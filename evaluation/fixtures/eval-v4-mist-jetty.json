@@ -1,0 +1,13 @@
+{"schema_version":"scc-evaluation-only-corpus-v1","corpus_key":"mist_jetty","title":"墨潮测候站","evaluation_only":true,"production_seed":false,"protected_asset_source":false,"chapters":[
+{"chapter_number":1,"title":"雾计开启","source_label":"开启时刻","body":"墨潮雾计在九点整由阮岱开启记录。"},
+{"chapter_number":2,"title":"自动停表","source_label":"自动停表","body":"雾计在九点十八分因读数稳定而自动停表。"},
+{"chapter_number":3,"title":"盘槽容量","source_label":"盘槽容量","body":"黑陶样品盘只有六个独立槽位，每个槽位只能放一粒晶砂。"},
+{"chapter_number":4,"title":"盐渍试验","source_label":"盐渍试验","body":"褪色试验确认，观测膜的灰白痕迹来自盐风沉积，而不是晨光照射。"},
+{"chapter_number":5,"title":"锁柜缘由","source_label":"锁柜缘由","body":"阮岱把潮图收进锁柜，但值班页没有说明这样做的原因。"},
+{"chapter_number":6,"title":"望远镜归属","source_label":"望远镜归属","body":"赤铜望远镜被发现放在北窗下，器材册没有登记它属于谁。"},
+{"chapter_number":7,"title":"风速校准","source_label":"风速校准","body":"午后校准把东侧风速计调回每息三格，和雾计的停表无关。"}],
+"memory":[
+{"memory_type":"event_timeline","subject":"墨潮雾计记录","predicate":"started_at","value":"九点整","source":{"chapter_number":1,"source_label":"开启时刻"}},
+{"memory_type":"event_timeline","subject":"墨潮雾计记录","predicate":"stopped_at","value":"九点十八分","source":{"chapter_number":2,"source_label":"自动停表"}},
+{"memory_type":"static_canon","subject":"黑陶样品盘","predicate":"slot_capacity","value":"六个独立槽位","source":{"chapter_number":3,"source_label":"盘槽容量"}},
+{"memory_type":"static_canon","subject":"观测膜灰白痕迹","predicate":"cause","value":"盐风沉积","source":{"chapter_number":4,"source_label":"盐渍试验"}}]}

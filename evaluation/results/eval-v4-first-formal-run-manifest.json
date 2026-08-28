@@ -1,0 +1,20 @@
+{
+  "evaluation": "scc-web-demo-eval-v4-first-formal",
+  "case_set_sha256": "2fd88830ad7ef61e089de7bd6d18ba930bdecf445c65c6ce835f20c7507768fc",
+  "source_file_hashes": {
+    "backend\\app\\v2_database.py": "7a9019648849e878576913bfb3374617adc5203083f22d9e537cd39d3efaff9f",
+    "backend\\app\\engine.py": "91f92b4c14d6985e220b3c6b03576668dfa7c611326eba48321015ea3d9c657d",
+    "backend\\app\\provider.py": "b0d6ac4c7c74c012bb77ba2acfad95513ba3555528e0e0249ff0ae81693585e5",
+    "evaluation\\case_sets\\eval-set-v4.json": "c787664f6fabac1e2e32e97f7fc9bf0d508d7b907db8e146ba1f471d4bb25dd8",
+    "evaluation\\run_eval.py": "3f3ee13e100f431e8477f2f64794eaec75fe2665ccf9957d948dca71e67985f7",
+    "evaluation\\manifests\\eval-set-v4-manifest.json": "f566baa06b8a18e1e1fc9a27534b7cda2dcec1af3997d3e22e7c419e4866ec1b",
+    "evaluation\\fixtures\\eval-v4-corpus-manifest.json": "315f1336e42884d5df6f7836062dff4b29049bf99914ae18661f9ed45e8d719c",
+    "evaluation\\fixtures\\eval-v4-eave-cabin.json": "b2f9430026c4f5d1648d121f8078bb38594ee296f077019ceec1b3920e01e619",
+    "evaluation\\fixtures\\eval-v4-mica-office.json": "3859917990935e226212b40de838eb9cec2a3018c9fdb333af84cf224fe7bc12",
+    "evaluation\\fixtures\\eval-v4-mist-jetty.json": "6dde6de27021dcfda3bfe3c25446dcc6bd3e635a90154f98705dd08033e0a322",
+    "evaluation\\v2_fixture_loader.py": "b5319b570cc019ebba3159f5c5c39911c230b167bd7ba60f644ef72341000625"
+  },
+  "safety_contract_sha256": "8054c14f5640fcc65dbbe70471abae505724325879c5ae0850f325550c396a79",
+  "provider_configuration": "environment_only_not_recorded",
+  "completed_at": "2026-08-28T02:59:33.029156+00:00"
+}

@@ -1,0 +1,52 @@
+# Secrets and local runtime
+.env
+.env.*
+!.env.example
+runtime/
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+
+# Python environments, caches, and test output
+.venv/
+backend/.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.coverage
+coverage/
+
+# Node and browser-test output
+frontend/node_modules/
+frontend/.next/
+frontend/.next-*/
+frontend/out/
+frontend/playwright-report/
+frontend/test-results/
+frontend/.env.local
+*.tsbuildinfo
+
+# Evaluation workspaces are local runtime data. The frozen V4 case set,
+# manifests, validators, tests, and sanitised retained results stay versioned.
+evaluation/fixture-workspaces/
+evaluation/.cache/
+evaluation/results/first-formal-*
+evaluation/results/eval-v2-*
+evaluation/results/eval-v3-*
+evaluation/results/v3-first-formal-post-run-integrity.json
+evaluation/results/repair-a-v1-integrity.json
+evaluation/results/post-run-review-index.json
+evaluation/results/stage66-*
+
+# Keep only the small public verification bundle below. All local runners,
+# logs, duplicate screenshots, and transient audit products remain local.
+artifacts/*
+!artifacts/README.md
+!artifacts/stage6-screenshots/
+artifacts/stage6-screenshots/*
+!artifacts/stage6-screenshots/1440-home.png
+!artifacts/stage6-screenshots/1440-grey-harbor-run-complete.png
+!artifacts/stage6-screenshots/1440-memory-update-review.png
+!artifacts/stage6-screenshots/1440-reset-confirmation.png

@@ -1,0 +1,13 @@
+{"schema_version":"scc-evaluation-only-corpus-v1","corpus_key":"eave_cabin","title":"藤环温室","evaluation_only":true,"production_seed":false,"protected_asset_source":false,"chapters":[
+{"chapter_number":1,"title":"值守职责","source_label":"值守职责","body":"夜间加压阀检查由程峪负责；苏莳只登记灌溉读数，不能代替阀检。"},
+{"chapter_number":2,"title":"通报封存","source_label":"通报封存","body":"热阈下调通报在十五点前封存，只有交班时才向值守人员开启。"},
+{"chapter_number":3,"title":"交班记录","source_label":"交班记录","body":"苏莳在十六点交班时第一次领取热阈下调通报，此前没有收到副本。"},
+{"chapter_number":4,"title":"样叶检测","source_label":"样叶检测","body":"藤环样叶的含锌量检测为百分之三点一到三点三。"},
+{"chapter_number":5,"title":"遮帘阈值","source_label":"遮帘阈值","body":"当湿度降至百分之四十以下时，南廊遮帘会自动展开；本次读数为百分之三十八。"},
+{"chapter_number":6,"title":"断枝缘由","source_label":"断枝缘由","body":"西床有一截嫩枝折断，巡查单没有写明折断原因。"},
+{"chapter_number":7,"title":"水槽读数","source_label":"水槽读数","body":"北侧水槽在傍晚维持七成水位，与热阈通报和遮帘无关。"}],
+"memory":[
+{"memory_type":"static_canon","subject":"程峪","predicate":"night_valve_duty","value":"负责夜间加压阀检查","source":{"chapter_number":1,"source_label":"值守职责"}},
+{"memory_type":"character_knowledge","subject":"苏莳","predicate":"heat_threshold_notice","value":"十六点交班时首次领取","source":{"chapter_number":3,"source_label":"交班记录"}},
+{"memory_type":"static_canon","subject":"藤环样叶","predicate":"zinc_content","value":"百分之三点一到三点三","source":{"chapter_number":4,"source_label":"样叶检测"}},
+{"memory_type":"static_canon","subject":"南廊遮帘","predicate":"opening_condition","value":"湿度低于百分之四十","source":{"chapter_number":5,"source_label":"遮帘阈值"}}]}

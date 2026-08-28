@@ -1,0 +1,12 @@
+{
+  "scanned_in_memory": true,
+  "response_count": 114,
+  "categories": {
+    "secret_value": 0,
+    "authorization_value": 0,
+    "prompt_body": 0,
+    "raw_provider_body": 0,
+    "chain_of_thought": 0
+  },
+  "unresolved": 0
+}

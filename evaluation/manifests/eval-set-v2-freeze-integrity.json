@@ -1,0 +1,15 @@
+{
+  "schema_version": "scc-eval-v2-freeze-integrity-v1",
+  "status": "frozen_data_assets",
+  "case_canonical_sha256": "6934887445ee8d493e940fcbb201eb75c7dfe025659413a68cd4f956749f4440",
+  "corpus_canonical_sha256": "c896b00bb0c730517dff1a63cba27d5b30c0e36d3fd46492dce8c20099af9b9c",
+  "frozen_files": {
+    "evaluation/case_sets/eval-set-v2.json": "f3aaab3281793b3a0f2e3e868802c8175a72d856a4bb45ad0a0b763e1d37a95d",
+    "evaluation/manifests/eval-set-v2-manifest.json": "27ff27a19b5be59a2ffe0a9870b8791f792f499173f15cda287803641ef5c9ab",
+    "evaluation/v2-semantic-review.json": "4067a8ab19abcbf2f119e0416bf920fe5369335c9c6a2d9345a5b7a4edb9a579",
+    "evaluation/fixtures/eval-v2-corpus-manifest.json": "671a514d0d7b03aa8b4789269f0758dcc488d81fb761cb4e7a287631c0126fea",
+    "evaluation/fixtures/eval-v2-calibration-spire.json": "2837bd68c4ec802d357c42c6f1f7184475af1a2648772d7d0c731670b02b0c57",
+    "evaluation/fixtures/eval-v2-cloud-post.json": "b044d9386ddafb39d332268105ff3658a6139263db9ffafbc2baf2a2750c159c",
+    "evaluation/fixtures/eval-v2-crystal-archive.json": "f43d5dd873e1acd606983ed3f0167f9460f3edd6e64a03011d8af26807700bce"
+  }
+}

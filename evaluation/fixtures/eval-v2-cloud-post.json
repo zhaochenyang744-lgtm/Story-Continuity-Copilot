@@ -1,0 +1,22 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "cloud_post",
+  "title": "云纹驿站",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "chapters": [
+    {"chapter_number": 1, "title": "双签路签", "source_label": "双签约定", "body": "洛绡与杜谨约定，只有两人都在路签上落印后，路线才能向外发布。"},
+    {"chapter_number": 2, "title": "绛色来信", "source_label": "来信边界", "body": "杜谨读得懂气压图，却还不知道绛色明信片是谁寄出。"},
+    {"chapter_number": 3, "title": "晨班南门", "source_label": "晨班时刻", "body": "驿站晨班信使在六点四十分从南门出发。"},
+    {"chapter_number": 4, "title": "紫蜡封套", "source_label": "封套状态", "body": "绛色明信片仍夹在紫蜡封套内，封口没有拆开。"},
+    {"chapter_number": 5, "title": "北岭登记", "source_label": "投递缺口", "body": "路线编号是否送达北岭观测台，登记簿没有记录。"},
+    {"chapter_number": 6, "title": "玄石投口", "source_label": "重量规则", "body": "玄石投口只接受重量不超过九克的纸页。"}
+  ],
+  "memory": [
+    {"memory_type": "relationship", "subject": "洛绡与杜谨", "predicate": "route_release", "value": "两人都在路签落印后才能发布", "source": {"chapter_number": 1, "source_label": "双签约定"}},
+    {"memory_type": "character_knowledge", "subject": "杜谨", "predicate": "does_not_know", "value": "绛色明信片寄件人", "source": {"chapter_number": 2, "source_label": "来信边界"}},
+    {"memory_type": "event_timeline", "subject": "晨班信使", "predicate": "departure", "value": "六点四十分从南门出发", "source": {"chapter_number": 3, "source_label": "晨班时刻"}},
+    {"memory_type": "dynamic_state", "subject": "绛色明信片", "predicate": "container", "value": "未拆开的紫蜡封套", "source": {"chapter_number": 4, "source_label": "封套状态"}}
+  ]
+}

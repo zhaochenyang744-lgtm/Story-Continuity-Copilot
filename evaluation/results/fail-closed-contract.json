@@ -1,0 +1,46 @@
+{
+  "evaluation": "scc-web-demo-eval-v1",
+  "type": "deterministic_fail_closed_contract",
+  "provider_calls": 0,
+  "paths": [
+    {
+      "path": "unavailable",
+      "post_status": 503,
+      "error_code": "provider_unavailable",
+      "valid": true
+    },
+    {
+      "path": "timeout",
+      "post_status": 202,
+      "terminal_status": "timed_out",
+      "error_code": "provider_timeout",
+      "issue_count": 0,
+      "valid": true
+    },
+    {
+      "path": "invalid_json",
+      "post_status": 202,
+      "terminal_status": "failed",
+      "error_code": "invalid_json",
+      "issue_count": 0,
+      "valid": true
+    },
+    {
+      "path": "schema",
+      "post_status": 202,
+      "terminal_status": "failed",
+      "error_code": "schema_invalid",
+      "issue_count": 0,
+      "valid": true
+    },
+    {
+      "path": "evidence_grounding",
+      "post_status": 202,
+      "terminal_status": "failed",
+      "error_code": "evidence_unresolvable",
+      "issue_count": 0,
+      "valid": true
+    }
+  ],
+  "validity": 1.0
+}

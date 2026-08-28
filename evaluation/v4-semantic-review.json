@@ -1,0 +1,127 @@
+{
+  "schema_version": "scc-eval-v4-semantic-review-v1",
+  "review_scope": "controller_accepted_for_freeze",
+  "structural_validation_note": "结构校验只能检查字段、唯一性与已知重合规则；不能替代总控对语义独立性和评测适用性的人工审阅。",
+  "entries": [
+    {
+      "case_id": "eval-v4-jetty-conflict-fog-duration",
+      "corpus_key": "mist_jetty",
+      "core_fact_key": "jetty:fog-recorded-duration",
+      "prior_archetype_reference": "V3 event_order；本候选为持续时段边界，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-jetty-conflict-tray-capacity",
+      "corpus_key": "mist_jetty",
+      "core_fact_key": "jetty:tray-capacity-limit",
+      "prior_archetype_reference": "V3 object state；本候选为容量上限，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-jetty-no-conflict-membrane-cause",
+      "corpus_key": "mist_jetty",
+      "core_fact_key": "jetty:membrane-salt-cause",
+      "prior_archetype_reference": "V3 no-conflict object state；本候选为受控因果归因，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-jetty-insufficient-chart-motive",
+      "corpus_key": "mist_jetty",
+      "core_fact_key": "jetty:chart-storage-motive",
+      "prior_archetype_reference": "V3 insufficient evidence；本候选为未知动机，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-jetty-insufficient-telescope-owner",
+      "corpus_key": "mist_jetty",
+      "core_fact_key": "jetty:telescope-ownership",
+      "prior_archetype_reference": "V3 insufficient evidence；本候选为未知归属，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-cabin-conflict-valve-duty",
+      "corpus_key": "eave_cabin",
+      "core_fact_key": "cabin:night-valve-duty",
+      "prior_archetype_reference": "V3 joint authority；本候选为排他职责分配，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-cabin-conflict-notice-knowledge",
+      "corpus_key": "eave_cabin",
+      "core_fact_key": "cabin:notice-knowledge-boundary",
+      "prior_archetype_reference": "V3 character knowledge；本候选为封存通报的授权获取时点，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-cabin-no-conflict-leaf-zinc",
+      "corpus_key": "eave_cabin",
+      "core_fact_key": "cabin:leaf-zinc-range",
+      "prior_archetype_reference": "V3 no-conflict object state；本候选为数值区间支持，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-cabin-no-conflict-curtain-threshold",
+      "corpus_key": "eave_cabin",
+      "core_fact_key": "cabin:curtain-threshold-result",
+      "prior_archetype_reference": "V3 world trigger；本候选为已满足的阈值支持，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-cabin-insufficient-branch-cause",
+      "corpus_key": "eave_cabin",
+      "core_fact_key": "cabin:branch-break-cause",
+      "prior_archetype_reference": "V3 insufficient evidence；本候选为未知损害原因，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-office-conflict-alert-drawer",
+      "corpus_key": "mica_office",
+      "core_fact_key": "office:alert-drawer-exception",
+      "prior_archetype_reference": "V3 world rule；本候选为警报例外条件违反，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-office-no-conflict-voucher-resolution",
+      "corpus_key": "mica_office",
+      "core_fact_key": "office:voucher-resolution-condition",
+      "prior_archetype_reference": "V3 event status；本候选为多条件完成后的解决状态，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-office-no-conflict-seal-inventory",
+      "corpus_key": "mica_office",
+      "core_fact_key": "office:seal-inventory-balance",
+      "prior_archetype_reference": "V3 no-conflict object state；本候选为数量守恒，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-office-insufficient-water-conclusion",
+      "corpus_key": "mica_office",
+      "core_fact_key": "office:water-sample-test-conclusion",
+      "prior_archetype_reference": "V3 unknown_event_completion；本候选为未知检测结论，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v4-office-insufficient-token-author",
+      "corpus_key": "mica_office",
+      "core_fact_key": "office:token-diagram-authorship",
+      "prior_archetype_reference": "V3 insufficient evidence；本候选为未知创作来源，待总控比较。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    }
+  ]
+}

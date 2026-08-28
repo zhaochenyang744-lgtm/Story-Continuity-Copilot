@@ -1,0 +1,970 @@
+{
+  "evaluation": "scc-web-demo-eval-v4-first-formal",
+  "status": "gate_passed",
+  "case_set_sha256": "2fd88830ad7ef61e089de7bd6d18ba930bdecf445c65c6ce835f20c7507768fc",
+  "formal_case_results": [
+    {
+      "case_id": "eval-v4-jetty-conflict-fog-duration",
+      "seed_key": "mist_jetty",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "timeline",
+      "predicted_category": "event_status",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "predicted_severity": "high",
+      "category_severity": [
+        "event_status",
+        "high"
+      ],
+      "run_id": "run-70185766-7e7c-48e8-81fa-1ee85fd21199",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "开启时刻"
+        ],
+        [
+          2,
+          "自动停表"
+        ],
+        [
+          7,
+          "风速校准"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-55fa0afe-84ff-4ca3-9118-243691a89bee"
+      ],
+      "evidence_semantic_set": [
+        [
+          2,
+          "自动停表"
+        ]
+      ],
+      "explanation_sha256": "9a26f81ff51aa8d3dbd4743dd8085dae61e55433a773cdbae221ea15cb2041dc",
+      "latency_ms": 3621,
+      "input_tokens": 1098,
+      "output_tokens": 285,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-jetty-conflict-tray-capacity",
+      "seed_key": "mist_jetty",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "attribute",
+      "predicted_category": "attribute",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "predicted_severity": "high",
+      "category_severity": [
+        "attribute",
+        "high"
+      ],
+      "run_id": "run-d1f162e4-b789-45aa-ae3e-be62533b5138",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          3,
+          "盘槽容量"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-7b06230d-9209-495c-ba78-7ccca483754c"
+      ],
+      "evidence_semantic_set": [
+        [
+          3,
+          "盘槽容量"
+        ]
+      ],
+      "explanation_sha256": "0902ed3d60416fcc8f03e80cbf10a558f78de8829a487f64c43eeb7a0b35bdae",
+      "latency_ms": 4104,
+      "input_tokens": 991,
+      "output_tokens": 276,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-jetty-no-conflict-membrane-cause",
+      "seed_key": "mist_jetty",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-132d9a79-090a-4bbb-8d9e-acc3fb6e21cf",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          4,
+          "盐渍试验"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 719,
+      "input_tokens": 994,
+      "output_tokens": 7,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-jetty-insufficient-chart-motive",
+      "seed_key": "mist_jetty",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "character_knowledge",
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "predicted_severity": "medium",
+      "category_severity": [
+        "character_knowledge",
+        "medium"
+      ],
+      "run_id": "run-e772bd30-26cf-42c8-990a-5c1870374092",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "开启时刻"
+        ],
+        [
+          5,
+          "锁柜缘由"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "explanation_sha256": "313cc6120fe066ab06cd8b7ef1d48fc63cf0b499a7453043079117b2049aaf9c",
+      "latency_ms": 3534,
+      "input_tokens": 1039,
+      "output_tokens": 163,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-jetty-insufficient-telescope-owner",
+      "seed_key": "mist_jetty",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "attribute",
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "predicted_severity": "medium",
+      "category_severity": [
+        "attribute",
+        "medium"
+      ],
+      "run_id": "run-692efb5e-7137-4bc7-874c-268df3000443",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "开启时刻"
+        ],
+        [
+          5,
+          "锁柜缘由"
+        ],
+        [
+          6,
+          "望远镜归属"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "explanation_sha256": "eeac56e06143fd80ae40255ab6e99da819d1e39da28aa2f754f377ae6d4e4102",
+      "latency_ms": 2727,
+      "input_tokens": 1083,
+      "output_tokens": 104,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-cabin-conflict-valve-duty",
+      "seed_key": "eave_cabin",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "relationship",
+      "predicted_category": "relationship",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "predicted_severity": "high",
+      "category_severity": [
+        "relationship",
+        "high"
+      ],
+      "run_id": "run-3506dac4-d486-4d23-9051-12aab0b13704",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "值守职责"
+        ],
+        [
+          3,
+          "交班记录"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-e1b2670d-50bb-4b0a-b4bf-315d02f4e2bb"
+      ],
+      "evidence_semantic_set": [
+        [
+          1,
+          "值守职责"
+        ]
+      ],
+      "explanation_sha256": "3fb3435ea289f5734f0086063e7650478b57e43b90f41b1d843d91f62709c9df",
+      "latency_ms": 3692,
+      "input_tokens": 1037,
+      "output_tokens": 274,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-cabin-conflict-notice-knowledge",
+      "seed_key": "eave_cabin",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "character_knowledge",
+      "predicted_category": "character_knowledge",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "predicted_severity": "high",
+      "category_severity": [
+        "character_knowledge",
+        "high"
+      ],
+      "run_id": "run-e2d192ad-596f-4511-80ed-645b614377d2",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "值守职责"
+        ],
+        [
+          2,
+          "通报封存"
+        ],
+        [
+          3,
+          "交班记录"
+        ],
+        [
+          7,
+          "水槽读数"
+        ]
+      ],
+      "cited_evidence_count": 2,
+      "cited_evidence_expected_count": 2,
+      "resolvable_evidence_count": 2,
+      "evidence_ids": [
+        "evidence-59824c90-5003-4d5a-87da-209abb7ac330",
+        "evidence-b8e732ae-36f7-4fac-95ba-d2d189fa068a"
+      ],
+      "evidence_semantic_set": [
+        [
+          2,
+          "通报封存"
+        ],
+        [
+          3,
+          "交班记录"
+        ]
+      ],
+      "explanation_sha256": "6d0a1c1b903a12918ac104e1c0d5bdb88826997eefcb2ac4393bc15fa42b3a6b",
+      "latency_ms": 4483,
+      "input_tokens": 1143,
+      "output_tokens": 355,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-cabin-no-conflict-leaf-zinc",
+      "seed_key": "eave_cabin",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-d936be8a-bfbf-40b2-8890-806839d2d193",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          4,
+          "样叶检测"
+        ],
+        [
+          5,
+          "遮帘阈值"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 1115,
+      "input_tokens": 1039,
+      "output_tokens": 7,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-cabin-no-conflict-curtain-threshold",
+      "seed_key": "eave_cabin",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-06114f3a-ab2a-4f49-b3e3-fc22ef3fe6fb",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          4,
+          "样叶检测"
+        ],
+        [
+          5,
+          "遮帘阈值"
+        ],
+        [
+          7,
+          "水槽读数"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 1171,
+      "input_tokens": 1094,
+      "output_tokens": 7,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-cabin-insufficient-branch-cause",
+      "seed_key": "eave_cabin",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "event_status",
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "predicted_severity": "medium",
+      "category_severity": [
+        "event_status",
+        "medium"
+      ],
+      "run_id": "run-aae02ffd-a4be-4052-b828-cf6316118135",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          6,
+          "断枝缘由"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "explanation_sha256": "cdb6a756cd3bb89bd0ce033a2cdbe52c711cc83eb677f78e61883876d69a2489",
+      "latency_ms": 2593,
+      "input_tokens": 979,
+      "output_tokens": 110,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-office-conflict-alert-drawer",
+      "seed_key": "mica_office",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "world_rule",
+      "predicted_category": "event_status",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "predicted_severity": "high",
+      "category_severity": [
+        "event_status",
+        "high"
+      ],
+      "run_id": "run-3341809f-9103-4e82-9778-1a672017900a",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "抽屉准则"
+        ],
+        [
+          2,
+          "警报约束"
+        ]
+      ],
+      "cited_evidence_count": 2,
+      "cited_evidence_expected_count": 2,
+      "resolvable_evidence_count": 2,
+      "evidence_ids": [
+        "evidence-169f06f7-a070-46e6-8d23-23196a2c77f9",
+        "evidence-b0b3c214-536b-40f6-9b55-1041591ebfaf"
+      ],
+      "evidence_semantic_set": [
+        [
+          1,
+          "抽屉准则"
+        ],
+        [
+          2,
+          "警报约束"
+        ]
+      ],
+      "explanation_sha256": "8d27bb6ce3e5f5eaabd8946c569f4048c747cad269195c8db1f6f9c06719df08",
+      "latency_ms": 4049,
+      "input_tokens": 1032,
+      "output_tokens": 354,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-office-no-conflict-voucher-resolution",
+      "seed_key": "mica_office",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-a91b8739-aa20-43d5-b75f-37fd436fe2ea",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          3,
+          "三章复核"
+        ],
+        [
+          4,
+          "库存结余"
+        ],
+        [
+          5,
+          "检测结论"
+        ],
+        [
+          6,
+          "图记来源"
+        ],
+        [
+          7,
+          "导线读数"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 1041,
+      "input_tokens": 1192,
+      "output_tokens": 7,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-office-no-conflict-seal-inventory",
+      "seed_key": "mica_office",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-c18eed47-2d61-46ea-ad1a-717c71b82b2a",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          3,
+          "三章复核"
+        ],
+        [
+          4,
+          "库存结余"
+        ],
+        [
+          6,
+          "图记来源"
+        ],
+        [
+          7,
+          "导线读数"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 1121,
+      "input_tokens": 1148,
+      "output_tokens": 7,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-office-insufficient-water-conclusion",
+      "seed_key": "mica_office",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "event_status",
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "predicted_severity": "medium",
+      "category_severity": [
+        "event_status",
+        "medium"
+      ],
+      "run_id": "run-76d3cbe9-9e77-499c-bec4-28b535522adf",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          5,
+          "检测结论"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "explanation_sha256": "0427a2f0dd48da5115e3df280957e6283e408eb3832becf0f8fbb8d0e35db52e",
+      "latency_ms": 2439,
+      "input_tokens": 983,
+      "output_tokens": 121,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-office-insufficient-token-author",
+      "seed_key": "mica_office",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "attribute",
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "predicted_severity": "medium",
+      "category_severity": [
+        "attribute",
+        "medium"
+      ],
+      "run_id": "run-83906926-d206-48bb-bc85-2e98d546a0af",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          3,
+          "三章复核"
+        ],
+        [
+          4,
+          "库存结余"
+        ],
+        [
+          5,
+          "检测结论"
+        ],
+        [
+          6,
+          "图记来源"
+        ],
+        [
+          7,
+          "导线读数"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "explanation_sha256": "d6dd23f45586543b7030fb094b26b315f7c03eedf65c7621f67e999fc4288815",
+      "latency_ms": 2255,
+      "input_tokens": 1185,
+      "output_tokens": 106,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-v4-pro",
+        "prompt_version": "continuity-review-v4",
+        "schema_version": "continuity-issue-v3",
+        "retrieval_method_version": "demo-retrieval-v2",
+        "source_memory_version": 1
+      }
+    }
+  ],
+  "metrics": {
+    "confusion_matrix": {
+      "conflict": {
+        "conflict": 5,
+        "no_conflict": 0,
+        "insufficient_evidence": 0
+      },
+      "no_conflict": {
+        "conflict": 0,
+        "no_conflict": 5,
+        "insufficient_evidence": 0
+      },
+      "insufficient_evidence": {
+        "conflict": 0,
+        "no_conflict": 0,
+        "insufficient_evidence": 5
+      }
+    },
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "conflict": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "no_conflict_false_positive_rate": 0.0,
+    "insufficient_evidence_recall": 1.0,
+    "retrieval_expected_evidence_hit_at_5": 1.0,
+    "cited_evidence_precision": 1.0,
+    "evidence_resolvability_grounding": 1.0,
+    "schema_validity": 1.0,
+    "latency_ms": {
+      "p50": 2593,
+      "p95": 4104
+    },
+    "tokens": {
+      "input_total": 16037,
+      "output_total": 2183
+    },
+    "cost": "unavailable"
+  },
+  "gate_checks": {
+    "macro_f1": true,
+    "conflict_recall": true,
+    "insufficient_evidence_recall": true,
+    "no_conflict_false_positive_rate": true,
+    "retrieval_expected_evidence_hit_at_5": true,
+    "cited_evidence_precision": true,
+    "schema_validity": true,
+    "evidence_resolvability_grounding": true,
+    "fail_closed_safety_paths": true
+  },
+  "safety_contract": {
+    "evaluation": "scc-web-demo-eval-v1",
+    "type": "deterministic_fail_closed_contract",
+    "provider_calls": 0,
+    "paths": [
+      {
+        "path": "unavailable",
+        "post_status": 503,
+        "error_code": "provider_unavailable",
+        "valid": true
+      },
+      {
+        "path": "timeout",
+        "post_status": 202,
+        "terminal_status": "timed_out",
+        "error_code": "provider_timeout",
+        "issue_count": 0,
+        "valid": true
+      },
+      {
+        "path": "invalid_json",
+        "post_status": 202,
+        "terminal_status": "failed",
+        "error_code": "invalid_json",
+        "issue_count": 0,
+        "valid": true
+      },
+      {
+        "path": "schema",
+        "post_status": 202,
+        "terminal_status": "failed",
+        "error_code": "schema_invalid",
+        "issue_count": 0,
+        "valid": true
+      },
+      {
+        "path": "evidence_grounding",
+        "post_status": 202,
+        "terminal_status": "failed",
+        "error_code": "evidence_unresolvable",
+        "issue_count": 0,
+        "valid": true
+      }
+    ],
+    "validity": 1.0
+  },
+  "run_metadata": {
+    "started_at": "2026-08-28T02:59:33.023869+00:00",
+    "runtime_mode": "evaluation_fixture",
+    "base_url_label": "isolated_evaluation_fixture",
+    "source_file_hashes": {
+      "backend\\app\\v2_database.py": "7a9019648849e878576913bfb3374617adc5203083f22d9e537cd39d3efaff9f",
+      "backend\\app\\engine.py": "91f92b4c14d6985e220b3c6b03576668dfa7c611326eba48321015ea3d9c657d",
+      "backend\\app\\provider.py": "b0d6ac4c7c74c012bb77ba2acfad95513ba3555528e0e0249ff0ae81693585e5",
+      "evaluation\\case_sets\\eval-set-v4.json": "c787664f6fabac1e2e32e97f7fc9bf0d508d7b907db8e146ba1f471d4bb25dd8",
+      "evaluation\\run_eval.py": "3f3ee13e100f431e8477f2f64794eaec75fe2665ccf9957d948dca71e67985f7",
+      "evaluation\\manifests\\eval-set-v4-manifest.json": "f566baa06b8a18e1e1fc9a27534b7cda2dcec1af3997d3e22e7c419e4866ec1b",
+      "evaluation\\fixtures\\eval-v4-corpus-manifest.json": "315f1336e42884d5df6f7836062dff4b29049bf99914ae18661f9ed45e8d719c",
+      "evaluation\\fixtures\\eval-v4-eave-cabin.json": "b2f9430026c4f5d1648d121f8078bb38594ee296f077019ceec1b3920e01e619",
+      "evaluation\\fixtures\\eval-v4-mica-office.json": "3859917990935e226212b40de838eb9cec2a3018c9fdb333af84cf224fe7bc12",
+      "evaluation\\fixtures\\eval-v4-mist-jetty.json": "6dde6de27021dcfda3bfe3c25446dcc6bd3e635a90154f98705dd08033e0a322",
+      "evaluation\\v2_fixture_loader.py": "b5319b570cc019ebba3159f5c5c39911c230b167bd7ba60f644ef72341000625"
+    },
+    "provider_configuration": "environment_only_not_recorded"
+  }
+}

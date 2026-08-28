@@ -1,0 +1,173 @@
+{
+  "schema_version": "scc-eval-v2-semantic-review-v1",
+  "review_scope": "controller_accepted_for_freeze",
+  "structural_validation_note": "结构校验只验证清单覆盖和引用关系，不能替代总控对语义独立性的人工验收。",
+  "entries": [
+    {
+      "case_id": "eval-v2-spire-conflict-signal-order",
+      "corpus_key": "calibration_spire",
+      "v2_decision_point": "矿载车离站与校准信标回报的先后关系",
+      "nearest_v1_case_id": "eval-v1-gh-conflict-timeline",
+      "why_not_same_fact_or_decision_point": "新 corpus 的矿载车和信标均未出现在 V1，且比较的是两项新事件的顺序。",
+      "nearest_v2_case_id": "eval-v2-spire-conflict-west-shadow",
+      "why_not_duplicate": "后者判定闸门规则，不涉及事件顺序。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-spire-conflict-west-shadow",
+      "corpus_key": "calibration_spire",
+      "v2_decision_point": "西向影线能否开启赤陶闸",
+      "nearest_v1_case_id": "eval-v1-zg-conflict-world-rule",
+      "why_not_same_fact_or_decision_point": "赤陶闸的影线触发机制与 V1 的植物发光机制无共同世界事实。",
+      "nearest_v2_case_id": "eval-v2-spire-no-conflict-mirror-seal",
+      "why_not_duplicate": "后者判定校准镜封存状态。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-spire-no-conflict-mirror-seal",
+      "corpus_key": "calibration_spire",
+      "v2_decision_point": "双面校准镜的柜内封存状态",
+      "nearest_v1_case_id": "eval-v1-pm-no-conflict-object",
+      "why_not_same_fact_or_decision_point": "校准镜与蓝釉柜是新物件和新位置，不涉及 V1 的钥匙。",
+      "nearest_v2_case_id": "eval-v2-spire-insufficient-code-prefix",
+      "why_not_duplicate": "后者判定未知校准码的具体数字。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-spire-insufficient-code-prefix",
+      "corpus_key": "calibration_spire",
+      "v2_decision_point": "赤陶闸校准码首位是否可知",
+      "nearest_v1_case_id": "eval-v1-gh-insufficient-key-location",
+      "why_not_same_fact_or_decision_point": "新判定针对校准码数字，不涉及廊桥钥匙或其位置。",
+      "nearest_v2_case_id": "eval-v2-spire-insufficient-fragment-kiln",
+      "why_not_duplicate": "后者判定黑陶碎片来源。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-spire-insufficient-fragment-kiln",
+      "corpus_key": "calibration_spire",
+      "v2_decision_point": "黑陶碎片来自哪座炉窑",
+      "nearest_v1_case_id": "eval-v1-gh-insufficient-boat-captain",
+      "why_not_same_fact_or_decision_point": "炉窑来源与白色渡船身份是不同 corpus 的不同开放问题。",
+      "nearest_v2_case_id": "eval-v2-spire-insufficient-code-prefix",
+      "why_not_duplicate": "后者只涉及校准码首位。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-post-conflict-single-release",
+      "corpus_key": "cloud_post",
+      "v2_decision_point": "路线发布是否需要双签",
+      "nearest_v1_case_id": "eval-v1-pm-conflict-relationship",
+      "why_not_same_fact_or_decision_point": "双签发布流程不涉及姓名交换或 V1 的角色关系。",
+      "nearest_v2_case_id": "eval-v2-post-conflict-sender-known",
+      "why_not_duplicate": "后者判定杜谨的寄件人知识。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-post-conflict-sender-known",
+      "corpus_key": "cloud_post",
+      "v2_decision_point": "杜谨是否知道明信片寄件人",
+      "nearest_v1_case_id": "eval-v1-gh-conflict-knowledge",
+      "why_not_same_fact_or_decision_point": "寄件人知识与廊桥钥匙代号无共同人物、物件或事实。",
+      "nearest_v2_case_id": "eval-v2-post-conflict-single-release",
+      "why_not_duplicate": "后者判定双签发布关系。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-post-no-conflict-courier-time",
+      "corpus_key": "cloud_post",
+      "v2_decision_point": "晨班信使的出发时间与地点",
+      "nearest_v1_case_id": "eval-v1-pm-no-conflict-timeline",
+      "why_not_same_fact_or_decision_point": "云纹驿站的晨班出发与河灯目录抄录是不同事件。",
+      "nearest_v2_case_id": "eval-v2-post-no-conflict-postcard-seal",
+      "why_not_duplicate": "后者判定明信片封套状态。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-post-no-conflict-postcard-seal",
+      "corpus_key": "cloud_post",
+      "v2_decision_point": "绛色明信片的封套与封口状态",
+      "nearest_v1_case_id": "eval-v1-zg-no-conflict-object",
+      "why_not_same_fact_or_decision_point": "明信片封套与 V1 的花粉样本在物件、地点和状态上均不同。",
+      "nearest_v2_case_id": "eval-v2-post-no-conflict-courier-time",
+      "why_not_duplicate": "后者判定信使行程。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-post-insufficient-north-ridge-delivery",
+      "corpus_key": "cloud_post",
+      "v2_decision_point": "路线编号是否送达北岭观测台",
+      "nearest_v1_case_id": "eval-v1-pm-insufficient-ink",
+      "why_not_same_fact_or_decision_point": "投递登记缺口与目录墨水信息是不同的证据不足判断。",
+      "nearest_v2_case_id": "eval-v2-post-conflict-single-release",
+      "why_not_duplicate": "后者判定路线发布权限。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-archive-conflict-tube-early-shelf",
+      "corpus_key": "crystal_archive",
+      "v2_decision_point": "琥珀管在22:15是否已移至档案架",
+      "nearest_v1_case_id": "eval-v1-gh-conflict-attribute",
+      "why_not_same_fact_or_decision_point": "琥珀管的时点位置与 V1 罗盘镜面属性没有共同事实。",
+      "nearest_v2_case_id": "eval-v2-archive-no-conflict-curtain-rule",
+      "why_not_duplicate": "后者判定遮帘规则。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-archive-no-conflict-curtain-rule",
+      "corpus_key": "crystal_archive",
+      "v2_decision_point": "灯光能否开启霜纹遮帘",
+      "nearest_v1_case_id": "eval-v1-zg-conflict-world-rule",
+      "why_not_same_fact_or_decision_point": "遮帘的霜纹规则与 V1 植物发光规则没有共同世界机制。",
+      "nearest_v2_case_id": "eval-v2-archive-no-conflict-label-review",
+      "why_not_duplicate": "后者判定两人的标签核对流程。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-archive-no-conflict-label-review",
+      "corpus_key": "crystal_archive",
+      "v2_decision_point": "记录样本重量后的共同标签核对流程",
+      "nearest_v1_case_id": "eval-v1-gh-no-conflict-relationship",
+      "why_not_same_fact_or_decision_point": "重量与标签协作不涉及 V1 的新线索披露约定。",
+      "nearest_v2_case_id": "eval-v2-archive-no-conflict-curtain-rule",
+      "why_not_duplicate": "后者只涉及遮帘开启条件。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-archive-insufficient-isotope",
+      "corpus_key": "crystal_archive",
+      "v2_decision_point": "粉末的具体同位素成分是否可知",
+      "nearest_v1_case_id": "eval-v1-pm-insufficient-ink",
+      "why_not_same_fact_or_decision_point": "同位素成分与目录墨水均属不同 corpus 的不同未确认属性。",
+      "nearest_v2_case_id": "eval-v2-archive-insufficient-mountain-route",
+      "why_not_duplicate": "后者判定递送路径。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v2-archive-insufficient-mountain-route",
+      "corpus_key": "crystal_archive",
+      "v2_decision_point": "夜间递送员的到达山道",
+      "nearest_v1_case_id": "eval-v1-zg-insufficient-visitor",
+      "why_not_same_fact_or_decision_point": "递送路径与访客进入记录没有共同人物、地点或事件。",
+      "nearest_v2_case_id": "eval-v2-archive-insufficient-isotope",
+      "why_not_duplicate": "后者判定粉末成分。",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    }
+  ]
+}
+

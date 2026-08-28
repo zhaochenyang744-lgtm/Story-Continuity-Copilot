@@ -1,0 +1,13 @@
+{"schema_version":"scc-evaluation-only-corpus-v1","corpus_key":"mica_office","title":"穹顶配给局","evaluation_only":true,"production_seed":false,"protected_asset_source":false,"chapters":[
+{"chapter_number":1,"title":"抽屉准则","source_label":"抽屉准则","body":"钴色抽屉须完成第三轮冷却后才能解除锁扣，第一轮和第二轮都不能开启。"},
+{"chapter_number":2,"title":"警报约束","source_label":"警报约束","body":"红色警报期间，钴色抽屉保持锁定，不适用普通的手动放行。"},
+{"chapter_number":3,"title":"三章复核","source_label":"三章复核","body":"同一张配给券出现三枚相符印章后，复核员将重复记录标为已解决。"},
+{"chapter_number":4,"title":"库存结余","source_label":"库存结余","body":"配给局收到九卷封条，下午领用两卷，账册记载剩余七卷。"},
+{"chapter_number":5,"title":"检测结论","source_label":"检测结论","body":"陶谜已把水样送检，但浊度检测的结论没有写入记录。"},
+{"chapter_number":6,"title":"图记来源","source_label":"图记来源","body":"一枚配给筹背面有手绘穹顶图记，但登记簿没有写明绘制者。"},
+{"chapter_number":7,"title":"导线读数","source_label":"导线读数","body":"西廊导线电阻在午后保持二十欧姆，与配给券复核无关。"}],
+"memory":[
+{"memory_type":"static_canon","subject":"钴色抽屉","predicate":"unlock_cycle","value":"第三轮冷却后","source":{"chapter_number":1,"source_label":"抽屉准则"}},
+{"memory_type":"static_canon","subject":"钴色抽屉","predicate":"red_alert_state","value":"保持锁定","source":{"chapter_number":2,"source_label":"警报约束"}},
+{"memory_type":"static_canon","subject":"重复配给券记录","predicate":"resolution_condition","value":"三枚相符印章后标为已解决","source":{"chapter_number":3,"source_label":"三章复核"}},
+{"memory_type":"dynamic_state","subject":"封条库存","predicate":"remaining_quantity","value":"七卷","source":{"chapter_number":4,"source_label":"库存结余"}}]}

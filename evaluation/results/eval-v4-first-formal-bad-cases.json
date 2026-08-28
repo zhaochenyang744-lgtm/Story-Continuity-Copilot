@@ -1,0 +1,31 @@
+{
+  "evaluation": "scc-web-demo-eval-v4-first-formal",
+  "bad_cases": [
+    {
+      "case_id": "eval-v4-jetty-conflict-fog-duration",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "rationale": "Recorded retrieval hit and cited Evidence resolvability do not explain the decision or category mismatch.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 1,
+        "resolvable_evidence_count": 1
+      }
+    },
+    {
+      "case_id": "eval-v4-office-conflict-alert-drawer",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "rationale": "Recorded retrieval hit and cited Evidence resolvability do not explain the decision or category mismatch.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 2,
+        "resolvable_evidence_count": 2
+      }
+    }
+  ]
+}

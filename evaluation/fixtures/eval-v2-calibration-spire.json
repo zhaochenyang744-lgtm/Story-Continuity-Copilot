@@ -1,0 +1,23 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "calibration_spire",
+  "title": "校准塔",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "chapters": [
+    {"chapter_number": 1, "title": "北影刻槽", "source_label": "闸门准则", "body": "赤陶闸只在正午的北向影线贴合刻槽时开启；西向影线不会触发闸门。"},
+    {"chapter_number": 2, "title": "蓝釉柜", "source_label": "校准镜存放", "body": "简澄把双面校准镜锁进蓝釉柜，柜门的铅封保持完整。"},
+    {"chapter_number": 3, "title": "东坡站", "source_label": "载车离站", "body": "最后一辆矿载车在十四点零五分离开东坡站。"},
+    {"chapter_number": 4, "title": "信标回报", "source_label": "信标回报", "body": "东坡站的校准信标在十四点二十分连续回报两次。"},
+    {"chapter_number": 5, "title": "七位码", "source_label": "密码边界", "body": "闻勉能够读出方位格，却不知道赤陶闸的七位校准码。"},
+    {"chapter_number": 6, "title": "塔脚碎片", "source_label": "碎片来历", "body": "塔脚的黑陶碎片尚未确认来自哪一座炉窑。"},
+    {"chapter_number": 7, "title": "签字后", "source_label": "交接协定", "body": "简澄和闻勉约定在记录签字后互相发送已验证的读数。"}
+  ],
+  "memory": [
+    {"memory_type": "static_canon", "subject": "赤陶闸", "predicate": "opening_rule", "value": "正午北向影线贴合刻槽时开启", "source": {"chapter_number": 1, "source_label": "闸门准则"}},
+    {"memory_type": "dynamic_state", "subject": "双面校准镜", "predicate": "location", "value": "蓝釉柜内且铅封完整", "source": {"chapter_number": 2, "source_label": "校准镜存放"}},
+    {"memory_type": "event_timeline", "subject": "校准信标", "predicate": "reported_at", "value": "十四点二十分连续两次", "source": {"chapter_number": 4, "source_label": "信标回报"}},
+    {"memory_type": "character_knowledge", "subject": "闻勉", "predicate": "does_not_know", "value": "赤陶闸的七位校准码", "source": {"chapter_number": 5, "source_label": "密码边界"}}
+  ]
+}

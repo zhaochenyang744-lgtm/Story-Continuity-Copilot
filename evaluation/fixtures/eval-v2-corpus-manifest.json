@@ -1,0 +1,12 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-manifest-v1",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "files": [
+    {"corpus_key":"calibration_spire","path":"evaluation/fixtures/eval-v2-calibration-spire.json","sha256":"2837bd68c4ec802d357c42c6f1f7184475af1a2648772d7d0c731670b02b0c57"},
+    {"corpus_key":"cloud_post","path":"evaluation/fixtures/eval-v2-cloud-post.json","sha256":"b044d9386ddafb39d332268105ff3658a6139263db9ffafbc2baf2a2750c159c"},
+    {"corpus_key":"crystal_archive","path":"evaluation/fixtures/eval-v2-crystal-archive.json","sha256":"f43d5dd873e1acd606983ed3f0167f9460f3edd6e64a03011d8af26807700bce"}
+  ],
+  "canonical_sha256": "c896b00bb0c730517dff1a63cba27d5b30c0e36d3fd46492dce8c20099af9b9c"
+}

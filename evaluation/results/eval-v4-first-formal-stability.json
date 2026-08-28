@@ -1,0 +1,274 @@
+{
+  "evaluation": "scc-web-demo-eval-v4-first-formal",
+  "rows": [
+    {
+      "case_id": "eval-v4-jetty-conflict-fog-duration",
+      "runs": [
+        {
+          "case_id": "eval-v4-jetty-conflict-fog-duration",
+          "seed_key": "mist_jetty",
+          "expected_class": "conflict",
+          "predicted_class": "conflict",
+          "expected_category": "timeline",
+          "predicted_category": "event_status",
+          "expected_severity": [
+            "medium",
+            "high"
+          ],
+          "predicted_severity": "high",
+          "category_severity": [
+            "event_status",
+            "high"
+          ],
+          "run_id": "run-70185766-7e7c-48e8-81fa-1ee85fd21199",
+          "post_status": 202,
+          "post_state": "queued",
+          "idempotency_replay_same_run": true,
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "schema_valid": true,
+          "retrieval_hit_at_5": true,
+          "retrieval_semantic_set": [
+            [
+              1,
+              "开启时刻"
+            ],
+            [
+              2,
+              "自动停表"
+            ],
+            [
+              7,
+              "风速校准"
+            ]
+          ],
+          "cited_evidence_count": 1,
+          "cited_evidence_expected_count": 1,
+          "resolvable_evidence_count": 1,
+          "evidence_ids": [
+            "evidence-55fa0afe-84ff-4ca3-9118-243691a89bee"
+          ],
+          "evidence_semantic_set": [
+            [
+              2,
+              "自动停表"
+            ]
+          ],
+          "explanation_sha256": "9a26f81ff51aa8d3dbd4743dd8085dae61e55433a773cdbae221ea15cb2041dc",
+          "latency_ms": 3621,
+          "input_tokens": 1098,
+          "output_tokens": 285,
+          "cost_cny": null,
+          "provenance": {
+            "provider_label": "deepseek",
+            "model_label": "deepseek-v4-pro",
+            "prompt_version": "continuity-review-v4",
+            "schema_version": "continuity-issue-v3",
+            "retrieval_method_version": "demo-retrieval-v2",
+            "source_memory_version": 1
+          }
+        },
+        {
+          "case_id": "eval-v4-jetty-conflict-fog-duration",
+          "run_id": "run-4fe94e88-4f7d-4e5a-bc9b-b8dc57f10749",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "conflict",
+          "category_severity": [
+            "event_status",
+            "high"
+          ],
+          "evidence_ids": [
+            "evidence-f89e51d9-2f11-41fd-8eb5-7a7f3f4e828f"
+          ],
+          "explanation_sha256": "cf761733bdb54ae52dc548c4f4af821a2088b2d6cbe17463d8c153eedbb9aaa9",
+          "terminal_status": "completed"
+        },
+        {
+          "case_id": "eval-v4-jetty-conflict-fog-duration",
+          "run_id": "run-b4bee60c-b1cf-416f-86a5-997f1b92517a",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "conflict",
+          "category_severity": [
+            "event_status",
+            "high"
+          ],
+          "evidence_ids": [
+            "evidence-a335a6d7-c802-4307-b295-295a66911a25"
+          ],
+          "explanation_sha256": "37135535d83f87ac491cbd4d02fda507bc1947d63d98837467bfebd07fec94c2",
+          "terminal_status": "completed"
+        }
+      ],
+      "stability": {
+        "class_decision_stability": true,
+        "category_severity_stability": true,
+        "evidence_id_set_stability": false,
+        "exact_explanation_text_stability": false
+      }
+    },
+    {
+      "case_id": "eval-v4-cabin-no-conflict-leaf-zinc",
+      "runs": [
+        {
+          "case_id": "eval-v4-cabin-no-conflict-leaf-zinc",
+          "seed_key": "eave_cabin",
+          "expected_class": "no_conflict",
+          "predicted_class": "no_conflict",
+          "expected_category": null,
+          "predicted_category": null,
+          "expected_severity": null,
+          "predicted_severity": null,
+          "category_severity": null,
+          "run_id": "run-d936be8a-bfbf-40b2-8890-806839d2d193",
+          "post_status": 202,
+          "post_state": "queued",
+          "idempotency_replay_same_run": true,
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "schema_valid": true,
+          "retrieval_hit_at_5": true,
+          "retrieval_semantic_set": [
+            [
+              4,
+              "样叶检测"
+            ],
+            [
+              5,
+              "遮帘阈值"
+            ]
+          ],
+          "cited_evidence_count": 0,
+          "cited_evidence_expected_count": 0,
+          "resolvable_evidence_count": 0,
+          "evidence_ids": [],
+          "evidence_semantic_set": [],
+          "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "latency_ms": 1115,
+          "input_tokens": 1039,
+          "output_tokens": 7,
+          "cost_cny": null,
+          "provenance": {
+            "provider_label": "deepseek",
+            "model_label": "deepseek-v4-pro",
+            "prompt_version": "continuity-review-v4",
+            "schema_version": "continuity-issue-v3",
+            "retrieval_method_version": "demo-retrieval-v2",
+            "source_memory_version": 1
+          }
+        },
+        {
+          "case_id": "eval-v4-cabin-no-conflict-leaf-zinc",
+          "run_id": "run-e2c38bd9-0be5-4d96-8ba6-5a95a16f4231",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "no_conflict",
+          "category_severity": null,
+          "evidence_ids": [],
+          "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "terminal_status": "completed"
+        },
+        {
+          "case_id": "eval-v4-cabin-no-conflict-leaf-zinc",
+          "run_id": "run-ef0fb0c9-2299-4a47-949e-1702522f91a1",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "no_conflict",
+          "category_severity": null,
+          "evidence_ids": [],
+          "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "terminal_status": "completed"
+        }
+      ],
+      "stability": {
+        "class_decision_stability": true,
+        "category_severity_stability": true,
+        "evidence_id_set_stability": true,
+        "exact_explanation_text_stability": true
+      }
+    },
+    {
+      "case_id": "eval-v4-office-insufficient-water-conclusion",
+      "runs": [
+        {
+          "case_id": "eval-v4-office-insufficient-water-conclusion",
+          "seed_key": "mica_office",
+          "expected_class": "insufficient_evidence",
+          "predicted_class": "insufficient_evidence",
+          "expected_category": null,
+          "predicted_category": "event_status",
+          "expected_severity": [
+            "low",
+            "medium"
+          ],
+          "predicted_severity": "medium",
+          "category_severity": [
+            "event_status",
+            "medium"
+          ],
+          "run_id": "run-76d3cbe9-9e77-499c-bec4-28b535522adf",
+          "post_status": 202,
+          "post_state": "queued",
+          "idempotency_replay_same_run": true,
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "schema_valid": true,
+          "retrieval_hit_at_5": true,
+          "retrieval_semantic_set": [
+            [
+              5,
+              "检测结论"
+            ]
+          ],
+          "cited_evidence_count": 0,
+          "cited_evidence_expected_count": 0,
+          "resolvable_evidence_count": 0,
+          "evidence_ids": [],
+          "evidence_semantic_set": [],
+          "explanation_sha256": "0427a2f0dd48da5115e3df280957e6283e408eb3832becf0f8fbb8d0e35db52e",
+          "latency_ms": 2439,
+          "input_tokens": 983,
+          "output_tokens": 121,
+          "cost_cny": null,
+          "provenance": {
+            "provider_label": "deepseek",
+            "model_label": "deepseek-v4-pro",
+            "prompt_version": "continuity-review-v4",
+            "schema_version": "continuity-issue-v3",
+            "retrieval_method_version": "demo-retrieval-v2",
+            "source_memory_version": 1
+          }
+        },
+        {
+          "case_id": "eval-v4-office-insufficient-water-conclusion",
+          "run_id": "run-2fbd6059-f110-498b-a21f-e1830c63e373",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "insufficient_evidence",
+          "category_severity": [
+            "event_status",
+            "medium"
+          ],
+          "evidence_ids": [],
+          "explanation_sha256": "a328e9cb6866f79b5ab7f852316be78571f9ba13e205ef1cd753c5b2fc0056ad",
+          "terminal_status": "completed"
+        },
+        {
+          "case_id": "eval-v4-office-insufficient-water-conclusion",
+          "run_id": "run-51680f05-47ec-47da-b848-fd291971c0f1",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "insufficient_evidence",
+          "category_severity": [
+            "event_status",
+            "medium"
+          ],
+          "evidence_ids": [],
+          "explanation_sha256": "d4445102879ff50868dd332d8ddae760859eddf24cecd94ffbfb2b9a6b9790ae",
+          "terminal_status": "completed"
+        }
+      ],
+      "stability": {
+        "class_decision_stability": true,
+        "category_severity_stability": true,
+        "evidence_id_set_stability": true,
+        "exact_explanation_text_stability": false
+      }
+    }
+  ]
+}

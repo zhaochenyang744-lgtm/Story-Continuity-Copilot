@@ -1,0 +1,22 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "crystal_archive",
+  "title": "棱晶档案室",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "chapters": [
+    {"chapter_number": 1, "title": "西侧恒温柜", "source_label": "低温存放", "body": "二十二点十分，封口完好的琥珀管仍放在西侧恒温柜。"},
+    {"chapter_number": 2, "title": "霜纹遮帘", "source_label": "遮帘准则", "body": "霜纹遮帘只在霜纹完全褪去时开启，灯光照射不会使它开启。"},
+    {"chapter_number": 3, "title": "重量标签", "source_label": "标记协作", "body": "湛原与弥桑约定各自记录样本重量后，再共同核对标签。"},
+    {"chapter_number": 4, "title": "东侧档案架", "source_label": "交接时刻", "body": "二十二点三十分，弥桑把琥珀管从西侧恒温柜移到东侧档案架。"},
+    {"chapter_number": 5, "title": "粉末工作单", "source_label": "同位素缺口", "body": "琥珀管内粉末的同位素成分尚未确认，工作单只记载了总重量。"},
+    {"chapter_number": 6, "title": "夜间回执", "source_label": "外勤回执", "body": "夜间递送员从哪条山道抵达档案室，回执没有说明。"}
+  ],
+  "memory": [
+    {"memory_type": "dynamic_state", "subject": "琥珀管", "predicate": "location", "value": "二十二点十分位于西侧恒温柜，二十二点三十分移至东侧档案架", "source": {"chapter_number": 4, "source_label": "交接时刻"}},
+    {"memory_type": "static_canon", "subject": "霜纹遮帘", "predicate": "opening_rule", "value": "霜纹完全褪去时开启", "source": {"chapter_number": 2, "source_label": "遮帘准则"}},
+    {"memory_type": "relationship", "subject": "湛原与弥桑", "predicate": "label_review", "value": "各自记录重量后共同核对标签", "source": {"chapter_number": 3, "source_label": "标记协作"}},
+    {"memory_type": "open_thread", "subject": "粉末同位素成分", "predicate": "status", "value": "尚未确认", "source": {"chapter_number": 5, "source_label": "同位素缺口"}}
+  ]
+}

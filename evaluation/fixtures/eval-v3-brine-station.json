@@ -1,0 +1,24 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "brine_station",
+  "title": "雾盐站",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "chapters": [
+    {"chapter_number": 1, "title": "启航登记", "source_label": "登记时刻", "body": "祁岚在六点十五分于雾盐站签下了潮位仪的启航登记。"},
+    {"chapter_number": 2, "title": "浮标回声", "source_label": "回声时刻", "body": "外湾浮标在六点二十五分才连续发出两次校表回声。"},
+    {"chapter_number": 3, "title": "双人交接", "source_label": "交接权限", "body": "祁岚与容澈约定，潮位仪的交接记录必须由两人共同确认后才能封存。"},
+    {"chapter_number": 4, "title": "盐雾灯标", "source_label": "灯标准则", "body": "盐雾灯标只在海雾的盐度达到刻线时转蓝，普通火把不能使它变色。"},
+    {"chapter_number": 5, "title": "红木匣", "source_label": "测深尺存放", "body": "铜制测深尺锁在红木匣内，匣口的蓝蜡封印完好无损。"},
+    {"chapter_number": 6, "title": "暗号页", "source_label": "译码边界", "body": "容澈能读出潮图，却不知道第七枚浮标的报码。"},
+    {"chapter_number": 7, "title": "北堤巡查", "source_label": "巡查缺口", "body": "夜班巡查是否抵达北堤，值守册没有留下结论。"}
+  ],
+  "memory": [
+    {"memory_type": "event_timeline", "subject": "潮位仪启航登记", "predicate": "signed_at", "value": "六点十五分", "source": {"chapter_number": 1, "source_label": "登记时刻"}},
+    {"memory_type": "event_timeline", "subject": "外湾浮标回声", "predicate": "reported_at", "value": "六点二十五分连续两次", "source": {"chapter_number": 2, "source_label": "回声时刻"}},
+    {"memory_type": "relationship", "subject": "祁岚与容澈", "predicate": "handover_record", "value": "共同确认后才能封存", "source": {"chapter_number": 3, "source_label": "交接权限"}},
+    {"memory_type": "dynamic_state", "subject": "铜制测深尺", "predicate": "location", "value": "红木匣内且蓝蜡封印完好", "source": {"chapter_number": 5, "source_label": "测深尺存放"}},
+    {"memory_type": "character_knowledge", "subject": "容澈", "predicate": "does_not_know", "value": "第七枚浮标的报码", "source": {"chapter_number": 6, "source_label": "译码边界"}}
+  ]
+}

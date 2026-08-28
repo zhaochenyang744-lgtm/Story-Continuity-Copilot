@@ -1,0 +1,15 @@
+{
+  "schema_version": "scc-eval-v4-freeze-integrity-v1",
+  "status": "frozen_data_assets",
+  "case_canonical_sha256": "2fd88830ad7ef61e089de7bd6d18ba930bdecf445c65c6ce835f20c7507768fc",
+  "corpus_canonical_sha256": "5bc19ed4c6e1fd231af4e2f798b174f58bd5fe55314552f907e3b8b82de7daf3",
+  "frozen_files": {
+    "evaluation/case_sets/eval-set-v4.json": "c787664f6fabac1e2e32e97f7fc9bf0d508d7b907db8e146ba1f471d4bb25dd8",
+    "evaluation/manifests/eval-set-v4-manifest.json": "f566baa06b8a18e1e1fc9a27534b7cda2dcec1af3997d3e22e7c419e4866ec1b",
+    "evaluation/v4-semantic-review.json": "9f8924c49b3342fa85f9fc6116398d373ddcd74fbbb360723984c659c97e5dfd",
+    "evaluation/fixtures/eval-v4-corpus-manifest.json": "315f1336e42884d5df6f7836062dff4b29049bf99914ae18661f9ed45e8d719c",
+    "evaluation/fixtures/eval-v4-mist-jetty.json": "6dde6de27021dcfda3bfe3c25446dcc6bd3e635a90154f98705dd08033e0a322",
+    "evaluation/fixtures/eval-v4-eave-cabin.json": "b2f9430026c4f5d1648d121f8078bb38594ee296f077019ceec1b3920e01e619",
+    "evaluation/fixtures/eval-v4-mica-office.json": "3859917990935e226212b40de838eb9cec2a3018c9fdb333af84cf224fe7bc12"
+  }
+}

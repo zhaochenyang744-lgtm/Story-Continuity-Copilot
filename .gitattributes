@@ -1,0 +1,25 @@
+* text=auto eol=lf
+
+*.png -text
+*.jpg -text
+*.jpeg -text
+*.gif -text
+*.webp -text
+*.ico -text
+*.sqlite3 -text
+*.db -text
+
+# These frozen V2 records intentionally retain their recorded terminal blank line.
+evaluation/case_sets/eval-set-v2.json whitespace=-blank-at-eof
+evaluation/manifests/eval-set-v2-manifest.json whitespace=-blank-at-eof
+evaluation/v2-semantic-review.json whitespace=-blank-at-eof
+
+# These seven formal V4 result artifacts are immutable byte-level evidence.
+# Keep their recorded bytes so the post-run integrity hashes remain portable.
+evaluation/results/eval-v4-first-formal-api-corpus-scan.json -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-bad-cases.json -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-checkpoint.json -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-report.md -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-results.json -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-run-manifest.json -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-stability.json -text whitespace=-blank-at-eol,-cr-at-eol

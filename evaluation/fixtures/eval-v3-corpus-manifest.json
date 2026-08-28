@@ -1,0 +1,12 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-manifest-v1",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "files": [
+    {"corpus_key": "brine_station", "path": "evaluation/fixtures/eval-v3-brine-station.json", "sha256": "c5aabf3ba36d654cb56397d3c551751b189b3364bbf5e9df3497a23664718b72"},
+    {"corpus_key": "basalt_theatre", "path": "evaluation/fixtures/eval-v3-basalt-theatre.json", "sha256": "31dc6a396af3f4d0f44b3e5485da19591db3e94459dba1d3a4fe14feebd5b144"},
+    {"corpus_key": "stair_post", "path": "evaluation/fixtures/eval-v3-stair-post.json", "sha256": "f0a1fad27f9a97dcb2db54930f2417c082655a3803d44b0ec7468a4cd24c2446"}
+  ],
+  "canonical_sha256": "e1916518e1f568908113ef20f1593513840289a05fd3ad1fb13af9993789c035"
+}
