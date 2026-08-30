@@ -1,4 +1,4 @@
-# Stage 11M implementation record
+# Long-form capacity validation, Stage 11M evidence record
 
 This implementation adds a separate 300k runner and validator. It preserves the
 11L runner, validator, and v1-v6 evidence unchanged. The formal runner accepts

@@ -1,4 +1,4 @@
-# Product decisions and validation
+# Product decisions and evidence
 
 ## Problem
 
@@ -22,9 +22,20 @@ Long-form fiction accumulates facts that are difficult to keep consistent: event
 
 ## Implementation
 
-The currently verified local Web Demo uses FastAPI, SQLite, Next.js, and React. Its API covers authentication, project lifecycle, story context, drafts, checks, Evidence, decisions, ChangeSets, Memory initialization and delta review, append-only source revisions, Reset, and import. The seed includes Grey Harbor Echoes, Paper Moon Archive, and Midnight Garden as independent projects.
+The currently verified v1.0 release candidate uses FastAPI, SQLite, Next.js, and React. Its API covers authentication, project lifecycle, story context, drafts, checks, Evidence, decisions, ChangeSets, Memory initialization and delta review, append-only source revisions, Reset, and import. The seed includes Grey Harbor Echoes, Paper Moon Archive, and Midnight Garden as independent projects.
 
 Checks use a supported DeepSeek-compatible provider only when the process is explicitly configured. The request is queued, schema-validated, and grounded against current-project SourceSpans before persistence. Fail-closed paths cover unavailable providers, timeouts, invalid JSON, invalid schema, and unresolvable Evidence.
+
+## Product development journey
+
+| Product milestone | Product outcome | Technical evidence |
+| --- | --- | --- |
+| MVP Build & Web Demo | Reproducible local author workflow and browser evidence | Stages 4–7 |
+| Author Workflow & Model Evaluation | Explicit author canon control and frozen product evaluation | Stages 8–10 |
+| Long-form Workflow Validation | Controlled 100k- and 300k-character recurring workflows | Stage 11 |
+| Agent Reliability | Observable lifecycle, provenance, Retry/Cancel, and atomic failure handling | Stage 12 |
+| Web App Readiness | Visitor isolation, limits, cleanup, account recovery, and deployable packaging | Stage 13 |
+| Public Release v1.0 | Deployment and public-address acceptance remain pending | Stage 14 |
 
 ## Evaluation
 
@@ -39,11 +50,11 @@ The published repository baseline is the frozen V4 product evaluation: 15 origin
 
 The frozen CLI PoC's held-out F1 of 0.9412 is a historical result under a different protocol. It is retained as historical context only and is not a V4 Web Demo claim.
 
-Stage 8 and Stage 9 product work are accepted. V5–V8 each retain one immutable first-valid formal result bundle with `gate_failed`, not replaced by later implementation changes. V8 completed all 30 calls; its only Bad Case was `location_action → event_status`, leaving the designated category regression at 2/3. This is retained as a portfolio-level known limitation, and Stage 10 is not reclassified as passed.
+Author Workflow & Model Evaluation retains the accepted Stage 8 and Stage 9 product work alongside the immutable V5–V8 first-valid formal result bundles. Each remains `gate_failed`, not replaced by later implementation changes. V8 completed all 30 calls; its only Bad Case was `location_action → event_status`, leaving the designated category regression at 2/3. This is retained as a portfolio-level known limitation, and the Stage 10 technical Gate is not reclassified as passed.
 
-Stage 11 has verified the recurring author workflow on real 100k- and 300k-character prefixes: import and initialize Memory, explicitly review candidates, append new chapters, run bounded-RAG Continuity and Memory Delta checks, review Evidence, decide every proposed change, and advance Memory only through author commits. The first 300k run remains an immutable capacity failure; the separate V2 repair passed the frozen Capacity, Performance, and Workflow Gates. The optional 1M-character Stage 11N pressure test is deferred and is not a personal-work release blocker.
+Long-form Workflow Validation, recorded under Stage 11, verified the recurring author workflow on real 100k- and 300k-character prefixes: import and initialize Memory, explicitly review candidates, append new chapters, run bounded-RAG Continuity and Memory Delta checks, review Evidence, decide every proposed change, and advance Memory only through author commits. The first 300k run remains an immutable capacity failure; the separate V2 repair passed the frozen Capacity, Performance, and Workflow Gates. The optional 1M-character Stage 11N pressure test is deferred and is not a personal-work release blocker.
 
-Stage 12 V2 passed the Agent Run lifecycle Gate for `queued`, `running`, `completed`, `timed_out`, `failed`, and `cancelled`, including Retry/Cancel provenance and zero partial business writes on non-completion. The V1 Provider-boundary incident remains `gate_failed`. Stage 13 V4 passed the local Web App product Gate: server-only integration boundaries, visitor isolation, limits and cleanup, recovery-email verification and password reset, reproducible standalone packaging, relocation, and full browser regression were independently verified. V2/V3 artifact failures remain historical `gate_failed` evidence.
+Agent Reliability, recorded under Stage 12, passed the Agent Run lifecycle Gate in V2 for `queued`, `running`, `completed`, `timed_out`, `failed`, and `cancelled`, including Retry/Cancel provenance and zero partial business writes on non-completion. The V1 Provider-boundary incident remains `gate_failed`. Web App Readiness, recorded under Stage 13, passed its local product Gate in V4: server-only integration boundaries, visitor isolation, limits and cleanup, recovery-email verification and password reset, reproducible standalone packaging, relocation, and full browser regression were independently verified. V2/V3 artifact failures remain historical `gate_failed` evidence.
 
 ## Safety boundaries
 
@@ -58,5 +69,5 @@ Stage 12 V2 passed the Agent Run lifecycle Gate for `queued`, `running`, `comple
 - Two V4 cases had the correct class but a category mismatch: `timeline → event_status` and `world_rule → event_status`.
 - Exact explanation text and Evidence IDs can vary across real-provider reruns even where decision and category/severity remain stable.
 - V4 is a compact product evaluation, not a broad benchmark or evidence of commercial deployment.
-- The current delivery is not deployed. Stages 12 and 13 have passed their current product Gates; the remaining route is the separately authorised Stage 14 deployment, public-address acceptance, rollback verification, and release.
+- The current delivery is not deployed. Agent Reliability and Web App Readiness have passed their current product Gates; the remaining route is the separately authorised Public Release v1.0 work recorded under Stage 14: deployment, public-address acceptance, rollback verification, and release.
 - The hosted route keeps Provider and SMTP credentials server-only, gives visitors isolated spaces, caps AI calls/text length/total spend, periodically clears visitor data, and implements recovery-email verification plus single-use password reset. It does not add general email identity, OAuth, subscriptions, an admin console, collaboration, cross-device sync, or AI continuation.

@@ -2,7 +2,7 @@
 
 ## Scope
 
-This guide reproduces the undeployed local Web App candidate. It creates a runtime database only under `runtime/data/demo.sqlite3` and does not read protected CLI PoC, Golden, held-out, or environment files.
+This guide reproduces the undeployed v1.0 release candidate. It creates a runtime database only under `runtime/data/demo.sqlite3` and does not read protected CLI PoC, Golden, held-out, or environment files.
 
 ## Prerequisites
 
@@ -103,12 +103,12 @@ npm run build
 
 ## Isolated browser E2E
 
-The frozen Stage 12 and Stage 13 browser suites use test-only providers, capture mail, dedicated loopback ports, approved system-temp roots, and separate Playwright configurations. They do not use the local demo database or a real Provider/SMTP service.
+The frozen Agent Reliability and Web App Readiness browser suites use test-only providers, capture mail, dedicated loopback ports, approved system-temp roots, and separate Playwright configurations. They do not use the local demo database or a real Provider/SMTP service.
 
-- Stage 12 V2: `frontend/playwright.stage12-v2.config.ts`, `backend/tests/e2e_app.py`, ports 3072/8072, and a `%TEMP%/story-stage12-v2-*` root.
-- Stage 13 V4: `frontend/playwright.stage13.config.ts`, `backend/tests/stage13_app.py`, `frontend/scripts/stage13-v4-build.ps1`, `frontend/scripts/start-stage13-v4-artifact.mjs`, ports 3084/8084, and a `%TEMP%/story-stage13-v4-impl-*` root.
+- Agent Reliability (Stage 12 V2): `frontend/playwright.stage12-v2.config.ts`, `backend/tests/e2e_app.py`, ports 3072/8072, and a `%TEMP%/story-stage12-v2-*` root.
+- Web App Readiness (Stage 13 V4): `frontend/playwright.stage13.config.ts`, `backend/tests/stage13_app.py`, `frontend/scripts/stage13-v4-build.ps1`, `frontend/scripts/start-stage13-v4-artifact.mjs`, ports 3084/8084, and a `%TEMP%/story-stage13-v4-impl-*` root.
 
-Both configurations validate the complete environment profile before either test app starts. Use the exact variables documented in `frontend/stage13-harness.mjs` and `backend/tests/stage13_harness.py`; mixed ports, prefixes, dist directories, or temp roots fail closed. The Stage 13 build script creates and scans the official standalone artifact before relocation startup.
+Both configurations validate the complete environment profile before either test app starts. Use the exact variables documented in `frontend/stage13-harness.mjs` and `backend/tests/stage13_harness.py`; mixed ports, prefixes, dist directories, or temp roots fail closed. The Web App Readiness build script creates and scans the official standalone artifact before relocation startup.
 
 ## What remains local
 
