@@ -1,0 +1,26 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "ember_observatory",
+  "title": "绯旷观星台",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {"method": "deterministic_original", "generator_version": "v5-candidate-1", "source_inputs": []},
+  "lineage": {"work_title": "绯旷观星台", "characters": ["景澈", "卢弦"], "locations": ["绯旷观星台", "赤檐校准室"], "core_design": "星栅校准与封存通报"},
+  "chapters": [
+    {"chapter_number": 1, "title": "旧图留档", "source_label": "棱镜旧图", "body": "作废旧图曾把星栅棱镜画成银箔覆面；图角盖有红色作废章，不能代表当前构造。"},
+    {"chapter_number": 2, "title": "换装验收", "source_label": "棱镜验收", "body": "最新验收单确认星栅棱镜已换为无色石英片与青铜框，当前构造不含银箔。"},
+    {"chapter_number": 3, "title": "风表封存", "source_label": "风表封存", "body": "折风表在十八点前封存在赤檐校准室的封筒内，景澈没有钥匙也未收到抄件。"},
+    {"chapter_number": 4, "title": "首次阅表", "source_label": "阅表签收", "body": "签收簿记载景澈十八点二十分第一次读到折风表的夜班安排。"},
+    {"chapter_number": 5, "title": "环尺读数", "source_label": "环尺角度", "body": "卢弦复测赤砂环尺，稳定读数为二十七度，三次复测结果相同。"},
+    {"chapter_number": 6, "title": "双人复核", "source_label": "复核职责", "body": "景澈记录星点坐标，卢弦复算偏差，两人共同在校准页落签后才归档。"},
+    {"chapter_number": 7, "title": "镜座裂纹", "source_label": "裂纹原因", "body": "北镜座出现一道细裂纹；巡检页明确写着成因尚未查明。"},
+    {"chapter_number": 8, "title": "匣位变更", "source_label": "移匣人员", "body": "一只羽灰算匣从东架移到下层柜，值班记录没有登记搬动者。"}
+  ],
+  "memory": [
+    {"memory_type": "static_canon", "subject": "星栅棱镜", "predicate": "current_material", "value": "无色石英片与青铜框，不含银箔", "source": {"chapter_number": 2, "source_label": "棱镜验收"}},
+    {"memory_type": "character_knowledge", "subject": "景澈", "predicate": "first_read_wind_roster", "value": "十八点二十分", "source": {"chapter_number": 4, "source_label": "阅表签收"}},
+    {"memory_type": "static_canon", "subject": "赤砂环尺", "predicate": "stable_angle", "value": "二十七度", "source": {"chapter_number": 5, "source_label": "环尺角度"}},
+    {"memory_type": "static_canon", "subject": "校准页归档", "predicate": "required_signers", "value": "景澈与卢弦共同落签", "source": {"chapter_number": 6, "source_label": "复核职责"}}
+  ]
+}

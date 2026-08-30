@@ -1,0 +1,69 @@
+{
+  "schema_version": "scc-eval-v7-first-formal-plan-v1",
+  "status": "gate_failed",
+  "formal_run_executed": true,
+  "provider_calls": 30,
+  "controller_candidate_gate_passed": true,
+  "formal_inputs_frozen": true,
+  "real_provider_authorization_received": true,
+  "preconditions": [
+    "controller independently accepts the V7 candidate Gate",
+    "user separately and explicitly authorizes real Provider calls",
+    "candidate assets are frozen to new approved formal paths without content changes"
+  ],
+  "planned_input_paths": {
+    "case_set": "evaluation/case_sets/eval-set-v7.json",
+    "manifest": "evaluation/manifests/eval-set-v7-manifest.json",
+    "corpus_manifest": "evaluation/fixtures/eval-v7-corpus-manifest.json"
+  },
+  "planned_output_paths": {
+    "checkpoint": "evaluation/results/eval-v7-first-formal-checkpoint.json",
+    "results": "evaluation/results/eval-v7-first-formal-results.json",
+    "report": "evaluation/results/eval-v7-first-formal-report.md",
+    "bad_cases": "evaluation/results/eval-v7-first-formal-bad-cases.json",
+    "stability": "evaluation/results/eval-v7-first-formal-stability.json",
+    "run_manifest": "evaluation/results/eval-v7-first-formal-run-manifest.json",
+    "api_scan": "evaluation/results/eval-v7-first-formal-api-corpus-scan.json",
+    "post_run_integrity": "evaluation/results/v7-first-formal-post-run-integrity.json"
+  },
+  "bad_case_protocol": {
+    "capture_when": [
+      "classification mismatch",
+      "category mismatch",
+      "threshold contributor failure",
+      "terminal failure",
+      "retrieval miss",
+      "unresolvable or non-expected citation",
+      "incomplete expected Evidence recall",
+      "incomplete multi-direct Evidence set"
+    ],
+    "merge_failure_dimensions_per_case": true,
+    "category_expected_and_predicted_retained": true,
+    "sanitized_fields_only": true,
+    "raw_provider_body_retained": false,
+    "chain_of_thought_retained": false
+  },
+  "stability_protocol": {
+    "representative_case_ids": [
+      "eval-v7-cartography-authority",
+      "eval-v7-siltworks-control-pigment",
+      "eval-v7-signalhouse-insufficient-alignment"
+    ],
+    "class_coverage": [
+      "conflict",
+      "no_conflict",
+      "insufficient_evidence"
+    ],
+    "independent_runs_per_case": 3,
+    "first_formal_runs_included": 3,
+    "additional_calls_after_formal": 6,
+    "execution_status": "gate_failed",
+    "terminal_failure_quality_stability": false
+  },
+  "stage_status": {
+    "stage_10": "gate_failed_not_passed",
+    "stage_11": "not_started",
+    "stage_12": "not_started"
+  },
+  "execution_note": "V7 first_valid_formal executed once under explicit authorization; consult the immutable result bundle and post-run integrity record for the retained outcome."
+}

@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "brass_migration",
+  "title": "The Brass Migration Ledger",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v7-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "The Brass Migration Ledger",
+    "characters": [
+      "Oren Sile",
+      "Vela Mar"
+    ],
+    "locations": [
+      "Gannet Steps",
+      "Marrow Quay"
+    ],
+    "core_design": "tagged beacon migration and staged departure chronology"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Shoreglass dissemination rule",
+      "source_label": "early_route_briefing",
+      "body": "Before first light, the named sealed Shoreglass brief is the sole and exhaustive dissemination channel for the route stating that flock Delta goes to Marrow Quay. In that period, a person knows that route only after signing for Shoreglass; oral recitation, copied extracts, and all other route transmissions are prohibited."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Shoreglass delivery register",
+      "source_label": "restricted_reroute_note",
+      "body": "At 05:40, before first light, the register records the sealed Shoreglass brief delivered only to Vela Mar; Oren Sile has no delivery or receipt entry."
+    },
+    {
+      "chapter_number": 3,
+      "title": "North-Chime convention",
+      "source_label": "launch_plan",
+      "body": "A beacon departure entry tagged North Chime denotes a departure after the harbor lamps are lit."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Beacon departure tag",
+      "source_label": "observed_departure",
+      "body": "The watch book tags the brass beacons' departure entry North Chime."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Wing tally",
+      "source_label": "wing_tally",
+      "body": "The east flock tally contains twenty-one brass beacons."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Mooring thread",
+      "source_label": "mooring_thread",
+      "body": "Each beacon cradle is tied with green hemp thread during the quiet watch."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Blurred barge image",
+      "source_label": "blurred_barge_image",
+      "body": "A blurred quay image shows a covered barge, but its cargo mark and departure time cannot be read."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Unsigned wing repair",
+      "source_label": "unsigned_wing_repair",
+      "body": "A repair card confirms a wing was mended but leaves the beacon identifier blank."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "character_knowledge",
+      "subject": "Vela Mar",
+      "predicate": "Shoreglass_brief",
+      "value": "sole recipient at 05:40",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "restricted_reroute_note"
+      }
+    },
+    {
+      "memory_type": "event_timeline",
+      "subject": "brass beacon departure",
+      "predicate": "timestamp_tag",
+      "value": "North Chime",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "observed_departure"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "east flock",
+      "predicate": "beacon_count",
+      "value": "twenty-one",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "wing_tally"
+      }
+    },
+    {
+      "memory_type": "open_thread",
+      "subject": "wing repair",
+      "predicate": "beacon_identifier",
+      "value": "blank",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "unsigned_wing_repair"
+      }
+    }
+  ]
+}

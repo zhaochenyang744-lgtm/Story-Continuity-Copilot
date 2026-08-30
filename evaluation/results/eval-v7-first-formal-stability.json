@@ -1,0 +1,365 @@
+{
+  "evaluation": "scc-web-demo-eval-v7-first-formal",
+  "rows": [
+    {
+      "case_id": "eval-v7-cartography-authority",
+      "runs": [
+        {
+          "case_id": "eval-v7-cartography-authority",
+          "seed_key": "indigo_cartography",
+          "expected_class": "conflict",
+          "predicted_class": "insufficient_evidence",
+          "expected_category": "relationship",
+          "predicted_category": "relationship",
+          "expected_severity": [
+            "medium",
+            "high"
+          ],
+          "predicted_severity": "medium",
+          "category_severity": [
+            "relationship",
+            "medium"
+          ],
+          "run_id": "run-3c8b657c-1b64-41cf-bcae-97cfc151fad6",
+          "post_status": 202,
+          "post_state": "queued",
+          "idempotency_replay_same_run": true,
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "schema_valid": true,
+          "retrieval_hit_at_5": true,
+          "retrieval_semantic_set": [
+            [
+              1,
+              "ordinary_custody_charter"
+            ],
+            [
+              2,
+              "flood_delegation"
+            ],
+            [
+              3,
+              "first_glazing_record"
+            ],
+            [
+              4,
+              "restoration_acceptance"
+            ],
+            [
+              7,
+              "initialed_margin_note"
+            ]
+          ],
+          "cited_evidence_count": 0,
+          "cited_evidence_expected_count": 0,
+          "resolvable_evidence_count": 0,
+          "evidence_ids": [],
+          "evidence_semantic_set": [],
+          "challenge_tags": [
+            "requires_multiple_direct_evidence",
+            "conflicting_sources",
+            "category_mismatch_regression"
+          ],
+          "requires_multiple_direct_evidence": true,
+          "expected_evidence_count": 2,
+          "cited_expected_evidence_unique_count": 0,
+          "expected_evidence_full_set_cited": false,
+          "explanation_sha256": "9f23954aa9c09cc4b38dcad9c9ff503db414eb96a1f38ce6651b8abef599a398",
+          "latency_ms": 1668,
+          "input_tokens": 1465,
+          "output_tokens": 140,
+          "cost_cny": null,
+          "provenance": {
+            "provider_label": "deepseek",
+            "model_label": "deepseek-v4-flash",
+            "prompt_version": "continuity-review-v4",
+            "schema_version": "continuity-issue-v3",
+            "retrieval_method_version": "demo-retrieval-v2",
+            "source_memory_version": 1
+          }
+        },
+        {
+          "case_id": "eval-v7-cartography-authority",
+          "run_id": "run-e4440081-a2ff-45fe-95a5-7b4c8b29632a",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "conflict",
+          "category_severity": [
+            "relationship",
+            "high"
+          ],
+          "evidence_ids": [
+            "evidence-258516f3-3999-4351-9665-d2cea5a8cb95",
+            "evidence-78428720-b8f4-482e-af8a-a19076ea4623"
+          ],
+          "explanation_sha256": "887b4c66a66bdb4c5a1d53b8b6a3a9cbf9f088ba95cfec8ad64b951a3792af1d",
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "latency_ms": 2628,
+          "input_tokens": 1464,
+          "output_tokens": 368,
+          "cost_cny": null
+        },
+        {
+          "case_id": "eval-v7-cartography-authority",
+          "run_id": "run-96d0844e-4ca2-4e97-a592-4dd9e38cc83e",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "conflict",
+          "category_severity": [
+            "relationship",
+            "high"
+          ],
+          "evidence_ids": [
+            "evidence-0da52a82-d4a2-4b04-b390-5222ff033f0a",
+            "evidence-e510b72c-2a63-49a2-bd9a-b4d2e76cb23b"
+          ],
+          "explanation_sha256": "08c951bde7d66d024b8dd8d879da6be0bc2c8c5a11c6712d525323074039dd60",
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "latency_ms": 2020,
+          "input_tokens": 1465,
+          "output_tokens": 248,
+          "cost_cny": null
+        }
+      ],
+      "stability": {
+        "class_decision_stability": false,
+        "category_severity_stability": false,
+        "evidence_id_set_stability": false,
+        "exact_explanation_text_stability": false,
+        "quality_stability_established": true,
+        "terminal_failure_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v7-siltworks-control-pigment",
+      "runs": [
+        {
+          "case_id": "eval-v7-siltworks-control-pigment",
+          "seed_key": "ember_siltworks",
+          "expected_class": "no_conflict",
+          "predicted_class": "no_conflict",
+          "expected_category": null,
+          "predicted_category": null,
+          "expected_severity": null,
+          "predicted_severity": null,
+          "category_severity": null,
+          "run_id": "run-8a27731c-22a3-4f80-9be8-13bd01d72a47",
+          "post_status": 202,
+          "post_state": "queued",
+          "idempotency_replay_same_run": true,
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "schema_valid": true,
+          "retrieval_hit_at_5": true,
+          "retrieval_semantic_set": [
+            [
+              1,
+              "filter_baseline"
+            ],
+            [
+              3,
+              "vessel_sealing"
+            ],
+            [
+              5,
+              "kiln_pigment"
+            ],
+            [
+              7,
+              "unranked_sampler_slips"
+            ],
+            [
+              8,
+              "pending_ash_assay"
+            ]
+          ],
+          "cited_evidence_count": 0,
+          "cited_evidence_expected_count": 0,
+          "resolvable_evidence_count": 0,
+          "evidence_ids": [],
+          "evidence_semantic_set": [],
+          "challenge_tags": [
+            "supported_control"
+          ],
+          "requires_multiple_direct_evidence": false,
+          "expected_evidence_count": 0,
+          "cited_expected_evidence_unique_count": 0,
+          "expected_evidence_full_set_cited": null,
+          "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "latency_ms": 585,
+          "input_tokens": 1429,
+          "output_tokens": 5,
+          "cost_cny": null,
+          "provenance": {
+            "provider_label": "deepseek",
+            "model_label": "deepseek-v4-flash",
+            "prompt_version": "continuity-review-v4",
+            "schema_version": "continuity-issue-v3",
+            "retrieval_method_version": "demo-retrieval-v2",
+            "source_memory_version": 1
+          }
+        },
+        {
+          "case_id": "eval-v7-siltworks-control-pigment",
+          "run_id": "run-77f83f67-cf08-4ad8-a70a-23a5164bfd21",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "no_conflict",
+          "category_severity": null,
+          "evidence_ids": [],
+          "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "latency_ms": 1000,
+          "input_tokens": 1427,
+          "output_tokens": 5,
+          "cost_cny": null
+        },
+        {
+          "case_id": "eval-v7-siltworks-control-pigment",
+          "run_id": "run-db304d5d-e1a4-42a8-9442-cfcc5bc960df",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "no_conflict",
+          "category_severity": null,
+          "evidence_ids": [],
+          "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "latency_ms": 690,
+          "input_tokens": 1427,
+          "output_tokens": 5,
+          "cost_cny": null
+        }
+      ],
+      "stability": {
+        "class_decision_stability": true,
+        "category_severity_stability": true,
+        "evidence_id_set_stability": true,
+        "exact_explanation_text_stability": true,
+        "quality_stability_established": true,
+        "terminal_failure_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v7-signalhouse-insufficient-alignment",
+      "runs": [
+        {
+          "case_id": "eval-v7-signalhouse-insufficient-alignment",
+          "seed_key": "orchid_signalhouse",
+          "expected_class": "insufficient_evidence",
+          "predicted_class": "insufficient_evidence",
+          "expected_category": null,
+          "predicted_category": "event_status",
+          "expected_severity": [
+            "low",
+            "medium"
+          ],
+          "predicted_severity": "medium",
+          "category_severity": [
+            "event_status",
+            "medium"
+          ],
+          "run_id": "run-9eacb769-e269-4452-91e7-30c588147e4b",
+          "post_status": 202,
+          "post_state": "queued",
+          "idempotency_replay_same_run": true,
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "schema_valid": true,
+          "retrieval_hit_at_5": true,
+          "retrieval_semantic_set": [
+            [
+              1,
+              "platform_assignment"
+            ],
+            [
+              2,
+              "tunnel_diversion"
+            ],
+            [
+              3,
+              "relay_opening"
+            ],
+            [
+              4,
+              "relay_interruption"
+            ],
+            [
+              8,
+              "open_relay_audit"
+            ]
+          ],
+          "cited_evidence_count": 0,
+          "cited_evidence_expected_count": 0,
+          "resolvable_evidence_count": 0,
+          "evidence_ids": [],
+          "evidence_semantic_set": [],
+          "challenge_tags": [
+            "insufficient_evidence",
+            "ambiguous_evidence"
+          ],
+          "requires_multiple_direct_evidence": false,
+          "expected_evidence_count": 0,
+          "cited_expected_evidence_unique_count": 0,
+          "expected_evidence_full_set_cited": null,
+          "explanation_sha256": "e1ddfafd7745bade7c8a32ea75a168553a36a035c4acb3a799bf92aae11c0f67",
+          "latency_ms": 1234,
+          "input_tokens": 1433,
+          "output_tokens": 93,
+          "cost_cny": null,
+          "provenance": {
+            "provider_label": "deepseek",
+            "model_label": "deepseek-v4-flash",
+            "prompt_version": "continuity-review-v4",
+            "schema_version": "continuity-issue-v3",
+            "retrieval_method_version": "demo-retrieval-v2",
+            "source_memory_version": 1
+          }
+        },
+        {
+          "case_id": "eval-v7-signalhouse-insufficient-alignment",
+          "run_id": "run-1ffced6d-7761-4b24-86d1-be485164214b",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "insufficient_evidence",
+          "category_severity": [
+            "event_status",
+            "medium"
+          ],
+          "evidence_ids": [],
+          "explanation_sha256": "857f6a977b5aa2fd17a335c27701f90141530477af43f65c04280d1d1b360caa",
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "latency_ms": 1388,
+          "input_tokens": 1432,
+          "output_tokens": 122,
+          "cost_cny": null
+        },
+        {
+          "case_id": "eval-v7-signalhouse-insufficient-alignment",
+          "run_id": "run-bfe2d586-8114-4a62-acb2-0580d7ab5390",
+          "idempotency_replay_same_run": true,
+          "predicted_class": "insufficient_evidence",
+          "category_severity": [
+            "event_status",
+            "medium"
+          ],
+          "evidence_ids": [],
+          "explanation_sha256": "857f6a977b5aa2fd17a335c27701f90141530477af43f65c04280d1d1b360caa",
+          "terminal_status": "completed",
+          "terminal_error_code": null,
+          "latency_ms": 1530,
+          "input_tokens": 1433,
+          "output_tokens": 123,
+          "cost_cny": null
+        }
+      ],
+      "stability": {
+        "class_decision_stability": true,
+        "category_severity_stability": true,
+        "evidence_id_set_stability": true,
+        "exact_explanation_text_stability": false,
+        "quality_stability_established": true,
+        "terminal_failure_count": 0
+      }
+    }
+  ]
+}

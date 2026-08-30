@@ -17,6 +17,30 @@ class BrowserTestProvider:
         return True
 
     def evaluate(self, request):
+        if request.get("task") == "memory_initialization":
+            sources = request["sources"]
+            return ProviderResult(
+                {
+                    "candidates": [
+                        {"memory_type": "static_canon", "subject": "雾港钟声", "predicate": "harbor_rule", "value": "钟声响起后船只停泊", "chapter_id": sources[0]["chapter_id"], "source_span_id": sources[0]["id"]},
+                        {"memory_type": "dynamic_state", "subject": "银钥匙", "predicate": "holder", "value": "林默保管", "chapter_id": sources[1]["chapter_id"], "source_span_id": sources[1]["id"]},
+                        {"memory_type": "character_knowledge", "subject": "林默", "predicate": "knowledge", "value": "北堤门只在清晨开启", "chapter_id": sources[2]["chapter_id"], "source_span_id": sources[2]["id"]},
+                    ]
+                },
+                input_tokens=96,
+                output_tokens=40,
+                cost_cny=0.002,
+                latency_ms=40,
+            )
+        if request.get("task") == "memory_delta":
+            source = request["sources"][0]
+            possession = "守塔人保管银钥匙" if "第二轮" in source["body"] else "林默交给守塔人"
+            return ProviderResult(
+                {"candidates": [
+                    {"memory_type":"dynamic_state","subject":"银钥匙","predicate":"possession","value":possession,"chapter_id":source["chapter_id"],"source_span_id":source["id"]},
+                    {"memory_type":"open_thread","subject":"北堤门","predicate":"status","value":"开启时间待确认","chapter_id":source["chapter_id"],"source_span_id":source["id"]},
+                ]}, input_tokens=72, output_tokens=32, cost_cny=0.001, latency_ms=30,
+            )
         issues = []
         categories = ("object_state", "character_knowledge")
         limit = 20 if "EXTREME_ISSUES" in request["draft"]["body"] else 2

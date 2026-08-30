@@ -1,0 +1,27 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "copper_orchard",
+  "title": "铜芽果园",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {"method": "deterministic_original", "generator_version": "v5-candidate-1", "source_inputs": []},
+  "lineage": {"work_title": "铜芽果园", "characters": ["尤檀", "蔺潮"], "locations": ["铜芽果园", "西坡月棚"], "core_design": "修枝位置与授粉收尾"},
+  "chapters": [
+    {"chapter_number": 1, "title": "午间分工", "source_label": "修枝分工", "body": "午间分工表指定尤檀只在西坡月棚修剪铜芽枝，东畦由蔺潮负责。"},
+    {"chapter_number": 2, "title": "剪具出入", "source_label": "剪具轨迹", "body": "十二点的剪具签领记录显示尤檀在西坡月棚领取并归还弧背剪。"},
+    {"chapter_number": 3, "title": "授粉排程", "source_label": "授粉旧牌", "body": "晨间旧牌曾把银蕊授粉列为当日完成项；牌面随后盖了延期章。"},
+    {"chapter_number": 4, "title": "延期收尾", "source_label": "授粉终态", "body": "日终单确认银蕊授粉因蜂箱未到而延期，本日没有完成授粉。"},
+    {"chapter_number": 5, "title": "果夹盘点", "source_label": "果夹数量", "body": "蓝铜果夹盘点为十四枚，尤檀与蔺潮复核后数量未变。"},
+    {"chapter_number": 6, "title": "灌流协作", "source_label": "灌流顺序", "body": "蔺潮先开启根槽，尤檀看到青旗后关闭回水阀，协作顺序固定。"},
+    {"chapter_number": 7, "title": "花粉颜色", "source_label": "花粉来源", "body": "西坡叶面留有靛色花粉，检验页尚未确认它来自哪一种花。"},
+    {"chapter_number": 8, "title": "空篮外运", "source_label": "空篮去向", "body": "两只藤骨空篮已由小车运出果园，出门条没有填写目的地。"}
+  ],
+  "memory": [
+    {"memory_type": "static_canon", "subject": "尤檀午间修枝", "predicate": "assigned_location", "value": "西坡月棚", "source": {"chapter_number": 1, "source_label": "修枝分工"}},
+    {"memory_type": "dynamic_state", "subject": "尤檀弧背剪", "predicate": "noon_trace", "value": "西坡月棚领取并归还", "source": {"chapter_number": 2, "source_label": "剪具轨迹"}},
+    {"memory_type": "event_timeline", "subject": "银蕊授粉", "predicate": "day_end_status", "value": "延期且未完成", "source": {"chapter_number": 4, "source_label": "授粉终态"}},
+    {"memory_type": "dynamic_state", "subject": "蓝铜果夹", "predicate": "count", "value": "十四枚", "source": {"chapter_number": 5, "source_label": "果夹数量"}},
+    {"memory_type": "static_canon", "subject": "根槽灌流", "predicate": "coordination_order", "value": "蔺潮开根槽后尤檀关回水阀", "source": {"chapter_number": 6, "source_label": "灌流顺序"}}
+  ]
+}

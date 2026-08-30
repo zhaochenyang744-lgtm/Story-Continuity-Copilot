@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "orchid_signalhouse",
+  "title": "The Orchid Signalhouse Book",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v7-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "The Orchid Signalhouse Book",
+    "characters": [
+      "Teren Lox",
+      "Siva Rehn"
+    ],
+    "locations": [
+      "Orchid Platform",
+      "Lacquer Tunnel"
+    ],
+    "core_design": "signal relay duties, diversion locations, and interrupted relay completion"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Calibration-token convention",
+      "source_label": "platform_assignment",
+      "body": "A calibration token is stamped by the relay location where its bearer performs the calibration."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Teren token stamp",
+      "source_label": "tunnel_diversion",
+      "body": "Teren Lox's fog-day calibration token is stamped Lacquer Tunnel."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Delivery completion definition",
+      "source_label": "relay_opening",
+      "body": "An eastward relay delivery counts complete only when its receipt lens remains clear through the final echo."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Hail lens log",
+      "source_label": "relay_interruption",
+      "body": "The hail log records that the Orchid relay's receipt lens clouded before the final echo."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Lens cloth",
+      "source_label": "lens_cloth",
+      "body": "Siva Rehn keeps the relay lens wrapped in a blue linen cloth."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Chime pattern",
+      "source_label": "chime_pattern",
+      "body": "A cleared tunnel is marked by one long chime followed by two short chimes."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Unknown platform visitor",
+      "source_label": "unknown_platform_visitor",
+      "body": "The visitor sheet records a boot print at Orchid Platform but names no visitor and gives no time."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Open relay audit",
+      "source_label": "open_relay_audit",
+      "body": "The audit confirms the shutter was inspected but does not record whether its final alignment passed."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Teren Lox",
+      "predicate": "fog_calibration_token_location",
+      "value": "Lacquer Tunnel",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "tunnel_diversion"
+      }
+    },
+    {
+      "memory_type": "event_timeline",
+      "subject": "Orchid relay transmission",
+      "predicate": "receipt_lens_state",
+      "value": "clouded before final echo",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "relay_interruption"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "relay lens",
+      "predicate": "wrapping",
+      "value": "blue linen cloth",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "lens_cloth"
+      }
+    },
+    {
+      "memory_type": "open_thread",
+      "subject": "relay shutter alignment",
+      "predicate": "final_result",
+      "value": "not recorded",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "open_relay_audit"
+      }
+    }
+  ]
+}

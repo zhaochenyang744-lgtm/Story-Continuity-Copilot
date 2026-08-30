@@ -82,6 +82,8 @@ export const labelError = (cause: unknown) => {
   const code = (cause as ApiFailure)?.code;
   const labels: Record<string, string> = {
     authentication_required: "会话已失效；已清除当前作品上下文，请重新登录。",
+    invalid_credentials: "账号或密码不正确。",
+    authentication_rate_limited: "登录尝试过于频繁，请稍后再试。",
     provider_unavailable:
       "本地 provider 不可用。本轮没有生成替代 Issue，可在恢复后重新检查。",
     invalid_json: "结果未通过结构校验，系统没有写入任何问题。",
@@ -93,9 +95,18 @@ export const labelError = (cause: unknown) => {
       "草稿谱系已失效，请基于当前 revision 重新检查。",
     insufficient_project_context:
       "Story Memory 尚待初始化；此作品暂不能运行连续性检查。",
+    invalid_candidate_decision: "请为每个候选选择接受、拒绝或编辑后接受。",
+    evidence_confirmation_required: "编辑后接受前，请明确确认上方 Evidence 仍支持该事实。",
+    source_revision_not_current: "导入来源已不是当前 revision；系统没有写入候选或 Memory。",
+    memory_initialization_conflict: "Memory V1 已不再为空，初始化已安全停止。",
     request_timeout: "请求超时，请稍后重试。",
     project_archived: "作品已归档，只读浏览。请先恢复作品再执行此操作。",
     metadata_revision_unavailable: "作品信息暂不可更新，请稍后重试。",
+    source_revision_conflict: "来源版本已变化；没有追加章节，请重新预览。",
+    source_hash_mismatch: "预览内容校验不一致；没有追加章节，请重新预览。",
+    source_change_set_expired: "追加预览已过期；没有追加章节，请重新预览。",
+    empty_source: "追加内容为空，无法创建章节。",
+    unsupported_format: "文件仅支持 UTF-8 的 .md 或 .txt。",
   };
   return labels[code] ?? "请求未完成。请保留当前内容并重试。";
 };

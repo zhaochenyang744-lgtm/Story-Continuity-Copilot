@@ -1,0 +1,128 @@
+{
+  "schema_version": "scc-eval-v6-first-formal-plan-v1",
+  "status": "gate_failed",
+  "formal_run_executed": true,
+  "provider_calls": 30,
+  "controller_candidate_gate_passed": true,
+  "real_provider_authorization_received": true,
+  "preconditions": [
+    "controller independently accepts the V6 candidate Gate",
+    "user separately and explicitly authorizes real Provider calls",
+    "candidate assets are frozen to new approved formal paths without content changes"
+  ],
+  "planned_input_paths": {
+    "case_set": "evaluation/case_sets/eval-set-v6.json",
+    "manifest": "evaluation/manifests/eval-set-v6-manifest.json",
+    "corpus_manifest": "evaluation/fixtures/eval-v6-corpus-manifest.json"
+  },
+  "planned_output_paths": {
+    "checkpoint": "evaluation/results/eval-v6-first-formal-checkpoint.json",
+    "results": "evaluation/results/eval-v6-first-formal-results.json",
+    "report": "evaluation/results/eval-v6-first-formal-report.md",
+    "bad_cases": "evaluation/results/eval-v6-first-formal-bad-cases.json",
+    "stability": "evaluation/results/eval-v6-first-formal-stability.json",
+    "run_manifest": "evaluation/results/eval-v6-first-formal-run-manifest.json",
+    "api_scan": "evaluation/results/eval-v6-first-formal-api-corpus-scan.json",
+    "post_run_integrity": "evaluation/results/v6-first-formal-post-run-integrity.json"
+  },
+  "bad_case_protocol": {
+    "capture_when": [
+      "classification mismatch",
+      "category mismatch",
+      "threshold contributor failure",
+      "terminal failure",
+      "retrieval miss",
+      "unresolvable or non-expected citation",
+      "incomplete expected Evidence recall",
+      "incomplete multi-direct Evidence set"
+    ],
+    "merge_failure_dimensions_per_case": true,
+    "sanitized_fields_only": true,
+    "raw_provider_body_retained": false,
+    "chain_of_thought_retained": false
+  },
+  "stability_protocol": {
+    "representative_case_ids": [
+      "eval-v6-lumen-conflict-counterweight-mass",
+      "eval-v6-quartz-control-vault-temperature",
+      "eval-v6-cinder-insufficient-engine-knock-cause"
+    ],
+    "class_coverage": [
+      "conflict",
+      "no_conflict",
+      "insufficient_evidence"
+    ],
+    "independent_runs_per_case": 3,
+    "first_formal_runs_included": 3,
+    "additional_calls_after_formal": 6,
+    "execution_status": "gate_failed",
+    "terminal_failure_quality_stability": false
+  },
+  "stage_status": {
+    "stage_10": "gate_failed_not_passed",
+    "stage_11": "not_started",
+    "stage_12": "not_started",
+    "v7_or_repeat_authorized": false
+  },
+  "post_run_audit": {
+    "source": "frozen_results_rows_and_bad_cases",
+    "known_artifact_limitation": "The frozen V6 Bad Case artifact records failure_dimensions but omits expected_category and predicted_category; this audit derives category detail from the immutable results rows.",
+    "bad_cases": [
+      {
+        "case_id": "eval-v6-lumen-conflict-crate-location",
+        "failure_dimensions": [
+          "expected_evidence_recall_incomplete",
+          "multi_direct_evidence_full_set_miss"
+        ]
+      },
+      {
+        "case_id": "eval-v6-velvet-conflict-amber-authority",
+        "failure_dimensions": [
+          "category_mismatch",
+          "expected_evidence_recall_incomplete",
+          "multi_direct_evidence_full_set_miss"
+        ],
+        "category": {
+          "expected": "relationship",
+          "predicted": "world_rule"
+        }
+      },
+      {
+        "case_id": "eval-v6-velvet-conflict-revised-phrase-knowledge",
+        "failure_dimensions": [
+          "expected_evidence_recall_incomplete",
+          "multi_direct_evidence_full_set_miss"
+        ]
+      },
+      {
+        "case_id": "eval-v6-quartz-conflict-seed-mist-order",
+        "failure_dimensions": [
+          "expected_evidence_recall_incomplete",
+          "multi_direct_evidence_full_set_miss"
+        ]
+      },
+      {
+        "case_id": "eval-v6-quartz-conflict-hatchling-tag-exception",
+        "failure_dimensions": [
+          "expected_evidence_recall_incomplete",
+          "multi_direct_evidence_full_set_miss"
+        ]
+      },
+      {
+        "case_id": "eval-v6-cinder-conflict-sora-inspection-place",
+        "failure_dimensions": [
+          "expected_evidence_recall_incomplete",
+          "multi_direct_evidence_full_set_miss"
+        ]
+      },
+      {
+        "case_id": "eval-v6-cinder-conflict-crossing-completion",
+        "failure_dimensions": [
+          "expected_evidence_recall_incomplete",
+          "multi_direct_evidence_full_set_miss"
+        ]
+      }
+    ]
+  },
+  "execution_note": "V6 first_valid_formal executed once under explicit authorization; Gate failed and Stage 10 is not passed. The immutable result bundle and post-run integrity record are retained; Stage 11, Stage 12, V7, and any repeat evaluation are not authorized."
+}

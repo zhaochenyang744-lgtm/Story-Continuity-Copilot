@@ -1,0 +1,35 @@
+{
+  "evaluation": "scc-web-demo-eval-v6-first-formal",
+  "execution_kind": "first_valid_formal",
+  "status": "gate_failed",
+  "case_set_sha256": "3b40e1a157be6e61be58025f7429c7011f30461c6b995ddb1dd9c28adf7564f0",
+  "source_file_hashes": {
+    "backend\\app\\v2_database.py": "acfc10485136b94740d06fd6b371c825f6413c3e5694ab6a5dc10cdaa317e3d0",
+    "backend\\app\\engine.py": "64c6863b0117059356791969637be669e9802879e78e74b13163033ca1b9b504",
+    "backend\\app\\provider.py": "30a66df507b128f786a14b504540d6cacd93e01dfd65454b4e96160b1fb3198c",
+    "evaluation\\case_sets\\eval-set-v6.json": "0ccb0831e7b120091ae3fc9c67b65d982929de3f81525bd9be354c1936adb115",
+    "evaluation\\run_eval.py": "37a3999939fc84b2cea91778c68c401ece14f60dc77232679493ffd776d0c657",
+    "evaluation\\manifests\\eval-set-v6-manifest.json": "fa9cffdc5d6d6d7d465e043dfb630a6c8ea47783aaf28cf2c6ec9eed3c4ec5b7",
+    "evaluation\\fixtures\\eval-v6-corpus-manifest.json": "c4f270cfb1c6ad0675e0391640fbd86dc0b4b6a8cf15e0feefbb18915ce26861",
+    "evaluation\\fixtures\\eval-v6-cinder-lantern-ferry.json": "8a535d066bc9880f2aa7704271fd484d853233913b13b63692c6154722b5e1d6",
+    "evaluation\\fixtures\\eval-v6-lumen-tidehouse.json": "4d4fdaa57262bf6e1eac5bed230d0cd5bcfcee942735eccc74d19cd16c0ccb91",
+    "evaluation\\fixtures\\eval-v6-quartz-aviary.json": "2dfab135faddc4de6ec3ed622445387a0edc4825299fa452bcfd48587afec65b",
+    "evaluation\\fixtures\\eval-v6-velvet-signal-yard.json": "f8fbad31eac556a33083e778fedbb4e6b9c0a3b61a038b74b0df514c0024f5ad",
+    "evaluation\\v2_fixture_loader.py": "d19d325d06a73ccc34e5866bb30309b57c8d05dd923d703d482239a3674b69cb"
+  },
+  "safety_contract_sha256": "8054c14f5640fcc65dbbe70471abae505724325879c5ae0850f325550c396a79",
+  "provider_configuration": "environment_only_not_recorded",
+  "provider_execution": {
+    "provider_run_records": 30,
+    "actual_provider_http_attempts": 30,
+    "successful_provider_responses": 30,
+    "terminal_status_counts": {
+      "completed": 30
+    },
+    "input_tokens_returned": 44302,
+    "output_tokens_returned": 4001,
+    "cost": "unavailable",
+    "elapsed_ms": 62971
+  },
+  "completed_at": "2026-08-29T06:07:15.819781+00:00"
+}

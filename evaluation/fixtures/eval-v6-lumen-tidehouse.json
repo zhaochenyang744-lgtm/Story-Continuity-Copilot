@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "lumen_tidehouse",
+  "title": "The Saffron Tidehouse",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v6-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "The Saffron Tidehouse",
+    "characters": [
+      "Iven Rusk",
+      "Talia Quill"
+    ],
+    "locations": [
+      "Meridian Intake",
+      "Brackwater Gantry"
+    ],
+    "core_design": "surge-audit custody and calibrated tidal machinery"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Retired balance card",
+      "source_label": "retired_balance_card",
+      "body": "A retired balance card lists the Lumen counterweight at forty-two kilograms before the alloy insert was installed."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Acceptance weighing",
+      "source_label": "acceptance_weighing",
+      "body": "Talia Quill signed the acceptance weighing: the alloy-fitted Lumen counterweight measured fifty-seven kilograms, replacing the retired figure."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Pre-surge custody",
+      "source_label": "pre_surge_custody",
+      "body": "Before the surge alarm, the Driftglass Crate was strapped to rack seven inside Meridian Intake."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Post-surge transfer",
+      "source_label": "post_surge_transfer",
+      "body": "The post-surge custody ledger transfers the Driftglass Crate to locker two at Brackwater Gantry and marks Meridian rack seven empty."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Impeller cadence",
+      "source_label": "impeller_cadence",
+      "body": "Iven Rusk timed the north impeller at Meridian Intake: each complete cycle lasted nine minutes."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Reserve valve mark",
+      "source_label": "reserve_valve_mark",
+      "body": "The reserve sluice valve carries one saffron stripe around its handwheel for night identification."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Vane handover note",
+      "source_label": "vane_handover_note",
+      "body": "The vane handover note is signed only R. S.; the blackout roster lists both Rina Sol and Rook Sable, and no entry resolves which person the initials denote."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Sample route amendment",
+      "source_label": "sample_route_amendment",
+      "body": "The sample route amendment names Nacre Pier only after a calibration, but the calibration's effective time is unrecorded and the surge log does not say whether the amendment then applied."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "Lumen counterweight",
+      "predicate": "accepted_mass",
+      "value": "fifty-seven kilograms",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "acceptance_weighing"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Driftglass Crate",
+      "predicate": "post_surge_location",
+      "value": "locker two at Brackwater Gantry",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "post_surge_transfer"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "north impeller",
+      "predicate": "cycle_duration",
+      "value": "nine minutes",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "impeller_cadence"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "reserve sluice valve",
+      "predicate": "night_mark",
+      "value": "one saffron stripe",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "reserve_valve_mark"
+      }
+    }
+  ]
+}

@@ -46,3 +46,64 @@ MEMORY_RECORDS = [
     ("mem-ghe-v4-007", "event_timeline", "低室电台", "received", "第6章 21:05 收到三次求救码", "ghe-ch06-s01"),
     ("mem-ghe-v4-008", "open_thread", "异常雾钟", "status", "北潮闸未关闭时响起，原因未解", "ghe-ch10-s01"),
 ]
+
+# Deterministic, Web-Demo-only review material. This is authored fixture data,
+# not stored or simulated Provider output. Identifiers are rebound to each new
+# account's project-local chapters, spans, Memory records, draft, and Run.
+DEMO_REVIEW_ISSUES = [
+    {
+        "claim_text": "温岚把罗盘放在潮汐档案室的桌上。",
+        "category": "object_state",
+        "severity": "high",
+        "explanation": "第 9 章确认罗盘由温岚保管；当前草稿补充了更具体的存放位置，需要作者决定是否更新当前状态。",
+        "evidence_span_id": "ghe-ch09-s01",
+        "related_memory_id": "mem-ghe-v4-002",
+        "proposed_memory_change": {
+            "operation": "replace",
+            "memory_type": "dynamic_state",
+            "subject": "黄铜罗盘",
+            "predicate": "holder",
+            "value": "由温岚放在潮汐档案室桌上",
+            "affected_memory_id": "mem-ghe-v4-002",
+        },
+    },
+    {
+        "claim_text": "罗盘暂时离开温岚随身保管的位置。",
+        "category": "location_action",
+        "severity": "medium",
+        "explanation": "既有事实只确认温岚保管罗盘；当前草稿出现临时放置动作，可由作者保留为待后续确认的线索。",
+        "evidence_span_id": "ghe-ch02-s01",
+        "related_memory_id": "mem-ghe-v4-002",
+        "proposed_memory_change": {
+            "operation": "add",
+            "memory_type": "open_thread",
+            "subject": "黄铜罗盘临时离手",
+            "predicate": "status",
+            "value": "被放在潮汐档案室桌上，后续去向待确认",
+        },
+    },
+    {
+        "claim_text": "苏岑决定先核对那声不该响起的雾钟。",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "第 10 章已记录北潮闸未关闭时雾钟异常响起；当前草稿明确了苏岑的调查优先级。",
+        "evidence_span_id": "ghe-ch10-s01",
+        "related_memory_id": "mem-ghe-v4-008",
+        "proposed_memory_change": {
+            "operation": "add",
+            "memory_type": "event_timeline",
+            "subject": "苏岑",
+            "predicate": "next_action",
+            "value": "优先核对异常雾钟",
+        },
+    },
+    {
+        "claim_text": "雾钟的响声与北潮闸状态存在表面冲突。",
+        "category": "world_rule",
+        "severity": "low",
+        "explanation": "这是用于练习误报判断的预置审阅项：第 10 章已把异常响钟保留为未解线索，并非自动改写世界规则。",
+        "evidence_span_id": "ghe-ch01-s01",
+        "related_memory_id": "mem-ghe-v4-001",
+        "proposed_memory_change": None,
+    },
+]

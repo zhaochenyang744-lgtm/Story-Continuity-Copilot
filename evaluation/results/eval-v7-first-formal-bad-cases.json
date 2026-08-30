@@ -1,0 +1,127 @@
+{
+  "evaluation": "scc-web-demo-eval-v7-first-formal",
+  "bad_cases": [
+    {
+      "case_id": "eval-v7-cartography-authority",
+      "expected_class": "conflict",
+      "predicted_class": "insufficient_evidence",
+      "category": {
+        "expected": "relationship",
+        "predicted": "relationship"
+      },
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "classification_mismatch",
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 0,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "eval-v7-cartography-panes",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "category": {
+        "expected": "attribute",
+        "predicted": "object_state"
+      },
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "category_mismatch"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 2,
+        "resolvable_evidence_count": 2,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 2,
+        "expected_evidence_full_set_cited": true
+      }
+    },
+    {
+      "case_id": "eval-v7-siltworks-filter-rule",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "category": {
+        "expected": "world_rule",
+        "predicted": null
+      },
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "classification_mismatch",
+        "category_mismatch",
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 0,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "eval-v7-migration-reroute-knowledge",
+      "expected_class": "conflict",
+      "predicted_class": "insufficient_evidence",
+      "category": {
+        "expected": "character_knowledge",
+        "predicted": "character_knowledge"
+      },
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "classification_mismatch",
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 0,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "eval-v7-migration-control-thread",
+      "expected_class": "no_conflict",
+      "predicted_class": "insufficient_evidence",
+      "category": {
+        "expected": null,
+        "predicted": "object_state"
+      },
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "classification_mismatch"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0,
+        "expected_evidence_count": 0,
+        "cited_expected_evidence_unique_count": 0,
+        "expected_evidence_full_set_cited": null
+      }
+    }
+  ]
+}

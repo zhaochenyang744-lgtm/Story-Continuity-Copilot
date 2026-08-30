@@ -1,0 +1,146 @@
+{
+  "evaluation": "scc-web-demo-eval-v6-first-formal",
+  "bad_cases": [
+    {
+      "case_id": "eval-v6-lumen-conflict-crate-location",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 1,
+        "resolvable_evidence_count": 1,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 1,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "eval-v6-velvet-conflict-amber-authority",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "category_mismatch",
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 1,
+        "resolvable_evidence_count": 1,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 1,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "eval-v6-velvet-conflict-revised-phrase-knowledge",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 1,
+        "resolvable_evidence_count": 1,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 1,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "eval-v6-quartz-conflict-seed-mist-order",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 1,
+        "resolvable_evidence_count": 1,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 1,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "eval-v6-quartz-conflict-hatchling-tag-exception",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 1,
+        "resolvable_evidence_count": 1,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 1,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "eval-v6-cinder-conflict-sora-inspection-place",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 1,
+        "resolvable_evidence_count": 1,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 1,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "eval-v6-cinder-conflict-crossing-completion",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 1,
+        "resolvable_evidence_count": 1,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 1,
+        "expected_evidence_full_set_cited": false
+      }
+    }
+  ]
+}

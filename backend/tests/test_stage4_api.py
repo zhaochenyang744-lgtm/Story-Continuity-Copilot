@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import pathlib
 import sqlite3
 import socket
@@ -17,7 +18,7 @@ import uvicorn
 from app.config import AppPaths
 from app.engine import ContinuityEngine
 from app.main import create_app
-from app.provider import DeepSeekProvider, ProviderFailure, ProviderInvalidJson, ProviderResult, ProviderTimeout
+from app.provider import CONTINUITY_REVIEW_RULES, DeepSeekProvider, ProviderFailure, ProviderInvalidJson, ProviderResult, ProviderTimeout
 from app.v2_database import V2Database
 
 
@@ -53,9 +54,41 @@ class DeepSeekProviderRegressionTests(unittest.TestCase):
         self.assertIn("exactly one top-level key, issues",prompt)
         self.assertIn("never emit a no_conflict issue",prompt)
         self.assertIn("Emit insufficient_evidence when the retrieved material neither supports nor contradicts the target claim",prompt)
-        self.assertIn("Category boundaries: attribute is an intrinsic or durable property",prompt)
-        self.assertIn("minimal necessary set of one or more direct Evidence",prompt)
+        self.assertIn("Apply category by the core decision, not surface words or background context",prompt)
+        self.assertIn("complete direct Evidence lineage",prompt)
+        self.assertIn("The unresolved-evidence guard has priority over conflict reasoning",prompt)
+        self.assertIn("decision_examples",prompt)
         self.assertNotIn("If no grounded conflict can be returned under these rules",prompt)
+
+    def test_continuity_prompt_contract_covers_unknown_facts_categories_and_complete_direct_evidence_without_case_hardcoding(self):
+        provider = DeepSeekProvider(client_factory=lambda: None)
+        prompt = provider._continuity_prompt({
+            'draft': {'id': 'draft-contract', 'revision': 1, 'body': '草稿提出一个具体原因。'},
+            'claims': [{'id': 'claim-contract', 'text': '草稿提出一个具体原因。', 'allowed_evidence': [{'id': 'span-contract', 'chapter_id': 'chapter-contract', 'body': '原因未确认。'}]}],
+            'memory': [], 'output_schema': {'type': 'object'},
+        })
+        rules = json.loads(prompt)['rules']
+        joined = '\n'.join(rules)
+        self.assertIn('unknown, unregistered, unconfirmed, not recorded, pending, or blank', joined)
+        self.assertIn('emit insufficient_evidence', joined.casefold())
+        self.assertIn('old plus new sources, regular rule plus exception, before plus after state, planned plus actual sequence', joined)
+        self.assertIn('test the smallest relevant combinations of spans', joined)
+        self.assertIn('jointly sufficient set of two or more supplied SourceSpans', joined)
+        self.assertIn('rule plus scope membership', joined)
+        self.assertIn('sole communication channel plus delivery record', joined)
+        self.assertIn('necessary member of the jointly sufficient contradiction set', joined)
+        self.assertIn('Assign category only after deciding the status and complete Evidence set', joined)
+        self.assertIn('must be absent, not null and not an empty object', joined)
+        self.assertLess(joined.index('The unresolved-evidence guard has priority'), joined.index('Only after the unresolved-evidence and direct-support guards'))
+        for boundary in ('attribute = an intrinsic, durable, or measured property', 'object_state = a named object\'s state or location at a specific time', 'relationship = a named person or role holder\'s authorization, responsibility, duty, obligation, kinship', 'world_rule = an abstract or global behavior constraint, mechanism, or exception', 'character_knowledge = what a character knows', 'timeline = event ordering', 'event_status = whether an event completed', 'location_action = where a character acted'):
+            self.assertIn(boundary, joined)
+        self.assertEqual(tuple(rules), CONTINUITY_REVIEW_RULES)
+        examples = json.loads(prompt)['decision_examples']
+        self.assertEqual(len(examples), 4)
+        self.assertIn('insufficient_evidence; evidence is []; omit proposed_memory_change.', examples[0]['decision'])
+        self.assertIn('cite both the direct baseline span and the direct later transition span', examples[2]['decision'])
+        self.assertNotIn('eval-v', prompt.casefold())
+        self.assertNotIn('ember observatory', prompt.casefold())
 
 
 class ContinuityDecisionContractTests(unittest.TestCase):
@@ -106,7 +139,13 @@ class ContinuityDecisionContractTests(unittest.TestCase):
 class Stage4ContractTests(unittest.TestCase):
     def setUp(self):
         root = pathlib.Path(tempfile.mkdtemp(prefix="scc-stage4-"))
-        self.client = TestClient(create_app(AppPaths.from_project_root(root, protected_poc_root=root / "protected")))
+        class UnavailableProvider:
+            label = "test-unavailable-provider"
+            model_label = "test-unavailable-provider"
+            available = False
+            def evaluate(self, _):
+                raise AssertionError("unavailable provider must not be called")
+        self.client = TestClient(create_app(AppPaths.from_project_root(root, protected_poc_root=root / "protected"), provider=UnavailableProvider()))
         result = self.client.post("/api/auth/register", json={"account_name":"authora","display_name":"Author A","password":"safe-password-42"}, headers=key())
         self.assertEqual(result.status_code, 201)
         self.seed = result.json()["data"]["seeded_projects"]
@@ -219,7 +258,7 @@ class Stage4ContractTests(unittest.TestCase):
         reviewed=client.get(f"/api/projects/{grey}/checks/{queued['run_id']}?include=issues,evidence,metrics")
         self.assertEqual(reviewed.status_code,200)
         metrics=reviewed.json()['data']['metrics']; provenance=metrics['provenance']
-        self.assertEqual(provenance,{'provider_label':'contract-provider','model_label':'contract-model-v1','prompt_version':'continuity-review-v4','schema_version':'continuity-issue-v3','retrieval_method_version':'demo-retrieval-v2','source_memory_version':4})
+        self.assertEqual(provenance,{'provider_label':'contract-provider','model_label':'contract-model-v1','prompt_version':'continuity-review-v8-bounded-evidence','schema_version':'continuity-issue-v3','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4})
         self.assertTrue(metrics['retrieval'])
         self.assertEqual(client.get(f"/api/projects/{other}/checks/{queued['run_id']}?include=metrics").status_code,404)
         self.assertEqual(client.post(f'/api/projects/{grey}/reset',json={'confirm':True,'reason':'demo_recovery'},headers=key()).status_code,200)

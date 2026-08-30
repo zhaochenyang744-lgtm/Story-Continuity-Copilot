@@ -1,0 +1,1280 @@
+{
+  "schema_version": "scc-eval-case-set-v8-candidate",
+  "status": "candidate_for_controller_review",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "formal_run_executed": false,
+  "provider_calls": 0,
+  "cases": [
+    {
+      "case_id": "v8-dusk-viaduct-conflict-relationship",
+      "corpus_key": "dusk_viaduct",
+      "seed_key": "dusk_viaduct",
+      "target_draft": "Palo Neris alone may open the Clove Bridge archive.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "relationship",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "roster_pin_rule",
+          "body_sha256": "5f1b40ab11bfb5d86a3be499896f78be7d66fe538d8fad2e485f1e06567cfa0c"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "roster_pin_ledger",
+          "body_sha256": "0d101932eaf0e514eeaba5d0f4d5dfe453312f64a66912ae7909a46954c7b515"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "dusk_viaduct",
+          "chapter_number": 1,
+          "source_label": "roster_pin_rule",
+          "body_sha256": "5f1b40ab11bfb5d86a3be499896f78be7d66fe538d8fad2e485f1e06567cfa0c"
+        },
+        {
+          "corpus_key": "dusk_viaduct",
+          "chapter_number": 2,
+          "source_label": "roster_pin_ledger",
+          "body_sha256": "0d101932eaf0e514eeaba5d0f4d5dfe453312f64a66912ae7909a46954c7b515"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources",
+        "category_mismatch_regression"
+      ],
+      "category_boundary_pair": [
+        "relationship",
+        "world_rule"
+      ],
+      "retrieval_difficulty": "paired_direct",
+      "core_fact_key": "v8-dusk_viaduct-relationship-joined",
+      "claim_shape": "v8-conflict-relationship-joint-inference",
+      "decision_signature": "v8|relationship|joined_definition_and_observation|dusk_viaduct|1",
+      "proper_nouns": [
+        "Palo Neris",
+        "Iven Sorr",
+        "Clove Bridge",
+        "Moth Vault"
+      ],
+      "evidence_completeness_review": [
+        "Evidence A defines the governing condition but does not establish the relevant observed person, state, code, tag, or record.",
+        "Evidence B supplies that observed fact but does not define why it controls the draft claim.",
+        "Together the rule or convention and the observed record establish that the draft is incompatible with the evidence."
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v8-dusk-viaduct-conflict-object_state",
+      "corpus_key": "dusk_viaduct",
+      "seed_key": "dusk_viaduct",
+      "target_draft": "The Moth Vault tube remains sealed.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "object_state",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "seal_definition",
+          "body_sha256": "ba6832cd3088ab4caf224424000db961c0720b0e676bec260eddafb21719df04"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "thread_inspection",
+          "body_sha256": "01493454cafb2bb9de25b44d499205d7a9178bffd787da4388347aa1c62f1d3d"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "dusk_viaduct",
+          "chapter_number": 3,
+          "source_label": "seal_definition",
+          "body_sha256": "ba6832cd3088ab4caf224424000db961c0720b0e676bec260eddafb21719df04"
+        },
+        {
+          "corpus_key": "dusk_viaduct",
+          "chapter_number": 4,
+          "source_label": "thread_inspection",
+          "body_sha256": "01493454cafb2bb9de25b44d499205d7a9178bffd787da4388347aa1c62f1d3d"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "category_boundary_pair": [
+        "location_action",
+        "object_state"
+      ],
+      "retrieval_difficulty": "paired_direct",
+      "core_fact_key": "v8-dusk_viaduct-object_state-joined",
+      "claim_shape": "v8-conflict-object_state-joint-inference",
+      "decision_signature": "v8|object_state|joined_definition_and_observation|dusk_viaduct|2",
+      "proper_nouns": [
+        "Palo Neris",
+        "Iven Sorr",
+        "Clove Bridge",
+        "Moth Vault"
+      ],
+      "evidence_completeness_review": [
+        "Evidence A defines the governing condition but does not establish the relevant observed person, state, code, tag, or record.",
+        "Evidence B supplies that observed fact but does not define why it controls the draft claim.",
+        "Together the rule or convention and the observed record establish that the draft is incompatible with the evidence."
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v8-dusk-viaduct-control-5",
+      "corpus_key": "dusk_viaduct",
+      "seed_key": "dusk_viaduct",
+      "target_draft": "The east span of Clove Bridge has six lanterns.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "lamp_count",
+          "body_sha256": "d77854a984748e29b97e0db72edaaa54d269b0372dee71e29ce47f45b2a307d3"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "dusk_viaduct",
+          "chapter_number": 5,
+          "source_label": "lamp_count",
+          "body_sha256": "d77854a984748e29b97e0db72edaaa54d269b0372dee71e29ce47f45b2a307d3"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "direct_with_same_entity_distractor",
+      "core_fact_key": "v8-dusk_viaduct-control-5",
+      "claim_shape": "v8-supported-control-with-distractor-dusk_viaduct-5",
+      "decision_signature": "v8|control|same_entity_distractor|dusk_viaduct|5",
+      "proper_nouns": [
+        "Palo Neris",
+        "Iven Sorr",
+        "Clove Bridge",
+        "Moth Vault"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-dusk-viaduct-control-6",
+      "corpus_key": "dusk_viaduct",
+      "seed_key": "dusk_viaduct",
+      "target_draft": "Palo Neris uses chalk paste on the bridge rail.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "rail_polish",
+          "body_sha256": "08cd3cfa253275a79be4697db4480abf6c75eb6bbe10e779e8bddd60e4e798fd"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "dusk_viaduct",
+          "chapter_number": 6,
+          "source_label": "rail_polish",
+          "body_sha256": "08cd3cfa253275a79be4697db4480abf6c75eb6bbe10e779e8bddd60e4e798fd"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "direct_with_same_entity_distractor",
+      "core_fact_key": "v8-dusk_viaduct-control-6",
+      "claim_shape": "v8-supported-control-with-distractor-dusk_viaduct-6",
+      "decision_signature": "v8|control|same_entity_distractor|dusk_viaduct|6",
+      "proper_nouns": [
+        "Palo Neris",
+        "Iven Sorr",
+        "Clove Bridge",
+        "Moth Vault"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-dusk-viaduct-insufficient-7",
+      "corpus_key": "dusk_viaduct",
+      "seed_key": "dusk_viaduct",
+      "target_draft": "The vault parcel's final weight was recorded as forty stones.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "pending_weight",
+          "body_sha256": "569396fcdc786aa8d9024304fe3371199bbae449e54f28811bfb25a40c18ed6e"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "dusk_viaduct",
+          "chapter_number": 7,
+          "source_label": "pending_weight",
+          "body_sha256": "569396fcdc786aa8d9024304fe3371199bbae449e54f28811bfb25a40c18ed6e"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence",
+        "pending_outcome"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "pending_outcome",
+      "core_fact_key": "v8-dusk_viaduct-unknown-pending_outcome",
+      "claim_shape": "v8-insufficient-pending_outcome-dusk_viaduct",
+      "decision_signature": "v8|insufficient|pending_outcome|dusk_viaduct|7",
+      "proper_nouns": [
+        "Palo Neris",
+        "Iven Sorr",
+        "Clove Bridge",
+        "Moth Vault"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-dusk-viaduct-insufficient-8",
+      "corpus_key": "dusk_viaduct",
+      "seed_key": "dusk_viaduct",
+      "target_draft": "Iven Sorr carried the transferred tube.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "blank_bearer",
+          "body_sha256": "e2828790ca94e5f658b5c9f0c63b546b041fcf7020f471106c62b3dde063d8a1"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "dusk_viaduct",
+          "chapter_number": 8,
+          "source_label": "blank_bearer",
+          "body_sha256": "e2828790ca94e5f658b5c9f0c63b546b041fcf7020f471106c62b3dde063d8a1"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence",
+        "blank_identity"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "blank_identity",
+      "core_fact_key": "v8-dusk_viaduct-unknown-blank_identity",
+      "claim_shape": "v8-insufficient-blank_identity-dusk_viaduct",
+      "decision_signature": "v8|insufficient|blank_identity|dusk_viaduct|8",
+      "proper_nouns": [
+        "Palo Neris",
+        "Iven Sorr",
+        "Clove Bridge",
+        "Moth Vault"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-sable-tideglass-conflict-world_rule",
+      "corpus_key": "sable_tideglass",
+      "seed_key": "sable_tideglass",
+      "target_draft": "The tideglass parcel may be sent without a paper receipt.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "world_rule",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "receipt_scope",
+          "body_sha256": "56b08a617c17d5d0417c1c19a8ee9ede9609498707a80e66ec2fe1dc4e511270"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "parcel_classification",
+          "body_sha256": "fb6b11a278fb1cd4389823acffcb2983f8e18bd5b1081f6fefa621a0226cfa28"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "sable_tideglass",
+          "chapter_number": 1,
+          "source_label": "receipt_scope",
+          "body_sha256": "56b08a617c17d5d0417c1c19a8ee9ede9609498707a80e66ec2fe1dc4e511270"
+        },
+        {
+          "corpus_key": "sable_tideglass",
+          "chapter_number": 2,
+          "source_label": "parcel_classification",
+          "body_sha256": "fb6b11a278fb1cd4389823acffcb2983f8e18bd5b1081f6fefa621a0226cfa28"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "category_boundary_pair": [
+        "relationship",
+        "world_rule"
+      ],
+      "retrieval_difficulty": "paired_direct",
+      "core_fact_key": "v8-sable_tideglass-world_rule-joined",
+      "claim_shape": "v8-conflict-world_rule-joint-inference",
+      "decision_signature": "v8|world_rule|joined_definition_and_observation|sable_tideglass|1",
+      "proper_nouns": [
+        "Yara Cett",
+        "Brom Olt",
+        "Pewter Room",
+        "Violet Slip"
+      ],
+      "evidence_completeness_review": [
+        "Evidence A defines the governing condition but does not establish the relevant observed person, state, code, tag, or record.",
+        "Evidence B supplies that observed fact but does not define why it controls the draft claim.",
+        "Together the rule or convention and the observed record establish that the draft is incompatible with the evidence."
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v8-sable-tideglass-conflict-attribute",
+      "corpus_key": "sable_tideglass",
+      "seed_key": "sable_tideglass",
+      "target_draft": "The certified tideglass lens has twelve facets.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "attribute",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "facet_count_rule",
+          "body_sha256": "ac0d8234f627479c111811300e81f1a3127ebc62c093886295275991770f1b64"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "facet_measurement",
+          "body_sha256": "2515f2725be9454baefcb3709e630d855f82750650b771899145d0bf9aad77e1"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "sable_tideglass",
+          "chapter_number": 3,
+          "source_label": "facet_count_rule",
+          "body_sha256": "ac0d8234f627479c111811300e81f1a3127ebc62c093886295275991770f1b64"
+        },
+        {
+          "corpus_key": "sable_tideglass",
+          "chapter_number": 4,
+          "source_label": "facet_measurement",
+          "body_sha256": "2515f2725be9454baefcb3709e630d855f82750650b771899145d0bf9aad77e1"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "paired_direct",
+      "core_fact_key": "v8-sable_tideglass-attribute-joined",
+      "claim_shape": "v8-conflict-attribute-joint-inference",
+      "decision_signature": "v8|attribute|joined_definition_and_observation|sable_tideglass|2",
+      "proper_nouns": [
+        "Yara Cett",
+        "Brom Olt",
+        "Pewter Room",
+        "Violet Slip"
+      ],
+      "evidence_completeness_review": [
+        "Evidence A defines the governing condition but does not establish the relevant observed person, state, code, tag, or record.",
+        "Evidence B supplies that observed fact but does not define why it controls the draft claim.",
+        "Together the rule or convention and the observed record establish that the draft is incompatible with the evidence."
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v8-sable-tideglass-control-5",
+      "corpus_key": "sable_tideglass",
+      "seed_key": "sable_tideglass",
+      "target_draft": "Yara Cett uses a violet stamp on the sealed parcel.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "stamp_color",
+          "body_sha256": "0c8cde91bf88f9a3741340e1a927c9b28e91c31577b4b3cf5c6f29f7513fb5f8"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "sable_tideglass",
+          "chapter_number": 5,
+          "source_label": "stamp_color",
+          "body_sha256": "0c8cde91bf88f9a3741340e1a927c9b28e91c31577b4b3cf5c6f29f7513fb5f8"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "direct_with_same_entity_distractor",
+      "core_fact_key": "v8-sable_tideglass-control-5",
+      "claim_shape": "v8-supported-control-with-distractor-sable_tideglass-5",
+      "decision_signature": "v8|control|same_entity_distractor|sable_tideglass|5",
+      "proper_nouns": [
+        "Yara Cett",
+        "Brom Olt",
+        "Pewter Room",
+        "Violet Slip"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-sable-tideglass-control-6",
+      "corpus_key": "sable_tideglass",
+      "seed_key": "sable_tideglass",
+      "target_draft": "The Violet Slip is shelved in the Pewter Room after review.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "slip_shelving",
+          "body_sha256": "6d7b87b13e36c53009f2ad03a8b45c51e265bbc956533ebcce4a9b9d225c5df7"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "sable_tideglass",
+          "chapter_number": 6,
+          "source_label": "slip_shelving",
+          "body_sha256": "6d7b87b13e36c53009f2ad03a8b45c51e265bbc956533ebcce4a9b9d225c5df7"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "direct_with_same_entity_distractor",
+      "core_fact_key": "v8-sable_tideglass-control-6",
+      "claim_shape": "v8-supported-control-with-distractor-sable_tideglass-6",
+      "decision_signature": "v8|control|same_entity_distractor|sable_tideglass|6",
+      "proper_nouns": [
+        "Yara Cett",
+        "Brom Olt",
+        "Pewter Room",
+        "Violet Slip"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-sable-tideglass-insufficient-7",
+      "corpus_key": "sable_tideglass",
+      "seed_key": "sable_tideglass",
+      "target_draft": "Yara Cett was the selected courier.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "unranked_notes",
+          "body_sha256": "12ffb42bffc1a7cbc002918517d8992924db5f97e91154ff6e55bb96e6569938"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "sable_tideglass",
+          "chapter_number": 7,
+          "source_label": "unranked_notes",
+          "body_sha256": "12ffb42bffc1a7cbc002918517d8992924db5f97e91154ff6e55bb96e6569938"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence",
+        "no_priority"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "no_priority",
+      "core_fact_key": "v8-sable_tideglass-unknown-no_priority",
+      "claim_shape": "v8-insufficient-no_priority-sable_tideglass",
+      "decision_signature": "v8|insufficient|no_priority|sable_tideglass|7",
+      "proper_nouns": [
+        "Yara Cett",
+        "Brom Olt",
+        "Pewter Room",
+        "Violet Slip"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-sable-tideglass-insufficient-8",
+      "corpus_key": "sable_tideglass",
+      "seed_key": "sable_tideglass",
+      "target_draft": "Brom Olt issued the parcel receipt.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "preparation_only",
+          "body_sha256": "92a241236b713cabafe31324cc4f064d25ad8d3064b545f043fc72ea6d6a1fcf"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "sable_tideglass",
+          "chapter_number": 8,
+          "source_label": "preparation_only",
+          "body_sha256": "92a241236b713cabafe31324cc4f064d25ad8d3064b545f043fc72ea6d6a1fcf"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence",
+        "preparation_without_result"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "preparation_without_result",
+      "core_fact_key": "v8-sable_tideglass-unknown-preparation_without_result",
+      "claim_shape": "v8-insufficient-preparation_without_result-sable_tideglass",
+      "decision_signature": "v8|insufficient|preparation_without_result|sable_tideglass|8",
+      "proper_nouns": [
+        "Yara Cett",
+        "Brom Olt",
+        "Pewter Room",
+        "Violet Slip"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-flint-garden-conflict-location_action",
+      "corpus_key": "flint_garden",
+      "seed_key": "flint_garden",
+      "target_draft": "Eli Vann repaired the hinge in Kite Shed.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "location_action",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "route_code_map",
+          "body_sha256": "573dbcfbcbfebe3cb54c6c35096fd4cb557c3ec57f40a3f4351a70e7c2664267"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "repair_receipt",
+          "body_sha256": "1dea53c20d923c803e955619a0af756349e87f086cd91b558a34f10b95ed92f8"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "flint_garden",
+          "chapter_number": 1,
+          "source_label": "route_code_map",
+          "body_sha256": "573dbcfbcbfebe3cb54c6c35096fd4cb557c3ec57f40a3f4351a70e7c2664267"
+        },
+        {
+          "corpus_key": "flint_garden",
+          "chapter_number": 2,
+          "source_label": "repair_receipt",
+          "body_sha256": "1dea53c20d923c803e955619a0af756349e87f086cd91b558a34f10b95ed92f8"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources",
+        "category_mismatch_regression"
+      ],
+      "category_boundary_pair": [
+        "location_action",
+        "object_state"
+      ],
+      "retrieval_difficulty": "paired_direct",
+      "core_fact_key": "v8-flint_garden-location_action-joined",
+      "claim_shape": "v8-conflict-location_action-joint-inference",
+      "decision_signature": "v8|location_action|joined_definition_and_observation|flint_garden|1",
+      "proper_nouns": [
+        "Noma Rusk",
+        "Eli Vann",
+        "Frost Court",
+        "Kite Shed"
+      ],
+      "evidence_completeness_review": [
+        "Evidence A defines the governing condition but does not establish the relevant observed person, state, code, tag, or record.",
+        "Evidence B supplies that observed fact but does not define why it controls the draft claim.",
+        "Together the rule or convention and the observed record establish that the draft is incompatible with the evidence."
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v8-flint-garden-conflict-event_status",
+      "corpus_key": "flint_garden",
+      "seed_key": "flint_garden",
+      "target_draft": "The seed-gate delivery was complete.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "event_status",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "completion_definition",
+          "body_sha256": "9e6fd5d4586ef48bf3a3315f076e9b4ee1c6128f185fd8fb86c7112d2fa96a14"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "latch_log",
+          "body_sha256": "f24bccd7f3ed2ec444d50a2c0eb15dff0a2ba60d4029fbd8fb83528662effb27"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "flint_garden",
+          "chapter_number": 3,
+          "source_label": "completion_definition",
+          "body_sha256": "9e6fd5d4586ef48bf3a3315f076e9b4ee1c6128f185fd8fb86c7112d2fa96a14"
+        },
+        {
+          "corpus_key": "flint_garden",
+          "chapter_number": 4,
+          "source_label": "latch_log",
+          "body_sha256": "f24bccd7f3ed2ec444d50a2c0eb15dff0a2ba60d4029fbd8fb83528662effb27"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "category_boundary_pair": [
+        "timeline",
+        "event_status"
+      ],
+      "retrieval_difficulty": "paired_direct",
+      "core_fact_key": "v8-flint_garden-event_status-joined",
+      "claim_shape": "v8-conflict-event_status-joint-inference",
+      "decision_signature": "v8|event_status|joined_definition_and_observation|flint_garden|2",
+      "proper_nouns": [
+        "Noma Rusk",
+        "Eli Vann",
+        "Frost Court",
+        "Kite Shed"
+      ],
+      "evidence_completeness_review": [
+        "Evidence A defines the governing condition but does not establish the relevant observed person, state, code, tag, or record.",
+        "Evidence B supplies that observed fact but does not define why it controls the draft claim.",
+        "Together the rule or convention and the observed record establish that the draft is incompatible with the evidence."
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v8-flint-garden-control-5",
+      "corpus_key": "flint_garden",
+      "seed_key": "flint_garden",
+      "target_draft": "Noma Rusk trims the frost hedge with a crescent shear.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "pruning_tool",
+          "body_sha256": "440fa324520dc10f536f3415d8f92829231da35a13ef0a49901c22f9152e8e37"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "flint_garden",
+          "chapter_number": 5,
+          "source_label": "pruning_tool",
+          "body_sha256": "440fa324520dc10f536f3415d8f92829231da35a13ef0a49901c22f9152e8e37"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "direct_with_same_entity_distractor",
+      "core_fact_key": "v8-flint_garden-control-5",
+      "claim_shape": "v8-supported-control-with-distractor-flint_garden-5",
+      "decision_signature": "v8|control|same_entity_distractor|flint_garden|5",
+      "proper_nouns": [
+        "Noma Rusk",
+        "Eli Vann",
+        "Frost Court",
+        "Kite Shed"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-flint-garden-control-6",
+      "corpus_key": "flint_garden",
+      "seed_key": "flint_garden",
+      "target_draft": "Frost Court opens after one brass bell and two reed bells.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "court_bell",
+          "body_sha256": "1ebb2cbc23774979b8ba3a31e60f8c22c396e6d8db52d6940e528d3333b1cf04"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "flint_garden",
+          "chapter_number": 6,
+          "source_label": "court_bell",
+          "body_sha256": "1ebb2cbc23774979b8ba3a31e60f8c22c396e6d8db52d6940e528d3333b1cf04"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "direct_with_same_entity_distractor",
+      "core_fact_key": "v8-flint_garden-control-6",
+      "claim_shape": "v8-supported-control-with-distractor-flint_garden-6",
+      "decision_signature": "v8|control|same_entity_distractor|flint_garden|6",
+      "proper_nouns": [
+        "Noma Rusk",
+        "Eli Vann",
+        "Frost Court",
+        "Kite Shed"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-flint-garden-insufficient-7",
+      "corpus_key": "flint_garden",
+      "seed_key": "flint_garden",
+      "target_draft": "Frost caused the cracked pot.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "unconfirmed_cause",
+          "body_sha256": "a9a31cdd080f14ad8f0d7a41887447ca3ee24e47e427b0951a603cb050c7ddda"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "flint_garden",
+          "chapter_number": 7,
+          "source_label": "unconfirmed_cause",
+          "body_sha256": "a9a31cdd080f14ad8f0d7a41887447ca3ee24e47e427b0951a603cb050c7ddda"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence",
+        "unconfirmed_causation"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "unconfirmed_causation",
+      "core_fact_key": "v8-flint_garden-unknown-unconfirmed_causation",
+      "claim_shape": "v8-insufficient-unconfirmed_causation-flint_garden",
+      "decision_signature": "v8|insufficient|unconfirmed_causation|flint_garden|7",
+      "proper_nouns": [
+        "Noma Rusk",
+        "Eli Vann",
+        "Frost Court",
+        "Kite Shed"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-flint-garden-insufficient-8",
+      "corpus_key": "flint_garden",
+      "seed_key": "flint_garden",
+      "target_draft": "The Kite Shed gate passed inspection.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "inspection_without_outcome",
+          "body_sha256": "c7a2639d2025afa5f226edbde81cd30381bdfb6c92378dde158e5358ff34530b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "flint_garden",
+          "chapter_number": 8,
+          "source_label": "inspection_without_outcome",
+          "body_sha256": "c7a2639d2025afa5f226edbde81cd30381bdfb6c92378dde158e5358ff34530b"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence",
+        "inspection_without_outcome"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "inspection_without_outcome",
+      "core_fact_key": "v8-flint_garden-unknown-inspection_without_outcome",
+      "claim_shape": "v8-insufficient-inspection_without_outcome-flint_garden",
+      "decision_signature": "v8|insufficient|inspection_without_outcome|flint_garden|8",
+      "proper_nouns": [
+        "Noma Rusk",
+        "Eli Vann",
+        "Frost Court",
+        "Kite Shed"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-opal-nursery-conflict-character_knowledge",
+      "corpus_key": "opal_nursery",
+      "seed_key": "opal_nursery",
+      "target_draft": "At 04:50, Cian Dusk knew the Lantern Ward transfer destination.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "character_knowledge",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "notice_knowledge_rule",
+          "body_sha256": "87949c858da0892f077faa0a55eb87fcda8c8f96eb5fdb6b23fd122f9e007146"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "notice_receipt_book",
+          "body_sha256": "4f1dc96514278e5218f4429621e9d8b836df27f0656347f8932cc4df650c75e5"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "opal_nursery",
+          "chapter_number": 1,
+          "source_label": "notice_knowledge_rule",
+          "body_sha256": "87949c858da0892f077faa0a55eb87fcda8c8f96eb5fdb6b23fd122f9e007146"
+        },
+        {
+          "corpus_key": "opal_nursery",
+          "chapter_number": 2,
+          "source_label": "notice_receipt_book",
+          "body_sha256": "4f1dc96514278e5218f4429621e9d8b836df27f0656347f8932cc4df650c75e5"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "paired_direct",
+      "core_fact_key": "v8-opal_nursery-character_knowledge-joined",
+      "claim_shape": "v8-conflict-character_knowledge-joint-inference",
+      "decision_signature": "v8|character_knowledge|joined_definition_and_observation|opal_nursery|1",
+      "proper_nouns": [
+        "Rhea Mott",
+        "Cian Dusk",
+        "Lantern Ward",
+        "Moss Dock"
+      ],
+      "evidence_completeness_review": [
+        "Evidence A defines the governing condition but does not establish the relevant observed person, state, code, tag, or record.",
+        "Evidence B supplies that observed fact but does not define why it controls the draft claim.",
+        "Together the rule or convention and the observed record establish that the draft is incompatible with the evidence."
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v8-opal-nursery-conflict-timeline",
+      "corpus_key": "opal_nursery",
+      "seed_key": "opal_nursery",
+      "target_draft": "The Moss Dock transfer was logged before the dawn bell.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "timeline",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "dawn_tag_rule",
+          "body_sha256": "9798947e7ec0fdddd8c0df5831217c9abec43bad0131231144fb93e758de1ca6"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "transfer_tag",
+          "body_sha256": "c84594b791613b718da7c975964d77123c46413bfb319823cce76475b491d94b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "opal_nursery",
+          "chapter_number": 3,
+          "source_label": "dawn_tag_rule",
+          "body_sha256": "9798947e7ec0fdddd8c0df5831217c9abec43bad0131231144fb93e758de1ca6"
+        },
+        {
+          "corpus_key": "opal_nursery",
+          "chapter_number": 4,
+          "source_label": "transfer_tag",
+          "body_sha256": "c84594b791613b718da7c975964d77123c46413bfb319823cce76475b491d94b"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources",
+        "category_mismatch_regression"
+      ],
+      "category_boundary_pair": [
+        "timeline",
+        "event_status"
+      ],
+      "retrieval_difficulty": "paired_direct",
+      "core_fact_key": "v8-opal_nursery-timeline-joined",
+      "claim_shape": "v8-conflict-timeline-joint-inference",
+      "decision_signature": "v8|timeline|joined_definition_and_observation|opal_nursery|2",
+      "proper_nouns": [
+        "Rhea Mott",
+        "Cian Dusk",
+        "Lantern Ward",
+        "Moss Dock"
+      ],
+      "evidence_completeness_review": [
+        "Evidence A defines the governing condition but does not establish the relevant observed person, state, code, tag, or record.",
+        "Evidence B supplies that observed fact but does not define why it controls the draft claim.",
+        "Together the rule or convention and the observed record establish that the draft is incompatible with the evidence."
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v8-opal-nursery-control-5",
+      "corpus_key": "opal_nursery",
+      "seed_key": "opal_nursery",
+      "target_draft": "The Lantern Ward cradle is lined with amber felt.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "cradle_fabric",
+          "body_sha256": "2bbab9ea20e5bb194579fb4dfe80bef33963538cae4a28ddaae74d56303ebf18"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "opal_nursery",
+          "chapter_number": 5,
+          "source_label": "cradle_fabric",
+          "body_sha256": "2bbab9ea20e5bb194579fb4dfe80bef33963538cae4a28ddaae74d56303ebf18"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "direct_with_same_entity_distractor",
+      "core_fact_key": "v8-opal_nursery-control-5",
+      "claim_shape": "v8-supported-control-with-distractor-opal_nursery-5",
+      "decision_signature": "v8|control|same_entity_distractor|opal_nursery|5",
+      "proper_nouns": [
+        "Rhea Mott",
+        "Cian Dusk",
+        "Lantern Ward",
+        "Moss Dock"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-opal-nursery-control-6",
+      "corpus_key": "opal_nursery",
+      "seed_key": "opal_nursery",
+      "target_draft": "Rhea Mott files the Moss Dock ledger in the Lantern Ward cabinet.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "dock_ledger_shelf",
+          "body_sha256": "40e2734e76865b70512f2259848fbbd7de5d366e86fb106dc97f554873892c73"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "opal_nursery",
+          "chapter_number": 6,
+          "source_label": "dock_ledger_shelf",
+          "body_sha256": "40e2734e76865b70512f2259848fbbd7de5d366e86fb106dc97f554873892c73"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "direct_with_same_entity_distractor",
+      "core_fact_key": "v8-opal_nursery-control-6",
+      "claim_shape": "v8-supported-control-with-distractor-opal_nursery-6",
+      "decision_signature": "v8|control|same_entity_distractor|opal_nursery|6",
+      "proper_nouns": [
+        "Rhea Mott",
+        "Cian Dusk",
+        "Lantern Ward",
+        "Moss Dock"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-opal-nursery-insufficient-7",
+      "corpus_key": "opal_nursery",
+      "seed_key": "opal_nursery",
+      "target_draft": "The nursery recorded thirty surviving seedlings.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "pending_count",
+          "body_sha256": "3606e87d7cca8e19f6fd8a6d30d698561adba2b9e729d58c8b92f285d8ad188d"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "opal_nursery",
+          "chapter_number": 7,
+          "source_label": "pending_count",
+          "body_sha256": "3606e87d7cca8e19f6fd8a6d30d698561adba2b9e729d58c8b92f285d8ad188d"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence",
+        "blank_outcome"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "blank_outcome",
+      "core_fact_key": "v8-opal_nursery-unknown-blank_outcome",
+      "claim_shape": "v8-insufficient-blank_outcome-opal_nursery",
+      "decision_signature": "v8|insufficient|blank_outcome|opal_nursery|7",
+      "proper_nouns": [
+        "Rhea Mott",
+        "Cian Dusk",
+        "Lantern Ward",
+        "Moss Dock"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v8-opal-nursery-insufficient-8",
+      "corpus_key": "opal_nursery",
+      "seed_key": "opal_nursery",
+      "target_draft": "Rhea Mott sent the parcel to Moss Dock.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "unidentified_parcel",
+          "body_sha256": "43ce8828bd94dffc10c8e29b2be94e63439415d2679dfa9aa03e472baed37d71"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "opal_nursery",
+          "chapter_number": 8,
+          "source_label": "unidentified_parcel",
+          "body_sha256": "43ce8828bd94dffc10c8e29b2be94e63439415d2679dfa9aa03e472baed37d71"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence",
+        "unconfirmed_identity"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "unconfirmed_identity",
+      "core_fact_key": "v8-opal_nursery-unknown-unconfirmed_identity",
+      "claim_shape": "v8-insufficient-unconfirmed_identity-opal_nursery",
+      "decision_signature": "v8|insufficient|unconfirmed_identity|opal_nursery|8",
+      "proper_nouns": [
+        "Rhea Mott",
+        "Cian Dusk",
+        "Lantern Ward",
+        "Moss Dock"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    }
+  ]
+}

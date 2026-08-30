@@ -1,0 +1,57 @@
+{
+  "evaluation": "scc-web-demo-eval-v5-first-formal",
+  "bad_cases": [
+    {
+      "case_id": "eval-v5-ember-conflict-prism-silver",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "rationale": "Recorded retrieval hit and cited Evidence resolvability do not explain the decision or category mismatch.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 1,
+        "resolvable_evidence_count": 1
+      }
+    },
+    {
+      "case_id": "eval-v5-ember-insufficient-box-mover",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "root_cause": "provider_generation",
+      "rationale": "Recorded retrieval hit and cited Evidence resolvability do not explain the decision or category mismatch.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-reed-conflict-solo-gate-authority",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "rationale": "Recorded retrieval hit and cited Evidence resolvability do not explain the decision or category mismatch.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 1,
+        "resolvable_evidence_count": 1
+      }
+    },
+    {
+      "case_id": "eval-v5-marsh-insufficient-horn-outcome",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "conflict",
+      "root_cause": "provider_generation",
+      "rationale": "Recorded retrieval hit and cited Evidence resolvability do not explain the decision or category mismatch.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 1,
+        "resolvable_evidence_count": 1
+      }
+    }
+  ]
+}

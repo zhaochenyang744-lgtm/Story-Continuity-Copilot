@@ -17,12 +17,22 @@ import type {
   Chapter,
   Draft,
   Issue,
+  MemoryCoverage,
+  MemoryDelta,
+  MemoryInitialization,
   Memory,
   Project,
   ProjectSummary,
   Run,
+  SourceChangeSet,
   User,
 } from "../model";
+
+// The optional catch-all page remounts its client tree between route segments.
+// Keep the browser-owned session bootstrap for the lifetime of this module so
+// ordinary in-app navigation does not turn into another authentication check.
+let bootstrappedUser: User | null | undefined;
+let sessionBootstrap: Promise<User | null> | null = null;
 
 type Home = {
   continue_work?: {
@@ -45,6 +55,7 @@ type Home = {
     high: number;
     medium: number;
     low: number;
+    continuity_status: "unchecked" | "checked_clear" | "pending";
   }[];
 };
 type ImportPreview = {
@@ -97,12 +108,39 @@ const statusLabel = (s?: string): string =>
   )[s ?? ""] ??
   s ??
   "—";
+const memoryTypeLabel = (value: string) =>
+  ({
+    static_canon: "固定设定",
+    dynamic_state: "当前状态",
+    event_timeline: "事件时间线",
+    character_knowledge: "角色所知",
+    open_thread: "未解线索",
+  })[value] ?? value;
+const reviewStatusLabel = (value: string) =>
+  value === "author_confirmed" ? "作者已确认" : value;
+const categoryLabel = (value: string) =>
+  ({
+    attribute: "属性事实",
+    location_action: "位置与动作",
+    timeline: "时间线",
+    character_knowledge: "角色所知",
+    object_state: "物件状态",
+    relationship: "角色关系",
+    world_rule: "世界规则",
+    event_status: "事件进展",
+  })[value] ?? value;
+const predicateLabel = (value: unknown) =>
+  ({ holder: "持有人 / 存放状态", status: "状态", next_action: "下一步行动" })[
+    String(value)
+  ] ?? String(value);
 function Button({
   children,
   className = "secondary",
   disabled,
   ariaPressed,
   ariaCurrent,
+  ariaBusy,
+  ariaLabel,
   onClick,
   type = "button",
 }: {
@@ -111,6 +149,8 @@ function Button({
   disabled?: boolean;
   ariaPressed?: boolean;
   ariaCurrent?: "page";
+  ariaBusy?: boolean;
+  ariaLabel?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "button" | "submit";
 }) {
@@ -122,6 +162,8 @@ function Button({
       aria-disabled={disabled || undefined}
       aria-pressed={ariaPressed}
       aria-current={ariaCurrent}
+      aria-busy={ariaBusy || undefined}
+      aria-label={ariaLabel}
       onClick={onClick}
     >
       {children}
@@ -154,8 +196,8 @@ function Icon({ name }: { name: "home" | "library" | "overview" | "outline" | "u
 export function Workbench() {
   const router = useRouter(),
     pathname = usePathname();
-  const [user, setUser] = useState<User | null>(null),
-    [ready, setReady] = useState(false),
+  const [user, setUser] = useState<User | null>(() => bootstrappedUser ?? null),
+    [ready, setReady] = useState(() => bootstrappedUser !== undefined),
     [home, setHome] = useState<Home | null>(null),
     [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [project, setProject] = useState<Project | null>(null),
@@ -163,7 +205,10 @@ export function Workbench() {
     [memories, setMemories] = useState<Memory[]>([]),
     [draft, setDraft] = useState<Draft | null>(null),
     [saved, setSaved] = useState<Draft | null>(null),
-    [run, setRun] = useState<Run | null>(null);
+    [run, setRun] = useState<Run | null>(null),
+    [initialization, setInitialization] = useState<MemoryInitialization | null>(null),
+    [memoryDelta, setMemoryDelta] = useState<MemoryDelta | null>(null),
+    [coverage, setCoverage] = useState<MemoryCoverage | null>(null);
   const [outline, setOutline] = useState<{
       chapter_nodes?: {
         id: string;
@@ -205,7 +250,8 @@ export function Workbench() {
     [q, setQ] = useState(""),
     [filter, setFilter] = useState(""),
     [sort, setSort] = useState("updated_desc"),
-    [onlyIssues, setOnlyIssues] = useState(false);
+    [onlyIssues, setOnlyIssues] = useState(false),
+    [small, setSmall] = useState(false);
   const epoch = useRef(0),
     activeProjectRequest = useRef<AbortController | null>(null),
     trigger = useRef<HTMLElement | null>(null),
@@ -217,20 +263,31 @@ export function Workbench() {
       ? parts[1]
       : null;
   const tab = parts[2] ?? "overview";
-  const small = typeof window !== "undefined" && window.innerWidth < 1024,
-    readOnly = small || project?.status === "archived",
+  useEffect(() => {
+    const update = () => setSmall(window.innerWidth < 1024);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  const readOnly = small || project?.status === "archived",
     dirty = Boolean(
       draft &&
       saved &&
       (draft.title !== saved.title || draft.body !== saved.body),
     );
   function clear() {
+    activeProjectRequest.current?.abort();
+    activeProjectRequest.current = null;
+    epoch.current += 1;
     setProject(null);
     setChapters([]);
     setMemories([]);
     setDraft(null);
     setSaved(null);
     setRun(null);
+    setInitialization(null);
+    setMemoryDelta(null);
+    setCoverage(null);
     setOutline(null);
     setCharacters([]);
     setWorld([]);
@@ -271,6 +328,7 @@ export function Workbench() {
       setError(cause);
       setNotice("");
       if ((cause as ApiFailure).code === "authentication_required") {
+        bootstrappedUser = null;
         setUser(null);
         clear();
         router.replace("/login");
@@ -300,17 +358,16 @@ export function Workbench() {
   }, [q, filter, onlyIssues, sort, fail]);
   const loadProject = useCallback(
     async (id: string) => {
-      activeProjectRequest.current?.abort();
+      clear();
       const n = ++epoch.current,
         controller = new AbortController();
       activeProjectRequest.current = controller;
-      clear();
       setBusy("正在读取作品");
       try {
         const p = await request<Project>(`/projects/${id}`, {
           signal: controller.signal,
         });
-        const [c, m, d, o, chars, w] = await Promise.all([
+        const [c, m, d, o, chars, w, initialized, memoryCoverage, delta] = await Promise.all([
           request<{ chapters: Chapter[] }>(
             `/projects/${id}/chapters?include=excerpt`,
             { signal: controller.signal },
@@ -330,6 +387,19 @@ export function Workbench() {
           request<{ entries: [] }>(`/projects/${id}/world`, {
             signal: controller.signal,
           }),
+          p.data_origin === "user_import"
+            ? request<MemoryInitialization>(`/projects/${id}/memory/initialization`, {
+                signal: controller.signal,
+              })
+            : Promise.resolve(null),
+          p.data_origin === "user_import"
+            ? request<MemoryCoverage>(`/projects/${id}/memory/coverage`, {
+                signal: controller.signal,
+              })
+            : Promise.resolve(null),
+          p.data_origin === "user_import"
+            ? request<MemoryDelta>(`/projects/${id}/memory/delta`, { signal: controller.signal })
+            : Promise.resolve(null),
         ]);
         if (n !== epoch.current) return;
         setProject(p);
@@ -340,6 +410,9 @@ export function Workbench() {
         setOutline(o as never);
         setCharacters(chars.characters as never);
         setWorld(w.entries as never);
+        setInitialization(initialized);
+        setMemoryDelta(delta);
+        setCoverage(memoryCoverage);
         if (p.latest_run) {
           const latest = await request<Run>(
             `/projects/${id}/checks/${p.latest_run.run_id}?include=issues,evidence,metrics`,
@@ -356,17 +429,29 @@ export function Workbench() {
     [fail],
   );
   useEffect(() => {
-    if (["/login", "/register"].includes(pathname)) {
-      const timer = window.setTimeout(() => setReady(true), 0);
-      return () => window.clearTimeout(timer);
-    }
-    request<{ user: User }>("/auth/session")
-      .then((x) => setUser(x.user))
-      .catch((e) => {
-        if ((e as ApiFailure).code !== "authentication_required") fail(e);
-      })
+    if (bootstrappedUser !== undefined) return;
+    const bootstrap =
+      sessionBootstrap ??
+      (sessionBootstrap = request<{ user: User | null }>("/auth/session?optional=true")
+        .then((x) => {
+          bootstrappedUser = x.user;
+          return x.user;
+        })
+        .catch((e) => {
+          if ((e as ApiFailure).code === "authentication_required") {
+            bootstrappedUser = null;
+            return null;
+          }
+          throw e;
+        })
+        .finally(() => {
+          sessionBootstrap = null;
+        }));
+    bootstrap
+      .then((nextUser) => setUser(nextUser))
+      .catch(fail)
       .finally(() => setReady(true));
-  }, [fail, pathname]);
+  }, [fail]);
   useEffect(() => {
     if (!ready) return;
     const auth = ["/login", "/register"].includes(pathname);
@@ -422,6 +507,8 @@ export function Workbench() {
   ) => {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
+    setError(null);
+    setNotice("");
     setBusy(kind === "login" ? "正在登录" : "正在创建本地账号");
     try {
       const body =
@@ -437,6 +524,7 @@ export function Workbench() {
             };
       const data = await json<{ user: User }>(`/auth/${kind}`, "POST", body);
       startTransition(() => {
+        bootstrappedUser = data.user;
         setUser(data.user);
         router.replace("/");
       });
@@ -451,6 +539,7 @@ export function Workbench() {
       await request("/auth/logout", { method: "POST" });
       startTransition(() => {
         clear();
+        bootstrappedUser = null;
         setUser(null);
         router.replace("/login");
       });
@@ -601,11 +690,20 @@ export function Workbench() {
     try {
       const form = new FormData(event.currentTarget);
       const accepted_item_ids = changeSet.items
-          .filter((i) => String(form.get(i.id)) === "accepted")
+          .filter((i) => ["accepted", "edited"].includes(String(form.get(i.id))))
           .map((i) => i.id),
         rejected_item_ids = changeSet.items
           .filter((i) => String(form.get(i.id)) === "rejected")
           .map((i) => i.id);
+      const edited_items = changeSet.items
+        .filter((i) => String(form.get(i.id)) === "edited")
+        .map((i) => ({
+          item_id: i.id,
+          memory_type: String(form.get(`edit:${i.id}:memory_type`)),
+          subject: String(form.get(`edit:${i.id}:subject`)),
+          predicate: String(form.get(`edit:${i.id}:predicate`)),
+          value: String(form.get(`edit:${i.id}:value`)),
+        }));
       if (accepted_item_ids.length + rejected_item_ids.length !== changeSet.items.length) throw Object.assign(new Error("invalid selection"), { code: "invalid_item_selection", retryable: false });
       const result = await json<{
         status: string;
@@ -617,6 +715,7 @@ export function Workbench() {
           confirm: true,
           accepted_item_ids,
           rejected_item_ids,
+          edited_items,
           note: "作者在 Workspace 审核",
         },
       );
@@ -638,6 +737,141 @@ export function Workbench() {
     } finally {
       setBusy("");
     }
+  };
+  const startMemoryInitialization = async () => {
+    if (!projectId || readOnly) return;
+    setBusy("正在生成 Story Memory 候选");
+    try {
+      await json<{ initialization: Pick<MemoryInitialization, "id" | "project_id" | "status" | "source_revision"> }>(
+        `/projects/${projectId}/memory/initializations?view=compact`,
+        "POST",
+        { source_revision: 1 },
+      );
+      const initialized = await request<MemoryInitialization>(`/projects/${projectId}/memory/initialization`);
+      setInitialization(initialized);
+      setCoverage(initialized.coverage ?? null);
+      setProject((current) =>
+        current ? { ...current, memory_initialization_status: "in_review" } : current,
+      );
+      setNotice("候选已生成，尚未写入 Story Memory。请逐项审核原文与 SourceSpan。");
+    } catch (cause) {
+      fail(cause);
+    } finally {
+      setBusy("");
+    }
+  };
+  const submitMemoryInitialization = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!projectId || !initialization?.id || readOnly) return;
+    const form = new FormData(event.currentTarget);
+    const selectedDecisions = new Map(
+      Array.from(
+        event.currentTarget.querySelectorAll<HTMLInputElement>(
+          'input[data-memory-candidate-id]:checked',
+        ),
+      ).map((input) => [input.dataset.memoryCandidateId!, input.value]),
+    );
+    const undecided = initialization.candidates.filter((candidate) => candidate.decision_status === "pending");
+    const coreUndecided = undecided.filter((candidate) => candidate.review_priority === "core");
+    if (coreUndecided.some((candidate) => !selectedDecisions.get(candidate.id))) {
+      const failure = new Error("请先决定所有核心候选") as ApiFailure;
+      failure.code = "invalid_candidate_decision";
+      failure.retryable = false;
+      fail(failure);
+      return;
+    }
+    if (undecided.some((candidate) => selectedDecisions.get(candidate.id) === "edited" && form.get(`memory-init:${candidate.id}:evidence-confirmed`) !== "confirmed")) {
+      const failure = new Error("请确认编辑后的 Evidence") as ApiFailure;
+      failure.code = "evidence_confirmation_required";
+      failure.retryable = false;
+      fail(failure);
+      return;
+    }
+    setBusy("正在记录作者审核并建立 Memory V1");
+    try {
+      for (const candidate of undecided.filter((candidate) => selectedDecisions.has(candidate.id))) {
+        const decision = selectedDecisions.get(candidate.id)!;
+        const after =
+          decision === "edited"
+            ? {
+                memory_type: String(form.get(`memory-init:${candidate.id}:memory_type`)),
+                subject: String(form.get(`memory-init:${candidate.id}:subject`)),
+                predicate: String(form.get(`memory-init:${candidate.id}:predicate`)),
+                value: String(form.get(`memory-init:${candidate.id}:value`)),
+              }
+            : undefined;
+        await json<{ candidate_id: string; decision_status: string }>(
+          `/projects/${projectId}/memory/initializations/${initialization.id}/candidates/${candidate.id}/decision?view=compact`,
+          "POST",
+          { decision, ...(after ? { after, evidence_span_id: candidate.source.span_id } : {}) },
+        );
+      }
+      const reviewedInitialization = await request<MemoryInitialization>(`/projects/${projectId}/memory/initialization`);
+      setInitialization(reviewedInitialization);
+      setCoverage(reviewedInitialization.coverage ?? null);
+      const committed = await json<{
+        initialization: Pick<MemoryInitialization, "id" | "project_id" | "status" | "source_revision">;
+        memory_version: number;
+        coverage?: MemoryCoverage;
+      }>(
+        `/projects/${projectId}/memory/initializations/${initialization.id}/commit?view=compact`,
+        "POST",
+        { confirm: true },
+      );
+      const refreshedInitialization = await request<MemoryInitialization>(`/projects/${projectId}/memory/initialization`);
+      setInitialization(refreshedInitialization);
+      setCoverage(committed.coverage ?? refreshedInitialization.coverage ?? null);
+      setMemories(
+        (await request<{ records: Memory[] }>(`/projects/${projectId}/memory`)).records,
+      );
+      setProject((current) =>
+        current
+          ? {
+              ...current,
+              current_memory_version: committed.memory_version,
+              memory_initialization_status: refreshedInitialization.status === "committed" ? "completed" : "in_review",
+            }
+          : current,
+      );
+      setNotice(
+        refreshedInitialization.status === "committed"
+          ? committed.coverage?.status === "ready_partial"
+            ? "核心候选已确认；辅助候选仍待审，不会进入 canon。现在可以安全开始首次检查。"
+            : "Memory V1 已由作者审核后建立；现在可以运行首次检查。"
+          : "核心候选未形成已确认事实；首次检查仍会安全返回上下文不足。",
+      );
+    } catch (cause) {
+      fail(cause);
+    } finally {
+      setBusy("");
+    }
+  };
+  const startIncrementalReview = async () => {
+    if (!projectId || !project || readOnly) return;
+    setBusy("正在运行增量检查与 Memory Delta");
+    try {
+      const result = await json<{ delta: MemoryDelta }>(`/projects/${projectId}/incremental-reviews`, "POST", { source_revision: project.source_revision });
+      const latest = await request<MemoryDelta>(`/projects/${projectId}/memory/delta`);
+      setMemoryDelta(latest); setCoverage(latest.coverage ?? result.delta.coverage ?? null);
+      if (latest.continuity_run_id) setRun(await request<Run>(`/projects/${projectId}/checks/${latest.continuity_run_id}?include=issues,evidence,metrics`));
+      setNotice("增量 Issues 与 Memory Delta 已分开生成；候选尚未成为 canon。");
+    } catch (cause) { fail(cause); } finally { setBusy(""); }
+  };
+  const submitMemoryDelta = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); if (!projectId || !memoryDelta?.id || readOnly) return;
+    const form = new FormData(event.currentTarget); const pending = memoryDelta.candidates.filter((x) => x.decision_status === "pending");
+    if (pending.filter((x) => x.review_priority === "core").some((x) => !form.get(`memory-delta:${x.id}`))) { fail(Object.assign(new Error("请先决定所有核心候选"), { code: "unresolved_required_decisions" })); return; }
+    setBusy("正在提交增量 Memory 审核");
+    try {
+      for (const candidate of pending.filter((x) => form.get(`memory-delta:${x.id}`))) {
+        const decision = String(form.get(`memory-delta:${candidate.id}`));
+        const after = decision === "edited" ? { memory_type:String(form.get(`memory-delta:${candidate.id}:memory_type`)), subject:String(form.get(`memory-delta:${candidate.id}:subject`)), predicate:String(form.get(`memory-delta:${candidate.id}:predicate`)), value:String(form.get(`memory-delta:${candidate.id}:value`)) } : undefined;
+        await json(`/projects/${projectId}/memory/deltas/${memoryDelta.id}/candidates/${candidate.id}/decision`, "POST", { decision, ...(after ? { after, evidence_span_id:candidate.source.span_id } : {}) });
+      }
+      const committed = await json<{ delta: MemoryDelta; memory_version:number }>(`/projects/${projectId}/memory/deltas/${memoryDelta.id}/commit`, "POST", { confirm:true });
+      setMemoryDelta(committed.delta); setCoverage(committed.delta.coverage ?? null); setMemories((await request<{records:Memory[]}>(`/projects/${projectId}/memory`)).records); setProject((current) => current ? {...current,current_memory_version:committed.memory_version} : current);
+      setNotice(committed.memory_version > (memoryDelta.base_memory_version ?? 0) ? `Memory V${committed.memory_version} 已建立。` : "增量核心候选全部拒绝；已覆盖来源但 Memory 版本未变。");
+    } catch (cause) { fail(cause); } finally { setBusy(""); }
   };
   const reset = async () => {
     if (!projectId) return;
@@ -767,7 +1001,11 @@ export function Workbench() {
         busy={busy}
         error={error}
         submit={submitAuth}
-        go={(h) => router.push(h)}
+        go={(h) => {
+          setError(null);
+          setNotice("");
+          router.push(h);
+        }}
       />
     );
   else if (!projectId)
@@ -827,6 +1065,9 @@ export function Workbench() {
         characters={characters}
         world={world}
         memories={memories}
+        initialization={initialization}
+        memoryDelta={memoryDelta}
+        coverage={coverage}
         draft={draft}
         saved={saved}
         run={run}
@@ -844,6 +1085,10 @@ export function Workbench() {
         }}
         review={review}
         commit={commit}
+        startMemoryInitialization={startMemoryInitialization}
+        submitMemoryInitialization={submitMemoryInitialization}
+        startIncrementalReview={startIncrementalReview}
+        submitMemoryDelta={submitMemoryDelta}
         reset={() => setResetOpen(true)}
         meta={() => setMetaOpen(true)}
         archive={() => setArchiveOpen(true)}
@@ -919,7 +1164,7 @@ export function Workbench() {
         <aside className="project-nav" aria-label="当前作品">
           <Button className="project-switch" onClick={() => go("/projects")}>
             <span>
-              <small>当前作品</small>
+              <small>更换当前作品</small>
               <strong>{project.title}</strong>
             </span>
             <span className="project-switch-mark" aria-hidden="true">⌄</span>
@@ -971,7 +1216,7 @@ export function Workbench() {
               : "浏览只读：小于 1024px 可阅读资料与证据；作者操作仅在桌面可用。"}
           </p>
         )}
-        {(notice || Boolean(error)) && (
+        {(!["/login", "/register"].includes(pathname) && (notice || Boolean(error))) && (
           <div
             className={error ? "feedback error" : "feedback"}
             role={error ? "alert" : "status"}
@@ -1040,15 +1285,17 @@ export function Workbench() {
         </Dialog>
       )}
       {resetOpen && project && (
-        <Dialog title="确认项目级 Reset" close={() => setResetOpen(false)}>
+        <Dialog title="恢复当前作品" close={() => setResetOpen(false)}>
           <p>
-            将恢复《{project.title}》。
+            将把《{project.title}》恢复到
             {project.data_origin === "user_import"
-              ? "保留已确认导入的 Chapter 和 SourceSpan；清除后续 Run、Issue、Decision、ChangeSet，并恢复空 Memory V1 与下一章草稿 r1。"
+              ? "刚导入完成时的状态：保留已确认导入的章节和原文来源，恢复空的第一版 Story Memory 与下一章初始草稿。"
               : project.data_origin === "demo_seed"
-                ? "恢复此预置作品的独立 seed、Memory 与草稿；不会改变其他作品或其他账户。"
-                : "恢复空 Outline、角色、世界观、Memory V1 与草稿 r1；不会改变其他作品。"}
+                ? "预置演示状态：恢复章节、已确认事实、初始草稿，以及可直接审阅的演示检查结果。"
+                : "刚创建时的空白状态，包括空资料、第一版 Story Memory 与初始草稿。"}
           </p>
+          <p>当前内容会被覆盖；本作品的连续性检查、问题、作者决定和尚未提交的候选变更都会被清除。其他作品和其他账户不受影响。</p>
+          <p><strong>恢复后无法撤销。</strong></p>
           <div className="actions">
             <Button
               className="primary"
@@ -1148,19 +1395,31 @@ function Auth({
   ) => Promise<void>;
   go: (href: string) => void;
 }) {
+  const accountInput = useRef<HTMLInputElement | null>(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const errorId = "auth-error";
+  const hasError = Boolean(error);
+  const authErrorLabel =
+    (error as ApiFailure | null)?.code === "authentication_required"
+      ? "会话已失效，请重新登录。"
+      : labelError(error);
+  useEffect(() => {
+    if (hasError) {
+      accountInput.current?.focus();
+      return;
+    }
+    if (window.innerWidth > 760) accountInput.current?.focus();
+  }, [hasError, register]);
   return (
     <section className="auth-layout">
       <section className="auth">
         <div className="auth-brand" aria-label="Story Continuity">
           <span className="brand-mark" aria-hidden="true" />
           <span aria-label="Story Continuity">
-            Story
-            <br />
-            Continuity
+            Story Continuity
           </span>
         </div>
         <div className="auth-heading">
-          <p className="eyebrow">AUTHOR WORKBENCH</p>
           <h1>{register ? "创建账号" : "登录"}</h1>
           <p className="auth-lede">{register ? "创建本地账号，开始管理你的作品。" : "继续你的作品与连续性工作。"}</p>
         </div>
@@ -1168,10 +1427,13 @@ function Auth({
           <label>
             账号
             <input
+              ref={accountInput}
               name="account_name"
               autoComplete="username"
               required
-              minLength={3}
+              minLength={register ? 3 : undefined}
+              aria-invalid={hasError || undefined}
+              aria-describedby={hasError ? errorId : undefined}
             />
           </label>
           {register && (
@@ -1184,23 +1446,39 @@ function Auth({
             密码
             <input
               name="password"
-              type="password"
+              type={passwordVisible ? "text" : "password"}
               autoComplete={register ? "new-password" : "current-password"}
               required
-              minLength={10}
+              minLength={register ? 10 : undefined}
+              aria-invalid={hasError || undefined}
+              aria-describedby={hasError ? errorId : undefined}
             />
           </label>
-          {Boolean(error) && (
-            <p className="inline-error" role="alert">
-              {labelError(error)}
-            </p>
-          )}
+          <Button
+            className="quiet auth-password-toggle"
+            ariaPressed={passwordVisible}
+            ariaLabel="切换口令可见性"
+            onClick={() => setPasswordVisible((visible) => !visible)}
+            disabled={Boolean(busy)}
+          >
+            {passwordVisible ? "隐藏密码" : "显示密码"}
+          </Button>
+          {register && <p className="auth-rules">账号至少 3 个字符，密码至少 10 个字符。</p>}
+          <p className="auth-recovery-note">测试阶段暂不支持找回密码，请妥善保管。</p>
+          <div className="auth-error-slot">
+            {hasError && (
+              <p id={errorId} className="inline-error" role="alert">
+                {authErrorLabel}
+              </p>
+            )}
+          </div>
           <div className="auth-actions">
-            <Button className="primary" type="submit" disabled={Boolean(busy)}>
-              {busy || (register ? "创建本地账号" : "登录")}
+            <Button className="primary" type="submit" disabled={Boolean(busy)} ariaBusy={Boolean(busy)}>
+              <span>{register ? "创建本地账号" : "登录"}</span>
+              <span className="auth-button-spinner" aria-hidden="true" data-active={Boolean(busy)} />
             </Button>
-            <Button className="quiet" onClick={() => go(register ? "/login" : "/register")}>
-              {register ? "前往登录" : "前往注册"}
+            <Button className="quiet" disabled={Boolean(busy)} onClick={() => go(register ? "/login" : "/register")}>
+              {register ? "已有账号？返回登录" : "还没有账号？创建本地账号"}
             </Button>
           </div>
         </form>
@@ -1272,7 +1550,7 @@ function HomePage({
           <ul className="home-issue-list">
             {home!.pending_continuity.map((x) => {
               const total = x.high + x.medium + x.low;
-              const tone = x.high ? "high" : x.medium ? "medium" : "low";
+              const tone = x.continuity_status === "unchecked" ? "unchecked" : x.high ? "high" : x.medium ? "medium" : "low";
               return (
                 <li key={x.project_id}>
                   <button onClick={() => open(x.project_id)}>
@@ -1283,8 +1561,8 @@ function HomePage({
                       </small>
                     </span>
                     <b className={`risk ${tone}`}>
-                      <I>{tone === "high" ? "▲" : tone === "medium" ? "●" : "✓"}</I>
-                      {total} 项待处理
+                      <I>{tone === "high" ? "▲" : tone === "medium" ? "●" : tone === "unchecked" ? "○" : "✓"}</I>
+                      {x.continuity_status === "unchecked" ? "尚未检查" : x.continuity_status === "checked_clear" ? "已检查 · 0 项待处理" : `${total} 项待处理`}
                     </b>
                   </button>
                 </li>
@@ -1292,7 +1570,7 @@ function HomePage({
             })}
           </ul>
         ) : (
-          <div className="empty">当前没有待处理的连续性问题。</div>
+          <div className="empty">当前没有作品。</div>
         )}
       </section>
     </section>
@@ -1301,18 +1579,20 @@ function HomePage({
 function Rows({
   rows,
   open,
+  append,
 }: {
   rows: Array<
     Pick<ProjectSummary, "title" | "status"> &
       Partial<
         Pick<
           ProjectSummary,
-          "genre" | "summary" | "current_memory_version" | "open_issue_count"
+          "genre" | "summary" | "current_memory_version" | "open_issue_count" | "continuity_status"
         >
       > &
       Partial<Pick<ProjectSummary, "id">> & { project_id?: string }
   >;
   open: (id: string) => void;
+  append?: (id: string) => void;
 }) {
   return rows.length ? (
     <>
@@ -1357,9 +1637,16 @@ function Rows({
                     ? "●"
                     : "✓"}
               </I>
-              {p.open_issue_count ?? 0} 项待处理
+              {p.continuity_status === "unchecked"
+                ? "尚未检查"
+                : p.continuity_status === "checked_clear"
+                  ? "已检查 · 0 项待处理"
+                  : `${p.open_issue_count ?? 0} 项待处理`}
             </span>
-            <Button className="quiet project-open" onClick={() => open(projectId)}>打开</Button>
+            <div className="actions">
+              <Button className="quiet project-open" onClick={() => open(projectId)}>打开</Button>
+              {append && p.status !== "archived" && <Button className="quiet" onClick={() => append(projectId)}>追加章节</Button>}
+            </div>
           </li>
         );
       })}
@@ -1448,7 +1735,7 @@ function Projects({
           清除条件
         </Button>
       </div>
-      <Rows rows={rows} open={open} />
+      <Rows rows={rows} open={open} append={(id) => go(`/projects/${id}/sources`)} />
     </section>
   );
 }
@@ -1728,6 +2015,9 @@ function ProjectPage(p: {
   }[];
   world: { id: string; entry_type: string; name: string; summary: string }[];
   memories: Memory[];
+  initialization: MemoryInitialization | null;
+  memoryDelta: MemoryDelta | null;
+  coverage: MemoryCoverage | null;
   draft: Draft | null;
   saved: Draft | null;
   run: Run | null;
@@ -1742,6 +2032,10 @@ function ProjectPage(p: {
   select: (i: Issue, el: HTMLElement) => void;
   review: () => Promise<void>;
   commit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
+  startMemoryInitialization: () => Promise<void>;
+  submitMemoryInitialization: (event: FormEvent<HTMLFormElement>) => Promise<void>;
+  startIncrementalReview: () => Promise<void>;
+  submitMemoryDelta: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   reset: () => void;
   meta: () => void;
   archive: () => void;
@@ -1787,8 +2081,11 @@ function ProjectPage(p: {
           <section className="overview-panel memory-panel" aria-label="Story Memory">
             <p className="eyebrow">STORY MEMORY</p>
             <h2>Memory V{p.project.current_memory_version}</h2>
+            <p className="term-help">Story Memory 是作者确认、供后续连续性检查使用的事实集合；版本号代表一次明确提交后的完整快照。</p>
             <dl className="overview-kv">
-              <div><dt>待处理</dt><dd>{p.project.open_issue_count ?? 0} 项</dd></div>
+              <div><dt>当前来源</dt><dd>Source r{p.project.source_revision ?? "—"}</dd></div>
+              <div><dt>Memory coverage</dt><dd>{p.coverage?.status ?? "尚未提供"}</dd></div>
+              <div><dt>检查状态</dt><dd>{p.project.continuity_status === "unchecked" ? "尚未检查" : p.project.continuity_status === "checked_clear" ? "已检查 · 0 项待处理" : `${p.project.open_issue_count ?? 0} 项待处理`}</dd></div>
               <div><dt>最近 Run</dt><dd>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚无"}</dd></div>
             </dl>
           </section>
@@ -1812,15 +2109,30 @@ function ProjectPage(p: {
           <h2>最近检查</h2>
           <div className="latest-run-row">
             <div>
-              <strong>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚无 Run"}</strong>
-              <span>{p.project.latest_run ? `Run ${p.project.latest_run.run_id}` : "保存草稿后可运行连续性检查。"}</span>
+              <strong>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚未检查"}</strong>
+              <span>{p.project.latest_run ? (p.project.latest_run.result_origin === "demo_preset" ? "预置演示审阅数据 · 未调用 Provider" : `检查记录 ${p.project.latest_run.run_id}`) : "保存草稿后可运行连续性检查。"}</span>
             </div>
             <Button className="secondary" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>打开审阅</Button>
           </div>
         </section>
         {p.project.data_origin === "user_import" && (
           <section className="warning import-context">
-            <I>!</I>导入作品尚待作者确认 Story Memory；初始化前检查会安全返回 insufficient_project_context。
+            <I>!</I>
+            {p.project.memory_initialization_status === "completed"
+              ? "导入来源已由作者确认并建立 Memory V1。"
+              : p.initialization?.status === "draft"
+                ? "Story Memory 候选正在等待逐项作者审核；候选不会自动成为 canon。"
+                : "导入作品尚待作者确认 Story Memory；初始化前检查会安全返回 insufficient_project_context。"}
+            {p.initialization?.status === "required" && (
+              <Button className="primary" disabled={blocked} onClick={() => void p.startMemoryInitialization()}>
+                初始化 Story Memory
+              </Button>
+            )}
+            {p.initialization?.status === "draft" && (
+              <Button className="secondary" disabled={blocked} onClick={() => p.go(`/projects/${p.project.id}/memory`)}>
+                审核候选与 Evidence
+              </Button>
+            )}
           </section>
         )}
       </section>
@@ -1888,23 +2200,39 @@ function ProjectPage(p: {
           <div>
             <p className="breadcrumb">项目 / {p.project.title} / Story Memory</p>
             <h1>Story Memory</h1>
-            <p>Memory V{p.project.current_memory_version}</p>
+            <p>Memory V{p.project.current_memory_version} · 每个版本都是作者明确提交后的完整事实快照。</p>
           </div>
         </header>
-        {p.memories.length ? (
+        {p.memoryDelta?.coverage_audit && (
+          <section className="notice" aria-label="增量来源覆盖审计">
+            <strong>来源覆盖审计：{p.memoryDelta.coverage_audit.status}</strong>
+            <p>Audit {p.memoryDelta.coverage_audit.id} · source r{p.memoryDelta.coverage_audit.source_revision} · {p.memoryDelta.coverage_audit.details.candidate_ids?.length ?? 0} 个候选均保留决定与 Evidence 谱系。</p>
+          </section>
+        )}
+        {p.memoryDelta && p.memoryDelta.status !== "not_started" && p.memoryDelta.status !== "covered" ? (
+          <MemoryDeltaReview delta={p.memoryDelta} blocked={blocked} submit={p.submitMemoryDelta} />
+        ) : p.project.data_origin === "user_import" && p.initialization && (!p.memories.length || p.coverage?.status === "ready_partial") ? (
+          <MemoryInitializationReview
+            initialization={p.initialization}
+            coverage={p.coverage}
+            blocked={blocked}
+            start={p.startMemoryInitialization}
+            submit={p.submitMemoryInitialization}
+            goToCheck={() => p.go(`/projects/${p.project.id}/workspace`)}
+          />
+        ) : p.memories.length ? (
           <ul className="read-list">
             {p.memories.map((m) => (
               <li key={m.id}>
                 <strong>
-                  {m.subject} · {m.predicate}：{m.value}
+                  {m.subject} · {predicateLabel(m.predicate)}：{m.value}
                 </strong>
                 <span>
-                  {m.memory_type} · 有效范围 {m.valid_from ?? "—"}–
-                  {m.valid_to ?? "今"} · {m.review_status}
+                  {memoryTypeLabel(m.memory_type)} · 有效范围（适用章节）{m.valid_from ?? "未标明"}–
+                  {m.valid_to ?? "当前"} · {reviewStatusLabel(m.review_status)}
                 </span>
                 <small>
-                  来源：{m.source?.chapter_id ?? "不可用"}/
-                  {m.source?.span_id ?? "不可用"}
+                  来源：{m.source ? `第 ${m.source.chapter_number} 章《${m.source.chapter_title}》` : "不可用"}
                   {m.source
                     ? ` · ${m.source.excerpt}`
                     : "（来源不可解析，已安全显示）"}
@@ -1924,6 +2252,10 @@ function ProjectPage(p: {
         )}
       </section>
     );
+  if (p.tab === "sources")
+    return (
+      <SourceAppend project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} />
+    );
   return (
     <section className="project-page workspace-page">
       <header className="page-header project-page-header workspace-page-header">
@@ -1935,6 +2267,9 @@ function ProjectPage(p: {
         <div className="actions">
           <Button disabled={blocked} onClick={p.reset}>
             Reset 当前作品
+          </Button>
+          <Button disabled={blocked || !p.draft || dirty} onClick={() => p.go(`/projects/${p.project.id}/sources`)}>
+            完成当前章节
           </Button>
           {dirty || p.controlled ? (
             <Button
@@ -1962,6 +2297,15 @@ function ProjectPage(p: {
           <I>!</I>受控编辑：只接受 source r{p.run?.source_revision} → r
           {(p.run?.source_revision ?? 0) + 1}，保存后会提交 Accept & edit 决策。
         </p>
+      )}
+      {p.project.data_origin === "user_import" && p.project.memory_initialization_status !== "completed" && (
+        <p className="warning">
+          <I>!</I>先在 Story Memory 中完成初始化审核；空 Memory V1 不会启动连续性检查。
+          <Button className="quiet" onClick={() => p.go(`/projects/${p.project.id}/memory`)}>前往审核</Button>
+        </p>
+      )}
+      {p.coverage?.status === "update_pending" && (
+        <p className="warning"><I>!</I>Source r{p.project.source_revision} 已追加；仅新 SourceSpan 与已确认 Memory 会进入增量审阅。{p.memoryDelta?.status === "failed" ? "本次运行失败，未写入任何 Issue 或候选，可安全重试。" : <Button className="primary" disabled={blocked} onClick={() => void p.startIncrementalReview()}>运行增量检查</Button>}</p>
       )}
       <div className="workspace-grid">
         <section className="editor">
@@ -1998,13 +2342,13 @@ function ProjectPage(p: {
             )}
           </label>
           <footer className="run-bar">
-            <span>{p.run ? `${stage(p.run.stage)} · evidence ${p.run.status === "completed" ? "可用" : "处理中"}` : "尚未运行连续性检查"}</span>
+            <span>{p.run ? `${stage(p.run.stage)} · Evidence ${p.run.status === "completed" ? "可用" : "处理中"}` : "尚未运行连续性检查"}</span>
             <span>{p.draft ? `${new Blob([p.draft.body]).size.toLocaleString()} bytes` : "读取中"}</span>
           </footer>
         </section>
         <aside className="issues">
           <header className="issues-top">
-            <h2>待审阅问题 <span>{p.run?.issues?.length ?? 0}</span></h2>
+            <h2>Issues <span>{p.run?.issues?.length ?? 0}</span></h2>
             <span className="issues-filter" aria-hidden="true">⌘</span>
           </header>
           {p.run ? (
@@ -2012,6 +2356,7 @@ function ProjectPage(p: {
               <p className="run-meta" aria-label="连续性检查运行状态">
                 {stage(p.run.stage)} · source revision {p.run.source_revision} · {p.run.is_stale ? "已过期" : "当前版本"}
               </p>
+              {p.run.result_origin === "demo_preset" && <p className="preset-note" role="note"><strong>预置演示审阅数据</strong> · 用于本地体验完整审阅链路，本次未调用 Provider，也不代表模型实时判断。</p>}
               {p.run.status === "failed" && (
                 <p className="inline-error">
                   {labelError({ code: p.run.error_code })}
@@ -2031,7 +2376,7 @@ function ProjectPage(p: {
                         </I>
                         {statusLabel(x.severity)}
                       </span>
-                      <strong>{x.category}</strong>
+                    <strong>{categoryLabel(x.category)}</strong>
                       <span>{x.claim_text || x.explanation}</span>
                       <small>{x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "已决策" : "查看 Evidence"}</small>
                     </Button>
@@ -2065,6 +2410,9 @@ function ProjectPage(p: {
           )}
         </aside>
       </div>
+      {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
+        <section className="project-section" aria-label="Memory Delta"><h2>Memory Delta</h2><p>Delta Run 与 Continuity Run 分开持久化。pending 候选不进入 canon，也不进入 Provider 输入。</p><p>source r{p.memoryDelta.source_revision} · {p.memoryDelta.status} · 核心待审 {p.memoryDelta.coverage?.counts.core_pending ?? 0}</p><Button onClick={() => p.go(`/projects/${p.project.id}/memory`)}>打开 Delta 审核与 Evidence</Button></section>
+      )}
       {p.changeSet && (
         <form className="review" aria-label="Memory Update Review" onSubmit={(event) => void p.commit(event)}>
           <header>
@@ -2073,25 +2421,32 @@ function ProjectPage(p: {
               <h2>Memory Update Review</h2>
               <p>
                 base V{p.changeSet.base_memory_version} → target V
-                {p.changeSet.target_memory_version}；逐项决定后才会写入。
+                {p.changeSet.target_memory_version}；候选不会自动写入。逐项接受、拒绝或编辑，并由作者明确提交后，才会原子创建新版本。
               </p>
             </div>
           </header>
           {p.changeSet.items.map((x) => (
             <article key={x.id} className="diff">
               <div>
-                <strong>Before</strong>
-                <pre>{JSON.stringify(x.before, null, 2)}</pre>
+                <strong>更新前</strong>
+                <p>{x.before ? `${String(x.before.subject)} · ${predicateLabel(x.before.predicate)}：${String(x.before.value)}` : "新增事实（当前版本中没有此记录）"}</p>
               </div>
               <div>
-                <strong>After</strong>
-                <pre>{JSON.stringify(x.after, null, 2)}</pre>
+                <strong>候选内容</strong>
+                <p>{memoryTypeLabel(String(x.after.memory_type))} · {String(x.after.subject)} · {predicateLabel(x.after.predicate)}：{String(x.after.value)}</p>
               </div>
               <fieldset>
                 <legend>作者审核</legend>
                 <label><input type="radio" name={x.id} value="accepted" defaultChecked disabled={blocked} />接受（写入候选）</label>
                 <label><input type="radio" name={x.id} value="rejected" disabled={blocked} />拒绝（不写入）</label>
+                <label><input type="radio" name={x.id} value="edited" disabled={blocked} />编辑后接受</label>
               </fieldset>
+              <div className="candidate-edit" aria-label="编辑候选事实">
+                <label>事实类型<select name={`edit:${x.id}:memory_type`} defaultValue={String(x.after.memory_type)} disabled={blocked}>{["static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"].map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label>
+                <label>对象<input name={`edit:${x.id}:subject`} defaultValue={String(x.after.subject)} disabled={blocked} /></label>
+                <label>关系<input name={`edit:${x.id}:predicate`} defaultValue={String(x.after.predicate)} disabled={blocked} /></label>
+                <label>事实内容<textarea name={`edit:${x.id}:value`} defaultValue={String(x.after.value)} disabled={blocked} /></label>
+              </div>
             </article>
           ))}
           <Button
@@ -2106,6 +2461,130 @@ function ProjectPage(p: {
     </section>
   );
 }
+function MemoryDeltaReview({ delta, blocked, submit }: { delta: MemoryDelta; blocked: boolean; submit: (event: FormEvent<HTMLFormElement>) => Promise<void> }) {
+  if (delta.status === "processing") return <div className="empty" role="status">正在分别运行 Continuity 与 Memory Delta；失败时不会显示半结果。</div>;
+  if (delta.status === "failed") return <div className="notice error" role="alert">增量运行失败：{delta.error_code ?? "安全失败"}。没有写入 Issue、候选或 MemoryVersion，可重新运行。</div>;
+  return <form className="review memory-init-review" aria-label="Memory Delta 审核" onSubmit={(event) => void submit(event)}><header><div><p className="eyebrow">MEMORY DELTA</p><h2>新增 Source r{delta.source_revision} 的候选</h2><p>核心候选必须全部决定；辅助候选可 pending，且不进入 canon 或 Provider 输入。当前 coverage：{delta.coverage?.status}。</p></div></header>{delta.candidates.map((candidate) => <article key={candidate.id} className="diff memory-init-candidate"><div className="candidate-source"><strong>Evidence · 第 {candidate.source.chapter_number} 章《{candidate.source.chapter_title}》</strong><p>{candidate.source.excerpt}</p><small>SourceSpan {candidate.source.span_id} · source r{candidate.source_revision}</small></div><div><strong>候选事实</strong><p>{memoryTypeLabel(candidate.memory_type)} · {candidate.subject} · {predicateLabel(candidate.predicate)}：{candidate.value}</p><small>delta · {candidate.review_priority === "core" ? "核心候选（必须决定）" : "辅助候选（可继续待审）"} · 尚未成为 canon</small></div>{candidate.decision_status === "pending" ? <><fieldset><legend>作者审核（未预选）</legend><label><input type="radio" name={`memory-delta:${candidate.id}`} value="accepted" disabled={blocked} />接受</label><label><input type="radio" name={`memory-delta:${candidate.id}`} value="rejected" disabled={blocked} />拒绝</label><label><input type="radio" name={`memory-delta:${candidate.id}`} value="edited" disabled={blocked} />编辑后接受</label></fieldset><div className="candidate-edit"><label>事实类型<select name={`memory-delta:${candidate.id}:memory_type`} defaultValue={candidate.memory_type} disabled={blocked}>{["static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"].map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label><label>对象<input name={`memory-delta:${candidate.id}:subject`} defaultValue={candidate.subject} disabled={blocked} /></label><label>关系<input name={`memory-delta:${candidate.id}:predicate`} defaultValue={candidate.predicate} disabled={blocked} /></label><label>事实内容<textarea name={`memory-delta:${candidate.id}:value`} defaultValue={candidate.value} disabled={blocked} /></label></div></> : <p>已由作者决定：{candidate.decision_status}；{candidate.decision_status === "rejected" ? "不写入 canon。" : "将在核心闭合提交时写入新 MemoryVersion。"}</p>}</article>)}<footer className="actions"><Button className="primary" type="submit" disabled={blocked || !delta.candidates.length}>提交已决定的核心候选</Button></footer></form>;
+}
+
+function MemoryInitializationReview({
+  initialization,
+  coverage,
+  blocked,
+  start,
+  submit,
+  goToCheck,
+}: {
+  initialization: MemoryInitialization;
+  coverage: MemoryCoverage | null;
+  blocked: boolean;
+  start: () => Promise<void>;
+  submit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
+  goToCheck: () => void;
+}) {
+  if (initialization.status === "required")
+    return (
+      <div className="empty memory-init-empty">
+        <strong>等待初始化</strong>
+        <p>系统会从当前导入章节与 SourceSpan 生成候选；候选不会自动成为 canon。</p>
+        <Button className="primary" disabled={blocked} onClick={() => void start()}>
+          初始化 Story Memory
+        </Button>
+      </div>
+    );
+  if (initialization.status === "rejected")
+    return (
+      <div className="empty memory-init-empty">
+        <strong>Memory V1 保持为空</strong>
+        <p>所有候选均被作者拒绝。连续性检查仍会安全返回上下文不足；可 Reset 导入作品后重新开始。</p>
+      </div>
+    );
+  return (
+    <form className="review memory-init-review" aria-label="Story Memory 初始化审核" onSubmit={(event) => void submit(event)}>
+      <header>
+        <div>
+          <p className="eyebrow">IMPORTED SOURCE · REVISION {initialization.source_revision}</p>
+          <h2>初始化候选审核</h2>
+          <p>核心候选必须全部决定；辅助候选可继续 pending，且不会进入 canon 或 Provider 输入。{coverage ? ` 当前覆盖：${coverage.status}；核心待审 ${coverage.counts.core_pending}，辅助待审 ${coverage.counts.supporting_pending}。` : ""}</p>
+        </div>
+      </header>
+      {initialization.candidates.map((candidate) => (
+        <article key={candidate.id} className="diff memory-init-candidate">
+          <div className="candidate-source">
+            <strong>原文 Evidence</strong>
+            <p>第 {candidate.source.chapter_number} 章《{candidate.source.chapter_title}》 · {candidate.source.label}</p>
+            <code>SourceSpan · {candidate.source.span_id}</code>
+            <blockquote>{candidate.source.text}</blockquote>
+            <a href={candidate.source.source_path}>查看章节来源</a>
+          </div>
+          <div>
+            <strong>候选事实</strong>
+            <p>{memoryTypeLabel(candidate.memory_type)} · {candidate.subject} · {predicateLabel(candidate.predicate)}：{candidate.value}</p>
+            <small>来源修订 r{candidate.source_revision} · {candidate.candidate_origin} · {candidate.review_priority === "core" ? "核心候选（必须决定）" : "辅助候选（可继续待审）"} · 尚未成为 canon</small>
+          </div>
+          {candidate.decision_status === "pending" ? (
+            <>
+              <fieldset>
+                <legend>作者审核（未预选）</legend>
+                <label><input type="radio" name={`memory-init:${candidate.id}`} value="accepted" data-memory-candidate-id={candidate.id} disabled={blocked} />接受（写入 V1）</label>
+                <label><input type="radio" name={`memory-init:${candidate.id}`} value="rejected" data-memory-candidate-id={candidate.id} disabled={blocked} />拒绝（不写入）</label>
+                <label><input type="radio" name={`memory-init:${candidate.id}`} value="edited" data-memory-candidate-id={candidate.id} disabled={blocked} />编辑后接受</label>
+              </fieldset>
+              <div className="candidate-edit" aria-label="编辑候选事实">
+                <label>事实类型<select name={`memory-init:${candidate.id}:memory_type`} defaultValue={candidate.memory_type} disabled={blocked}>{["static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"].map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label>
+                <label>对象<input name={`memory-init:${candidate.id}:subject`} defaultValue={candidate.subject} disabled={blocked} /></label>
+                <label>关系<input name={`memory-init:${candidate.id}:predicate`} defaultValue={candidate.predicate} disabled={blocked} /></label>
+                <label>事实内容<textarea name={`memory-init:${candidate.id}:value`} defaultValue={candidate.value} disabled={blocked} /></label>
+                <label className="evidence-confirmation"><input type="checkbox" name={`memory-init:${candidate.id}:evidence-confirmed`} value="confirmed" disabled={blocked} />我确认编辑后的事实仍由上方 Evidence 支持</label>
+              </div>
+            </>
+          ) : (
+            <p className="candidate-decision">作者已{candidate.decision_status === "rejected" ? "拒绝" : candidate.decision_status === "edited" ? "编辑后接受" : "接受"}此候选。</p>
+          )}
+        </article>
+      ))}
+      {initialization.status === "draft" && (
+        <Button className="primary" disabled={blocked} type="submit">确认核心审核并建立 Memory V1</Button>
+      )}
+      {coverage?.status === "ready_partial" && (
+        <div className="notice success" role="status">
+          <strong>已安全建立部分 Memory</strong>
+          <p>所有核心候选已最终决定并至少确认一条；{coverage.counts.supporting_pending} 条辅助候选仍 pending，不在 canon 或 Provider 输入中。</p>
+          <Button className="primary" disabled={blocked} type="button" onClick={goToCheck}>开始连续性检查</Button>
+        </div>
+      )}
+      {coverage?.status === "in_review" && coverage.counts.core_pending === 0 && coverage.counts.confirmed_core === 0 && (
+        <div className="notice error" role="alert">核心候选均未被确认；尚不能开始连续性检查。</div>
+      )}
+    </form>
+  );
+}
+function SourceAppend({ project, draft, chapters, readOnly }: { project: Project; draft: Draft | null; chapters: Chapter[]; readOnly: boolean }) {
+  const router=useRouter();
+  const [method, setMethod] = useState<"draft_complete" | "paste" | "file">("paste"), [content, setContent] = useState(""), [filename, setFilename] = useState(""), [preview, setPreview] = useState<SourceChangeSet | null>(null), [nextDraft, setNextDraft] = useState<Draft | null>(null), [busy, setBusy] = useState(""), [error, setError] = useState("");
+  const base = project.source_revision ?? 1;
+  const makePreview = async () => {
+    setBusy("正在生成追加预览"); setError("");
+    try {
+      const data = await json<{ source_change_set: SourceChangeSet }>(`/projects/${project.id}/source-change-sets/preview`, "POST", { mode: "append", input_method: method, base_source_revision: base, ...(method === "draft_complete" ? { draft_id: draft?.id } : { content, ...(method === "file" ? { filename } : {}) }) });
+      setPreview(data.source_change_set);
+    } catch (cause) { setError(labelError(cause)); } finally { setBusy(""); }
+  };
+  const commit = async () => {
+    if (!preview) return; setBusy("正在原子追加章节"); setError("");
+    try { const data = await json<{ source_change_set: SourceChangeSet; next_draft: Draft }>(`/projects/${project.id}/source-change-sets/${preview.id}/commit`, "POST", { confirm: true, content_sha256: preview.content_sha256 }); setPreview(data.source_change_set); setNextDraft(data.next_draft); }
+    catch (cause) { setError(labelError(cause)); } finally { setBusy(""); }
+  };
+  return <section className="project-page read-page"><header className="page-header"><div><p className="breadcrumb">项目 / {project.title} / 章节来源</p><h1>追加章节</h1><p>目标作品：{project.title} · source r{base} → r{base + 1}。P0 只追加，既有来源不覆盖。</p></div></header>
+    <section className="project-section"><h2>新增来源</h2><fieldset disabled={readOnly || Boolean(busy)}><legend>入口</legend>{(["draft_complete", "paste", "file"] as const).map((value) => <label key={value}><input type="radio" checked={method === value} onChange={() => setMethod(value)} />{value === "draft_complete" ? "完成当前章节" : value === "paste" ? "粘贴追加" : "追加文件"}</label>)}</fieldset>
+    {method === "draft_complete" ? <p>将完成当前草稿《{draft?.title ?? "—"}》并追加为新章节。</p> : <><label>章节正文<textarea value={content} onChange={(event) => setContent(event.target.value)} disabled={readOnly || Boolean(busy)} /></label>{method === "file" && <label>追加文件<input type="file" accept=".md,.txt,text/markdown,text/plain" disabled={readOnly || Boolean(busy)} onChange={async (event) => { const file = event.currentTarget.files?.[0]; if (!file) return; setFilename(file.name); setContent(await file.text()); }} /><small>{filename || "仅支持 UTF-8 .md / .txt"}</small></label>}</>}
+    <Button className="primary" disabled={readOnly || Boolean(busy) || (method !== "draft_complete" && !content.trim())} onClick={() => void makePreview()}>{busy || "预览追加"}</Button></section>
+    {error && <div className="notice error" role="alert">{error} 请保留当前内容，重新获取当前 source revision 后重试。</div>}
+    {preview && <section className="notice success" role="status"><strong>SourceChangeSet 预览 · {preview.status}</strong><p>SHA-256 {preview.content_sha256} · {preview.chapter_count} 个章节 / {preview.source_span_count} 个 SourceSpan · r{preview.base_source_revision} → r{preview.target_source_revision}</p><small>预览于 {preview.previewed_at}；创建审计已记录。文件仅记录 basename。</small><ul>{preview.chapters.map((chapter) => <li key={chapter.preview_id}>第 {chapter.order} 个追加章节《{chapter.title}》· {chapter.character_count} 字</li>)}</ul>{preview.status === "previewed" ? <Button className="primary" disabled={readOnly || Boolean(busy)} onClick={() => void commit()}>确认追加并创建下一章草稿</Button> : <><p>已提交 source r{preview.target_source_revision}。</p>{nextDraft && <p>下一章草稿：第 {nextDraft.chapter_number} 章《{nextDraft.title}》 · {nextDraft.id}</p>}<Button className="primary" onClick={() => router.push(`/projects/${project.id}/workspace`)}>进入下一章草稿</Button></>}</section>}
+    <Read title="现有章节来源" breadcrumb="Evidence 可回源" note="历史 Evidence 保持指向原 SourceSpan。" items={chapters.flatMap((chapter) => (chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`}><strong>第 {chapter.number} 章《{chapter.title}》 · {span.label}</strong><span>{span.text_excerpt}</span></li>))} empty="此作品还没有可回源的章节片段。" />
+  </section>;
+}
+
 function Read({
   title,
   breadcrumb,
@@ -2176,7 +2655,7 @@ function Evidence({
           <span className="sr-only">关闭</span>
         </Button>
         <p className="eyebrow">EVIDENCE</p>
-        <h2>{issue.category}</h2>
+        <h2>{categoryLabel(issue.category)}</h2>
         <p>
           <span className={`risk ${issue.severity}`}>
             <I>▲</I>
@@ -2194,36 +2673,39 @@ function Evidence({
             <dd>{issue.claim_span_id}</dd>
           </div>
           <div>
-            <dt>Run / revision</dt>
+            <dt>检查记录 / 来源修订</dt>
             <dd>
               {run?.run_id} · source r{run?.source_revision} / current r
               {run?.current_revision}
             </dd>
           </div>
           <div>
-            <dt>stale / superseded / lineage</dt>
+            <dt>谱系状态</dt>
             <dd>
-              {String(run?.is_stale)} / {String(run?.superseded)} /{" "}
-              {run?.lineage_status}
+              {run?.is_stale ? "证据已过期" : "当前草稿谱系可用"} · {run?.lineage_status}
             </dd>
           </div>
         </dl>
         {evidence.length ? (
           <section>
             <h3>Evidence</h3>
+            <p>可核对的来源证据</p>
             {evidence.map((x) => (
               <article className="evidence" key={x.id}>
                 <strong>
-                  {x.chapter_id}/{x.span_id}
+                  第 {x.chapter_number} 章《{x.chapter_title}》
                 </strong>
-                <p>{x.excerpt}</p>
+                <p><strong>来源修订：</strong>草稿 r{x.source_revision}</p>
+                <blockquote>{x.excerpt}</blockquote>
+                {x.excerpt_context !== x.excerpt && <p>上下文：{x.excerpt_context}</p>}
                 <small>
-                  {x.relation} · 充分性：{x.sufficiency}
+                  {x.relation === "contradicts" ? "与当前表述冲突" : x.relation === "supports" ? "支持当前表述" : "提供上下文"} · {x.sufficiency === "sufficient" ? "证据充分" : "证据不足"}
                 </small>
                 <p>
                   相关 Memory：
                   {x.related_memory_ids.join("；") || "无"}
                 </p>
+                <a href={x.source_path}>回到当前作品的章节来源</a>
               </article>
             ))}
           </section>

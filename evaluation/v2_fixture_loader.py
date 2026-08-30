@@ -35,6 +35,30 @@ V4_CORPUS_PATHS = {
     "eave_cabin": FIXTURES / "eval-v4-eave-cabin.json",
     "mica_office": FIXTURES / "eval-v4-mica-office.json",
 }
+V5_CORPUS_PATHS = {
+    "ember_observatory": FIXTURES / "eval-v5-ember-observatory.json",
+    "reed_foundry": FIXTURES / "eval-v5-reed-foundry.json",
+    "glass_marsh": FIXTURES / "eval-v5-glass-marsh.json",
+    "copper_orchard": FIXTURES / "eval-v5-copper-orchard.json",
+}
+V6_CORPUS_PATHS = {
+    "lumen_tidehouse": FIXTURES / "eval-v6-lumen-tidehouse.json",
+    "velvet_signal_yard": FIXTURES / "eval-v6-velvet-signal-yard.json",
+    "quartz_aviary": FIXTURES / "eval-v6-quartz-aviary.json",
+    "cinder_lantern_ferry": FIXTURES / "eval-v6-cinder-lantern-ferry.json",
+}
+V7_CORPUS_PATHS = {
+    "indigo_cartography": FIXTURES / "eval-v7-indigo-cartography.json",
+    "ember_siltworks": FIXTURES / "eval-v7-ember-siltworks.json",
+    "brass_migration": FIXTURES / "eval-v7-brass-migration.json",
+    "orchid_signalhouse": FIXTURES / "eval-v7-orchid-signalhouse.json",
+}
+V8_CORPUS_PATHS = {
+    "dusk_viaduct": FIXTURES / "eval-v8-dusk-viaduct.json",
+    "sable_tideglass": FIXTURES / "eval-v8-sable-tideglass.json",
+    "flint_garden": FIXTURES / "eval-v8-flint-garden.json",
+    "opal_nursery": FIXTURES / "eval-v8-opal-nursery.json",
+}
 
 
 @dataclass(frozen=True)

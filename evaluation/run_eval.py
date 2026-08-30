@@ -17,7 +17,7 @@ import httpx
 
 from evaluation.metrics import aggregate, prediction_for_target, stability
 from evaluation.validate_eval_set import canonical_sha256
-from evaluation.v2_fixture_loader import CORPUS_PATHS, V3_CORPUS_PATHS, V4_CORPUS_PATHS, corpus_manifest_payload, fixture_runtime_at
+from evaluation.v2_fixture_loader import CORPUS_PATHS, V3_CORPUS_PATHS, V4_CORPUS_PATHS, V5_CORPUS_PATHS, V6_CORPUS_PATHS, V7_CORPUS_PATHS, V8_CORPUS_PATHS, corpus_manifest_payload, fixture_runtime_at
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -149,6 +149,14 @@ def fixture_corpus_paths(corpus_manifest_path: pathlib.Path) -> dict[str, pathli
         return V3_CORPUS_PATHS
     if resolved == (ROOT / "evaluation" / "fixtures" / "eval-v4-corpus-manifest.json").resolve():
         return V4_CORPUS_PATHS
+    if resolved == (ROOT / "evaluation" / "fixtures" / "eval-v5-corpus-manifest.json").resolve():
+        return V5_CORPUS_PATHS
+    if resolved == (ROOT / "evaluation" / "fixtures" / "eval-v6-corpus-manifest.json").resolve():
+        return V6_CORPUS_PATHS
+    if resolved == (ROOT / "evaluation" / "fixtures" / "eval-v7-corpus-manifest.json").resolve():
+        return V7_CORPUS_PATHS
+    if resolved == (ROOT / "evaluation" / "fixtures" / "eval-v8-corpus-manifest.json").resolve():
+        return V8_CORPUS_PATHS
     raise RuntimeError("fixture_corpus_manifest_not_formally_recognized")
 
 
@@ -397,6 +405,8 @@ def build_case_result(client: httpx.Client, case: dict, intent: dict[str, Any], 
     retrieval_semantics = {span_by_id[item] for item in trace["returned_span_ids"] if item in span_by_id}
     evidence = issue.get("evidence", []) if issue else []
     evidence_semantics = [span_by_id.get(item["span_id"]) for item in evidence]
+    cited_expected_unique = set(item for item in evidence_semantics if item in expected_semantics)
+    expected_citable_count = len(expected_semantics) if case["expected_class"] == "conflict" else 0
     return {
         "case_id": case["case_id"], "seed_key": case["seed_key"], "expected_class": case["expected_class"], "predicted_class": predicted,
         "expected_category": case["expected_category"], "predicted_category": issue.get("category") if issue else None,
@@ -408,6 +418,11 @@ def build_case_result(client: httpx.Client, case: dict, intent: dict[str, Any], 
         "retrieval_semantic_set": sorted([list(item) for item in retrieval_semantics]), "cited_evidence_count": len(evidence), "cited_evidence_expected_count": sum(item in expected_semantics for item in evidence_semantics),
         "resolvable_evidence_count": sum(item is not None for item in evidence_semantics), "evidence_ids": sorted(item["id"] for item in evidence),
         "evidence_semantic_set": sorted([list(item) for item in evidence_semantics if item is not None]),
+        "challenge_tags": list(case.get("challenge_tags", [])),
+        "requires_multiple_direct_evidence": bool(case.get("requires_multiple_direct_evidence")),
+        "expected_evidence_count": expected_citable_count,
+        "cited_expected_evidence_unique_count": len(cited_expected_unique) if expected_citable_count else 0,
+        "expected_evidence_full_set_cited": expected_semantics <= set(evidence_semantics) if expected_citable_count else None,
         "explanation_sha256": hashlib.sha256((issue.get("explanation", "") if issue else "").encode("utf-8")).hexdigest(),
         "latency_ms": metrics.get("latency_ms"), "input_tokens": metrics.get("input_tokens"), "output_tokens": metrics.get("output_tokens"), "cost_cny": metrics.get("cost_cny"), "provenance": metrics.get("provenance"),
     }
@@ -464,29 +479,63 @@ def repeat_case(client: httpx.Client, case: dict, context: dict[str, Any], scann
     terminal = wait_for_terminal(client, context["project_id"], response.json()["data"]["run_id"], scanner)
     predicted, issue = prediction_for_target(terminal, case["target_claim_ordinal"])
     evidence = issue.get("evidence", []) if issue else []
-    return {"case_id": case["case_id"], "run_id": response.json()["data"]["run_id"], "idempotency_replay_same_run": True, "predicted_class": predicted, "category_severity": [issue.get("category"), issue.get("severity")] if issue else None, "evidence_ids": sorted(item["id"] for item in evidence), "explanation_sha256": hashlib.sha256((issue.get("explanation", "") if issue else "").encode("utf-8")).hexdigest(), "terminal_status": terminal["status"]}
+    metrics = terminal.get("metrics", {})
+    return {"case_id": case["case_id"], "run_id": response.json()["data"]["run_id"], "idempotency_replay_same_run": True, "predicted_class": predicted, "category_severity": [issue.get("category"), issue.get("severity")] if issue else None, "evidence_ids": sorted(item["id"] for item in evidence), "explanation_sha256": hashlib.sha256((issue.get("explanation", "") if issue else "").encode("utf-8")).hexdigest(), "terminal_status": terminal["status"], "terminal_error_code": terminal.get("error_code"), "latency_ms": metrics.get("latency_ms"), "input_tokens": metrics.get("input_tokens"), "output_tokens": metrics.get("output_tokens"), "cost_cny": metrics.get("cost_cny")}
 
 
 def bad_case(result: dict) -> dict | None:
+    dimensions: list[str] = []
     if result["terminal_status"] != "completed":
+        dimensions.append("terminal_failure")
         cause = "schema"
         rationale = "The fail-closed schema/evidence guard ended the run with a terminal error."
-    elif not result["retrieval_hit_at_5"]:
+    else:
+        cause = "provider_generation"
+        rationale = "One or more model-quality dimensions did not match the frozen rubric."
+    if not result["retrieval_hit_at_5"]:
+        dimensions.append("retrieval_miss")
         cause = "retrieval"
         rationale = "The expected semantic evidence location was absent from the recorded retrieval top five."
-    elif result["cited_evidence_count"] != result["resolvable_evidence_count"]:
+    if result["cited_evidence_count"] != result["resolvable_evidence_count"]:
+        dimensions.append("evidence_grounding")
         cause = "evidence_grounding"
         rationale = "At least one cited Evidence item could not be resolved against the recorded source span."
-    elif result["predicted_class"] != result["expected_class"] or (result["expected_category"] and result["predicted_category"] != result["expected_category"]):
-        cause = "provider_generation"
-        rationale = "Recorded retrieval hit and cited Evidence resolvability do not explain the decision or category mismatch."
-    else:
+    if result["predicted_class"] != result["expected_class"]:
+        dimensions.append("classification_mismatch")
+    if result.get("expected_category") and result.get("predicted_category") != result["expected_category"]:
+        dimensions.append("category_mismatch")
+    expected_count = result.get("expected_evidence_count", 0)
+    cited_expected = result.get("cited_expected_evidence_unique_count", 0)
+    if result.get("expected_class") == "conflict" and cited_expected < expected_count:
+        dimensions.append("expected_evidence_recall_incomplete")
+    if result.get("requires_multiple_direct_evidence") and result.get("expected_evidence_full_set_cited") is not True:
+        dimensions.append("multi_direct_evidence_full_set_miss")
+    dimensions = list(dict.fromkeys(dimensions))
+    if not dimensions:
         return None
-    return {"case_id": result["case_id"], "expected_class": result["expected_class"], "predicted_class": result["predicted_class"], "root_cause": cause, "rationale": rationale, "evidence": {"terminal_error_code": result["terminal_error_code"], "retrieval_hit_at_5": result["retrieval_hit_at_5"], "cited_evidence_count": result["cited_evidence_count"], "resolvable_evidence_count": result["resolvable_evidence_count"]}}
+    if "terminal_failure" in dimensions:
+        cause = "schema"
+        rationale = "The fail-closed schema/evidence guard ended the run with a terminal error."
+    elif "retrieval_miss" in dimensions:
+        cause = "retrieval"
+        rationale = "The expected semantic evidence location was absent from the recorded retrieval top five."
+    elif "evidence_grounding" in dimensions:
+        cause = "evidence_grounding"
+        rationale = "At least one cited Evidence item could not be resolved against the recorded source span."
+    return {"case_id": result["case_id"], "expected_class": result["expected_class"], "predicted_class": result["predicted_class"], "category": {"expected": result.get("expected_category"), "predicted": result.get("predicted_category")}, "root_cause": cause, "failure_dimensions": dimensions, "rationale": rationale, "evidence": {"terminal_error_code": result["terminal_error_code"], "retrieval_hit_at_5": result["retrieval_hit_at_5"], "cited_evidence_count": result["cited_evidence_count"], "resolvable_evidence_count": result["resolvable_evidence_count"], "expected_evidence_count": expected_count, "cited_expected_evidence_unique_count": cited_expected, "expected_evidence_full_set_cited": result.get("expected_evidence_full_set_cited")}}
 
 
 def gate(metrics: dict, safety: dict, thresholds: dict) -> tuple[bool, dict[str, bool]]:
     checks = {"macro_f1": metrics["macro_f1"] >= thresholds["macro_f1_min"], "conflict_recall": metrics["conflict"]["recall"] >= thresholds["conflict_recall_min"], "insufficient_evidence_recall": metrics["insufficient_evidence_recall"] >= thresholds["insufficient_evidence_recall_min"], "no_conflict_false_positive_rate": metrics["no_conflict_false_positive_rate"] <= thresholds["no_conflict_false_positive_rate_max"], "retrieval_expected_evidence_hit_at_5": metrics["retrieval_expected_evidence_hit_at_5"] >= thresholds["retrieval_expected_evidence_hit_at_5_min"], "cited_evidence_precision": metrics["cited_evidence_precision"] == thresholds["cited_evidence_precision"], "schema_validity": metrics["schema_validity"] == thresholds["schema_validity"], "evidence_resolvability_grounding": metrics["evidence_resolvability_grounding"] == thresholds["evidence_resolvability_grounding"], "fail_closed_safety_paths": safety.get("validity") == thresholds["fail_closed_safety_paths"]}
+    if "conflict_category_accuracy_min" in thresholds:
+        checks["conflict_category_accuracy"] = metrics["conflict_category_accuracy"] >= thresholds["conflict_category_accuracy_min"]
+    if "designated_category_mismatch_regression_required_correct" in thresholds:
+        regression = metrics["designated_category_mismatch_regression"]
+        checks["designated_category_mismatch_regression"] = regression["correct"] == thresholds["designated_category_mismatch_regression_required_correct"] and regression["total"] == thresholds["designated_category_mismatch_regression_required_total"]
+    if "expected_evidence_recall_min" in thresholds:
+        checks["expected_evidence_recall"] = metrics["expected_evidence_recall"] >= thresholds["expected_evidence_recall_min"]
+    if "multi_direct_evidence_full_set_recall_min" in thresholds:
+        checks["multi_direct_evidence_full_set_recall"] = metrics["multi_direct_evidence_full_set_recall"] >= thresholds["multi_direct_evidence_full_set_recall_min"]
     return all(checks.values()), checks
 
 
@@ -505,6 +554,8 @@ def execute_formal_run(
     run_stability: bool = True,
     cases_override: list[dict] | None = None,
     fault_hook=None,
+    formal_run_kind: str = "formal",
+    abort_after_first_transport_failure: bool = False,
 ) -> dict[str, Any]:
     """The single production-API formal execution chain for remote or fixture inputs."""
     if runtime_mode not in RUNTIME_MODES:
@@ -531,6 +582,12 @@ def execute_formal_run(
         v3_manifest = ROOT / "evaluation" / "manifests" / "eval-set-v3-manifest.json"
         v4_case_set = ROOT / "evaluation" / "case_sets" / "eval-set-v4.json"
         v4_manifest = ROOT / "evaluation" / "manifests" / "eval-set-v4-manifest.json"
+        v5_case_set = ROOT / "evaluation" / "case_sets" / "eval-set-v5.json"
+        v5_manifest = ROOT / "evaluation" / "manifests" / "eval-set-v5-manifest.json"
+        v6_case_set = ROOT / "evaluation" / "case_sets" / "eval-set-v6.json"
+        v6_manifest = ROOT / "evaluation" / "manifests" / "eval-set-v6-manifest.json"
+        v7_case_set = ROOT / "evaluation" / "case_sets" / "eval-set-v7.json"
+        v7_manifest = ROOT / "evaluation" / "manifests" / "eval-set-v7-manifest.json"
         if config.case_set_path.resolve() == v2_case_set.resolve() and config.manifest_path.resolve() == v2_manifest.resolve():
             from evaluation.validate_eval_set_v2 import validate_formal_freeze
             validate_formal_freeze(config.case_set_path, config.manifest_path)
@@ -540,6 +597,18 @@ def execute_formal_run(
         elif config.case_set_path.resolve() == v4_case_set.resolve() and config.manifest_path.resolve() == v4_manifest.resolve():
             from evaluation.validate_eval_set_v4 import validate_formal_freeze
             validate_formal_freeze(config.case_set_path, config.manifest_path)
+        elif config.case_set_path.resolve() == v5_case_set.resolve() and config.manifest_path.resolve() == v5_manifest.resolve():
+            from evaluation.validate_eval_set_v5 import validate_formal_freeze
+            validate_formal_freeze(config.case_set_path, config.manifest_path)
+        elif config.case_set_path.resolve() == v6_case_set.resolve() and config.manifest_path.resolve() == v6_manifest.resolve():
+            from evaluation.validate_eval_set_v6 import validate_formal_freeze
+            validate_formal_freeze(config.case_set_path, config.manifest_path)
+        elif config.case_set_path.resolve() == v7_case_set.resolve() and config.manifest_path.resolve() == v7_manifest.resolve():
+            from evaluation.validate_eval_set_v7 import validate_formal_freeze
+            validate_formal_freeze(config.case_set_path, config.manifest_path)
+        elif config.case_set_path.resolve() == (ROOT / "evaluation" / "case_sets" / "eval-set-v8.json").resolve() and config.manifest_path.resolve() == (ROOT / "evaluation" / "manifests" / "eval-set-v8-manifest.json").resolve():
+            from evaluation.validate_eval_set_v8 import validate_formal_freeze
+            validate_formal_freeze()
         else:
             raise RuntimeError("fixture_formal_assets_must_use_frozen_paths")
     corpus_manifest_path = verify_fixture_inputs(cases_payload, manifest) if runtime_mode == EVALUATION_FIXTURE_MODE else None
@@ -559,8 +628,11 @@ def execute_formal_run(
     clients: dict[str, Any] = {}
     scanner = ApiResponseScanner()
     fixture_adapter = FixtureRuntimeAdapter(config.evaluation_id, fixture_work_root_path, provider, fixture_corpus_paths(corpus_manifest_path)) if runtime_mode == EVALUATION_FIXTURE_MODE else None
+    started_at = datetime.now(timezone.utc)
+    started_clock = time.perf_counter()
+    aborted_transport_error: str | None = None
     try:
-        for case in active_cases:
+        for case_index, case in enumerate(active_cases):
             fixture_runtime = fixture_adapter.open_case(case) if fixture_adapter else None
             client = fixture_runtime.client if fixture_runtime else httpx.Client(base_url=base_url.rstrip("/"), timeout=45)
             clients[case["case_id"]] = client
@@ -573,8 +645,11 @@ def execute_formal_run(
                 result, intent = run_case(checkpoint, client, case, scanner, fault_hook=fault_hook, preloaded_project_id=fixture_runtime.identity.project_id if fixture_runtime else None)
             contexts[case["case_id"]] = intent
             results.append(result)
+            if case_index == 0 and abort_after_first_transport_failure and result.get("terminal_error_code") in {"provider_unavailable", "provider_timeout", "provider_error"}:
+                aborted_transport_error = result["terminal_error_code"]
+                break
         stability_rows = []
-        if run_stability:
+        if run_stability and aborted_transport_error is None:
             selected = {case["case_id"]: case for case in active_cases if case["case_id"] in manifest["stability_protocol"]["representative_case_ids"]}
             for case_id, case in selected.items():
                 repeats = [next(item for item in results if item["case_id"] == case_id)]
@@ -586,9 +661,32 @@ def execute_formal_run(
         else:
             for client in clients.values():
                 client.close()
-    metrics = aggregate(results)
-    passed, gate_checks = gate(metrics, safety, manifest["required_thresholds"])
-    report = {"evaluation": config.evaluation_id, "status": "gate_passed" if passed else "gate_failed", "case_set_sha256": manifest["case_set"]["canonical_sha256"], "formal_case_results": results, "metrics": metrics, "gate_checks": gate_checks, "safety_contract": safety, "run_metadata": {"started_at": datetime.now(timezone.utc).isoformat(), "runtime_mode": runtime_mode, "base_url_label": "user_started_local_provider_backend" if runtime_mode == REMOTE_SEED_MODE else "isolated_evaluation_fixture", "source_file_hashes": source_hashes, "provider_configuration": "environment_only_not_recorded"}}
+    finished_at = datetime.now(timezone.utc)
+    elapsed_ms = int((time.perf_counter() - started_clock) * 1000)
+    additional_runs = [run for row in stability_rows for run in row["runs"][1:]]
+    all_provider_runs = [*results, *additional_runs]
+    token_input = sum(item.get("input_tokens") or 0 for item in all_provider_runs)
+    token_output = sum(item.get("output_tokens") or 0 for item in all_provider_runs)
+    costs = [item.get("cost_cny") for item in all_provider_runs]
+    provider_execution = {
+        "provider_run_records": len(all_provider_runs),
+        "actual_provider_http_attempts": getattr(provider, "request_attempts", len(all_provider_runs)),
+        "successful_provider_responses": getattr(provider, "successful_responses", sum(item.get("latency_ms") is not None for item in all_provider_runs)),
+        "terminal_status_counts": {status: sum(item.get("terminal_status") == status for item in all_provider_runs) for status in sorted({item.get("terminal_status") for item in all_provider_runs})},
+        "input_tokens_returned": token_input,
+        "output_tokens_returned": token_output,
+        "cost": "unavailable" if not costs or any(value is None for value in costs) else sum(costs),
+        "elapsed_ms": elapsed_ms,
+    }
+    if aborted_transport_error is None:
+        metrics = aggregate(results)
+        passed, gate_checks = gate(metrics, safety, manifest["required_thresholds"])
+        status = "gate_passed" if passed else "gate_failed"
+    else:
+        metrics = None
+        gate_checks = {"quality_gate_evaluated": False}
+        status = "aborted_valid_run_attempt"
+    report = {"evaluation": config.evaluation_id, "execution_kind": formal_run_kind, "status": status, "abort_reason": aborted_transport_error, "case_set_sha256": manifest["case_set"]["canonical_sha256"], "formal_case_results": results, "metrics": metrics, "gate_checks": gate_checks, "safety_contract": safety, "run_metadata": {"started_at": started_at.isoformat(), "completed_at": finished_at.isoformat(), "runtime_mode": runtime_mode, "base_url_label": "user_started_local_provider_backend" if runtime_mode == REMOTE_SEED_MODE else "isolated_evaluation_fixture", "source_file_hashes": source_hashes, "provider_configuration": "environment_only_not_recorded", "provider_execution": provider_execution}}
     bad = [item for result in results if (item := bad_case(result))]
     outcome = {"report": report, "stability": {"evaluation": config.evaluation_id, "rows": stability_rows}, "bad_cases": {"evaluation": config.evaluation_id, "bad_cases": bad}, "scanner": scanner.result(), "source_hashes": source_hashes}
     if write_artifacts:
@@ -596,9 +694,9 @@ def execute_formal_run(
         write_json(artifacts["formal"], report)
         write_json(artifacts["stability"], outcome["stability"])
         write_json(artifacts["bad_cases"], outcome["bad_cases"])
-        write_json(artifacts["run_manifest"], {"evaluation": config.evaluation_id, "case_set_sha256": manifest["case_set"]["canonical_sha256"], "source_file_hashes": source_hashes, "safety_contract_sha256": sha256_file(SAFETY), "provider_configuration": "environment_only_not_recorded", "completed_at": datetime.now(timezone.utc).isoformat()})
+        write_json(artifacts["run_manifest"], {"evaluation": config.evaluation_id, "execution_kind": formal_run_kind, "status": status, "case_set_sha256": manifest["case_set"]["canonical_sha256"], "source_file_hashes": source_hashes, "safety_contract_sha256": sha256_file(SAFETY), "provider_configuration": "environment_only_not_recorded", "provider_execution": provider_execution, "completed_at": finished_at.isoformat()})
         write_json(artifacts["api_scan"], outcome["scanner"])
-        artifacts["report"].write_text("# Evaluation formal report\n\nStatus: **" + ("gate passed" if passed else "gate failed") + "**\n\n```json\n" + json.dumps({"metrics": metrics, "gate_checks": gate_checks, "bad_case_count": len(bad)}, ensure_ascii=False, indent=2) + "\n```\n", encoding="utf-8")
+        artifacts["report"].write_text("# Evaluation formal report\n\nExecution kind: **" + formal_run_kind + "**\n\nStatus: **" + status + "**\n\n```json\n" + json.dumps({"metrics": metrics, "gate_checks": gate_checks, "bad_case_count": len(bad), "provider_execution": provider_execution}, ensure_ascii=False, indent=2) + "\n```\n", encoding="utf-8")
     return outcome
 
 
@@ -612,11 +710,17 @@ def main() -> None:
     parser.add_argument("--manifest", default="evaluation/manifests/eval-set-v1-manifest.json")
     parser.add_argument("--result-prefix", default="first-formal")
     parser.add_argument("--checkpoint-path")
+    parser.add_argument("--formal-run-kind", default="formal")
+    parser.add_argument("--abort-after-first-transport-failure", action="store_true")
     args = parser.parse_args()
     try:
         config = build_run_config(args.evaluation_id, args.case_set, args.manifest, args.result_prefix, args.checkpoint_path)
         work_root = fixture_work_root(args.fixture_work_root, args.evaluation_id) if args.runtime_mode == EVALUATION_FIXTURE_MODE else None
-        outcome = execute_formal_run(config, runtime_mode=args.runtime_mode, base_url=args.base_url, fixture_work_root_path=work_root)
+        provider = None
+        if args.runtime_mode == EVALUATION_FIXTURE_MODE:
+            from app.provider import DeepSeekProvider
+            provider = DeepSeekProvider()
+        outcome = execute_formal_run(config, runtime_mode=args.runtime_mode, base_url=args.base_url, fixture_work_root_path=work_root, provider=provider, formal_run_kind=args.formal_run_kind, abort_after_first_transport_failure=args.abort_after_first_transport_failure)
     except (ValueError, RuntimeError) as error:
         raise SystemExit(str(error))
     print(json.dumps({"status": outcome["report"]["status"], "metrics": outcome["report"]["metrics"], "bad_case_count": len(outcome["bad_cases"]["bad_cases"])}, ensure_ascii=False, indent=2))

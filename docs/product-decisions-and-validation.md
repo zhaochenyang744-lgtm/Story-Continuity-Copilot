@@ -22,13 +22,13 @@ Long-form fiction accumulates facts that are difficult to keep consistent: event
 
 ## Implementation
 
-The local Web Demo uses FastAPI, SQLite, Next.js, and React. Its 24 endpoint templates cover authentication, project lifecycle, story context, drafts, checks, Evidence, decisions, ChangeSets, Reset, and import. The seed includes Grey Harbor Echoes, Paper Moon Archive, and Midnight Garden as independent projects.
+The currently verified local Web Demo uses FastAPI, SQLite, Next.js, and React. Its API covers authentication, project lifecycle, story context, drafts, checks, Evidence, decisions, ChangeSets, Memory initialization and delta review, append-only source revisions, Reset, and import. The seed includes Grey Harbor Echoes, Paper Moon Archive, and Midnight Garden as independent projects.
 
 Checks use a supported DeepSeek-compatible provider only when the process is explicitly configured. The request is queued, schema-validated, and grounded against current-project SourceSpans before persistence. Fail-closed paths cover unavailable providers, timeouts, invalid JSON, invalid schema, and unresolvable Evidence.
 
 ## Evaluation
 
-The current Web Demo result is the frozen V4 product evaluation: 15 original, balanced three-class cases over three isolated corpora plus 6 stability reruns. All 21 runs completed.
+The published repository baseline is the frozen V4 product evaluation: 15 original, balanced three-class cases over three isolated corpora plus 6 stability reruns. All 21 runs completed.
 
 | Area | Result |
 | --- | --- |
@@ -38,6 +38,10 @@ The current Web Demo result is the frozen V4 product evaluation: 15 original, ba
 | Stability | Decision 3/3; category/severity 3/3; Evidence ID set 2/3; exact explanation hash 1/3. |
 
 The frozen CLI PoC's held-out F1 of 0.9412 is a historical result under a different protocol. It is retained as historical context only and is not a V4 Web Demo claim.
+
+Stage 8 and Stage 9 product work are accepted. V5–V8 each retain one immutable first-valid formal result bundle with `gate_failed`, not replaced by later implementation changes. V8 completed all 30 calls; its only Bad Case was `location_action → event_status`, leaving the designated category regression at 2/3. This is retained as a portfolio-level known limitation, and Stage 10 is not reclassified as passed.
+
+Stage 11 has verified the recurring author workflow on real 100k- and 300k-character prefixes: import and initialize Memory, explicitly review candidates, append new chapters, run bounded-RAG Continuity and Memory Delta checks, review Evidence, decide every proposed change, and advance Memory only through author commits. The first 300k run remains an immutable capacity failure; the separate V2 repair passed the frozen Capacity, Performance, and Workflow Gates. The optional 1M-character Stage 11N pressure test is deferred and is not a personal-work release blocker. Stages 12–14 have not started.
 
 ## Safety boundaries
 
@@ -52,4 +56,5 @@ The frozen CLI PoC's held-out F1 of 0.9412 is a historical result under a differ
 - Two V4 cases had the correct class but a category mismatch: `timeline → event_status` and `world_rule → event_status`.
 - Exact explanation text and Evidence IDs can vary across real-provider reruns even where decision and category/severity remain stable.
 - V4 is a compact product evaluation, not a broad benchmark or evidence of commercial deployment.
-- No deployment is included. Any hosted version would require a separate decision about provider credentials, persistent data, authentication, monitoring, rollback, and public-demo data handling.
+- The current delivery is not deployed. With the primary Stage 11 100k/300k targets verified, the remaining route is Stage 12 Agent Run lifecycle, Stage 13 server-proxied lightweight Web App deployment, and Stage 14 public-address acceptance and release. Each stage uses a predeclared Gate.
+- The hosted route keeps Provider credentials server-only, gives visitors isolated spaces, caps AI calls/text length/total spend, and periodically clears visitor data. It does not add email verification, password recovery, OAuth, subscriptions, an admin console, collaboration, cross-device sync, or AI continuation.

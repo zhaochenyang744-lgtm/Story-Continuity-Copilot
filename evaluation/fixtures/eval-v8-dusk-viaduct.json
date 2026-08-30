@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "dusk_viaduct",
+  "title": "The Dusk Viaduct Archive",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v8-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "The Dusk Viaduct Archive",
+    "characters": [
+      "Palo Neris",
+      "Iven Sorr"
+    ],
+    "locations": [
+      "Clove Bridge",
+      "Moth Vault"
+    ],
+    "core_design": "bridge archives, pin custody, and measured lantern routes"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Roster-pin condition",
+      "source_label": "roster_pin_rule",
+      "body": "A named person may open the Clove Bridge archive only when that person wears the archive's silver roster pin; the rule does not name its current wearer."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Pin custody ledger",
+      "source_label": "roster_pin_ledger",
+      "body": "The dusk ledger lists Iven Sorr, and no other person, as the current wearer of the silver roster pin."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Seal condition",
+      "source_label": "seal_definition",
+      "body": "The Moth Vault tube counts as sealed exactly when its neck thread is both uncut and blue."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Thread inspection",
+      "source_label": "thread_inspection",
+      "body": "The tube inspection records an uncut neck thread whose dye is gray, not blue."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Span lamp count",
+      "source_label": "lamp_count",
+      "body": "The Clove Bridge maintenance sheet records six lanterns along the east span; a separate west-span entry records nine and is not part of the east span."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Rail polish",
+      "source_label": "rail_polish",
+      "body": "Palo Neris polishes the bridge rail with chalk paste; an unrelated vault list mentions oil for hinges."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Pending weight",
+      "source_label": "pending_weight",
+      "body": "The vault parcel has been weighed, but the ledger leaves its final weight outcome pending."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Blank bearer",
+      "source_label": "blank_bearer",
+      "body": "A transfer tag records that a tube changed hands but leaves the bearer name blank."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "Palo Neris",
+      "predicate": "fixture_anchor",
+      "value": "dusk_viaduct-1",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "roster_pin_rule"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Palo Neris",
+      "predicate": "fixture_anchor",
+      "value": "dusk_viaduct-3",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "seal_definition"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Palo Neris",
+      "predicate": "fixture_anchor",
+      "value": "dusk_viaduct-5",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "lamp_count"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Palo Neris",
+      "predicate": "fixture_anchor",
+      "value": "dusk_viaduct-7",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "pending_weight"
+      }
+    }
+  ]
+}

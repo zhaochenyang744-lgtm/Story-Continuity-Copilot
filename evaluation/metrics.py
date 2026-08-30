@@ -32,6 +32,9 @@ def aggregate(case_results: list[dict[str, Any]]) -> dict[str, Any]:
     total = len(case_results)
     per_class = {label: _prf(matrix, label) for label in CLASSES}
     no_conflict_total = sum(matrix["no_conflict"].values())
+    conflict_results = [item for item in case_results if item["expected_class"] == "conflict"]
+    designated_regressions = [item for item in conflict_results if "category_mismatch_regression" in item.get("challenge_tags", [])]
+    multi_direct = [item for item in conflict_results if item.get("requires_multiple_direct_evidence")]
     metrics = {
         "confusion_matrix": matrix,
         "accuracy": sum(matrix[label][label] for label in CLASSES) / total if total else 0.0,
@@ -43,6 +46,19 @@ def aggregate(case_results: list[dict[str, Any]]) -> dict[str, Any]:
         "cited_evidence_precision": _ratio(sum(item["cited_evidence_expected_count"] for item in case_results), sum(item["cited_evidence_count"] for item in case_results)),
         "evidence_resolvability_grounding": _ratio(sum(item["resolvable_evidence_count"] for item in case_results), sum(item["cited_evidence_count"] for item in case_results), zero_value=1.0),
         "schema_validity": sum(bool(item["schema_valid"]) for item in case_results) / total if total else 0.0,
+        "conflict_category_accuracy": _ratio(sum(item.get("predicted_category") == item.get("expected_category") for item in conflict_results), len(conflict_results)),
+        "designated_category_mismatch_regression": {
+            "correct": sum(item.get("predicted_category") == item.get("expected_category") for item in designated_regressions),
+            "total": len(designated_regressions),
+        },
+        "expected_evidence_recall": _ratio(
+            sum(item.get("cited_expected_evidence_unique_count", 0) for item in conflict_results),
+            sum(item.get("expected_evidence_count", 0) for item in conflict_results),
+        ),
+        "multi_direct_evidence_full_set_recall": _ratio(
+            sum(bool(item.get("expected_evidence_full_set_cited")) for item in multi_direct),
+            len(multi_direct),
+        ),
         "latency_ms": percentile_summary([item.get("latency_ms") for item in case_results]),
         "tokens": {"input_total": sum(item.get("input_tokens") or 0 for item in case_results), "output_total": sum(item.get("output_tokens") or 0 for item in case_results)},
         "cost": "unavailable" if any(item.get("cost_cny") is None for item in case_results) else sum(item["cost_cny"] for item in case_results),
@@ -62,6 +78,9 @@ def percentile_summary(values: list[int | None]) -> dict[str, int | None]:
 
 
 def stability(repeats: list[dict[str, Any]]) -> dict[str, Any]:
+    terminal_statuses_present = all("terminal_status" in item for item in repeats)
+    terminal_failure_count = sum(item.get("terminal_status") != "completed" for item in repeats) if terminal_statuses_present else 0
+    quality_established = not terminal_statuses_present or terminal_failure_count == 0
     def same(key: str) -> bool:
-        return len({repr(item.get(key)) for item in repeats}) == 1
-    return {"class_decision_stability": same("predicted_class"), "category_severity_stability": same("category_severity"), "evidence_id_set_stability": same("evidence_ids"), "exact_explanation_text_stability": same("explanation_sha256")}
+        return quality_established and len({repr(item.get(key)) for item in repeats}) == 1
+    return {"class_decision_stability": same("predicted_class"), "category_severity_stability": same("category_severity"), "evidence_id_set_stability": same("evidence_ids"), "exact_explanation_text_stability": same("explanation_sha256"), "quality_stability_established": quality_established, "terminal_failure_count": terminal_failure_count}

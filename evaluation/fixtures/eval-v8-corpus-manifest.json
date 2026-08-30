@@ -1,0 +1,29 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-manifest-v1",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "files": [
+    {
+      "corpus_key": "dusk_viaduct",
+      "path": "evaluation/fixtures/eval-v8-dusk-viaduct.json",
+      "sha256": "2ae14249376175ad12a8c467766dc4e8eb2f2918eaaad5fc8f0df79fa184e0e0"
+    },
+    {
+      "corpus_key": "sable_tideglass",
+      "path": "evaluation/fixtures/eval-v8-sable-tideglass.json",
+      "sha256": "2c72e767eda4d326fda663bc1f79823b4414f9c129144bd13ca442968fc4e425"
+    },
+    {
+      "corpus_key": "flint_garden",
+      "path": "evaluation/fixtures/eval-v8-flint-garden.json",
+      "sha256": "5050dbdb8c80296f80eef73f1aa6ab3abed2f8b216718f7f75d57664ec576b31"
+    },
+    {
+      "corpus_key": "opal_nursery",
+      "path": "evaluation/fixtures/eval-v8-opal-nursery.json",
+      "sha256": "33e74a36687bdb8771fa03c8b5a9b767a7bf7d22fd78b86b5155b486dc6b6992"
+    }
+  ],
+  "canonical_sha256": "878a21487bc9cde3e06982eac73e152fdc94851b8c6b2c5513ef39d1c31f476b"
+}

@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "velvet_signal_yard",
+  "title": "Velvet Signal Yard",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v6-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "Velvet Signal Yard",
+    "characters": [
+      "Neris Vale",
+      "Odo Prynn"
+    ],
+    "locations": [
+      "Juniper Relay Yard",
+      "Cipher Loft"
+    ],
+    "core_design": "emergency rail authority and sealed briefing circulation"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Ordinary duty charter",
+      "source_label": "ordinary_duty_charter",
+      "body": "The ordinary charter gives Neris Vale departure authority while Odo Prynn inspects signal lamps without dispatch power."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Amber emergency rider",
+      "source_label": "amber_emergency_rider",
+      "body": "An amber-flag rider temporarily assigns departure authority to Odo Prynn until the yard returns to green, overriding the ordinary charter."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Earlier phrase briefing",
+      "source_label": "earlier_phrase_briefing",
+      "body": "At dusk Neris Vale read the earlier relay phrase Willow Nine; Odo Prynn was absent from that briefing."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Revised sealed memo",
+      "source_label": "revised_sealed_memo",
+      "body": "The midnight memo replaces Willow Nine with Marble Six, records delivery only to Odo Prynn, and states Neris Vale was not informed."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Bell cadence",
+      "source_label": "bell_cadence",
+      "body": "Juniper Relay Yard announces a clear branch with three short bell strokes followed by one long stroke."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Lever binding",
+      "source_label": "lever_binding",
+      "body": "Switch lever C is wrapped with violet cord so gloved operators can distinguish it in fog."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Relay advisory provenance",
+      "source_label": "relay_advisory_provenance",
+      "body": "An unsigned advisory recommends isolating the phantom-aspect circuit, but the register does not confirm its author, inspector authority, or whether it was an official finding."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Observer register",
+      "source_label": "observer_register",
+      "body": "The final observer line in the Cipher Loft register is blank, with no witness identity recorded."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "amber-flag dispatch",
+      "predicate": "temporary_authority",
+      "value": "Odo Prynn",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "amber_emergency_rider"
+      }
+    },
+    {
+      "memory_type": "character_knowledge",
+      "subject": "Odo Prynn",
+      "predicate": "revised_phrase",
+      "value": "Marble Six",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "revised_sealed_memo"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "clear-branch bell",
+      "predicate": "cadence",
+      "value": "three short then one long",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "bell_cadence"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "switch lever C",
+      "predicate": "tactile_binding",
+      "value": "violet cord",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "lever_binding"
+      }
+    }
+  ]
+}

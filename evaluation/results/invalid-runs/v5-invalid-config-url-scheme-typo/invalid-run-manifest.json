@@ -1,0 +1,47 @@
+{
+  "schema_version": "scc-evaluation-invalid-run-manifest-v1",
+  "evaluation": "scc-web-demo-eval-v5-first-formal",
+  "archive_id": "v5-invalid-config-url-scheme-typo",
+  "status": "invalid_configuration_run_excluded_from_quality_gate",
+  "incident": {
+    "base_url_scheme": "ttps",
+    "failure_boundary": "client_url_validation_or_before_successful_transport",
+    "provider_run_records": 30,
+    "formal_run_records": 24,
+    "stability_run_records": 6,
+    "terminal_error_counts": {"provider_error": 30},
+    "successful_provider_responses": 0,
+    "input_tokens_returned": 0,
+    "output_tokens_returned": 0,
+    "cost": "unavailable",
+    "counts_toward_v5_model_quality_gate": false
+  },
+  "privacy": {
+    "api_key_retained": false,
+    "complete_base_url_retained": false,
+    "prompt_retained": false,
+    "raw_provider_body_retained": false,
+    "chain_of_thought_retained": false
+  },
+  "original_result_files": {
+    "eval-v5-first-formal-api-corpus-scan.json": {"sha256": "2a76e1671b624c6f375400fcb397c43c1b29b8b497c219b6fdbab4bcb22f4a31", "size": 238},
+    "eval-v5-first-formal-bad-cases.json": {"sha256": "c6ff0f50fd97b3f112c194a32c9927a19859d0fef014a92bf0affb96e1648fa9", "size": 11636},
+    "eval-v5-first-formal-checkpoint.json": {"sha256": "e55ece3358c75776a46dbebe79bc591dac297313c7b49d1355238950e35d6a5c", "size": 63202},
+    "eval-v5-first-formal-report.md": {"sha256": "fed73f7dea33bdb7f972879258e97e743b28b0fc212914cbdd631d0daef1df95", "size": 1907},
+    "eval-v5-first-formal-results.json": {"sha256": "de6261ec6217f0ffb2a74d7c31770a0f8b6d7e9ce5f4e079d32f412bcc2feafd", "size": 50010},
+    "eval-v5-first-formal-run-manifest.json": {"sha256": "24a68a26ca1aa92e18580b7f12ae7e684cfaf727a53f1e415ae8079da2082015", "size": 1779},
+    "eval-v5-first-formal-stability.json": {"sha256": "775e7d5154b36f3b59b8e1b68e4bf7421efafd4b1d7ea1f9a780385b7b1e0b78", "size": 9885},
+    "v5-first-formal-post-run-integrity.json": {"sha256": "3ce57b48b65c2cf08823363759401bae3f93b4720437a03ef5f7b12c2c18b8a9", "size": 7536}
+  },
+  "incident_note": {
+    "path": "evaluation/results/invalid-runs/v5-invalid-config-url-scheme-typo/incident.md",
+    "sha256": "418adaa270406464f080ac2796eab7c3476b195d656d3af80337ab67993e6ddd",
+    "size": 710
+  },
+  "archived_workspace": {
+    "path": "evaluation/fixture-workspaces/invalid-runs/v5-invalid-config-url-scheme-typo/scc-web-demo-eval-v5-first-formal",
+    "sqlite_count": 24,
+    "run_status_totals": {"failed": 30},
+    "canonical_summary_sha256": "be5f9584c99914f5c0c6cfde189e8a7cd32441262b8e1b12abd5d5adb6b96ac9"
+  }
+}

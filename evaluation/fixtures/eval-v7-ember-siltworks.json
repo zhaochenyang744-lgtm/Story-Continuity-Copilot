@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "ember_siltworks",
+  "title": "The Ember Siltworks Register",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v7-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "The Ember Siltworks Register",
+    "characters": [
+      "Kesa Thorn",
+      "Ulan Vey"
+    ],
+    "locations": [
+      "Kiln Basin",
+      "Ash Loop"
+    ],
+    "core_design": "silt-filter operating rules and sealed vessel state changes"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Red-purge applicability",
+      "source_label": "filter_baseline",
+      "body": "At the red pressure mark, the purge instruction opens any filter fitted with a copper relief ring for one cycle."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Amber-ring inventory",
+      "source_label": "steam_exception",
+      "body": "The basin inventory records that every amber filter is fitted with a copper relief ring."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Cobalt seal definition",
+      "source_label": "vessel_sealing",
+      "body": "For the Cobalt Vessel, the black resin band is the seal: if the band is removed from the vessel, the vessel is unsealed."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Rinse band inventory",
+      "source_label": "rinse_transfer",
+      "body": "After the rinse, the custody sheet places the Cobalt Vessel's black resin band in an inventory sleeve rather than on the vessel."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Kiln pigment",
+      "source_label": "kiln_pigment",
+      "body": "Kesa Thorn mixes the inspection pigment from ochre dust and clear oil."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Gauge tapping",
+      "source_label": "gauge_tapping",
+      "body": "The pressure gauge is tested with four light taps before a shift begins."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Unranked sampler slips",
+      "source_label": "unranked_sampler_slips",
+      "body": "Two sampler slips name different collecting crews, and the register declares no priority between them."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Pending ash assay",
+      "source_label": "pending_ash_assay",
+      "body": "The ash assay lists its sample weight but records the composition result as pending."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "amber filters",
+      "predicate": "relief_ring",
+      "value": "copper",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "steam_exception"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Cobalt Vessel",
+      "predicate": "post_rinse_band_location",
+      "value": "inventory sleeve",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "rinse_transfer"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "inspection pigment",
+      "predicate": "ingredients",
+      "value": "ochre dust and clear oil",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "kiln_pigment"
+      }
+    },
+    {
+      "memory_type": "open_thread",
+      "subject": "ash assay",
+      "predicate": "composition",
+      "value": "pending",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "pending_ash_assay"
+      }
+    }
+  ]
+}

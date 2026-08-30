@@ -1,0 +1,247 @@
+{
+  "schema_version": "scc-evaluation-post-run-integrity-v1",
+  "evaluation": "scc-web-demo-eval-v6-first-formal",
+  "retained_artifacts": {
+    "count": 7,
+    "files": [
+      {
+        "path": "evaluation/results/eval-v6-first-formal-api-corpus-scan.json",
+        "sha256": "2a76e1671b624c6f375400fcb397c43c1b29b8b497c219b6fdbab4bcb22f4a31",
+        "size": 238
+      },
+      {
+        "path": "evaluation/results/eval-v6-first-formal-bad-cases.json",
+        "sha256": "108a94dba9f938b6a5b244ebdbe7b0adadb210e9877f83607f52b2c0eb313128",
+        "size": 5371
+      },
+      {
+        "path": "evaluation/results/eval-v6-first-formal-checkpoint.json",
+        "sha256": "5b6bb41ee131c89240816fb12458604414319ab60173409ee540f3ea193da52d",
+        "size": 71124
+      },
+      {
+        "path": "evaluation/results/eval-v6-first-formal-report.md",
+        "sha256": "80d953f0062f68ee4dc7d061f96a594af3fbf787894cd76c5e235a30157059d0",
+        "size": 2266
+      },
+      {
+        "path": "evaluation/results/eval-v6-first-formal-results.json",
+        "sha256": "9b8f6fe15b46acc463d31448a21e656a6ad7fbf3647e6ce218edd2684c8f340e",
+        "size": 57695
+      },
+      {
+        "path": "evaluation/results/eval-v6-first-formal-run-manifest.json",
+        "sha256": "e72bf59cf18848e3854eac09b0f6019e347f89a30298a9e80810f2891e6c86d7",
+        "size": 2203
+      },
+      {
+        "path": "evaluation/results/eval-v6-first-formal-stability.json",
+        "sha256": "7efe5e45e6c609b01074dfd50248bd0e3d031b90eefd477c0b45c93b1c392c3d",
+        "size": 13149
+      }
+    ]
+  },
+  "fixture_workspaces": {
+    "root": "evaluation/fixture-workspaces/scc-web-demo-eval-v6-first-formal",
+    "sqlite_count": 24,
+    "run_status_totals": {
+      "completed": 30
+    },
+    "sqlite_files": [
+      {
+        "workspace_key": "07acb4aba413ea0508effced",
+        "sha256": "d6c98e9df54d86478e47c986252b9331b331712c506b08e4675f6d58dff0c52e",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "173cf3df98837c36e75a216c",
+        "sha256": "5eac400c974f36f2df17a618be7efb639525690736c9d5847792144699f4be32",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "32a14aed0833e37c3b9ff08f",
+        "sha256": "3d17e868bf8f97eea5179b70a85cb065e7b11e997f08023802499e44758a35bb",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "35d1d49e015178f5a76094e0",
+        "sha256": "d919243be1650e14e1939d573b6dd9bfa992f4d43ea0e171d2c1386959471cf8",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "35dd72889ae48d9d14a10ddb",
+        "sha256": "511a28f5c103a5c20ab6c767ea1baf38d5df57a37651e02663da127416f10235",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "5618862984a3449bfd643208",
+        "sha256": "f3e6e9a2baca0772a2187771070380dea279a7812fd1adff42434a17e663eab6",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "58e832c3a390c82cb07f8bc6",
+        "sha256": "608c8fa4948c863db41708bbfdc5278257ca9f1964e5e33107c2a38bfdc8f2c7",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "7746474e3e6968119f82eea5",
+        "sha256": "c5cd9fe1c2eefedd80018c04ad4d188351cf555b7590deb8205b3a4c90b53a41",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "8421d40c13f850480ffde319",
+        "sha256": "43dc337e4c131e67200f06db847e4f3e7845455e7a260044829085a49f4243bd",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "84a4e22f28d9fd7703a88253",
+        "sha256": "5c7677c3d97fede4b73d9276345d62e18655ba83daffc9926399cbe8f367983f",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "86cd8a040d0949fb4eccf14f",
+        "sha256": "498db10ac42b97126ee639d78c73ea1bc50c641f0e6929541861389193d3fd4b",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "8a484a1d5ba4bca49886b21e",
+        "sha256": "8653a34ea3383d0b48926fc1306d6b8e0ad98532a3b0977b94d80930a8d3907a",
+        "size": 352256,
+        "run_status": {
+          "completed": 3
+        }
+      },
+      {
+        "workspace_key": "8a67e39585dbdfd351729711",
+        "sha256": "18053b70207356f79f8b50c8c8136e4b55d0648f74ab2f6242fda9c1817d6a64",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "8f689c24a85e58d19728159e",
+        "sha256": "29a5c9bd3787dbabdb2931c0efa9113e974fa0b2d5746255d31f1454601f8919",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "92425856a3b0d6db527fd29d",
+        "sha256": "a2f00128c2d3cce34c4d2da7eb659bc95e53eb3ad8f14520fd48bec111ec939b",
+        "size": 352256,
+        "run_status": {
+          "completed": 3
+        }
+      },
+      {
+        "workspace_key": "96e9fb3e80db048355fcf885",
+        "sha256": "95418b71de7723cea4c0a5776aa35c707aeb8743cf7fbc89cf8341bc714561c4",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "976a61dc660fdad2c6cf2448",
+        "sha256": "f803e00f117b9cece8aca37230265d1ead0f67aac5587b2870671b2c822d4351",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "c4f075379674b7997d892c6f",
+        "sha256": "2212bfe5ceffa869a8bd700ba663c338b36b438cbb64f3dd72b6723c9124dc9e",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "c8e6d4e00047427edf7b13f9",
+        "sha256": "cee18505e14e1f65bdb777334df398a0ba9817255ad248fc6ab822d7e31a5a22",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "dda31a9bfacf5d4eb154d7d8",
+        "sha256": "85f984051ea78c075dbfa2d3232693863708aacad163e18a0a8e35fab8b67435",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "e6aac56bc4e54f3d4ec85963",
+        "sha256": "6e619d3e68fc691b155f9e7b2d82e79cf851ec35aec58a0c2480d21801d88c3d",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "f157abdd9d48324ddccbc0ed",
+        "sha256": "8bf69aa2f4e8453700cabf4e5afcccf8fa576553aed952019187d8166ffa3db2",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "f763774798b7623c7f407d8b",
+        "sha256": "964897d193ed3c5a764ac856621b90786ae32d860c6e80c7f6edbf41bc3539b3",
+        "size": 352256,
+        "run_status": {
+          "completed": 1
+        }
+      },
+      {
+        "workspace_key": "fa27312487aa19eba17f59a6",
+        "sha256": "38157d52fb4e6a7769071e419d291558b50704e3a0edd9a2c84071f991078f0e",
+        "size": 352256,
+        "run_status": {
+          "completed": 3
+        }
+      }
+    ]
+  },
+  "raw_provider_content_retained": false,
+  "integrity_status": "retained_baseline"
+}

@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "indigo_cartography",
+  "title": "The Indigo Cartography Room",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v7-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "The Indigo Cartography Room",
+    "characters": [
+      "Miri Ansel",
+      "Doran Pike"
+    ],
+    "locations": [
+      "Raster Hall",
+      "Windward Annex"
+    ],
+    "core_design": "flood-season map custody and layered survey plates"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Blue-alert badge rule",
+      "source_label": "ordinary_custody_charter",
+      "body": "During a blue-flood alert, survey plates may be released only by the registered wearer of the cobalt tide badge."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Blue-alert badge inspection",
+      "source_label": "flood_delegation",
+      "body": "The blue-alert inspection log records Doran Pike as the registered wearer of the cobalt tide badge."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Final-glaze counting rule",
+      "source_label": "first_glazing_record",
+      "body": "The current pane count of the north survey window is the number of panes visible in its final-glaze preservation photograph."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Final-glaze photograph",
+      "source_label": "restoration_acceptance",
+      "body": "The final-glaze preservation photograph of the north survey window shows fifteen separately framed mica panes."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Latitude stencil",
+      "source_label": "latitude_stencil",
+      "body": "The tide table stencil marks the equinox latitude with a narrow silver line."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Archive bell",
+      "source_label": "archive_bell",
+      "body": "Raster Hall closes its map drawers after two low bells and one high bell."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Initialed margin note",
+      "source_label": "initialed_margin_note",
+      "body": "A margin note is initialed M. A.; both Miri Ansel and Mara Aven were present, and no witness identifies the writer."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Unlogged courier seal",
+      "source_label": "unlogged_courier_seal",
+      "body": "The courier seal is intact, but the dispatch book leaves its destination field blank."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "Doran Pike",
+      "predicate": "blue_alert_badge",
+      "value": "cobalt tide badge",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "flood_delegation"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "north survey window",
+      "predicate": "final_glaze_photo_panes",
+      "value": "fifteen",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "restoration_acceptance"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "tide table stencil",
+      "predicate": "equinox_mark",
+      "value": "narrow silver line",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "latitude_stencil"
+      }
+    },
+    {
+      "memory_type": "open_thread",
+      "subject": "margin note",
+      "predicate": "writer",
+      "value": "unresolved",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "initialed_margin_note"
+      }
+    }
+  ]
+}

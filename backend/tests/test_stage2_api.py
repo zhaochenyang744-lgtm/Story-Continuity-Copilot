@@ -16,7 +16,13 @@ class ScopedRegressionTests(unittest.TestCase):
         root=pathlib.Path(tempfile.mkdtemp(prefix="scc-regression-")); self.c=TestClient(create_app(AppPaths.from_project_root(root,protected_poc_root=root/"protected")))
         r=self.c.post('/api/auth/register',json={"account_name":"regression","display_name":"Regression","password":"valid-password-99"},headers=h()); self.assertEqual(r.status_code,201); self.p=r.json()['data']['seeded_projects'][0]['id']
         self.d=self.c.get(f'/api/projects/{self.p}').json()['data']['current_draft']
-    def test_missing_session_is_401(self): self.assertEqual(TestClient(self.c.app).get('/api/home').status_code,401)
+    def test_missing_session_is_401(self):
+        anonymous=TestClient(self.c.app)
+        self.assertEqual(anonymous.get('/api/home').status_code,401)
+        self.assertEqual(anonymous.get('/api/auth/session').status_code,401)
+        optional=anonymous.get('/api/auth/session?optional=true')
+        self.assertEqual(optional.status_code,200)
+        self.assertEqual(optional.json()['data'],{'user':None,'session':None})
     def test_draft_read_is_project_scoped(self): self.assertEqual(self.c.get(f'/api/projects/{self.p}/drafts/{self.d["id"]}').status_code,200)
     def test_draft_cas_conflict_is_safe(self):
         self.assertEqual(self.c.patch(f'/api/projects/{self.p}/drafts/{self.d["id"]}',json={"base_revision":9,"body":"x"},headers=h()).status_code,409)
@@ -68,7 +74,7 @@ class ScopedRegressionTests(unittest.TestCase):
         registration=client.post('/api/auth/register',json={'account_name':'metricuser','display_name':'Metric','password':'valid-password-99'},headers=h()).json()['data']; project=registration['seeded_projects'][0]['id']; draft=client.get(f'/api/projects/{project}').json()['data']['current_draft']
         run=client.post(f'/api/projects/{project}/checks',json={'draft_id':draft['id'],'draft_revision':1},headers=h()).json()['data']['run_id']
         minimal=client.get(f'/api/projects/{project}/checks/{run}').json()['data']; detailed=client.get(f'/api/projects/{project}/checks/{run}?include=metrics').json()['data']
-        self.assertNotIn('metrics',minimal); self.assertEqual({key:detailed['metrics'][key] for key in ('latency_ms','input_tokens','output_tokens','cost_cny')},{'latency_ms':7,'input_tokens':33,'output_tokens':12,'cost_cny':None}); self.assertEqual(detailed['metrics']['provenance'],{'provider_label':'metrics-test','model_label':'metrics-test','prompt_version':'continuity-review-v4','schema_version':'continuity-issue-v3','retrieval_method_version':'demo-retrieval-v2','source_memory_version':4}); self.assertTrue(detailed['metrics']['retrieval'])
+        self.assertNotIn('metrics',minimal); self.assertEqual({key:detailed['metrics'][key] for key in ('latency_ms','input_tokens','output_tokens','cost_cny')},{'latency_ms':7,'input_tokens':33,'output_tokens':12,'cost_cny':None}); self.assertEqual(detailed['metrics']['provenance'],{'provider_label':'metrics-test','model_label':'metrics-test','prompt_version':'continuity-review-v8-bounded-evidence','schema_version':'continuity-issue-v3','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4}); self.assertTrue(detailed['metrics']['retrieval'])
 
     def test_login_rate_limit_only_counts_failed_attempts(self):
         account={'account_name':'regression','password':'valid-password-99'}
@@ -113,7 +119,7 @@ class ScopedRegressionTests(unittest.TestCase):
             connection.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,input_tokens,output_tokens,latency_ms,cost_cny,error_code,retryable,created_at,completed_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",('failed-run',self.p,draft['id'],1,'failed','failed','test',None,None,1,None,'provider_error',1,stamp,stamp,'test-model','test-prompt','test-schema','test-retrieval',4))
             connection.execute("INSERT INTO v2_issues(id,project_id,run_id,claim_span_id,status,classification,category,severity,evidence_status,explanation,proposed_change_json) VALUES(?,?,?,?,?,?,?,?,?,?,?)",('high-issue',self.p,'failed-run','claim-x','open','conflict','object_state','high','sufficient','安全错误',None))
         home=self.c.get('/api/home').json()['data']; pending=next(item for item in home['pending_continuity'] if item['project_id']==self.p)
-        self.assertEqual((pending['open_count'],pending['high'],pending['medium'],pending['low']),(1,1,0,0)); self.assertEqual(home['latest_failed_run']['run_id'],'failed-run')
+        self.assertEqual((pending['open_count'],pending['high'],pending['medium'],pending['low']),(5,2,2,1)); self.assertEqual(home['latest_failed_run']['run_id'],'failed-run')
 
     def test_operational_error_maps_to_operation_specific_safe_envelope(self):
         db=self.c.app.state.database

@@ -1,0 +1,29 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-manifest-v1",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "files": [
+    {
+      "corpus_key": "indigo_cartography",
+      "path": "evaluation/fixtures/eval-v7-indigo-cartography.json",
+      "sha256": "7ff21604332e8d9ccdb6591d560b76cb9f04f9a31ae5f5bb5d6183f7c3908bbb"
+    },
+    {
+      "corpus_key": "ember_siltworks",
+      "path": "evaluation/fixtures/eval-v7-ember-siltworks.json",
+      "sha256": "ecfc5df446499b7c298b5205af4e8137a47293c7fa6b8d6ddb70191d2bde629c"
+    },
+    {
+      "corpus_key": "brass_migration",
+      "path": "evaluation/fixtures/eval-v7-brass-migration.json",
+      "sha256": "48a07b40d4ef48da1299d445bf939eaae19e5f466243f8f24a715e6a2a7de8db"
+    },
+    {
+      "corpus_key": "orchid_signalhouse",
+      "path": "evaluation/fixtures/eval-v7-orchid-signalhouse.json",
+      "sha256": "d817ca87bf7dc3316f171f78bb3bc6908659211dd7ac89df637c2f160dafc5db"
+    }
+  ],
+  "canonical_sha256": "04a9e6e1b4c847c12433d42de640b8906252f3590cb5135f77d375fedda683c0"
+}

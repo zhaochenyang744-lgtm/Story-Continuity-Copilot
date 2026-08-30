@@ -8,14 +8,16 @@ export type ProjectSummary = {
   metadata_revision?: number;
   data_origin: string;
   current_memory_version: number;
+  source_revision?: number;
   open_issue_count?: number;
+  continuity_status?: "unchecked" | "checked_clear" | "pending";
   updated_at: string;
   current_draft?: { id: string; revision: number; chapter_number: number };
 };
 export type Project = ProjectSummary & {
   chapter_count: number;
   current_draft: { id: string; revision: number; chapter_number: number };
-  latest_run: { run_id: string; status: string; created_at: string } | null;
+  latest_run: { run_id: string; status: string; created_at: string; result_origin: "provider" | "demo_preset" } | null;
   memory_initialization_status?: string;
 };
 export type Draft = {
@@ -33,7 +35,7 @@ export type Chapter = {
   number: number;
   title: string;
   summary: string;
-  source_spans?: { span_id: string; label: string; text_excerpt: string }[];
+  source_spans?: { span_id: string; label: string; source_revision?: number; text_excerpt: string }[];
 };
 export type Memory = {
   id: string;
@@ -44,7 +46,46 @@ export type Memory = {
   valid_from: number | null;
   valid_to: number | null;
   review_status: string;
-  source: { chapter_id: string; span_id: string; excerpt: string } | null;
+  source: { chapter_id: string; chapter_number: number; chapter_title: string; span_id: string; excerpt: string; source_path: string } | null;
+};
+export type MemoryInitialization = {
+  id?: string;
+  project_id: string;
+  status: "required" | "draft" | "committed" | "rejected";
+  source_revision: number;
+  provider_label?: string;
+  error_code?: string | null;
+  coverage?: MemoryCoverage;
+  candidates: {
+    id: string;
+    memory_type: string;
+    subject: string;
+    predicate: string;
+    value: string;
+    candidate_origin: "initialization" | "delta";
+    review_priority: "core" | "supporting";
+    decision_status: "pending" | "accepted" | "rejected" | "edited";
+    decision?: { decision: string; after: Record<string, string> | null; evidence_span_id?: string | null } | null;
+    source_revision: number;
+    source: {
+      chapter_id: string;
+      chapter_number: number;
+      chapter_title: string;
+      span_id: string;
+      label: string;
+      excerpt: string;
+      text: string;
+      source_path: string;
+    };
+  }[];
+};
+export type MemoryCoverage = {
+  project_id: string;
+  status: "required" | "in_review" | "ready_partial" | "ready_current" | "update_pending";
+  source_revision: number;
+  memory_version: number;
+  counts: { core_pending: number; supporting_pending: number; confirmed: number; confirmed_core: number; pending_canon_count: 0 };
+  blocking_reason: "none" | "core_review_required" | "no_confirmed_core" | "delta_review_required";
 };
 export type Issue = {
   id: string;
@@ -59,8 +100,13 @@ export type Issue = {
   evidence?: {
     id: string;
     chapter_id: string;
+    chapter_number: number;
+    chapter_title: string;
     span_id: string;
+    source_revision: number;
     excerpt: string;
+    excerpt_context: string;
+    source_path: string;
     relation: string;
     sufficiency: string;
     related_memory_ids: string[];
@@ -76,10 +122,36 @@ export type Run = {
   is_stale: boolean;
   superseded: boolean;
   lineage_status: string;
+  result_origin: "provider" | "demo_preset";
+  result_origin_label: string;
   error_code: string | null;
   created_at: string;
   completed_at: string | null;
+  run_type?: "continuity" | "memory_delta";
   issues?: Issue[];
+};
+export type MemoryDelta = {
+  id?: string;
+  project_id: string;
+  source_revision?: number;
+  base_memory_version?: number;
+  status: string;
+  error_code?: string | null;
+  continuity_run_id?: string;
+  memory_delta_run_id?: string;
+  coverage?: MemoryCoverage;
+  coverage_audit?: {
+    id: string;
+    project_id: string;
+    source_revision: number;
+    status: string;
+    memory_version: number;
+    delta_batch_id: string;
+    actor_user_id: string | null;
+    details: { candidate_ids?: string[]; decisions?: { candidate_id: string; decision: string; after: Record<string, string> | null; evidence_span_id: string | null }[] };
+    created_at: string;
+  } | null;
+  candidates: MemoryInitialization["candidates"];
 };
 export type ChangeSet = {
   id: string;
@@ -97,3 +169,4 @@ export type ChangeSet = {
     decision_ids: string[];
   }[];
 };
+export type SourceChangeSet = { id:string; project_id:string; base_source_revision:number; target_source_revision:number; mode:"append"; input_method:"draft_complete"|"paste"|"file"; content_sha256:string; status:"previewed"|"committed"|"failed"; chapter_count:number; source_span_count:number; chapters:{preview_id:string;title:string;order:number;character_count:number}[]; previewed_at:string; committed_at:string|null; failed_at:string|null; failure_code:string|null; expires_at:string; audit:{created_by_user_id:string;idempotency_key_fingerprint:string;request_fingerprint:string;file_basename:string|null} };

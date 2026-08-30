@@ -243,10 +243,11 @@ test.describe.serial("Stage 5 real local workflow", () => {
     page,
     context,
   }) => {
-    const expired: number[] = [];
+    const optionalSessionProbes: number[] = [];
     page.on("response", (response) => {
-      if (new URL(response.url()).pathname === "/api/auth/session")
-        expired.push(response.status());
+      const url = new URL(response.url());
+      if (url.pathname === "/api/auth/session" && url.searchParams.get("optional") === "true")
+        optionalSessionProbes.push(response.status());
     });
     await register(page, account("stagefiveauth"));
     await page.reload();
@@ -255,9 +256,10 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await logoutMenu.getByRole("menuitem", { name: "退出登录", exact: true }).click();
     await expect(page.getByRole("heading", { name: "登录" })).toBeVisible();
     await context.clearCookies();
+    expect((await page.request.get("/api/auth/session")).status()).toBe(401);
     await page.goto("/projects");
     await expect(page.getByRole("heading", { name: "登录" })).toBeVisible();
-    expect(expired).toContain(401);
+    expect(optionalSessionProbes).toContain(200);
   });
 
   test("two browser sessions keep project data isolated", async ({ browser }) => {

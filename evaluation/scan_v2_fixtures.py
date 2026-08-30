@@ -5,7 +5,7 @@ import json
 import re
 from typing import Any
 
-from evaluation.v2_fixture_loader import CORPUS_PATHS, V3_CORPUS_PATHS, V4_CORPUS_PATHS, fixture_runtime
+from evaluation.v2_fixture_loader import CORPUS_PATHS, V3_CORPUS_PATHS, V4_CORPUS_PATHS, V5_CORPUS_PATHS, V6_CORPUS_PATHS, V7_CORPUS_PATHS, V8_CORPUS_PATHS, fixture_runtime
 
 
 PATTERNS = {
@@ -36,7 +36,7 @@ def _count_text(value: str, categories: dict[str, int]) -> None:
 def scan() -> dict[str, Any]:
     categories = {name: 0 for name in PATTERNS}
     source_files = 0
-    corpus_sets = (CORPUS_PATHS, V3_CORPUS_PATHS, V4_CORPUS_PATHS)
+    corpus_sets = (CORPUS_PATHS, V3_CORPUS_PATHS, V4_CORPUS_PATHS, V5_CORPUS_PATHS, V6_CORPUS_PATHS, V7_CORPUS_PATHS, V8_CORPUS_PATHS)
     for corpus_paths in corpus_sets:
         for path in corpus_paths.values():
             source_files += 1

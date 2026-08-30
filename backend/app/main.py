@@ -13,11 +13,53 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from .config import AppPaths, PATHS, ProtectedPathError
 from .database import DomainError
-from .engine import ContinuityEngine
+from .engine import ContinuityEngine, MemoryDeltaEngine, MemoryInitializationEngine
 from .provider import DeepSeekProvider, ProviderPort
 from .v2_database import V2Database
 
 COOKIE = "scc_local_session"
+MEMORY_INITIALIZATION_FAILURE_PHASES = {"provider_preflight","batch_planning","provider_request","post_response_decode","post_response_budget","post_response_validation","post_aggregation"}
+MEMORY_INITIALIZATION_FIELDS = {"memory_type","subject","predicate","value","chapter_id","source_span_id"}
+MEMORY_REPAIR_CODES = {"top_level_shape_invalid","candidate_collection_invalid","candidate_count_invalid","empty_candidates","candidate_fields_invalid","memory_type_invalid","required_field_type_invalid","required_field_blank","candidate_length_invalid","evidence_unresolvable"}
+MEMORY_NORMALIZATION_KINDS = {"trimmed_string","memory_type_format","extra_fields_removed"}
+
+def safe_repair_events(value:object)->list[dict]:
+    if not isinstance(value,list):return []
+    cleaned=[]
+    for event in value:
+        if not isinstance(event,dict):continue
+        batch=event.get("batch_ordinal"); attempt=event.get("attempt"); reason=event.get("reason_code"); result=event.get("result")
+        if not (isinstance(batch,int) and not isinstance(batch,bool) and batch>=1 and isinstance(attempt,int) and not isinstance(attempt,bool) and attempt>=1 and reason in MEMORY_REPAIR_CODES and result in {"pending","succeeded","failed","provider_failed"}):continue
+        item={"batch_ordinal":batch,"attempt":attempt,"reason_code":reason,"result":result}
+        batch_attempt=event.get("batch_attempt")
+        if isinstance(batch_attempt,int) and not isinstance(batch_attempt,bool) and 1<=batch_attempt<=2:item["batch_attempt"]=batch_attempt
+        if event.get("field") in MEMORY_INITIALIZATION_FIELDS:item["field"]=event["field"]
+        ordinal=event.get("candidate_ordinal")
+        if isinstance(ordinal,int) and not isinstance(ordinal,bool) and ordinal>=1:item["candidate_ordinal"]=ordinal
+        if event.get("final_reason_code") in MEMORY_REPAIR_CODES:item["final_reason_code"]=event["final_reason_code"]
+        cleaned.append(item)
+    return cleaned
+
+def safe_memory_initialization_failure_details(result:dict)->dict:
+    """Allow only operational scalars; never expose request or Provider payload data."""
+    details={}
+    phase=result.get("failure_phase")
+    if phase in MEMORY_INITIALIZATION_FAILURE_PHASES:details["failure_phase"]=phase
+    ordinal=result.get("failed_batch_ordinal")
+    if ordinal is None or (isinstance(ordinal,int) and not isinstance(ordinal,bool) and ordinal>=1):details["failed_batch_ordinal"]=ordinal
+    total=result.get("total_batches")
+    if isinstance(total,int) and not isinstance(total,bool) and total>=0:details["total_batches"]=total
+    for field in ("input_tokens","output_tokens","latency_ms","schema_repair_attempts","validated_batches","staged_candidate_count","normalization_count"):
+        value=result.get(field)
+        if isinstance(value,int) and not isinstance(value,bool) and value>=0:details[field]=value
+    if result.get("invalid_field") in MEMORY_INITIALIZATION_FIELDS:details["invalid_field"]=result["invalid_field"]
+    invalid_ordinal=result.get("invalid_candidate_ordinal")
+    if isinstance(invalid_ordinal,int) and not isinstance(invalid_ordinal,bool) and invalid_ordinal>=1:details["invalid_candidate_ordinal"]=invalid_ordinal
+    details["repair_events"]=safe_repair_events(result.get("repair_events"))
+    kinds=result.get("normalization_kinds")
+    if isinstance(kinds,dict):details["normalization_kinds"]={key:value for key,value in kinds.items() if key in MEMORY_NORMALIZATION_KINDS and isinstance(value,int) and not isinstance(value,bool) and value>=1}
+    details["cost_available"]=isinstance(result.get("cost_cny"),(int,float)) and not isinstance(result.get("cost_cny"),bool)
+    return details
 
 class Strict(BaseModel): model_config = ConfigDict(extra="forbid")
 class Register(Strict): account_name:str; display_name:str; password:str
@@ -29,12 +71,28 @@ class DraftPatch(Strict): base_revision:int=Field(ge=1); body:str; title:str|Non
 class Check(Strict): draft_id:str; draft_revision:int=Field(ge=1); client_request_id:str|None=None
 class Decision(Strict): run_id:str; source_revision:int=Field(ge=1); decision:Literal['accept_and_edit','keep_intentional','false_positive']; note:str|None=None; resulting_revision:int|None=None
 class ChangeSet(Strict): run_id:str; source_run_revision:int=Field(ge=1); resolved_revision:int=Field(ge=1)
-class Commit(Strict): confirm:bool|None=None; accepted_item_ids:list[str]; rejected_item_ids:list[str]; note:str|None=None
+class EditedMemoryItem(Strict): item_id:str; memory_type:Literal['static_canon','dynamic_state','event_timeline','character_knowledge','open_thread']; subject:str; predicate:str; value:str
+class Commit(Strict): confirm:bool|None=None; accepted_item_ids:list[str]; rejected_item_ids:list[str]; edited_items:list[EditedMemoryItem]=Field(default_factory=list); note:str|None=None
 class Reset(Strict): confirm:bool|None=None; reason:Literal['fresh_start','demo_recovery']|None=None
 class ImportCommit(Strict): confirm:bool|None=None; title:str; genre:str|None=None; summary:str|None=None; chapter_preview_ids:list[str]
+class MemoryInitialization(Strict): source_revision:int=Field(ge=1)
+class EditedMemoryCandidate(Strict): memory_type:Literal['static_canon','dynamic_state','event_timeline','character_knowledge','open_thread']; subject:str; predicate:str; value:str
+class MemoryCandidateDecision(Strict): decision:Literal['accepted','rejected','edited']; after:EditedMemoryCandidate|None=None; evidence_span_id:str|None=None
+class MemoryInitializationCommit(Strict): confirm:bool|None=None
+class SourceChangePreview(Strict):
+    mode:Literal['append']
+    input_method:Literal['draft_complete','paste','file']
+    base_source_revision:int=Field(ge=1)
+    draft_id:str|None=None
+    content:str|None=None
+    title:str|None=None
+    filename:str|None=None
+class SourceChangeCommit(Strict): confirm:bool|None=None; content_sha256:str
+class IncrementalReview(Strict): source_revision:int=Field(ge=2)
+class MemoryDeltaCommit(Strict): confirm:bool|None=None
 
 def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=None)->FastAPI:
-    db=V2Database(paths); engine=ContinuityEngine(provider or DeepSeekProvider())
+    db=V2Database(paths); engine=ContinuityEngine(provider or DeepSeekProvider()); memory_engine=MemoryInitializationEngine(engine.provider); delta_engine=MemoryDeltaEngine(engine.provider)
     # Initialize eagerly too: ASGI unit clients do not necessarily enter the
     # lifespan context, while normal servers retain the same idempotent check.
     db.initialize()
@@ -49,6 +107,13 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             if result['status']=='completed': db.advance_run(project_id,run_id,'assembling_reviewable_results')
             db.finish_run(project_id,run_id,result)
         except Exception: db.finish_run(project_id,run_id,{'status':'failed','error_code':'internal_run_error','retryable':True})
+    def execute_incremental(project_id:str,batch_id:str):
+        try:
+            continuity_input,delta_input=db.incremental_inputs(project_id,batch_id)
+            continuity=engine.execute(continuity_input); delta=delta_engine.execute(delta_input)
+            db.finish_incremental_runs(project_id,batch_id,continuity,delta)
+        except Exception:
+            db.finish_incremental_runs(project_id,batch_id,{"status":"failed","error_code":"internal_run_error","retryable":True},{"status":"failed","error_code":"internal_run_error","retryable":True})
     @app.middleware('http')
     async def ids(request:Request,call_next):
         request.state.request_id='req_'+uuid.uuid4().hex; response=await call_next(request); response.headers['X-Request-Id']=request.state.request_id; return response
@@ -101,8 +166,12 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.post('/api/auth/logout',status_code=204)
     def logout(request:Request):csrf(request); db.logout(request.cookies.get(COOKIE)); response=Response(status_code=204); response.delete_cookie(COOKIE,path='/'); return response
     @app.get('/api/auth/session')
-    def session(request:Request):
-        active=user(request);return ok(request,{'user':{'id':active['id'],'account_name':active['account_name'],'display_name':active['display_name']},'session':{'expires_at':active['expires_at']}})
+    def session(request:Request,optional:bool=False):
+        try: active=user(request)
+        except DomainError as error:
+            if optional and error.code=='authentication_required':return ok(request,{'user':None,'session':None})
+            raise
+        return ok(request,{'user':{'id':active['id'],'account_name':active['account_name'],'display_name':active['display_name']},'session':{'expires_at':active['expires_at']}})
     @app.get('/api/home')
     def home(request:Request):return ok(request,db.home(user(request)['id']))
     @app.get('/api/projects')
@@ -154,6 +223,66 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     def memory(project_id:str,request:Request,version:int|None=None,entity:str|None=None,memory_type:str|None=None,chapter:str|None=None):
         if memory_type not in {None,'static_canon','dynamic_state','event_timeline','character_knowledge','open_thread'}:raise HTTPException(400,'invalid_filter')
         data=db.memory(user(request)['id'],project_id,version); data['records']=[r for r in data['records'] if(not entity or entity in r['subject'] or entity in r['value'])and(not memory_type or r['memory_type']==memory_type)and(not chapter or(r['source']and r['source']['chapter_id']==chapter))];return ok(request,data)
+    @app.get('/api/projects/{project_id}/memory/initialization')
+    def memory_initialization(project_id:str,request:Request):return ok(request,db.memory_initialization(user(request)['id'],project_id))
+    @app.get('/api/projects/{project_id}/memory/coverage')
+    def memory_coverage(project_id:str,request:Request):return ok(request,db.memory_coverage(user(request)['id'],project_id))
+    @app.get('/api/projects/{project_id}/memory/delta')
+    def memory_delta(project_id:str,request:Request):return ok(request,db.memory_delta(user(request)['id'],project_id))
+    @app.get('/api/projects/{project_id}/source-coverage-audits/{audit_id}')
+    def source_coverage_audit(project_id:str,audit_id:str,request:Request):return ok(request,db.source_coverage_audit(user(request)['id'],project_id,audit_id))
+    @app.post('/api/projects/{project_id}/memory/initializations',status_code=201)
+    def start_memory_initialization(project_id:str,payload:MemoryInitialization,request:Request,view:Literal['full','compact']='full',idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'memory_initialization_failed')
+        actor=user(request); input_data=db.memory_initialization_input(actor['id'],project_id,payload.source_revision)
+        if input_data is None:
+            current=db.memory_initialization(actor['id'],project_id)
+            initialization=current if view=='full' else {field:current.get(field) for field in ('id','project_id','status','source_revision','created_at','completed_at')}
+            return ok(request,{"initialization":initialization})
+        result=memory_engine.execute(input_data)
+        if result['status']!='completed':raise DomainError(result['error_code'],503,result.get('retryable') is True,safe_memory_initialization_failure_details(result))
+        data,status=db.complete_memory_initialization(actor['id'],project_id,input_data,result,memory_engine.provenance(),key(idempotency_key))
+        data['initialization_metrics']={key:result[key] for key in ('total_batches','schema_repair_attempts','validated_batches','staged_candidate_count','normalization_count','input_tokens','output_tokens','latency_ms') if isinstance(result.get(key),int) and not isinstance(result.get(key),bool)}
+        data['initialization_metrics']['repair_events']=safe_repair_events(result.get('repair_events'))
+        kinds=result.get('normalization_kinds')
+        data['initialization_metrics']['normalization_kinds']={key:value for key,value in kinds.items() if key in MEMORY_NORMALIZATION_KINDS and isinstance(value,int) and not isinstance(value,bool) and value>=1} if isinstance(kinds,dict) else {}
+        data['initialization_metrics']['cost_available']=isinstance(result.get('cost_cny'),(int,float)) and not isinstance(result.get('cost_cny'),bool)
+        data['initialization_provenance']=memory_engine.provenance()
+        if view=='full':data['initialization']=db.memory_initialization(actor['id'],project_id)
+        return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/memory/initializations/{initialization_id}/candidates/{candidate_id}/decision')
+    def memory_candidate_decision(project_id:str,initialization_id:str,candidate_id:str,payload:MemoryCandidateDecision,request:Request,view:Literal['full','compact']='full',idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'memory_candidate_decision_failed');actor=user(request);data,status=db.decide_memory_candidate(actor['id'],project_id,initialization_id,candidate_id,payload.model_dump(exclude_none=True),key(idempotency_key))
+        if view=='full':data['initialization']=db.memory_initialization(actor['id'],project_id)
+        return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/memory/initializations/{initialization_id}/commit')
+    def commit_memory_initialization(project_id:str,initialization_id:str,payload:MemoryInitializationCommit,request:Request,view:Literal['full','compact']='full',idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'memory_initialization_commit_failed');actor=user(request);data,status=db.commit_memory_initialization(actor['id'],project_id,initialization_id,payload.model_dump(exclude_none=True),key(idempotency_key))
+        if view=='full':data['initialization']=db.memory_initialization(actor['id'],project_id)
+        return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/incremental-reviews',status_code=202)
+    def incremental_review(project_id:str,payload:IncrementalReview,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'incremental_review_failed'); actor=user(request)
+        if not engine.provider.available: raise HTTPException(503,'provider_unavailable')
+        data,status,created=db.create_incremental_runs(actor['id'],project_id,payload.model_dump(),key(idempotency_key),engine.provenance(),delta_engine.provenance())
+        if created:
+            if executor: executor(execute_incremental,project_id,data['batch_id'])
+            else: background_tasks.add_task(execute_incremental,project_id,data['batch_id'])
+        return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/memory/deltas/{batch_id}/candidates/{candidate_id}/decision')
+    def memory_delta_candidate_decision(project_id:str,batch_id:str,candidate_id:str,payload:MemoryCandidateDecision,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'memory_delta_decision_failed'); data,status=db.decide_memory_delta_candidate(user(request)['id'],project_id,batch_id,candidate_id,payload.model_dump(exclude_none=True),key(idempotency_key)); return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/memory/deltas/{batch_id}/commit')
+    def commit_memory_delta(project_id:str,batch_id:str,payload:MemoryDeltaCommit,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'memory_delta_commit_failed'); data,status=db.commit_memory_delta(user(request)['id'],project_id,batch_id,payload.model_dump(exclude_none=True),key(idempotency_key)); return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/source-change-sets/preview',status_code=201)
+    def source_change_preview(project_id:str,payload:SourceChangePreview,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'source_change_preview_failed');data,status=db.preview_source_change_set(user(request)['id'],project_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/source-change-sets/{change_set_id}/commit')
+    def source_change_commit(project_id:str,change_set_id:str,payload:SourceChangeCommit,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'source_change_commit_failed');data,status=db.commit_source_change_set(user(request)['id'],project_id,change_set_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
+    @app.get('/api/projects/{project_id}/source-revisions/{source_revision}/spans')
+    def source_revision_spans(project_id:str,source_revision:int,request:Request):return ok(request,db.source_revision_spans(user(request)['id'],project_id,source_revision))
     @app.get('/api/projects/{project_id}/drafts/{draft_id}')
     def draft(project_id:str,draft_id:str,request:Request):return ok(request,db.draft(user(request)['id'],project_id,draft_id))
     @app.patch('/api/projects/{project_id}/drafts/{draft_id}')

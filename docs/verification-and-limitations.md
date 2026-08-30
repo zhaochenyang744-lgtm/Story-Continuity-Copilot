@@ -1,8 +1,8 @@
 # Verification and known limitations
 
-## Final retained verification record
+## Published V4 baseline verification record
 
-The following results are retained evidence for the local Web Demo. They describe completed verification, not a deployment or a claim of universal reliability.
+The following results are the retained Stage 7 publication baseline for the local Web Demo. They describe completed verification, not a deployment or a claim of universal reliability. Later accepted work and retained failures are recorded separately below.
 
 | Area | Retained result | Scope |
 | --- | --- | --- |
@@ -37,6 +37,12 @@ The V4 results are stored as sanitised structured files with a post-run integrit
 
 The reported V4 scope is deliberately narrow: it is a frozen 15-case product evaluation with 6 stability reruns, not an online A/B test, a broad literary-quality benchmark, or an estimate of production cost.
 
+## Current evaluation status
+
+Stages 8 and 9 are accepted. V5–V8 each retain one immutable first-valid formal result bundle with `gate_failed`; those results, integrity records, and workspaces are historical evidence rather than retuning inputs. V8 `first_valid_formal` ran once on frozen `deepseek-v4-pro` and `continuity-review-v6` inputs. All 30 calls completed; classification, macro F1, all three class recalls, retrieval, citation precision, grounding, schema validity, and Evidence completeness were 1.0000. Category accuracy was 0.875 and the designated category regression was 2/3 because one `location_action` case was classified as `event_status`. This single deviation is retained as a portfolio-level known limitation, while the immutable Stage 10 result remains `gate_failed`.
+
+Stage 11 has separately verified the long-form product workflow at the primary 100k- and 300k-character targets. The accepted 300k V2 evidence records 90/90 successful Provider calls with no transport retries, a 4,820,992-byte final SQLite database, bounded write acknowledgements, resolvable current-project Evidence, explicit author decisions, and no pending or automatic canon writes. The earlier 300k V1 capacity failure remains unchanged. The optional 1M-character Stage 11N pressure test and Stages 12–14 have not started.
+
 ## Limitations
 
 - Two formal V4 cases had the correct class but a category mismatch: `timeline → event_status` and `world_rule → event_status`.
@@ -44,6 +50,7 @@ The reported V4 scope is deliberately narrow: it is a frozen 15-case product eva
 - A real provider must be explicitly configured. Without it, the product intentionally returns `503 provider_unavailable` instead of fabricating a result.
 - The local runtime database is deliberately excluded from version control. Reset restores the demo path but is not a backup, collaboration, or hosted data-management system.
 - The historical frozen CLI PoC and its held-out F1 0.9412 use a different protocol. That result is not combined with V4 metrics.
+- The currently verified product is not deployed. The planned hosted route has not yet been implemented or accepted.
 
 ## Evidence references
 

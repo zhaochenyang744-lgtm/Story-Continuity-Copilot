@@ -1,0 +1,28 @@
+{
+  "evaluation": "scc-web-demo-eval-v8-first-formal",
+  "bad_cases": [
+    {
+      "case_id": "v8-flint-garden-conflict-location_action",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "category": {
+        "expected": "location_action",
+        "predicted": "event_status"
+      },
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "category_mismatch"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 2,
+        "resolvable_evidence_count": 2,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 2,
+        "expected_evidence_full_set_cited": true
+      }
+    }
+  ]
+}

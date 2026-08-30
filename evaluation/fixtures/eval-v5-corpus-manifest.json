@@ -1,0 +1,13 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-manifest-v1",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "files": [
+    {"corpus_key": "ember_observatory", "path": "evaluation/fixtures/eval-v5-ember-observatory.json", "sha256": "beb4b30ae4613c06f5c95ac82a06ef14a6c546faf32efab4fe15aaec8cfb61c8"},
+    {"corpus_key": "reed_foundry", "path": "evaluation/fixtures/eval-v5-reed-foundry.json", "sha256": "12cfac0f67fee346483f6e878064ca6a6e9869653fbe6e66fc2adfa737700c3b"},
+    {"corpus_key": "glass_marsh", "path": "evaluation/fixtures/eval-v5-glass-marsh.json", "sha256": "c8a913c2573f03dddb65dd74402f1f37e01d7db243aa85afc973604ec098063a"},
+    {"corpus_key": "copper_orchard", "path": "evaluation/fixtures/eval-v5-copper-orchard.json", "sha256": "79cecdcb51016812ba9d02d2fb67e60d10ae9da77d5d05b5078fddf52d667473"}
+  ],
+  "canonical_sha256": "48124a6eab2b65a4ab2339bf5f645d732fcbec5dbf36a3c5d25fdfc79d74795a"
+}

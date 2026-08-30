@@ -1,0 +1,317 @@
+{
+  "evaluation": "scc-web-demo-eval-v5-first-formal",
+  "bad_cases": [
+    {
+      "case_id": "eval-v5-ember-conflict-prism-silver",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-ember-conflict-roster-knowledge",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-ember-no-conflict-ring-angle",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-ember-no-conflict-joint-signoff",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-ember-insufficient-crack-cause",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-ember-insufficient-box-mover",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-reed-conflict-core-location",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-reed-conflict-solo-gate-authority",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-reed-no-conflict-bellows-pressure",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-reed-no-conflict-casting-complete",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-reed-insufficient-ash-destination",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-reed-insufficient-hammer-motive",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-marsh-conflict-flash-order",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-marsh-conflict-aurora-shutters",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-marsh-no-conflict-float-location",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-marsh-no-conflict-salt-mirror",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-marsh-insufficient-note-author",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-marsh-insufficient-horn-outcome",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-orchard-conflict-east-pruning",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-orchard-conflict-pollination-complete",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-orchard-no-conflict-clip-count",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-orchard-no-conflict-irrigation-order",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-orchard-insufficient-pollen-source",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    },
+    {
+      "case_id": "eval-v5-orchard-insufficient-basket-destination",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "root_cause": "schema",
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "provider_error",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0
+      }
+    }
+  ]
+}

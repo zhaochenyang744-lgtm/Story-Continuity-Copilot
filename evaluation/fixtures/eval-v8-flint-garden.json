@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "flint_garden",
+  "title": "The Flint Garden Registry",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v8-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "The Flint Garden Registry",
+    "characters": [
+      "Noma Rusk",
+      "Eli Vann"
+    ],
+    "locations": [
+      "Frost Court",
+      "Kite Shed"
+    ],
+    "core_design": "garden notices, coded repairs, and final-gate completion records"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Route-code map",
+      "source_label": "route_code_map",
+      "body": "On the Flint Garden registry, repair code K-4 denotes work performed in Frost Court; the map does not identify a particular repair."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Repair receipt",
+      "source_label": "repair_receipt",
+      "body": "Eli Vann's hinge repair receipt bears route code K-4; another receipt for a gate latch bears K-9."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Completion definition",
+      "source_label": "completion_definition",
+      "body": "A seed-gate delivery is complete only if both the delivery stamp is present and the final gate latch is closed."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Latch log",
+      "source_label": "latch_log",
+      "body": "The seed-gate log records a delivery stamp, but says the final gate latch remained open."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Pruning tool",
+      "source_label": "pruning_tool",
+      "body": "Noma Rusk trims the frost hedge with a crescent shear; a nearby rake entry refers to leaf collection only."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Court bell",
+      "source_label": "court_bell",
+      "body": "Frost Court opens after one brass bell and two reed bells."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Unconfirmed cause",
+      "source_label": "unconfirmed_cause",
+      "body": "A cracked pot was found after rain, but no record identifies whether wind, frost, or a person caused it."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Inspection without outcome",
+      "source_label": "inspection_without_outcome",
+      "body": "The Kite Shed gate was inspected, but the inspector recorded no pass or fail result."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "Noma Rusk",
+      "predicate": "fixture_anchor",
+      "value": "flint_garden-1",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "route_code_map"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Noma Rusk",
+      "predicate": "fixture_anchor",
+      "value": "flint_garden-3",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "completion_definition"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Noma Rusk",
+      "predicate": "fixture_anchor",
+      "value": "flint_garden-5",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "pruning_tool"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Noma Rusk",
+      "predicate": "fixture_anchor",
+      "value": "flint_garden-7",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "unconfirmed_cause"
+      }
+    }
+  ]
+}
