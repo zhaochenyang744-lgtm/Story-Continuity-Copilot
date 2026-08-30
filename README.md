@@ -1,6 +1,6 @@
 # Story Continuity Copilot
 
-Story Continuity Copilot is a long-form fiction continuity review product whose currently verified delivery is a local Web Demo. It combines versioned Story Memory with a continuity agent that returns grounded findings for an author to review. It does not write the next chapter: the author remains responsible for the text and explicitly decides whether a proposed Memory change becomes canon.
+Story Continuity Copilot is a long-form fiction continuity review product whose currently verified delivery is an undeployed local Web App candidate. It combines versioned Story Memory with a continuity agent that returns grounded findings for an author to review. It does not write the next chapter: the author remains responsible for the text and explicitly decides whether a proposed Memory change becomes canon.
 
 The repository is designed for local reproduction. It contains the application source, migration and seed logic, tests, sanitised V4–V8 evaluation result records, and a small set of production-workflow screenshots. It does not include runtime databases, environment files, provider credentials, raw provider responses, recorded runtime prompt bodies, chain-of-thought, or protected evaluation assets. Full V5–V8 post-run database-hash validation therefore also requires the separately retained local evaluation workspaces; the committed result files alone do not recreate those SQLite artifacts.
 
@@ -19,9 +19,11 @@ Three independently seeded projects are available: **Grey Harbor Echoes**, **Pap
 
 ## Product and safety boundaries
 
-- The FastAPI backend exposes 24 API endpoint templates for authentication, projects, story context, drafts, checks, Evidence, decisions, ChangeSets, Reset, and import.
+- The FastAPI backend covers registered and visitor authentication, recovery-email verification and password reset, projects, story context, imports, drafts, checks, Evidence, decisions, ChangeSets, Reset, quotas, and visitor cleanup.
 - Every project resource is checked against the current session and project ownership. Cross-account access returns a not-found response without disclosing the resource.
 - Evidence must resolve to a SourceSpan owned by the active project. Unresolvable Evidence fails closed.
+- Continuity and Memory Delta work use an observable Agent Run lifecycle: `queued`, `running`, `completed`, `timed_out`, `failed`, or `cancelled`. Retry and Cancel preserve lineage, and non-completed runs do not create partial Issues, Decisions, or Memory updates.
+- Public-mode configuration fails closed. Provider and SMTP credentials remain server-only; visitors receive isolated, time-limited spaces with server-enforced workflow, provider-attempt, text-length, and budget limits.
 - An explicitly configured `DeepSeekProvider` supports real local checks. When no production provider is configured, a check returns `503 provider_unavailable`; it does not create a Run or substitute a static result.
 - Reset is project-scoped, confirmed, idempotent, and constrained to this demo's runtime database.
 
@@ -46,7 +48,9 @@ The frozen CLI PoC has a separate historical held-out result (F1 0.9412) under a
 
 V5–V8 each retain one immutable first-valid formal result bundle with `gate_failed`; later work does not overwrite or rerun them. In V8, all 30 calls completed and all core classification and Evidence measures were 1.0000, but the designated category regression was 2/3 because one `location_action` case was classified as `event_status`. This single category deviation is retained as a portfolio-level known limitation, while the Stage 10 Gate remains failed.
 
-Stage 11 has since verified the author-controlled long-form workflow on a real 100k-character prefix and a 300k-character prefix. The accepted 300k V2 result completed initialization plus two append/review/decision/commit rounds with bounded RAG, valid Evidence lineage, no automatic canon writes, and a 4,820,992-byte final SQLite database. The first 300k V1 capacity failure remains immutable alongside the V2 pass. The optional 1M-character Stage 11N pressure test has not been run; Stages 12–14 have not started.
+Stage 11 has since verified the author-controlled long-form workflow on a real 100k-character prefix and a 300k-character prefix. The accepted 300k V2 result completed initialization plus two append/review/decision/commit rounds with bounded RAG, valid Evidence lineage, no automatic canon writes, and a 4,820,992-byte final SQLite database. The first 300k V1 capacity failure remains immutable alongside the V2 pass. The optional 1M-character Stage 11N pressure test has not been run.
+
+Stage 12 V2 independently passed the six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero-partial-write Gates; its V1 Provider-boundary incident remains `gate_failed`. Stage 13 V4 independently passed the local Web App product Gate after the V2/V3 deployment-artifact failures: server-only integration boundaries, visitor isolation, limits and cleanup, real recovery contracts, two reproducible standalone builds, relocation, and the full browser matrix were verified without external Provider HTTP or SMTP. The application is not publicly deployed, and Stage 14 public-address acceptance has not started.
 
 Read [the verification record](docs/verification-and-limitations.md) for evidence scope and limitations, and [the product decisions record](docs/product-decisions-and-validation.md) for the rationale behind the workflow.
 
@@ -84,6 +88,11 @@ Start the backend in one terminal:
 
 ```powershell
 Set-Location backend
+$env:PUBLIC_APP_MODE = '0'
+$env:PUBLIC_BASE_URL = 'http://127.0.0.1:3000'
+$env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
+$env:TRUSTED_HOSTS = '127.0.0.1:8000'
+$env:TRUSTED_ORIGINS = 'http://127.0.0.1:3000'
 & ..\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
@@ -91,6 +100,9 @@ Start the frontend in a second terminal:
 
 ```powershell
 Set-Location frontend
+$env:PUBLIC_APP_MODE = '0'
+$env:PUBLIC_BASE_URL = 'http://127.0.0.1:3000'
+$env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
 npm run dev
 ```
 
@@ -101,6 +113,11 @@ Open `http://127.0.0.1:3000`. The frontend rewrites same-origin `/api` requests 
 ```powershell
 # Backend contract and regression suite
 Set-Location backend
+$env:PUBLIC_APP_MODE = '0'
+$env:PUBLIC_BASE_URL = 'http://127.0.0.1:3000'
+$env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
+$env:TRUSTED_HOSTS = '127.0.0.1:8000,testserver'
+$env:TRUSTED_ORIGINS = 'http://127.0.0.1:3000,http://testserver'
 & ..\.venv\Scripts\python.exe -m unittest discover -s tests -v
 
 # Public evaluation package checks; no provider calls
@@ -114,12 +131,15 @@ $env:PYTHONPATH = '.;backend'
 
 # Frontend static gates
 Set-Location frontend
+$env:PUBLIC_APP_MODE = '0'
+$env:PUBLIC_BASE_URL = 'http://127.0.0.1:3000'
+$env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
 npm run lint
 npm run typecheck
 npm run build
 ```
 
-The backend suite includes the 24-endpoint contract coverage. The release-bundle validator checks that the published V4 results, frozen assets, recorded workspace metadata, documentation, and screenshots are self-consistent; it does not claim to reopen unpublished SQLite workspaces. Browser E2E requires the isolated FastAPI/Next.js processes described in [the local setup guide](docs/local-setup.md); it uses a test-only provider and a temporary database rather than the local demo database.
+The backend suite includes the Stage 12 lifecycle and Stage 13 public-app security contracts. The release-bundle validator checks that the published V4 results, frozen assets, recorded workspace metadata, documentation, and screenshots are self-consistent; it does not claim to reopen unpublished SQLite workspaces. Browser E2E requires the isolated FastAPI/Next.js processes described in [the local setup guide](docs/local-setup.md); it uses a test-only provider and a temporary database rather than the local demo database.
 
 ## Demo path
 
@@ -127,7 +147,8 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 
 ## Known limitations
 
-- The currently verified version is a local demo, not a deployed service or a claim of production operation. A lightweight hosted Web App is a planned later route.
+- The currently verified version is an undeployed local Web App candidate, not a claim of public production operation. Stage 14 still needs a separately authorised deployment, public-address acceptance, and rollback Gate.
+- Recovery flows are implemented and validated with a server-side capture mailer; real SMTP delivery and public reset links have not yet been accepted in a deployed environment.
 - V4 is a small, frozen product evaluation; it supports the stated evaluation claims only and is not a general benchmark.
 - Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.
 - The provider returns no cost in the retained V4 results.

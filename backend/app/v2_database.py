@@ -21,6 +21,32 @@ from .memory_contract import is_controlled_candidate, normalize_memory_value, no
 from .seed_data import CHAPTERS, DEMO_REVIEW_ISSUES, DRAFT, MEMORY_RECORDS
 
 
+RUN_ACTIVE_STATUSES = {"queued", "running"}
+RUN_TERMINAL_STATUSES = {"completed", "failed", "timed_out", "cancelled"}
+
+
+def public_run_status(status: str) -> str:
+    """Expose only the frozen Stage 12 state vocabulary."""
+    return "failed" if status == "budget_paused" else status
+
+
+def public_run_error(status: str, error_code: str | None) -> str | None:
+    if status == "budget_paused" or error_code in {"budget_paused", "session_guard_paused"}:
+        return "budget_guard_exceeded"
+    return error_code
+
+
+def elapsed_ms(started_at: str | None, completed_at: str | None) -> int | None:
+    if not started_at or not completed_at:
+        return None
+    try:
+        start = datetime.fromisoformat(started_at)
+        end = datetime.fromisoformat(completed_at)
+    except ValueError:
+        return None
+    return max(0, int((end - start).total_seconds() * 1000))
+
+
 def utcnow() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -70,7 +96,7 @@ def _rewrite_memory_identity(value: str | None, memory_ids: dict[str, str]) -> s
 
 SCHEMA = """
 PRAGMA foreign_keys=ON;
-CREATE TABLE IF NOT EXISTS v2_users(id TEXT PRIMARY KEY,account_name TEXT NOT NULL UNIQUE,display_name TEXT NOT NULL,password_hash TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS v2_users(id TEXT PRIMARY KEY,account_name TEXT NOT NULL UNIQUE,display_name TEXT NOT NULL,password_hash TEXT NOT NULL,created_at TEXT NOT NULL,account_type TEXT NOT NULL DEFAULT 'registered',visitor_expires_at TEXT,recovery_email_hash TEXT,recovery_email_masked TEXT,recovery_email_verified_at TEXT);
 CREATE TABLE IF NOT EXISTS v2_sessions(id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),token_hash TEXT NOT NULL UNIQUE,expires_at TEXT NOT NULL,revoked_at TEXT,created_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS v2_projects(id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),title TEXT NOT NULL,genre TEXT NOT NULL DEFAULT '',summary TEXT NOT NULL DEFAULT '',status TEXT NOT NULL,metadata_revision INTEGER NOT NULL,data_origin TEXT NOT NULL,seed_key TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,current_memory_version INTEGER NOT NULL DEFAULT 1,source_revision INTEGER NOT NULL DEFAULT 1);
 CREATE INDEX IF NOT EXISTS v2_projects_by_owner ON v2_projects(user_id,status,updated_at);
@@ -84,9 +110,11 @@ CREATE TABLE IF NOT EXISTS v2_memory_versions(project_id TEXT NOT NULL REFERENCE
 CREATE TABLE IF NOT EXISTS v2_memory_records(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),version INTEGER NOT NULL,memory_type TEXT NOT NULL,subject TEXT NOT NULL,predicate TEXT NOT NULL,value TEXT NOT NULL,source_span_id TEXT,review_status TEXT NOT NULL,valid_from INTEGER,valid_to INTEGER,source_claim_id TEXT,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_drafts(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),chapter_number INTEGER NOT NULL,title TEXT NOT NULL,body TEXT NOT NULL,revision INTEGER NOT NULL,status TEXT NOT NULL,saved_at TEXT NOT NULL,parent_revision INTEGER,edit_context_json TEXT,checksum TEXT NOT NULL,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_draft_revisions(draft_id TEXT NOT NULL REFERENCES v2_drafts(id),revision INTEGER NOT NULL,title TEXT NOT NULL,body TEXT NOT NULL,checksum TEXT NOT NULL,parent_revision INTEGER,edit_context_json TEXT,saved_at TEXT NOT NULL,PRIMARY KEY(draft_id,revision));
-CREATE TABLE IF NOT EXISTS v2_runs(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),draft_id TEXT NOT NULL REFERENCES v2_drafts(id),source_revision INTEGER NOT NULL,status TEXT NOT NULL,stage TEXT NOT NULL,provider_label TEXT NOT NULL,input_tokens INTEGER,output_tokens INTEGER,latency_ms INTEGER,cost_cny REAL,error_code TEXT,retryable INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL,completed_at TEXT,model_label TEXT,prompt_version TEXT,schema_version TEXT,retrieval_method_version TEXT,source_memory_version INTEGER,result_origin TEXT NOT NULL DEFAULT 'provider',run_type TEXT NOT NULL DEFAULT 'continuity',source_change_set_id TEXT,source_span_ids_json TEXT NOT NULL DEFAULT '[]',UNIQUE(project_id,id));
+CREATE TABLE IF NOT EXISTS v2_runs(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),draft_id TEXT NOT NULL REFERENCES v2_drafts(id),source_revision INTEGER NOT NULL,status TEXT NOT NULL,stage TEXT NOT NULL,provider_label TEXT NOT NULL,input_tokens INTEGER,output_tokens INTEGER,latency_ms INTEGER,cost_cny REAL,error_code TEXT,retryable INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL,completed_at TEXT,model_label TEXT,prompt_version TEXT,schema_version TEXT,retrieval_method_version TEXT,source_memory_version INTEGER,result_origin TEXT NOT NULL DEFAULT 'provider',run_type TEXT NOT NULL DEFAULT 'continuity',source_change_set_id TEXT,source_span_ids_json TEXT NOT NULL DEFAULT '[]',started_at TEXT,cancel_requested_at TEXT,duration_ms INTEGER,retry_of_run_id TEXT,root_run_id TEXT,attempt_number INTEGER NOT NULL DEFAULT 1,incremental_batch_id TEXT,UNIQUE(project_id,id));
 CREATE INDEX IF NOT EXISTS v2_runs_by_project ON v2_runs(project_id,draft_id,source_revision,status);
 CREATE TABLE IF NOT EXISTS v2_run_stages(run_id TEXT NOT NULL REFERENCES v2_runs(id),stage TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(run_id,stage));
+CREATE TABLE IF NOT EXISTS v2_run_events(run_id TEXT NOT NULL REFERENCES v2_runs(id),sequence INTEGER NOT NULL,status TEXT NOT NULL,stage TEXT NOT NULL,error_code TEXT,created_at TEXT NOT NULL,PRIMARY KEY(run_id,sequence));
+CREATE INDEX IF NOT EXISTS v2_run_events_by_run ON v2_run_events(run_id,sequence);
 CREATE TABLE IF NOT EXISTS v2_run_claims(id TEXT PRIMARY KEY,run_id TEXT NOT NULL REFERENCES v2_runs(id),ordinal INTEGER NOT NULL,text TEXT NOT NULL,UNIQUE(run_id,ordinal));
 CREATE TABLE IF NOT EXISTS v2_retrieval_traces(run_id TEXT NOT NULL REFERENCES v2_runs(id),claim_id TEXT NOT NULL,terms TEXT NOT NULL,returned_span_ids_json TEXT NOT NULL,method_version TEXT NOT NULL,PRIMARY KEY(run_id,claim_id));
 CREATE TABLE IF NOT EXISTS v2_issues(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),claim_span_id TEXT NOT NULL,status TEXT NOT NULL,classification TEXT NOT NULL DEFAULT 'conflict',category TEXT NOT NULL,severity TEXT NOT NULL,evidence_status TEXT NOT NULL,explanation TEXT NOT NULL,proposed_change_json TEXT,UNIQUE(project_id,id));
@@ -152,7 +180,23 @@ class V2Database:
             self._migrate_stage11k_incremental_delta(c)
             self._migrate_stage11k_run_audit_fields(c)
             self._migrate_stage11k_coverage_audit_details(c)
+            self._migrate_stage13_identity(c)
             self._migrate_legacy_project(c)
+            self._migrate_stage12_run_lifecycle(c)
+
+    def _migrate_stage13_identity(self, c: sqlite3.Connection) -> None:
+        columns = {row["name"] for row in c.execute("PRAGMA table_info(v2_users)")}
+        additions = {
+            "account_type": "TEXT NOT NULL DEFAULT 'registered'",
+            "visitor_expires_at": "TEXT",
+            "recovery_email_hash": "TEXT",
+            "recovery_email_masked": "TEXT",
+            "recovery_email_verified_at": "TEXT",
+        }
+        for name, definition in additions.items():
+            if name not in columns:
+                c.execute(f"ALTER TABLE v2_users ADD COLUMN {name} {definition}")
+        c.execute("CREATE UNIQUE INDEX IF NOT EXISTS v2_users_recovery_email_unique ON v2_users(recovery_email_hash) WHERE recovery_email_hash IS NOT NULL")
 
     def _migrate_run_provenance(self, c: sqlite3.Connection) -> None:
         """Add safe, version-only Run provenance without rewriting old results."""
@@ -287,6 +331,31 @@ class V2Database:
         if "details_json" not in fields: c.execute("ALTER TABLE v2_source_coverage_audits ADD COLUMN details_json TEXT NOT NULL DEFAULT '{}'")
         c.execute("INSERT INTO schema_migrations VALUES(16,?)",(utcnow(),))
 
+    def _migrate_stage12_run_lifecycle(self, c: sqlite3.Connection) -> None:
+        """Add lifecycle lineage without rewriting historic terminal facts."""
+        columns={row["name"] for row in c.execute("PRAGMA table_info(v2_runs)").fetchall()}
+        additions={
+            "started_at":"TEXT",
+            "cancel_requested_at":"TEXT",
+            "duration_ms":"INTEGER",
+            "retry_of_run_id":"TEXT",
+            "root_run_id":"TEXT",
+            "attempt_number":"INTEGER NOT NULL DEFAULT 1",
+            "incremental_batch_id":"TEXT",
+        }
+        for name,definition in additions.items():
+            if name not in columns:c.execute(f"ALTER TABLE v2_runs ADD COLUMN {name} {definition}")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_run_events(run_id TEXT NOT NULL REFERENCES v2_runs(id),sequence INTEGER NOT NULL,status TEXT NOT NULL,stage TEXT NOT NULL,error_code TEXT,created_at TEXT NOT NULL,PRIMARY KEY(run_id,sequence))")
+        c.execute("CREATE INDEX IF NOT EXISTS v2_run_events_by_run ON v2_run_events(run_id,sequence)")
+        c.execute("UPDATE v2_runs SET root_run_id=id WHERE root_run_id IS NULL")
+        c.execute("UPDATE v2_runs SET attempt_number=1 WHERE attempt_number IS NULL OR attempt_number<1")
+        c.execute("UPDATE v2_runs SET incremental_batch_id=(SELECT b.id FROM v2_memory_delta_batches b WHERE b.continuity_run_id=v2_runs.id OR b.memory_delta_run_id=v2_runs.id) WHERE incremental_batch_id IS NULL AND source_change_set_id IS NOT NULL")
+        c.execute("UPDATE v2_runs SET duration_ms=CAST(MAX(0,(julianday(completed_at)-julianday(started_at))*86400000) AS INTEGER) WHERE duration_ms IS NULL AND started_at IS NOT NULL AND completed_at IS NOT NULL")
+        for run in c.execute("SELECT * FROM v2_runs WHERE NOT EXISTS(SELECT 1 FROM v2_run_events e WHERE e.run_id=v2_runs.id)").fetchall():
+            status=public_run_status(run["status"]); stage=status if run["status"]=="budget_paused" else run["stage"]
+            c.execute("INSERT INTO v2_run_events VALUES(?,?,?,?,?,?)",(run["id"],1,status,stage,public_run_error(run["status"],run["error_code"]),run["completed_at"] or run["created_at"]))
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(17,?)",(utcnow(),))
+
     @staticmethod
     def _normalize(value: str) -> str:
         return normalize_memory_value(value)
@@ -315,7 +384,7 @@ class V2Database:
         if not legacy:
             return
         user_id = new_id("usr")
-        c.execute("INSERT INTO v2_users VALUES(?,?,?,?,?)", (user_id, "v1-migration", "V1 local migration", _password(secrets.token_urlsafe(24)), utcnow()))
+        c.execute("INSERT INTO v2_users(id,account_name,display_name,password_hash,created_at) VALUES(?,?,?,?,?)", (user_id, "v1-migration", "V1 local migration", _password(secrets.token_urlsafe(24)), utcnow()))
         project_id = new_id("prj")
         stamp = utcnow()
         c.execute("INSERT INTO v2_projects VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", (project_id,user_id,legacy["title"],"",legacy["summary"],"active",1,"v1_migrated",None,stamp,stamp,int(legacy["current_memory_version"]),1))
@@ -450,6 +519,32 @@ class V2Database:
         created = (result, status_code)
         return (*created, True) if with_created else created
 
+    @staticmethod
+    def _append_run_event(c: sqlite3.Connection, run_id: str, status: str, stage: str, error_code: str | None, stamp: str) -> None:
+        sequence=c.execute("SELECT COALESCE(MAX(sequence),0)+1 FROM v2_run_events WHERE run_id=?",(run_id,)).fetchone()[0]
+        c.execute("INSERT INTO v2_run_events(run_id,sequence,status,stage,error_code,created_at) VALUES(?,?,?,?,?,?)",(run_id,sequence,public_run_status(status),stage,public_run_error(status,error_code),stamp))
+        c.execute("INSERT OR IGNORE INTO v2_run_stages(run_id,stage,created_at) VALUES(?,?,?)",(run_id,stage,stamp))
+
+    @staticmethod
+    def _normalized_terminal(result: dict[str, Any]) -> tuple[str, str, str | None]:
+        original=str(result.get("status") or "failed")
+        status=public_run_status(original)
+        if status not in RUN_TERMINAL_STATUSES:status="failed"
+        error=public_run_error(original,result.get("error_code"))
+        if status=="failed" and not error:error="internal_run_error"
+        return status,status,error
+
+    @staticmethod
+    def _cancel_active_row(c: sqlite3.Connection, run: sqlite3.Row, stamp: str) -> dict[str, Any]:
+        if run["status"]=="queued":
+            duration=elapsed_ms(run["started_at"] or run["created_at"],stamp)
+            changed=c.execute("UPDATE v2_runs SET status='cancelled',stage='cancelled',cancel_requested_at=COALESCE(cancel_requested_at,?),completed_at=?,duration_ms=?,error_code='author_cancelled',retryable=1 WHERE id=? AND status='queued'",(stamp,stamp,duration,run["id"])).rowcount
+            if changed:V2Database._append_run_event(c,run["id"],"cancelled","cancelled","author_cancelled",stamp)
+            return {"run_id":run["id"],"status":"cancelled","stage":"cancelled"}
+        changed=c.execute("UPDATE v2_runs SET stage='cancelling',cancel_requested_at=COALESCE(cancel_requested_at,?),error_code='author_cancelled',retryable=1 WHERE id=? AND status='running' AND stage!='cancelling'",(stamp,run["id"])).rowcount
+        if changed:V2Database._append_run_event(c,run["id"],"running","cancelling","author_cancelled",stamp)
+        return {"run_id":run["id"],"status":"running","stage":"cancelling"}
+
     def _empty_project_state(self, c: sqlite3.Connection, project_id: str, chapter_number: int = 1) -> str:
         stamp = utcnow()
         c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)", (project_id,1,"current",None,stamp))
@@ -507,10 +602,11 @@ class V2Database:
         stamp = utcnow()
         run_id = scoped_seed_id("run", project_id, "grey-harbor-review-v1")
         c.execute(
-            "INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,input_tokens,output_tokens,latency_ms,cost_cny,error_code,retryable,created_at,completed_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-            (run_id,project_id,draft_id,1,"completed","completed","not_called",None,None,0,0.0,None,0,stamp,stamp,"not_applicable","demo-preset-v1","demo-review-v1","demo-preset-v1",4,"demo_preset"),
+            "INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,input_tokens,output_tokens,latency_ms,cost_cny,error_code,retryable,created_at,completed_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,started_at,duration_ms,root_run_id,attempt_number) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            (run_id,project_id,draft_id,1,"completed","completed","not_called",None,None,None,None,None,0,stamp,stamp,"not_applicable","demo-preset-v1","demo-review-v1","demo-preset-v1",4,"demo_preset",stamp,0,run_id,1),
         )
         c.execute("INSERT INTO v2_run_stages(run_id,stage,created_at) VALUES(?,?,?)", (run_id,"completed",stamp))
+        c.execute("INSERT INTO v2_run_events(run_id,sequence,status,stage,error_code,created_at) VALUES(?,?,?,?,?,?)", (run_id,1,"completed","completed",None,stamp))
         for ordinal, fixture in enumerate(DEMO_REVIEW_ISSUES, 1):
             claim_id = scoped_seed_id("claim", project_id, f"grey-harbor-claim-{ordinal}")
             issue_id = scoped_seed_id("issue", project_id, f"grey-harbor-issue-{ordinal}")
@@ -601,8 +697,13 @@ class V2Database:
                     raise DomainError("password_policy_failed", 422)
                 if c.execute("SELECT 1 FROM v2_users WHERE account_name=?", (account_name,)).fetchone():
                     raise DomainError("account_name_unavailable", 409)
+                if payload.get("recovery_email_hash") and c.execute("SELECT 1 FROM v2_users WHERE recovery_email_hash=?", (payload["recovery_email_hash"],)).fetchone():
+                    raise DomainError("recovery_email_unavailable", 409)
                 user_id = new_id("usr")
-                c.execute("INSERT INTO v2_users VALUES(?,?,?,?,?)", (user_id,account_name,display_name,_password(password),utcnow()))
+                c.execute(
+                    "INSERT INTO v2_users(id,account_name,display_name,password_hash,created_at,recovery_email_hash,recovery_email_masked) VALUES(?,?,?,?,?,?,?)",
+                    (user_id,account_name,display_name,_password(password),utcnow(),payload.get("recovery_email_hash"),payload.get("recovery_email_masked")),
+                )
                 seeded = []
                 seed_times = {
                     "grey_harbor": "2026-08-26T09:43:00+00:00",
@@ -616,11 +717,25 @@ class V2Database:
                     seeded.append({"id":project_id,"seed_key":seed_key,"title":title})
                 token, expires_at = self._new_session(c, user_id)
                 return {"user":{"id":user_id,"account_name":account_name,"display_name":display_name},"session":{"expires_at":expires_at,"_token":token},"seeded_projects":seeded}
-            data, status = self._idem(c, f"register:{account_name}", "register", key, payload, create, 201)
+            data, status, created = self._idem(c, f"register:{account_name}", "register", key, payload, create, 201, with_created=True)
             if "_token" not in data.get("session", {}):
                 token, expires_at = self._new_session(c, data["user"]["id"])
                 data["session"] = {"expires_at":expires_at,"_token":token}
+            data["_registration_created"] = created
             return data, status
+
+    def finalize_registration_replay(self, account_name: str, key: str, data: dict[str, Any], status: int) -> None:
+        scope = f"register:{_account(account_name)}"
+        persisted = json.loads(json.dumps({name:value for name,value in data.items() if name not in {"_registration_created"}}, ensure_ascii=False))
+        if isinstance(persisted.get("session"), dict):
+            persisted["session"] = {name:value for name,value in persisted["session"].items() if name != "_token"}
+        with self.connection() as c:
+            changed = c.execute(
+                "UPDATE v2_idempotency SET response_json=?,status_code=? WHERE scope=? AND operation='register' AND idempotency_key=?",
+                (json.dumps(persisted, ensure_ascii=False), status, scope, key),
+            ).rowcount
+            if changed != 1:
+                raise DomainError("registration_failed", 503, True)
 
     def _new_session(self, c: sqlite3.Connection, user_id: str) -> tuple[str, str]:
         token = secrets.token_urlsafe(48)
@@ -650,7 +765,8 @@ class V2Database:
         if not raw_token:
             raise DomainError("authentication_required", 401)
         with self.connection() as c:
-            row = c.execute("SELECT u.id,u.account_name,u.display_name,s.expires_at FROM v2_sessions s JOIN v2_users u ON u.id=s.user_id WHERE s.token_hash=? AND s.revoked_at IS NULL AND s.expires_at>?", (hashlib.sha256(raw_token.encode()).hexdigest(),utcnow())).fetchone()
+            stamp=utcnow()
+            row = c.execute("SELECT u.id,u.account_name,u.display_name,s.expires_at FROM v2_sessions s JOIN v2_users u ON u.id=s.user_id WHERE s.token_hash=? AND s.revoked_at IS NULL AND s.expires_at>? AND (u.account_type!='visitor' OR u.visitor_expires_at>?)", (hashlib.sha256(raw_token.encode()).hexdigest(),stamp,stamp)).fetchone()
             if not row:
                 raise DomainError("authentication_required", 401)
             return dict(row)
@@ -716,7 +832,7 @@ class V2Database:
         with self.connection() as c:
             project = self._project(c,user_id,project_id)
             draft = c.execute("SELECT id,chapter_number,revision,status FROM v2_drafts WHERE project_id=? AND status IN ('draft','saved') ORDER BY saved_at DESC LIMIT 1", (project_id,)).fetchone()
-            run = c.execute("SELECT id,status,created_at,result_origin FROM v2_runs WHERE project_id=? ORDER BY created_at DESC LIMIT 1", (project_id,)).fetchone()
+            run = c.execute("SELECT id,status,created_at,result_origin FROM v2_runs WHERE project_id=? ORDER BY created_at DESC,rowid DESC LIMIT 1", (project_id,)).fetchone()
             open_count=c.execute("SELECT COUNT(*) FROM v2_issues WHERE project_id=? AND status='open'",(project_id,)).fetchone()[0]
             return {"id":project["id"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"chapter_count":c.execute("SELECT COUNT(*) FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0],"outline_progress":0,"current_memory_version":project["current_memory_version"],"source_revision":project["source_revision"],"current_draft":dict(draft) if draft else None,"latest_run":({"run_id":run["id"],"status":run["status"],"created_at":run["created_at"],"result_origin":run["result_origin"]} if run else None),"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if run and run["status"]=="completed" else "unchecked"),"updated_at":project["updated_at"],"data_origin":project["data_origin"],"memory_initialization_status":self._memory_initialization_status(c,project_id,project["data_origin"]) }
 
@@ -1036,17 +1152,22 @@ class V2Database:
                 if not self._confirmed_memory(c,project_id,project["current_memory_version"]): raise DomainError("insufficient_project_context",422)
                 if not self._delta_sources(c,project_id,revision): raise DomainError("source_revision_not_current",409)
                 existing=c.execute("SELECT * FROM v2_memory_delta_batches WHERE project_id=? AND source_revision=?",(project_id,revision)).fetchone()
-                if existing and existing["status"] != "failed": return {"delta":self._delta_view(c,project_id,existing)}
+                if existing and existing["status"] not in {"failed","cancelled","timed_out"}: return {"delta":self._delta_view(c,project_id,existing)}
                 draft=c.execute("SELECT * FROM v2_drafts WHERE project_id=? AND status IN ('draft','saved') ORDER BY saved_at DESC LIMIT 1",(project_id,)).fetchone()
                 if not draft: raise DomainError("draft_invalid",422)
                 change=c.execute("SELECT id FROM v2_source_change_sets WHERE project_id=? AND target_source_revision=? AND status='committed' ORDER BY committed_at DESC LIMIT 1",(project_id,revision)).fetchone()
                 spans=self._delta_sources(c,project_id,revision)
                 if not change or not spans: raise DomainError("source_lineage_not_available",409)
                 stamp,batch_id,continuity_id,delta_id=utcnow(),new_id("memorydelta"),new_id("run"),new_id("run")
-                for run_id,kind,prov in ((continuity_id,"continuity",continuity_provenance),(delta_id,"memory_delta",delta_provenance)):
-                    c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,source_change_set_id,source_span_ids_json) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,project_id,draft["id"],revision,"queued","queued",prov["provider_label"],stamp,prov["model_label"],prov["prompt_version"],prov["schema_version"],prov["retrieval_method_version"],project["current_memory_version"],"provider",kind,change["id"],json.dumps([row["id"] for row in spans]))); c.execute("INSERT INTO v2_run_stages VALUES(?,?,?)",(run_id,"queued",stamp))
+                prior={}
                 if existing:
-                    batch_id=existing["id"]; c.execute("UPDATE v2_memory_delta_batches SET base_memory_version=?,continuity_run_id=?,memory_delta_run_id=?,status='processing',error_code=NULL,created_at=?,completed_at=NULL,covered_at=NULL WHERE id=?",(project["current_memory_version"],continuity_id,delta_id,stamp,batch_id))
+                    batch_id=existing["id"]
+                    prior={row["run_type"]:row for row in c.execute("SELECT * FROM v2_runs WHERE id IN (?,?)",(existing["continuity_run_id"],existing["memory_delta_run_id"])).fetchall()}
+                for run_id,kind,prov in ((continuity_id,"continuity",continuity_provenance),(delta_id,"memory_delta",delta_provenance)):
+                    previous=prior.get(kind); root=(previous["root_run_id"] or previous["id"]) if previous else run_id; attempt=(previous["attempt_number"]+1) if previous else 1
+                    c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,source_change_set_id,source_span_ids_json,retry_of_run_id,root_run_id,attempt_number,incremental_batch_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,project_id,draft["id"],revision,"queued","queued",prov["provider_label"],stamp,prov["model_label"],prov["prompt_version"],prov["schema_version"],prov["retrieval_method_version"],project["current_memory_version"],"provider",kind,change["id"],json.dumps([row["id"] for row in spans]),previous["id"] if previous else None,root,attempt,batch_id)); self._append_run_event(c,run_id,"queued","queued",None,stamp)
+                if existing:
+                    c.execute("UPDATE v2_memory_delta_batches SET base_memory_version=?,continuity_run_id=?,memory_delta_run_id=?,status='processing',error_code=NULL,created_at=?,completed_at=NULL,covered_at=NULL WHERE id=?",(project["current_memory_version"],continuity_id,delta_id,stamp,batch_id))
                 else: c.execute("INSERT INTO v2_memory_delta_batches VALUES(?,?,?,?,?,?,?,?,?,?,?)",(batch_id,project_id,revision,project["current_memory_version"],continuity_id,delta_id,"processing",None,stamp,None,None))
                 return {"delta":self._delta_view(c,project_id,c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=?",(batch_id,)).fetchone()),"continuity_run_id":continuity_id,"memory_delta_run_id":delta_id,"batch_id":batch_id}
             return self._idem(c,user_id,"incremental_runs:"+project_id,key,payload,create,202,with_created=True)
@@ -1064,6 +1185,27 @@ class V2Database:
             if not claims or not memory: raise DomainError("insufficient_project_context",422)
             return {"claims":claims,"memory":memory,"draft":{"id":batch["continuity_run_id"],"revision":batch["source_revision"],"body":"\n".join(x["text"] for x in claims)}},{"source_revision":batch["source_revision"],"sources":sources,"memory":memory}
 
+    def advance_incremental_runs(self,project_id,batch_id,stage):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            batch=c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=? AND project_id=?",(batch_id,project_id)).fetchone()
+            if not batch:raise DomainError("resource_not_found",404)
+            runs=c.execute("SELECT * FROM v2_runs WHERE id IN (?,?) ORDER BY run_type",(batch["continuity_run_id"],batch["memory_delta_run_id"])).fetchall()
+            if len(runs)!=2:return False
+            stamp=utcnow()
+            if batch["status"]=="cancelled" or any(run["cancel_requested_at"] or run["status"]=="cancelled" for run in runs):
+                for run in runs:
+                    if run["status"] in RUN_ACTIVE_STATUSES:
+                        duration=elapsed_ms(run["started_at"] or run["created_at"],stamp)
+                        if c.execute("UPDATE v2_runs SET status='cancelled',stage='cancelled',completed_at=?,duration_ms=?,error_code='author_cancelled',retryable=1,cancel_requested_at=COALESCE(cancel_requested_at,?) WHERE id=? AND status IN ('queued','running')",(stamp,duration,stamp,run["id"])).rowcount:self._append_run_event(c,run["id"],"cancelled","cancelled","author_cancelled",stamp)
+                c.execute("UPDATE v2_memory_delta_batches SET status='cancelled',error_code='author_cancelled',completed_at=COALESCE(completed_at,?) WHERE id=?",(stamp,batch_id))
+                return False
+            if any(run["status"] not in RUN_ACTIVE_STATUSES for run in runs):return False
+            for run in runs:
+                if run["status"]=="running" and run["stage"]==stage:continue
+                if c.execute("UPDATE v2_runs SET status='running',stage=?,started_at=COALESCE(started_at,?) WHERE id=? AND status IN ('queued','running') AND cancel_requested_at IS NULL",(stage,stamp,run["id"])).rowcount:self._append_run_event(c,run["id"],"running",stage,None,stamp)
+            return True
+
     def finish_incremental_runs(self,project_id,batch_id,continuity,delta):
         prepared=None
         if continuity["status"]=="completed" and delta["status"]=="completed":
@@ -1078,14 +1220,32 @@ class V2Database:
                 sources.append(source)
             prepared=(inputs,sources,self._delta_priorities(delta["candidates"],delta_input["memory"]))
         with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
             batch=c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=? AND project_id=?",(batch_id,project_id)).fetchone()
             if not batch: raise DomainError("resource_not_found",404)
-            stamp=utcnow(); complete=continuity["status"]=="completed" and delta["status"]=="completed"
+            run_rows={row["id"]:row for row in c.execute("SELECT * FROM v2_runs WHERE id IN (?,?)",(batch["continuity_run_id"],batch["memory_delta_run_id"])).fetchall()}
+            if len(run_rows)!=2:return False
+            stamp=utcnow(); cancelled=batch["status"]=="cancelled" or any(row["cancel_requested_at"] or row["status"]=="cancelled" for row in run_rows.values())
+            if cancelled:
+                group_status,group_error="cancelled","author_cancelled"
+            elif continuity["status"]=="completed" and delta["status"]=="completed":
+                group_status,group_error="completed",None
+            elif continuity.get("status")=="timed_out" or delta.get("status")=="timed_out":
+                group_status,group_error="timed_out",continuity.get("error_code") or delta.get("error_code") or "provider_timeout"
+            else:
+                group_status="failed"; group_error=public_run_error(str(continuity.get("status")),continuity.get("error_code")) or public_run_error(str(delta.get("status")),delta.get("error_code")) or "incremental_run_failed"
+            changed=0
             for run_id,result in ((batch["continuity_run_id"],continuity),(batch["memory_delta_run_id"],delta)):
-                terminal={"completed":"completed","failed":"failed","timed_out":"timed_out","budget_paused":"budget_paused"}.get(result["status"],"failed")
-                c.execute("UPDATE v2_runs SET status=?,stage=?,input_tokens=?,output_tokens=?,latency_ms=?,cost_cny=?,error_code=?,retryable=?,completed_at=? WHERE id=?",(result["status"],terminal,result.get("input_tokens"),result.get("output_tokens"),result.get("latency_ms"),result.get("cost_cny"),result.get("error_code"),int(bool(result.get("retryable"))),stamp,run_id)); c.execute("INSERT OR IGNORE INTO v2_run_stages VALUES(?,?,?)",(run_id,terminal,stamp))
-            if not complete:
-                c.execute("UPDATE v2_memory_delta_batches SET status='failed',error_code=?,completed_at=? WHERE id=?",(continuity.get("error_code") or delta.get("error_code") or "incremental_run_failed",stamp,batch_id)); return
+                run=run_rows[run_id]
+                if run["status"] not in RUN_ACTIVE_STATUSES:continue
+                duration=elapsed_ms(run["started_at"] or run["created_at"],stamp)
+                metrics=result if not cancelled else result
+                changed+=c.execute("UPDATE v2_runs SET status=?,stage=?,input_tokens=?,output_tokens=?,latency_ms=?,cost_cny=?,error_code=?,retryable=?,completed_at=?,duration_ms=? WHERE id=? AND status IN ('queued','running')",(group_status,group_status,metrics.get("input_tokens"),metrics.get("output_tokens"),metrics.get("latency_ms"),metrics.get("cost_cny"),group_error,int(group_status!="completed"),stamp,duration,run_id)).rowcount
+                self._append_run_event(c,run_id,group_status,group_status,group_error,stamp)
+            if group_status!="completed":
+                batch_status="cancelled" if group_status=="cancelled" else "failed"
+                c.execute("UPDATE v2_memory_delta_batches SET status=?,error_code=?,completed_at=? WHERE id=?",(batch_status,group_error,stamp,batch_id)); return bool(changed)
+            if changed!=2:return False
             inputs,sources,priorities=prepared
             trace_rows=continuity.get("retrieval_traces",[]); trace_by_claim={row.get("claim_id"):row.get("returned_span_ids") for row in trace_rows if isinstance(row,dict)}
             method=continuity.get("retrieval_method_version")
@@ -1100,6 +1260,7 @@ class V2Database:
             for ordinal,(item,source,priority) in enumerate(zip(delta["candidates"],sources,priorities),1):
                 c.execute("INSERT INTO v2_memory_delta_candidates VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(new_id("memorydeltacandidate"),project_id,batch_id,batch["source_revision"],ordinal,item["memory_type"],item["subject"],item["predicate"],item["value"],source["chapter_id"],source["id"],"delta",priority,"pending",None,None))
             c.execute("UPDATE v2_memory_delta_batches SET status='in_review',completed_at=? WHERE id=?",(stamp,batch_id))
+            return True
 
     def decide_memory_delta_candidate(self,user_id,project_id,batch_id,candidate_id,payload,key):
         with self.connection() as c:
@@ -1230,16 +1391,27 @@ class V2Database:
                 running=c.execute("SELECT id FROM v2_runs WHERE project_id=? AND draft_id=? AND source_revision=? AND status IN ('queued','running')",(project_id,draft["id"],draft["revision"])).fetchone()
                 if running: raise DomainError("run_already_active",409,False,{"run_id":running["id"]})
                 run_id,stamp=new_id("run"),utcnow()
-                c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,project_id,draft["id"],draft["revision"],"queued","queued",provenance["provider_label"],stamp,provenance["model_label"],provenance["prompt_version"],provenance["schema_version"],provenance["retrieval_method_version"],project["current_memory_version"],"provider"))
-                c.execute("INSERT INTO v2_run_stages VALUES(?,?,?)",(run_id,"queued",stamp))
-                return {"run_id":run_id,"project_id":project_id,"status":"queued","source_revision":draft["revision"],"stage":"queued","result_origin":"provider","result_origin_label":"Provider 检查结果","created_at":stamp}
+                c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,root_run_id,attempt_number) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,project_id,draft["id"],draft["revision"],"queued","queued",provenance["provider_label"],stamp,provenance["model_label"],provenance["prompt_version"],provenance["schema_version"],provenance["retrieval_method_version"],project["current_memory_version"],"provider",run_id,1))
+                self._append_run_event(c,run_id,"queued","queued",None,stamp)
+                return {"run_id":run_id,"project_id":project_id,"run_type":"continuity","status":"queued","source_revision":draft["revision"],"stage":"queued","result_origin":"provider","result_origin_label":"Provider 检查结果","retry_of_run_id":None,"root_run_id":run_id,"attempt_number":1,"created_at":stamp}
             return self._idem(c,user_id,"create_check:"+project_id,key,payload,create,202,with_created=True)
 
-    def advance_run(self, project_id: str, run_id: str, stage: str) -> None:
+    def advance_run(self, project_id: str, run_id: str, stage: str) -> bool:
         with self.connection() as c:
-            if not c.execute("SELECT 1 FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone(): raise DomainError("resource_not_found",404)
-            c.execute("UPDATE v2_runs SET status='running',stage=? WHERE id=? AND project_id=?",(stage,run_id,project_id))
-            c.execute("INSERT OR IGNORE INTO v2_run_stages VALUES(?,?,?)",(run_id,stage,utcnow()))
+            c.execute("BEGIN IMMEDIATE")
+            run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
+            if not run: raise DomainError("resource_not_found",404)
+            if run["status"] not in RUN_ACTIVE_STATUSES:return False
+            stamp=utcnow()
+            if run["cancel_requested_at"]:
+                duration=elapsed_ms(run["started_at"] or run["created_at"],stamp)
+                changed=c.execute("UPDATE v2_runs SET status='cancelled',stage='cancelled',completed_at=?,duration_ms=?,error_code='author_cancelled',retryable=1 WHERE id=? AND status IN ('queued','running')",(stamp,duration,run_id)).rowcount
+                if changed:self._append_run_event(c,run_id,"cancelled","cancelled","author_cancelled",stamp)
+                return False
+            if run["status"]=="running" and run["stage"]==stage:return True
+            changed=c.execute("UPDATE v2_runs SET status='running',stage=?,started_at=COALESCE(started_at,?) WHERE id=? AND project_id=? AND status IN ('queued','running') AND cancel_requested_at IS NULL",(stage,stamp,run_id,project_id)).rowcount
+            if changed:self._append_run_event(c,run_id,"running",stage,None,stamp)
+            return bool(changed)
 
     def session_budget_exhausted(self, project_id: str, limit: int = 40000) -> bool:
         with self.connection() as c:
@@ -1261,6 +1433,7 @@ class V2Database:
         with self.connection() as c:
             run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
             if not run: raise DomainError("resource_not_found",404)
+            if run["status"] not in RUN_ACTIVE_STATUSES or run["cancel_requested_at"]: raise DomainError("run_cancelled",409)
             coverage=self._memory_coverage(c,project_id)
             if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["pending_canon_count"] != 0:
                 raise DomainError("insufficient_project_context",422)
@@ -1283,20 +1456,92 @@ class V2Database:
                 claim["allowed_evidence"]=hits
             return {"run":dict(run),"draft":{"id":revision["draft_id"],"revision":revision["revision"],"body":revision["body"]},"claims":claims,"memory":memory}
 
-    def finish_run(self, project_id: str, run_id: str, result: dict[str, Any]) -> None:
+    def finish_run(self, project_id: str, run_id: str, result: dict[str, Any]) -> bool:
         with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
             run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
             if not run: raise DomainError("resource_not_found",404)
-            terminal={"completed":"completed","failed":"failed","timed_out":"timed_out","budget_paused":"budget_paused"}.get(result["status"],"failed")
+            if run["status"] not in RUN_ACTIVE_STATUSES:return False
             stamp=utcnow()
-            c.execute("UPDATE v2_runs SET status=?,stage=?,input_tokens=?,output_tokens=?,latency_ms=?,cost_cny=?,error_code=?,retryable=?,completed_at=? WHERE id=? AND project_id=?",(result["status"],terminal,result.get("input_tokens"),result.get("output_tokens"),result.get("latency_ms"),result.get("cost_cny"),result.get("error_code"),int(bool(result.get("retryable"))),stamp,run_id,project_id))
-            c.execute("INSERT OR IGNORE INTO v2_run_stages VALUES(?,?,?)",(run_id,terminal,stamp))
-            if result["status"]!="completed": return
+            if run["cancel_requested_at"]:
+                status,terminal,error="cancelled","cancelled","author_cancelled"
+                retryable=True
+            else:
+                status,terminal,error=self._normalized_terminal(result)
+                retryable=bool(result.get("retryable")) or status in {"timed_out","cancelled"}
+            duration=elapsed_ms(run["started_at"] or (run["created_at"] if run["status"]=="queued" else None),stamp)
+            changed=c.execute("UPDATE v2_runs SET status=?,stage=?,input_tokens=?,output_tokens=?,latency_ms=?,cost_cny=?,error_code=?,retryable=?,completed_at=?,duration_ms=? WHERE id=? AND project_id=? AND status IN ('queued','running')",(status,terminal,result.get("input_tokens"),result.get("output_tokens"),result.get("latency_ms"),result.get("cost_cny"),error,int(retryable),stamp,duration,run_id,project_id)).rowcount
+            if not changed:return False
+            self._append_run_event(c,run_id,status,terminal,error,stamp)
+            if status!="completed": return True
             for issue in result.get("issues",[]):
                 issue_id=new_id("issue")
                 c.execute("INSERT INTO v2_issues(id,project_id,run_id,claim_span_id,status,classification,category,severity,evidence_status,explanation,proposed_change_json) VALUES(?,?,?,?,?,?,?,?,?,?,?)",(issue_id,project_id,run_id,issue["claim_span_id"],"open",issue["status"],issue["category"],issue["severity"],issue["evidence_status"],issue["explanation"],json.dumps(issue.get("proposed_memory_change")) if issue.get("proposed_memory_change") else None))
                 for evidence in issue["evidence"]:
                     c.execute("INSERT INTO v2_evidence(id,project_id,issue_id,chapter_id,span_id,excerpt,relation,sufficiency,related_memory_ids_json,source_revision) VALUES(?,?,?,?,?,?,?,?,?,?)",(new_id("evidence"),project_id,issue_id,evidence["chapter_id"],evidence["span_id"],evidence["excerpt"],evidence["relation"],evidence["sufficiency"],json.dumps(evidence["related_memory_ids"]),run["source_revision"]))
+            return True
+
+    def cancel_run(self,user_id,project_id,run_id,payload,key):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def cancel():
+                self._project(c,user_id,project_id,True)
+                target=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
+                if not target:raise DomainError("resource_not_found",404)
+                if public_run_status(target["status"]) in RUN_TERMINAL_STATUSES:raise DomainError("run_cancel_terminal",409)
+                rows=[target]
+                if target["incremental_batch_id"]:
+                    rows=c.execute("SELECT * FROM v2_runs WHERE project_id=? AND incremental_batch_id=? AND attempt_number=? ORDER BY run_type",(project_id,target["incremental_batch_id"],target["attempt_number"])).fetchall()
+                    if len(rows)!=2:raise DomainError("internal_run_error",409)
+                stamp=utcnow(); outputs=[]
+                for row in rows:
+                    if row["status"] in RUN_ACTIVE_STATUSES:outputs.append(self._cancel_active_row(c,row,stamp))
+                if target["incremental_batch_id"]:
+                    c.execute("UPDATE v2_memory_delta_batches SET status='cancelled',error_code='author_cancelled',completed_at=COALESCE(completed_at,?) WHERE id=? AND project_id=?",(stamp,target["incremental_batch_id"],project_id))
+                current=next((item for item in outputs if item["run_id"]==run_id),{"run_id":run_id,"status":"running","stage":"cancelling"})
+                return {**current,"cancel_requested_at":target["cancel_requested_at"] or stamp,"sibling_run_ids":[item["run_id"] for item in outputs if item["run_id"]!=run_id]}
+            return self._idem(c,user_id,"cancel_run:"+project_id+":"+run_id,key,payload,cancel)
+
+    def _retry_copy(self,c,previous,batch_id=None):
+        run_id,stamp=new_id("run"),utcnow(); root=previous["root_run_id"] or previous["id"]
+        attempt=c.execute("SELECT COALESCE(MAX(attempt_number),0)+1 FROM v2_runs WHERE root_run_id=?",(root,)).fetchone()[0]
+        c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,source_change_set_id,source_span_ids_json,retry_of_run_id,root_run_id,attempt_number,incremental_batch_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,previous["project_id"],previous["draft_id"],previous["source_revision"],"queued","queued",previous["provider_label"],stamp,previous["model_label"],previous["prompt_version"],previous["schema_version"],previous["retrieval_method_version"],previous["source_memory_version"],previous["result_origin"],previous["run_type"],previous["source_change_set_id"],previous["source_span_ids_json"],previous["id"],root,attempt,batch_id))
+        self._append_run_event(c,run_id,"queued","queued",None,stamp)
+        return {"run_id":run_id,"run_type":previous["run_type"],"status":"queued","stage":"queued","created_at":stamp,"retry_of_run_id":previous["id"],"root_run_id":root,"attempt_number":attempt}
+
+    def retry_run(self,user_id,project_id,run_id,payload,key):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def retry():
+                project=self._project(c,user_id,project_id,True)
+                target=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
+                if not target:raise DomainError("resource_not_found",404)
+                status=public_run_status(target["status"])
+                allowed=(status in {"timed_out","cancelled"}) or (status=="failed" and bool(target["retryable"]))
+                if not allowed:raise DomainError("run_retry_not_allowed",409)
+                if target["result_origin"]!="provider":raise DomainError("run_retry_not_allowed",409)
+                if target["incremental_batch_id"]:
+                    batch=c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=? AND project_id=?",(target["incremental_batch_id"],project_id)).fetchone()
+                    if not batch or run_id not in {batch["continuity_run_id"],batch["memory_delta_run_id"]}:raise DomainError("run_retry_lineage_stale",409)
+                    previous=c.execute("SELECT * FROM v2_runs WHERE id IN (?,?) ORDER BY run_type",(batch["continuity_run_id"],batch["memory_delta_run_id"])).fetchall()
+                    if len(previous)!=2:raise DomainError("run_retry_lineage_stale",409)
+                    if project["source_revision"]!=target["source_revision"] or project["current_memory_version"]!=batch["base_memory_version"]:raise DomainError("run_retry_lineage_stale",409)
+                    change=c.execute("SELECT 1 FROM v2_source_change_sets WHERE id=? AND project_id=? AND target_source_revision=? AND status='committed'",(target["source_change_set_id"],project_id,target["source_revision"])).fetchone()
+                    span_ids=json.loads(target["source_span_ids_json"] or "[]")
+                    count=c.execute("SELECT COUNT(*) FROM v2_source_spans WHERE project_id=? AND source_revision=? AND id IN (%s)" % ",".join("?" for _ in span_ids),(project_id,target["source_revision"],*span_ids)).fetchone()[0] if span_ids else 0
+                    if not change or not span_ids or count!=len(span_ids):raise DomainError("run_retry_lineage_stale",409)
+                    roots={row["root_run_id"] or row["id"] for row in previous}
+                    if c.execute("SELECT 1 FROM v2_runs WHERE root_run_id IN (%s) AND status IN ('queued','running') LIMIT 1" % ",".join("?" for _ in roots),tuple(roots)).fetchone():raise DomainError("run_already_active",409)
+                    created={row["run_type"]:self._retry_copy(c,row,batch["id"]) for row in previous}
+                    continuity_id=created["continuity"]["run_id"]; delta_id=created["memory_delta"]["run_id"]
+                    c.execute("UPDATE v2_memory_delta_batches SET continuity_run_id=?,memory_delta_run_id=?,status='processing',error_code=NULL,created_at=?,completed_at=NULL,covered_at=NULL WHERE id=?",(continuity_id,delta_id,utcnow(),batch["id"]))
+                    return {"paired":True,"batch_id":batch["id"],"continuity_run_id":continuity_id,"memory_delta_run_id":delta_id,"runs":[created["continuity"],created["memory_delta"]]}
+                draft=c.execute("SELECT revision FROM v2_drafts WHERE id=? AND project_id=?",(target["draft_id"],project_id)).fetchone()
+                if not draft or draft["revision"]!=target["source_revision"] or project["current_memory_version"]!=target["source_memory_version"]:raise DomainError("run_retry_lineage_stale",409)
+                root=target["root_run_id"] or target["id"]
+                if c.execute("SELECT 1 FROM v2_runs WHERE root_run_id=? AND status IN ('queued','running')",(root,)).fetchone():raise DomainError("run_already_active",409)
+                return {"paired":False,"run":self._retry_copy(c,target)}
+            return self._idem(c,user_id,"retry_run:"+project_id+":"+run_id,key,payload,retry,202,with_created=True)
 
     def _resolved_evidence(self, c: sqlite3.Connection, project_id: str, issue: sqlite3.Row, run: sqlite3.Row) -> list[dict[str, Any]]:
         claim = c.execute("SELECT text FROM v2_run_claims WHERE id=? AND run_id=?", (issue["claim_span_id"],run["id"])).fetchone()
@@ -1340,8 +1585,13 @@ class V2Database:
             incremental=bool(run["source_change_set_id"]) and bool(source_span_ids)
             direct_successor=draft["revision"]==run["source_revision"]+1 and draft["edit_context_json"] and json.loads(draft["edit_context_json"]).get("source_run_id")==run_id
             current=incremental or run["run_type"]!="continuity" or draft["revision"]==run["source_revision"] or direct_successor
-            result={"run_id":run_id,"project_id":project_id,"run_type":run["run_type"],"status":run["status"],"stage":run["stage"],"source_revision":run["source_revision"],"source_change_set_id":run["source_change_set_id"],"source_span_ids":source_span_ids,"current_revision":draft["revision"],"is_stale":not current,"superseded":not current,"lineage_status":("incremental_source_revision" if incremental else "validated_direct_successor" if direct_successor else "current" if current else "lineage_invalid_requires_recheck"),"result_origin":run["result_origin"],"result_origin_label":("预置演示审阅数据（未调用 Provider）" if run["result_origin"]=="demo_preset" else "Provider 检查结果"),"error_code":run["error_code"],"retryable":bool(run["retryable"]),"created_at":run["created_at"],"completed_at":run["completed_at"]}
-            if "issues" in include:
+            status=public_run_status(run["status"]); stage=status if run["status"]=="budget_paused" else run["stage"]; error_code=public_run_error(run["status"],run["error_code"])
+            transitions=[{"sequence":row["sequence"],"status":public_run_status(row["status"]),"stage":row["stage"],"error_code":public_run_error(row["status"],row["error_code"]),"created_at":row["created_at"]} for row in c.execute("SELECT * FROM v2_run_events WHERE run_id=? ORDER BY sequence",(run_id,)).fetchall()]
+            provenance={"provider_label":run["provider_label"],"model_label":run["model_label"] or "legacy_unspecified","prompt_version":run["prompt_version"] or "legacy_unspecified","schema_version":run["schema_version"] or "legacy_unspecified","retrieval_method_version":run["retrieval_method_version"] or "legacy_unspecified","source_memory_version":run["source_memory_version"]}
+            if incremental:provenance.update({"source_change_set_id":run["source_change_set_id"],"source_span_ids":source_span_ids,"incremental_batch_id":run["incremental_batch_id"]})
+            metrics={"latency_ms":run["latency_ms"],"input_tokens":run["input_tokens"],"output_tokens":run["output_tokens"],"cost_cny":run["cost_cny"],"cost_available":run["cost_cny"] is not None,"provenance":provenance,"retrieval":[]}
+            result={"run_id":run_id,"project_id":project_id,"run_type":run["run_type"],"status":status,"stage":stage,"source_revision":run["source_revision"],"source_memory_version":run["source_memory_version"],"source_change_set_id":run["source_change_set_id"],"source_span_ids":source_span_ids,"incremental_batch_id":run["incremental_batch_id"],"current_revision":draft["revision"],"is_stale":not current,"superseded":not current,"lineage_status":("incremental_source_revision" if incremental else "validated_direct_successor" if direct_successor else "current" if current else "lineage_invalid_requires_recheck"),"result_origin":run["result_origin"],"result_origin_label":("预置演示审阅数据（未调用 Provider）" if run["result_origin"]=="demo_preset" else "Provider 检查结果"),"error_code":error_code,"retryable":bool(run["retryable"]) or run["status"]=="budget_paused","created_at":run["created_at"],"started_at":run["started_at"],"completed_at":run["completed_at"],"cancel_requested_at":run["cancel_requested_at"],"duration_ms":run["duration_ms"],"retry_of_run_id":run["retry_of_run_id"],"root_run_id":run["root_run_id"] or run_id,"attempt_number":run["attempt_number"] or 1,"transitions":transitions,"provenance":provenance,"provider_metrics":{key:metrics[key] for key in ("latency_ms","input_tokens","output_tokens","cost_cny","cost_available")}}
+            if "issues" in include and status=="completed":
                 issues=[]
                 for issue in c.execute("SELECT * FROM v2_issues WHERE project_id=? AND run_id=?",(project_id,run_id)).fetchall():
                     claim=c.execute("SELECT text FROM v2_run_claims WHERE id=? AND run_id=?",(issue["claim_span_id"],run_id)).fetchone()
@@ -1357,10 +1607,7 @@ class V2Database:
                 for trace in c.execute("SELECT claim_id,returned_span_ids_json,method_version FROM v2_retrieval_traces WHERE run_id=? ORDER BY claim_id",(run_id,)).fetchall():
                     claim=c.execute("SELECT ordinal FROM v2_run_claims WHERE id=? AND run_id=?",(trace["claim_id"],run_id)).fetchone()
                     traces.append({"claim_ordinal":claim["ordinal"] if claim else None,"returned_span_ids":json.loads(trace["returned_span_ids_json"]),"method_version":trace["method_version"]})
-                provenance={"provider_label":run["provider_label"],"model_label":run["model_label"] or "legacy_unspecified","prompt_version":run["prompt_version"] or "legacy_unspecified","schema_version":run["schema_version"] or "legacy_unspecified","retrieval_method_version":run["retrieval_method_version"] or "legacy_unspecified","source_memory_version":run["source_memory_version"]}
-                if incremental:
-                    provenance.update({"source_change_set_id":run["source_change_set_id"],"source_span_ids":source_span_ids})
-                result["metrics"]={"latency_ms":run["latency_ms"],"input_tokens":run["input_tokens"],"output_tokens":run["output_tokens"],"cost_cny":run["cost_cny"],"cost_available":run["cost_cny"] is not None,"provenance":provenance,"retrieval":traces}
+                result["metrics"]={**metrics,"retrieval":traces}
             return result
 
     def decide(self, user_id: str, project_id: str, issue_id: str, payload: dict[str, Any], key: str):
@@ -1517,6 +1764,7 @@ class V2Database:
                 c.execute("DELETE FROM v2_issues WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_retrieval_traces WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
                 c.execute("DELETE FROM v2_run_claims WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
+                c.execute("DELETE FROM v2_run_events WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
                 c.execute("DELETE FROM v2_run_stages WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
                 c.execute("DELETE FROM v2_runs WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_draft_revisions WHERE draft_id IN (SELECT id FROM v2_drafts WHERE project_id=?)",(project_id,))

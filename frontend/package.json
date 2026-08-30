@@ -1,5 +1,5 @@
 {
-  "name": "story-continuity-web-demo-frontend",
+  "name": "story-continuity-app",
   "private": true,
   "version": "0.1.0",
   "scripts": {
@@ -8,6 +8,12 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "build": "next build",
+    "test:build-origin": "node --test tests/build-origin.test.mjs tests/build-id.test.mjs tests/public-config.test.mjs tests/stage13-harness.test.mjs tests/stage13-v4-policy.test.mjs tests/stage13-v4-runtime.test.mjs",
+    "verify:build-manifest": "node scripts/assert-api-rewrite.mjs",
+    "verify:stage13-v4-artifact": "node scripts/stage13-v4-policy.mjs",
+    "compare:stage13-v4-artifacts": "node scripts/stage13-v4-compare.mjs",
+    "verify:stage13-v4-runtime": "node scripts/stage13-v4-runtime-scan.mjs",
+    "start:stage13-v4-artifact": "node scripts/start-stage13-v4-artifact.mjs",
     "test:e2e": "playwright test"
   },
   "dependencies": {

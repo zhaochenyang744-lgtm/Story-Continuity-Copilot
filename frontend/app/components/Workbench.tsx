@@ -33,6 +33,8 @@ import type {
 // ordinary in-app navigation does not turn into another authentication check.
 let bootstrappedUser: User | null | undefined;
 let sessionBootstrap: Promise<User | null> | null = null;
+const publicAuthPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm", "/verify-email"];
+const isPublicAuthPath = (value: string) => publicAuthPaths.includes(value);
 
 type Home = {
   continue_work?: {
@@ -90,10 +92,19 @@ const stage = (s: string): string =>
       retrieving_confirmed_facts: "检索已确认事实",
       comparing_evidence: "比对证据",
       assembling_reviewable_results: "整理可审阅结果",
+      running_continuity: "运行增量 Continuity",
+      running_memory_delta: "运行 Memory Delta",
+      cancelling: "正在安全取消",
       completed: "检查完成",
+      timed_out: "检查超时",
       failed: "检查失败",
+      cancelled: "已取消",
     }) as Record<string, string>
   )[s] ?? s;
+const activeRun = (run: Run | null) => Boolean(run && ["queued", "running"].includes(run.status));
+const retryableRun = (run: Run | null) => Boolean(run && ["failed", "timed_out", "cancelled"].includes(run.status) && (run.status !== "failed" || run.retryable));
+const durationLabel = (value?: number | null) => value == null ? "尚不可用" : value < 1000 ? `${value} ms` : `${(value / 1000).toFixed(2)} s`;
+const timestampLabel = (value?: string | null) => value ? new Date(value).toLocaleString("zh-CN", { hour12: false }) : "—";
 const statusLabel = (s?: string): string =>
   (
     ({
@@ -206,6 +217,7 @@ export function Workbench() {
     [draft, setDraft] = useState<Draft | null>(null),
     [saved, setSaved] = useState<Draft | null>(null),
     [run, setRun] = useState<Run | null>(null),
+    [pairedRun, setPairedRun] = useState<Run | null>(null),
     [initialization, setInitialization] = useState<MemoryInitialization | null>(null),
     [memoryDelta, setMemoryDelta] = useState<MemoryDelta | null>(null),
     [coverage, setCoverage] = useState<MemoryCoverage | null>(null);
@@ -285,6 +297,7 @@ export function Workbench() {
     setDraft(null);
     setSaved(null);
     setRun(null);
+    setPairedRun(null);
     setInitialization(null);
     setMemoryDelta(null);
     setCoverage(null);
@@ -336,6 +349,10 @@ export function Workbench() {
     },
     [router],
   );
+  const updateBootstrappedUser = useCallback((next: User | null) => {
+    bootstrappedUser = next;
+    setUser(next);
+  }, []);
   const go = (href: string) => {
     if (dirty && href !== pathname) setSwitchTo(href);
     else router.push(href);
@@ -367,6 +384,15 @@ export function Workbench() {
         const p = await request<Project>(`/projects/${id}`, {
           signal: controller.signal,
         });
+        // Restore the lifecycle record before fan-out. On a cold refresh this
+        // is the safety-critical state: it must not sit behind the browser's
+        // same-origin connection queue for the larger workspace payloads.
+        const latest = p.latest_run
+          ? await request<Run>(
+              `/projects/${id}/checks/${p.latest_run.run_id}?include=issues,evidence,metrics`,
+              { signal: controller.signal },
+            )
+          : null;
         const [c, m, d, o, chars, w, initialized, memoryCoverage, delta] = await Promise.all([
           request<{ chapters: Chapter[] }>(
             `/projects/${id}/chapters?include=excerpt`,
@@ -413,13 +439,28 @@ export function Workbench() {
         setInitialization(initialized);
         setMemoryDelta(delta);
         setCoverage(memoryCoverage);
-        if (p.latest_run) {
-          const latest = await request<Run>(
-            `/projects/${id}/checks/${p.latest_run.run_id}?include=issues,evidence,metrics`,
-            { signal: controller.signal },
-          );
-          if (n === epoch.current) setRun(latest);
+        let primaryRun = latest;
+        let siblingRun: Run | null = null;
+        if (
+          latest?.incremental_batch_id &&
+          delta?.id === latest.incremental_batch_id &&
+          delta.continuity_run_id &&
+          delta.memory_delta_run_id
+        ) {
+          const readRun = (runId: string) =>
+            latest.run_id === runId
+              ? Promise.resolve(latest)
+              : request<Run>(
+                  `/projects/${id}/checks/${runId}?include=issues,evidence,metrics`,
+                  { signal: controller.signal },
+                );
+          [primaryRun, siblingRun] = await Promise.all([
+            readRun(delta.continuity_run_id),
+            readRun(delta.memory_delta_run_id),
+          ]);
         }
+        setRun(primaryRun);
+        setPairedRun(siblingRun);
       } catch (e) {
         if ((e as Error).name !== "AbortError") fail(e);
       } finally {
@@ -454,12 +495,12 @@ export function Workbench() {
   }, [fail]);
   useEffect(() => {
     if (!ready) return;
-    const auth = ["/login", "/register"].includes(pathname);
+    const auth = isPublicAuthPath(pathname);
     if (!user && !auth) {
       router.replace("/login");
       return;
     }
-    if (user && auth) {
+    if (user && ["/login", "/register", "/password-reset", "/password-reset/confirm"].includes(pathname)) {
       router.replace("/");
       return;
     }
@@ -480,27 +521,41 @@ export function Workbench() {
     fail,
   ]);
   useEffect(() => {
-    if (!run || !projectId || !["queued", "running"].includes(run.status))
+    if (!run || !projectId || (!activeRun(run) && !activeRun(pairedRun)))
       return;
     const timer = window.setInterval(
-      () =>
-        request<Run>(
-          `/projects/${projectId}/checks/${run.run_id}?include=issues,evidence,metrics`,
+      () => {
+        const currentRuns = pairedRun ? [run, pairedRun] : [run];
+        Promise.all(
+          currentRuns.map((item) =>
+            request<Run>(
+              `/projects/${projectId}/checks/${item.run_id}?include=issues,evidence,metrics`,
+            ),
+          ),
         )
-          .then((next) => {
+          .then((nextRuns) => {
+            const next = nextRuns[0];
             setRun(next);
-            if (!["queued", "running"].includes(next.status))
+            setPairedRun(nextRuns[1] ?? null);
+            if (nextRuns.every((item) => !activeRun(item))) {
               setNotice(
                 next.status === "completed"
                   ? "检查完成，等待作者审阅。"
-                  : labelError({ code: next.error_code }),
+                  : `${labelError({ code: next.error_code })} 未完成 Run 不会写入或展示部分结果。`,
               );
+              if (next.incremental_batch_id)
+                request<MemoryDelta>(`/projects/${projectId}/memory/delta`).then((delta) => {
+                  setMemoryDelta(delta);
+                  setCoverage(delta.coverage ?? null);
+                }).catch(fail);
+            }
           })
-          .catch(fail),
+          .catch(fail);
+      },
       1000,
     );
     return () => window.clearInterval(timer);
-  }, [run, projectId, fail]);
+  }, [run, pairedRun, projectId, fail]);
   const submitAuth = async (
     e: FormEvent<HTMLFormElement>,
     kind: "login" | "register",
@@ -521,6 +576,7 @@ export function Workbench() {
               account_name: String(f.get("account_name")),
               display_name: String(f.get("display_name")),
               password: String(f.get("password")),
+              recovery_email: String(f.get("recovery_email")),
             };
       const data = await json<{ user: User }>(`/auth/${kind}`, "POST", body);
       startTransition(() => {
@@ -530,6 +586,23 @@ export function Workbench() {
       });
     } catch (x) {
       fail(x);
+    } finally {
+      setBusy("");
+    }
+  };
+  const enterVisitor = async () => {
+    setError(null);
+    setNotice("");
+    setBusy("正在创建 24 小时访客空间");
+    try {
+      const data = await request<{ user: User }>("/auth/visitor", { method: "POST" });
+      startTransition(() => {
+        bootstrappedUser = data.user;
+        setUser(data.user);
+        router.replace("/");
+      });
+    } catch (cause) {
+      fail(cause);
     } finally {
       setBusy("");
     }
@@ -621,12 +694,51 @@ export function Workbench() {
         error_code: null,
         completed_at: null,
       });
+      setPairedRun(null);
       setNotice("检查已排队；只轮询此 Run，不展示模型推理过程。");
     } catch (e) {
       fail(e);
     } finally {
       setBusy("");
     }
+  };
+  const cancelRun = async () => {
+    if (!projectId || !run || !activeRun(run) || readOnly) return;
+    setBusy("正在安全取消 Run");
+    try {
+      await json(`/projects/${projectId}/checks/${run.run_id}/cancel`, "POST", { client_request_id: crypto.randomUUID() });
+      const refreshedRuns = await Promise.all(
+        (pairedRun ? [run, pairedRun] : [run]).map((item) =>
+          request<Run>(`/projects/${projectId}/checks/${item.run_id}?include=issues,evidence,metrics`),
+        ),
+      );
+      const refreshed = refreshedRuns[0];
+      setRun(refreshed);
+      setPairedRun(refreshedRuns[1] ?? null);
+      if (refreshed.incremental_batch_id) {
+        const delta = await request<MemoryDelta>(`/projects/${projectId}/memory/delta`);
+        setMemoryDelta(delta); setCoverage(delta.coverage ?? null);
+      }
+      setNotice(refreshed.status === "cancelled" ? "Run 已取消；未写入部分结果。" : "已请求协作式取消；Provider 返回后会丢弃迟到结果。等待安全终态。 ");
+    } catch (cause) { fail(cause); } finally { setBusy(""); }
+  };
+  const retryRun = async () => {
+    if (!projectId || !run || !retryableRun(run) || readOnly) return;
+    setBusy("正在创建新 Run");
+    try {
+      const retried = await json<{ paired: boolean; run?: Run; continuity_run_id?: string; memory_delta_run_id?: string; batch_id?: string }>(`/projects/${projectId}/checks/${run.run_id}/retry`, "POST", { client_request_id: crypto.randomUUID() });
+      const nextId = retried.paired ? retried.continuity_run_id : retried.run?.run_id;
+      if (!nextId) throw Object.assign(new Error("Retry response missing Run"), { code: "internal_run_error" });
+      const next = await request<Run>(`/projects/${projectId}/checks/${nextId}?include=issues,evidence,metrics`);
+      setRun(next);
+      if (retried.paired) {
+        if (!retried.memory_delta_run_id) throw Object.assign(new Error("Retry response missing paired Run"), { code: "internal_run_error" });
+        setPairedRun(await request<Run>(`/projects/${projectId}/checks/${retried.memory_delta_run_id}?include=issues,evidence,metrics`));
+        const delta = await request<MemoryDelta>(`/projects/${projectId}/memory/delta`);
+        setMemoryDelta(delta); setCoverage(delta.coverage ?? null);
+      } else setPairedRun(null);
+      setNotice(`已创建 attempt ${next.attempt_number ?? "—"} 的新 Run；原 Run 保持不可变。`);
+    } catch (cause) { fail(cause); } finally { setBusy(""); }
   };
   const decide = async (
     issue: Issue,
@@ -853,8 +965,15 @@ export function Workbench() {
       const result = await json<{ delta: MemoryDelta }>(`/projects/${projectId}/incremental-reviews`, "POST", { source_revision: project.source_revision });
       const latest = await request<MemoryDelta>(`/projects/${projectId}/memory/delta`);
       setMemoryDelta(latest); setCoverage(latest.coverage ?? result.delta.coverage ?? null);
-      if (latest.continuity_run_id) setRun(await request<Run>(`/projects/${projectId}/checks/${latest.continuity_run_id}?include=issues,evidence,metrics`));
-      setNotice("增量 Issues 与 Memory Delta 已分开生成；候选尚未成为 canon。");
+      if (latest.continuity_run_id && latest.memory_delta_run_id) {
+        const [continuity, deltaRun] = await Promise.all([
+          request<Run>(`/projects/${projectId}/checks/${latest.continuity_run_id}?include=issues,evidence,metrics`),
+          request<Run>(`/projects/${projectId}/checks/${latest.memory_delta_run_id}?include=issues,evidence,metrics`),
+        ]);
+        setRun(continuity);
+        setPairedRun(deltaRun);
+      }
+      setNotice(latest.status === "in_review" ? "增量双 Run 已完成；候选尚未成为 canon。" : "增量 Continuity 与 Memory Delta 已排队；只在双 Run 完成后展示结果。");
     } catch (cause) { fail(cause); } finally { setBusy(""); }
   };
   const submitMemoryDelta = async (event: FormEvent<HTMLFormElement>) => {
@@ -994,6 +1113,12 @@ export function Workbench() {
         正在恢复本地会话…
       </div>
     );
+  else if (pathname === "/password-reset")
+    body = <PasswordResetRequestPage go={go} />;
+  else if (pathname === "/password-reset/confirm")
+    body = <PasswordResetConfirmPage go={go} />;
+  else if (pathname === "/verify-email")
+    body = <VerifyEmailPage go={go} refreshUser={updateBootstrappedUser} />;
   else if (!user)
     body = (
       <Auth
@@ -1001,6 +1126,7 @@ export function Workbench() {
         busy={busy}
         error={error}
         submit={submitAuth}
+        visitor={enterVisitor}
         go={(h) => {
           setError(null);
           setNotice("");
@@ -1008,6 +1134,8 @@ export function Workbench() {
         }}
       />
     );
+  else if (pathname === "/account/security")
+    body = <AccountSecurity user={user} updateUser={updateBootstrappedUser} go={go} />;
   else if (!projectId)
     body =
       pathname === "/projects/new" ? (
@@ -1071,6 +1199,7 @@ export function Workbench() {
         draft={draft}
         saved={saved}
         run={run}
+        pairedRun={pairedRun}
         locallyResolvedIssueIds={locallyResolvedIssueIds}
         readOnly={readOnly}
         busy={busy}
@@ -1079,6 +1208,8 @@ export function Workbench() {
         setDraft={setDraft}
         save={save}
         check={check}
+        cancelRun={cancelRun}
+        retryRun={retryRun}
         select={(i, el) => {
           trigger.current = el;
           setSelected(i);
@@ -1148,6 +1279,10 @@ export function Workbench() {
             {userMenuOpen && (
               <div className="user-menu" role="menu" aria-label="用户菜单">
                 <p>{user.display_name}<small>{user.account_name}</small></p>
+                {user.account_type === "visitor" && <p className="visitor-expiry">访客空间有效至 <time>{timestampLabel(user.visitor_expires_at)}</time></p>}
+                {user.account_type !== "visitor" && (
+                  <button type="button" role="menuitem" onClick={() => go("/account/security")}>账号安全</button>
+                )}
                 <button
                   type="button"
                   role="menuitem"
@@ -1216,7 +1351,7 @@ export function Workbench() {
               : "浏览只读：小于 1024px 可阅读资料与证据；作者操作仅在桌面可用。"}
           </p>
         )}
-        {(!["/login", "/register"].includes(pathname) && (notice || Boolean(error))) && (
+        {(!isPublicAuthPath(pathname) && (notice || Boolean(error))) && (
           <div
             className={error ? "feedback error" : "feedback"}
             role={error ? "alert" : "status"}
@@ -1384,6 +1519,7 @@ function Auth({
   busy,
   error,
   submit,
+  visitor,
   go,
 }: {
   register: boolean;
@@ -1393,6 +1529,7 @@ function Auth({
     e: FormEvent<HTMLFormElement>,
     k: "login" | "register",
   ) => Promise<void>;
+  visitor: () => Promise<void>;
   go: (href: string) => void;
 }) {
   const accountInput = useRef<HTMLInputElement | null>(null);
@@ -1442,6 +1579,12 @@ function Auth({
             <input name="display_name" required maxLength={60} />
           </label>
           )}
+          {register && (
+            <label>
+              恢复邮箱
+              <input name="recovery_email" type="email" autoComplete="email" required maxLength={254} />
+            </label>
+          )}
           <label>
             密码
             <input
@@ -1463,8 +1606,10 @@ function Auth({
           >
             {passwordVisible ? "隐藏密码" : "显示密码"}
           </Button>
-          {register && <p className="auth-rules">账号至少 3 个字符，密码至少 10 个字符。</p>}
-          <p className="auth-recovery-note">测试阶段暂不支持找回密码，请妥善保管。</p>
+          {register && <p className="auth-rules">账号至少 3 个字符，密码至少 10 个字符。恢复邮箱验证后可用于密码找回。</p>}
+          {!register && (
+            <Button className="quiet auth-password-toggle" disabled={Boolean(busy)} onClick={() => go("/password-reset")}>忘记密码？</Button>
+          )}
           <div className="auth-error-slot">
             {hasError && (
               <p id={errorId} className="inline-error" role="alert">
@@ -1474,15 +1619,179 @@ function Auth({
           </div>
           <div className="auth-actions">
             <Button className="primary" type="submit" disabled={Boolean(busy)} ariaBusy={Boolean(busy)}>
-              <span>{register ? "创建本地账号" : "登录"}</span>
+              <span>{register ? "创建账号" : "登录"}</span>
               <span className="auth-button-spinner" aria-hidden="true" data-active={Boolean(busy)} />
             </Button>
             <Button className="quiet" disabled={Boolean(busy)} onClick={() => go(register ? "/login" : "/register")}>
-              {register ? "已有账号？返回登录" : "还没有账号？创建本地账号"}
+              {register ? "已有账号？返回登录" : "还没有账号？创建账号"}
             </Button>
+            {!register && <Button className="quiet" disabled={Boolean(busy)} onClick={() => void visitor()}>以访客身份体验 24 小时</Button>}
           </div>
         </form>
       </section>
+    </section>
+  );
+}
+
+function PasswordResetRequestPage({ go }: { go: (href: string) => void }) {
+  const [state, setState] = useState<"request" | "sending" | "sent" | "rate-limited" | "failed">("request");
+  const [message, setMessage] = useState("");
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    setState("sending");
+    setMessage("");
+    try {
+      await json("/auth/password-reset/request", "POST", { recovery_email: String(form.get("recovery_email")) });
+      setState("sent");
+      setMessage("如果该邮箱已验证，我们已发送一封 15 分钟内有效的重置邮件。");
+    } catch (cause) {
+      const code = (cause as ApiFailure).code;
+      setState(code === "recovery_rate_limited" ? "rate-limited" : "failed");
+      setMessage(labelError(cause));
+    }
+  };
+  return (
+    <section className="auth-layout">
+      <section className="auth recovery-panel">
+        <div className="auth-brand"><span className="brand-mark" aria-hidden="true" />Story Continuity</div>
+        <div className="auth-heading"><h1>找回密码</h1><p className="auth-lede">输入已验证的恢复邮箱。无论账号是否存在，响应都保持一致。</p></div>
+        <form onSubmit={(event) => void submit(event)}>
+          <label>恢复邮箱<input name="recovery_email" type="email" autoComplete="email" required maxLength={254} /></label>
+          <div className="auth-error-slot" aria-live="polite">
+            {message && <p className={state === "failed" || state === "rate-limited" ? "inline-error" : "inline-success"} role={state === "failed" ? "alert" : "status"}>{message}</p>}
+          </div>
+          <div className="auth-actions">
+            <Button className="primary" type="submit" disabled={state === "sending"} ariaBusy={state === "sending"}>{state === "sending" ? "正在提交" : "发送重置邮件"}</Button>
+            <Button className="quiet" onClick={() => go("/login")}>返回登录</Button>
+          </div>
+        </form>
+      </section>
+    </section>
+  );
+}
+
+function consumeTokenFromFragment(): string {
+  const token = new URLSearchParams(window.location.hash.replace(/^#/, "")).get("token") ?? "";
+  history.replaceState(history.state, "", `${window.location.pathname}${window.location.search}`);
+  return token;
+}
+
+function PasswordResetConfirmPage({ go }: { go: (href: string) => void }) {
+  const [state, setState] = useState<"confirm" | "sending" | "success" | "invalid" | "rate-limited">("confirm");
+  const [message, setMessage] = useState("");
+  const token = useRef("");
+  useEffect(() => {
+    token.current = consumeTokenFromFragment();
+  }, []);
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    if (!token.current) {
+      setState("invalid");
+      setMessage("安全链接无效或已过期，请重新发起。");
+      return;
+    }
+    setState("sending");
+    try {
+      await json("/auth/password-reset/confirm", "POST", { token: token.current, password: String(form.get("password")) });
+      setState("success");
+      setMessage("密码已更新，所有旧会话均已撤销。请使用新密码登录。");
+    } catch (cause) {
+      const code = (cause as ApiFailure).code;
+      setState(code === "recovery_rate_limited" ? "rate-limited" : "invalid");
+      setMessage(labelError(cause));
+    }
+  };
+  return (
+    <section className="auth-layout">
+      <section className="auth recovery-panel">
+        <div className="auth-brand"><span className="brand-mark" aria-hidden="true" />Story Continuity</div>
+        <div className="auth-heading"><h1>设置新密码</h1><p className="auth-lede">安全链接只能使用一次，并在 15 分钟后过期。</p></div>
+        {state === "success" ? (
+          <div className="auth-actions" aria-live="polite"><p className="inline-success" role="status">{message}</p><Button className="primary" onClick={() => go("/login")}>前往登录</Button></div>
+        ) : (
+          <form onSubmit={(event) => void submit(event)}>
+            <label>新密码<input name="password" type="password" autoComplete="new-password" minLength={10} required /></label>
+            <p className="auth-rules">至少 10 个字符，且不能全部相同。</p>
+            <div className="auth-error-slot" aria-live="assertive">
+              {message && <p className="inline-error" role="alert">{message}</p>}
+            </div>
+            <div className="auth-actions">
+              <Button className="primary" type="submit" disabled={state === "sending"} ariaBusy={state === "sending"}>{state === "sending" ? "正在更新" : "更新密码"}</Button>
+              <Button className="quiet" onClick={() => go("/password-reset")}>重新发起</Button>
+            </div>
+          </form>
+        )}
+      </section>
+    </section>
+  );
+}
+
+function VerifyEmailPage({ go, refreshUser }: { go: (href: string) => void; refreshUser: (user: User | null) => void }) {
+  const [message, setMessage] = useState("正在验证恢复邮箱…");
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    const token = consumeTokenFromFragment();
+    if (!token) {
+      queueMicrotask(() => {
+        setFailed(true);
+        setMessage("安全链接无效或已过期，请重新发送验证邮件。");
+      });
+      return;
+    }
+    json("/auth/recovery-email/verify", "POST", { token })
+      .then(async () => {
+        const session = await request<{ user: User | null }>("/auth/session?optional=true");
+        refreshUser(session.user);
+        setMessage("恢复邮箱已验证，可用于密码找回。");
+      })
+      .catch((cause) => { setFailed(true); setMessage(labelError(cause)); });
+  }, [refreshUser]);
+  return (
+    <section className="auth-layout"><section className="auth recovery-panel">
+      <div className="auth-brand"><span className="brand-mark" aria-hidden="true" />Story Continuity</div>
+      <div className="auth-heading"><h1>验证恢复邮箱</h1><p className={failed ? "inline-error" : "inline-success"} role={failed ? "alert" : "status"} aria-live="polite">{message}</p></div>
+      <div className="auth-actions"><Button className="primary" onClick={() => go("/")}>返回工作台</Button></div>
+    </section></section>
+  );
+}
+
+function AccountSecurity({ user, updateUser, go }: { user: User; updateUser: (user: User) => void; go: (href: string) => void }) {
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [email, setEmail] = useState("");
+  const refresh = async () => {
+    const session = await request<{ user: User }>("/auth/session");
+    updateUser(session.user);
+  };
+  const send = async (resend: boolean) => {
+    setBusy(true); setError(""); setMessage("");
+    try {
+      await json(resend ? "/auth/recovery-email/resend" : "/auth/recovery-email", "POST", { recovery_email: email });
+      await refresh();
+      setMessage(resend ? "验证邮件已重新发送。" : "恢复邮箱已绑定，验证邮件已发送。");
+    } catch (cause) { setError(labelError(cause)); }
+    finally { setBusy(false); }
+  };
+  const recovery = user.recovery_email ?? { configured: false, verified: false, masked: null };
+  return (
+    <section className="content account-security">
+      <header className="page-heading"><div><p className="eyebrow">账号安全</p><h1>恢复邮箱</h1><p>邮箱只用于账户恢复和必要安全通知。</p></div><Button onClick={() => go("/")}>返回工作台</Button></header>
+      <section className="security-status" aria-live="polite">
+        <h2>当前状态</h2>
+        <p>{recovery.configured ? recovery.masked : "尚未绑定"} · {recovery.verified ? "已验证" : "未验证"}</p>
+        {user.account_type === "visitor" && <p className="inline-error">访客空间不支持绑定恢复邮箱。</p>}
+      </section>
+      {user.account_type !== "visitor" && (
+        <form className="security-form" onSubmit={(event) => { event.preventDefault(); void send(false); }}>
+          <label>恢复邮箱<input name="recovery_email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={(event) => setEmail(event.target.value)} /></label>
+          <div className="auth-actions"><Button className="primary" type="submit" disabled={busy}>{recovery.configured ? "更换并发送验证" : "绑定并发送验证"}</Button>{recovery.configured && !recovery.verified && <Button type="button" disabled={busy || !email} onClick={() => void send(true)}>重新发送</Button>}</div>
+          {message && <p className="inline-success" role="status">{message}</p>}
+          {error && <p className="inline-error" role="alert">{error}</p>}
+        </form>
+      )}
     </section>
   );
 }
@@ -1991,6 +2300,37 @@ function Import({
   );
 }
 
+function RunLifecycle({ run, blocked, cancelRun, retryRun, actions = true }: { run: Run; blocked: boolean; cancelRun: () => Promise<void>; retryRun: () => Promise<void>; actions?: boolean }) {
+  const metrics = run.provider_metrics ?? run.metrics;
+  const provenance = run.provenance ?? run.metrics?.provenance;
+  const unfinished = run.status !== "completed" && !activeRun(run);
+  return (
+    <section className={`run-lifecycle status-${run.status}`} aria-label={`${run.run_type === "memory_delta" ? "Memory Delta" : "Continuity"} Agent Run 生命周期`} aria-live="polite">
+      <header>
+        <div>
+          <p className="eyebrow">AGENT RUN · {run.run_type === "memory_delta" ? "MEMORY DELTA" : "CONTINUITY"}</p>
+          <h2>{stage(run.stage)}</h2>
+          <p>attempt {run.attempt_number ?? 1} · Run {run.run_id}</p>
+        </div>
+        <div className="run-actions">
+          <span className={`run-state state-${run.status}`}>{stage(run.status)}</span>
+          {actions && activeRun(run) && <Button disabled={blocked} onClick={() => void cancelRun()}>{run.stage === "cancelling" ? "正在取消" : "取消 Run"}</Button>}
+          {actions && retryableRun(run) && <Button className="primary" disabled={blocked} onClick={() => void retryRun()}>重试为新 Run</Button>}
+        </div>
+      </header>
+      {unfinished && <p className="run-safety" role="alert">{labelError({ code: run.error_code })} 本轮未写入部分 Issue、Evidence、Decision 或 Memory 结果。</p>}
+      {run.stage === "cancelling" && <p className="run-safety" role="status">正在等待当前 Provider 阶段返回；迟到结果将被丢弃，不会进入业务表。</p>}
+      <dl className="run-facts">
+        <div><dt>创建 / 开始 / 结束</dt><dd>{timestampLabel(run.created_at)}<br />{timestampLabel(run.started_at)}<br />{timestampLabel(run.completed_at)}</dd></div>
+        <div><dt>耗时</dt><dd>Run {durationLabel(run.duration_ms)}<br />Provider {durationLabel(metrics?.latency_ms)}</dd></div>
+        <div><dt>Provider 用量</dt><dd>{metrics?.input_tokens == null ? "tokens 不可用" : `${metrics.input_tokens} in / ${metrics.output_tokens ?? 0} out`}<br />{metrics?.cost_available ? `实际 cost ¥${metrics.cost_cny}` : "cost unavailable（不估算）"}</dd></div>
+        <div><dt>Lineage</dt><dd>source r{run.source_revision} · Memory V{run.source_memory_version ?? provenance?.source_memory_version ?? "—"}<br />root {run.root_run_id ?? run.run_id}</dd></div>
+      </dl>
+      {provenance && <details className="run-provenance"><summary>查看 provenance 与状态事件</summary><dl><div><dt>Provider / model</dt><dd>{provenance.provider_label} / {provenance.model_label}</dd></div><div><dt>Prompt / schema</dt><dd>{provenance.prompt_version} / {provenance.schema_version}</dd></div><div><dt>Retrieval</dt><dd>{provenance.retrieval_method_version}</dd></div></dl><ol>{(run.transitions ?? []).map((event) => <li key={event.sequence}><strong>{event.sequence}. {stage(event.stage)}</strong><span>{event.status} · {timestampLabel(event.created_at)}{event.error_code ? ` · ${event.error_code}` : ""}</span></li>)}</ol></details>}
+    </section>
+  );
+}
+
 function ProjectPage(p: {
   tab: string;
   project: Project;
@@ -2021,6 +2361,7 @@ function ProjectPage(p: {
   draft: Draft | null;
   saved: Draft | null;
   run: Run | null;
+  pairedRun: Run | null;
   locallyResolvedIssueIds: string[];
   readOnly: boolean;
   busy: string;
@@ -2029,6 +2370,8 @@ function ProjectPage(p: {
   setDraft: (v: Draft) => void;
   save: () => Promise<void>;
   check: () => Promise<void>;
+  cancelRun: () => Promise<void>;
+  retryRun: () => Promise<void>;
   select: (i: Issue, el: HTMLElement) => void;
   review: () => Promise<void>;
   commit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
@@ -2280,7 +2623,7 @@ function ProjectPage(p: {
               <Icon name="save" />
               {p.controlled ? "保存受控修订" : "保存草稿"}
             </Button>
-          ) : (
+          ) : (!p.run || (!activeRun(p.run) && !retryableRun(p.run))) ? (
             <Button
               className="primary"
               disabled={blocked || !p.draft}
@@ -2289,7 +2632,7 @@ function ProjectPage(p: {
               <Icon name="play" />
               运行连续性检查
             </Button>
-          )}
+          ) : null}
         </div>
       </header>
       {p.controlled && (
@@ -2307,6 +2650,8 @@ function ProjectPage(p: {
       {p.coverage?.status === "update_pending" && (
         <p className="warning"><I>!</I>Source r{p.project.source_revision} 已追加；仅新 SourceSpan 与已确认 Memory 会进入增量审阅。{p.memoryDelta?.status === "failed" ? "本次运行失败，未写入任何 Issue 或候选，可安全重试。" : <Button className="primary" disabled={blocked} onClick={() => void p.startIncrementalReview()}>运行增量检查</Button>}</p>
       )}
+      {p.run && <RunLifecycle run={p.run} blocked={blocked} cancelRun={p.cancelRun} retryRun={p.retryRun} />}
+      {p.pairedRun && <RunLifecycle run={p.pairedRun} blocked={blocked} cancelRun={p.cancelRun} retryRun={p.retryRun} actions={false} />}
       <div className="workspace-grid">
         <section className="editor">
           <header className="editor-top">
@@ -2342,7 +2687,7 @@ function ProjectPage(p: {
             )}
           </label>
           <footer className="run-bar">
-            <span>{p.run ? `${stage(p.run.stage)} · Evidence ${p.run.status === "completed" ? "可用" : "处理中"}` : "尚未运行连续性检查"}</span>
+            <span>{p.run ? `${stage(p.run.stage)} · Evidence ${p.run.status === "completed" ? "可用" : activeRun(p.run) ? "处理中" : "不可用"}` : "尚未运行连续性检查"}</span>
             <span>{p.draft ? `${new Blob([p.draft.body]).size.toLocaleString()} bytes` : "读取中"}</span>
           </footer>
         </section>
@@ -2357,9 +2702,9 @@ function ProjectPage(p: {
                 {stage(p.run.stage)} · source revision {p.run.source_revision} · {p.run.is_stale ? "已过期" : "当前版本"}
               </p>
               {p.run.result_origin === "demo_preset" && <p className="preset-note" role="note"><strong>预置演示审阅数据</strong> · 用于本地体验完整审阅链路，本次未调用 Provider，也不代表模型实时判断。</p>}
-              {p.run.status === "failed" && (
+              {["failed", "timed_out", "cancelled"].includes(p.run.status) && (
                 <p className="inline-error">
-                  {labelError({ code: p.run.error_code })}
+                  {labelError({ code: p.run.error_code })} 未写入、也不展示部分结果。
                 </p>
               )}
               <ul className="issue-list">
@@ -2462,8 +2807,8 @@ function ProjectPage(p: {
   );
 }
 function MemoryDeltaReview({ delta, blocked, submit }: { delta: MemoryDelta; blocked: boolean; submit: (event: FormEvent<HTMLFormElement>) => Promise<void> }) {
-  if (delta.status === "processing") return <div className="empty" role="status">正在分别运行 Continuity 与 Memory Delta；失败时不会显示半结果。</div>;
-  if (delta.status === "failed") return <div className="notice error" role="alert">增量运行失败：{delta.error_code ?? "安全失败"}。没有写入 Issue、候选或 MemoryVersion，可重新运行。</div>;
+  if (["processing", "cancelling"].includes(delta.status)) return <div className="empty" role="status">正在分别运行 Continuity 与 Memory Delta；只有双 Run 全部完成后才会显示结果。</div>;
+  if (["failed", "timed_out", "cancelled"].includes(delta.status)) return <div className="notice error" role="alert">增量运行未完成：{labelError({ code: delta.error_code })} 没有写入 Issue、候选或 MemoryVersion，请在 Run 生命周期中安全重试。</div>;
   return <form className="review memory-init-review" aria-label="Memory Delta 审核" onSubmit={(event) => void submit(event)}><header><div><p className="eyebrow">MEMORY DELTA</p><h2>新增 Source r{delta.source_revision} 的候选</h2><p>核心候选必须全部决定；辅助候选可 pending，且不进入 canon 或 Provider 输入。当前 coverage：{delta.coverage?.status}。</p></div></header>{delta.candidates.map((candidate) => <article key={candidate.id} className="diff memory-init-candidate"><div className="candidate-source"><strong>Evidence · 第 {candidate.source.chapter_number} 章《{candidate.source.chapter_title}》</strong><p>{candidate.source.excerpt}</p><small>SourceSpan {candidate.source.span_id} · source r{candidate.source_revision}</small></div><div><strong>候选事实</strong><p>{memoryTypeLabel(candidate.memory_type)} · {candidate.subject} · {predicateLabel(candidate.predicate)}：{candidate.value}</p><small>delta · {candidate.review_priority === "core" ? "核心候选（必须决定）" : "辅助候选（可继续待审）"} · 尚未成为 canon</small></div>{candidate.decision_status === "pending" ? <><fieldset><legend>作者审核（未预选）</legend><label><input type="radio" name={`memory-delta:${candidate.id}`} value="accepted" disabled={blocked} />接受</label><label><input type="radio" name={`memory-delta:${candidate.id}`} value="rejected" disabled={blocked} />拒绝</label><label><input type="radio" name={`memory-delta:${candidate.id}`} value="edited" disabled={blocked} />编辑后接受</label></fieldset><div className="candidate-edit"><label>事实类型<select name={`memory-delta:${candidate.id}:memory_type`} defaultValue={candidate.memory_type} disabled={blocked}>{["static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"].map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label><label>对象<input name={`memory-delta:${candidate.id}:subject`} defaultValue={candidate.subject} disabled={blocked} /></label><label>关系<input name={`memory-delta:${candidate.id}:predicate`} defaultValue={candidate.predicate} disabled={blocked} /></label><label>事实内容<textarea name={`memory-delta:${candidate.id}:value`} defaultValue={candidate.value} disabled={blocked} /></label></div></> : <p>已由作者决定：{candidate.decision_status}；{candidate.decision_status === "rejected" ? "不写入 canon。" : "将在核心闭合提交时写入新 MemoryVersion。"}</p>}</article>)}<footer className="actions"><Button className="primary" type="submit" disabled={blocked || !delta.candidates.length}>提交已决定的核心候选</Button></footer></form>;
 }
 

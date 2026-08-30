@@ -41,7 +41,9 @@ The reported V4 scope is deliberately narrow: it is a frozen 15-case product eva
 
 Stages 8 and 9 are accepted. V5–V8 each retain one immutable first-valid formal result bundle with `gate_failed`; those results, integrity records, and workspaces are historical evidence rather than retuning inputs. V8 `first_valid_formal` ran once on frozen `deepseek-v4-pro` and `continuity-review-v6` inputs. All 30 calls completed; classification, macro F1, all three class recalls, retrieval, citation precision, grounding, schema validity, and Evidence completeness were 1.0000. Category accuracy was 0.875 and the designated category regression was 2/3 because one `location_action` case was classified as `event_status`. This single deviation is retained as a portfolio-level known limitation, while the immutable Stage 10 result remains `gate_failed`.
 
-Stage 11 has separately verified the long-form product workflow at the primary 100k- and 300k-character targets. The accepted 300k V2 evidence records 90/90 successful Provider calls with no transport retries, a 4,820,992-byte final SQLite database, bounded write acknowledgements, resolvable current-project Evidence, explicit author decisions, and no pending or automatic canon writes. The earlier 300k V1 capacity failure remains unchanged. The optional 1M-character Stage 11N pressure test and Stages 12–14 have not started.
+Stage 11 has separately verified the long-form product workflow at the primary 100k- and 300k-character targets. The accepted 300k V2 evidence records 90/90 successful Provider calls with no transport retries, a 4,820,992-byte final SQLite database, bounded write acknowledgements, resolvable current-project Evidence, explicit author decisions, and no pending or automatic canon writes. The earlier 300k V1 capacity failure remains unchanged. The optional 1M-character Stage 11N pressure test has not started.
+
+Stage 12 V2 passed the six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero-partial-write Gates; the V1 Provider-boundary incident remains `gate_failed`. Stage 13 V4 passed the local Web App product Gate after preserving the V2/V3 artifact failures: visitor and registered-user isolation, quotas and cleanup, recovery-email verification and password reset, two reproducible standalone builds, relocation, and the browser/security matrix were independently verified with zero external Provider HTTP and SMTP calls. Stage 14 public deployment and public-address acceptance have not started.
 
 ## Limitations
 
@@ -50,7 +52,7 @@ Stage 11 has separately verified the long-form product workflow at the primary 1
 - A real provider must be explicitly configured. Without it, the product intentionally returns `503 provider_unavailable` instead of fabricating a result.
 - The local runtime database is deliberately excluded from version control. Reset restores the demo path but is not a backup, collaboration, or hosted data-management system.
 - The historical frozen CLI PoC and its held-out F1 0.9412 use a different protocol. That result is not combined with V4 metrics.
-- The currently verified product is not deployed. The planned hosted route has not yet been implemented or accepted.
+- The currently verified product is not deployed. The hosted product contracts have been implemented and accepted locally, but real SMTP delivery, public HTTPS behaviour, release rollback, and the public-address workflow remain Stage 14 work.
 
 ## Evidence references
 

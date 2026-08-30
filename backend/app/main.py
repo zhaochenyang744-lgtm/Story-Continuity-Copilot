@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+from concurrent.futures import ThreadPoolExecutor
+import asyncio
+import os
+import threading
 import uuid
 from typing import Literal
 from urllib.parse import urlparse
@@ -15,6 +19,17 @@ from .config import AppPaths, PATHS, ProtectedPathError
 from .database import DomainError
 from .engine import ContinuityEngine, MemoryDeltaEngine, MemoryInitializationEngine
 from .provider import DeepSeekProvider, ProviderPort
+from .stage13 import (
+    MailerPort,
+    SmtpMailer,
+    Stage13Service,
+    Stage13Settings,
+    UnavailableMailer,
+    UsageGuardProvider,
+    masked_email,
+    normalize_email,
+    provider_usage,
+)
 from .v2_database import V2Database
 
 COOKIE = "scc_local_session"
@@ -62,13 +77,18 @@ def safe_memory_initialization_failure_details(result:dict)->dict:
     return details
 
 class Strict(BaseModel): model_config = ConfigDict(extra="forbid")
-class Register(Strict): account_name:str; display_name:str; password:str
+class Register(Strict): account_name:str; display_name:str; password:str; recovery_email:str|None=None
 class Login(Strict): account_name:str; password:str
+class RecoveryEmail(Strict): recovery_email:str
+class RecoveryToken(Strict): token:str=Field(min_length=32,max_length=512)
+class PasswordResetRequest(Strict): recovery_email:str
+class PasswordResetConfirm(Strict): token:str=Field(min_length=32,max_length=512); password:str
 class ProjectCreate(Strict): title:str; genre:str|None=None; summary:str|None=None
 class ProjectPatch(Strict): base_metadata_revision:int=Field(ge=1); title:str|None=None; genre:str|None=None; summary:str|None=None; status:Literal['active','paused','completed','archived']|None=None; confirm_archive:bool|None=None
 class EditContext(Strict): source_run_id:str; source_revision:int=Field(ge=1); issue_id:str
 class DraftPatch(Strict): base_revision:int=Field(ge=1); body:str; title:str|None=None; edit_context:EditContext|None=None
 class Check(Strict): draft_id:str; draft_revision:int=Field(ge=1); client_request_id:str|None=None
+class RunAction(Strict): client_request_id:str|None=None
 class Decision(Strict): run_id:str; source_revision:int=Field(ge=1); decision:Literal['accept_and_edit','keep_intentional','false_positive']; note:str|None=None; resulting_revision:int|None=None
 class ChangeSet(Strict): run_id:str; source_run_revision:int=Field(ge=1); resolved_revision:int=Field(ge=1)
 class EditedMemoryItem(Strict): item_id:str; memory_type:Literal['static_canon','dynamic_state','event_timeline','character_knowledge','open_thread']; subject:str; predicate:str; value:str
@@ -91,32 +111,78 @@ class SourceChangeCommit(Strict): confirm:bool|None=None; content_sha256:str
 class IncrementalReview(Strict): source_revision:int=Field(ge=2)
 class MemoryDeltaCommit(Strict): confirm:bool|None=None
 
-def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=None)->FastAPI:
-    db=V2Database(paths); engine=ContinuityEngine(provider or DeepSeekProvider()); memory_engine=MemoryInitializationEngine(engine.provider); delta_engine=MemoryDeltaEngine(engine.provider)
+def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=None, settings:Stage13Settings|None=None, mailer:MailerPort|None=None)->FastAPI:
+    settings=settings or Stage13Settings.from_env()
+    db=V2Database(paths)
     # Initialize eagerly too: ASGI unit clients do not necessarily enter the
     # lifespan context, while normal servers retain the same idempotent check.
     db.initialize()
+    if mailer is None:
+        mailer=SmtpMailer(settings) if settings.public_app_mode else UnavailableMailer()
+    stage13=Stage13Service(db,settings,mailer)
+    recovery_executor=ThreadPoolExecutor(max_workers=2,thread_name_prefix="stage13-recovery")
+    registration_lock=threading.Lock()
+    guarded_provider=UsageGuardProvider(provider or DeepSeekProvider(),stage13)
+    engine=ContinuityEngine(guarded_provider); memory_engine=MemoryInitializationEngine(engine.provider); delta_engine=MemoryDeltaEngine(engine.provider)
     @asynccontextmanager
-    async def lifespan(_:FastAPI): db.initialize(); yield
+    async def lifespan(_:FastAPI):
+        db.initialize(); stage13.initialize(); stage13.cleanup_expired_visitors()
+        async def periodic_cleanup():
+            while True:
+                await asyncio.sleep(settings.cleanup_interval_seconds)
+                stage13.cleanup_expired_visitors()
+        task=asyncio.create_task(periodic_cleanup())
+        try: yield
+        finally:
+            task.cancel()
+            try: await task
+            except asyncio.CancelledError: pass
+            recovery_executor.shutdown(wait=True,cancel_futures=False)
     app=FastAPI(title='Story Continuity Copilot Web Demo',version='0.4.0',lifespan=lifespan)
-    app.state.database=db; app.state.engine=engine
-    def execute(project_id:str,run_id:str):
+    app.state.database=db; app.state.engine=engine; app.state.stage13=stage13; app.state.stage13_settings=settings; app.state.recovery_executor=recovery_executor
+    def trusted_host(value:str)->bool:
+        folded=value.casefold()
+        if folded in settings.trusted_hosts:return True
+        if settings.public_app_mode or settings.test_mode:return False
+        try:return urlparse(f'http://{folded}').hostname in {'127.0.0.1','localhost'}
+        except ValueError:return False
+    def execute(project_id:str,run_id:str,user_id:str,reservation_id:str):
         try:
-            if db.session_budget_exhausted(project_id): db.finish_run(project_id,run_id,{'status':'budget_paused','error_code':'session_guard_paused','retryable':True}); return
-            db.advance_run(project_id,run_id,'preparing_draft'); db.advance_run(project_id,run_id,'retrieving_confirmed_facts'); data=db.run_input(project_id,run_id); db.advance_run(project_id,run_id,'comparing_evidence'); result=engine.execute(data)
-            if result['status']=='completed': db.advance_run(project_id,run_id,'assembling_reviewable_results')
+            if db.session_budget_exhausted(project_id): db.finish_run(project_id,run_id,{'status':'failed','error_code':'budget_guard_exceeded','retryable':True}); return
+            if not db.advance_run(project_id,run_id,'preparing_draft'):return
+            if not db.advance_run(project_id,run_id,'retrieving_confirmed_facts'):return
+            data=db.run_input(project_id,run_id)
+            if not db.advance_run(project_id,run_id,'comparing_evidence'):return
+            with provider_usage(user_id,reservation_id): result=engine.execute(data)
+            if result['status']=='completed' and not db.advance_run(project_id,run_id,'assembling_reviewable_results'):return
             db.finish_run(project_id,run_id,result)
         except Exception: db.finish_run(project_id,run_id,{'status':'failed','error_code':'internal_run_error','retryable':True})
-    def execute_incremental(project_id:str,batch_id:str):
+    def execute_incremental(project_id:str,batch_id:str,user_id:str,reservation_id:str):
         try:
+            if not db.advance_incremental_runs(project_id,batch_id,'running_continuity'):return
             continuity_input,delta_input=db.incremental_inputs(project_id,batch_id)
-            continuity=engine.execute(continuity_input); delta=delta_engine.execute(delta_input)
+            with provider_usage(user_id,reservation_id): continuity=engine.execute(continuity_input)
+            if continuity['status']!='completed':
+                db.finish_incremental_runs(project_id,batch_id,continuity,{'status':'failed','error_code':'incremental_sibling_failed','retryable':True}); return
+            if not db.advance_incremental_runs(project_id,batch_id,'running_memory_delta'):return
+            with provider_usage(user_id,reservation_id): delta=delta_engine.execute(delta_input)
             db.finish_incremental_runs(project_id,batch_id,continuity,delta)
         except Exception:
             db.finish_incremental_runs(project_id,batch_id,{"status":"failed","error_code":"internal_run_error","retryable":True},{"status":"failed","error_code":"internal_run_error","retryable":True})
     @app.middleware('http')
     async def ids(request:Request,call_next):
-        request.state.request_id='req_'+uuid.uuid4().hex; response=await call_next(request); response.headers['X-Request-Id']=request.state.request_id; return response
+        request.state.request_id='req_'+uuid.uuid4().hex
+        host=request.headers.get('host','').casefold()
+        if not trusted_host(host):
+            response=JSONResponse(status_code=403,content={'error':{'code':'cross_site_request_rejected','message':'请求无法完成','retryable':False},'request_id':request.state.request_id})
+        else:
+            response=await call_next(request)
+        response.headers['X-Request-Id']=request.state.request_id
+        response.headers['Content-Security-Policy']="default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
+        response.headers['X-Content-Type-Options']='nosniff'
+        response.headers['Referrer-Policy']='no-referrer'
+        if settings.public_app_mode: response.headers['Strict-Transport-Security']='max-age=63072000; includeSubDomains'
+        return response
     def failure(request:Request,status:int,code:str,retryable:bool=False,details:dict|None=None):
         error={'code':code,'message':'请求无法完成','retryable':retryable}
         if details:error['details']=details
@@ -143,35 +209,84 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         return result
     def operation(request:Request, code:str)->None: request.state.failure_code=code
     def csrf(request:Request):
-        host=request.headers.get('host','').split(':',1)[0].casefold()
-        if host not in {'localhost','127.0.0.1','testserver'}: raise HTTPException(403,'cross_site_request_rejected')
+        host=request.headers.get('host','').casefold()
+        if not trusted_host(host): raise HTTPException(403,'cross_site_request_rejected')
         origin=request.headers.get('origin')
         if origin:
-            parsed=urlparse(origin)
-            if parsed.scheme not in {'http','https'} or parsed.hostname not in {'localhost','127.0.0.1'}:raise HTTPException(403,'cross_site_request_rejected')
+            if origin not in settings.trusted_origins:raise HTTPException(403,'cross_site_request_rejected')
+        elif settings.public_app_mode: raise HTTPException(403,'cross_site_request_rejected')
+    def client_ip(request:Request)->str:
+        return request.client.host if request.client else 'unknown'
     def user(request:Request):return db.session_user(request.cookies.get(COOKIE))
     def session_response(request:Request,data:dict,status:int):
         token=data.get('session',{}).pop('_token',None); response=ok(request,data,status)
-        if token:response.set_cookie(COOKIE,token,httponly=True,samesite='lax',secure=False,max_age=43200,path='/')
+        if token:
+            account=data.get('user',{})
+            max_age=settings.visitor_ttl_hours*3600 if account.get('account_type')=='visitor' else 43200
+            response.set_cookie(COOKIE,token,httponly=True,samesite='lax',secure=settings.cookie_secure,max_age=max_age,path='/')
         return response
     @app.get('/health')
     def health():return {'status':'ok','service':'story-continuity-web-demo'}
     @app.get('/readiness')
-    def ready():return {'status':'ready','database':'runtime/data/demo.sqlite3','counts':db.counts()}
+    def ready():return {'status':'ready','capabilities':{'database':True,'provider_configured':bool(engine.provider.available),'mailer_configured':not isinstance(mailer,UnavailableMailer),'public_mode':settings.public_app_mode},'security_error_code':None}
+    @app.post('/api/auth/visitor',status_code=201)
+    def visitor(request:Request):
+        csrf(request); data=stage13.create_visitor(request.cookies.get(COOKIE)); return session_response(request,data,201)
     @app.post('/api/auth/register',status_code=201)
     def register(payload:Register,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request); operation(request,'registration_failed'); data,status=db.register(payload.model_dump(),key(idempotency_key)); return session_response(request,data,status)
+        csrf(request); operation(request,'registration_failed'); replay_key=key(idempotency_key)
+        with registration_lock:
+            if settings.require_recovery_email and not payload.recovery_email: raise HTTPException(400,'recovery_email_required')
+            registration=payload.model_dump(exclude={'recovery_email'})
+            if payload.recovery_email:
+                normalized=normalize_email(payload.recovery_email)
+                registration['recovery_email_hash']=stage13.email_hash(normalized)
+                registration['recovery_email_masked']=masked_email(normalized)
+            data,status=db.register(registration,replay_key)
+            created=bool(data.pop('_registration_created',False))
+            if created:
+                delivery='not_requested'
+                if payload.recovery_email:
+                    try:
+                        stage13.resend_verification(data['user']['id'],payload.recovery_email,client_ip(request)); delivery='sent'
+                    except DomainError as error:
+                        if error.code!='recovery_delivery_failed': raise
+                        delivery='failed'
+                data['user']=stage13.safe_user(data['user']['id']); data['recovery_email_delivery']=delivery
+                db.finalize_registration_replay(payload.account_name,replay_key,data,status)
+            else:
+                data['user']=stage13.safe_user(data['user']['id'])
+                data.setdefault('recovery_email_delivery','failed' if payload.recovery_email else 'not_requested')
+            return session_response(request,data,status)
     @app.post('/api/auth/login')
-    def login(payload:Login,request:Request):csrf(request); operation(request,'login_failed'); return session_response(request,db.login(payload.model_dump()),200)
+    def login(payload:Login,request:Request):
+        csrf(request); operation(request,'login_failed'); data=db.login(payload.model_dump()); data['user']=stage13.safe_user(data['user']['id']); return session_response(request,data,200)
     @app.post('/api/auth/logout',status_code=204)
-    def logout(request:Request):csrf(request); db.logout(request.cookies.get(COOKIE)); response=Response(status_code=204); response.delete_cookie(COOKIE,path='/'); return response
+    def logout(request:Request):csrf(request); db.logout(request.cookies.get(COOKIE)); response=Response(status_code=204); response.delete_cookie(COOKIE,path='/',secure=settings.cookie_secure,samesite='lax'); return response
     @app.get('/api/auth/session')
     def session(request:Request,optional:bool=False):
         try: active=user(request)
         except DomainError as error:
             if optional and error.code=='authentication_required':return ok(request,{'user':None,'session':None})
             raise
-        return ok(request,{'user':{'id':active['id'],'account_name':active['account_name'],'display_name':active['display_name']},'session':{'expires_at':active['expires_at']}})
+        return ok(request,{'user':stage13.safe_user(active['id']),'session':{'expires_at':active['expires_at']}})
+    @app.get('/api/auth/recovery-email')
+    def recovery_email_status(request:Request): return ok(request,stage13.safe_user(user(request)['id'])['recovery_email'])
+    @app.post('/api/auth/recovery-email')
+    def recovery_email_bind(payload:RecoveryEmail,request:Request):
+        csrf(request); return ok(request,stage13.bind_recovery_email(user(request)['id'],payload.recovery_email,client_ip(request)))
+    @app.post('/api/auth/recovery-email/resend',status_code=202)
+    def recovery_email_resend(payload:RecoveryEmail,request:Request):
+        csrf(request); return ok(request,stage13.resend_verification(user(request)['id'],payload.recovery_email,client_ip(request)),202)
+    @app.post('/api/auth/recovery-email/verify')
+    def recovery_email_verify(payload:RecoveryToken,request:Request):
+        csrf(request); return ok(request,stage13.verify_email(payload.token,client_ip(request)))
+    @app.post('/api/auth/password-reset/request',status_code=202)
+    def password_reset_request(payload:PasswordResetRequest,request:Request):
+        csrf(request); stage13.request_password_reset(payload.recovery_email,client_ip(request),recovery_executor.submit); return ok(request,{'accepted':True},202)
+    @app.post('/api/auth/password-reset/confirm')
+    def password_reset_confirm(payload:PasswordResetConfirm,request:Request):
+        csrf(request); return ok(request,stage13.confirm_password_reset(payload.token,payload.password,client_ip(request)))
     @app.get('/api/home')
     def home(request:Request):return ok(request,db.home(user(request)['id']))
     @app.get('/api/projects')
@@ -239,8 +354,11 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             current=db.memory_initialization(actor['id'],project_id)
             initialization=current if view=='full' else {field:current.get(field) for field in ('id','project_id','status','source_revision','created_at','completed_at')}
             return ok(request,{"initialization":initialization})
-        result=memory_engine.execute(input_data)
-        if result['status']!='completed':raise DomainError(result['error_code'],503,result.get('retryable') is True,safe_memory_initialization_failure_details(result))
+        reservation_id=stage13.reserve_workflow(actor['id'],project_id,'memory_initialization')
+        with provider_usage(actor['id'],reservation_id): result=memory_engine.execute(input_data)
+        if result['status']!='completed':
+            status=429 if result.get('error_code') in {'provider_attempt_quota_exceeded','workflow_quota_exceeded','server_budget_exceeded'} else 503
+            raise DomainError(result['error_code'],status,result.get('retryable') is True,safe_memory_initialization_failure_details(result))
         data,status=db.complete_memory_initialization(actor['id'],project_id,input_data,result,memory_engine.provenance(),key(idempotency_key))
         data['initialization_metrics']={key:result[key] for key in ('total_batches','schema_repair_attempts','validated_batches','staged_candidate_count','normalization_count','input_tokens','output_tokens','latency_ms') if isinstance(result.get(key),int) and not isinstance(result.get(key),bool)}
         data['initialization_metrics']['repair_events']=safe_repair_events(result.get('repair_events'))
@@ -266,8 +384,12 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         if not engine.provider.available: raise HTTPException(503,'provider_unavailable')
         data,status,created=db.create_incremental_runs(actor['id'],project_id,payload.model_dump(),key(idempotency_key),engine.provenance(),delta_engine.provenance())
         if created:
-            if executor: executor(execute_incremental,project_id,data['batch_id'])
-            else: background_tasks.add_task(execute_incremental,project_id,data['batch_id'])
+            try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'incremental_review',data['continuity_run_id'])
+            except DomainError as error:
+                failed={'status':'failed','error_code':error.code,'retryable':True}
+                db.finish_incremental_runs(project_id,data['batch_id'],failed,failed); raise
+            if executor: executor(execute_incremental,project_id,data['batch_id'],actor['id'],reservation_id)
+            else: background_tasks.add_task(execute_incremental,project_id,data['batch_id'],actor['id'],reservation_id)
         return ok(request,data,status)
     @app.post('/api/projects/{project_id}/memory/deltas/{batch_id}/candidates/{candidate_id}/decision')
     def memory_delta_candidate_decision(project_id:str,batch_id:str,candidate_id:str,payload:MemoryCandidateDecision,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
@@ -277,7 +399,12 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         csrf(request); operation(request,'memory_delta_commit_failed'); data,status=db.commit_memory_delta(user(request)['id'],project_id,batch_id,payload.model_dump(exclude_none=True),key(idempotency_key)); return ok(request,data,status)
     @app.post('/api/projects/{project_id}/source-change-sets/preview',status_code=201)
     def source_change_preview(project_id:str,payload:SourceChangePreview,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request); operation(request,'source_change_preview_failed');data,status=db.preview_source_change_set(user(request)['id'],project_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
+        csrf(request); operation(request,'source_change_preview_failed'); actor=user(request)
+        if payload.input_method in {'paste','file'}:
+            content=payload.content or ''
+            chapters,_,_=db._parse_import(content)
+            if any(len(chapter['body'])>stage13.text_limits(actor['id'])['draft_chars'] for chapter in chapters): raise HTTPException(413,'source_too_large')
+        data,status=db.preview_source_change_set(actor['id'],project_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
     @app.post('/api/projects/{project_id}/source-change-sets/{change_set_id}/commit')
     def source_change_commit(project_id:str,change_set_id:str,payload:SourceChangeCommit,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request); operation(request,'source_change_commit_failed');data,status=db.commit_source_change_set(user(request)['id'],project_id,change_set_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
@@ -287,7 +414,9 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     def draft(project_id:str,draft_id:str,request:Request):return ok(request,db.draft(user(request)['id'],project_id,draft_id))
     @app.patch('/api/projects/{project_id}/drafts/{draft_id}')
     def draft_patch(project_id:str,draft_id:str,payload:DraftPatch,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'draft_save_failed');data,status=db.patch_draft(user(request)['id'],project_id,draft_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
+        csrf(request);operation(request,'draft_save_failed'); actor=user(request)
+        if len(payload.body)>stage13.text_limits(actor['id'])['draft_chars']: raise HTTPException(413,'draft_too_large')
+        data,status=db.patch_draft(actor['id'],project_id,draft_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
     @app.post('/api/projects/{project_id}/checks',status_code=202)
     def checks(project_id:str,payload:Check,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request); operation(request,'check_create_failed')
@@ -295,11 +424,35 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         if not engine.provider.available:raise HTTPException(503,'provider_unavailable')
         data,status,created=db.create_run(actor['id'],project_id,payload.model_dump(exclude_none=True),key(idempotency_key),engine.provenance())
         if created:
-            if executor:executor(execute,project_id,data['run_id'])
-            else:background_tasks.add_task(execute,project_id,data['run_id'])
+            try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'continuity',data['run_id'])
+            except DomainError as error:
+                db.finish_run(project_id,data['run_id'],{'status':'failed','error_code':error.code,'retryable':True}); raise
+            if executor:executor(execute,project_id,data['run_id'],actor['id'],reservation_id)
+            else:background_tasks.add_task(execute,project_id,data['run_id'],actor['id'],reservation_id)
         return ok(request,data,status)
     @app.get('/api/projects/{project_id}/checks/{run_id}')
     def check(project_id:str,run_id:str,request:Request,include:str|None=None):return ok(request,db.run_view(user(request)['id'],project_id,run_id,parse_include(include)))
+    @app.post('/api/projects/{project_id}/checks/{run_id}/cancel')
+    def cancel_check(project_id:str,run_id:str,payload:RunAction,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'run_cancel_failed');data,status=db.cancel_run(user(request)['id'],project_id,run_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/checks/{run_id}/retry',status_code=202)
+    def retry_check(project_id:str,run_id:str,payload:RunAction,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'run_retry_failed'); actor=user(request);data,status,created=db.retry_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key))
+        if created:
+            target_run_id=data['continuity_run_id'] if data['paired'] else data['run']['run_id']
+            try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'retry',target_run_id)
+            except DomainError as error:
+                failed={'status':'failed','error_code':error.code,'retryable':True}
+                if data['paired']: db.finish_incremental_runs(project_id,data['batch_id'],failed,failed)
+                else: db.finish_run(project_id,target_run_id,failed)
+                raise
+            if data['paired']:
+                if executor:executor(execute_incremental,project_id,data['batch_id'],actor['id'],reservation_id)
+                else:background_tasks.add_task(execute_incremental,project_id,data['batch_id'],actor['id'],reservation_id)
+            else:
+                if executor:executor(execute,project_id,data['run']['run_id'],actor['id'],reservation_id)
+                else:background_tasks.add_task(execute,project_id,data['run']['run_id'],actor['id'],reservation_id)
+        return ok(request,data,status)
     @app.post('/api/projects/{project_id}/issues/{issue_id}/decision')
     def decision(project_id:str,issue_id:str,payload:Decision,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'decision_failed');data,status=db.decide(user(request)['id'],project_id,issue_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
@@ -314,10 +467,29 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         csrf(request);operation(request,'reset_failed');data,status=db.reset(user(request)['id'],project_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
     @app.post('/api/imports/preview',status_code=201)
     async def preview(request:Request,file:UploadFile=File(...),idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'preview_failed');data,status=db.preview_import(user(request)['id'],file.filename or '',await file.read(),key(idempotency_key));return ok(request,data,status)
+        csrf(request);operation(request,'preview_failed'); actor=user(request); limits=stage13.text_limits(actor['id'])
+        content=await file.read(limits['import_bytes']+1)
+        if len(content)>limits['import_bytes']: raise HTTPException(413,'import_too_large')
+        try: decoded=content.decode('utf-8')
+        except UnicodeDecodeError: raise HTTPException(415,'unsupported_encoding') from None
+        if len(decoded)>limits['import_chars']: raise HTTPException(413,'import_too_large')
+        data,status=db.preview_import(actor['id'],file.filename or '',content,key(idempotency_key));return ok(request,data,status)
     @app.post('/api/imports/{import_id}/commit',status_code=201)
     def import_commit(import_id:str,payload:ImportCommit,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'import_failed');data,status=db.commit_import(user(request)['id'],import_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
     return app
 
-app=create_app()
+if os.environ.get("SCC_DISABLE_DEFAULT_APP") == "1":
+    app = None
+else:
+    try:
+        app = create_app()
+    except RuntimeError as configuration_error:
+        failure_code = str(configuration_error)
+
+        @asynccontextmanager
+        async def failed_configuration_lifespan(_:FastAPI):
+            raise RuntimeError(failure_code)
+            yield
+
+        app = FastAPI(title="Story Continuity Copilot configuration failure", lifespan=failed_configuration_lifespan)

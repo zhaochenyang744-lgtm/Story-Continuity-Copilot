@@ -1,4 +1,11 @@
-export type User = { id: string; account_name: string; display_name: string };
+export type User = {
+  id: string;
+  account_name: string;
+  display_name: string;
+  account_type?: "registered" | "visitor";
+  visitor_expires_at?: string | null;
+  recovery_email?: { configured: boolean; verified: boolean; masked: string | null };
+};
 export type ProjectSummary = {
   id: string;
   title: string;
@@ -115,9 +122,14 @@ export type Issue = {
 export type Run = {
   run_id: string;
   project_id: string;
-  status: string;
+  run_type: "continuity" | "memory_delta";
+  status: "queued" | "running" | "completed" | "timed_out" | "failed" | "cancelled";
   stage: string;
   source_revision: number;
+  source_memory_version?: number;
+  source_change_set_id?: string | null;
+  source_span_ids?: string[];
+  incremental_batch_id?: string | null;
   current_revision: number;
   is_stale: boolean;
   superseded: boolean;
@@ -125,9 +137,19 @@ export type Run = {
   result_origin: "provider" | "demo_preset";
   result_origin_label: string;
   error_code: string | null;
+  retryable: boolean;
   created_at: string;
+  started_at?: string | null;
   completed_at: string | null;
-  run_type?: "continuity" | "memory_delta";
+  cancel_requested_at?: string | null;
+  duration_ms?: number | null;
+  retry_of_run_id?: string | null;
+  root_run_id?: string;
+  attempt_number?: number;
+  transitions?: { sequence: number; status: string; stage: string; error_code: string | null; created_at: string }[];
+  provenance?: { provider_label: string; model_label: string; prompt_version: string; schema_version: string; retrieval_method_version: string; source_memory_version: number; source_change_set_id?: string; source_span_ids?: string[]; incremental_batch_id?: string };
+  provider_metrics?: { latency_ms: number | null; input_tokens: number | null; output_tokens: number | null; cost_cny: number | null; cost_available: boolean };
+  metrics?: { latency_ms: number | null; input_tokens: number | null; output_tokens: number | null; cost_cny: number | null; cost_available: boolean; provenance: Run["provenance"]; retrieval: { claim_ordinal: number | null; returned_span_ids: string[]; method_version: string }[] };
   issues?: Issue[];
 };
 export type MemoryDelta = {

@@ -3,20 +3,33 @@
 from pathlib import Path
 import os
 import tempfile
+import threading
 
 from app.config import AppPaths
+
+# Importing app.main normally constructs the production ASGI app and therefore
+# a production provider. The browser-test process must only construct the
+# injected stub below.
+os.environ["SCC_DISABLE_DEFAULT_APP"] = "1"
 from app.main import create_app
-from app.provider import ProviderResult
+from app.provider import ProviderInvalidJson, ProviderResult, ProviderTimeout
 
 
 class BrowserTestProvider:
     label = "browser-e2e-test-provider"
+
+    def __init__(self):
+        self.calls = 0
+        self.entered = threading.Event()
+        self.release = threading.Event()
+        self.failed_once = set()
 
     @property
     def available(self):
         return True
 
     def evaluate(self, request):
+        self.calls += 1
         if request.get("task") == "memory_initialization":
             sources = request["sources"]
             return ProviderResult(
@@ -41,6 +54,18 @@ class BrowserTestProvider:
                     {"memory_type":"open_thread","subject":"北堤门","predicate":"status","value":"开启时间待确认","chapter_id":source["chapter_id"],"source_span_id":source["id"]},
                 ]}, input_tokens=72, output_tokens=32, cost_cny=0.001, latency_ms=30,
             )
+        body = request["draft"]["body"]
+        if "STAGE12_BLOCK" in body:
+            self.entered.set()
+            if not self.release.wait(20):
+                raise ProviderTimeout()
+        if "STAGE12_TIMEOUT" in body:
+            raise ProviderTimeout()
+        if "STAGE12_FAILURE" in body:
+            raise ProviderInvalidJson()
+        if "STAGE12_FAIL_ONCE" in body and request["draft"]["id"] not in self.failed_once:
+            self.failed_once.add(request["draft"]["id"])
+            raise ProviderInvalidJson()
         issues = []
         categories = ("object_state", "character_knowledge")
         limit = 20 if "EXTREME_ISSUES" in request["draft"]["body"] else 2
@@ -88,16 +113,58 @@ class BrowserTestProvider:
 
 
 _configured_root = os.environ.get("E2E_TEST_ROOT")
-if _configured_root:
-    TEST_ROOT = Path(_configured_root).resolve()
-    system_temp = Path(tempfile.gettempdir()).resolve()
-    if system_temp not in TEST_ROOT.parents or "story-continuity-web-demo" in str(TEST_ROOT).casefold():
-        raise RuntimeError("E2E_TEST_ROOT must be a system-temp directory outside the Web Demo")
-    TEST_ROOT.mkdir(parents=True, exist_ok=True)
-else:
-    TEST_ROOT = Path(tempfile.mkdtemp(prefix="scc-stage5-e2e-"))
+if not _configured_root:
+    raise RuntimeError("E2E_TEST_ROOT is required for isolated browser tests")
+TEST_ROOT = Path(_configured_root).resolve()
+system_temp = Path(tempfile.gettempdir()).resolve()
+allowed_prefixes = ("story-stage12-v2-impl-", "story-stage12-v2-pm3-")
+if (
+    system_temp not in TEST_ROOT.parents
+    or not TEST_ROOT.name.startswith(allowed_prefixes)
+    or "story-continuity-web-demo" in str(TEST_ROOT).casefold()
+):
+    raise RuntimeError(
+        "E2E_TEST_ROOT must be an approved Stage 12 V2 system-temp directory"
+    )
+TEST_ROOT.mkdir(parents=True, exist_ok=True)
 TEST_PATHS = AppPaths.from_project_root(
     TEST_ROOT,
     protected_poc_root=TEST_ROOT / "protected-poc-placeholder",
 )
-app = create_app(paths=TEST_PATHS, provider=BrowserTestProvider())
+provider = BrowserTestProvider()
+app = create_app(paths=TEST_PATHS, provider=provider)
+
+
+@app.get("/api/test/stage12/release")
+def release_stage12_provider():
+    provider.release.set()
+    return {"released": True, "provider_calls": provider.calls}
+
+
+@app.get("/api/test/stage12/reset")
+def reset_stage12_provider():
+    provider.entered.clear()
+    provider.release.clear()
+    return {"reset": True, "provider_calls": provider.calls}
+
+
+@app.get("/api/test/stage12/stats")
+def stage12_provider_stats():
+    return {
+        "provider_mode": "injected_stub",
+        "external_provider_http_enabled": False,
+        "provider_calls": provider.calls,
+        "provider_http_calls": 0,
+        "blocked": provider.entered.is_set() and not provider.release.is_set(),
+        "test_root": str(TEST_ROOT),
+    }
+
+
+@app.post("/api/test/stage12/projects/{project_id}/runs/{run_id}/fail-nonretryable")
+def fail_stage12_run_nonretryable(project_id: str, run_id: str):
+    changed = app.state.database.finish_run(
+        project_id,
+        run_id,
+        {"status": "failed", "error_code": "schema_invalid", "retryable": False},
+    )
+    return {"changed": changed, "run_id": run_id, "retryable": False}
