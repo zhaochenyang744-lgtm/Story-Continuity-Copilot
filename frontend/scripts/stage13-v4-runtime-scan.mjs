@@ -38,12 +38,12 @@ export async function scanStage13V4RuntimeEvidence(evidenceDir, profileName, fir
   const files = await filesBelow(evidence);
   for (const file of files) {
     const buffer = await readFile(file);
-    const decoded = buffer.toString("utf8");
-    const folded = decoded.toLocaleLowerCase("en-US");
+    const scannedText = pathScanText(buffer, path.extname(file));
+    const folded = scannedText.toLocaleLowerCase("en-US");
     const relative = path.relative(evidence, file).replaceAll("/", "\\");
     for (const literal of forbidden) if (literal && folded.includes(literal.toLocaleLowerCase("en-US"))) hits.push({ relative, literal });
-    for (const literal of extractAbsoluteLiterals(pathScanText(buffer, path.extname(file)))) hits.push({ relative, literal });
-    for (const literal of decoded.match(/stage13v4(?:impl|pm3)[a-z0-9_.-]*@example\.test/gi) || []) hits.push({ relative, literal });
+    for (const literal of extractAbsoluteLiterals(scannedText)) hits.push({ relative, literal });
+    for (const literal of scannedText.match(/stage13v4(?:impl|pm3)[a-z0-9_.-]*@example\.test/gi) || []) hits.push({ relative, literal });
   }
   if (hits.length) throw new Error(`STAGE13_V4_RUNTIME_HIT:${JSON.stringify(hits)}`);
   return { profile: profileName, fileCount: files.length, level0Hits: 0, level1Hits: 0, level4AbsoluteHits: 0 };

@@ -1,4 +1,4 @@
-# 3–5 minute demo guide
+# Story Continuity Copilot v1.0 Public Release — 3–5 minute demo guide
 
 This path demonstrates the local workflow using seeded data. It does not require a real provider call.
 

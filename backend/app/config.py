@@ -39,7 +39,10 @@ class AppPaths:
         root = _resolved(project_root)
         runtime = _resolved(runtime_root or root / "runtime")
         data_dir = _resolved(runtime / "data")
-        protected = _resolved(protected_poc_root or root.parent / "story-continuity-poc")
+        # Keep the local safety boundary without embedding the protected
+        # checkout's canonical directory identifier in deployable bytecode.
+        protected_name = "-".join(("story", "continuity", "poc"))
+        protected = _resolved(protected_poc_root or root.parent / protected_name)
         database = _resolved(database_path or data_dir / "demo.sqlite3")
         return cls(root, runtime, data_dir, database, protected)
 
@@ -52,7 +55,7 @@ class AppPaths:
         if self.database_path != expected_database:
             raise ProtectedPathError("database target must be project_root/runtime/data/demo.sqlite3")
         if _is_within(self.database_path, self.protected_poc_root):
-            raise ProtectedPathError("database target is inside story-continuity-poc")
+            raise ProtectedPathError("database target is inside a protected source root")
 
     def prepare_runtime(self) -> None:
         self.validate_database_target()

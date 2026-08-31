@@ -1,0 +1,24 @@
+FROM python:3.13.7-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app/backend
+
+WORKDIR /app
+RUN groupadd --gid 10001 continuity \
+    && useradd --uid 10001 --gid 10001 --no-create-home --shell /usr/sbin/nologin continuity
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends gosu \
+    && rm -rf /var/lib/apt/lists/*
+COPY backend/requirements.txt /app/backend/requirements.txt
+RUN python -m pip install --no-cache-dir --requirement /app/backend/requirements.txt
+COPY backend/app /app/backend/app
+COPY deployment/backend-entrypoint.sh /app/deployment/backend-entrypoint.sh
+RUN mkdir -p /app/runtime/data /backups \
+    && chown -R continuity:continuity /app /backups \
+    && chmod 0555 /app/deployment/backend-entrypoint.sh
+
+WORKDIR /app/backend
+EXPOSE 8000
+ENTRYPOINT ["/app/deployment/backend-entrypoint.sh"]
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--no-access-log"]

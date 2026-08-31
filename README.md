@@ -1,6 +1,8 @@
-# Story Continuity Copilot
+# Story Continuity Copilot v1.0 Public Release
 
-Story Continuity Copilot is a long-form fiction continuity review product whose currently verified delivery is an undeployed v1.0 release candidate. It combines versioned Story Memory with a continuity agent that returns grounded findings for an author to review. It does not write the next chapter: the author remains responsible for the text and explicitly decides whether a proposed Memory change becomes canon.
+Story Continuity Copilot v1.0 Public Release is a deployed long-form fiction continuity review product. It combines versioned Story Memory with a continuity agent that returns grounded findings for an author to review. It does not write the next chapter: the author remains responsible for the text and explicitly decides whether a proposed Memory change becomes canon.
+
+The signed product name is **Story Continuity Copilot v1.0 Public Release**. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility; they are not alternate product-release names.
 
 The repository is designed for local reproduction. It contains the application source, migration and seed logic, tests, sanitised V4–V8 evaluation result records, and a small set of production-workflow screenshots. It does not include runtime databases, environment files, provider credentials, raw provider responses, recorded runtime prompt bodies, chain-of-thought, or protected evaluation assets. Full V5–V8 post-run database-hash validation therefore also requires the separately retained local evaluation workspaces; the committed result files alone do not recreate those SQLite artifacts.
 
@@ -38,7 +40,7 @@ The public product story is organised around six milestones. Historical Stage id
 | Long-form Workflow Validation | Real 100k- and 300k-character workflow validation with bounded retrieval and resolvable Evidence | Stage 11 |
 | Agent Reliability | Six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero partial business writes on non-completion | Stage 12 |
 | Web App Readiness | Visitor isolation, quotas, cleanup, recovery contracts, reproducible packaging, and browser/security verification | Stage 13 |
-| Public Release v1.0 | Deployment, public-address acceptance, and rollback verification remain pending | Stage 14 |
+| Public Release v1.0 | Signed after the frozen Required Gates A–G passed at the public origin | Stage 14 |
 
 The published repository baseline is the frozen **V4** set: 15 original, balanced three-class cases across three isolated corpora, plus 6 stability reruns. All 21 runs completed.
 
@@ -61,7 +63,7 @@ V5–V8 each retain one immutable first-valid formal result bundle with `gate_fa
 
 Long-form Workflow Validation, recorded under Stage 11, verified the author-controlled workflow on a real 100k-character prefix and a 300k-character prefix. The accepted 300k V2 result completed initialization plus two append/review/decision/commit rounds with bounded RAG, valid Evidence lineage, no automatic canon writes, and a 4,820,992-byte final SQLite database. The first 300k V1 capacity failure remains immutable alongside the V2 pass. The optional 1M-character Stage 11N pressure test has not been run.
 
-Agent Reliability, recorded under Stage 12, independently passed the six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero-partial-write Gates in V2; its V1 Provider-boundary incident remains `gate_failed`. Web App Readiness, recorded under Stage 13, independently passed its local product Gate in V4 after preserving the V2/V3 deployment-artifact failures: server-only integration boundaries, visitor isolation, limits and cleanup, real recovery contracts, two reproducible standalone builds, relocation, and the full browser matrix were verified without external Provider HTTP or SMTP. The application is not publicly deployed, and Public Release v1.0 acceptance, recorded under Stage 14, has not started.
+Agent Reliability, recorded under Stage 12, independently passed the six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero-partial-write Gates in V2; its V1 Provider-boundary incident remains `gate_failed`. Web App Readiness, recorded under Stage 13, independently passed its local product Gate in V4 after preserving the V2/V3 deployment-artifact failures: server-only integration boundaries, visitor isolation, limits and cleanup, real recovery contracts, two reproducible standalone builds, relocation, and the full browser matrix were verified without external Provider HTTP or SMTP. The v1.0 Public Release is deployed on Tencent Cloud and has passed HTTPS/security, real SMTP/password recovery, restart persistence, backup/same-release redeploy, a real-provider two-round author workflow, visitor and registered-account isolation, quota separation, visitor cleanup, and public Cancel/Timeout/Retry atomicity checks.
 
 Read [the verification record](docs/verification-and-limitations.md) for evidence scope and limitations, and [the product decisions record](docs/product-decisions-and-validation.md) for the rationale behind the workflow.
 
@@ -158,8 +160,8 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 
 ## Known limitations
 
-- The currently verified version is an undeployed v1.0 release candidate, not a claim of public production operation. Public Release v1.0, recorded under Stage 14, still needs a separately authorised deployment, public-address acceptance, and rollback Gate.
-- Recovery flows are implemented and validated with a server-side capture mailer; real SMTP delivery and public reset links have not yet been accepted in a deployed environment.
+- The currently verified delivery is the signed `Story Continuity Copilot v1.0 Public Release`. This is a product-release acceptance claim, not a commercial SLA or a claim that the retained Stage 10 `gate_failed` evaluation was later passed.
+- Real SMTP delivery, email verification, password reset, old-session revocation, new-password login, and used-link replay rejection have been accepted at the public origin. Email credentials and addresses remain server-only.
 - V4 is a small, frozen product evaluation; it supports the stated evaluation claims only and is not a general benchmark.
 - Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.
 - The provider returns no cost in the retained V4 results.

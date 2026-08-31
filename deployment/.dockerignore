@@ -1,0 +1,11 @@
+**
+!backend/
+!backend/requirements.txt
+!backend/app/
+!backend/app/**
+!deployment/
+!deployment/Dockerfile.backend
+!deployment/Dockerfile.frontend
+!deployment/backend-entrypoint.sh
+!frontend-source/
+!frontend-source/**

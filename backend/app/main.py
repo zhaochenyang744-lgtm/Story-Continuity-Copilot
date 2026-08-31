@@ -226,9 +226,14 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             response.set_cookie(COOKIE,token,httponly=True,samesite='lax',secure=settings.cookie_secure,max_age=max_age,path='/')
         return response
     @app.get('/health')
-    def health():return {'status':'ok','service':'story-continuity-web-demo'}
+    def health():return {'status':'ok','service':'story-continuity-app'}
     @app.get('/readiness')
-    def ready():return {'status':'ready','capabilities':{'database':True,'provider_configured':bool(engine.provider.available),'mailer_configured':not isinstance(mailer,UnavailableMailer),'public_mode':settings.public_app_mode},'security_error_code':None}
+    def ready():
+        try: database_ready=db.readiness_probe()
+        except sqlite3.Error: database_ready=False
+        capabilities={'database':database_ready,'provider_configured':bool(engine.provider.available),'mailer_configured':not isinstance(mailer,UnavailableMailer),'public_mode':settings.public_app_mode}
+        required_ready=database_ready and (not settings.public_app_mode or (capabilities['provider_configured'] and capabilities['mailer_configured']))
+        return JSONResponse(status_code=200 if required_ready else 503,content={'status':'ready' if required_ready else 'not_ready','capabilities':capabilities,'security_error_code':None if required_ready else 'required_capability_unavailable'})
     @app.post('/api/auth/visitor',status_code=201)
     def visitor(request:Request):
         csrf(request); data=stage13.create_visitor(request.cookies.get(COOKIE)); return session_response(request,data,201)

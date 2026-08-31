@@ -1,4 +1,4 @@
-# Product decisions and evidence
+# Story Continuity Copilot v1.0 Public Release — product decisions and evidence
 
 ## Problem
 
@@ -22,7 +22,7 @@ Long-form fiction accumulates facts that are difficult to keep consistent: event
 
 ## Implementation
 
-The currently verified v1.0 release candidate uses FastAPI, SQLite, Next.js, and React. Its API covers authentication, project lifecycle, story context, drafts, checks, Evidence, decisions, ChangeSets, Memory initialization and delta review, append-only source revisions, Reset, and import. The seed includes Grey Harbor Echoes, Paper Moon Archive, and Midnight Garden as independent projects.
+The currently verified v1.0 Public Release uses FastAPI, SQLite, Next.js, and React. Its API covers authentication, project lifecycle, story context, drafts, checks, Evidence, decisions, ChangeSets, Memory initialization and delta review, append-only source revisions, Reset, and import. The seed includes Grey Harbor Echoes, Paper Moon Archive, and Midnight Garden as independent projects.
 
 Checks use a supported DeepSeek-compatible provider only when the process is explicitly configured. The request is queued, schema-validated, and grounded against current-project SourceSpans before persistence. Fail-closed paths cover unavailable providers, timeouts, invalid JSON, invalid schema, and unresolvable Evidence.
 
@@ -35,7 +35,7 @@ Checks use a supported DeepSeek-compatible provider only when the process is exp
 | Long-form Workflow Validation | Controlled 100k- and 300k-character recurring workflows | Stage 11 |
 | Agent Reliability | Observable lifecycle, provenance, Retry/Cancel, and atomic failure handling | Stage 12 |
 | Web App Readiness | Visitor isolation, limits, cleanup, account recovery, and deployable packaging | Stage 13 |
-| Public Release v1.0 | Deployment and public-address acceptance remain pending | Stage 14 |
+| Public Release v1.0 | Frozen Required Gates A–G passed and signed at the public origin | Stage 14 |
 
 ## Evaluation
 
@@ -69,5 +69,5 @@ Agent Reliability, recorded under Stage 12, passed the Agent Run lifecycle Gate 
 - Two V4 cases had the correct class but a category mismatch: `timeline → event_status` and `world_rule → event_status`.
 - Exact explanation text and Evidence IDs can vary across real-provider reruns even where decision and category/severity remain stable.
 - V4 is a compact product evaluation, not a broad benchmark or evidence of commercial deployment.
-- The current delivery is not deployed. Agent Reliability and Web App Readiness have passed their current product Gates; the remaining route is the separately authorised Public Release v1.0 work recorded under Stage 14: deployment, public-address acceptance, rollback verification, and release.
+- The current delivery is the signed `Story Continuity Copilot v1.0 Public Release`. HTTPS/security, real Provider and SMTP paths, password recovery, persistence, backup/same-release redeploy, instance restart, visitor and registered-account isolation, quota separation, targeted visitor cleanup, the two-round author workflow, and public Cancel/Timeout/Retry atomicity have been accepted.
 - The hosted route keeps Provider and SMTP credentials server-only, gives visitors isolated spaces, caps AI calls/text length/total spend, periodically clears visitor data, and implements recovery-email verification plus single-use password reset. It does not add general email identity, OAuth, subscriptions, an admin console, collaboration, cross-device sync, or AI continuation.

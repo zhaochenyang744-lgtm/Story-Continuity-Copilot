@@ -1,0 +1,35 @@
+FROM --platform=linux/amd64 node:22.20.0-alpine3.22 AS deps
+
+WORKDIR /app
+COPY frontend-source/package.json frontend-source/package-lock.json ./
+RUN npm ci
+
+FROM --platform=linux/amd64 node:22.20.0-alpine3.22 AS builder
+
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY frontend-source/ ./
+
+ARG PUBLIC_BASE_URL
+ENV BACKEND_ORIGIN=http://backend:8000 \
+    PUBLIC_APP_MODE=1 \
+    PUBLIC_BASE_URL=${PUBLIC_BASE_URL} \
+    NEXT_DIST_DIR=.next
+
+RUN mkdir -p public \
+    && NEXT_BUILD_ID="$(node build-id.mjs /app)" npm run build
+
+FROM --platform=linux/amd64 node:22.20.0-alpine3.22 AS runner
+
+WORKDIR /app
+ENV NODE_ENV=production \
+    HOSTNAME=0.0.0.0 \
+    PORT=3000
+
+COPY --from=builder --chown=node:node /app/.next/standalone ./
+COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+COPY --from=builder --chown=node:node /app/public ./public
+
+USER node
+EXPOSE 3000
+CMD ["node", "server.js"]

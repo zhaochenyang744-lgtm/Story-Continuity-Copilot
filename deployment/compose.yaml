@@ -1,0 +1,90 @@
+name: story-continuity-public
+
+services:
+  backend:
+    image: localhost/story-continuity-backend:${RELEASE_ID:?release id required}
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.backend
+    restart: unless-stopped
+    init: true
+    environment:
+      PUBLIC_APP_MODE: "1"
+      PUBLIC_BASE_URL: https://${PUBLIC_HOST:?public host required}
+      PUBLIC_RESET_BASE_URL: https://${PUBLIC_HOST:?public host required}
+      BACKEND_ORIGIN: http://backend:8000
+      TRUSTED_HOSTS: backend:8000,127.0.0.1:8000,${PUBLIC_HOST:?public host required}
+      TRUSTED_ORIGINS: https://${PUBLIC_HOST:?public host required}
+      CONTINUITY_PROVIDER: deepseek
+      CONTINUITY_MODEL: deepseek-v4-pro
+      CONTINUITY_BASE_URL: ${CONTINUITY_BASE_URL:?provider base url required}
+      CONTINUITY_INPUT_CNY_PER_MILLION: ${CONTINUITY_INPUT_CNY_PER_MILLION:?input rate required}
+      CONTINUITY_OUTPUT_CNY_PER_MILLION: ${CONTINUITY_OUTPUT_CNY_PER_MILLION:?output rate required}
+      SMTP_HOST: ${SMTP_HOST:?smtp host required}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_TLS: "1"
+      WEB_CONCURRENCY: "1"
+      SINGLE_INSTANCE: "1"
+      SQLITE_PERSISTENT_VOLUME: "1"
+    volumes:
+      - story_runtime:/app/runtime
+      - story_backups:/backups
+      - ${SCC_SECRET_DIR:?secret directory required}:/run/secrets:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:8000/readiness', headers={'Host':'127.0.0.1:8000'}), timeout=5).read()"]
+      interval: 30s
+      timeout: 7s
+      retries: 5
+      start_period: 30s
+    deploy:
+      replicas: 1
+
+  frontend:
+    image: localhost/story-continuity-frontend:${RELEASE_ID:?release id required}
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.frontend
+      args:
+        PUBLIC_BASE_URL: https://${PUBLIC_HOST:?public host required}
+    restart: unless-stopped
+    init: true
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 7s
+      retries: 5
+      start_period: 20s
+    deploy:
+      replicas: 1
+
+  caddy:
+    image: caddy:2.10.2-alpine
+    restart: unless-stopped
+    environment:
+      PUBLIC_HOST: ${PUBLIC_HOST:?public host required}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+
+volumes:
+  story_runtime:
+    name: story-continuity-runtime
+  story_backups:
+    name: story-continuity-backups
+  caddy_data:
+    name: story-continuity-caddy-data
+  caddy_config:
+    name: story-continuity-caddy-config

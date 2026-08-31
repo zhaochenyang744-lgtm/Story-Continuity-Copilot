@@ -1,11 +1,11 @@
-"""Original, demo-specific seed for the Web Demo. Never import PoC assets here."""
+"""Synthetic, public seed content for the Story Continuity application."""
 
 from __future__ import annotations
 
 SEED_ORIGIN = {
     "origin": "original_demo_specific_web_demo_stage1",
     "created_on": "2026-08-25",
-    "restriction": "Written for this Web Demo; no PoC, Golden, held-out, run, Memory DB, or provider data is used.",
+    "restriction": "Synthetic public sample; no private author content or runtime account data is used.",
 }
 
 PROJECT = {

@@ -21,6 +21,24 @@ export const stage13V4Profiles = Object.freeze({
     genericRoot: "W:\\",
     genericCounts: Object.freeze({ "server.js": 3, ".next-stage13-v4-pm3\\required-server-files.json": 4 }),
   }),
+  stage14impl: Object.freeze({
+    frontendOrigin: null,
+    backendOrigin: "http://backend:8000",
+    distDir: ".next-stage14-impl",
+    tempPrefix: "story-stage14-impl-",
+    genericRoot: "V:\\",
+    genericCounts: Object.freeze({ "server.js": 3, ".next-stage14-impl\\required-server-files.json": 4 }),
+    publicMode: true,
+  }),
+  stage14pm3: Object.freeze({
+    frontendOrigin: null,
+    backendOrigin: "http://backend:8000",
+    distDir: ".next-stage14-pm3",
+    tempPrefix: "story-stage14-pm3-",
+    genericRoot: "W:\\",
+    genericCounts: Object.freeze({ "server.js": 3, ".next-stage14-pm3\\required-server-files.json": 4 }),
+    publicMode: true,
+  }),
 });
 
 export const level3Tuples = Object.freeze([
@@ -131,13 +149,13 @@ function packagePath(artifact, packageName) {
     : path.join(artifact, "node_modules", "@img", "sharp-win32-x64", "package.json");
 }
 
-export async function scanStage13V4Artifact(artifactDir, profileName, firstPartyRoots = []) {
+export async function scanStage13V4Artifact(artifactDir, profileName, firstPartyRoots = [], options = {}) {
   const profile = stage13V4Profiles[profileName];
   if (!profile) throw new Error("STAGE13_V4_PROFILE_INVALID");
   const artifact = path.resolve(artifactDir);
   const relativeToTemp = path.relative(path.resolve(tmpdir()), artifact);
   if (!relativeToTemp || relativeToTemp.startsWith("..") || path.isAbsolute(relativeToTemp)) throw new Error("STAGE13_V4_ARTIFACT_OUTSIDE_SYSTEM_TEMP");
-  if (!artifact.split(path.sep).some((part) => part.startsWith(profile.tempPrefix))) throw new Error("STAGE13_V4_ARTIFACT_PROFILE_MISMATCH");
+  if (!options.allowRelocated && !artifact.split(path.sep).some((part) => part.startsWith(profile.tempPrefix))) throw new Error("STAGE13_V4_ARTIFACT_PROFILE_MISMATCH");
   if (!(await stat(artifact)).isDirectory()) throw new Error("STAGE13_V4_ARTIFACT_NOT_DIRECTORY");
 
   const level0Literals = ["valid-password-13", "#token=", "stage13-browser-injected-provider", "capture mailer", "/api/test/stage13"];
@@ -159,7 +177,7 @@ export async function scanStage13V4Artifact(artifactDir, profileName, firstParty
       const count = countLiteral(bytes, literal);
       if (count) level0Hits.push({ relative, literal, count });
     }
-    const recoveryEmails = text.match(/stage13v4(?:impl|pm3)[a-z0-9_.-]*@example\.test/gi) || [];
+    const recoveryEmails = text.match(/stage(?:13v4|14)(?:impl|pm3)[a-z0-9_.-]*@example\.test/gi) || [];
     for (const literal of recoveryEmails) level0Hits.push({ relative, literal, count: 1 });
     for (const literal of level1Literals) {
       const count = folded.split(literal.toLocaleLowerCase("en-US")).length - 1;
@@ -204,6 +222,15 @@ export async function scanStage13V4Artifact(artifactDir, profileName, firstParty
   const rewrites = [...(routes.rewrites?.beforeFiles || []), ...(routes.rewrites?.afterFiles || []), ...(routes.rewrites?.fallback || [])];
   const expectedDestination = `${profile.backendOrigin}/api/:path*`;
   if (rewrites.length !== 1 || rewrites[0]?.source !== "/api/:path*" || rewrites[0]?.destination !== expectedDestination) throw new Error("STAGE13_V4_REWRITE_MISMATCH");
+  let publicBaseUrl = null;
+  if (profile.publicMode) {
+    const metadata = JSON.parse(await readFile(path.join(artifact, "stage14-build-metadata.json"), "utf8"));
+    const parsed = new URL(metadata.publicBaseUrl);
+    if (metadata.profile !== profileName || metadata.backendOrigin !== profile.backendOrigin || parsed.protocol !== "https:" || parsed.origin !== metadata.publicBaseUrl) {
+      throw new Error("STAGE14_PUBLIC_METADATA_INVALID");
+    }
+    publicBaseUrl = parsed.origin;
+  }
 
   const fileList = files.map((file) => relativeFile(artifact, file)).sort();
   return {
@@ -216,12 +243,13 @@ export async function scanStage13V4Artifact(artifactDir, profileName, firstParty
     level3Hits: actualLevel3,
     routesSha256: sha256(routesBytes),
     rewriteDestination: expectedDestination,
+    publicBaseUrl,
   };
 }
 
 async function main() {
   const [artifactDir, profileName, ...firstPartyRoots] = process.argv.slice(2);
-  if (!artifactDir || !profileName) throw new Error("usage: node scripts/stage13-v4-policy.mjs <artifact-dir> <v4impl|v4pm3> [first-party-root ...]");
+  if (!artifactDir || !profileName) throw new Error("usage: node scripts/stage13-v4-policy.mjs <artifact-dir> <profile> [first-party-root ...]");
   process.stdout.write(`${JSON.stringify(await scanStage13V4Artifact(artifactDir, profileName, firstPartyRoots))}\n`);
 }
 

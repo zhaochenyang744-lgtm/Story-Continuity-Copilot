@@ -8,7 +8,7 @@ import { scanStage13V4RuntimeEvidence } from "../scripts/stage13-v4-runtime-scan
 
 test("compressed binary bytes do not become synthetic paths", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "story-stage13-v4-impl-runtime-binary-"));
-  await writeFile(path.join(root, "screen.png"), Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x66, 0x3a, 0x5c, 0x03, 0xff, 0x29, 0x1b, 0x08, 0x5c, 0x7f]));
+  await writeFile(path.join(root, "screen.png"), Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x66, 0x3a, 0x5c, 0x03, 0xff, 0x56, 0x3a, 0x5c, 0x00, 0x29, 0x1b, 0x08, 0x5c, 0x7f]));
   assert.equal((await scanStage13V4RuntimeEvidence(root, "v4impl")).level4AbsoluteHits, 0);
 });
 

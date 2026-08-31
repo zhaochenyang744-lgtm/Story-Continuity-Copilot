@@ -1,4 +1,4 @@
-# Validation evidence and known limitations
+# Story Continuity Copilot v1.0 Public Release — validation evidence and known limitations
 
 ## Published V4 baseline verification record
 
@@ -46,7 +46,7 @@ The reported V4 scope is deliberately narrow: it is a frozen 15-case product eva
 | Long-form Workflow Validation | Stage 11 |
 | Agent Reliability | Stage 12 |
 | Web App Readiness | Stage 13 |
-| Public Release v1.0 | Stage 14, not started |
+| Public Release v1.0 | Stage 14, frozen Required Gates A–G passed and signed |
 
 ## Current evaluation status
 
@@ -54,7 +54,7 @@ Author Workflow & Model Evaluation retains the accepted Stage 8 and Stage 9 work
 
 Long-form Workflow Validation, recorded under Stage 11, separately verified the product workflow at the primary 100k- and 300k-character targets. The accepted 300k V2 evidence records 90/90 successful Provider calls with no transport retries, a 4,820,992-byte final SQLite database, bounded write acknowledgements, resolvable current-project Evidence, explicit author decisions, and no pending or automatic canon writes. The earlier 300k V1 capacity failure remains unchanged. The optional 1M-character Stage 11N pressure test has not started.
 
-Agent Reliability, recorded under Stage 12, passed the six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero-partial-write Gates in V2; the V1 Provider-boundary incident remains `gate_failed`. Web App Readiness, recorded under Stage 13, passed the local product Gate in V4 after preserving the V2/V3 artifact failures: visitor and registered-user isolation, quotas and cleanup, recovery-email verification and password reset, two reproducible standalone builds, relocation, and the browser/security matrix were independently verified with zero external Provider HTTP and SMTP calls. Public Release v1.0, recorded under Stage 14, has not started.
+Agent Reliability, recorded under Stage 12, passed the six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero-partial-write Gates in V2; the V1 Provider-boundary incident remains `gate_failed`. Web App Readiness, recorded under Stage 13, passed the local product Gate in V4 after preserving the V2/V3 artifact failures: visitor and registered-user isolation, quotas and cleanup, recovery-email verification and password reset, two reproducible standalone builds, relocation, and the browser/security matrix were independently verified with zero external Provider HTTP and SMTP calls. Stage 14 then passed the frozen public Required Gates A–G on Tencent Cloud: HTTPS/security, real SMTP/password recovery, persistence and backup/same-release redeploy, visitor and registered-account isolation, quota separation, targeted visitor cleanup, a real-provider two-round author workflow, and public failed/cancelled/timed_out/Retry atomicity. It is signed as `Story Continuity Copilot v1.0 Public Release`.
 
 ## Limitations
 
@@ -63,7 +63,7 @@ Agent Reliability, recorded under Stage 12, passed the six-state Agent Run lifec
 - A real provider must be explicitly configured. Without it, the product intentionally returns `503 provider_unavailable` instead of fabricating a result.
 - The local runtime database is deliberately excluded from version control. Reset restores the demo path but is not a backup, collaboration, or hosted data-management system.
 - The historical frozen CLI PoC and its held-out F1 0.9412 use a different protocol. That result is not combined with V4 metrics.
-- The currently verified product is not deployed. The hosted product contracts have been implemented and accepted locally, but real SMTP delivery, public HTTPS behaviour, release rollback, and the public-address workflow remain Public Release v1.0 work under Stage 14.
+- The signed Public Release is evidence of the frozen product Gate only. It is not a commercial SLA, does not turn the compact V4 evaluation into a broad benchmark, and does not rewrite any retained historical `gate_failed` result.
 
 ## Evidence references
 

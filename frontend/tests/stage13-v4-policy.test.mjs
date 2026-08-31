@@ -8,17 +8,21 @@ import { scanStage13V4Artifact } from "../scripts/stage13-v4-policy.mjs";
 const frontendRoot = path.resolve(import.meta.dirname, "..");
 
 async function fixture(profile = "v4impl") {
-  const impl = profile === "v4impl";
-  const prefix = impl ? "story-stage13-v4-impl-unit-" : "story-stage13-v4-pm3-unit-";
-  const dist = impl ? ".next-stage13-v4-impl" : ".next-stage13-v4-pm3";
-  const backend = impl ? "http://127.0.0.1:8084" : "http://127.0.0.1:8085";
-  const genericRoot = impl ? "V:\\" : "W:\\";
+  const profiles = {
+    v4impl: { prefix: "story-stage13-v4-impl-unit-", dist: ".next-stage13-v4-impl", backend: "http://127.0.0.1:8084", genericRoot: "V:\\" },
+    v4pm3: { prefix: "story-stage13-v4-pm3-unit-", dist: ".next-stage13-v4-pm3", backend: "http://127.0.0.1:8085", genericRoot: "W:\\" },
+    stage14impl: { prefix: "story-stage14-impl-unit-", dist: ".next-stage14-impl", backend: "http://backend:8000", genericRoot: "V:\\", publicBaseUrl: "https://stage14.example" },
+    stage14pm3: { prefix: "story-stage14-pm3-unit-", dist: ".next-stage14-pm3", backend: "http://backend:8000", genericRoot: "W:\\", publicBaseUrl: "https://stage14.example" },
+  };
+  const selected = profiles[profile];
+  const { prefix, dist, backend, genericRoot } = selected;
   const root = await mkdtemp(path.join(tmpdir(), prefix));
   await mkdir(path.join(root, dist), { recursive: true });
   await writeFile(path.join(root, "package.json"), JSON.stringify({ name: "story-continuity-app", version: "0.1.0" }));
   await writeFile(path.join(root, "server.js"), genericRoot.repeat(3));
   await writeFile(path.join(root, dist, "required-server-files.json"), genericRoot.repeat(4));
   await writeFile(path.join(root, dist, "routes-manifest.json"), JSON.stringify({ rewrites: { beforeFiles: [], afterFiles: [{ source: "/api/:path*", destination: `${backend}/api/:path*` }], fallback: [] } }));
+  if (selected.publicBaseUrl) await writeFile(path.join(root, "stage14-build-metadata.json"), JSON.stringify({ profile, publicBaseUrl: selected.publicBaseUrl, backendOrigin: backend }));
   const copies = [
     ["node_modules/next/package.json", "node_modules/next/package.json"],
     ["node_modules/@img/sharp-win32-x64/package.json", "node_modules/@img/sharp-win32-x64/package.json"],
@@ -38,6 +42,17 @@ test("accepts only the exact V4 Level 2 and Level 3 tuples", async () => {
   for (const profile of ["v4impl", "v4pm3"]) {
     const { root } = await fixture(profile);
     const report = await scanStage13V4Artifact(root, profile);
+    assert.equal(report.level2Hits.length, 2);
+    assert.equal(report.level3Hits.length, 4);
+  }
+});
+
+test("Stage 14 public artifacts retain the V4 path model and canonical metadata", async () => {
+  for (const profile of ["stage14impl", "stage14pm3"]) {
+    const { root } = await fixture(profile);
+    const report = await scanStage13V4Artifact(root, profile);
+    assert.equal(report.publicBaseUrl, "https://stage14.example");
+    assert.equal(report.rewriteDestination, "http://backend:8000/api/:path*");
     assert.equal(report.level2Hits.length, 2);
     assert.equal(report.level3Hits.length, 4);
   }
@@ -87,4 +102,18 @@ test("rejects Level 2 location/count and Level 3 hash/count/version drift", asyn
 test("rejects mixed profile temp roots", async () => {
   const { root } = await fixture("v4pm3");
   await assert.rejects(() => scanStage13V4Artifact(root, "v4impl"), /ARTIFACT_PROFILE_MISMATCH/);
+});
+
+test("relocation bypasses only the original temp-prefix location check", async () => {
+  const { root } = await fixture("stage14impl");
+  const relocatedParent = await mkdtemp(path.join(tmpdir(), "story-stage14-relocated-unit-"));
+  const relocated = path.join(relocatedParent, "frontend-artifact");
+  await mkdir(relocated);
+  const sourceFiles = await import("node:fs/promises");
+  await sourceFiles.cp(root, relocated, { recursive: true, force: true });
+  await assert.rejects(() => scanStage13V4Artifact(relocated, "stage14impl"), /ARTIFACT_PROFILE_MISMATCH/);
+  const report = await scanStage13V4Artifact(relocated, "stage14impl", [], { allowRelocated: true });
+  assert.equal(report.level2Hits.length, 2);
+  await writeFile(path.join(relocated, "identity.txt"), "story-continuity-web-demo");
+  await assert.rejects(() => scanStage13V4Artifact(relocated, "stage14impl", [], { allowRelocated: true }), /LEVEL1_HIT/);
 });

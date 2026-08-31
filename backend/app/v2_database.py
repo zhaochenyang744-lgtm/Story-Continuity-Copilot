@@ -184,6 +184,13 @@ class V2Database:
             self._migrate_legacy_project(c)
             self._migrate_stage12_run_lifecycle(c)
 
+    def readiness_probe(self) -> bool:
+        """Verify that the configured database is readable and fully initialized."""
+        with self.connection() as c:
+            row = c.execute("SELECT COUNT(*) AS count FROM schema_migrations").fetchone()
+            check = c.execute("PRAGMA quick_check").fetchone()
+            return bool(row and row["count"] >= 1 and check and check[0] == "ok")
+
     def _migrate_stage13_identity(self, c: sqlite3.Connection) -> None:
         columns = {row["name"] for row in c.execute("PRAGMA table_info(v2_users)")}
         additions = {
