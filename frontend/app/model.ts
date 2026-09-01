@@ -28,12 +28,26 @@ export type Project = ProjectSummary & {
   memory_initialization_status?: string;
   is_tutorial?: boolean;
 };
+export type TutorialEvent =
+  | "memory_source_opened"
+  | "continuity_issue_located"
+  | "evidence_opened"
+  | "author_decision_recorded";
+export type TutorialProgress = {
+  tutorial_version: "1.2.0";
+  tutorial_project_id: string;
+  current_step: 1 | 2 | 3 | 4 | 5;
+  completed_events: TutorialEvent[];
+  revision: number;
+  updated_at: string;
+};
 export type Onboarding = {
   status: "active" | "completed" | "skipped";
   real_project_count: number;
   show_first_run: boolean;
   completed_at?: string | null;
   tutorial: { project_id: string; title: string; status?: ProjectSummary["status"]; data_origin: "tutorial_seed" } | null;
+  progress: TutorialProgress | null;
 };
 export type Draft = {
   id: string;

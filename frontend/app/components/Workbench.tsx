@@ -2,6 +2,7 @@
 
 import {
   FormEvent,
+  KeyboardEvent as ReactKeyboardEvent,
   MouseEventHandler,
   ReactNode,
   startTransition,
@@ -10,6 +11,7 @@ import {
   useRef,
   useState,
 } from "react";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { json, labelError, request, type ApiFailure } from "../api";
 import type {
@@ -26,6 +28,8 @@ import type {
   ProjectSummary,
   Run,
   SourceChangeSet,
+  TutorialEvent,
+  TutorialProgress,
   User,
 } from "../model";
 
@@ -77,6 +81,40 @@ type ImportPreview = {
   };
   warnings: string[];
 };
+type EvidenceItem = NonNullable<Issue["evidence"]>[number];
+type ReadonlySourceRecord = {
+  recordId: string;
+  subject: string;
+  chapterId: string;
+  chapterNumber: number;
+  chapterTitle: string;
+  spanId: string;
+  excerpt: string;
+  sourcePath?: string;
+  sourceRevision?: number;
+  memoryType?: string;
+  reviewStatus?: string;
+  relation?: string;
+  sufficiency?: string;
+};
+type ProjectVisualStatus = "active" | "paused" | "completed" | "archived";
+type TutorialStep = 1 | 2 | 3 | 4 | 5;
+
+function useDocumentScrollLock() {
+  useEffect(() => {
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflow;
+    const previousPaddingRight = root.style.paddingRight;
+    const scrollbarWidth = Math.max(0, window.innerWidth - root.clientWidth);
+    root.style.overflow = "hidden";
+    if (scrollbarWidth > 0) root.style.paddingRight = `${scrollbarWidth}px`;
+    return () => {
+      root.style.overflow = previousOverflow;
+      root.style.paddingRight = previousPaddingRight;
+    };
+  }, []);
+}
+
 const tabs = [
   ["overview", "项目概览"],
   ["outline", "大纲"],
@@ -95,13 +133,17 @@ const stage = (s: string): string =>
       assembling_reviewable_results: "整理可审阅结果",
       running_continuity: "运行增量 Continuity",
       running_memory_delta: "运行 Memory Delta",
+      running: "运行中",
+      pending: "待处理",
+      processing: "处理中",
+      succeeded: "已完成",
       cancelling: "正在安全取消",
       completed: "检查完成",
       timed_out: "检查超时",
       failed: "检查失败",
       cancelled: "已取消",
     }) as Record<string, string>
-  )[s] ?? s;
+  )[s] ?? "未知检查阶段";
 const activeRun = (run: Run | null) => Boolean(run && ["queued", "running"].includes(run.status));
 const retryableRun = (run: Run | null) => Boolean(run && ["failed", "timed_out", "cancelled"].includes(run.status) && (run.status !== "failed" || run.retryable));
 const durationLabel = (value?: number | null) => value == null ? "尚不可用" : value < 1000 ? `${value} ms` : `${(value / 1000).toFixed(2)} s`;
@@ -115,11 +157,18 @@ const statusLabel = (s?: string): string =>
       active: "进行中",
       archived: "已归档",
       paused: "已暂停",
+      complete: "已完成",
       completed: "已完成",
+      checked_clear: "检查通过",
+      unchecked: "尚未检查",
+      pending: "待处理",
     }) as Record<string, string>
-  )[s ?? ""] ??
-  s ??
-  "—";
+  )[s ?? ""] ?? (s ? "未知状态" : "—");
+const projectVisualStatus = (status: string): ProjectVisualStatus => {
+  if (status === "complete" || status === "completed") return "completed";
+  if (status === "paused" || status === "archived") return status;
+  return "active";
+};
 const memoryTypeLabel = (value: string) =>
   ({
     static_canon: "固定设定",
@@ -127,9 +176,13 @@ const memoryTypeLabel = (value: string) =>
     event_timeline: "事件时间线",
     character_knowledge: "角色所知",
     open_thread: "未解线索",
-  })[value] ?? value;
+  })[value] ?? "未分类事实";
 const reviewStatusLabel = (value: string) =>
-  value === "author_confirmed" ? "作者已确认" : value;
+  ({ author_confirmed: "作者已确认", pending: "待确认", rejected: "已拒绝" })[value] ?? "待确认";
+const evidenceStatusLabel = (value: string) =>
+  ({ sufficient: "证据充分", insufficient: "证据不足", unavailable: "证据不可用" })[value] ?? "证据状态未知";
+const coverageStatusLabel = (value?: string) =>
+  ({ required: "待初始化", in_review: "审核中", ready_partial: "部分就绪", ready_current: "当前版本就绪", update_pending: "待审核更新" })[value ?? ""] ?? "尚未提供";
 const categoryLabel = (value: string) =>
   ({
     attribute: "属性事实",
@@ -140,11 +193,40 @@ const categoryLabel = (value: string) =>
     relationship: "角色关系",
     world_rule: "世界规则",
     event_status: "事件进展",
-  })[value] ?? value;
+  })[value] ?? "其他连续性问题";
 const predicateLabel = (value: unknown) =>
-  ({ holder: "持有人 / 存放状态", status: "状态", next_action: "下一步行动" })[
+  ({
+    holder: "持有人 / 存放状态",
+    status: "状态",
+    next_action: "下一步行动",
+    ring_condition: "触发条件",
+    does_not_know: "尚未知晓",
+    location: "所在位置",
+    relationship: "关系",
+    goal: "目标",
+    occurred_at: "发生时间",
+    time: "时间",
+    received: "接收记录",
+  })[
     String(value)
-  ] ?? String(value);
+  ] ?? "其他属性";
+const roleTypeLabel = (value: string) =>
+  ({ protagonist: "主角", antagonist: "对立角色", ally: "支持角色", supporting: "配角" })[value] ?? "其他角色";
+const worldTypeLabel = (value: string) =>
+  ({ location: "地点", rule: "规则", organization: "组织", object: "物件", term: "术语" })[value] ?? "其他资料";
+const decisionStatusLabel = (value: string) =>
+  ({ pending: "待决定", accepted: "已接受", rejected: "已拒绝", edited: "编辑后接受" })[value] ?? "决定状态未知";
+const nextActionLabel = (value: string) =>
+  ({ continue_draft: "继续写作", review_issues: "审阅问题", initialize_memory: "建立 Story Memory" })[value] ?? "继续处理作品";
+const lineageStatusLabel = (value?: string | null) =>
+  ({ current: "当前版本", stale: "已过期", pending_decision_validation: "等待决策校验" })[value ?? ""] ?? "谱系状态未知";
+const tutorialEvents: Record<TutorialStep, TutorialEvent | null> = {
+  1: null,
+  2: "memory_source_opened",
+  3: "continuity_issue_located",
+  4: "evidence_opened",
+  5: "author_decision_recorded",
+};
 function Button({
   children,
   className = "secondary",
@@ -182,6 +264,303 @@ function Button({
     </button>
   );
 }
+
+type TutorialGuidanceTarget = {
+  element: HTMLElement;
+  key: string;
+  message: string;
+};
+type TutorialHintState = {
+  left: number;
+  message: string;
+  placement: "above" | "below";
+  top: number;
+  width: number;
+};
+
+let tutorialGuidanceRequestSequence = 0;
+let tutorialGuidanceConsumedSequence = 0;
+const tutorialGuidanceRequestEvent = "story-tutorial-guidance-request";
+
+function emitTutorialGuidanceRequest() {
+  tutorialGuidanceRequestSequence += 1;
+  window.dispatchEvent(new Event(tutorialGuidanceRequestEvent));
+}
+
+const tutorialTargetInViewport = (element: HTMLElement) => {
+  const rect = element.getBoundingClientRect();
+  return (
+    rect.width > 0 &&
+    rect.height > 0 &&
+    rect.bottom > 0 &&
+    rect.top < window.innerHeight &&
+    rect.right > 0 &&
+    rect.left < document.documentElement.clientWidth
+  );
+};
+
+function resolveTutorialGuidanceTarget({
+  evidenceOpen,
+  readOnly,
+  sourceOpen,
+  step,
+  tab,
+}: {
+  evidenceOpen: boolean;
+  readOnly: boolean;
+  sourceOpen: boolean;
+  step: TutorialStep;
+  tab: string;
+}): TutorialGuidanceTarget | null {
+  if (sourceOpen) {
+    const close = document.querySelector<HTMLElement>(".source-layer .close");
+    return close
+      ? { element: close, key: "source-close", message: "看完来源后，关闭并继续" }
+      : null;
+  }
+  const primary = document.querySelector<HTMLElement>(
+    ".tutorial-primary-action:not(:disabled)",
+  );
+  if (step === 1) {
+    if (tab !== "memory")
+      return primary
+        ? { element: primary, key: "memory-navigation", message: "下一步：打开 Story Memory" }
+        : null;
+    const source = document.querySelector<HTMLElement>(
+      ".memory-source:not(:disabled)",
+    );
+    if (source && tutorialTargetInViewport(source))
+      return {
+        element: source,
+        key: "memory-source",
+        message: "下一步：查看这条事实的章节来源",
+      };
+    return primary
+      ? { element: primary, key: "memory-locate", message: "点击定位下一步" }
+      : null;
+  }
+  if (step === 2)
+    return primary
+      ? { element: primary, key: "workspace-navigation", message: "下一步：进入连续性检查" }
+      : null;
+  if (step === 3) {
+    if (tab !== "workspace")
+      return primary
+        ? { element: primary, key: "workspace-return", message: "下一步：返回写作与检查" }
+        : null;
+    const issue =
+      document.querySelector<HTMLElement>(".issue-row.severity-high") ??
+      document.querySelector<HTMLElement>(".issue-row");
+    if (issue && tutorialTargetInViewport(issue))
+      return {
+        element: issue,
+        key: "high-risk-issue",
+        message: "下一步：打开这条高风险问题",
+      };
+    return primary
+      ? { element: primary, key: "issue-locate", message: "点击定位下一步" }
+      : null;
+  }
+  if (step === 4) {
+    if (evidenceOpen) {
+      const decision = document.querySelector<HTMLElement>(
+        readOnly ? ".tutorial-mobile-decision-note" : ".author-decision",
+      );
+      return decision
+        ? {
+            element: decision,
+            key: readOnly ? "mobile-decision-note" : "author-decision",
+            message: readOnly
+              ? "请在桌面端继续完成作者决定"
+              : "请选择一种处理方式，教学不会替你决定",
+          }
+        : null;
+    }
+    const issue =
+      document.querySelector<HTMLElement>(".issue-row.severity-high") ??
+      document.querySelector<HTMLElement>(".issue-row");
+    return issue
+      ? { element: issue, key: "decision-return", message: "下一步：重新打开待审问题" }
+      : primary
+        ? { element: primary, key: "decision-locate", message: "点击定位下一步" }
+        : null;
+  }
+  return primary
+    ? {
+        element: primary,
+        key: "tutorial-complete",
+        message: "完成教学后即可导入自己的作品",
+      }
+    : null;
+}
+
+function TutorialGuidance({
+  active,
+  busy,
+  evidenceOpen,
+  projectId,
+  readOnly,
+  requestId,
+  sourceOpen,
+  step,
+  tab,
+}: {
+  active: boolean;
+  busy: boolean;
+  evidenceOpen: boolean;
+  projectId: string;
+  readOnly: boolean;
+  requestId: number;
+  sourceOpen: boolean;
+  step: TutorialStep;
+  tab: string;
+}) {
+  const [activityEpoch, setActivityEpoch] = useState(0);
+  const [hint, setHint] = useState<TutorialHintState | null>(null);
+  const handledRequest = useRef(0);
+  const manualScrollGraceUntil = useRef(0);
+  const pulsedSteps = useRef(new Set<string>());
+  const hintId = "tutorial-guidance-hint";
+  const contextKey = `${projectId}:${step}:${tab}:${sourceOpen ? "source" : "page"}:${evidenceOpen ? "evidence" : "plain"}:${readOnly ? "readonly" : "editable"}`;
+
+  useEffect(() => {
+    if (!active) return;
+    const markActivity = (event: Event) => {
+      if (
+        event.type === "scroll" &&
+        window.performance.now() < manualScrollGraceUntil.current
+      )
+        return;
+      setActivityEpoch((value) => value + 1);
+    };
+    window.addEventListener("click", markActivity, true);
+    window.addEventListener("keydown", markActivity, true);
+    window.addEventListener("touchstart", markActivity, true);
+    window.addEventListener("wheel", markActivity, { capture: true, passive: true });
+    window.addEventListener("scroll", markActivity, true);
+    return () => {
+      window.removeEventListener("click", markActivity, true);
+      window.removeEventListener("keydown", markActivity, true);
+      window.removeEventListener("touchstart", markActivity, true);
+      window.removeEventListener("wheel", markActivity, true);
+      window.removeEventListener("scroll", markActivity, true);
+    };
+  }, [active]);
+
+  useEffect(() => {
+    if (requestId > handledRequest.current)
+      manualScrollGraceUntil.current = window.performance.now() + 1_200;
+    let idleTimer: ReturnType<typeof setTimeout> | null = null;
+    let initialized = false;
+    let attached: HTMLElement | null = null;
+    let previousDescription: string | null = null;
+    const detach = () => {
+      if (!attached) return;
+      attached.classList.remove("tutorial-guidance-target", "is-pulsing");
+      attached.removeAttribute("data-tutorial-guidance-target");
+      attached.removeAttribute("data-tutorial-guidance-key");
+      if (previousDescription === null) attached.removeAttribute("aria-describedby");
+      else attached.setAttribute("aria-describedby", previousDescription);
+      attached = null;
+      previousDescription = null;
+    };
+    const position = (target: HTMLElement, message: string) => {
+      const rect = target.getBoundingClientRect();
+      const viewportWidth = document.documentElement.clientWidth;
+      const width = Math.min(272, Math.max(180, viewportWidth - 32));
+      const left = Math.min(
+        viewportWidth - width - 16,
+        Math.max(16, rect.left + rect.width / 2 - width / 2),
+      );
+      const placement =
+        rect.bottom + 92 > window.innerHeight && rect.top > 100 ? "above" : "below";
+      setHint({
+        left,
+        message,
+        placement,
+        top: placement === "above" ? rect.top - 10 : rect.bottom + 10,
+        width,
+      });
+    };
+    const attach = (target: TutorialGuidanceTarget, automatic: boolean) => {
+      detach();
+      attached = target.element;
+      previousDescription = attached.getAttribute("aria-describedby");
+      const descriptions = new Set(
+        `${previousDescription ?? ""} ${hintId}`.trim().split(/\s+/).filter(Boolean),
+      );
+      attached.setAttribute("aria-describedby", [...descriptions].join(" "));
+      attached.setAttribute("data-tutorial-guidance-target", "true");
+      attached.setAttribute("data-tutorial-guidance-key", target.key);
+      attached.classList.add("tutorial-guidance-target");
+      const pulseKey = `${projectId}:${step}`;
+      if (automatic && !pulsedSteps.current.has(pulseKey)) {
+        pulsedSteps.current.add(pulseKey);
+        attached.classList.add("is-pulsing");
+      }
+      position(attached, target.message);
+    };
+    const resolve = () =>
+      resolveTutorialGuidanceTarget({
+        evidenceOpen,
+        readOnly,
+        sourceOpen,
+        step,
+        tab,
+      });
+    const attempt = () => {
+      if (!initialized || !active || busy || attached || idleTimer) return;
+      const target = resolve();
+      if (!target) return;
+      if (requestId > handledRequest.current) {
+        handledRequest.current = requestId;
+        if (requestId > tutorialGuidanceConsumedSequence) {
+          tutorialGuidanceConsumedSequence = requestId;
+          attach(target, false);
+          return;
+        }
+      }
+      idleTimer = setTimeout(() => {
+        idleTimer = null;
+        const current = resolve();
+        if (current) attach(current, true);
+      }, 12_000);
+    };
+    const initializeTimer = window.setTimeout(() => {
+      setHint(null);
+      initialized = true;
+      if (active && !busy) attempt();
+    }, 0);
+    const observer = new MutationObserver(attempt);
+    observer.observe(document.body, { childList: true, subtree: true });
+    const updatePosition = () => {
+      if (!attached) return;
+      const current = resolve();
+      if (current?.element === attached) position(attached, current.message);
+    };
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      if (idleTimer) clearTimeout(idleTimer);
+      window.clearTimeout(initializeTimer);
+      observer.disconnect();
+      window.removeEventListener("resize", updatePosition);
+      detach();
+    };
+  }, [active, activityEpoch, busy, contextKey, evidenceOpen, projectId, readOnly, requestId, sourceOpen, step, tab]);
+
+  if (!hint) return null;
+  return (
+    <div
+      id={hintId}
+      className={`tutorial-guidance-hint ${hint.placement}`}
+      role="status"
+      aria-live="polite"
+      style={{ left: hint.left, top: hint.top, width: hint.width }}
+    >
+      {hint.message}
+    </div>
+  );
+}
 function BrandMark() {
   return (
     <svg className="brand-mark" viewBox="0 0 32 32" role="img" aria-label="Story Continuity 品牌标志">
@@ -203,16 +582,38 @@ function Chevron({ className = "" }: { className?: string }) {
 }
 function EmptyManuscriptVisual() {
   return (
-    <svg className="empty-manuscript-visual" viewBox="0 0 280 150" role="img" aria-label="第一章手稿与连续性时间线">
-      <text x="16" y="98">01</text>
-      <path className="empty-paper" d="M105 22h111l22 22v84H105Z" />
-      <path className="empty-fold" d="M216 22v22h22" />
-      <path className="empty-line" d="M126 59h83M126 73h70M126 87h83M126 101h51" />
-      <path className="empty-timeline" d="M92 120h151" />
-      <circle cx="111" cy="120" r="5" />
-      <circle cx="168" cy="120" r="5" />
-      <circle cx="224" cy="120" r="5" />
-    </svg>
+    <Image
+      className="empty-manuscript-visual"
+      src="/assets/v120/empty-manuscript-alpha.webp"
+      alt="空白手稿由紫色连续性线索相连"
+      width={1358}
+      height={838}
+      sizes="(max-width: 1023px) 230px, 280px"
+    />
+  );
+}
+function EmptyLibraryVisual() {
+  return (
+    <Image
+      className="empty-library-visual"
+      src="/assets/v120/empty-library-alpha.webp"
+      alt="打开的空白手稿档案与紫色连续性线索"
+      width={1672}
+      height={745}
+      sizes="(max-width: 1023px) 360px, 480px"
+    />
+  );
+}
+function TutorialCompleteVisual() {
+  return (
+    <Image
+      className="tutorial-complete-visual"
+      src="/assets/v120/tutorial-complete-alpha.webp"
+      alt="连续性线索已收束的完整手稿档案"
+      width={944}
+      height={1187}
+      sizes="(max-width: 1023px) 280px, 360px"
+    />
   );
 }
 function MoreMenu({ children }: { children: ReactNode }) {
@@ -309,10 +710,16 @@ export function Workbench() {
     [filter, setFilter] = useState(""),
     [sort, setSort] = useState("updated_desc"),
     [onlyIssues, setOnlyIssues] = useState(false),
-    [small, setSmall] = useState(false);
+    [small, setSmall] = useState(false),
+    [sourceRecord, setSourceRecord] = useState<ReadonlySourceRecord | null>(null),
+    [tutorialProgress, setTutorialProgress] = useState<TutorialProgress | null>(null);
+  const [tutorialGuidanceRequest, setTutorialGuidanceRequest] = useState(
+    tutorialGuidanceRequestSequence,
+  );
   const epoch = useRef(0),
     activeProjectRequest = useRef<AbortController | null>(null),
     trigger = useRef<HTMLElement | null>(null),
+    sourceTrigger = useRef<HTMLButtonElement | null>(null),
     userMenuTrigger = useRef<HTMLButtonElement | null>(null),
     projectModuleNav = useRef<HTMLElement | null>(null);
   const parts = pathname.split("/").filter(Boolean);
@@ -321,6 +728,20 @@ export function Workbench() {
       ? parts[1]
       : null;
   const tab = parts[2] ?? "overview";
+  useEffect(() => {
+    const syncTutorialGuidanceRequest = () =>
+      setTutorialGuidanceRequest(tutorialGuidanceRequestSequence);
+    window.addEventListener(
+      tutorialGuidanceRequestEvent,
+      syncTutorialGuidanceRequest,
+    );
+    syncTutorialGuidanceRequest();
+    return () =>
+      window.removeEventListener(
+        tutorialGuidanceRequestEvent,
+        syncTutorialGuidanceRequest,
+      );
+  }, []);
   useEffect(() => {
     const update = () => setSmall(window.innerWidth < 1024);
     update();
@@ -333,6 +754,11 @@ export function Workbench() {
       saved &&
       (draft.title !== saved.title || draft.body !== saved.body),
     );
+  const activeTutorialStep: TutorialStep =
+    project?.is_tutorial &&
+    tutorialProgress?.tutorial_project_id === project.id
+      ? tutorialProgress.current_step
+      : 1;
   function clear() {
     activeProjectRequest.current?.abort();
     activeProjectRequest.current = null;
@@ -351,6 +777,8 @@ export function Workbench() {
     setCharacters([]);
     setWorld([]);
     setSelected(null);
+    setSourceRecord(null);
+    setTutorialProgress(null);
     setControlled(null);
     setLocallyResolvedIssueIds([]);
     setChangeSet(null);
@@ -398,6 +826,40 @@ export function Workbench() {
     },
     [router],
   );
+  const applyOnboarding = useCallback((next: Onboarding) => {
+    setOnboarding(next);
+    setTutorialProgress(next.progress);
+  }, []);
+  const resyncTutorialProgress = useCallback(async () => {
+    const next = await request<Onboarding>("/onboarding");
+    applyOnboarding(next);
+    return next.progress;
+  }, [applyOnboarding]);
+  const recordTutorialEvent = useCallback(
+    async (tutorialProjectId: string, event: TutorialEvent) => {
+      try {
+        const next = await json<TutorialProgress>("/onboarding/progress", "POST", {
+          tutorial_version: "1.2.0",
+          project_id: tutorialProjectId,
+          event,
+        });
+        setTutorialProgress(next);
+        setOnboarding((current) =>
+          current ? { ...current, progress: next } : current,
+        );
+        return next;
+      } catch (cause) {
+        try {
+          await resyncTutorialProgress();
+        } catch {
+          // Preserve the first write failure for the author-facing error.
+        }
+        fail(cause);
+        throw cause;
+      }
+    },
+    [fail, resyncTutorialProgress],
+  );
   const updateBootstrappedUser = useCallback((next: User | null) => {
     bootstrappedUser = next;
     setUser(next);
@@ -429,11 +891,11 @@ export function Workbench() {
         request<Onboarding>("/onboarding"),
       ]);
       setHome(nextHome);
-      setOnboarding(nextOnboarding);
+      applyOnboarding(nextOnboarding);
     } catch (cause) {
       fail(cause);
     }
-  }, [fail]);
+  }, [applyOnboarding, fail]);
   const loadProject = useCallback(
     async (id: string) => {
       clear();
@@ -454,7 +916,7 @@ export function Workbench() {
               { signal: controller.signal },
             )
           : null;
-        const [c, m, d, o, chars, w, initialized, memoryCoverage, delta] = await Promise.all([
+        const [c, m, d, o, chars, w, initialized, memoryCoverage, delta, projectOnboarding] = await Promise.all([
           request<{ chapters: Chapter[] }>(
             `/projects/${id}/chapters?include=excerpt`,
             { signal: controller.signal },
@@ -487,9 +949,13 @@ export function Workbench() {
           p.data_origin === "user_import"
             ? request<MemoryDelta>(`/projects/${id}/memory/delta`, { signal: controller.signal })
             : Promise.resolve(null),
+          p.is_tutorial
+            ? request<Onboarding>("/onboarding", { signal: controller.signal })
+            : Promise.resolve(null),
         ]);
         if (n !== epoch.current) return;
         setProject(p);
+        if (projectOnboarding) applyOnboarding(projectOnboarding);
         setChapters(c.chapters);
         setMemories(m.records);
         setDraft(d);
@@ -528,7 +994,7 @@ export function Workbench() {
         if (n === epoch.current) setBusy("");
       }
     },
-    [fail],
+    [applyOnboarding, fail],
   );
   useEffect(() => {
     if (bootstrappedUser !== undefined) return;
@@ -674,6 +1140,7 @@ export function Workbench() {
       await request("/auth/logout", { method: "POST" });
       startTransition(() => {
         clear();
+        setTutorialProgress(null);
         bootstrappedUser = null;
         setUser(null);
         router.replace("/login");
@@ -686,9 +1153,17 @@ export function Workbench() {
     setBusy(outcome === "complete" ? "正在完成教学" : "正在跳过教学");
     try {
       await json(`/onboarding/${outcome}`, "POST", { confirm: true });
-      clear();
-      router.replace("/");
-      setNotice(outcome === "complete" ? "教学已完成。现在可以导入第一部真实作品。" : "已跳过教学。现在可以导入第一部真实作品。");
+      setTutorialProgress(null);
+      setOnboarding(null);
+      if (outcome === "complete") {
+        clear();
+        setNotice("");
+        router.replace("/onboarding/complete");
+      } else {
+        clear();
+        router.replace("/");
+        setNotice("已跳过教学。现在可以导入第一部真实作品。");
+      }
     } catch (cause) {
       fail(cause);
     } finally {
@@ -698,8 +1173,9 @@ export function Workbench() {
   const reopenTutorial = async () => {
     setBusy("正在恢复教学样例");
     try {
-      const data = await json<{ tutorial: { project_id: string } }>("/onboarding/reopen", "POST", { confirm: true });
+      const data = await json<{ tutorial: { project_id: string }; progress: TutorialProgress }>("/onboarding/reopen", "POST", { confirm: true });
       setUserMenuOpen(false);
+      setTutorialProgress(data.progress);
       router.push(`/projects/${data.tutorial.project_id}/overview`);
     } catch (cause) {
       fail(cause);
@@ -748,6 +1224,8 @@ export function Workbench() {
         setLocallyResolvedIssueIds((ids) => [
           ...new Set([...ids, controlled.id]),
         ]);
+        if (project?.is_tutorial)
+          await recordTutorialEvent(project.id, "author_decision_recorded");
         setControlled(null);
         setRun(
           await request<Run>(
@@ -834,7 +1312,7 @@ export function Workbench() {
     if (!projectId || !run || readOnly) return;
     setBusy("正在记录作者决策");
     try {
-      await json(`/projects/${projectId}/issues/${issue.id}/decision`, "POST", {
+      const recorded = await json<{ decision: string; resulting_revision: number | null }>(`/projects/${projectId}/issues/${issue.id}/decision`, "POST", {
         run_id: run.run_id,
         source_revision: run.source_revision,
         decision,
@@ -845,16 +1323,25 @@ export function Workbench() {
       setLocallyResolvedIssueIds((ids) => [
         ...new Set([...ids, issue.id]),
       ]);
-      setRun(
-        await request<Run>(
-          `/projects/${projectId}/checks/${run.run_id}?include=issues,evidence,metrics`,
-        ),
+      if (project?.is_tutorial)
+        await recordTutorialEvent(project.id, "author_decision_recorded");
+      const refreshed = await request<Run>(
+        `/projects/${projectId}/checks/${run.run_id}?include=issues,evidence,metrics`,
       );
-      setSelected(null);
+      setRun(refreshed);
+      setSelected(
+        refreshed.issues?.find((candidate) => candidate.id === issue.id) ?? {
+          ...issue,
+          decision: {
+            decision: recorded.decision ?? decision,
+            resulting_revision: recorded.resulting_revision ?? null,
+          },
+        },
+      );
       setNotice(
         decision === "keep_intentional"
-          ? "已保留作者意图；可进入 Memory Review。"
-          : "已标记为误报，不会写入 Story Memory。",
+          ? "决定已记录：保留作者意图；可继续审阅后续 Memory 变更。"
+          : "决定已记录：此问题已标记为误报，不会写入 Story Memory。",
       );
     } catch (e) {
       fail(e);
@@ -1223,6 +1710,16 @@ export function Workbench() {
     );
   else if (pathname === "/account/security")
     body = <AccountSecurity user={user} updateUser={updateBootstrappedUser} go={go} />;
+  else if (pathname === "/onboarding/complete")
+    body = (
+      <TutorialCompletePage
+        go={(href) => {
+          clear();
+          window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+          router.replace(href);
+        }}
+      />
+    );
   else if (!projectId)
     body =
       pathname === "/projects/new" ? (
@@ -1289,6 +1786,9 @@ export function Workbench() {
         run={run}
         pairedRun={pairedRun}
         locallyResolvedIssueIds={locallyResolvedIssueIds}
+        selectedIssueId={selected?.id ?? null}
+        tutorialStep={activeTutorialStep}
+        requestTutorialGuidance={emitTutorialGuidanceRequest}
         readOnly={readOnly}
         busy={busy}
         controlled={controlled}
@@ -1298,9 +1798,17 @@ export function Workbench() {
         check={check}
         cancelRun={cancelRun}
         retryRun={retryRun}
-        select={(i, el) => {
+        select={async (i, el) => {
           trigger.current = el;
           setSelected(i);
+          if (project.is_tutorial) {
+            try {
+              await recordTutorialEvent(project.id, "continuity_issue_located");
+              await recordTutorialEvent(project.id, "evidence_opened");
+            } catch {
+              // The shared error path has resynchronized canonical progress.
+            }
+          }
         }}
         review={review}
         commit={commit}
@@ -1312,6 +1820,30 @@ export function Workbench() {
         meta={() => setMetaOpen(true)}
         archive={() => setArchiveOpen(true)}
         finishTutorial={finishTutorial}
+        advanceTutorial={(event) => recordTutorialEvent(project.id, event)}
+        openMemorySource={async (memory, element) => {
+          if (!memory.source) return;
+          sourceTrigger.current = element;
+          setSourceRecord({
+            recordId: memory.id,
+            subject: memory.subject,
+            chapterId: memory.source.chapter_id,
+            chapterNumber: memory.source.chapter_number,
+            chapterTitle: memory.source.chapter_title,
+            spanId: memory.source.span_id,
+            excerpt: memory.source.excerpt,
+            sourcePath: memory.source.source_path,
+            memoryType: memory.memory_type,
+            reviewStatus: memory.review_status,
+          });
+          if (project.is_tutorial) {
+            try {
+              await recordTutorialEvent(project.id, "memory_source_opened");
+            } catch {
+              // Keep the real source drawer open and surface the save failure.
+            }
+          }
+        }}
         go={go}
       />
     ) : (
@@ -1370,7 +1902,6 @@ export function Workbench() {
             </button>
             {userMenuOpen && (
               <div className="user-menu" role="menu" aria-label="用户菜单">
-                <p><strong>{user.display_name}</strong>{user.display_name.trim().toLocaleLowerCase() !== user.account_name.trim().toLocaleLowerCase() && <small>{user.account_name}</small>}</p>
                 {user.account_type === "visitor" && <p className="visitor-expiry">访客空间有效至 <time>{timestampLabel(user.visitor_expires_at)}</time></p>}
                 {user.account_type !== "visitor" && (
                   <button type="button" role="menuitem" onClick={() => go("/account/security")}><Icon name="security" />账号安全</button>
@@ -1380,6 +1911,7 @@ export function Workbench() {
                 )}
                 <button
                   type="button"
+                  className="danger"
                   role="menuitem"
                   onClick={() => void logout()}
                 >
@@ -1451,12 +1983,41 @@ export function Workbench() {
         )}
         {body}
       </main>
+      {sourceRecord && project && (
+        <SourceDrawer
+          record={sourceRecord}
+          chapters={chapters}
+          projectTitle={project.title}
+          currentSourceRevision={project.source_revision}
+          close={() => {
+            setSourceRecord(null);
+            setTimeout(() => sourceTrigger.current?.focus(), 0);
+          }}
+        />
+      )}
       {selected && (
         <Evidence
           issue={selected}
           run={run}
           readOnly={readOnly}
+          tutorial={Boolean(project?.is_tutorial)}
           busy={busy}
+          openSource={(evidence, element) => {
+            sourceTrigger.current = element;
+            setSourceRecord({
+              recordId: evidence.id,
+              subject: `${categoryLabel(selected.category)}的历史证据`,
+              chapterId: evidence.chapter_id,
+              chapterNumber: evidence.chapter_number,
+              chapterTitle: evidence.chapter_title,
+              spanId: evidence.span_id,
+              excerpt: evidence.excerpt,
+              sourcePath: evidence.source_path,
+              sourceRevision: evidence.source_revision,
+              relation: evidence.relation,
+              sufficiency: evidence.sufficiency,
+            });
+          }}
           close={() => {
             setSelected(null);
             setTimeout(() => trigger.current?.focus(), 0);
@@ -1467,6 +2028,19 @@ export function Workbench() {
             setTimeout(() => document.getElementById("draft-body")?.focus(), 0);
           }}
           decide={decide}
+        />
+      )}
+      {project?.is_tutorial && (
+        <TutorialGuidance
+          active
+          busy={Boolean(busy)}
+          evidenceOpen={Boolean(selected)}
+          projectId={project.id}
+          readOnly={readOnly}
+          requestId={tutorialGuidanceRequest}
+          sourceOpen={Boolean(sourceRecord)}
+          step={activeTutorialStep}
+          tab={tab}
         />
       )}
       {switchTo && (
@@ -1880,6 +2454,35 @@ function AccountSecurity({ user, updateUser, go }: { user: User; updateUser: (us
     </section>
   );
 }
+function TutorialCompletePage({ go }: { go: (href: string) => void }) {
+  const steps = [
+    "认识作品资料与 Story Memory",
+    "查看一条事实来源",
+    "打开高风险问题与 Evidence",
+    "作出作者决定",
+    "完成一次检查",
+  ];
+  return (
+    <section className="tutorial-complete-page">
+      <header className="home-heading"><p className="breadcrumb">全局 / 首页</p><h1>继续你的故事</h1></header>
+      <section className="tutorial-complete-panel" aria-labelledby="tutorial-complete-title">
+        <TutorialCompleteVisual />
+        <div className="tutorial-complete-copy">
+          <p className="eyebrow">隔离教学 · 已结束</p>
+          <h2 id="tutorial-complete-title">教学已完成</h2>
+          <p>你已经走完一次连续性检查流程。</p>
+          <ol>{steps.map((step, index) => <li key={step}><span>{index + 1}</span>{step}</li>)}</ol>
+          <div className="tutorial-complete-actions">
+            <Button className="primary" onClick={() => go("/projects/import")}>导入自己的作品</Button>
+            <Button onClick={() => go("/projects/new")}>创建空白作品</Button>
+            <Button className="quiet" onClick={() => go("/")}>返回首页</Button>
+          </div>
+          <small>教学项目不计入真实作品。</small>
+        </div>
+      </section>
+    </section>
+  );
+}
 function HomePage({
   home,
   onboarding,
@@ -1891,6 +2494,8 @@ function HomePage({
   open: (id: string) => void;
   go: (h: string) => void;
 }) {
+  const recentProjects = home?.recent_projects ?? [];
+  const pendingContinuity = home?.pending_continuity ?? [];
   return (
     <section className="home-page">
       <header className="home-heading">
@@ -1898,15 +2503,16 @@ function HomePage({
         <h1>继续你的故事</h1>
       </header>
       {onboarding?.show_first_run && onboarding.tutorial && (
-        <section className="tutorial-entry" aria-label="首次教学">
-          <div>
+        <section className="tutorial-entry home-entry-composition" aria-label="首次教学">
+          <EmptyManuscriptVisual />
+          <div className="home-entry-copy">
             <p className="eyebrow">首次使用 · 教学模式</p>
-            <h2>用隔离样例走一遍核心流程</h2>
-            <p>教学作品不会进入真实作品列表、搜索、数量或待处理问题。你可以随时完成或跳过。</p>
+            <h2>从隔离样例开始建立连续性档案</h2>
+            <p>教学作品不计入真实作品、搜索或待处理问题；完成后再导入自己的故事。</p>
           </div>
-          <div className="actions">
-            <Button onClick={() => go("/projects/import")}>导入第一部作品</Button>
+          <div className="actions home-entry-actions">
             <Button className="primary" onClick={() => open(onboarding.tutorial!.project_id)}>开始教学</Button>
+            <Button onClick={() => go("/projects/import")}>导入第一部作品</Button>
           </div>
         </section>
       )}
@@ -1919,9 +2525,7 @@ function HomePage({
             </h2>
             <p>
               草稿 revision {home.continue_work.draft_revision} · 下一步：
-              {home.continue_work.next_action === "continue_draft"
-                ? "继续写作"
-                : home.continue_work.next_action}
+              {nextActionLabel(home.continue_work.next_action)}
             </p>
           </div>
           <Button
@@ -1932,14 +2536,14 @@ function HomePage({
           </Button>
         </section>
       ) : !onboarding?.show_first_run ? (
-        <section className="empty-workspace">
+        <section className="empty-workspace home-entry-composition">
           <EmptyManuscriptVisual />
-          <div className="empty-workspace-copy">
+          <div className="empty-workspace-copy home-entry-copy">
             <p className="eyebrow">真实作品空间 · 尚未建立</p>
-            <h2>你的第一部作品将从这里建立连续性档案。</h2>
+            <h2>从第一章开始建立连续性档案</h2>
             <p>导入 TXT / Markdown，或从空白作品开始。</p>
           </div>
-          <div className="actions">
+          <div className="actions home-entry-actions">
             <Button className="primary" onClick={() => go("/projects/import")}>导入第一部作品</Button>
             <Button onClick={() => go("/projects/new")}>新建空白作品</Button>
           </div>
@@ -1949,11 +2553,11 @@ function HomePage({
         <section className="home-section">
           <header className="home-section-head">
             <h2>最近作品</h2>
-            <Button onClick={() => go("/projects")}>查看全部</Button>
+            {recentProjects.length > 0 && <Button onClick={() => go("/projects")}>查看全部</Button>}
           </header>
-          {(home?.recent_projects ?? []).length ? (
+          {recentProjects.length ? (
             <ul className="home-work-list">
-              {home!.recent_projects.map((item) => (
+              {recentProjects.map((item) => (
                 <li key={item.project_id}>
                   <button onClick={() => open(item.project_id)}>
                     <strong>《{item.title}》</strong>
@@ -1963,13 +2567,20 @@ function HomePage({
                 </li>
               ))}
             </ul>
-          ) : <div className="empty compact-empty">还没有真实作品。</div>}
+          ) : (
+            <div className="home-empty-state compact-empty">
+              <span className="home-empty-mark" aria-hidden="true"><Icon name="library" /></span>
+              <p>导入作品后，最近编辑的故事会显示在这里。</p>
+            </div>
+          )}
         </section>
         <section className="home-section home-issues-section">
-          <h2>待处理问题</h2>
-          {(home?.pending_continuity ?? []).length ? (
+          <header className="home-section-head">
+            <h2>待处理问题</h2>
+          </header>
+          {pendingContinuity.length ? (
             <ul className="home-issue-list">
-              {home!.pending_continuity.map((x) => {
+              {pendingContinuity.map((x) => {
                 const total = x.high + x.medium + x.low;
                 const tone = x.continuity_status === "unchecked" ? "unchecked" : x.high ? "high" : x.medium ? "medium" : "low";
                 return (
@@ -1988,7 +2599,12 @@ function HomePage({
                 );
               })}
             </ul>
-          ) : <div className="empty compact-empty">当前没有待处理问题。</div>}
+          ) : (
+            <div className="home-empty-state compact-empty">
+              <span className="home-empty-mark" aria-hidden="true"><Icon name="overview" /></span>
+              <p>运行第一次连续性检查后，问题会按风险显示在这里。</p>
+            </div>
+          )}
         </section>
       </div>
     </section>
@@ -2015,7 +2631,7 @@ function Rows({
   filtered?: boolean;
 }) {
   return rows.length ? (
-    <>
+    <div className="project-table">
       <div className="project-rows-head" aria-hidden="true">
         <span />
         <span>作品</span>
@@ -2071,7 +2687,7 @@ function Rows({
         );
       })}
       </ul>
-    </>
+    </div>
   ) : (
     <div className={filtered ? "empty search-empty" : "empty project-list-empty"}>
       {filtered ? "没有匹配当前条件的作品。调整或清除条件后再试。" : "还没有真实作品。"}
@@ -2103,6 +2719,7 @@ function Projects({
   open: (id: string) => void;
   go: (h: string) => void;
 }) {
+  const filtered = Boolean(q || filter || onlyIssues || sort !== "updated_desc");
   return (
     <section className="projects-page">
       <header className="page-header">
@@ -2110,14 +2727,14 @@ function Projects({
           <p className="breadcrumb">全局 / 作品管理</p>
           <h1>作品管理</h1>
         </div>
-        <div className="actions">
+        {(rows.length > 0 || filtered) && <div className="actions">
           <Button onClick={() => go("/projects/import")}>导入作品</Button>
           <Button className="primary" onClick={() => go("/projects/new")}>
             新建作品
           </Button>
-        </div>
+        </div>}
       </header>
-      <div className="filters project-toolbar">
+      {(rows.length > 0 || filtered) && <div className="filters project-toolbar">
         <label className="project-search">
           <span className="sr-only">搜索</span>
           <input placeholder="搜索标题或简介" value={q} onChange={(e) => set("q", e.target.value)} />
@@ -2160,13 +2777,27 @@ function Projects({
         <Button className="quiet clear-filters" onClick={clear}>
           清除条件
         </Button>
-      </div>
-      <Rows
-        rows={rows}
-        open={open}
-        append={(id) => go(`/projects/${id}/sources`)}
-        filtered={Boolean(q || filter || onlyIssues || sort !== "updated_desc")}
-      />
+      </div>}
+      {!rows.length && !filtered ? (
+        <section className="project-empty-state" aria-labelledby="project-empty-title">
+          <EmptyLibraryVisual />
+          <div>
+            <p className="eyebrow">真实作品空间</p>
+            <h2 id="project-empty-title">还没有真实作品</h2>
+            <p>集中管理你的真实作品与连续性检查。</p>
+            <hr />
+            <p>导入已有 TXT / Markdown，或从空白作品开始。</p>
+            <div className="actions"><Button onClick={() => go("/projects/import")}>导入作品</Button><Button className="primary" onClick={() => go("/projects/new")}>新建作品</Button></div>
+          </div>
+        </section>
+      ) : (
+        <Rows
+          rows={rows}
+          open={open}
+          append={(id) => go(`/projects/${id}/sources`)}
+          filtered={filtered}
+        />
+      )}
     </section>
   );
 }
@@ -2430,25 +3061,29 @@ function RunLifecycle({ run, blocked, cancelRun, retryRun, actions = true }: { r
     <section className={`run-lifecycle status-${run.status}`} aria-label={`${run.run_type === "memory_delta" ? "Memory Delta" : "Continuity"} Agent Run 生命周期`} aria-live="polite">
       <header>
         <div>
-          <p className="eyebrow">AGENT RUN · {run.run_type === "memory_delta" ? "MEMORY DELTA" : "CONTINUITY"}</p>
+          <p className="eyebrow">{run.run_type === "memory_delta" ? "STORY MEMORY 检查" : "连续性检查"}</p>
           <h2>{stage(run.stage)}</h2>
-          <p>attempt {run.attempt_number ?? 1} · Run {run.run_id}</p>
+          <p>第 {run.attempt_number ?? 1} 次尝试 · {run.status === "completed" ? "结果已准备好，可继续审阅。" : "保留当前页面即可查看状态变化。"}</p>
         </div>
         <div className="run-actions">
           <span className={`run-state state-${run.status}`}>{stage(run.status)}</span>
-          {actions && activeRun(run) && <Button disabled={blocked} onClick={() => void cancelRun()}>{run.stage === "cancelling" ? "正在取消" : "取消 Run"}</Button>}
-          {actions && retryableRun(run) && <Button className="primary" disabled={blocked} onClick={() => void retryRun()}>重试为新 Run</Button>}
+          {actions && activeRun(run) && <Button disabled={blocked} onClick={() => void cancelRun()}>{run.stage === "cancelling" ? "正在取消" : "取消检查"}</Button>}
+          {actions && retryableRun(run) && <Button className="primary" disabled={blocked} onClick={() => void retryRun()}>重新检查</Button>}
         </div>
       </header>
-      {unfinished && <p className="run-safety" role="alert">{labelError({ code: run.error_code })} 本轮未写入部分 Issue、Evidence、Decision 或 Memory 结果。</p>}
-      {run.stage === "cancelling" && <p className="run-safety" role="status">正在等待当前 Provider 阶段返回；迟到结果将被丢弃，不会进入业务表。</p>}
-      <dl className="run-facts">
-        <div><dt>创建 / 开始 / 结束</dt><dd>{timestampLabel(run.created_at)}<br />{timestampLabel(run.started_at)}<br />{timestampLabel(run.completed_at)}</dd></div>
-        <div><dt>耗时</dt><dd>Run {durationLabel(run.duration_ms)}<br />Provider {durationLabel(metrics?.latency_ms)}</dd></div>
-        <div><dt>Provider 用量</dt><dd>{metrics?.input_tokens == null ? "tokens 不可用" : `${metrics.input_tokens} in / ${metrics.output_tokens ?? 0} out`}<br />{metrics?.cost_available ? `实际 cost ¥${metrics.cost_cny}` : "cost unavailable（不估算）"}</dd></div>
-        <div><dt>Lineage</dt><dd>source r{run.source_revision} · Memory V{run.source_memory_version ?? provenance?.source_memory_version ?? "—"}<br />root {run.root_run_id ?? run.run_id}</dd></div>
-      </dl>
-      {provenance && <details className="run-provenance"><summary>查看 provenance 与状态事件</summary><dl><div><dt>Provider / model</dt><dd>{provenance.provider_label} / {provenance.model_label}</dd></div><div><dt>Prompt / schema</dt><dd>{provenance.prompt_version} / {provenance.schema_version}</dd></div><div><dt>Retrieval</dt><dd>{provenance.retrieval_method_version}</dd></div></dl><ol>{(run.transitions ?? []).map((event) => <li key={event.sequence}><strong>{event.sequence}. {stage(event.stage)}</strong><span>{event.status} · {timestampLabel(event.created_at)}{event.error_code ? ` · ${event.error_code}` : ""}</span></li>)}</ol></details>}
+      {unfinished && <p className="run-safety" role="alert">{labelError({ code: run.error_code })} 本轮未写入任何部分问题、证据、作者决定或 Memory 结果。</p>}
+      {run.stage === "cancelling" && <p className="run-safety" role="status">正在等待当前模型服务阶段返回；迟到结果将被丢弃，不会进入业务表。</p>}
+      <details className="run-technical">
+        <summary>技术详情</summary>
+        <dl className="run-facts">
+          <div><dt>运行编号</dt><dd>{run.run_id}<br />根运行 {run.root_run_id ?? run.run_id}</dd></div>
+          <div><dt>创建 / 开始 / 结束</dt><dd>{timestampLabel(run.created_at)}<br />{timestampLabel(run.started_at)}<br />{timestampLabel(run.completed_at)}</dd></div>
+          <div><dt>运行耗时</dt><dd>检查 {durationLabel(run.duration_ms)}<br />模型服务 {durationLabel(metrics?.latency_ms)}</dd></div>
+          <div><dt>模型服务用量</dt><dd>{metrics?.input_tokens == null ? "用量不可用" : `输入 ${metrics.input_tokens} / 输出 ${metrics.output_tokens ?? 0}`}<br />{metrics?.cost_available ? `实际费用 ¥${metrics.cost_cny}` : "费用不可用（不估算）"}</dd></div>
+          <div><dt>证据谱系</dt><dd>来源 r{run.source_revision} · Memory V{run.source_memory_version ?? provenance?.source_memory_version ?? "—"}<br />{lineageStatusLabel(run.lineage_status)}</dd></div>
+        </dl>
+        {provenance && <section className="run-provenance"><h3>处理版本与状态事件</h3><dl><div><dt>服务 / 模型</dt><dd>{provenance.provider_label} / {provenance.model_label}</dd></div><div><dt>提示词 / 数据结构</dt><dd>{provenance.prompt_version} / {provenance.schema_version}</dd></div><div><dt>检索版本</dt><dd>{provenance.retrieval_method_version}</dd></div></dl><ol>{(run.transitions ?? []).map((event) => <li key={event.sequence}><strong>{event.sequence}. {stage(event.stage)}</strong><span>{stage(event.status)} · {timestampLabel(event.created_at)}{event.error_code ? ` · ${event.error_code}` : ""}</span></li>)}</ol></section>}
+      </details>
     </section>
   );
 }
@@ -2458,56 +3093,167 @@ function ProjectContextNotices({
   tab,
   readOnly,
   busy,
+  tutorialStep,
   finishTutorial,
+  advanceTutorial,
+  requestTutorialGuidance,
   go,
 }: {
   project: Project;
   tab: string;
   readOnly: boolean;
   busy: string;
+  tutorialStep: TutorialStep;
   finishTutorial: (outcome: "complete" | "skip") => Promise<void>;
+  advanceTutorial: (event: TutorialEvent) => Promise<TutorialProgress>;
+  requestTutorialGuidance: () => void;
   go: (href: string) => void;
 }) {
-  const tutorialStep = tab === "workspace" ? 2 : tab === "sources" ? 3 : 1;
   const tutorialCopy = {
     1: {
-      title: "了解作品资料与 Story Memory",
-      task: "查看项目概览、人物与 Story Memory，理解连续性档案如何组织。",
-      action: "下一步：查看连续性问题",
+      title: "认识作品资料与 Story Memory",
+      task: "打开 Story Memory，找到一条已经确认的事实，并查看它的章节来源。",
+      action: tab === "memory" ? "定位事实来源" : "去 Story Memory",
     },
     2: {
-      title: "查看连续性问题与 Evidence",
-      task: "浏览预置问题及 Evidence，理解判断如何回到原文证据。",
-      action: "下一步：导入自己的作品",
+      title: "进入连续性检查",
+      task: "来源已经打开。接下来进入写作与检查，找到预设的高风险问题。",
+      action: "去写作与检查",
     },
     3: {
-      title: "完成教学并导入自己的作品",
-      task: "确认追加章节的入口，然后结束隔离教学并建立真实作品。",
+      title: "对照当前草稿与历史证据",
+      task: "在问题列表中打开高风险项，核对当前草稿、历史证据和冲突说明。",
+      action: tab === "workspace" ? "定位高风险问题" : "返回写作与检查",
+    },
+    4: {
+      title: "作出一次作者决定",
+      task: readOnly
+        ? "移动端可以浏览完整证据。请在桌面端继续完成作者决定。"
+        : "在证据抽屉底部选择保留写法、接受建议并编辑，或标记为误报。",
+      action: readOnly ? "查看桌面端提示" : "定位作者决定",
+    },
+    5: {
+      title: "作者决定已记录",
+      task: "作者决定已经记录。结束隔离教学后，你会回到没有真实作品的工作台。",
       action: "完成教学",
     },
   }[tutorialStep];
+  const requestAfterContextChange = (delay = 0) =>
+    window.setTimeout(requestTutorialGuidance, delay);
+  const requestWhenScrollSettles = () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      requestAfterContextChange();
+      return;
+    }
+    let done = false;
+    let settleTimer = 0;
+    let fallbackTimer = 0;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      window.removeEventListener("scroll", onScroll, true);
+      window.clearTimeout(settleTimer);
+      window.clearTimeout(fallbackTimer);
+      requestTutorialGuidance();
+    };
+    const onScroll = () => {
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(finish, 240);
+    };
+    window.addEventListener("scroll", onScroll, true);
+    onScroll();
+    fallbackTimer = window.setTimeout(finish, 2_000);
+  };
+  const locate = (selector: string) => {
+    const target = document.querySelector<HTMLElement>(selector);
+    requestWhenScrollSettles();
+    target?.scrollIntoView({
+      block: "center",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+  };
+  const navigate = (href: string, selector?: string) => {
+    go(href);
+    window.setTimeout(() => {
+      const target = selector
+        ? document.querySelector<HTMLElement>(selector)
+        : null;
+      target?.scrollIntoView({
+        block: "center",
+        behavior: "auto",
+      });
+      requestAfterContextChange(target ? 100 : 400);
+    }, 500);
+  };
+  const runTutorialAction = async () => {
+    if (tutorialStep === 1) {
+      if (tab === "memory")
+        locate(".memory-source:not(:disabled)");
+      else navigate(`/projects/${project.id}/memory`);
+      return;
+    }
+    if (tutorialStep === 2) {
+      try {
+        await advanceTutorial("continuity_issue_located");
+        navigate(`/projects/${project.id}/workspace`, ".issue-row.severity-high");
+      } catch {
+        // The shared request path keeps the author on the current step and
+        // resynchronizes the canonical server progress.
+      }
+      return;
+    }
+    if (tutorialStep === 3) {
+      if (tab === "workspace")
+        locate(".issue-row.severity-high");
+      else navigate(`/projects/${project.id}/workspace`);
+      return;
+    }
+    if (tutorialStep === 4) {
+      locate(
+        readOnly
+          ? ".tutorial-mobile-decision-note"
+          : ".author-decision, .issue-row.severity-high, .issue-row",
+      );
+      return;
+    }
+    if (tutorialStep === 5) void finishTutorial("complete");
+  };
   return (
     <>
       {project.is_tutorial && (
-        <section className="tutorial-mode-bar" aria-label="教学模式">
+        <section className={tutorialStep === 5 ? "tutorial-mode-bar tutorial-completion-bar" : "tutorial-mode-bar"} aria-label="教学模式">
           <div className="tutorial-progress" aria-label="教学进度">
-            <p><strong>{tutorialStep} / 3</strong><span>隔离教学</span></p>
-            <div>
+            <div className="tutorial-step-count">
+              <strong>教学 {tutorialStep} / 5</strong>
+              <ol aria-label="五步教学进度">
+                {([1, 2, 3, 4, 5] as TutorialStep[]).map((step) => (
+                  <li
+                    key={step}
+                    className={step === tutorialStep ? "current" : step < tutorialStep ? "complete" : ""}
+                    aria-current={step === tutorialStep ? "step" : undefined}
+                    data-event={tutorialEvents[step] ?? "start"}
+                  >
+                    {step < tutorialStep ? "✓" : step}
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <div className="tutorial-copy">
               <strong>{tutorialCopy.title}</strong>
               <span>{tutorialCopy.task}</span>
-              <small>固定样例不会计入作品数量、搜索或待处理问题。</small>
+              <small>隔离样例不计入真实作品、搜索或待处理问题。</small>
             </div>
           </div>
           <div className="actions">
-            <Button className="quiet" disabled={Boolean(busy)} onClick={() => void finishTutorial("skip")}>跳过教学</Button>
+            {tutorialStep === 5
+              ? <Button className="quiet" disabled={Boolean(busy)} onClick={() => go("/")}>稍后完成</Button>
+              : <Button className="quiet" disabled={Boolean(busy)} onClick={() => void finishTutorial("skip")}>跳过教学</Button>}
             <Button
-              className="primary"
+              className="primary tutorial-primary-action"
               disabled={Boolean(busy)}
-              onClick={() => tutorialStep === 1
-                ? go(`/projects/${project.id}/workspace`)
-                : tutorialStep === 2
-                  ? go(`/projects/${project.id}/sources`)
-                  : void finishTutorial("complete")}
+              onClick={() => void runTutorialAction()}
             >
               {tutorialCopy.action}
             </Button>
@@ -2519,7 +3265,9 @@ function ProjectContextNotices({
           <I>◉</I>
           {project.status === "archived"
             ? "作品已归档：仅可浏览，恢复后才可保存、检查、决策、提交或 Reset。"
-            : "移动端只读浏览：可查看资料与 Evidence；编辑和检查请回到桌面。"}
+            : project.is_tutorial && tutorialStep === 4
+              ? "移动端可以浏览完整证据。请在桌面端继续完成作者决定。"
+            : "当前窗口较窄，暂为只读浏览；放大窗口即可继续写作与检查。"}
         </p>
       )}
     </>
@@ -2558,6 +3306,9 @@ function ProjectPage(p: {
   run: Run | null;
   pairedRun: Run | null;
   locallyResolvedIssueIds: string[];
+  selectedIssueId: string | null;
+  tutorialStep: TutorialStep;
+  requestTutorialGuidance: () => void;
   readOnly: boolean;
   busy: string;
   controlled: Issue | null;
@@ -2567,7 +3318,7 @@ function ProjectPage(p: {
   check: () => Promise<void>;
   cancelRun: () => Promise<void>;
   retryRun: () => Promise<void>;
-  select: (i: Issue, el: HTMLElement) => void;
+  select: (i: Issue, el: HTMLElement) => Promise<void> | void;
   review: () => Promise<void>;
   commit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   startMemoryInitialization: () => Promise<void>;
@@ -2578,6 +3329,8 @@ function ProjectPage(p: {
   meta: () => void;
   archive: () => void;
   finishTutorial: (outcome: "complete" | "skip") => Promise<void>;
+  advanceTutorial: (event: TutorialEvent) => Promise<TutorialProgress>;
+  openMemorySource: (memory: Memory, element: HTMLButtonElement) => Promise<void> | void;
   go: (href: string) => void;
 }) {
   const dirty = Boolean(
@@ -2592,7 +3345,10 @@ function ProjectPage(p: {
         tab={p.tab}
         readOnly={p.readOnly}
         busy={p.busy}
+        tutorialStep={p.tutorialStep}
         finishTutorial={p.finishTutorial}
+        advanceTutorial={p.advanceTutorial}
+        requestTutorialGuidance={p.requestTutorialGuidance}
         go={p.go}
       />
     );
@@ -2623,7 +3379,7 @@ function ProjectPage(p: {
           <section className="overview-panel current-draft-panel">
             <p className="eyebrow">当前草稿</p>
             <h2>第 {p.project.current_draft.chapter_number} 章</h2>
-            <p>revision {p.project.current_draft.revision} · 当前可继续写作与审阅。</p>
+            <p>第 {p.project.current_draft.revision} 次保存 · 当前可继续写作与审阅。</p>
             <div className="draft-progress" aria-hidden="true"><span /></div>
             <div className="overview-meta">
               <span>{p.project.chapter_count} 个章节</span>
@@ -2635,10 +3391,10 @@ function ProjectPage(p: {
             <h2>Memory V{p.project.current_memory_version}</h2>
             <p className="term-help">Story Memory 是作者确认、供后续连续性检查使用的事实集合；版本号代表一次明确提交后的完整快照。</p>
             <dl className="overview-kv">
-              <div><dt>当前来源</dt><dd>Source r{p.project.source_revision ?? "—"}</dd></div>
-              <div><dt>Memory coverage</dt><dd>{p.coverage?.status ?? "尚未提供"}</dd></div>
+              <div><dt>当前资料版本</dt><dd>{p.project.source_revision == null ? "尚未提供" : `第 ${p.project.source_revision} 版`}</dd></div>
+              <div><dt>Memory 覆盖</dt><dd>{coverageStatusLabel(p.coverage?.status)}</dd></div>
               <div><dt>检查状态</dt><dd>{p.project.continuity_status === "unchecked" ? "尚未检查" : p.project.continuity_status === "checked_clear" ? "已检查 · 0 项待处理" : `${p.project.open_issue_count ?? 0} 项待处理`}</dd></div>
-              <div><dt>最近 Run</dt><dd>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚无"}</dd></div>
+              <div><dt>最近检查</dt><dd>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚无"}</dd></div>
             </dl>
           </section>
         </div>
@@ -2691,61 +3447,26 @@ function ProjectPage(p: {
     );
   if (p.tab === "outline")
     return (
-      <Read
-        title="大纲"
-        breadcrumb={`项目 / ${p.project.title} / 大纲`}
-        note="查看当前章节结构。"
+      <OutlineView
+        projectTitle={p.project.title}
+        chapters={p.outline?.chapter_nodes ?? []}
         context={contextNotices}
-        items={(p.outline?.chapter_nodes ?? []).map((x) => (
-          <li key={x.id}>
-            <strong>
-              第 {x.chapter_number} 章 · {x.title}
-            </strong>
-            <span>
-              {statusLabel(x.status)} · {x.summary}
-            </span>
-          </li>
-        ))}
-        empty="此作品还没有大纲节点。"
       />
     );
   if (p.tab === "characters")
     return (
-      <Read
-        title="角色库"
-        breadcrumb={`项目 / ${p.project.title} / 角色库`}
-        note="查看角色身份、目标、当前状态和知识边界。"
+      <CharacterArchive
+        projectTitle={p.project.title}
+        characters={p.characters}
         context={contextNotices}
-        items={p.characters.map((x) => (
-          <li key={x.id}>
-            <strong>
-              {x.name} · {x.role_type}
-            </strong>
-            <span>
-              {x.identity}；目标：{x.goal}；状态：{x.current_state}；知识边界：
-              {x.knowledge_boundary}
-            </span>
-          </li>
-        ))}
-        empty="此作品还没有角色记录。"
       />
     );
   if (p.tab === "world")
     return (
-      <Read
-        title="世界观"
-        breadcrumb={`项目 / ${p.project.title} / 世界观`}
-        note="查看地点、组织、规则、物件与术语。"
+      <WorldArchive
+        projectTitle={p.project.title}
+        entries={p.world}
         context={contextNotices}
-        items={p.world.map((x) => (
-          <li key={x.id}>
-            <strong>
-              {x.name} · {x.entry_type}
-            </strong>
-            <span>{x.summary}</span>
-          </li>
-        ))}
-        empty="此作品还没有世界观记录。"
       />
     );
   if (p.tab === "memory")
@@ -2777,25 +3498,10 @@ function ProjectPage(p: {
             goToCheck={() => p.go(`/projects/${p.project.id}/workspace`)}
           />
         ) : p.memories.length ? (
-          <ul className="read-list">
-            {p.memories.map((m) => (
-              <li key={m.id}>
-                <strong>
-                  {m.subject} · {predicateLabel(m.predicate)}：{m.value}
-                </strong>
-                <span>
-                  {memoryTypeLabel(m.memory_type)} · 有效范围（适用章节）{m.valid_from ?? "未标明"}–
-                  {m.valid_to ?? "当前"} · {reviewStatusLabel(m.review_status)}
-                </span>
-                <small>
-                  来源：{m.source ? `第 ${m.source.chapter_number} 章《${m.source.chapter_title}》` : "不可用"}
-                  {m.source
-                    ? ` · ${m.source.excerpt}`
-                    : "（来源不可解析，已安全显示）"}
-                </small>
-              </li>
-            ))}
-          </ul>
+          <MemoryRecords
+            records={p.memories}
+            openSource={p.openMemorySource}
+          />
         ) : (
           <div className="empty">
             <strong>Memory V1 为空</strong>
@@ -2818,7 +3524,7 @@ function ProjectPage(p: {
         <div>
           <p className="breadcrumb">项目 / {p.project.title} / 写作与检查</p>
           <h1>{p.draft?.title || "正在读取草稿"}</h1>
-          <p>草稿 revision {p.draft?.revision ?? "—"}</p>
+          <p>{dirty ? "当前草稿有尚未保存的修改。" : "当前草稿已保存，可以继续写作或检查。"}</p>
         </div>
         {!p.readOnly && (
           <div className="actions">
@@ -2827,7 +3533,7 @@ function ProjectPage(p: {
                 <Icon name="save" />
                 {p.controlled ? "保存受控修订" : "保存草稿"}
               </Button>
-            ) : (!p.run || (!activeRun(p.run) && !retryableRun(p.run))) ? (
+            ) : (p.run && !activeRun(p.run) && !retryableRun(p.run)) ? (
               <Button className="primary" disabled={blocked || !p.draft} onClick={() => void p.check()}>
                 <Icon name="play" />
                 运行连续性检查
@@ -2843,8 +3549,8 @@ function ProjectPage(p: {
       {contextNotices}
       {p.controlled && (
         <p className="warning">
-          <I>!</I>受控编辑：只接受 source r{p.run?.source_revision} → r
-          {(p.run?.source_revision ?? 0) + 1}，保存后会提交 Accept & edit 决策。
+          <I>!</I>受控编辑：只接受资料版本第 {p.run?.source_revision ?? "?"} 版 → 第
+          {(p.run?.source_revision ?? 0) + 1} 版，保存后会提交“接受建议并编辑”决定。
         </p>
       )}
       {p.project.data_origin === "user_import" && p.project.memory_initialization_status !== "completed" && (
@@ -2854,7 +3560,7 @@ function ProjectPage(p: {
         </p>
       )}
       {p.coverage?.status === "update_pending" && (
-        <p className="warning"><I>!</I>Source r{p.project.source_revision} 已追加；仅新 SourceSpan 与已确认 Memory 会进入增量审阅。{p.memoryDelta?.status === "failed" ? "本次运行失败，未写入任何 Issue 或候选，可安全重试。" : <Button className="primary" disabled={blocked} onClick={() => void p.startIncrementalReview()}>运行增量检查</Button>}</p>
+        <p className="warning"><I>!</I>资料版本第 {p.project.source_revision} 版已追加；只有新增来源片段与已确认 Memory 会进入增量审阅。{p.memoryDelta?.status === "failed" ? "本次检查失败，未写入任何问题或候选，可安全重试。" : <Button className="primary" disabled={blocked} onClick={() => void p.startIncrementalReview()}>运行增量检查</Button>}</p>
       )}
       {p.run && <RunLifecycle run={p.run} blocked={blocked} cancelRun={p.cancelRun} retryRun={p.retryRun} actions={!p.readOnly} />}
       {p.pairedRun && <RunLifecycle run={p.pairedRun} blocked={blocked} cancelRun={p.cancelRun} retryRun={p.retryRun} actions={false} />}
@@ -2862,8 +3568,7 @@ function ProjectPage(p: {
         <section className="editor">
           <header className="editor-top">
             <div className="editor-title">
-              <strong>{p.draft?.title || "当前草稿"}</strong>
-              <span aria-label="草稿修订">draft · revision {p.draft?.revision ?? "—"} · {dirty ? "未保存" : "已保存"}</span>
+              <span>{dirty ? "正在编辑当前章节" : "当前章节"}</span>
             </div>
             <span className={dirty ? "save-state unsaved" : "save-state"}>{dirty ? "● 未保存" : "✓ 已保存"}</span>
           </header>
@@ -2893,21 +3598,28 @@ function ProjectPage(p: {
             )}
           </label>
           <footer className="run-bar">
-            <span>{p.run ? `${stage(p.run.stage)} · Evidence ${p.run.status === "completed" ? "可用" : activeRun(p.run) ? "处理中" : "不可用"}` : "尚未运行连续性检查"}</span>
-            <span>{p.draft ? `${new Blob([p.draft.body]).size.toLocaleString()} bytes` : "读取中"}</span>
+            <span>{p.run ? `${stage(p.run.stage)} · 证据${p.run.status === "completed" ? "可用" : activeRun(p.run) ? "处理中" : "不可用"}` : "尚未运行连续性检查"}</span>
           </footer>
+          <details className="workspace-technical">
+            <summary>技术详情</summary>
+            <dl className="metadata">
+              <div><dt>草稿修订</dt><dd>{p.draft?.revision ?? "未提供"}</dd></div>
+              <div><dt>草稿大小</dt><dd>{p.draft ? `${new Blob([p.draft.body]).size.toLocaleString()} bytes` : "读取中"}</dd></div>
+              <div><dt>草稿记录</dt><dd>{p.draft?.id ?? "未提供"}</dd></div>
+            </dl>
+          </details>
         </section>
         <aside className="issues">
           <header className="issues-top">
-            <h2>Issues <span>{p.run?.issues?.length ?? 0}</span></h2>
+            <h2>连续性问题 <span>{p.run?.issues?.length ?? 0}</span></h2>
             <span className="issues-filter" aria-hidden="true">⌘</span>
           </header>
           {p.run ? (
             <>
               <p className="run-meta" aria-label="连续性检查运行状态">
-                {stage(p.run.stage)} · source revision {p.run.source_revision} · {p.run.is_stale ? "已过期" : "当前版本"}
+                {stage(p.run.stage)} · {p.run.is_stale ? "检查依据已过期" : "基于当前版本"}
               </p>
-              {p.run.result_origin === "demo_preset" && <p className="preset-note" role="note"><strong>预置演示审阅数据</strong> · 用于本地体验完整审阅链路，本次未调用 Provider，也不代表模型实时判断。</p>}
+              {p.run.result_origin === "demo_preset" && <p className="preset-note" role="note"><strong>预置演示审阅数据</strong> · 用于本地体验完整审阅链路，本次未调用外部模型服务，也不代表模型实时判断。</p>}
               {["failed", "timed_out", "cancelled"].includes(p.run.status) && (
                 <p className="inline-error">
                   {labelError({ code: p.run.error_code })} 未写入、也不展示部分结果。
@@ -2916,7 +3628,11 @@ function ProjectPage(p: {
               <ul className="issue-list">
                 {(p.run.issues ?? []).map((x) => (
                   <li key={x.id}>
-                    <Button onClick={(e) => p.select(x, e.currentTarget)}>
+                    <Button
+                      className={`issue-row severity-${x.severity}${p.selectedIssueId === x.id ? " selected" : ""}${x.decision || p.locallyResolvedIssueIds.includes(x.id) ? " resolved" : ""}`}
+                      ariaPressed={p.selectedIssueId === x.id}
+                      onClick={(e) => p.select(x, e.currentTarget)}
+                    >
                       <span className={`risk ${x.severity}`}>
                         <I>
                           {x.severity === "high"
@@ -2929,7 +3645,8 @@ function ProjectPage(p: {
                       </span>
                     <strong>{categoryLabel(x.category)}</strong>
                       <span>{x.claim_text || x.explanation}</span>
-                      <small>{x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "已决策" : "查看 Evidence"}</small>
+                      <small>{x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "决定已记录" : "查看证据"}</small>
+                      <span className="issue-arrow" aria-hidden="true">›</span>
                     </Button>
                   </li>
                 ))}
@@ -2957,12 +3674,16 @@ function ProjectPage(p: {
                 )}
             </>
           ) : (
-            <div className="empty">尚无 Run。保存当前草稿后可提交检查。</div>
+            <div className="empty issues-empty">
+              <h3>检查结果会显示在这里</h3>
+              <p>系统会按风险列出与历史事实可能冲突的内容，并提供可追溯证据。</p>
+              {!p.readOnly && <Button className="primary" disabled={blocked || !p.draft || dirty} onClick={() => void p.check()}>运行连续性检查</Button>}
+            </div>
           )}
         </aside>
       </div>
       {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
-        <section className="project-section" aria-label="Memory Delta"><h2>Memory Delta</h2><p>Delta Run 与 Continuity Run 分开持久化。pending 候选不进入 canon，也不进入 Provider 输入。</p><p>source r{p.memoryDelta.source_revision} · {p.memoryDelta.status} · 核心待审 {p.memoryDelta.coverage?.counts.core_pending ?? 0}</p><Button onClick={() => p.go(`/projects/${p.project.id}/memory`)}>打开 Delta 审核与 Evidence</Button></section>
+        <section className="project-section" aria-label="Memory 更新建议"><h2>Memory 更新建议</h2><p>连续性问题与事实更新建议会分别保存；未确认的候选不会进入正式事实，也不会用于后续模型检查。</p><p>资料版本第 {p.memoryDelta.source_revision ?? "?"} 版 · 状态 {p.memoryDelta.status} · 核心待审 {p.memoryDelta.coverage?.counts.core_pending ?? 0}</p><Button onClick={() => p.go(`/projects/${p.project.id}/memory`)}>打开更新审核与证据</Button></section>
       )}
       {p.changeSet && (
         <form className="review" aria-label="Memory Update Review" onSubmit={(event) => void p.commit(event)}>
@@ -3015,7 +3736,7 @@ function ProjectPage(p: {
 function MemoryDeltaReview({ delta, blocked, submit }: { delta: MemoryDelta; blocked: boolean; submit: (event: FormEvent<HTMLFormElement>) => Promise<void> }) {
   if (["processing", "cancelling"].includes(delta.status)) return <div className="empty" role="status">正在分别运行 Continuity 与 Memory Delta；只有双 Run 全部完成后才会显示结果。</div>;
   if (["failed", "timed_out", "cancelled"].includes(delta.status)) return <div className="notice error" role="alert">增量运行未完成：{labelError({ code: delta.error_code })} 没有写入 Issue、候选或 MemoryVersion，请在 Run 生命周期中安全重试。</div>;
-  return <form className="review memory-init-review" aria-label="Memory Delta 审核" onSubmit={(event) => void submit(event)}><header><div><p className="eyebrow">MEMORY DELTA</p><h2>新增 Source r{delta.source_revision} 的候选</h2><p>核心候选必须全部决定；辅助候选可 pending，且不进入 canon 或 Provider 输入。当前 coverage：{delta.coverage?.status}。</p></div></header>{delta.candidates.map((candidate) => <article key={candidate.id} className="diff memory-init-candidate"><div className="candidate-source"><strong>Evidence · 第 {candidate.source.chapter_number} 章《{candidate.source.chapter_title}》</strong><p>{candidate.source.excerpt}</p><small>SourceSpan {candidate.source.span_id} · source r{candidate.source_revision}</small></div><div><strong>候选事实</strong><p>{memoryTypeLabel(candidate.memory_type)} · {candidate.subject} · {predicateLabel(candidate.predicate)}：{candidate.value}</p><small>delta · {candidate.review_priority === "core" ? "核心候选（必须决定）" : "辅助候选（可继续待审）"} · 尚未成为 canon</small></div>{candidate.decision_status === "pending" ? <><fieldset><legend>作者审核（未预选）</legend><label><input type="radio" name={`memory-delta:${candidate.id}`} value="accepted" disabled={blocked} />接受</label><label><input type="radio" name={`memory-delta:${candidate.id}`} value="rejected" disabled={blocked} />拒绝</label><label><input type="radio" name={`memory-delta:${candidate.id}`} value="edited" disabled={blocked} />编辑后接受</label></fieldset><div className="candidate-edit"><label>事实类型<select name={`memory-delta:${candidate.id}:memory_type`} defaultValue={candidate.memory_type} disabled={blocked}>{["static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"].map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label><label>对象<input name={`memory-delta:${candidate.id}:subject`} defaultValue={candidate.subject} disabled={blocked} /></label><label>关系<input name={`memory-delta:${candidate.id}:predicate`} defaultValue={candidate.predicate} disabled={blocked} /></label><label>事实内容<textarea name={`memory-delta:${candidate.id}:value`} defaultValue={candidate.value} disabled={blocked} /></label></div></> : <p>已由作者决定：{candidate.decision_status}；{candidate.decision_status === "rejected" ? "不写入 canon。" : "将在核心闭合提交时写入新 MemoryVersion。"}</p>}</article>)}<footer className="actions"><Button className="primary" type="submit" disabled={blocked || !delta.candidates.length}>提交已决定的核心候选</Button></footer></form>;
+  return <form className="review memory-init-review" aria-label="Memory Delta 审核" onSubmit={(event) => void submit(event)}><header><div><p className="eyebrow">MEMORY DELTA</p><h2>新增 Source r{delta.source_revision} 的候选</h2><p>核心候选必须全部决定；辅助候选可待确认，且不进入 canon 或 Provider 输入。当前覆盖：{coverageStatusLabel(delta.coverage?.status)}。</p></div></header>{delta.candidates.map((candidate) => <article key={candidate.id} className="diff memory-init-candidate"><div className="candidate-source"><strong>Evidence · 第 {candidate.source.chapter_number} 章《{candidate.source.chapter_title}》</strong><p>{candidate.source.excerpt}</p><small>SourceSpan {candidate.source.span_id} · source r{candidate.source_revision}</small></div><div><strong>候选事实</strong><p>{memoryTypeLabel(candidate.memory_type)} · {candidate.subject} · {predicateLabel(candidate.predicate)}：{candidate.value}</p><small>增量候选 · {candidate.review_priority === "core" ? "核心候选（必须决定）" : "辅助候选（可继续待审）"} · 尚未成为 canon</small></div>{candidate.decision_status === "pending" ? <><fieldset><legend>作者审核（未预选）</legend><label><input type="radio" name={`memory-delta:${candidate.id}`} value="accepted" disabled={blocked} />接受</label><label><input type="radio" name={`memory-delta:${candidate.id}`} value="rejected" disabled={blocked} />拒绝</label><label><input type="radio" name={`memory-delta:${candidate.id}`} value="edited" disabled={blocked} />编辑后接受</label></fieldset><div className="candidate-edit"><label>事实类型<select name={`memory-delta:${candidate.id}:memory_type`} defaultValue={candidate.memory_type} disabled={blocked}>{["static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"].map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label><label>对象<input name={`memory-delta:${candidate.id}:subject`} defaultValue={candidate.subject} disabled={blocked} /></label><label>关系<input name={`memory-delta:${candidate.id}:predicate`} defaultValue={candidate.predicate} disabled={blocked} /></label><label>事实内容<textarea name={`memory-delta:${candidate.id}:value`} defaultValue={candidate.value} disabled={blocked} /></label></div></> : <p>已由作者决定：{decisionStatusLabel(candidate.decision_status)}；{candidate.decision_status === "rejected" ? "不写入 canon。" : "将在核心闭合提交时写入新 MemoryVersion。"}</p>}</article>)}<footer className="actions"><Button className="primary" type="submit" disabled={blocked || !delta.candidates.length}>提交已决定的核心候选</Button></footer></form>;
 }
 
 function MemoryInitializationReview({
@@ -3169,11 +3890,312 @@ function Read({
     </section>
   );
 }
+
+function OutlineView({
+  projectTitle,
+  chapters,
+  context,
+}: {
+  projectTitle: string;
+  chapters: { id: string; chapter_number: number; title: string; summary: string; status: string }[];
+  context?: ReactNode;
+}) {
+  const [query, setQuery] = useState("");
+  const [status, setStatus] = useState("");
+  const visible = chapters.filter(
+    (chapter) =>
+      (!query || `${chapter.title} ${chapter.summary}`.toLocaleLowerCase().includes(query.toLocaleLowerCase())) &&
+      (!status || projectVisualStatus(chapter.status) === status),
+  );
+  return (
+    <section className="project-page archive-page outline-page">
+      <header className="page-header">
+        <div><p className="breadcrumb">项目 / {projectTitle} / 大纲</p><h1>大纲</h1><p>按故事发生顺序查看章节结构与当前状态。</p></div>
+      </header>
+      {context}
+      <div className="archive-toolbar">
+        <label><span className="sr-only">搜索章节</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索章节" /></label>
+        <label><span className="sr-only">章节状态</span><select value={status} onChange={(event) => setStatus(event.target.value)}><option value="">全部状态</option><option value="completed">已完成</option><option value="active">进行中</option><option value="paused">已暂停</option><option value="archived">已归档</option></select></label>
+      </div>
+      {visible.length ? (
+        <ol className="outline-timeline">
+          {visible.map((chapter) => {
+            const visualStatus = projectVisualStatus(chapter.status);
+            return (
+            <li key={chapter.id} data-status={visualStatus}>
+              <span className="timeline-node" aria-hidden="true" />
+              <span className="chapter-number">{String(chapter.chapter_number).padStart(2, "0")}</span>
+              <div><h2>{chapter.title}</h2><p>{chapter.summary || "此章节尚未填写摘要。"}</p></div>
+              <span className={`status-pill ${visualStatus}`}><I>●</I>{statusLabel(visualStatus)}</span>
+              <Icon name="library" />
+            </li>
+            );
+          })}
+        </ol>
+      ) : <div className="empty archive-empty">{chapters.length ? "没有匹配当前条件的章节。" : "此作品还没有大纲节点。"}</div>}
+    </section>
+  );
+}
+
+function CharacterArchive({
+  projectTitle,
+  characters,
+  context,
+}: {
+  projectTitle: string;
+  characters: { id: string; name: string; role_type: string; identity: string; goal: string; current_state: string; knowledge_boundary: string }[];
+  context?: ReactNode;
+}) {
+  const [query, setQuery] = useState("");
+  const [selectedId, setSelectedId] = useState(characters[0]?.id ?? "");
+  const visible = characters.filter((character) =>
+    `${character.name} ${character.identity} ${character.role_type}`.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+  );
+  const selected = visible.find((character) => character.id === selectedId) ?? visible[0];
+  return (
+    <section className="project-page archive-page character-page">
+      <header className="page-header"><div><p className="breadcrumb">项目 / {projectTitle} / 角色库</p><h1>角色库</h1><p>管理角色身份、目标、状态与知识边界。</p></div></header>
+      {context}
+      <div className="archive-toolbar character-toolbar">
+        <label><span className="sr-only">搜索角色</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索角色" /></label>
+        <span>{visible.length} 个角色</span>
+      </div>
+      {selected ? (
+        <div className="archive-split">
+          <ul className="archive-index" aria-label="角色列表">
+            {visible.map((character) => (
+              <li key={character.id}><button type="button" className={character.id === selected.id ? "current" : ""} onClick={() => setSelectedId(character.id)}><span className="character-monogram" aria-hidden="true">{character.name.slice(0, 1)}</span><span><strong>{character.name}</strong><small>{character.identity || roleTypeLabel(character.role_type)}</small></span></button></li>
+            ))}
+          </ul>
+          <article className="archive-detail character-detail">
+            <header><span className="character-monogram large" aria-hidden="true">{selected.name.slice(0, 1)}</span><div><h2>{selected.name}</h2><p>{selected.identity || roleTypeLabel(selected.role_type)}</p></div></header>
+            <dl className="detail-grid">
+              <div><dt><Icon name="users" />角色定位</dt><dd>{selected.identity || roleTypeLabel(selected.role_type)}</dd></div>
+              <div><dt><Icon name="overview" />当前目标</dt><dd>{selected.goal || "尚未记录"}</dd></div>
+              <div><dt><Icon name="pen" />当前状态</dt><dd>{selected.current_state || "尚未记录"}</dd></div>
+              <div><dt><Icon name="memory" />知识边界</dt><dd>{selected.knowledge_boundary || "尚未记录"}</dd></div>
+            </dl>
+          </article>
+        </div>
+      ) : <div className="empty archive-empty">{characters.length ? "没有匹配的角色。" : "此作品还没有角色记录。"}</div>}
+    </section>
+  );
+}
+
+function WorldArchive({
+  projectTitle,
+  entries,
+  context,
+}: {
+  projectTitle: string;
+  entries: { id: string; entry_type: string; name: string; summary: string }[];
+  context?: ReactNode;
+}) {
+  const categories = ["location", "rule", "organization", "object", "term"];
+  const [category, setCategory] = useState(entries[0]?.entry_type ?? "location");
+  const [query, setQuery] = useState("");
+  const [selectedId, setSelectedId] = useState(entries[0]?.id ?? "");
+  const visible = entries.filter((entry) => entry.entry_type === category && `${entry.name} ${entry.summary}`.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
+  const selected = visible.find((entry) => entry.id === selectedId) ?? visible[0];
+  return (
+    <section className="project-page archive-page world-page">
+      <header className="page-header"><div><p className="breadcrumb">项目 / {projectTitle} / 世界观</p><h1>世界观</h1><p>集中管理地点、规则、组织、物件与术语。</p></div></header>
+      {context}
+      <div className="world-controls">
+        <nav aria-label="世界观分类">{categories.map((value) => <button type="button" key={value} className={category === value ? "current" : ""} aria-current={category === value ? "page" : undefined} onClick={() => { setCategory(value); setSelectedId(""); }}>{worldTypeLabel(value)}</button>)}</nav>
+        <label><span className="sr-only">搜索世界设定</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索世界设定" /></label>
+      </div>
+      {selected ? (
+        <div className="archive-split world-split">
+          <section className="world-index"><h2>{worldTypeLabel(category)}</h2><ul>{visible.map((entry) => <li key={entry.id}><button type="button" className={entry.id === selected.id ? "current" : ""} onClick={() => setSelectedId(entry.id)}>{entry.name}</button></li>)}</ul></section>
+          <article className="archive-detail world-detail"><h2>{selected.name}</h2><dl><div><dt>类型</dt><dd>{worldTypeLabel(selected.entry_type)}</dd></div><div><dt>设定摘要</dt><dd>{selected.summary || "尚未记录摘要"}</dd></div><div><dt>关联</dt><dd>暂未建立关联</dd></div></dl></article>
+        </div>
+      ) : <div className="empty archive-empty">{entries.length ? `“${worldTypeLabel(category)}”分类暂无匹配条目。` : "此作品还没有世界观记录。"}</div>}
+    </section>
+  );
+}
+
+function MemoryRecords({ records, openSource }: { records: Memory[]; openSource: (record: Memory, element: HTMLButtonElement) => void }) {
+  const [filter, setFilter] = useState("all");
+  const [query, setQuery] = useState("");
+  const filterNav = useRef<HTMLElement>(null);
+  const filters = [
+    ["all", "全部事实"],
+    ["character_knowledge", "角色知识"],
+    ["event_timeline", "时间线"],
+    ["dynamic_state", "当前状态"],
+    ["static_canon", "世界规则"],
+    ["open_thread", "待确认"],
+  ];
+  const visible = records.filter((record) =>
+    (filter === "all" || record.memory_type === filter) &&
+    `${record.subject} ${predicateLabel(record.predicate)} ${record.value}`.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+  );
+  useEffect(() => {
+    filterNav.current
+      ?.querySelector<HTMLElement>('[aria-current="page"]')
+      ?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+  }, [filter]);
+  return (
+    <section className="memory-records" aria-label="Story Memory 事实档案">
+      <div className="memory-controls">
+        <div className="memory-filter-rail">
+          <nav ref={filterNav} aria-label="事实分类">{filters.map(([value, label]) => <button type="button" key={value} className={filter === value ? "current" : ""} aria-current={filter === value ? "page" : undefined} onClick={() => setFilter(value)}>{label}</button>)}</nav>
+        </div>
+        <label><span className="sr-only">搜索事实</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索事实" /></label>
+      </div>
+      {visible.length ? (
+        <div className="memory-table" role="table" aria-label="事实档案">
+          <div className="memory-row memory-head" role="row"><span>主体</span><span>属性</span><span>当前值</span><span>有效范围</span><span>状态</span><span>来源</span></div>
+          {visible.map((record) => (
+            <div className="memory-row" role="row" key={record.id}>
+              <strong role="cell" className="memory-subject">{record.subject}</strong>
+              <span role="cell" className="memory-field" data-label="属性">{predicateLabel(record.predicate)}</span>
+              <span role="cell" className="memory-field" data-label="当前值">{record.value}</span>
+              <span role="cell" className="memory-field" data-label="有效范围">第 {record.valid_from ?? "?"} 章—{record.valid_to == null ? "当前章" : `第 ${record.valid_to} 章`}</span>
+              <span role="cell" data-label="状态" className={`memory-status ${record.review_status === "author_confirmed" ? "confirmed" : "pending"}`}><I>{record.review_status === "author_confirmed" ? "✓" : "○"}</I>{reviewStatusLabel(record.review_status)}</span>
+              <Button className="quiet memory-source" ariaLabel={record.source ? `查看 ${record.subject} 的来源` : `${record.subject} 暂无来源`} disabled={!record.source} onClick={(event) => openSource(record, event.currentTarget)}>{record.source ? `第 ${record.source.chapter_number} 章 ↗` : "不可用"}</Button>
+              <small className="memory-kind">{memoryTypeLabel(record.memory_type)}</small>
+            </div>
+          ))}
+        </div>
+      ) : <div className="empty archive-empty">没有匹配当前条件的事实。</div>}
+    </section>
+  );
+}
+
+function SourceDrawer({
+  record,
+  chapters,
+  projectTitle,
+  currentSourceRevision,
+  close,
+}: {
+  record: ReadonlySourceRecord;
+  chapters: Chapter[];
+  projectTitle: string;
+  currentSourceRevision?: number;
+  close: () => void;
+}) {
+  useDocumentScrollLock();
+  const drawerRef = useRef<HTMLElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const [leaving, setLeaving] = useState(false);
+  const chapter = chapters.find((item) => item.id === record.chapterId || item.number === record.chapterNumber);
+  const sourceSpans = chapter?.source_spans ?? [];
+  const matchingSpan = sourceSpans.find((span) => span.span_id === record.spanId);
+  const contextSpans = sourceSpans
+    .filter((span) => span.span_id !== record.spanId)
+    .slice(0, 2);
+
+  useEffect(() => {
+    closeRef.current?.focus();
+  }, []);
+
+  const requestClose = () => {
+    if (leaving) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      close();
+      return;
+    }
+    setLeaving(true);
+    window.setTimeout(close, 140);
+  };
+
+  const containFocus = (event: ReactKeyboardEvent<HTMLElement>) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
+      requestClose();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = Array.from(
+      drawerRef.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), details > summary, [tabindex]:not([tabindex="-1"])',
+      ) ?? [],
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (!first || !last) return;
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
+  return (
+    <div className={`modal-layer drawer-layer source-layer${leaving ? " is-closing" : ""}`} role="presentation">
+      <aside
+        className="drawer source-drawer"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${record.subject} 的章节来源`}
+        ref={drawerRef}
+        onKeyDown={containFocus}
+      >
+        <button type="button" className="close" ref={closeRef} onClick={requestClose}>
+          <span aria-hidden="true">×</span>
+          <span className="sr-only">关闭章节来源</span>
+        </button>
+        <header className="drawer-header source-drawer-header">
+          <p className="eyebrow">章节来源</p>
+          <h2>第 {record.chapterNumber} 章《{record.chapterTitle || "标题未提供"}》</h2>
+          <p>
+            {matchingSpan?.source_revision == null && record.sourceRevision == null ? "来源修订未提供" : `来源修订 r${matchingSpan?.source_revision ?? record.sourceRevision}`}
+            {matchingSpan?.label ? ` · ${matchingSpan.label}` : ""}
+          </p>
+        </header>
+        <section className="evidence-section source-excerpt">
+          <h3>被引用的原文片段</h3>
+          <blockquote><mark>{matchingSpan?.text_excerpt || record.excerpt || "引用内容未提供"}</mark></blockquote>
+        </section>
+        <section className="evidence-section source-context">
+          <h3>可用上下文</h3>
+          {chapter?.summary ? <div className="source-summary"><strong>章节摘要</strong><p>{chapter.summary}</p></div> : <p className="source-unavailable">章节摘要未提供。</p>}
+          {contextSpans.length ? contextSpans.map((span) => (
+            <article key={span.span_id}>
+              <strong>{span.label}</strong>
+              <p>{span.text_excerpt}</p>
+            </article>
+          )) : <p className="source-unavailable">当前接口未提供更多同章片段。</p>}
+        </section>
+        <section className="evidence-section source-tags">
+          <h3>{record.memoryType ? "事实状态" : "证据关系"}</h3>
+          <div>
+            {record.memoryType ? (
+              <><span>{memoryTypeLabel(record.memoryType)}</span><span className={record.reviewStatus === "author_confirmed" ? "confirmed" : "pending"}>{reviewStatusLabel(record.reviewStatus ?? "")}</span></>
+            ) : (
+              <><span>{record.relation || "关系未提供"}</span><span>{record.sufficiency || "充分性未提供"}</span></>
+            )}
+          </div>
+        </section>
+        <details className="evidence-technical source-technical">
+          <summary>技术详情</summary>
+          <dl className="metadata">
+            <div><dt>来源记录</dt><dd>{record.recordId || "未提供"}</dd></div>
+            <div><dt>SourceSpan</dt><dd>{record.spanId || "未提供"}</dd></div>
+            <div><dt>章节记录</dt><dd>{record.chapterId || "未提供"}</dd></div>
+            <div><dt>作品当前来源修订</dt><dd>{currentSourceRevision == null ? "未提供" : `r${currentSourceRevision}`}</dd></div>
+            <div><dt>来源路径（只读记录）</dt><dd>{record.sourcePath || "未提供"}</dd></div>
+          </dl>
+        </details>
+        <footer className="drawer-assurance"><Icon name="security" />《{projectTitle}》的来源内容保持只读，不会从此处进入追加或编辑流程。</footer>
+      </aside>
+    </div>
+  );
+}
+
 function Evidence({
   issue,
   run,
   readOnly,
+  tutorial,
   busy,
+  openSource,
   close,
   accept,
   decide,
@@ -3181,85 +4203,88 @@ function Evidence({
   issue: Issue;
   run: Run | null;
   readOnly: boolean;
+  tutorial: boolean;
   busy: string;
+  openSource: (evidence: EvidenceItem, element: HTMLButtonElement) => void;
   close: () => void;
   accept: () => void;
   decide: (i: Issue, d: "keep_intentional" | "false_positive") => Promise<void>;
 }) {
-  const ref = useRef<HTMLButtonElement>(null);
+  useDocumentScrollLock();
+  const drawerRef = useRef<HTMLElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const [leaving, setLeaving] = useState(false);
   useEffect(() => {
-    ref.current?.focus();
-    const listener = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-    };
-    window.addEventListener("keydown", listener);
-    return () => window.removeEventListener("keydown", listener);
-  }, [close]);
+    closeRef.current?.focus();
+  }, []);
+  const requestClose = () => {
+    if (leaving) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      close();
+      return;
+    }
+    setLeaving(true);
+    window.setTimeout(close, 140);
+  };
+  const containFocus = (event: ReactKeyboardEvent<HTMLElement>) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
+      requestClose();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = Array.from(
+      drawerRef.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), details > summary, [tabindex]:not([tabindex="-1"])',
+      ) ?? [],
+    ).filter((element) => !element.hasAttribute("hidden"));
+    if (!focusable.length) {
+      event.preventDefault();
+      closeRef.current?.focus();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
   const evidence = issue.evidence ?? [];
   return (
-    <div className="modal-layer" role="presentation">
+    <div className={`modal-layer drawer-layer evidence-layer${leaving ? " is-closing" : ""}`} role="presentation">
       <aside
         className="drawer"
         role="dialog"
         aria-modal="true"
         aria-label="问题证据"
+        ref={drawerRef}
+        onKeyDown={containFocus}
       >
-        <Button className="close" onClick={close}>
-          <span ref={ref}>×</span>
+        <button type="button" className="close" ref={closeRef} onClick={requestClose}>
+          <span aria-hidden="true">×</span>
           <span className="sr-only">关闭</span>
-        </Button>
-        <p className="eyebrow">EVIDENCE</p>
-        <h2>{categoryLabel(issue.category)}</h2>
-        <p>
-          <span className={`risk ${issue.severity}`}>
-            <I>▲</I>
-            {statusLabel(issue.severity)}
-          </span>{" "}
-          {issue.claim_text || issue.explanation}
-        </p>
-        <dl className="metadata">
-          <div>
-            <dt>问题句</dt>
-            <dd>{issue.claim_text || issue.explanation}</dd>
-          </div>
-          <div>
-            <dt>草稿位置</dt>
-            <dd>{issue.claim_span_id}</dd>
-          </div>
-          <div>
-            <dt>检查记录 / 来源修订</dt>
-            <dd>
-              {run?.run_id} · source r{run?.source_revision} / current r
-              {run?.current_revision}
-            </dd>
-          </div>
-          <div>
-            <dt>谱系状态</dt>
-            <dd>
-              {run?.is_stale ? "证据已过期" : "当前草稿谱系可用"} · {run?.lineage_status}
-            </dd>
-          </div>
-        </dl>
+        </button>
+        <header className="drawer-header">
+          <p className="eyebrow">证据</p>
+          <div><h2>{categoryLabel(issue.category)}</h2><span className={`risk ${issue.severity}`}><I>▲</I>{statusLabel(issue.severity)}</span></div>
+        </header>
+        <section className={`evidence-section current-claim severity-${issue.severity}`}>
+          <h3>当前草稿</h3>
+          <blockquote>{issue.claim_text || issue.explanation}</blockquote>
+        </section>
         {evidence.length ? (
-          <section>
-            <h3>Evidence</h3>
-            <p>可核对的来源证据</p>
+          <section className="evidence-section evidence-history">
+            <h3>历史证据</h3>
             {evidence.map((x) => (
               <article className="evidence" key={x.id}>
-                <strong>
-                  第 {x.chapter_number} 章《{x.chapter_title}》
-                </strong>
-                <p><strong>来源修订：</strong>草稿 r{x.source_revision}</p>
                 <blockquote>{x.excerpt}</blockquote>
                 {x.excerpt_context !== x.excerpt && <p>上下文：{x.excerpt_context}</p>}
-                <small>
-                  {x.relation === "contradicts" ? "与当前表述冲突" : x.relation === "supports" ? "支持当前表述" : "提供上下文"} · {x.sufficiency === "sufficient" ? "证据充分" : "证据不足"}
-                </small>
-                <p>
-                  相关 Memory：
-                  {x.related_memory_ids.join("；") || "无"}
-                </p>
-                <a href={x.source_path}>回到当前作品的章节来源</a>
+                <footer><strong>第 {x.chapter_number} 章《{x.chapter_title || "标题未提供"}》</strong><Button className="quiet evidence-source-link" onClick={(event) => openSource(x, event.currentTarget)}>查看来源 ↗</Button></footer>
               </article>
             ))}
           </section>
@@ -3268,14 +4293,38 @@ function Evidence({
             <I>!</I>没有可解析 Evidence；不能做作者决策。
           </p>
         )}
+        <section className="evidence-section conflict-explanation">
+          <h3>冲突说明</h3>
+          <p>{issue.explanation}</p>
+        </section>
         {!readOnly && (
-          <div className="drawer-actions">
-            <Button className="primary" disabled={Boolean(busy) || !evidence.length} onClick={accept}>Accept & edit</Button>
-            <Button disabled={Boolean(busy) || !evidence.length} onClick={() => void decide(issue, "keep_intentional")}>Keep intentional</Button>
-            <Button disabled={Boolean(busy) || !evidence.length} onClick={() => void decide(issue, "false_positive")}>Mark false positive</Button>
-          </div>
+          <section className="evidence-section author-decision">
+            <h3>作者决定</h3>
+            {issue.decision ? <p className="decision-feedback" role="status"><I>✓</I>决定已记录；此问题保留在列表中，便于后续追溯。</p> : <p>请选择如何处理此问题。</p>}
+            <div className="drawer-actions">
+              <Button className="primary" disabled={Boolean(busy) || !evidence.length || Boolean(issue.decision)} onClick={accept}>接受建议并编辑</Button>
+              <Button disabled={Boolean(busy) || !evidence.length || Boolean(issue.decision)} onClick={() => void decide(issue, "keep_intentional")}>保留当前写法</Button>
+              <Button className="quiet false-positive-action" disabled={Boolean(busy) || !evidence.length || Boolean(issue.decision)} onClick={() => void decide(issue, "false_positive")}>标记为误报</Button>
+            </div>
+          </section>
         )}
-        {readOnly && <p className="readonly">浏览只读：作者决策不可用。</p>}
+        {readOnly && (
+          <p className={tutorial ? "readonly tutorial-mobile-decision-note" : "readonly"}>
+            {tutorial
+              ? "移动端可以浏览完整证据。请在桌面端继续完成作者决定。"
+              : "浏览只读：作者决策不可用。"}
+          </p>
+        )}
+        <details className="evidence-technical">
+          <summary>技术详情</summary>
+          <dl className="metadata">
+            <div><dt>草稿位置</dt><dd>{issue.claim_span_id}</dd></div>
+            <div><dt>检查记录 / 来源修订</dt><dd>{run?.run_id} · source r{run?.source_revision} / current r{run?.current_revision}</dd></div>
+            <div><dt>谱系状态</dt><dd>{run?.is_stale ? "证据已过期" : "当前草稿谱系可用"} · {lineageStatusLabel(run?.lineage_status)}</dd></div>
+            <div><dt>证据状态</dt><dd>{evidenceStatusLabel(issue.evidence_status)}</dd></div>
+          </dl>
+        </details>
+        <footer className="drawer-assurance"><Icon name="security" />你的决定只应用于本次问题，并更新相应检查结果。</footer>
       </aside>
     </div>
   );

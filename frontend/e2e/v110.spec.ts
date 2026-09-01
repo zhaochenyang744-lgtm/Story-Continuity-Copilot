@@ -112,6 +112,8 @@ test("visual system uses an accessible manuscript mark, role-based fonts, and re
 
 test("first-run tutorial is isolated, resumable, and mobile read-only actions are hidden", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
+  const initialStats = await page.request.get("/api/test/stage12/stats");
+  const initialProviderCalls = (await initialStats.json()).provider_calls as number;
   const credentials = await register(page, "v110tutorial");
   const onboarding = await apiData<{ status: string; real_project_count: number; tutorial: { project_id: string } }>(page, "/api/onboarding");
   const projects = await apiData<{ projects: unknown[] }>(page, "/api/projects");
@@ -119,18 +121,18 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   expect(onboarding.real_project_count).toBe(0);
   expect(projects.projects).toEqual([]);
   await expect(page.getByLabel("首次教学")).toBeVisible();
-  await expect(page.getByText("你的第一部作品将从这里建立连续性档案。", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("从第一章开始建立连续性档案", { exact: true })).toHaveCount(0);
   const homeWidth = await page.locator(".home-page").evaluate((node) => node.getBoundingClientRect().width);
-  expect(homeWidth).toBeGreaterThanOrEqual(960);
-  expect(homeWidth).toBeLessThanOrEqual(1040);
+  expect(homeWidth).toBeGreaterThanOrEqual(1080);
+  expect(homeWidth).toBeLessThanOrEqual(1160);
   await expectHomeSectionHeaderAlignment(page);
   await page.screenshot({ path: path.join(outputDir, "1440-first-run-home.png"), fullPage: true });
 
   await page.getByRole("button", { name: "开始教学", exact: true }).click();
   await expect(page.getByRole("heading", { name: "教学模式 · 灰港回声", exact: true })).toBeVisible();
-  await expect(page.getByLabel("教学模式")).toContainText("不会计入作品数量");
-  await expect(page.getByLabel("教学进度")).toContainText("1 / 3");
-  await expect(page.getByLabel("教学进度")).toContainText("了解作品资料与 Story Memory");
+  await expect(page.getByLabel("教学模式")).toContainText("不计入真实作品");
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 1 / 5");
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("认识作品资料与 Story Memory");
   await expect(page.getByRole("button", { name: "跳过教学", exact: true })).toBeVisible();
   await expect(page.getByText("预置演示审阅数据", { exact: false }).first()).toBeVisible();
   const projectWidth = await page.locator(".project-page").evaluate((node) => node.getBoundingClientRect().width);
@@ -138,7 +140,7 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   await expect(page.locator(".project-page-header .more-menu")).toBeVisible();
 
   await expectMobileGeometry(page, "教学模式 · 灰港回声");
-  await expect(page.getByText("移动端只读浏览", { exact: false })).toBeVisible();
+  await expect(page.locator(".readonly").filter({ hasText: "当前窗口较窄，暂为只读浏览；放大窗口即可继续写作与检查。" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Reset 当前作品", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "完成当前章节", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "运行连续性检查", exact: true })).toHaveCount(0);
@@ -164,23 +166,28 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.screenshot({ path: path.join(outputDir, "1440-tutorial-step1.png"), fullPage: true });
-  await page.getByRole("button", { name: "下一步：查看连续性问题", exact: true }).click();
-  await expect(page.getByLabel("教学进度")).toContainText("2 / 3");
-  await expect(page.getByLabel("教学进度")).toContainText("查看连续性问题与 Evidence");
+  await page.getByRole("button", { name: "Story Memory", exact: true }).click();
+  await page.locator(".memory-source:not(:disabled)").first().click();
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 2 / 5");
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("进入连续性检查");
   await page.screenshot({ path: path.join(outputDir, "1440-tutorial-step2.png"), fullPage: true });
-  await expectMobileGeometry(page, "第十一章：未归的航标");
-  await page.screenshot({ path: path.join(outputDir, "390-tutorial-step2.png"), fullPage: true });
-
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.getByRole("button", { name: "下一步：导入自己的作品", exact: true }).click();
-  await expect(page.getByLabel("教学进度")).toContainText("3 / 3");
-  await expect(page.getByLabel("教学进度")).toContainText("完成教学并导入自己的作品");
-  await page.screenshot({ path: path.join(outputDir, "1440-tutorial-step3.png"), fullPage: true });
-  await expectMobileGeometry(page, "追加章节");
-  await page.screenshot({ path: path.join(outputDir, "390-tutorial-step3.png"), fullPage: true });
-
+  await page.getByRole("button", { name: "关闭章节来源", exact: true }).click();
+  await page.getByRole("button", { name: "去写作与检查", exact: true }).click();
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 3 / 5");
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("对照当前草稿与历史证据");
+  await page.locator(".issue-list button").first().click();
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 4 / 5");
+  const evidence = page.getByRole("dialog", { name: "问题证据" });
+  await expect(evidence.getByRole("heading", { name: "作者决定", exact: true })).toBeVisible();
+  await evidence.getByRole("button", { name: "保留当前写法", exact: true }).click();
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 5 / 5");
+  await page.screenshot({ path: path.join(outputDir, "1440-tutorial-step5.png"), fullPage: true });
+  await evidence.getByRole("button", { name: "关闭", exact: true }).click();
+  await expect(evidence).toHaveCount(0);
   await page.getByRole("button", { name: "完成教学", exact: true }).click();
-  await expect(page.getByText("你的第一部作品将从这里建立连续性档案。", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "教学已完成", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "返回首页", exact: true }).click();
+  await expect(page.getByText("从第一章开始建立连续性档案", { exact: true })).toBeVisible();
   await expect(page.getByText("导入 TXT / Markdown，或从空白作品开始。", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "导入第一部作品", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "新建空白作品", exact: true })).toBeVisible();
@@ -199,7 +206,9 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   await page.getByRole("menuitem", { name: "重新打开教学", exact: true }).click();
   await expect(page.getByRole("heading", { name: "教学模式 · 灰港回声", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "跳过教学", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "继续你的故事", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "用户菜单", exact: true }).click();
+  await expect(page.getByRole("menu", { name: "用户菜单", exact: true })).toBeVisible();
   await page.getByRole("menuitem", { name: "退出登录", exact: true }).click();
   await page.getByLabel("账号").fill(credentials.account);
   await page.locator('input[name="password"]').fill(credentials.password);
@@ -207,8 +216,8 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   await expect(page.getByRole("heading", { name: "继续你的故事" })).toBeVisible();
   await expect(page.getByLabel("首次教学")).toHaveCount(0);
   expect((await apiData<{ status: string }>(page, "/api/onboarding")).status).toBe("skipped");
-  const stats = await page.request.get("/api/test/stage13/stats");
-  expect(await stats.json()).toMatchObject({ provider_calls: 0, provider_http_calls: 0, smtp_external_calls: 0 });
+  const stats = await page.request.get("/api/test/stage12/stats");
+  expect(await stats.json()).toMatchObject({ provider_calls: initialProviderCalls, provider_http_calls: 0 });
 });
 
 test("direct import exits first run and project management adapts from desktop row to mobile card", async ({ page }) => {
@@ -232,7 +241,7 @@ test("direct import exits first run and project management adapts from desktop r
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "写作与检查", exact: true }).click();
-  await expect(page.getByText("移动端只读浏览", { exact: false })).toBeVisible();
+  await expect(page.locator(".readonly").filter({ hasText: "当前窗口较窄，暂为只读浏览；放大窗口即可继续写作与检查。" })).toBeVisible();
   const workspaceHeading = page.locator(".workspace-page h1");
   const workspaceHeadingBox = await workspaceHeading.boundingBox();
   if (!workspaceHeadingBox) throw new Error("real workspace heading is not measurable");
@@ -286,7 +295,7 @@ test("account menu avoids duplicate identity text and keeps keyboard focus behav
   await expect(trigger.locator(".account-helper")).toHaveText("个人账号");
   await trigger.click();
   const menu = page.getByRole("menu", { name: "用户菜单", exact: true });
-  await expect(menu.getByText(account, { exact: true })).toHaveCount(1);
+  await expect(menu.getByText(account, { exact: true })).toHaveCount(0);
   await expect(menu.locator("small")).toHaveCount(0);
   await expect(menu.locator("svg.ui-icon")).toHaveCount(3);
   const [triggerBox, menuBox] = await Promise.all([trigger.boundingBox(), menu.boundingBox()]);

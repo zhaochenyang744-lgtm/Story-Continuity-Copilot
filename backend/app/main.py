@@ -111,6 +111,10 @@ class SourceChangeCommit(Strict): confirm:bool|None=None; content_sha256:str
 class IncrementalReview(Strict): source_revision:int=Field(ge=2)
 class MemoryDeltaCommit(Strict): confirm:bool|None=None
 class OnboardingAction(Strict): confirm:bool
+class TutorialProgressEvent(Strict):
+    tutorial_version:Literal['1.2.0']
+    project_id:str
+    event:Literal['memory_source_opened','continuity_issue_located','evidence_opened','author_decision_recorded']
 
 def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=None, settings:Stage13Settings|None=None, mailer:MailerPort|None=None)->FastAPI:
     settings=settings or Stage13Settings.from_env()
@@ -139,7 +143,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             try: await task
             except asyncio.CancelledError: pass
             recovery_executor.shutdown(wait=True,cancel_futures=False)
-    app=FastAPI(title='Story Continuity Copilot Web Demo',version='1.1.0',lifespan=lifespan)
+    app=FastAPI(title='Story Continuity Copilot Web Demo',version='1.2.0',lifespan=lifespan)
     app.state.database=db; app.state.engine=engine; app.state.stage13=stage13; app.state.stage13_settings=settings; app.state.recovery_executor=recovery_executor
     def trusted_host(value:str)->bool:
         folded=value.casefold()
@@ -297,6 +301,9 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     def home(request:Request):return ok(request,db.home(user(request)['id']))
     @app.get('/api/onboarding')
     def onboarding(request:Request):return ok(request,db.onboarding(user(request)['id']))
+    @app.post('/api/onboarding/progress')
+    def onboarding_progress(payload:TutorialProgressEvent,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'onboarding_progress_failed');data,status=db.record_tutorial_event(user(request)['id'],payload.model_dump(),key(idempotency_key));return ok(request,data,status)
     @app.post('/api/onboarding/complete')
     def onboarding_complete(payload:OnboardingAction,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'onboarding_update_failed');data,status=db.finish_onboarding(user(request)['id'],'completed',payload.model_dump(),key(idempotency_key));return ok(request,data,status)

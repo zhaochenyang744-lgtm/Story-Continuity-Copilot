@@ -23,6 +23,13 @@ from .seed_data import CHAPTERS, DEMO_REVIEW_ISSUES, DRAFT, MEMORY_RECORDS
 
 RUN_ACTIVE_STATUSES = {"queued", "running"}
 RUN_TERMINAL_STATUSES = {"completed", "failed", "timed_out", "cancelled"}
+TUTORIAL_VERSION = "1.2.0"
+TUTORIAL_EVENT_STEPS = {
+    "memory_source_opened": 2,
+    "continuity_issue_located": 3,
+    "evidence_opened": 4,
+    "author_decision_recorded": 5,
+}
 
 
 def public_run_status(status: str) -> str:
@@ -96,7 +103,7 @@ def _rewrite_memory_identity(value: str | None, memory_ids: dict[str, str]) -> s
 
 SCHEMA = """
 PRAGMA foreign_keys=ON;
-CREATE TABLE IF NOT EXISTS v2_users(id TEXT PRIMARY KEY,account_name TEXT NOT NULL UNIQUE,display_name TEXT NOT NULL,password_hash TEXT NOT NULL,created_at TEXT NOT NULL,account_type TEXT NOT NULL DEFAULT 'registered',visitor_expires_at TEXT,recovery_email_hash TEXT,recovery_email_masked TEXT,recovery_email_verified_at TEXT,onboarding_status TEXT NOT NULL DEFAULT 'completed',onboarding_tutorial_project_id TEXT,onboarding_completed_at TEXT);
+CREATE TABLE IF NOT EXISTS v2_users(id TEXT PRIMARY KEY,account_name TEXT NOT NULL UNIQUE,display_name TEXT NOT NULL,password_hash TEXT NOT NULL,created_at TEXT NOT NULL,account_type TEXT NOT NULL DEFAULT 'registered',visitor_expires_at TEXT,recovery_email_hash TEXT,recovery_email_masked TEXT,recovery_email_verified_at TEXT,onboarding_status TEXT NOT NULL DEFAULT 'completed',onboarding_tutorial_project_id TEXT,onboarding_completed_at TEXT,onboarding_tutorial_version TEXT,onboarding_current_step INTEGER,onboarding_completed_events_json TEXT,onboarding_progress_revision INTEGER,onboarding_progress_updated_at TEXT);
 CREATE TABLE IF NOT EXISTS v2_sessions(id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),token_hash TEXT NOT NULL UNIQUE,expires_at TEXT NOT NULL,revoked_at TEXT,created_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS v2_projects(id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),title TEXT NOT NULL,genre TEXT NOT NULL DEFAULT '',summary TEXT NOT NULL DEFAULT '',status TEXT NOT NULL,metadata_revision INTEGER NOT NULL,data_origin TEXT NOT NULL,seed_key TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,current_memory_version INTEGER NOT NULL DEFAULT 1,source_revision INTEGER NOT NULL DEFAULT 1);
 CREATE INDEX IF NOT EXISTS v2_projects_by_owner ON v2_projects(user_id,status,updated_at);
@@ -182,6 +189,7 @@ class V2Database:
             self._migrate_stage11k_coverage_audit_details(c)
             self._migrate_stage13_identity(c)
             self._migrate_v110_onboarding(c)
+            self._migrate_v120_tutorial_progress(c)
             self._migrate_legacy_project(c)
             self._migrate_stage12_run_lifecycle(c)
 
@@ -218,6 +226,32 @@ class V2Database:
             if name not in columns:
                 c.execute(f"ALTER TABLE v2_users ADD COLUMN {name} {definition}")
         c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(110,?)", (utcnow(),))
+
+    def _migrate_v120_tutorial_progress(self, c: sqlite3.Connection) -> None:
+        """Add durable progress without reactivating completed or skipped accounts."""
+        columns = {row["name"] for row in c.execute("PRAGMA table_info(v2_users)")}
+        additions = {
+            "onboarding_tutorial_version": "TEXT",
+            "onboarding_current_step": "INTEGER",
+            "onboarding_completed_events_json": "TEXT",
+            "onboarding_progress_revision": "INTEGER",
+            "onboarding_progress_updated_at": "TEXT",
+        }
+        for name, definition in additions.items():
+            if name not in columns:
+                c.execute(f"ALTER TABLE v2_users ADD COLUMN {name} {definition}")
+        stamp = utcnow()
+        c.execute(
+            "UPDATE v2_users SET onboarding_tutorial_version=?,onboarding_current_step=1,"
+            "onboarding_completed_events_json='[]',onboarding_progress_revision=1,"
+            "onboarding_progress_updated_at=? "
+            "WHERE account_type='registered' AND onboarding_status='active' "
+            "AND onboarding_tutorial_version IS NULL "
+            "AND EXISTS(SELECT 1 FROM v2_projects p WHERE p.id=v2_users.onboarding_tutorial_project_id "
+            "AND p.user_id=v2_users.id AND p.data_origin='tutorial_seed')",
+            (TUTORIAL_VERSION, stamp),
+        )
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(120,?)", (stamp,))
 
     def _migrate_run_provenance(self, c: sqlite3.Connection) -> None:
         """Add safe, version-only Run provenance without rewriting old results."""
@@ -721,9 +755,10 @@ class V2Database:
                 if payload.get("recovery_email_hash") and c.execute("SELECT 1 FROM v2_users WHERE recovery_email_hash=?", (payload["recovery_email_hash"],)).fetchone():
                     raise DomainError("recovery_email_unavailable", 409)
                 user_id = new_id("usr")
+                stamp = utcnow()
                 c.execute(
-                    "INSERT INTO v2_users(id,account_name,display_name,password_hash,created_at,recovery_email_hash,recovery_email_masked,onboarding_status) VALUES(?,?,?,?,?,?,?,'active')",
-                    (user_id,account_name,display_name,_password(password),utcnow(),payload.get("recovery_email_hash"),payload.get("recovery_email_masked")),
+                    "INSERT INTO v2_users(id,account_name,display_name,password_hash,created_at,recovery_email_hash,recovery_email_masked,onboarding_status,onboarding_tutorial_version,onboarding_current_step,onboarding_completed_events_json,onboarding_progress_revision,onboarding_progress_updated_at) VALUES(?,?,?,?,?,?,?,'active',?,1,'[]',1,?)",
+                    (user_id,account_name,display_name,_password(password),stamp,payload.get("recovery_email_hash"),payload.get("recovery_email_masked"),TUTORIAL_VERSION,stamp),
                 )
                 tutorial_id = self._create_project(
                     c,
@@ -738,6 +773,10 @@ class V2Database:
                     "UPDATE v2_users SET onboarding_tutorial_project_id=? WHERE id=?",
                     (tutorial_id, user_id),
                 )
+                progress = self._tutorial_progress(
+                    c,
+                    c.execute("SELECT * FROM v2_users WHERE id=?", (user_id,)).fetchone(),
+                )
                 token, expires_at = self._new_session(c, user_id)
                 return {
                     "user":{"id":user_id,"account_name":account_name,"display_name":display_name},
@@ -747,6 +786,7 @@ class V2Database:
                         "status":"active",
                         "real_project_count":0,
                         "tutorial":{"project_id":tutorial_id,"title":"教学模式 · 灰港回声","data_origin":"tutorial_seed"},
+                        "progress":progress,
                     },
                 }
             data, status, created = self._idem(c, f"register:{account_name}", "register", key, payload, create, 201, with_created=True)
@@ -808,11 +848,57 @@ class V2Database:
             with self.connection() as c:
                 c.execute("UPDATE v2_sessions SET revoked_at=? WHERE token_hash=? AND revoked_at IS NULL", (utcnow(),hashlib.sha256(raw_token.encode()).hexdigest()))
 
-    # --- v1.1.0 first-run tutorial ---
+    # --- v1.2.0 durable first-run tutorial ---
+    def _tutorial_progress(self, c: sqlite3.Connection, user: sqlite3.Row) -> dict[str, Any] | None:
+        if user["account_type"] != "registered" or user["onboarding_status"] != "active":
+            return None
+        tutorial_id = user["onboarding_tutorial_project_id"]
+        if not tutorial_id:
+            return None
+        project = c.execute(
+            "SELECT 1 FROM v2_projects WHERE id=? AND user_id=? AND data_origin='tutorial_seed'",
+            (tutorial_id, user["id"]),
+        ).fetchone()
+        if not project:
+            return None
+        try:
+            events = json.loads(user["onboarding_completed_events_json"] or "[]")
+        except (TypeError, ValueError):
+            raise DomainError("tutorial_progress_unavailable", 503, True) from None
+        step = user["onboarding_current_step"]
+        revision = user["onboarding_progress_revision"]
+        updated_at = user["onboarding_progress_updated_at"]
+        if (
+            user["onboarding_tutorial_version"] != TUTORIAL_VERSION
+            or not isinstance(step, int)
+            or isinstance(step, bool)
+            or not 1 <= step <= 5
+            or not isinstance(revision, int)
+            or isinstance(revision, bool)
+            or revision < 1
+            or not isinstance(updated_at, str)
+            or not isinstance(events, list)
+            or len(events) != len(set(events))
+            or any(event not in TUTORIAL_EVENT_STEPS for event in events)
+        ):
+            raise DomainError("tutorial_progress_unavailable", 503, True)
+        canonical_events = sorted(events, key=TUTORIAL_EVENT_STEPS.__getitem__)
+        canonical_step = max([1, *(TUTORIAL_EVENT_STEPS[event] for event in canonical_events)])
+        if step != canonical_step:
+            raise DomainError("tutorial_progress_unavailable", 503, True)
+        return {
+            "tutorial_version": TUTORIAL_VERSION,
+            "tutorial_project_id": tutorial_id,
+            "current_step": step,
+            "completed_events": canonical_events,
+            "revision": revision,
+            "updated_at": updated_at,
+        }
+
     def onboarding(self, user_id: str) -> dict[str, Any]:
         with self.connection() as c:
             user = c.execute(
-                "SELECT account_type,onboarding_status,onboarding_tutorial_project_id,onboarding_completed_at FROM v2_users WHERE id=?",
+                "SELECT * FROM v2_users WHERE id=?",
                 (user_id,),
             ).fetchone()
             if not user:
@@ -839,9 +925,71 @@ class V2Database:
                 "status": user["onboarding_status"],
                 "real_project_count": real_count,
                 "tutorial": tutorial,
+                "progress": self._tutorial_progress(c, user),
                 "completed_at": user["onboarding_completed_at"],
                 "show_first_run": user["account_type"] == "registered" and user["onboarding_status"] == "active" and real_count == 0,
             }
+
+    def record_tutorial_event(self, user_id: str, payload: dict[str, Any], key: str):
+        with self.connection() as c:
+            user = c.execute("SELECT * FROM v2_users WHERE id=?", (user_id,)).fetchone()
+            if not user:
+                raise DomainError("authentication_required", 401)
+            if user["account_type"] != "registered" or user["onboarding_status"] != "active":
+                raise DomainError("tutorial_unavailable", 409)
+            project_id = payload["project_id"]
+            if (
+                payload["tutorial_version"] != TUTORIAL_VERSION
+                or project_id != user["onboarding_tutorial_project_id"]
+                or not c.execute(
+                    "SELECT 1 FROM v2_projects WHERE id=? AND user_id=? AND data_origin='tutorial_seed'",
+                    (project_id, user_id),
+                ).fetchone()
+            ):
+                raise DomainError("tutorial_progress_target_invalid", 409)
+            event = payload["event"]
+            if event not in TUTORIAL_EVENT_STEPS:
+                raise DomainError("invalid_request", 400)
+            stored = c.execute(
+                "SELECT fingerprint FROM v2_idempotency WHERE scope=? AND operation='onboarding_progress' AND idempotency_key=?",
+                (user_id, key),
+            ).fetchone()
+            fingerprint = digest(payload)
+            if stored and stored["fingerprint"] != fingerprint:
+                raise DomainError("idempotency_conflict", 409)
+            progress = self._tutorial_progress(c, user)
+            if progress is None:
+                raise DomainError("tutorial_progress_unavailable", 503, True)
+            if event not in progress["completed_events"]:
+                events = sorted(
+                    [*progress["completed_events"], event],
+                    key=TUTORIAL_EVENT_STEPS.__getitem__,
+                )
+                step = max(progress["current_step"], TUTORIAL_EVENT_STEPS[event])
+                revision = progress["revision"] + 1
+                stamp = utcnow()
+                changed = c.execute(
+                    "UPDATE v2_users SET onboarding_current_step=?,onboarding_completed_events_json=?,"
+                    "onboarding_progress_revision=?,onboarding_progress_updated_at=? "
+                    "WHERE id=? AND onboarding_progress_revision=?",
+                    (step, json.dumps(events), revision, stamp, user_id, progress["revision"]),
+                ).rowcount
+                if changed != 1:
+                    raise DomainError("tutorial_progress_conflict", 409, True)
+                user = c.execute("SELECT * FROM v2_users WHERE id=?", (user_id,)).fetchone()
+                progress = self._tutorial_progress(c, user)
+            response_json = json.dumps(progress, ensure_ascii=False)
+            if stored:
+                c.execute(
+                    "UPDATE v2_idempotency SET response_json=?,status_code=200 WHERE scope=? AND operation='onboarding_progress' AND idempotency_key=?",
+                    (response_json, user_id, key),
+                )
+            else:
+                c.execute(
+                    "INSERT INTO v2_idempotency VALUES(?,?,?,?,?,?,?)",
+                    (user_id, "onboarding_progress", key, fingerprint, response_json, 200, utcnow()),
+                )
+            return progress, 200
 
     def finish_onboarding(self, user_id: str, outcome: str, payload: dict[str, Any], key: str):
         if outcome not in {"completed", "skipped"}:
@@ -860,7 +1008,7 @@ class V2Database:
                     "UPDATE v2_users SET onboarding_status=?,onboarding_completed_at=? WHERE id=?",
                     (outcome, stamp, user_id),
                 )
-                return {"status": outcome, "completed_at": stamp, "real_project_count": c.execute("SELECT COUNT(*) FROM v2_projects WHERE user_id=? AND data_origin!='tutorial_seed'", (user_id,)).fetchone()[0]}
+                return {"status": outcome, "completed_at": stamp, "real_project_count": c.execute("SELECT COUNT(*) FROM v2_projects WHERE user_id=? AND data_origin!='tutorial_seed'", (user_id,)).fetchone()[0], "progress": None}
             return self._idem(c, user_id, f"onboarding_{outcome}", key, payload, finish, 200)
 
     def reopen_onboarding(self, user_id: str, payload: dict[str, Any], key: str):
@@ -868,7 +1016,7 @@ class V2Database:
             raise DomainError("confirmation_required", 400)
         with self.connection() as c:
             user = c.execute(
-                "SELECT account_type,onboarding_tutorial_project_id FROM v2_users WHERE id=?",
+                "SELECT account_type,onboarding_tutorial_project_id,onboarding_progress_revision FROM v2_users WHERE id=?",
                 (user_id,),
             ).fetchone()
             if not user:
@@ -876,6 +1024,7 @@ class V2Database:
             if user["account_type"] != "registered":
                 raise DomainError("tutorial_unavailable", 409)
             tutorial_id = user["onboarding_tutorial_project_id"]
+            previous_revision = user["onboarding_progress_revision"] or 0
         if tutorial_id:
             self.reset(user_id, tutorial_id, {"confirm": True, "reason": "demo_recovery"}, key)
         with self.connection() as c:
@@ -901,10 +1050,13 @@ class V2Database:
                         (utcnow(), current_id),
                     )
                 c.execute(
-                    "UPDATE v2_users SET onboarding_status='active',onboarding_tutorial_project_id=?,onboarding_completed_at=NULL WHERE id=?",
-                    (current_id, user_id),
+                    "UPDATE v2_users SET onboarding_status='active',onboarding_tutorial_project_id=?,onboarding_completed_at=NULL,"
+                    "onboarding_tutorial_version=?,onboarding_current_step=1,onboarding_completed_events_json='[]',"
+                    "onboarding_progress_revision=?,onboarding_progress_updated_at=? WHERE id=?",
+                    (current_id, TUTORIAL_VERSION, previous_revision + 1, utcnow(), user_id),
                 )
-                return {"status": "active", "tutorial": {"project_id": current_id, "title": "教学模式 · 灰港回声", "data_origin": "tutorial_seed"}}
+                refreshed = c.execute("SELECT * FROM v2_users WHERE id=?", (user_id,)).fetchone()
+                return {"status": "active", "tutorial": {"project_id": current_id, "title": "教学模式 · 灰港回声", "data_origin": "tutorial_seed"}, "progress": self._tutorial_progress(c, refreshed)}
             return self._idem(c, user_id, "onboarding_reopen", key, payload, reopen, 200)
 
     def _complete_onboarding_for_real_project(self, c: sqlite3.Connection, user_id: str) -> None:
