@@ -42,9 +42,8 @@ class Stage8PresetReviewTests(unittest.TestCase):
             headers=idem(),
         )
         self.assertEqual(registered.status_code, 201)
-        self.projects = registered.json()["data"]["seeded_projects"]
-        self.grey = self.projects[0]["id"]
-        self.other = self.projects[1]["id"]
+        self.grey = registered.json()["data"]["onboarding"]["tutorial"]["project_id"]
+        self.other = self.client.post("/api/projects", json={"title": "Stage 8 Other"}, headers=idem()).json()["data"]["project"]["id"]
 
     def preset_view(self):
         project = self.client.get(f"/api/projects/{self.grey}").json()["data"]
@@ -74,7 +73,7 @@ class Stage8PresetReviewTests(unittest.TestCase):
         with self.app.state.database.connection() as connection:
             return "\n".join(connection.iterdump())
 
-    def test_registration_seeds_scoped_completed_review_without_provider(self):
+    def test_isolated_tutorial_has_scoped_completed_review_without_provider(self):
         response = self.preset_view()
         self.assertEqual(response.status_code, 200)
         run = response.json()["data"]

@@ -14,7 +14,7 @@ def h(): return {"Idempotency-Key":str(uuid.uuid4())}
 class ScopedRegressionTests(unittest.TestCase):
     def setUp(self):
         root=pathlib.Path(tempfile.mkdtemp(prefix="scc-regression-")); self.c=TestClient(create_app(AppPaths.from_project_root(root,protected_poc_root=root/"protected")))
-        r=self.c.post('/api/auth/register',json={"account_name":"regression","display_name":"Regression","password":"valid-password-99"},headers=h()); self.assertEqual(r.status_code,201); self.p=r.json()['data']['seeded_projects'][0]['id']
+        r=self.c.post('/api/auth/register',json={"account_name":"regression","display_name":"Regression","password":"valid-password-99"},headers=h()); self.assertEqual(r.status_code,201); self.p=r.json()['data']['onboarding']['tutorial']['project_id']
         self.d=self.c.get(f'/api/projects/{self.p}').json()['data']['current_draft']
     def test_missing_session_is_401(self):
         anonymous=TestClient(self.c.app)
@@ -71,7 +71,7 @@ class ScopedRegressionTests(unittest.TestCase):
                 claim=next(item for item in request['claims'] if item['allowed_evidence']); evidence=claim['allowed_evidence'][0]
                 return ProviderResult({'issues':[{'claim_span_id':claim['id'],'status':'conflict','category':'object_state','severity':'high','explanation':'可验证。','evidence':[{'chapter_id':evidence['chapter_id'],'span_id':evidence['id'],'relation':'contradicts','sufficiency':'sufficient','related_memory_ids':[]}]}]},input_tokens=33,output_tokens=12,latency_ms=7)
         root=pathlib.Path(tempfile.mkdtemp(prefix='scc-metrics-')); client=TestClient(create_app(AppPaths.from_project_root(root,protected_poc_root=root/'protected'),provider=Provider(),executor=lambda fn,*args:fn(*args)))
-        registration=client.post('/api/auth/register',json={'account_name':'metricuser','display_name':'Metric','password':'valid-password-99'},headers=h()).json()['data']; project=registration['seeded_projects'][0]['id']; draft=client.get(f'/api/projects/{project}').json()['data']['current_draft']
+        registration=client.post('/api/auth/register',json={'account_name':'metricuser','display_name':'Metric','password':'valid-password-99'},headers=h()).json()['data']; project=registration['onboarding']['tutorial']['project_id']; draft=client.get(f'/api/projects/{project}').json()['data']['current_draft']
         run=client.post(f'/api/projects/{project}/checks',json={'draft_id':draft['id'],'draft_revision':1},headers=h()).json()['data']['run_id']
         minimal=client.get(f'/api/projects/{project}/checks/{run}').json()['data']; detailed=client.get(f'/api/projects/{project}/checks/{run}?include=metrics').json()['data']
         self.assertNotIn('metrics',minimal); self.assertEqual({key:detailed['metrics'][key] for key in ('latency_ms','input_tokens','output_tokens','cost_cny')},{'latency_ms':7,'input_tokens':33,'output_tokens':12,'cost_cny':None}); self.assertEqual(detailed['metrics']['provenance'],{'provider_label':'metrics-test','model_label':'metrics-test','prompt_version':'continuity-review-v8-bounded-evidence','schema_version':'continuity-issue-v3','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4}); self.assertTrue(detailed['metrics']['retrieval'])
@@ -99,7 +99,8 @@ class ScopedRegressionTests(unittest.TestCase):
     def test_csrf_and_query_lineage_fail_closed(self):
         rejected=self.c.post('/api/auth/logout',headers={'Origin':'http://localhost.evil.example','Host':'attacker.example'})
         self.assertEqual((rejected.status_code,rejected.json()['error']['code']),(403,'cross_site_request_rejected'))
-        paper=self.c.get('/api/projects').json()['data']['projects'][1]['id']; foreign_chapter=self.c.get(f'/api/projects/{paper}/chapters').json()['data']['chapters'][0]['id']
+        preview=self.c.post('/api/imports/preview',files={'file':('foreign.md','# 第一章\n外部章节。'.encode('utf-8'),'text/markdown')},headers=h()).json()['data']
+        paper=self.c.post(f"/api/imports/{preview['import_id']}/commit",json={'confirm':True,'title':'查询隔离作品','chapter_preview_ids':[item['preview_id'] for item in preview['detected']['chapters']]},headers=h()).json()['data']['project']['id']; foreign_chapter=self.c.get(f'/api/projects/{paper}/chapters').json()['data']['chapters'][0]['id']
         self.assertEqual(self.c.get(f'/api/projects/{self.p}/chapters?chapter_id={foreign_chapter}').status_code,404)
         self.assertEqual(self.c.get(f'/api/projects/{self.p}/outline?volume=two').status_code,400)
 
@@ -114,12 +115,13 @@ class ScopedRegressionTests(unittest.TestCase):
 
     def test_home_aggregates_own_severity_and_failed_run(self):
         db=self.c.app.state.database
+        real=self.c.post('/api/projects',json={'title':'首页聚合作品'},headers=h()).json()['data']['project']['id']
         with db.connection() as connection:
-            draft=connection.execute('SELECT id FROM v2_drafts WHERE project_id=?',(self.p,)).fetchone(); stamp='2026-01-01T00:00:00+00:00'
-            connection.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,input_tokens,output_tokens,latency_ms,cost_cny,error_code,retryable,created_at,completed_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",('failed-run',self.p,draft['id'],1,'failed','failed','test',None,None,1,None,'provider_error',1,stamp,stamp,'test-model','test-prompt','test-schema','test-retrieval',4))
-            connection.execute("INSERT INTO v2_issues(id,project_id,run_id,claim_span_id,status,classification,category,severity,evidence_status,explanation,proposed_change_json) VALUES(?,?,?,?,?,?,?,?,?,?,?)",('high-issue',self.p,'failed-run','claim-x','open','conflict','object_state','high','sufficient','安全错误',None))
-        home=self.c.get('/api/home').json()['data']; pending=next(item for item in home['pending_continuity'] if item['project_id']==self.p)
-        self.assertEqual((pending['open_count'],pending['high'],pending['medium'],pending['low']),(5,2,2,1)); self.assertEqual(home['latest_failed_run']['run_id'],'failed-run')
+            draft=connection.execute('SELECT id FROM v2_drafts WHERE project_id=?',(real,)).fetchone(); stamp='2026-01-01T00:00:00+00:00'
+            connection.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,input_tokens,output_tokens,latency_ms,cost_cny,error_code,retryable,created_at,completed_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",('failed-run',real,draft['id'],1,'failed','failed','test',None,None,1,None,'provider_error',1,stamp,stamp,'test-model','test-prompt','test-schema','test-retrieval',1))
+            connection.execute("INSERT INTO v2_issues(id,project_id,run_id,claim_span_id,status,classification,category,severity,evidence_status,explanation,proposed_change_json) VALUES(?,?,?,?,?,?,?,?,?,?,?)",('high-issue',real,'failed-run','claim-x','open','conflict','object_state','high','sufficient','安全错误',None))
+        home=self.c.get('/api/home').json()['data']; pending=next(item for item in home['pending_continuity'] if item['project_id']==real)
+        self.assertEqual((pending['open_count'],pending['high'],pending['medium'],pending['low']),(1,1,0,0)); self.assertEqual(home['latest_failed_run']['run_id'],'failed-run')
 
     def test_operational_error_maps_to_operation_specific_safe_envelope(self):
         db=self.c.app.state.database

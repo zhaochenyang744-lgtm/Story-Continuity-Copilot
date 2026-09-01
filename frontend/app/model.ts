@@ -26,6 +26,14 @@ export type Project = ProjectSummary & {
   current_draft: { id: string; revision: number; chapter_number: number };
   latest_run: { run_id: string; status: string; created_at: string; result_origin: "provider" | "demo_preset" } | null;
   memory_initialization_status?: string;
+  is_tutorial?: boolean;
+};
+export type Onboarding = {
+  status: "active" | "completed" | "skipped";
+  real_project_count: number;
+  show_first_run: boolean;
+  completed_at?: string | null;
+  tutorial: { project_id: string; title: string; status?: ProjectSummary["status"]; data_origin: "tutorial_seed" } | null;
 };
 export type Draft = {
   id: string;

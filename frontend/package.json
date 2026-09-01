@@ -15,7 +15,8 @@
     "verify:stage13-v4-runtime": "node scripts/stage13-v4-runtime-scan.mjs",
     "start:stage13-v4-artifact": "node scripts/start-stage13-v4-artifact.mjs",
     "verify:stage14-bundle": "node scripts/stage14-bundle-scan.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:v110": "playwright test --config playwright.v110.config.ts"
   },
   "dependencies": {
     "next": "^16.3.3",

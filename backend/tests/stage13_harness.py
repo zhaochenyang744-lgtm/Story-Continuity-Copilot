@@ -43,6 +43,15 @@ PROFILES = {
         "frontend_port": 3085,
         "backend_port": 8085,
     },
+    "v110impl": {
+        "frontend_origin": "http://127.0.0.1:3190",
+        "backend_origin": "http://127.0.0.1:8190",
+        "dist_dir": ".next-v110-impl",
+        "temp_prefix": "story-v110-impl-",
+        "account_prefix": "v110impl",
+        "frontend_port": 3190,
+        "backend_port": 8190,
+    },
 }
 
 

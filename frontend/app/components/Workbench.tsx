@@ -21,6 +21,7 @@ import type {
   MemoryDelta,
   MemoryInitialization,
   Memory,
+  Onboarding,
   Project,
   ProjectSummary,
   Run,
@@ -181,6 +182,47 @@ function Button({
     </button>
   );
 }
+function BrandMark() {
+  return (
+    <svg className="brand-mark" viewBox="0 0 32 32" role="img" aria-label="Story Continuity 品牌标志">
+      <path className="brand-page-back" d="M7.5 5.5h13a2 2 0 0 1 2 2v17h-13a2 2 0 0 1-2-2Z" />
+      <path className="brand-page-front" d="M11.5 8.5h13v18h-11a2 2 0 0 1-2-2Z" />
+      <path className="brand-line" d="M15 13h6.5M15 17h6.5M15 21h4" />
+      <path className="brand-clue" d="m6 22 5-4 4 2 7-7" />
+      <circle className="brand-node" cx="6" cy="22" r="1.5" />
+      <circle className="brand-node" cx="22" cy="13" r="1.5" />
+    </svg>
+  );
+}
+function Chevron({ className = "" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 20 20" aria-hidden="true">
+      <path d="m5.5 7.5 4.5 4.5 4.5-4.5" />
+    </svg>
+  );
+}
+function EmptyManuscriptVisual() {
+  return (
+    <svg className="empty-manuscript-visual" viewBox="0 0 280 150" role="img" aria-label="第一章手稿与连续性时间线">
+      <text x="16" y="98">01</text>
+      <path className="empty-paper" d="M105 22h111l22 22v84H105Z" />
+      <path className="empty-fold" d="M216 22v22h22" />
+      <path className="empty-line" d="M126 59h83M126 73h70M126 87h83M126 101h51" />
+      <path className="empty-timeline" d="M92 120h151" />
+      <circle cx="111" cy="120" r="5" />
+      <circle cx="168" cy="120" r="5" />
+      <circle cx="224" cy="120" r="5" />
+    </svg>
+  );
+}
+function MoreMenu({ children }: { children: ReactNode }) {
+  return (
+    <details className="more-menu">
+      <summary>更多<Chevron className="more-chevron" /></summary>
+      <div role="menu" aria-label="更多操作">{children}</div>
+    </details>
+  );
+}
 function I({ children }: { children: string }) {
   return (
     <span className="icon" aria-hidden="true">
@@ -188,7 +230,7 @@ function I({ children }: { children: string }) {
     </span>
   );
 }
-function Icon({ name }: { name: "home" | "library" | "overview" | "outline" | "users" | "world" | "memory" | "pen" | "save" | "play" }) {
+function Icon({ name }: { name: "home" | "library" | "overview" | "outline" | "users" | "world" | "memory" | "pen" | "save" | "play" | "security" | "tutorial" | "logout" }) {
   const paths: Record<string, ReactNode> = {
     home: <><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z" /></>,
     library: <><rect x="4" y="3" width="13" height="18" rx="2" /><path d="M8 7h5M8 11h5M8 15h4" /></>,
@@ -200,6 +242,9 @@ function Icon({ name }: { name: "home" | "library" | "overview" | "outline" | "u
     pen: <><path d="m4 20 4.2-1 10-10a2.8 2.8 0 0 0-4-4l-10 10Z" /><path d="m13 6 4 4M4 20l1-4" /></>,
     save: <><path d="M5 3h12l3 3v15H4V4a1 1 0 0 1 1-1Z" /><path d="M8 3v6h8V3M8 21v-7h8v7" /></>,
     play: <><path d="m8 5 11 7-11 7Z" /></>,
+    security: <><path d="M12 3 5 6v5c0 4.7 2.8 8.1 7 10 4.2-1.9 7-5.3 7-10V6Z" /><path d="m9 12 2 2 4-4" /></>,
+    tutorial: <><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5ZM20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5Z" /></>,
+    logout: <><path d="M10 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5M14 8l4 4-4 4M8 12h10" /></>,
   };
   return <svg className="ui-icon" viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>;
 }
@@ -210,6 +255,7 @@ export function Workbench() {
   const [user, setUser] = useState<User | null>(() => bootstrappedUser ?? null),
     [ready, setReady] = useState(() => bootstrappedUser !== undefined),
     [home, setHome] = useState<Home | null>(null),
+    [onboarding, setOnboarding] = useState<Onboarding | null>(null),
     [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [project, setProject] = useState<Project | null>(null),
     [chapters, setChapters] = useState<Chapter[]>([]),
@@ -309,6 +355,9 @@ export function Workbench() {
     setLocallyResolvedIssueIds([]);
     setChangeSet(null);
     setUserMenuOpen(false);
+    setHome(null);
+    setOnboarding(null);
+    setProjects([]);
   }
   useEffect(() => {
     if (!userMenuOpen) return;
@@ -373,6 +422,18 @@ export function Workbench() {
       fail(e);
     }
   }, [q, filter, onlyIssues, sort, fail]);
+  const loadHome = useCallback(async () => {
+    try {
+      const [nextHome, nextOnboarding] = await Promise.all([
+        request<Home>("/home"),
+        request<Onboarding>("/onboarding"),
+      ]);
+      setHome(nextHome);
+      setOnboarding(nextOnboarding);
+    } catch (cause) {
+      fail(cause);
+    }
+  }, [fail]);
   const loadProject = useCallback(
     async (id: string) => {
       clear();
@@ -507,7 +568,7 @@ export function Workbench() {
     if (!user) return;
     if (projectId) void Promise.resolve().then(() => loadProject(projectId));
     else {
-      if (pathname === "/") request<Home>("/home").then(setHome).catch(fail);
+      if (pathname === "/") void Promise.resolve().then(() => loadHome());
       if (pathname.startsWith("/projects")) void Promise.resolve().then(() => loadProjects());
     }
   }, [
@@ -517,6 +578,7 @@ export function Workbench() {
     projectId,
     loadProject,
     loadProjects,
+    loadHome,
     router,
     fail,
   ]);
@@ -618,6 +680,31 @@ export function Workbench() {
       });
     } catch (e) {
       fail(e);
+    }
+  };
+  const finishTutorial = async (outcome: "complete" | "skip") => {
+    setBusy(outcome === "complete" ? "正在完成教学" : "正在跳过教学");
+    try {
+      await json(`/onboarding/${outcome}`, "POST", { confirm: true });
+      clear();
+      router.replace("/");
+      setNotice(outcome === "complete" ? "教学已完成。现在可以导入第一部真实作品。" : "已跳过教学。现在可以导入第一部真实作品。");
+    } catch (cause) {
+      fail(cause);
+    } finally {
+      setBusy("");
+    }
+  };
+  const reopenTutorial = async () => {
+    setBusy("正在恢复教学样例");
+    try {
+      const data = await json<{ tutorial: { project_id: string } }>("/onboarding/reopen", "POST", { confirm: true });
+      setUserMenuOpen(false);
+      router.push(`/projects/${data.tutorial.project_id}/overview`);
+    } catch (cause) {
+      fail(cause);
+    } finally {
+      setBusy("");
     }
   };
   const save = async () => {
@@ -1179,6 +1266,7 @@ export function Workbench() {
       ) : (
         <HomePage
           home={home}
+          onboarding={onboarding}
           open={(id) => go(`/projects/${id}/overview`)}
           go={go}
         />
@@ -1223,6 +1311,7 @@ export function Workbench() {
         reset={() => setResetOpen(true)}
         meta={() => setMetaOpen(true)}
         archive={() => setArchiveOpen(true)}
+        finishTutorial={finishTutorial}
         go={go}
       />
     ) : (
@@ -1236,7 +1325,7 @@ export function Workbench() {
       {user && (
         <aside className="global-nav" aria-label="全局工作台">
           <div className="brand">
-            <span className="brand-mark" aria-hidden="true" />
+            <BrandMark />
             <span aria-label="Story Continuity">
               Story
               <br />
@@ -1273,22 +1362,28 @@ export function Workbench() {
               onClick={() => setUserMenuOpen((open) => !open)}
             >
               <span className="account-avatar" aria-hidden="true">{user.display_name.slice(0, 1)}</span>
-              <span className="account-name">{user.display_name}</span>
-              <span className="account-caret" aria-hidden="true">⌄</span>
+              <span className="account-copy">
+                <span className="account-name">{user.display_name}</span>
+                <span className="account-helper">{user.account_type === "visitor" ? "访客空间" : "个人账号"}</span>
+              </span>
+              <Chevron className="account-caret" />
             </button>
             {userMenuOpen && (
               <div className="user-menu" role="menu" aria-label="用户菜单">
-                <p>{user.display_name}<small>{user.account_name}</small></p>
+                <p><strong>{user.display_name}</strong>{user.display_name.trim().toLocaleLowerCase() !== user.account_name.trim().toLocaleLowerCase() && <small>{user.account_name}</small>}</p>
                 {user.account_type === "visitor" && <p className="visitor-expiry">访客空间有效至 <time>{timestampLabel(user.visitor_expires_at)}</time></p>}
                 {user.account_type !== "visitor" && (
-                  <button type="button" role="menuitem" onClick={() => go("/account/security")}>账号安全</button>
+                  <button type="button" role="menuitem" onClick={() => go("/account/security")}><Icon name="security" />账号安全</button>
+                )}
+                {user.account_type !== "visitor" && (
+                  <button type="button" role="menuitem" onClick={() => void reopenTutorial()}><Icon name="tutorial" />重新打开教学</button>
                 )}
                 <button
                   type="button"
                   role="menuitem"
                   onClick={() => void logout()}
                 >
-                  退出登录
+                  <Icon name="logout" />退出登录
                 </button>
               </div>
             )}
@@ -1302,7 +1397,7 @@ export function Workbench() {
               <small>更换当前作品</small>
               <strong>{project.title}</strong>
             </span>
-            <span className="project-switch-mark" aria-hidden="true">⌄</span>
+            <Chevron className="project-switch-mark" />
           </Button>
           <div className="project-context">
             <span className={`status-pill ${project.status}`}>
@@ -1335,22 +1430,9 @@ export function Workbench() {
               </Button>
             ))}
           </nav>
-          <div className="project-nav-foot">
-            <Button className="quiet" onClick={() => setMetaOpen(true)}>
-              编辑作品信息
-            </Button>
-          </div>
         </aside>
       )}
       <main id="main">
-        {projectId && readOnly && project && (
-          <p className="readonly" role="note">
-            <I>◉</I>
-            {project.status === "archived"
-              ? "作品已归档：仅可浏览，恢复后才可保存、检查、决策、提交或 Reset。"
-              : "浏览只读：小于 1024px 可阅读资料与证据；作者操作仅在桌面可用。"}
-          </p>
-        )}
         {(!isPublicAuthPath(pathname) && (notice || Boolean(error))) && (
           <div
             className={error ? "feedback error" : "feedback"}
@@ -1551,7 +1633,7 @@ function Auth({
     <section className="auth-layout">
       <section className="auth">
         <div className="auth-brand" aria-label="Story Continuity">
-          <span className="brand-mark" aria-hidden="true" />
+          <BrandMark />
           <span aria-label="Story Continuity">
             Story Continuity
           </span>
@@ -1585,30 +1667,33 @@ function Auth({
               <input name="recovery_email" type="email" autoComplete="email" required maxLength={254} />
             </label>
           )}
-          <label>
-            密码
-            <input
-              name="password"
-              type={passwordVisible ? "text" : "password"}
-              autoComplete={register ? "new-password" : "current-password"}
-              required
-              minLength={register ? 10 : undefined}
-              aria-invalid={hasError || undefined}
-              aria-describedby={hasError ? errorId : undefined}
-            />
-          </label>
-          <Button
-            className="quiet auth-password-toggle"
-            ariaPressed={passwordVisible}
-            ariaLabel="切换口令可见性"
-            onClick={() => setPasswordVisible((visible) => !visible)}
-            disabled={Boolean(busy)}
-          >
-            {passwordVisible ? "隐藏密码" : "显示密码"}
-          </Button>
+          <div className="auth-password-label">
+            <label htmlFor="auth-password">密码</label>
+            <span className="auth-password-field">
+              <input
+                id="auth-password"
+                name="password"
+                type={passwordVisible ? "text" : "password"}
+                autoComplete={register ? "new-password" : "current-password"}
+                required
+                minLength={register ? 10 : undefined}
+                aria-invalid={hasError || undefined}
+                aria-describedby={hasError ? errorId : undefined}
+              />
+              <Button
+                className="quiet auth-password-toggle"
+                ariaPressed={passwordVisible}
+                ariaLabel={passwordVisible ? "隐藏密码" : "显示密码"}
+                onClick={() => setPasswordVisible((visible) => !visible)}
+                disabled={Boolean(busy)}
+              >
+                {passwordVisible ? "隐藏" : "显示"}
+              </Button>
+            </span>
+          </div>
           {register && <p className="auth-rules">账号至少 3 个字符，密码至少 10 个字符。恢复邮箱验证后可用于密码找回。</p>}
           {!register && (
-            <Button className="quiet auth-password-toggle" disabled={Boolean(busy)} onClick={() => go("/password-reset")}>忘记密码？</Button>
+            <Button className="quiet auth-forgot" disabled={Boolean(busy)} onClick={() => go("/password-reset")}>忘记密码？</Button>
           )}
           <div className="auth-error-slot">
             {hasError && (
@@ -1622,10 +1707,10 @@ function Auth({
               <span>{register ? "创建账号" : "登录"}</span>
               <span className="auth-button-spinner" aria-hidden="true" data-active={Boolean(busy)} />
             </Button>
-            <Button className="quiet" disabled={Boolean(busy)} onClick={() => go(register ? "/login" : "/register")}>
+            <Button className="quiet auth-switch-link" disabled={Boolean(busy)} onClick={() => go(register ? "/login" : "/register")}>
               {register ? "已有账号？返回登录" : "还没有账号？创建账号"}
             </Button>
-            {!register && <Button className="quiet" disabled={Boolean(busy)} onClick={() => void visitor()}>以访客身份体验 24 小时</Button>}
+            {!register && <Button className="secondary auth-visitor" disabled={Boolean(busy)} onClick={() => void visitor()}>访客体验 24 小时</Button>}
           </div>
         </form>
       </section>
@@ -1654,7 +1739,7 @@ function PasswordResetRequestPage({ go }: { go: (href: string) => void }) {
   return (
     <section className="auth-layout">
       <section className="auth recovery-panel">
-        <div className="auth-brand"><span className="brand-mark" aria-hidden="true" />Story Continuity</div>
+        <div className="auth-brand"><BrandMark />Story Continuity</div>
         <div className="auth-heading"><h1>找回密码</h1><p className="auth-lede">输入已验证的恢复邮箱。无论账号是否存在，响应都保持一致。</p></div>
         <form onSubmit={(event) => void submit(event)}>
           <label>恢复邮箱<input name="recovery_email" type="email" autoComplete="email" required maxLength={254} /></label>
@@ -1706,7 +1791,7 @@ function PasswordResetConfirmPage({ go }: { go: (href: string) => void }) {
   return (
     <section className="auth-layout">
       <section className="auth recovery-panel">
-        <div className="auth-brand"><span className="brand-mark" aria-hidden="true" />Story Continuity</div>
+        <div className="auth-brand"><BrandMark />Story Continuity</div>
         <div className="auth-heading"><h1>设置新密码</h1><p className="auth-lede">安全链接只能使用一次，并在 15 分钟后过期。</p></div>
         {state === "success" ? (
           <div className="auth-actions" aria-live="polite"><p className="inline-success" role="status">{message}</p><Button className="primary" onClick={() => go("/login")}>前往登录</Button></div>
@@ -1750,7 +1835,7 @@ function VerifyEmailPage({ go, refreshUser }: { go: (href: string) => void; refr
   }, [refreshUser]);
   return (
     <section className="auth-layout"><section className="auth recovery-panel">
-      <div className="auth-brand"><span className="brand-mark" aria-hidden="true" />Story Continuity</div>
+      <div className="auth-brand"><BrandMark />Story Continuity</div>
       <div className="auth-heading"><h1>验证恢复邮箱</h1><p className={failed ? "inline-error" : "inline-success"} role={failed ? "alert" : "status"} aria-live="polite">{message}</p></div>
       <div className="auth-actions"><Button className="primary" onClick={() => go("/")}>返回工作台</Button></div>
     </section></section>
@@ -1797,10 +1882,12 @@ function AccountSecurity({ user, updateUser, go }: { user: User; updateUser: (us
 }
 function HomePage({
   home,
+  onboarding,
   open,
   go,
 }: {
   home: Home | null;
+  onboarding: Onboarding | null;
   open: (id: string) => void;
   go: (h: string) => void;
 }) {
@@ -1810,6 +1897,19 @@ function HomePage({
         <p className="breadcrumb">全局 / 首页</p>
         <h1>继续你的故事</h1>
       </header>
+      {onboarding?.show_first_run && onboarding.tutorial && (
+        <section className="tutorial-entry" aria-label="首次教学">
+          <div>
+            <p className="eyebrow">首次使用 · 教学模式</p>
+            <h2>用隔离样例走一遍核心流程</h2>
+            <p>教学作品不会进入真实作品列表、搜索、数量或待处理问题。你可以随时完成或跳过。</p>
+          </div>
+          <div className="actions">
+            <Button onClick={() => go("/projects/import")}>导入第一部作品</Button>
+            <Button className="primary" onClick={() => open(onboarding.tutorial!.project_id)}>开始教学</Button>
+          </div>
+        </section>
+      )}
       {home?.continue_work ? (
         <section className="home-continue">
           <div>
@@ -1831,57 +1931,66 @@ function HomePage({
             继续工作
           </Button>
         </section>
-      ) : (
-        <div className="empty home-empty">
-          尚无继续工作。创建或导入作品后，这里会显示真实状态。
-        </div>
-      )}
-      <section className="home-section">
-        <header className="home-section-head">
-          <h2>最近作品</h2>
-          <Button onClick={() => go("/projects")}>查看全部作品</Button>
-        </header>
-        <ul className="home-work-list">
-          {(home?.recent_projects ?? []).map((project) => (
-            <li key={project.project_id}>
-              <button onClick={() => open(project.project_id)}>
-                <strong>《{project.title}》</strong>
-                <span>{statusLabel(project.status)}</span>
-                <i aria-hidden="true">→</i>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section className="home-section home-issues-section">
-        <h2>待处理连续性问题</h2>
-        {(home?.pending_continuity ?? []).length ? (
-          <ul className="home-issue-list">
-            {home!.pending_continuity.map((x) => {
-              const total = x.high + x.medium + x.low;
-              const tone = x.continuity_status === "unchecked" ? "unchecked" : x.high ? "high" : x.medium ? "medium" : "low";
-              return (
-                <li key={x.project_id}>
-                  <button onClick={() => open(x.project_id)}>
-                    <span>
-                      <strong>《{x.title}》</strong>
-                      <small>
-                        高风险 {x.high} · 中风险 {x.medium} · 低风险 {x.low}
-                      </small>
-                    </span>
-                    <b className={`risk ${tone}`}>
-                      <I>{tone === "high" ? "▲" : tone === "medium" ? "●" : tone === "unchecked" ? "○" : "✓"}</I>
-                      {x.continuity_status === "unchecked" ? "尚未检查" : x.continuity_status === "checked_clear" ? "已检查 · 0 项待处理" : `${total} 项待处理`}
-                    </b>
+      ) : !onboarding?.show_first_run ? (
+        <section className="empty-workspace">
+          <EmptyManuscriptVisual />
+          <div className="empty-workspace-copy">
+            <p className="eyebrow">真实作品空间 · 尚未建立</p>
+            <h2>你的第一部作品将从这里建立连续性档案。</h2>
+            <p>导入 TXT / Markdown，或从空白作品开始。</p>
+          </div>
+          <div className="actions">
+            <Button className="primary" onClick={() => go("/projects/import")}>导入第一部作品</Button>
+            <Button onClick={() => go("/projects/new")}>新建空白作品</Button>
+          </div>
+        </section>
+      ) : null}
+      <div className="home-section-grid">
+        <section className="home-section">
+          <header className="home-section-head">
+            <h2>最近作品</h2>
+            <Button onClick={() => go("/projects")}>查看全部</Button>
+          </header>
+          {(home?.recent_projects ?? []).length ? (
+            <ul className="home-work-list">
+              {home!.recent_projects.map((item) => (
+                <li key={item.project_id}>
+                  <button onClick={() => open(item.project_id)}>
+                    <strong>《{item.title}》</strong>
+                    <span>{statusLabel(item.status)}</span>
+                    <i aria-hidden="true">→</i>
                   </button>
                 </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <div className="empty">当前没有作品。</div>
-        )}
-      </section>
+              ))}
+            </ul>
+          ) : <div className="empty compact-empty">还没有真实作品。</div>}
+        </section>
+        <section className="home-section home-issues-section">
+          <h2>待处理问题</h2>
+          {(home?.pending_continuity ?? []).length ? (
+            <ul className="home-issue-list">
+              {home!.pending_continuity.map((x) => {
+                const total = x.high + x.medium + x.low;
+                const tone = x.continuity_status === "unchecked" ? "unchecked" : x.high ? "high" : x.medium ? "medium" : "low";
+                return (
+                  <li key={x.project_id}>
+                    <button onClick={() => open(x.project_id)}>
+                      <span>
+                        <strong>《{x.title}》</strong>
+                        <small>高 {x.high} · 中 {x.medium} · 低 {x.low}</small>
+                      </span>
+                      <b className={`risk ${tone}`}>
+                        <I>{tone === "high" ? "▲" : tone === "medium" ? "●" : tone === "unchecked" ? "○" : "✓"}</I>
+                        {x.continuity_status === "unchecked" ? "尚未检查" : x.continuity_status === "checked_clear" ? "已清" : `${total} 项`}
+                      </b>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : <div className="empty compact-empty">当前没有待处理问题。</div>}
+        </section>
+      </div>
     </section>
   );
 }
@@ -1889,6 +1998,7 @@ function Rows({
   rows,
   open,
   append,
+  filtered = false,
 }: {
   rows: Array<
     Pick<ProjectSummary, "title" | "status"> &
@@ -1902,6 +2012,7 @@ function Rows({
   >;
   open: (id: string) => void;
   append?: (id: string) => void;
+  filtered?: boolean;
 }) {
   return rows.length ? (
     <>
@@ -1962,7 +2073,9 @@ function Rows({
       </ul>
     </>
   ) : (
-    <div className="empty">没有符合条件的作品。</div>
+    <div className={filtered ? "empty search-empty" : "empty project-list-empty"}>
+      {filtered ? "没有匹配当前条件的作品。调整或清除条件后再试。" : "还没有真实作品。"}
+    </div>
   );
 }
 function Projects({
@@ -2005,46 +2118,55 @@ function Projects({
         </div>
       </header>
       <div className="filters project-toolbar">
-        <label>
+        <label className="project-search">
           <span className="sr-only">搜索</span>
           <input placeholder="搜索标题或简介" value={q} onChange={(e) => set("q", e.target.value)} />
         </label>
-        <label>
-          <span className="sr-only">状态</span>
-          <select
-            value={filter}
-            onChange={(e) => set("filter", e.target.value)}
-          >
-            <option value="">未归档</option>
-            <option value="active">进行中</option>
-            <option value="paused">已暂停</option>
-            <option value="completed">已完成</option>
-            <option value="archived">已归档</option>
-          </select>
-        </label>
-        <label>
-          <span className="sr-only">排序</span>
-          <select value={sort} onChange={(e) => set("sort", e.target.value)}>
-            <option value="updated_desc">最近更新</option>
-            <option value="title_asc">作品名</option>
-          </select>
-        </label>
-        <label className="check">
-          <input
-            type="checkbox"
-            checked={onlyIssues}
-            onChange={(e) => set("issues", e.target.checked)}
-          />
+        <div className="project-filter-group" aria-label="状态与排序">
+          <label>
+            <span className="sr-only">状态</span>
+            <select
+              value={filter}
+              onChange={(e) => set("filter", e.target.value)}
+            >
+              <option value="">未归档</option>
+              <option value="active">进行中</option>
+              <option value="paused">已暂停</option>
+              <option value="completed">已完成</option>
+              <option value="archived">已归档</option>
+            </select>
+          </label>
+          <label>
+            <span className="sr-only">排序</span>
+            <select value={sort} onChange={(e) => set("sort", e.target.value)}>
+              <option value="updated_desc">最近更新</option>
+              <option value="title_asc">作品名</option>
+            </select>
+          </label>
+        </div>
+        <button
+          type="button"
+          className="issue-switch"
+          role="switch"
+          aria-checked={onlyIssues}
+          onClick={() => set("issues", !onlyIssues)}
+        >
+          <span className="switch-track" aria-hidden="true"><span /></span>
           仅有待处理问题
-        </label>
-        <Button className="primary" disabled={Boolean(busy)} onClick={refresh}>
+        </button>
+        <Button disabled={Boolean(busy)} onClick={refresh}>
           应用条件
         </Button>
-        <Button onClick={clear}>
+        <Button className="quiet clear-filters" onClick={clear}>
           清除条件
         </Button>
       </div>
-      <Rows rows={rows} open={open} append={(id) => go(`/projects/${id}/sources`)} />
+      <Rows
+        rows={rows}
+        open={open}
+        append={(id) => go(`/projects/${id}/sources`)}
+        filtered={Boolean(q || filter || onlyIssues || sort !== "updated_desc")}
+      />
     </section>
   );
 }
@@ -2331,6 +2453,79 @@ function RunLifecycle({ run, blocked, cancelRun, retryRun, actions = true }: { r
   );
 }
 
+function ProjectContextNotices({
+  project,
+  tab,
+  readOnly,
+  busy,
+  finishTutorial,
+  go,
+}: {
+  project: Project;
+  tab: string;
+  readOnly: boolean;
+  busy: string;
+  finishTutorial: (outcome: "complete" | "skip") => Promise<void>;
+  go: (href: string) => void;
+}) {
+  const tutorialStep = tab === "workspace" ? 2 : tab === "sources" ? 3 : 1;
+  const tutorialCopy = {
+    1: {
+      title: "了解作品资料与 Story Memory",
+      task: "查看项目概览、人物与 Story Memory，理解连续性档案如何组织。",
+      action: "下一步：查看连续性问题",
+    },
+    2: {
+      title: "查看连续性问题与 Evidence",
+      task: "浏览预置问题及 Evidence，理解判断如何回到原文证据。",
+      action: "下一步：导入自己的作品",
+    },
+    3: {
+      title: "完成教学并导入自己的作品",
+      task: "确认追加章节的入口，然后结束隔离教学并建立真实作品。",
+      action: "完成教学",
+    },
+  }[tutorialStep];
+  return (
+    <>
+      {project.is_tutorial && (
+        <section className="tutorial-mode-bar" aria-label="教学模式">
+          <div className="tutorial-progress" aria-label="教学进度">
+            <p><strong>{tutorialStep} / 3</strong><span>隔离教学</span></p>
+            <div>
+              <strong>{tutorialCopy.title}</strong>
+              <span>{tutorialCopy.task}</span>
+              <small>固定样例不会计入作品数量、搜索或待处理问题。</small>
+            </div>
+          </div>
+          <div className="actions">
+            <Button className="quiet" disabled={Boolean(busy)} onClick={() => void finishTutorial("skip")}>跳过教学</Button>
+            <Button
+              className="primary"
+              disabled={Boolean(busy)}
+              onClick={() => tutorialStep === 1
+                ? go(`/projects/${project.id}/workspace`)
+                : tutorialStep === 2
+                  ? go(`/projects/${project.id}/sources`)
+                  : void finishTutorial("complete")}
+            >
+              {tutorialCopy.action}
+            </Button>
+          </div>
+        </section>
+      )}
+      {readOnly && (
+        <p className="readonly" role="note">
+          <I>◉</I>
+          {project.status === "archived"
+            ? "作品已归档：仅可浏览，恢复后才可保存、检查、决策、提交或 Reset。"
+            : "移动端只读浏览：可查看资料与 Evidence；编辑和检查请回到桌面。"}
+        </p>
+      )}
+    </>
+  );
+}
+
 function ProjectPage(p: {
   tab: string;
   project: Project;
@@ -2382,6 +2577,7 @@ function ProjectPage(p: {
   reset: () => void;
   meta: () => void;
   archive: () => void;
+  finishTutorial: (outcome: "complete" | "skip") => Promise<void>;
   go: (href: string) => void;
 }) {
   const dirty = Boolean(
@@ -2389,7 +2585,17 @@ function ProjectPage(p: {
       p.saved &&
       (p.draft.title !== p.saved.title || p.draft.body !== p.saved.body),
     ),
-    blocked = p.readOnly || Boolean(p.busy);
+    blocked = p.readOnly || Boolean(p.busy),
+    contextNotices = (
+      <ProjectContextNotices
+        project={p.project}
+        tab={p.tab}
+        readOnly={p.readOnly}
+        busy={p.busy}
+        finishTutorial={p.finishTutorial}
+        go={p.go}
+      />
+    );
   if (p.tab === "overview")
     return (
       <section className="project-page overview-page">
@@ -2400,16 +2606,19 @@ function ProjectPage(p: {
             <p>{p.project.summary || "此作品尚未填写说明。"}</p>
           </div>
           <div className="actions">
-            <Button onClick={p.reset}>Reset 当前作品</Button>
-            <Button onClick={p.archive}>
-              {p.project.status === "archived" ? "恢复作品" : "归档作品"}
-            </Button>
-            <Button onClick={p.meta}>编辑信息</Button>
             <Button className="primary" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>
-              <Icon name="pen" />继续草稿
+              <Icon name="pen" />{p.readOnly ? "查看草稿" : "继续草稿"}
             </Button>
+            {!p.readOnly && (
+              <MoreMenu>
+                <Button onClick={p.reset}>Reset 当前作品</Button>
+                {!p.project.is_tutorial && <Button onClick={p.archive}>{p.project.status === "archived" ? "恢复作品" : "归档作品"}</Button>}
+                {!p.project.is_tutorial && <Button onClick={p.meta}>编辑作品信息</Button>}
+              </MoreMenu>
+            )}
           </div>
         </header>
+        {contextNotices}
         <div className="overview-grid">
           <section className="overview-panel current-draft-panel">
             <p className="eyebrow">当前草稿</p>
@@ -2486,6 +2695,7 @@ function ProjectPage(p: {
         title="大纲"
         breadcrumb={`项目 / ${p.project.title} / 大纲`}
         note="查看当前章节结构。"
+        context={contextNotices}
         items={(p.outline?.chapter_nodes ?? []).map((x) => (
           <li key={x.id}>
             <strong>
@@ -2505,6 +2715,7 @@ function ProjectPage(p: {
         title="角色库"
         breadcrumb={`项目 / ${p.project.title} / 角色库`}
         note="查看角色身份、目标、当前状态和知识边界。"
+        context={contextNotices}
         items={p.characters.map((x) => (
           <li key={x.id}>
             <strong>
@@ -2525,6 +2736,7 @@ function ProjectPage(p: {
         title="世界观"
         breadcrumb={`项目 / ${p.project.title} / 世界观`}
         note="查看地点、组织、规则、物件与术语。"
+        context={contextNotices}
         items={p.world.map((x) => (
           <li key={x.id}>
             <strong>
@@ -2546,6 +2758,7 @@ function ProjectPage(p: {
             <p>Memory V{p.project.current_memory_version} · 每个版本都是作者明确提交后的完整事实快照。</p>
           </div>
         </header>
+        {contextNotices}
         {p.memoryDelta?.coverage_audit && (
           <section className="notice" aria-label="增量来源覆盖审计">
             <strong>来源覆盖审计：{p.memoryDelta.coverage_audit.status}</strong>
@@ -2597,7 +2810,7 @@ function ProjectPage(p: {
     );
   if (p.tab === "sources")
     return (
-      <SourceAppend project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} />
+      <SourceAppend project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} context={contextNotices} />
     );
   return (
     <section className="project-page workspace-page">
@@ -2607,34 +2820,27 @@ function ProjectPage(p: {
           <h1>{p.draft?.title || "正在读取草稿"}</h1>
           <p>草稿 revision {p.draft?.revision ?? "—"}</p>
         </div>
-        <div className="actions">
-          <Button disabled={blocked} onClick={p.reset}>
-            Reset 当前作品
-          </Button>
-          <Button disabled={blocked || !p.draft || dirty} onClick={() => p.go(`/projects/${p.project.id}/sources`)}>
-            完成当前章节
-          </Button>
-          {dirty || p.controlled ? (
-            <Button
-              className="primary"
-              disabled={blocked}
-              onClick={() => void p.save()}
-            >
-              <Icon name="save" />
-              {p.controlled ? "保存受控修订" : "保存草稿"}
-            </Button>
-          ) : (!p.run || (!activeRun(p.run) && !retryableRun(p.run))) ? (
-            <Button
-              className="primary"
-              disabled={blocked || !p.draft}
-              onClick={() => void p.check()}
-            >
-              <Icon name="play" />
-              运行连续性检查
-            </Button>
-          ) : null}
-        </div>
+        {!p.readOnly && (
+          <div className="actions">
+            {dirty || p.controlled ? (
+              <Button className="primary" disabled={blocked} onClick={() => void p.save()}>
+                <Icon name="save" />
+                {p.controlled ? "保存受控修订" : "保存草稿"}
+              </Button>
+            ) : (!p.run || (!activeRun(p.run) && !retryableRun(p.run))) ? (
+              <Button className="primary" disabled={blocked || !p.draft} onClick={() => void p.check()}>
+                <Icon name="play" />
+                运行连续性检查
+              </Button>
+            ) : null}
+            <MoreMenu>
+              <Button disabled={blocked} onClick={p.reset}>Reset 当前作品</Button>
+              <Button disabled={blocked || !p.draft || dirty} onClick={() => p.go(`/projects/${p.project.id}/sources`)}>完成当前章节</Button>
+            </MoreMenu>
+          </div>
+        )}
       </header>
+      {contextNotices}
       {p.controlled && (
         <p className="warning">
           <I>!</I>受控编辑：只接受 source r{p.run?.source_revision} → r
@@ -2650,7 +2856,7 @@ function ProjectPage(p: {
       {p.coverage?.status === "update_pending" && (
         <p className="warning"><I>!</I>Source r{p.project.source_revision} 已追加；仅新 SourceSpan 与已确认 Memory 会进入增量审阅。{p.memoryDelta?.status === "failed" ? "本次运行失败，未写入任何 Issue 或候选，可安全重试。" : <Button className="primary" disabled={blocked} onClick={() => void p.startIncrementalReview()}>运行增量检查</Button>}</p>
       )}
-      {p.run && <RunLifecycle run={p.run} blocked={blocked} cancelRun={p.cancelRun} retryRun={p.retryRun} />}
+      {p.run && <RunLifecycle run={p.run} blocked={blocked} cancelRun={p.cancelRun} retryRun={p.retryRun} actions={!p.readOnly} />}
       {p.pairedRun && <RunLifecycle run={p.pairedRun} blocked={blocked} cancelRun={p.cancelRun} retryRun={p.retryRun} actions={false} />}
       <div className="workspace-grid">
         <section className="editor">
@@ -2904,7 +3110,7 @@ function MemoryInitializationReview({
     </form>
   );
 }
-function SourceAppend({ project, draft, chapters, readOnly }: { project: Project; draft: Draft | null; chapters: Chapter[]; readOnly: boolean }) {
+function SourceAppend({ project, draft, chapters, readOnly, context }: { project: Project; draft: Draft | null; chapters: Chapter[]; readOnly: boolean; context?: ReactNode }) {
   const router=useRouter();
   const [method, setMethod] = useState<"draft_complete" | "paste" | "file">("paste"), [content, setContent] = useState(""), [filename, setFilename] = useState(""), [preview, setPreview] = useState<SourceChangeSet | null>(null), [nextDraft, setNextDraft] = useState<Draft | null>(null), [busy, setBusy] = useState(""), [error, setError] = useState("");
   const base = project.source_revision ?? 1;
@@ -2920,12 +3126,12 @@ function SourceAppend({ project, draft, chapters, readOnly }: { project: Project
     try { const data = await json<{ source_change_set: SourceChangeSet; next_draft: Draft }>(`/projects/${project.id}/source-change-sets/${preview.id}/commit`, "POST", { confirm: true, content_sha256: preview.content_sha256 }); setPreview(data.source_change_set); setNextDraft(data.next_draft); }
     catch (cause) { setError(labelError(cause)); } finally { setBusy(""); }
   };
-  return <section className="project-page read-page"><header className="page-header"><div><p className="breadcrumb">项目 / {project.title} / 章节来源</p><h1>追加章节</h1><p>目标作品：{project.title} · source r{base} → r{base + 1}。P0 只追加，既有来源不覆盖。</p></div></header>
-    <section className="project-section"><h2>新增来源</h2><fieldset disabled={readOnly || Boolean(busy)}><legend>入口</legend>{(["draft_complete", "paste", "file"] as const).map((value) => <label key={value}><input type="radio" checked={method === value} onChange={() => setMethod(value)} />{value === "draft_complete" ? "完成当前章节" : value === "paste" ? "粘贴追加" : "追加文件"}</label>)}</fieldset>
+  return <section className="project-page read-page"><header className="page-header"><div><p className="breadcrumb">项目 / {project.title} / 章节来源</p><h1>追加章节</h1><p>目标作品：{project.title} · source r{base} → r{base + 1}。P0 只追加，既有来源不覆盖。</p></div></header>{context}
+    {!readOnly && <section className="project-section"><h2>新增来源</h2><fieldset disabled={Boolean(busy)}><legend>入口</legend>{(["draft_complete", "paste", "file"] as const).map((value) => <label key={value}><input type="radio" checked={method === value} onChange={() => setMethod(value)} />{value === "draft_complete" ? "完成当前章节" : value === "paste" ? "粘贴追加" : "追加文件"}</label>)}</fieldset>
     {method === "draft_complete" ? <p>将完成当前草稿《{draft?.title ?? "—"}》并追加为新章节。</p> : <><label>章节正文<textarea value={content} onChange={(event) => setContent(event.target.value)} disabled={readOnly || Boolean(busy)} /></label>{method === "file" && <label>追加文件<input type="file" accept=".md,.txt,text/markdown,text/plain" disabled={readOnly || Boolean(busy)} onChange={async (event) => { const file = event.currentTarget.files?.[0]; if (!file) return; setFilename(file.name); setContent(await file.text()); }} /><small>{filename || "仅支持 UTF-8 .md / .txt"}</small></label>}</>}
-    <Button className="primary" disabled={readOnly || Boolean(busy) || (method !== "draft_complete" && !content.trim())} onClick={() => void makePreview()}>{busy || "预览追加"}</Button></section>
+    <Button className="primary" disabled={Boolean(busy) || (method !== "draft_complete" && !content.trim())} onClick={() => void makePreview()}>{busy || "预览追加"}</Button></section>}
     {error && <div className="notice error" role="alert">{error} 请保留当前内容，重新获取当前 source revision 后重试。</div>}
-    {preview && <section className="notice success" role="status"><strong>SourceChangeSet 预览 · {preview.status}</strong><p>SHA-256 {preview.content_sha256} · {preview.chapter_count} 个章节 / {preview.source_span_count} 个 SourceSpan · r{preview.base_source_revision} → r{preview.target_source_revision}</p><small>预览于 {preview.previewed_at}；创建审计已记录。文件仅记录 basename。</small><ul>{preview.chapters.map((chapter) => <li key={chapter.preview_id}>第 {chapter.order} 个追加章节《{chapter.title}》· {chapter.character_count} 字</li>)}</ul>{preview.status === "previewed" ? <Button className="primary" disabled={readOnly || Boolean(busy)} onClick={() => void commit()}>确认追加并创建下一章草稿</Button> : <><p>已提交 source r{preview.target_source_revision}。</p>{nextDraft && <p>下一章草稿：第 {nextDraft.chapter_number} 章《{nextDraft.title}》 · {nextDraft.id}</p>}<Button className="primary" onClick={() => router.push(`/projects/${project.id}/workspace`)}>进入下一章草稿</Button></>}</section>}
+    {preview && <section className="notice success" role="status"><strong>SourceChangeSet 预览 · {preview.status}</strong><p>SHA-256 {preview.content_sha256} · {preview.chapter_count} 个章节 / {preview.source_span_count} 个 SourceSpan · r{preview.base_source_revision} → r{preview.target_source_revision}</p><small>预览于 {preview.previewed_at}；创建审计已记录。文件仅记录 basename。</small><ul>{preview.chapters.map((chapter) => <li key={chapter.preview_id}>第 {chapter.order} 个追加章节《{chapter.title}》· {chapter.character_count} 字</li>)}</ul>{!readOnly && (preview.status === "previewed" ? <Button className="primary" disabled={Boolean(busy)} onClick={() => void commit()}>确认追加并创建下一章草稿</Button> : <><p>已提交 source r{preview.target_source_revision}。</p>{nextDraft && <p>下一章草稿：第 {nextDraft.chapter_number} 章《{nextDraft.title}》 · {nextDraft.id}</p>}<Button className="primary" onClick={() => router.push(`/projects/${project.id}/workspace`)}>进入下一章草稿</Button></>)}</section>}
     <Read title="现有章节来源" breadcrumb="Evidence 可回源" note="历史 Evidence 保持指向原 SourceSpan。" items={chapters.flatMap((chapter) => (chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`}><strong>第 {chapter.number} 章《{chapter.title}》 · {span.label}</strong><span>{span.text_excerpt}</span></li>))} empty="此作品还没有可回源的章节片段。" />
   </section>;
 }
@@ -2934,12 +3140,14 @@ function Read({
   title,
   breadcrumb,
   note,
+  context,
   items,
   empty,
 }: {
   title: string;
   breadcrumb: string;
   note: string;
+  context?: ReactNode;
   items: ReactNode[];
   empty: string;
 }) {
@@ -2952,6 +3160,7 @@ function Read({
           <p>{note}</p>
         </div>
       </header>
+      {context}
       {items.length ? (
         <ul className="read-list">{items}</ul>
       ) : (
@@ -3059,27 +3268,13 @@ function Evidence({
             <I>!</I>没有可解析 Evidence；不能做作者决策。
           </p>
         )}
-        <div className="drawer-actions">
-          <Button
-            className="primary"
-            disabled={readOnly || Boolean(busy) || !evidence.length}
-            onClick={accept}
-          >
-            Accept & edit
-          </Button>
-          <Button
-            disabled={readOnly || Boolean(busy) || !evidence.length}
-            onClick={() => void decide(issue, "keep_intentional")}
-          >
-            Keep intentional
-          </Button>
-          <Button
-            disabled={readOnly || Boolean(busy) || !evidence.length}
-            onClick={() => void decide(issue, "false_positive")}
-          >
-            Mark false positive
-          </Button>
-        </div>
+        {!readOnly && (
+          <div className="drawer-actions">
+            <Button className="primary" disabled={Boolean(busy) || !evidence.length} onClick={accept}>Accept & edit</Button>
+            <Button disabled={Boolean(busy) || !evidence.length} onClick={() => void decide(issue, "keep_intentional")}>Keep intentional</Button>
+            <Button disabled={Boolean(busy) || !evidence.length} onClick={() => void decide(issue, "false_positive")}>Mark false positive</Button>
+          </div>
+        )}
         {readOnly && <p className="readonly">浏览只读：作者决策不可用。</p>}
       </aside>
     </div>

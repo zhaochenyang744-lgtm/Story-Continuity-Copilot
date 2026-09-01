@@ -419,7 +419,7 @@ class Stage13PublicAppTests(unittest.TestCase):
         oversized = ("文" * 350_001).encode("utf-8")
         rejected = self.client.post("/api/imports/preview", headers=idem(), files={"file": ("registered.md", oversized, "text/markdown")})
         self.assertEqual((rejected.status_code, rejected.json()["error"]["code"]), (413, "import_too_large"))
-        own_project = registered.json()["data"]["seeded_projects"][0]["id"]
+        own_project = registered.json()["data"]["onboarding"]["tutorial"]["project_id"]
         own = self.client.get(f"/api/projects/{own_project}").json()["data"]
         rejected_draft = self.client.patch(
             f"/api/projects/{own_project}/drafts/{own['current_draft']['id']}", headers=idem(),

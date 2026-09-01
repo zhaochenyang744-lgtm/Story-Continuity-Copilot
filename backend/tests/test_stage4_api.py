@@ -148,18 +148,19 @@ class Stage4ContractTests(unittest.TestCase):
         self.client = TestClient(create_app(AppPaths.from_project_root(root, protected_poc_root=root / "protected"), provider=UnavailableProvider()))
         result = self.client.post("/api/auth/register", json={"account_name":"authora","display_name":"Author A","password":"safe-password-42"}, headers=key())
         self.assertEqual(result.status_code, 201)
-        self.seed = result.json()["data"]["seeded_projects"]
-        self.grey = self.seed[0]["id"]
+        self.grey = result.json()["data"]["onboarding"]["tutorial"]["project_id"]
 
     def test_auth_and_all_read_contracts_are_account_scoped(self):
         self.assertEqual(self.client.get("/api/auth/session").status_code, 200)
         home = self.client.get("/api/home")
         self.assertEqual(home.status_code, 200)
         home_data = home.json()["data"]
-        self.assertEqual(home_data["continue_work"]["project_title"], "灰港回声")
-        self.assertEqual([item["title"] for item in home_data["recent_projects"]], ["灰港回声", "纸月档案", "零点花园"])
+        self.assertIsNone(home_data["continue_work"])
+        self.assertEqual(home_data["recent_projects"], [])
         projects = self.client.get("/api/projects").json()["data"]["projects"]
-        self.assertEqual(len(projects), 3)
+        self.assertEqual(projects, [])
+        onboarding = self.client.get("/api/onboarding").json()["data"]
+        self.assertEqual((onboarding["real_project_count"], onboarding["tutorial"]["project_id"]), (0, self.grey))
         project = self.client.get(f"/api/projects/{self.grey}").json()["data"]
         self.assertEqual(project["chapter_count"], 10)
         for suffix in ("outline", "characters", "world", "chapters?include=excerpt", "memory"):
@@ -196,7 +197,7 @@ class Stage4ContractTests(unittest.TestCase):
         self.assertEqual((stale.status_code,stale.json()["error"]["code"]),(409,"revision_conflict"))
         unavailable=self.client.post(f"/api/projects/{self.grey}/checks",json={"draft_id":draft['id'],"draft_revision":2},headers=key())
         self.assertEqual((unavailable.status_code,unavailable.json()["error"]["code"]),(503,"provider_unavailable"))
-        other=self.seed[1]["id"]; before=self.client.get(f"/api/projects/{other}").json()["data"]
+        other=self.client.post("/api/projects",json={"title":"Reset Other"},headers=key()).json()["data"]["project"]["id"]; before=self.client.get(f"/api/projects/{other}").json()["data"]
         reset=self.client.post(f"/api/projects/{self.grey}/reset",json={"confirm":True,"reason":"demo_recovery"},headers=key())
         self.assertEqual((reset.status_code,reset.json()["data"]["current_memory_version"]),(200,4))
         after=self.client.get(f"/api/projects/{other}").json()["data"]
@@ -226,7 +227,7 @@ class Stage4ContractTests(unittest.TestCase):
                 return ProviderResult({"issues":[{"claim_span_id":claim["id"],"status":"conflict","category":"object_state","severity":"high","explanation":"测试中的可审阅冲突。","evidence":[{"chapter_id":evidence["chapter_id"],"span_id":evidence["id"],"relation":"contradicts","sufficiency":"sufficient","related_memory_ids":[]}],"proposed_memory_change":{"operation":"add","memory_type":"open_thread","subject":"测试线索","predicate":"status","value":"作者确认","affected_memory_id":None}}]})
         root=pathlib.Path(tempfile.mkdtemp(prefix="scc-stage4-flow-")); app=create_app(AppPaths.from_project_root(root,protected_poc_root=root/"protected"),provider=ScriptedProvider(),executor=lambda fn,*args:fn(*args)); client=TestClient(app)
         registration=client.post("/api/auth/register",json={"account_name":"flowuser","display_name":"Flow","password":"safe-password-45"},headers=key())
-        project_id=registration.json()["data"]["seeded_projects"][0]["id"]
+        project_id=registration.json()["data"]["onboarding"]["tutorial"]["project_id"]
         project=client.get(f"/api/projects/{project_id}").json()["data"]; draft=project["current_draft"]
         created=client.post(f"/api/projects/{project_id}/checks",json={"draft_id":draft["id"],"draft_revision":1},headers=key())
         self.assertEqual(created.status_code,202)
@@ -249,7 +250,7 @@ class Stage4ContractTests(unittest.TestCase):
         root=pathlib.Path(tempfile.mkdtemp(prefix='scc-provenance-'))
         app=create_app(AppPaths.from_project_root(root,protected_poc_root=root/'protected'),provider=Provider(),executor=lambda fn,*args:fn(*args)); client=TestClient(app)
         registered=client.post('/api/auth/register',json={'account_name':'provenance','display_name':'Provenance','password':'safe-password-67'},headers=key()).json()['data']
-        grey=registered['seeded_projects'][0]['id']; other=registered['seeded_projects'][1]['id']; draft=client.get(f'/api/projects/{grey}').json()['data']['current_draft']
+        grey=registered['onboarding']['tutorial']['project_id']; other=client.post('/api/projects',json={'title':'Provenance Other'},headers=key()).json()['data']['project']['id']; draft=client.get(f'/api/projects/{grey}').json()['data']['current_draft']
         legacy,_,_=app.state.database.create_run(registered['user']['id'],grey,{'draft_id':draft['id'],'draft_revision':1},str(uuid.uuid4()),{'provider_label':'contract-provider','model_label':'contract-model-v1','prompt_version':'continuity-review-v1','schema_version':'continuity-issue-v1','retrieval_method_version':'demo-retrieval-v2'})
         app.state.database.finish_run(grey,legacy['run_id'],{'status':'failed','error_code':'provider_error','retryable':True})
         legacy_view=app.state.database.run_view(registered['user']['id'],grey,legacy['run_id'],{'metrics'})
@@ -294,7 +295,7 @@ class Stage4ContractTests(unittest.TestCase):
             else: self.fail('uvicorn did not become ready')
             with httpx.Client(base_url=base,timeout=5) as client:
                 registration=client.post('/api/auth/register',json={'account_name':'slowuser','display_name':'Slow','password':'safe-password-47'},headers=key()); self.assertEqual(registration.status_code,201)
-                project=registration.json()['data']['seeded_projects'][0]['id']; draft=client.get(f'/api/projects/{project}').json()['data']['current_draft']; started=time.monotonic(); queued=client.post(f'/api/projects/{project}/checks',json={'draft_id':draft['id'],'draft_revision':1},headers=key()); elapsed=time.monotonic()-started
+                project=registration.json()['data']['onboarding']['tutorial']['project_id']; draft=client.get(f'/api/projects/{project}').json()['data']['current_draft']; started=time.monotonic(); queued=client.post(f'/api/projects/{project}/checks',json={'draft_id':draft['id'],'draft_revision':1},headers=key()); elapsed=time.monotonic()-started
                 self.assertEqual((queued.status_code,queued.json()['data']['status']),(202,'queued')); self.assertLess(elapsed,1.0); run_id=queued.json()['data']['run_id']
                 for _ in range(40):
                     state=client.get(f'/api/projects/{project}/checks/{run_id}').json()['data']
@@ -312,7 +313,7 @@ class Stage4ContractTests(unittest.TestCase):
             available=True; label='twenty-four-contract'
             def evaluate(_,request): return ProviderResult({'issues':[grounded_issue(request)]})
         root=pathlib.Path(tempfile.mkdtemp(prefix='scc-24-contract-')); client=TestClient(create_app(AppPaths.from_project_root(root,protected_poc_root=root/'protected'),provider=Provider(),executor=lambda fn,*args:fn(*args))); seen={}
-        registration=client.post('/api/auth/register',json={'account_name':'twentyfour','display_name':'Twenty Four','password':'safe-password-48'},headers=key()); seen['register']=registration.status_code; project=registration.json()['data']['seeded_projects'][0]['id']
+        registration=client.post('/api/auth/register',json={'account_name':'twentyfour','display_name':'Twenty Four','password':'safe-password-48'},headers=key()); seen['register']=registration.status_code; project=registration.json()['data']['onboarding']['tutorial']['project_id']
         seen['session']=client.get('/api/auth/session').status_code; seen['login']=client.post('/api/auth/login',json={'account_name':'twentyfour','password':'safe-password-48'}).status_code; seen['home']=client.get('/api/home').status_code; seen['projects']=client.get('/api/projects').status_code
         created=client.post('/api/projects',json={'title':'接口作品'},headers=key()); seen['create_project']=created.status_code; created_id=created.json()['data']['project']['id']; project_read=client.get(f'/api/projects/{created_id}'); seen['project']=project_read.status_code; self.assertEqual(project_read.json()['data']['metadata_revision'],1); self.assertEqual(client.get('/api/projects').json()['data']['projects'][-1]['metadata_revision'],1); seen['project_patch']=client.patch(f'/api/projects/{created_id}',json={'base_metadata_revision':1,'summary':'已更新'},headers=key()).status_code
         seen['outline']=client.get(f'/api/projects/{project}/outline?volume=1').status_code; seen['characters']=client.get(f'/api/projects/{project}/characters?role_type=ally').status_code; seen['world']=client.get(f'/api/projects/{project}/world?entry_type=location').status_code; seen['chapters']=client.get(f'/api/projects/{project}/chapters?include=excerpt').status_code; seen['memory']=client.get(f'/api/projects/{project}/memory?memory_type=static_canon').status_code
@@ -335,7 +336,7 @@ class Stage4ContractTests(unittest.TestCase):
                 except httpx.HTTPError: time.sleep(.05)
             else: self.fail('uvicorn did not become ready')
             with httpx.Client(base_url=base,timeout=5) as client:
-                seen={}; registration=client.post('/api/auth/register',json={'account_name':'uvicorn24','display_name':'Uvicorn','password':'safe-password-49'},headers=key()); seen['register']=registration.status_code; project=registration.json()['data']['seeded_projects'][0]['id']
+                seen={}; registration=client.post('/api/auth/register',json={'account_name':'uvicorn24','display_name':'Uvicorn','password':'safe-password-49'},headers=key()); seen['register']=registration.status_code; project=registration.json()['data']['onboarding']['tutorial']['project_id']
                 seen['session']=client.get('/api/auth/session').status_code; seen['login']=client.post('/api/auth/login',json={'account_name':'uvicorn24','password':'safe-password-49'}).status_code; seen['home']=client.get('/api/home').status_code; seen['projects']=client.get('/api/projects').status_code
                 created=client.post('/api/projects',json={'title':'服务烟测'},headers=key()); seen['create_project']=created.status_code; created_id=created.json()['data']['project']['id']; seen['project']=client.get(f'/api/projects/{created_id}').status_code; seen['project_patch']=client.patch(f'/api/projects/{created_id}',json={'base_metadata_revision':1,'summary':'烟测'},headers=key()).status_code
                 seen['outline']=client.get(f'/api/projects/{project}/outline?volume=1').status_code; seen['characters']=client.get(f'/api/projects/{project}/characters?role_type=ally').status_code; seen['world']=client.get(f'/api/projects/{project}/world?entry_type=location').status_code; seen['chapters']=client.get(f'/api/projects/{project}/chapters?include=excerpt').status_code; seen['memory']=client.get(f'/api/projects/{project}/memory?memory_type=static_canon').status_code
@@ -355,7 +356,7 @@ class Stage4ContractTests(unittest.TestCase):
 class ContinuityRegressionTests(unittest.TestCase):
     def flow(self, provider):
         root=pathlib.Path(tempfile.mkdtemp(prefix='scc-continuity-v2-')); app=create_app(AppPaths.from_project_root(root,protected_poc_root=root/'protected'),provider=provider,executor=lambda fn,*args:fn(*args)); client=TestClient(app)
-        registered=client.post('/api/auth/register',json={'account_name':'continuity','display_name':'Continuity','password':'safe-password-55'},headers=key()).json()['data']; project=registered['seeded_projects'][0]['id']; draft=client.get(f'/api/projects/{project}').json()['data']['current_draft']; run=client.post(f'/api/projects/{project}/checks',json={'draft_id':draft['id'],'draft_revision':1},headers=key()).json()['data']['run_id']; checked=client.get(f'/api/projects/{project}/checks/{run}?include=issues,evidence').json()['data']
+        registered=client.post('/api/auth/register',json={'account_name':'continuity','display_name':'Continuity','password':'safe-password-55'},headers=key()).json()['data']; project=registered['onboarding']['tutorial']['project_id']; draft=client.get(f'/api/projects/{project}').json()['data']['current_draft']; run=client.post(f'/api/projects/{project}/checks',json={'draft_id':draft['id'],'draft_revision':1},headers=key()).json()['data']['run_id']; checked=client.get(f'/api/projects/{project}/checks/{run}?include=issues,evidence').json()['data']
         return app,client,project,draft,run,checked
 
     def test_controlled_edit_lineage_and_false_positive_no_memory_change(self):

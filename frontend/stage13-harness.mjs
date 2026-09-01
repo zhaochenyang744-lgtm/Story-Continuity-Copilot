@@ -30,6 +30,13 @@ const profiles = Object.freeze({
     tempPrefix: "story-stage13-v4-pm3-",
     accountPrefix: "stage13v4pm3",
   }),
+  v110impl: Object.freeze({
+    frontendOrigin: "http://127.0.0.1:3190",
+    backendOrigin: "http://127.0.0.1:8190",
+    distDir: ".next-v110-impl",
+    tempPrefix: "story-v110-impl-",
+    accountPrefix: "v110impl",
+  }),
 });
 
 function isolatedPath(value, profile, name, { root } = {}) {

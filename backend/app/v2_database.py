@@ -96,7 +96,7 @@ def _rewrite_memory_identity(value: str | None, memory_ids: dict[str, str]) -> s
 
 SCHEMA = """
 PRAGMA foreign_keys=ON;
-CREATE TABLE IF NOT EXISTS v2_users(id TEXT PRIMARY KEY,account_name TEXT NOT NULL UNIQUE,display_name TEXT NOT NULL,password_hash TEXT NOT NULL,created_at TEXT NOT NULL,account_type TEXT NOT NULL DEFAULT 'registered',visitor_expires_at TEXT,recovery_email_hash TEXT,recovery_email_masked TEXT,recovery_email_verified_at TEXT);
+CREATE TABLE IF NOT EXISTS v2_users(id TEXT PRIMARY KEY,account_name TEXT NOT NULL UNIQUE,display_name TEXT NOT NULL,password_hash TEXT NOT NULL,created_at TEXT NOT NULL,account_type TEXT NOT NULL DEFAULT 'registered',visitor_expires_at TEXT,recovery_email_hash TEXT,recovery_email_masked TEXT,recovery_email_verified_at TEXT,onboarding_status TEXT NOT NULL DEFAULT 'completed',onboarding_tutorial_project_id TEXT,onboarding_completed_at TEXT);
 CREATE TABLE IF NOT EXISTS v2_sessions(id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),token_hash TEXT NOT NULL UNIQUE,expires_at TEXT NOT NULL,revoked_at TEXT,created_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS v2_projects(id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),title TEXT NOT NULL,genre TEXT NOT NULL DEFAULT '',summary TEXT NOT NULL DEFAULT '',status TEXT NOT NULL,metadata_revision INTEGER NOT NULL,data_origin TEXT NOT NULL,seed_key TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,current_memory_version INTEGER NOT NULL DEFAULT 1,source_revision INTEGER NOT NULL DEFAULT 1);
 CREATE INDEX IF NOT EXISTS v2_projects_by_owner ON v2_projects(user_id,status,updated_at);
@@ -181,6 +181,7 @@ class V2Database:
             self._migrate_stage11k_run_audit_fields(c)
             self._migrate_stage11k_coverage_audit_details(c)
             self._migrate_stage13_identity(c)
+            self._migrate_v110_onboarding(c)
             self._migrate_legacy_project(c)
             self._migrate_stage12_run_lifecycle(c)
 
@@ -204,6 +205,19 @@ class V2Database:
             if name not in columns:
                 c.execute(f"ALTER TABLE v2_users ADD COLUMN {name} {definition}")
         c.execute("CREATE UNIQUE INDEX IF NOT EXISTS v2_users_recovery_email_unique ON v2_users(recovery_email_hash) WHERE recovery_email_hash IS NOT NULL")
+
+    def _migrate_v110_onboarding(self, c: sqlite3.Connection) -> None:
+        """Add opt-in tutorial state without changing any existing account or project."""
+        columns = {row["name"] for row in c.execute("PRAGMA table_info(v2_users)")}
+        additions = {
+            "onboarding_status": "TEXT NOT NULL DEFAULT 'completed'",
+            "onboarding_tutorial_project_id": "TEXT",
+            "onboarding_completed_at": "TEXT",
+        }
+        for name, definition in additions.items():
+            if name not in columns:
+                c.execute(f"ALTER TABLE v2_users ADD COLUMN {name} {definition}")
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(110,?)", (utcnow(),))
 
     def _migrate_run_provenance(self, c: sqlite3.Connection) -> None:
         """Add safe, version-only Run provenance without rewriting old results."""
@@ -708,22 +722,33 @@ class V2Database:
                     raise DomainError("recovery_email_unavailable", 409)
                 user_id = new_id("usr")
                 c.execute(
-                    "INSERT INTO v2_users(id,account_name,display_name,password_hash,created_at,recovery_email_hash,recovery_email_masked) VALUES(?,?,?,?,?,?,?)",
+                    "INSERT INTO v2_users(id,account_name,display_name,password_hash,created_at,recovery_email_hash,recovery_email_masked,onboarding_status) VALUES(?,?,?,?,?,?,?,'active')",
                     (user_id,account_name,display_name,_password(password),utcnow(),payload.get("recovery_email_hash"),payload.get("recovery_email_masked")),
                 )
-                seeded = []
-                seed_times = {
-                    "grey_harbor": "2026-08-26T09:43:00+00:00",
-                    "paper_moon": "2026-08-25T16:20:00+00:00",
-                    "zero_garden": "2026-08-24T11:05:00+00:00",
-                }
-                for seed_key, title, genre, summary in (("grey_harbor","灰港回声","悬疑","潮图修复师追查被改写的航线记录。"),("paper_moon","纸月档案","奇幻","档案修复员追查消失的纸月。"),("zero_garden","零点花园","科幻","夜班园丁记录零点开放的花。")):
-                    project_id = self._create_project(c,user_id,title,genre,summary,"demo_seed",seed_key)
-                    seed_time = seed_times[seed_key]
-                    c.execute("UPDATE v2_projects SET created_at=?,updated_at=? WHERE id=?", (seed_time, seed_time, project_id))
-                    seeded.append({"id":project_id,"seed_key":seed_key,"title":title})
+                tutorial_id = self._create_project(
+                    c,
+                    user_id,
+                    "教学模式 · 灰港回声",
+                    "悬疑 · 教学样例",
+                    "隔离的确定性教学作品；不计入真实作品、搜索或待处理事项。",
+                    "tutorial_seed",
+                    "grey_harbor",
+                )
+                c.execute(
+                    "UPDATE v2_users SET onboarding_tutorial_project_id=? WHERE id=?",
+                    (tutorial_id, user_id),
+                )
                 token, expires_at = self._new_session(c, user_id)
-                return {"user":{"id":user_id,"account_name":account_name,"display_name":display_name},"session":{"expires_at":expires_at,"_token":token},"seeded_projects":seeded}
+                return {
+                    "user":{"id":user_id,"account_name":account_name,"display_name":display_name},
+                    "session":{"expires_at":expires_at,"_token":token},
+                    "seeded_projects":[],
+                    "onboarding":{
+                        "status":"active",
+                        "real_project_count":0,
+                        "tutorial":{"project_id":tutorial_id,"title":"教学模式 · 灰港回声","data_origin":"tutorial_seed"},
+                    },
+                }
             data, status, created = self._idem(c, f"register:{account_name}", "register", key, payload, create, 201, with_created=True)
             if "_token" not in data.get("session", {}):
                 token, expires_at = self._new_session(c, data["user"]["id"])
@@ -783,10 +808,115 @@ class V2Database:
             with self.connection() as c:
                 c.execute("UPDATE v2_sessions SET revoked_at=? WHERE token_hash=? AND revoked_at IS NULL", (utcnow(),hashlib.sha256(raw_token.encode()).hexdigest()))
 
+    # --- v1.1.0 first-run tutorial ---
+    def onboarding(self, user_id: str) -> dict[str, Any]:
+        with self.connection() as c:
+            user = c.execute(
+                "SELECT account_type,onboarding_status,onboarding_tutorial_project_id,onboarding_completed_at FROM v2_users WHERE id=?",
+                (user_id,),
+            ).fetchone()
+            if not user:
+                raise DomainError("authentication_required", 401)
+            real_count = c.execute(
+                "SELECT COUNT(*) FROM v2_projects WHERE user_id=? AND data_origin!='tutorial_seed'",
+                (user_id,),
+            ).fetchone()[0]
+            tutorial = None
+            tutorial_id = user["onboarding_tutorial_project_id"]
+            if tutorial_id:
+                row = c.execute(
+                    "SELECT id,title,status,data_origin FROM v2_projects WHERE id=? AND user_id=? AND data_origin='tutorial_seed'",
+                    (tutorial_id, user_id),
+                ).fetchone()
+                if row:
+                    tutorial = {
+                        "project_id": row["id"],
+                        "title": row["title"],
+                        "status": row["status"],
+                        "data_origin": row["data_origin"],
+                    }
+            return {
+                "status": user["onboarding_status"],
+                "real_project_count": real_count,
+                "tutorial": tutorial,
+                "completed_at": user["onboarding_completed_at"],
+                "show_first_run": user["account_type"] == "registered" and user["onboarding_status"] == "active" and real_count == 0,
+            }
+
+    def finish_onboarding(self, user_id: str, outcome: str, payload: dict[str, Any], key: str):
+        if outcome not in {"completed", "skipped"}:
+            raise DomainError("invalid_request", 400)
+        with self.connection() as c:
+            def finish() -> dict[str, Any]:
+                if payload.get("confirm") is not True:
+                    raise DomainError("confirmation_required", 400)
+                user = c.execute("SELECT account_type FROM v2_users WHERE id=?", (user_id,)).fetchone()
+                if not user:
+                    raise DomainError("authentication_required", 401)
+                if user["account_type"] != "registered":
+                    raise DomainError("tutorial_unavailable", 409)
+                stamp = utcnow()
+                c.execute(
+                    "UPDATE v2_users SET onboarding_status=?,onboarding_completed_at=? WHERE id=?",
+                    (outcome, stamp, user_id),
+                )
+                return {"status": outcome, "completed_at": stamp, "real_project_count": c.execute("SELECT COUNT(*) FROM v2_projects WHERE user_id=? AND data_origin!='tutorial_seed'", (user_id,)).fetchone()[0]}
+            return self._idem(c, user_id, f"onboarding_{outcome}", key, payload, finish, 200)
+
+    def reopen_onboarding(self, user_id: str, payload: dict[str, Any], key: str):
+        if payload.get("confirm") is not True:
+            raise DomainError("confirmation_required", 400)
+        with self.connection() as c:
+            user = c.execute(
+                "SELECT account_type,onboarding_tutorial_project_id FROM v2_users WHERE id=?",
+                (user_id,),
+            ).fetchone()
+            if not user:
+                raise DomainError("authentication_required", 401)
+            if user["account_type"] != "registered":
+                raise DomainError("tutorial_unavailable", 409)
+            tutorial_id = user["onboarding_tutorial_project_id"]
+        if tutorial_id:
+            self.reset(user_id, tutorial_id, {"confirm": True, "reason": "demo_recovery"}, key)
+        with self.connection() as c:
+            def reopen() -> dict[str, Any]:
+                current_id = tutorial_id
+                exists = current_id and c.execute(
+                    "SELECT 1 FROM v2_projects WHERE id=? AND user_id=? AND data_origin='tutorial_seed'",
+                    (current_id, user_id),
+                ).fetchone()
+                if not exists:
+                    current_id = self._create_project(
+                        c,
+                        user_id,
+                        "教学模式 · 灰港回声",
+                        "悬疑 · 教学样例",
+                        "隔离的确定性教学作品；不计入真实作品、搜索或待处理事项。",
+                        "tutorial_seed",
+                        "grey_harbor",
+                    )
+                else:
+                    c.execute(
+                        "UPDATE v2_projects SET title='教学模式 · 灰港回声',genre='悬疑 · 教学样例',summary='隔离的确定性教学作品；不计入真实作品、搜索或待处理事项。',status='active',metadata_revision=metadata_revision+1,updated_at=? WHERE id=?",
+                        (utcnow(), current_id),
+                    )
+                c.execute(
+                    "UPDATE v2_users SET onboarding_status='active',onboarding_tutorial_project_id=?,onboarding_completed_at=NULL WHERE id=?",
+                    (current_id, user_id),
+                )
+                return {"status": "active", "tutorial": {"project_id": current_id, "title": "教学模式 · 灰港回声", "data_origin": "tutorial_seed"}}
+            return self._idem(c, user_id, "onboarding_reopen", key, payload, reopen, 200)
+
+    def _complete_onboarding_for_real_project(self, c: sqlite3.Connection, user_id: str) -> None:
+        c.execute(
+            "UPDATE v2_users SET onboarding_status='completed',onboarding_completed_at=COALESCE(onboarding_completed_at,?) WHERE id=? AND account_type='registered' AND onboarding_status='active'",
+            (utcnow(), user_id),
+        )
+
     # --- project read/lifecycle implementation ---
     def home(self, user_id: str) -> dict[str, Any]:
         with self.connection() as c:
-            projects = c.execute("SELECT * FROM v2_projects WHERE user_id=? AND status!='archived' ORDER BY updated_at DESC", (user_id,)).fetchall()
+            projects = c.execute("SELECT * FROM v2_projects WHERE user_id=? AND status!='archived' AND data_origin!='tutorial_seed' ORDER BY updated_at DESC", (user_id,)).fetchall()
             recent, pending, continuation = [], [], None
             for project in projects:
                 draft = c.execute("SELECT * FROM v2_drafts WHERE project_id=? ORDER BY saved_at DESC LIMIT 1", (project["id"],)).fetchone()
@@ -798,7 +928,7 @@ class V2Database:
                 pending.append({"project_id":project["id"],"title":project["title"],"open_count":issue_count,"continuity_status":continuity_status,**levels})
                 if continuation is None and draft:
                     continuation = {"project_id":project["id"],"project_title":project["title"],"draft_id":draft["id"],"draft_title":draft["title"],"draft_revision":draft["revision"],"next_action":"continue_draft","updated_at":project["updated_at"]}
-            failed=c.execute("SELECT r.id,r.project_id,r.status,r.error_code,r.created_at FROM v2_runs r JOIN v2_projects p ON p.id=r.project_id WHERE p.user_id=? AND r.status IN ('failed','timed_out') ORDER BY r.created_at DESC LIMIT 1",(user_id,)).fetchone()
+            failed=c.execute("SELECT r.id,r.project_id,r.status,r.error_code,r.created_at FROM v2_runs r JOIN v2_projects p ON p.id=r.project_id WHERE p.user_id=? AND p.data_origin!='tutorial_seed' AND r.status IN ('failed','timed_out') ORDER BY r.created_at DESC LIMIT 1",(user_id,)).fetchone()
             latest={"run_id":failed["id"],"project_id":failed["project_id"],"status":failed["status"],"error_code":failed["error_code"],"created_at":failed["created_at"]} if failed else None
             return {"continue_work":continuation,"recent_projects":recent,"pending_continuity":pending,"latest_failed_run":latest}
 
@@ -806,7 +936,7 @@ class V2Database:
         if status not in {None,"active","paused","completed","archived"} or sort not in {None,"updated_desc","title_asc"}:
             raise DomainError("invalid_filter", 400)
         with self.connection() as c:
-            sql, values = "SELECT * FROM v2_projects WHERE user_id=?", [user_id]
+            sql, values = "SELECT * FROM v2_projects WHERE user_id=? AND data_origin!='tutorial_seed'", [user_id]
             if status:
                 sql += " AND status=?"; values.append(status)
             else:
@@ -831,6 +961,7 @@ class V2Database:
                 if not 1 <= len(title) <= 80 or len(summary) > 500:
                     raise DomainError("project_invalid", 422)
                 project_id = self._create_project(c,user_id,title,genre,summary,"user_created")
+                self._complete_onboarding_for_real_project(c, user_id)
                 draft = c.execute("SELECT * FROM v2_drafts WHERE project_id=?", (project_id,)).fetchone()
                 return {"project":{"id":project_id,"title":title,"genre":genre,"summary":summary,"status":"active","current_memory_version":1,"current_draft":{"id":draft["id"],"chapter_number":1,"revision":1,"status":"draft"}},"created_resources":{"outline":True,"characters":True,"world":True}}
             return self._idem(c,user_id,"create_project",key,payload,create,201)
@@ -841,7 +972,7 @@ class V2Database:
             draft = c.execute("SELECT id,chapter_number,revision,status FROM v2_drafts WHERE project_id=? AND status IN ('draft','saved') ORDER BY saved_at DESC LIMIT 1", (project_id,)).fetchone()
             run = c.execute("SELECT id,status,created_at,result_origin FROM v2_runs WHERE project_id=? ORDER BY created_at DESC,rowid DESC LIMIT 1", (project_id,)).fetchone()
             open_count=c.execute("SELECT COUNT(*) FROM v2_issues WHERE project_id=? AND status='open'",(project_id,)).fetchone()[0]
-            return {"id":project["id"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"chapter_count":c.execute("SELECT COUNT(*) FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0],"outline_progress":0,"current_memory_version":project["current_memory_version"],"source_revision":project["source_revision"],"current_draft":dict(draft) if draft else None,"latest_run":({"run_id":run["id"],"status":run["status"],"created_at":run["created_at"],"result_origin":run["result_origin"]} if run else None),"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if run and run["status"]=="completed" else "unchecked"),"updated_at":project["updated_at"],"data_origin":project["data_origin"],"memory_initialization_status":self._memory_initialization_status(c,project_id,project["data_origin"]) }
+            return {"id":project["id"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"chapter_count":c.execute("SELECT COUNT(*) FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0],"outline_progress":0,"current_memory_version":project["current_memory_version"],"source_revision":project["source_revision"],"current_draft":dict(draft) if draft else None,"latest_run":({"run_id":run["id"],"status":run["status"],"created_at":run["created_at"],"result_origin":run["result_origin"]} if run else None),"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if run and run["status"]=="completed" else "unchecked"),"updated_at":project["updated_at"],"data_origin":project["data_origin"],"is_tutorial":project["data_origin"]=="tutorial_seed","memory_initialization_status":self._memory_initialization_status(c,project_id,project["data_origin"]) }
 
     def outline(self, user_id: str, project_id: str) -> dict[str, Any]:
         with self.connection() as c:
@@ -1778,7 +1909,7 @@ class V2Database:
                 c.execute("DELETE FROM v2_drafts WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_memory_records WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_memory_versions WHERE project_id=?",(project_id,))
-                if project["data_origin"]=="demo_seed":
+                if project["data_origin"] in {"demo_seed", "tutorial_seed"}:
                     c.execute("DELETE FROM v2_characters WHERE project_id=?",(project_id,))
                     c.execute("DELETE FROM v2_world_entries WHERE project_id=?",(project_id,))
                     c.execute("DELETE FROM v2_outline_nodes WHERE project_id=?",(project_id,))
@@ -1850,6 +1981,7 @@ class V2Database:
                 title,summary,genre=str(payload.get("title","")).strip(),str(payload.get("summary","")).strip(),str(payload.get("genre","")).strip()
                 if not title or len(title)>80 or len(summary)>500: raise DomainError("project_invalid",422)
                 project_id=self._create_project(c,user_id,title,genre,summary,"user_import",imported=chapters)
+                self._complete_onboarding_for_real_project(c, user_id)
                 draft=c.execute("SELECT * FROM v2_drafts WHERE project_id=?",(project_id,)).fetchone()
                 c.execute("UPDATE v2_import_drafts SET committed_at=?,source_text=NULL WHERE id=?",(utcnow(),import_id))
                 return {"project":{"id":project_id,"title":title,"data_origin":"user_import","status":"active","current_memory_version":1,"memory_initialization_status":"required","current_draft":{"id":draft["id"],"chapter_number":draft["chapter_number"],"revision":1}},"import":{"chapter_count":len(chapters),"source_span_count":len(chapters),"sha256":imported["sha256"],"status":"completed"}}

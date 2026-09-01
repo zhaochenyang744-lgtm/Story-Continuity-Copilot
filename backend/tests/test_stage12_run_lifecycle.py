@@ -87,8 +87,8 @@ class Stage12RunLifecycleTests(unittest.TestCase):
         self.app = create_app(AppPaths.from_project_root(self.root, protected_poc_root=self.root / "protected"), provider=self.provider, executor=self.executor)
         self.client = TestClient(self.app)
         registered = self.client.post("/api/auth/register", json={"account_name": "lifecycle-author", "display_name": "Lifecycle", "password": "safe-password-123"}, headers=idem()).json()["data"]
-        self.project = registered["seeded_projects"][0]["id"]
-        self.other_project = registered["seeded_projects"][1]["id"]
+        self.project = registered["onboarding"]["tutorial"]["project_id"]
+        self.other_project = self.client.post("/api/projects", json={"title": "Lifecycle Other"}, headers=idem()).json()["data"]["project"]["id"]
         self.draft = self.client.get(f"/api/projects/{self.project}").json()["data"]["current_draft"]
 
     def counts(self):

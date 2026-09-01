@@ -502,7 +502,7 @@ class Stage11BoundedContextTests(unittest.TestCase):
         root = pathlib.Path(tempfile.mkdtemp(prefix="scc-stage11-run-atomic-"))
         db = V2Database(AppPaths.from_project_root(root, protected_poc_root=root / "protected")); db.initialize()
         registered, _ = db.register({"account_name": "stage11run", "display_name": "Stage 11", "password": "stage11-safe-password"}, str(uuid.uuid4()))
-        user = registered["user"]["id"]; project = registered["seeded_projects"][0]["id"]
+        user = registered["user"]["id"]; project = registered["onboarding"]["tutorial"]["project_id"]
         draft = db.project(user, project)["current_draft"]
         body = "甲" * 600 + "。" + "乙" * 600 + "。" + "丙" * 600 + "。"
         patched, _ = db.patch_draft(user, project, draft["id"], {"title": "Stage 11 bounded", "body": body, "base_revision": draft["revision"]}, str(uuid.uuid4()))
