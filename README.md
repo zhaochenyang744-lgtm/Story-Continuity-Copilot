@@ -1,10 +1,17 @@
-# Story Continuity Copilot v1.0 Public Release
+# Story Continuity Copilot v1.2.0
 
-Story Continuity Copilot v1.0 Public Release is a deployed long-form fiction continuity review product. It combines versioned Story Memory with a continuity agent that returns grounded findings for an author to review. It does not write the next chapter: the author remains responsible for the text and explicitly decides whether a proposed Memory change becomes canon.
+Story Continuity Copilot v1.2.0 is the current repository version of a long-form fiction continuity review product. It combines versioned Story Memory with a continuity agent that returns grounded findings for an author to review. It does not write the next chapter: the author remains responsible for the text and explicitly decides whether a proposed Memory change becomes canon.
 
-The signed product name is **Story Continuity Copilot v1.0 Public Release**. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility; they are not alternate product-release names.
+The signed Stage 14 public-production baseline remains **Story Continuity Copilot v1.0 Public Release**. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility. The current source version is v1.2.0; deployment status should be verified against the public origin rather than inferred from the repository alone.
 
 The repository is designed for local reproduction. It contains the application source, migration and seed logic, tests, sanitised V4–V8 evaluation result records, and a small set of production-workflow screenshots. It does not include runtime databases, environment files, provider credentials, raw provider responses, recorded runtime prompt bodies, chain-of-thought, or protected evaluation assets. Full V5–V8 post-run database-hash validation therefore also requires the separately retained local evaluation workspaces; the committed result files alone do not recreate those SQLite artifacts.
+
+## v1.2.0 update
+
+- New registered accounts receive one isolated tutorial sample instead of three preset real works. The sample is excluded from real-work counts, search, recent works, and pending-issue summaries; completing or skipping the tutorial returns the account to an empty real workspace.
+- The tutorial is a five-step author workflow covering Story Memory sources, continuity issues, Evidence, and an explicit Author Decision. Business progress is stored on the backend with version binding, CSRF protection, idempotency, monotonic revisions, and cross-login restoration; transient hints and focus effects remain client-only.
+- The non-login workspace uses a wider, responsive authoring layout, a compact mobile read-only mode, clearer page actions and empty states, reduced nested framing, and three locally bundled WebP narrative assets instead of large illustrative SVG compositions.
+- Independent local acceptance passed the backend suite (156/156), the v1.2 browser workflow (1/1), the frozen v1.1 regression (5/5), frontend contracts (27/27), lint, typecheck, and the production build.
 
 ## Product overview
 
@@ -17,7 +24,7 @@ The author workflow is:
 5. Accept, reject, or edit proposed Memory changes. A ChangeSet records the decision; only accepted changes update canon.
 6. Use project Reset to restore the seeded review path when a fresh demonstration is needed.
 
-Three independently seeded projects are available: **Grey Harbor Echoes**, **Paper Moon Archive**, and **Midnight Garden**. Their project data, Memory, drafts, and review state are isolated per account and per project.
+Visitor demo spaces retain three independently seeded projects: **Grey Harbor Echoes**, **Paper Moon Archive**, and **Midnight Garden**. New registered accounts instead receive the isolated **Grey Harbor Echoes** tutorial sample described above. Project data, Memory, drafts, and review state remain isolated per account and per project.
 
 ## Product and safety boundaries
 
@@ -41,6 +48,7 @@ The public product story is organised around six milestones. Historical Stage id
 | Agent Reliability | Six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero partial business writes on non-completion | Stage 12 |
 | Web App Readiness | Visitor isolation, quotas, cleanup, recovery contracts, reproducible packaging, and browser/security verification | Stage 13 |
 | Public Release v1.0 | Signed after the frozen Required Gates A–G passed at the public origin | Stage 14 |
+| Product Iteration v1.2.0 | Isolated first-run tutorial, durable progress, responsive authoring UI, bitmap narrative assets, and local regression acceptance | v1.2.0 tests |
 
 The published repository baseline is the frozen **V4** set: 15 original, balanced three-class cases across three isolated corpora, plus 6 stability reruns. All 21 runs completed.
 
@@ -160,7 +168,7 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 
 ## Known limitations
 
-- The currently verified delivery is the signed `Story Continuity Copilot v1.0 Public Release`. This is a product-release acceptance claim, not a commercial SLA or a claim that the retained Stage 10 `gate_failed` evaluation was later passed.
+- The signed Stage 14 production baseline is `Story Continuity Copilot v1.0 Public Release`; the current repository source is v1.2.0. Neither statement is a commercial SLA or a claim that the retained Stage 10 `gate_failed` evaluation was later passed.
 - Real SMTP delivery, email verification, password reset, old-session revocation, new-password login, and used-link replay rejection have been accepted at the public origin. Email credentials and addresses remain server-only.
 - V4 is a small, frozen product evaluation; it supports the stated evaluation claims only and is not a general benchmark.
 - Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.
