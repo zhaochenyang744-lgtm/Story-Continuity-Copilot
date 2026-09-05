@@ -50,7 +50,7 @@ class Stage13Provider:
         if request.get("task") == "memory_delta":
             source = request["sources"][0]
             return ProviderResult(
-                {"candidates": [{"memory_type": "open_thread", "subject": "潮汐门", "predicate": "status", "value": "等待作者确认", "chapter_id": source["chapter_id"], "source_span_id": source["id"]}]},
+                {"candidates": [{"change_kind": "new_fact", "affected_memory_id": None, "memory_type": "open_thread", "subject": "潮汐门", "predicate": "status", "value": "等待作者确认", "invalidation_reason": None, "chapter_id": source["chapter_id"], "source_span_id": source["id"]}]},
                 input_tokens=40, output_tokens=20, cost_cny=None, latency_ms=10,
             )
         body = request["draft"]["body"]

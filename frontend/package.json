@@ -8,16 +8,18 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "build": "next build",
-    "test:build-origin": "node --test tests/build-origin.test.mjs tests/build-id.test.mjs tests/public-config.test.mjs tests/stage13-harness.test.mjs tests/stage13-v4-policy.test.mjs tests/stage13-v4-runtime.test.mjs tests/stage14-deployment.test.mjs",
+    "test:build-origin": "node --test tests/build-origin.test.mjs tests/build-id.test.mjs tests/public-config.test.mjs tests/stage13-harness.test.mjs tests/stage13-v4-policy.test.mjs tests/stage13-v4-runtime.test.mjs tests/stage14-deployment.test.mjs tests/v130-allowlist-consistency.test.mjs tests/v130-harness.test.mjs tests/v130-release-scan.test.mjs",
     "verify:build-manifest": "node scripts/assert-api-rewrite.mjs",
     "verify:stage13-v4-artifact": "node scripts/stage13-v4-policy.mjs",
     "compare:stage13-v4-artifacts": "node scripts/stage13-v4-compare.mjs",
     "verify:stage13-v4-runtime": "node scripts/stage13-v4-runtime-scan.mjs",
     "start:stage13-v4-artifact": "node scripts/start-stage13-v4-artifact.mjs",
     "verify:stage14-bundle": "node scripts/stage14-bundle-scan.mjs",
+    "verify:v130-allowlist": "node scripts/v130-allowlist-consistency.mjs",
     "test:e2e": "playwright test",
     "test:v110": "playwright test --config playwright.v110.config.ts",
-    "test:v120": "playwright test --config playwright.v120.config.ts"
+    "test:v120": "playwright test --config playwright.v120.config.ts",
+    "test:v130": "node scripts/run-v130-local-rc.mjs"
   },
   "dependencies": {
     "next": "^16.3.3",

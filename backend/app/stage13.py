@@ -412,7 +412,7 @@ class Stage13Service:
     def account(self, user_id: str) -> dict[str, Any]:
         with self.database.connection() as c:
             row = c.execute(
-                "SELECT id,account_name,display_name,account_type,visitor_expires_at,recovery_email_hash,recovery_email_masked,recovery_email_verified_at "
+                "SELECT id,account_name,display_name,account_type,visitor_expires_at,recovery_email_hash,recovery_email_masked,recovery_email_verified_at,avatar_preset,profile_revision "
                 "FROM v2_users WHERE id=?",
                 (user_id,),
             ).fetchone()
@@ -420,12 +420,14 @@ class Stage13Service:
                 raise DomainError("authentication_required", 401)
             return dict(row)
 
-    def safe_user(self, user_id: str) -> dict[str, Any]:
-        row = self.account(user_id)
+    @staticmethod
+    def _safe_user(row: dict[str, Any]) -> dict[str, Any]:
         return {
             "id": row["id"],
             "account_name": row["account_name"],
             "display_name": row["display_name"],
+            "avatar_preset": row["avatar_preset"],
+            "profile_revision": row["profile_revision"],
             "account_type": row["account_type"],
             "visitor_expires_at": row["visitor_expires_at"],
             "recovery_email": {
@@ -434,6 +436,37 @@ class Stage13Service:
                 "masked": row["recovery_email_masked"],
             },
         }
+
+    def safe_user(self, user_id: str) -> dict[str, Any]:
+        return self._safe_user(self.account(user_id))
+
+    def update_profile(self, user_id: str, payload: dict[str, Any], idempotency_key: str) -> tuple[dict[str, Any], int]:
+        display_name = str(payload.get("display_name", "")).strip()
+        normalized = {**payload, "display_name": display_name}
+        if not 1 <= len(display_name) <= 60:
+            raise DomainError("invalid_request", 400)
+        with self.database.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def update() -> dict[str, Any]:
+                row = c.execute("SELECT * FROM v2_users WHERE id=?", (user_id,)).fetchone()
+                if not row:
+                    raise DomainError("authentication_required", 401)
+                if row["account_type"] != "registered":
+                    raise DomainError("profile_update_not_allowed", 403)
+                if int(row["profile_revision"]) != int(normalized["base_profile_revision"]):
+                    raise DomainError("profile_revision_conflict", 409, details={"current_profile_revision": int(row["profile_revision"])})
+                revision = int(row["profile_revision"]) + 1
+                c.execute(
+                    "UPDATE v2_users SET display_name=?,avatar_preset=?,profile_revision=? WHERE id=?",
+                    (display_name, normalized["avatar_preset"], revision, user_id),
+                )
+                updated = c.execute(
+                    "SELECT id,account_name,display_name,account_type,visitor_expires_at,recovery_email_hash,recovery_email_masked,recovery_email_verified_at,avatar_preset,profile_revision FROM v2_users WHERE id=?",
+                    (user_id,),
+                ).fetchone()
+                return {"user": self._safe_user(dict(updated))}
+            data, status = self.database._idem(c, f"profile:{user_id}", "update", idempotency_key, normalized, update)
+            return data, status
 
     def create_visitor(self, existing_token: str | None) -> dict[str, Any]:
         if existing_token:
@@ -474,6 +507,8 @@ class Stage13Service:
                     "id": user_id,
                     "account_name": account_name,
                     "display_name": display_name,
+                    "avatar_preset": "continuity_violet",
+                    "profile_revision": 1,
                     "account_type": "visitor",
                     "visitor_expires_at": expires,
                     "recovery_email": {"configured": False, "verified": False, "masked": None},
@@ -748,13 +783,16 @@ class Stage13Service:
                     for draft_id in draft_ids:
                         c.execute("DELETE FROM v2_draft_revisions WHERE draft_id=?", (draft_id,))
                     for table in (
+                        "v2_revision_candidate_decisions", "v2_revision_task_versions", "v2_revision_tasks", "v2_revision_plan_candidates",
                         "v2_evidence", "v2_decisions", "v2_issues", "v2_commit_audits", "v2_change_set_items",
                         "v2_change_sets", "v2_reset_audits", "v2_source_coverage_audits", "v2_memory_delta_decisions",
                         "v2_memory_delta_candidates", "v2_memory_delta_batches", "v2_source_change_set_audits",
                         "v2_source_change_sets", "v2_memory_candidate_decisions", "v2_memory_candidates",
-                        "v2_memory_initializations", "v2_runs", "v2_drafts", "v2_memory_records",
+                        "v2_memory_initializations", "v2_analysis_results", "v2_analysis_inputs", "v2_runs", "v2_drafts", "v2_memory_records",
                         "v2_memory_versions", "v2_source_spans", "v2_chapters", "v2_world_entries", "v2_characters",
-                        "v2_outline_nodes",
+                        "v2_outline_nodes", "v2_author_story_plan_versions", "v2_author_character_plan_versions",
+                        "v2_author_world_plan_versions", "v2_author_context_versions", "v2_author_story_plans",
+                        "v2_author_character_plans", "v2_author_world_plans",
                     ):
                         c.execute(f"DELETE FROM {table} WHERE project_id=?", (project_id,))
                     c.execute("DELETE FROM v2_projects WHERE id=?", (project_id,))

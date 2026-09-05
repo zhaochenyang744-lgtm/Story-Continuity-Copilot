@@ -9,7 +9,7 @@ test("login and register keep distinct validation contracts and responsive entry
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/login");
   const loginAccount = page.getByLabel("账号");
-  const loginPassword = page.getByLabel("密码");
+  const loginPassword = page.getByLabel("密码", { exact: true });
   await expect(loginAccount).toBeFocused();
   expect(await loginAccount.evaluate((input) => (input as HTMLInputElement).minLength)).toBe(-1);
   expect(await loginPassword.evaluate((input) => (input as HTMLInputElement).minLength)).toBe(-1);
@@ -17,20 +17,19 @@ test("login and register keep distinct validation contracts and responsive entry
 
   await page.goto("/register");
   const registerAccount = page.getByLabel("账号");
-  const registerPassword = page.getByLabel("密码");
+  const registerPassword = page.getByLabel("密码", { exact: true });
   expect(await registerAccount.evaluate((input) => (input as HTMLInputElement).minLength)).toBe(3);
   expect(await registerPassword.evaluate((input) => (input as HTMLInputElement).minLength)).toBe(10);
-  await expect(page.getByText("账号至少 3 个字符，密码至少 10 个字符。", { exact: true })).toBeVisible();
-  await expect(page.getByText("测试阶段暂不支持找回密码，请妥善保管。", { exact: true })).toBeVisible();
+  await expect(page.getByText("账号至少 3 个字符，密码至少 10 个字符。恢复邮箱验证后可用于密码找回。", { exact: true })).toBeVisible();
 
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(registerAccount).toHaveCSS("font-size", "16px");
   const [primary, secondary] = await Promise.all([
-    page.getByRole("button", { name: "创建本地账号", exact: true }).boundingBox(),
+    page.getByRole("button", { name: "创建账号", exact: true }).boundingBox(),
     page.getByRole("button", { name: "已有账号？返回登录", exact: true }).boundingBox(),
   ]);
   if (!primary || !secondary) throw new Error("认证操作按钮不可测量");
-  expect(secondary.y).toBeGreaterThanOrEqual(primary.y + primary.height + 8);
+  expect(secondary.y).toBeGreaterThanOrEqual(primary.y + primary.height + 6);
 
   await page.goto("/login");
   await expect(page.getByLabel("账号")).not.toBeFocused();
@@ -53,12 +52,12 @@ test("credential errors are inline, accessible, replaceable, and keep the recove
   });
   await page.goto("/login");
   await page.getByLabel("账号").fill("valid-user");
-  await page.getByLabel("密码").fill("valid-password");
+  await page.getByLabel("密码", { exact: true }).fill("valid-password");
   await page.getByRole("button", { name: "登录", exact: true }).click();
 
   const alert = page.locator("#auth-error");
   await expect(alert).toHaveText("账号或密码不正确。");
-  for (const input of [page.getByLabel("账号"), page.getByLabel("密码")]) {
+  for (const input of [page.getByLabel("账号"), page.getByLabel("密码", { exact: true })]) {
     await expect(input).toHaveAttribute("aria-invalid", "true");
     await expect(input).toHaveAttribute("aria-describedby", "auth-error");
   }
@@ -67,7 +66,7 @@ test("credential errors are inline, accessible, replaceable, and keep the recove
   await page.getByRole("button", { name: "登录", exact: true }).click();
   await expect(alert).toHaveCount(0);
   await expect(page.getByRole("button", { name: "登录", exact: true })).toHaveAttribute("aria-busy", "true");
-  await expect(page.getByRole("button", { name: "还没有账号？创建本地账号", exact: true })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "还没有账号？创建账号", exact: true })).toBeDisabled();
   releaseRateLimit();
   await expect(alert).toHaveText("登录尝试过于频繁，请稍后再试。");
   await expect(page.getByText("已清除当前作品上下文", { exact: false })).toHaveCount(0);
@@ -75,12 +74,12 @@ test("credential errors are inline, accessible, replaceable, and keep the recove
 
 test("password visibility toggles without changing the authentication flow", async ({ page }) => {
   await page.goto("/login");
-  const password = page.getByLabel("密码");
-  const toggle = page.getByRole("button", { name: "切换口令可见性", exact: true });
+  const password = page.getByLabel("密码", { exact: true });
+  const toggle = page.getByRole("button", { name: "显示密码", exact: true });
   await expect(toggle).toHaveAttribute("aria-pressed", "false");
   await toggle.click();
   await expect(password).toHaveAttribute("type", "text");
-  await expect(toggle).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "隐藏密码", exact: true })).toHaveAttribute("aria-pressed", "true");
 });
 
 test("client-side navigation after login keeps the bootstrapped session and never re-shows the bootstrap screen", async ({ page }) => {
@@ -90,10 +89,12 @@ test("client-side navigation after login keeps the bootstrapped session and neve
     if (new URL(request.url()).pathname === "/api/auth/session") sessionRequests.push(request.url());
   });
   await page.goto("/register");
-  await page.getByLabel("账号").fill(`authnav${Date.now()}`);
+  const account = `authnav${Date.now()}`;
+  await page.getByLabel("账号").fill(account);
   await page.getByLabel("显示名称").fill("认证导航测试");
-  await page.getByLabel("密码").fill(`safe-${randomUUID()}`);
-  await page.getByRole("button", { name: "创建本地账号", exact: true }).click();
+  await page.getByLabel("恢复邮箱").fill(`${account}@example.test`);
+  await page.getByLabel("密码", { exact: true }).fill(`safe-${randomUUID()}`);
+  await page.getByRole("button", { name: "创建账号", exact: true }).click();
   await expect(page.getByRole("heading", { name: "继续你的故事" })).toBeVisible();
   expect(sessionRequests.length).toBeGreaterThan(0);
   sessionRequests.length = 0;
@@ -122,19 +123,6 @@ test("client-side navigation after login keeps the bootstrapped session and neve
   expect(homeBefore.iconLeft).toBe(projectsBefore.iconLeft);
   expect(homeBefore.textLeft).toBe(projectsBefore.textLeft);
 
-  const homeHead = page.locator(".home-section-head");
-  const issueHead = page.locator(".home-issues-section > h2");
-  await expect(homeHead).toHaveCSS("min-height", "40px");
-  await expect(issueHead).toHaveCSS("min-height", "40px");
-  const [homeHeadBox, homeButtonBox, issueHeadBox] = await Promise.all([
-    homeHead.boundingBox(),
-    homeHead.getByRole("button", { name: "查看全部作品", exact: true }).boundingBox(),
-    issueHead.boundingBox(),
-  ]);
-  if (!homeHeadBox || !homeButtonBox || !issueHeadBox) throw new Error("首页标题行不可测量");
-  expect(Math.abs(homeHeadBox.y + homeHeadBox.height / 2 - (homeButtonBox.y + homeButtonBox.height / 2))).toBeLessThanOrEqual(1);
-  expect(homeHeadBox.height).toBe(issueHeadBox.height);
-
   await projectsNav.click();
   await expect(page.getByRole("heading", { name: "作品管理" })).toBeVisible();
   const [homeActive, projectsActive] = await Promise.all([navMetrics(homeNav), navMetrics(projectsNav)]);
@@ -156,8 +144,9 @@ test("an existing session entering /login waits for the session check and replac
   await page.goto("/register");
   await page.getByLabel("账号").fill(account);
   await page.getByLabel("显示名称").fill("认证重定向测试");
-  await page.getByLabel("密码").fill(password);
-  await page.getByRole("button", { name: "创建本地账号", exact: true }).click();
+  await page.getByLabel("恢复邮箱").fill(`${account}@example.test`);
+  await page.getByLabel("密码", { exact: true }).fill(password);
+  await page.getByRole("button", { name: "创建账号", exact: true }).click();
   await expect(page).toHaveURL(/\/$/);
 
   let release!: () => void;

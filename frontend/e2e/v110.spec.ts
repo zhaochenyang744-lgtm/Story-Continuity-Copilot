@@ -81,8 +81,8 @@ test("login fits a 1366x720 viewport with in-field password controls", async ({ 
 test("visual system uses an accessible manuscript mark, role-based fonts, and reduced static frames", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await register(page, "v110visual");
-  await expect(page.locator("svg.brand-mark")).toHaveCount(1);
-  await expect(page.locator("svg.brand-mark")).toHaveAttribute("aria-label", "Story Continuity 品牌标志");
+  await expect(page.locator(".global-nav img.brand-lockup")).toHaveCount(1);
+  await expect(page.locator(".global-nav img.brand-lockup")).toHaveAttribute("alt", "Story Continuity");
   const fonts = await page.evaluate(() => ({
     body: getComputedStyle(document.body).fontFamily,
     heading: getComputedStyle(document.querySelector("h1")!).fontFamily,
@@ -94,7 +94,7 @@ test("visual system uses an accessible manuscript mark, role-based fonts, and re
 
   await page.getByRole("button", { name: "开始教学", exact: true }).click();
   await expect(page.getByRole("heading", { name: "教学模式 · 灰港回声", exact: true })).toBeVisible();
-  const staticPanelStyles = await page.locator(".overview-page .overview-panel").evaluateAll((nodes) => nodes.map((node) => {
+  const primaryPanelStyles = await page.locator(".overview-page .overview-primary-card").evaluateAll((nodes) => nodes.map((node) => {
     const style = getComputedStyle(node);
     return {
       borderRadius: style.borderRadius,
@@ -102,10 +102,22 @@ test("visual system uses an accessible manuscript mark, role-based fonts, and re
       boxShadow: style.boxShadow,
     };
   }));
-  expect(staticPanelStyles).toHaveLength(4);
-  expect(staticPanelStyles.every((style) =>
-    style.borderRadius === "0px" &&
-    style.backgroundImage === "none" &&
+  const referencePanelStyles = await page.locator(".overview-page .overview-reference-card").evaluateAll((nodes) => nodes.map((node) => {
+    const style = getComputedStyle(node);
+    return {
+      borderRadius: style.borderRadius,
+      boxShadow: style.boxShadow,
+    };
+  }));
+  expect(primaryPanelStyles).toHaveLength(2);
+  expect(primaryPanelStyles.every((style) =>
+    style.borderRadius === "12px" &&
+    style.backgroundImage.includes("linear-gradient") &&
+    style.boxShadow !== "none"
+  )).toBe(true);
+  expect(referencePanelStyles).toHaveLength(3);
+  expect(referencePanelStyles.every((style) =>
+    style.borderRadius === "10px" &&
     style.boxShadow === "none"
   )).toBe(true);
 });
@@ -144,7 +156,7 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   await expect(page.getByRole("button", { name: "Reset 当前作品", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "完成当前章节", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "运行连续性检查", exact: true })).toHaveCount(0);
-  const staticPanelStyles = await page.locator(".overview-page .overview-panel").evaluateAll((nodes) => nodes.map((node) => {
+  const primaryPanelStyles = await page.locator(".overview-page .overview-primary-card").evaluateAll((nodes) => nodes.map((node) => {
     const style = getComputedStyle(node);
     return {
       borderLeftWidth: style.borderLeftWidth,
@@ -154,12 +166,28 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
       boxShadow: style.boxShadow,
     };
   }));
-  expect(staticPanelStyles).toHaveLength(4);
-  expect(staticPanelStyles.every((style) =>
-    style.borderLeftWidth === "0px" &&
-    style.borderRightWidth === "0px" &&
-    style.borderRadius === "0px" &&
-    style.backgroundImage === "none" &&
+  const referencePanelStyles = await page.locator(".overview-page .overview-reference-card").evaluateAll((nodes) => nodes.map((node) => {
+    const style = getComputedStyle(node);
+    return {
+      borderLeftWidth: style.borderLeftWidth,
+      borderRightWidth: style.borderRightWidth,
+      borderRadius: style.borderRadius,
+      boxShadow: style.boxShadow,
+    };
+  }));
+  expect(primaryPanelStyles).toHaveLength(2);
+  expect(primaryPanelStyles.every((style) =>
+    style.borderLeftWidth === "1px" &&
+    style.borderRightWidth === "1px" &&
+    style.borderRadius === "12px" &&
+    style.backgroundImage.includes("linear-gradient") &&
+    style.boxShadow !== "none"
+  )).toBe(true);
+  expect(referencePanelStyles).toHaveLength(3);
+  expect(referencePanelStyles.every((style) =>
+    style.borderLeftWidth === "1px" &&
+    style.borderRightWidth === "1px" &&
+    style.borderRadius === "10px" &&
     style.boxShadow === "none"
   )).toBe(true);
   await page.screenshot({ path: path.join(outputDir, "390-tutorial-step1.png"), fullPage: true });
@@ -297,7 +325,8 @@ test("account menu avoids duplicate identity text and keeps keyboard focus behav
   const menu = page.getByRole("menu", { name: "用户菜单", exact: true });
   await expect(menu.getByText(account, { exact: true })).toHaveCount(0);
   await expect(menu.locator("small")).toHaveCount(0);
-  await expect(menu.locator("svg.ui-icon")).toHaveCount(3);
+  await expect(menu.getByRole("menuitem")).toHaveText(["个人信息", "账号安全", "重新打开教学", "退出登录"]);
+  await expect(menu.locator("svg.ui-icon")).toHaveCount(4);
   const [triggerBox, menuBox] = await Promise.all([trigger.boundingBox(), menu.boundingBox()]);
   if (!triggerBox || !menuBox) throw new Error("account menu is not measurable");
   expect(Math.abs(triggerBox.width - menuBox.width)).toBeLessThanOrEqual(1);

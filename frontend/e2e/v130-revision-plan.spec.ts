@@ -1,0 +1,180 @@
+import { expect, test, type APIResponse, type Page, type Request } from "@playwright/test";
+import { randomUUID } from "node:crypto";
+import path from "node:path";
+
+const backendOrigin=process.env.E2E_BACKEND_ORIGIN;
+if(!backendOrigin)throw new Error("E2E_BACKEND_ORIGIN is required");
+const accountPrefix=process.env.E2E_ACCOUNT_PREFIX;
+if(!accountPrefix)throw new Error("E2E_ACCOUNT_PREFIX is required");
+type Envelope<T>={data:T};
+async function data<T>(response:APIResponse){expect(response.ok(),await response.text()).toBe(true);return ((await response.json()) as Envelope<T>).data;}
+async function register(page:Page){
+  const account=`${accountPrefix}revision${Date.now()}${Math.floor(Math.random()*1000)}`.toLowerCase();
+  await page.goto("/register");
+  await page.getByLabel("账号").fill(account);
+  await page.getByLabel("显示名称").fill("修订闭环验收作者");
+  await page.getByLabel("恢复邮箱").fill(`${account}@example.test`);
+  await page.locator('input[name="password"]').fill(`safe-${randomUUID()}`);
+  await page.getByRole("button",{name:"创建账号",exact:true}).click();
+  await expect(page.getByRole("heading",{name:"继续你的故事",exact:true})).toBeVisible();
+}
+async function snap(page:Page,name:string){if(process.env.E2E_OUTPUT_DIR)await page.screenshot({path:path.join(process.env.E2E_OUTPUT_DIR,name),fullPage:true});}
+
+test("v1.3.0 revision suggestions create bounded persistent tasks while edits, saves, and rechecks stay explicit",async({page})=>{
+  const consoleErrors:string[]=[],pageErrors:string[]=[],requestErrors:string[]=[];
+  type RequestPhase="steady"|"recheck-binding-change";
+  let projectId="",requestPhase:RequestPhase="steady",expectedRefreshAborts=0;
+  const requestStarts=new WeakMap<Request,{phase:RequestPhase;startedAt:number}>();
+  const isRevisionPlanList=(request:Request)=>{
+    const url=new URL(request.url());
+    return Boolean(projectId)&&request.method()==="GET"&&url.pathname===`/api/projects/${projectId}/analyses`&&url.searchParams.get("analysis_type")==="revision_plan";
+  };
+  page.on("console",message=>{if(message.type()==="error")consoleErrors.push(message.text());});
+  page.on("pageerror",error=>pageErrors.push(error.message));
+  page.on("request",request=>{if(isRevisionPlanList(request))requestStarts.set(request,{phase:requestPhase,startedAt:performance.now()});});
+  page.on("requestfailed",request=>{
+    const failed=`${request.method()} ${request.url()} ${request.failure()?.errorText??""}`;
+    const start=requestStarts.get(request);
+    if(start?.phase==="recheck-binding-change"&&Number.isFinite(start.startedAt)&&isRevisionPlanList(request)&&request.failure()?.errorText==="net::ERR_ABORTED")expectedRefreshAborts+=1;
+    else requestErrors.push(failed);
+  });
+  await page.setViewportSize({width:1366,height:900});
+  const statsBefore=await (await page.request.get(`${backendOrigin}/api/test/stage12/stats`)).json() as {provider_http_calls:number};
+  await register(page);
+  const onboarding=await data<{tutorial:{project_id:string}}>(await page.request.get(`${backendOrigin}/api/onboarding`));
+  projectId=onboarding.tutorial.project_id;
+  const originalProject=await data<{current_memory_version:number;current_draft:{id:string;revision:number};latest_run:{run_id:string}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));
+  const originalRun=await data<{issues:{id:string;status:string;decision:unknown}[]}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}/checks/${originalProject.latest_run.run_id}?include=issues,evidence`));
+
+  await page.goto(`/projects/${projectId}/workspace`);
+  const tools=page.getByRole("region",{name:"修订计划与任务"});
+  await expect(tools).toBeVisible();
+  const editorBox=await page.locator(".workspace-grid").boundingBox(),toolBox=await tools.boundingBox();
+  expect(editorBox&&toolBox&&editorBox.y<toolBox.y).toBe(true);
+  await tools.locator(":scope > summary").click();
+  const picker=page.getByRole("region",{name:"从连续性问题生成修订建议"});
+  await expect(picker.locator('.revision-issue-picker input[type="checkbox"]')).toHaveCount(4);
+  for(const checkbox of await picker.locator('.revision-issue-picker input[type="checkbox"]').all())await checkbox.check();
+  await picker.getByRole("button",{name:"生成修订建议（4）",exact:true}).click();
+  await expect(picker.getByText("已把作者选择的问题整理为可审阅修订建议。",{exact:true})).toBeVisible();
+  const candidates=picker.locator(".revision-candidate");
+  await expect(candidates).toHaveCount(4);
+  const candidateEvidence=candidates.first().locator(".bounded-source-links a").first();
+  const candidateHref=await candidateEvidence.getAttribute("href");
+  expect(candidateHref).toMatch(new RegExp(`/projects/${projectId}/sources#span-`));
+  const candidateTarget=new URL(candidateHref!,page.url()).hash.slice(1);
+  await candidateEvidence.click();
+  await expect(page).toHaveURL(new RegExp(`/projects/${projectId}/sources#span-`));
+  const candidateAnchor=page.locator(`[id="${candidateTarget}"]`);await expect(candidateAnchor).toBeVisible();
+  expect(await candidateAnchor.evaluate(node=>{const box=node.getBoundingClientRect();return box.top<window.innerHeight&&box.bottom>0;})).toBe(true);
+  await page.goto(`/projects/${projectId}/workspace`);await expect(tools).toBeVisible();await tools.locator(":scope > summary").click();
+
+  const first=candidates.nth(0),second=candidates.nth(1),third=candidates.nth(2),fourth=candidates.nth(3);
+  await first.getByRole("button",{name:"接受并创建任务",exact:true}).click();
+  await expect(first).toContainText("作者已接受");
+  await second.getByText("编辑后接受",{exact:true}).click();
+  await second.getByLabel("任务标题").fill("作者编辑后的时间线修订");
+  await second.getByLabel("行动说明").fill("先核对章节时间线，再由作者手动修改当前正文。");
+  await second.getByLabel("优先级").selectOption("low");
+  await second.getByRole("button",{name:"编辑后创建任务",exact:true}).click();
+  await expect(second).toContainText("编辑后接受");
+  await third.getByRole("button",{name:"拒绝",exact:true}).click();
+  await expect(third).toContainText("作者已拒绝");
+  await expect(fourth).toContainText("待作者决定");
+
+  const taskPanel=page.getByRole("region",{name:"持久修订任务"});
+  const taskCards=taskPanel.locator(".revision-task");
+  await expect(taskCards).toHaveCount(2);
+  await expect(taskCards.nth(1)).toContainText("作者编辑后的时间线修订");
+  const tasksAfterDecision=await data<{task_version:number;tasks:{id:string;issue_id:string;status:string;version:number}[]}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}/revision-tasks?include_completed=true`));
+  expect(tasksAfterDecision.task_version).toBe(2);
+  expect(tasksAfterDecision.tasks.map(task=>task.status)).toEqual(["todo","todo"]);
+  const originalAfterDecisions=await data<{issues:{id:string;status:string;decision:unknown}[]}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}/checks/${originalProject.latest_run.run_id}?include=issues,evidence`));
+  expect(originalAfterDecisions.issues.map(issue=>[issue.id,issue.status,issue.decision])).toEqual(originalRun.issues.map(issue=>[issue.id,issue.status,issue.decision]));
+  const projectAfterDecisions=await data<{current_memory_version:number;latest_run:{run_id:string}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));
+  expect(projectAfterDecisions.current_memory_version).toBe(originalProject.current_memory_version);
+  expect(projectAfterDecisions.latest_run.run_id).toBe(originalProject.latest_run.run_id);
+
+  await fourth.getByText("编辑后接受",{exact:true}).click();
+  await fourth.getByLabel("任务标题").fill("冲突后仍保留的候选编辑");
+  await fourth.getByLabel("行动说明").fill("这个未提交输入不能被任务刷新静默覆盖。");
+  const externalTaskUpdate=await page.request.patch(`${backendOrigin}/api/projects/${projectId}/revision-tasks/${tasksAfterDecision.tasks[0].id}`,{headers:{"Idempotency-Key":randomUUID()},data:{base_version:tasksAfterDecision.tasks[0].version,status:"in_progress"}});
+  expect(externalTaskUpdate.status()).toBe(200);
+  const conflictResponse=page.waitForResponse(response=>response.request().method()==="PATCH"&&new URL(response.url()).pathname.endsWith(`/revision-tasks/${tasksAfterDecision.tasks[0].id}`)&&response.status()===409);
+  await taskCards.first().getByLabel(/任务进度$/).selectOption("completed");
+  expect((await conflictResponse).status()).toBe(409);
+  await expect(tools.getByRole("alert")).toContainText("候选编辑内容仍保留");
+  await expect(fourth.getByLabel("任务标题")).toHaveValue("冲突后仍保留的候选编辑");
+  await tools.getByRole("button",{name:"载入最新任务",exact:true}).click();
+  await expect(tools.getByText(/已载入最新任务与候选状态/)).toBeVisible();
+  await expect(fourth.getByLabel("任务标题")).toHaveValue("冲突后仍保留的候选编辑");
+  await expect(taskCards.first()).toContainText("进行中");
+  await expect.poll(()=>consoleErrors.filter(message=>message.includes("409 (Conflict)")).length).toBe(1);
+  expect(consoleErrors.every(message=>message.includes("409 (Conflict)"))).toBe(true);
+  consoleErrors.length=0;
+
+  await taskCards.first().getByRole("button",{name:"回到同一草稿",exact:true}).click();
+  await expect(page.locator("#draft-body")).toBeFocused();
+  const draftBody=page.locator("#draft-body");
+  await draftBody.fill(`${await draftBody.inputValue()}\n作者依据修订任务手动完成这一处叙述。`);
+  await expect(tools.getByText(/当前草稿有未保存修改/)).toBeVisible();
+  await expect(taskPanel.getByRole("button",{name:"显式重新检查",exact:true})).toBeDisabled();
+  const dirtyValue=await draftBody.inputValue();
+  await taskCards.first().locator(".bounded-source-links a").first().click();
+  const unsavedDialog=page.getByRole("dialog",{name:"未保存草稿"});
+  await expect(unsavedDialog).toBeVisible();
+  await unsavedDialog.getByRole("button",{name:"取消",exact:true}).click();
+  await expect(page).toHaveURL(new RegExp(`/projects/${projectId}/workspace$`));
+  await expect(draftBody).toHaveValue(dirtyValue);
+  await page.getByRole("button",{name:"保存草稿",exact:true}).click();
+  await expect(page.getByText("✓ 已保存",{exact:true})).toBeVisible();
+  await expect(picker.locator(".revision-run").first().getByText("依据已变化",{exact:true})).toBeVisible();
+  await expect(taskCards).toHaveCount(2);
+
+  const firstTask=taskCards.first();
+  await firstTask.getByLabel(/任务进度$/).selectOption("completed");
+  await expect(firstTask).toContainText("已完成");
+  await expect(tools.getByText(/不会自动复检或修改 Story Memory/)).toBeVisible();
+  const beforeExplicitRecheck=await data<{current_memory_version:number;latest_run:{run_id:string}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));
+  expect(beforeExplicitRecheck.latest_run.run_id).toBe(originalProject.latest_run.run_id);
+  expect(beforeExplicitRecheck.current_memory_version).toBe(originalProject.current_memory_version);
+  const issuesBeforeRecheck=await data<{issues:{status:string;decision:unknown}[]}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}/checks/${originalProject.latest_run.run_id}?include=issues,evidence`));
+  expect(issuesBeforeRecheck.issues.every(issue=>issue.status==="open"&&issue.decision==null)).toBe(true);
+
+  const recheckResponse=page.waitForResponse(response=>response.request().method()==="POST"&&new URL(response.url()).pathname===`/api/projects/${projectId}/checks`);
+  const revisionPlanRefresh=page.waitForResponse(response=>response.request().method()==="GET"&&new URL(response.url()).pathname===`/api/projects/${projectId}/analyses`&&new URL(response.url()).searchParams.get("analysis_type")==="revision_plan"&&response.status()===200);
+  requestPhase="recheck-binding-change";
+  await taskPanel.getByRole("button",{name:"显式重新检查",exact:true}).click();
+  expect((await recheckResponse).status()).toBe(202);
+  await expect.poll(async()=>{const project=await data<{latest_run:{run_id:string}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));return project.latest_run.run_id;}).not.toBe(originalProject.latest_run.run_id);
+  expect((await revisionPlanRefresh).status()).toBe(200);
+  requestPhase="steady";
+  expect(expectedRefreshAborts).toBeLessThanOrEqual(1);
+  await expect(taskCards).toHaveCount(2);
+  const oldTaskEvidence=taskCards.first().locator(".bounded-source-links a").first();
+  const oldTaskHref=await oldTaskEvidence.getAttribute("href");
+  expect(oldTaskHref).toMatch(new RegExp(`/projects/${projectId}/sources#span-`));
+  const oldTaskTarget=new URL(oldTaskHref!,page.url()).hash.slice(1);
+  await oldTaskEvidence.click();
+  await expect(page).toHaveURL(new RegExp(`/projects/${projectId}/sources#span-`));
+  const oldTaskAnchor=page.locator(`[id="${oldTaskTarget}"]`);await expect(oldTaskAnchor).toBeVisible();
+  expect(await oldTaskAnchor.evaluate(node=>{const box=node.getBoundingClientRect();return box.top<window.innerHeight&&box.bottom>0;})).toBe(true);
+  await page.goto(`/projects/${projectId}/workspace`);await expect(tools).toBeVisible();await tools.locator(":scope > summary").click();
+  await page.waitForLoadState("networkidle");
+  await snap(page,"revision-plan-01-desktop-1366.png");
+
+  await page.setViewportSize({width:390,height:844});
+  await page.reload();
+  await expect(tools).toBeVisible();
+  await tools.locator(":scope > summary").click();
+  await expect(taskPanel.getByText("作者编辑后的时间线修订",{exact:true})).toBeVisible();
+  await expect(tools.locator("form, fieldset, select, input, textarea")).toHaveCount(0);
+  await expect(tools.getByRole("button",{name:/生成修订建议|接受并创建任务|编辑后创建任务|拒绝|回到同一草稿|显式重新检查|取消|重试/})).toHaveCount(0);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+  await snap(page,"revision-plan-02-mobile-390.png");
+  const statsAfter=await (await page.request.get(`${backendOrigin}/api/test/stage12/stats`)).json() as {provider_http_calls:number};
+  expect(statsAfter.provider_http_calls).toBe(statsBefore.provider_http_calls);
+  expect(statsAfter.provider_http_calls).toBe(0);
+  expect(expectedRefreshAborts).toBeLessThanOrEqual(1);
+  expect(consoleErrors).toEqual([]);expect(pageErrors).toEqual([]);expect(requestErrors).toEqual([]);
+});

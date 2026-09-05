@@ -37,6 +37,19 @@ class InjectedProvider:
         if "claims" in request:
             return ProviderResult({"issues": []}, 3, 2, None, 1)
         source = request["sources"][0]
+        if request.get("task") == "memory_delta":
+            affected = request["memory"][0]
+            return ProviderResult({"candidates": [{
+                "change_kind": "changed_fact",
+                "affected_memory_id": affected["id"],
+                "memory_type": affected["memory_type"],
+                "subject": affected["subject"],
+                "predicate": affected["predicate"],
+                "value": f"受控状态{self.request_attempts}",
+                "invalidation_reason": None,
+                "chapter_id": source["chapter_id"],
+                "source_span_id": source["id"],
+            }]}, 3, 2, None, 1)
         return ProviderResult({"candidates": [{"memory_type": "dynamic_state", "subject": "测试作者", "predicate": "status", "value": f"受控状态{self.request_attempts}", "chapter_id": source["chapter_id"], "source_span_id": source["id"]}]}, 3, 2, None, 1)
 
 

@@ -51,6 +51,15 @@ class ScopedRegressionTests(unittest.TestCase):
         response=self.c.post(f'/api/imports/{preview["import_id"]}/commit',json={'confirm':True,'title':'不会导入','chapter_preview_ids':[item['preview_id'] for item in preview['detected']['chapters']]},headers=h())
         self.assertEqual((response.status_code,response.json()['error']['code']),(409,'import_expired'))
         with db.connection() as connection: self.assertIsNone(connection.execute('SELECT source_text FROM v2_import_drafts WHERE id=?',(preview['import_id'],)).fetchone()[0]); self.assertEqual(connection.execute('SELECT COUNT(*) FROM v2_projects').fetchone()[0],before)
+    def test_cancel_import_removes_temporary_source_without_creating_project(self):
+        preview=self.c.post('/api/imports/preview',files={'file':('cancel.md','# 第一章\n尚未确认的临时原文'.encode(),'text/markdown')},headers=h()).json()['data']; db=self.c.app.state.database
+        with db.connection() as connection: self.assertIsNotNone(connection.execute('SELECT source_text FROM v2_import_drafts WHERE id=?',(preview['import_id'],)).fetchone()[0])
+        outsider=TestClient(self.c.app); outsider.post('/api/auth/register',json={'account_name':'canceloutsider','display_name':'Cancel Outsider','password':'valid-password-98'},headers=h()); rejected=outsider.post(f'/api/imports/{preview["import_id"]}/cancel',json={'confirm':True},headers=h()); self.assertEqual((rejected.status_code,rejected.json()['error']['code']),(404,'import_not_found'))
+        with db.connection() as connection: before_projects=connection.execute('SELECT COUNT(*) FROM v2_projects').fetchone()[0]
+        headers=h(); cancelled=self.c.post(f'/api/imports/{preview["import_id"]}/cancel',json={'confirm':True},headers=headers); replay=self.c.post(f'/api/imports/{preview["import_id"]}/cancel',json={'confirm':True},headers=headers)
+        self.assertEqual((cancelled.status_code,cancelled.json()['data']['status']),(200,'cancelled')); self.assertEqual(replay.json()['data'],cancelled.json()['data'])
+        with db.connection() as connection: self.assertIsNone(connection.execute('SELECT 1 FROM v2_import_drafts WHERE id=?',(preview['import_id'],)).fetchone()); self.assertEqual(connection.execute('SELECT COUNT(*) FROM v2_projects').fetchone()[0],before_projects)
+        commit=self.c.post(f'/api/imports/{preview["import_id"]}/commit',json={'confirm':True,'title':'不会创建','chapter_preview_ids':[item['preview_id'] for item in preview['detected']['chapters']]},headers=h()); self.assertEqual((commit.status_code,commit.json()['error']['code']),(404,'import_not_found'))
     def test_metadata_requires_archive_confirmation(self): self.assertEqual(self.c.patch(f'/api/projects/{self.p}',json={"base_metadata_revision":1,"status":"archived"},headers=h()).status_code,400)
     def test_cross_account_project_is_not_found(self):
         outsider=TestClient(self.c.app); outsider.post('/api/auth/register',json={"account_name":"secondu","display_name":"Second","password":"valid-password-98"},headers=h()); self.assertEqual(outsider.get(f'/api/projects/{self.p}').status_code,404)

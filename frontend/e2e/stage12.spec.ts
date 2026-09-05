@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 const lifecycle = (page: Page) => page.getByLabel("Agent Run 生命周期");
-const fixture = path.resolve(process.cwd(), "e2e/fixtures/stage9-mist-harbor.md");
+const fixture = path.resolve(process.cwd(), "frontend/e2e/fixtures/stage9-mist-harbor.md");
 const accountPrefix = process.env.E2E_ACCOUNT_PREFIX;
 if (!accountPrefix?.startsWith("stage12v2")) {
   throw new Error("E2E_ACCOUNT_PREFIX must start with stage12v2");
@@ -14,9 +14,10 @@ async function registerAndOpen(page: Page, prefix: string) {
   await page.goto("/register");
   await page.getByLabel("账号").fill(`${accountPrefix}-${prefix}-${Date.now()}`);
   await page.getByLabel("显示名称").fill("阶段十二作者");
-  await page.getByLabel("密码").fill(`safe-${randomUUID()}`);
+  await page.getByLabel("恢复邮箱").fill(`${accountPrefix}-${prefix}-${Date.now()}@example.test`);
+  await page.locator("#auth-password").fill(`safe-${randomUUID()}`);
   const registration = page.waitForResponse((response) => response.request().method() === "POST" && new URL(response.url()).pathname === "/api/auth/register");
-  await page.getByRole("button", { name: "创建本地账号" }).click();
+  await page.getByRole("button", { name: "创建账号", exact: true }).click();
   expect((await registration).status()).toBe(201);
   await expect(page.getByRole("heading", { name: "继续你的故事" })).toBeVisible();
   await page.goto("/projects");
@@ -62,8 +63,9 @@ async function prepareIncrementalProject(page: Page, marker = "") {
   await page.goto("/register");
   await page.getByLabel("账号").fill(`${accountPrefix}-pair-${Date.now()}`);
   await page.getByLabel("显示名称").fill("阶段十二增量作者");
-  await page.getByLabel("密码").fill(`safe-${randomUUID()}`);
-  await page.getByRole("button", { name: "创建本地账号" }).click();
+  await page.getByLabel("恢复邮箱").fill(`${accountPrefix}-pair-${Date.now()}@example.test`);
+  await page.locator("#auth-password").fill(`safe-${randomUUID()}`);
+  await page.getByRole("button", { name: "创建账号", exact: true }).click();
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
   await page.getByRole("button", { name: "导入作品", exact: true }).click();
   await page.locator('input[name="file"]').setInputFiles({
@@ -249,13 +251,14 @@ test.describe("Stage 12 Agent Run lifecycle", () => {
     await outsider.goto("/register");
     await outsider.getByLabel("账号").fill(`${accountPrefix}-isolation-outsider-${Date.now()}`);
     await outsider.getByLabel("显示名称").fill("隔离账号");
-    await outsider.getByLabel("密码").fill(`safe-${randomUUID()}`);
+    await outsider.getByLabel("恢复邮箱").fill(`${accountPrefix}-outsider-${Date.now()}@example.test`);
+    await outsider.locator("#auth-password").fill(`safe-${randomUUID()}`);
     const outsiderRegistered = outsider.waitForResponse(
       (response) =>
         new URL(response.url()).pathname === "/api/auth/register" &&
         response.request().method() === "POST",
     );
-    await outsider.getByRole("button", { name: "创建本地账号" }).click();
+    await outsider.getByRole("button", { name: "创建账号", exact: true }).click();
     expect((await outsiderRegistered).status()).toBe(201);
     await expect(outsider.getByRole("heading", { name: "继续你的故事" })).toBeVisible();
     const crossAccount = await outsider.request.post(

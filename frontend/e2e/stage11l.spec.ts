@@ -5,7 +5,7 @@ import path from "node:path";
 
 const fixture = path.resolve(
   process.cwd(),
-  "e2e/fixtures/stage9-mist-harbor.md",
+  "frontend/e2e/fixtures/stage9-mist-harbor.md",
 );
 
 async function api(page: Page, url: string) {
@@ -18,8 +18,9 @@ async function initializedProject(page: Page) {
   await page.goto("/register");
   await page.getByLabel("账号").fill(account);
   await page.getByLabel("显示名称").fill("11L 作者");
-  await page.getByLabel("密码").fill(password);
-  await page.getByRole("button", { name: "创建本地账号" }).click();
+  await page.getByLabel("恢复邮箱").fill(`${account}@example.test`);
+  await page.locator("#auth-password").fill(password);
+  await page.getByRole("button", { name: "创建账号", exact: true }).click();
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
   await page.getByRole("button", { name: "导入作品", exact: true }).click();
   await page
@@ -147,7 +148,7 @@ async function start(page: Page, id: string, revision: number) {
   );
   await page
     .locator(".warning")
-    .filter({ hasText: `Source r${revision}` })
+    .filter({ hasText: `资料版本第 ${revision} 版` })
     .getByRole("button", { name: "运行增量检查" })
     .click();
   const response = await started;
@@ -179,12 +180,12 @@ async function start(page: Page, id: string, revision: number) {
 
 async function submitCore(page: Page, edit = false) {
   await page
-    .getByRole("button", { name: "打开 Delta 审核与 Evidence" })
+    .getByRole("button", { name: "打开更新审核与证据" })
     .click();
   const review = page.getByRole("form", { name: "Memory Delta 审核" });
   const cores = review
-    .locator("article.memory-init-candidate")
-    .filter({ hasText: "核心候选（必须决定）" });
+    .locator("article.memory-delta-candidate")
+    .filter({ hasText: "核心变化 · 必须决定" });
   await expect(cores.first()).toBeVisible();
   const coreCount = await cores.count();
   expect(coreCount).toBeGreaterThan(0);
@@ -201,7 +202,7 @@ async function submitCore(page: Page, edit = false) {
         new URL(response.url()).pathname,
       ) && response.request().method() === "POST",
   );
-  await review.getByRole("button", { name: "提交已决定的核心候选" }).click();
+  await review.getByRole("button", { name: "确认提交并更新 Story Memory" }).click();
   expect((await commit).status()).toBe(200);
 }
 
@@ -229,9 +230,9 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
     "# 追加章节\n第一轮：林默将银钥匙交给守塔人。",
   );
   const first = await start(page, author.id, 2);
-  await expect(page.getByRole("heading", { name: /Issues/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /连续性问题/ })).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Memory Delta" }),
+    page.getByRole("region", { name: "Memory 更新建议" }),
   ).toBeVisible();
   for (const runId of [first.continuity_run_id, first.memory_delta_run_id]) {
     const run = await api(
@@ -249,20 +250,20 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
   await page.locator(".issue-list button").first().click();
   const drawer = page.getByRole("dialog", { name: "问题证据" });
   await expect(drawer).toBeVisible();
-  await expect(drawer.getByText("Evidence", { exact: true })).toBeVisible();
+  await expect(drawer.getByText("证据", { exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(drawer).toBeHidden();
   await page
-    .getByRole("button", { name: "打开 Delta 审核与 Evidence" })
+    .getByRole("button", { name: "打开更新审核与证据" })
     .click();
   const firstReview = page.getByRole("form", { name: "Memory Delta 审核" });
   await firstReview
-    .getByRole("button", { name: "提交已决定的核心候选" })
+    .getByRole("button", { name: "确认提交并更新 Story Memory" })
     .click();
   await expect(page.locator(".feedback.error")).toContainText("请求未完成");
   const firstCores = firstReview
-    .locator("article.memory-init-candidate")
-    .filter({ hasText: "核心候选（必须决定）" });
+    .locator("article.memory-delta-candidate")
+    .filter({ hasText: "核心变化 · 必须决定" });
   await expect(firstCores.first()).toBeVisible();
   const firstCoreCount = await firstCores.count();
   expect(firstCoreCount).toBeGreaterThan(0);
@@ -275,7 +276,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
     /\/memory\/deltas\/[^/]+\/commit$/.test(new URL(response.url()).pathname),
   );
   await firstReview
-    .getByRole("button", { name: "提交已决定的核心候选" })
+    .getByRole("button", { name: "确认提交并更新 Story Memory" })
     .click();
   expect((await firstCommit).status()).toBe(200);
   const afterFirst = await api(page, `/api/projects/${author.id}/memory`);
@@ -315,7 +316,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
   expect((await loggedOut).status()).toBe(204);
   await page.waitForURL(/\/login$/);
   await page.getByLabel("账号").fill(author.account);
-  await page.getByLabel("密码").fill(author.password);
+  await page.locator("#auth-password").fill(author.password);
   await page.getByRole("button", { name: "登录" }).click();
   await expect
     .poll(
@@ -390,7 +391,7 @@ test("390 is browse-only for the prepared incremental review", async ({
   );
   await start(page, author.id, 2);
   await page
-    .getByRole("button", { name: "打开 Delta 审核与 Evidence" })
+    .getByRole("button", { name: "打开更新审核与证据" })
     .click();
   await page.setViewportSize({ width: 390, height: 844 });
   const review = page.getByRole("form", { name: "Memory Delta 审核" });
@@ -398,7 +399,7 @@ test("390 is browse-only for the prepared incremental review", async ({
   for (const control of await review.locator("input,select,textarea").all())
     await expect(control).toBeDisabled();
   await expect(
-    review.getByRole("button", { name: "提交已决定的核心候选" }),
+    review.getByRole("button", { name: "确认提交并更新 Story Memory" }),
   ).toBeDisabled();
   expect(
     await page.evaluate(

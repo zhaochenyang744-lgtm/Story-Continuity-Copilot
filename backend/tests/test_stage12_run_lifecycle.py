@@ -47,7 +47,8 @@ class LifecycleProvider:
             raise ProviderTimeout()
         if task == "memory_delta":
             source = request["sources"][0]
-            return ProviderResult({"candidates": [{"memory_type": "dynamic_state", "subject": "林默", "predicate": "status", "value": "已离开雾港", "chapter_id": source["chapter_id"], "source_span_id": source["id"]}]}, input_tokens=7, output_tokens=3, latency_ms=4)
+            affected = next(item for item in request["memory"] if item["subject"] == "林默" and item["predicate"] == "status")
+            return ProviderResult({"candidates": [{"change_kind": "changed_fact", "affected_memory_id": affected["id"], "memory_type": "dynamic_state", "subject": "林默", "predicate": "status", "value": "已离开雾港", "invalidation_reason": None, "chapter_id": source["chapter_id"], "source_span_id": source["id"]}]}, input_tokens=7, output_tokens=3, latency_ms=4)
         return ProviderResult({"issues": []}, input_tokens=11, output_tokens=5, latency_ms=6)
 
 
@@ -235,6 +236,11 @@ class Stage12RunLifecycleTests(unittest.TestCase):
         old = self.view(run_id)
         self.assertEqual((old["status"], old["error_code"], self.counts()), ("timed_out", "provider_timeout", before))
         self.emit_counts("timeout", before, self.counts())
+        author_context = self.client.post(
+            f"/api/projects/{self.project}/author-intent/story-plans",
+            json={"base_author_context_version": 0, "title": "Retry context", "status": "planned"},
+            headers=idem(),
+        ).json()["data"]
         key = str(uuid.uuid4())
         body = {"client_request_id": "retry-1"}
         first = self.client.post(f"/api/projects/{self.project}/checks/{run_id}/retry", json=body, headers=idem(key))
@@ -244,7 +250,9 @@ class Stage12RunLifecycleTests(unittest.TestCase):
         new_run = first.json()["data"]["run"]
         self.assertNotEqual(new_run["run_id"], run_id)
         self.assertEqual((new_run["retry_of_run_id"], new_run["root_run_id"], new_run["attempt_number"]), (run_id, run_id, 2))
-        self.assertEqual((self.view(run_id)["status"], self.view(new_run["run_id"])["status"], self.counts()), ("timed_out", "queued", before))
+        retried_view = self.view(new_run["run_id"])
+        self.assertEqual((retried_view["author_context_version"], retried_view["author_context_snapshot_digest"], retried_view["author_context_resolvable"]), (1, author_context["snapshot_digest"], True))
+        self.assertEqual((self.view(run_id)["status"], retried_view["status"], self.counts()), ("timed_out", "queued", before))
         self.emit_counts("unfinished_retry", before, self.counts())
         self.executor.tasks.clear()
         self.client.patch(f"/api/projects/{self.project}/drafts/{self.draft['id']}", json={"base_revision": self.draft["revision"], "body": "谱系已变化。"}, headers=idem())

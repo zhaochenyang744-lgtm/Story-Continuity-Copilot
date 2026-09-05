@@ -1,8 +1,24 @@
-# Story Continuity Copilot v1.2.0
+# Story Continuity Copilot v1.3.0 local release candidate
 
-Story Continuity Copilot v1.2.0 is the current repository version of a long-form fiction continuity review product. It combines versioned Story Memory with a continuity agent that returns grounded findings for an author to review. It does not write the next chapter: the author remains responsible for the text and explicitly decides whether a proposed Memory change becomes canon.
+The current repository state is the local **Story Continuity Copilot v1.3.0 release candidate**. It closes the author workflow from project planning and pre-writing context through saved-draft analysis, bounded revision tasks, explicit recheck, Evidence review, author decisions, and a new immutable Story Memory version. It does not write or rewrite prose: the author owns the text and every canon decision.
 
-The signed Stage 14 public-production baseline remains **Story Continuity Copilot v1.0 Public Release** as a historical evidence baseline. The active public deployment now runs **Story Continuity Copilot v1.2.0**, release `v120-a35265e-20260902`, from source commit `a35265e`. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility.
+The active online product remains **Story Continuity Copilot v1.2.0**, release `v120-a35265e-20260902`, from source commit `a35265e`. The local v1.3.0 release candidate is not deployed. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
+
+The canonical product description is [v1.3.0 product contract](docs/v1.3.0-product.md). The writing-analysis, [character-alias and change-impact](docs/v1.3.0-character-alias-impact.md), [bounded revision plan](docs/v1.3.0-revision-plan.md), and Memory-delta documents remain focused technical appendices. Release scope, verification assets, and protected local evidence are separated in the [v1.3.0 release allowlist](docs/v1.3.0-release-allowlist.json).
+
+The signed Stage 14 public-production baseline remains **Story Continuity Copilot v1.0 Public Release** as a historical evidence baseline. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility.
+
+## v1.3.0 local release candidate
+
+- Author Context stores editable future plans for story structure, characters, and world rules; it never proves that prose was written.
+- Character aliases are author-confirmed, versioned identity records; change-impact analysis binds them with draft, source, Memory, and Author Context state and never auto-writes a proposal.
+- Saved drafts and SourceSpans store written material. Story Memory stores only author-confirmed facts. AI output stays in analysis Runs and candidates until the author decides.
+- Writing adds a bounded chapter brief and saved-draft plan-alignment check. Story Memory adds new, changed, and invalidated fact review with resolvable Evidence.
+- Authors can select current continuity Issues, generate one bounded Evidence-backed revision suggestion per Issue, accept or edit suggestions into persistent tasks, manually revise and save the same draft, then explicitly recheck. Task progress never resolves Issues or changes canon.
+- Accepted Memory decisions create one immutable Memory version and one auditable ChangeSet atomically. Rejected or empty reviews close source coverage without version growth.
+- The desktop global rail can collapse persistently, wide operational surfaces use the available canvas, and the author profile prioritises real works, chapter and word totals, and continue-writing access before secondary display-name and bundled-avatar settings.
+- Desktop supports authoring and review. A 390 px viewport remains browse-only with the reason shown, sources available, and no horizontal overflow.
+- Writing and Checking includes a desktop immersive manuscript overlay with shared unsaved draft state, explicit save only, adjustable typography and column width, and a collapsible continuity-issue rail.
 
 The repository is designed for local reproduction. It contains the application source, migration and seed logic, tests, sanitised V4–V8 evaluation result records, and a small set of production-workflow screenshots. It does not include runtime databases, environment files, provider credentials, raw provider responses, recorded runtime prompt bodies, chain-of-thought, or protected evaluation assets. Full V5–V8 post-run database-hash validation therefore also requires the separately retained local evaluation workspaces; the committed result files alone do not recreate those SQLite artifacts.
 
@@ -41,7 +57,7 @@ Visitor demo spaces retain three independently seeded projects: **Grey Harbor Ec
 - The FastAPI backend covers registered and visitor authentication, recovery-email verification and password reset, projects, story context, imports, drafts, checks, Evidence, decisions, ChangeSets, Reset, quotas, and visitor cleanup.
 - Every project resource is checked against the current session and project ownership. Cross-account access returns a not-found response without disclosing the resource.
 - Evidence must resolve to a SourceSpan owned by the active project. Unresolvable Evidence fails closed.
-- Continuity and Memory Delta work use an observable Agent Run lifecycle: `queued`, `running`, `completed`, `timed_out`, `failed`, or `cancelled`. Retry and Cancel preserve lineage, and non-completed runs do not create partial Issues, Decisions, or Memory updates.
+- Continuity, revision-plan, and Memory Delta work use an observable Agent Run lifecycle: `queued`, `running`, `completed`, `timed_out`, `failed`, or `cancelled`. Retry and Cancel preserve lineage, and non-completed runs do not create partial Issues, revision tasks, Decisions, or Memory updates.
 - Public-mode configuration fails closed. Provider and SMTP credentials remain server-only; visitors receive isolated, time-limited spaces with server-enforced workflow, provider-attempt, text-length, and budget limits.
 - An explicitly configured `DeepSeekProvider` supports real local checks. When no production provider is configured, a check returns `503 provider_unavailable`; it does not create a Run or substitute a static result.
 - Reset is project-scoped, confirmed, idempotent, and constrained to this demo's runtime database.
@@ -168,7 +184,13 @@ $env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
 npm run lint
 npm run typecheck
 npm run build
+
+# Isolated v1.3.0 production-standalone acceptance on 3197/8197
+# Each run prints its unique last-run.json, HTML report, and Provider statistics paths.
+npm run test:v130
 ```
+
+`test:v130` builds from an explicit temporary source copy that excludes environment files, copies `public` and compiled static assets into the standalone artifact, waits for HTML, key JavaScript chunks, and same-origin session bootstrap, then runs all `v130-*.spec.ts` tests. The profile fails closed on wrong ports, temporary roots, dist directories, account prefixes, or mixed origins. It does not use the v1.2 evidence directory or the independent 3196/8196 acceptance services.
 
 The backend suite includes the Agent Reliability lifecycle and Web App Readiness security contracts, recorded under Stages 12 and 13. The release-bundle validator checks that the published V4 results, frozen assets, recorded workspace metadata, documentation, and screenshots are self-consistent; it does not claim to reopen unpublished SQLite workspaces. Browser E2E requires the isolated FastAPI/Next.js processes described in [the local setup guide](docs/local-setup.md); it uses a test-only provider and a temporary database rather than the local demo database.
 
@@ -178,7 +200,7 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 
 ## Known limitations
 
-- The signed Stage 14 production baseline remains `Story Continuity Copilot v1.0 Public Release` as historical evidence, while the active public deployment and current repository source are v1.2.0. The v1.2.0 operational/browser acceptance does not re-sign Stage 14, constitute a commercial SLA, or claim that the retained Stage 10 `gate_failed` evaluation was later passed.
+- The signed Stage 14 production baseline remains `Story Continuity Copilot v1.0 Public Release` as historical evidence. The active public deployment is v1.2.0, while the current local repository state is the undeployed v1.3.0 release candidate. Local acceptance does not re-sign Stage 14, constitute a commercial SLA, or claim that the retained Stage 10 `gate_failed` evaluation was later passed.
 - Real SMTP delivery, email verification, password reset, old-session revocation, new-password login, and used-link replay rejection have been accepted at the public origin. Email credentials and addresses remain server-only.
 - V4 is a small, frozen product evaluation; it supports the stated evaluation claims only and is not a general benchmark.
 - Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.

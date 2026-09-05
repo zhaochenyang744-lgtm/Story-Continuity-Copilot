@@ -10,6 +10,7 @@ import json
 import re
 import secrets
 import sqlite3
+import unicodedata
 import uuid
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
@@ -23,6 +24,13 @@ from .seed_data import CHAPTERS, DEMO_REVIEW_ISSUES, DRAFT, MEMORY_RECORDS
 
 RUN_ACTIVE_STATUSES = {"queued", "running"}
 RUN_TERMINAL_STATUSES = {"completed", "failed", "timed_out", "cancelled"}
+FORESHADOW_STATUSES = {"planned", "planted", "developing", "resolved", "abandoned"}
+FORESHADOW_MAX_RECORDS = 200
+REVISION_PLAN_MAX_ISSUES = 8
+REVISION_TASK_MAX_RECORDS = 200
+REVISION_TASK_PRIORITIES = {"high", "medium", "low"}
+REVISION_TASK_STATUSES = {"todo", "in_progress", "completed"}
+MAX_RESOURCE_VERSION = 2_147_483_647
 TUTORIAL_VERSION = "1.2.0"
 TUTORIAL_EVENT_STEPS = {
     "memory_source_opened": 2,
@@ -103,9 +111,9 @@ def _rewrite_memory_identity(value: str | None, memory_ids: dict[str, str]) -> s
 
 SCHEMA = """
 PRAGMA foreign_keys=ON;
-CREATE TABLE IF NOT EXISTS v2_users(id TEXT PRIMARY KEY,account_name TEXT NOT NULL UNIQUE,display_name TEXT NOT NULL,password_hash TEXT NOT NULL,created_at TEXT NOT NULL,account_type TEXT NOT NULL DEFAULT 'registered',visitor_expires_at TEXT,recovery_email_hash TEXT,recovery_email_masked TEXT,recovery_email_verified_at TEXT,onboarding_status TEXT NOT NULL DEFAULT 'completed',onboarding_tutorial_project_id TEXT,onboarding_completed_at TEXT,onboarding_tutorial_version TEXT,onboarding_current_step INTEGER,onboarding_completed_events_json TEXT,onboarding_progress_revision INTEGER,onboarding_progress_updated_at TEXT);
+CREATE TABLE IF NOT EXISTS v2_users(id TEXT PRIMARY KEY,account_name TEXT NOT NULL UNIQUE,display_name TEXT NOT NULL,password_hash TEXT NOT NULL,created_at TEXT NOT NULL,account_type TEXT NOT NULL DEFAULT 'registered',visitor_expires_at TEXT,recovery_email_hash TEXT,recovery_email_masked TEXT,recovery_email_verified_at TEXT,onboarding_status TEXT NOT NULL DEFAULT 'completed',onboarding_tutorial_project_id TEXT,onboarding_completed_at TEXT,onboarding_tutorial_version TEXT,onboarding_current_step INTEGER,onboarding_completed_events_json TEXT,onboarding_progress_revision INTEGER,onboarding_progress_updated_at TEXT,avatar_preset TEXT NOT NULL DEFAULT 'continuity_violet',profile_revision INTEGER NOT NULL DEFAULT 1);
 CREATE TABLE IF NOT EXISTS v2_sessions(id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),token_hash TEXT NOT NULL UNIQUE,expires_at TEXT NOT NULL,revoked_at TEXT,created_at TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS v2_projects(id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),title TEXT NOT NULL,genre TEXT NOT NULL DEFAULT '',summary TEXT NOT NULL DEFAULT '',status TEXT NOT NULL,metadata_revision INTEGER NOT NULL,data_origin TEXT NOT NULL,seed_key TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,current_memory_version INTEGER NOT NULL DEFAULT 1,source_revision INTEGER NOT NULL DEFAULT 1);
+CREATE TABLE IF NOT EXISTS v2_projects(id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),title TEXT NOT NULL,genre TEXT NOT NULL DEFAULT '',summary TEXT NOT NULL DEFAULT '',status TEXT NOT NULL,metadata_revision INTEGER NOT NULL,data_origin TEXT NOT NULL,seed_key TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,current_memory_version INTEGER NOT NULL DEFAULT 1,source_revision INTEGER NOT NULL DEFAULT 1,author_context_version INTEGER NOT NULL DEFAULT 0,alias_version INTEGER NOT NULL DEFAULT 0,revision_task_version INTEGER NOT NULL DEFAULT 0);
 CREATE INDEX IF NOT EXISTS v2_projects_by_owner ON v2_projects(user_id,status,updated_at);
 CREATE TABLE IF NOT EXISTS v2_outline_nodes(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),chapter_number INTEGER NOT NULL,title TEXT NOT NULL,summary TEXT NOT NULL,status TEXT NOT NULL,UNIQUE(project_id,chapter_number));
 CREATE TABLE IF NOT EXISTS v2_characters(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),name TEXT NOT NULL,role_type TEXT NOT NULL,identity TEXT NOT NULL,goal TEXT NOT NULL,current_state TEXT NOT NULL,knowledge_boundary TEXT NOT NULL,relationships_json TEXT NOT NULL,source_ids_json TEXT NOT NULL,UNIQUE(project_id,id));
@@ -117,7 +125,7 @@ CREATE TABLE IF NOT EXISTS v2_memory_versions(project_id TEXT NOT NULL REFERENCE
 CREATE TABLE IF NOT EXISTS v2_memory_records(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),version INTEGER NOT NULL,memory_type TEXT NOT NULL,subject TEXT NOT NULL,predicate TEXT NOT NULL,value TEXT NOT NULL,source_span_id TEXT,review_status TEXT NOT NULL,valid_from INTEGER,valid_to INTEGER,source_claim_id TEXT,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_drafts(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),chapter_number INTEGER NOT NULL,title TEXT NOT NULL,body TEXT NOT NULL,revision INTEGER NOT NULL,status TEXT NOT NULL,saved_at TEXT NOT NULL,parent_revision INTEGER,edit_context_json TEXT,checksum TEXT NOT NULL,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_draft_revisions(draft_id TEXT NOT NULL REFERENCES v2_drafts(id),revision INTEGER NOT NULL,title TEXT NOT NULL,body TEXT NOT NULL,checksum TEXT NOT NULL,parent_revision INTEGER,edit_context_json TEXT,saved_at TEXT NOT NULL,PRIMARY KEY(draft_id,revision));
-CREATE TABLE IF NOT EXISTS v2_runs(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),draft_id TEXT NOT NULL REFERENCES v2_drafts(id),source_revision INTEGER NOT NULL,status TEXT NOT NULL,stage TEXT NOT NULL,provider_label TEXT NOT NULL,input_tokens INTEGER,output_tokens INTEGER,latency_ms INTEGER,cost_cny REAL,error_code TEXT,retryable INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL,completed_at TEXT,model_label TEXT,prompt_version TEXT,schema_version TEXT,retrieval_method_version TEXT,source_memory_version INTEGER,result_origin TEXT NOT NULL DEFAULT 'provider',run_type TEXT NOT NULL DEFAULT 'continuity',source_change_set_id TEXT,source_span_ids_json TEXT NOT NULL DEFAULT '[]',started_at TEXT,cancel_requested_at TEXT,duration_ms INTEGER,retry_of_run_id TEXT,root_run_id TEXT,attempt_number INTEGER NOT NULL DEFAULT 1,incremental_batch_id TEXT,UNIQUE(project_id,id));
+CREATE TABLE IF NOT EXISTS v2_runs(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),draft_id TEXT NOT NULL REFERENCES v2_drafts(id),source_revision INTEGER NOT NULL,draft_revision INTEGER,status TEXT NOT NULL,stage TEXT NOT NULL,provider_label TEXT NOT NULL,input_tokens INTEGER,output_tokens INTEGER,latency_ms INTEGER,cost_cny REAL,error_code TEXT,retryable INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL,completed_at TEXT,model_label TEXT,prompt_version TEXT,schema_version TEXT,retrieval_method_version TEXT,source_memory_version INTEGER,result_origin TEXT NOT NULL DEFAULT 'provider',run_type TEXT NOT NULL DEFAULT 'continuity',source_change_set_id TEXT,source_span_ids_json TEXT NOT NULL DEFAULT '[]',started_at TEXT,cancel_requested_at TEXT,duration_ms INTEGER,retry_of_run_id TEXT,root_run_id TEXT,attempt_number INTEGER NOT NULL DEFAULT 1,incremental_batch_id TEXT,author_context_version INTEGER,author_context_snapshot_digest TEXT,alias_version INTEGER,alias_snapshot_digest TEXT,UNIQUE(project_id,id));
 CREATE INDEX IF NOT EXISTS v2_runs_by_project ON v2_runs(project_id,draft_id,source_revision,status);
 CREATE TABLE IF NOT EXISTS v2_run_stages(run_id TEXT NOT NULL REFERENCES v2_runs(id),stage TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(run_id,stage));
 CREATE TABLE IF NOT EXISTS v2_run_events(run_id TEXT NOT NULL REFERENCES v2_runs(id),sequence INTEGER NOT NULL,status TEXT NOT NULL,stage TEXT NOT NULL,error_code TEXT,created_at TEXT NOT NULL,PRIMARY KEY(run_id,sequence));
@@ -127,7 +135,7 @@ CREATE TABLE IF NOT EXISTS v2_retrieval_traces(run_id TEXT NOT NULL REFERENCES v
 CREATE TABLE IF NOT EXISTS v2_issues(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),claim_span_id TEXT NOT NULL,status TEXT NOT NULL,classification TEXT NOT NULL DEFAULT 'conflict',category TEXT NOT NULL,severity TEXT NOT NULL,evidence_status TEXT NOT NULL,explanation TEXT NOT NULL,proposed_change_json TEXT,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_evidence(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),issue_id TEXT NOT NULL REFERENCES v2_issues(id),chapter_id TEXT NOT NULL,span_id TEXT NOT NULL,excerpt TEXT NOT NULL,relation TEXT NOT NULL,sufficiency TEXT NOT NULL,related_memory_ids_json TEXT NOT NULL,source_revision INTEGER NOT NULL,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_decisions(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),issue_id TEXT NOT NULL REFERENCES v2_issues(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),decision TEXT NOT NULL,note TEXT,source_revision INTEGER NOT NULL,resulting_revision INTEGER,lineage_status TEXT NOT NULL,created_at TEXT NOT NULL,UNIQUE(issue_id,source_revision));
-CREATE TABLE IF NOT EXISTS v2_change_sets(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),source_run_revision INTEGER NOT NULL,resolved_revision INTEGER NOT NULL,lineage_status TEXT NOT NULL,base_version INTEGER NOT NULL,target_version INTEGER NOT NULL,status TEXT NOT NULL,created_at TEXT NOT NULL,committed_at TEXT,UNIQUE(project_id,id));
+CREATE TABLE IF NOT EXISTS v2_change_sets(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),source_run_revision INTEGER NOT NULL,resolved_revision INTEGER NOT NULL,lineage_status TEXT NOT NULL,base_version INTEGER NOT NULL,target_version INTEGER NOT NULL,status TEXT NOT NULL,created_at TEXT NOT NULL,committed_at TEXT,change_set_kind TEXT NOT NULL DEFAULT 'continuity',actor_user_id TEXT,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_change_set_items(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),change_set_id TEXT NOT NULL REFERENCES v2_change_sets(id),operation TEXT NOT NULL,before_json TEXT,after_json TEXT NOT NULL,source_ids_json TEXT NOT NULL,decision_ids_json TEXT NOT NULL,review_status TEXT,committed_after_json TEXT,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_commit_audits(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),change_set_id TEXT NOT NULL REFERENCES v2_change_sets(id),status TEXT NOT NULL,accepted_json TEXT NOT NULL,rejected_json TEXT NOT NULL,note TEXT,created_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS v2_reset_audits(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),user_id TEXT NOT NULL REFERENCES v2_users(id),reason TEXT NOT NULL,completed_at TEXT NOT NULL,response_json TEXT NOT NULL);
@@ -140,12 +148,45 @@ CREATE INDEX IF NOT EXISTS v2_memory_candidates_by_initialization ON v2_memory_c
 CREATE TABLE IF NOT EXISTS v2_source_change_sets(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),user_id TEXT NOT NULL REFERENCES v2_users(id),base_source_revision INTEGER NOT NULL,target_source_revision INTEGER NOT NULL,mode TEXT NOT NULL,input_method TEXT NOT NULL,content_hash TEXT NOT NULL,content_json TEXT NOT NULL,chapters_json TEXT NOT NULL,status TEXT NOT NULL,error_code TEXT,expires_at TEXT NOT NULL,created_at TEXT NOT NULL,committed_at TEXT,draft_id TEXT,draft_revision INTEGER,draft_checksum TEXT,failed_at TEXT,failure_code TEXT,commit_result_json TEXT,UNIQUE(project_id,id));
 CREATE INDEX IF NOT EXISTS v2_source_change_sets_by_project ON v2_source_change_sets(project_id,status,created_at);
 CREATE TABLE IF NOT EXISTS v2_source_change_set_audits(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),change_set_id TEXT NOT NULL REFERENCES v2_source_change_sets(id),event TEXT NOT NULL,payload_json TEXT NOT NULL,created_at TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS v2_memory_delta_batches(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),source_revision INTEGER NOT NULL,base_memory_version INTEGER NOT NULL,continuity_run_id TEXT NOT NULL REFERENCES v2_runs(id),memory_delta_run_id TEXT NOT NULL REFERENCES v2_runs(id),status TEXT NOT NULL,error_code TEXT,created_at TEXT NOT NULL,completed_at TEXT,covered_at TEXT,UNIQUE(project_id,source_revision));
-CREATE TABLE IF NOT EXISTS v2_memory_delta_candidates(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),batch_id TEXT NOT NULL REFERENCES v2_memory_delta_batches(id),source_revision INTEGER NOT NULL,candidate_ordinal INTEGER NOT NULL,memory_type TEXT NOT NULL,subject TEXT NOT NULL,predicate TEXT NOT NULL,value TEXT NOT NULL,chapter_id TEXT NOT NULL REFERENCES v2_chapters(id),source_span_id TEXT NOT NULL REFERENCES v2_source_spans(id),candidate_origin TEXT NOT NULL DEFAULT 'delta',review_priority TEXT NOT NULL,decision_status TEXT NOT NULL DEFAULT 'pending',decision_json TEXT,decided_at TEXT,UNIQUE(project_id,id));
+CREATE TABLE IF NOT EXISTS v2_memory_delta_batches(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),source_revision INTEGER NOT NULL,base_memory_version INTEGER NOT NULL,continuity_run_id TEXT NOT NULL REFERENCES v2_runs(id),memory_delta_run_id TEXT NOT NULL REFERENCES v2_runs(id),status TEXT NOT NULL,error_code TEXT,created_at TEXT NOT NULL,completed_at TEXT,covered_at TEXT,retrieval_json TEXT NOT NULL DEFAULT '{}',UNIQUE(project_id,source_revision));
+CREATE TABLE IF NOT EXISTS v2_memory_delta_candidates(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),batch_id TEXT NOT NULL REFERENCES v2_memory_delta_batches(id),source_revision INTEGER NOT NULL,candidate_ordinal INTEGER NOT NULL,memory_type TEXT NOT NULL,subject TEXT NOT NULL,predicate TEXT NOT NULL,value TEXT NOT NULL,chapter_id TEXT NOT NULL REFERENCES v2_chapters(id),source_span_id TEXT NOT NULL REFERENCES v2_source_spans(id),candidate_origin TEXT NOT NULL DEFAULT 'delta',review_priority TEXT NOT NULL,decision_status TEXT NOT NULL DEFAULT 'pending',decision_json TEXT,decided_at TEXT,change_kind TEXT NOT NULL DEFAULT 'new_fact',affected_memory_id TEXT,invalidation_reason TEXT,UNIQUE(project_id,id));
 CREATE INDEX IF NOT EXISTS v2_memory_delta_candidates_by_batch ON v2_memory_delta_candidates(batch_id,decision_status);
 CREATE TABLE IF NOT EXISTS v2_memory_delta_decisions(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),batch_id TEXT NOT NULL REFERENCES v2_memory_delta_batches(id),candidate_id TEXT NOT NULL REFERENCES v2_memory_delta_candidates(id),decision TEXT NOT NULL,after_json TEXT,evidence_span_id TEXT,source_revision INTEGER NOT NULL,created_at TEXT NOT NULL,UNIQUE(candidate_id));
 CREATE TABLE IF NOT EXISTS v2_source_coverage_audits(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),source_revision INTEGER NOT NULL,status TEXT NOT NULL,memory_version INTEGER NOT NULL,delta_batch_id TEXT NOT NULL REFERENCES v2_memory_delta_batches(id),actor_user_id TEXT,details_json TEXT NOT NULL DEFAULT '{}',created_at TEXT NOT NULL,UNIQUE(project_id,source_revision));
 CREATE TABLE IF NOT EXISTS v2_login_attempts(account_name TEXT NOT NULL,attempted_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS v2_author_story_plans(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),title TEXT NOT NULL,summary TEXT NOT NULL DEFAULT '',goal TEXT NOT NULL DEFAULT '',position INTEGER NOT NULL,status TEXT NOT NULL,target_chapter_number INTEGER,archived_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,UNIQUE(project_id,id));
+CREATE INDEX IF NOT EXISTS v2_author_story_plans_by_project ON v2_author_story_plans(project_id,archived_at,position);
+CREATE TABLE IF NOT EXISTS v2_author_character_plans(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),name TEXT NOT NULL,role_type TEXT NOT NULL,goal TEXT NOT NULL DEFAULT '',planned_state TEXT NOT NULL DEFAULT '',notes TEXT NOT NULL DEFAULT '',position INTEGER NOT NULL,archived_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,UNIQUE(project_id,id));
+CREATE INDEX IF NOT EXISTS v2_author_character_plans_by_project ON v2_author_character_plans(project_id,archived_at,position);
+CREATE TABLE IF NOT EXISTS v2_author_world_plans(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),name TEXT NOT NULL,category TEXT NOT NULL,description TEXT NOT NULL,notes TEXT NOT NULL DEFAULT '',position INTEGER NOT NULL,archived_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,UNIQUE(project_id,id));
+CREATE INDEX IF NOT EXISTS v2_author_world_plans_by_project ON v2_author_world_plans(project_id,archived_at,position);
+CREATE TABLE IF NOT EXISTS v2_author_context_versions(project_id TEXT NOT NULL REFERENCES v2_projects(id),version INTEGER NOT NULL,parent_version INTEGER,snapshot_digest TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(project_id,version));
+CREATE TABLE IF NOT EXISTS v2_author_story_plan_versions(project_id TEXT NOT NULL,version INTEGER NOT NULL,item_id TEXT NOT NULL,title TEXT NOT NULL,summary TEXT NOT NULL,goal TEXT NOT NULL,position INTEGER NOT NULL,status TEXT NOT NULL,target_chapter_number INTEGER,archived_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,PRIMARY KEY(project_id,version,item_id),FOREIGN KEY(project_id,version) REFERENCES v2_author_context_versions(project_id,version));
+CREATE INDEX IF NOT EXISTS v2_author_story_plan_versions_order ON v2_author_story_plan_versions(project_id,version,position,item_id);
+CREATE TABLE IF NOT EXISTS v2_author_character_plan_versions(project_id TEXT NOT NULL,version INTEGER NOT NULL,item_id TEXT NOT NULL,name TEXT NOT NULL,role_type TEXT NOT NULL,goal TEXT NOT NULL,planned_state TEXT NOT NULL,notes TEXT NOT NULL,position INTEGER NOT NULL,archived_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,PRIMARY KEY(project_id,version,item_id),FOREIGN KEY(project_id,version) REFERENCES v2_author_context_versions(project_id,version));
+CREATE INDEX IF NOT EXISTS v2_author_character_plan_versions_order ON v2_author_character_plan_versions(project_id,version,position,item_id);
+CREATE TABLE IF NOT EXISTS v2_author_world_plan_versions(project_id TEXT NOT NULL,version INTEGER NOT NULL,item_id TEXT NOT NULL,name TEXT NOT NULL,category TEXT NOT NULL,description TEXT NOT NULL,notes TEXT NOT NULL,position INTEGER NOT NULL,archived_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,PRIMARY KEY(project_id,version,item_id),FOREIGN KEY(project_id,version) REFERENCES v2_author_context_versions(project_id,version));
+CREATE INDEX IF NOT EXISTS v2_author_world_plan_versions_order ON v2_author_world_plan_versions(project_id,version,position,item_id);
+CREATE TABLE IF NOT EXISTS v2_analysis_inputs(run_id TEXT PRIMARY KEY REFERENCES v2_runs(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),analysis_type TEXT NOT NULL,input_json TEXT NOT NULL,retrieval_json TEXT NOT NULL,input_digest TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS v2_analysis_results(run_id TEXT PRIMARY KEY REFERENCES v2_runs(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),analysis_type TEXT NOT NULL,result_json TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS v2_analysis_results_by_project ON v2_analysis_results(project_id,analysis_type,created_at);
+CREATE TABLE IF NOT EXISTS v2_character_alias_state(project_id TEXT NOT NULL REFERENCES v2_projects(id),character_id TEXT NOT NULL REFERENCES v2_characters(id),version INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL,PRIMARY KEY(project_id,character_id));
+CREATE TABLE IF NOT EXISTS v2_character_aliases(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),character_id TEXT NOT NULL REFERENCES v2_characters(id),alias TEXT NOT NULL,normalized_alias TEXT NOT NULL,status TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,archived_at TEXT,UNIQUE(project_id,id));
+CREATE UNIQUE INDEX IF NOT EXISTS v2_character_aliases_active_name ON v2_character_aliases(project_id,character_id,normalized_alias) WHERE status='active';
+CREATE INDEX IF NOT EXISTS v2_character_aliases_by_character ON v2_character_aliases(project_id,character_id,status,created_at);
+CREATE TABLE IF NOT EXISTS v2_foreshadows(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),title TEXT NOT NULL,normalized_title TEXT NOT NULL,description TEXT NOT NULL,status TEXT NOT NULL,planted_chapter_id TEXT REFERENCES v2_chapters(id),planted_source_span_id TEXT REFERENCES v2_source_spans(id),resolved_chapter_id TEXT REFERENCES v2_chapters(id),resolved_source_span_id TEXT REFERENCES v2_source_spans(id),version INTEGER NOT NULL,archived_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,UNIQUE(project_id,id));
+CREATE UNIQUE INDEX IF NOT EXISTS v2_foreshadows_active_title ON v2_foreshadows(project_id,normalized_title) WHERE archived_at IS NULL;
+CREATE INDEX IF NOT EXISTS v2_foreshadows_by_project ON v2_foreshadows(project_id,archived_at,status,updated_at);
+CREATE TABLE IF NOT EXISTS v2_foreshadow_versions(item_id TEXT NOT NULL REFERENCES v2_foreshadows(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),version INTEGER NOT NULL,snapshot_json TEXT NOT NULL,event TEXT NOT NULL,actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,PRIMARY KEY(item_id,version));
+CREATE TABLE IF NOT EXISTS v2_foreshadow_candidates(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),candidate_ordinal INTEGER NOT NULL,title TEXT NOT NULL,description TEXT NOT NULL,suggested_status TEXT NOT NULL,planted_chapter_id TEXT REFERENCES v2_chapters(id),planted_source_span_id TEXT REFERENCES v2_source_spans(id),resolved_chapter_id TEXT REFERENCES v2_chapters(id),resolved_source_span_id TEXT REFERENCES v2_source_spans(id),evidence_json TEXT NOT NULL,decision_status TEXT NOT NULL DEFAULT 'pending',decision_json TEXT,decided_at TEXT,created_at TEXT NOT NULL,UNIQUE(run_id,candidate_ordinal));
+CREATE INDEX IF NOT EXISTS v2_foreshadow_candidates_by_run ON v2_foreshadow_candidates(run_id,decision_status,candidate_ordinal);
+CREATE TABLE IF NOT EXISTS v2_foreshadow_candidate_decisions(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),candidate_id TEXT NOT NULL REFERENCES v2_foreshadow_candidates(id),decision TEXT NOT NULL,after_json TEXT,created_record_id TEXT REFERENCES v2_foreshadows(id),actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,UNIQUE(candidate_id));
+CREATE TABLE IF NOT EXISTS v2_revision_plan_candidates(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),candidate_ordinal INTEGER NOT NULL,issue_id TEXT NOT NULL REFERENCES v2_issues(id),title TEXT NOT NULL,normalized_title TEXT NOT NULL,instruction TEXT NOT NULL,priority TEXT NOT NULL,evidence_json TEXT NOT NULL,decision_status TEXT NOT NULL DEFAULT 'pending',decision_json TEXT,decided_at TEXT,created_at TEXT NOT NULL,UNIQUE(run_id,candidate_ordinal),UNIQUE(run_id,issue_id));
+CREATE INDEX IF NOT EXISTS v2_revision_plan_candidates_by_run ON v2_revision_plan_candidates(run_id,decision_status,candidate_ordinal);
+CREATE TABLE IF NOT EXISTS v2_revision_tasks(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),source_run_id TEXT NOT NULL REFERENCES v2_runs(id),candidate_id TEXT NOT NULL REFERENCES v2_revision_plan_candidates(id),issue_id TEXT NOT NULL REFERENCES v2_issues(id),title TEXT NOT NULL,normalized_title TEXT NOT NULL,instruction TEXT NOT NULL,priority TEXT NOT NULL,position INTEGER NOT NULL,status TEXT NOT NULL,version INTEGER NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,UNIQUE(project_id,id),UNIQUE(candidate_id));
+CREATE INDEX IF NOT EXISTS v2_revision_tasks_by_project ON v2_revision_tasks(project_id,status,position,created_at);
+CREATE TABLE IF NOT EXISTS v2_revision_task_versions(task_id TEXT NOT NULL REFERENCES v2_revision_tasks(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),version INTEGER NOT NULL,snapshot_json TEXT NOT NULL,event TEXT NOT NULL,actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,PRIMARY KEY(task_id,version));
+CREATE TABLE IF NOT EXISTS v2_revision_candidate_decisions(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),candidate_id TEXT NOT NULL REFERENCES v2_revision_plan_candidates(id),decision TEXT NOT NULL,after_json TEXT,created_task_id TEXT REFERENCES v2_revision_tasks(id),actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,UNIQUE(candidate_id));
 """
 
 
@@ -190,8 +231,16 @@ class V2Database:
             self._migrate_stage13_identity(c)
             self._migrate_v110_onboarding(c)
             self._migrate_v120_tutorial_progress(c)
+            self._migrate_v130_author_intent(c)
+            self._migrate_v130_profile(c)
             self._migrate_legacy_project(c)
             self._migrate_stage12_run_lifecycle(c)
+            self._migrate_v130_author_context_snapshots(c)
+            self._migrate_v130_writing_analysis(c)
+            self._migrate_v130_memory_delta_fact_lifecycle(c)
+            self._migrate_v130_character_aliases(c)
+            self._migrate_v130_foreshadows(c)
+            self._migrate_v130_revision_plans(c)
 
     def readiness_probe(self) -> bool:
         """Verify that the configured database is readable and fully initialized."""
@@ -252,6 +301,123 @@ class V2Database:
             (TUTORIAL_VERSION, stamp),
         )
         c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(120,?)", (stamp,))
+
+    def _migrate_v130_author_intent(self, c: sqlite3.Connection) -> None:
+        """Add an independent author-intent store and nullable Run binding."""
+        project_columns = {row["name"] for row in c.execute("PRAGMA table_info(v2_projects)")}
+        if "author_context_version" not in project_columns:
+            c.execute("ALTER TABLE v2_projects ADD COLUMN author_context_version INTEGER NOT NULL DEFAULT 0")
+        run_columns = {row["name"] for row in c.execute("PRAGMA table_info(v2_runs)")}
+        if "author_context_version" not in run_columns:
+            c.execute("ALTER TABLE v2_runs ADD COLUMN author_context_version INTEGER")
+        c.execute("UPDATE v2_projects SET author_context_version=0 WHERE author_context_version IS NULL OR author_context_version<0")
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(130,?)", (utcnow(),))
+
+    def _migrate_v130_profile(self, c: sqlite3.Connection) -> None:
+        """Add durable, local-only author profile presentation fields."""
+        columns = {row["name"] for row in c.execute("PRAGMA table_info(v2_users)")}
+        additions = {
+            "avatar_preset": "TEXT NOT NULL DEFAULT 'continuity_violet'",
+            "profile_revision": "INTEGER NOT NULL DEFAULT 1",
+        }
+        for name, definition in additions.items():
+            if name not in columns:
+                c.execute(f"ALTER TABLE v2_users ADD COLUMN {name} {definition}")
+        c.execute("UPDATE v2_users SET avatar_preset='continuity_violet' WHERE avatar_preset IS NULL OR avatar_preset='' ")
+        c.execute("UPDATE v2_users SET profile_revision=1 WHERE profile_revision IS NULL OR profile_revision<1")
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(132,?)", (utcnow(),))
+
+    def _migrate_v130_author_context_snapshots(self, c: sqlite3.Connection) -> None:
+        """Freeze the current mutable Author Context without inventing old history."""
+        run_columns={row["name"] for row in c.execute("PRAGMA table_info(v2_runs)")}
+        if "author_context_snapshot_digest" not in run_columns:
+            c.execute("ALTER TABLE v2_runs ADD COLUMN author_context_snapshot_digest TEXT")
+        for project in c.execute("SELECT * FROM v2_projects ORDER BY id").fetchall():
+            project_id=project["id"]
+            self._insert_empty_author_context_zero(c,project_id,project["created_at"])
+            live_count=sum(c.execute(f"SELECT COUNT(*) FROM {spec['table']} WHERE project_id=?",(project_id,)).fetchone()[0] for spec in self._AUTHOR_INTENT.values())
+            current=int(project["author_context_version"] or 0)
+            if current==0 and live_count:
+                current=1
+                c.execute("UPDATE v2_projects SET author_context_version=? WHERE id=?",(current,project_id))
+            if current>0 and not c.execute("SELECT 1 FROM v2_author_context_versions WHERE project_id=? AND version=?",(project_id,current)).fetchone():
+                self._write_author_context_snapshot(c,project_id,current,0,project["updated_at"])
+        for run in c.execute("SELECT id,project_id,author_context_version,author_context_snapshot_digest FROM v2_runs WHERE author_context_version IS NOT NULL").fetchall():
+            version=c.execute("SELECT snapshot_digest FROM v2_author_context_versions WHERE project_id=? AND version=?",(run["project_id"],run["author_context_version"])).fetchone()
+            if version:
+                if run["author_context_snapshot_digest"] is None:
+                    c.execute("UPDATE v2_runs SET author_context_snapshot_digest=? WHERE id=?",(version["snapshot_digest"],run["id"]))
+            else:
+                c.execute("UPDATE v2_runs SET author_context_version=NULL,author_context_snapshot_digest=NULL WHERE id=?",(run["id"],))
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(131,?)",(utcnow(),))
+
+    def _migrate_v130_writing_analysis(self, c: sqlite3.Connection) -> None:
+        """Add immutable state-bound analysis inputs and results."""
+        columns={row["name"] for row in c.execute("PRAGMA table_info(v2_runs)").fetchall()}
+        if "draft_revision" not in columns:c.execute("ALTER TABLE v2_runs ADD COLUMN draft_revision INTEGER")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_analysis_inputs(run_id TEXT PRIMARY KEY REFERENCES v2_runs(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),analysis_type TEXT NOT NULL,input_json TEXT NOT NULL,retrieval_json TEXT NOT NULL,input_digest TEXT NOT NULL,created_at TEXT NOT NULL)")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_analysis_results(run_id TEXT PRIMARY KEY REFERENCES v2_runs(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),analysis_type TEXT NOT NULL,result_json TEXT NOT NULL,created_at TEXT NOT NULL)")
+        c.execute("CREATE INDEX IF NOT EXISTS v2_analysis_results_by_project ON v2_analysis_results(project_id,analysis_type,created_at)")
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(133,?)",(utcnow(),))
+
+    def _migrate_v130_character_aliases(self, c: sqlite3.Connection) -> None:
+        """Add independent character aliases and immutable analysis bindings."""
+        project_columns={row["name"] for row in c.execute("PRAGMA table_info(v2_projects)").fetchall()}
+        if "alias_version" not in project_columns:c.execute("ALTER TABLE v2_projects ADD COLUMN alias_version INTEGER NOT NULL DEFAULT 0")
+        run_columns={row["name"] for row in c.execute("PRAGMA table_info(v2_runs)").fetchall()}
+        if "alias_version" not in run_columns:c.execute("ALTER TABLE v2_runs ADD COLUMN alias_version INTEGER")
+        if "alias_snapshot_digest" not in run_columns:c.execute("ALTER TABLE v2_runs ADD COLUMN alias_snapshot_digest TEXT")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_character_alias_state(project_id TEXT NOT NULL REFERENCES v2_projects(id),character_id TEXT NOT NULL REFERENCES v2_characters(id),version INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL,PRIMARY KEY(project_id,character_id))")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_character_aliases(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),character_id TEXT NOT NULL REFERENCES v2_characters(id),alias TEXT NOT NULL,normalized_alias TEXT NOT NULL,status TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,archived_at TEXT,UNIQUE(project_id,id))")
+        c.execute("CREATE UNIQUE INDEX IF NOT EXISTS v2_character_aliases_active_name ON v2_character_aliases(project_id,character_id,normalized_alias) WHERE status='active'")
+        c.execute("CREATE INDEX IF NOT EXISTS v2_character_aliases_by_character ON v2_character_aliases(project_id,character_id,status,created_at)")
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(134,?)",(utcnow(),))
+
+    def _migrate_v130_foreshadows(self, c: sqlite3.Connection) -> None:
+        """Add author-owned foreshadows and immutable bindings for bounded AI tools."""
+        project_columns={row["name"] for row in c.execute("PRAGMA table_info(v2_projects)").fetchall()}
+        if "foreshadow_version" not in project_columns:c.execute("ALTER TABLE v2_projects ADD COLUMN foreshadow_version INTEGER NOT NULL DEFAULT 0")
+        run_columns={row["name"] for row in c.execute("PRAGMA table_info(v2_runs)").fetchall()}
+        if "foreshadow_version" not in run_columns:c.execute("ALTER TABLE v2_runs ADD COLUMN foreshadow_version INTEGER")
+        if "foreshadow_snapshot_digest" not in run_columns:c.execute("ALTER TABLE v2_runs ADD COLUMN foreshadow_snapshot_digest TEXT")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_foreshadows(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),title TEXT NOT NULL,normalized_title TEXT NOT NULL,description TEXT NOT NULL,status TEXT NOT NULL,planted_chapter_id TEXT REFERENCES v2_chapters(id),planted_source_span_id TEXT REFERENCES v2_source_spans(id),resolved_chapter_id TEXT REFERENCES v2_chapters(id),resolved_source_span_id TEXT REFERENCES v2_source_spans(id),version INTEGER NOT NULL,archived_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,UNIQUE(project_id,id))")
+        c.execute("CREATE UNIQUE INDEX IF NOT EXISTS v2_foreshadows_active_title ON v2_foreshadows(project_id,normalized_title) WHERE archived_at IS NULL")
+        c.execute("CREATE INDEX IF NOT EXISTS v2_foreshadows_by_project ON v2_foreshadows(project_id,archived_at,status,updated_at)")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_foreshadow_versions(item_id TEXT NOT NULL REFERENCES v2_foreshadows(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),version INTEGER NOT NULL,snapshot_json TEXT NOT NULL,event TEXT NOT NULL,actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,PRIMARY KEY(item_id,version))")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_foreshadow_candidates(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),candidate_ordinal INTEGER NOT NULL,title TEXT NOT NULL,description TEXT NOT NULL,suggested_status TEXT NOT NULL,planted_chapter_id TEXT REFERENCES v2_chapters(id),planted_source_span_id TEXT REFERENCES v2_source_spans(id),resolved_chapter_id TEXT REFERENCES v2_chapters(id),resolved_source_span_id TEXT REFERENCES v2_source_spans(id),evidence_json TEXT NOT NULL,decision_status TEXT NOT NULL DEFAULT 'pending',decision_json TEXT,decided_at TEXT,created_at TEXT NOT NULL,UNIQUE(run_id,candidate_ordinal))")
+        c.execute("CREATE INDEX IF NOT EXISTS v2_foreshadow_candidates_by_run ON v2_foreshadow_candidates(run_id,decision_status,candidate_ordinal)")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_foreshadow_candidate_decisions(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),candidate_id TEXT NOT NULL REFERENCES v2_foreshadow_candidates(id),decision TEXT NOT NULL,after_json TEXT,created_record_id TEXT REFERENCES v2_foreshadows(id),actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,UNIQUE(candidate_id))")
+
+    def _migrate_v130_revision_plans(self, c: sqlite3.Connection) -> None:
+        """Add review-only revision suggestions and author-owned durable tasks."""
+        project_columns={row["name"] for row in c.execute("PRAGMA table_info(v2_projects)").fetchall()}
+        if "revision_task_version" not in project_columns:c.execute("ALTER TABLE v2_projects ADD COLUMN revision_task_version INTEGER NOT NULL DEFAULT 0")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_revision_plan_candidates(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),candidate_ordinal INTEGER NOT NULL,issue_id TEXT NOT NULL REFERENCES v2_issues(id),title TEXT NOT NULL,normalized_title TEXT NOT NULL,instruction TEXT NOT NULL,priority TEXT NOT NULL,evidence_json TEXT NOT NULL,decision_status TEXT NOT NULL DEFAULT 'pending',decision_json TEXT,decided_at TEXT,created_at TEXT NOT NULL,UNIQUE(run_id,candidate_ordinal),UNIQUE(run_id,issue_id))")
+        c.execute("CREATE INDEX IF NOT EXISTS v2_revision_plan_candidates_by_run ON v2_revision_plan_candidates(run_id,decision_status,candidate_ordinal)")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_revision_tasks(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),source_run_id TEXT NOT NULL REFERENCES v2_runs(id),candidate_id TEXT NOT NULL REFERENCES v2_revision_plan_candidates(id),issue_id TEXT NOT NULL REFERENCES v2_issues(id),title TEXT NOT NULL,normalized_title TEXT NOT NULL,instruction TEXT NOT NULL,priority TEXT NOT NULL,position INTEGER NOT NULL,status TEXT NOT NULL,version INTEGER NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,UNIQUE(project_id,id),UNIQUE(candidate_id))")
+        c.execute("CREATE INDEX IF NOT EXISTS v2_revision_tasks_by_project ON v2_revision_tasks(project_id,status,position,created_at)")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_revision_task_versions(task_id TEXT NOT NULL REFERENCES v2_revision_tasks(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),version INTEGER NOT NULL,snapshot_json TEXT NOT NULL,event TEXT NOT NULL,actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,PRIMARY KEY(task_id,version))")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_revision_candidate_decisions(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),candidate_id TEXT NOT NULL REFERENCES v2_revision_plan_candidates(id),decision TEXT NOT NULL,after_json TEXT,created_task_id TEXT REFERENCES v2_revision_tasks(id),actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,UNIQUE(candidate_id))")
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(135,?)",(utcnow(),))
+
+    def _migrate_v130_memory_delta_fact_lifecycle(self, c: sqlite3.Connection) -> None:
+        """Extend the existing delta approval chain without reinterpreting canon history."""
+        batch_columns={row["name"] for row in c.execute("PRAGMA table_info(v2_memory_delta_batches)").fetchall()}
+        if "retrieval_json" not in batch_columns:c.execute("ALTER TABLE v2_memory_delta_batches ADD COLUMN retrieval_json TEXT NOT NULL DEFAULT '{}'")
+        candidate_columns={row["name"] for row in c.execute("PRAGMA table_info(v2_memory_delta_candidates)").fetchall()}
+        added_change_kind="change_kind" not in candidate_columns
+        for name,definition in {"change_kind":"TEXT NOT NULL DEFAULT 'new_fact'","affected_memory_id":"TEXT","invalidation_reason":"TEXT"}.items():
+            if name not in candidate_columns:c.execute(f"ALTER TABLE v2_memory_delta_candidates ADD COLUMN {name} {definition}")
+        change_set_columns={row["name"] for row in c.execute("PRAGMA table_info(v2_change_sets)").fetchall()}
+        if "change_set_kind" not in change_set_columns:c.execute("ALTER TABLE v2_change_sets ADD COLUMN change_set_kind TEXT NOT NULL DEFAULT 'continuity'")
+        if "actor_user_id" not in change_set_columns:c.execute("ALTER TABLE v2_change_sets ADD COLUMN actor_user_id TEXT")
+        if added_change_kind:
+            for row in c.execute("SELECT d.*,b.base_memory_version FROM v2_memory_delta_candidates d JOIN v2_memory_delta_batches b ON b.id=d.batch_id AND b.project_id=d.project_id ORDER BY d.id").fetchall():
+                identity=self._candidate_key(row["memory_type"],row["subject"],row["predicate"],allow_legacy_alias=False)
+                prior=next((record for record in c.execute("SELECT * FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed'",(row["project_id"],row["base_memory_version"])).fetchall() if self._candidate_key(record["memory_type"],record["subject"],record["predicate"],allow_legacy_alias=False)==identity),None)
+                if prior and self._normalize(prior["value"])!=self._normalize(row["value"]):
+                    c.execute("UPDATE v2_memory_delta_candidates SET change_kind='changed_fact',affected_memory_id=? WHERE id=?",(prior["id"],row["id"]))
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(134,?)",(utcnow(),))
 
     def _migrate_run_provenance(self, c: sqlite3.Connection) -> None:
         """Add safe, version-only Run provenance without rewriting old results."""
@@ -442,7 +608,7 @@ class V2Database:
         c.execute("INSERT INTO v2_users(id,account_name,display_name,password_hash,created_at) VALUES(?,?,?,?,?)", (user_id, "v1-migration", "V1 local migration", _password(secrets.token_urlsafe(24)), utcnow()))
         project_id = new_id("prj")
         stamp = utcnow()
-        c.execute("INSERT INTO v2_projects VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", (project_id,user_id,legacy["title"],"",legacy["summary"],"active",1,"v1_migrated",None,stamp,stamp,int(legacy["current_memory_version"]),1))
+        c.execute("INSERT INTO v2_projects(id,user_id,title,genre,summary,status,metadata_revision,data_origin,seed_key,created_at,updated_at,current_memory_version,source_revision,author_context_version) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (project_id,user_id,legacy["title"],"",legacy["summary"],"active",1,"v1_migrated",None,stamp,stamp,int(legacy["current_memory_version"]),1,0))
         chapters = c.execute("SELECT * FROM chapters WHERE project_id=? ORDER BY chapter_number", (legacy["id"],)).fetchall()
         chapter_ids: dict[str, str] = {}
         span_ids: dict[str, str] = {}
@@ -529,7 +695,7 @@ class V2Database:
                 if not run_id:
                     continue
                 change_set_id = new_id("changeset"); change_set_ids[changeset["id"]] = change_set_id
-                c.execute("INSERT INTO v2_change_sets VALUES(?,?,?,?,?,?,?,?,?,?,?)", (change_set_id,project_id,run_id,changeset["source_run_revision"],changeset["resolved_revision"],changeset["lineage_status"],changeset["base_version"],changeset["target_version"],changeset["status"],changeset["created_at"],changeset["committed_at"]))
+                c.execute("INSERT INTO v2_change_sets(id,project_id,run_id,source_run_revision,resolved_revision,lineage_status,base_version,target_version,status,created_at,committed_at,change_set_kind,actor_user_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", (change_set_id,project_id,run_id,changeset["source_run_revision"],changeset["resolved_revision"],changeset["lineage_status"],changeset["base_version"],changeset["target_version"],changeset["status"],changeset["created_at"],changeset["committed_at"],"continuity",None))
         if "change_set_items" in tables:
             item_columns = {x["name"] for x in c.execute("PRAGMA table_info(change_set_items)").fetchall()}
             for item in c.execute("SELECT * FROM change_set_items").fetchall():
@@ -614,7 +780,8 @@ class V2Database:
         project_id = new_id("prj")
         stamp = utcnow()
         version = 4 if seed_key == "grey_harbor" else 1
-        c.execute("INSERT INTO v2_projects VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", (project_id,user_id,title,genre,summary,"active",1,origin,seed_key,stamp,stamp,version,1))
+        c.execute("INSERT INTO v2_projects(id,user_id,title,genre,summary,status,metadata_revision,data_origin,seed_key,created_at,updated_at,current_memory_version,source_revision,author_context_version) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (project_id,user_id,title,genre,summary,"active",1,origin,seed_key,stamp,stamp,version,1,0))
+        self._insert_empty_author_context_zero(c,project_id,stamp)
         if seed_key == "grey_harbor":
             self._seed_grey_harbor(c, project_id)
         elif seed_key in {"paper_moon", "zero_garden"}:
@@ -656,9 +823,11 @@ class V2Database:
         """Create a reviewable preset without executing or impersonating a Provider."""
         stamp = utcnow()
         run_id = scoped_seed_id("run", project_id, "grey-harbor-review-v1")
+        project=c.execute("SELECT * FROM v2_projects WHERE id=?",(project_id,)).fetchone()
+        author_version,author_digest=self._current_author_context_binding(c,project)
         c.execute(
-            "INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,input_tokens,output_tokens,latency_ms,cost_cny,error_code,retryable,created_at,completed_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,started_at,duration_ms,root_run_id,attempt_number) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-            (run_id,project_id,draft_id,1,"completed","completed","not_called",None,None,None,None,None,0,stamp,stamp,"not_applicable","demo-preset-v1","demo-review-v1","demo-preset-v1",4,"demo_preset",stamp,0,run_id,1),
+            "INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,input_tokens,output_tokens,latency_ms,cost_cny,error_code,retryable,created_at,completed_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,started_at,duration_ms,root_run_id,attempt_number,author_context_version,author_context_snapshot_digest) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            (run_id,project_id,draft_id,1,"completed","completed","not_called",None,None,None,None,None,0,stamp,stamp,"not_applicable","demo-preset-v1","demo-review-v1","demo-preset-v1",4,"demo_preset",stamp,0,run_id,1,author_version,author_digest),
         )
         c.execute("INSERT INTO v2_run_stages(run_id,stage,created_at) VALUES(?,?,?)", (run_id,"completed",stamp))
         c.execute("INSERT INTO v2_run_events(run_id,sequence,status,stage,error_code,created_at) VALUES(?,?,?,?,?,?)", (run_id,1,"completed","completed",None,stamp))
@@ -1073,14 +1242,14 @@ class V2Database:
             for project in projects:
                 draft = c.execute("SELECT * FROM v2_drafts WHERE project_id=? ORDER BY saved_at DESC LIMIT 1", (project["id"],)).fetchone()
                 issue_count = c.execute("SELECT COUNT(*) FROM v2_issues WHERE project_id=? AND status='open'", (project["id"],)).fetchone()[0]
-                completed_check = c.execute("SELECT 1 FROM v2_runs WHERE project_id=? AND status='completed' LIMIT 1", (project["id"],)).fetchone()
+                completed_check = c.execute("SELECT 1 FROM v2_runs WHERE project_id=? AND run_type IN ('continuity','memory_delta') AND status='completed' LIMIT 1", (project["id"],)).fetchone()
                 continuity_status = "pending" if issue_count else "checked_clear" if completed_check else "unchecked"
                 recent.append({"project_id":project["id"],"title":project["title"],"status":project["status"],"updated_at":project["updated_at"]})
                 levels={level:c.execute("SELECT COUNT(*) FROM v2_issues WHERE project_id=? AND status='open' AND severity=?",(project["id"],level)).fetchone()[0] for level in ("high","medium","low")}
                 pending.append({"project_id":project["id"],"title":project["title"],"open_count":issue_count,"continuity_status":continuity_status,**levels})
                 if continuation is None and draft:
                     continuation = {"project_id":project["id"],"project_title":project["title"],"draft_id":draft["id"],"draft_title":draft["title"],"draft_revision":draft["revision"],"next_action":"continue_draft","updated_at":project["updated_at"]}
-            failed=c.execute("SELECT r.id,r.project_id,r.status,r.error_code,r.created_at FROM v2_runs r JOIN v2_projects p ON p.id=r.project_id WHERE p.user_id=? AND p.data_origin!='tutorial_seed' AND r.status IN ('failed','timed_out') ORDER BY r.created_at DESC LIMIT 1",(user_id,)).fetchone()
+            failed=c.execute("SELECT r.id,r.project_id,r.status,r.error_code,r.created_at FROM v2_runs r JOIN v2_projects p ON p.id=r.project_id WHERE p.user_id=? AND p.data_origin!='tutorial_seed' AND r.run_type IN ('continuity','memory_delta') AND r.status IN ('failed','timed_out') ORDER BY r.created_at DESC LIMIT 1",(user_id,)).fetchone()
             latest={"run_id":failed["id"],"project_id":failed["project_id"],"status":failed["status"],"error_code":failed["error_code"],"created_at":failed["created_at"]} if failed else None
             return {"continue_work":continuation,"recent_projects":recent,"pending_continuity":pending,"latest_failed_run":latest}
 
@@ -1098,12 +1267,18 @@ class V2Database:
             sql += " ORDER BY " + ("title COLLATE NOCASE" if sort == "title_asc" else "updated_at DESC")
             result = []
             for project in c.execute(sql, values).fetchall():
-                draft = c.execute("SELECT id,chapter_number,revision,status FROM v2_drafts WHERE project_id=? ORDER BY saved_at DESC LIMIT 1", (project["id"],)).fetchone()
+                draft = c.execute("SELECT id,chapter_number,revision,status,body FROM v2_drafts WHERE project_id=? ORDER BY saved_at DESC LIMIT 1", (project["id"],)).fetchone()
+                chapters = c.execute("SELECT chapter_number,body FROM v2_chapters WHERE project_id=? ORDER BY chapter_number", (project["id"],)).fetchall()
+                writing_by_chapter = {int(chapter["chapter_number"]): str(chapter["body"] or "") for chapter in chapters}
+                if draft and str(draft["body"] or "").strip():
+                    writing_by_chapter[int(draft["chapter_number"])] = str(draft["body"])
+                word_count = sum(len(re.sub(r"\s+", "", body)) for body in writing_by_chapter.values())
                 open_count = c.execute("SELECT COUNT(*) FROM v2_issues WHERE project_id=? AND status='open'", (project["id"],)).fetchone()[0]
-                completed_check = c.execute("SELECT 1 FROM v2_runs WHERE project_id=? AND status='completed' LIMIT 1", (project["id"],)).fetchone()
+                completed_check = c.execute("SELECT 1 FROM v2_runs WHERE project_id=? AND run_type IN ('continuity','memory_delta') AND status='completed' LIMIT 1", (project["id"],)).fetchone()
                 if has_open_issues is not None and bool(open_count) != has_open_issues:
                     continue
-                result.append({"id":project["id"],"seed_key":project["seed_key"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"data_origin":project["data_origin"],"chapter_count":c.execute("SELECT COUNT(*) FROM v2_chapters WHERE project_id=?",(project["id"],)).fetchone()[0],"current_memory_version":project["current_memory_version"],"current_draft":dict(draft) if draft else None,"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if completed_check else "unchecked"),"updated_at":project["updated_at"]})
+                draft_summary = {key: draft[key] for key in ("id", "chapter_number", "revision", "status")} if draft else None
+                result.append({"id":project["id"],"seed_key":project["seed_key"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"author_context_version":project["author_context_version"],"foreshadow_version":project["foreshadow_version"],"data_origin":project["data_origin"],"chapter_count":len(chapters),"word_count":word_count,"current_memory_version":project["current_memory_version"],"current_draft":draft_summary,"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if completed_check else "unchecked"),"updated_at":project["updated_at"]})
             return {"projects":result}
 
     def create_project(self, user_id: str, payload: dict[str, Any], key: str):
@@ -1115,16 +1290,236 @@ class V2Database:
                 project_id = self._create_project(c,user_id,title,genre,summary,"user_created")
                 self._complete_onboarding_for_real_project(c, user_id)
                 draft = c.execute("SELECT * FROM v2_drafts WHERE project_id=?", (project_id,)).fetchone()
-                return {"project":{"id":project_id,"title":title,"genre":genre,"summary":summary,"status":"active","current_memory_version":1,"current_draft":{"id":draft["id"],"chapter_number":1,"revision":1,"status":"draft"}},"created_resources":{"outline":True,"characters":True,"world":True}}
+                return {"project":{"id":project_id,"title":title,"genre":genre,"summary":summary,"status":"active","current_memory_version":1,"author_context_version":0,"foreshadow_version":0,"current_draft":{"id":draft["id"],"chapter_number":1,"revision":1,"status":"draft"}},"created_resources":{"outline":True,"characters":True,"world":True}}
             return self._idem(c,user_id,"create_project",key,payload,create,201)
 
     def project(self, user_id: str, project_id: str) -> dict[str, Any]:
         with self.connection() as c:
             project = self._project(c,user_id,project_id)
             draft = c.execute("SELECT id,chapter_number,revision,status FROM v2_drafts WHERE project_id=? AND status IN ('draft','saved') ORDER BY saved_at DESC LIMIT 1", (project_id,)).fetchone()
-            run = c.execute("SELECT id,status,created_at,result_origin FROM v2_runs WHERE project_id=? ORDER BY created_at DESC,rowid DESC LIMIT 1", (project_id,)).fetchone()
+            run = c.execute("SELECT id,status,created_at,result_origin FROM v2_runs WHERE project_id=? AND run_type IN ('continuity','memory_delta') ORDER BY created_at DESC,rowid DESC LIMIT 1", (project_id,)).fetchone()
             open_count=c.execute("SELECT COUNT(*) FROM v2_issues WHERE project_id=? AND status='open'",(project_id,)).fetchone()[0]
-            return {"id":project["id"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"chapter_count":c.execute("SELECT COUNT(*) FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0],"outline_progress":0,"current_memory_version":project["current_memory_version"],"source_revision":project["source_revision"],"current_draft":dict(draft) if draft else None,"latest_run":({"run_id":run["id"],"status":run["status"],"created_at":run["created_at"],"result_origin":run["result_origin"]} if run else None),"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if run and run["status"]=="completed" else "unchecked"),"updated_at":project["updated_at"],"data_origin":project["data_origin"],"is_tutorial":project["data_origin"]=="tutorial_seed","memory_initialization_status":self._memory_initialization_status(c,project_id,project["data_origin"]) }
+            return {"id":project["id"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"author_context_version":project["author_context_version"],"foreshadow_version":project["foreshadow_version"],"chapter_count":c.execute("SELECT COUNT(*) FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0],"outline_progress":0,"current_memory_version":project["current_memory_version"],"source_revision":project["source_revision"],"current_draft":dict(draft) if draft else None,"latest_run":({"run_id":run["id"],"status":run["status"],"created_at":run["created_at"],"result_origin":run["result_origin"]} if run else None),"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if run and run["status"]=="completed" else "unchecked"),"updated_at":project["updated_at"],"data_origin":project["data_origin"],"is_tutorial":project["data_origin"]=="tutorial_seed","memory_initialization_status":self._memory_initialization_status(c,project_id,project["data_origin"]) }
+
+    # --- v1.3 author intent: independent from confirmed Story Memory ---
+    _AUTHOR_INTENT = {
+        "story": {
+            "table": "v2_author_story_plans", "collection": "story_plans", "prefix": "storyplan",
+            "fields": ("title", "summary", "goal", "status", "target_chapter_number"),
+            "required": ("title", "status"),
+            "snapshot_table": "v2_author_story_plan_versions",
+            "snapshot_fields": ("id","title","summary","goal","position","status","target_chapter_number","archived_at","created_at","updated_at"),
+        },
+        "character": {
+            "table": "v2_author_character_plans", "collection": "character_plans", "prefix": "characterplan",
+            "fields": ("name", "role_type", "goal", "planned_state", "notes"),
+            "required": ("name", "role_type"),
+            "snapshot_table": "v2_author_character_plan_versions",
+            "snapshot_fields": ("id","name","role_type","goal","planned_state","notes","position","archived_at","created_at","updated_at"),
+        },
+        "world": {
+            "table": "v2_author_world_plans", "collection": "world_plans", "prefix": "worldplan",
+            "fields": ("name", "category", "description", "notes"),
+            "required": ("name", "category", "description"),
+            "snapshot_table": "v2_author_world_plan_versions",
+            "snapshot_fields": ("id","name","category","description","notes","position","archived_at","created_at","updated_at"),
+        },
+    }
+
+    @classmethod
+    def _empty_author_context_payload(cls) -> dict[str, list[dict[str, Any]]]:
+        return {spec["collection"]:[] for spec in cls._AUTHOR_INTENT.values()}
+
+    @staticmethod
+    def _author_snapshot_digest(version: int, parent_version: int | None, payload: dict[str, Any]) -> str:
+        return digest({"version":version,"parent_version":parent_version,"snapshot":payload})
+
+    @classmethod
+    def _live_author_context_payload(cls, c: sqlite3.Connection, project_id: str) -> dict[str, list[dict[str, Any]]]:
+        payload={}
+        for spec in cls._AUTHOR_INTENT.values():
+            rows=c.execute(f"SELECT * FROM {spec['table']} WHERE project_id=? ORDER BY position,id",(project_id,)).fetchall()
+            payload[spec["collection"]]=[{field:row[field] for field in spec["snapshot_fields"]} for row in rows]
+        return payload
+
+    @classmethod
+    def _stored_author_context_payload(cls, c: sqlite3.Connection, project_id: str, version: int) -> dict[str, list[dict[str, Any]]]:
+        payload={}
+        for spec in cls._AUTHOR_INTENT.values():
+            rows=c.execute(f"SELECT * FROM {spec['snapshot_table']} WHERE project_id=? AND version=? ORDER BY position,item_id",(project_id,version)).fetchall()
+            payload[spec["collection"]]=[{field:(row["item_id"] if field=="id" else row[field]) for field in spec["snapshot_fields"]} for row in rows]
+        return payload
+
+    @classmethod
+    def _insert_empty_author_context_zero(cls, c: sqlite3.Connection, project_id: str, stamp: str) -> sqlite3.Row:
+        empty_digest=cls._author_snapshot_digest(0,None,cls._empty_author_context_payload())
+        existing=c.execute("SELECT * FROM v2_author_context_versions WHERE project_id=? AND version=0",(project_id,)).fetchone()
+        if existing:
+            if existing["parent_version"] is not None or existing["snapshot_digest"]!=empty_digest:
+                raise DomainError("author_context_snapshot_invalid",409)
+            return existing
+        c.execute("INSERT INTO v2_author_context_versions(project_id,version,parent_version,snapshot_digest,created_at) VALUES(?,0,NULL,?,?)",(project_id,empty_digest,stamp))
+        return c.execute("SELECT * FROM v2_author_context_versions WHERE project_id=? AND version=0",(project_id,)).fetchone()
+
+    @classmethod
+    def _write_author_context_snapshot(cls, c: sqlite3.Connection, project_id: str, version: int, parent_version: int, stamp: str) -> sqlite3.Row:
+        if version<1 or parent_version<0 or version<=parent_version:
+            raise DomainError("author_context_snapshot_invalid",409)
+        if not c.execute("SELECT 1 FROM v2_author_context_versions WHERE project_id=? AND version=?",(project_id,parent_version)).fetchone():
+            raise DomainError("author_context_snapshot_unresolvable",409)
+        if c.execute("SELECT 1 FROM v2_author_context_versions WHERE project_id=? AND version=?",(project_id,version)).fetchone():
+            raise DomainError("author_context_version_conflict",409)
+        payload=cls._live_author_context_payload(c,project_id); snapshot_digest=cls._author_snapshot_digest(version,parent_version,payload)
+        c.execute("INSERT INTO v2_author_context_versions(project_id,version,parent_version,snapshot_digest,created_at) VALUES(?,?,?,?,?)",(project_id,version,parent_version,snapshot_digest,stamp))
+        for spec in cls._AUTHOR_INTENT.values():
+            columns=("project_id","version","item_id",*spec["snapshot_fields"][1:])
+            for item in payload[spec["collection"]]:
+                values=(project_id,version,item["id"],*(item[field] for field in spec["snapshot_fields"][1:]))
+                c.execute(f"INSERT INTO {spec['snapshot_table']}({','.join(columns)}) VALUES({','.join('?' for _ in columns)})",values)
+        return c.execute("SELECT * FROM v2_author_context_versions WHERE project_id=? AND version=?",(project_id,version)).fetchone()
+
+    @classmethod
+    def _author_context_version_row(cls, c: sqlite3.Connection, project_id: str, version: int) -> sqlite3.Row | None:
+        meta=c.execute("SELECT * FROM v2_author_context_versions WHERE project_id=? AND version=?",(project_id,version)).fetchone()
+        if not meta:return None
+        if cls._author_snapshot_digest(version,meta["parent_version"],cls._stored_author_context_payload(c,project_id,version))!=meta["snapshot_digest"]:
+            raise DomainError("author_context_snapshot_invalid",409)
+        return meta
+
+    @classmethod
+    def _current_author_context_binding(cls, c: sqlite3.Connection, project: sqlite3.Row) -> tuple[int,str]:
+        version=int(project["author_context_version"])
+        meta=cls._author_context_version_row(c,project["id"],version)
+        if not meta:raise DomainError("author_context_snapshot_unresolvable",409)
+        return version,meta["snapshot_digest"]
+
+    @staticmethod
+    def _author_item(row: sqlite3.Row) -> dict[str, Any]:
+        item = dict(row)
+        item["archived"] = item["archived_at"] is not None
+        return item
+
+    @staticmethod
+    def _require_author_version(project: sqlite3.Row, supplied: int) -> None:
+        if supplied != project["author_context_version"]:
+            raise DomainError("author_context_version_conflict",409,False,{"current_author_context_version":project["author_context_version"]})
+
+    @classmethod
+    def _clean_author_fields(cls, kind: str, payload: dict[str, Any], creating: bool) -> dict[str, Any]:
+        spec=cls._AUTHOR_INTENT[kind]; values={}
+        limits={"title":120,"name":120,"summary":2000,"goal":2000,"planned_state":2000,"notes":4000,"description":4000}
+        enums={"status":{"planned","in_progress","paused","completed"},"role_type":{"protagonist","ally","antagonist","supporting","other"},"category":{"location","organization","rule","object","term","other"}}
+        if creating and any(field not in payload for field in spec["required"]):
+            raise DomainError("author_intent_invalid",422)
+        for field in spec["fields"]:
+            if field not in payload: continue
+            value=payload[field]
+            if field!="target_chapter_number":
+                if not isinstance(value,str): raise DomainError("author_intent_invalid",422)
+                value=value.strip()
+                if len(value)>limits.get(field,120): raise DomainError("author_intent_invalid",422)
+            if field in spec["required"] and not value: raise DomainError("author_intent_invalid",422)
+            if field in enums and value not in enums[field]: raise DomainError("author_intent_invalid",422)
+            if field=="target_chapter_number" and value is not None and (not isinstance(value,int) or isinstance(value,bool) or value<1):
+                raise DomainError("author_intent_invalid",422)
+            values[field]=value
+        return values
+
+    def author_intent(self, user_id: str, project_id: str, include_archived: bool = False, version: int | None = None) -> dict[str, Any]:
+        with self.connection() as c:
+            project=self._project(c,user_id,project_id)
+            selected=int(project["author_context_version"] if version is None else version)
+            meta=self._author_context_version_row(c,project_id,selected)
+            if not meta:raise DomainError("author_context_version_not_found",404)
+            snapshot=self._stored_author_context_payload(c,project_id,selected)
+            result={"project_id":project_id,"author_context_version":selected,"version":selected,"parent_version":meta["parent_version"],"snapshot_digest":meta["snapshot_digest"]}
+            for spec in self._AUTHOR_INTENT.values():
+                rows=snapshot[spec["collection"]]
+                result[spec["collection"]]=[{**item,"archived":item["archived_at"] is not None} for item in rows if include_archived or item["archived_at"] is None]
+            return result
+
+    def create_author_intent_item(self, user_id: str, project_id: str, kind: str, payload: dict[str, Any], key: str):
+        spec=self._AUTHOR_INTENT[kind]
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def create() -> dict[str, Any]:
+                project=self._project(c,user_id,project_id,True)
+                self._require_author_version(project,payload["base_author_context_version"])
+                values=self._clean_author_fields(kind,payload,True)
+                stamp,item_id=utcnow(),new_id(spec["prefix"])
+                position=c.execute(f"SELECT COALESCE(MAX(position),0)+1 FROM {spec['table']} WHERE project_id=? AND archived_at IS NULL",(project_id,)).fetchone()[0]
+                fields=("id","project_id",*values.keys(),"position","archived_at","created_at","updated_at")
+                params=(item_id,project_id,*values.values(),position,None,stamp,stamp)
+                c.execute(f"INSERT INTO {spec['table']}({','.join(fields)}) VALUES({','.join('?' for _ in fields)})",params)
+                version=project["author_context_version"]+1
+                meta=self._write_author_context_snapshot(c,project_id,version,project["author_context_version"],stamp)
+                c.execute("UPDATE v2_projects SET author_context_version=?,updated_at=? WHERE id=?",(version,stamp,project_id))
+                item=c.execute(f"SELECT * FROM {spec['table']} WHERE id=? AND project_id=?",(item_id,project_id)).fetchone()
+                return {"project_id":project_id,"author_context_version":version,"version":version,"parent_version":meta["parent_version"],"snapshot_digest":meta["snapshot_digest"],"item":self._author_item(item)}
+            return self._idem(c,user_id,f"author_intent_create:{project_id}:{kind}",key,payload,create,201)
+
+    def update_author_intent_item(self, user_id: str, project_id: str, kind: str, item_id: str, payload: dict[str, Any], key: str):
+        spec=self._AUTHOR_INTENT[kind]
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def update() -> dict[str, Any]:
+                project=self._project(c,user_id,project_id,True)
+                self._require_author_version(project,payload["base_author_context_version"])
+                item=c.execute(f"SELECT * FROM {spec['table']} WHERE id=? AND project_id=?",(item_id,project_id)).fetchone()
+                if not item: raise DomainError("resource_not_found",404)
+                if item["archived_at"] is not None: raise DomainError("author_intent_item_archived",409)
+                values=self._clean_author_fields(kind,payload,False)
+                if not values: raise DomainError("author_intent_invalid",422)
+                stamp=utcnow(); assignments=",".join(f"{field}=?" for field in values)
+                c.execute(f"UPDATE {spec['table']} SET {assignments},updated_at=? WHERE id=? AND project_id=?",(*values.values(),stamp,item_id,project_id))
+                version=project["author_context_version"]+1
+                meta=self._write_author_context_snapshot(c,project_id,version,project["author_context_version"],stamp)
+                c.execute("UPDATE v2_projects SET author_context_version=?,updated_at=? WHERE id=?",(version,stamp,project_id))
+                refreshed=c.execute(f"SELECT * FROM {spec['table']} WHERE id=? AND project_id=?",(item_id,project_id)).fetchone()
+                return {"project_id":project_id,"author_context_version":version,"version":version,"parent_version":meta["parent_version"],"snapshot_digest":meta["snapshot_digest"],"item":self._author_item(refreshed)}
+            return self._idem(c,user_id,f"author_intent_update:{project_id}:{kind}:{item_id}",key,payload,update)
+
+    def reorder_author_intent_items(self, user_id: str, project_id: str, kind: str, payload: dict[str, Any], key: str):
+        spec=self._AUTHOR_INTENT[kind]
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def reorder() -> dict[str, Any]:
+                project=self._project(c,user_id,project_id,True)
+                self._require_author_version(project,payload["base_author_context_version"])
+                ordered=payload["ordered_ids"]
+                active=[row["id"] for row in c.execute(f"SELECT id FROM {spec['table']} WHERE project_id=? AND archived_at IS NULL",(project_id,)).fetchall()]
+                if len(ordered)!=len(set(ordered)) or set(ordered)!=set(active): raise DomainError("author_intent_reorder_invalid",422)
+                stamp=utcnow()
+                for position,current_id in enumerate(ordered,1):
+                    c.execute(f"UPDATE {spec['table']} SET position=?,updated_at=? WHERE id=? AND project_id=? AND archived_at IS NULL",(position,stamp,current_id,project_id))
+                version=project["author_context_version"]+1
+                meta=self._write_author_context_snapshot(c,project_id,version,project["author_context_version"],stamp)
+                c.execute("UPDATE v2_projects SET author_context_version=?,updated_at=? WHERE id=?",(version,stamp,project_id))
+                rows=c.execute(f"SELECT * FROM {spec['table']} WHERE project_id=? AND archived_at IS NULL ORDER BY position,id",(project_id,)).fetchall()
+                return {"project_id":project_id,"author_context_version":version,"version":version,"parent_version":meta["parent_version"],"snapshot_digest":meta["snapshot_digest"],spec["collection"]:[self._author_item(row) for row in rows]}
+            return self._idem(c,user_id,f"author_intent_reorder:{project_id}:{kind}",key,payload,reorder)
+
+    def archive_author_intent_item(self, user_id: str, project_id: str, kind: str, item_id: str, payload: dict[str, Any], key: str):
+        if payload.get("confirm") is not True: raise DomainError("confirmation_required",400)
+        spec=self._AUTHOR_INTENT[kind]
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def archive() -> dict[str, Any]:
+                project=self._project(c,user_id,project_id,True)
+                self._require_author_version(project,payload["base_author_context_version"])
+                item=c.execute(f"SELECT * FROM {spec['table']} WHERE id=? AND project_id=?",(item_id,project_id)).fetchone()
+                if not item: raise DomainError("resource_not_found",404)
+                if item["archived_at"] is not None: raise DomainError("author_intent_item_archived",409)
+                stamp=utcnow()
+                c.execute(f"UPDATE {spec['table']} SET archived_at=?,updated_at=? WHERE id=? AND project_id=?",(stamp,stamp,item_id,project_id))
+                active=c.execute(f"SELECT id FROM {spec['table']} WHERE project_id=? AND archived_at IS NULL ORDER BY position,id",(project_id,)).fetchall()
+                for position,row in enumerate(active,1): c.execute(f"UPDATE {spec['table']} SET position=? WHERE id=?",(position,row["id"]))
+                version=project["author_context_version"]+1
+                meta=self._write_author_context_snapshot(c,project_id,version,project["author_context_version"],stamp)
+                c.execute("UPDATE v2_projects SET author_context_version=?,updated_at=? WHERE id=?",(version,stamp,project_id))
+                archived=c.execute(f"SELECT * FROM {spec['table']} WHERE id=? AND project_id=?",(item_id,project_id)).fetchone()
+                return {"project_id":project_id,"author_context_version":version,"version":version,"parent_version":meta["parent_version"],"snapshot_digest":meta["snapshot_digest"],"item":self._author_item(archived)}
+            return self._idem(c,user_id,f"author_intent_archive:{project_id}:{kind}:{item_id}",key,payload,archive)
 
     def outline(self, user_id: str, project_id: str) -> dict[str, Any]:
         with self.connection() as c:
@@ -1143,6 +1538,240 @@ class V2Database:
                     raise DomainError("source_unavailable",422)
                 values.append({"id":x["id"],"name":x["name"],"role_type":x["role_type"],"identity":x["identity"],"goal":x["goal"],"current_state":x["current_state"],"knowledge_boundary":x["knowledge_boundary"],"relationships":json.loads(x["relationships_json"]),"source_ids":source_ids})
             return {"project_id":project_id,"characters":values}
+
+    @staticmethod
+    def _normalized_alias(value: str) -> str:
+        return " ".join(unicodedata.normalize("NFKC",value).split()).casefold()
+
+    def _character_alias_snapshot(self,c:sqlite3.Connection,project_id:str,character_id:str,include_archived:bool=True)->dict[str,Any]:
+        character=c.execute("SELECT id,name FROM v2_characters WHERE id=? AND project_id=?",(character_id,project_id)).fetchone()
+        if not character:raise DomainError("resource_not_found",404)
+        state=c.execute("SELECT version,updated_at FROM v2_character_alias_state WHERE project_id=? AND character_id=?",(project_id,character_id)).fetchone()
+        query="SELECT id,alias,status,created_at,updated_at,archived_at FROM v2_character_aliases WHERE project_id=? AND character_id=?"
+        if not include_archived:query+=" AND status='active'"
+        rows=c.execute(query+" ORDER BY status,created_at,id",(project_id,character_id)).fetchall()
+        return {"project_id":project_id,"character_id":character_id,"primary_name":character["name"],"version":int(state["version"]) if state else 0,"updated_at":state["updated_at"] if state else None,"aliases":[dict(row) for row in rows]}
+
+    def character_aliases(self,user_id:str,project_id:str,character_id:str,include_archived:bool=False)->dict[str,Any]:
+        with self.connection() as c:
+            self._project(c,user_id,project_id)
+            return self._character_alias_snapshot(c,project_id,character_id,include_archived)
+
+    def _write_character_alias(self,user_id:str,project_id:str,character_id:str,payload:dict[str,Any],key:str,operation:str,alias_id:str|None=None):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def write():
+                self._project(c,user_id,project_id,True)
+                character=c.execute("SELECT id,name FROM v2_characters WHERE id=? AND project_id=?",(character_id,project_id)).fetchone()
+                if not character:raise DomainError("resource_not_found",404)
+                state=c.execute("SELECT version FROM v2_character_alias_state WHERE project_id=? AND character_id=?",(project_id,character_id)).fetchone()
+                current=int(state["version"]) if state else 0
+                if payload["base_version"]!=current:raise DomainError("character_alias_version_conflict",409,False,{"current_version":current})
+                target=None
+                if alias_id:
+                    target=c.execute("SELECT * FROM v2_character_aliases WHERE id=? AND project_id=? AND character_id=?",(alias_id,project_id,character_id)).fetchone()
+                    if not target:raise DomainError("resource_not_found",404)
+                stamp=utcnow()
+                if operation in {"create","update"}:
+                    alias=" ".join(str(payload["alias"]).split())
+                    normalized=self._normalized_alias(alias)
+                    if not alias or len(alias)>80:raise DomainError("character_alias_invalid",422)
+                    if normalized==self._normalized_alias(character["name"]):raise DomainError("character_alias_duplicate",409)
+                    duplicate=c.execute("SELECT id FROM v2_character_aliases WHERE project_id=? AND character_id=? AND normalized_alias=? AND status='active' AND id<>?",(project_id,character_id,normalized,alias_id or "")).fetchone()
+                    if duplicate:raise DomainError("character_alias_duplicate",409)
+                    active=c.execute("SELECT COUNT(*) FROM v2_character_aliases WHERE project_id=? AND character_id=? AND status='active'",(project_id,character_id)).fetchone()[0]
+                    if operation=="create" and active>=20:raise DomainError("character_alias_limit_reached",409)
+                    if operation=="create":
+                        changed_alias_id=new_id("alias")
+                        c.execute("INSERT INTO v2_character_aliases VALUES(?,?,?,?,?,?,?,?,?)",(changed_alias_id,project_id,character_id,alias,normalized,"active",stamp,stamp,None))
+                    else:
+                        if target["status"]!="active":raise DomainError("character_alias_archived",409)
+                        changed_alias_id=alias_id
+                        c.execute("UPDATE v2_character_aliases SET alias=?,normalized_alias=?,updated_at=? WHERE id=?",(alias,normalized,stamp,alias_id))
+                else:
+                    if target["status"]!="active":raise DomainError("character_alias_archived",409)
+                    changed_alias_id=alias_id
+                    c.execute("UPDATE v2_character_aliases SET status='archived',archived_at=?,updated_at=? WHERE id=?",(stamp,stamp,alias_id))
+                version=current+1
+                c.execute("INSERT INTO v2_character_alias_state(project_id,character_id,version,updated_at) VALUES(?,?,?,?) ON CONFLICT(project_id,character_id) DO UPDATE SET version=excluded.version,updated_at=excluded.updated_at",(project_id,character_id,version,stamp))
+                c.execute("UPDATE v2_projects SET alias_version=alias_version+1,updated_at=? WHERE id=?",(stamp,project_id))
+                snapshot=self._character_alias_snapshot(c,project_id,character_id,True)
+                snapshot["changed_alias_id"]=changed_alias_id
+                return snapshot
+            return self._idem(c,user_id,f"character_alias_{operation}:{project_id}:{character_id}:{alias_id or ''}",key,payload,write,201 if operation=="create" else 200)
+
+    def create_character_alias(self,user_id:str,project_id:str,character_id:str,payload:dict[str,Any],key:str):return self._write_character_alias(user_id,project_id,character_id,payload,key,"create")
+    def update_character_alias(self,user_id:str,project_id:str,character_id:str,alias_id:str,payload:dict[str,Any],key:str):return self._write_character_alias(user_id,project_id,character_id,payload,key,"update",alias_id)
+    def archive_character_alias(self,user_id:str,project_id:str,character_id:str,alias_id:str,payload:dict[str,Any],key:str):return self._write_character_alias(user_id,project_id,character_id,payload,key,"archive",alias_id)
+
+    def _current_alias_binding(self,c:sqlite3.Connection,project_id:str)->tuple[int,str,list[dict[str,Any]]]:
+        project=c.execute("SELECT alias_version FROM v2_projects WHERE id=?",(project_id,)).fetchone()
+        rows=[dict(row) for row in c.execute("SELECT a.id,a.character_id,ch.name primary_name,a.alias,s.version character_alias_version FROM v2_character_aliases a JOIN v2_characters ch ON ch.id=a.character_id AND ch.project_id=a.project_id LEFT JOIN v2_character_alias_state s ON s.project_id=a.project_id AND s.character_id=a.character_id WHERE a.project_id=? AND a.status='active' ORDER BY a.character_id,a.normalized_alias,a.id",(project_id,)).fetchall()]
+        version=int(project["alias_version"] or 0)
+        return version,digest(rows),rows
+
+    @staticmethod
+    def _normalized_foreshadow_title(value:str)->str:
+        return " ".join(unicodedata.normalize("NFKC",value).split()).casefold()
+
+    def _foreshadow_reference(self,c:sqlite3.Connection,project_id:str,chapter_id:str|None,source_span_id:str|None)->dict[str,Any]|None:
+        if source_span_id:
+            row=c.execute("SELECT s.id,s.label,s.chapter_id,ch.chapter_number,ch.title chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.id=? AND s.project_id=?",(source_span_id,project_id)).fetchone()
+            if not row or (chapter_id and chapter_id!=row["chapter_id"]):raise DomainError("foreshadow_reference_invalid",422)
+            return {"chapter_id":row["chapter_id"],"chapter_number":row["chapter_number"],"chapter_title":row["chapter_title"],"source_span_id":row["id"],"source_label":row["label"],"source_path":f"/projects/{project_id}/sources#span-{row['id']}"}
+        if chapter_id:
+            row=c.execute("SELECT id,chapter_number,title FROM v2_chapters WHERE id=? AND project_id=?",(chapter_id,project_id)).fetchone()
+            if not row:raise DomainError("foreshadow_reference_invalid",422)
+            return {"chapter_id":row["id"],"chapter_number":row["chapter_number"],"chapter_title":row["title"],"source_span_id":None,"source_label":None,"source_path":f"/projects/{project_id}/sources#chapter-{row['id']}"}
+        return None
+
+    def _foreshadow_item(self,c:sqlite3.Connection,row:sqlite3.Row|dict[str,Any])->dict[str,Any]:
+        item=dict(row)
+        planted=self._foreshadow_reference(c,item["project_id"],item.get("planted_chapter_id"),item.get("planted_source_span_id"))
+        resolved=self._foreshadow_reference(c,item["project_id"],item.get("resolved_chapter_id"),item.get("resolved_source_span_id"))
+        return {"id":item["id"],"project_id":item["project_id"],"title":item["title"],"description":item["description"],"status":item["status"],"version":item["version"],"planted":planted,"resolved":resolved,"archived_at":item.get("archived_at"),"created_at":item["created_at"],"updated_at":item["updated_at"]}
+
+    def _foreshadow_snapshot(self,c:sqlite3.Connection,project_id:str,include_archived:bool=False)->dict[str,Any]:
+        project=c.execute("SELECT foreshadow_version FROM v2_projects WHERE id=?",(project_id,)).fetchone()
+        query="SELECT * FROM v2_foreshadows WHERE project_id=?"
+        if not include_archived:query+=" AND archived_at IS NULL"
+        rows=c.execute(query+" ORDER BY archived_at IS NOT NULL,status,updated_at DESC,id",(project_id,)).fetchall()
+        return {"project_id":project_id,"foreshadow_version":int(project["foreshadow_version"] or 0),"records":[self._foreshadow_item(c,row) for row in rows]}
+
+    def foreshadows(self,user_id:str,project_id:str,include_archived:bool=False)->dict[str,Any]:
+        with self.connection() as c:
+            self._project(c,user_id,project_id)
+            return self._foreshadow_snapshot(c,project_id,include_archived)
+
+    def _validate_foreshadow_payload(self,c:sqlite3.Connection,project_id:str,payload:dict[str,Any])->dict[str,Any]:
+        title=" ".join(str(payload.get("title") or "").split())
+        description=str(payload.get("description") or "").strip()
+        status=payload.get("status")
+        if not 1<=len(title)<=120 or not 1<=len(description)<=1200 or status not in FORESHADOW_STATUSES:raise DomainError("foreshadow_invalid",422)
+        planted=self._foreshadow_reference(c,project_id,payload.get("planted_chapter_id"),payload.get("planted_source_span_id"))
+        resolved=self._foreshadow_reference(c,project_id,payload.get("resolved_chapter_id"),payload.get("resolved_source_span_id"))
+        return {"title":title,"normalized_title":self._normalized_foreshadow_title(title),"description":description,"status":status,"planted_chapter_id":planted["chapter_id"] if planted else None,"planted_source_span_id":planted["source_span_id"] if planted else None,"resolved_chapter_id":resolved["chapter_id"] if resolved else None,"resolved_source_span_id":resolved["source_span_id"] if resolved else None}
+
+    def _record_foreshadow_version(self,c:sqlite3.Connection,row:sqlite3.Row|dict[str,Any],event:str,user_id:str,stamp:str)->None:
+        item=dict(row)
+        snapshot={key:item.get(key) for key in ("id","project_id","title","description","status","planted_chapter_id","planted_source_span_id","resolved_chapter_id","resolved_source_span_id","version","archived_at","created_at","updated_at")}
+        c.execute("INSERT INTO v2_foreshadow_versions VALUES(?,?,?,?,?,?,?)",(item["id"],item["project_id"],item["version"],json.dumps(snapshot,ensure_ascii=False,sort_keys=True),event,user_id,stamp))
+
+    def create_foreshadow(self,user_id:str,project_id:str,payload:dict[str,Any],key:str):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def create():
+                project=self._project(c,user_id,project_id,True)
+                current=int(project["foreshadow_version"] or 0)
+                if payload["base_foreshadow_version"]!=current:raise DomainError("foreshadow_version_conflict",409,False,{"current_version":current})
+                if current>=MAX_RESOURCE_VERSION:raise DomainError("foreshadow_version_limit",409)
+                if c.execute("SELECT COUNT(*) FROM v2_foreshadows WHERE project_id=? AND archived_at IS NULL",(project_id,)).fetchone()[0]>=FORESHADOW_MAX_RECORDS:raise DomainError("foreshadow_limit_reached",409)
+                values=self._validate_foreshadow_payload(c,project_id,payload)
+                if c.execute("SELECT 1 FROM v2_foreshadows WHERE project_id=? AND normalized_title=? AND archived_at IS NULL",(project_id,values["normalized_title"])).fetchone():raise DomainError("foreshadow_duplicate",409)
+                item_id,stamp=new_id("foreshadow"),utcnow()
+                c.execute("INSERT INTO v2_foreshadows VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(item_id,project_id,values["title"],values["normalized_title"],values["description"],values["status"],values["planted_chapter_id"],values["planted_source_span_id"],values["resolved_chapter_id"],values["resolved_source_span_id"],1,None,stamp,stamp))
+                row=c.execute("SELECT * FROM v2_foreshadows WHERE id=?",(item_id,)).fetchone();self._record_foreshadow_version(c,row,"created",user_id,stamp)
+                c.execute("UPDATE v2_projects SET foreshadow_version=foreshadow_version+1,updated_at=? WHERE id=?",(stamp,project_id))
+                return {**self._foreshadow_snapshot(c,project_id,True),"item":self._foreshadow_item(c,row)}
+            return self._idem(c,user_id,f"foreshadow_create:{project_id}",key,payload,create,201)
+
+    def update_foreshadow(self,user_id:str,project_id:str,item_id:str,payload:dict[str,Any],key:str):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def update():
+                project=self._project(c,user_id,project_id,True)
+                row=c.execute("SELECT * FROM v2_foreshadows WHERE id=? AND project_id=?",(item_id,project_id)).fetchone()
+                if not row:raise DomainError("resource_not_found",404)
+                if row["archived_at"]:raise DomainError("foreshadow_archived",409)
+                if payload["base_version"]!=row["version"]:raise DomainError("foreshadow_version_conflict",409,False,{"current_version":row["version"]})
+                if row["version"]>=MAX_RESOURCE_VERSION or int(project["foreshadow_version"] or 0)>=MAX_RESOURCE_VERSION:raise DomainError("foreshadow_version_limit",409)
+                provided={key:value for key,value in payload.items() if key!="base_version"}
+                if not provided:raise DomainError("foreshadow_invalid",422)
+                merged={key:row[key] for key in ("title","description","status","planted_chapter_id","planted_source_span_id","resolved_chapter_id","resolved_source_span_id")}
+                merged.update(provided);values=self._validate_foreshadow_payload(c,project_id,merged)
+                duplicate=c.execute("SELECT 1 FROM v2_foreshadows WHERE project_id=? AND normalized_title=? AND archived_at IS NULL AND id<>?",(project_id,values["normalized_title"],item_id)).fetchone()
+                if duplicate:raise DomainError("foreshadow_duplicate",409)
+                stamp=utcnow();version=row["version"]+1
+                c.execute("UPDATE v2_foreshadows SET title=?,normalized_title=?,description=?,status=?,planted_chapter_id=?,planted_source_span_id=?,resolved_chapter_id=?,resolved_source_span_id=?,version=?,updated_at=? WHERE id=?",(values["title"],values["normalized_title"],values["description"],values["status"],values["planted_chapter_id"],values["planted_source_span_id"],values["resolved_chapter_id"],values["resolved_source_span_id"],version,stamp,item_id))
+                changed=c.execute("SELECT * FROM v2_foreshadows WHERE id=?",(item_id,)).fetchone();self._record_foreshadow_version(c,changed,"updated",user_id,stamp)
+                c.execute("UPDATE v2_projects SET foreshadow_version=foreshadow_version+1,updated_at=? WHERE id=?",(stamp,project_id))
+                return {**self._foreshadow_snapshot(c,project_id,True),"item":self._foreshadow_item(c,changed)}
+            return self._idem(c,user_id,f"foreshadow_update:{project_id}:{item_id}",key,payload,update)
+
+    def archive_foreshadow(self,user_id:str,project_id:str,item_id:str,payload:dict[str,Any],key:str):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def archive():
+                project=self._project(c,user_id,project_id,True)
+                row=c.execute("SELECT * FROM v2_foreshadows WHERE id=? AND project_id=?",(item_id,project_id)).fetchone()
+                if not row:raise DomainError("resource_not_found",404)
+                if row["archived_at"]:raise DomainError("foreshadow_archived",409)
+                if payload["base_version"]!=row["version"]:raise DomainError("foreshadow_version_conflict",409,False,{"current_version":row["version"]})
+                if row["version"]>=MAX_RESOURCE_VERSION or int(project["foreshadow_version"] or 0)>=MAX_RESOURCE_VERSION:raise DomainError("foreshadow_version_limit",409)
+                stamp=utcnow();version=row["version"]+1
+                c.execute("UPDATE v2_foreshadows SET version=?,archived_at=?,updated_at=? WHERE id=?",(version,stamp,stamp,item_id))
+                changed=c.execute("SELECT * FROM v2_foreshadows WHERE id=?",(item_id,)).fetchone();self._record_foreshadow_version(c,changed,"archived",user_id,stamp)
+                c.execute("UPDATE v2_projects SET foreshadow_version=foreshadow_version+1,updated_at=? WHERE id=?",(stamp,project_id))
+                return {**self._foreshadow_snapshot(c,project_id,True),"item":self._foreshadow_item(c,changed)}
+            return self._idem(c,user_id,f"foreshadow_archive:{project_id}:{item_id}",key,payload,archive)
+
+    def _current_foreshadow_binding(self,c:sqlite3.Connection,project_id:str)->tuple[int,str,list[dict[str,Any]]]:
+        project=c.execute("SELECT foreshadow_version FROM v2_projects WHERE id=?",(project_id,)).fetchone()
+        rows=[dict(row) for row in c.execute("SELECT id,title,description,status,planted_chapter_id,planted_source_span_id,resolved_chapter_id,resolved_source_span_id,version FROM v2_foreshadows WHERE project_id=? AND archived_at IS NULL ORDER BY normalized_title,id",(project_id,)).fetchall()]
+        return int(project["foreshadow_version"] or 0),digest(rows),rows
+
+    @staticmethod
+    def _normalized_revision_task_title(value:str)->str:
+        return re.sub(r"\s+","",value).casefold()
+
+    def _validate_revision_task_fields(self,payload:dict[str,Any])->dict[str,Any]:
+        title=" ".join(str(payload.get("title") or "").split());instruction=str(payload.get("instruction") or "").strip();priority=payload.get("priority")
+        if not 1<=len(title)<=120 or not 1<=len(instruction)<=1200 or priority not in REVISION_TASK_PRIORITIES:raise DomainError("revision_task_invalid",422)
+        return {"title":title,"normalized_title":self._normalized_revision_task_title(title),"instruction":instruction,"priority":priority}
+
+    @staticmethod
+    def _revision_task_item(row:sqlite3.Row|dict[str,Any])->dict[str,Any]:
+        item=dict(row)
+        return {key:item[key] for key in ("id","project_id","source_run_id","candidate_id","issue_id","title","instruction","priority","position","status","version","created_at","updated_at")}|{"evidence":json.loads(item.get("evidence_json") or "[]")}
+
+    def _revision_task_snapshot(self,c:sqlite3.Connection,project_id:str,include_completed:bool=True)->dict[str,Any]:
+        project=c.execute("SELECT revision_task_version FROM v2_projects WHERE id=?",(project_id,)).fetchone()
+        query="SELECT t.*,c.evidence_json FROM v2_revision_tasks t JOIN v2_revision_plan_candidates c ON c.id=t.candidate_id WHERE t.project_id=?"
+        args:list[Any]=[project_id]
+        if not include_completed:query+=" AND t.status!='completed'"
+        query+=" ORDER BY CASE t.priority WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END,t.position,t.created_at,t.id"
+        rows=c.execute(query,args).fetchall()
+        return {"project_id":project_id,"task_version":int(project["revision_task_version"] or 0),"tasks":[self._revision_task_item(row) for row in rows]}
+
+    def revision_tasks(self,user_id:str,project_id:str,include_completed:bool=True)->dict[str,Any]:
+        with self.connection() as c:
+            self._project(c,user_id,project_id)
+            return self._revision_task_snapshot(c,project_id,include_completed)
+
+    def _record_revision_task_version(self,c:sqlite3.Connection,row:sqlite3.Row,event:str,user_id:str,stamp:str)->None:
+        item=dict(row);snapshot={key:item[key] for key in ("id","source_run_id","candidate_id","issue_id","title","instruction","priority","position","status","version","created_at","updated_at")}
+        c.execute("INSERT INTO v2_revision_task_versions VALUES(?,?,?,?,?,?,?)",(item["id"],item["project_id"],item["version"],json.dumps(snapshot,ensure_ascii=False,sort_keys=True),event,user_id,stamp))
+
+    def update_revision_task(self,user_id:str,project_id:str,task_id:str,payload:dict[str,Any],key:str):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def update():
+                project=self._project(c,user_id,project_id,True)
+                row=c.execute("SELECT * FROM v2_revision_tasks WHERE id=? AND project_id=?",(task_id,project_id)).fetchone()
+                if not row:raise DomainError("resource_not_found",404)
+                if payload["base_version"]!=row["version"]:raise DomainError("revision_task_version_conflict",409,False,{"current_version":row["version"]})
+                if row["version"]>=MAX_RESOURCE_VERSION or int(project["revision_task_version"] or 0)>=MAX_RESOURCE_VERSION:raise DomainError("revision_task_version_limit",409)
+                status=payload.get("status")
+                if status not in REVISION_TASK_STATUSES or status==row["status"]:raise DomainError("revision_task_status_invalid",422)
+                if row["status"]=="completed" and status!="completed":
+                    if c.execute("SELECT COUNT(*) FROM v2_revision_tasks WHERE project_id=? AND status!='completed'",(project_id,)).fetchone()[0]>=REVISION_TASK_MAX_RECORDS:raise DomainError("revision_task_limit_reached",409)
+                    if c.execute("SELECT 1 FROM v2_revision_tasks WHERE project_id=? AND normalized_title=? AND status!='completed' AND id<>?",(project_id,row["normalized_title"],task_id)).fetchone():raise DomainError("revision_task_duplicate",409)
+                stamp=utcnow();version=row["version"]+1
+                c.execute("UPDATE v2_revision_tasks SET status=?,version=?,updated_at=? WHERE id=? AND project_id=?",(status,version,stamp,task_id,project_id))
+                changed=c.execute("SELECT * FROM v2_revision_tasks WHERE id=?",(task_id,)).fetchone();self._record_revision_task_version(c,changed,"status_"+status,user_id,stamp)
+                c.execute("UPDATE v2_projects SET revision_task_version=revision_task_version+1,updated_at=? WHERE id=?",(stamp,project_id))
+                return {**self._revision_task_snapshot(c,project_id,True),"item":self._revision_task_item({**dict(changed),"evidence_json":c.execute("SELECT evidence_json FROM v2_revision_plan_candidates WHERE id=?",(changed["candidate_id"],)).fetchone()[0]})}
+            return self._idem(c,user_id,f"revision_task_update:{project_id}:{task_id}",key,payload,update)
 
     def world(self, user_id: str, project_id: str) -> dict[str, Any]:
         with self.connection() as c:
@@ -1210,7 +1839,7 @@ class V2Database:
             core_pending=sum(row["review_priority"]=="core" and row["decision_status"]=="pending" for row in rows)
             supporting_pending=sum(row["review_priority"]=="supporting" and row["decision_status"]=="pending" for row in rows)
             confirmed_core=sum(row["review_priority"]=="core" and row["decision_status"] in {"accepted","edited"} for row in rows)
-            confirmed=c.execute("SELECT COUNT(*) FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed'",(project_id,project["current_memory_version"])).fetchone()[0]
+            confirmed=c.execute("SELECT COUNT(*) FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?)",(project_id,project["current_memory_version"],project["current_memory_version"],project["current_memory_version"])).fetchone()[0]
             if delta["status"] != "covered":
                 return {"project_id":project_id,"status":"update_pending","source_revision":delta["source_revision"],"memory_version":project["current_memory_version"],"counts":{"core_pending":core_pending,"supporting_pending":supporting_pending,"confirmed":confirmed,"confirmed_core":confirmed_core,"pending_canon_count":0},"blocking_reason":delta["error_code"] or "delta_core_review_required"}
             return {"project_id":project_id,"status":"ready_partial" if supporting_pending else "ready_current","source_revision":delta["source_revision"],"memory_version":project["current_memory_version"],"counts":{"core_pending":0,"supporting_pending":supporting_pending,"confirmed":confirmed,"confirmed_core":confirmed_core,"pending_canon_count":0},"blocking_reason":"none"}
@@ -1218,7 +1847,7 @@ class V2Database:
             return {"project_id":project_id,"status":"update_pending","source_revision":c.execute("SELECT source_revision FROM v2_projects WHERE id=?",(project_id,)).fetchone()[0],"memory_version":project["current_memory_version"],"counts":{"core_pending":0,"supporting_pending":0,"confirmed":0,"confirmed_core":0,"pending_canon_count":0},"blocking_reason":"delta_review_required"}
         initialization=c.execute("SELECT * FROM v2_memory_initializations WHERE project_id=? AND source_revision=1",(project_id,)).fetchone()
         if not initialization:
-            confirmed=c.execute("SELECT COUNT(*) FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed'",(project_id,project["current_memory_version"])).fetchone()[0]
+            confirmed=c.execute("SELECT COUNT(*) FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?)",(project_id,project["current_memory_version"],project["current_memory_version"],project["current_memory_version"])).fetchone()[0]
             if confirmed:
                 return {"project_id":project_id,"status":"ready_current","source_revision":1,"memory_version":project["current_memory_version"],"counts":{"core_pending":0,"supporting_pending":0,"confirmed":confirmed,"confirmed_core":confirmed,"pending_canon_count":0},"blocking_reason":"none"}
             return {"project_id":project_id,"status":"required","source_revision":1,"memory_version":project["current_memory_version"],"counts":{"core_pending":0,"supporting_pending":0,"confirmed":0,"confirmed_core":0,"pending_canon_count":0},"blocking_reason":"core_review_required"}
@@ -1389,9 +2018,10 @@ class V2Database:
         return [dict(row) for row in rows]
 
     def _confirmed_memory(self,c,project_id,version):
-        return [dict(row) for row in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id,review_status FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' ORDER BY id",(project_id,version)).fetchall()]
+        return [dict(row) for row in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id,review_status,valid_from,valid_to FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id",(project_id,version,version,version)).fetchall()]
 
     def _delta_priority(self,item,confirmed):
+        if item.get("change_kind") in {"changed_fact","invalidated_fact"}:return "core"
         if item["memory_type"]=="open_thread" or not self._is_controlled_candidate(item["memory_type"],item["predicate"],allow_legacy_alias=False): return "supporting"
         identity=self._candidate_key(item["memory_type"],item["subject"],item["predicate"],allow_legacy_alias=False)
         prior=[row for row in confirmed if self._candidate_key(row["memory_type"],row["subject"],row["predicate"],allow_legacy_alias=False)==identity]
@@ -1405,23 +2035,63 @@ class V2Database:
         """
         seen=set(); result=[]
         for item in items:
-            identity=(self._normalize(item["memory_type"]),self._normalize(item["subject"]),normalized_predicate(item["predicate"],allow_legacy_alias=False),self._normalize(item["value"]))
+            identity=(item.get("change_kind","new_fact"),item.get("affected_memory_id"),self._normalize(item["memory_type"]),self._normalize(item["subject"]),normalized_predicate(item["predicate"],allow_legacy_alias=False),self._normalize(item["value"]))
             duplicate=identity in seen
             priority="supporting" if duplicate else self._delta_priority(item,confirmed)
             seen.add(identity); result.append(priority)
         return result
 
+    def _validate_delta_candidates_against_memory(self,items,confirmed):
+        by_id={row["id"]:row for row in confirmed}; by_key={self._candidate_key(row["memory_type"],row["subject"],row["predicate"],allow_legacy_alias=False):row for row in confirmed}
+        affected=set(); targets=set()
+        for item in items:
+            kind=item.get("change_kind"); memory_id=item.get("affected_memory_id"); key=self._candidate_key(item["memory_type"],item["subject"],item["predicate"],allow_legacy_alias=False)
+            if kind=="new_fact":
+                if memory_id is not None or key in by_key:raise DomainError("candidate_conflict",422)
+            elif kind in {"changed_fact","invalidated_fact"}:
+                before=by_id.get(memory_id)
+                if not before:raise DomainError("affected_memory_unresolvable",422)
+                if memory_id in affected:raise DomainError("duplicate_candidate",422)
+                affected.add(memory_id)
+                before_fact={field:str(before[field]).strip() for field in ("memory_type","subject","predicate","value")}
+                if kind=="invalidated_fact" and any(str(item[field]).strip()!=before_fact[field] for field in before_fact):raise DomainError("candidate_conflict",422)
+                if kind=="changed_fact":
+                    collision=by_key.get(key)
+                    if collision and collision["id"]!=memory_id:raise DomainError("candidate_conflict",422)
+            else:raise DomainError("change_kind_invalid",422)
+            target=(kind,memory_id,key,self._normalize(item["value"]))
+            if target in targets:raise DomainError("duplicate_candidate",422)
+            targets.add(target)
+
     def _coverage_audit_view(self,c,project_id,row):
         return {"id":row["id"],"project_id":project_id,"source_revision":row["source_revision"],"status":row["status"],"memory_version":row["memory_version"],"delta_batch_id":row["delta_batch_id"],"actor_user_id":row["actor_user_id"],"details":json.loads(row["details_json"] or "{}"),"created_at":row["created_at"]}
+
+    def _delta_memory_view(self,c,project_id,version,memory_id):
+        row=c.execute("SELECT m.*,s.chapter_id,s.body excerpt,ch.chapter_number,ch.title chapter_title FROM v2_memory_records m LEFT JOIN v2_source_spans s ON s.id=m.source_span_id AND s.project_id=m.project_id LEFT JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=m.project_id WHERE m.id=? AND m.project_id=? AND m.version=? AND m.review_status='author_confirmed'",(memory_id,project_id,version)).fetchone()
+        if not row or (row["valid_from"] is not None and row["valid_from"]>version) or (row["valid_to"] is not None and row["valid_to"]<version):raise DomainError("affected_memory_unresolvable",422)
+        if row["source_span_id"] and not row["chapter_id"]:raise DomainError("evidence_unresolvable",422)
+        return {"id":row["id"],"memory_type":row["memory_type"],"subject":row["subject"],"predicate":row["predicate"],"value":row["value"],"valid_from":row["valid_from"],"valid_to":row["valid_to"],"review_status":row["review_status"],"source":({"chapter_id":row["chapter_id"],"chapter_number":row["chapter_number"],"chapter_title":row["chapter_title"],"span_id":row["source_span_id"],"excerpt":row["excerpt"][:500],"source_path":f"/projects/{project_id}/sources#span-{row['source_span_id']}"} if row["source_span_id"] else None)}
+
+    def _delta_change_set_view(self,c,project_id,batch):
+        row=c.execute("SELECT * FROM v2_change_sets WHERE project_id=? AND run_id=? AND change_set_kind='memory_delta' ORDER BY created_at DESC LIMIT 1",(project_id,batch["memory_delta_run_id"])).fetchone()
+        if not row:return None
+        ordinals={candidate["id"]:candidate["candidate_ordinal"] for candidate in c.execute("SELECT id,candidate_ordinal FROM v2_memory_delta_candidates WHERE project_id=? AND batch_id=?",(project_id,batch["id"])).fetchall()}; items=[]
+        for item in c.execute("SELECT * FROM v2_change_set_items WHERE project_id=? AND change_set_id=? ORDER BY id",(project_id,row["id"])).fetchall():
+            items.append({"id":item["id"],"operation":item["operation"],"before":json.loads(item["before_json"]) if item["before_json"] else None,"after":json.loads(item["after_json"]),"source_ids":json.loads(item["source_ids_json"]),"decision_ids":json.loads(item["decision_ids_json"]),"review_status":item["review_status"],"committed_after":json.loads(item["committed_after_json"]) if item["committed_after_json"] else None})
+        items.sort(key=lambda item:(ordinals.get(item["after"].get("candidate_id"),10**9),item["id"]))
+        return {"id":row["id"],"project_id":project_id,"change_set_kind":row["change_set_kind"],"status":row["status"],"base_memory_version":row["base_version"],"target_memory_version":row["target_version"],"source_revision":row["source_run_revision"],"run_id":row["run_id"],"batch_id":batch["id"],"actor_user_id":row["actor_user_id"],"created_at":row["created_at"],"committed_at":row["committed_at"],"items":items}
 
     def _delta_view(self,c,project_id,batch):
         sources={row["id"]:row for row in self._delta_sources(c,project_id,batch["source_revision"])}; items=[]
         for row in c.execute("SELECT * FROM v2_memory_delta_candidates WHERE batch_id=? AND project_id=? ORDER BY candidate_ordinal,id",(batch["id"],project_id)).fetchall():
             source=sources.get(row["source_span_id"])
             if not source or source["chapter_id"]!=row["chapter_id"]: raise DomainError("evidence_unresolvable",422)
-            items.append({"id":row["id"],"memory_type":row["memory_type"],"subject":row["subject"],"predicate":row["predicate"],"value":row["value"],"candidate_origin":"delta","review_priority":row["review_priority"],"decision_status":row["decision_status"],"decision":json.loads(row["decision_json"]) if row["decision_json"] else None,"source_revision":row["source_revision"],"source":{"chapter_id":source["chapter_id"],"chapter_number":source["chapter_number"],"chapter_title":source["chapter_title"],"span_id":source["id"],"label":source["label"],"excerpt":source["body"][:500],"source_path":f"/projects/{project_id}/sources#span-{source['id']}"}})
+            before=self._delta_memory_view(c,project_id,batch["base_memory_version"],row["affected_memory_id"]) if row["affected_memory_id"] else None
+            fact={field:row[field] for field in ("memory_type","subject","predicate","value")}
+            items.append({"id":row["id"],"change_kind":row["change_kind"],"affected_memory_id":row["affected_memory_id"],"invalidation_reason":row["invalidation_reason"],**fact,"before":before,"after":fact if row["change_kind"]!="invalidated_fact" else None,"candidate_origin":"delta","review_priority":row["review_priority"],"decision_status":row["decision_status"],"decision":json.loads(row["decision_json"]) if row["decision_json"] else None,"source_revision":row["source_revision"],"source":{"chapter_id":source["chapter_id"],"chapter_number":source["chapter_number"],"chapter_title":source["chapter_title"],"span_id":source["id"],"label":source["label"],"excerpt":source["body"][:500],"source_path":f"/projects/{project_id}/sources#span-{source['id']}"}})
         audit=c.execute("SELECT * FROM v2_source_coverage_audits WHERE project_id=? AND delta_batch_id=?",(project_id,batch["id"])).fetchone()
-        return {"id":batch["id"],"project_id":project_id,"source_revision":batch["source_revision"],"base_memory_version":batch["base_memory_version"],"status":batch["status"],"error_code":batch["error_code"],"continuity_run_id":batch["continuity_run_id"],"memory_delta_run_id":batch["memory_delta_run_id"],"candidates":items,"coverage":self._memory_coverage(c,project_id),"coverage_audit":self._coverage_audit_view(c,project_id,audit) if audit else None}
+        retrieval=json.loads(batch["retrieval_json"] or "{}") if "retrieval_json" in batch.keys() else {}
+        return {"id":batch["id"],"project_id":project_id,"source_revision":batch["source_revision"],"base_memory_version":batch["base_memory_version"],"status":batch["status"],"error_code":batch["error_code"],"continuity_run_id":batch["continuity_run_id"],"memory_delta_run_id":batch["memory_delta_run_id"],"candidates":items,"retrieval":retrieval,"change_set":self._delta_change_set_view(c,project_id,batch),"coverage":self._memory_coverage(c,project_id),"coverage_audit":self._coverage_audit_view(c,project_id,audit) if audit else None}
 
     def memory_delta(self,user_id,project_id):
         with self.connection() as c:
@@ -1442,23 +2112,27 @@ class V2Database:
                 if not self._confirmed_memory(c,project_id,project["current_memory_version"]): raise DomainError("insufficient_project_context",422)
                 if not self._delta_sources(c,project_id,revision): raise DomainError("source_revision_not_current",409)
                 existing=c.execute("SELECT * FROM v2_memory_delta_batches WHERE project_id=? AND source_revision=?",(project_id,revision)).fetchone()
-                if existing and existing["status"] not in {"failed","cancelled","timed_out"}: return {"delta":self._delta_view(c,project_id,existing)}
+                if existing and existing["status"] not in {"failed","cancelled","timed_out"}:
+                    if existing["status"]=="in_review" and existing["base_memory_version"]!=project["current_memory_version"]:
+                        c.execute("DELETE FROM v2_memory_delta_decisions WHERE project_id=? AND batch_id=?",(project_id,existing["id"]));c.execute("DELETE FROM v2_memory_delta_candidates WHERE project_id=? AND batch_id=?",(project_id,existing["id"]))
+                    else:return {"delta":self._delta_view(c,project_id,existing)}
                 draft=c.execute("SELECT * FROM v2_drafts WHERE project_id=? AND status IN ('draft','saved') ORDER BY saved_at DESC LIMIT 1",(project_id,)).fetchone()
                 if not draft: raise DomainError("draft_invalid",422)
                 change=c.execute("SELECT id FROM v2_source_change_sets WHERE project_id=? AND target_source_revision=? AND status='committed' ORDER BY committed_at DESC LIMIT 1",(project_id,revision)).fetchone()
                 spans=self._delta_sources(c,project_id,revision)
                 if not change or not spans: raise DomainError("source_lineage_not_available",409)
                 stamp,batch_id,continuity_id,delta_id=utcnow(),new_id("memorydelta"),new_id("run"),new_id("run")
+                author_version,author_digest=self._current_author_context_binding(c,project)
                 prior={}
                 if existing:
                     batch_id=existing["id"]
                     prior={row["run_type"]:row for row in c.execute("SELECT * FROM v2_runs WHERE id IN (?,?)",(existing["continuity_run_id"],existing["memory_delta_run_id"])).fetchall()}
                 for run_id,kind,prov in ((continuity_id,"continuity",continuity_provenance),(delta_id,"memory_delta",delta_provenance)):
                     previous=prior.get(kind); root=(previous["root_run_id"] or previous["id"]) if previous else run_id; attempt=(previous["attempt_number"]+1) if previous else 1
-                    c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,source_change_set_id,source_span_ids_json,retry_of_run_id,root_run_id,attempt_number,incremental_batch_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,project_id,draft["id"],revision,"queued","queued",prov["provider_label"],stamp,prov["model_label"],prov["prompt_version"],prov["schema_version"],prov["retrieval_method_version"],project["current_memory_version"],"provider",kind,change["id"],json.dumps([row["id"] for row in spans]),previous["id"] if previous else None,root,attempt,batch_id)); self._append_run_event(c,run_id,"queued","queued",None,stamp)
+                    c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,source_change_set_id,source_span_ids_json,retry_of_run_id,root_run_id,attempt_number,incremental_batch_id,author_context_version,author_context_snapshot_digest) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,project_id,draft["id"],revision,"queued","queued",prov["provider_label"],stamp,prov["model_label"],prov["prompt_version"],prov["schema_version"],prov["retrieval_method_version"],project["current_memory_version"],"provider",kind,change["id"],json.dumps([row["id"] for row in spans]),previous["id"] if previous else None,root,attempt,batch_id,author_version,author_digest)); self._append_run_event(c,run_id,"queued","queued",None,stamp)
                 if existing:
-                    c.execute("UPDATE v2_memory_delta_batches SET base_memory_version=?,continuity_run_id=?,memory_delta_run_id=?,status='processing',error_code=NULL,created_at=?,completed_at=NULL,covered_at=NULL WHERE id=?",(project["current_memory_version"],continuity_id,delta_id,stamp,batch_id))
-                else: c.execute("INSERT INTO v2_memory_delta_batches VALUES(?,?,?,?,?,?,?,?,?,?,?)",(batch_id,project_id,revision,project["current_memory_version"],continuity_id,delta_id,"processing",None,stamp,None,None))
+                    c.execute("UPDATE v2_memory_delta_batches SET base_memory_version=?,continuity_run_id=?,memory_delta_run_id=?,status='processing',error_code=NULL,created_at=?,completed_at=NULL,covered_at=NULL,retrieval_json='{}' WHERE id=?",(project["current_memory_version"],continuity_id,delta_id,stamp,batch_id))
+                else: c.execute("INSERT INTO v2_memory_delta_batches(id,project_id,source_revision,base_memory_version,continuity_run_id,memory_delta_run_id,status,error_code,created_at,completed_at,covered_at,retrieval_json) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",(batch_id,project_id,revision,project["current_memory_version"],continuity_id,delta_id,"processing",None,stamp,None,None,"{}"))
                 return {"delta":self._delta_view(c,project_id,c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=?",(batch_id,)).fetchone()),"continuity_run_id":continuity_id,"memory_delta_run_id":delta_id,"batch_id":batch_id}
             return self._idem(c,user_id,"incremental_runs:"+project_id,key,payload,create,202,with_created=True)
 
@@ -1467,7 +2141,7 @@ class V2Database:
             batch=c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=? AND project_id=?",(batch_id,project_id)).fetchone()
             if not batch: raise DomainError("resource_not_found",404)
             sources=self._delta_sources(c,project_id,batch["source_revision"]); memory=self._confirmed_memory(c,project_id,batch["base_memory_version"])
-            historical={row["id"]:dict(row) for row in c.execute("SELECT s.id,s.chapter_id,s.label,s.body,ch.chapter_number,ch.title chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.project_id=? AND s.id IN (SELECT source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND source_span_id IS NOT NULL)",(project_id,project_id,batch["base_memory_version"])).fetchall()}
+            historical={row["id"]:dict(row) for row in c.execute("SELECT s.id,s.chapter_id,s.label,s.body,ch.chapter_number,ch.title chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.project_id=? AND s.id IN (SELECT source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND source_span_id IS NOT NULL AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?))",(project_id,project_id,batch["base_memory_version"],batch["base_memory_version"],batch["base_memory_version"])).fetchall()}
             claims=[]; allowed=sorted(historical.values(),key=lambda row:(row["chapter_number"],row["id"]))
             for source in sources:
                 for text in (part.strip() for part in re.split(r"(?<=[。！？])",source["body"])):
@@ -1508,6 +2182,7 @@ class V2Database:
                 source=next((x for x in delta_input["sources"] if x["id"]==item["source_span_id"] and x["chapter_id"]==item["chapter_id"]),None)
                 if not source: raise DomainError("evidence_unresolvable",422)
                 sources.append(source)
+            self._validate_delta_candidates_against_memory(delta["candidates"],delta_input["memory"])
             prepared=(inputs,sources,self._delta_priorities(delta["candidates"],delta_input["memory"]))
         with self.connection() as c:
             c.execute("BEGIN IMMEDIATE")
@@ -1548,25 +2223,36 @@ class V2Database:
                 issue_id=new_id("issue"); c.execute("INSERT INTO v2_issues(id,project_id,run_id,claim_span_id,status,classification,category,severity,evidence_status,explanation,proposed_change_json) VALUES(?,?,?,?,?,?,?,?,?,?,?)",(issue_id,project_id,batch["continuity_run_id"],issue["claim_span_id"],"open",issue["status"],issue["category"],issue["severity"],issue["evidence_status"],issue["explanation"],json.dumps(issue.get("proposed_memory_change")) if issue.get("proposed_memory_change") else None))
                 for evidence in issue["evidence"]: c.execute("INSERT INTO v2_evidence(id,project_id,issue_id,chapter_id,span_id,excerpt,relation,sufficiency,related_memory_ids_json,source_revision) VALUES(?,?,?,?,?,?,?,?,?,?)",(new_id("evidence"),project_id,issue_id,evidence["chapter_id"],evidence["span_id"],evidence["excerpt"],evidence["relation"],evidence["sufficiency"],json.dumps(evidence["related_memory_ids"]),batch["source_revision"]))
             for ordinal,(item,source,priority) in enumerate(zip(delta["candidates"],sources,priorities),1):
-                c.execute("INSERT INTO v2_memory_delta_candidates VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(new_id("memorydeltacandidate"),project_id,batch_id,batch["source_revision"],ordinal,item["memory_type"],item["subject"],item["predicate"],item["value"],source["chapter_id"],source["id"],"delta",priority,"pending",None,None))
-            c.execute("UPDATE v2_memory_delta_batches SET status='in_review',completed_at=? WHERE id=?",(stamp,batch_id))
+                c.execute("INSERT INTO v2_memory_delta_candidates(id,project_id,batch_id,source_revision,candidate_ordinal,memory_type,subject,predicate,value,chapter_id,source_span_id,candidate_origin,review_priority,decision_status,decision_json,decided_at,change_kind,affected_memory_id,invalidation_reason) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(new_id("memorydeltacandidate"),project_id,batch_id,batch["source_revision"],ordinal,item["memory_type"],item["subject"],item["predicate"],item["value"],source["chapter_id"],source["id"],"delta",priority,"pending",None,None,item["change_kind"],item.get("affected_memory_id"),item.get("invalidation_reason")))
+            c.execute("UPDATE v2_memory_delta_batches SET status='in_review',completed_at=?,retrieval_json=? WHERE id=?",(stamp,json.dumps(delta.get("retrieval",{}),ensure_ascii=False),batch_id))
             return True
 
     def decide_memory_delta_candidate(self,user_id,project_id,batch_id,candidate_id,payload,key):
         with self.connection() as c:
             def decide():
-                self._project(c,user_id,project_id,True); batch=c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=? AND project_id=?",(batch_id,project_id)).fetchone(); row=c.execute("SELECT * FROM v2_memory_delta_candidates WHERE id=? AND batch_id=? AND project_id=?",(candidate_id,batch_id,project_id)).fetchone()
+                project=self._project(c,user_id,project_id,True); batch=c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=? AND project_id=?",(batch_id,project_id)).fetchone(); row=c.execute("SELECT * FROM v2_memory_delta_candidates WHERE id=? AND batch_id=? AND project_id=?",(candidate_id,batch_id,project_id)).fetchone()
                 if not batch or not row: raise DomainError("resource_not_found",404)
                 if batch["status"]!="in_review": raise DomainError("memory_delta_closed",409)
-                if row["decision_status"]!="pending": raise DomainError("candidate_already_decided",409)
+                if project["source_revision"]!=batch["source_revision"] or project["current_memory_version"]!=batch["base_memory_version"]:raise DomainError("memory_delta_stale",409)
                 decision=payload.get("decision"); base={key:row[key] for key in ("memory_type","subject","predicate","value")}; after=base; evidence=None
                 if decision not in {"accepted","rejected","edited"}: raise DomainError("invalid_candidate_decision",422)
+                if row["decision_status"]!="pending":
+                    saved=json.loads(row["decision_json"] or "{}")
+                    same_plain=saved.get("decision")==decision and decision!="edited" and payload.get("after") is None and payload.get("evidence_span_id") is None
+                    same_edit=saved.get("decision")==decision=="edited" and digest(saved.get("after"))==digest(payload.get("after")) and saved.get("evidence_span_id")==payload.get("evidence_span_id")
+                    if same_plain or same_edit:return {"candidate_id":candidate_id,"decision_status":row["decision_status"],"delta":self._delta_view(c,project_id,batch)}
+                    raise DomainError("candidate_already_decided",409)
                 if decision=="edited":
+                    if row["change_kind"]=="invalidated_fact":raise DomainError("invalid_candidate_decision",422)
                     edit=payload.get("after") or {}; after={name:str(edit.get(name," ")).strip() for name in base}; evidence=payload.get("evidence_span_id")
-                    if after["memory_type"] not in {"static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"} or not all(after.values()) or evidence!=row["source_span_id"]: raise DomainError("invalid_item_edit",422)
+                    if after["memory_type"] not in {"static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"} or not all(after.values()) or len(after["subject"])>80 or len(after["predicate"])>80 or len(after["value"])>240 or not self._is_controlled_candidate(after["memory_type"],after["predicate"],allow_legacy_alias=False) or evidence!=row["source_span_id"]: raise DomainError("invalid_item_edit",422)
+                    if row["change_kind"]=="changed_fact":
+                        before=self._delta_memory_view(c,project_id,batch["base_memory_version"],row["affected_memory_id"])
+                        if all(self._normalize(after[field])==self._normalize(before[field]) for field in base):raise DomainError("candidate_conflict",422)
                 elif payload.get("after") is not None or payload.get("evidence_span_id") is not None: raise DomainError("invalid_candidate_decision",422)
                 if not c.execute("SELECT 1 FROM v2_source_spans WHERE id=? AND project_id=? AND source_revision=?",(row["source_span_id"],project_id,batch["source_revision"])).fetchone(): raise DomainError("evidence_unresolvable",422)
-                saved={"decision":decision,"after":after if decision!="rejected" else None,"evidence_span_id":evidence}; stamp=utcnow()
+                if row["affected_memory_id"]:self._delta_memory_view(c,project_id,batch["base_memory_version"],row["affected_memory_id"])
+                saved={"decision":decision,"change_kind":row["change_kind"],"affected_memory_id":row["affected_memory_id"],"after":after if decision!="rejected" and row["change_kind"]!="invalidated_fact" else None,"invalidation_reason":row["invalidation_reason"],"evidence_span_id":evidence}; stamp=utcnow()
                 c.execute("UPDATE v2_memory_delta_candidates SET decision_status=?,decision_json=?,decided_at=? WHERE id=?",(decision,json.dumps(saved,ensure_ascii=False),stamp,candidate_id)); c.execute("INSERT INTO v2_memory_delta_decisions VALUES(?,?,?,?,?,?,?,?,?)",(new_id("memorydeltadecision"),project_id,batch_id,candidate_id,decision,json.dumps(saved["after"],ensure_ascii=False) if saved["after"] else None,evidence,batch["source_revision"],stamp))
                 return {"candidate_id":candidate_id,"decision_status":decision,"delta":self._delta_view(c,project_id,batch)}
             return self._idem(c,user_id,"memory_delta_decision:"+project_id+":"+candidate_id,key,payload,decide)
@@ -1578,24 +2264,56 @@ class V2Database:
                 if not batch: raise DomainError("resource_not_found",404)
                 if batch["status"]=="covered":
                     audit=c.execute("SELECT * FROM v2_source_coverage_audits WHERE project_id=? AND delta_batch_id=?",(project_id,batch_id)).fetchone()
-                    return {"delta":self._delta_view(c,project_id,batch),"memory_version":project["current_memory_version"],"coverage_audit":self._coverage_audit_view(c,project_id,audit) if audit else None}
-                if batch["status"]!="in_review" or payload.get("confirm") is not True or project["source_revision"]!=batch["source_revision"]: raise DomainError("confirmation_required",400)
+                    return {"delta":self._delta_view(c,project_id,batch),"memory_version":audit["memory_version"] if audit else project["current_memory_version"],"coverage_audit":self._coverage_audit_view(c,project_id,audit) if audit else None,"change_set":self._delta_change_set_view(c,project_id,batch)}
+                if payload.get("confirm") is not True:raise DomainError("confirmation_required",400)
+                if batch["status"]!="in_review":raise DomainError("memory_delta_closed",409)
+                if project["source_revision"]!=batch["source_revision"] or project["current_memory_version"]!=batch["base_memory_version"]:raise DomainError("memory_delta_stale",409)
                 rows=c.execute("SELECT * FROM v2_memory_delta_candidates WHERE batch_id=? AND project_id=? ORDER BY candidate_ordinal",(batch_id,project_id)).fetchall(); core=[row for row in rows if row["review_priority"]=="core"]
-                if not core or any(row["decision_status"]=="pending" for row in core): raise DomainError("unresolved_required_decisions",409)
-                confirmed_core=[row for row in core if row["decision_status"] in {"accepted","edited"}]; accepted=[row for row in rows if row["decision_status"] in {"accepted","edited"}]; stamp=utcnow()
-                audit_details={"candidate_ids":[row["id"] for row in rows],"decisions":[{"candidate_id":row["id"],"decision":row["decision_status"],"after":json.loads(row["decision_json"])["after"] if row["decision_json"] else None,"evidence_span_id":json.loads(row["decision_json"] or "{}").get("evidence_span_id") or row["source_span_id"]} for row in rows],"source_revision":batch["source_revision"]}
+                if any(row["decision_status"]=="pending" for row in core): raise DomainError("unresolved_required_decisions",409)
+                accepted=[row for row in rows if row["decision_status"] in {"accepted","edited"}]; stamp=utcnow(); base_version=batch["base_memory_version"]; target=base_version+1 if accepted else base_version
+                confirmed=self._confirmed_memory(c,project_id,base_version); confirmed_by_id={row["id"]:row for row in confirmed}; target_keys={}
+                change_set_id=new_id("changeset"); change_status="committed" if accepted else "rejected"
+                c.execute("INSERT INTO v2_change_sets(id,project_id,run_id,source_run_revision,resolved_revision,lineage_status,base_version,target_version,status,created_at,committed_at,change_set_kind,actor_user_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",(change_set_id,project_id,batch["memory_delta_run_id"],batch["source_revision"],batch["source_revision"],"incremental_source_revision",base_version,target,change_status,stamp,stamp,"memory_delta",user_id))
+                item_rows=[]; accepted_item_ids=[]; rejected_item_ids=[]; edited_item_ids=[]; decisions=[]
+                for row in rows:
+                    if not c.execute("SELECT 1 FROM v2_source_spans WHERE id=? AND project_id=? AND source_revision=?",(row["source_span_id"],project_id,batch["source_revision"])).fetchone():raise DomainError("evidence_unresolvable",422)
+                    decision=c.execute("SELECT * FROM v2_memory_delta_decisions WHERE candidate_id=? AND project_id=? AND batch_id=?",(row["id"],project_id,batch_id)).fetchone()
+                    saved=json.loads(row["decision_json"] or "{}")
+                    before=self._delta_memory_view(c,project_id,base_version,row["affected_memory_id"]) if row["affected_memory_id"] else None
+                    after=saved.get("after") if row["decision_status"] in {"accepted","edited"} else ({field:row[field] for field in ("memory_type","subject","predicate","value")} if row["change_kind"]!="invalidated_fact" else None)
+                    if row["change_kind"]=="invalidated_fact":after={"candidate_id":row["id"],"change_kind":"invalidated_fact","affected_memory_id":row["affected_memory_id"],"invalidation_reason":row["invalidation_reason"]}
+                    else:after={"candidate_id":row["id"],"change_kind":row["change_kind"],"affected_memory_id":row["affected_memory_id"],**after,"source_span_id":row["source_span_id"]}
+                    if row["decision_status"] in {"accepted","edited"} and row["change_kind"]!="invalidated_fact":
+                        if not self._is_controlled_candidate(after["memory_type"],after["predicate"],allow_legacy_alias=False):raise DomainError("invalid_item_edit",422)
+                        target_key=self._candidate_key(after["memory_type"],after["subject"],after["predicate"],allow_legacy_alias=False)
+                        collision=next((item for item in confirmed if self._candidate_key(item["memory_type"],item["subject"],item["predicate"],allow_legacy_alias=False)==target_key and item["id"]!=row["affected_memory_id"]),None)
+                        if collision or target_key in target_keys:raise DomainError("candidate_conflict",422)
+                        target_keys[target_key]=row["id"]
+                    operation={"new_fact":"add","changed_fact":"replace","invalidated_fact":"retire"}[row["change_kind"]]
+                    source_ids=[row["source_span_id"]]+([row["affected_memory_id"]] if row["affected_memory_id"] else [])
+                    decision_ids=[decision["id"]] if decision else []
+                    item_id=new_id("changeitem"); committed_after=after if row["decision_status"] in {"accepted","edited"} else None
+                    c.execute("INSERT INTO v2_change_set_items(id,project_id,change_set_id,operation,before_json,after_json,source_ids_json,decision_ids_json,review_status,committed_after_json) VALUES(?,?,?,?,?,?,?,?,?,?)",(item_id,project_id,change_set_id,operation,json.dumps(before,ensure_ascii=False) if before else None,json.dumps(after,ensure_ascii=False),json.dumps(source_ids),json.dumps(decision_ids),row["decision_status"],json.dumps(committed_after,ensure_ascii=False) if committed_after else None))
+                    item_rows.append((row,after,item_id)); decisions.append({"candidate_id":row["id"],"change_kind":row["change_kind"],"affected_memory_id":row["affected_memory_id"],"decision":row["decision_status"],"before":before,"after":committed_after,"invalidation_reason":row["invalidation_reason"],"evidence_span_id":row["source_span_id"]})
+                    if row["decision_status"] in {"accepted","edited"}:accepted_item_ids.append(item_id)
+                    if row["decision_status"]=="edited":edited_item_ids.append(item_id)
+                    if row["decision_status"]=="rejected":rejected_item_ids.append(item_id)
+                audit_details={"change_set_id":change_set_id,"candidate_ids":[row["id"] for row in rows],"decisions":decisions,"source_revision":batch["source_revision"],"base_memory_version":base_version,"target_memory_version":target}
                 audit_id=new_id("sourcecoverage")
-                if not confirmed_core:
-                    c.execute("INSERT INTO v2_source_coverage_audits(id,project_id,source_revision,status,memory_version,delta_batch_id,actor_user_id,details_json,created_at) VALUES(?,?,?,?,?,?,?,?,?)",(audit_id,project_id,batch["source_revision"],"covered_without_memory_change",project["current_memory_version"],batch_id,user_id,json.dumps(audit_details,ensure_ascii=False),stamp)); c.execute("UPDATE v2_memory_delta_batches SET status='covered',covered_at=? WHERE id=?",(stamp,batch_id)); audit=c.execute("SELECT * FROM v2_source_coverage_audits WHERE id=?",(audit_id,)).fetchone(); return {"delta":self._delta_view(c,project_id,batch),"memory_version":project["current_memory_version"],"status":"covered_without_memory_change","coverage_audit":self._coverage_audit_view(c,project_id,audit)}
-                target=project["current_memory_version"]+1; c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,target,"current",project["current_memory_version"],stamp)); c.execute("INSERT INTO v2_memory_records(id,project_id,version,memory_type,subject,predicate,value,source_span_id,review_status,valid_from,valid_to,source_claim_id) SELECT id||'-v'||?,project_id,?,memory_type,subject,predicate,value,source_span_id,review_status,valid_from,valid_to,source_claim_id FROM v2_memory_records WHERE project_id=? AND version=?",(target,target,project_id,project["current_memory_version"]))
-                for row in accepted:
-                    after=json.loads(row["decision_json"])["after"]
-                    if not c.execute("SELECT 1 FROM v2_source_spans WHERE id=? AND project_id=? AND source_revision=?",(row["source_span_id"],project_id,batch["source_revision"])).fetchone(): raise DomainError("evidence_unresolvable",422)
-                    identity=self._candidate_key(after["memory_type"],after["subject"],after["predicate"],allow_legacy_alias=False); old=next((item for item in c.execute("SELECT * FROM v2_memory_records WHERE project_id=? AND version=?",(project_id,target)).fetchall() if self._candidate_key(item["memory_type"],item["subject"],item["predicate"],allow_legacy_alias=False)==identity),None)
-                    if old: c.execute("UPDATE v2_memory_records SET value=?,source_span_id=?,review_status='author_confirmed' WHERE id=?",(after["value"],row["source_span_id"],old["id"]))
-                    else: c.execute("INSERT INTO v2_memory_records VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",(new_id("mem"),project_id,target,after["memory_type"],after["subject"],after["predicate"],after["value"],row["source_span_id"],"author_confirmed",None,None,None))
-                c.execute("UPDATE v2_memory_versions SET status='superseded' WHERE project_id=? AND version=?",(project_id,project["current_memory_version"])); c.execute("UPDATE v2_projects SET current_memory_version=?,updated_at=? WHERE id=?",(target,stamp,project_id)); c.execute("INSERT INTO v2_source_coverage_audits(id,project_id,source_revision,status,memory_version,delta_batch_id,actor_user_id,details_json,created_at) VALUES(?,?,?,?,?,?,?,?,?)",(audit_id,project_id,batch["source_revision"],"covered_with_memory_change",target,batch_id,user_id,json.dumps(audit_details,ensure_ascii=False),stamp)); c.execute("UPDATE v2_memory_delta_batches SET status='covered',covered_at=? WHERE id=?",(stamp,batch_id)); audit=c.execute("SELECT * FROM v2_source_coverage_audits WHERE id=?",(audit_id,)).fetchone()
-                return {"delta":self._delta_view(c,project_id,batch),"memory_version":target,"status":"covered_with_memory_change","coverage_audit":self._coverage_audit_view(c,project_id,audit)}
+                if not accepted:
+                    c.execute("INSERT INTO v2_source_coverage_audits(id,project_id,source_revision,status,memory_version,delta_batch_id,actor_user_id,details_json,created_at) VALUES(?,?,?,?,?,?,?,?,?)",(audit_id,project_id,batch["source_revision"],"covered_without_memory_change",base_version,batch_id,user_id,json.dumps(audit_details,ensure_ascii=False),stamp)); c.execute("UPDATE v2_memory_delta_batches SET status='covered',covered_at=? WHERE id=?",(stamp,batch_id)); c.execute("INSERT INTO v2_commit_audits(id,project_id,change_set_id,status,accepted_json,rejected_json,note,created_at) VALUES(?,?,?,?,?,?,?,?)",(new_id("commit"),project_id,change_set_id,"rejected",json.dumps([]),json.dumps(rejected_item_ids),"Memory Delta review",stamp)); audit=c.execute("SELECT * FROM v2_source_coverage_audits WHERE id=?",(audit_id,)).fetchone(); current_batch=c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=?",(batch_id,)).fetchone(); delta_view=self._delta_view(c,project_id,current_batch); return {"delta":delta_view,"memory_version":base_version,"status":"covered_without_memory_change","coverage_audit":self._coverage_audit_view(c,project_id,audit),"change_set":delta_view["change_set"]}
+                c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,target,"current",base_version,stamp)); c.execute("INSERT INTO v2_memory_records(id,project_id,version,memory_type,subject,predicate,value,source_span_id,review_status,valid_from,valid_to,source_claim_id) SELECT id||'-v'||?,project_id,?,memory_type,subject,predicate,value,source_span_id,review_status,valid_from,valid_to,source_claim_id FROM v2_memory_records WHERE project_id=? AND version=?",(target,target,project_id,base_version))
+                for row,after,_ in item_rows:
+                    if row["decision_status"] not in {"accepted","edited"}:continue
+                    if row["change_kind"]=="new_fact":
+                        c.execute("INSERT INTO v2_memory_records(id,project_id,version,memory_type,subject,predicate,value,source_span_id,review_status,valid_from,valid_to,source_claim_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",(new_id("mem"),project_id,target,after["memory_type"],after["subject"],after["predicate"],after["value"],row["source_span_id"],"author_confirmed",target,None,None))
+                    else:
+                        target_id=row["affected_memory_id"]+f"-v{target}"
+                        if not c.execute("SELECT 1 FROM v2_memory_records WHERE id=? AND project_id=? AND version=?",(target_id,project_id,target)).fetchone():raise DomainError("affected_memory_unresolvable",422)
+                        if row["change_kind"]=="changed_fact":c.execute("UPDATE v2_memory_records SET memory_type=?,subject=?,predicate=?,value=?,source_span_id=?,review_status='author_confirmed',valid_from=?,valid_to=NULL WHERE id=? AND project_id=? AND version=?",(after["memory_type"],after["subject"],after["predicate"],after["value"],row["source_span_id"],target,target_id,project_id,target))
+                        else:c.execute("UPDATE v2_memory_records SET valid_to=? WHERE id=? AND project_id=? AND version=?",(target-1,target_id,project_id,target))
+                c.execute("UPDATE v2_memory_versions SET status='superseded' WHERE project_id=? AND version=?",(project_id,base_version)); c.execute("UPDATE v2_projects SET current_memory_version=?,updated_at=? WHERE id=?",(target,stamp,project_id)); c.execute("INSERT INTO v2_source_coverage_audits(id,project_id,source_revision,status,memory_version,delta_batch_id,actor_user_id,details_json,created_at) VALUES(?,?,?,?,?,?,?,?,?)",(audit_id,project_id,batch["source_revision"],"covered_with_memory_change",target,batch_id,user_id,json.dumps(audit_details,ensure_ascii=False),stamp)); c.execute("UPDATE v2_memory_delta_batches SET status='covered',covered_at=? WHERE id=?",(stamp,batch_id)); c.execute("INSERT INTO v2_commit_audits(id,project_id,change_set_id,status,accepted_json,rejected_json,note,created_at) VALUES(?,?,?,?,?,?,?,?)",(new_id("commit"),project_id,change_set_id,"committed",json.dumps(accepted_item_ids),json.dumps(rejected_item_ids),"Memory Delta review",stamp)); audit=c.execute("SELECT * FROM v2_source_coverage_audits WHERE id=?",(audit_id,)).fetchone(); current_batch=c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=?",(batch_id,)).fetchone(); delta_view=self._delta_view(c,project_id,current_batch)
+                return {"delta":delta_view,"memory_version":target,"status":"covered_with_memory_change","coverage_audit":self._coverage_audit_view(c,project_id,audit),"change_set":delta_view["change_set"],"edited_item_ids":edited_item_ids}
             return self._idem(c,user_id,"memory_delta_commit:"+project_id+":"+batch_id,key,payload,commit)
 
     def draft(self, user_id: str, project_id: str, draft_id: str) -> dict[str, Any]:
@@ -1678,13 +2396,315 @@ class V2Database:
                     raise DomainError("insufficient_project_context",422)
                 context=c.execute("SELECT COUNT(*) FROM v2_memory_records WHERE project_id=? AND version=?",(project_id,project["current_memory_version"])).fetchone()[0]
                 if not context: raise DomainError("insufficient_project_context",422)
-                running=c.execute("SELECT id FROM v2_runs WHERE project_id=? AND draft_id=? AND source_revision=? AND status IN ('queued','running')",(project_id,draft["id"],draft["revision"])).fetchone()
+                running=c.execute("SELECT id FROM v2_runs WHERE project_id=? AND draft_id=? AND source_revision=? AND run_type='continuity' AND status IN ('queued','running')",(project_id,draft["id"],draft["revision"])).fetchone()
                 if running: raise DomainError("run_already_active",409,False,{"run_id":running["id"]})
                 run_id,stamp=new_id("run"),utcnow()
-                c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,root_run_id,attempt_number) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,project_id,draft["id"],draft["revision"],"queued","queued",provenance["provider_label"],stamp,provenance["model_label"],provenance["prompt_version"],provenance["schema_version"],provenance["retrieval_method_version"],project["current_memory_version"],"provider",run_id,1))
+                author_version,author_digest=self._current_author_context_binding(c,project)
+                c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,root_run_id,attempt_number,author_context_version,author_context_snapshot_digest) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,project_id,draft["id"],draft["revision"],"queued","queued",provenance["provider_label"],stamp,provenance["model_label"],provenance["prompt_version"],provenance["schema_version"],provenance["retrieval_method_version"],project["current_memory_version"],"provider",run_id,1,author_version,author_digest))
                 self._append_run_event(c,run_id,"queued","queued",None,stamp)
-                return {"run_id":run_id,"project_id":project_id,"run_type":"continuity","status":"queued","source_revision":draft["revision"],"stage":"queued","result_origin":"provider","result_origin_label":"Provider 检查结果","retry_of_run_id":None,"root_run_id":run_id,"attempt_number":1,"created_at":stamp}
+                return {"run_id":run_id,"project_id":project_id,"run_type":"continuity","status":"queued","source_revision":draft["revision"],"author_context_version":author_version,"author_context_snapshot_digest":author_digest,"stage":"queued","result_origin":"provider","result_origin_label":"Provider 检查结果","retry_of_run_id":None,"root_run_id":run_id,"attempt_number":1,"created_at":stamp}
             return self._idem(c,user_id,"create_check:"+project_id,key,payload,create,202,with_created=True)
+
+    @staticmethod
+    def _analysis_terms(*values: str) -> set[str]:
+        compact="".join(re.findall(r"[\u4e00-\u9fffA-Za-z0-9]"," ".join(values))).casefold()
+        return {compact[index:index+2] for index in range(max(0,len(compact)-1))}
+
+    @classmethod
+    def _analysis_rank(cls, terms: set[str], *values: str) -> int:
+        text=" ".join(values).casefold()
+        return sum(term in text for term in terms)
+
+    @classmethod
+    def _analysis_draft_excerpt(cls, body: str, hints: list[str], limit: int = 1200) -> str:
+        if len(body)<=limit:return body
+        terms=cls._analysis_terms(*hints)
+        anchors=sorted({body.casefold().find(term) for term in terms if body.casefold().find(term)>=0})
+        pieces=[]; remaining=limit
+        for anchor in ([0]+anchors)[:8]:
+            if remaining<=0:break
+            size=min(600,remaining); start=max(0,min(anchor-size//3,len(body)-size))
+            piece=body[start:start+size]
+            if piece not in pieces:pieces.append(piece); remaining-=len(piece)
+        return "\n…\n".join(pieces)[:limit]
+
+    def _revision_plan_issue_binding(self,c:sqlite3.Connection,project_id:str,issue_ids:list[str])->tuple[sqlite3.Row,str,list[dict[str,Any]]]:
+        if not isinstance(issue_ids,list) or not 1<=len(issue_ids)<=REVISION_PLAN_MAX_ISSUES or len(set(issue_ids))!=len(issue_ids) or any(not isinstance(item,str) or not item for item in issue_ids):raise DomainError("revision_plan_issue_invalid",422)
+        issues=[];source_run=None
+        for issue_id in issue_ids:
+            issue=c.execute("SELECT * FROM v2_issues WHERE id=? AND project_id=?",(issue_id,project_id)).fetchone()
+            if not issue:raise DomainError("resource_not_found",404)
+            run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(issue["run_id"],project_id)).fetchone()
+            if not run or run["run_type"]!="continuity" or public_run_status(run["status"])!="completed":raise DomainError("revision_plan_issue_invalid",422)
+            if source_run is not None and source_run["id"]!=run["id"]:raise DomainError("revision_plan_issue_invalid",422)
+            if issue["status"]!="open" or c.execute("SELECT 1 FROM v2_decisions WHERE project_id=? AND issue_id=?",(project_id,issue_id)).fetchone():raise DomainError("revision_plan_issue_stale",409)
+            evidence=[item for item in self._resolved_evidence(c,project_id,issue,run) if item["sufficiency"]=="sufficient"][:5]
+            if not evidence:raise DomainError("revision_plan_evidence_unavailable",422)
+            claim=c.execute("SELECT text FROM v2_run_claims WHERE id=? AND run_id=?",(issue["claim_span_id"],run["id"])).fetchone()
+            if not claim:raise DomainError("revision_plan_evidence_unavailable",422)
+            issues.append({"id":issue_id,"claim_text":claim["text"],"classification":issue["classification"],"category":issue["category"],"severity":issue["severity"],"explanation":issue["explanation"],"evidence":evidence})
+            source_run=run
+        if source_run is None:raise DomainError("revision_plan_issue_invalid",422)
+        return source_run,digest(issues),issues
+
+    def create_analysis_run(self, user_id: str, project_id: str, payload: dict[str, Any], key: str, provenance: dict[str, str]):
+        analysis_type=payload.get("analysis_type")
+        if analysis_type not in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan"}:raise DomainError("analysis_type_invalid",422)
+        if (analysis_type=="change_impact") != bool(payload.get("proposal")):raise DomainError("change_impact_proposal_invalid",422)
+        if analysis_type=="story_qa":
+            question=" ".join(str(payload.get("question") or "").split());scope=payload.get("scope")
+            if not 1<=len(question)<=1000 or not isinstance(scope,list) or not scope or len(scope)>3 or len(set(scope))!=len(scope) or not set(scope)<={"confirmed","written","planned"}:raise DomainError("story_qa_input_invalid",422)
+            payload={**payload,"question":question,"scope":scope}
+        elif payload.get("question") is not None or payload.get("scope") is not None:raise DomainError("analysis_input_invalid",422)
+        if analysis_type=="revision_plan":
+            issue_ids=payload.get("issue_ids")
+            if not isinstance(issue_ids,list) or not 1<=len(issue_ids)<=REVISION_PLAN_MAX_ISSUES or len(set(issue_ids))!=len(issue_ids):raise DomainError("revision_plan_issue_invalid",422)
+        elif payload.get("issue_ids") is not None:raise DomainError("analysis_input_invalid",422)
+        with self.connection() as c:
+            def create():
+                project=self._project(c,user_id,project_id,True)
+                draft=c.execute("SELECT * FROM v2_drafts WHERE id=? AND project_id=?",(payload["draft_id"],project_id)).fetchone()
+                if not draft:raise DomainError("resource_not_found",404)
+                if draft["revision"]!=payload["draft_revision"]:raise DomainError("draft_revision_not_current",409)
+                if analysis_type=="plan_alignment" and not draft["body"].strip():raise DomainError("analysis_draft_empty",422)
+                selected_issues=[];selected_issue_digest=None;source_issue_run=None
+                if analysis_type=="revision_plan":
+                    source_issue_run,selected_issue_digest,selected_issues=self._revision_plan_issue_binding(c,project_id,payload["issue_ids"])
+                    # Continuity Run source_revision is the checked draft revision;
+                    # writing-analysis source_revision separately binds the committed corpus.
+                    if source_issue_run["draft_id"]!=draft["id"] or source_issue_run["source_revision"]!=draft["revision"] or source_issue_run["source_memory_version"]!=project["current_memory_version"]:raise DomainError("revision_plan_issue_stale",409)
+                author_version,author_digest=self._current_author_context_binding(c,project)
+                alias_version,alias_digest,aliases=self._current_alias_binding(c,project_id)
+                foreshadow_version,foreshadow_digest,foreshadows=self._current_foreshadow_binding(c,project_id)
+                author_payload=self._stored_author_context_payload(c,project_id,author_version)
+                story=[item for item in author_payload["story_plans"] if item["archived_at"] is None]
+                if analysis_type=="plan_alignment" and not story:raise DomainError("analysis_plan_unavailable",422)
+                running=c.execute("SELECT id FROM v2_runs WHERE project_id=? AND draft_id=? AND draft_revision=? AND run_type=? AND status IN ('queued','running')",(project_id,draft["id"],draft["revision"],analysis_type)).fetchone()
+                if running:raise DomainError("run_already_active",409,False,{"run_id":running["id"]})
+                hints=[draft["title"],str(payload.get("question") or "")]+[str(item.get(field) or "") for item in story for field in ("title","summary","goal")]+[str(item.get(field) or "") for item in foreshadows for field in ("title","description")]+[str(item.get(field) or "") for item in selected_issues for field in ("claim_text","explanation")]
+                terms=self._analysis_terms(*hints, draft["body"][:2400])
+                story=sorted(story,key=lambda item:(0 if item.get("target_chapter_number")==draft["chapter_number"] else 1,item["position"],item["id"]))[:4]
+                characters=[item for item in author_payload["character_plans"] if item["archived_at"] is None]
+                characters=sorted(characters,key=lambda item:(-self._analysis_rank(terms,item["name"],item["goal"],item["planned_state"],item["notes"]),item["position"],item["id"]))[:2]
+                worlds=[item for item in author_payload["world_plans"] if item["archived_at"] is None]
+                worlds=sorted(worlds,key=lambda item:(-self._analysis_rank(terms,item["name"],item["description"],item["notes"]),item["position"],item["id"]))[:2]
+                memory_rows=[dict(row) for row in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id",(project_id,project["current_memory_version"],project["current_memory_version"],project["current_memory_version"])).fetchall()]
+                memory=sorted(memory_rows,key=lambda item:(-self._analysis_rank(terms,item["subject"],item["predicate"],item["value"]),item["id"]))[:8]
+                span_rows=[dict(row) for row in c.execute("SELECT s.id,s.chapter_id,s.label,s.body,s.source_revision,ch.chapter_number,ch.title chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.project_id=? AND s.source_revision<=? ORDER BY s.source_revision DESC,ch.chapter_number DESC,s.id",(project_id,project["source_revision"])).fetchall()]
+                spans=sorted(span_rows,key=lambda item:(-self._analysis_rank(terms,item["label"],item["body"]),-item["source_revision"],-item["chapter_number"],item["id"]))[:4]
+                run_id,stamp=new_id("run"),utcnow()
+                all_claims=[{"id":f"draft-claim-{draft['id']}-r{draft['revision']}-{ordinal}","text":text[:240],"ordinal":ordinal} for ordinal,text in enumerate((x.strip() for x in re.split(r"(?<=[。！？.!?])",draft["body"]) if x.strip()),1)]
+                ranked_claims=sorted(all_claims,key=lambda item:(-self._analysis_rank(terms,item["text"]),item["ordinal"]))
+                claims=[] if analysis_type=="context_brief" else sorted(({item["id"]:item for item in (all_claims[:2]+all_claims[-2:]+ranked_claims[:8])}).values(),key=lambda item:item["ordinal"])[:8]
+                selected_author={"story_plans":story,"character_plans":characters,"world_plans":worlds}
+                source_items=[{**item,"body":self._bounded_excerpt(item["body"],terms,500)} for item in spans]
+                factual_characters=[dict(row) for row in c.execute("SELECT id,name,role_type,identity,goal,current_state,knowledge_boundary,source_ids_json FROM v2_characters WHERE project_id=? ORDER BY id",(project_id,)).fetchall()]
+                factual_world=[dict(row) for row in c.execute("SELECT id,entry_type,name,summary,source_ids_json FROM v2_world_entries WHERE project_id=? ORDER BY id",(project_id,)).fetchall()]
+                chapters=[]
+                for item in source_items:
+                    if not any(row["id"]==item["chapter_id"] for row in chapters):chapters.append({"id":item["chapter_id"],"chapter_number":item["chapter_number"],"title":item["chapter_title"]})
+                retrieval={"method_version":provenance["retrieval_method_version"],"selected_ids":{"author_context":[item["id"] for group in selected_author.values() for item in group],"memory_record":[item["id"] for item in memory],"source_span":[item["id"] for item in source_items],"draft_claim":[item["id"] for item in claims],"character_alias":[item["id"] for item in aliases] if analysis_type=="change_impact" else [],"foreshadow_record":[item["id"] for item in foreshadows] if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else [],"issue":[item["id"] for item in selected_issues],"issue_evidence":[evidence["id"] for item in selected_issues for evidence in item["evidence"]]},"counts":{"author_context":{"available":sum(len(author_payload[name]) for name in author_payload),"selected":sum(len(group) for group in selected_author.values())},"memory_record":{"available":len(memory_rows),"selected":len(memory)},"source_span":{"available":len(span_rows),"selected":len(source_items)},"draft_claim":{"available":len(all_claims),"selected":len(claims)},"character_alias":{"available":len(aliases),"selected":len(aliases) if analysis_type=="change_impact" else 0},"foreshadow_record":{"available":len(foreshadows),"selected":len(foreshadows) if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else 0},"issue":{"available":len(selected_issues),"selected":len(selected_issues)},"issue_evidence":{"available":sum(len(item["evidence"]) for item in selected_issues),"selected":sum(len(item["evidence"]) for item in selected_issues)}},"truncated":{"author_context":sum(len(author_payload[name]) for name in author_payload)>sum(len(group) for group in selected_author.values()),"memory_record":len(memory_rows)>len(memory),"source_span":len(span_rows)>len(source_items),"draft_claim":len(all_claims)>len(claims),"draft_body":len(draft["body"])>1200,"character_alias":False,"foreshadow_record":False,"issue":False,"issue_evidence":False}}
+                if analysis_type=="context_brief" and not (retrieval["selected_ids"]["author_context"] or retrieval["selected_ids"]["memory_record"] or retrieval["selected_ids"]["source_span"]):raise DomainError("analysis_evidence_unavailable",422)
+                bindings={"project_id":project_id,"draft_id":draft["id"],"draft_revision":draft["revision"],"source_revision":project["source_revision"],"memory_version":project["current_memory_version"],"author_context_version":author_version,"author_context_snapshot_digest":author_digest}
+                layers={"planned":selected_author,"confirmed":{"memory_records":memory},"written":{"draft":{"id":draft["id"],"revision":draft["revision"],"chapter_number":draft["chapter_number"],"title":draft["title"],"excerpt":self._analysis_draft_excerpt(draft["body"],hints)},"draft_claims":claims,"source_spans":source_items}}
+                if analysis_type=="change_impact":
+                    proposal=payload["proposal"]
+                    targets={"chapter":{item["id"] for item in chapters},"character":{item["id"] for item in factual_characters},"world":{item["id"] for item in factual_world},"memory":{item["id"] for item in memory},"plan":{item["id"] for group in selected_author.values() for item in group}}
+                    if proposal.get("target_id") and (proposal["target_type"]=="general" or proposal["target_id"] not in targets.get(proposal["target_type"],set())):raise DomainError("change_impact_target_invalid",422)
+                    bindings.update({"alias_version":alias_version,"alias_snapshot_digest":alias_digest})
+                    layers["identity"]={"characters":factual_characters,"aliases":aliases}
+                    layers["reference"]={"chapters":chapters,"world_entries":factual_world}
+                if analysis_type=="story_qa":
+                    scope=set(payload["scope"])
+                    if "planned" not in scope:
+                        layers["planned"]={"story_plans":[],"character_plans":[],"world_plans":[]};retrieval["selected_ids"]["author_context"]=[];retrieval["counts"]["author_context"]["selected"]=0
+                    if "confirmed" not in scope:
+                        layers["confirmed"]={"memory_records":[]};retrieval["selected_ids"]["memory_record"]=[];retrieval["counts"]["memory_record"]["selected"]=0
+                    if "written" not in scope:
+                        layers["written"]={"draft":{**layers["written"]["draft"],"excerpt":""},"draft_claims":[],"source_spans":[]};retrieval["selected_ids"]["source_span"]=[];retrieval["selected_ids"]["draft_claim"]=[];retrieval["counts"]["source_span"]["selected"]=0;retrieval["counts"]["draft_claim"]["selected"]=0
+                if analysis_type=="foreshadow_scan":
+                    layers["planned"]={"story_plans":[],"character_plans":[],"world_plans":[]};layers["confirmed"]={"memory_records":[]}
+                    retrieval["selected_ids"]["author_context"]=[];retrieval["selected_ids"]["memory_record"]=[];retrieval["counts"]["author_context"]["selected"]=0;retrieval["counts"]["memory_record"]["selected"]=0
+                if analysis_type in {"story_qa","foreshadow_scan","revision_plan"}:bindings.update({"foreshadow_version":foreshadow_version,"foreshadow_snapshot_digest":foreshadow_digest})
+                if analysis_type=="revision_plan":bindings.update({"source_run_id":source_issue_run["id"],"selected_issue_digest":selected_issue_digest})
+                input_data={"task":analysis_type,"bindings":bindings,"layers":layers,"retrieval":retrieval,**({"proposal":payload["proposal"]} if analysis_type=="change_impact" else {}),**({"question":payload["question"],"scope":payload["scope"]} if analysis_type=="story_qa" else {}),**({"author_records":{"foreshadows":foreshadows}} if analysis_type in {"foreshadow_scan","revision_plan"} else {}),**({"source_run_id":source_issue_run["id"],"selected_issues":selected_issues} if analysis_type=="revision_plan" else {})}
+                input_json=json.dumps(input_data,ensure_ascii=False,sort_keys=True,separators=(",",":"))
+                c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,draft_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,root_run_id,attempt_number,author_context_version,author_context_snapshot_digest,alias_version,alias_snapshot_digest,foreshadow_version,foreshadow_snapshot_digest) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,project_id,draft["id"],project["source_revision"],draft["revision"],"queued","queued",provenance["provider_label"],stamp,provenance["model_label"],provenance["prompt_version"],provenance["schema_version"],provenance["retrieval_method_version"],project["current_memory_version"],"provider",analysis_type,run_id,1,author_version,author_digest,alias_version if analysis_type=="change_impact" else None,alias_digest if analysis_type=="change_impact" else None,foreshadow_version if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else None,foreshadow_digest if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else None))
+                c.execute("INSERT INTO v2_analysis_inputs VALUES(?,?,?,?,?,?,?)",(run_id,project_id,analysis_type,input_json,json.dumps(retrieval,ensure_ascii=False,sort_keys=True),digest(input_data),stamp))
+                self._append_run_event(c,run_id,"queued","queued",None,stamp)
+                return {"run_id":run_id,"project_id":project_id,"analysis_type":analysis_type,"run_type":analysis_type,"status":"queued","stage":"queued","draft_revision":draft["revision"],"source_revision":project["source_revision"],"source_memory_version":project["current_memory_version"],"author_context_version":author_version,"author_context_snapshot_digest":author_digest,"alias_version":alias_version if analysis_type=="change_impact" else None,"alias_snapshot_digest":alias_digest if analysis_type=="change_impact" else None,"foreshadow_version":foreshadow_version if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else None,"foreshadow_snapshot_digest":foreshadow_digest if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else None,"proposal":payload.get("proposal"),"question":payload.get("question"),"scope":payload.get("scope"),"issue_ids":payload.get("issue_ids"),"source_run_id":source_issue_run["id"] if source_issue_run else None,"retry_of_run_id":None,"root_run_id":run_id,"attempt_number":1,"created_at":stamp}
+            return self._idem(c,user_id,"create_analysis:"+analysis_type+":"+project_id,key,payload,create,202,with_created=True)
+
+    def analysis_run_input(self, project_id: str, run_id: str) -> dict[str, Any]:
+        with self.connection() as c:
+            run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
+            row=c.execute("SELECT * FROM v2_analysis_inputs WHERE run_id=? AND project_id=?",(run_id,project_id)).fetchone()
+            if not run or not row:raise DomainError("resource_not_found",404)
+            if run["status"] not in RUN_ACTIVE_STATUSES or run["cancel_requested_at"]:raise DomainError("run_cancelled",409)
+            data=json.loads(row["input_json"])
+            if digest(data)!=row["input_digest"]:raise DomainError("analysis_input_invalid",409)
+            return data
+
+    def finish_analysis_run(self, project_id: str, run_id: str, result: dict[str, Any]) -> bool:
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
+            if not run:raise DomainError("resource_not_found",404)
+            if run["status"] not in RUN_ACTIVE_STATUSES:return False
+            stamp=utcnow()
+            if run["cancel_requested_at"]:status,terminal,error,retryable="cancelled","cancelled","author_cancelled",True
+            else:
+                status,terminal,error=self._normalized_terminal(result);retryable=bool(result.get("retryable")) or status in {"timed_out","cancelled"}
+            duration=elapsed_ms(run["started_at"] or run["created_at"],stamp)
+            changed=c.execute("UPDATE v2_runs SET status=?,stage=?,input_tokens=?,output_tokens=?,latency_ms=?,cost_cny=?,error_code=?,retryable=?,completed_at=?,duration_ms=? WHERE id=? AND project_id=? AND status IN ('queued','running')",(status,terminal,result.get("input_tokens"),result.get("output_tokens"),result.get("latency_ms"),result.get("cost_cny"),error,int(retryable),stamp,duration,run_id,project_id)).rowcount
+            if not changed:return False
+            self._append_run_event(c,run_id,status,terminal,error,stamp)
+            if status=="completed":
+                if not isinstance(result.get("analysis"),dict):raise DomainError("analysis_result_invalid",409)
+                analysis=result["analysis"]
+                if run["run_type"]=="foreshadow_scan":
+                    stored=[]
+                    for ordinal,candidate in enumerate(analysis.get("candidates",[]),1):
+                        candidate_id=new_id("foreshadowcandidate")
+                        self._foreshadow_reference(c,project_id,candidate.get("planted_chapter_id"),candidate.get("planted_source_span_id"));self._foreshadow_reference(c,project_id,candidate.get("resolved_chapter_id"),candidate.get("resolved_source_span_id"))
+                        c.execute("INSERT INTO v2_foreshadow_candidates VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(candidate_id,project_id,run_id,ordinal,candidate["title"],candidate["description"],candidate["suggested_status"],candidate.get("planted_chapter_id"),candidate.get("planted_source_span_id"),candidate.get("resolved_chapter_id"),candidate.get("resolved_source_span_id"),json.dumps(candidate["evidence"],ensure_ascii=False,sort_keys=True),"pending",None,None,stamp))
+                        stored.append({**candidate,"id":candidate_id,"decision_status":"pending","decision":None})
+                    analysis={**analysis,"candidates":stored}
+                if run["run_type"]=="revision_plan":
+                    stored=[]
+                    for ordinal,candidate in enumerate(analysis.get("candidates",[]),1):
+                        candidate_id=new_id("revisioncandidate")
+                        c.execute("INSERT INTO v2_revision_plan_candidates(id,project_id,run_id,candidate_ordinal,issue_id,title,normalized_title,instruction,priority,evidence_json,decision_status,decision_json,decided_at,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(candidate_id,project_id,run_id,ordinal,candidate["issue_id"],candidate["title"],self._normalized_revision_task_title(candidate["title"]),candidate["instruction"],candidate["priority"],json.dumps(candidate["evidence"],ensure_ascii=False,sort_keys=True),"pending",None,None,stamp))
+                        stored.append({**candidate,"id":candidate_id,"decision_status":"pending","decision":None})
+                    analysis={**analysis,"candidates":stored}
+                c.execute("INSERT INTO v2_analysis_results VALUES(?,?,?,?,?)",(run_id,project_id,run["run_type"],json.dumps(analysis,ensure_ascii=False,sort_keys=True),stamp))
+            return True
+
+    def analysis_view(self, user_id: str, project_id: str, run_id: str) -> dict[str, Any]:
+        result=self.run_view(user_id,project_id,run_id,set())
+        with self.connection() as c:
+            project=self._project(c,user_id,project_id)
+            run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
+            if run["run_type"] not in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan"}:raise DomainError("resource_not_found",404)
+            draft=c.execute("SELECT revision FROM v2_drafts WHERE id=? AND project_id=?",(run["draft_id"],project_id)).fetchone()
+            alias_current=run["run_type"]!="change_impact" or (project["alias_version"]==run["alias_version"] and self._current_alias_binding(c,project_id)[1]==run["alias_snapshot_digest"])
+            foreshadow_current=True
+            if run["run_type"] in {"story_qa","foreshadow_scan","revision_plan"}:
+                current_foreshadow=self._current_foreshadow_binding(c,project_id)
+                if run["run_type"]=="foreshadow_scan":
+                    own_ids={row["created_record_id"] for row in c.execute("SELECT created_record_id FROM v2_foreshadow_candidate_decisions WHERE run_id=? AND created_record_id IS NOT NULL",(run_id,)).fetchall()}
+                    original_rows=[item for item in current_foreshadow[2] if item["id"] not in own_ids]
+                    foreshadow_current=current_foreshadow[0]==run["foreshadow_version"]+len(own_ids) and digest(original_rows)==run["foreshadow_snapshot_digest"]
+                else:foreshadow_current=current_foreshadow[:2]==(run["foreshadow_version"],run["foreshadow_snapshot_digest"])
+            input_row=c.execute("SELECT input_json,retrieval_json,input_digest FROM v2_analysis_inputs WHERE run_id=?",(run_id,)).fetchone()
+            input_payload=json.loads(input_row["input_json"]) if input_row else {}
+            issue_current=True
+            if run["run_type"]=="revision_plan":
+                try:
+                    issue_run,issue_digest,_=self._revision_plan_issue_binding(c,project_id,input_payload.get("bindings",{}).get("selected_issue_ids") or [item["id"] for item in input_payload.get("selected_issues",[])])
+                    issue_current=issue_run["id"]==input_payload.get("source_run_id") and issue_digest==input_payload.get("bindings",{}).get("selected_issue_digest")
+                except DomainError:issue_current=False
+            current=bool(draft and draft["revision"]==run["draft_revision"] and project["source_revision"]==run["source_revision"] and project["current_memory_version"]==run["source_memory_version"] and project["author_context_version"]==run["author_context_version"] and result["author_context_resolvable"] and alias_current and foreshadow_current and issue_current)
+            stored=c.execute("SELECT result_json FROM v2_analysis_results WHERE run_id=?",(run_id,)).fetchone()
+            result.update({"analysis_type":run["run_type"],"draft_revision":run["draft_revision"],"current_draft_revision":draft["revision"] if draft else None,"alias_version":run["alias_version"],"alias_snapshot_digest":run["alias_snapshot_digest"],"foreshadow_version":run["foreshadow_version"],"foreshadow_snapshot_digest":run["foreshadow_snapshot_digest"],"proposal":input_payload.get("proposal"),"question":input_payload.get("question"),"scope":input_payload.get("scope"),"issue_ids":[item["id"] for item in input_payload.get("selected_issues",[])],"source_run_id":input_payload.get("source_run_id"),"is_stale":not current,"superseded":not current,"lineage_status":"current" if current else "bound_state_changed","retrieval":json.loads(input_row["retrieval_json"]) if input_row else None,"input_digest":input_row["input_digest"] if input_row else None})
+            if result["status"]=="completed":
+                if not stored:raise DomainError("analysis_result_unresolvable",409)
+                result["analysis"]=json.loads(stored["result_json"])
+                if run["run_type"]=="foreshadow_scan":
+                    decisions={row["id"]:row for row in c.execute("SELECT id,decision_status,decision_json,decided_at FROM v2_foreshadow_candidates WHERE run_id=? ORDER BY candidate_ordinal",(run_id,)).fetchall()}
+                    for candidate in result["analysis"].get("candidates",[]):
+                        state=decisions.get(candidate["id"])
+                        if state:candidate.update({"decision_status":state["decision_status"],"decision":json.loads(state["decision_json"]) if state["decision_json"] else None,"decided_at":state["decided_at"]})
+                if run["run_type"]=="revision_plan":
+                    decisions={row["id"]:row for row in c.execute("SELECT id,decision_status,decision_json,decided_at FROM v2_revision_plan_candidates WHERE run_id=? ORDER BY candidate_ordinal",(run_id,)).fetchall()}
+                    for candidate in result["analysis"].get("candidates",[]):
+                        state=decisions.get(candidate["id"])
+                        if state:candidate.update({"decision_status":state["decision_status"],"decision":json.loads(state["decision_json"]) if state["decision_json"] else None,"decided_at":state["decided_at"]})
+            return result
+
+    def latest_analysis(self, user_id: str, project_id: str, analysis_type: str, limit: int = 10) -> dict[str, Any]:
+        if analysis_type not in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan"}:raise DomainError("analysis_type_invalid",422)
+        with self.connection() as c:
+            self._project(c,user_id,project_id)
+            rows=c.execute("SELECT id FROM v2_runs WHERE project_id=? AND run_type=? ORDER BY created_at DESC,rowid DESC LIMIT ?",(project_id,analysis_type,limit)).fetchall()
+        runs=[self.analysis_view(user_id,project_id,row["id"]) for row in rows]
+        return {"analysis_type":analysis_type,"run":runs[0] if runs else None,"runs":runs}
+
+    def decide_foreshadow_candidate(self,user_id:str,project_id:str,run_id:str,candidate_id:str,payload:dict[str,Any],key:str):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def decide():
+                project=self._project(c,user_id,project_id,True)
+                run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=? AND run_type='foreshadow_scan'",(run_id,project_id)).fetchone()
+                candidate=c.execute("SELECT * FROM v2_foreshadow_candidates WHERE id=? AND project_id=? AND run_id=?",(candidate_id,project_id,run_id)).fetchone()
+                if not run or not candidate:raise DomainError("resource_not_found",404)
+                if public_run_status(run["status"])!="completed":raise DomainError("foreshadow_candidate_unavailable",409)
+                if candidate["decision_status"]!="pending":raise DomainError("foreshadow_candidate_decided",409)
+                draft=c.execute("SELECT revision FROM v2_drafts WHERE id=? AND project_id=?",(run["draft_id"],project_id)).fetchone()
+                author=self._current_author_context_binding(c,project);foreshadow=self._current_foreshadow_binding(c,project_id)
+                own_ids={row["created_record_id"] for row in c.execute("SELECT created_record_id FROM v2_foreshadow_candidate_decisions WHERE run_id=? AND created_record_id IS NOT NULL",(run_id,)).fetchall()}
+                original_rows=[item for item in foreshadow[2] if item["id"] not in own_ids]
+                decision_current=foreshadow[0]==run["foreshadow_version"]+len(own_ids) and digest(original_rows)==run["foreshadow_snapshot_digest"]
+                if not draft or draft["revision"]!=run["draft_revision"] or project["source_revision"]!=run["source_revision"] or project["current_memory_version"]!=run["source_memory_version"] or author!=(run["author_context_version"],run["author_context_snapshot_digest"]) or not decision_current:raise DomainError("foreshadow_candidate_stale",409)
+                if payload["base_foreshadow_version"]!=project["foreshadow_version"]:raise DomainError("foreshadow_version_conflict",409,False,{"current_version":project["foreshadow_version"]})
+                decision=payload["decision"]
+                if decision not in {"accepted","edited","rejected"}:raise DomainError("foreshadow_candidate_decision_invalid",422)
+                edited=payload.get("edited")
+                if (decision=="edited") != bool(edited):raise DomainError("foreshadow_candidate_decision_invalid",422)
+                stamp=utcnow();created_record_id=None;after=None
+                if decision!="rejected":
+                    if int(project["foreshadow_version"] or 0)>=MAX_RESOURCE_VERSION:raise DomainError("foreshadow_version_limit",409)
+                    if c.execute("SELECT COUNT(*) FROM v2_foreshadows WHERE project_id=? AND archived_at IS NULL",(project_id,)).fetchone()[0]>=FORESHADOW_MAX_RECORDS:raise DomainError("foreshadow_limit_reached",409)
+                    values=self._validate_foreshadow_payload(c,project_id,edited or {"title":candidate["title"],"description":candidate["description"],"status":candidate["suggested_status"],"planted_chapter_id":candidate["planted_chapter_id"],"planted_source_span_id":candidate["planted_source_span_id"],"resolved_chapter_id":candidate["resolved_chapter_id"],"resolved_source_span_id":candidate["resolved_source_span_id"]})
+                    if c.execute("SELECT 1 FROM v2_foreshadows WHERE project_id=? AND normalized_title=? AND archived_at IS NULL",(project_id,values["normalized_title"])).fetchone():raise DomainError("foreshadow_duplicate",409)
+                    created_record_id=new_id("foreshadow")
+                    c.execute("INSERT INTO v2_foreshadows VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(created_record_id,project_id,values["title"],values["normalized_title"],values["description"],values["status"],values["planted_chapter_id"],values["planted_source_span_id"],values["resolved_chapter_id"],values["resolved_source_span_id"],1,None,stamp,stamp))
+                    record=c.execute("SELECT * FROM v2_foreshadows WHERE id=?",(created_record_id,)).fetchone();self._record_foreshadow_version(c,record,"candidate_"+decision,user_id,stamp);after=self._foreshadow_item(c,record)
+                    c.execute("UPDATE v2_projects SET foreshadow_version=foreshadow_version+1,updated_at=? WHERE id=?",(stamp,project_id))
+                decision_payload={"decision":decision,"after":after,"created_record_id":created_record_id}
+                c.execute("UPDATE v2_foreshadow_candidates SET decision_status=?,decision_json=?,decided_at=? WHERE id=?",(decision,json.dumps(decision_payload,ensure_ascii=False,sort_keys=True),stamp,candidate_id))
+                c.execute("INSERT INTO v2_foreshadow_candidate_decisions VALUES(?,?,?,?,?,?,?,?,?)",(new_id("foreshadowdecision"),project_id,run_id,candidate_id,decision,json.dumps(after,ensure_ascii=False,sort_keys=True) if after else None,created_record_id,user_id,stamp))
+                return {"project_id":project_id,"run_id":run_id,"candidate_id":candidate_id,"decision_status":decision,"decision":decision_payload,"foreshadows":self._foreshadow_snapshot(c,project_id,True)}
+            return self._idem(c,user_id,f"foreshadow_candidate_decision:{project_id}:{run_id}:{candidate_id}",key,payload,decide)
+
+    def decide_revision_candidate(self,user_id:str,project_id:str,run_id:str,candidate_id:str,payload:dict[str,Any],key:str):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def decide():
+                project=self._project(c,user_id,project_id,True)
+                run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=? AND run_type='revision_plan'",(run_id,project_id)).fetchone()
+                candidate=c.execute("SELECT * FROM v2_revision_plan_candidates WHERE id=? AND project_id=? AND run_id=?",(candidate_id,project_id,run_id)).fetchone()
+                if not run or not candidate:raise DomainError("resource_not_found",404)
+                if public_run_status(run["status"])!="completed":raise DomainError("revision_candidate_unavailable",409)
+                if candidate["decision_status"]!="pending":raise DomainError("revision_candidate_decided",409)
+                input_row=c.execute("SELECT input_json FROM v2_analysis_inputs WHERE run_id=? AND project_id=?",(run_id,project_id)).fetchone()
+                if not input_row:raise DomainError("revision_candidate_stale",409)
+                input_payload=json.loads(input_row["input_json"]);issue_ids=[item["id"] for item in input_payload.get("selected_issues",[])]
+                try:source_run,issue_digest,_=self._revision_plan_issue_binding(c,project_id,issue_ids)
+                except DomainError:raise DomainError("revision_candidate_stale",409) from None
+                draft=c.execute("SELECT revision FROM v2_drafts WHERE id=? AND project_id=?",(run["draft_id"],project_id)).fetchone()
+                current_author=self._current_author_context_binding(c,project);current_foreshadow=self._current_foreshadow_binding(c,project_id)
+                bindings=input_payload.get("bindings",{})
+                if not draft or draft["revision"]!=run["draft_revision"] or project["source_revision"]!=run["source_revision"] or project["current_memory_version"]!=run["source_memory_version"] or current_author!=(run["author_context_version"],run["author_context_snapshot_digest"]) or current_foreshadow[:2]!=(run["foreshadow_version"],run["foreshadow_snapshot_digest"]) or source_run["id"]!=input_payload.get("source_run_id") or issue_digest!=bindings.get("selected_issue_digest"):raise DomainError("revision_candidate_stale",409)
+                decision=payload.get("decision");edited=payload.get("edited")
+                if decision not in {"accepted","edited","rejected"} or (decision=="edited")!=bool(edited):raise DomainError("revision_candidate_decision_invalid",422)
+                if payload.get("base_task_version")!=project["revision_task_version"]:raise DomainError("revision_task_version_conflict",409,False,{"current_version":project["revision_task_version"]})
+                stamp=utcnow();created_task_id=None;after=None
+                if decision!="rejected":
+                    if int(project["revision_task_version"] or 0)>=MAX_RESOURCE_VERSION:raise DomainError("revision_task_version_limit",409)
+                    if c.execute("SELECT COUNT(*) FROM v2_revision_tasks WHERE project_id=? AND status!='completed'",(project_id,)).fetchone()[0]>=REVISION_TASK_MAX_RECORDS:raise DomainError("revision_task_limit_reached",409)
+                    values=self._validate_revision_task_fields(edited or {"title":candidate["title"],"instruction":candidate["instruction"],"priority":candidate["priority"]})
+                    if c.execute("SELECT 1 FROM v2_revision_tasks WHERE project_id=? AND normalized_title=? AND status!='completed'",(project_id,values["normalized_title"])).fetchone():raise DomainError("revision_task_duplicate",409)
+                    created_task_id=new_id("revisiontask");position=c.execute("SELECT COALESCE(MAX(position),0)+1 FROM v2_revision_tasks WHERE project_id=?",(project_id,)).fetchone()[0]
+                    c.execute("INSERT INTO v2_revision_tasks(id,project_id,source_run_id,candidate_id,issue_id,title,normalized_title,instruction,priority,position,status,version,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(created_task_id,project_id,run_id,candidate_id,candidate["issue_id"],values["title"],values["normalized_title"],values["instruction"],values["priority"],position,"todo",1,stamp,stamp))
+                    task=c.execute("SELECT * FROM v2_revision_tasks WHERE id=?",(created_task_id,)).fetchone();self._record_revision_task_version(c,task,"candidate_"+decision,user_id,stamp)
+                    c.execute("UPDATE v2_projects SET revision_task_version=revision_task_version+1,updated_at=? WHERE id=?",(stamp,project_id))
+                    after=self._revision_task_item({**dict(task),"evidence_json":candidate["evidence_json"]})
+                decision_payload={"decision":decision,"after":after,"created_task_id":created_task_id}
+                c.execute("UPDATE v2_revision_plan_candidates SET decision_status=?,decision_json=?,decided_at=? WHERE id=?",(decision,json.dumps(decision_payload,ensure_ascii=False,sort_keys=True),stamp,candidate_id))
+                c.execute("INSERT INTO v2_revision_candidate_decisions VALUES(?,?,?,?,?,?,?,?,?)",(new_id("revisiondecision"),project_id,run_id,candidate_id,decision,json.dumps(after,ensure_ascii=False,sort_keys=True) if after else None,created_task_id,user_id,stamp))
+                return {"project_id":project_id,"run_id":run_id,"candidate_id":candidate_id,"decision_status":decision,"decision":decision_payload,"revision_tasks":self._revision_task_snapshot(c,project_id,True)}
+            return self._idem(c,user_id,f"revision_candidate_decision:{project_id}:{run_id}:{candidate_id}",key,payload,decide)
 
     def advance_run(self, project_id: str, run_id: str, stage: str) -> bool:
         with self.connection() as c:
@@ -1732,7 +2752,8 @@ class V2Database:
             for ordinal,text in enumerate(x.strip() for x in re.split(r"(?<=[。！？])",revision["body"]) if x.strip()):
                 claim_id=f"claim-{run_id}-{ordinal+1}"; claims.append({"id":claim_id,"text":text})
                 c.execute("INSERT OR IGNORE INTO v2_run_claims VALUES(?,?,?,?)",(claim_id,run_id,ordinal+1,text))
-            memory=[dict(x) for x in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id FROM v2_memory_records WHERE project_id=? AND version=(SELECT current_memory_version FROM v2_projects WHERE id=?) AND review_status='author_confirmed' ORDER BY id",(project_id,project_id)).fetchall()]
+            source_memory_version=run["source_memory_version"]
+            memory=[dict(x) for x in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id",(project_id,source_memory_version,source_memory_version,source_memory_version)).fetchall()]
             if not memory: raise DomainError("insufficient_project_context",422)
             spans=[dict(x) for x in c.execute("SELECT id,chapter_id,body,label FROM v2_source_spans WHERE project_id=?",(project_id,)).fetchall()]
             for claim in claims:
@@ -1792,12 +2813,30 @@ class V2Database:
                 return {**current,"cancel_requested_at":target["cancel_requested_at"] or stamp,"sibling_run_ids":[item["run_id"] for item in outputs if item["run_id"]!=run_id]}
             return self._idem(c,user_id,"cancel_run:"+project_id+":"+run_id,key,payload,cancel)
 
+    def require_run_type(self,user_id:str,project_id:str,run_id:str,allowed:set[str])->str:
+        with self.connection() as c:
+            self._project(c,user_id,project_id)
+            row=c.execute("SELECT run_type FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
+            if not row or row["run_type"] not in allowed:raise DomainError("resource_not_found",404)
+            return row["run_type"]
+
     def _retry_copy(self,c,previous,batch_id=None):
         run_id,stamp=new_id("run"),utcnow(); root=previous["root_run_id"] or previous["id"]
         attempt=c.execute("SELECT COALESCE(MAX(attempt_number),0)+1 FROM v2_runs WHERE root_run_id=?",(root,)).fetchone()[0]
-        c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,source_change_set_id,source_span_ids_json,retry_of_run_id,root_run_id,attempt_number,incremental_batch_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,previous["project_id"],previous["draft_id"],previous["source_revision"],"queued","queued",previous["provider_label"],stamp,previous["model_label"],previous["prompt_version"],previous["schema_version"],previous["retrieval_method_version"],previous["source_memory_version"],previous["result_origin"],previous["run_type"],previous["source_change_set_id"],previous["source_span_ids_json"],previous["id"],root,attempt,batch_id))
+        project=c.execute("SELECT * FROM v2_projects WHERE id=?",(previous["project_id"],)).fetchone()
+        analysis=previous["run_type"] in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan"}
+        if analysis:author_version,author_digest=previous["author_context_version"],previous["author_context_snapshot_digest"]
+        else:author_version,author_digest=self._current_author_context_binding(c,project)
+        c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,draft_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,source_change_set_id,source_span_ids_json,retry_of_run_id,root_run_id,attempt_number,incremental_batch_id,author_context_version,author_context_snapshot_digest,alias_version,alias_snapshot_digest,foreshadow_version,foreshadow_snapshot_digest) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,previous["project_id"],previous["draft_id"],previous["source_revision"],previous["draft_revision"],"queued","queued",previous["provider_label"],stamp,previous["model_label"],previous["prompt_version"],previous["schema_version"],previous["retrieval_method_version"],previous["source_memory_version"],previous["result_origin"],previous["run_type"],previous["source_change_set_id"],previous["source_span_ids_json"],previous["id"],root,attempt,batch_id,author_version,author_digest,previous["alias_version"],previous["alias_snapshot_digest"],previous["foreshadow_version"],previous["foreshadow_snapshot_digest"]))
+        if analysis:
+            source=c.execute("SELECT * FROM v2_analysis_inputs WHERE run_id=?",(previous["id"],)).fetchone()
+            if not source:raise DomainError("run_retry_lineage_stale",409)
+            c.execute("INSERT INTO v2_analysis_inputs VALUES(?,?,?,?,?,?,?)",(run_id,source["project_id"],source["analysis_type"],source["input_json"],source["retrieval_json"],source["input_digest"],stamp))
         self._append_run_event(c,run_id,"queued","queued",None,stamp)
-        return {"run_id":run_id,"run_type":previous["run_type"],"status":"queued","stage":"queued","created_at":stamp,"retry_of_run_id":previous["id"],"root_run_id":root,"attempt_number":attempt}
+        output={"run_id":run_id,"project_id":previous["project_id"],"run_type":previous["run_type"],"analysis_type":previous["run_type"] if analysis else None,"status":"queued","stage":"queued","draft_revision":previous["draft_revision"],"source_revision":previous["source_revision"],"source_memory_version":previous["source_memory_version"],"author_context_version":previous["author_context_version"],"alias_version":previous["alias_version"],"foreshadow_version":previous["foreshadow_version"],"created_at":stamp,"retry_of_run_id":previous["id"],"root_run_id":root,"attempt_number":attempt}
+        if analysis:
+            analysis_input=json.loads(source["input_json"]);output.update({"proposal":analysis_input.get("proposal"),"question":analysis_input.get("question"),"scope":analysis_input.get("scope"),"issue_ids":[item["id"] for item in analysis_input.get("selected_issues",[])],"source_run_id":analysis_input.get("source_run_id")})
+        return output
 
     def retry_run(self,user_id,project_id,run_id,payload,key):
         with self.connection() as c:
@@ -1824,8 +2863,24 @@ class V2Database:
                     if c.execute("SELECT 1 FROM v2_runs WHERE root_run_id IN (%s) AND status IN ('queued','running') LIMIT 1" % ",".join("?" for _ in roots),tuple(roots)).fetchone():raise DomainError("run_already_active",409)
                     created={row["run_type"]:self._retry_copy(c,row,batch["id"]) for row in previous}
                     continuity_id=created["continuity"]["run_id"]; delta_id=created["memory_delta"]["run_id"]
-                    c.execute("UPDATE v2_memory_delta_batches SET continuity_run_id=?,memory_delta_run_id=?,status='processing',error_code=NULL,created_at=?,completed_at=NULL,covered_at=NULL WHERE id=?",(continuity_id,delta_id,utcnow(),batch["id"]))
+                    c.execute("UPDATE v2_memory_delta_batches SET continuity_run_id=?,memory_delta_run_id=?,status='processing',error_code=NULL,created_at=?,completed_at=NULL,covered_at=NULL,retrieval_json='{}' WHERE id=?",(continuity_id,delta_id,utcnow(),batch["id"]))
                     return {"paired":True,"batch_id":batch["id"],"continuity_run_id":continuity_id,"memory_delta_run_id":delta_id,"runs":[created["continuity"],created["memory_delta"]]}
+                if target["run_type"] in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan"}:
+                    draft=c.execute("SELECT revision FROM v2_drafts WHERE id=? AND project_id=?",(target["draft_id"],project_id)).fetchone()
+                    current_author=self._current_author_context_binding(c,project)
+                    alias_current=target["run_type"]!="change_impact" or self._current_alias_binding(c,project_id)[:2]==(target["alias_version"],target["alias_snapshot_digest"])
+                    foreshadow_current=target["run_type"] not in {"story_qa","foreshadow_scan","revision_plan"} or self._current_foreshadow_binding(c,project_id)[:2]==(target["foreshadow_version"],target["foreshadow_snapshot_digest"])
+                    issue_current=True
+                    if target["run_type"]=="revision_plan":
+                        source=c.execute("SELECT input_json FROM v2_analysis_inputs WHERE run_id=?",(target["id"],)).fetchone()
+                        try:
+                            analysis_input=json.loads(source["input_json"]);issue_run,issue_digest,_=self._revision_plan_issue_binding(c,project_id,[item["id"] for item in analysis_input.get("selected_issues",[])])
+                            issue_current=issue_run["id"]==analysis_input.get("source_run_id") and issue_digest==analysis_input.get("bindings",{}).get("selected_issue_digest")
+                        except (DomainError,TypeError,ValueError):issue_current=False
+                    if not draft or draft["revision"]!=target["draft_revision"] or project["source_revision"]!=target["source_revision"] or project["current_memory_version"]!=target["source_memory_version"] or current_author!=(target["author_context_version"],target["author_context_snapshot_digest"]) or not alias_current or not foreshadow_current or not issue_current:raise DomainError("run_retry_lineage_stale",409)
+                    root=target["root_run_id"] or target["id"]
+                    if c.execute("SELECT 1 FROM v2_runs WHERE root_run_id=? AND status IN ('queued','running')",(root,)).fetchone():raise DomainError("run_already_active",409)
+                    return {"paired":False,"run":self._retry_copy(c,target)}
                 draft=c.execute("SELECT revision FROM v2_drafts WHERE id=? AND project_id=?",(target["draft_id"],project_id)).fetchone()
                 if not draft or draft["revision"]!=target["source_revision"] or project["current_memory_version"]!=target["source_memory_version"]:raise DomainError("run_retry_lineage_stale",409)
                 root=target["root_run_id"] or target["id"]
@@ -1874,13 +2929,22 @@ class V2Database:
             source_span_ids=json.loads(run["source_span_ids_json"] or "[]")
             incremental=bool(run["source_change_set_id"]) and bool(source_span_ids)
             direct_successor=draft["revision"]==run["source_revision"]+1 and draft["edit_context_json"] and json.loads(draft["edit_context_json"]).get("source_run_id")==run_id
-            current=incremental or run["run_type"]!="continuity" or draft["revision"]==run["source_revision"] or direct_successor
+            analysis=run["run_type"] in {"context_brief","plan_alignment","change_impact"}
+            project=c.execute("SELECT source_revision,current_memory_version,author_context_version,alias_version FROM v2_projects WHERE id=?",(project_id,)).fetchone()
+            alias_current=run["run_type"]!="change_impact" or project["alias_version"]==run["alias_version"]
+            current=(draft["revision"]==run["draft_revision"] and project["source_revision"]==run["source_revision"] and project["current_memory_version"]==run["source_memory_version"] and project["author_context_version"]==run["author_context_version"] and alias_current) if analysis else (project["source_revision"]==run["source_revision"] and project["current_memory_version"]==run["source_memory_version"]) if incremental else run["run_type"]!="continuity" or draft["revision"]==run["source_revision"] or direct_successor
             status=public_run_status(run["status"]); stage=status if run["status"]=="budget_paused" else run["stage"]; error_code=public_run_error(run["status"],run["error_code"])
             transitions=[{"sequence":row["sequence"],"status":public_run_status(row["status"]),"stage":row["stage"],"error_code":public_run_error(row["status"],row["error_code"]),"created_at":row["created_at"]} for row in c.execute("SELECT * FROM v2_run_events WHERE run_id=? ORDER BY sequence",(run_id,)).fetchall()]
+            author_meta=None
+            if run["author_context_version"] is not None:
+                try:author_meta=self._author_context_version_row(c,project_id,run["author_context_version"])
+                except DomainError:author_meta=None
+            author_resolved=bool(author_meta and run["author_context_snapshot_digest"] and author_meta["snapshot_digest"]==run["author_context_snapshot_digest"])
+            author_status="not_recorded" if run["author_context_version"] is None else "recorded" if author_resolved else "unresolvable"
             provenance={"provider_label":run["provider_label"],"model_label":run["model_label"] or "legacy_unspecified","prompt_version":run["prompt_version"] or "legacy_unspecified","schema_version":run["schema_version"] or "legacy_unspecified","retrieval_method_version":run["retrieval_method_version"] or "legacy_unspecified","source_memory_version":run["source_memory_version"]}
             if incremental:provenance.update({"source_change_set_id":run["source_change_set_id"],"source_span_ids":source_span_ids,"incremental_batch_id":run["incremental_batch_id"]})
             metrics={"latency_ms":run["latency_ms"],"input_tokens":run["input_tokens"],"output_tokens":run["output_tokens"],"cost_cny":run["cost_cny"],"cost_available":run["cost_cny"] is not None,"provenance":provenance,"retrieval":[]}
-            result={"run_id":run_id,"project_id":project_id,"run_type":run["run_type"],"status":status,"stage":stage,"source_revision":run["source_revision"],"source_memory_version":run["source_memory_version"],"source_change_set_id":run["source_change_set_id"],"source_span_ids":source_span_ids,"incremental_batch_id":run["incremental_batch_id"],"current_revision":draft["revision"],"is_stale":not current,"superseded":not current,"lineage_status":("incremental_source_revision" if incremental else "validated_direct_successor" if direct_successor else "current" if current else "lineage_invalid_requires_recheck"),"result_origin":run["result_origin"],"result_origin_label":("预置演示审阅数据（未调用 Provider）" if run["result_origin"]=="demo_preset" else "Provider 检查结果"),"error_code":error_code,"retryable":bool(run["retryable"]) or run["status"]=="budget_paused","created_at":run["created_at"],"started_at":run["started_at"],"completed_at":run["completed_at"],"cancel_requested_at":run["cancel_requested_at"],"duration_ms":run["duration_ms"],"retry_of_run_id":run["retry_of_run_id"],"root_run_id":run["root_run_id"] or run_id,"attempt_number":run["attempt_number"] or 1,"transitions":transitions,"provenance":provenance,"provider_metrics":{key:metrics[key] for key in ("latency_ms","input_tokens","output_tokens","cost_cny","cost_available")}}
+            result={"run_id":run_id,"project_id":project_id,"run_type":run["run_type"],"status":status,"stage":stage,"source_revision":run["source_revision"],"draft_revision":run["draft_revision"],"source_memory_version":run["source_memory_version"],"author_context_version":run["author_context_version"],"author_context_version_status":author_status,"author_context_resolvable":author_resolved,"author_context_snapshot_digest":run["author_context_snapshot_digest"] if author_resolved else None,"alias_version":run["alias_version"],"alias_snapshot_digest":run["alias_snapshot_digest"],"source_change_set_id":run["source_change_set_id"],"source_span_ids":source_span_ids,"incremental_batch_id":run["incremental_batch_id"],"current_revision":draft["revision"],"is_stale":not current,"superseded":not current,"lineage_status":(("incremental_source_revision" if current else "incremental_state_changed_requires_recheck") if incremental else "validated_direct_successor" if direct_successor else "current" if current else "lineage_invalid_requires_recheck"),"result_origin":run["result_origin"],"result_origin_label":("预置演示审阅数据（未调用 Provider）" if run["result_origin"]=="demo_preset" else "Provider 检查结果"),"error_code":error_code,"retryable":bool(run["retryable"]) or run["status"]=="budget_paused","created_at":run["created_at"],"started_at":run["started_at"],"completed_at":run["completed_at"],"cancel_requested_at":run["cancel_requested_at"],"duration_ms":run["duration_ms"],"retry_of_run_id":run["retry_of_run_id"],"root_run_id":run["root_run_id"] or run_id,"attempt_number":run["attempt_number"] or 1,"transitions":transitions,"provenance":provenance,"provider_metrics":{key:metrics[key] for key in ("latency_ms","input_tokens","output_tokens","cost_cny","cost_available")}}
             if "issues" in include and status=="completed":
                 issues=[]
                 for issue in c.execute("SELECT * FROM v2_issues WHERE project_id=? AND run_id=?",(project_id,run_id)).fetchall():
@@ -1951,7 +3015,7 @@ class V2Database:
                         proposed.append((issue,decision,after,before))
                 if not proposed: raise DomainError("no_reviewable_changes",422)
                 change_set_id=new_id("changeset"); lineage="validated_direct_successor" if successor else "current"
-                c.execute("INSERT INTO v2_change_sets VALUES(?,?,?,?,?,?,?,?,?,?,?)",(change_set_id,project_id,run["id"],run["source_revision"],draft["revision"],lineage,project["current_memory_version"],project["current_memory_version"]+1,"draft",utcnow(),None))
+                c.execute("INSERT INTO v2_change_sets(id,project_id,run_id,source_run_revision,resolved_revision,lineage_status,base_version,target_version,status,created_at,committed_at,change_set_kind,actor_user_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",(change_set_id,project_id,run["id"],run["source_revision"],draft["revision"],lineage,project["current_memory_version"],project["current_memory_version"]+1,"draft",utcnow(),None,"continuity",user_id))
                 items=[]
                 for issue,decision,after,before in proposed:
                     item_id=new_id("changeitem")
@@ -2038,7 +3102,15 @@ class V2Database:
                 project=self._project(c,user_id,project_id,True)
                 if payload.get("confirm") is not True: raise DomainError("confirmation_required",400)
                 if payload.get("reason") not in {"fresh_start","demo_recovery"}: raise DomainError("invalid_request",400)
+                stamp=utcnow()
                 # dependent children first. The set is deliberately project-scoped.
+                for table in ("v2_author_story_plan_versions","v2_author_character_plan_versions","v2_author_world_plan_versions"):
+                    c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
+                c.execute("DELETE FROM v2_author_context_versions WHERE project_id=?",(project_id,))
+                for table in ("v2_author_story_plans","v2_author_character_plans","v2_author_world_plans"):
+                    c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
+                c.execute("UPDATE v2_projects SET author_context_version=0,updated_at=? WHERE id=?",(stamp,project_id))
+                zero=self._insert_empty_author_context_zero(c,project_id,stamp)
                 c.execute("DELETE FROM v2_memory_candidate_decisions WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_memory_candidates WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_memory_initializations WHERE project_id=?",(project_id,))
@@ -2049,10 +3121,19 @@ class V2Database:
                 c.execute("DELETE FROM v2_commit_audits WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_change_set_items WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_change_sets WHERE project_id=?",(project_id,))
+                c.execute("DELETE FROM v2_revision_candidate_decisions WHERE project_id=?",(project_id,))
+                c.execute("DELETE FROM v2_revision_task_versions WHERE project_id=?",(project_id,))
+                c.execute("DELETE FROM v2_revision_tasks WHERE project_id=?",(project_id,))
+                c.execute("DELETE FROM v2_revision_plan_candidates WHERE project_id=?",(project_id,))
+                c.execute("UPDATE v2_projects SET revision_task_version=0 WHERE id=?",(project_id,))
                 c.execute("DELETE FROM v2_decisions WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_evidence WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_issues WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_retrieval_traces WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
+                c.execute("DELETE FROM v2_analysis_results WHERE project_id=?",(project_id,))
+                c.execute("DELETE FROM v2_analysis_inputs WHERE project_id=?",(project_id,))
+                c.execute("DELETE FROM v2_character_aliases WHERE project_id=?",(project_id,))
+                c.execute("DELETE FROM v2_character_alias_state WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_run_claims WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
                 c.execute("DELETE FROM v2_run_events WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
                 c.execute("DELETE FROM v2_run_stages WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
@@ -2079,12 +3160,12 @@ class V2Database:
                 else:
                     c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,1,"current",None,utcnow()))
                     self._draft(c,project_id,1); version=1
-                c.execute("UPDATE v2_projects SET current_memory_version=?,updated_at=? WHERE id=?",(version,utcnow(),project_id))
+                c.execute("UPDATE v2_projects SET current_memory_version=?,author_context_version=0,alias_version=0,updated_at=? WHERE id=?",(version,utcnow(),project_id))
                 # A project reset invalidates replay records that reference
                 # deleted drafts/runs, but retains this reset's own replay.
                 c.execute("DELETE FROM v2_idempotency WHERE scope=? AND operation LIKE ? AND operation!=?",(user_id,"%"+project_id+"%","reset:"+project_id))
                 reset_id=new_id("reset")
-                result={"reset_id":reset_id,"project_id":project_id,"current_memory_version":version,"draft_revision":1,"status":"completed","data_origin":project["data_origin"]}
+                result={"reset_id":reset_id,"project_id":project_id,"current_memory_version":version,"author_context_version":0,"author_context_snapshot_digest":zero["snapshot_digest"],"draft_revision":1,"status":"completed","data_origin":project["data_origin"]}
                 c.execute("INSERT INTO v2_reset_audits VALUES(?,?,?,?,?,?)",(reset_id,project_id,user_id,payload["reason"],utcnow(),json.dumps(result)))
                 return result
             return self._idem(c,user_id,"reset:"+project_id,key,payload,reset)
@@ -2138,6 +3219,17 @@ class V2Database:
                 c.execute("UPDATE v2_import_drafts SET committed_at=?,source_text=NULL WHERE id=?",(utcnow(),import_id))
                 return {"project":{"id":project_id,"title":title,"data_origin":"user_import","status":"active","current_memory_version":1,"memory_initialization_status":"required","current_draft":{"id":draft["id"],"chapter_number":draft["chapter_number"],"revision":1}},"import":{"chapter_count":len(chapters),"source_span_count":len(chapters),"sha256":imported["sha256"],"status":"completed"}}
             return self._idem(c,user_id,"commit_import:"+import_id,key,payload,commit,201)
+
+    def cancel_import(self, user_id: str, import_id: str, payload: dict[str, Any], key: str):
+        with self.connection() as c:
+            def cancel() -> dict[str, Any]:
+                imported=c.execute("SELECT id,committed_at FROM v2_import_drafts WHERE id=? AND user_id=?",(import_id,user_id)).fetchone()
+                if not imported: raise DomainError("import_not_found",404)
+                if imported["committed_at"]: raise DomainError("already_committed",409)
+                if payload.get("confirm") is not True: raise DomainError("confirmation_required",400)
+                c.execute("DELETE FROM v2_import_drafts WHERE id=? AND user_id=? AND committed_at IS NULL",(import_id,user_id))
+                return {"import_id":import_id,"status":"cancelled"}
+            return self._idem(c,user_id,"cancel_import:"+import_id,key,payload,cancel)
 
     # --- Stage 11J append-only source revisions ---
     def _source_change_set_view(self, row: sqlite3.Row) -> dict[str, Any]:

@@ -92,7 +92,7 @@ class Stage11LFailureObservabilityTests(unittest.TestCase):
                 if request.get("task")=="memory_initialization":
                     source=request["sources"][0]; payload={"candidates":[{"memory_type":"static_canon","subject":"基准人物","predicate":"status","value":"已建立基准","chapter_id":source["chapter_id"],"source_span_id":source["id"]}]}
                 elif request.get("task")=="memory_delta":
-                    source=request["sources"][0]; payload={"candidates":[{"memory_type":"dynamic_state","subject":"测试记录员甲","predicate":"status","value":f"已完成第{request['source_revision']}版受控书签动作","chapter_id":source["chapter_id"],"source_span_id":source["id"]}]}
+                    source=request["sources"][0]; payload={"candidates":[{"change_kind":"new_fact","affected_memory_id":None,"memory_type":"dynamic_state","subject":f"测试记录员{request['source_revision']}","predicate":"status","value":f"已完成第{request['source_revision']}版受控书签动作","invalidation_reason":None,"chapter_id":source["chapter_id"],"source_span_id":source["id"]}]}
                 else:payload={"issues":[]}
                 return ProviderResult(payload,input_tokens=10,output_tokens=5,latency_ms=1)
         root=pathlib.Path(tempfile.mkdtemp(prefix="scc-11l-v6-runner-"))/"isolated"

@@ -3,7 +3,9 @@
 import {
   FormEvent,
   KeyboardEvent as ReactKeyboardEvent,
+  MouseEvent as ReactMouseEvent,
   MouseEventHandler,
+  Ref,
   ReactNode,
   startTransition,
   useCallback,
@@ -15,9 +17,17 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { json, labelError, request, type ApiFailure } from "../api";
 import type {
+  AuthorCharacterPlan,
+  AuthorContext,
+  AuthorStoryPlan,
+  AuthorWorldPlan,
   ChangeSet,
   Chapter,
+  CharacterAliasSnapshot,
   Draft,
+  ForeshadowCandidate,
+  ForeshadowRecord,
+  ForeshadowSnapshot,
   Issue,
   MemoryCoverage,
   MemoryDelta,
@@ -26,11 +36,16 @@ import type {
   Onboarding,
   Project,
   ProjectSummary,
+  RevisionPlanCandidate,
+  RevisionTask,
+  RevisionTaskPriority,
+  RevisionTaskSnapshot,
   Run,
   SourceChangeSet,
   TutorialEvent,
   TutorialProgress,
   User,
+  WritingAnalysisRun,
 } from "../model";
 
 // The optional catch-all page remounts its client tree between route segments.
@@ -38,6 +53,8 @@ import type {
 // ordinary in-app navigation does not turn into another authentication check.
 let bootstrappedUser: User | null | undefined;
 let sessionBootstrap: Promise<User | null> | null = null;
+let rememberedGlobalNavCollapsed: boolean | undefined;
+const globalNavStorageKey = "story-continuity:global-nav-collapsed";
 const publicAuthPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm", "/verify-email"];
 const isPublicAuthPath = (value: string) => publicAuthPaths.includes(value);
 
@@ -131,6 +148,9 @@ const stage = (s: string): string =>
       retrieving_confirmed_facts: "检索已确认事实",
       comparing_evidence: "比对证据",
       assembling_reviewable_results: "整理可审阅结果",
+      binding_context: "绑定写作上下文",
+      analyzing_layers: "分层分析计划、事实与正文",
+      assembling_results: "整理分析结果",
       running_continuity: "运行增量 Continuity",
       running_memory_delta: "运行 Memory Delta",
       running: "运行中",
@@ -143,9 +163,11 @@ const stage = (s: string): string =>
       failed: "检查失败",
       cancelled: "已取消",
     }) as Record<string, string>
-  )[s] ?? "未知检查阶段";
+  )[s] ?? "未知检查状态";
 const activeRun = (run: Run | null) => Boolean(run && ["queued", "running"].includes(run.status));
 const retryableRun = (run: Run | null) => Boolean(run && ["failed", "timed_out", "cancelled"].includes(run.status) && (run.status !== "failed" || run.retryable));
+const activeAnalysis = (run: WritingAnalysisRun | null) => Boolean(run && ["queued", "running"].includes(run.status));
+const retryableAnalysis = (run: WritingAnalysisRun | null) => Boolean(run && ["failed", "timed_out", "cancelled"].includes(run.status) && (run.status !== "failed" || run.retryable));
 const durationLabel = (value?: number | null) => value == null ? "尚不可用" : value < 1000 ? `${value} ms` : `${(value / 1000).toFixed(2)} s`;
 const timestampLabel = (value?: string | null) => value ? new Date(value).toLocaleString("zh-CN", { hour12: false }) : "—";
 const statusLabel = (s?: string): string =>
@@ -235,6 +257,9 @@ function Button({
   ariaCurrent,
   ariaBusy,
   ariaLabel,
+  ariaExpanded,
+  buttonRef,
+  title,
   onClick,
   type = "button",
 }: {
@@ -245,11 +270,15 @@ function Button({
   ariaCurrent?: "page";
   ariaBusy?: boolean;
   ariaLabel?: string;
+  ariaExpanded?: boolean;
+  buttonRef?: Ref<HTMLButtonElement>;
+  title?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "button" | "submit";
 }) {
   return (
     <button
+      ref={buttonRef}
       type={type}
       className={className}
       disabled={disabled}
@@ -258,6 +287,8 @@ function Button({
       aria-current={ariaCurrent}
       aria-busy={ariaBusy || undefined}
       aria-label={ariaLabel}
+      aria-expanded={ariaExpanded}
+      title={title}
       onClick={onClick}
     >
       {children}
@@ -563,14 +594,28 @@ function TutorialGuidance({
 }
 function BrandMark() {
   return (
-    <svg className="brand-mark" viewBox="0 0 32 32" role="img" aria-label="Story Continuity 品牌标志">
-      <path className="brand-page-back" d="M7.5 5.5h13a2 2 0 0 1 2 2v17h-13a2 2 0 0 1-2-2Z" />
-      <path className="brand-page-front" d="M11.5 8.5h13v18h-11a2 2 0 0 1-2-2Z" />
-      <path className="brand-line" d="M15 13h6.5M15 17h6.5M15 21h4" />
-      <path className="brand-clue" d="m6 22 5-4 4 2 7-7" />
-      <circle className="brand-node" cx="6" cy="22" r="1.5" />
-      <circle className="brand-node" cx="22" cy="13" r="1.5" />
-    </svg>
+    <span className="brand-asset">
+      <Image className="brand-lockup" src="/assets/brand/story-continuity-lockup.svg" alt="Story Continuity" width={196} height={48} priority />
+      <Image className="brand-symbol" src="/assets/brand/story-continuity-mark.svg" alt="Story Continuity" width={48} height={48} priority />
+    </span>
+  );
+}
+
+const avatarPresets: { id: User["avatar_preset"]; label: string; description: string; src: string }[] = [
+  { id: "continuity_violet", label: "连续线", description: "沉静的紫色编辑肖像", src: "/assets/avatars/continuity-violet.webp" },
+  { id: "archive_blue", label: "档案蓝", description: "冷静的蓝色档案肖像", src: "/assets/avatars/archive-blue.webp" },
+  { id: "folio_rose", label: "书页玫", description: "温和的玫色书页肖像", src: "/assets/avatars/folio-rose.webp" },
+  { id: "signal_amber", label: "信号琥珀", description: "清晰的琥珀色创作肖像", src: "/assets/avatars/signal-amber.webp" },
+];
+
+const avatarSource = (preset: User["avatar_preset"] | undefined) =>
+  avatarPresets.find((item) => item.id === preset)?.src ?? avatarPresets[0].src;
+
+function ProfileAvatar({ user, className = "" }: { user: User; className?: string }) {
+  return (
+    <span className={`profile-avatar avatar-${user.avatar_preset || "continuity_violet"} ${className}`.trim()} aria-hidden="true">
+      <Image className="profile-avatar-image" src={avatarSource(user.avatar_preset)} alt="" width={512} height={512} sizes="(max-width: 760px) 72px, 112px" />
+    </span>
   );
 }
 function Chevron({ className = "" }: { className?: string }) {
@@ -631,10 +676,10 @@ function I({ children }: { children: string }) {
     </span>
   );
 }
-function Icon({ name }: { name: "home" | "library" | "overview" | "outline" | "users" | "world" | "memory" | "pen" | "save" | "play" | "security" | "tutorial" | "logout" }) {
+function Icon({ name }: { name: "home" | "library" | "overview" | "outline" | "users" | "world" | "memory" | "pen" | "save" | "play" | "profile" | "security" | "tutorial" | "logout" }) {
   const paths: Record<string, ReactNode> = {
     home: <><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z" /></>,
-    library: <><rect x="4" y="3" width="13" height="18" rx="2" /><path d="M8 7h5M8 11h5M8 15h4" /></>,
+    library: <><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 7h8M8 11h8M8 15h6" /></>,
     overview: <><rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" /><rect x="4" y="14" width="6" height="6" rx="1" /><rect x="14" y="14" width="6" height="6" rx="1" /></>,
     outline: <><path d="M8 6h12M8 12h12M8 18h12" /><path d="M4 6h.01M4 12h.01M4 18h.01" /></>,
     users: <><circle cx="9" cy="8" r="3" /><path d="M3 20c.5-3 2.5-5 6-5s5.5 2 6 5M17 11c2.2 0 4 1.7 4 4M16.5 5.2a3 3 0 0 1 0 5.6" /></>,
@@ -643,6 +688,7 @@ function Icon({ name }: { name: "home" | "library" | "overview" | "outline" | "u
     pen: <><path d="m4 20 4.2-1 10-10a2.8 2.8 0 0 0-4-4l-10 10Z" /><path d="m13 6 4 4M4 20l1-4" /></>,
     save: <><path d="M5 3h12l3 3v15H4V4a1 1 0 0 1 1-1Z" /><path d="M8 3v6h8V3M8 21v-7h8v7" /></>,
     play: <><path d="m8 5 11 7-11 7Z" /></>,
+    profile: <><circle cx="12" cy="8" r="4" /><path d="M4 21c.7-4.4 3.3-7 8-7s7.3 2.6 8 7" /></>,
     security: <><path d="M12 3 5 6v5c0 4.7 2.8 8.1 7 10 4.2-1.9 7-5.3 7-10V6Z" /><path d="m9 12 2 2 4-4" /></>,
     tutorial: <><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5ZM20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5Z" /></>,
     logout: <><path d="M10 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5M14 8l4 4-4 4M8 12h10" /></>,
@@ -657,7 +703,9 @@ export function Workbench() {
     [ready, setReady] = useState(() => bootstrappedUser !== undefined),
     [home, setHome] = useState<Home | null>(null),
     [onboarding, setOnboarding] = useState<Onboarding | null>(null),
-    [projects, setProjects] = useState<ProjectSummary[]>([]);
+    [projects, setProjects] = useState<ProjectSummary[]>([]),
+    [authorProjects, setAuthorProjects] = useState<ProjectSummary[] | null>(null);
+  const [globalNavCollapsed, setGlobalNavCollapsed] = useState(() => rememberedGlobalNavCollapsed ?? false);
   const [project, setProject] = useState<Project | null>(null),
     [chapters, setChapters] = useState<Chapter[]>([]),
     [memories, setMemories] = useState<Memory[]>([]),
@@ -665,9 +713,14 @@ export function Workbench() {
     [saved, setSaved] = useState<Draft | null>(null),
     [run, setRun] = useState<Run | null>(null),
     [pairedRun, setPairedRun] = useState<Run | null>(null),
+    [contextBrief, setContextBrief] = useState<WritingAnalysisRun | null>(null),
+    [planAlignment, setPlanAlignment] = useState<WritingAnalysisRun | null>(null),
+    [analysisBusy, setAnalysisBusy] = useState<"context_brief" | "plan_alignment" | "">(""),
     [initialization, setInitialization] = useState<MemoryInitialization | null>(null),
     [memoryDelta, setMemoryDelta] = useState<MemoryDelta | null>(null),
     [coverage, setCoverage] = useState<MemoryCoverage | null>(null);
+  const [authorContext, setAuthorContext] = useState<AuthorContext | null>(null),
+    [authorBusy, setAuthorBusy] = useState("");
   const [outline, setOutline] = useState<{
       chapter_nodes?: {
         id: string;
@@ -701,6 +754,8 @@ export function Workbench() {
     ),
     [changeSet, setChangeSet] = useState<ChangeSet | null>(null);
   const [switchTo, setSwitchTo] = useState<string | null>(null),
+    [switchSaving, setSwitchSaving] = useState(false),
+    [switchSaveFailed, setSwitchSaveFailed] = useState(false),
     [resetOpen, setResetOpen] = useState(false),
     [metaOpen, setMetaOpen] = useState(false),
     [archiveOpen, setArchiveOpen] = useState(false),
@@ -718,6 +773,7 @@ export function Workbench() {
   );
   const epoch = useRef(0),
     activeProjectRequest = useRef<AbortController | null>(null),
+    switchSavePending = useRef(false),
     trigger = useRef<HTMLElement | null>(null),
     sourceTrigger = useRef<HTMLButtonElement | null>(null),
     userMenuTrigger = useRef<HTMLButtonElement | null>(null),
@@ -728,6 +784,18 @@ export function Workbench() {
       ? parts[1]
       : null;
   const tab = parts[2] ?? "overview";
+  useEffect(() => {
+    if (rememberedGlobalNavCollapsed !== undefined) return;
+    const timer = window.setTimeout(() => {
+      try {
+        rememberedGlobalNavCollapsed = window.localStorage.getItem(globalNavStorageKey) === "true";
+        setGlobalNavCollapsed(rememberedGlobalNavCollapsed);
+      } catch {
+        rememberedGlobalNavCollapsed = false;
+      }
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
   useEffect(() => {
     const syncTutorialGuidanceRequest = () =>
       setTutorialGuidanceRequest(tutorialGuidanceRequestSequence);
@@ -773,6 +841,8 @@ export function Workbench() {
     setInitialization(null);
     setMemoryDelta(null);
     setCoverage(null);
+    setAuthorContext(null);
+    setAuthorBusy("");
     setOutline(null);
     setCharacters([]);
     setWorld([]);
@@ -865,9 +935,26 @@ export function Workbench() {
     setUser(next);
   }, []);
   const go = (href: string) => {
-    if (dirty && href !== pathname) setSwitchTo(href);
+    setUserMenuOpen(false);
+    if (dirty && href !== pathname) {
+      setSwitchSaveFailed(false);
+      setSwitchTo(href);
+    }
     else router.push(href);
   };
+  const toggleGlobalNav = useCallback(() => {
+    setUserMenuOpen(false);
+    setGlobalNavCollapsed((current) => {
+      const next = !current;
+      rememberedGlobalNavCollapsed = next;
+      try {
+        window.localStorage.setItem(globalNavStorageKey, String(next));
+      } catch {
+        // Layout remains usable when browser storage is unavailable.
+      }
+      return next;
+    });
+  }, []);
   const loadProjects = useCallback(async (criteria?: {
     q: string;
     filter: string;
@@ -884,6 +971,18 @@ export function Workbench() {
       fail(e);
     }
   }, [q, filter, onlyIssues, sort, fail]);
+  const loadAuthorProjects = useCallback(async () => {
+    setAuthorProjects(null);
+    try {
+      const [current, archived] = await Promise.all([
+        request<{ projects: ProjectSummary[] }>("/projects?q=&sort=updated_desc"),
+        request<{ projects: ProjectSummary[] }>("/projects?q=&status=archived&sort=updated_desc"),
+      ]);
+      setAuthorProjects([...current.projects, ...archived.projects].sort((a, b) => b.updated_at.localeCompare(a.updated_at)));
+    } catch (cause) {
+      fail(cause);
+    }
+  }, [fail]);
   const loadHome = useCallback(async () => {
     try {
       const [nextHome, nextOnboarding] = await Promise.all([
@@ -916,7 +1015,7 @@ export function Workbench() {
               { signal: controller.signal },
             )
           : null;
-        const [c, m, d, o, chars, w, initialized, memoryCoverage, delta, projectOnboarding] = await Promise.all([
+        const [c, m, d, o, chars, w, author, initialized, memoryCoverage, delta, projectOnboarding, briefLatest, alignmentLatest] = await Promise.all([
           request<{ chapters: Chapter[] }>(
             `/projects/${id}/chapters?include=excerpt`,
             { signal: controller.signal },
@@ -936,6 +1035,9 @@ export function Workbench() {
           request<{ entries: [] }>(`/projects/${id}/world`, {
             signal: controller.signal,
           }),
+          request<AuthorContext>(`/projects/${id}/author-intent?include_archived=true`, {
+            signal: controller.signal,
+          }),
           p.data_origin === "user_import"
             ? request<MemoryInitialization>(`/projects/${id}/memory/initialization`, {
                 signal: controller.signal,
@@ -952,6 +1054,8 @@ export function Workbench() {
           p.is_tutorial
             ? request<Onboarding>("/onboarding", { signal: controller.signal })
             : Promise.resolve(null),
+          request<{ run: WritingAnalysisRun | null }>(`/projects/${id}/analyses?analysis_type=context_brief`, { signal: controller.signal }),
+          request<{ run: WritingAnalysisRun | null }>(`/projects/${id}/analyses?analysis_type=plan_alignment`, { signal: controller.signal }),
         ]);
         if (n !== epoch.current) return;
         setProject(p);
@@ -963,9 +1067,12 @@ export function Workbench() {
         setOutline(o as never);
         setCharacters(chars.characters as never);
         setWorld(w.entries as never);
+        setAuthorContext(author);
         setInitialization(initialized);
         setMemoryDelta(delta);
         setCoverage(memoryCoverage);
+        setContextBrief(briefLatest.run);
+        setPlanAlignment(alignmentLatest.run);
         let primaryRun = latest;
         let siblingRun: Run | null = null;
         if (
@@ -995,6 +1102,60 @@ export function Workbench() {
       }
     },
     [applyOnboarding, fail],
+  );
+  const refreshAuthorContext = useCallback(
+    async (id: string, requestEpoch: number, signal?: AbortSignal) => {
+      const next = await request<AuthorContext>(
+        `/projects/${id}/author-intent?include_archived=true`,
+        { signal },
+      );
+      if (requestEpoch !== epoch.current || projectId !== id) return null;
+      setAuthorContext(next);
+      setProject((current) =>
+        current?.id === id
+          ? { ...current, author_context_version: next.author_context_version }
+          : current,
+      );
+      return next;
+    },
+    [projectId],
+  );
+  const mutateAuthorContext = useCallback(
+    async (
+      endpoint: string,
+      method: "POST" | "PATCH",
+      payload: Record<string, unknown>,
+      busyLabel: string,
+    ) => {
+      if (!projectId) throw new Error("author_context_project_missing");
+      const id = projectId;
+      const requestEpoch = epoch.current;
+      const signal = activeProjectRequest.current?.signal;
+      setAuthorBusy(busyLabel);
+      try {
+        await json<unknown>(
+          `/projects/${id}/author-intent/${endpoint}`,
+          method,
+          payload,
+          signal,
+        );
+        return await refreshAuthorContext(id, requestEpoch, signal);
+      } catch (cause) {
+        if ((cause as ApiFailure).code === "author_context_version_conflict") {
+          try {
+            await refreshAuthorContext(id, requestEpoch, signal);
+          } catch {
+            // Keep the original conflict as the author-facing failure.
+          }
+        } else if ((cause as ApiFailure).code === "authentication_required") {
+          fail(cause);
+        }
+        throw cause;
+      } finally {
+        if (requestEpoch === epoch.current && projectId === id) setAuthorBusy("");
+      }
+    },
+    [fail, projectId, refreshAuthorContext],
   );
   useEffect(() => {
     if (bootstrappedUser !== undefined) return;
@@ -1036,6 +1197,7 @@ export function Workbench() {
     else {
       if (pathname === "/") void Promise.resolve().then(() => loadHome());
       if (pathname.startsWith("/projects")) void Promise.resolve().then(() => loadProjects());
+      if (pathname === "/account/profile") void Promise.resolve().then(() => loadAuthorProjects());
     }
   }, [
     ready,
@@ -1044,6 +1206,7 @@ export function Workbench() {
     projectId,
     loadProject,
     loadProjects,
+    loadAuthorProjects,
     loadHome,
     router,
     fail,
@@ -1084,6 +1247,16 @@ export function Workbench() {
     );
     return () => window.clearInterval(timer);
   }, [run, pairedRun, projectId, fail]);
+  useEffect(() => {
+    if (!projectId || (!activeAnalysis(contextBrief) && !activeAnalysis(planAlignment))) return;
+    const timer=window.setInterval(() => {
+      const rows=[contextBrief,planAlignment].filter((item): item is WritingAnalysisRun => Boolean(item && activeAnalysis(item)));
+      Promise.all(rows.map((item) => request<WritingAnalysisRun>(`/projects/${projectId}/analyses/${item.run_id}`)))
+        .then((next) => next.forEach((item) => item.analysis_type === "context_brief" ? setContextBrief(item) : setPlanAlignment(item)))
+        .catch(fail);
+    },1000);
+    return () => window.clearInterval(timer);
+  },[contextBrief,planAlignment,projectId,fail]);
   const submitAuth = async (
     e: FormEvent<HTMLFormElement>,
     kind: "login" | "register",
@@ -1183,8 +1356,10 @@ export function Workbench() {
       setBusy("");
     }
   };
-  const save = async () => {
-    if (!projectId || !draft || readOnly) return;
+  const save = async (): Promise<boolean> => {
+    if (!projectId || !draft || readOnly) return false;
+    setError(null);
+    setNotice("");
     setBusy(controlled ? "保存受控修订" : "保存草稿");
     try {
       const body: Record<string, unknown> = {
@@ -1210,6 +1385,8 @@ export function Workbench() {
       };
       setDraft(next);
       setSaved(next);
+      setContextBrief((current)=>current&&current.draft_revision!==result.revision?{...current,is_stale:true,lineage_status:"bound_state_changed"}:current);
+      setPlanAlignment((current)=>current&&current.draft_revision!==result.revision?{...current,is_stale:true,lineage_status:"bound_state_changed"}:current);
       if (controlled && run) {
         await json(
           `/projects/${projectId}/issues/${controlled.id}/decision`,
@@ -1234,8 +1411,10 @@ export function Workbench() {
         );
         setNotice(`已按受控谱系保存 revision ${result.revision}。`);
       } else setNotice(`草稿已保存为 revision ${result.revision}。`);
+      return true;
     } catch (e) {
       fail(e);
+      return false;
     } finally {
       setBusy("");
     }
@@ -1266,6 +1445,36 @@ export function Workbench() {
     } finally {
       setBusy("");
     }
+  };
+  const startAnalysis = async (analysisType: "context_brief" | "plan_alignment") => {
+    if (!projectId || !draft || dirty || readOnly) return;
+    setAnalysisBusy(analysisType);
+    try {
+      const created=await json<WritingAnalysisRun>(`/projects/${projectId}/analyses`,"POST",{analysis_type:analysisType,draft_id:draft.id,draft_revision:draft.revision,client_request_id:crypto.randomUUID()});
+      const next={...created,is_stale:false,lineage_status:"current",error_code:null} as WritingAnalysisRun;
+      if (analysisType==="context_brief") setContextBrief(next); else setPlanAlignment(next);
+      setNotice(analysisType==="context_brief" ? "章节简报已排队；完成后会在草稿上方显示。" : "计划偏离检查已排队；完成后会按计划逐项显示。" );
+    } catch (cause) { fail(cause); } finally { setAnalysisBusy(""); }
+  };
+  const cancelAnalysis = async (target: WritingAnalysisRun) => {
+    if (!projectId || readOnly || !activeAnalysis(target) || !["context_brief","plan_alignment"].includes(target.analysis_type)) return;
+    const analysisType=target.analysis_type as "context_brief"|"plan_alignment";
+    setAnalysisBusy(analysisType);
+    try {
+      await json(`/projects/${projectId}/analyses/${target.run_id}/cancel`,"POST",{client_request_id:crypto.randomUUID()});
+      const next=await request<WritingAnalysisRun>(`/projects/${projectId}/analyses/${target.run_id}`);
+      if (target.analysis_type==="context_brief") setContextBrief(next); else setPlanAlignment(next);
+    } catch (cause) { fail(cause); } finally { setAnalysisBusy(""); }
+  };
+  const retryAnalysis = async (target: WritingAnalysisRun) => {
+    if (!projectId || readOnly || !retryableAnalysis(target) || !["context_brief","plan_alignment"].includes(target.analysis_type)) return;
+    const analysisType=target.analysis_type as "context_brief"|"plan_alignment";
+    setAnalysisBusy(analysisType);
+    try {
+      const retried=await json<{run:WritingAnalysisRun}>(`/projects/${projectId}/analyses/${target.run_id}/retry`,"POST",{client_request_id:crypto.randomUUID()});
+      const next=await request<WritingAnalysisRun>(`/projects/${projectId}/analyses/${retried.run.run_id}`);
+      if (target.analysis_type==="context_brief") setContextBrief(next); else setPlanAlignment(next);
+    } catch (cause) { fail(cause); } finally { setAnalysisBusy(""); }
   };
   const cancelRun = async () => {
     if (!projectId || !run || !activeRun(run) || readOnly) return;
@@ -1537,8 +1746,7 @@ export function Workbench() {
     setBusy("正在运行增量检查与 Memory Delta");
     try {
       const result = await json<{ delta: MemoryDelta }>(`/projects/${projectId}/incremental-reviews`, "POST", { source_revision: project.source_revision });
-      const latest = await request<MemoryDelta>(`/projects/${projectId}/memory/delta`);
-      setMemoryDelta(latest); setCoverage(latest.coverage ?? result.delta.coverage ?? null);
+      let latest = await request<MemoryDelta>(`/projects/${projectId}/memory/delta`);
       if (latest.continuity_run_id && latest.memory_delta_run_id) {
         const [continuity, deltaRun] = await Promise.all([
           request<Run>(`/projects/${projectId}/checks/${latest.continuity_run_id}?include=issues,evidence,metrics`),
@@ -1546,7 +1754,10 @@ export function Workbench() {
         ]);
         setRun(continuity);
         setPairedRun(deltaRun);
+        if (!activeRun(continuity) && !activeRun(deltaRun) && latest.status === "processing")
+          latest = await request<MemoryDelta>(`/projects/${projectId}/memory/delta`);
       }
+      setMemoryDelta(latest); setCoverage(latest.coverage ?? result.delta.coverage ?? null);
       setNotice(latest.status === "in_review" ? "增量双 Run 已完成；候选尚未成为 canon。" : "增量 Continuity 与 Memory Delta 已排队；只在双 Run 完成后展示结果。");
     } catch (cause) { fail(cause); } finally { setBusy(""); }
   };
@@ -1563,7 +1774,7 @@ export function Workbench() {
       }
       const committed = await json<{ delta: MemoryDelta; memory_version:number }>(`/projects/${projectId}/memory/deltas/${memoryDelta.id}/commit`, "POST", { confirm:true });
       setMemoryDelta(committed.delta); setCoverage(committed.delta.coverage ?? null); setMemories((await request<{records:Memory[]}>(`/projects/${projectId}/memory`)).records); setProject((current) => current ? {...current,current_memory_version:committed.memory_version} : current);
-      setNotice(committed.memory_version > (memoryDelta.base_memory_version ?? 0) ? `Memory V${committed.memory_version} 已建立。` : "增量核心候选全部拒绝；已覆盖来源但 Memory 版本未变。");
+      setNotice(committed.memory_version > (memoryDelta.base_memory_version ?? 0) ? `Memory V${committed.memory_version} 与审计 ChangeSet 已原子建立。` : memoryDelta.candidates.length ? "事实变化均未被接受；来源覆盖已审计，Memory 版本未变。" : "本次没有事实变化候选；来源覆盖已审计，Memory 版本未变。");
     } catch (cause) { fail(cause); } finally { setBusy(""); }
   };
   const reset = async () => {
@@ -1650,6 +1861,28 @@ export function Workbench() {
       setBusy("");
     }
   };
+  const discardImport = async (leaveImport: boolean): Promise<boolean> => {
+    const activePreview = preview;
+    if (!activePreview) {
+      setPreview(null);
+      if (leaveImport) router.push("/projects");
+      return true;
+    }
+    setBusy("正在取消导入");
+    try {
+      await json(`/imports/${activePreview.import_id}/cancel`, "POST", {
+        confirm: true,
+      });
+      setPreview(null);
+      if (leaveImport) router.push("/projects");
+      return true;
+    } catch (cause) {
+      fail(cause);
+      return false;
+    } finally {
+      setBusy("");
+    }
+  };
   const updateProject = async (payload: Record<string, unknown>) => {
     if (!projectId || !project) return;
     if (typeof project.metadata_revision !== "number") {
@@ -1708,6 +1941,8 @@ export function Workbench() {
         }}
       />
     );
+  else if (pathname === "/account/profile")
+    body = <AccountProfile user={user} projects={authorProjects} updateUser={updateBootstrappedUser} go={go} />;
   else if (pathname === "/account/security")
     body = <AccountSecurity user={user} updateUser={updateBootstrappedUser} go={go} />;
   else if (pathname === "/onboarding/complete")
@@ -1730,7 +1965,8 @@ export function Workbench() {
           error={error}
           preview={preview}
           previewFile={previewFile}
-          cancel={() => setPreview(null)}
+          cancel={() => discardImport(true)}
+          restart={() => discardImport(false)}
           commit={importCommit}
           disabled={small}
         />
@@ -1777,6 +2013,8 @@ export function Workbench() {
         outline={outline}
         characters={characters}
         world={world}
+        authorContext={authorContext}
+        authorBusy={authorBusy}
         memories={memories}
         initialization={initialization}
         memoryDelta={memoryDelta}
@@ -1785,12 +2023,16 @@ export function Workbench() {
         saved={saved}
         run={run}
         pairedRun={pairedRun}
+        contextBrief={contextBrief}
+        planAlignment={planAlignment}
+        analysisBusy={analysisBusy}
         locallyResolvedIssueIds={locallyResolvedIssueIds}
         selectedIssueId={selected?.id ?? null}
         tutorialStep={activeTutorialStep}
         requestTutorialGuidance={emitTutorialGuidanceRequest}
         readOnly={readOnly}
         busy={busy}
+        error={error}
         controlled={controlled}
         changeSet={changeSet}
         setDraft={setDraft}
@@ -1798,6 +2040,9 @@ export function Workbench() {
         check={check}
         cancelRun={cancelRun}
         retryRun={retryRun}
+        startAnalysis={startAnalysis}
+        cancelAnalysis={cancelAnalysis}
+        retryAnalysis={retryAnalysis}
         select={async (i, el) => {
           trigger.current = el;
           setSelected(i);
@@ -1821,6 +2066,7 @@ export function Workbench() {
         archive={() => setArchiveOpen(true)}
         finishTutorial={finishTutorial}
         advanceTutorial={(event) => recordTutorialEvent(project.id, event)}
+        mutateAuthorContext={mutateAuthorContext}
         openMemorySource={async (memory, element) => {
           if (!memory.source) return;
           sourceTrigger.current = element;
@@ -1850,37 +2096,48 @@ export function Workbench() {
       <div className="boot">{busy || "正在读取当前作品…"}</div>
     );
   return (
-    <div className={`workbench${user ? "" : " auth-shell"}`}>
+    <div className={`workbench${user ? "" : " auth-shell"}${user && globalNavCollapsed ? " global-nav-collapsed" : ""}`}>
       <a className="skip" href="#main">
         跳到主要内容
       </a>
       {user && (
-        <aside className="global-nav" aria-label="全局工作台">
-          <div className="brand">
-            <BrandMark />
-            <span aria-label="Story Continuity">
-              Story
-              <br />
-              Continuity
-            </span>
+        <aside className="global-nav" aria-label="全局工作台" data-collapsed={globalNavCollapsed ? "true" : "false"}>
+          <div className="global-nav-head">
+            <div className="brand">
+              <BrandMark />
+            </div>
+            <button
+              type="button"
+              className="global-nav-toggle"
+              aria-label={globalNavCollapsed ? "展开全局侧栏" : "收起全局侧栏"}
+              title={globalNavCollapsed ? "展开全局侧栏" : "收起全局侧栏"}
+              aria-expanded={!globalNavCollapsed}
+              onClick={toggleGlobalNav}
+            >
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d={globalNavCollapsed ? "m7 4 6 6-6 6" : "m13 4-6 6 6 6"} /></svg>
+            </button>
           </div>
           <p className="nav-kicker">AUTHOR WORKBENCH</p>
           <nav aria-label="全局导航">
             <Button
               className={pathname === "/" ? "nav current" : "nav"}
+              ariaLabel="首页"
+              title={globalNavCollapsed ? "首页" : undefined}
               onClick={() => go("/")}
             >
               <Icon name="home" />
-              首页
+              <span className="nav-label">首页</span>
             </Button>
             <Button
               className={
                 pathname.startsWith("/projects") ? "nav current" : "nav"
               }
+              ariaLabel="作品管理"
+              title={globalNavCollapsed ? "作品管理" : undefined}
               onClick={() => go("/projects")}
             >
               <Icon name="library" />
-              作品管理
+              <span className="nav-label">作品管理</span>
             </Button>
           </nav>
           <div className="account">
@@ -1893,7 +2150,7 @@ export function Workbench() {
               aria-expanded={userMenuOpen}
               onClick={() => setUserMenuOpen((open) => !open)}
             >
-              <span className="account-avatar" aria-hidden="true">{user.display_name.slice(0, 1)}</span>
+              <ProfileAvatar user={user} className="account-avatar" />
               <span className="account-copy">
                 <span className="account-name">{user.display_name}</span>
                 <span className="account-helper">{user.account_type === "visitor" ? "访客空间" : "个人账号"}</span>
@@ -1903,6 +2160,9 @@ export function Workbench() {
             {userMenuOpen && (
               <div className="user-menu" role="menu" aria-label="用户菜单">
                 {user.account_type === "visitor" && <p className="visitor-expiry">访客空间有效至 <time>{timestampLabel(user.visitor_expires_at)}</time></p>}
+                {user.account_type !== "visitor" && (
+                  <button type="button" role="menuitem" onClick={() => go("/account/profile")}><Icon name="profile" />个人信息</button>
+                )}
                 {user.account_type !== "visitor" && (
                   <button type="button" role="menuitem" onClick={() => go("/account/security")}><Icon name="security" />账号安全</button>
                 )}
@@ -2044,17 +2304,37 @@ export function Workbench() {
         />
       )}
       {switchTo && (
-        <Dialog title="未保存草稿" close={() => setSwitchTo(null)}>
+        <Dialog
+          title="未保存草稿"
+          closeDisabled={switchSaving}
+          close={() => {
+            if (!switchSavePending.current) setSwitchTo(null);
+          }}
+        >
           <p>
             切换作品会清理旧作品的草稿、Run、Issue、Evidence 和 Memory Review
             状态。
           </p>
+          {switchSaveFailed && Boolean(error) && (
+            <p className="inline-error" role="alert">
+              保存失败，尚未切换。{labelError(error)} 当前标题和正文仍保留。
+            </p>
+          )}
           <div className="actions">
             <Button
               className="primary"
-              disabled={Boolean(busy)}
+              disabled={Boolean(busy) || switchSaving}
               onClick={async () => {
-                await save();
+                switchSavePending.current = true;
+                setSwitchSaving(true);
+                setSwitchSaveFailed(false);
+                const savedBeforeSwitch = await save();
+                switchSavePending.current = false;
+                setSwitchSaving(false);
+                if (!savedBeforeSwitch) {
+                  setSwitchSaveFailed(true);
+                  return;
+                }
                 const t = switchTo;
                 setSwitchTo(null);
                 router.push(t);
@@ -2063,7 +2343,9 @@ export function Workbench() {
               保存并切换
             </Button>
             <Button
+              disabled={switchSaving}
               onClick={() => {
+                if (switchSavePending.current) return;
                 setDraft(saved);
                 router.push(switchTo);
                 setSwitchTo(null);
@@ -2071,7 +2353,9 @@ export function Workbench() {
             >
               放弃修改
             </Button>
-            <Button onClick={() => setSwitchTo(null)}>取消</Button>
+            <Button disabled={switchSaving} onClick={() => {
+              if (!switchSavePending.current) setSwitchTo(null);
+            }}>取消</Button>
           </div>
         </Dialog>
       )}
@@ -2206,12 +2490,7 @@ function Auth({
   return (
     <section className="auth-layout">
       <section className="auth">
-        <div className="auth-brand" aria-label="Story Continuity">
-          <BrandMark />
-          <span aria-label="Story Continuity">
-            Story Continuity
-          </span>
-        </div>
+        <div className="auth-brand"><BrandMark /></div>
         <div className="auth-heading">
           <h1>{register ? "创建账号" : "登录"}</h1>
           <p className="auth-lede">{register ? "创建本地账号，开始管理你的作品。" : "继续你的作品与连续性工作。"}</p>
@@ -2413,6 +2692,169 @@ function VerifyEmailPage({ go, refreshUser }: { go: (href: string) => void; refr
       <div className="auth-heading"><h1>验证恢复邮箱</h1><p className={failed ? "inline-error" : "inline-success"} role={failed ? "alert" : "status"} aria-live="polite">{message}</p></div>
       <div className="auth-actions"><Button className="primary" onClick={() => go("/")}>返回工作台</Button></div>
     </section></section>
+  );
+}
+
+function formatWritingCount(value: number) {
+  return new Intl.NumberFormat("zh-CN").format(value);
+}
+
+function AvatarPickerDialog({
+  user,
+  selected,
+  busy,
+  select,
+  close,
+}: {
+  user: User;
+  selected: User["avatar_preset"];
+  busy: boolean;
+  select: (preset: User["avatar_preset"]) => void;
+  close: () => void;
+}) {
+  const { modalRef, firstRef, containFocus } = useModalFocus<HTMLInputElement>(close);
+  return (
+    <div className="modal-layer avatar-picker-layer" role="presentation">
+      <section ref={modalRef} className="dialog avatar-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="avatar-picker-title" onKeyDown={containFocus}>
+        <Button className="close" ariaLabel="关闭头像选择" onClick={close}>×</Button>
+        <p className="eyebrow">资料设置</p>
+        <h2 id="avatar-picker-title">更换头像</h2>
+        <p>选择随应用保存的本地编辑头像。</p>
+        <fieldset className="avatar-picker compact-avatar-picker">
+          <legend className="sr-only">头像预设</legend>
+          <div>
+            {avatarPresets.map((preset, index) => (
+              <label key={preset.id} className={selected === preset.id ? "selected" : ""}>
+                <input ref={index === 0 ? firstRef : undefined} className="sr-only" type="radio" name="avatar_preset" value={preset.id} checked={selected === preset.id} onChange={() => select(preset.id)} disabled={busy} />
+                <ProfileAvatar user={{ ...user, avatar_preset: preset.id }} />
+                <span><strong>{preset.label}</strong><small>{preset.description}</small></span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <div className="actions"><Button className="primary" onClick={close}>完成</Button></div>
+      </section>
+    </div>
+  );
+}
+
+function AccountProfile({ user, projects, updateUser, go }: { user: User; projects: ProjectSummary[] | null; updateUser: (user: User) => void; go: (href: string) => void }) {
+  const [displayName, setDisplayName] = useState(user.display_name);
+  const [avatarPreset, setAvatarPreset] = useState<User["avatar_preset"]>(user.avatar_preset || "continuity_violet");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [avatarOpen, setAvatarOpen] = useState(false);
+  const avatarTrigger = useRef<HTMLButtonElement>(null);
+  const previewUser = { ...user, display_name: displayName, avatar_preset: avatarPreset };
+  const changed = displayName.trim() !== user.display_name || avatarPreset !== user.avatar_preset;
+  const projectRows = projects ?? [];
+  const totalChapters = projectRows.reduce((total, project) => total + (project.chapter_count ?? 0), 0);
+  const totalWords = projectRows.reduce((total, project) => total + (project.word_count ?? 0), 0);
+  const activeProjects = projectRows.filter((project) => project.status === "active").length;
+  const completedProjects = projectRows.filter((project) => project.status === "completed").length;
+  const continueProject = projectRows.find((project) => project.status === "active" && project.current_draft) ?? projectRows.find((project) => project.status !== "archived");
+  const closeAvatarPicker = () => {
+    setAvatarOpen(false);
+    setTimeout(() => avatarTrigger.current?.focus(), 0);
+  };
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setBusy(true); setMessage(""); setError("");
+    try {
+      const data = await json<{ user: User }>("/auth/profile", "PATCH", {
+        base_profile_revision: user.profile_revision,
+        display_name: displayName,
+        avatar_preset: avatarPreset,
+      });
+      updateUser(data.user);
+      setDisplayName(data.user.display_name);
+      setAvatarPreset(data.user.avatar_preset);
+      setAvatarOpen(false);
+      setMessage("个人信息已保存。");
+    } catch (cause) {
+      if ((cause as ApiFailure).code === "profile_revision_conflict") {
+        try {
+          const session = await request<{ user: User }>("/auth/session");
+          updateUser(session.user);
+        } catch {
+          // Preserve the first write failure and the author's unsubmitted choices.
+        }
+      }
+      setError(labelError(cause));
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <section className="content account-profile-page">
+      <header className="author-center-header">
+        <div className="author-center-identity">
+          <button ref={avatarTrigger} type="button" className="avatar-edit-trigger" aria-label="更换头像" title="更换头像" aria-haspopup="dialog" aria-expanded={avatarOpen} onClick={() => setAvatarOpen(true)}>
+            <ProfileAvatar user={previewUser} className="profile-hero-avatar" />
+            <span>更换</span>
+          </button>
+          <div>
+            <p className="eyebrow">作者中心</p>
+            <h1>{user.display_name}</h1>
+            <p><span>@{user.account_name}</span><span>个人账号</span></p>
+          </div>
+        </div>
+        <Button onClick={() => go("/")}>返回工作台</Button>
+      </header>
+      <form className="author-center-form" onSubmit={(event) => void submit(event)}>
+        <div className="author-center-main">
+          <section className="author-summary" aria-labelledby="author-summary-title">
+            <header className="section-heading"><div><p className="eyebrow">真实数据</p><h2 id="author-summary-title">创作概况</h2></div>{continueProject && <Button className="quiet" onClick={() => go(`/projects/${continueProject.id}/${continueProject.current_draft && continueProject.status !== "archived" ? "workspace" : "overview"}`)}>继续创作</Button>}</header>
+            <dl className="author-stat-list">
+              <div><dt>真实作品</dt><dd>{projects === null ? "—" : formatWritingCount(projectRows.length)}</dd></div>
+              <div><dt>已写章节</dt><dd>{projects === null ? "—" : formatWritingCount(totalChapters)}</dd></div>
+              <div><dt>正文与草稿字数</dt><dd>{projects === null ? "—" : formatWritingCount(totalWords)}</dd></div>
+              <div><dt>创作状态</dt><dd>{projects === null ? "读取中" : `${activeProjects} 部进行中 · ${completedProjects} 部完成`}</dd></div>
+            </dl>
+            <p className="author-stat-note">字数按真实章节正文与当前草稿去除空白后统计；教学作品不计入。</p>
+          </section>
+          <section className="author-works" aria-labelledby="author-works-title">
+            <header className="section-heading"><div><p className="eyebrow">创作空间</p><h2 id="author-works-title">我的作品</h2></div><Button className="quiet" onClick={() => go("/projects")}>全部作品</Button></header>
+            {projects === null ? (
+              <p className="author-works-state" role="status">正在读取真实作品…</p>
+            ) : projectRows.length ? (
+              <ul>
+                {projectRows.slice(0, 5).map((item) => (
+                  <li key={item.id}>
+                    <button type="button" onClick={() => go(`/projects/${item.id}/${item.current_draft && item.status !== "archived" ? "workspace" : "overview"}`)}>
+                      <span className="author-work-copy"><strong>{item.title}</strong><small>{item.genre || "未填写类型"} · {item.chapter_count ?? 0} 章 · {formatWritingCount(item.word_count ?? 0)} 字</small></span>
+                      <span className={`status-pill ${item.status}`}>{statusLabel(item.status)}</span>
+                      <span className="author-work-action">{item.status === "archived" ? "查看" : "继续"} →</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="author-works-state empty"><strong>还没有真实作品</strong><p>从空白作品开始，或导入已有 TXT / Markdown。</p><div className="actions"><Button onClick={() => go("/projects/import")}>导入作品</Button><Button className="primary" onClick={() => go("/projects/new")}>新建作品</Button></div></div>
+            )}
+          </section>
+        </div>
+        <aside className="profile-settings" aria-labelledby="profile-settings-title">
+          <header><p className="eyebrow">次级设置</p><h2 id="profile-settings-title">资料设置</h2><p>调整工作台展示资料，不改变登录凭据。</p></header>
+          <div className="profile-name-field">
+            <label htmlFor="profile-display-name">显示名称</label>
+            <input id="profile-display-name" value={displayName} onChange={(event) => setDisplayName(event.target.value)} required maxLength={60} autoComplete="name" aria-describedby="profile-display-name-help" disabled={busy} />
+            <small id="profile-display-name-help">仅用于工作台展示。</small>
+          </div>
+          <dl className="profile-account-fact">
+            <div><dt>登录账号</dt><dd>{user.account_name}</dd></div>
+            <div><dt>账户类型</dt><dd>个人账号</dd></div>
+          </dl>
+          <div className="profile-feedback" aria-live="polite">
+            {message && <p className="inline-success" role="status">{message}</p>}
+            {error && <p className="inline-error" role="alert">{error}</p>}
+          </div>
+          <div className="profile-actions"><Button className="primary" type="submit" disabled={busy || !changed} ariaBusy={busy}>{busy ? "正在保存" : "保存资料"}</Button><Button className="quiet" onClick={() => go("/account/security")}>账号与安全</Button></div>
+        </aside>
+      </form>
+      {avatarOpen && <AvatarPickerDialog user={previewUser} selected={avatarPreset} busy={busy} select={setAvatarPreset} close={closeAvatarPicker} />}
+    </section>
   );
 }
 
@@ -2845,6 +3287,7 @@ function Import({
   preview,
   previewFile,
   cancel,
+  restart,
   commit,
   disabled,
 }: {
@@ -2852,7 +3295,8 @@ function Import({
   error: unknown;
   preview: ImportPreview | null;
   previewFile: (file: File) => Promise<boolean>;
-  cancel: () => void;
+  cancel: () => Promise<boolean>;
+  restart: () => Promise<boolean>;
   commit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
   disabled: boolean;
 }) {
@@ -2867,8 +3311,15 @@ function Import({
     setSelectedFile(file);
     setLocalError("");
   };
-  const resetToFile = () => {
-    cancel();
+  const resetToFile = async () => {
+    if (!(await restart())) return;
+    setStep("file");
+    setSelectedFile(null);
+    setLocalError("");
+    if (fileInput.current) fileInput.current.value = "";
+  };
+  const cancelAndExit = async () => {
+    if (!(await cancel())) return;
     setStep("file");
     setSelectedFile(null);
     setLocalError("");
@@ -2952,7 +3403,7 @@ function Import({
           </ul>
           {Boolean(localError || error) && <p className="inline-error">{localError || (error ? labelError(error) : "")}</p>}
           <div className="actions">
-            <Button type="button" onClick={resetToFile} disabled={Boolean(busy)}>取消导入</Button>
+            <Button type="button" onClick={() => void cancelAndExit()} disabled={Boolean(busy)}>取消导入</Button>
             <Button className="primary" type="submit" disabled={disabled || Boolean(busy)}>
               {busy || "解析并预览章节"}
             </Button>
@@ -3004,11 +3455,11 @@ function Import({
             ))}
           </ol>
           <div className="actions">
-            <Button onClick={resetToFile} disabled={Boolean(busy)}>返回重新选择</Button>
+            <Button onClick={() => void resetToFile()} disabled={Boolean(busy)}>返回重新选择</Button>
             <Button className="primary" onClick={() => setStep("confirm")} disabled={disabled || Boolean(busy)}>
               继续确认
             </Button>
-            <Button onClick={resetToFile} disabled={Boolean(busy)}>取消导入</Button>
+            <Button onClick={() => void cancelAndExit()} disabled={Boolean(busy)}>取消导入</Button>
           </div>
         </section>
       )}
@@ -3044,7 +3495,7 @@ function Import({
           {Boolean(error) && <p className="inline-error">{labelError(error)}</p>}
           <div className="actions">
             <Button type="button" onClick={() => setStep("preview")} disabled={Boolean(busy)}>返回章节预览</Button>
-            <Button type="button" onClick={resetToFile} disabled={Boolean(busy)}>取消导入</Button>
+            <Button type="button" onClick={() => void cancelAndExit()} disabled={Boolean(busy)}>取消导入</Button>
             <Button className="primary" type="submit" disabled={disabled || Boolean(busy)}>{busy || "确认导入"}</Button>
           </div>
         </form>
@@ -3072,7 +3523,7 @@ function RunLifecycle({ run, blocked, cancelRun, retryRun, actions = true }: { r
         </div>
       </header>
       {unfinished && <p className="run-safety" role="alert">{labelError({ code: run.error_code })} 本轮未写入任何部分问题、证据、作者决定或 Memory 结果。</p>}
-      {run.stage === "cancelling" && <p className="run-safety" role="status">正在等待当前模型服务阶段返回；迟到结果将被丢弃，不会进入业务表。</p>}
+      {run.stage === "cancelling" && <p className="run-safety" role="status">正在等待当前模型服务返回；迟到结果将被丢弃，不会进入业务表。</p>}
       <details className="run-technical">
         <summary>技术详情</summary>
         <dl className="run-facts">
@@ -3086,6 +3537,182 @@ function RunLifecycle({ run, blocked, cancelRun, retryRun, actions = true }: { r
       </details>
     </section>
   );
+}
+
+const briefSectionLabel: Record<string,string>={related_plan:"相关计划",confirmed_fact:"已确认事实",character_state:"角色状态",world_rule:"世界规则",open_thread:"未解事项",recent_source:"近期正文"};
+const alignmentStatusLabel: Record<string,string>={planned_covered:"已覆盖",planned_missing:"计划缺失",planned_early:"提前发生",planned_changed:"发生变化",insufficient_evidence:"证据不足"};
+
+function AnalysisSources({sources}:{sources:{source_id:string;source_type:string;label:string;excerpt:string}[]}) {
+  if (!sources.length) return <p className="analysis-no-source">当前结论未引用正文证据。</p>;
+  return <details className="analysis-sources"><summary>查看来源 · {sources.length}</summary><ul>{sources.map((source)=><li key={`${source.source_type}:${source.source_id}`}><strong>{source.label}</strong><p>{source.excerpt}</p><small>{source.source_type} · {source.source_id}</small></li>)}</ul></details>;
+}
+
+function WritingAnalysisPanel({run,readOnly,busy,cancel,retry}:{run:WritingAnalysisRun;readOnly:boolean;busy:boolean;cancel:(run:WritingAnalysisRun)=>Promise<void>;retry:(run:WritingAnalysisRun)=>Promise<void>}) {
+  const title=run.analysis_type==="context_brief"?"章节简报":"计划偏离";
+  return <section className={`writing-analysis-result status-${run.status}${run.is_stale?" stale":""}`} aria-label={`${title}结果`}>
+    <header><div><p className="eyebrow">AI 写作辅助 · {run.analysis_type==="context_brief"?"写作前":"保存后"}</p><h3>{title}</h3></div><span className={`run-state state-${run.status}`}>{run.is_stale?"依据已变化":stage(run.status)}</span></header>
+    {activeAnalysis(run)&&<p className="analysis-pending">{stage(run.stage)}。编辑器仍可继续使用；本轮不会展示中间推理。</p>}
+    {["failed","timed_out","cancelled"].includes(run.status)&&<p className="inline-error">{labelError({code:run.error_code})} 未写入、也不展示部分结果。</p>}
+    {run.analysis&&<><p className="analysis-summary">{run.analysis.summary}</p>{run.analysis.summary_sources&&<AnalysisSources sources={run.analysis.summary_sources}/>}<ol className="analysis-items">{run.analysis.items.map((item,index)=>"section" in item?<li key={`${item.section}:${index}`}><span className="analysis-kicker">{briefSectionLabel[item.section]}</span><p>{item.text}</p><AnalysisSources sources={item.sources}/></li>:"story_plan_id" in item?<li key={item.story_plan_id}><div className="analysis-item-head"><strong>{item.story_plan_title}</strong><span className={`alignment-status status-${item.status}`}>{alignmentStatusLabel[item.status]}</span></div><p>{item.explanation}</p><AnalysisSources sources={item.evidence}/></li>:null)}</ol></>}
+    <footer><small>草稿 r{run.draft_revision} · 来源 r{run.source_revision} · Memory V{run.source_memory_version} · Author Context V{run.author_context_version}</small>{!readOnly&&<div className="analysis-result-actions">{activeAnalysis(run)&&<Button disabled={busy} onClick={()=>void cancel(run)}>取消</Button>}{retryableAnalysis(run)&&<Button disabled={busy} onClick={()=>void retry(run)}>重试</Button>}</div>}</footer>
+  </section>;
+}
+
+const foreshadowStatusLabel:Record<ForeshadowRecord["status"],string>={planned:"计划中",planted:"已埋设",developing:"发展中",resolved:"已回收",abandoned:"已放弃"};
+const qaStatusLabel:Record<string,string>={answered:"已有答案",partial:"部分回答",insufficient:"证据不足",conflicting:"证据冲突"};
+const qaLayerLabel:Record<string,string>={confirmed:"已确认事实",written:"已写正文",planned:"当前作者计划"};
+const qaStanceLabel:Record<string,string>={supports:"支持",contradicts:"冲突",context:"背景"};
+
+type ForeshadowEditor={title:string;description:string;status:ForeshadowRecord["status"];planted_reference:string;resolved_reference:string};
+const emptyForeshadowEditor:ForeshadowEditor={title:"",description:"",status:"planned",planted_reference:"",resolved_reference:""};
+
+function splitForeshadowReference(value:string){const [chapter_id,source_span_id]=value.split("|");return {chapter_id:chapter_id||null,source_span_id:source_span_id||null};}
+function recordEditor(record:ForeshadowRecord):ForeshadowEditor{return {title:record.title,description:record.description,status:record.status,planted_reference:record.planted?`${record.planted.chapter_id}|${record.planted.source_span_id??""}`:"",resolved_reference:record.resolved?`${record.resolved.chapter_id}|${record.resolved.source_span_id??""}`:""};}
+function candidateEditor(candidate:ForeshadowCandidate):ForeshadowEditor{return {title:candidate.title,description:candidate.description,status:candidate.suggested_status,planted_reference:candidate.planted_chapter_id?`${candidate.planted_chapter_id}|${candidate.planted_source_span_id??""}`:"",resolved_reference:candidate.resolved_chapter_id?`${candidate.resolved_chapter_id}|${candidate.resolved_source_span_id??""}`:""};}
+
+function protectSourceNavigation(event:ReactMouseEvent<HTMLAnchorElement>,href:string|undefined,navigate?:((href:string)=>void)){
+  if(!navigate||!href||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+  const target=new URL(href,window.location.href),current=new URL(window.location.href);
+  if(target.origin===current.origin&&target.pathname===current.pathname&&target.search===current.search)return;
+  event.preventDefault();navigate(href);
+}
+
+function EvidenceLinks({sources,navigate}:{sources:{source_id:string;source_type:string;label:string;excerpt:string;source_path?:string;relation?:string}[];navigate?:(href:string)=>void}){
+  if(!sources.length)return <p className="analysis-no-source">没有可采信证据。</p>;
+  return <ul className="source-links bounded-source-links">{sources.map((source)=><li key={`${source.source_type}:${source.source_id}:${source.relation??""}`}><a href={source.source_path} onClick={(event)=>protectSourceNavigation(event,source.source_path,navigate)} aria-label={`查看证据：${source.label}（${source.source_type}）`}><span><strong>{source.label}</strong>{source.relation&&<em>{source.relation==="resolved"?"回收":source.relation==="developing"?"发展":"埋设"}</em>}</span><small>{source.excerpt}</small></a></li>)}</ul>;
+}
+
+function ForeshadowReferenceSelect({label,value,setValue,chapters,disabled}:{label:string;value:string;setValue:(value:string)=>void;chapters:Chapter[];disabled:boolean}){
+  return <label>{label}<select value={value} disabled={disabled} onChange={(event)=>setValue(event.target.value)}><option value="">不关联</option>{chapters.flatMap((chapter)=>[<option key={`chapter:${chapter.id}`} value={`${chapter.id}|`}>第 {chapter.number} 章《{chapter.title}》</option>,...(chapter.source_spans??[]).map((span)=><option key={span.span_id} value={`${chapter.id}|${span.span_id}`}>第 {chapter.number} 章 · {span.label}</option>)])}</select></label>;
+}
+
+function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go}:{project:Project;draft:Draft|null;chapters:Chapter[];readOnly:boolean;dirty:boolean;go:(href:string)=>void}){
+  const [snapshot,setSnapshot]=useState<ForeshadowSnapshot|null>(null);
+  const [qaRuns,setQaRuns]=useState<WritingAnalysisRun[]>([]),[scanRuns,setScanRuns]=useState<WritingAnalysisRun[]>([]);
+  const [question,setQuestion]=useState(""),[scope,setScope]=useState<("confirmed"|"written"|"planned")[]>(["confirmed","written","planned"]);
+  const [editor,setEditor]=useState<ForeshadowEditor>(emptyForeshadowEditor),[editingId,setEditingId]=useState<string|null>(null),[editingBaseVersion,setEditingBaseVersion]=useState<number|null>(null);
+  const [candidateEdits,setCandidateEdits]=useState<Record<string,ForeshadowEditor>>({});
+  const [busy,setBusy]=useState(""),[notice,setNotice]=useState(""),[conflict,setConflict]=useState(false);
+  const refreshEpoch=useRef(0),refreshAbort=useRef<AbortController|null>(null);
+  const draftRevision=draft?.revision;
+  const refresh=useCallback(async(silent=false)=>{
+    const epoch=++refreshEpoch.current;
+    refreshAbort.current?.abort();
+    const controller=new AbortController();
+    refreshAbort.current=controller;
+    try{
+      const [records,qa,scan]=await Promise.all([
+        request<ForeshadowSnapshot>(`/projects/${project.id}/foreshadows?include_archived=true`,{signal:controller.signal}),
+        request<{run:WritingAnalysisRun|null;runs:WritingAnalysisRun[]}>(`/projects/${project.id}/analyses?analysis_type=story_qa&limit=20`,{signal:controller.signal}),
+        request<{run:WritingAnalysisRun|null;runs:WritingAnalysisRun[]}>(`/projects/${project.id}/analyses?analysis_type=foreshadow_scan&limit=20`,{signal:controller.signal}),
+      ]);
+      if(controller.signal.aborted||epoch!==refreshEpoch.current)return;
+      setSnapshot(records);setQaRuns(qa.runs??[]);setScanRuns(scan.runs??[]);
+    }catch(error){if((error as Error).name!=="AbortError"&&!silent&&epoch===refreshEpoch.current)setNotice(labelError(error));}
+    finally{if(refreshAbort.current===controller)refreshAbort.current=null;}
+  },[project.id]);
+  const hasActiveRun=qaRuns.some(activeAnalysis)||scanRuns.some(activeAnalysis);
+  useEffect(()=>{void draftRevision;const timer=window.setTimeout(()=>void refresh(),0);return()=>{window.clearTimeout(timer);refreshEpoch.current+=1;refreshAbort.current?.abort();};},[refresh,draftRevision]);
+  useEffect(()=>{if(!hasActiveRun)return;const timer=window.setInterval(()=>void refresh(true),700);return()=>window.clearInterval(timer);},[refresh,hasActiveRun]);
+  const activeQa=qaRuns.find(activeAnalysis),activeScan=scanRuns.find(activeAnalysis);
+  const editorPayload=(value:ForeshadowEditor)=>{const planted=splitForeshadowReference(value.planted_reference),resolved=splitForeshadowReference(value.resolved_reference);return {title:value.title,description:value.description,status:value.status,planted_chapter_id:planted.chapter_id,planted_source_span_id:planted.source_span_id,resolved_chapter_id:resolved.chapter_id,resolved_source_span_id:resolved.source_span_id};};
+  const saveRecord=async(event:FormEvent)=>{event.preventDefault();if(!snapshot||(editingId&&editingBaseVersion===null))return;setBusy("record");setNotice("");setConflict(false);try{const next=editingId?await json<ForeshadowSnapshot>(`/projects/${project.id}/foreshadows/${editingId}`,"PATCH",{base_version:editingBaseVersion,...editorPayload(editor)}):await json<ForeshadowSnapshot>(`/projects/${project.id}/foreshadows`,"POST",{base_foreshadow_version:snapshot.foreshadow_version,...editorPayload(editor)});setSnapshot(next);setEditingId(null);setEditingBaseVersion(null);setEditor(emptyForeshadowEditor);setNotice(editingId?"作者伏笔记录已更新。":"作者伏笔记录已创建。");await refresh(true);}catch(error){setConflict((error as ApiFailure).code==="foreshadow_version_conflict");setNotice(labelError(error));}finally{setBusy("");}};
+  const loadLatest=async()=>{setBusy("reload");setNotice("正在载入最新伏笔版本；当前输入不会被清空。");try{const latest=await request<ForeshadowSnapshot>(`/projects/${project.id}/foreshadows?include_archived=true`);setSnapshot(latest);if(editingId){const current=latest.records.find((item)=>item.id===editingId);if(current)setEditingBaseVersion(current.version);}setConflict(false);setNotice("已载入最新伏笔版本；当前输入仍保留，请检查后主动重试保存。");await refresh(true);}catch(error){setNotice(labelError(error));}finally{setBusy("");}};
+  const archiveRecord=async(record:ForeshadowRecord)=>{setBusy(record.id);setNotice("");try{const next=await json<ForeshadowSnapshot>(`/projects/${project.id}/foreshadows/${record.id}/archive`,"POST",{base_version:record.version});setSnapshot(next);setNotice("伏笔记录已归档，历史版本仍可追溯。");await refresh(true);}catch(error){setNotice(labelError(error));}finally{setBusy("");}};
+  const start=async(kind:"story_qa"|"foreshadow_scan")=>{if(!draft)return;if(dirty){setNotice("请先保存当前草稿；有界问答与伏笔扫描只分析已保存版本。");return;}setBusy(kind);setNotice("");try{await json<WritingAnalysisRun>(`/projects/${project.id}/analyses`,"POST",{analysis_type:kind,draft_id:draft.id,draft_revision:draft.revision,...(kind==="story_qa"?{question,scope}:{})});if(kind==="story_qa")setQuestion("");setNotice(kind==="story_qa"?"问题已提交；回答只使用所选依据。":"伏笔扫描已提交；候选不会自动成为作者记录。");await refresh(true);}catch(error){setNotice(labelError(error));}finally{setBusy("");}};
+  const runAction=async(run:WritingAnalysisRun,action:"cancel"|"retry")=>{setBusy(run.run_id);setNotice("");try{await json(`/projects/${project.id}/analyses/${run.run_id}/${action}`,"POST",{client_request_id:crypto.randomUUID()});await refresh(true);}catch(error){setNotice(labelError(error));}finally{setBusy("");}};
+  const decide=async(run:WritingAnalysisRun,candidate:ForeshadowCandidate,decision:"accepted"|"edited"|"rejected")=>{if(!snapshot)return;setBusy(candidate.id);setNotice("");try{const edited=candidateEdits[candidate.id]??candidateEditor(candidate);await json(`/projects/${project.id}/analyses/${run.run_id}/foreshadow-candidates/${candidate.id}/decision`,"POST",{base_foreshadow_version:snapshot.foreshadow_version,decision,...(decision==="edited"?{edited:editorPayload(edited)}:{})});setNotice(decision==="rejected"?"AI 候选已拒绝，不会创建作者记录。":"AI 候选已由作者确认并创建记录。");await refresh(true);}catch(error){setNotice(labelError(error));}finally{setBusy("");}};
+  const changeCandidate=(candidate:ForeshadowCandidate,patch:Partial<ForeshadowEditor>)=>setCandidateEdits((current)=>({...current,[candidate.id]:{...(current[candidate.id]??candidateEditor(candidate)),...patch}}));
+  const toggleScope=(value:"confirmed"|"written"|"planned")=>setScope((current)=>current.includes(value)?(current.length===1?current:current.filter((item)=>item!==value)):[...current,value]);
+  const renderRunActions=(run:WritingAnalysisRun)=>!readOnly&&<div className="analysis-result-actions">{activeAnalysis(run)&&<Button disabled={Boolean(busy)} onClick={()=>void runAction(run,"cancel")}>取消</Button>}{retryableAnalysis(run)&&<Button disabled={Boolean(busy)||run.is_stale} onClick={()=>void runAction(run,"retry")}>重试</Button>}</div>;
+  return <details className="bounded-story-tools" role="region" aria-label="有界问答与伏笔管理">
+    <summary className="bounded-tools-header"><div><p className="eyebrow">次级 AI 工具</p><h2>有界问答与伏笔管理</h2><p>按需展开，不遮挡正文；已有回答与伏笔记录也在这里。</p></div><small>作者伏笔 V{snapshot?.foreshadow_version??project.foreshadow_version??0} · 回答 {qaRuns.length} · 扫描 {scanRuns.length}</small></summary>
+    <div className="bounded-tools-intro">回答按依据分层；AI 扫描只提出候选。正文、Story Memory、Author Context 与其他作者资料都不会被自动修改。</div>
+    {notice&&<p className="notice" role="status">{notice}</p>}
+    {conflict&&<div className="bounded-conflict" role="alert"><p>服务器上的伏笔版本已变化；你的标题、说明与引用选择仍保留。载入最新版本后检查差异，再主动重试保存。</p><Button className="secondary" disabled={Boolean(busy)} onClick={()=>void loadLatest()}>载入最新版本</Button></div>}
+    {dirty&&!readOnly&&<p className="bounded-dirty-note" role="note">当前草稿有未保存修改。已有结果仍可浏览；提问与扫描会保持禁用，保存后会自动刷新并标记旧结果。</p>}
+    <div className="bounded-tools-grid">
+      <section className="bounded-tool" aria-label="有界问答">
+        <header><div><p className="eyebrow">当前作品问题</p><h3>有界问答</h3></div>{activeQa&&<span className="run-state state-running">{stage(activeQa.status)}</span>}</header>
+        {!readOnly&&<form className="qa-form" onSubmit={(event)=>{event.preventDefault();void start("story_qa");}}><label>你的问题<textarea value={question} maxLength={1000} onChange={(event)=>setQuestion(event.target.value)} placeholder="例如：林默目前是否知道北门会提前开启？" /></label><fieldset><legend>限定依据</legend>{(["confirmed","written","planned"] as const).map((value)=><label key={value}><input type="checkbox" checked={scope.includes(value)} onChange={()=>toggleScope(value)} />{qaLayerLabel[value]}</label>)}</fieldset><Button className="secondary" type="submit" disabled={Boolean(busy)||Boolean(activeQa)||!question.trim()||!draft||dirty}>提交问题</Button></form>}
+        {readOnly&&!qaRuns.length&&<p className="muted">窄窗口仅浏览已有回答；请在宽屏窗口提问。</p>}
+        <div className="bounded-run-list">{qaRuns.map((run)=><article key={run.run_id} className={`bounded-run status-${run.status}${run.is_stale?" stale":""}`}><header><strong>{run.question||"历史问题"}</strong><span>{run.is_stale?"依据已变化":qaStatusLabel[run.analysis?.answer_status??""]??stage(run.status)}</span></header>{activeAnalysis(run)&&<p className="analysis-pending">{stage(run.stage)}；不会展示中间推理。</p>}{["failed","timed_out","cancelled"].includes(run.status)&&<p className="inline-error">{labelError({code:run.error_code})}</p>}{run.analysis&&<><p className="qa-answer">{run.analysis.answer}</p>{run.analysis.findings?.map((finding,index)=><section className={`qa-finding stance-${finding.stance}`} key={`${finding.layer}:${index}`}><header><span>{qaLayerLabel[finding.layer]}</span><em>{qaStanceLabel[finding.stance]}</em></header><p>{finding.text}</p><EvidenceLinks sources={finding.evidence} navigate={go}/></section>)}</>}<footer><small>草稿 r{run.draft_revision} · 来源 r{run.source_revision} · Story Memory V{run.source_memory_version} · Author Context V{run.author_context_version} · 作者伏笔 V{run.foreshadow_version??0} · 检索 {run.retrieval?.method_version??"—"}</small>{renderRunActions(run)}</footer></article>)}</div>
+      </section>
+      <section className="bounded-tool" aria-label="伏笔管理">
+        <header><div><p className="eyebrow">作者记录是主数据</p><h3>伏笔记录</h3></div>{!readOnly&&<Button className="secondary" disabled={Boolean(busy)||Boolean(activeScan)||!draft||dirty} onClick={()=>void start("foreshadow_scan")}>{activeScan?"扫描中":"扫描已写正文"}</Button>}</header>
+        {!readOnly&&<form className="foreshadow-form" onSubmit={saveRecord}><label>标题<input value={editor.title} maxLength={120} onChange={(event)=>setEditor({...editor,title:event.target.value})} /></label><label>说明<textarea value={editor.description} maxLength={1200} onChange={(event)=>setEditor({...editor,description:event.target.value})} /></label><label>状态<select value={editor.status} onChange={(event)=>setEditor({...editor,status:event.target.value as ForeshadowRecord["status"]})}>{Object.entries(foreshadowStatusLabel).map(([value,label])=><option key={value} value={value}>{label}</option>)}</select></label><ForeshadowReferenceSelect label="埋设章节 / 来源" value={editor.planted_reference} setValue={(value)=>setEditor({...editor,planted_reference:value})} chapters={chapters} disabled={Boolean(busy)}/><ForeshadowReferenceSelect label="回收章节 / 来源" value={editor.resolved_reference} setValue={(value)=>setEditor({...editor,resolved_reference:value})} chapters={chapters} disabled={Boolean(busy)}/><div className="form-actions"><Button className="primary" type="submit" disabled={Boolean(busy)||!editor.title.trim()||!editor.description.trim()||(Boolean(editingId)&&editingBaseVersion===null)}>{editingId?"保存修改":"新建作者记录"}</Button>{editingId&&<Button type="button" onClick={()=>{setEditingId(null);setEditingBaseVersion(null);setEditor(emptyForeshadowEditor);}}>取消编辑</Button>}</div></form>}
+        <div className="foreshadow-records">{snapshot?.records.map((record)=><article key={record.id} id={`foreshadow-${record.id}`} className={record.archived_at?"archived":""}><header><div><strong>{record.title}</strong><small>作者记录 · V{record.version}</small></div><span>{record.archived_at?"已归档":foreshadowStatusLabel[record.status]}</span></header><p>{record.description}</p><div className="foreshadow-links">{record.planted&&<a href={record.planted.source_path} onClick={(event)=>protectSourceNavigation(event,record.planted?.source_path,go)}>埋设：第 {record.planted.chapter_number} 章{record.planted.source_label?` · ${record.planted.source_label}`:""}</a>}{record.resolved&&<a href={record.resolved.source_path} onClick={(event)=>protectSourceNavigation(event,record.resolved?.source_path,go)}>回收：第 {record.resolved.chapter_number} 章{record.resolved.source_label?` · ${record.resolved.source_label}`:""}</a>}</div>{!readOnly&&!record.archived_at&&<footer><Button className="quiet" disabled={Boolean(busy)} onClick={()=>{setEditingId(record.id);setEditingBaseVersion(record.version);setEditor(recordEditor(record));}}>编辑</Button><Button className="quiet" disabled={Boolean(busy)} onClick={()=>void archiveRecord(record)}>归档</Button></footer>}</article>)}{snapshot&&!snapshot.records.length&&<p className="muted">还没有作者伏笔记录；AI 候选不会自动出现在这里。</p>}</div>
+        {scanRuns.map((run)=><article key={run.run_id} className={`foreshadow-scan bounded-run status-${run.status}${run.is_stale?" stale":""}`}><header><div><strong>AI 伏笔候选</strong><small>{timestampLabel(run.created_at)}</small></div><span>{run.is_stale?"依据已变化":stage(run.status)}</span></header>{activeAnalysis(run)&&<p className="analysis-pending">{stage(run.stage)}；扫描只读取已绑定内容。</p>}{["failed","timed_out","cancelled"].includes(run.status)&&<p className="inline-error">{labelError({code:run.error_code})}</p>}{run.analysis&&<><p>{run.analysis.summary}</p>{(run.analysis.candidates as ForeshadowCandidate[]|undefined)?.map((candidate)=><section className="foreshadow-candidate" key={candidate.id} id={`foreshadow-candidate-${candidate.id}`}><header><div><strong>{candidate.title}</strong><small>AI 候选 · {foreshadowStatusLabel[candidate.suggested_status]}</small></div><span>{candidate.decision_status==="pending"?"待作者决定":candidate.decision_status==="rejected"?"作者已拒绝":candidate.decision_status==="edited"?"编辑后接受":"作者已接受"}</span></header><p>{candidate.description}</p><EvidenceLinks sources={candidate.evidence} navigate={go}/>{!readOnly&&candidate.decision_status==="pending"&&!run.is_stale&&<div className="candidate-review"><details><summary>编辑后接受</summary>{(()=>{const value=candidateEdits[candidate.id]??candidateEditor(candidate);return <div className="candidate-edit-fields"><label>标题<input value={value.title} maxLength={120} onChange={(event)=>changeCandidate(candidate,{title:event.target.value})} /></label><label>说明<textarea value={value.description} maxLength={1200} onChange={(event)=>changeCandidate(candidate,{description:event.target.value})} /></label><label>状态<select value={value.status} onChange={(event)=>changeCandidate(candidate,{status:event.target.value as ForeshadowRecord["status"]})}>{Object.entries(foreshadowStatusLabel).map(([option,label])=><option key={option} value={option}>{label}</option>)}</select></label><ForeshadowReferenceSelect label="埋设章节 / 来源" value={value.planted_reference} setValue={(next)=>changeCandidate(candidate,{planted_reference:next})} chapters={chapters} disabled={Boolean(busy)}/><ForeshadowReferenceSelect label="回收章节 / 来源" value={value.resolved_reference} setValue={(next)=>changeCandidate(candidate,{resolved_reference:next})} chapters={chapters} disabled={Boolean(busy)}/><Button className="primary" disabled={Boolean(busy)||!value.title.trim()||!value.description.trim()} onClick={()=>void decide(run,candidate,"edited")}>保存为作者记录</Button></div>;})()}</details><div className="form-actions"><Button className="secondary" disabled={Boolean(busy)} onClick={()=>void decide(run,candidate,"accepted")}>接受</Button><Button className="quiet" disabled={Boolean(busy)} onClick={()=>void decide(run,candidate,"rejected")}>拒绝</Button></div></div>}</section>)}</>}<footer><small>草稿 r{run.draft_revision} · 来源 r{run.source_revision} · Story Memory V{run.source_memory_version} · Author Context V{run.author_context_version} · 作者伏笔 V{run.foreshadow_version??0} · 检索 {run.retrieval?.method_version??"—"}</small>{renderRunActions(run)}</footer></article>)}
+      </section>
+    </div>
+  </details>;
+}
+
+const revisionPriorityLabel:Record<RevisionTaskPriority,string>={high:"高",medium:"中",low:"低"};
+const revisionTaskStatusLabel:Record<RevisionTask["status"],string>={todo:"待处理",in_progress:"进行中",completed:"已完成"};
+type RevisionCandidateEditor={title:string;instruction:string;priority:RevisionTaskPriority};
+const revisionCandidateEditor=(candidate:RevisionPlanCandidate):RevisionCandidateEditor=>({title:candidate.title,instruction:candidate.instruction,priority:candidate.priority});
+
+function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{project:Project;draft:Draft|null;run:Run|null;readOnly:boolean;dirty:boolean;busy:boolean;recheck:()=>Promise<void>;go:(href:string)=>void}){
+  const [snapshot,setSnapshot]=useState<RevisionTaskSnapshot|null>(null);
+  const [runs,setRuns]=useState<WritingAnalysisRun[]>([]);
+  const [selected,setSelected]=useState<string[]>([]);
+  const [candidateEdits,setCandidateEdits]=useState<Record<string,RevisionCandidateEditor>>({});
+  const [localBusy,setLocalBusy]=useState(""),[notice,setNotice]=useState(""),[conflict,setConflict]=useState(false);
+  const refreshEpoch=useRef(0),refreshAbort=useRef<AbortController|null>(null);
+  const draftRevision=draft?.revision;
+  const sourceRunId=run?.run_id;
+  const refresh=useCallback(async(silent=false)=>{
+    const epoch=++refreshEpoch.current;
+    refreshAbort.current?.abort();
+    const controller=new AbortController();refreshAbort.current=controller;
+    try{
+      const [tasks,plans]=await Promise.all([
+        request<RevisionTaskSnapshot>(`/projects/${project.id}/revision-tasks?include_completed=true`,{signal:controller.signal}),
+        request<{run:WritingAnalysisRun|null;runs:WritingAnalysisRun[]}>(`/projects/${project.id}/analyses?analysis_type=revision_plan&limit=20`,{signal:controller.signal}),
+      ]);
+      if(controller.signal.aborted||epoch!==refreshEpoch.current)return;
+      setSnapshot(tasks);setRuns(plans.runs??[]);
+      return true;
+    }catch(error){if((error as Error).name!=="AbortError"&&!silent&&epoch===refreshEpoch.current)setNotice(labelError(error));return false;}
+    finally{if(refreshAbort.current===controller)refreshAbort.current=null;}
+  },[project.id]);
+  const hasActive=runs.some(activeAnalysis);
+  useEffect(()=>{void draftRevision;void sourceRunId;const timer=window.setTimeout(()=>{setSelected([]);void refresh();},0);return()=>{window.clearTimeout(timer);refreshEpoch.current+=1;refreshAbort.current?.abort();};},[refresh,draftRevision,sourceRunId]);
+  useEffect(()=>{if(!hasActive)return;const timer=window.setInterval(()=>void refresh(true),700);return()=>window.clearInterval(timer);},[refresh,hasActive]);
+  const eligible=(run?.status==="completed"&&!run.is_stale?run.issues??[]:[]).filter((issue)=>issue.status==="open"&&!issue.decision&&(issue.evidence??[]).some((source)=>source.sufficiency==="sufficient"));
+  const eligibleIds=new Set(eligible.map((issue)=>issue.id)),effectiveSelected=selected.filter((issueId)=>eligibleIds.has(issueId));
+  const toggleIssue=(issueId:string)=>setSelected((current)=>{const visible=current.filter((id)=>eligibleIds.has(id));return visible.includes(issueId)?visible.filter((id)=>id!==issueId):visible.length<8?[...visible,issueId]:visible;});
+  const start=async()=>{if(!draft||!effectiveSelected.length)return;if(dirty){setNotice("请先显式保存当前草稿；修订建议只绑定已保存版本。");return;}setLocalBusy("start");setNotice("");try{await json(`/projects/${project.id}/analyses`,"POST",{analysis_type:"revision_plan",draft_id:draft.id,draft_revision:draft.revision,issue_ids:effectiveSelected});setSelected([]);setNotice("修订建议已提交；每条候选仍需作者接受、编辑后接受或拒绝。");await refresh(true);}catch(error){setNotice(labelError(error));}finally{setLocalBusy("");}};
+  const runAction=async(target:WritingAnalysisRun,action:"cancel"|"retry")=>{setLocalBusy(target.run_id);setNotice("");try{await json(`/projects/${project.id}/analyses/${target.run_id}/${action}`,"POST",{client_request_id:crypto.randomUUID()});await refresh(true);}catch(error){setNotice(labelError(error));}finally{setLocalBusy("");}};
+  const changeCandidate=(candidate:RevisionPlanCandidate,patch:Partial<RevisionCandidateEditor>)=>setCandidateEdits((current)=>({...current,[candidate.id]:{...(current[candidate.id]??revisionCandidateEditor(candidate)),...patch}}));
+  const decide=async(target:WritingAnalysisRun,candidate:RevisionPlanCandidate,decision:"accepted"|"edited"|"rejected")=>{if(!snapshot)return;setLocalBusy(candidate.id);setNotice("");setConflict(false);try{const edited=candidateEdits[candidate.id]??revisionCandidateEditor(candidate);const result=await json<{revision_tasks:RevisionTaskSnapshot}>(`/projects/${project.id}/analyses/${target.run_id}/revision-candidates/${candidate.id}/decision`,"POST",{base_task_version:snapshot.task_version,decision,...(decision==="edited"?{edited}:{})});setSnapshot(result.revision_tasks);setNotice(decision==="rejected"?"修订候选已拒绝，没有创建任务。":"修订候选已确认并创建持久任务；正文仍需作者手动修改并保存。");await refresh(true);}catch(error){setConflict((error as ApiFailure).code==="revision_task_version_conflict");setNotice(labelError(error));}finally{setLocalBusy("");}};
+  const updateTask=async(task:RevisionTask,status:RevisionTask["status"])=>{setLocalBusy(task.id);setNotice("");setConflict(false);try{const next=await json<RevisionTaskSnapshot>(`/projects/${project.id}/revision-tasks/${task.id}`,"PATCH",{base_version:task.version,status});setSnapshot(next);setNotice(status==="completed"?"任务已标记完成。连续性问题仍保持原状态，也不会自动复检或修改 Story Memory。":"任务进度已更新；它与建议所绑定的旧分析状态相互独立。");}catch(error){setConflict((error as ApiFailure).code==="revision_task_version_conflict");setNotice(labelError(error));}finally{setLocalBusy("");}};
+  const loadLatest=async()=>{setLocalBusy("reload");setNotice("正在载入最新任务版本；候选编辑内容会继续保留。");try{if(await refresh(true)){setConflict(false);setNotice("已载入最新任务与候选状态；候选编辑内容仍保留，请核对后主动重试。");}else setNotice("载入最新任务失败；当前候选编辑内容仍保留，请稍后重试。");}finally{setLocalBusy("");}};
+  const returnToDraft=()=>{const editor=document.getElementById("draft-body");editor?.scrollIntoView({behavior:"smooth",block:"center"});window.setTimeout(()=>editor?.focus(),250);};
+  const activeRun=runs.find(activeAnalysis);
+  return <details className="bounded-story-tools revision-plan-tools" role="region" aria-label="修订计划与任务">
+    <summary className="bounded-tools-header"><div><p className="eyebrow">作者掌控的修订闭环</p><h2>修订计划与任务</h2><p>从当前连续性问题生成有界行动建议；确认后仅创建任务，不会改写正文或事实。</p></div><small>任务 V{snapshot?.task_version??0} · 活动 {snapshot?.tasks.filter((task)=>task.status!=="completed").length??0} · 历史计划 {runs.length}</small></summary>
+    <div className="bounded-tools-intro">先选择当前检查中的问题，再逐条决定候选。接受任务后回到同一草稿手动修改、显式保存，并在需要时主动重新检查。</div>
+    {notice&&<p className="notice" role="status">{notice}</p>}
+    {conflict&&<div className="bounded-conflict" role="alert"><p>服务器上的修订任务版本已变化；候选编辑内容仍保留。请载入最新版本、核对状态后再主动重试。</p><Button className="secondary" disabled={Boolean(localBusy)} onClick={()=>void loadLatest()}>载入最新任务</Button></div>}
+    {dirty&&!readOnly&&<p className="bounded-dirty-note" role="note">当前草稿有未保存修改：不能生成、重试建议或重新检查；已接受任务仍可更新进度。</p>}
+    <div className="revision-plan-layout">
+      <section className="revision-plan-column" aria-label="从连续性问题生成修订建议">
+        <header><div><p className="eyebrow">当前有效检查</p><h3>选择问题</h3></div>{activeRun&&<span className="run-state state-running">{stage(activeRun.status)}</span>}</header>
+        {!readOnly&&<>{eligible.length?<fieldset className="revision-issue-picker"><legend>最多选择 8 条</legend>{eligible.map((issue)=><label key={issue.id}><input type="checkbox" checked={effectiveSelected.includes(issue.id)} disabled={Boolean(localBusy)||(!effectiveSelected.includes(issue.id)&&effectiveSelected.length>=8)} onChange={()=>toggleIssue(issue.id)} /><span><strong>{categoryLabel(issue.category)} · {statusLabel(issue.severity)}</strong><small>{issue.claim_text||issue.explanation}</small></span></label>)}</fieldset>:<p className="muted">当前没有来自同一次有效检查、证据充分且未作决定的问题。请先保存草稿并运行连续性检查。</p>}<Button className="secondary" disabled={Boolean(localBusy)||busy||Boolean(activeRun)||dirty||!draft||!effectiveSelected.length} onClick={()=>void start()}>{activeRun?"生成中":`生成修订建议${effectiveSelected.length?`（${effectiveSelected.length}）`:""}`}</Button></>}
+        {readOnly&&!runs.length&&<p className="muted">窄窗口仅浏览已有修订建议与任务；请在宽屏窗口生成或作出决定。</p>}
+        <div className="revision-run-list">{runs.map((target)=><article key={target.run_id} className={`revision-run status-${target.status}${target.is_stale?" stale":""}`}><header><div><strong>AI 修订建议</strong><small>{timestampLabel(target.created_at)} · {target.issue_ids?.length??0} 个问题</small></div><span>{target.is_stale?"依据已变化":stage(target.status)}</span></header>{activeAnalysis(target)&&<p className="analysis-pending">{stage(target.stage)}；不会展示中间推理或部分结果。</p>}{["failed","timed_out","cancelled"].includes(target.status)&&<p className="inline-error">{labelError({code:target.error_code})} 未创建任何候选。</p>}{target.analysis&&<><p>{target.analysis.summary}</p>{(target.analysis.candidates as RevisionPlanCandidate[]|undefined)?.map((candidate)=><section className="revision-candidate" key={candidate.id} id={`revision-candidate-${candidate.id}`}><header><div><strong>{candidate.title}</strong><small>优先级 {revisionPriorityLabel[candidate.priority]} · 对应 Issue {candidate.issue_id}</small></div><span>{candidate.decision_status==="pending"?"待作者决定":candidate.decision_status==="rejected"?"作者已拒绝":candidate.decision_status==="edited"?"编辑后接受":"作者已接受"}</span></header><p>{candidate.instruction}</p><EvidenceLinks sources={candidate.evidence} navigate={go}/>{!readOnly&&candidate.decision_status==="pending"&&!target.is_stale&&<div className="candidate-review"><details><summary>编辑后接受</summary>{(()=>{const value=candidateEdits[candidate.id]??revisionCandidateEditor(candidate);return <div className="candidate-edit-fields"><label>任务标题<input value={value.title} maxLength={120} onChange={(event)=>changeCandidate(candidate,{title:event.target.value})} /></label><label>行动说明<textarea value={value.instruction} maxLength={1200} onChange={(event)=>changeCandidate(candidate,{instruction:event.target.value})} /></label><label>优先级<select value={value.priority} onChange={(event)=>changeCandidate(candidate,{priority:event.target.value as RevisionTaskPriority})}>{(["high","medium","low"] as const).map((priority)=><option key={priority} value={priority}>{revisionPriorityLabel[priority]}</option>)}</select></label><Button className="primary" disabled={Boolean(localBusy)||!value.title.trim()||!value.instruction.trim()} onClick={()=>void decide(target,candidate,"edited")}>编辑后创建任务</Button></div>;})()}</details><div className="form-actions"><Button className="secondary" disabled={Boolean(localBusy)} onClick={()=>void decide(target,candidate,"accepted")}>接受并创建任务</Button><Button className="quiet" disabled={Boolean(localBusy)} onClick={()=>void decide(target,candidate,"rejected")}>拒绝</Button></div></div>}{candidate.decision?.after&&<p className="revision-created-link">已创建任务：<a href={`#revision-task-${candidate.decision.after.id}`}>{candidate.decision.after.title}</a></p>}</section>)}</>}
+          <footer><small>草稿 r{target.draft_revision} · 来源 r{target.source_revision} · Story Memory V{target.source_memory_version} · Author Context V{target.author_context_version} · 作者伏笔 V{target.foreshadow_version??0}</small>{!readOnly&&<div className="analysis-result-actions">{activeAnalysis(target)&&<Button disabled={Boolean(localBusy)} onClick={()=>void runAction(target,"cancel")}>取消</Button>}{retryableAnalysis(target)&&<Button disabled={Boolean(localBusy)||target.is_stale||dirty} onClick={()=>void runAction(target,"retry")}>重试</Button>}</div>}</footer></article>)}</div>
+      </section>
+      <section className="revision-plan-column" aria-label="持久修订任务">
+        <header><div><p className="eyebrow">独立任务层</p><h3>修订任务</h3></div><span className="version-chip">V{snapshot?.task_version??0}</span></header>
+        <p className="revision-boundary">任务进度是作者的工作记录。标记完成不会解决 Issue、运行检查或修改正文、Story Memory 与 Author Context。</p>
+        <div className="revision-task-list">{snapshot?.tasks.map((task)=><article key={task.id} id={`revision-task-${task.id}`} className={`revision-task priority-${task.priority} status-${task.status}`}><header><div><strong>{task.title}</strong><small>优先级 {revisionPriorityLabel[task.priority]} · 任务 V{task.version}</small></div><span>{revisionTaskStatusLabel[task.status]}</span></header><p>{task.instruction}</p><EvidenceLinks sources={task.evidence} navigate={go}/>{!readOnly&&<footer><Button className="quiet" disabled={Boolean(localBusy)||busy} onClick={returnToDraft}>回到同一草稿</Button><label>任务进度<select aria-label={`${task.title}任务进度`} value={task.status} disabled={Boolean(localBusy)||busy} onChange={(event)=>void updateTask(task,event.target.value as RevisionTask["status"])}>{(["todo","in_progress","completed"] as const).map((status)=><option key={status} value={status}>{revisionTaskStatusLabel[status]}</option>)}</select></label></footer>}</article>)}{snapshot&&!snapshot.tasks.length&&<p className="muted">尚无修订任务。AI 候选只有在作者接受后才会进入这里。</p>}</div>
+        {!readOnly&&<div className="revision-loop-actions"><Button className="secondary" disabled={Boolean(localBusy)||busy||dirty||!draft} onClick={()=>void recheck()}>显式重新检查</Button><small>请先手动修改并保存草稿；任务完成状态不会触发此操作。</small></div>}
+      </section>
+    </div>
+  </details>;
 }
 
 function ProjectContextNotices({
@@ -3274,6 +3901,199 @@ function ProjectContextNotices({
   );
 }
 
+type ImmersiveFontSize = "small" | "medium" | "large";
+type ImmersiveLineHeight = "compact" | "comfortable" | "airy";
+type ImmersiveColumnWidth = "narrow" | "medium" | "wide";
+
+function manuscriptCounts(value: string) {
+  return {
+    words: Array.from(value.replace(/\s+/g, "")).length,
+    characters: Array.from(value).length,
+  };
+}
+
+function ImmersiveEditor({
+  project,
+  draft,
+  saved,
+  run,
+  busy,
+  error,
+  controlled,
+  selectedIssueId,
+  locallyResolvedIssueIds,
+  fontSize,
+  lineHeight,
+  columnWidth,
+  issuesOpen,
+  setFontSize,
+  setLineHeight,
+  setColumnWidth,
+  setIssuesOpen,
+  setDraft,
+  save,
+  select,
+  close,
+}: {
+  project: Project;
+  draft: Draft | null;
+  saved: Draft | null;
+  run: Run | null;
+  busy: string;
+  error: unknown;
+  controlled: Issue | null;
+  selectedIssueId: string | null;
+  locallyResolvedIssueIds: string[];
+  fontSize: ImmersiveFontSize;
+  lineHeight: ImmersiveLineHeight;
+  columnWidth: ImmersiveColumnWidth;
+  issuesOpen: boolean;
+  setFontSize: (value: ImmersiveFontSize) => void;
+  setLineHeight: (value: ImmersiveLineHeight) => void;
+  setColumnWidth: (value: ImmersiveColumnWidth) => void;
+  setIssuesOpen: (value: boolean) => void;
+  setDraft: (draft: Draft) => void;
+  save: () => Promise<boolean>;
+  select: (issue: Issue, element: HTMLElement) => Promise<void> | void;
+  close: () => void;
+}) {
+  const { modalRef, firstRef, containFocus } = useModalFocus<HTMLButtonElement>(close);
+  const dirty = Boolean(draft && saved && (draft.title !== saved.title || draft.body !== saved.body));
+  const saving = busy === "保存草稿" || busy === "保存受控修订";
+  const counts = manuscriptCounts(draft?.body ?? "");
+  const saveState = saving ? "saving" : error ? "failed" : dirty ? "unsaved" : "saved";
+  const saveLabel = saving ? "保存中" : error ? "保存失败" : dirty ? "未保存" : "已保存";
+  const issues = run?.issues ?? [];
+  return (
+    <section
+      ref={modalRef}
+      className="immersive-editor"
+      role="dialog"
+      aria-modal="true"
+      aria-label="沉浸写作"
+      data-font-size={fontSize}
+      data-line-height={lineHeight}
+      data-column-width={columnWidth}
+      data-issues={issuesOpen ? "open" : "closed"}
+      onKeyDown={containFocus}
+    >
+      <header className="immersive-header">
+        <div className="immersive-identity">
+          <span>第 {draft?.chapter_number ?? "—"} 章 · revision {draft?.revision ?? "—"}</span>
+          <strong>{project.title}</strong>
+        </div>
+        <div className="immersive-display-settings" aria-label="写作显示设置">
+          <label>
+            <span>正文字号</span>
+            <select value={fontSize} onChange={(event) => setFontSize(event.target.value as ImmersiveFontSize)}>
+              <option value="small">17 px</option>
+              <option value="medium">19 px</option>
+              <option value="large">21 px</option>
+            </select>
+          </label>
+          <label>
+            <span>行距</span>
+            <select value={lineHeight} onChange={(event) => setLineHeight(event.target.value as ImmersiveLineHeight)}>
+              <option value="compact">1.65</option>
+              <option value="comfortable">1.85</option>
+              <option value="airy">2.05</option>
+            </select>
+          </label>
+          <label>
+            <span>正文列</span>
+            <select value={columnWidth} onChange={(event) => setColumnWidth(event.target.value as ImmersiveColumnWidth)}>
+              <option value="narrow">窄</option>
+              <option value="medium">中</option>
+              <option value="wide">宽</option>
+            </select>
+          </label>
+        </div>
+        <div className="immersive-header-actions">
+          <Button
+            ariaLabel={issuesOpen ? "收起连续性问题辅助栏" : "展开连续性问题辅助栏"}
+            ariaExpanded={issuesOpen}
+            onClick={() => setIssuesOpen(!issuesOpen)}
+          >
+            问题 {issues.length}
+          </Button>
+          <Button buttonRef={firstRef} ariaLabel="退出沉浸写作并返回写作与检查" onClick={close}>退出沉浸</Button>
+        </div>
+      </header>
+      {controlled && <p className="immersive-lineage-note" role="note">受控修订仍绑定当前 Issue 与来源版本；保存会沿用原决定谱系。</p>}
+      <div className="immersive-canvas">
+        <div className="immersive-manuscript" role="document" aria-label="沉浸写作正文">
+          <div className="immersive-writing-column">
+            <label className="immersive-title-field">
+              <span className="sr-only">沉浸写作章节标题</span>
+              <input
+                value={draft?.title ?? ""}
+                disabled={Boolean(busy)}
+                onChange={(event) => draft && setDraft({ ...draft, title: event.target.value })}
+              />
+            </label>
+            <label className="immersive-body-field">
+              <span className="sr-only">沉浸写作草稿正文</span>
+              <textarea
+                id="immersive-draft-body"
+                value={draft?.body ?? ""}
+                disabled={Boolean(busy)}
+                spellCheck={false}
+                onChange={(event) => draft && setDraft({ ...draft, body: event.target.value })}
+              />
+            </label>
+          </div>
+        </div>
+        <aside id="immersive-issues" className="immersive-issues" aria-label="连续性问题辅助栏">
+          <header>
+            <div><p className="eyebrow">检查辅助</p><h2>连续性问题</h2></div>
+            <Button className="quiet" ariaLabel="收起连续性问题辅助栏" onClick={() => setIssuesOpen(false)}>收起</Button>
+          </header>
+          {run ? (
+            <>
+              <p className="run-meta">{stage(run.stage)} · {run.is_stale ? "检查依据已过期" : "基于当前保存版本"}</p>
+              <ul className="immersive-issue-list">
+                {issues.map((issue) => (
+                  <li key={issue.id}>
+                    <Button
+                      className={selectedIssueId === issue.id ? "selected" : ""}
+                      ariaPressed={selectedIssueId === issue.id}
+                      onClick={(event) => select(issue, event.currentTarget)}
+                    >
+                      <span><strong>{categoryLabel(issue.category)}</strong><small>{statusLabel(issue.severity)}</small></span>
+                      <span>{issue.claim_text || issue.explanation}</span>
+                      <small>{issue.decision || locallyResolvedIssueIds.includes(issue.id) ? "决定已记录" : "查看证据"}</small>
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+              {!issues.length && <p className="immersive-issues-empty">当前检查没有可审阅 Issue。</p>}
+            </>
+          ) : <p className="immersive-issues-empty">尚未运行连续性检查。退出沉浸模式后可回到完整检查布局。</p>}
+        </aside>
+      </div>
+      <footer className="immersive-footer">
+        <div className="immersive-counts" aria-label="实时写作统计">
+          <span><strong>{counts.words.toLocaleString("zh-CN")}</strong> 字</span>
+          <span><strong>{counts.characters.toLocaleString("zh-CN")}</strong> 字符</span>
+        </div>
+        <p className={`immersive-save-state ${saveState}`} role="status" aria-live="polite">
+          <strong>{saveLabel}</strong>
+          <span>{error ? labelError(error) : "仅在点击保存时写入；退出沉浸模式不会丢失当前输入。"}</span>
+        </p>
+        <Button
+          className="primary"
+          ariaLabel="显式保存草稿"
+          disabled={!draft || !dirty || Boolean(busy)}
+          ariaBusy={saving}
+          onClick={() => void save()}
+        >
+          <Icon name="save" />{saving ? "正在保存" : controlled ? "保存受控修订" : "保存草稿"}
+        </Button>
+      </footer>
+    </section>
+  );
+}
+
 function ProjectPage(p: {
   tab: string;
   project: Project;
@@ -3297,6 +4117,8 @@ function ProjectPage(p: {
     knowledge_boundary: string;
   }[];
   world: { id: string; entry_type: string; name: string; summary: string }[];
+  authorContext: AuthorContext | null;
+  authorBusy: string;
   memories: Memory[];
   initialization: MemoryInitialization | null;
   memoryDelta: MemoryDelta | null;
@@ -3305,19 +4127,26 @@ function ProjectPage(p: {
   saved: Draft | null;
   run: Run | null;
   pairedRun: Run | null;
+  contextBrief: WritingAnalysisRun | null;
+  planAlignment: WritingAnalysisRun | null;
+  analysisBusy: "context_brief" | "plan_alignment" | "";
   locallyResolvedIssueIds: string[];
   selectedIssueId: string | null;
   tutorialStep: TutorialStep;
   requestTutorialGuidance: () => void;
   readOnly: boolean;
   busy: string;
+  error: unknown;
   controlled: Issue | null;
   changeSet: ChangeSet | null;
   setDraft: (v: Draft) => void;
-  save: () => Promise<void>;
+  save: () => Promise<boolean>;
   check: () => Promise<void>;
   cancelRun: () => Promise<void>;
   retryRun: () => Promise<void>;
+  startAnalysis: (kind: "context_brief" | "plan_alignment") => Promise<void>;
+  cancelAnalysis: (run: WritingAnalysisRun) => Promise<void>;
+  retryAnalysis: (run: WritingAnalysisRun) => Promise<void>;
   select: (i: Issue, el: HTMLElement) => Promise<void> | void;
   review: () => Promise<void>;
   commit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
@@ -3330,9 +4159,45 @@ function ProjectPage(p: {
   archive: () => void;
   finishTutorial: (outcome: "complete" | "skip") => Promise<void>;
   advanceTutorial: (event: TutorialEvent) => Promise<TutorialProgress>;
+  mutateAuthorContext: (
+    endpoint: string,
+    method: "POST" | "PATCH",
+    payload: Record<string, unknown>,
+    busyLabel: string,
+  ) => Promise<AuthorContext | null>;
   openMemorySource: (memory: Memory, element: HTMLButtonElement) => Promise<void> | void;
   go: (href: string) => void;
 }) {
+  const [immersiveOpen, setImmersiveOpen] = useState(false);
+  const [immersiveFontSize, setImmersiveFontSize] = useState<ImmersiveFontSize>("medium");
+  const [immersiveLineHeight, setImmersiveLineHeight] = useState<ImmersiveLineHeight>("comfortable");
+  const [immersiveColumnWidth, setImmersiveColumnWidth] = useState<ImmersiveColumnWidth>("medium");
+  const [immersiveIssuesOpen, setImmersiveIssuesOpen] = useState(true);
+  const immersiveTrigger = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const hash=window.location.hash.slice(1);
+    if(!hash)return;
+    const reveal=window.setTimeout(()=>{
+      const target=document.getElementById(hash);
+      if(!target)return;
+      let ancestor=target.parentElement;
+      while(ancestor){if(ancestor instanceof HTMLDetailsElement)ancestor.open=true;ancestor=ancestor.parentElement;}
+      target.scrollIntoView({block:"center"});
+      target.focus({preventScroll:true});
+    },0);
+    return()=>window.clearTimeout(reveal);
+  },[p.project.id,p.tab,p.chapters,p.memories]);
+  useEffect(() => {
+    const closeOnNarrowViewport = () => {
+      if (window.innerWidth < 1024) setImmersiveOpen(false);
+    };
+    window.addEventListener("resize", closeOnNarrowViewport);
+    return () => window.removeEventListener("resize", closeOnNarrowViewport);
+  }, []);
+  const closeImmersive = () => {
+    setImmersiveOpen(false);
+    setTimeout(() => immersiveTrigger.current?.focus(), 0);
+  };
   const dirty = Boolean(
       p.draft &&
       p.saved &&
@@ -3375,18 +4240,18 @@ function ProjectPage(p: {
           </div>
         </header>
         {contextNotices}
-        <div className="overview-grid">
-          <section className="overview-panel current-draft-panel">
+        <div className="overview-grid overview-primary-grid">
+          <section className="overview-panel overview-primary-card current-draft-panel">
             <p className="eyebrow">当前草稿</p>
             <h2>第 {p.project.current_draft.chapter_number} 章</h2>
             <p>第 {p.project.current_draft.revision} 次保存 · 当前可继续写作与审阅。</p>
-            <div className="draft-progress" aria-hidden="true"><span /></div>
             <div className="overview-meta">
               <span>{p.project.chapter_count} 个章节</span>
               <span>已保存</span>
             </div>
+            <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>打开当前草稿</Button>
           </section>
-          <section className="overview-panel memory-panel" aria-label="Story Memory">
+          <section className="overview-panel overview-primary-card memory-panel" aria-label="Story Memory">
             <p className="eyebrow">STORY MEMORY</p>
             <h2>Memory V{p.project.current_memory_version}</h2>
             <p className="term-help">Story Memory 是作者确认、供后续连续性检查使用的事实集合；版本号代表一次明确提交后的完整快照。</p>
@@ -3396,26 +4261,32 @@ function ProjectPage(p: {
               <div><dt>检查状态</dt><dd>{p.project.continuity_status === "unchecked" ? "尚未检查" : p.project.continuity_status === "checked_clear" ? "已检查 · 0 项待处理" : `${p.project.open_issue_count ?? 0} 项待处理`}</dd></div>
               <div><dt>最近检查</dt><dd>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚无"}</dd></div>
             </dl>
+            <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/memory`)}>查看 Story Memory</Button>
           </section>
         </div>
         <section className="project-section">
           <h2>资料摘要</h2>
           <div className="overview-grid overview-reference-grid">
-            <section className="overview-panel">
+            <section className="overview-panel overview-reference-card">
               <h3>大纲</h3>
-              <p>{p.project.chapter_count ? `已建立 ${p.project.chapter_count} 个章节节点。` : "尚未建立章节节点。"}</p>
-              <Button className="quiet" onClick={() => p.go(`/projects/${p.project.id}/outline`)}>查看大纲</Button>
+              <p>{p.project.chapter_count ? `${p.project.chapter_count} 个已写章节` : "尚无已写章节"} · {p.authorContext?.story_plans.length ?? 0} 条创作规划</p>
+              <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/outline`)}>查看大纲</Button>
             </section>
-            <section className="overview-panel">
-              <h3>角色与世界观</h3>
-              <p>项目资料、角色状态与世界观条目会独立维护。</p>
-              <Button className="quiet" onClick={() => p.go(`/projects/${p.project.id}/characters`)}>查看角色库</Button>
+            <section className="overview-panel overview-reference-card">
+              <h3>角色</h3>
+              <p>{p.characters.length} 条正文档案 · {p.authorContext?.character_plans.length ?? 0} 条角色规划</p>
+              <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/characters`)}>查看角色库</Button>
+            </section>
+            <section className="overview-panel overview-reference-card">
+              <h3>世界观</h3>
+              <p>{p.world.length} 条正文资料 · {p.authorContext?.world_plans.length ?? 0} 条设定规划</p>
+              <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/world`)}>查看世界观</Button>
             </section>
           </div>
         </section>
         <section className="project-section latest-run-section">
           <h2>最近检查</h2>
-          <div className="latest-run-row">
+          <div className={`latest-run-row latest-run-card ${p.project.continuity_status ?? "unchecked"}`}>
             <div>
               <strong>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚未检查"}</strong>
               <span>{p.project.latest_run ? (p.project.latest_run.result_origin === "demo_preset" ? "预置演示审阅数据 · 未调用 Provider" : `检查记录 ${p.project.latest_run.run_id}`) : "保存草稿后可运行连续性检查。"}</span>
@@ -3447,26 +4318,50 @@ function ProjectPage(p: {
     );
   if (p.tab === "outline")
     return (
-      <OutlineView
+      <AuthorPlanningPage
+        key="story-planning"
+        kind="story"
+        projectId={p.project.id}
         projectTitle={p.project.title}
-        chapters={p.outline?.chapter_nodes ?? []}
+        projectIsTutorial={Boolean(p.project.is_tutorial)}
+        authorContext={p.authorContext}
+        readOnly={p.readOnly}
+        busy={p.authorBusy}
+        mutate={p.mutateAuthorContext}
         context={contextNotices}
+        reference={<OutlineReference chapters={p.outline?.chapter_nodes ?? []} />}
       />
     );
   if (p.tab === "characters")
     return (
-      <CharacterArchive
+      <AuthorPlanningPage
+        key="character-planning"
+        kind="character"
+        projectId={p.project.id}
         projectTitle={p.project.title}
-        characters={p.characters}
+        projectIsTutorial={Boolean(p.project.is_tutorial)}
+        authorContext={p.authorContext}
+        readOnly={p.readOnly}
+        busy={p.authorBusy}
+        mutate={p.mutateAuthorContext}
         context={contextNotices}
+        reference={<CharacterArchive projectId={p.project.id} characters={p.characters} draft={p.draft} readOnly={p.readOnly} />}
       />
     );
   if (p.tab === "world")
     return (
-      <WorldArchive
+      <AuthorPlanningPage
+        key="world-planning"
+        kind="world"
+        projectId={p.project.id}
         projectTitle={p.project.title}
-        entries={p.world}
+        projectIsTutorial={Boolean(p.project.is_tutorial)}
+        authorContext={p.authorContext}
+        readOnly={p.readOnly}
+        busy={p.authorBusy}
+        mutate={p.mutateAuthorContext}
         context={contextNotices}
+        reference={<WorldArchive entries={p.world} />}
       />
     );
   if (p.tab === "memory")
@@ -3484,10 +4379,11 @@ function ProjectPage(p: {
           <section className="notice" aria-label="增量来源覆盖审计">
             <strong>来源覆盖审计：{p.memoryDelta.coverage_audit.status}</strong>
             <p>Audit {p.memoryDelta.coverage_audit.id} · source r{p.memoryDelta.coverage_audit.source_revision} · {p.memoryDelta.coverage_audit.details.candidate_ids?.length ?? 0} 个候选均保留决定与 Evidence 谱系。</p>
+            {p.memoryDelta.change_set && <p>ChangeSet {p.memoryDelta.change_set.id} · Memory V{p.memoryDelta.change_set.base_memory_version} → V{p.memoryDelta.change_set.target_memory_version} · {p.memoryDelta.change_set.items.length} 条审计项。</p>}
           </section>
         )}
         {p.memoryDelta && p.memoryDelta.status !== "not_started" && p.memoryDelta.status !== "covered" ? (
-          <MemoryDeltaReview delta={p.memoryDelta} blocked={blocked} submit={p.submitMemoryDelta} />
+          <MemoryDeltaReview delta={p.memoryDelta} blocked={blocked} submit={p.submitMemoryDelta} openSource={p.openMemorySource} />
         ) : p.project.data_origin === "user_import" && p.initialization && (!p.memories.length || p.coverage?.status === "ready_partial") ? (
           <MemoryInitializationReview
             initialization={p.initialization}
@@ -3528,6 +4424,14 @@ function ProjectPage(p: {
         </div>
         {!p.readOnly && (
           <div className="actions">
+            <Button
+              buttonRef={immersiveTrigger}
+              ariaLabel="进入沉浸写作"
+              disabled={!p.draft || Boolean(p.busy)}
+              onClick={() => setImmersiveOpen(true)}
+            >
+              <Icon name="pen" />沉浸写作
+            </Button>
             {dirty || p.controlled ? (
               <Button className="primary" disabled={blocked} onClick={() => void p.save()}>
                 <Icon name="save" />
@@ -3562,13 +4466,19 @@ function ProjectPage(p: {
       {p.coverage?.status === "update_pending" && (
         <p className="warning"><I>!</I>资料版本第 {p.project.source_revision} 版已追加；只有新增来源片段与已确认 Memory 会进入增量审阅。{p.memoryDelta?.status === "failed" ? "本次检查失败，未写入任何问题或候选，可安全重试。" : <Button className="primary" disabled={blocked} onClick={() => void p.startIncrementalReview()}>运行增量检查</Button>}</p>
       )}
+      <section className="writing-assist" aria-label="AI 写作辅助">
+        <header><div><p className="eyebrow">AI 写作辅助</p><h2>计划、事实与正文分层对照</h2><p>简报用于写作前准备；偏离检查只分析已保存草稿，不会修改正文或 Story Memory。</p></div>{!p.readOnly&&<div className="writing-assist-actions"><Button className="secondary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty} onClick={()=>void p.startAnalysis("context_brief")}>{p.analysisBusy==="context_brief"?"正在生成":"生成章节简报"}</Button><Button className="secondary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty||!p.draft.body.trim()} onClick={()=>void p.startAnalysis("plan_alignment")}>{p.analysisBusy==="plan_alignment"?"正在检查":"检查计划偏离"}</Button></div>}</header>
+        {p.readOnly&&!p.contextBrief&&!p.planAlignment&&<p className="muted">当前窄窗口仅支持浏览已有分析结果；请在宽屏窗口生成或重试。</p>}
+        {(p.contextBrief||p.planAlignment)&&<div className="writing-analysis-grid">{p.contextBrief&&<WritingAnalysisPanel run={p.contextBrief} readOnly={p.readOnly} busy={Boolean(p.analysisBusy)} cancel={p.cancelAnalysis} retry={p.retryAnalysis}/>} {p.planAlignment&&<WritingAnalysisPanel run={p.planAlignment} readOnly={p.readOnly} busy={Boolean(p.analysisBusy)} cancel={p.cancelAnalysis} retry={p.retryAnalysis}/>}</div>}
+      </section>
       {p.run && <RunLifecycle run={p.run} blocked={blocked} cancelRun={p.cancelRun} retryRun={p.retryRun} actions={!p.readOnly} />}
       {p.pairedRun && <RunLifecycle run={p.pairedRun} blocked={blocked} cancelRun={p.cancelRun} retryRun={p.retryRun} actions={false} />}
       <div className="workspace-grid">
         <section className="editor">
           <header className="editor-top">
             <div className="editor-title">
-              <span>{dirty ? "正在编辑当前章节" : "当前章节"}</span>
+              <strong>{dirty ? "正在编辑" : "当前草稿"}</strong>
+              <span>第 {p.draft?.chapter_number ?? "—"} 章 · revision {p.draft?.revision ?? "—"}</span>
             </div>
             <span className={dirty ? "save-state unsaved" : "save-state"}>{dirty ? "● 未保存" : "✓ 已保存"}</span>
           </header>
@@ -3582,7 +4492,7 @@ function ProjectPage(p: {
               }
             />
           </label>
-          <label className="draft-field">
+          <label id="draft-source" className="draft-field">
             <span className="sr-only">草稿正文</span>
             {p.readOnly ? (
               <article className="draft-read">{p.draft?.body}</article>
@@ -3611,8 +4521,7 @@ function ProjectPage(p: {
         </section>
         <aside className="issues">
           <header className="issues-top">
-            <h2>连续性问题 <span>{p.run?.issues?.length ?? 0}</span></h2>
-            <span className="issues-filter" aria-hidden="true">⌘</span>
+            <div><h2>连续性问题 <span>{p.run?.issues?.length ?? 0}</span></h2><p>按风险查看问题与对应证据</p></div>
           </header>
           {p.run ? (
             <>
@@ -3633,19 +4542,21 @@ function ProjectPage(p: {
                       ariaPressed={p.selectedIssueId === x.id}
                       onClick={(e) => p.select(x, e.currentTarget)}
                     >
-                      <span className={`risk ${x.severity}`}>
-                        <I>
-                          {x.severity === "high"
-                            ? "▲"
-                            : x.severity === "medium"
-                              ? "●"
-                              : "○"}
-                        </I>
-                        {statusLabel(x.severity)}
+                      <span className="issue-row-head">
+                        <span className={`risk ${x.severity}`}>
+                          <I>
+                            {x.severity === "high"
+                              ? "▲"
+                              : x.severity === "medium"
+                                ? "●"
+                                : "○"}
+                          </I>
+                          {statusLabel(x.severity)}
+                        </span>
+                        <strong>{categoryLabel(x.category)}</strong>
                       </span>
-                    <strong>{categoryLabel(x.category)}</strong>
-                      <span>{x.claim_text || x.explanation}</span>
-                      <small>{x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "决定已记录" : "查看证据"}</small>
+                      <span className="issue-claim">{x.claim_text || x.explanation}</span>
+                      <small className="issue-action-label">{x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "决定已记录" : "查看证据"}</small>
                       <span className="issue-arrow" aria-hidden="true">›</span>
                     </Button>
                   </li>
@@ -3682,6 +4593,33 @@ function ProjectPage(p: {
           )}
         </aside>
       </div>
+      <BoundedStoryTools key={p.project.id} project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} dirty={dirty} go={p.go} />
+      <RevisionPlanTools key={`revision:${p.project.id}`} project={p.project} draft={p.draft} run={p.run} readOnly={p.readOnly} dirty={dirty} busy={Boolean(p.busy)} recheck={p.check} go={p.go} />
+      {immersiveOpen && !p.readOnly && (
+        <ImmersiveEditor
+          project={p.project}
+          draft={p.draft}
+          saved={p.saved}
+          run={p.run}
+          busy={p.busy}
+          error={p.error}
+          controlled={p.controlled}
+          selectedIssueId={p.selectedIssueId}
+          locallyResolvedIssueIds={p.locallyResolvedIssueIds}
+          fontSize={immersiveFontSize}
+          lineHeight={immersiveLineHeight}
+          columnWidth={immersiveColumnWidth}
+          issuesOpen={immersiveIssuesOpen}
+          setFontSize={setImmersiveFontSize}
+          setLineHeight={setImmersiveLineHeight}
+          setColumnWidth={setImmersiveColumnWidth}
+          setIssuesOpen={setImmersiveIssuesOpen}
+          setDraft={p.setDraft}
+          save={p.save}
+          select={p.select}
+          close={closeImmersive}
+        />
+      )}
       {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
         <section className="project-section" aria-label="Memory 更新建议"><h2>Memory 更新建议</h2><p>连续性问题与事实更新建议会分别保存；未确认的候选不会进入正式事实，也不会用于后续模型检查。</p><p>资料版本第 {p.memoryDelta.source_revision ?? "?"} 版 · 状态 {p.memoryDelta.status} · 核心待审 {p.memoryDelta.coverage?.counts.core_pending ?? 0}</p><Button onClick={() => p.go(`/projects/${p.project.id}/memory`)}>打开更新审核与证据</Button></section>
       )}
@@ -3733,10 +4671,76 @@ function ProjectPage(p: {
     </section>
   );
 }
-function MemoryDeltaReview({ delta, blocked, submit }: { delta: MemoryDelta; blocked: boolean; submit: (event: FormEvent<HTMLFormElement>) => Promise<void> }) {
-  if (["processing", "cancelling"].includes(delta.status)) return <div className="empty" role="status">正在分别运行 Continuity 与 Memory Delta；只有双 Run 全部完成后才会显示结果。</div>;
-  if (["failed", "timed_out", "cancelled"].includes(delta.status)) return <div className="notice error" role="alert">增量运行未完成：{labelError({ code: delta.error_code })} 没有写入 Issue、候选或 MemoryVersion，请在 Run 生命周期中安全重试。</div>;
-  return <form className="review memory-init-review" aria-label="Memory Delta 审核" onSubmit={(event) => void submit(event)}><header><div><p className="eyebrow">MEMORY DELTA</p><h2>新增 Source r{delta.source_revision} 的候选</h2><p>核心候选必须全部决定；辅助候选可待确认，且不进入 canon 或 Provider 输入。当前覆盖：{coverageStatusLabel(delta.coverage?.status)}。</p></div></header>{delta.candidates.map((candidate) => <article key={candidate.id} className="diff memory-init-candidate"><div className="candidate-source"><strong>Evidence · 第 {candidate.source.chapter_number} 章《{candidate.source.chapter_title}》</strong><p>{candidate.source.excerpt}</p><small>SourceSpan {candidate.source.span_id} · source r{candidate.source_revision}</small></div><div><strong>候选事实</strong><p>{memoryTypeLabel(candidate.memory_type)} · {candidate.subject} · {predicateLabel(candidate.predicate)}：{candidate.value}</p><small>增量候选 · {candidate.review_priority === "core" ? "核心候选（必须决定）" : "辅助候选（可继续待审）"} · 尚未成为 canon</small></div>{candidate.decision_status === "pending" ? <><fieldset><legend>作者审核（未预选）</legend><label><input type="radio" name={`memory-delta:${candidate.id}`} value="accepted" disabled={blocked} />接受</label><label><input type="radio" name={`memory-delta:${candidate.id}`} value="rejected" disabled={blocked} />拒绝</label><label><input type="radio" name={`memory-delta:${candidate.id}`} value="edited" disabled={blocked} />编辑后接受</label></fieldset><div className="candidate-edit"><label>事实类型<select name={`memory-delta:${candidate.id}:memory_type`} defaultValue={candidate.memory_type} disabled={blocked}>{["static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"].map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label><label>对象<input name={`memory-delta:${candidate.id}:subject`} defaultValue={candidate.subject} disabled={blocked} /></label><label>关系<input name={`memory-delta:${candidate.id}:predicate`} defaultValue={candidate.predicate} disabled={blocked} /></label><label>事实内容<textarea name={`memory-delta:${candidate.id}:value`} defaultValue={candidate.value} disabled={blocked} /></label></div></> : <p>已由作者决定：{decisionStatusLabel(candidate.decision_status)}；{candidate.decision_status === "rejected" ? "不写入 canon。" : "将在核心闭合提交时写入新 MemoryVersion。"}</p>}</article>)}<footer className="actions"><Button className="primary" type="submit" disabled={blocked || !delta.candidates.length}>提交已决定的核心候选</Button></footer></form>;
+function MemoryDeltaReview({ delta, blocked, submit, openSource }: { delta: MemoryDelta; blocked: boolean; submit: (event: FormEvent<HTMLFormElement>) => Promise<void>; openSource: (memory: Memory, element: HTMLButtonElement) => Promise<void> | void }) {
+  const [choices, setChoices] = useState<Record<string, string>>({});
+  if (["processing", "cancelling"].includes(delta.status)) return <div className="empty" role="status">正在运行连续性检查与 Story Memory 更新分析；两项都完成后才会显示审核结果。</div>;
+  if (["failed", "timed_out", "cancelled"].includes(delta.status)) return <div className="notice error" role="alert">更新分析未完成：{labelError({ code: delta.error_code })} 没有写入 Issue、候选或 Memory 版本，请从当前来源安全重试。</div>;
+  const kindLabel = { new_fact: "新增事实", changed_fact: "变更事实", invalidated_fact: "失效事实" } as const;
+  const sourceMemory = (candidate: MemoryDelta["candidates"][number]): Memory => ({
+    id: candidate.id,
+    memory_type: candidate.memory_type,
+    subject: candidate.subject,
+    predicate: candidate.predicate,
+    value: candidate.value,
+    valid_from: null,
+    valid_to: null,
+    review_status: "pending",
+    source: { chapter_id: candidate.source.chapter_id, chapter_number: candidate.source.chapter_number, chapter_title: candidate.source.chapter_title, span_id: candidate.source.span_id, excerpt: candidate.source.excerpt, source_path: candidate.source.source_path },
+  });
+  return (
+    <form className="review memory-init-review memory-delta-review" aria-label="Memory Delta 审核" onSubmit={(event) => void submit(event)}>
+      <header>
+        <div>
+          <p className="eyebrow">STORY MEMORY · SOURCE R{delta.source_revision}</p>
+          <h2>核对事实变化</h2>
+          <p>每条变化都绑定当前来源与 Memory V{delta.base_memory_version}。核心变化必须全部决定；辅助建议只有明确决定后才会提交。当前覆盖：{coverageStatusLabel(delta.coverage?.status)}。</p>
+        </div>
+      </header>
+      {!delta.candidates.length && <div className="empty"><strong>没有发现事实变化候选</strong><p>仍需确认本次来源已完成覆盖审计；确认后不会创建新 Memory 版本。</p></div>}
+      {delta.candidates.map((candidate) => {
+        const selected = choices[candidate.id] ?? "";
+        return (
+          <article key={candidate.id} className={`diff memory-init-candidate memory-delta-candidate kind-${candidate.change_kind}`}>
+            <header className="delta-candidate-heading">
+              <span className="delta-kind">{kindLabel[candidate.change_kind]}</span>
+              <span>{candidate.review_priority === "core" ? "核心变化 · 必须决定" : "辅助建议 · 可继续待审"}</span>
+            </header>
+            <div className="delta-fact-flow">
+              <section className="delta-fact before-fact">
+                <strong>当前已确认事实</strong>
+                {candidate.before ? <><p>{memoryTypeLabel(candidate.before.memory_type)} · {candidate.before.subject} · {predicateLabel(candidate.before.predicate)}：{candidate.before.value}</p><small>Memory V{delta.base_memory_version} · {candidate.before.id}</small>{candidate.before.source && <Button type="button" className="link-button" onClick={(event) => void openSource(candidate.before as Memory, event.currentTarget)}>查看原事实来源</Button>}</> : <p className="muted">当前 Story Memory 中没有对应事实。</p>}
+              </section>
+              <span className="delta-arrow" aria-hidden="true">→</span>
+              <section className="delta-fact proposed-fact">
+                <strong>AI 提议</strong>
+                {candidate.change_kind === "invalidated_fact" ? <><p>停止沿用这条事实，不生成相反事实。</p><small>理由：{candidate.invalidation_reason}</small></> : <p>{memoryTypeLabel(candidate.memory_type)} · {candidate.subject} · {predicateLabel(candidate.predicate)}：{candidate.value}</p>}
+              </section>
+            </div>
+            <section className="candidate-source delta-evidence">
+              <strong>新修订 Evidence · 第 {candidate.source.chapter_number} 章《{candidate.source.chapter_title}》</strong>
+              <blockquote>{candidate.source.excerpt}</blockquote>
+              <small>SourceSpan {candidate.source.span_id} · source r{candidate.source_revision}</small>
+              <Button type="button" className="link-button" onClick={(event) => void openSource(sourceMemory(candidate), event.currentTarget)}>查看新修订来源</Button>
+            </section>
+            {candidate.decision_status === "pending" ? <>
+              <fieldset className="delta-decision"><legend>作者决定（未预选）</legend>
+                <label><input type="radio" name={`memory-delta:${candidate.id}`} value="accepted" checked={selected === "accepted"} onChange={() => setChoices((current) => ({ ...current, [candidate.id]: "accepted" }))} disabled={blocked} />接受</label>
+                <label><input type="radio" name={`memory-delta:${candidate.id}`} value="rejected" checked={selected === "rejected"} onChange={() => setChoices((current) => ({ ...current, [candidate.id]: "rejected" }))} disabled={blocked} />拒绝</label>
+                {candidate.change_kind !== "invalidated_fact" && <label><input type="radio" name={`memory-delta:${candidate.id}`} value="edited" checked={selected === "edited"} onChange={() => setChoices((current) => ({ ...current, [candidate.id]: "edited" }))} disabled={blocked} />编辑后接受</label>}
+              </fieldset>
+              {selected === "edited" && candidate.change_kind !== "invalidated_fact" && <div className="candidate-edit" aria-label="编辑事实变化">
+                <label>事实类型<select name={`memory-delta:${candidate.id}:memory_type`} defaultValue={candidate.memory_type} disabled={blocked}>{["static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"].map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label>
+                <label>对象<input name={`memory-delta:${candidate.id}:subject`} defaultValue={candidate.subject} maxLength={80} disabled={blocked} /></label>
+                <label>关系<input name={`memory-delta:${candidate.id}:predicate`} defaultValue={candidate.predicate} maxLength={80} disabled={blocked} /></label>
+                <label>事实内容<textarea name={`memory-delta:${candidate.id}:value`} defaultValue={candidate.value} maxLength={240} disabled={blocked} /></label>
+              </div>}
+            </> : <p className="candidate-decision">作者已{candidate.decision_status === "rejected" ? "拒绝" : candidate.decision_status === "edited" ? "编辑后接受" : "接受"}此变化；{candidate.decision_status === "rejected" ? "不会改变 Story Memory。" : "等待原子提交。"}</p>}
+          </article>
+        );
+      })}
+      <footer className="actions"><Button className="primary" type="submit" disabled={blocked}>{delta.candidates.length ? "确认提交并更新 Story Memory" : "确认无候选并完成覆盖"}</Button></footer>
+    </form>
+  );
 }
 
 function MemoryInitializationReview({
@@ -3853,7 +4857,7 @@ function SourceAppend({ project, draft, chapters, readOnly, context }: { project
     <Button className="primary" disabled={Boolean(busy) || (method !== "draft_complete" && !content.trim())} onClick={() => void makePreview()}>{busy || "预览追加"}</Button></section>}
     {error && <div className="notice error" role="alert">{error} 请保留当前内容，重新获取当前 source revision 后重试。</div>}
     {preview && <section className="notice success" role="status"><strong>SourceChangeSet 预览 · {preview.status}</strong><p>SHA-256 {preview.content_sha256} · {preview.chapter_count} 个章节 / {preview.source_span_count} 个 SourceSpan · r{preview.base_source_revision} → r{preview.target_source_revision}</p><small>预览于 {preview.previewed_at}；创建审计已记录。文件仅记录 basename。</small><ul>{preview.chapters.map((chapter) => <li key={chapter.preview_id}>第 {chapter.order} 个追加章节《{chapter.title}》· {chapter.character_count} 字</li>)}</ul>{!readOnly && (preview.status === "previewed" ? <Button className="primary" disabled={Boolean(busy)} onClick={() => void commit()}>确认追加并创建下一章草稿</Button> : <><p>已提交 source r{preview.target_source_revision}。</p>{nextDraft && <p>下一章草稿：第 {nextDraft.chapter_number} 章《{nextDraft.title}》 · {nextDraft.id}</p>}<Button className="primary" onClick={() => router.push(`/projects/${project.id}/workspace`)}>进入下一章草稿</Button></>)}</section>}
-    <Read title="现有章节来源" breadcrumb="Evidence 可回源" note="历史 Evidence 保持指向原 SourceSpan。" items={chapters.flatMap((chapter) => (chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`}><strong>第 {chapter.number} 章《{chapter.title}》 · {span.label}</strong><span>{span.text_excerpt}</span></li>))} empty="此作品还没有可回源的章节片段。" />
+    <Read title="现有章节来源" breadcrumb="Evidence 可回源" note="历史 Evidence 保持指向原 SourceSpan。" items={chapters.flatMap((chapter) => [<li key={`chapter-${chapter.id}`} id={`chapter-${chapter.id}`} className="source-chapter-anchor"><strong>第 {chapter.number} 章《{chapter.title}》</strong><span>{chapter.summary||"本章来源"}</span></li>,...(chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`}><strong>第 {chapter.number} 章《{chapter.title}》 · {span.label}</strong><span>{span.text_excerpt}</span></li>)])} empty="此作品还没有可回源的章节片段。" />
   </section>;
 }
 
@@ -3891,14 +4895,495 @@ function Read({
   );
 }
 
-function OutlineView({
+type AuthorPlanKind = "story" | "character" | "world";
+type AuthorPlanSelection =
+  | { kind: "story"; item: AuthorStoryPlan }
+  | { kind: "character"; item: AuthorCharacterPlan }
+  | { kind: "world"; item: AuthorWorldPlan };
+type AuthorPlanDialogState =
+  | { kind: "story"; item: AuthorStoryPlan | null }
+  | { kind: "character"; item: AuthorCharacterPlan | null }
+  | { kind: "world"; item: AuthorWorldPlan | null };
+type AuthorMutation = (
+  endpoint: string,
+  method: "POST" | "PATCH",
+  payload: Record<string, unknown>,
+  busyLabel: string,
+) => Promise<AuthorContext | null>;
+
+const authorPlanCopy = {
+  story: {
+    title: "大纲",
+    planning: "创作规划",
+    reference: "已写章节",
+    newLabel: "新建规划",
+    noun: "故事规划",
+    description: "安排后续章节的故事方向；已写章节保持为只读正文资料。",
+    empty: "还没有创作规划。这里记录作者对后续故事的安排，不会自动成为正文事实。",
+  },
+  character: {
+    title: "角色库",
+    planning: "角色规划",
+    reference: "正文档案",
+    newLabel: "新建角色规划",
+    noun: "角色规划",
+    description: "规划角色后续目标与状态；正文档案继续展示已经写入故事的资料。",
+    empty: "还没有角色规划。可以先记录角色接下来要追求的目标与计划状态。",
+  },
+  world: {
+    title: "世界观",
+    planning: "设定规划",
+    reference: "正文资料",
+    newLabel: "新建设定规划",
+    noun: "设定规划",
+    description: "规划后续要使用的地点、规则与组织；正文资料保持只读。",
+    empty: "还没有设定规划。可以先记录后续创作准备使用的世界设定。",
+  },
+} as const;
+
+const authorStoryStatusLabel = (value: AuthorStoryPlan["status"]) =>
+  ({ planned: "待开始", in_progress: "进行中", paused: "已暂停", completed: "已完成" })[value];
+
+function AuthorPlanningPage({
+  kind,
+  projectId,
   projectTitle,
-  chapters,
+  projectIsTutorial,
+  authorContext,
+  readOnly,
+  busy,
+  mutate,
   context,
+  reference,
 }: {
+  kind: AuthorPlanKind;
+  projectId: string;
   projectTitle: string;
-  chapters: { id: string; chapter_number: number; title: string; summary: string; status: string }[];
+  projectIsTutorial: boolean;
+  authorContext: AuthorContext | null;
+  readOnly: boolean;
+  busy: string;
+  mutate: AuthorMutation;
   context?: ReactNode;
+  reference: ReactNode;
+}) {
+  const copy = authorPlanCopy[kind];
+  const [mode, setMode] = useState<"planning" | "reference">(() =>
+    typeof window !== "undefined" && window.location.hash.startsWith("#plan-")
+      ? "planning"
+      : projectIsTutorial ? "reference" : "planning",
+  );
+  const [showArchived, setShowArchived] = useState(false);
+  const [dialog, setDialog] = useState<AuthorPlanDialogState | null>(null);
+  const [archiveTarget, setArchiveTarget] = useState<AuthorPlanSelection | null>(null);
+  const [pageError, setPageError] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const returnFocus = useRef<HTMLButtonElement | null>(null);
+  const records: AuthorPlanSelection[] = !authorContext
+    ? []
+    : kind === "story"
+      ? authorContext.story_plans.map((item) => ({ kind, item }))
+      : kind === "character"
+        ? authorContext.character_plans.map((item) => ({ kind, item }))
+        : authorContext.world_plans.map((item) => ({ kind, item }));
+  const activeRecords = records.filter(({ item }) => !item.archived);
+  const visibleRecords = showArchived ? records : activeRecords;
+  const endpoint = kind === "story" ? "story-plans" : kind === "character" ? "character-plans" : "world-plans";
+  const disabled = readOnly || Boolean(busy) || !authorContext;
+
+  const restoreFocus = () => requestAnimationFrame(() => returnFocus.current?.focus());
+  const closeDialog = () => {
+    setDialog(null);
+    restoreFocus();
+  };
+  const closeArchive = () => {
+    setArchiveTarget(null);
+    restoreFocus();
+  };
+  const openCreate = (button: HTMLButtonElement) => {
+    returnFocus.current = button;
+    setPageError("");
+    setFeedback("");
+    setDialog({ kind, item: null } as AuthorPlanDialogState);
+  };
+  const openEdit = (selection: AuthorPlanSelection, button: HTMLButtonElement) => {
+    returnFocus.current = button;
+    setPageError("");
+    setFeedback("");
+    setDialog(selection);
+  };
+  const savePlan = async (fields: Record<string, unknown>, state: AuthorPlanDialogState) => {
+    if (!authorContext) return;
+    const itemId = state.item?.id;
+    await mutate(
+      itemId ? `${endpoint}/${itemId}` : endpoint,
+      itemId ? "PATCH" : "POST",
+      { base_author_context_version: authorContext.author_context_version, ...fields },
+      itemId ? `正在保存${copy.noun}` : `正在新建${copy.noun}`,
+    );
+    setFeedback(itemId ? `${copy.noun}已更新。` : `${copy.noun}已创建。`);
+    closeDialog();
+  };
+  const move = async (selection: AuthorPlanSelection, offset: -1 | 1) => {
+    if (!authorContext) return;
+    const index = activeRecords.findIndex(({ item }) => item.id === selection.item.id);
+    const nextIndex = index + offset;
+    if (index < 0 || nextIndex < 0 || nextIndex >= activeRecords.length) return;
+    const orderedIds = activeRecords.map(({ item }) => item.id);
+    [orderedIds[index], orderedIds[nextIndex]] = [orderedIds[nextIndex], orderedIds[index]];
+    setPageError("");
+    setFeedback("");
+    try {
+      await mutate(
+        `${endpoint}/reorder`,
+        "POST",
+        {
+          base_author_context_version: authorContext.author_context_version,
+          ordered_ids: orderedIds,
+        },
+        `正在调整${copy.noun}顺序`,
+      );
+      setFeedback("规划顺序已更新。");
+    } catch (cause) {
+      setPageError(
+        (cause as ApiFailure).code === "author_context_version_conflict"
+          ? "内容已在其他窗口更新，已载入最新版本，请确认后重试。"
+          : labelError(cause),
+      );
+    }
+  };
+  const archivePlan = async () => {
+    if (!authorContext || !archiveTarget) return;
+    setPageError("");
+    setFeedback("");
+    try {
+      await mutate(
+        `${endpoint}/${archiveTarget.item.id}/archive`,
+        "POST",
+        { base_author_context_version: authorContext.author_context_version, confirm: true },
+        `正在归档${copy.noun}`,
+      );
+      setFeedback(`${copy.noun}已归档。`);
+      closeArchive();
+    } catch (cause) {
+      setPageError(
+        (cause as ApiFailure).code === "author_context_version_conflict"
+          ? "内容已在其他窗口更新，已载入最新版本，请确认后重试。"
+          : labelError(cause),
+      );
+    }
+  };
+
+  return (
+    <section className={`project-page archive-page author-planning-page author-${kind}-page`} data-project-id={projectId}>
+      <header className="page-header author-planning-header">
+        <div>
+          <p className="breadcrumb">项目 / {projectTitle} / {copy.title}</p>
+          <h1>{copy.title}</h1>
+          <p>{copy.description}</p>
+        </div>
+        <div className="author-planning-status">
+          <span>作者规划 v{authorContext?.author_context_version ?? "—"}</span>
+          {mode === "planning" && !readOnly && (
+            <Button className="primary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>
+              {copy.newLabel}
+            </Button>
+          )}
+        </div>
+      </header>
+      {context}
+      <nav className="author-mode-switch" aria-label={`${copy.title}资料模式`}>
+        <Button className={mode === "planning" ? "current" : "quiet"} ariaPressed={mode === "planning"} onClick={() => setMode("planning")}>{copy.planning}</Button>
+        <Button className={mode === "reference" ? "current" : "quiet"} ariaPressed={mode === "reference"} onClick={() => setMode("reference")}>{copy.reference}</Button>
+      </nav>
+      {mode === "reference" ? (
+        <div className="author-reference-pane" aria-label={copy.reference}>{reference}</div>
+      ) : (
+        <section className="author-planning-pane" aria-label={copy.planning} aria-busy={Boolean(busy)}>
+          <div className="author-planning-toolbar">
+            <div>
+              <strong>{copy.planning}</strong>
+              <span>{activeRecords.length} 条进行中的规划{records.some(({ item }) => item.archived) ? ` · ${records.length - activeRecords.length} 条已归档` : ""}</span>
+            </div>
+            {records.some(({ item }) => item.archived) && (
+              <Button className="quiet" ariaPressed={showArchived} onClick={() => setShowArchived((current) => !current)}>
+                {showArchived ? "隐藏已归档" : "查看已归档"}
+              </Button>
+            )}
+          </div>
+          {readOnly && <p className="author-mobile-note" role="note">移动端可以浏览作者规划；请在桌面端创建、编辑、排序或归档。</p>}
+          {pageError && <p className="notice error author-plan-notice" role="alert">{pageError}</p>}
+          {feedback && <p className="notice success author-plan-notice" role="status">{feedback}</p>}
+          {!authorContext ? (
+            <div className="empty archive-empty">正在读取作者规划。</div>
+          ) : visibleRecords.length ? (
+            <ol className="author-plan-list">
+              {visibleRecords.map((selection) => {
+                const index = activeRecords.findIndex(({ item }) => item.id === selection.item.id);
+                return (
+                  <AuthorPlanRow
+                    key={selection.item.id}
+                    selection={selection}
+                    readOnly={readOnly}
+                    busy={Boolean(busy)}
+                    canMoveUp={!selection.item.archived && index > 0}
+                    canMoveDown={!selection.item.archived && index >= 0 && index < activeRecords.length - 1}
+                    edit={(button) => openEdit(selection, button)}
+                    moveUp={() => void move(selection, -1)}
+                    moveDown={() => void move(selection, 1)}
+                    archive={(button) => {
+                      returnFocus.current = button;
+                      setPageError("");
+                      setFeedback("");
+                      setArchiveTarget(selection);
+                    }}
+                  />
+                );
+              })}
+            </ol>
+          ) : (
+            <div className="empty author-plan-empty">
+              <strong>{showArchived ? "没有已归档规划" : copy.empty}</strong>
+            </div>
+          )}
+        </section>
+      )}
+      {dialog && (
+        <AuthorPlanDialog
+          state={dialog}
+          busy={busy}
+          close={closeDialog}
+          save={(fields) => savePlan(fields, dialog)}
+        />
+      )}
+      {archiveTarget && (
+        <AuthorArchiveDialog
+          selection={archiveTarget}
+          busy={busy}
+          error={pageError}
+          close={closeArchive}
+          confirm={() => void archivePlan()}
+        />
+      )}
+    </section>
+  );
+}
+
+function authorPlanName(selection: AuthorPlanSelection) {
+  return selection.kind === "story" ? selection.item.title : selection.item.name;
+}
+
+function AuthorPlanRow({
+  selection,
+  readOnly,
+  busy,
+  canMoveUp,
+  canMoveDown,
+  edit,
+  moveUp,
+  moveDown,
+  archive,
+}: {
+  selection: AuthorPlanSelection;
+  readOnly: boolean;
+  busy: boolean;
+  canMoveUp: boolean;
+  canMoveDown: boolean;
+  edit: (button: HTMLButtonElement) => void;
+  moveUp: () => void;
+  moveDown: () => void;
+  archive: (button: HTMLButtonElement) => void;
+}) {
+  const name = authorPlanName(selection);
+  const item = selection.item;
+  return (
+    <li id={`plan-${item.id}`} className={item.archived ? "archived" : ""} data-author-plan-id={item.id}>
+      <div className="author-plan-order" aria-hidden="true">{String(item.position).padStart(2, "0")}</div>
+      <article>
+        <header>
+          <div>
+            <h2>{name}</h2>
+            {item.archived && <span className="status-pill archived"><I>●</I>已归档</span>}
+          </div>
+          {selection.kind === "story" ? <p>{selection.item.summary || "尚未填写摘要。"}</p> : selection.kind === "character" ? <p>{roleTypeLabel(selection.item.role_type)}</p> : <p>{worldTypeLabel(selection.item.category)}</p>}
+        </header>
+        {selection.kind === "story" ? (
+          <dl className="author-plan-fields">
+            <div><dt>创作目标</dt><dd>{selection.item.goal || "尚未填写"}</dd></div>
+            <div><dt>状态</dt><dd>{authorStoryStatusLabel(selection.item.status)}</dd></div>
+            <div><dt>目标章节</dt><dd>{selection.item.target_chapter_number ? `第 ${selection.item.target_chapter_number} 章` : "尚未指定"}</dd></div>
+          </dl>
+        ) : selection.kind === "character" ? (
+          <dl className="author-plan-fields">
+            <div><dt>角色目标</dt><dd>{selection.item.goal || "尚未填写"}</dd></div>
+            <div><dt>计划状态</dt><dd>{selection.item.planned_state || "尚未填写"}</dd></div>
+            <div><dt>备注</dt><dd>{selection.item.notes || "尚未填写"}</dd></div>
+          </dl>
+        ) : (
+          <dl className="author-plan-fields">
+            <div><dt>设定描述</dt><dd>{selection.item.description}</dd></div>
+            <div><dt>备注</dt><dd>{selection.item.notes || "尚未填写"}</dd></div>
+          </dl>
+        )}
+      </article>
+      {!readOnly && !item.archived && (
+        <div className="author-plan-actions" aria-label={`${name} 操作`}>
+          <Button className="quiet" disabled={busy} ariaLabel={`编辑 ${name}`} onClick={(event) => edit(event.currentTarget)}>编辑</Button>
+          <Button className="quiet order-action" disabled={busy || !canMoveUp} ariaLabel={`上移 ${name}`} onClick={moveUp}>↑<span>上移</span></Button>
+          <Button className="quiet order-action" disabled={busy || !canMoveDown} ariaLabel={`下移 ${name}`} onClick={moveDown}>↓<span>下移</span></Button>
+          <Button className="quiet archive-action" disabled={busy} ariaLabel={`归档 ${name}`} onClick={(event) => archive(event.currentTarget)}>归档</Button>
+        </div>
+      )}
+    </li>
+  );
+}
+
+function useModalFocus<T extends HTMLElement = HTMLInputElement>(close: () => void) {
+  const modalRef = useRef<HTMLElement>(null);
+  const firstRef = useRef<T>(null);
+  useDocumentScrollLock();
+  useEffect(() => firstRef.current?.focus(), []);
+  const containFocus = (event: ReactKeyboardEvent<HTMLElement>) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      close();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = Array.from(
+      modalRef.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ) ?? [],
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (!first || !last) return;
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+  return { modalRef, firstRef, containFocus };
+}
+
+function AuthorPlanDialog({
+  state,
+  busy,
+  close,
+  save,
+}: {
+  state: AuthorPlanDialogState;
+  busy: string;
+  close: () => void;
+  save: (fields: Record<string, unknown>) => Promise<void>;
+}) {
+  const storyItem = state.kind === "story" ? state.item : null;
+  const characterItem = state.kind === "character" ? state.item : null;
+  const worldItem = state.kind === "world" ? state.item : null;
+  const [title, setTitle] = useState(storyItem?.title ?? "");
+  const [summary, setSummary] = useState(storyItem?.summary ?? "");
+  const [goal, setGoal] = useState(storyItem?.goal ?? characterItem?.goal ?? "");
+  const [status, setStatus] = useState<AuthorStoryPlan["status"]>(storyItem?.status ?? "planned");
+  const [targetChapter, setTargetChapter] = useState(storyItem?.target_chapter_number ? String(storyItem.target_chapter_number) : "");
+  const [name, setName] = useState(characterItem?.name ?? worldItem?.name ?? "");
+  const [roleType, setRoleType] = useState<AuthorCharacterPlan["role_type"]>(characterItem?.role_type ?? "supporting");
+  const [plannedState, setPlannedState] = useState(characterItem?.planned_state ?? "");
+  const [notes, setNotes] = useState(characterItem?.notes ?? worldItem?.notes ?? "");
+  const [category, setCategory] = useState<AuthorWorldPlan["category"]>(worldItem?.category ?? "location");
+  const [description, setDescription] = useState(worldItem?.description ?? "");
+  const [error, setError] = useState("");
+  const { modalRef, firstRef, containFocus } = useModalFocus(close);
+  const copy = authorPlanCopy[state.kind];
+  const editing = Boolean(state.item);
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError("");
+    const fields: Record<string, unknown> = state.kind === "story"
+      ? { title, summary, goal, status, target_chapter_number: targetChapter ? Number(targetChapter) : null }
+      : state.kind === "character"
+        ? { name, role_type: roleType, goal, planned_state: plannedState, notes }
+        : { name, category, description, notes };
+    try {
+      await save(fields);
+    } catch (cause) {
+      setError(
+        (cause as ApiFailure).code === "author_context_version_conflict"
+          ? "内容已在其他窗口更新，已载入最新版本，请确认后重试。"
+          : labelError(cause),
+      );
+    }
+  };
+  return (
+    <div className="modal-layer author-plan-layer" role="presentation">
+      <section ref={modalRef} className="dialog author-plan-dialog" role="dialog" aria-modal="true" aria-label={`${editing ? "编辑" : "新建"}${copy.noun}`} onKeyDown={containFocus}>
+        <button type="button" className="close" disabled={Boolean(busy)} onClick={close}><span aria-hidden="true">×</span><span className="sr-only">关闭</span></button>
+        <header><p className="eyebrow">作者规划</p><h2>{editing ? `编辑${copy.noun}` : `新建${copy.noun}`}</h2><p>这些内容用于安排未来创作，不会写入正文档案或 Story Memory。</p></header>
+        <form onSubmit={(event) => void submit(event)}>
+          {state.kind === "story" ? (
+            <>
+              <label>标题<input ref={firstRef} value={title} onChange={(event) => setTitle(event.target.value)} maxLength={120} required disabled={Boolean(busy)} /></label>
+              <label>摘要<textarea value={summary} onChange={(event) => setSummary(event.target.value)} maxLength={2000} disabled={Boolean(busy)} /></label>
+              <label>创作目标<textarea value={goal} onChange={(event) => setGoal(event.target.value)} maxLength={2000} disabled={Boolean(busy)} /></label>
+              <div className="author-plan-form-row"><label>状态<select value={status} onChange={(event) => setStatus(event.target.value as AuthorStoryPlan["status"])} disabled={Boolean(busy)}><option value="planned">待开始</option><option value="in_progress">进行中</option><option value="paused">已暂停</option><option value="completed">已完成</option></select></label><label>目标章节<input type="number" min={1} value={targetChapter} onChange={(event) => setTargetChapter(event.target.value)} disabled={Boolean(busy)} /></label></div>
+            </>
+          ) : state.kind === "character" ? (
+            <>
+              <label>姓名<input ref={firstRef} value={name} onChange={(event) => setName(event.target.value)} maxLength={120} required disabled={Boolean(busy)} /></label>
+              <label>角色类型<select value={roleType} onChange={(event) => setRoleType(event.target.value as AuthorCharacterPlan["role_type"])} disabled={Boolean(busy)}><option value="protagonist">主角</option><option value="ally">支持角色</option><option value="antagonist">对立角色</option><option value="supporting">配角</option><option value="other">其他角色</option></select></label>
+              <label>角色目标<textarea value={goal} onChange={(event) => setGoal(event.target.value)} maxLength={2000} disabled={Boolean(busy)} /></label>
+              <label>计划状态<textarea value={plannedState} onChange={(event) => setPlannedState(event.target.value)} maxLength={2000} disabled={Boolean(busy)} /></label>
+              <label>备注<textarea value={notes} onChange={(event) => setNotes(event.target.value)} maxLength={4000} disabled={Boolean(busy)} /></label>
+            </>
+          ) : (
+            <>
+              <label>名称<input ref={firstRef} value={name} onChange={(event) => setName(event.target.value)} maxLength={120} required disabled={Boolean(busy)} /></label>
+              <label>分类<select value={category} onChange={(event) => setCategory(event.target.value as AuthorWorldPlan["category"])} disabled={Boolean(busy)}><option value="location">地点</option><option value="organization">组织</option><option value="rule">规则</option><option value="object">物件</option><option value="term">术语</option><option value="other">其他资料</option></select></label>
+              <label>描述<textarea value={description} onChange={(event) => setDescription(event.target.value)} maxLength={4000} required disabled={Boolean(busy)} /></label>
+              <label>备注<textarea value={notes} onChange={(event) => setNotes(event.target.value)} maxLength={4000} disabled={Boolean(busy)} /></label>
+            </>
+          )}
+          {error && <p className="inline-error" role="alert">{error}</p>}
+          <div className="actions"><Button type="button" disabled={Boolean(busy)} onClick={close}>取消</Button><Button className="primary" type="submit" disabled={Boolean(busy)} ariaBusy={Boolean(busy)}>{busy || "保存"}</Button></div>
+        </form>
+      </section>
+    </div>
+  );
+}
+
+function AuthorArchiveDialog({
+  selection,
+  busy,
+  error,
+  close,
+  confirm,
+}: {
+  selection: AuthorPlanSelection;
+  busy: string;
+  error: string;
+  close: () => void;
+  confirm: () => void;
+}) {
+  const { modalRef, firstRef, containFocus } = useModalFocus<HTMLButtonElement>(close);
+  return (
+    <div className="modal-layer author-plan-layer" role="presentation">
+      <section ref={modalRef} className="dialog author-archive-dialog" role="dialog" aria-modal="true" aria-label={`归档 ${authorPlanName(selection)}`} onKeyDown={containFocus}>
+        <button type="button" className="close" disabled={Boolean(busy)} onClick={close}><span aria-hidden="true">×</span><span className="sr-only">关闭</span></button>
+        <h2>归档“{authorPlanName(selection)}”？</h2>
+        <p>归档后默认隐藏；当前产品不提供恢复操作。正文资料不会受到影响。</p>
+        {error && <p className="inline-error" role="alert">{error}</p>}
+        <div className="actions"><Button type="button" disabled={Boolean(busy)} onClick={close}>取消</Button><button ref={firstRef} type="button" className="danger" disabled={Boolean(busy)} onClick={confirm} aria-busy={Boolean(busy) || undefined}>{busy || "确认归档"}</button></div>
+      </section>
+    </div>
+  );
+}
+
+function OutlineReference({
+  chapters,
+}: {
+  chapters: { id: string; chapter_number: number; title: string; summary: string; status: string }[];
 }) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("");
@@ -3908,11 +5393,7 @@ function OutlineView({
       (!status || projectVisualStatus(chapter.status) === status),
   );
   return (
-    <section className="project-page archive-page outline-page">
-      <header className="page-header">
-        <div><p className="breadcrumb">项目 / {projectTitle} / 大纲</p><h1>大纲</h1><p>按故事发生顺序查看章节结构与当前状态。</p></div>
-      </header>
-      {context}
+    <section className="outline-page">
       <div className="archive-toolbar">
         <label><span className="sr-only">搜索章节</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索章节" /></label>
         <label><span className="sr-only">章节状态</span><select value={status} onChange={(event) => setStatus(event.target.value)}><option value="">全部状态</option><option value="completed">已完成</option><option value="active">进行中</option><option value="paused">已暂停</option><option value="archived">已归档</option></select></label>
@@ -3938,24 +5419,83 @@ function OutlineView({
 }
 
 function CharacterArchive({
-  projectTitle,
+  projectId,
   characters,
-  context,
+  draft,
+  readOnly,
 }: {
-  projectTitle: string;
+  projectId: string;
   characters: { id: string; name: string; role_type: string; identity: string; goal: string; current_state: string; knowledge_boundary: string }[];
-  context?: ReactNode;
+  draft: Draft | null;
+  readOnly: boolean;
 }) {
   const [query, setQuery] = useState("");
-  const [selectedId, setSelectedId] = useState(characters[0]?.id ?? "");
+  const [selectedId, setSelectedId] = useState(() => {
+    if (typeof window === "undefined") return characters[0]?.id ?? "";
+    const requested = new URLSearchParams(window.location.search).get("character");
+    return characters.some((character) => character.id === requested) ? requested! : characters[0]?.id ?? "";
+  });
   const visible = characters.filter((character) =>
     `${character.name} ${character.identity} ${character.role_type}`.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
   );
   const selected = visible.find((character) => character.id === selectedId) ?? visible[0];
+  const [aliasSnapshot,setAliasSnapshot]=useState<CharacterAliasSnapshot|null>(null);
+  const [aliasInput,setAliasInput]=useState("");
+  const [aliasBusy,setAliasBusy]=useState(false);
+  const [impactInput,setImpactInput]=useState("");
+  const [impactRuns,setImpactRuns]=useState<WritingAnalysisRun[]>([]);
+  const [impactBusy,setImpactBusy]=useState(false);
+  const [toolNotice,setToolNotice]=useState("");
+  const refreshAliases=useCallback(async(characterId:string)=>{
+    const next=await request<CharacterAliasSnapshot>(`/projects/${projectId}/characters/${characterId}/aliases?include_archived=true`);setAliasSnapshot(next);
+  },[projectId]);
+  const refreshImpact=useCallback(async()=>{
+    const next=await request<{run:WritingAnalysisRun|null;runs:WritingAnalysisRun[]}>(`/projects/${projectId}/analyses?analysis_type=change_impact`);setImpactRuns(next.runs??[]);
+  },[projectId]);
+  useEffect(()=>{
+    if(!selected?.id)return;
+    let live=true;
+    Promise.all([request<CharacterAliasSnapshot>(`/projects/${projectId}/characters/${selected.id}/aliases?include_archived=true`),request<{run:WritingAnalysisRun|null;runs:WritingAnalysisRun[]}>(`/projects/${projectId}/analyses?analysis_type=change_impact`)]).then(([aliases,impacts])=>{if(live){setAliasSnapshot(aliases);setImpactRuns(impacts.runs??[]);}}).catch((error)=>{if(live)setToolNotice(labelError(error));});
+    return()=>{live=false;};
+  },[projectId,selected?.id]);
+  const proposalFor=(run:WritingAnalysisRun)=>run.proposal??run.analysis?.proposal??null;
+  const activeImpactRun=impactRuns.find((run)=>["queued","running"].includes(run.status))??null;
+  const impactRun=selected?impactRuns.find((run)=>{const proposal=proposalFor(run);return proposal?.target_type==="character"&&proposal.target_id===selected.id;})??null:null;
+  const currentAliasSnapshot=selected&&aliasSnapshot?.character_id===selected.id?aliasSnapshot:null;
+  const targetName=(run:WritingAnalysisRun)=>{const proposal=proposalFor(run);if(!proposal)return "未记录对象";if(proposal.target_type==="character")return characters.find((character)=>character.id===proposal.target_id)?.name??"未知角色";return proposal.target_type;};
+  useEffect(()=>{
+    if(!activeImpactRun)return;
+    const timer=window.setInterval(()=>{void refreshImpact();},700);
+    return()=>window.clearInterval(timer);
+  },[activeImpactRun,refreshImpact]);
+  useEffect(()=>{
+    if(typeof window==="undefined"||!window.location.hash)return;
+    const target=window.location.hash.slice(1);
+    const frame=window.requestAnimationFrame(()=>document.getElementById(target)?.scrollIntoView({block:"center"}));
+    return()=>window.cancelAnimationFrame(frame);
+  },[selected?.id,currentAliasSnapshot?.updated_at]);
+  const addAlias=async()=>{
+    if(!selected||!currentAliasSnapshot||!aliasInput.trim())return;setAliasBusy(true);setToolNotice("");
+    try{const next=await json<CharacterAliasSnapshot>(`/projects/${projectId}/characters/${selected.id}/aliases`,"POST",{base_version:currentAliasSnapshot.version,alias:aliasInput});setAliasSnapshot(next);setAliasInput("");setToolNotice("别名已保存为独立角色资料。");}catch(error){setToolNotice(labelError(error));}finally{setAliasBusy(false);}
+  };
+  const editAlias=async(aliasId:string,value:string)=>{
+    if(!selected||!currentAliasSnapshot)return;setAliasBusy(true);setToolNotice("");
+    try{setAliasSnapshot(await json<CharacterAliasSnapshot>(`/projects/${projectId}/characters/${selected.id}/aliases/${aliasId}`,"PATCH",{base_version:currentAliasSnapshot.version,alias:value}));setToolNotice("别名已更新。");}catch(error){setToolNotice(labelError(error));}finally{setAliasBusy(false);}
+  };
+  const archiveAlias=async(aliasId:string)=>{
+    if(!selected||!currentAliasSnapshot)return;setAliasBusy(true);setToolNotice("");
+    try{setAliasSnapshot(await json<CharacterAliasSnapshot>(`/projects/${projectId}/characters/${selected.id}/aliases/${aliasId}/archive`,"POST",{base_version:currentAliasSnapshot.version}));setToolNotice("别名已归档，历史记录仍保留。");}catch(error){setToolNotice(labelError(error));}finally{setAliasBusy(false);}
+  };
+  const startImpact=async()=>{
+    if(!selected||!draft||!impactInput.trim())return;setImpactBusy(true);setToolNotice("");
+    try{const created=await json<WritingAnalysisRun>(`/projects/${projectId}/analyses`,"POST",{analysis_type:"change_impact",draft_id:draft.id,draft_revision:draft.revision,proposal:{target_type:"character",target_id:selected.id,proposed_change:impactInput},client_request_id:crypto.randomUUID()});setImpactRuns((current)=>[created,...current.filter((run)=>run.run_id!==created.run_id)]);setImpactInput("");await refreshImpact();setToolNotice("修改影响分析已创建；它不会自动改写任何资料。");}catch(error){setToolNotice(labelError(error));}finally{setImpactBusy(false);}
+  };
+  const actionImpact=async(action:"cancel"|"retry")=>{
+    if(!impactRun)return;setImpactBusy(true);setToolNotice("");
+    try{await json(`/projects/${projectId}/analyses/${impactRun.run_id}/${action}`,"POST",{client_request_id:crypto.randomUUID()});await refreshImpact();}catch(error){setToolNotice(labelError(error));}finally{setImpactBusy(false);}
+  };
   return (
-    <section className="project-page archive-page character-page">
-      <header className="page-header"><div><p className="breadcrumb">项目 / {projectTitle} / 角色库</p><h1>角色库</h1><p>管理角色身份、目标、状态与知识边界。</p></div></header>
-      {context}
+    <section className="character-page">
       <div className="archive-toolbar character-toolbar">
         <label><span className="sr-only">搜索角色</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索角色" /></label>
         <span>{visible.length} 个角色</span>
@@ -3967,7 +5507,7 @@ function CharacterArchive({
               <li key={character.id}><button type="button" className={character.id === selected.id ? "current" : ""} onClick={() => setSelectedId(character.id)}><span className="character-monogram" aria-hidden="true">{character.name.slice(0, 1)}</span><span><strong>{character.name}</strong><small>{character.identity || roleTypeLabel(character.role_type)}</small></span></button></li>
             ))}
           </ul>
-          <article className="archive-detail character-detail">
+          <article id={`character-${selected.id}`} className="archive-detail character-detail">
             <header><span className="character-monogram large" aria-hidden="true">{selected.name.slice(0, 1)}</span><div><h2>{selected.name}</h2><p>{selected.identity || roleTypeLabel(selected.role_type)}</p></div></header>
             <dl className="detail-grid">
               <div><dt><Icon name="users" />角色定位</dt><dd>{selected.identity || roleTypeLabel(selected.role_type)}</dd></div>
@@ -3975,6 +5515,27 @@ function CharacterArchive({
               <div><dt><Icon name="pen" />当前状态</dt><dd>{selected.current_state || "尚未记录"}</dd></div>
               <div><dt><Icon name="memory" />知识边界</dt><dd>{selected.knowledge_boundary || "尚未记录"}</dd></div>
             </dl>
+            <section className="character-alias-panel" aria-label="角色别名资料">
+              <header><div><p className="eyebrow">明确资料层</p><h3>角色别名</h3></div><span className="version-chip">v{currentAliasSnapshot?.version??0}</span></header>
+              <p className="muted">主名：{selected.name}。这里只记录作者确认的称呼，AI 不会把猜测写成别名。</p>
+              <div className="alias-list">
+                {currentAliasSnapshot?.aliases.map((item)=><AliasRow key={item.id} item={item} readOnly={readOnly} busy={aliasBusy} save={editAlias} archive={archiveAlias}/>)}
+                {!currentAliasSnapshot?.aliases.length&&<p className="empty-inline">尚无别名。</p>}
+              </div>
+              {!readOnly&&<div className="alias-create"><input value={aliasInput} maxLength={80} onChange={(event)=>setAliasInput(event.target.value)} placeholder="添加作者确认的别名"/><Button className="secondary" disabled={aliasBusy||!aliasInput.trim()||(currentAliasSnapshot?.aliases.filter((item)=>item.status==="active").length??0)>=20} onClick={()=>void addAlias()}>添加别名</Button></div>}
+            </section>
+            <section className="change-impact-panel" aria-label="修改影响分析">
+              <header><div><p className="eyebrow">AI 写作辅助 · 只读分析</p><h3>修改影响分析</h3></div>{impactRun&&<span className={`run-state state-${impactRun.status}`}>{impactRun.is_stale?"依据已变化":stage(impactRun.status)}</span>}</header>
+              <p className="muted">明确写下拟修改内容；结果只指出受影响资料并给出证据，不生成替换正文，也不自动保存。</p>
+              {!readOnly&&<div className="impact-create"><textarea value={impactInput} maxLength={4000} onChange={(event)=>setImpactInput(event.target.value)} placeholder={`例如：把“${selected.name}”的公开身份改为港务调查员`} /><Button className="secondary" disabled={impactBusy||Boolean(activeImpactRun)||!draft||!impactInput.trim()} onClick={()=>void startImpact()}>分析影响</Button></div>}
+              {activeImpactRun&&activeImpactRun.run_id!==impactRun?.run_id&&<p className="analysis-pending">“{targetName(activeImpactRun)}”的影响分析正在{stage(activeImpactRun.status)}；完成或取消前不能创建另一项分析。</p>}
+              {impactRun&&<div className="impact-context"><p><strong>分析对象：</strong>角色 · {targetName(impactRun)} <code>{proposalFor(impactRun)?.target_id}</code></p><p><strong>拟修改内容：</strong>{proposalFor(impactRun)?.proposed_change}</p><small>本 Run 绑定：草稿 r{impactRun.draft_revision} · 来源 r{impactRun.source_revision} · Story Memory V{impactRun.source_memory_version} · Author Context V{impactRun.author_context_version} · 别名 V{impactRun.alias_version??0} · 检索 {impactRun.retrieval?.method_version??"—"}</small></div>}
+              {impactRun?.analysis&&<div className={`impact-result evidence-${impactRun.analysis.evidence_status??"supported"}`}><strong>{impactRun.analysis.summary}</strong>{impactRun.analysis.evidence_status==="insufficient"&&<p className="analysis-no-source">未形成可采信影响项；Provider 的无证据自由文本未被保留。</p>}{impactRun.analysis.items.map((item,index)=>"impact" in item?<article key={`${item.target_id}-${index}`}><h4>{item.label}</h4><p>{item.impact}</p><ul className="source-links">{item.evidence.map((source)=><li key={`${source.source_type}-${source.source_id}`}><a href={source.source_path} aria-label={`查看证据：${source.label}（${source.source_type}）`}>{source.label}<small>{source.source_type}</small></a></li>)}</ul></article>:null)}</div>}
+              {impactRun&&!readOnly&&<div className="analysis-actions">{["queued","running"].includes(impactRun.status)&&<Button className="quiet" disabled={impactBusy} onClick={()=>void actionImpact("cancel")}>取消</Button>}{["failed","timed_out","cancelled"].includes(impactRun.status)&&impactRun.retryable&&<Button className="quiet" disabled={impactBusy||impactRun.is_stale} onClick={()=>void actionImpact("retry")}>重试</Button>}</div>}
+              {!impactRun&&impactRuns.length>0&&<p className="empty-inline">当前角色尚无影响分析；其他对象的运行仅列在历史中。</p>}
+              {impactRuns.length>0&&<details><summary>分析版本（{impactRuns.length}）</summary><ol className="impact-history">{impactRuns.map((run)=><li key={run.run_id}><span>{targetName(run)} · <code>{proposalFor(run)?.target_id??"—"}</code> · 第 {run.attempt_number??1} 次 · {stage(run.status)}</span><small>{proposalFor(run)?.proposed_change??"未记录提案"} · {run.is_stale?"依据已变化":"依据当前"}</small></li>)}</ol></details>}
+            </section>
+            {toolNotice&&<p className="notice compact" role="status">{toolNotice}</p>}
           </article>
         </div>
       ) : <div className="empty archive-empty">{characters.length ? "没有匹配的角色。" : "此作品还没有角色记录。"}</div>}
@@ -3982,25 +5543,26 @@ function CharacterArchive({
   );
 }
 
+function AliasRow({item,readOnly,busy,save,archive}:{item:CharacterAliasSnapshot["aliases"][number];readOnly:boolean;busy:boolean;save:(id:string,value:string)=>Promise<void>;archive:(id:string)=>Promise<void>}){
+  const [value,setValue]=useState(item.alias);
+  return <div id={`alias-${item.id}`} className={`alias-row ${item.status}`}><input aria-label={`${item.alias} 别名`} value={value} disabled={readOnly||busy||item.status==="archived"} onChange={(event)=>setValue(event.target.value)}/><span>{item.status==="active"?"使用中":"已归档"}</span>{!readOnly&&item.status==="active"&&<><Button className="quiet" disabled={busy||!value.trim()||value===item.alias} onClick={()=>void save(item.id,value)}>保存</Button><Button className="quiet danger" disabled={busy} onClick={()=>void archive(item.id)}>归档</Button></>}</div>;
+}
+
 function WorldArchive({
-  projectTitle,
   entries,
-  context,
 }: {
-  projectTitle: string;
   entries: { id: string; entry_type: string; name: string; summary: string }[];
-  context?: ReactNode;
 }) {
   const categories = ["location", "rule", "organization", "object", "term"];
-  const [category, setCategory] = useState(entries[0]?.entry_type ?? "location");
+  const requestedWorld=typeof window!=="undefined"?new URLSearchParams(window.location.search).get("world"):null;
+  const requestedWorldEntry=entries.find((entry)=>entry.id===requestedWorld);
+  const [category, setCategory] = useState(requestedWorldEntry?.entry_type??entries[0]?.entry_type ?? "location");
   const [query, setQuery] = useState("");
-  const [selectedId, setSelectedId] = useState(entries[0]?.id ?? "");
+  const [selectedId, setSelectedId] = useState(requestedWorldEntry?.id??entries[0]?.id ?? "");
   const visible = entries.filter((entry) => entry.entry_type === category && `${entry.name} ${entry.summary}`.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
   const selected = visible.find((entry) => entry.id === selectedId) ?? visible[0];
   return (
-    <section className="project-page archive-page world-page">
-      <header className="page-header"><div><p className="breadcrumb">项目 / {projectTitle} / 世界观</p><h1>世界观</h1><p>集中管理地点、规则、组织、物件与术语。</p></div></header>
-      {context}
+    <section className="world-page">
       <div className="world-controls">
         <nav aria-label="世界观分类">{categories.map((value) => <button type="button" key={value} className={category === value ? "current" : ""} aria-current={category === value ? "page" : undefined} onClick={() => { setCategory(value); setSelectedId(""); }}>{worldTypeLabel(value)}</button>)}</nav>
         <label><span className="sr-only">搜索世界设定</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索世界设定" /></label>
@@ -4008,7 +5570,7 @@ function WorldArchive({
       {selected ? (
         <div className="archive-split world-split">
           <section className="world-index"><h2>{worldTypeLabel(category)}</h2><ul>{visible.map((entry) => <li key={entry.id}><button type="button" className={entry.id === selected.id ? "current" : ""} onClick={() => setSelectedId(entry.id)}>{entry.name}</button></li>)}</ul></section>
-          <article className="archive-detail world-detail"><h2>{selected.name}</h2><dl><div><dt>类型</dt><dd>{worldTypeLabel(selected.entry_type)}</dd></div><div><dt>设定摘要</dt><dd>{selected.summary || "尚未记录摘要"}</dd></div><div><dt>关联</dt><dd>暂未建立关联</dd></div></dl></article>
+          <article id={`world-${selected.id}`} className="archive-detail world-detail"><h2>{selected.name}</h2><dl><div><dt>类型</dt><dd>{worldTypeLabel(selected.entry_type)}</dd></div><div><dt>设定摘要</dt><dd>{selected.summary || "尚未记录摘要"}</dd></div><div><dt>关联</dt><dd>暂未建立关联</dd></div></dl></article>
         </div>
       ) : <div className="empty archive-empty">{entries.length ? `“${worldTypeLabel(category)}”分类暂无匹配条目。` : "此作品还没有世界观记录。"}</div>}
     </section>
@@ -4046,14 +5608,14 @@ function MemoryRecords({ records, openSource }: { records: Memory[]; openSource:
       </div>
       {visible.length ? (
         <div className="memory-table" role="table" aria-label="事实档案">
-          <div className="memory-row memory-head" role="row"><span>主体</span><span>属性</span><span>当前值</span><span>有效范围</span><span>状态</span><span>来源</span></div>
+          <div className="memory-row memory-head" role="row"><span>主体</span><span>属性</span><span>事实值</span><span>有效范围</span><span>状态</span><span>来源</span></div>
           {visible.map((record) => (
-            <div className="memory-row" role="row" key={record.id}>
+            <div id={`memory-${record.id}`} className="memory-row" role="row" key={record.id}>
               <strong role="cell" className="memory-subject">{record.subject}</strong>
               <span role="cell" className="memory-field" data-label="属性">{predicateLabel(record.predicate)}</span>
               <span role="cell" className="memory-field" data-label="当前值">{record.value}</span>
               <span role="cell" className="memory-field" data-label="有效范围">第 {record.valid_from ?? "?"} 章—{record.valid_to == null ? "当前章" : `第 ${record.valid_to} 章`}</span>
-              <span role="cell" data-label="状态" className={`memory-status ${record.review_status === "author_confirmed" ? "confirmed" : "pending"}`}><I>{record.review_status === "author_confirmed" ? "✓" : "○"}</I>{reviewStatusLabel(record.review_status)}</span>
+              <span role="cell" data-label="状态" className={`memory-status ${record.valid_to != null ? "retired" : record.review_status === "author_confirmed" ? "confirmed" : "pending"}`}><I>{record.valid_to != null ? "—" : record.review_status === "author_confirmed" ? "✓" : "○"}</I>{record.valid_to != null ? "已失效" : reviewStatusLabel(record.review_status)}</span>
               <Button className="quiet memory-source" ariaLabel={record.source ? `查看 ${record.subject} 的来源` : `${record.subject} 暂无来源`} disabled={!record.source} onClick={(event) => openSource(record, event.currentTarget)}>{record.source ? `第 ${record.source.chapter_number} 章 ↗` : "不可用"}</Button>
               <small className="memory-kind">{memoryTypeLabel(record.memory_type)}</small>
             </div>
@@ -4271,7 +5833,8 @@ function Evidence({
         </button>
         <header className="drawer-header">
           <p className="eyebrow">证据</p>
-          <div><h2>{categoryLabel(issue.category)}</h2><span className={`risk ${issue.severity}`}><I>▲</I>{statusLabel(issue.severity)}</span></div>
+          <div><h2>{categoryLabel(issue.category)}</h2><span className={`risk ${issue.severity}`}><I>{issue.severity === "high" ? "▲" : issue.severity === "medium" ? "●" : "○"}</I>{statusLabel(issue.severity)}</span></div>
+          <p className="drawer-context">对照当前草稿与已写章节来源，再作出作者决定。</p>
         </header>
         <section className={`evidence-section current-claim severity-${issue.severity}`}>
           <h3>当前草稿</h3>
@@ -4333,20 +5896,22 @@ function Dialog({
   title,
   children,
   close,
+  closeDisabled = false,
 }: {
   title: string;
   children: ReactNode;
   close: () => void;
+  closeDisabled?: boolean;
 }) {
   const ref = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     ref.current?.focus();
     const listener = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
+      if (e.key === "Escape" && !closeDisabled) close();
     };
     window.addEventListener("keydown", listener);
     return () => window.removeEventListener("keydown", listener);
-  }, [close]);
+  }, [close, closeDisabled]);
   return (
     <div className="modal-layer" role="presentation">
       <section
@@ -4355,7 +5920,7 @@ function Dialog({
         aria-modal="true"
         aria-label={title}
       >
-        <Button className="close" onClick={close}>
+        <Button className="close" disabled={closeDisabled} onClick={close}>
           <span ref={ref}>×</span>
           <span className="sr-only">关闭</span>
         </Button>

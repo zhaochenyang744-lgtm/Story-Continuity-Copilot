@@ -17,7 +17,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from .config import AppPaths, PATHS, ProtectedPathError
 from .database import DomainError
-from .engine import ContinuityEngine, MemoryDeltaEngine, MemoryInitializationEngine
+from .engine import ContinuityEngine, MemoryDeltaEngine, MemoryInitializationEngine, WritingAnalysisEngine
 from .provider import DeepSeekProvider, ProviderPort
 from .stage13 import (
     MailerPort,
@@ -79,6 +79,10 @@ def safe_memory_initialization_failure_details(result:dict)->dict:
 class Strict(BaseModel): model_config = ConfigDict(extra="forbid")
 class Register(Strict): account_name:str; display_name:str; password:str; recovery_email:str|None=None
 class Login(Strict): account_name:str; password:str
+class ProfilePatch(Strict):
+    base_profile_revision:int=Field(ge=1)
+    display_name:str=Field(min_length=1,max_length=60)
+    avatar_preset:Literal['continuity_violet','archive_blue','folio_rose','signal_amber']
 class RecoveryEmail(Strict): recovery_email:str
 class RecoveryToken(Strict): token:str=Field(min_length=32,max_length=512)
 class PasswordResetRequest(Strict): recovery_email:str
@@ -88,13 +92,64 @@ class ProjectPatch(Strict): base_metadata_revision:int=Field(ge=1); title:str|No
 class EditContext(Strict): source_run_id:str; source_revision:int=Field(ge=1); issue_id:str
 class DraftPatch(Strict): base_revision:int=Field(ge=1); body:str; title:str|None=None; edit_context:EditContext|None=None
 class Check(Strict): draft_id:str; draft_revision:int=Field(ge=1); client_request_id:str|None=None
+class ChangeImpactProposal(Strict):
+    target_type:Literal['chapter','character','world','memory','plan','general']
+    target_id:str|None=None
+    proposed_change:str=Field(min_length=1,max_length=4000)
+class WritingAnalysis(Strict):
+    analysis_type:Literal['context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan']
+    draft_id:str
+    draft_revision:int=Field(ge=1)
+    proposal:ChangeImpactProposal|None=None
+    question:str|None=Field(default=None,min_length=1,max_length=1000)
+    scope:list[Literal['confirmed','written','planned']]|None=Field(default=None,min_length=1,max_length=3)
+    issue_ids:list[str]|None=Field(default=None,min_length=1,max_length=8)
+    client_request_id:str|None=None
 class RunAction(Strict): client_request_id:str|None=None
+class CharacterAliasCreate(Strict): base_version:int=Field(ge=0); alias:str=Field(min_length=1,max_length=80)
+class CharacterAliasPatch(Strict): base_version:int=Field(ge=0); alias:str=Field(min_length=1,max_length=80)
+class CharacterAliasArchive(Strict): base_version:int=Field(ge=0)
+class ForeshadowFields(Strict):
+    title:str=Field(min_length=1,max_length=120)
+    description:str=Field(min_length=1,max_length=1200)
+    status:Literal['planned','planted','developing','resolved','abandoned']
+    planted_chapter_id:str|None=None
+    planted_source_span_id:str|None=None
+    resolved_chapter_id:str|None=None
+    resolved_source_span_id:str|None=None
+class ForeshadowCreate(ForeshadowFields): base_foreshadow_version:int=Field(ge=0,le=2147483647)
+class ForeshadowPatch(Strict):
+    base_version:int=Field(ge=1,le=2147483647)
+    title:str|None=Field(default=None,min_length=1,max_length=120)
+    description:str|None=Field(default=None,min_length=1,max_length=1200)
+    status:Literal['planned','planted','developing','resolved','abandoned']|None=None
+    planted_chapter_id:str|None=None
+    planted_source_span_id:str|None=None
+    resolved_chapter_id:str|None=None
+    resolved_source_span_id:str|None=None
+class ForeshadowArchive(Strict): base_version:int=Field(ge=1,le=2147483647)
+class ForeshadowCandidateDecision(Strict):
+    base_foreshadow_version:int=Field(ge=0,le=2147483647)
+    decision:Literal['accepted','edited','rejected']
+    edited:ForeshadowFields|None=None
+class RevisionTaskFields(Strict):
+    title:str=Field(min_length=1,max_length=120)
+    instruction:str=Field(min_length=1,max_length=1200)
+    priority:Literal['high','medium','low']
+class RevisionCandidateDecision(Strict):
+    base_task_version:int=Field(ge=0,le=2147483647)
+    decision:Literal['accepted','edited','rejected']
+    edited:RevisionTaskFields|None=None
+class RevisionTaskPatch(Strict):
+    base_version:int=Field(ge=1,le=2147483647)
+    status:Literal['todo','in_progress','completed']
 class Decision(Strict): run_id:str; source_revision:int=Field(ge=1); decision:Literal['accept_and_edit','keep_intentional','false_positive']; note:str|None=None; resulting_revision:int|None=None
 class ChangeSet(Strict): run_id:str; source_run_revision:int=Field(ge=1); resolved_revision:int=Field(ge=1)
 class EditedMemoryItem(Strict): item_id:str; memory_type:Literal['static_canon','dynamic_state','event_timeline','character_knowledge','open_thread']; subject:str; predicate:str; value:str
 class Commit(Strict): confirm:bool|None=None; accepted_item_ids:list[str]; rejected_item_ids:list[str]; edited_items:list[EditedMemoryItem]=Field(default_factory=list); note:str|None=None
 class Reset(Strict): confirm:bool|None=None; reason:Literal['fresh_start','demo_recovery']|None=None
 class ImportCommit(Strict): confirm:bool|None=None; title:str; genre:str|None=None; summary:str|None=None; chapter_preview_ids:list[str]
+class ImportCancel(Strict): confirm:bool|None=None
 class MemoryInitialization(Strict): source_revision:int=Field(ge=1)
 class EditedMemoryCandidate(Strict): memory_type:Literal['static_canon','dynamic_state','event_timeline','character_knowledge','open_thread']; subject:str; predicate:str; value:str
 class MemoryCandidateDecision(Strict): decision:Literal['accepted','rejected','edited']; after:EditedMemoryCandidate|None=None; evidence_span_id:str|None=None
@@ -115,6 +170,52 @@ class TutorialProgressEvent(Strict):
     tutorial_version:Literal['1.2.0']
     project_id:str
     event:Literal['memory_source_opened','continuity_issue_located','evidence_opened','author_decision_recorded']
+class AuthorStoryCreate(Strict):
+    base_author_context_version:int=Field(ge=0)
+    title:str=Field(min_length=1,max_length=120)
+    summary:str=Field(default='',max_length=2000)
+    goal:str=Field(default='',max_length=2000)
+    status:Literal['planned','in_progress','paused','completed']='planned'
+    target_chapter_number:int|None=Field(default=None,ge=1)
+class AuthorStoryPatch(Strict):
+    base_author_context_version:int=Field(ge=0)
+    title:str|None=Field(default=None,min_length=1,max_length=120)
+    summary:str|None=Field(default=None,max_length=2000)
+    goal:str|None=Field(default=None,max_length=2000)
+    status:Literal['planned','in_progress','paused','completed']|None=None
+    target_chapter_number:int|None=Field(default=None,ge=1)
+class AuthorCharacterCreate(Strict):
+    base_author_context_version:int=Field(ge=0)
+    name:str=Field(min_length=1,max_length=120)
+    role_type:Literal['protagonist','ally','antagonist','supporting','other']
+    goal:str=Field(default='',max_length=2000)
+    planned_state:str=Field(default='',max_length=2000)
+    notes:str=Field(default='',max_length=4000)
+class AuthorCharacterPatch(Strict):
+    base_author_context_version:int=Field(ge=0)
+    name:str|None=Field(default=None,min_length=1,max_length=120)
+    role_type:Literal['protagonist','ally','antagonist','supporting','other']|None=None
+    goal:str|None=Field(default=None,max_length=2000)
+    planned_state:str|None=Field(default=None,max_length=2000)
+    notes:str|None=Field(default=None,max_length=4000)
+class AuthorWorldCreate(Strict):
+    base_author_context_version:int=Field(ge=0)
+    name:str=Field(min_length=1,max_length=120)
+    category:Literal['location','organization','rule','object','term','other']
+    description:str=Field(min_length=1,max_length=4000)
+    notes:str=Field(default='',max_length=4000)
+class AuthorWorldPatch(Strict):
+    base_author_context_version:int=Field(ge=0)
+    name:str|None=Field(default=None,min_length=1,max_length=120)
+    category:Literal['location','organization','rule','object','term','other']|None=None
+    description:str|None=Field(default=None,min_length=1,max_length=4000)
+    notes:str|None=Field(default=None,max_length=4000)
+class AuthorIntentReorder(Strict):
+    base_author_context_version:int=Field(ge=0)
+    ordered_ids:list[str]=Field(max_length=500)
+class AuthorIntentArchive(Strict):
+    base_author_context_version:int=Field(ge=0)
+    confirm:bool
 
 def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=None, settings:Stage13Settings|None=None, mailer:MailerPort|None=None)->FastAPI:
     settings=settings or Stage13Settings.from_env()
@@ -128,7 +229,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     recovery_executor=ThreadPoolExecutor(max_workers=2,thread_name_prefix="stage13-recovery")
     registration_lock=threading.Lock()
     guarded_provider=UsageGuardProvider(provider or DeepSeekProvider(),stage13)
-    engine=ContinuityEngine(guarded_provider); memory_engine=MemoryInitializationEngine(engine.provider); delta_engine=MemoryDeltaEngine(engine.provider)
+    engine=ContinuityEngine(guarded_provider); memory_engine=MemoryInitializationEngine(engine.provider); delta_engine=MemoryDeltaEngine(engine.provider); analysis_engine=WritingAnalysisEngine(engine.provider)
     @asynccontextmanager
     async def lifespan(_:FastAPI):
         db.initialize(); stage13.initialize(); stage13.cleanup_expired_visitors()
@@ -143,7 +244,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             try: await task
             except asyncio.CancelledError: pass
             recovery_executor.shutdown(wait=True,cancel_futures=False)
-    app=FastAPI(title='Story Continuity Copilot Web Demo',version='1.2.0',lifespan=lifespan)
+    app=FastAPI(title='Story Continuity Copilot Web Demo',version='1.3.0',lifespan=lifespan)
     app.state.database=db; app.state.engine=engine; app.state.stage13=stage13; app.state.stage13_settings=settings; app.state.recovery_executor=recovery_executor
     def trusted_host(value:str)->bool:
         folded=value.casefold()
@@ -162,6 +263,16 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             if result['status']=='completed' and not db.advance_run(project_id,run_id,'assembling_reviewable_results'):return
             db.finish_run(project_id,run_id,result)
         except Exception: db.finish_run(project_id,run_id,{'status':'failed','error_code':'internal_run_error','retryable':True})
+    def execute_analysis(project_id:str,run_id:str,user_id:str,reservation_id:str):
+        try:
+            if db.session_budget_exhausted(project_id):db.finish_analysis_run(project_id,run_id,{'status':'failed','error_code':'budget_guard_exceeded','retryable':True});return
+            if not db.advance_run(project_id,run_id,'binding_context'):return
+            data=db.analysis_run_input(project_id,run_id)
+            if not db.advance_run(project_id,run_id,'analyzing_layers'):return
+            with provider_usage(user_id,reservation_id):result=analysis_engine.execute(data)
+            if result['status']=='completed' and not db.advance_run(project_id,run_id,'assembling_results'):return
+            db.finish_analysis_run(project_id,run_id,result)
+        except Exception:db.finish_analysis_run(project_id,run_id,{'status':'failed','error_code':'internal_run_error','retryable':True})
     def execute_incremental(project_id:str,batch_id:str,user_id:str,reservation_id:str):
         try:
             if not db.advance_incremental_runs(project_id,batch_id,'running_continuity'):return
@@ -172,6 +283,9 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             if not db.advance_incremental_runs(project_id,batch_id,'running_memory_delta'):return
             with provider_usage(user_id,reservation_id): delta=delta_engine.execute(delta_input)
             db.finish_incremental_runs(project_id,batch_id,continuity,delta)
+        except DomainError as error:
+            failed={"status":"failed","error_code":error.code,"retryable":error.retryable}
+            db.finish_incremental_runs(project_id,batch_id,failed,failed)
         except Exception:
             db.finish_incremental_runs(project_id,batch_id,{"status":"failed","error_code":"internal_run_error","retryable":True},{"status":"failed","error_code":"internal_run_error","retryable":True})
     @app.middleware('http')
@@ -280,6 +394,11 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             if optional and error.code=='authentication_required':return ok(request,{'user':None,'session':None})
             raise
         return ok(request,{'user':stage13.safe_user(active['id']),'session':{'expires_at':active['expires_at']}})
+    @app.patch('/api/auth/profile')
+    def profile_update(payload:ProfilePatch,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'profile_update_failed'); replay_key=key(idempotency_key)
+        data,status=stage13.update_profile(user(request)['id'],payload.model_dump(),replay_key)
+        return ok(request,data,status)
     @app.get('/api/auth/recovery-email')
     def recovery_email_status(request:Request): return ok(request,stage13.safe_user(user(request)['id'])['recovery_email'])
     @app.post('/api/auth/recovery-email')
@@ -323,6 +442,44 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.patch('/api/projects/{project_id}')
     def project_patch(project_id:str,payload:ProjectPatch,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'update_failed');data,status=db.update_project(user(request)['id'],project_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
+    @app.get('/api/projects/{project_id}/author-intent')
+    def author_intent(project_id:str,request:Request,include_archived:bool=False,version:int|None=None):return ok(request,db.author_intent(user(request)['id'],project_id,include_archived,version))
+    @app.post('/api/projects/{project_id}/author-intent/story-plans',status_code=201)
+    def create_author_story(project_id:str,payload:AuthorStoryCreate,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_create_failed');data,status=db.create_author_intent_item(user(request)['id'],project_id,'story',payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
+    @app.patch('/api/projects/{project_id}/author-intent/story-plans/{item_id}')
+    def patch_author_story(project_id:str,item_id:str,payload:AuthorStoryPatch,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_update_failed');data,status=db.update_author_intent_item(user(request)['id'],project_id,'story',item_id,payload.model_dump(exclude_unset=True),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/author-intent/story-plans/reorder')
+    def reorder_author_story(project_id:str,payload:AuthorIntentReorder,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_reorder_failed');data,status=db.reorder_author_intent_items(user(request)['id'],project_id,'story',payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/author-intent/story-plans/{item_id}/archive')
+    def archive_author_story(project_id:str,item_id:str,payload:AuthorIntentArchive,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_archive_failed');data,status=db.archive_author_intent_item(user(request)['id'],project_id,'story',item_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/author-intent/character-plans',status_code=201)
+    def create_author_character(project_id:str,payload:AuthorCharacterCreate,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_create_failed');data,status=db.create_author_intent_item(user(request)['id'],project_id,'character',payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.patch('/api/projects/{project_id}/author-intent/character-plans/{item_id}')
+    def patch_author_character(project_id:str,item_id:str,payload:AuthorCharacterPatch,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_update_failed');data,status=db.update_author_intent_item(user(request)['id'],project_id,'character',item_id,payload.model_dump(exclude_unset=True),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/author-intent/character-plans/reorder')
+    def reorder_author_character(project_id:str,payload:AuthorIntentReorder,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_reorder_failed');data,status=db.reorder_author_intent_items(user(request)['id'],project_id,'character',payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/author-intent/character-plans/{item_id}/archive')
+    def archive_author_character(project_id:str,item_id:str,payload:AuthorIntentArchive,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_archive_failed');data,status=db.archive_author_intent_item(user(request)['id'],project_id,'character',item_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/author-intent/world-plans',status_code=201)
+    def create_author_world(project_id:str,payload:AuthorWorldCreate,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_create_failed');data,status=db.create_author_intent_item(user(request)['id'],project_id,'world',payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.patch('/api/projects/{project_id}/author-intent/world-plans/{item_id}')
+    def patch_author_world(project_id:str,item_id:str,payload:AuthorWorldPatch,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_update_failed');data,status=db.update_author_intent_item(user(request)['id'],project_id,'world',item_id,payload.model_dump(exclude_unset=True),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/author-intent/world-plans/reorder')
+    def reorder_author_world(project_id:str,payload:AuthorIntentReorder,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_reorder_failed');data,status=db.reorder_author_intent_items(user(request)['id'],project_id,'world',payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/author-intent/world-plans/{item_id}/archive')
+    def archive_author_world(project_id:str,item_id:str,payload:AuthorIntentArchive,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_intent_archive_failed');data,status=db.archive_author_intent_item(user(request)['id'],project_id,'world',item_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
     @app.get('/api/projects/{project_id}/outline')
     def outline(project_id:str,request:Request,volume:str|None=None,status:str|None=None):
         if volume not in {None,'1'} or status not in {None,'planned','complete'}:raise HTTPException(400,'invalid_filter')
@@ -339,6 +496,28 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         if q:rows=[item for item in rows if q in item['name'] or q in item['identity']]
         if role_type:rows=[item for item in rows if item['role_type']==role_type]
         data['characters']=rows;return ok(request,data)
+    @app.get('/api/projects/{project_id}/characters/{character_id}/aliases')
+    def character_aliases(project_id:str,character_id:str,request:Request,include_archived:bool=False):return ok(request,db.character_aliases(user(request)['id'],project_id,character_id,include_archived))
+    @app.post('/api/projects/{project_id}/characters/{character_id}/aliases',status_code=201)
+    def create_character_alias(project_id:str,character_id:str,payload:CharacterAliasCreate,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'character_alias_create_failed');data,status=db.create_character_alias(user(request)['id'],project_id,character_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.patch('/api/projects/{project_id}/characters/{character_id}/aliases/{alias_id}')
+    def patch_character_alias(project_id:str,character_id:str,alias_id:str,payload:CharacterAliasPatch,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'character_alias_update_failed');data,status=db.update_character_alias(user(request)['id'],project_id,character_id,alias_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/characters/{character_id}/aliases/{alias_id}/archive')
+    def archive_character_alias(project_id:str,character_id:str,alias_id:str,payload:CharacterAliasArchive,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'character_alias_archive_failed');data,status=db.archive_character_alias(user(request)['id'],project_id,character_id,alias_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.get('/api/projects/{project_id}/foreshadows')
+    def foreshadows(project_id:str,request:Request,include_archived:bool=False):return ok(request,db.foreshadows(user(request)['id'],project_id,include_archived))
+    @app.post('/api/projects/{project_id}/foreshadows',status_code=201)
+    def create_foreshadow(project_id:str,payload:ForeshadowCreate,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'foreshadow_create_failed');data,status=db.create_foreshadow(user(request)['id'],project_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.patch('/api/projects/{project_id}/foreshadows/{item_id}')
+    def patch_foreshadow(project_id:str,item_id:str,payload:ForeshadowPatch,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'foreshadow_update_failed');data,status=db.update_foreshadow(user(request)['id'],project_id,item_id,payload.model_dump(exclude_unset=True),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/foreshadows/{item_id}/archive')
+    def archive_foreshadow(project_id:str,item_id:str,payload:ForeshadowArchive,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'foreshadow_archive_failed');data,status=db.archive_foreshadow(user(request)['id'],project_id,item_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
     @app.get('/api/projects/{project_id}/world')
     def world(project_id:str,request:Request,q:str|None=None,entry_type:str|None=None,entry_id:str|None=None):
         if entry_type not in {None,'location','organization','rule','object','term'}:raise HTTPException(400,'invalid_filter')
@@ -454,14 +633,57 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             if executor:executor(execute,project_id,data['run_id'],actor['id'],reservation_id)
             else:background_tasks.add_task(execute,project_id,data['run_id'],actor['id'],reservation_id)
         return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/analyses',status_code=202)
+    def analyses(project_id:str,payload:WritingAnalysis,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'analysis_create_failed');actor=user(request)
+        if not analysis_engine.provider.available:raise HTTPException(503,'provider_unavailable')
+        body=payload.model_dump(exclude_none=True);data,status,created=db.create_analysis_run(actor['id'],project_id,body,key(idempotency_key),analysis_engine.provenance(payload.analysis_type))
+        if created:
+            try:reservation_id=stage13.reserve_workflow(actor['id'],project_id,payload.analysis_type,data['run_id'])
+            except DomainError as error:
+                db.finish_analysis_run(project_id,data['run_id'],{'status':'failed','error_code':error.code,'retryable':True});raise
+            if executor:executor(execute_analysis,project_id,data['run_id'],actor['id'],reservation_id)
+            else:background_tasks.add_task(execute_analysis,project_id,data['run_id'],actor['id'],reservation_id)
+        return ok(request,data,status)
+    @app.get('/api/projects/{project_id}/analyses/{run_id}')
+    def analysis(project_id:str,run_id:str,request:Request):return ok(request,db.analysis_view(user(request)['id'],project_id,run_id))
+    @app.get('/api/projects/{project_id}/analyses')
+    def latest_analysis(project_id:str,analysis_type:Literal['context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'],request:Request,limit:int=10):return ok(request,db.latest_analysis(user(request)['id'],project_id,analysis_type,max(1,min(limit,50))))
+    @app.post('/api/projects/{project_id}/analyses/{run_id}/cancel')
+    def cancel_analysis(project_id:str,run_id:str,payload:RunAction,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'analysis_cancel_failed');actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'});data,status=db.cancel_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/analyses/{run_id}/retry',status_code=202)
+    def retry_analysis(project_id:str,run_id:str,payload:RunAction,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'analysis_retry_failed');actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'});data,status,created=db.retry_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key))
+        if created:
+            target=data['run'];target_run_id=target['run_id']
+            if target['run_type'] not in {'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'}:raise HTTPException(404,'resource_not_found')
+            try:reservation_id=stage13.reserve_workflow(actor['id'],project_id,'retry',target_run_id)
+            except DomainError as error:
+                db.finish_analysis_run(project_id,target_run_id,{'status':'failed','error_code':error.code,'retryable':True});raise
+            if executor:executor(execute_analysis,project_id,target_run_id,actor['id'],reservation_id)
+            else:background_tasks.add_task(execute_analysis,project_id,target_run_id,actor['id'],reservation_id)
+        return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/analyses/{run_id}/foreshadow-candidates/{candidate_id}/decision')
+    def decide_foreshadow_candidate(project_id:str,run_id:str,candidate_id:str,payload:ForeshadowCandidateDecision,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'foreshadow_candidate_decision_failed');data,status=db.decide_foreshadow_candidate(user(request)['id'],project_id,run_id,candidate_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/analyses/{run_id}/revision-candidates/{candidate_id}/decision')
+    def decide_revision_candidate(project_id:str,run_id:str,candidate_id:str,payload:RevisionCandidateDecision,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'revision_candidate_decision_failed');data,status=db.decide_revision_candidate(user(request)['id'],project_id,run_id,candidate_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
+    @app.get('/api/projects/{project_id}/revision-tasks')
+    def revision_tasks(project_id:str,request:Request,include_completed:bool=True):return ok(request,db.revision_tasks(user(request)['id'],project_id,include_completed))
+    @app.patch('/api/projects/{project_id}/revision-tasks/{task_id}')
+    def revision_task_patch(project_id:str,task_id:str,payload:RevisionTaskPatch,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'revision_task_update_failed');data,status=db.update_revision_task(user(request)['id'],project_id,task_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
     @app.get('/api/projects/{project_id}/checks/{run_id}')
-    def check(project_id:str,run_id:str,request:Request,include:str|None=None):return ok(request,db.run_view(user(request)['id'],project_id,run_id,parse_include(include)))
+    def check(project_id:str,run_id:str,request:Request,include:str|None=None):
+        parsed_include=parse_include(include);actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'continuity','memory_delta'});return ok(request,db.run_view(actor['id'],project_id,run_id,parsed_include))
     @app.post('/api/projects/{project_id}/checks/{run_id}/cancel')
     def cancel_check(project_id:str,run_id:str,payload:RunAction,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'run_cancel_failed');data,status=db.cancel_run(user(request)['id'],project_id,run_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+        csrf(request);operation(request,'run_cancel_failed');actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'continuity','memory_delta'});data,status=db.cancel_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
     @app.post('/api/projects/{project_id}/checks/{run_id}/retry',status_code=202)
     def retry_check(project_id:str,run_id:str,payload:RunAction,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'run_retry_failed'); actor=user(request);data,status,created=db.retry_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key))
+        csrf(request);operation(request,'run_retry_failed'); actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'continuity','memory_delta'});data,status,created=db.retry_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key))
         if created:
             target_run_id=data['continuity_run_id'] if data['paired'] else data['run']['run_id']
             try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'retry',target_run_id)
@@ -501,6 +723,9 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.post('/api/imports/{import_id}/commit',status_code=201)
     def import_commit(import_id:str,payload:ImportCommit,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'import_failed');data,status=db.commit_import(user(request)['id'],import_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/imports/{import_id}/cancel')
+    def import_cancel(import_id:str,payload:ImportCancel,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'import_cancel_failed');data,status=db.cancel_import(user(request)['id'],import_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
     return app
 
 if os.environ.get("SCC_DISABLE_DEFAULT_APP") == "1":

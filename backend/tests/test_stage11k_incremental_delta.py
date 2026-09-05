@@ -31,15 +31,16 @@ class DeltaProvider:
             ]})
         if task=="memory_delta":
             source=request["sources"][0]
+            affected=next(item for item in request["memory"] if item["subject"]=="林默" and item["predicate"]=="status")
             if self.fail_mode=="schema": return ProviderResult({"candidates":[{"bad":"shape"}]})
-            if self.fail_mode=="evidence": return ProviderResult({"candidates":[{"memory_type":"dynamic_state","subject":"林默","predicate":"status","value":"已离开雾港","chapter_id":"not-current","source_span_id":"not-current"}]})
+            if self.fail_mode=="evidence": return ProviderResult({"candidates":[{"change_kind":"changed_fact","affected_memory_id":affected["id"],"memory_type":"dynamic_state","subject":"林默","predicate":"status","value":"已离开雾港","invalidation_reason":None,"chapter_id":"not-current","source_span_id":"not-current"}]})
             candidates=[
-                {"memory_type":"dynamic_state","subject":"林默","predicate":"status","value":"已离开雾港","chapter_id":source["chapter_id"],"source_span_id":source["id"]},
-                {"memory_type":"open_thread","subject":"北堤门","predicate":"status","value":"是否开启仍待确认","chapter_id":source["chapter_id"],"source_span_id":source["id"]},
+                {"change_kind":"changed_fact","affected_memory_id":affected["id"],"memory_type":"dynamic_state","subject":"林默","predicate":"status","value":"已离开雾港","invalidation_reason":None,"chapter_id":source["chapter_id"],"source_span_id":source["id"]},
+                {"change_kind":"new_fact","affected_memory_id":None,"memory_type":"open_thread","subject":"北堤门","predicate":"status","value":"是否开启仍待确认","invalidation_reason":None,"chapter_id":source["chapter_id"],"source_span_id":source["id"]},
             ]
             if self.duplicate:
                 second=request["sources"][1]
-                candidates.insert(1,{"memory_type":"dynamic_state","subject":" 林默 ","predicate":"status","value":"已离开雾港 ","chapter_id":second["chapter_id"],"source_span_id":second["id"]})
+                candidates.insert(1,{"change_kind":"changed_fact","affected_memory_id":affected["id"],"memory_type":"dynamic_state","subject":"林默","predicate":"status","value":"已离开雾港","invalidation_reason":None,"chapter_id":second["chapter_id"],"source_span_id":second["id"]})
             return ProviderResult({"candidates":candidates},input_tokens=12,output_tokens=8,latency_ms=3)
         return ProviderResult({"issues":[]},input_tokens=8,output_tokens=4,latency_ms=2)
 
@@ -74,6 +75,7 @@ class Stage11KTests(unittest.TestCase):
         response,delta=self.start(); self.assertEqual(response.status_code,202); self.assertEqual((delta["status"],delta["coverage"]["status"]),("in_review","update_pending"))
         continuity=self.client.get(f"/api/projects/{self.project}/checks/{delta['continuity_run_id']}?include=issues,evidence,metrics").json()["data"]
         memory_run=self.client.get(f"/api/projects/{self.project}/checks/{delta['memory_delta_run_id']}?include=metrics").json()["data"]
+        author_context=self.client.get(f"/api/projects/{self.project}/author-intent?version=0").json()["data"]
         self.assertEqual((continuity["run_type"],memory_run["run_type"]),("continuity","memory_delta"))
         for run in (continuity,memory_run):
             self.assertEqual((run["source_revision"],run["lineage_status"],run["is_stale"],run["superseded"]),(2,"incremental_source_revision",False,False))
@@ -81,18 +83,19 @@ class Stage11KTests(unittest.TestCase):
             self.assertEqual(run["metrics"]["provenance"]["source_span_ids"],run["source_span_ids"])
             self.assertEqual(run["metrics"]["provenance"]["source_memory_version"],1)
             self.assertTrue(run["metrics"]["provenance"]["prompt_version"]); self.assertIsNotNone(run["metrics"]["latency_ms"])
+            self.assertEqual((run["author_context_version"],run["author_context_snapshot_digest"],run["author_context_resolvable"]),(0,author_context["snapshot_digest"],True))
         self.assertEqual(continuity["metrics"]["retrieval"][0]["method_version"],"bounded-lexical-v4-longform")
         self.assertTrue(all(len(trace["returned_span_ids"])<=3 and len(trace["returned_span_ids"])==len(set(trace["returned_span_ids"])) for trace in continuity["metrics"]["retrieval"]))
         continuity_request=next(request for request in self.provider.last_requests if request.get("task") is None)
         expected=[[span["id"] for span in claim["allowed_evidence"]] for claim in continuity_request["claims"]]
         self.assertEqual([trace["returned_span_ids"] for trace in continuity["metrics"]["retrieval"]],expected)
 
-    def test_duplicate_normalized_tuple_is_supporting_and_reinitialize_does_not_drift(self):
-        self.provider.duplicate=True; _,delta=self.start(); same=[x for x in delta["candidates"] if x["memory_type"]=="dynamic_state"]
-        self.assertEqual([x["review_priority"] for x in same],["core","supporting"])
-        before=[(x["id"],x["review_priority"]) for x in delta["candidates"]]; self.app.state.database.initialize()
+    def test_duplicate_affected_fact_fails_closed_without_candidate_drift(self):
+        self.provider.duplicate=True; before=self.counts(); _,delta=self.start()
+        self.assertEqual((delta["status"],delta["error_code"],delta["candidates"]),("failed","duplicate_candidate",[]))
+        self.assertEqual(self.counts(),before); self.app.state.database.initialize()
         after=self.client.get(f"/api/projects/{self.project}/memory/delta").json()["data"]
-        self.assertEqual(before,[(x["id"],x["review_priority"]) for x in after["candidates"]])
+        self.assertEqual((after["status"],after["candidates"]),("failed",[]))
 
     def test_edited_core_with_current_evidence_creates_v2_and_readable_audit(self):
         _,delta=self.start(); core=next(x for x in delta["candidates"] if x["review_priority"]=="core")
@@ -117,7 +120,7 @@ class Stage11KTests(unittest.TestCase):
         self.assertEqual(audit["details"]["decisions"][0]["decision"],"rejected"); self.assertTrue(audit["details"]["decisions"][0]["evidence_span_id"])
 
     def test_provider_failures_leave_terminal_runs_and_no_partial_result_rows(self):
-        for mode,code,status in (("timeout","provider_timeout","timed_out"),("invalid_json","invalid_json","failed"),("schema","schema_invalid","failed"),("evidence","evidence_unresolvable","failed")):
+        for mode,code,status in (("timeout","provider_timeout","timed_out"),("invalid_json","invalid_json","failed"),("schema","candidate_fields_invalid","failed"),("evidence","evidence_unresolvable","failed")):
             with self.subTest(mode=mode):
                 self.setUp(); self.provider.fail_mode=mode; before=self.counts(); _,failed=self.start()
                 self.assertEqual((failed["status"],failed["error_code"]),("failed",code)); self.assertEqual(self.counts(),before)

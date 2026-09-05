@@ -48,11 +48,13 @@ class TwoRoundProvider:
             if self.failure == "schema":
                 return ProviderResult({"candidates": [{"not": "a candidate"}]})
             if self.failure == "evidence":
-                return ProviderResult({"candidates": [{"memory_type": "dynamic_state", "subject": "林默", "predicate": "status", "value": "坏证据", "chapter_id": "foreign", "source_span_id": "foreign"}]})
+                affected = next(item for item in request["memory"] if item["subject"] == "林默" and item["predicate"] == "status")
+                return ProviderResult({"candidates": [{"change_kind": "changed_fact", "affected_memory_id": affected["id"], "memory_type": "dynamic_state", "subject": "林默", "predicate": "status", "value": "坏证据", "invalidation_reason": None, "chapter_id": "foreign", "source_span_id": "foreign"}]})
             value = "已离开雾港" if "第一轮" in source["body"] else "已抵达北堤"
+            affected = next(item for item in request["memory"] if item["subject"] == "林默" and item["predicate"] == "status")
             return ProviderResult({"candidates": [
-                {"memory_type": "dynamic_state", "subject": "林默", "predicate": "status", "value": value, "chapter_id": source["chapter_id"], "source_span_id": source["id"]},
-                {"memory_type": "open_thread", "subject": "北堤门", "predicate": "status", "value": "待作者确认", "chapter_id": source["chapter_id"], "source_span_id": source["id"]},
+                {"change_kind": "changed_fact", "affected_memory_id": affected["id"], "memory_type": "dynamic_state", "subject": "林默", "predicate": "status", "value": value, "invalidation_reason": None, "chapter_id": source["chapter_id"], "source_span_id": source["id"]},
+                {"change_kind": "new_fact", "affected_memory_id": None, "memory_type": "open_thread", "subject": "北堤门", "predicate": "status", "value": "待作者确认", "invalidation_reason": None, "chapter_id": source["chapter_id"], "source_span_id": source["id"]},
             ]}, input_tokens=7, output_tokens=4, latency_ms=2)
         return ProviderResult({"issues": []}, input_tokens=6, output_tokens=2, latency_ms=1)
 
@@ -142,7 +144,7 @@ class Stage11LTwoRoundApiTests(unittest.TestCase):
             runs = [self.client.get(f"/api/projects/{self.project}/checks/{run_id}?include=metrics").json()["data"] for run_id in (delta["continuity_run_id"], delta["memory_delta_run_id"])]
             self.assertEqual({run["run_type"] for run in runs}, {"continuity", "memory_delta"})
             for run in runs:
-                self.assertEqual((run["source_revision"], run["lineage_status"], run["is_stale"]), (revision, "incremental_source_revision", False))
+                self.assertEqual((run["source_revision"], run["lineage_status"], run["is_stale"]), (revision, "incremental_state_changed_requires_recheck", True))
                 self.assertTrue(run["source_change_set_id"])
                 self.assertTrue(run["source_span_ids"])
                 self.assertEqual(run["metrics"]["provenance"]["source_memory_version"], revision - 1)
@@ -155,7 +157,7 @@ class Stage11LTwoRoundApiTests(unittest.TestCase):
 
     def test_timeout_json_schema_and_evidence_fail_without_half_writes_then_new_key_retries(self):
         self._append(self.project, 1, "# 第二章\n第一轮失败注入。")
-        for failure, error in (("timeout", "provider_timeout"), ("invalid_json", "invalid_json"), ("schema", "schema_invalid"), ("evidence", "evidence_unresolvable")):
+        for failure, error in (("timeout", "provider_timeout"), ("invalid_json", "invalid_json"), ("schema", "candidate_fields_invalid"), ("evidence", "evidence_unresolvable")):
             with self.subTest(failure=failure):
                 root = pathlib.Path(tempfile.mkdtemp(prefix="scc-11l-failure-"))
                 provider = TwoRoundProvider(); provider.failure = failure

@@ -223,7 +223,7 @@ class Stage11BoundedContextTests(unittest.TestCase):
         request=delta._request({"source_revision":2,"sources":[source(99,100)],"memory":memory})
         self.assertEqual(len(request["memory"]),20)
         self.assertLessEqual(request_prompt_and_budget(request)[1],6000)
-        self.assertEqual(delta.provenance()["prompt_version"],"memory-delta-v2-bounded-retrieval")
+        self.assertEqual(delta.provenance()["prompt_version"],"memory-delta-v3-fact-lifecycle")
 
     def test_provider_uses_2000_output_cap_and_invalid_json_keeps_only_metadata(self):
         posted = []
