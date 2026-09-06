@@ -32,11 +32,15 @@ REVISION_TASK_PRIORITIES = {"high", "medium", "low"}
 REVISION_TASK_STATUSES = {"todo", "in_progress", "completed"}
 MAX_RESOURCE_VERSION = 2_147_483_647
 TUTORIAL_VERSION = "1.2.0"
+TRUSTWORTHY_REVIEW_VERSION = "trustworthy_review_v1"
+ISSUE_NATURES = {"confirmed_conflict", "possible_conflict", "state_change", "insufficient_evidence"}
+ISSUE_ACTIONS = {"edit", "apply_suggestion", "keep_intentional", "false_positive"}
 TUTORIAL_EVENT_STEPS = {
     "memory_source_opened": 2,
     "continuity_issue_located": 3,
     "evidence_opened": 4,
     "author_decision_recorded": 5,
+    "author_decision_reviewed": 5,
 }
 
 
@@ -132,7 +136,7 @@ CREATE TABLE IF NOT EXISTS v2_run_events(run_id TEXT NOT NULL REFERENCES v2_runs
 CREATE INDEX IF NOT EXISTS v2_run_events_by_run ON v2_run_events(run_id,sequence);
 CREATE TABLE IF NOT EXISTS v2_run_claims(id TEXT PRIMARY KEY,run_id TEXT NOT NULL REFERENCES v2_runs(id),ordinal INTEGER NOT NULL,text TEXT NOT NULL,UNIQUE(run_id,ordinal));
 CREATE TABLE IF NOT EXISTS v2_retrieval_traces(run_id TEXT NOT NULL REFERENCES v2_runs(id),claim_id TEXT NOT NULL,terms TEXT NOT NULL,returned_span_ids_json TEXT NOT NULL,method_version TEXT NOT NULL,PRIMARY KEY(run_id,claim_id));
-CREATE TABLE IF NOT EXISTS v2_issues(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),claim_span_id TEXT NOT NULL,status TEXT NOT NULL,classification TEXT NOT NULL DEFAULT 'conflict',category TEXT NOT NULL,severity TEXT NOT NULL,evidence_status TEXT NOT NULL,explanation TEXT NOT NULL,proposed_change_json TEXT,UNIQUE(project_id,id));
+CREATE TABLE IF NOT EXISTS v2_issues(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),claim_span_id TEXT NOT NULL,status TEXT NOT NULL,classification TEXT NOT NULL DEFAULT 'conflict',category TEXT NOT NULL,severity TEXT NOT NULL,evidence_status TEXT NOT NULL,explanation TEXT NOT NULL,proposed_change_json TEXT,review_contract_version TEXT,nature TEXT,reasoning TEXT,evidence_chain_json TEXT,suggested_revision_json TEXT,available_actions_json TEXT,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_evidence(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),issue_id TEXT NOT NULL REFERENCES v2_issues(id),chapter_id TEXT NOT NULL,span_id TEXT NOT NULL,excerpt TEXT NOT NULL,relation TEXT NOT NULL,sufficiency TEXT NOT NULL,related_memory_ids_json TEXT NOT NULL,source_revision INTEGER NOT NULL,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_decisions(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),issue_id TEXT NOT NULL REFERENCES v2_issues(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),decision TEXT NOT NULL,note TEXT,source_revision INTEGER NOT NULL,resulting_revision INTEGER,lineage_status TEXT NOT NULL,created_at TEXT NOT NULL,UNIQUE(issue_id,source_revision));
 CREATE TABLE IF NOT EXISTS v2_change_sets(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),run_id TEXT NOT NULL REFERENCES v2_runs(id),source_run_revision INTEGER NOT NULL,resolved_revision INTEGER NOT NULL,lineage_status TEXT NOT NULL,base_version INTEGER NOT NULL,target_version INTEGER NOT NULL,status TEXT NOT NULL,created_at TEXT NOT NULL,committed_at TEXT,change_set_kind TEXT NOT NULL DEFAULT 'continuity',actor_user_id TEXT,UNIQUE(project_id,id));
@@ -140,10 +144,13 @@ CREATE TABLE IF NOT EXISTS v2_change_set_items(id TEXT PRIMARY KEY,project_id TE
 CREATE TABLE IF NOT EXISTS v2_commit_audits(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),change_set_id TEXT NOT NULL REFERENCES v2_change_sets(id),status TEXT NOT NULL,accepted_json TEXT NOT NULL,rejected_json TEXT NOT NULL,note TEXT,created_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS v2_reset_audits(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),user_id TEXT NOT NULL REFERENCES v2_users(id),reason TEXT NOT NULL,completed_at TEXT NOT NULL,response_json TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS v2_idempotency(scope TEXT NOT NULL,operation TEXT NOT NULL,idempotency_key TEXT NOT NULL,fingerprint TEXT NOT NULL,response_json TEXT NOT NULL,status_code INTEGER NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(scope,operation,idempotency_key));
+CREATE TABLE IF NOT EXISTS v2_tutorial_progress_restarts(id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),previous_status TEXT NOT NULL,previous_revision INTEGER NOT NULL,resulting_revision INTEGER NOT NULL,created_at TEXT NOT NULL,UNIQUE(user_id,resulting_revision));
 CREATE TABLE IF NOT EXISTS v2_import_drafts(id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),filename TEXT NOT NULL,byte_size INTEGER NOT NULL,sha256 TEXT NOT NULL,format TEXT NOT NULL,chapters_json TEXT NOT NULL,source_text TEXT,warnings_json TEXT NOT NULL,expires_at TEXT NOT NULL,committed_at TEXT,created_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS v2_memory_initializations(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),source_revision INTEGER NOT NULL,source_snapshot_digest TEXT NOT NULL,status TEXT NOT NULL,provider_label TEXT NOT NULL,model_label TEXT NOT NULL,prompt_version TEXT NOT NULL,schema_version TEXT NOT NULL,error_code TEXT,created_at TEXT NOT NULL,completed_at TEXT,UNIQUE(project_id,source_revision));
 CREATE TABLE IF NOT EXISTS v2_memory_candidates(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),initialization_id TEXT NOT NULL REFERENCES v2_memory_initializations(id),source_revision INTEGER NOT NULL,candidate_ordinal INTEGER NOT NULL DEFAULT 0,memory_type TEXT NOT NULL,subject TEXT NOT NULL,predicate TEXT NOT NULL,value TEXT NOT NULL,chapter_id TEXT NOT NULL REFERENCES v2_chapters(id),source_span_id TEXT NOT NULL REFERENCES v2_source_spans(id),candidate_origin TEXT NOT NULL DEFAULT 'initialization',review_priority TEXT NOT NULL DEFAULT 'supporting',decision_status TEXT NOT NULL DEFAULT 'pending',decision_json TEXT,decided_at TEXT,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_memory_candidate_decisions(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),initialization_id TEXT NOT NULL REFERENCES v2_memory_initializations(id),candidate_id TEXT NOT NULL REFERENCES v2_memory_candidates(id),decision TEXT NOT NULL,after_json TEXT,evidence_span_id TEXT,source_revision INTEGER NOT NULL,created_at TEXT NOT NULL,UNIQUE(candidate_id));
+CREATE TABLE IF NOT EXISTS v2_memory_candidate_review_events(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),initialization_id TEXT NOT NULL REFERENCES v2_memory_initializations(id),candidate_id TEXT NOT NULL REFERENCES v2_memory_candidates(id),event TEXT NOT NULL,decision TEXT NOT NULL,decision_json TEXT NOT NULL,actor_user_id TEXT NOT NULL REFERENCES v2_users(id),source_revision INTEGER NOT NULL,created_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS v2_memory_candidate_review_events_by_candidate ON v2_memory_candidate_review_events(candidate_id,created_at,id);
 CREATE INDEX IF NOT EXISTS v2_memory_candidates_by_initialization ON v2_memory_candidates(initialization_id,decision_status);
 CREATE TABLE IF NOT EXISTS v2_source_change_sets(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),user_id TEXT NOT NULL REFERENCES v2_users(id),base_source_revision INTEGER NOT NULL,target_source_revision INTEGER NOT NULL,mode TEXT NOT NULL,input_method TEXT NOT NULL,content_hash TEXT NOT NULL,content_json TEXT NOT NULL,chapters_json TEXT NOT NULL,status TEXT NOT NULL,error_code TEXT,expires_at TEXT NOT NULL,created_at TEXT NOT NULL,committed_at TEXT,draft_id TEXT,draft_revision INTEGER,draft_checksum TEXT,failed_at TEXT,failure_code TEXT,commit_result_json TEXT,UNIQUE(project_id,id));
 CREATE INDEX IF NOT EXISTS v2_source_change_sets_by_project ON v2_source_change_sets(project_id,status,created_at);
@@ -231,6 +238,8 @@ class V2Database:
             self._migrate_stage13_identity(c)
             self._migrate_v110_onboarding(c)
             self._migrate_v120_tutorial_progress(c)
+            self._migrate_v140_trustworthy_review(c)
+            self._migrate_v140_initialization_recovery(c)
             self._migrate_v130_author_intent(c)
             self._migrate_v130_profile(c)
             self._migrate_legacy_project(c)
@@ -301,6 +310,45 @@ class V2Database:
             (TUTORIAL_VERSION, stamp),
         )
         c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(120,?)", (stamp,))
+
+    def _migrate_v140_trustworthy_review(self, c: sqlite3.Connection) -> None:
+        """Add review semantics and progress-only restart audit without reinterpreting old rows."""
+        issue_columns = {row["name"] for row in c.execute("PRAGMA table_info(v2_issues)")}
+        for name, definition in {
+            "review_contract_version": "TEXT",
+            "nature": "TEXT",
+            "reasoning": "TEXT",
+            "evidence_chain_json": "TEXT",
+            "suggested_revision_json": "TEXT",
+            "available_actions_json": "TEXT",
+        }.items():
+            if name not in issue_columns:
+                c.execute(f"ALTER TABLE v2_issues ADD COLUMN {name} {definition}")
+        c.execute(
+            "CREATE TABLE IF NOT EXISTS v2_tutorial_progress_restarts("
+            "id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),"
+            "project_id TEXT NOT NULL REFERENCES v2_projects(id),previous_status TEXT NOT NULL,"
+            "previous_revision INTEGER NOT NULL,resulting_revision INTEGER NOT NULL,"
+            "created_at TEXT NOT NULL,UNIQUE(user_id,resulting_revision))"
+        )
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(140,?)", (utcnow(),))
+
+    def _migrate_v140_initialization_recovery(self, c: sqlite3.Connection) -> None:
+        """Add append-only candidate review history used by explicit reopen/re-review."""
+        c.execute(
+            "CREATE TABLE IF NOT EXISTS v2_memory_candidate_review_events("
+            "id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),"
+            "initialization_id TEXT NOT NULL REFERENCES v2_memory_initializations(id),"
+            "candidate_id TEXT NOT NULL REFERENCES v2_memory_candidates(id),event TEXT NOT NULL,"
+            "decision TEXT NOT NULL,decision_json TEXT NOT NULL,"
+            "actor_user_id TEXT NOT NULL REFERENCES v2_users(id),source_revision INTEGER NOT NULL,"
+            "created_at TEXT NOT NULL)"
+        )
+        c.execute(
+            "CREATE INDEX IF NOT EXISTS v2_memory_candidate_review_events_by_candidate "
+            "ON v2_memory_candidate_review_events(candidate_id,created_at,id)"
+        )
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(141,?)", (utcnow(),))
 
     def _migrate_v130_author_intent(self, c: sqlite3.Connection) -> None:
         """Add an independent author-intent store and nullable Run binding."""
@@ -834,6 +882,7 @@ class V2Database:
         for ordinal, fixture in enumerate(DEMO_REVIEW_ISSUES, 1):
             claim_id = scoped_seed_id("claim", project_id, f"grey-harbor-claim-{ordinal}")
             issue_id = scoped_seed_id("issue", project_id, f"grey-harbor-issue-{ordinal}")
+            evidence_id = scoped_seed_id("evidence",project_id,f"grey-harbor-evidence-{ordinal}")
             span_id = span_ids[fixture["evidence_span_id"]]
             chapter_id = c.execute("SELECT chapter_id FROM v2_source_spans WHERE id=? AND project_id=?", (span_id,project_id)).fetchone()[0]
             related_memory_id = memory_ids[fixture["related_memory_id"]]
@@ -844,9 +893,12 @@ class V2Database:
                     proposed["affected_memory_id"] = memory_ids[proposed["affected_memory_id"]]
             c.execute("INSERT INTO v2_run_claims(id,run_id,ordinal,text) VALUES(?,?,?,?)", (claim_id,run_id,ordinal,fixture["claim_text"]))
             c.execute("INSERT INTO v2_retrieval_traces(run_id,claim_id,terms,returned_span_ids_json,method_version) VALUES(?,?,?,?,?)", (run_id,claim_id,"demo preset",json.dumps([span_id]),"demo-preset-v1"))
-            c.execute("INSERT INTO v2_issues(id,project_id,run_id,claim_span_id,status,classification,category,severity,evidence_status,explanation,proposed_change_json) VALUES(?,?,?,?,?,?,?,?,?,?,?)", (issue_id,project_id,run_id,claim_id,"open","conflict",fixture["category"],fixture["severity"],"sufficient",fixture["explanation"],json.dumps(proposed,ensure_ascii=False) if proposed else None))
+            c.execute(
+                "INSERT INTO v2_issues(id,project_id,run_id,claim_span_id,status,classification,category,severity,evidence_status,explanation,proposed_change_json,review_contract_version,nature,reasoning,evidence_chain_json,suggested_revision_json,available_actions_json) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                (issue_id,project_id,run_id,claim_id,"open",fixture["classification"],fixture["category"],fixture["severity"],fixture["evidence_sufficiency"],fixture["explanation"],json.dumps(proposed,ensure_ascii=False) if proposed else None,TRUSTWORTHY_REVIEW_VERSION,fixture["nature"],fixture["reasoning"],json.dumps([{"evidence_id":evidence_id,"role":fixture["evidence_role"]}],ensure_ascii=False),json.dumps(fixture["suggested_revision"],ensure_ascii=False) if fixture["suggested_revision"] else None,json.dumps(fixture["available_actions"],ensure_ascii=False)),
+            )
             excerpt = c.execute("SELECT body FROM v2_source_spans WHERE id=? AND project_id=?", (span_id,project_id)).fetchone()[0]
-            c.execute("INSERT INTO v2_evidence(id,project_id,issue_id,chapter_id,span_id,excerpt,relation,sufficiency,related_memory_ids_json,source_revision) VALUES(?,?,?,?,?,?,?,?,?,?)", (scoped_seed_id("evidence",project_id,f"grey-harbor-evidence-{ordinal}"),project_id,issue_id,chapter_id,span_id,excerpt,"contradicts","sufficient",json.dumps([related_memory_id]),1))
+            c.execute("INSERT INTO v2_evidence(id,project_id,issue_id,chapter_id,span_id,excerpt,relation,sufficiency,related_memory_ids_json,source_revision) VALUES(?,?,?,?,?,?,?,?,?,?)", (evidence_id,project_id,issue_id,chapter_id,span_id,excerpt,fixture["evidence_relation"],fixture["evidence_sufficiency"],json.dumps([related_memory_id]),1))
 
     def _seed_other(self, c: sqlite3.Connection, project_id: str, seed_key: str) -> None:
         seed = {
@@ -1129,6 +1181,24 @@ class V2Database:
             progress = self._tutorial_progress(c, user)
             if progress is None:
                 raise DomainError("tutorial_progress_unavailable", 503, True)
+            if event == "author_decision_reviewed":
+                run_id = payload.get("run_id")
+                issue_id = payload.get("issue_id")
+                reviewed = run_id and issue_id and c.execute(
+                    "SELECT 1 FROM v2_decisions d "
+                    "JOIN v2_issues i ON i.id=d.issue_id AND i.project_id=d.project_id AND i.run_id=d.run_id "
+                    "JOIN v2_runs r ON r.id=d.run_id AND r.project_id=d.project_id AND r.source_revision=d.source_revision "
+                    "WHERE d.project_id=? AND d.run_id=? AND d.issue_id=?",
+                    (project_id, run_id, issue_id),
+                ).fetchone()
+                if (
+                    not reviewed
+                    or progress["current_step"] < 4
+                    or "evidence_opened" not in progress["completed_events"]
+                ):
+                    raise DomainError("tutorial_decision_review_unavailable", 409)
+            elif payload.get("run_id") is not None or payload.get("issue_id") is not None:
+                raise DomainError("invalid_request", 400)
             if event not in progress["completed_events"]:
                 events = sorted(
                     [*progress["completed_events"], event],
@@ -1227,6 +1297,28 @@ class V2Database:
                 refreshed = c.execute("SELECT * FROM v2_users WHERE id=?", (user_id,)).fetchone()
                 return {"status": "active", "tutorial": {"project_id": current_id, "title": "教学模式 · 灰港回声", "data_origin": "tutorial_seed"}, "progress": self._tutorial_progress(c, refreshed)}
             return self._idem(c, user_id, "onboarding_reopen", key, payload, reopen, 200)
+
+    def restart_tutorial_progress(self,user_id:str,payload:dict[str,Any],key:str):
+        """Restart only the tutorial pointer/progress; seeded work and review history are immutable."""
+        with self.connection() as c:
+            def restart()->dict[str,Any]:
+                if payload.get("confirm") is not True:raise DomainError("confirmation_required",400)
+                user=c.execute("SELECT * FROM v2_users WHERE id=?",(user_id,)).fetchone()
+                if not user:raise DomainError("authentication_required",401)
+                if user["account_type"]!="registered":raise DomainError("tutorial_unavailable",409)
+                project_id=payload.get("project_id")
+                project=c.execute("SELECT id,title,status,data_origin FROM v2_projects WHERE id=? AND user_id=? AND data_origin='tutorial_seed'",(project_id,user_id)).fetchone()
+                if not project or project_id!=user["onboarding_tutorial_project_id"] or payload.get("tutorial_version")!=TUTORIAL_VERSION:raise DomainError("tutorial_progress_target_invalid",409)
+                previous_revision=user["onboarding_progress_revision"] or 0
+                base=payload.get("base_revision")
+                if base is not None and base!=previous_revision:raise DomainError("tutorial_progress_revision_conflict",409)
+                stamp=utcnow();resulting_revision=previous_revision+1;restart_id=new_id("tutorialrestart")
+                c.execute("UPDATE v2_users SET onboarding_status='active',onboarding_completed_at=NULL,onboarding_tutorial_version=?,onboarding_current_step=1,onboarding_completed_events_json='[]',onboarding_progress_revision=?,onboarding_progress_updated_at=? WHERE id=?",(TUTORIAL_VERSION,resulting_revision,stamp,user_id))
+                c.execute("INSERT INTO v2_tutorial_progress_restarts(id,user_id,project_id,previous_status,previous_revision,resulting_revision,created_at) VALUES(?,?,?,?,?,?,?)",(restart_id,user_id,project_id,user["onboarding_status"],previous_revision,resulting_revision,stamp))
+                refreshed=c.execute("SELECT * FROM v2_users WHERE id=?",(user_id,)).fetchone()
+                real_count=c.execute("SELECT COUNT(*) FROM v2_projects WHERE user_id=? AND data_origin!='tutorial_seed'",(user_id,)).fetchone()[0]
+                return {"status":"active","real_project_count":real_count,"show_first_run":real_count==0,"completed_at":None,"tutorial":{"project_id":project["id"],"title":project["title"],"status":project["status"],"data_origin":"tutorial_seed"},"progress":self._tutorial_progress(c,refreshed),"restart_id":restart_id}
+            return self._idem(c,user_id,"onboarding_progress_restart",key,payload,restart,200)
 
     def _complete_onboarding_for_real_project(self, c: sqlite3.Connection, user_id: str) -> None:
         c.execute(
@@ -1884,7 +1976,10 @@ class V2Database:
             source=source_by_id.get(candidate["source_span_id"])
             if not source or source["chapter_id"]!=candidate["chapter_id"] or candidate["source_revision"]!=initialization["source_revision"]:raise DomainError("evidence_unresolvable",422)
             decision=json.loads(candidate["decision_json"]) if candidate["decision_json"] else None
-            candidates.append({"id":candidate["id"],"memory_type":candidate["memory_type"],"subject":candidate["subject"],"predicate":candidate["predicate"],"value":candidate["value"],"candidate_origin":candidate["candidate_origin"],"review_priority":candidate["review_priority"],"decision_status":candidate["decision_status"],"decision":decision,"source_revision":candidate["source_revision"],"source":{"chapter_id":source["chapter_id"],"chapter_number":source["chapter_number"],"chapter_title":source["chapter_title"],"span_id":source["id"],"label":source["label"],"excerpt":source["body"][:500],"text":source["body"],"source_path":f"/projects/{project_id}/sources#span-{source['id']}"}})
+            review_history=[]
+            for event in c.execute("SELECT * FROM v2_memory_candidate_review_events WHERE candidate_id=? AND project_id=? ORDER BY created_at,id",(candidate["id"],project_id)).fetchall():
+                review_history.append({"id":event["id"],"event":event["event"],"decision":event["decision"],"snapshot":json.loads(event["decision_json"]),"source_revision":event["source_revision"],"created_at":event["created_at"]})
+            candidates.append({"id":candidate["id"],"memory_type":candidate["memory_type"],"subject":candidate["subject"],"predicate":candidate["predicate"],"value":candidate["value"],"candidate_origin":candidate["candidate_origin"],"review_priority":candidate["review_priority"],"decision_status":candidate["decision_status"],"decision":decision,"review_history":review_history,"source_revision":candidate["source_revision"],"source":{"chapter_id":source["chapter_id"],"chapter_number":source["chapter_number"],"chapter_title":source["chapter_title"],"span_id":source["id"],"label":source["label"],"excerpt":source["body"][:500],"text":source["body"],"source_path":f"/projects/{project_id}/sources#span-{source['id']}"}})
         return {"id":initialization["id"],"project_id":project_id,"status":initialization["status"],"source_revision":initialization["source_revision"],"provider_label":initialization["provider_label"],"error_code":initialization["error_code"],"created_at":initialization["created_at"],"completed_at":initialization["completed_at"],"candidates":candidates,"coverage":self._memory_coverage(c,project_id)}
 
     def _initialization_summary(self, initialization: sqlite3.Row) -> dict[str, Any]:
@@ -1976,8 +2071,31 @@ class V2Database:
                 stamp=utcnow()
                 c.execute("UPDATE v2_memory_candidates SET decision_status=?,decision_json=?,decided_at=? WHERE id=? AND project_id=?",(decision,json.dumps(saved,ensure_ascii=False),stamp,candidate_id,project_id))
                 c.execute("INSERT INTO v2_memory_candidate_decisions(id,project_id,initialization_id,candidate_id,decision,after_json,evidence_span_id,source_revision,created_at) VALUES(?,?,?,?,?,?,?,?,?)",(new_id("memorydecision"),project_id,initialization_id,candidate_id,decision,json.dumps(saved["after"],ensure_ascii=False) if saved["after"] else None,evidence_span_id,initialization["source_revision"],stamp))
+                c.execute("INSERT INTO v2_memory_candidate_review_events(id,project_id,initialization_id,candidate_id,event,decision,decision_json,actor_user_id,source_revision,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)",(new_id("memoryreviewevent"),project_id,initialization_id,candidate_id,"decided",decision,json.dumps(saved,ensure_ascii=False),user_id,initialization["source_revision"],stamp))
                 return {"candidate_id":candidate_id,"decision_status":decision}
             return self._idem(c,user_id,"memory_candidate_decision:"+project_id+":"+candidate_id,key,payload,decide)
+
+    def reopen_memory_candidate(self, user_id: str, project_id: str, initialization_id: str, candidate_id: str, payload: dict[str, Any], key: str):
+        with self.connection() as c:
+            def reopen():
+                self._project(c,user_id,project_id,True)
+                initialization=c.execute("SELECT * FROM v2_memory_initializations WHERE id=? AND project_id=?",(initialization_id,project_id)).fetchone()
+                candidate=c.execute("SELECT * FROM v2_memory_candidates WHERE id=? AND initialization_id=? AND project_id=?",(candidate_id,initialization_id,project_id)).fetchone()
+                if not initialization or not candidate: raise DomainError("resource_not_found",404)
+                if initialization["status"]!="draft": raise DomainError("memory_initialization_closed",409)
+                if payload.get("confirm") is not True: raise DomainError("confirmation_required",400)
+                self._assert_initialization_sources_current(c,project_id,initialization)
+                current=candidate["decision_status"]
+                if current=="pending": raise DomainError("memory_candidate_not_decided",409)
+                if payload.get("base_decision_status")!=current: raise DomainError("memory_candidate_review_conflict",409)
+                saved=json.loads(candidate["decision_json"]) if candidate["decision_json"] else None
+                if not isinstance(saved,dict) or saved.get("decision")!=current: raise DomainError("memory_candidate_review_unresolvable",409)
+                stamp=utcnow()
+                c.execute("INSERT INTO v2_memory_candidate_review_events(id,project_id,initialization_id,candidate_id,event,decision,decision_json,actor_user_id,source_revision,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)",(new_id("memoryreviewevent"),project_id,initialization_id,candidate_id,"reopened",current,json.dumps(saved,ensure_ascii=False),user_id,initialization["source_revision"],stamp))
+                c.execute("DELETE FROM v2_memory_candidate_decisions WHERE candidate_id=? AND project_id=?",(candidate_id,project_id))
+                c.execute("UPDATE v2_memory_candidates SET decision_status='pending',decision_json=NULL,decided_at=NULL WHERE id=? AND project_id=?",(candidate_id,project_id))
+                return {"candidate_id":candidate_id,"decision_status":"pending","previous_decision_status":current}
+            return self._idem(c,user_id,"memory_candidate_reopen:"+project_id+":"+candidate_id,key,payload,reopen)
 
     def commit_memory_initialization(self, user_id: str, project_id: str, initialization_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
@@ -2170,6 +2288,37 @@ class V2Database:
                 if c.execute("UPDATE v2_runs SET status='running',stage=?,started_at=COALESCE(started_at,?) WHERE id=? AND status IN ('queued','running') AND cancel_requested_at IS NULL",(stage,stamp,run["id"])).rowcount:self._append_run_event(c,run["id"],"running",stage,None,stamp)
             return True
 
+    def _persist_review_issue(self,c:sqlite3.Connection,project_id:str,run_id:str,source_revision:int,issue:dict[str,Any])->str:
+        """Persist one already-validated result without inventing semantics for legacy output."""
+        issue_id=new_id("issue")
+        evidence_rows=[(new_id("evidence"),item) for item in issue.get("evidence",[])]
+        contract=issue.get("review_contract_version")
+        chain_json=suggestion_json=actions_json=None
+        nature=reasoning=None
+        if contract==TRUSTWORTHY_REVIEW_VERSION:
+            nature=issue.get("nature");reasoning=issue.get("reasoning")
+            by_span={item["span_id"]:evidence_id for evidence_id,item in evidence_rows}
+            chain=issue.get("evidence_chain")
+            if nature not in ISSUE_NATURES or not isinstance(reasoning,str) or not isinstance(chain,list):
+                raise DomainError("schema_invalid",422)
+            try: persisted_chain=[{"evidence_id":by_span[item["span_id"]],"role":item["role"]} for item in chain]
+            except (KeyError,TypeError): raise DomainError("evidence_unresolvable",422)
+            if len(persisted_chain)!=len(evidence_rows):raise DomainError("evidence_unresolvable",422)
+            actions=issue.get("available_actions")
+            if not isinstance(actions,list) or not set(actions)<=ISSUE_ACTIONS:raise DomainError("schema_invalid",422)
+            chain_json=json.dumps(persisted_chain,ensure_ascii=False)
+            suggestion_json=json.dumps(issue.get("suggested_revision"),ensure_ascii=False) if issue.get("suggested_revision") else None
+            actions_json=json.dumps(actions,ensure_ascii=False)
+        else:
+            contract=None
+        c.execute(
+            "INSERT INTO v2_issues(id,project_id,run_id,claim_span_id,status,classification,category,severity,evidence_status,explanation,proposed_change_json,review_contract_version,nature,reasoning,evidence_chain_json,suggested_revision_json,available_actions_json) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            (issue_id,project_id,run_id,issue["claim_span_id"],"open",issue["status"],issue["category"],issue["severity"],issue["evidence_status"],issue["explanation"],json.dumps(issue.get("proposed_memory_change"),ensure_ascii=False) if issue.get("proposed_memory_change") else None,contract,nature,reasoning,chain_json,suggestion_json,actions_json),
+        )
+        for evidence_id,evidence in evidence_rows:
+            c.execute("INSERT INTO v2_evidence(id,project_id,issue_id,chapter_id,span_id,excerpt,relation,sufficiency,related_memory_ids_json,source_revision) VALUES(?,?,?,?,?,?,?,?,?,?)",(evidence_id,project_id,issue_id,evidence["chapter_id"],evidence["span_id"],evidence["excerpt"],evidence["relation"],evidence["sufficiency"],json.dumps(evidence["related_memory_ids"]),source_revision))
+        return issue_id
+
     def finish_incremental_runs(self,project_id,batch_id,continuity,delta):
         prepared=None
         if continuity["status"]=="completed" and delta["status"]=="completed":
@@ -2220,8 +2369,7 @@ class V2Database:
                 if not isinstance(returned,list) or len(returned)!=len(set(returned)) or len(returned)>3 or not set(returned)<=allowed_ids:raise DomainError("retrieval_trace_invalid",422)
                 c.execute("INSERT INTO v2_run_claims VALUES(?,?,?,?)",(claim["id"],batch["continuity_run_id"],ordinal,claim["text"])); c.execute("INSERT INTO v2_retrieval_traces VALUES(?,?,?,?,?)",(batch["continuity_run_id"],claim["id"],"bounded_lexical",json.dumps(returned),method))
             for issue in continuity.get("issues",[]):
-                issue_id=new_id("issue"); c.execute("INSERT INTO v2_issues(id,project_id,run_id,claim_span_id,status,classification,category,severity,evidence_status,explanation,proposed_change_json) VALUES(?,?,?,?,?,?,?,?,?,?,?)",(issue_id,project_id,batch["continuity_run_id"],issue["claim_span_id"],"open",issue["status"],issue["category"],issue["severity"],issue["evidence_status"],issue["explanation"],json.dumps(issue.get("proposed_memory_change")) if issue.get("proposed_memory_change") else None))
-                for evidence in issue["evidence"]: c.execute("INSERT INTO v2_evidence(id,project_id,issue_id,chapter_id,span_id,excerpt,relation,sufficiency,related_memory_ids_json,source_revision) VALUES(?,?,?,?,?,?,?,?,?,?)",(new_id("evidence"),project_id,issue_id,evidence["chapter_id"],evidence["span_id"],evidence["excerpt"],evidence["relation"],evidence["sufficiency"],json.dumps(evidence["related_memory_ids"]),batch["source_revision"]))
+                self._persist_review_issue(c,project_id,batch["continuity_run_id"],batch["source_revision"],issue)
             for ordinal,(item,source,priority) in enumerate(zip(delta["candidates"],sources,priorities),1):
                 c.execute("INSERT INTO v2_memory_delta_candidates(id,project_id,batch_id,source_revision,candidate_ordinal,memory_type,subject,predicate,value,chapter_id,source_span_id,candidate_origin,review_priority,decision_status,decision_json,decided_at,change_kind,affected_memory_id,invalidation_reason) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(new_id("memorydeltacandidate"),project_id,batch_id,batch["source_revision"],ordinal,item["memory_type"],item["subject"],item["predicate"],item["value"],source["chapter_id"],source["id"],"delta",priority,"pending",None,None,item["change_kind"],item.get("affected_memory_id"),item.get("invalidation_reason")))
             c.execute("UPDATE v2_memory_delta_batches SET status='in_review',completed_at=?,retrieval_json=? WHERE id=?",(stamp,json.dumps(delta.get("retrieval",{}),ensure_ascii=False),batch_id))
@@ -2786,10 +2934,7 @@ class V2Database:
             self._append_run_event(c,run_id,status,terminal,error,stamp)
             if status!="completed": return True
             for issue in result.get("issues",[]):
-                issue_id=new_id("issue")
-                c.execute("INSERT INTO v2_issues(id,project_id,run_id,claim_span_id,status,classification,category,severity,evidence_status,explanation,proposed_change_json) VALUES(?,?,?,?,?,?,?,?,?,?,?)",(issue_id,project_id,run_id,issue["claim_span_id"],"open",issue["status"],issue["category"],issue["severity"],issue["evidence_status"],issue["explanation"],json.dumps(issue.get("proposed_memory_change")) if issue.get("proposed_memory_change") else None))
-                for evidence in issue["evidence"]:
-                    c.execute("INSERT INTO v2_evidence(id,project_id,issue_id,chapter_id,span_id,excerpt,relation,sufficiency,related_memory_ids_json,source_revision) VALUES(?,?,?,?,?,?,?,?,?,?)",(new_id("evidence"),project_id,issue_id,evidence["chapter_id"],evidence["span_id"],evidence["excerpt"],evidence["relation"],evidence["sufficiency"],json.dumps(evidence["related_memory_ids"]),run["source_revision"]))
+                self._persist_review_issue(c,project_id,run_id,run["source_revision"],issue)
             return True
 
     def cancel_run(self,user_id,project_id,run_id,payload,key):
@@ -2920,6 +3065,27 @@ class V2Database:
             })
         return resolved
 
+    def _review_issue_contract(self,c:sqlite3.Connection,project_id:str,issue:sqlite3.Row,run:sqlite3.Row)->dict[str,Any]:
+        if issue["review_contract_version"]!=TRUSTWORTHY_REVIEW_VERSION:
+            return {"review_contract_version":"legacy_v3"}
+        try:
+            chain=json.loads(issue["evidence_chain_json"]);actions=json.loads(issue["available_actions_json"])
+            suggestion=json.loads(issue["suggested_revision_json"]) if issue["suggested_revision_json"] else None
+        except (TypeError,ValueError):raise DomainError("review_contract_unresolvable",422)
+        evidence_ids={row["id"] for row in c.execute("SELECT id FROM v2_evidence WHERE project_id=? AND issue_id=?",(project_id,issue["id"])).fetchall()}
+        chain_ids=[item.get("evidence_id") for item in chain] if isinstance(chain,list) and all(isinstance(item,dict) for item in chain) else []
+        roles={"prior_state","current_context","missing_link"}
+        if len(chain_ids)!=len(set(chain_ids)) or set(chain_ids)!=evidence_ids:
+            raise DomainError("evidence_unresolvable",422)
+        if issue["nature"] not in ISSUE_NATURES or not issue["reasoning"] or not isinstance(actions,list) or not set(actions)<=ISSUE_ACTIONS or len(actions)!=len(set(actions)) or any(item.get("role") not in roles or set(item)!={"evidence_id","role"} for item in chain):
+            raise DomainError("review_contract_unresolvable",422)
+        if issue["nature"]=="insufficient_evidence" and actions:raise DomainError("review_contract_unresolvable",422)
+        if suggestion is not None:
+            revision=c.execute("SELECT body FROM v2_draft_revisions WHERE draft_id=? AND revision=?",(run["draft_id"],run["source_revision"])).fetchone()
+            if not isinstance(suggestion,dict) or set(suggestion)!={"before","after"} or not revision or revision["body"].count(suggestion.get("before",""))!=1 or suggestion.get("before")==suggestion.get("after") or "apply_suggestion" not in actions:raise DomainError("suggested_revision_unresolvable",422)
+        elif "apply_suggestion" in actions:raise DomainError("suggested_revision_unresolvable",422)
+        return {"review_contract_version":TRUSTWORTHY_REVIEW_VERSION,"nature":issue["nature"],"reasoning":issue["reasoning"],"evidence_chain":chain,"suggested_revision":suggestion,"available_actions":actions}
+
     def run_view(self, user_id: str, project_id: str, run_id: str, include: set[str]) -> dict[str, Any]:
         with self.connection() as c:
             self._project(c,user_id,project_id)
@@ -2947,11 +3113,11 @@ class V2Database:
             result={"run_id":run_id,"project_id":project_id,"run_type":run["run_type"],"status":status,"stage":stage,"source_revision":run["source_revision"],"draft_revision":run["draft_revision"],"source_memory_version":run["source_memory_version"],"author_context_version":run["author_context_version"],"author_context_version_status":author_status,"author_context_resolvable":author_resolved,"author_context_snapshot_digest":run["author_context_snapshot_digest"] if author_resolved else None,"alias_version":run["alias_version"],"alias_snapshot_digest":run["alias_snapshot_digest"],"source_change_set_id":run["source_change_set_id"],"source_span_ids":source_span_ids,"incremental_batch_id":run["incremental_batch_id"],"current_revision":draft["revision"],"is_stale":not current,"superseded":not current,"lineage_status":(("incremental_source_revision" if current else "incremental_state_changed_requires_recheck") if incremental else "validated_direct_successor" if direct_successor else "current" if current else "lineage_invalid_requires_recheck"),"result_origin":run["result_origin"],"result_origin_label":("预置演示审阅数据（未调用 Provider）" if run["result_origin"]=="demo_preset" else "Provider 检查结果"),"error_code":error_code,"retryable":bool(run["retryable"]) or run["status"]=="budget_paused","created_at":run["created_at"],"started_at":run["started_at"],"completed_at":run["completed_at"],"cancel_requested_at":run["cancel_requested_at"],"duration_ms":run["duration_ms"],"retry_of_run_id":run["retry_of_run_id"],"root_run_id":run["root_run_id"] or run_id,"attempt_number":run["attempt_number"] or 1,"transitions":transitions,"provenance":provenance,"provider_metrics":{key:metrics[key] for key in ("latency_ms","input_tokens","output_tokens","cost_cny","cost_available")}}
             if "issues" in include and status=="completed":
                 issues=[]
-                for issue in c.execute("SELECT * FROM v2_issues WHERE project_id=? AND run_id=?",(project_id,run_id)).fetchall():
+                for issue in c.execute("SELECT * FROM v2_issues WHERE project_id=? AND run_id=? ORDER BY rowid",(project_id,run_id)).fetchall():
                     claim=c.execute("SELECT text FROM v2_run_claims WHERE id=? AND run_id=?",(issue["claim_span_id"],run_id)).fetchone()
                     if not claim: raise DomainError("evidence_unresolvable",422)
                     decision=c.execute("SELECT decision,resulting_revision FROM v2_decisions WHERE project_id=? AND issue_id=? AND source_revision=?",(project_id,issue["id"],run["source_revision"])).fetchone()
-                    item={"id":issue["id"],"claim_span_id":issue["claim_span_id"],"claim_text":claim["text"],"status":issue["status"],"classification":issue["classification"],"category":issue["category"],"severity":issue["severity"],"evidence_status":issue["evidence_status"],"explanation":issue["explanation"],"decision":dict(decision) if decision else None}
+                    item={"id":issue["id"],"claim_span_id":issue["claim_span_id"],"claim_text":claim["text"],"status":issue["status"],"classification":issue["classification"],"category":issue["category"],"severity":issue["severity"],"evidence_status":issue["evidence_status"],"explanation":issue["explanation"],"decision":dict(decision) if decision else None,**self._review_issue_contract(c,project_id,issue,run)}
                     if "evidence" in include:
                         item["evidence"]=self._resolved_evidence(c,project_id,issue,run)
                     issues.append(item)
@@ -2971,10 +3137,16 @@ class V2Database:
                 issue=c.execute("SELECT * FROM v2_issues WHERE id=? AND project_id=?",(issue_id,project_id)).fetchone()
                 run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(payload["run_id"],project_id)).fetchone()
                 if not issue or not run or issue["run_id"]!=run["id"] or payload["source_revision"]!=run["source_revision"]: raise DomainError("resource_not_found",404)
-                self._resolved_evidence(c,project_id,issue,run)
+                evidence=self._resolved_evidence(c,project_id,issue,run)
+                if issue["evidence_status"]!="sufficient" or not evidence or any(item["sufficiency"]!="sufficient" for item in evidence):raise DomainError("issue_decision_unavailable",409)
                 if c.execute("SELECT 1 FROM v2_decisions WHERE issue_id=? AND source_revision=?",(issue_id,run["source_revision"])).fetchone(): raise DomainError("already_decided",409)
                 draft=c.execute("SELECT * FROM v2_drafts WHERE id=? AND project_id=?",(run["draft_id"],project_id)).fetchone()
                 decision=payload["decision"]; resulting=payload.get("resulting_revision")
+                contract=self._review_issue_contract(c,project_id,issue,run)
+                if contract["review_contract_version"]==TRUSTWORTHY_REVIEW_VERSION:
+                    actions=set(contract["available_actions"])
+                    permitted=(decision=="accept_and_edit" and bool(actions&{"edit","apply_suggestion"})) or decision in actions
+                    if not permitted:raise DomainError("issue_action_unavailable",409)
                 if decision=="accept_and_edit":
                     valid=resulting==run["source_revision"]+1 and draft["revision"]==resulting and draft["edit_context_json"] and json.loads(draft["edit_context_json"]).get("source_run_id")==run["id"] and json.loads(draft["edit_context_json"]).get("issue_id")==issue_id
                     if not valid: raise DomainError("invalid_resulting_revision",422)
@@ -3000,7 +3172,11 @@ class V2Database:
                 if not (draft["revision"]==run["source_revision"] or successor) or payload["resolved_revision"]!=draft["revision"]: raise DomainError("lineage_invalid_requires_recheck",409)
                 issues=c.execute("SELECT * FROM v2_issues WHERE project_id=? AND run_id=?",(project_id,run["id"])).fetchall()
                 decisions=c.execute("SELECT * FROM v2_decisions WHERE project_id=? AND run_id=?",(project_id,run["id"])).fetchall()
-                if len(issues)!=len(decisions): raise DomainError("unresolved_required_decisions",409)
+                required=set()
+                for issue in issues:
+                    contract=self._review_issue_contract(c,project_id,issue,run)
+                    if issue["evidence_status"]=="sufficient" and (contract["review_contract_version"]=="legacy_v3" or contract["available_actions"]):required.add(issue["id"])
+                if required!={decision["issue_id"] for decision in decisions}: raise DomainError("unresolved_required_decisions",409)
                 proposed=[]
                 for decision in decisions:
                     issue=next(item for item in issues if item["id"]==decision["issue_id"])
@@ -3111,6 +3287,7 @@ class V2Database:
                     c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
                 c.execute("UPDATE v2_projects SET author_context_version=0,updated_at=? WHERE id=?",(stamp,project_id))
                 zero=self._insert_empty_author_context_zero(c,project_id,stamp)
+                c.execute("DELETE FROM v2_memory_candidate_review_events WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_memory_candidate_decisions WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_memory_candidates WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_memory_initializations WHERE project_id=?",(project_id,))
@@ -3170,19 +3347,129 @@ class V2Database:
                 return result
             return self._idem(c,user_id,"reset:"+project_id,key,payload,reset)
 
-    def _parse_import(self, text: str) -> tuple[list[dict[str, Any]], str, list[str]]:
-        # Markdown headings take priority, then Chinese/Arabic chapter headings.
-        matcher=re.compile(r"(?mi)^\s*(?:#{1,6}\s+|第\s*[0-9一二三四五六七八九十百]+\s*[章节回]|chapter\s+\d+\s*[:：]?\s*)(.+)$")
-        found=list(matcher.finditer(text))
-        if not found:
-            return [{"id":"preview-1","title":"第1章","order":1,"body":text}],"single_chapter_fallback",["chapter_heading_not_found"]
-        chapters=[]
-        for index,match in enumerate(found):
-            end=found[index+1].start() if index+1<len(found) else len(text)
-            body=text[match.end():end].strip()
-            if body: chapters.append({"id":f"preview-{len(chapters)+1}","title":match.group(1).strip()[:120],"order":len(chapters)+1,"body":body})
-        if not chapters: raise DomainError("chapter_detection_failed",422)
-        return chapters,"markdown_or_chinese_heading",[]
+    @staticmethod
+    def _import_excerpt(body: str) -> str:
+        """Return up to three readable preview lines without changing persisted body text."""
+        snippets=[]
+        for raw_line in body.splitlines():
+            line=raw_line.strip().lstrip("\ufeff")
+            if not line or re.fullmatch(r"[0-9]{1,4}",line): continue
+            for sentence in re.split(r"(?<=[。！？!?；;])",line):
+                sentence=sentence.strip()
+                if not sentence: continue
+                snippets.append(sentence if len(sentence)<=84 else sentence[:83].rstrip()+"…")
+                if len(snippets)==3: return "\n".join(snippets)
+        return "\n".join(snippets)
+
+    def _parse_import(self, text: str) -> tuple[list[dict[str, Any]], str, list[str], dict[str, Any]]:
+        """Split a local text without inventing structure or silently dropping source text."""
+        raw_lines=text.splitlines(keepends=True) or [text]
+        plain_lines=[line.rstrip("\r\n").lstrip("\ufeff") for line in raw_lines]
+        offsets=[];cursor=0
+        for line in raw_lines:
+            offsets.append(cursor);cursor+=len(line)
+
+        def parsed_number(token: str) -> int | None:
+            folded=token.strip().replace("两","二").replace("〇","零")
+            if folded.isdigit(): return int(folded)
+            digits={"零":0,"一":1,"二":2,"三":3,"四":4,"五":5,"六":6,"七":7,"八":8,"九":9}
+            if not folded or any(char not in digits and char not in "十百" for char in folded): return None
+            total,current=0,0
+            for char in folded:
+                if char in digits: current=digits[char]
+                elif char=="十": total+=(current or 1)*10;current=0
+                elif char=="百": total+=(current or 1)*100;current=0
+            return total+current
+
+        markdown=re.compile(r"^\s{0,3}#{1,6}\s+(.+?)\s*$")
+        chinese=re.compile(r"^\s*第\s*([0-9零〇一二两三四五六七八九十百]+)\s*([章节回卷])(?:\s*[:：、.\-]?\s*)(.*?)\s*$")
+        english=re.compile(r"^\s*chapter\s+([0-9]{1,4})(?:\s*[:：.\-]?\s*)(.*?)\s*$",re.I)
+        directory_link=re.compile(r"^\s*(?:[0-9]{1,4}\s*\(\s*chapter[0-9]+\.html\s*\)|返回(?:总)?目录\s*\(\s*chapter[0-9]+\.html\s*\))\s*$",re.I)
+        numeric=re.compile(r"^\s*([0-9]{1,4})\s*$")
+
+        markdown_markers=[];explicit_markers=[];numeric_markers=[]
+        for index,line in enumerate(plain_lines):
+            if match:=markdown.match(line):
+                markdown_markers.append({"index":index,"number":None,"title":match.group(1).strip(),"kind":"markdown","suffix":match.group(1).strip(),"excluded":[]})
+            if match:=chinese.match(line):
+                token,unit,suffix=match.groups()
+                explicit_markers.append({"index":index,"number":parsed_number(token),"title":suffix.strip() or f"第{token}{unit}","kind":"chinese","suffix":suffix.strip(),"marker_title":f"第{token}{unit}","excluded":[]})
+            elif match:=english.match(line):
+                token,suffix=match.groups()
+                explicit_markers.append({"index":index,"number":int(token),"title":suffix.strip() or f"Chapter {token}","kind":"english","suffix":suffix.strip(),"marker_title":f"Chapter {token}","excluded":[]})
+            if match:=numeric.match(line): numeric_markers.append({"index":index,"number":int(match.group(1)),"title":f"第{int(match.group(1))}节","kind":"numeric","suffix":"","excluded":[]})
+
+        markers=markdown_markers or explicit_markers
+        strategy="markdown_heading" if markdown_markers else "chapter_heading"
+        warnings=[]
+        numeric_values=[item["number"] for item in numeric_markers]
+        numeric_resets=sum(current<=previous for previous,current in zip(numeric_values,numeric_values[1:]))
+
+        if markers:
+            for position,marker in enumerate(markers):
+                limit=markers[position+1]["index"] if position+1<len(markers) else len(raw_lines)
+                if marker["suffix"].casefold()!="目录": continue
+                index=marker["index"]+1;excluded=[];saw_link=False
+                while index<limit:
+                    if not plain_lines[index].strip(): index+=1;continue
+                    if directory_link.match(plain_lines[index]): excluded.append(index);saw_link=True;index+=1;continue
+                    break
+                if saw_link:
+                    marker["excluded"]=excluded
+                    marker["title"]=marker.get("marker_title") or marker["title"]
+            if any(marker["excluded"] for marker in markers): warnings.append("directory_index_removed")
+            if numeric_resets:
+                warnings.append("numeric_headings_preserved_as_subsections")
+        else:
+            sequential=bool(numeric_markers) and numeric_values==list(range(1,len(numeric_values)+1))
+            substantive=sequential and all(len("".join(raw_lines[item["index"]+1:(numeric_markers[index+1]["index"] if index+1<len(numeric_markers) else len(raw_lines))]).strip())>=20 for index,item in enumerate(numeric_markers))
+            if len(numeric_markers)>=2 and substantive:
+                markers=numeric_markers;strategy="numeric_heading"
+            else:
+                fallback_warnings=["chapter_heading_not_found"]
+                if numeric_markers: fallback_warnings.append("ambiguous_numeric_headings_preserved_as_single_chapter")
+                audit={"parser_version":"import-structure-v2","source_line_count":len(raw_lines),"source_character_count":len(text),"retained_body_characters":len(text),"structural_heading_characters":0,"excluded_directory_characters":0,"coverage_complete":True,"order_preserved":True,"no_duplicate_source_assignment":True,"directory_index_blocks":[],"numeric_heading_count":len(numeric_markers),"numeric_reset_count":numeric_resets,"numeric_interpretation":"ambiguous_preserved" if numeric_markers else "not_present"}
+                return [{"id":"preview-1","title":"第1章","order":1,"body":text,"source_line_start":1,"source_line_end":len(raw_lines),"source_character_start":0,"source_character_end":len(text),"heading_source_line":None,"excluded_index_line_count":0}],"single_chapter_fallback",fallback_warnings,audit
+
+        heading_indices={marker["index"] for marker in markers}
+        excluded_indices={index for marker in markers for index in marker["excluded"]}
+        chapters=[];assigned_body_indices=[]
+        def add_chapter(title: str, indices: list[int], line_start: int, line_end: int, heading_line: int | None, excluded_count: int=0) -> None:
+            body="".join(raw_lines[index] for index in indices)
+            if not body.strip(): raise DomainError("chapter_detection_failed",422)
+            assigned_body_indices.extend(indices)
+            chapters.append({"id":f"preview-{len(chapters)+1}","title":title.strip()[:120],"order":len(chapters)+1,"body":body,"source_line_start":line_start,"source_line_end":line_end,"source_character_start":offsets[line_start-1] if line_start>=1 else 0,"source_character_end":offsets[line_end-1]+len(raw_lines[line_end-1]) if line_end>=1 else 0,"heading_source_line":heading_line,"excluded_index_line_count":excluded_count})
+
+        first=markers[0]
+        leading_indices=list(range(0,first["index"]))
+        leading_substantive=bool("".join(raw_lines[index] for index in leading_indices).strip())
+        # Prefix whitespace/BOM belongs to the first detected chapter too; every source
+        # character must be represented by a body, heading, or explicitly excluded index.
+        merge_leading=bool(leading_indices) and (not leading_substantive or strategy in {"markdown_heading","numeric_heading"} or first.get("number")==1)
+        if leading_substantive and not merge_leading:
+            inferred=first.get("number")==2 and first["kind"] in {"chinese","english"}
+            add_chapter("第1章（由后续章界推定）" if inferred else "导入开篇（未识别章名）",leading_indices,1,first["index"],None)
+            warnings.append("leading_chapter_inferred" if inferred else "leading_content_preserved")
+        elif not merge_leading:
+            leading_indices=[]
+
+        directory_blocks=[]
+        for position,marker in enumerate(markers):
+            end=markers[position+1]["index"] if position+1<len(markers) else len(raw_lines)
+            body_indices=[index for index in range(marker["index"]+1,end) if index not in excluded_indices]
+            if position==0 and merge_leading: body_indices=leading_indices+body_indices
+            line_start=1 if position==0 and merge_leading else marker["index"]+1
+            line_end=end
+            add_chapter(marker["title"],body_indices,line_start,line_end,marker["index"]+1,len(marker["excluded"]))
+            if marker["excluded"]:
+                directory_blocks.append({"heading_line":marker["index"]+1,"excluded_line_start":min(marker["excluded"])+1,"excluded_line_end":max(marker["excluded"])+1,"excluded_line_count":len(marker["excluded"])})
+
+        structural_characters=sum(len(raw_lines[index]) for index in heading_indices)
+        excluded_characters=sum(len(raw_lines[index]) for index in excluded_indices)
+        retained_characters=sum(len(chapter["body"]) for chapter in chapters)
+        audit={"parser_version":"import-structure-v2","source_line_count":len(raw_lines),"source_character_count":len(text),"retained_body_characters":retained_characters,"structural_heading_characters":structural_characters,"excluded_directory_characters":excluded_characters,"coverage_complete":retained_characters+structural_characters+excluded_characters==len(text),"order_preserved":assigned_body_indices==sorted(assigned_body_indices),"no_duplicate_source_assignment":len(assigned_body_indices)==len(set(assigned_body_indices)),"directory_index_blocks":directory_blocks,"numeric_heading_count":len(numeric_markers),"numeric_reset_count":numeric_resets,"numeric_interpretation":"subsections_preserved" if markers is not numeric_markers and numeric_markers else "chapters" if strategy=="numeric_heading" else "not_present"}
+        if not audit["coverage_complete"] or not audit["order_preserved"] or not audit["no_duplicate_source_assignment"]: raise DomainError("chapter_detection_failed",422)
+        return chapters,strategy,warnings,audit
 
     def preview_import(self, user_id: str, filename: str, content: bytes, key: str):
         if not filename.lower().endswith((".txt",".md")): raise DomainError("unsupported_format",415)
@@ -3193,9 +3480,9 @@ class V2Database:
         with self.connection() as c:
             payload={"filename":filename,"sha256":hashlib.sha256(content).hexdigest()}
             def preview() -> dict[str, Any]:
-                chapters,strategy,warnings=self._parse_import(text); import_id=new_id("import"); expires_at=(datetime.now(timezone.utc)+timedelta(minutes=20)).isoformat()
+                chapters,strategy,warnings,audit=self._parse_import(text); import_id=new_id("import"); expires_at=(datetime.now(timezone.utc)+timedelta(minutes=20)).isoformat()
                 c.execute("INSERT INTO v2_import_drafts VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",(import_id,user_id,filename,len(content),payload["sha256"],filename.rsplit(".",1)[-1].lower(),json.dumps(chapters,ensure_ascii=False),text,json.dumps(warnings),expires_at,None,utcnow()))
-                return {"import_id":import_id,"file":{"name":filename,"size":len(content),"sha256":payload["sha256"],"format":filename.rsplit(".",1)[-1].lower()},"detected":{"strategy":strategy,"chapter_count":len(chapters),"chapters":[{"preview_id":item["id"],"title":item["title"],"order":item["order"],"character_count":len(item["body"]),"excerpt":item["body"][:180]} for item in chapters]},"warnings":warnings,"expires_at":expires_at}
+                return {"import_id":import_id,"file":{"name":filename,"size":len(content),"sha256":payload["sha256"],"format":filename.rsplit(".",1)[-1].lower()},"detected":{"strategy":strategy,"chapter_count":len(chapters),"chapters":[{"preview_id":item["id"],"title":item["title"],"order":item["order"],"character_count":len(item["body"]),"excerpt":self._import_excerpt(item["body"]),"source_line_start":item["source_line_start"],"source_line_end":item["source_line_end"],"heading_source_line":item["heading_source_line"],"excluded_index_line_count":item["excluded_index_line_count"]} for item in chapters],"audit":audit},"warnings":warnings,"expires_at":expires_at}
             return self._idem(c,user_id,"preview_import",key,payload,preview,201)
 
     def commit_import(self, user_id: str, import_id: str, payload: dict[str, Any], key: str):
@@ -3254,7 +3541,7 @@ class V2Database:
                     if method=="file" and not str(payload.get("filename") or "").lower().endswith((".md",".txt")): raise DomainError("unsupported_format",415)
                     if not text.strip(): raise DomainError("empty_source",422)
                 if len(text.encode("utf-8"))>5*1024*1024: raise DomainError("source_too_large",413)
-                chapters,_,_=self._parse_import(text)
+                chapters,_,_,_=self._parse_import(text)
                 if title and len(chapters)==1: chapters[0]["title"]=title[:120]
                 change_id,stamp=new_id("sourcechangeset"),utcnow(); expires=(datetime.now(timezone.utc)+timedelta(minutes=20)).isoformat(); content_hash=hashlib.sha256(text.encode("utf-8")).hexdigest()
                 audit={"created_by_user_id":user_id,"idempotency_key_fingerprint":digest(key),"request_fingerprint":digest(payload),"file_basename":(str(payload.get("filename","")).replace("\\","/").split("/")[-1] if method=="file" else None)}

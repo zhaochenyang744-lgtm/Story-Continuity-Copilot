@@ -10,8 +10,11 @@ ALLOWED_STATUS={"conflict","insufficient_evidence"}
 ALLOWED_CATEGORY={"attribute","location_action","timeline","character_knowledge","object_state","relationship","world_rule","event_status"}
 ALLOWED_SEVERITY={"low","medium","high"}
 ALLOWED_MEMORY_TYPE={"static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"}
+REVIEW_NATURES={"confirmed_conflict","possible_conflict","state_change","insufficient_evidence"}
+REVIEW_ACTIONS={"edit","apply_suggestion","keep_intentional","false_positive"}
+EVIDENCE_CHAIN_ROLES={"prior_state","current_context","missing_link"}
 MAX_RUN_TOKENS=8000
-PROMPT_VERSION="continuity-review-v8-bounded-evidence"
+PROMPT_VERSION="continuity-review-v9-trustworthy-review"
 MEMORY_PROMPT_VERSION="memory-initialization-v8-pro-two-repair"
 RETRIEVAL_METHOD_VERSION="bounded-lexical-v4-longform"
 RELATED_MEMORY_LIMIT=15
@@ -60,7 +63,7 @@ class MemoryCandidateValidationError(ValueError):
 
 
 def _continuity_schema() -> dict[str, Any]:
-    return {"issues":[{"claim_span_id":"current claim id","status":"conflict|insufficient_evidence","category":"allowed category","severity":"low|medium|high","explanation":"non-empty short reviewable conclusion","evidence":[{"chapter_id":"allowed chapter id","span_id":"allowed span id","relation":"supports|contradicts|context","sufficiency":"sufficient|insufficient","related_memory_ids":["known memory id"]}],"proposed_memory_change":{"operation":"add|replace","memory_type":"allowed memory type","subject":"string","predicate":"string","value":"string","affected_memory_id":"required for replace only"}}]}
+    return {"issues":[{"claim_span_id":"current claim id","status":"conflict|insufficient_evidence","nature":"confirmed_conflict|possible_conflict|state_change|insufficient_evidence","category":"allowed category","severity":"low|medium|high","explanation":"short backwards-compatible summary","reasoning":"why the cited evidence supports this nature, or exactly what evidence is missing","evidence":[{"chapter_id":"allowed chapter id","span_id":"allowed span id","relation":"supports|contradicts|context","sufficiency":"sufficient|insufficient","related_memory_ids":["known memory id"]}],"evidence_chain":[{"span_id":"one cited evidence span id","role":"prior_state|current_context|missing_link"}],"suggested_revision":{"before":"exact text occurring once in the bound draft","after":"specific replacement text"},"available_actions":["edit|apply_suggestion|keep_intentional|false_positive"],"proposed_memory_change":{"operation":"add|replace","memory_type":"allowed memory type","subject":"string","predicate":"string","value":"string","affected_memory_id":"required for replace only"}}]}
 
 
 def _memory_schema() -> dict[str, Any]:
@@ -110,7 +113,7 @@ def _bounded_excerpt(body:str,hints:list[str],limit:int=CONTINUITY_EVIDENCE_EXCE
 class ContinuityEngine:
     def __init__(self,provider:ProviderPort): self.provider=provider
     def provenance(self)->dict[str,str]:
-        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":PROMPT_VERSION,"schema_version":"continuity-issue-v3","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
+        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":PROMPT_VERSION,"schema_version":"continuity-issue-v4-trustworthy-review","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
 
     def _selected_evidence(self,claim:dict[str,Any],memory:list[dict[str,Any]])->list[dict[str,Any]]:
         unique={span["id"]:span for span in claim["allowed_evidence"]}
@@ -182,22 +185,47 @@ class ContinuityEngine:
             if raw.get("status")=="no_conflict":raise ValueError("no_conflict_issue_forbidden")
             explanation=raw.get("explanation") if isinstance(raw,dict) else None
             if not isinstance(raw,dict) or raw.get("claim_span_id") not in claims or raw.get("status") not in ALLOWED_STATUS or raw.get("category") not in ALLOWED_CATEGORY or raw.get("severity") not in ALLOWED_SEVERITY or not isinstance(explanation,str) or not explanation.strip():raise ValueError("schema_invalid")
+            review_keys={"nature","reasoning","evidence_chain","suggested_revision","available_actions"}
+            present=review_keys & set(raw)
+            if present and present!=review_keys:raise ValueError("schema_invalid")
+            trustworthy=present==review_keys
             evs=raw.get("evidence",[]); allowed={x["id"]:x for x in claims[raw["claim_span_id"]]["allowed_evidence"]}
             if raw["status"]=="conflict" and not evs:raise ValueError("conflict_without_evidence")
-            if raw["status"]=="insufficient_evidence" and evs:raise ValueError("insufficient_evidence_upgraded")
+            if raw["status"]=="insufficient_evidence" and evs and not trustworthy:raise ValueError("insufficient_evidence_upgraded")
             if raw["status"]=="insufficient_evidence" and raw.get("proposed_memory_change") is not None:raise ValueError("insufficient_evidence_memory_change")
             cleaned=[]
             for ev in evs:
                 if not isinstance(ev,dict) or ev.get("span_id") not in allowed:raise ValueError("evidence_unresolvable")
                 s=allowed[ev["span_id"]]
                 if ev.get("chapter_id")!=s["chapter_id"] or ev.get("relation") not in {"supports","contradicts","context"} or ev.get("sufficiency") not in {"sufficient","insufficient"} or not set(ev.get("related_memory_ids",[]))<=set(mem):raise ValueError("evidence_unresolvable")
-                if raw["status"]=="conflict" and (ev.get("relation")!="contradicts" or ev.get("sufficiency")!="sufficient"):raise ValueError("conflict_evidence_not_direct")
+                if raw["status"]=="conflict" and not trustworthy and (ev.get("relation")!="contradicts" or ev.get("sufficiency")!="sufficient"):raise ValueError("conflict_evidence_not_direct")
+                if raw["status"]=="insufficient_evidence" and ev.get("sufficiency")!="insufficient":raise ValueError("insufficient_evidence_upgraded")
                 cleaned.append({"chapter_id":s["chapter_id"],"span_id":s["id"],"excerpt":s.get("prompt_excerpt",s["body"]),"relation":ev["relation"],"sufficiency":ev["sufficiency"],"related_memory_ids":ev.get("related_memory_ids",[])})
             change=raw.get("proposed_memory_change")
             if change is not None:
                 required={"memory_type","subject","predicate","value","operation"}
                 if (not isinstance(change,dict) or not required<=set(change) or change["memory_type"] not in ALLOWED_MEMORY_TYPE or change["operation"] not in {"add","replace"} or any(not isinstance(change[key],str) or not change[key].strip() for key in ("subject","predicate","value")) or (change["operation"]=="add" and change.get("affected_memory_id") is not None) or (change["operation"]=="replace" and change.get("affected_memory_id") not in mem) or raw["status"]!="conflict"):raise ValueError("schema_invalid")
-            output.append({"claim_span_id":raw["claim_span_id"],"status":raw["status"],"category":raw["category"],"severity":raw["severity"],"evidence_status":"sufficient" if evs else "insufficient","explanation":explanation.strip()[:500],"evidence":cleaned,"proposed_memory_change":change})
+            review={"review_contract_version":"legacy_v3","nature":None,"reasoning":None,"evidence_chain":None,"suggested_revision":None,"available_actions":None}
+            if trustworthy:
+                nature=raw.get("nature");reasoning=raw.get("reasoning");chain=raw.get("evidence_chain");suggestion=raw.get("suggested_revision");actions=raw.get("available_actions")
+                if nature not in REVIEW_NATURES or not isinstance(reasoning,str) or not reasoning.strip() or len(reasoning.strip())>800:raise ValueError("schema_invalid")
+                if raw["status"]=="insufficient_evidence" and nature!="insufficient_evidence":raise ValueError("schema_invalid")
+                if raw["status"]=="conflict" and nature=="insufficient_evidence":raise ValueError("schema_invalid")
+                if nature=="confirmed_conflict" and any(ev["relation"]!="contradicts" or ev["sufficiency"]!="sufficient" for ev in cleaned):raise ValueError("conflict_evidence_not_direct")
+                if nature in {"possible_conflict","state_change"} and any(ev["sufficiency"]!="sufficient" for ev in cleaned):raise ValueError("evidence_unresolvable")
+                if nature=="insufficient_evidence" and (not cleaned or any(ev["sufficiency"]!="insufficient" for ev in cleaned)):raise ValueError("evidence_unresolvable")
+                if not isinstance(chain,list) or len(chain)!=len(cleaned) or any(not isinstance(item,dict) or set(item)!={"span_id","role"} or item.get("role") not in EVIDENCE_CHAIN_ROLES for item in chain):raise ValueError("evidence_unresolvable")
+                chain_spans=[item["span_id"] for item in chain]
+                if len(chain_spans)!=len(set(chain_spans)) or set(chain_spans)!={item["span_id"] for item in cleaned}:raise ValueError("evidence_unresolvable")
+                if nature=="insufficient_evidence" and any(item["role"]!="missing_link" for item in chain):raise ValueError("evidence_unresolvable")
+                if not isinstance(actions,list) or len(actions)!=len(set(actions)) or not set(actions)<=REVIEW_ACTIONS:raise ValueError("schema_invalid")
+                if nature=="insufficient_evidence" and actions:raise ValueError("schema_invalid")
+                if suggestion is not None:
+                    if not isinstance(suggestion,dict) or set(suggestion)!={"before","after"} or any(not isinstance(suggestion.get(field),str) or not suggestion[field].strip() for field in ("before","after")) or suggestion["before"]==suggestion["after"]:raise ValueError("schema_invalid")
+                    if data["draft"]["body"].count(suggestion["before"])!=1 or "apply_suggestion" not in actions:raise ValueError("suggested_revision_unresolvable")
+                elif "apply_suggestion" in actions:raise ValueError("suggested_revision_unresolvable")
+                review={"review_contract_version":"trustworthy_review_v1","nature":nature,"reasoning":reasoning.strip(),"evidence_chain":chain,"suggested_revision":suggestion,"available_actions":actions}
+            output.append({"claim_span_id":raw["claim_span_id"],"status":raw["status"],"category":raw["category"],"severity":raw["severity"],"evidence_status":"sufficient" if cleaned and all(item["sufficiency"]=="sufficient" for item in cleaned) else "insufficient","explanation":explanation.strip()[:500],"evidence":cleaned,"proposed_memory_change":change,**review})
         return output
 
 

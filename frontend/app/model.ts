@@ -86,7 +86,8 @@ export type TutorialEvent =
   | "memory_source_opened"
   | "continuity_issue_located"
   | "evidence_opened"
-  | "author_decision_recorded";
+  | "author_decision_recorded"
+  | "author_decision_reviewed";
 export type TutorialProgress = {
   tutorial_version: "1.2.0";
   tutorial_project_id: string;
@@ -149,6 +150,14 @@ export type MemoryInitialization = {
     review_priority: "core" | "supporting";
     decision_status: "pending" | "accepted" | "rejected" | "edited";
     decision?: { decision: string; after: Record<string, string> | null; evidence_span_id?: string | null } | null;
+    review_history: {
+      id: string;
+      event: "decided" | "reopened";
+      decision: "accepted" | "rejected" | "edited";
+      snapshot: { decision: string; after: Record<string, string> | null; evidence_span_id?: string | null };
+      source_revision: number;
+      created_at: string;
+    }[];
     source_revision: number;
     source: {
       chapter_id: string;
@@ -172,11 +181,28 @@ export type MemoryCoverage = {
 };
 export type Issue = {
   id: string;
+  review_contract_version: "legacy_v3" | "trustworthy_review_v1";
   status: string;
   category: string;
   severity: "high" | "medium" | "low";
   evidence_status: string;
   explanation: string;
+  nature?:
+    | "confirmed_conflict"
+    | "possible_conflict"
+    | "state_change"
+    | "insufficient_evidence"
+    | string;
+  reasoning?: string;
+  evidence_chain?: { evidence_id: string; role: "prior_state" | "current_context" | "missing_link" }[];
+  suggested_revision?: { before: string; after: string } | null;
+  available_actions?: (
+    | "edit"
+    | "apply_suggestion"
+    | "keep_intentional"
+    | "false_positive"
+    | "propose_fact"
+  )[];
   claim_span_id: string;
   claim_text?: string;
   decision?: { decision: string; resulting_revision: number | null } | null;

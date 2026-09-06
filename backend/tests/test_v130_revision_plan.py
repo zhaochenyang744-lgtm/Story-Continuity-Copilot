@@ -94,7 +94,7 @@ class V130RevisionPlanTests(unittest.TestCase):
         self.draft = self.client.get(f"/api/projects/{self.project_id}/drafts/{draft_summary['id']}").json()["data"]
         with self.app.state.database.connection() as connection:
             rows = connection.execute(
-                "SELECT i.id FROM v2_issues i JOIN v2_runs r ON r.id=i.run_id WHERE i.project_id=? AND i.status='open' AND r.status='completed' ORDER BY i.id",
+                "SELECT i.id FROM v2_issues i JOIN v2_runs r ON r.id=i.run_id WHERE i.project_id=? AND i.status='open' AND i.evidence_status='sufficient' AND r.status='completed' ORDER BY i.id",
                 (self.project_id,),
             ).fetchall()
             self.issue_ids = [row["id"] for row in rows]
@@ -257,7 +257,7 @@ class V130RevisionPlanTests(unittest.TestCase):
         project_id = registered["onboarding"]["tutorial"]["project_id"]
         project = client.get(f"/api/projects/{project_id}").json()["data"]
         with app.state.database.connection() as connection:
-            issue_id = connection.execute("SELECT id FROM v2_issues WHERE project_id=? AND status='open' ORDER BY id LIMIT 1", (project_id,)).fetchone()[0]
+            issue_id = connection.execute("SELECT id FROM v2_issues WHERE project_id=? AND status='open' AND evidence_status='sufficient' ORDER BY id LIMIT 1", (project_id,)).fetchone()[0]
         created = client.post(f"/api/projects/{project_id}/analyses", headers=idem(), json={"analysis_type": "revision_plan", "draft_id": project["current_draft"]["id"], "draft_revision": project["current_draft"]["revision"], "issue_ids": [issue_id]})
         run_id = created.json()["data"]["run_id"]
         cancelled = client.post(f"/api/projects/{project_id}/analyses/{run_id}/cancel", headers=idem(), json={})

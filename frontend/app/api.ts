@@ -65,18 +65,26 @@ export async function request<T>(
   }
 }
 
-export const json = <T>(
+export const jsonWithIdempotency = <T>(
   path: string,
   method: "POST" | "PATCH",
   body: unknown,
+  idempotencyKey: string,
   signal?: AbortSignal,
 ) =>
   request<T>(path, {
     method,
     signal,
-    headers: { "Idempotency-Key": crypto.randomUUID() },
+    headers: { "Idempotency-Key": idempotencyKey },
     body: JSON.stringify(body),
   });
+
+export const json = <T>(
+  path: string,
+  method: "POST" | "PATCH",
+  body: unknown,
+  signal?: AbortSignal,
+) => jsonWithIdempotency<T>(path, method, body, crypto.randomUUID(), signal);
 
 export const labelError = (cause: unknown) => {
   const code = (cause as ApiFailure)?.code;
@@ -114,6 +122,12 @@ export const labelError = (cause: unknown) => {
     invalid_json: "结果未通过结构校验，系统没有写入任何问题。",
     evidence_unresolvable:
       "证据来源不可解析，结果已安全关闭；请检查来源后重试。",
+    review_contract_unresolvable: "审阅语义或证据链无法验证；当前结果已安全关闭。",
+    suggested_revision_unresolvable: "建议修改无法唯一定位到本次检查绑定的草稿。",
+    issue_decision_unavailable: "当前问题缺少充分证据，不能记录确定性的作者决定。",
+    issue_action_unavailable: "该作者动作不在本条问题的服务器允许范围内。",
+    tutorial_progress_revision_conflict: "教学进度已在其他窗口变化；请刷新后再重新开始。",
+    tutorial_decision_review_unavailable: "这条已有决定无法与当前教学证据对应；未推进教学，也没有改写决定。",
     revision_conflict:
       "草稿已被其他编辑更新。本地修改仍保留，请重新载入后处理冲突。",
     lineage_invalid_requires_recheck:
@@ -121,6 +135,10 @@ export const labelError = (cause: unknown) => {
     insufficient_project_context:
       "Story Memory 尚待初始化；此作品暂不能运行连续性检查。",
     invalid_candidate_decision: "请为每个候选选择接受、拒绝或编辑后接受。",
+    memory_candidate_not_decided: "此候选当前已是待审核状态，无需再次重新评估。",
+    memory_candidate_review_conflict: "此候选的审核状态已在其他窗口变化；请刷新后再操作。",
+    memory_candidate_review_unresolvable: "此候选的既有审核记录无法验证；系统未改变其状态。",
+    memory_initialization_closed: "此初始化审核已经提交，不能重新打开候选。",
     evidence_confirmation_required: "编辑后接受前，请明确确认上方 Evidence 仍支持该事实。",
     source_revision_not_current: "导入来源已不是当前 revision；系统没有写入候选或 Memory。",
     memory_initialization_conflict: "Memory V1 已不再为空，初始化已安全停止。",

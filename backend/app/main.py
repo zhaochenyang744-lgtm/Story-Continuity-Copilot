@@ -153,6 +153,7 @@ class ImportCancel(Strict): confirm:bool|None=None
 class MemoryInitialization(Strict): source_revision:int=Field(ge=1)
 class EditedMemoryCandidate(Strict): memory_type:Literal['static_canon','dynamic_state','event_timeline','character_knowledge','open_thread']; subject:str; predicate:str; value:str
 class MemoryCandidateDecision(Strict): decision:Literal['accepted','rejected','edited']; after:EditedMemoryCandidate|None=None; evidence_span_id:str|None=None
+class MemoryCandidateReopen(Strict): confirm:Literal[True]; base_decision_status:Literal['accepted','rejected','edited']
 class MemoryInitializationCommit(Strict): confirm:bool|None=None
 class SourceChangePreview(Strict):
     mode:Literal['append']
@@ -169,7 +170,14 @@ class OnboardingAction(Strict): confirm:bool
 class TutorialProgressEvent(Strict):
     tutorial_version:Literal['1.2.0']
     project_id:str
-    event:Literal['memory_source_opened','continuity_issue_located','evidence_opened','author_decision_recorded']
+    event:Literal['memory_source_opened','continuity_issue_located','evidence_opened','author_decision_recorded','author_decision_reviewed']
+    run_id:str|None=None
+    issue_id:str|None=None
+class TutorialProgressRestart(Strict):
+    tutorial_version:Literal['1.2.0']
+    project_id:str
+    base_revision:int|None=Field(default=None,ge=1)
+    confirm:bool
 class AuthorStoryCreate(Strict):
     base_author_context_version:int=Field(ge=0)
     title:str=Field(min_length=1,max_length=120)
@@ -244,7 +252,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             try: await task
             except asyncio.CancelledError: pass
             recovery_executor.shutdown(wait=True,cancel_futures=False)
-    app=FastAPI(title='Story Continuity Copilot Web Demo',version='1.3.0',lifespan=lifespan)
+    app=FastAPI(title='Story Continuity Copilot Web Demo',version='1.4.0',lifespan=lifespan)
     app.state.database=db; app.state.engine=engine; app.state.stage13=stage13; app.state.stage13_settings=settings; app.state.recovery_executor=recovery_executor
     def trusted_host(value:str)->bool:
         folded=value.casefold()
@@ -422,7 +430,10 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     def onboarding(request:Request):return ok(request,db.onboarding(user(request)['id']))
     @app.post('/api/onboarding/progress')
     def onboarding_progress(payload:TutorialProgressEvent,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'onboarding_progress_failed');data,status=db.record_tutorial_event(user(request)['id'],payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+        csrf(request);operation(request,'onboarding_progress_failed');data,status=db.record_tutorial_event(user(request)['id'],payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/onboarding/progress/restart')
+    def onboarding_progress_restart(payload:TutorialProgressRestart,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'onboarding_update_failed');data,status=db.restart_tutorial_progress(user(request)['id'],payload.model_dump(),key(idempotency_key));return ok(request,data,status)
     @app.post('/api/onboarding/complete')
     def onboarding_complete(payload:OnboardingAction,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'onboarding_update_failed');data,status=db.finish_onboarding(user(request)['id'],'completed',payload.model_dump(),key(idempotency_key));return ok(request,data,status)
@@ -576,6 +587,11 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         csrf(request); operation(request,'memory_candidate_decision_failed');actor=user(request);data,status=db.decide_memory_candidate(actor['id'],project_id,initialization_id,candidate_id,payload.model_dump(exclude_none=True),key(idempotency_key))
         if view=='full':data['initialization']=db.memory_initialization(actor['id'],project_id)
         return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/memory/initializations/{initialization_id}/candidates/{candidate_id}/reopen')
+    def memory_candidate_reopen(project_id:str,initialization_id:str,candidate_id:str,payload:MemoryCandidateReopen,request:Request,view:Literal['full','compact']='full',idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'memory_candidate_reopen_failed');actor=user(request);data,status=db.reopen_memory_candidate(actor['id'],project_id,initialization_id,candidate_id,payload.model_dump(),key(idempotency_key))
+        if view=='full':data['initialization']=db.memory_initialization(actor['id'],project_id)
+        return ok(request,data,status)
     @app.post('/api/projects/{project_id}/memory/initializations/{initialization_id}/commit')
     def commit_memory_initialization(project_id:str,initialization_id:str,payload:MemoryInitializationCommit,request:Request,view:Literal['full','compact']='full',idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request); operation(request,'memory_initialization_commit_failed');actor=user(request);data,status=db.commit_memory_initialization(actor['id'],project_id,initialization_id,payload.model_dump(exclude_none=True),key(idempotency_key))
@@ -605,7 +621,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         csrf(request); operation(request,'source_change_preview_failed'); actor=user(request)
         if payload.input_method in {'paste','file'}:
             content=payload.content or ''
-            chapters,_,_=db._parse_import(content)
+            chapters,_,_,_=db._parse_import(content)
             if any(len(chapter['body'])>stage13.text_limits(actor['id'])['draft_chars'] for chapter in chapters): raise HTTPException(413,'source_too_large')
         data,status=db.preview_source_change_set(actor['id'],project_id,payload.model_dump(exclude_none=True),key(idempotency_key));return ok(request,data,status)
     @app.post('/api/projects/{project_id}/source-change-sets/{change_set_id}/commit')

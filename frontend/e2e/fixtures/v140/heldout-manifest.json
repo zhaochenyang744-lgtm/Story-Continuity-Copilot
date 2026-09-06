@@ -1,0 +1,23 @@
+{
+  "fixture_version": "v1.4.0-heldout-manifest-1",
+  "status": "reserved_pending_freeze",
+  "frozen_at": null,
+  "content_hash": null,
+  "content_location": null,
+  "content_in_implementation_checkout": false,
+  "rules": [
+    "The implementation phase does not inspect held-out story text.",
+    "Held-out cases are executed only after the frontend candidate is frozen.",
+    "Failures are retained as first-failure evidence and are not used to tune this candidate."
+  ],
+  "case_ids": [
+    "heldout-cross-chapter-handoff",
+    "heldout-simultaneous-holder",
+    "heldout-alias-distance",
+    "heldout-flashback-stop",
+    "heldout-character-lie",
+    "heldout-foreshadow-intent",
+    "heldout-missing-evidence",
+    "heldout-distant-plan"
+  ]
+}

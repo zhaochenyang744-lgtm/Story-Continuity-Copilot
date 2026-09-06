@@ -271,6 +271,59 @@ class Stage9MemoryInitializationTests(unittest.TestCase):
         self.assertEqual(self.client.get(f"/api/projects/{project_id}/memory/initialization").json()["data"]["status"],"required")
         self.assertEqual(self.client.get(f"/api/projects/{other}").json()["data"],before_other)
 
+    def test_all_rejected_can_reopen_redecide_and_commit_with_append_only_history(self):
+        project_id=self.imported_project("全拒绝后恢复")
+        initialization=self.start(project_id).json()["data"]["initialization"]
+        candidates={candidate["subject"]:candidate for candidate in initialization["candidates"]}
+        for candidate in initialization["candidates"]:
+            self.assertEqual(self.client.post(f"/api/projects/{project_id}/memory/initializations/{initialization['id']}/candidates/{candidate['id']}/decision",json={"decision":"rejected"},headers=idem()).status_code,200)
+        blocked=self.client.post(f"/api/projects/{project_id}/memory/initializations/{initialization['id']}/commit",json={"confirm":True},headers=idem())
+        self.assertEqual((blocked.status_code,blocked.json()["error"]["code"]),(422,"insufficient_project_context"))
+        target=candidates["雾港守则"]
+        endpoint=f"/api/projects/{project_id}/memory/initializations/{initialization['id']}/candidates/{target['id']}/reopen"
+        reopen_key=str(uuid.uuid4())
+        reopened=self.client.post(endpoint,json={"confirm":True,"base_decision_status":"rejected"},headers=idem(reopen_key))
+        replay=self.client.post(endpoint,json={"confirm":True,"base_decision_status":"rejected"},headers=idem(reopen_key))
+        self.assertEqual((reopened.status_code,replay.status_code),(200,200))
+        self.assertEqual(reopened.json()["data"]["decision_status"],"pending")
+        changed_replay=self.client.post(endpoint,json={"confirm":True,"base_decision_status":"accepted"},headers=idem(reopen_key))
+        self.assertEqual((changed_replay.status_code,changed_replay.json()["error"]["code"]),(409,"idempotency_conflict"))
+        refreshed=self.client.get(f"/api/projects/{project_id}/memory/initialization").json()["data"]
+        refreshed_target=next(candidate for candidate in refreshed["candidates"] if candidate["id"]==target["id"])
+        self.assertEqual((refreshed_target["decision_status"],refreshed_target["decision"],[(event["event"],event["decision"],event["snapshot"]["decision"]) for event in refreshed_target["review_history"]]),("pending",None,[("decided","rejected","rejected"),("reopened","rejected","rejected")]))
+        repeated=self.client.post(endpoint,json={"confirm":True,"base_decision_status":"rejected"},headers=idem())
+        self.assertEqual((repeated.status_code,repeated.json()["error"]["code"]),(409,"memory_candidate_not_decided"))
+        decided=self.client.post(f"/api/projects/{project_id}/memory/initializations/{initialization['id']}/candidates/{target['id']}/decision",json={"decision":"accepted"},headers=idem())
+        self.assertEqual(decided.status_code,200)
+        committed=self.client.post(f"/api/projects/{project_id}/memory/initializations/{initialization['id']}/commit",json={"confirm":True},headers=idem())
+        self.assertEqual(committed.status_code,200)
+        final=self.client.get(f"/api/projects/{project_id}/memory/initialization").json()["data"]
+        final_target=next(candidate for candidate in final["candidates"] if candidate["id"]==target["id"])
+        self.assertEqual((final["status"],final_target["decision_status"],[event["event"] for event in final_target["review_history"]]),("committed","accepted",["decided","reopened","decided"]))
+        closed=self.client.post(endpoint,json={"confirm":True,"base_decision_status":"accepted"},headers=idem())
+        self.assertEqual((closed.status_code,closed.json()["error"]["code"]),(409,"memory_initialization_closed"))
+
+    def test_reopen_enforces_confirmation_version_project_and_account_scope(self):
+        project_id=self.imported_project("重开权限与版本")
+        initialization=self.start(project_id).json()["data"]["initialization"]
+        target=initialization["candidates"][0]
+        decision_url=f"/api/projects/{project_id}/memory/initializations/{initialization['id']}/candidates/{target['id']}/decision"
+        self.assertEqual(self.client.post(decision_url,json={"decision":"rejected"},headers=idem()).status_code,200)
+        endpoint=f"/api/projects/{project_id}/memory/initializations/{initialization['id']}/candidates/{target['id']}/reopen"
+        missing=self.client.post(endpoint,json={"base_decision_status":"rejected"},headers=idem())
+        self.assertEqual(missing.status_code,400)
+        conflict=self.client.post(endpoint,json={"confirm":True,"base_decision_status":"accepted"},headers=idem())
+        self.assertEqual((conflict.status_code,conflict.json()["error"]["code"]),(409,"memory_candidate_review_conflict"))
+        other_project=self.imported_project("另一个重开项目")
+        cross_project=self.client.post(f"/api/projects/{other_project}/memory/initializations/{initialization['id']}/candidates/{target['id']}/reopen",json={"confirm":True,"base_decision_status":"rejected"},headers=idem())
+        self.assertEqual(cross_project.status_code,404)
+        outsider=TestClient(self.app)
+        outsider.post("/api/auth/register",json={"account_name":"stage9reopenother","display_name":"Other","password":"safe-password-96"},headers=idem())
+        self.assertEqual(outsider.post(endpoint,json={"confirm":True,"base_decision_status":"rejected"},headers=idem()).status_code,404)
+        current=self.client.get(f"/api/projects/{project_id}/memory/initialization").json()["data"]
+        current_target=next(candidate for candidate in current["candidates"] if candidate["id"]==target["id"])
+        self.assertEqual((current_target["decision_status"],len(current_target["review_history"])),("rejected",1))
+
     def test_fail_closed_for_stale_cross_account_and_invalid_provider(self):
         project_id=self.imported_project()
         before=self.app.state.database.counts().copy()

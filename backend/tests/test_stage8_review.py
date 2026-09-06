@@ -54,7 +54,9 @@ class Stage8PresetReviewTests(unittest.TestCase):
     def decide_and_create_changeset(self):
         run = self.preset_view().json()["data"]
         for issue in run["issues"]:
-            decision = "false_positive" if "表面冲突" in issue["claim_text"] else "keep_intentional"
+            if not issue.get("available_actions"):
+                continue
+            decision = "keep_intentional"
             response = self.client.post(
                 f"/api/projects/{self.grey}/issues/{issue['id']}/decision",
                 json={"run_id": run["run_id"], "source_revision": run["source_revision"], "decision": decision, "note": "作者审阅"},
