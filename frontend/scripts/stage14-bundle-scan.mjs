@@ -18,6 +18,16 @@ const frontendRootFiles = new Set([
 const frontendRootDirectories = new Set(["app", "public"]);
 const forbiddenNativeExtensions = new Set([".dll", ".dylib", ".exe", ".node", ".pdb", ".so"]);
 
+// Reviewed PNGs contain the public Trufo CA email inside their C2PA signing
+// certificates. Preserve that provenance; scope the exception to exact files.
+// A modified image or the same email in source text must still fail the gate.
+const reviewedProvenanceImages = new Set([
+  "2cf1e26e46c51fb0b2a9ee3ffb8cf9b7a8f33df96450655c423de8030c7eeadf", // creative-bulb.png
+  "faf46153034b4acba12c58af64b189a9149d6f27d37f4e7d528166fe3abb4d3f", // home-cosmos.png
+  "3ebb0973df34330d2451ee28a5eeedb7244820d6baef6dc7092a811653da09f6", // manuscript-glass.png
+  "e18f0445484ef95fe9e10e990fb99719e078f8db78b6abdfeccc009041b55b4a", // story-door.png
+]);
+
 async function filesBelow(root) {
   const files = [];
   for (const entry of await readdir(root, { withFileTypes: true })) {
@@ -43,6 +53,7 @@ function count(bytes, value) {
 }
 
 export function scanDeployableBytes(bytes, firstPartyRoots = [], secretValues = []) {
+  if (secretValues.some((value) => value && count(bytes, value))) throw new Error("STAGE14_BUNDLE_SECRET_HIT");
   const text = bytes.toString("utf8");
   const folded = text.toLocaleLowerCase("en-US");
   const identities = firstPartyIdentities(firstPartyRoots).flatMap(identityVariants);
@@ -51,8 +62,11 @@ export function scanDeployableBytes(bytes, firstPartyRoots = [], secretValues = 
   if (forbidden.some((literal) => folded.includes(literal.toLocaleLowerCase("en-US")))) throw new Error("STAGE14_BUNDLE_LEVEL0_HIT");
   if (/#token=[A-Za-z0-9_-]{32,}/.test(text)) throw new Error("STAGE14_BUNDLE_LEVEL0_HIT");
   if (/[A-Za-z]:\\(?:Users|Documents)\\/i.test(text) || /\/(?:Users|home)\/[^/]+\//.test(text) || /\\\\[A-Za-z0-9._-]+\\[A-Za-z0-9$._-]+\\/.test(text)) throw new Error("STAGE14_BUNDLE_ABSOLUTE_PATH_HIT");
-  if (/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(text)) throw new Error("STAGE14_BUNDLE_EMAIL_HIT");
-  if (secretValues.some((value) => value && count(bytes, value))) throw new Error("STAGE14_BUNDLE_SECRET_HIT");
+  const emails = [...text.matchAll(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/ig)].map((match) => match[0]);
+  if (emails.length && !(emails.every((email) => email === "ca@trufo.ai")
+    && reviewedProvenanceImages.has(createHash("sha256").update(bytes).digest("hex")))) {
+    throw new Error("STAGE14_BUNDLE_EMAIL_HIT");
+  }
 }
 
 export function assertPortableBundlePath(relativePath) {
