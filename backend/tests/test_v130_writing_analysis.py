@@ -74,7 +74,8 @@ class V130WritingAnalysisTests(unittest.TestCase):
         brief_view=self.client.get(f"/api/projects/{self.project_id}/analyses/{brief.json()['data']['run_id']}").json()["data"]
         self.assertEqual((brief_view["status"],brief_view["analysis_type"],brief_view["is_stale"]),("completed","context_brief",False))
         self.assertEqual(brief_view["analysis"]["items"][0]["sources"][0]["source_type"],"author_context")
-        self.assertEqual(brief_view["retrieval"]["method_version"],"writing-analysis-lexical-v1")
+        self.assertEqual(brief_view["retrieval"]["method_version"],"writing-analysis-lexical-v2-draft-claims")
+        self.assertTrue(brief_view["retrieval"]["selected_ids"]["draft_claim"])
         self.assertTrue(brief_view["retrieval"]["selected_ids"]["memory_record"])
         self.assertEqual(self.client.get(f"/api/projects/{self.project_id}/checks/{brief.json()['data']['run_id']}").status_code,404)
         align=self._run("plan_alignment")

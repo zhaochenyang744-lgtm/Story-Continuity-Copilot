@@ -20,6 +20,7 @@ from .config import AppPaths
 from .database import DomainError, digest
 from .memory_contract import is_controlled_candidate, normalize_memory_value, normalized_predicate
 from .seed_data import CHAPTERS, DEMO_REVIEW_ISSUES, DRAFT, MEMORY_RECORDS
+from .text_content import DRAFT_BODY_FORMATS, visible_draft_text
 
 
 RUN_ACTIVE_STATUSES = {"queued", "running"}
@@ -129,7 +130,7 @@ CREATE TABLE IF NOT EXISTS v2_memory_versions(project_id TEXT NOT NULL REFERENCE
 CREATE TABLE IF NOT EXISTS v2_memory_records(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),version INTEGER NOT NULL,memory_type TEXT NOT NULL,subject TEXT NOT NULL,predicate TEXT NOT NULL,value TEXT NOT NULL,source_span_id TEXT,review_status TEXT NOT NULL,valid_from INTEGER,valid_to INTEGER,source_claim_id TEXT,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_drafts(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),chapter_number INTEGER NOT NULL,title TEXT NOT NULL,body TEXT NOT NULL,revision INTEGER NOT NULL,status TEXT NOT NULL,saved_at TEXT NOT NULL,parent_revision INTEGER,edit_context_json TEXT,checksum TEXT NOT NULL,UNIQUE(project_id,id));
 CREATE TABLE IF NOT EXISTS v2_draft_revisions(draft_id TEXT NOT NULL REFERENCES v2_drafts(id),revision INTEGER NOT NULL,title TEXT NOT NULL,body TEXT NOT NULL,checksum TEXT NOT NULL,parent_revision INTEGER,edit_context_json TEXT,saved_at TEXT NOT NULL,PRIMARY KEY(draft_id,revision));
-CREATE TABLE IF NOT EXISTS v2_runs(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),draft_id TEXT NOT NULL REFERENCES v2_drafts(id),source_revision INTEGER NOT NULL,draft_revision INTEGER,status TEXT NOT NULL,stage TEXT NOT NULL,provider_label TEXT NOT NULL,input_tokens INTEGER,output_tokens INTEGER,latency_ms INTEGER,cost_cny REAL,error_code TEXT,retryable INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL,completed_at TEXT,model_label TEXT,prompt_version TEXT,schema_version TEXT,retrieval_method_version TEXT,source_memory_version INTEGER,result_origin TEXT NOT NULL DEFAULT 'provider',run_type TEXT NOT NULL DEFAULT 'continuity',source_change_set_id TEXT,source_span_ids_json TEXT NOT NULL DEFAULT '[]',started_at TEXT,cancel_requested_at TEXT,duration_ms INTEGER,retry_of_run_id TEXT,root_run_id TEXT,attempt_number INTEGER NOT NULL DEFAULT 1,incremental_batch_id TEXT,author_context_version INTEGER,author_context_snapshot_digest TEXT,alias_version INTEGER,alias_snapshot_digest TEXT,UNIQUE(project_id,id));
+CREATE TABLE IF NOT EXISTS v2_runs(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),draft_id TEXT NOT NULL REFERENCES v2_drafts(id),source_revision INTEGER NOT NULL,draft_revision INTEGER,status TEXT NOT NULL,stage TEXT NOT NULL,provider_label TEXT NOT NULL,input_tokens INTEGER,output_tokens INTEGER,latency_ms INTEGER,cost_cny REAL,error_code TEXT,retryable INTEGER NOT NULL DEFAULT 0,created_at TEXT NOT NULL,completed_at TEXT,model_label TEXT,prompt_version TEXT,schema_version TEXT,retrieval_method_version TEXT,source_memory_version INTEGER,result_origin TEXT NOT NULL DEFAULT 'provider',run_type TEXT NOT NULL DEFAULT 'continuity',source_change_set_id TEXT,source_span_ids_json TEXT NOT NULL DEFAULT '[]',started_at TEXT,cancel_requested_at TEXT,duration_ms INTEGER,retry_of_run_id TEXT,root_run_id TEXT,attempt_number INTEGER NOT NULL DEFAULT 1,incremental_batch_id TEXT,author_context_version INTEGER,author_context_snapshot_digest TEXT,alias_version INTEGER,alias_snapshot_digest TEXT,contract_normalization_count INTEGER NOT NULL DEFAULT 0,contract_normalizations_json TEXT NOT NULL DEFAULT '[]',UNIQUE(project_id,id));
 CREATE INDEX IF NOT EXISTS v2_runs_by_project ON v2_runs(project_id,draft_id,source_revision,status);
 CREATE TABLE IF NOT EXISTS v2_run_stages(run_id TEXT NOT NULL REFERENCES v2_runs(id),stage TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(run_id,stage));
 CREATE TABLE IF NOT EXISTS v2_run_events(run_id TEXT NOT NULL REFERENCES v2_runs(id),sequence INTEGER NOT NULL,status TEXT NOT NULL,stage TEXT NOT NULL,error_code TEXT,created_at TEXT NOT NULL,PRIMARY KEY(run_id,sequence));
@@ -250,6 +251,8 @@ class V2Database:
             self._migrate_v130_character_aliases(c)
             self._migrate_v130_foreshadows(c)
             self._migrate_v130_revision_plans(c)
+            self._migrate_v140_author_materials(c)
+            self._migrate_v140_rich_draft_formats(c)
 
     def readiness_probe(self) -> bool:
         """Verify that the configured database is readable and fully initialized."""
@@ -324,6 +327,13 @@ class V2Database:
         }.items():
             if name not in issue_columns:
                 c.execute(f"ALTER TABLE v2_issues ADD COLUMN {name} {definition}")
+        run_columns = {row["name"] for row in c.execute("PRAGMA table_info(v2_runs)")}
+        for name, definition in {
+            "contract_normalization_count": "INTEGER NOT NULL DEFAULT 0",
+            "contract_normalizations_json": "TEXT NOT NULL DEFAULT '[]'",
+        }.items():
+            if name not in run_columns:
+                c.execute(f"ALTER TABLE v2_runs ADD COLUMN {name} {definition}")
         c.execute(
             "CREATE TABLE IF NOT EXISTS v2_tutorial_progress_restarts("
             "id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),"
@@ -374,6 +384,28 @@ class V2Database:
         c.execute("UPDATE v2_users SET avatar_preset='continuity_violet' WHERE avatar_preset IS NULL OR avatar_preset='' ")
         c.execute("UPDATE v2_users SET profile_revision=1 WHERE profile_revision IS NULL OR profile_revision<1")
         c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(132,?)", (utcnow(),))
+
+    def _migrate_v140_author_materials(self, c: sqlite3.Connection) -> None:
+        """Add canonical author materials and immutable comparison decisions.
+
+        Legacy author-intent rows remain authoritative in their original tables.
+        They are projected lazily into the canonical store with stable prefixed IDs.
+        """
+        c.execute("CREATE TABLE IF NOT EXISTS v2_author_materials(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),kind TEXT NOT NULL,title TEXT NOT NULL,content TEXT NOT NULL,nature TEXT NOT NULL,disclosure TEXT NOT NULL,knowledge TEXT NOT NULL DEFAULT '',chapter_from INTEGER,chapter_to INTEGER,revision INTEGER NOT NULL,origin TEXT NOT NULL,legacy_kind TEXT,legacy_item_id TEXT,legacy_snapshot_json TEXT,archived_at TEXT,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,UNIQUE(project_id,id),UNIQUE(project_id,legacy_kind,legacy_item_id))")
+        c.execute("CREATE INDEX IF NOT EXISTS v2_author_materials_by_project ON v2_author_materials(project_id,archived_at,kind,updated_at)")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_author_material_versions(material_id TEXT NOT NULL REFERENCES v2_author_materials(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),revision INTEGER NOT NULL,snapshot_json TEXT NOT NULL,event TEXT NOT NULL,actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,PRIMARY KEY(material_id,revision))")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_author_comparisons(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),material_id TEXT NOT NULL REFERENCES v2_author_materials(id),material_revision INTEGER NOT NULL,source_span_id TEXT NOT NULL REFERENCES v2_source_spans(id),source_revision INTEGER NOT NULL,material_snapshot_json TEXT NOT NULL,passage_snapshot_json TEXT NOT NULL,decision_revision INTEGER NOT NULL DEFAULT 0,created_by TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,UNIQUE(project_id,id))")
+        comparison_columns={row["name"] for row in c.execute("PRAGMA table_info(v2_author_comparisons)").fetchall()}
+        if "latest_analysis_run_id" not in comparison_columns:c.execute("ALTER TABLE v2_author_comparisons ADD COLUMN latest_analysis_run_id TEXT REFERENCES v2_runs(id)")
+        c.execute("CREATE INDEX IF NOT EXISTS v2_author_comparisons_by_project ON v2_author_comparisons(project_id,created_at,id)")
+        c.execute("CREATE TABLE IF NOT EXISTS v2_author_comparison_decisions(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),comparison_id TEXT NOT NULL REFERENCES v2_author_comparisons(id),decision_revision INTEGER NOT NULL,decision TEXT NOT NULL,reason TEXT NOT NULL,before_material_json TEXT,after_material_json TEXT,status TEXT NOT NULL,actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,UNIQUE(comparison_id,decision_revision))")
+        c.execute("CREATE INDEX IF NOT EXISTS v2_author_comparison_decisions_by_comparison ON v2_author_comparison_decisions(comparison_id,decision_revision)")
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(144,?)", (utcnow(),))
+
+    def _migrate_v140_rich_draft_formats(self, c: sqlite3.Connection) -> None:
+        """Track representation per revision without rewriting legacy bodies."""
+        c.execute("CREATE TABLE IF NOT EXISTS v2_draft_content_formats(draft_id TEXT NOT NULL REFERENCES v2_drafts(id) ON DELETE CASCADE,revision INTEGER NOT NULL,body_format TEXT NOT NULL CHECK(body_format IN ('plain_text','markdown')),created_at TEXT NOT NULL,PRIMARY KEY(draft_id,revision))")
+        c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(145,?)", (utcnow(),))
 
     def _migrate_v130_author_context_snapshots(self, c: sqlite3.Connection) -> None:
         """Freeze the current mutable Author Context without inventing old history."""
@@ -1613,6 +1645,263 @@ class V2Database:
                 return {"project_id":project_id,"author_context_version":version,"version":version,"parent_version":meta["parent_version"],"snapshot_digest":meta["snapshot_digest"],"item":self._author_item(archived)}
             return self._idem(c,user_id,f"author_intent_archive:{project_id}:{kind}:{item_id}",key,payload,archive)
 
+    # --- v1.4 canonical author materials and manuscript comparisons ---
+    @staticmethod
+    def _material_public(row: sqlite3.Row | dict[str, Any]) -> dict[str, Any]:
+        item=dict(row)
+        return {"id":item["id"],"kind":item["kind"],"title":item["title"],"content":item["content"],"nature":item["nature"],"disclosure":item["disclosure"],"knowledge":item["knowledge"],"from":item.get("chapter_from"),"to":item.get("chapter_to"),"revision":item["revision"],"archived":item.get("archived_at") is not None,"origin":item["origin"],"created_at":item["created_at"],"updated_at":item["updated_at"]}
+
+    @classmethod
+    def _legacy_material(cls, kind: str, row: sqlite3.Row) -> dict[str, Any]:
+        if kind=="story":
+            title=row["title"]
+            content="\n\n".join(part for part in (row["summary"],f"故事目标：{row['goal']}" if row["goal"] else "",f"计划章节：第 {row['target_chapter_number']} 章" if row["target_chapter_number"] else "") if part)
+        elif kind=="character":
+            title=row["name"]
+            content="\n\n".join(part for part in (f"目标：{row['goal']}" if row["goal"] else "",f"计划状态：{row['planned_state']}" if row["planned_state"] else "",row["notes"]) if part)
+        else:
+            title=row["name"]
+            content="\n\n".join(part for part in (row["description"],row["notes"]) if part)
+        return {"id":f"{kind}:{row['id']}","kind":kind,"title":title,"content":content or title,"nature":"plan","disclosure":"unspecified","knowledge":"","chapter_from":None,"chapter_to":None,"revision":1,"origin":"legacy_author_intent","legacy_kind":kind,"legacy_item_id":row["id"],"legacy_snapshot_json":json.dumps(dict(row),ensure_ascii=False,sort_keys=True),"archived_at":row["archived_at"],"created_at":row["created_at"],"updated_at":row["updated_at"]}
+
+    @classmethod
+    def _ensure_legacy_materials(cls,c:sqlite3.Connection,project_id:str,actor_user_id:str)->None:
+        for kind,spec in cls._AUTHOR_INTENT.items():
+            for legacy in c.execute(f"SELECT * FROM {spec['table']} WHERE project_id=? ORDER BY position,id",(project_id,)).fetchall():
+                item=cls._legacy_material(kind,legacy)
+                if c.execute("SELECT 1 FROM v2_author_materials WHERE id=? AND project_id=?",(item["id"],project_id)).fetchone():continue
+                c.execute("INSERT INTO v2_author_materials(id,project_id,kind,title,content,nature,disclosure,knowledge,chapter_from,chapter_to,revision,origin,legacy_kind,legacy_item_id,legacy_snapshot_json,archived_at,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(item["id"],project_id,item["kind"],item["title"],item["content"],item["nature"],item["disclosure"],item["knowledge"],item["chapter_from"],item["chapter_to"],1,item["origin"],kind,legacy["id"],item["legacy_snapshot_json"],item["archived_at"],item["created_at"],item["updated_at"]))
+                snapshot=cls._material_public(item)
+                c.execute("INSERT INTO v2_author_material_versions VALUES(?,?,?,?,?,?,?)",(item["id"],project_id,1,json.dumps(snapshot,ensure_ascii=False,sort_keys=True),"legacy_import",actor_user_id,item["created_at"]))
+
+    @staticmethod
+    def _clean_material_payload(payload:dict[str,Any],creating:bool=False)->dict[str,Any]:
+        if "from_" in payload and "from" not in payload:
+            payload={**payload,"from":payload["from_"]};payload.pop("from_",None)
+        allowed={"kind","title","content","nature","disclosure","knowledge","from","to","origin"}; values={}
+        for field in allowed:
+            if field in payload:values[field]=payload[field]
+        if creating and not {"kind","title","content","nature","disclosure"}<=set(values):raise DomainError("author_material_invalid",422)
+        enums={"kind":{"story","character","world"},"nature":{"setting","plan","idea"},"disclosure":{"unspecified","hidden","revealed"}}
+        for field,options in enums.items():
+            if field in values and values[field] not in options:raise DomainError("author_material_invalid",422)
+        for field,limit,required in (("title",160,True),("content",30000,True),("knowledge",3000,False),("origin",120,False)):
+            if field in values:
+                if not isinstance(values[field],str):raise DomainError("author_material_invalid",422)
+                values[field]=values[field].strip()
+                if len(values[field])>limit or (required and not values[field]):raise DomainError("author_material_invalid",422)
+        values.setdefault("knowledge","") if creating else None
+        values.setdefault("origin","author") if creating else None
+        for field in ("from","to"):
+            if field in values and values[field] is not None and (not isinstance(values[field],int) or isinstance(values[field],bool) or not 1<=values[field]<=999999):raise DomainError("author_material_invalid",422)
+        if values.get("from") is not None and values.get("to") is not None and values["from"]>values["to"]:raise DomainError("author_material_invalid",422)
+        return values
+
+    @classmethod
+    def _write_material_version(cls,c:sqlite3.Connection,row:sqlite3.Row,event:str,actor_user_id:str,stamp:str)->None:
+        c.execute("INSERT INTO v2_author_material_versions VALUES(?,?,?,?,?,?,?)",(row["id"],row["project_id"],row["revision"],json.dumps(cls._material_public(row),ensure_ascii=False,sort_keys=True),event,actor_user_id,stamp))
+
+    @classmethod
+    def _bump_author_context(cls,c:sqlite3.Connection,project:sqlite3.Row,stamp:str)->tuple[int,str]:
+        version=int(project["author_context_version"])+1
+        meta=cls._write_author_context_snapshot(c,project["id"],version,int(project["author_context_version"]),stamp)
+        c.execute("UPDATE v2_projects SET author_context_version=?,updated_at=? WHERE id=?",(version,stamp,project["id"]))
+        return version,meta["snapshot_digest"]
+
+    def author_materials(self,user_id:str,project_id:str,include_archived:bool=False,kind:str|None=None)->dict[str,Any]:
+        if kind is not None and kind not in {"story","character","world"}:raise DomainError("author_material_kind_invalid",422)
+        with self.connection() as c:
+            project=self._project(c,user_id,project_id)
+            self._ensure_legacy_materials(c,project_id,user_id)
+            clauses=["project_id=?"];params:list[Any]=[project_id]
+            if not include_archived:clauses.append("archived_at IS NULL")
+            if kind:clauses.append("kind=?");params.append(kind)
+            rows=c.execute("SELECT * FROM v2_author_materials WHERE "+" AND ".join(clauses)+" ORDER BY kind,created_at,id",params).fetchall()
+            materials=[]
+            for row in rows:
+                reason=self._material_stale_reason(c,row)
+                materials.append({**self._material_public(row),"is_stale":reason=="legacy_changed","stale_reason":"legacy_changed" if reason=="legacy_changed" else None})
+            return {"project_id":project_id,"author_context_version":project["author_context_version"],"materials":materials}
+
+    def create_author_material(self,user_id:str,project_id:str,payload:dict[str,Any],key:str):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def create():
+                project=self._project(c,user_id,project_id,True);self._require_author_version(project,payload["base_author_context_version"])
+                values=self._clean_material_payload(payload,True);stamp=utcnow();item_id=new_id("material")
+                c.execute("INSERT INTO v2_author_materials(id,project_id,kind,title,content,nature,disclosure,knowledge,chapter_from,chapter_to,revision,origin,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(item_id,project_id,values["kind"],values["title"],values["content"],values["nature"],values["disclosure"],values["knowledge"],values.get("from"),values.get("to"),1,values["origin"],stamp,stamp))
+                row=c.execute("SELECT * FROM v2_author_materials WHERE id=?",(item_id,)).fetchone();self._write_material_version(c,row,"create",user_id,stamp);version,digest_value=self._bump_author_context(c,project,stamp)
+                return {"project_id":project_id,"author_context_version":version,"author_context_snapshot_digest":digest_value,"material":self._material_public(row)}
+            return self._idem(c,user_id,f"author_material_create:{project_id}",key,payload,create,201)
+
+    def _update_material_row(self,c:sqlite3.Connection,project:sqlite3.Row,user_id:str,material_id:str,payload:dict[str,Any],event:str)->tuple[sqlite3.Row,int,str]:
+        self._ensure_legacy_materials(c,project["id"],user_id)
+        row=c.execute("SELECT * FROM v2_author_materials WHERE id=? AND project_id=?",(material_id,project["id"])).fetchone()
+        if not row:raise DomainError("resource_not_found",404)
+        if payload["base_revision"]!=row["revision"]:raise DomainError("author_material_revision_conflict",409,False,{"current_revision":row["revision"]})
+        values=self._clean_material_payload(payload,False)
+        values.pop("origin",None)
+        if not values:raise DomainError("author_material_invalid",422)
+        merged={"from":row["chapter_from"],"to":row["chapter_to"],**values}
+        if merged.get("from") is not None and merged.get("to") is not None and merged["from"]>merged["to"]:raise DomainError("author_material_invalid",422)
+        columns={"from":"chapter_from","to":"chapter_to",**{key:key for key in ("kind","title","content","nature","disclosure","knowledge")}}
+        assignments=",".join(f"{columns[field]}=?" for field in values);stamp=utcnow();revision=row["revision"]+1
+        legacy_snapshot=row["legacy_snapshot_json"]
+        if row["legacy_kind"]:
+            spec=self._AUTHOR_INTENT[row["legacy_kind"]];legacy=c.execute(f"SELECT * FROM {spec['table']} WHERE id=? AND project_id=?",(row["legacy_item_id"],project["id"])).fetchone()
+            if legacy:legacy_snapshot=json.dumps(dict(legacy),ensure_ascii=False,sort_keys=True)
+        c.execute(f"UPDATE v2_author_materials SET {assignments},revision=?,origin='author',legacy_snapshot_json=?,updated_at=? WHERE id=? AND project_id=?",(*values.values(),revision,legacy_snapshot,stamp,material_id,project["id"]))
+        updated=c.execute("SELECT * FROM v2_author_materials WHERE id=?",(material_id,)).fetchone();self._write_material_version(c,updated,event,user_id,stamp);version,digest_value=self._bump_author_context(c,project,stamp)
+        return updated,version,digest_value
+
+    def update_author_material(self,user_id:str,project_id:str,material_id:str,payload:dict[str,Any],key:str):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def update():
+                project=self._project(c,user_id,project_id,True);self._require_author_version(project,payload["base_author_context_version"])
+                row,version,digest_value=self._update_material_row(c,project,user_id,material_id,payload,"update")
+                return {"project_id":project_id,"author_context_version":version,"author_context_snapshot_digest":digest_value,"material":self._material_public(row)}
+            return self._idem(c,user_id,f"author_material_update:{project_id}:{material_id}",key,payload,update)
+
+    def archive_author_material(self,user_id:str,project_id:str,material_id:str,payload:dict[str,Any],key:str):
+        if payload.get("confirm") is not True:raise DomainError("confirmation_required",400)
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def change():
+                project=self._project(c,user_id,project_id,True);self._require_author_version(project,payload["base_author_context_version"]);self._ensure_legacy_materials(c,project_id,user_id)
+                row=c.execute("SELECT * FROM v2_author_materials WHERE id=? AND project_id=?",(material_id,project_id)).fetchone()
+                if not row:raise DomainError("resource_not_found",404)
+                if row["revision"]!=payload["base_revision"]:raise DomainError("author_material_revision_conflict",409,False,{"current_revision":row["revision"]})
+                archived=bool(payload["archived"])
+                if archived==(row["archived_at"] is not None):raise DomainError("author_material_archive_noop",409)
+                stamp=utcnow();c.execute("UPDATE v2_author_materials SET archived_at=?,revision=revision+1,origin='author',updated_at=? WHERE id=?",(stamp if archived else None,stamp,material_id));updated=c.execute("SELECT * FROM v2_author_materials WHERE id=?",(material_id,)).fetchone();self._write_material_version(c,updated,"archive" if archived else "restore",user_id,stamp);version,digest_value=self._bump_author_context(c,project,stamp)
+                return {"project_id":project_id,"author_context_version":version,"author_context_snapshot_digest":digest_value,"material":self._material_public(updated)}
+            return self._idem(c,user_id,f"author_material_archive:{project_id}:{material_id}",key,payload,change)
+
+    def author_material_versions(self,user_id:str,project_id:str,material_id:str)->dict[str,Any]:
+        with self.connection() as c:
+            self._project(c,user_id,project_id);self._ensure_legacy_materials(c,project_id,user_id)
+            if not c.execute("SELECT 1 FROM v2_author_materials WHERE id=? AND project_id=?",(material_id,project_id)).fetchone():raise DomainError("resource_not_found",404)
+            rows=c.execute("SELECT revision,snapshot_json,event,actor_user_id,created_at FROM v2_author_material_versions WHERE material_id=? AND project_id=? ORDER BY revision",(material_id,project_id)).fetchall()
+            return {"project_id":project_id,"material_id":material_id,"versions":[{"revision":row["revision"],"snapshot":json.loads(row["snapshot_json"]),"event":row["event"],"actor_user_id":row["actor_user_id"],"created_at":row["created_at"]} for row in rows]}
+
+    def author_check_basis(self,user_id:str,project_id:str,chapter_number:int)->dict[str,Any]:
+        if not 1<=chapter_number<=999999:raise DomainError("chapter_number_invalid",422)
+        with self.connection() as c:
+            project=self._project(c,user_id,project_id);self._ensure_legacy_materials(c,project_id,user_id)
+            rows=c.execute("SELECT * FROM v2_author_materials WHERE project_id=? ORDER BY kind,created_at,id",(project_id,)).fetchall();included=[];excluded=[]
+            for row in rows:
+                item=self._material_public(row);reason=None
+                if item["archived"]:reason="archived"
+                elif item["nature"]=="idea":reason="idea"
+                elif (item["from"] is not None and chapter_number<item["from"]) or (item["to"] is not None and chapter_number>item["to"]):reason="out_of_range"
+                elif self._material_stale_reason(c,row):reason="stale"
+                (excluded if reason else included).append({**item,**({"exclusion_reason":reason} if reason else {})})
+            memory=[dict(row) for row in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id,review_status,valid_from,valid_to FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id",(project_id,project["current_memory_version"],project["current_memory_version"],project["current_memory_version"])).fetchall()]
+            spans=[dict(row) for row in c.execute("SELECT s.id,s.chapter_id,c.chapter_number,c.title AS chapter_title,s.label,s.body,s.source_revision FROM v2_source_spans s JOIN v2_chapters c ON c.id=s.chapter_id WHERE s.project_id=? AND s.source_revision=? ORDER BY c.chapter_number,s.id",(project_id,project["source_revision"])).fetchall()]
+            status="ready" if included and spans else "partial" if included or spans or memory else "insufficient"
+            return {"project_id":project_id,"chapter_number":chapter_number,"author_context_version":project["author_context_version"],"source_revision":project["source_revision"],"memory_version":project["current_memory_version"],"included":{"materials":included},"excluded":{"materials":excluded},"confirmed":{"memory_records":memory},"written":{"source_spans":spans},"coverage":{"status":status,"counts":{"included_materials":len(included),"excluded_materials":len(excluded),"memory_records":len(memory),"source_spans":len(spans)},"truncated":False},"semantics":{"hidden":"author_truth_not_reader_or_character_knowledge","knowledge":"separate_character_knowledge_boundary","plan":"deviation_is_not_fact_conflict"}}
+
+    @classmethod
+    def _material_stale_reason(cls,c:sqlite3.Connection,row:sqlite3.Row,chapter_number:int|None=None)->str|None:
+        if row["archived_at"] is not None:return "archived"
+        if chapter_number is not None and ((row["chapter_from"] is not None and chapter_number<row["chapter_from"]) or (row["chapter_to"] is not None and chapter_number>row["chapter_to"])):return "out_of_range"
+        if row["legacy_kind"]:
+            spec=cls._AUTHOR_INTENT[row["legacy_kind"]];legacy=c.execute(f"SELECT * FROM {spec['table']} WHERE id=? AND project_id=?",(row["legacy_item_id"],row["project_id"])).fetchone()
+            if not legacy or json.dumps(dict(legacy),ensure_ascii=False,sort_keys=True)!=row["legacy_snapshot_json"]:return "legacy_changed"
+        return None
+
+    @classmethod
+    def _comparison_public(cls,c:sqlite3.Connection,row:sqlite3.Row)->dict[str,Any]:
+        material=json.loads(row["material_snapshot_json"]);passage=json.loads(row["passage_snapshot_json"])
+        current=c.execute("SELECT * FROM v2_author_materials WHERE id=? AND project_id=?",(row["material_id"],row["project_id"])).fetchone()
+        span=c.execute("SELECT source_revision,body FROM v2_source_spans WHERE id=? AND project_id=?",(row["source_span_id"],row["project_id"])).fetchone()
+        project=c.execute("SELECT source_revision FROM v2_projects WHERE id=?",(row["project_id"],)).fetchone()
+        stale=not current or cls._material_stale_reason(c,current) is not None or current["revision"]!=row["material_revision"] or not project or project["source_revision"]!=row["source_revision"] or not span or span["source_revision"]!=row["source_revision"] or span["body"]!=passage["text"]
+        decisions=c.execute("SELECT * FROM v2_author_comparison_decisions WHERE comparison_id=? ORDER BY decision_revision",(row["id"],)).fetchall()
+        history=[{"id":item["id"],"decision_revision":item["decision_revision"],"decision":item["decision"],"reason":item["reason"],"before_material":json.loads(item["before_material_json"]) if item["before_material_json"] else None,"after_material":json.loads(item["after_material_json"]) if item["after_material_json"] else None,"status":item["status"],"actor_user_id":item["actor_user_id"],"created_at":item["created_at"],"is_effective":not stale and item["decision_revision"]==row["decision_revision"]} for item in decisions]
+        return {"id":row["id"],"project_id":row["project_id"],"material_id":row["material_id"],"material_revision":row["material_revision"],"source_span_id":row["source_span_id"],"source_revision":row["source_revision"],"document":material,"passage":passage,"decision_revision":row["decision_revision"],"decision_history":history,"latest_decision":history[-1] if history else None,"latest_analysis_run_id":row["latest_analysis_run_id"],"is_stale":stale,"created_at":row["created_at"]}
+
+    def create_author_comparison(self,user_id:str,project_id:str,payload:dict[str,Any],key:str):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def create():
+                project=self._project(c,user_id,project_id,True);self._ensure_legacy_materials(c,project_id,user_id)
+                material=c.execute("SELECT * FROM v2_author_materials WHERE id=? AND project_id=?",(payload["material_id"],project_id)).fetchone()
+                if not material:raise DomainError("resource_not_found",404)
+                material_state=self._material_stale_reason(c,material)
+                if material_state=="archived":raise DomainError("author_material_archived",409)
+                if material_state:raise DomainError("author_material_stale",409)
+                if material["revision"]!=payload["material_revision"]:raise DomainError("author_material_revision_conflict",409,False,{"current_revision":material["revision"]})
+                span=c.execute("SELECT s.*,c.chapter_number,c.title AS chapter_title FROM v2_source_spans s JOIN v2_chapters c ON c.id=s.chapter_id WHERE s.id=? AND s.project_id=?",(payload["source_span_id"],project_id)).fetchone()
+                if not span:raise DomainError("source_span_not_found",404)
+                if span["source_revision"]!=payload["source_revision"] or span["source_revision"]!=project["source_revision"]:raise DomainError("source_revision_conflict",409,False,{"current_source_revision":project["source_revision"]})
+                comparison_id=new_id("comparison");stamp=utcnow();passage={"id":span["id"],"chapterId":span["chapter_id"],"number":span["chapter_number"],"title":span["chapter_title"],"text":span["body"],"revision":span["source_revision"]}
+                c.execute("INSERT INTO v2_author_comparisons(id,project_id,material_id,material_revision,source_span_id,source_revision,material_snapshot_json,passage_snapshot_json,decision_revision,created_by,created_at,latest_analysis_run_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",(comparison_id,project_id,material["id"],material["revision"],span["id"],span["source_revision"],json.dumps(self._material_public(material),ensure_ascii=False,sort_keys=True),json.dumps(passage,ensure_ascii=False,sort_keys=True),0,user_id,stamp,None))
+                row=c.execute("SELECT * FROM v2_author_comparisons WHERE id=?",(comparison_id,)).fetchone();result=self._comparison_public(c,row);result["applicable"]=(material["chapter_from"] is None or span["chapter_number"]>=material["chapter_from"]) and (material["chapter_to"] is None or span["chapter_number"]<=material["chapter_to"]);return result
+            return self._idem(c,user_id,f"author_comparison_create:{project_id}",key,payload,create,201)
+
+    def author_comparisons(self,user_id:str,project_id:str,include_stale:bool=True,comparison_id:str|None=None)->dict[str,Any]:
+        with self.connection() as c:
+            self._project(c,user_id,project_id);query="SELECT * FROM v2_author_comparisons WHERE project_id=?";params:list[Any]=[project_id]
+            if comparison_id:query+=" AND id=?";params.append(comparison_id)
+            rows=c.execute(query+" ORDER BY created_at,id",params).fetchall()
+            if comparison_id and not rows:raise DomainError("resource_not_found",404)
+            items=[self._comparison_public(c,row) for row in rows];items=items if include_stale else [item for item in items if not item["is_stale"]]
+            return items[0] if comparison_id else {"project_id":project_id,"comparisons":items}
+
+    def decide_author_comparison(self,user_id:str,project_id:str,comparison_id:str,payload:dict[str,Any],key:str):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def decide():
+                project=self._project(c,user_id,project_id,True);row=c.execute("SELECT * FROM v2_author_comparisons WHERE id=? AND project_id=?",(comparison_id,project_id)).fetchone()
+                if not row:raise DomainError("resource_not_found",404)
+                if self._comparison_public(c,row)["is_stale"]:raise DomainError("author_comparison_stale",409)
+                if row["decision_revision"]!=payload["base_decision_revision"]:raise DomainError("comparison_decision_revision_conflict",409,False,{"current_decision_revision":row["decision_revision"]})
+                decision=payload["decision"];reason=payload["reason"].strip()
+                if not reason or len(reason)>2000:raise DomainError("comparison_decision_invalid",422)
+                before=after=None;author_version=project["author_context_version"]
+                if decision=="adjust_material":
+                    if any(field not in payload for field in ("base_author_context_version","base_material_revision","material_patch")):raise DomainError("comparison_decision_invalid",422)
+                    self._require_author_version(project,payload["base_author_context_version"]);current=c.execute("SELECT * FROM v2_author_materials WHERE id=? AND project_id=?",(row["material_id"],project_id)).fetchone()
+                    if not current or current["revision"]!=payload["base_material_revision"]:raise DomainError("author_material_revision_conflict",409,False,{"current_revision":current["revision"] if current else None})
+                    before=self._material_public(current);patch={**payload["material_patch"],"base_revision":payload["base_material_revision"]};updated,author_version,_=self._update_material_row(c,project,user_id,row["material_id"],patch,"decision_adjust");after=self._material_public(updated)
+                revision=row["decision_revision"]+1;stamp=utcnow();status="pending" if decision in {"prepare_text_edit","later"} else "recorded";decision_id=new_id("comparisondecision")
+                c.execute("INSERT INTO v2_author_comparison_decisions VALUES(?,?,?,?,?,?,?,?,?,?,?)",(decision_id,project_id,comparison_id,revision,decision,reason,json.dumps(before,ensure_ascii=False,sort_keys=True) if before else None,json.dumps(after,ensure_ascii=False,sort_keys=True) if after else None,status,user_id,stamp));c.execute("UPDATE v2_author_comparisons SET decision_revision=? WHERE id=?",(revision,comparison_id));refreshed=c.execute("SELECT * FROM v2_author_comparisons WHERE id=?",(comparison_id,)).fetchone()
+                return {"project_id":project_id,"author_context_version":author_version,"comparison":self._comparison_public(c,refreshed)}
+            return self._idem(c,user_id,f"author_comparison_decision:{project_id}:{comparison_id}",key,payload,decide)
+
+    def create_author_comparison_analysis(self,user_id:str,project_id:str,comparison_id:str,payload:dict[str,Any],key:str,provenance:dict[str,str]):
+        with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
+            def create():
+                project=self._project(c,user_id,project_id,True);comparison=c.execute("SELECT * FROM v2_author_comparisons WHERE id=? AND project_id=?",(comparison_id,project_id)).fetchone()
+                if not comparison:raise DomainError("resource_not_found",404)
+                if comparison["decision_revision"]!=payload["base_decision_revision"]:raise DomainError("comparison_decision_revision_conflict",409,False,{"current_decision_revision":comparison["decision_revision"]})
+                public=self._comparison_public(c,comparison)
+                if public["is_stale"]:raise DomainError("author_comparison_stale",409)
+                material=public["document"]
+                if material["nature"]=="idea":raise DomainError("author_material_not_authoritative",422)
+                passage=public["passage"]
+                current_material=c.execute("SELECT * FROM v2_author_materials WHERE id=? AND project_id=?",(comparison["material_id"],project_id)).fetchone()
+                if not current_material or self._material_stale_reason(c,current_material,passage["number"]) is not None:raise DomainError("author_comparison_not_applicable",422)
+                coverage=self._memory_coverage(c,project_id)
+                if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["confirmed_core"]<1:raise DomainError("insufficient_project_context",422)
+                draft=c.execute("SELECT * FROM v2_drafts WHERE project_id=? ORDER BY saved_at DESC LIMIT 1",(project_id,)).fetchone()
+                if not draft:raise DomainError("resource_not_found",404)
+                memory=[dict(row) for row in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id,review_status,valid_from,valid_to FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id LIMIT 50",(project_id,project["current_memory_version"],project["current_memory_version"],project["current_memory_version"])).fetchall()]
+                route={"story":"story_plans","character":"character_plans","world":"world_plans"}[material["kind"]];planned={"story_plans":[],"character_plans":[],"world_plans":[]};planned[route]=[material]
+                source={"id":passage["id"],"chapter_id":passage["chapterId"],"chapter_number":passage["number"],"chapter_title":passage["title"],"label":passage["title"],"body":passage["text"],"source_revision":passage["revision"]}
+                retrieval={"method_version":provenance["retrieval_method_version"],"selected_ids":{"author_material":[material["id"]],"memory_record":[item["id"] for item in memory],"source_span":[source["id"]]},"counts":{"author_material":{"available":1,"selected":1},"memory_record":{"available":len(memory),"selected":len(memory)},"source_span":{"available":1,"selected":1}},"truncated":{"author_material":False,"memory_record":False,"source_span":False}}
+                bindings={"project_id":project_id,"comparison_id":comparison_id,"decision_revision":comparison["decision_revision"],"material_revision":comparison["material_revision"],"source_revision":comparison["source_revision"],"draft_id":draft["id"],"draft_revision":draft["revision"],"memory_version":project["current_memory_version"],"author_context_version":project["author_context_version"]}
+                data={"task":"author_material_comparison","bindings":bindings,"comparison":{"material":material,"passage":passage},"layers":{"planned":planned,"confirmed":{"memory_records":memory},"written":{"draft":{"id":draft["id"],"revision":draft["revision"],"chapter_number":draft["chapter_number"],"title":draft["title"],"excerpt":""},"draft_claims":[],"source_spans":[source]}},"retrieval":retrieval}
+                run_id=new_id("run");stamp=utcnow();author_version,author_digest=self._current_author_context_binding(c,project);input_json=json.dumps(data,ensure_ascii=False,sort_keys=True,separators=(",",":"))
+                c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,draft_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,root_run_id,attempt_number,author_context_version,author_context_snapshot_digest) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,project_id,draft["id"],project["source_revision"],draft["revision"],"queued","queued",provenance["provider_label"],stamp,provenance["model_label"],provenance["prompt_version"],provenance["schema_version"],provenance["retrieval_method_version"],project["current_memory_version"],"provider","author_material_comparison",run_id,1,author_version,author_digest))
+                c.execute("INSERT INTO v2_analysis_inputs VALUES(?,?,?,?,?,?,?)",(run_id,project_id,"author_material_comparison",input_json,json.dumps(retrieval,ensure_ascii=False,sort_keys=True),digest(data),stamp));self._append_run_event(c,run_id,"queued","queued",None,stamp)
+                c.execute("UPDATE v2_author_comparisons SET latest_analysis_run_id=? WHERE id=? AND project_id=?",(run_id,comparison_id,project_id))
+                return {"run_id":run_id,"project_id":project_id,"analysis_type":"author_material_comparison","run_type":"author_material_comparison","comparison_id":comparison_id,"decision_revision":comparison["decision_revision"],"status":"queued","stage":"queued","source_revision":project["source_revision"],"source_memory_version":project["current_memory_version"],"author_context_version":author_version,"created_at":stamp}
+            return self._idem(c,user_id,f"author_comparison_analysis:{project_id}:{comparison_id}",key,payload,create,202,with_created=True)
+
     def outline(self, user_id: str, project_id: str) -> dict[str, Any]:
         with self.connection() as c:
             self._project(c,user_id,project_id)
@@ -2464,12 +2753,17 @@ class V2Database:
                 return {"delta":delta_view,"memory_version":target,"status":"covered_with_memory_change","coverage_audit":self._coverage_audit_view(c,project_id,audit),"change_set":delta_view["change_set"],"edited_item_ids":edited_item_ids}
             return self._idem(c,user_id,"memory_delta_commit:"+project_id+":"+batch_id,key,payload,commit)
 
+    @staticmethod
+    def _draft_body_format(c: sqlite3.Connection, draft_id: str, revision: int) -> str:
+        row=c.execute("SELECT body_format FROM v2_draft_content_formats WHERE draft_id=? AND revision=?",(draft_id,revision)).fetchone()
+        return row["body_format"] if row and row["body_format"] in DRAFT_BODY_FORMATS else "plain_text"
+
     def draft(self, user_id: str, project_id: str, draft_id: str) -> dict[str, Any]:
         with self.connection() as c:
             self._project(c,user_id,project_id)
             draft=c.execute("SELECT * FROM v2_drafts WHERE id=? AND project_id=?",(draft_id,project_id)).fetchone()
             if not draft: raise DomainError("resource_not_found",404)
-            return {key:draft[key] for key in ("id","project_id","title","body","chapter_number","revision","status","saved_at")}
+            return {**{key:draft[key] for key in ("id","project_id","title","body","chapter_number","revision","status","saved_at")},"body_format":self._draft_body_format(c,draft_id,draft["revision"])}
 
     def update_project(self, user_id: str, project_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
@@ -2515,6 +2809,9 @@ class V2Database:
                 body=payload["body"]
                 if len(body.encode("utf-8"))>120000: raise DomainError("draft_too_large",413)
                 if payload["base_revision"]!=draft["revision"]: raise DomainError("revision_conflict",409,False,{"current_revision":draft["revision"]})
+                previous_format=self._draft_body_format(c,draft_id,draft["revision"])
+                body_format=payload.get("body_format",previous_format)
+                if body_format not in DRAFT_BODY_FORMATS:raise DomainError("draft_format_invalid",422)
                 edit=payload.get("edit_context"); edit_json=None
                 if edit:
                     run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=? AND status='completed'",(edit["source_run_id"],project_id)).fetchone()
@@ -2525,8 +2822,9 @@ class V2Database:
                 title=payload.get("title") or draft["title"]
                 c.execute("UPDATE v2_drafts SET title=?,body=?,revision=?,status='saved',saved_at=?,parent_revision=?,edit_context_json=?,checksum=? WHERE id=?",(title,body,revision,stamp,draft["revision"],edit_json,checksum,draft_id))
                 c.execute("INSERT INTO v2_draft_revisions VALUES(?,?,?,?,?,?,?,?)",(draft_id,revision,title,body,checksum,draft["revision"],edit_json,stamp))
+                c.execute("INSERT INTO v2_draft_content_formats VALUES(?,?,?,?)",(draft_id,revision,body_format,stamp))
                 c.execute("UPDATE v2_projects SET updated_at=? WHERE id=?",(stamp,project_id))
-                output={"id":draft_id,"project_id":project_id,"revision":revision,"saved_at":stamp,"body_checksum":checksum,"status":"saved"}
+                output={"id":draft_id,"project_id":project_id,"revision":revision,"saved_at":stamp,"body_checksum":checksum,"body_format":body_format,"status":"saved"}
                 if edit: output.update({"parent_revision":draft["revision"],"edit_context":edit,"lineage_status":"pending_decision_validation"})
                 return output
             return self._idem(c,user_id,"patch_draft:"+project_id+":"+draft_id,key,payload,patch)
@@ -2614,7 +2912,8 @@ class V2Database:
                 draft=c.execute("SELECT * FROM v2_drafts WHERE id=? AND project_id=?",(payload["draft_id"],project_id)).fetchone()
                 if not draft:raise DomainError("resource_not_found",404)
                 if draft["revision"]!=payload["draft_revision"]:raise DomainError("draft_revision_not_current",409)
-                if analysis_type=="plan_alignment" and not draft["body"].strip():raise DomainError("analysis_draft_empty",422)
+                draft_text=visible_draft_text(draft["body"],self._draft_body_format(c,draft["id"],draft["revision"]))
+                if analysis_type=="plan_alignment" and not draft_text.strip():raise DomainError("analysis_draft_empty",422)
                 selected_issues=[];selected_issue_digest=None;source_issue_run=None
                 if analysis_type=="revision_plan":
                     source_issue_run,selected_issue_digest,selected_issues=self._revision_plan_issue_binding(c,project_id,payload["issue_ids"])
@@ -2624,26 +2923,30 @@ class V2Database:
                 author_version,author_digest=self._current_author_context_binding(c,project)
                 alias_version,alias_digest,aliases=self._current_alias_binding(c,project_id)
                 foreshadow_version,foreshadow_digest,foreshadows=self._current_foreshadow_binding(c,project_id)
-                author_payload=self._stored_author_context_payload(c,project_id,author_version)
-                story=[item for item in author_payload["story_plans"] if item["archived_at"] is None]
+                self._ensure_legacy_materials(c,project_id,user_id)
+                canonical=[]
+                for row in c.execute("SELECT * FROM v2_author_materials WHERE project_id=? ORDER BY kind,created_at,id",(project_id,)).fetchall():
+                    if row["nature"]=="idea" or self._material_stale_reason(c,row,draft["chapter_number"]) is not None:continue
+                    canonical.append({**self._material_public(row),"_analysis_id":row["legacy_item_id"] or row["id"]})
+                story=[{"id":item["_analysis_id"],"title":item["title"],"summary":item["content"],"goal":"","position":position,"status":"planned","target_chapter_number":item["from"] if item["from"]==item["to"] else None,"archived_at":None,"created_at":item["created_at"],"updated_at":item["updated_at"],"nature":item["nature"],"disclosure":item["disclosure"],"knowledge":item["knowledge"]} for position,item in enumerate((item for item in canonical if item["kind"]=="story" and (analysis_type!="plan_alignment" or item["nature"]=="plan")),1)]
                 if analysis_type=="plan_alignment" and not story:raise DomainError("analysis_plan_unavailable",422)
                 running=c.execute("SELECT id FROM v2_runs WHERE project_id=? AND draft_id=? AND draft_revision=? AND run_type=? AND status IN ('queued','running')",(project_id,draft["id"],draft["revision"],analysis_type)).fetchone()
                 if running:raise DomainError("run_already_active",409,False,{"run_id":running["id"]})
                 hints=[draft["title"],str(payload.get("question") or "")]+[str(item.get(field) or "") for item in story for field in ("title","summary","goal")]+[str(item.get(field) or "") for item in foreshadows for field in ("title","description")]+[str(item.get(field) or "") for item in selected_issues for field in ("claim_text","explanation")]
-                terms=self._analysis_terms(*hints, draft["body"][:2400])
+                terms=self._analysis_terms(*hints, draft_text[:2400])
                 story=sorted(story,key=lambda item:(0 if item.get("target_chapter_number")==draft["chapter_number"] else 1,item["position"],item["id"]))[:4]
-                characters=[item for item in author_payload["character_plans"] if item["archived_at"] is None]
+                characters=[{"id":item["_analysis_id"],"name":item["title"],"role_type":"other","goal":"","planned_state":item["content"],"notes":"","position":position,"archived_at":None,"created_at":item["created_at"],"updated_at":item["updated_at"],"nature":item["nature"],"disclosure":item["disclosure"],"knowledge":item["knowledge"]} for position,item in enumerate((item for item in canonical if item["kind"]=="character"),1)]
                 characters=sorted(characters,key=lambda item:(-self._analysis_rank(terms,item["name"],item["goal"],item["planned_state"],item["notes"]),item["position"],item["id"]))[:2]
-                worlds=[item for item in author_payload["world_plans"] if item["archived_at"] is None]
+                worlds=[{"id":item["_analysis_id"],"name":item["title"],"category":"other","description":item["content"],"notes":"","position":position,"archived_at":None,"created_at":item["created_at"],"updated_at":item["updated_at"],"nature":item["nature"],"disclosure":item["disclosure"],"knowledge":item["knowledge"]} for position,item in enumerate((item for item in canonical if item["kind"]=="world"),1)]
                 worlds=sorted(worlds,key=lambda item:(-self._analysis_rank(terms,item["name"],item["description"],item["notes"]),item["position"],item["id"]))[:2]
                 memory_rows=[dict(row) for row in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id",(project_id,project["current_memory_version"],project["current_memory_version"],project["current_memory_version"])).fetchall()]
                 memory=sorted(memory_rows,key=lambda item:(-self._analysis_rank(terms,item["subject"],item["predicate"],item["value"]),item["id"]))[:8]
                 span_rows=[dict(row) for row in c.execute("SELECT s.id,s.chapter_id,s.label,s.body,s.source_revision,ch.chapter_number,ch.title chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.project_id=? AND s.source_revision<=? ORDER BY s.source_revision DESC,ch.chapter_number DESC,s.id",(project_id,project["source_revision"])).fetchall()]
                 spans=sorted(span_rows,key=lambda item:(-self._analysis_rank(terms,item["label"],item["body"]),-item["source_revision"],-item["chapter_number"],item["id"]))[:4]
                 run_id,stamp=new_id("run"),utcnow()
-                all_claims=[{"id":f"draft-claim-{draft['id']}-r{draft['revision']}-{ordinal}","text":text[:240],"ordinal":ordinal} for ordinal,text in enumerate((x.strip() for x in re.split(r"(?<=[。！？.!?])",draft["body"]) if x.strip()),1)]
+                all_claims=[{"id":f"draft-claim-{draft['id']}-r{draft['revision']}-{ordinal}","text":text[:240],"ordinal":ordinal} for ordinal,text in enumerate((x.strip() for x in re.split(r"(?<=[。！？.!?])",draft_text) if x.strip()),1)]
                 ranked_claims=sorted(all_claims,key=lambda item:(-self._analysis_rank(terms,item["text"]),item["ordinal"]))
-                claims=[] if analysis_type=="context_brief" else sorted(({item["id"]:item for item in (all_claims[:2]+all_claims[-2:]+ranked_claims[:8])}).values(),key=lambda item:item["ordinal"])[:8]
+                claims=sorted(({item["id"]:item for item in (all_claims[:2]+all_claims[-2:]+ranked_claims[:8])}).values(),key=lambda item:item["ordinal"])[:8]
                 selected_author={"story_plans":story,"character_plans":characters,"world_plans":worlds}
                 source_items=[{**item,"body":self._bounded_excerpt(item["body"],terms,500)} for item in spans]
                 factual_characters=[dict(row) for row in c.execute("SELECT id,name,role_type,identity,goal,current_state,knowledge_boundary,source_ids_json FROM v2_characters WHERE project_id=? ORDER BY id",(project_id,)).fetchall()]
@@ -2651,10 +2954,10 @@ class V2Database:
                 chapters=[]
                 for item in source_items:
                     if not any(row["id"]==item["chapter_id"] for row in chapters):chapters.append({"id":item["chapter_id"],"chapter_number":item["chapter_number"],"title":item["chapter_title"]})
-                retrieval={"method_version":provenance["retrieval_method_version"],"selected_ids":{"author_context":[item["id"] for group in selected_author.values() for item in group],"memory_record":[item["id"] for item in memory],"source_span":[item["id"] for item in source_items],"draft_claim":[item["id"] for item in claims],"character_alias":[item["id"] for item in aliases] if analysis_type=="change_impact" else [],"foreshadow_record":[item["id"] for item in foreshadows] if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else [],"issue":[item["id"] for item in selected_issues],"issue_evidence":[evidence["id"] for item in selected_issues for evidence in item["evidence"]]},"counts":{"author_context":{"available":sum(len(author_payload[name]) for name in author_payload),"selected":sum(len(group) for group in selected_author.values())},"memory_record":{"available":len(memory_rows),"selected":len(memory)},"source_span":{"available":len(span_rows),"selected":len(source_items)},"draft_claim":{"available":len(all_claims),"selected":len(claims)},"character_alias":{"available":len(aliases),"selected":len(aliases) if analysis_type=="change_impact" else 0},"foreshadow_record":{"available":len(foreshadows),"selected":len(foreshadows) if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else 0},"issue":{"available":len(selected_issues),"selected":len(selected_issues)},"issue_evidence":{"available":sum(len(item["evidence"]) for item in selected_issues),"selected":sum(len(item["evidence"]) for item in selected_issues)}},"truncated":{"author_context":sum(len(author_payload[name]) for name in author_payload)>sum(len(group) for group in selected_author.values()),"memory_record":len(memory_rows)>len(memory),"source_span":len(span_rows)>len(source_items),"draft_claim":len(all_claims)>len(claims),"draft_body":len(draft["body"])>1200,"character_alias":False,"foreshadow_record":False,"issue":False,"issue_evidence":False}}
+                retrieval={"method_version":provenance["retrieval_method_version"],"selected_ids":{"author_context":[item["id"] for group in selected_author.values() for item in group],"memory_record":[item["id"] for item in memory],"source_span":[item["id"] for item in source_items],"draft_claim":[item["id"] for item in claims],"character_alias":[item["id"] for item in aliases] if analysis_type=="change_impact" else [],"foreshadow_record":[item["id"] for item in foreshadows] if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else [],"issue":[item["id"] for item in selected_issues],"issue_evidence":[evidence["id"] for item in selected_issues for evidence in item["evidence"]]},"counts":{"author_context":{"available":len(canonical),"selected":sum(len(group) for group in selected_author.values())},"memory_record":{"available":len(memory_rows),"selected":len(memory)},"source_span":{"available":len(span_rows),"selected":len(source_items)},"draft_claim":{"available":len(all_claims),"selected":len(claims)},"character_alias":{"available":len(aliases),"selected":len(aliases) if analysis_type=="change_impact" else 0},"foreshadow_record":{"available":len(foreshadows),"selected":len(foreshadows) if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else 0},"issue":{"available":len(selected_issues),"selected":len(selected_issues)},"issue_evidence":{"available":sum(len(item["evidence"]) for item in selected_issues),"selected":sum(len(item["evidence"]) for item in selected_issues)}},"truncated":{"author_context":len(canonical)>sum(len(group) for group in selected_author.values()),"memory_record":len(memory_rows)>len(memory),"source_span":len(span_rows)>len(source_items),"draft_claim":len(all_claims)>len(claims),"draft_body":len(draft_text)>1200,"character_alias":False,"foreshadow_record":False,"issue":False,"issue_evidence":False}}
                 if analysis_type=="context_brief" and not (retrieval["selected_ids"]["author_context"] or retrieval["selected_ids"]["memory_record"] or retrieval["selected_ids"]["source_span"]):raise DomainError("analysis_evidence_unavailable",422)
                 bindings={"project_id":project_id,"draft_id":draft["id"],"draft_revision":draft["revision"],"source_revision":project["source_revision"],"memory_version":project["current_memory_version"],"author_context_version":author_version,"author_context_snapshot_digest":author_digest}
-                layers={"planned":selected_author,"confirmed":{"memory_records":memory},"written":{"draft":{"id":draft["id"],"revision":draft["revision"],"chapter_number":draft["chapter_number"],"title":draft["title"],"excerpt":self._analysis_draft_excerpt(draft["body"],hints)},"draft_claims":claims,"source_spans":source_items}}
+                layers={"planned":selected_author,"confirmed":{"memory_records":memory},"written":{"draft":{"id":draft["id"],"revision":draft["revision"],"chapter_number":draft["chapter_number"],"title":draft["title"],"excerpt":self._analysis_draft_excerpt(draft_text,hints)},"draft_claims":claims,"source_spans":source_items}}
                 if analysis_type=="change_impact":
                     proposal=payload["proposal"]
                     targets={"chapter":{item["id"] for item in chapters},"character":{item["id"] for item in factual_characters},"world":{item["id"] for item in factual_world},"memory":{item["id"] for item in memory},"plan":{item["id"] for group in selected_author.values() for item in group}}
@@ -2704,7 +3007,9 @@ class V2Database:
             else:
                 status,terminal,error=self._normalized_terminal(result);retryable=bool(result.get("retryable")) or status in {"timed_out","cancelled"}
             duration=elapsed_ms(run["started_at"] or run["created_at"],stamp)
-            changed=c.execute("UPDATE v2_runs SET status=?,stage=?,input_tokens=?,output_tokens=?,latency_ms=?,cost_cny=?,error_code=?,retryable=?,completed_at=?,duration_ms=? WHERE id=? AND project_id=? AND status IN ('queued','running')",(status,terminal,result.get("input_tokens"),result.get("output_tokens"),result.get("latency_ms"),result.get("cost_cny"),error,int(retryable),stamp,duration,run_id,project_id)).rowcount
+            normalizations=result.get("contract_normalizations") if isinstance(result.get("contract_normalizations"),list) else []
+            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome")=="insufficient_evidence" and item.get("provider_attempt")==2]
+            changed=c.execute("UPDATE v2_runs SET status=?,stage=?,input_tokens=?,output_tokens=?,latency_ms=?,cost_cny=?,error_code=?,retryable=?,completed_at=?,duration_ms=?,contract_normalization_count=?,contract_normalizations_json=? WHERE id=? AND project_id=? AND status IN ('queued','running')",(status,terminal,result.get("input_tokens"),result.get("output_tokens"),result.get("latency_ms"),result.get("cost_cny"),error,int(retryable),stamp,duration,len(safe_normalizations),json.dumps(safe_normalizations,ensure_ascii=False),run_id,project_id)).rowcount
             if not changed:return False
             self._append_run_event(c,run_id,status,terminal,error,stamp)
             if status=="completed":
@@ -2733,7 +3038,7 @@ class V2Database:
         with self.connection() as c:
             project=self._project(c,user_id,project_id)
             run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
-            if run["run_type"] not in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan"}:raise DomainError("resource_not_found",404)
+            if run["run_type"] not in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan","author_material_comparison"}:raise DomainError("resource_not_found",404)
             draft=c.execute("SELECT revision FROM v2_drafts WHERE id=? AND project_id=?",(run["draft_id"],project_id)).fetchone()
             alias_current=run["run_type"]!="change_impact" or (project["alias_version"]==run["alias_version"] and self._current_alias_binding(c,project_id)[1]==run["alias_snapshot_digest"])
             foreshadow_current=True
@@ -2753,6 +3058,9 @@ class V2Database:
                     issue_current=issue_run["id"]==input_payload.get("source_run_id") and issue_digest==input_payload.get("bindings",{}).get("selected_issue_digest")
                 except DomainError:issue_current=False
             current=bool(draft and draft["revision"]==run["draft_revision"] and project["source_revision"]==run["source_revision"] and project["current_memory_version"]==run["source_memory_version"] and project["author_context_version"]==run["author_context_version"] and result["author_context_resolvable"] and alias_current and foreshadow_current and issue_current)
+            if run["run_type"]=="author_material_comparison":
+                comparison=c.execute("SELECT * FROM v2_author_comparisons WHERE id=? AND project_id=?",(input_payload.get("bindings",{}).get("comparison_id"),project_id)).fetchone()
+                current=bool(comparison and not self._comparison_public(c,comparison)["is_stale"] and comparison["decision_revision"]==input_payload.get("bindings",{}).get("decision_revision") and project["source_revision"]==run["source_revision"] and project["author_context_version"]==run["author_context_version"])
             stored=c.execute("SELECT result_json FROM v2_analysis_results WHERE run_id=?",(run_id,)).fetchone()
             result.update({"analysis_type":run["run_type"],"draft_revision":run["draft_revision"],"current_draft_revision":draft["revision"] if draft else None,"alias_version":run["alias_version"],"alias_snapshot_digest":run["alias_snapshot_digest"],"foreshadow_version":run["foreshadow_version"],"foreshadow_snapshot_digest":run["foreshadow_snapshot_digest"],"proposal":input_payload.get("proposal"),"question":input_payload.get("question"),"scope":input_payload.get("scope"),"issue_ids":[item["id"] for item in input_payload.get("selected_issues",[])],"source_run_id":input_payload.get("source_run_id"),"is_stale":not current,"superseded":not current,"lineage_status":"current" if current else "bound_state_changed","retrieval":json.loads(input_row["retrieval_json"]) if input_row else None,"input_digest":input_row["input_digest"] if input_row else None})
             if result["status"]=="completed":
@@ -2771,7 +3079,7 @@ class V2Database:
             return result
 
     def latest_analysis(self, user_id: str, project_id: str, analysis_type: str, limit: int = 10) -> dict[str, Any]:
-        if analysis_type not in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan"}:raise DomainError("analysis_type_invalid",422)
+        if analysis_type not in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan","author_material_comparison"}:raise DomainError("analysis_type_invalid",422)
         with self.connection() as c:
             self._project(c,user_id,project_id)
             rows=c.execute("SELECT id FROM v2_runs WHERE project_id=? AND run_type=? ORDER BY created_at DESC,rowid DESC LIMIT ?",(project_id,analysis_type,limit)).fetchall()
@@ -2896,8 +3204,10 @@ class V2Database:
             if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["pending_canon_count"] != 0:
                 raise DomainError("insufficient_project_context",422)
             revision=c.execute("SELECT * FROM v2_draft_revisions WHERE draft_id=? AND revision=?",(run["draft_id"],run["source_revision"])).fetchone()
+            body_format=self._draft_body_format(c,revision["draft_id"],revision["revision"])
+            draft_text=visible_draft_text(revision["body"],body_format)
             claims=[]
-            for ordinal,text in enumerate(x.strip() for x in re.split(r"(?<=[。！？])",revision["body"]) if x.strip()):
+            for ordinal,text in enumerate(x.strip() for x in re.split(r"(?<=[。！？])",draft_text) if x.strip()):
                 claim_id=f"claim-{run_id}-{ordinal+1}"; claims.append({"id":claim_id,"text":text})
                 c.execute("INSERT OR IGNORE INTO v2_run_claims VALUES(?,?,?,?)",(claim_id,run_id,ordinal+1,text))
             source_memory_version=run["source_memory_version"]
@@ -2913,7 +3223,7 @@ class V2Database:
                 hits=[{**pair[1],"prompt_excerpt":self._bounded_excerpt(pair[1]["body"],terms)} for pair in sorted(scored,key=lambda pair:(-pair[0],pair[1]["id"]))[:5]]
                 c.execute("INSERT OR REPLACE INTO v2_retrieval_traces VALUES(?,?,?,?,?)",(run_id,claim["id"],",".join(sorted(terms))[:200],json.dumps([hit["id"] for hit in hits]),run["retrieval_method_version"] or "legacy_unspecified"))
                 claim["allowed_evidence"]=hits
-            return {"run":dict(run),"draft":{"id":revision["draft_id"],"revision":revision["revision"],"body":revision["body"]},"claims":claims,"memory":memory}
+            return {"run":dict(run),"draft":{"id":revision["draft_id"],"revision":revision["revision"],"body":draft_text,"body_format":body_format},"claims":claims,"memory":memory}
 
     def finish_run(self, project_id: str, run_id: str, result: dict[str, Any]) -> bool:
         with self.connection() as c:
@@ -2929,7 +3239,9 @@ class V2Database:
                 status,terminal,error=self._normalized_terminal(result)
                 retryable=bool(result.get("retryable")) or status in {"timed_out","cancelled"}
             duration=elapsed_ms(run["started_at"] or (run["created_at"] if run["status"]=="queued" else None),stamp)
-            changed=c.execute("UPDATE v2_runs SET status=?,stage=?,input_tokens=?,output_tokens=?,latency_ms=?,cost_cny=?,error_code=?,retryable=?,completed_at=?,duration_ms=? WHERE id=? AND project_id=? AND status IN ('queued','running')",(status,terminal,result.get("input_tokens"),result.get("output_tokens"),result.get("latency_ms"),result.get("cost_cny"),error,int(retryable),stamp,duration,run_id,project_id)).rowcount
+            normalizations=result.get("contract_normalizations") if isinstance(result.get("contract_normalizations"),list) else []
+            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome")=="insufficient_evidence" and item.get("provider_attempt")==2]
+            changed=c.execute("UPDATE v2_runs SET status=?,stage=?,input_tokens=?,output_tokens=?,latency_ms=?,cost_cny=?,error_code=?,retryable=?,completed_at=?,duration_ms=?,contract_normalization_count=?,contract_normalizations_json=? WHERE id=? AND project_id=? AND status IN ('queued','running')",(status,terminal,result.get("input_tokens"),result.get("output_tokens"),result.get("latency_ms"),result.get("cost_cny"),error,int(retryable),stamp,duration,len(safe_normalizations),json.dumps(safe_normalizations,ensure_ascii=False),run_id,project_id)).rowcount
             if not changed:return False
             self._append_run_event(c,run_id,status,terminal,error,stamp)
             if status!="completed": return True
@@ -2969,7 +3281,7 @@ class V2Database:
         run_id,stamp=new_id("run"),utcnow(); root=previous["root_run_id"] or previous["id"]
         attempt=c.execute("SELECT COALESCE(MAX(attempt_number),0)+1 FROM v2_runs WHERE root_run_id=?",(root,)).fetchone()[0]
         project=c.execute("SELECT * FROM v2_projects WHERE id=?",(previous["project_id"],)).fetchone()
-        analysis=previous["run_type"] in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan"}
+        analysis=previous["run_type"] in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan","author_material_comparison"}
         if analysis:author_version,author_digest=previous["author_context_version"],previous["author_context_snapshot_digest"]
         else:author_version,author_digest=self._current_author_context_binding(c,project)
         c.execute("INSERT INTO v2_runs(id,project_id,draft_id,source_revision,draft_revision,status,stage,provider_label,created_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,source_change_set_id,source_span_ids_json,retry_of_run_id,root_run_id,attempt_number,incremental_batch_id,author_context_version,author_context_snapshot_digest,alias_version,alias_snapshot_digest,foreshadow_version,foreshadow_snapshot_digest) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(run_id,previous["project_id"],previous["draft_id"],previous["source_revision"],previous["draft_revision"],"queued","queued",previous["provider_label"],stamp,previous["model_label"],previous["prompt_version"],previous["schema_version"],previous["retrieval_method_version"],previous["source_memory_version"],previous["result_origin"],previous["run_type"],previous["source_change_set_id"],previous["source_span_ids_json"],previous["id"],root,attempt,batch_id,author_version,author_digest,previous["alias_version"],previous["alias_snapshot_digest"],previous["foreshadow_version"],previous["foreshadow_snapshot_digest"]))
@@ -2977,6 +3289,9 @@ class V2Database:
             source=c.execute("SELECT * FROM v2_analysis_inputs WHERE run_id=?",(previous["id"],)).fetchone()
             if not source:raise DomainError("run_retry_lineage_stale",409)
             c.execute("INSERT INTO v2_analysis_inputs VALUES(?,?,?,?,?,?,?)",(run_id,source["project_id"],source["analysis_type"],source["input_json"],source["retrieval_json"],source["input_digest"],stamp))
+            if previous["run_type"]=="author_material_comparison":
+                comparison_id=json.loads(source["input_json"]).get("bindings",{}).get("comparison_id")
+                if comparison_id:c.execute("UPDATE v2_author_comparisons SET latest_analysis_run_id=? WHERE id=? AND project_id=?",(run_id,comparison_id,previous["project_id"]))
         self._append_run_event(c,run_id,"queued","queued",None,stamp)
         output={"run_id":run_id,"project_id":previous["project_id"],"run_type":previous["run_type"],"analysis_type":previous["run_type"] if analysis else None,"status":"queued","stage":"queued","draft_revision":previous["draft_revision"],"source_revision":previous["source_revision"],"source_memory_version":previous["source_memory_version"],"author_context_version":previous["author_context_version"],"alias_version":previous["alias_version"],"foreshadow_version":previous["foreshadow_version"],"created_at":stamp,"retry_of_run_id":previous["id"],"root_run_id":root,"attempt_number":attempt}
         if analysis:
@@ -3010,7 +3325,7 @@ class V2Database:
                     continuity_id=created["continuity"]["run_id"]; delta_id=created["memory_delta"]["run_id"]
                     c.execute("UPDATE v2_memory_delta_batches SET continuity_run_id=?,memory_delta_run_id=?,status='processing',error_code=NULL,created_at=?,completed_at=NULL,covered_at=NULL,retrieval_json='{}' WHERE id=?",(continuity_id,delta_id,utcnow(),batch["id"]))
                     return {"paired":True,"batch_id":batch["id"],"continuity_run_id":continuity_id,"memory_delta_run_id":delta_id,"runs":[created["continuity"],created["memory_delta"]]}
-                if target["run_type"] in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan"}:
+                if target["run_type"] in {"context_brief","plan_alignment","change_impact","story_qa","foreshadow_scan","revision_plan","author_material_comparison"}:
                     draft=c.execute("SELECT revision FROM v2_drafts WHERE id=? AND project_id=?",(target["draft_id"],project_id)).fetchone()
                     current_author=self._current_author_context_binding(c,project)
                     alias_current=target["run_type"]!="change_impact" or self._current_alias_binding(c,project_id)[:2]==(target["alias_version"],target["alias_snapshot_digest"])
@@ -3082,7 +3397,8 @@ class V2Database:
         if issue["nature"]=="insufficient_evidence" and actions:raise DomainError("review_contract_unresolvable",422)
         if suggestion is not None:
             revision=c.execute("SELECT body FROM v2_draft_revisions WHERE draft_id=? AND revision=?",(run["draft_id"],run["source_revision"])).fetchone()
-            if not isinstance(suggestion,dict) or set(suggestion)!={"before","after"} or not revision or revision["body"].count(suggestion.get("before",""))!=1 or suggestion.get("before")==suggestion.get("after") or "apply_suggestion" not in actions:raise DomainError("suggested_revision_unresolvable",422)
+            revision_text=visible_draft_text(revision["body"],self._draft_body_format(c,run["draft_id"],run["source_revision"])) if revision else ""
+            if not isinstance(suggestion,dict) or set(suggestion)!={"before","after"} or not revision or revision_text.count(suggestion.get("before",""))!=1 or suggestion.get("before")==suggestion.get("after") or "apply_suggestion" not in actions:raise DomainError("suggested_revision_unresolvable",422)
         elif "apply_suggestion" in actions:raise DomainError("suggested_revision_unresolvable",422)
         return {"review_contract_version":TRUSTWORTHY_REVIEW_VERSION,"nature":issue["nature"],"reasoning":issue["reasoning"],"evidence_chain":chain,"suggested_revision":suggestion,"available_actions":actions}
 
@@ -3109,7 +3425,8 @@ class V2Database:
             author_status="not_recorded" if run["author_context_version"] is None else "recorded" if author_resolved else "unresolvable"
             provenance={"provider_label":run["provider_label"],"model_label":run["model_label"] or "legacy_unspecified","prompt_version":run["prompt_version"] or "legacy_unspecified","schema_version":run["schema_version"] or "legacy_unspecified","retrieval_method_version":run["retrieval_method_version"] or "legacy_unspecified","source_memory_version":run["source_memory_version"]}
             if incremental:provenance.update({"source_change_set_id":run["source_change_set_id"],"source_span_ids":source_span_ids,"incremental_batch_id":run["incremental_batch_id"]})
-            metrics={"latency_ms":run["latency_ms"],"input_tokens":run["input_tokens"],"output_tokens":run["output_tokens"],"cost_cny":run["cost_cny"],"cost_available":run["cost_cny"] is not None,"provenance":provenance,"retrieval":[]}
+            contract_normalizations=json.loads(run["contract_normalizations_json"] or "[]")
+            metrics={"latency_ms":run["latency_ms"],"input_tokens":run["input_tokens"],"output_tokens":run["output_tokens"],"cost_cny":run["cost_cny"],"cost_available":run["cost_cny"] is not None,"contract_normalization_count":run["contract_normalization_count"] or 0,"contract_normalizations":contract_normalizations,"provenance":provenance,"retrieval":[]}
             result={"run_id":run_id,"project_id":project_id,"run_type":run["run_type"],"status":status,"stage":stage,"source_revision":run["source_revision"],"draft_revision":run["draft_revision"],"source_memory_version":run["source_memory_version"],"author_context_version":run["author_context_version"],"author_context_version_status":author_status,"author_context_resolvable":author_resolved,"author_context_snapshot_digest":run["author_context_snapshot_digest"] if author_resolved else None,"alias_version":run["alias_version"],"alias_snapshot_digest":run["alias_snapshot_digest"],"source_change_set_id":run["source_change_set_id"],"source_span_ids":source_span_ids,"incremental_batch_id":run["incremental_batch_id"],"current_revision":draft["revision"],"is_stale":not current,"superseded":not current,"lineage_status":(("incremental_source_revision" if current else "incremental_state_changed_requires_recheck") if incremental else "validated_direct_successor" if direct_successor else "current" if current else "lineage_invalid_requires_recheck"),"result_origin":run["result_origin"],"result_origin_label":("预置演示审阅数据（未调用 Provider）" if run["result_origin"]=="demo_preset" else "Provider 检查结果"),"error_code":error_code,"retryable":bool(run["retryable"]) or run["status"]=="budget_paused","created_at":run["created_at"],"started_at":run["started_at"],"completed_at":run["completed_at"],"cancel_requested_at":run["cancel_requested_at"],"duration_ms":run["duration_ms"],"retry_of_run_id":run["retry_of_run_id"],"root_run_id":run["root_run_id"] or run_id,"attempt_number":run["attempt_number"] or 1,"transitions":transitions,"provenance":provenance,"provider_metrics":{key:metrics[key] for key in ("latency_ms","input_tokens","output_tokens","cost_cny","cost_available")}}
             if "issues" in include and status=="completed":
                 issues=[]
@@ -3521,7 +3838,7 @@ class V2Database:
     # --- Stage 11J append-only source revisions ---
     def _source_change_set_view(self, row: sqlite3.Row) -> dict[str, Any]:
         chapters=json.loads(row["chapters_json"])
-        return {"id":row["id"],"project_id":row["project_id"],"base_source_revision":row["base_source_revision"],"target_source_revision":row["target_source_revision"],"mode":row["mode"],"input_method":row["input_method"],"content_sha256":row["content_hash"],"status":row["status"],"chapter_count":len(chapters),"source_span_count":len(chapters),"chapters":[{"preview_id":x["id"],"title":x["title"],"order":x["order"],"character_count":len(x["body"])} for x in chapters],"previewed_at":row["created_at"],"committed_at":row["committed_at"],"failed_at":row["failed_at"],"failure_code":row["failure_code"],"expires_at":row["expires_at"],"audit":json.loads(row["content_json"]).get("audit",{})}
+        return {"id":row["id"],"project_id":row["project_id"],"base_source_revision":row["base_source_revision"],"target_source_revision":row["target_source_revision"],"mode":row["mode"],"input_method":row["input_method"],"content_sha256":row["content_hash"],"status":row["status"],"chapter_count":len(chapters),"source_span_count":len(chapters),"chapters":[{"preview_id":x["id"],"title":x["title"],"order":x["order"],"character_count":len(x.get("source_body",x["body"]))} for x in chapters],"previewed_at":row["created_at"],"committed_at":row["committed_at"],"failed_at":row["failed_at"],"failure_code":row["failure_code"],"expires_at":row["expires_at"],"audit":json.loads(row["content_json"]).get("audit",{})}
 
     def preview_source_change_set(self, user_id: str, project_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
@@ -3535,6 +3852,7 @@ class V2Database:
                     if not draft or not draft["body"].strip(): raise DomainError("draft_invalid",422)
                     text,title=draft["body"],draft["title"]
                     draft_id,draft_revision,draft_checksum=draft["id"],draft["revision"],draft["checksum"]
+                    draft_format=self._draft_body_format(c,draft_id,draft_revision)
                 else:
                     text=str(payload.get("content") or "")
                     title=str(payload.get("title") or "").strip()
@@ -3542,6 +3860,8 @@ class V2Database:
                     if not text.strip(): raise DomainError("empty_source",422)
                 if len(text.encode("utf-8"))>5*1024*1024: raise DomainError("source_too_large",413)
                 chapters,_,_,_=self._parse_import(text)
+                if method=="draft_complete":
+                    for chapter in chapters:chapter["source_body"]=visible_draft_text(chapter["body"],draft_format)
                 if title and len(chapters)==1: chapters[0]["title"]=title[:120]
                 change_id,stamp=new_id("sourcechangeset"),utcnow(); expires=(datetime.now(timezone.utc)+timedelta(minutes=20)).isoformat(); content_hash=hashlib.sha256(text.encode("utf-8")).hexdigest()
                 audit={"created_by_user_id":user_id,"idempotency_key_fingerprint":digest(key),"request_fingerprint":digest(payload),"file_basename":(str(payload.get("filename","")).replace("\\","/").split("/")[-1] if method=="file" else None)}
@@ -3574,7 +3894,7 @@ class V2Database:
                     for ordinal,item in enumerate(chapters,1):
                         chapter_id,span_id=new_id("chapter"),new_id("span"); number=start+ordinal
                         c.execute("INSERT INTO v2_chapters VALUES(?,?,?,?,?,?,?)",(chapter_id,project_id,number,item["title"],"",item["body"],change["target_source_revision"]))
-                        c.execute("INSERT INTO v2_source_spans VALUES(?,?,?,?,?,?)",(span_id,project_id,chapter_id,"append",item["body"],change["target_source_revision"]))
+                        c.execute("INSERT INTO v2_source_spans VALUES(?,?,?,?,?,?)",(span_id,project_id,chapter_id,"append",item.get("source_body",item["body"]),change["target_source_revision"]))
                     c.execute("UPDATE v2_drafts SET status='completed' WHERE project_id=? AND status IN ('draft','saved')",(project_id,))
                     next_draft_id=self._draft(c,project_id,start+len(chapters)+1); stamp=utcnow()
                     c.execute("UPDATE v2_projects SET source_revision=?,updated_at=? WHERE id=?",(change["target_source_revision"],stamp,project_id))

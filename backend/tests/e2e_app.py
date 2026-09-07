@@ -18,6 +18,8 @@ from app.provider import ProviderInvalidJson, ProviderResult, ProviderTimeout
 
 class BrowserTestProvider:
     label = "browser-e2e-test-provider"
+    allows_legacy_continuity_contract = True
+    allows_legacy_foreshadow_evidence_contract = True
 
     def __init__(self):
         self.calls = 0
@@ -31,6 +33,14 @@ class BrowserTestProvider:
 
     def evaluate(self, request):
         self.calls += 1
+        if request.get("task") == "author_material_comparison":
+            material=request["comparison"]["material"]
+            passage=request["comparison"]["passage"]
+            return ProviderResult({
+                "assessment":"plan_deviation" if material["nature"]=="plan" else "possible_tension",
+                "explanation":"浏览器验收桩只验证服务链路与绑定证据，不代表真实 AI 质量结论。",
+                "evidence":[{"source_type":"author_material","source_id":material["id"]},{"source_type":"source_span","source_id":passage["id"]}],
+            },input_tokens=12,output_tokens=18,latency_ms=20)
         if request.get("task") == "context_brief":
             written=request["layers"]["written"]
             if "E2E_ANALYSIS_FAILURE" in written["draft"]["excerpt"]:raise ProviderInvalidJson()

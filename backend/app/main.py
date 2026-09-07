@@ -13,7 +13,7 @@ import sqlite3
 from fastapi import BackgroundTasks, FastAPI, File, Header, HTTPException, Request, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, model_validator
 
 from .config import AppPaths, PATHS, ProtectedPathError
 from .database import DomainError
@@ -90,7 +90,12 @@ class PasswordResetConfirm(Strict): token:str=Field(min_length=32,max_length=512
 class ProjectCreate(Strict): title:str; genre:str|None=None; summary:str|None=None
 class ProjectPatch(Strict): base_metadata_revision:int=Field(ge=1); title:str|None=None; genre:str|None=None; summary:str|None=None; status:Literal['active','paused','completed','archived']|None=None; confirm_archive:bool|None=None
 class EditContext(Strict): source_run_id:str; source_revision:int=Field(ge=1); issue_id:str
-class DraftPatch(Strict): base_revision:int=Field(ge=1); body:str; title:str|None=None; edit_context:EditContext|None=None
+class DraftPatch(Strict):
+    base_revision:int=Field(ge=1)
+    body:str
+    title:str|None=None
+    body_format:Literal['plain_text','markdown']|None=None
+    edit_context:EditContext|None=None
 class Check(Strict): draft_id:str; draft_revision:int=Field(ge=1); client_request_id:str|None=None
 class ChangeImpactProposal(Strict):
     target_type:Literal['chapter','character','world','memory','plan','general']
@@ -224,6 +229,58 @@ class AuthorIntentReorder(Strict):
 class AuthorIntentArchive(Strict):
     base_author_context_version:int=Field(ge=0)
     confirm:bool
+class AuthorRangeFields(Strict):
+    from_:StrictInt|None=Field(default=None,ge=1,le=999999)
+    to:StrictInt|None=Field(default=None,ge=1,le=999999)
+    @model_validator(mode='before')
+    @classmethod
+    def accept_from(cls,value):
+        if isinstance(value,dict) and 'from' in value:
+            value={**value,'from_':value['from']};value.pop('from',None)
+        return value
+class AuthorMaterialFields(AuthorRangeFields):
+    kind:Literal['story','character','world']
+    title:str=Field(min_length=1,max_length=160)
+    content:str=Field(min_length=1,max_length=30000)
+    nature:Literal['setting','plan','idea']
+    disclosure:Literal['unspecified','hidden','revealed']
+    knowledge:str=Field(default='',max_length=3000)
+    origin:Literal['author']='author'
+class AuthorMaterialCreate(AuthorMaterialFields):base_author_context_version:StrictInt=Field(ge=0)
+class AuthorMaterialPatch(AuthorRangeFields):
+    base_author_context_version:StrictInt=Field(ge=0)
+    base_revision:StrictInt=Field(ge=1)
+    kind:Literal['story','character','world']|None=None
+    title:str|None=Field(default=None,min_length=1,max_length=160)
+    content:str|None=Field(default=None,min_length=1,max_length=30000)
+    nature:Literal['setting','plan','idea']|None=None
+    disclosure:Literal['unspecified','hidden','revealed']|None=None
+    knowledge:str|None=Field(default=None,max_length=3000)
+class AuthorMaterialArchive(Strict):
+    base_author_context_version:StrictInt=Field(ge=0)
+    base_revision:StrictInt=Field(ge=1)
+    archived:bool
+    confirm:Literal[True]
+class AuthorComparisonCreate(Strict):
+    material_id:str
+    material_revision:StrictInt=Field(ge=1)
+    source_span_id:str
+    source_revision:StrictInt=Field(ge=1)
+class AuthorMaterialDecisionPatch(AuthorRangeFields):
+    kind:Literal['story','character','world']|None=None
+    title:str|None=Field(default=None,min_length=1,max_length=160)
+    content:str|None=Field(default=None,min_length=1,max_length=30000)
+    nature:Literal['setting','plan','idea']|None=None
+    disclosure:Literal['unspecified','hidden','revealed']|None=None
+    knowledge:str|None=Field(default=None,max_length=3000)
+class AuthorComparisonDecision(Strict):
+    base_decision_revision:StrictInt=Field(ge=0)
+    decision:Literal['prepare_text_edit','adjust_material','intentional','not_issue','later']
+    reason:str=Field(min_length=1,max_length=2000)
+    base_author_context_version:StrictInt|None=Field(default=None,ge=0)
+    base_material_revision:StrictInt|None=Field(default=None,ge=1)
+    material_patch:AuthorMaterialDecisionPatch|None=None
+class AuthorComparisonAnalysis(Strict):base_decision_revision:StrictInt=Field(ge=0)
 
 def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=None, settings:Stage13Settings|None=None, mailer:MailerPort|None=None)->FastAPI:
     settings=settings or Stage13Settings.from_env()
@@ -491,6 +548,43 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.post('/api/projects/{project_id}/author-intent/world-plans/{item_id}/archive')
     def archive_author_world(project_id:str,item_id:str,payload:AuthorIntentArchive,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'author_intent_archive_failed');data,status=db.archive_author_intent_item(user(request)['id'],project_id,'world',item_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.get('/api/projects/{project_id}/author-context/materials')
+    def author_materials(project_id:str,request:Request,include_archived:bool=False,kind:Literal['story','character','world']|None=None):return ok(request,db.author_materials(user(request)['id'],project_id,include_archived,kind))
+    @app.post('/api/projects/{project_id}/author-context/materials',status_code=201)
+    def author_material_create(project_id:str,payload:AuthorMaterialCreate,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_material_create_failed');data,status=db.create_author_material(user(request)['id'],project_id,payload.model_dump(by_alias=True),key(idempotency_key));return ok(request,data,status)
+    @app.patch('/api/projects/{project_id}/author-context/materials/{material_id}')
+    def author_material_patch(project_id:str,material_id:str,payload:AuthorMaterialPatch,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_material_update_failed');data,status=db.update_author_material(user(request)['id'],project_id,material_id,payload.model_dump(exclude_unset=True,by_alias=True),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/author-context/materials/{material_id}/archive')
+    def author_material_archive(project_id:str,material_id:str,payload:AuthorMaterialArchive,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_material_archive_failed');data,status=db.archive_author_material(user(request)['id'],project_id,material_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.get('/api/projects/{project_id}/author-context/materials/{material_id}/versions')
+    def author_material_versions(project_id:str,material_id:str,request:Request):return ok(request,db.author_material_versions(user(request)['id'],project_id,material_id))
+    @app.get('/api/projects/{project_id}/author-context/check-basis')
+    def author_check_basis(project_id:str,chapter_number:int,request:Request):return ok(request,db.author_check_basis(user(request)['id'],project_id,chapter_number))
+    @app.post('/api/projects/{project_id}/author-context/comparisons',status_code=201)
+    def author_comparison_create(project_id:str,payload:AuthorComparisonCreate,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_comparison_create_failed');data,status=db.create_author_comparison(user(request)['id'],project_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+    @app.get('/api/projects/{project_id}/author-context/comparisons')
+    def author_comparisons(project_id:str,request:Request,include_stale:bool=True):return ok(request,db.author_comparisons(user(request)['id'],project_id,include_stale))
+    @app.get('/api/projects/{project_id}/author-context/comparisons/{comparison_id}')
+    def author_comparison(project_id:str,comparison_id:str,request:Request):return ok(request,db.author_comparisons(user(request)['id'],project_id,True,comparison_id))
+    @app.post('/api/projects/{project_id}/author-context/comparisons/{comparison_id}/decisions')
+    def author_comparison_decision(project_id:str,comparison_id:str,payload:AuthorComparisonDecision,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_comparison_decision_failed');data,status=db.decide_author_comparison(user(request)['id'],project_id,comparison_id,payload.model_dump(exclude_none=True,by_alias=True),key(idempotency_key));return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/author-context/comparisons/{comparison_id}/analysis',status_code=202)
+    def author_comparison_analysis(project_id:str,comparison_id:str,payload:AuthorComparisonAnalysis,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'author_comparison_analysis_failed');actor=user(request)
+        if not analysis_engine.provider.available:raise HTTPException(503,'provider_unavailable')
+        data,status,created=db.create_author_comparison_analysis(actor['id'],project_id,comparison_id,payload.model_dump(),key(idempotency_key),analysis_engine.provenance('author_material_comparison'))
+        if created:
+            try:reservation_id=stage13.reserve_workflow(actor['id'],project_id,'author_material_comparison',data['run_id'])
+            except DomainError as error:
+                db.finish_analysis_run(project_id,data['run_id'],{'status':'failed','error_code':error.code,'retryable':True});raise
+            if executor:executor(execute_analysis,project_id,data['run_id'],actor['id'],reservation_id)
+            else:background_tasks.add_task(execute_analysis,project_id,data['run_id'],actor['id'],reservation_id)
+        return ok(request,data,status)
     @app.get('/api/projects/{project_id}/outline')
     def outline(project_id:str,request:Request,volume:str|None=None,status:str|None=None):
         if volume not in {None,'1'} or status not in {None,'planned','complete'}:raise HTTPException(400,'invalid_filter')
@@ -664,16 +758,16 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.get('/api/projects/{project_id}/analyses/{run_id}')
     def analysis(project_id:str,run_id:str,request:Request):return ok(request,db.analysis_view(user(request)['id'],project_id,run_id))
     @app.get('/api/projects/{project_id}/analyses')
-    def latest_analysis(project_id:str,analysis_type:Literal['context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'],request:Request,limit:int=10):return ok(request,db.latest_analysis(user(request)['id'],project_id,analysis_type,max(1,min(limit,50))))
+    def latest_analysis(project_id:str,analysis_type:Literal['context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan','author_material_comparison'],request:Request,limit:int=10):return ok(request,db.latest_analysis(user(request)['id'],project_id,analysis_type,max(1,min(limit,50))))
     @app.post('/api/projects/{project_id}/analyses/{run_id}/cancel')
     def cancel_analysis(project_id:str,run_id:str,payload:RunAction,request:Request,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'analysis_cancel_failed');actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'});data,status=db.cancel_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
+        csrf(request);operation(request,'analysis_cancel_failed');actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan','author_material_comparison'});data,status=db.cancel_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key));return ok(request,data,status)
     @app.post('/api/projects/{project_id}/analyses/{run_id}/retry',status_code=202)
     def retry_analysis(project_id:str,run_id:str,payload:RunAction,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
-        csrf(request);operation(request,'analysis_retry_failed');actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'});data,status,created=db.retry_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key))
+        csrf(request);operation(request,'analysis_retry_failed');actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan','author_material_comparison'});data,status,created=db.retry_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key))
         if created:
             target=data['run'];target_run_id=target['run_id']
-            if target['run_type'] not in {'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan'}:raise HTTPException(404,'resource_not_found')
+            if target['run_type'] not in {'context_brief','plan_alignment','change_impact','story_qa','foreshadow_scan','revision_plan','author_material_comparison'}:raise HTTPException(404,'resource_not_found')
             try:reservation_id=stage13.reserve_workflow(actor['id'],project_id,'retry',target_run_id)
             except DomainError as error:
                 db.finish_analysis_run(project_id,target_run_id,{'status':'failed','error_code':error.code,'retryable':True});raise

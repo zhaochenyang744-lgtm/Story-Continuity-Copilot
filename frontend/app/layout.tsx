@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./visual-system.css";
+import "./author-context-preview.css";
+import "./reference-refresh.css";
 
 export const metadata: Metadata = {
   title: "Story Continuity Copilot",

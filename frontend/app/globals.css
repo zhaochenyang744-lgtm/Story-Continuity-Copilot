@@ -1350,8 +1350,9 @@ fieldset input {
 .project-rows li,
 .project-rows-head { grid-template-columns: var(--project-columns); column-gap: var(--project-column-gap); padding-inline: 18px; }
 .project-rows li { min-height: 76px; }
-.project-rows-head { display: grid; align-items: center; max-width: 1180px; min-height: 42px !important; padding-block: 0; border: 1px solid var(--line-strong); border-bottom: 1px solid var(--line); border-radius: 12px 12px 0 0; background: var(--ink-850); color: var(--faint); font-size: 11px; font-weight: 650; }
+.project-rows-head { display: grid; align-items: center; width: 100%; min-height: 42px !important; padding-block: 0; border: 1px solid var(--line-strong); border-bottom: 1px solid var(--line); border-radius: 12px 12px 0 0; background: var(--ink-850); color: var(--faint); font-size: 11px; font-weight: 650; }
 .project-rows-head span { min-width: 0; }
+.project-rows-head span:last-child { text-align: center; }
 .project-row-main small, .project-summary, .project-memory { color: var(--muted); font-size: 12px; }
 .project-summary { line-height: 1.5; }
 .project-memory { white-space: nowrap; }

@@ -5,6 +5,7 @@ import pathlib
 import sys
 import tempfile
 import unittest
+from copy import deepcopy
 from unittest.mock import patch
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "tools"))
@@ -68,13 +69,20 @@ class Stage11MRunnerTests(unittest.TestCase):
         result["initialization_metrics"]["validated_batches"] = 81
         return result
 
-    def test_injected_success_is_validator_compatible(self):
+    def _historical_v8_result(self):
+        result = deepcopy(self._result())
+        result["initialization_provenance"]["prompt_version"] = "memory-initialization-v8-pro-two-repair"
+        return result
+
+    def test_frozen_validator_accepts_historical_v8_fixture_and_rejects_current_v9_provenance(self):
         result = self._result()
         self.assertEqual(result["status"], "completed_pending_independent_gate")
-        self.assertTrue(validator.validate_result(result))
+        self.assertEqual(result["initialization_provenance"]["prompt_version"], "memory-initialization-v9-field-contract")
+        self.assertFalse(validator.validate_result(result))
+        self.assertTrue(validator.validate_result(self._historical_v8_result()))
 
     def test_capacity_repair_validator_requires_bounded_idempotency(self):
-        result=self._result()
+        result=self._historical_v8_result()
         result["evidence_id"]="real-novel-300k-11m-v2"
         result["capacity_repair_contract"]="bounded-write-responses-v1"
         self.assertTrue(capacity_validator.validate_result(result))
@@ -101,7 +109,7 @@ class Stage11MRunnerTests(unittest.TestCase):
             runner._write_once(path, {"status": "gate_failed"})
             with self.assertRaisesRegex(runner.RunFailure, "formal_result_already_exists"):
                 runner._write_once(path, {"status": "gate_failed"})
-        result = self._result()
+        result = self._historical_v8_result()
         result["source_path"] = "forbidden"
         self.assertFalse(validator.validate_result(result))
 

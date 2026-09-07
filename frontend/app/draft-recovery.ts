@@ -1,4 +1,4 @@
-import type { Draft } from "./model";
+import type { Draft, DraftBodyFormat } from "./model";
 
 export const draftRecoverySchemaVersion = 1;
 
@@ -10,6 +10,7 @@ export type DraftRecoverySnapshot = {
   base_revision: number;
   title: string;
   body: string;
+  body_format?: DraftBodyFormat;
   updated_at: string;
 };
 
@@ -34,6 +35,7 @@ function isSnapshot(value: unknown): value is DraftRecoverySnapshot {
     Number.isInteger(item.base_revision) &&
     typeof item.title === "string" &&
     typeof item.body === "string" &&
+    (item.body_format === undefined || item.body_format === "plain_text" || item.body_format === "markdown") &&
     typeof item.updated_at === "string"
   );
 }
@@ -65,6 +67,7 @@ export function writeDraftRecovery(
     base_revision: draft.revision,
     title: draft.title,
     body: draft.body,
+    body_format: draft.body_format,
     updated_at: updatedAt,
   };
   storage.setItem(draftRecoveryKey(identity), JSON.stringify(snapshot));

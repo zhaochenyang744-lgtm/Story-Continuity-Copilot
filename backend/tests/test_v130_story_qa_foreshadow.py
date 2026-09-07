@@ -21,6 +21,7 @@ class BoundedToolsProvider:
     available = True
     label = "bounded-tools-test-provider"
     model_label = "bounded-tools-test-model"
+    allows_legacy_foreshadow_evidence_contract = True
 
     def __init__(self):
         self.requests: list[dict] = []

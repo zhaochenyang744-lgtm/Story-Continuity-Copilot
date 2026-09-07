@@ -2232,10 +2232,23 @@ main {
     font-size: 12px;
   }
 }
+.author-summary {
+  container-type: inline-size;
+}
+.author-summary .author-stat-list > div {
+  align-items: center;
+  padding: 18px 12px;
+  border: 1px solid #40354f;
+  text-align: center;
+}
 .author-stat-list dt {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 9px;
+  justify-content: center;
+  gap: 8px;
+  min-height: 57px;
+  white-space: nowrap;
 }
 .author-stat-list dt svg {
   width: 23px;
@@ -2247,7 +2260,29 @@ main {
   color: #cba5ff;
 }
 .author-stat-list dd {
-  padding-left: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 40px;
+  padding: 0;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  font-variant-numeric: tabular-nums;
+}
+.author-stat-list > div:last-child dd {
+  white-space: normal;
+  text-wrap: balance;
+}
+@container (max-width: 600px) {
+  .author-stat-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@container (max-width: 320px) {
+  .author-stat-list > div:not(:last-child) dd {
+    font-size: 22px;
+  }
 }
 .author-works-state.empty > .empty-manuscript-visual {
   width: 150px;

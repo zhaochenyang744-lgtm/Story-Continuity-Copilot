@@ -30,7 +30,7 @@ def grounded_issue(request, index: int = 0, operation: str = 'add'):
     claim=request['claims'][index]; evidence=claim['allowed_evidence'][0]; memory=next(item for item in request['memory'] if item['source_span_id']==evidence['id'])
     proposal={'operation':operation,'memory_type':'open_thread','subject':f'作者确认项{index}','predicate':'status','value':'待后续章节推进','affected_memory_id':None}
     if operation=='replace': proposal.update({'memory_type':memory['memory_type'],'subject':memory['subject'],'predicate':memory['predicate'],'value':'作者确认的新状态','affected_memory_id':memory['id']})
-    return {'claim_span_id':claim['id'],'status':'conflict','category':'object_state','severity':'high','explanation':'可验证连续性差异。','evidence':[{'chapter_id':evidence['chapter_id'],'span_id':evidence['id'],'relation':'contradicts','sufficiency':'sufficient','related_memory_ids':[memory['id']]}],'proposed_memory_change':proposal}
+    return {'claim_span_id':claim['id'],'status':'conflict','nature':'possible_conflict','category':'object_state','severity':'high','explanation':'可验证连续性差异。','reasoning':'当前证据形成需要作者复核的张力，但没有证明明确的同一时间冲突。','temporal_basis':{'claim_anchor':None,'evidence_anchor':None,'relation':'unknown'},'evidence':[{'chapter_id':evidence['chapter_id'],'span_id':evidence['id'],'relation':'contradicts','sufficiency':'sufficient','related_memory_ids':[memory['id']]}],'evidence_chain':[{'span_id':evidence['id'],'role':'prior_state'}],'suggested_revision':None,'available_actions':['edit','keep_intentional','false_positive'],'proposed_memory_change':proposal}
 
 
 class DeepSeekProviderRegressionTests(unittest.TestCase):
@@ -97,6 +97,7 @@ class ContinuityDecisionContractTests(unittest.TestCase):
     def execute(self,payload):
         class Provider:
             label='fake-contract'; model_label='fake-contract-v2'; available=True
+            allows_legacy_continuity_contract=True
             def evaluate(_,request): return ProviderResult(payload,input_tokens=2,output_tokens=1,latency_ms=1)
         return ContinuityEngine(Provider()).execute(self.data)
 
@@ -220,6 +221,7 @@ class Stage4ContractTests(unittest.TestCase):
         class ScriptedProvider:
             label="test-only"
             available=True
+            allows_legacy_continuity_contract=True
             def evaluate(self, request):
                 claim=next(item for item in request["claims"] if item["allowed_evidence"])
                 evidence=claim["allowed_evidence"][0]
@@ -258,7 +260,7 @@ class Stage4ContractTests(unittest.TestCase):
         reviewed=client.get(f"/api/projects/{grey}/checks/{queued['run_id']}?include=issues,evidence,metrics")
         self.assertEqual(reviewed.status_code,200)
         metrics=reviewed.json()['data']['metrics']; provenance=metrics['provenance']
-        self.assertEqual(provenance,{'provider_label':'contract-provider','model_label':'contract-model-v1','prompt_version':'continuity-review-v9-trustworthy-review','schema_version':'continuity-issue-v4-trustworthy-review','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4})
+        self.assertEqual(provenance,{'provider_label':'contract-provider','model_label':'contract-model-v1','prompt_version':'continuity-review-v13-conservative-postrepair','schema_version':'continuity-issue-v5-temporal-basis','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4})
         self.assertTrue(metrics['retrieval'])
         self.assertEqual(client.get(f"/api/projects/{other}/checks/{queued['run_id']}?include=metrics").status_code,404)
         self.assertEqual(client.post(f'/api/projects/{grey}/reset',json={'confirm':True,'reason':'demo_recovery'},headers=key()).status_code,200)
@@ -279,6 +281,7 @@ class Stage4ContractTests(unittest.TestCase):
     def test_real_uvicorn_returns_queued_before_slow_provider_completes(self):
         class SlowProvider:
             label='slow-test-provider'; available=True
+            allows_legacy_continuity_contract=True
             def evaluate(_,request):
                 time.sleep(2.5)
                 claim=next(item for item in request['claims'] if item['allowed_evidence']); evidence=claim['allowed_evidence'][0]
@@ -423,10 +426,12 @@ class ContinuityRegressionTests(unittest.TestCase):
         _,client,project,_,run,checked=self.flow(Grounded()); self.assertEqual((checked['status'],checked['issues'][0]['classification']),('completed','conflict'))
         class Insufficient:
             available=True; label='insufficient'
+            allows_legacy_continuity_contract=True
             def evaluate(_,request): return ProviderResult({'issues':[{'claim_span_id':request['claims'][0]['id'],'status':'insufficient_evidence','category':'attribute','severity':'low','explanation':'材料没有说明具体标识。','evidence':[]}]})
         _,client,project,_,run,checked=self.flow(Insufficient()); self.assertEqual((checked['status'],checked['issues'][0]['classification'],checked['issues'][0]['evidence']),('completed','insufficient_evidence',[]))
         class InsufficientWithChange:
             available=True; label='insufficient-with-change'
+            allows_legacy_continuity_contract=True
             def evaluate(_,request): return ProviderResult({'issues':[{'claim_span_id':request['claims'][0]['id'],'status':'insufficient_evidence','category':'attribute','severity':'low','explanation':'材料没有说明具体标识。','evidence':[],'proposed_memory_change':{}}]})
         _,client,project,_,run,_=self.flow(InsufficientWithChange()); checked=client.get(f'/api/projects/{project}/checks/{run}').json()['data']; self.assertEqual((checked['status'],checked['error_code']),('failed','insufficient_evidence_memory_change'))
         class OutsideEvidence:
@@ -444,6 +449,7 @@ class ContinuityRegressionTests(unittest.TestCase):
         for payload,code in invalid_payloads:
             class InvalidPayload:
                 available=True; label='invalid-payload'
+                allows_legacy_continuity_contract=True
                 def evaluate(_,request,payload=payload): return ProviderResult(payload)
             _,client,project,_,run,_=self.flow(InvalidPayload()); checked=client.get(f'/api/projects/{project}/checks/{run}').json()['data']; self.assertEqual((checked['status'],checked['error_code']),('failed',code))
 

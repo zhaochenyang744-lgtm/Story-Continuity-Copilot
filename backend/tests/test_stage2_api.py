@@ -75,7 +75,7 @@ class ScopedRegressionTests(unittest.TestCase):
         with db.connection() as connection: self.assertEqual('\n'.join(connection.iterdump()),before)
     def test_metrics_are_opt_in(self):
         class Provider:
-            available=True; label='metrics-test'
+            available=True; label='metrics-test'; allows_legacy_continuity_contract=True
             def evaluate(_,request):
                 claim=next(item for item in request['claims'] if item['allowed_evidence']); evidence=claim['allowed_evidence'][0]
                 return ProviderResult({'issues':[{'claim_span_id':claim['id'],'status':'conflict','category':'object_state','severity':'high','explanation':'可验证。','evidence':[{'chapter_id':evidence['chapter_id'],'span_id':evidence['id'],'relation':'contradicts','sufficiency':'sufficient','related_memory_ids':[]}]}]},input_tokens=33,output_tokens=12,latency_ms=7)
@@ -83,7 +83,7 @@ class ScopedRegressionTests(unittest.TestCase):
         registration=client.post('/api/auth/register',json={'account_name':'metricuser','display_name':'Metric','password':'valid-password-99'},headers=h()).json()['data']; project=registration['onboarding']['tutorial']['project_id']; draft=client.get(f'/api/projects/{project}').json()['data']['current_draft']
         run=client.post(f'/api/projects/{project}/checks',json={'draft_id':draft['id'],'draft_revision':1},headers=h()).json()['data']['run_id']
         minimal=client.get(f'/api/projects/{project}/checks/{run}').json()['data']; detailed=client.get(f'/api/projects/{project}/checks/{run}?include=metrics').json()['data']
-        self.assertNotIn('metrics',minimal); self.assertEqual({key:detailed['metrics'][key] for key in ('latency_ms','input_tokens','output_tokens','cost_cny')},{'latency_ms':7,'input_tokens':33,'output_tokens':12,'cost_cny':None}); self.assertEqual(detailed['metrics']['provenance'],{'provider_label':'metrics-test','model_label':'metrics-test','prompt_version':'continuity-review-v9-trustworthy-review','schema_version':'continuity-issue-v4-trustworthy-review','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4}); self.assertTrue(detailed['metrics']['retrieval'])
+        self.assertNotIn('metrics',minimal); self.assertEqual({key:detailed['metrics'][key] for key in ('latency_ms','input_tokens','output_tokens','cost_cny')},{'latency_ms':7,'input_tokens':33,'output_tokens':12,'cost_cny':None}); self.assertEqual(detailed['metrics']['provenance'],{'provider_label':'metrics-test','model_label':'metrics-test','prompt_version':'continuity-review-v13-conservative-postrepair','schema_version':'continuity-issue-v5-temporal-basis','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4}); self.assertTrue(detailed['metrics']['retrieval'])
 
     def test_login_rate_limit_only_counts_failed_attempts(self):
         account={'account_name':'regression','password':'valid-password-99'}

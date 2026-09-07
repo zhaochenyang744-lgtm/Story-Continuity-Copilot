@@ -17,6 +17,7 @@ class BatchProvider:
     available = True
     label = "stage11-batch-provider"
     model_label = "stage11-batch-model"
+    allows_legacy_continuity_contract = True
 
     def __init__(self, fail_at=None):
         self.calls = []
@@ -120,6 +121,7 @@ class InvalidJsonSecondContinuityProvider:
     available = True
     label = "stage11-invalid-json-continuity"
     model_label = "stage11-invalid-json-continuity-model"
+    allows_legacy_continuity_contract = True
 
     def __init__(self): self.calls = []
 
@@ -174,7 +176,7 @@ class Stage11BoundedContextTests(unittest.TestCase):
         self.assertFalse(is_controlled_candidate("open_thread", "status", allow_legacy_alias=False))
         self.assertFalse(is_controlled_candidate("static_canon", "knows", allow_legacy_alias=False))
         self.assertTrue(is_controlled_candidate("static_canon", "knows"))
-        self.assertEqual(engine.provenance()["prompt_version"], "memory-initialization-v8-pro-two-repair")
+        self.assertEqual(engine.provenance()["prompt_version"], "memory-initialization-v9-field-contract")
 
     def test_memory_v5_validation_rejects_unbounded_candidate_count_and_fields(self):
         source_item = source(1, 20)

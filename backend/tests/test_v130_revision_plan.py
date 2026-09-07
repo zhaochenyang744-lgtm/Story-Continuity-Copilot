@@ -59,6 +59,9 @@ class RevisionPlanProvider:
             "category": "object_state",
             "severity": "high",
             "explanation": "当前草稿与既有来源需要作者核对。",
+            "nature": "possible_conflict",
+            "reasoning": "当前材料形成状态张力，但没有证明同一时间范围内不可共存。",
+            "temporal_basis": {"claim_anchor": None, "evidence_anchor": None, "relation": "unknown"},
             "evidence": [{
                 "chapter_id": source["chapter_id"],
                 "span_id": source["id"],
@@ -66,6 +69,9 @@ class RevisionPlanProvider:
                 "sufficiency": "sufficient",
                 "related_memory_ids": [],
             }],
+            "evidence_chain": [{"span_id": source["id"], "role": "prior_state"}],
+            "suggested_revision": None,
+            "available_actions": ["false_positive"],
             "proposed_memory_change": None,
         }]}, 8, 4, latency_ms=1)
 

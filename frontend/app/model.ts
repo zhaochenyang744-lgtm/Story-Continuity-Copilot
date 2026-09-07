@@ -104,11 +104,13 @@ export type Onboarding = {
   tutorial: { project_id: string; title: string; status?: ProjectSummary["status"]; data_origin: "tutorial_seed" } | null;
   progress: TutorialProgress | null;
 };
+export type DraftBodyFormat = "plain_text" | "markdown";
 export type Draft = {
   id: string;
   project_id: string;
   title: string;
   body: string;
+  body_format: DraftBodyFormat;
   chapter_number: number;
   revision: number;
   saved_at: string;

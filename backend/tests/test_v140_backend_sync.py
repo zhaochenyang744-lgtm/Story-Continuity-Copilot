@@ -33,6 +33,7 @@ class TrustworthyProvider:
             "claim_span_id": claim["id"], "status": "conflict", "nature": "possible_conflict",
             "category": "object_state", "severity": "medium", "explanation": "存在需要作者复核的状态张力。",
             "reasoning": "引用来源给出较早状态，但没有封闭后续转移的可能，因此只标记为可能冲突。",
+            "temporal_basis": {"claim_anchor": None, "evidence_anchor": None, "relation": "unknown"},
             "evidence": [{"chapter_id": evidence["chapter_id"], "span_id": evidence["id"], "relation": "context", "sufficiency": "sufficient", "related_memory_ids": []}],
             "evidence_chain": [{"span_id": evidence["id"], "role": "prior_state"}],
             "suggested_revision": None, "available_actions": ["false_positive"],
@@ -107,7 +108,7 @@ class V140BackendSyncTests(unittest.TestCase):
 
     def test_suggested_revision_requires_complete_contract_and_unique_bound_text(self):
         data = {"draft": {"id": "d", "revision": 1, "body": "重复。重复。"}, "memory": [], "claims": [{"id": "c", "text": "重复。", "allowed_evidence": [{"id": "s", "chapter_id": "ch", "body": "旧状态。", "prompt_excerpt": "旧状态。"}]}]}
-        issue = {"claim_span_id": "c", "status": "conflict", "nature": "confirmed_conflict", "category": "object_state", "severity": "high", "explanation": "x", "reasoning": "同一对象与时间范围直接冲突。", "evidence": [{"chapter_id": "ch", "span_id": "s", "relation": "contradicts", "sufficiency": "sufficient", "related_memory_ids": []}], "evidence_chain": [{"span_id": "s", "role": "prior_state"}], "suggested_revision": {"before": "重复。", "after": "唯一。"}, "available_actions": ["apply_suggestion"]}
+        issue = {"claim_span_id": "c", "status": "conflict", "nature": "possible_conflict", "category": "object_state", "severity": "high", "explanation": "需复核。", "reasoning": "同一对象存在状态张力。", "temporal_basis": {"claim_anchor": None, "evidence_anchor": None, "relation": "unknown"}, "evidence": [{"chapter_id": "ch", "span_id": "s", "relation": "contradicts", "sufficiency": "sufficient", "related_memory_ids": []}], "evidence_chain": [{"span_id": "s", "role": "prior_state"}], "suggested_revision": {"before": "重复。", "after": "唯一。"}, "available_actions": ["apply_suggestion"]}
         with self.assertRaisesRegex(ValueError, "suggested_revision_unresolvable"):
             ContinuityEngine(self.provider).validate({"issues": [issue]}, data)
         partial = dict(issue); partial.pop("reasoning")

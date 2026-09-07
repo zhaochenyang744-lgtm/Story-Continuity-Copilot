@@ -24,6 +24,10 @@
     "test:v140:visual": "node scripts/run-v140-visual.mjs"
   },
   "dependencies": {
+    "@tiptap/markdown": "3.31.3",
+    "@tiptap/pm": "3.31.3",
+    "@tiptap/react": "3.31.3",
+    "@tiptap/starter-kit": "3.31.3",
     "next": "^16.3.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

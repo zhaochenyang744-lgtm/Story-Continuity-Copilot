@@ -43,7 +43,7 @@ class DeterministicInitializationProvider:
         claim = request["claims"][0]
         memory = next(item for item in request["memory"] if item["subject"] == "雾港守则")
         evidence = next(item for item in claim["allowed_evidence"] if item["id"] == memory["source_span_id"])
-        return ProviderResult({"issues": [{"claim_span_id":claim["id"], "status":"conflict", "category":"object_state", "severity":"medium", "explanation":"草稿中的钥匙状态需要与已确认来源一起由作者核对。", "evidence":[{"chapter_id":evidence["chapter_id"],"span_id":evidence["id"],"relation":"contradicts","sufficiency":"sufficient","related_memory_ids":[memory["id"]]}], "proposed_memory_change":None}]})
+        return ProviderResult({"issues": [{"claim_span_id":claim["id"], "status":"conflict", "nature":"possible_conflict", "category":"object_state", "severity":"medium", "explanation":"草稿中的钥匙状态需要与已确认来源一起由作者核对。", "reasoning":"当前材料形成状态张力，但没有证明同一时间范围内不可共存。", "temporal_basis":{"claim_anchor":None,"evidence_anchor":None,"relation":"unknown"}, "evidence":[{"chapter_id":evidence["chapter_id"],"span_id":evidence["id"],"relation":"contradicts","sufficiency":"sufficient","related_memory_ids":[memory["id"]]}], "evidence_chain":[{"span_id":evidence["id"],"role":"prior_state"}], "suggested_revision":None, "available_actions":["false_positive"], "proposed_memory_change":None}]})
 
 
 class InvalidInitializationProvider(DeterministicInitializationProvider):
@@ -91,7 +91,7 @@ class Stage9MemoryInitializationTests(unittest.TestCase):
         metrics=started.json()["data"]["initialization_metrics"]
         self.assertEqual((metrics["total_batches"],metrics["schema_repair_attempts"],metrics["cost_available"]),(1,0,False))
         provenance=started.json()["data"]["initialization_provenance"]
-        self.assertEqual((provenance["prompt_version"],provenance["chunking_method_version"]),("memory-initialization-v8-pro-two-repair","source-chunk-v4-5800"))
+        self.assertEqual((provenance["prompt_version"],provenance["chunking_method_version"]),("memory-initialization-v9-field-contract","source-chunk-v4-5800"))
         self.assertEqual((initialization["status"],initialization["source_revision"],len(initialization["candidates"])), ("draft",1,3))
         self.assertEqual(self.provider.calls,1)
         self.assertTrue(all(item["decision_status"]=="pending" and item["source"]["text"] for item in initialization["candidates"]))

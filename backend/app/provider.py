@@ -63,13 +63,17 @@ class ProviderResult:
 
 
 CONTINUITY_REVIEW_RULES = (
+    "Write every author-facing explanation, reasoning, and suggested revision in the dominant language of the bound draft. Preserve proper nouns from the source.",
     "Decide every current claim before emitting output. Return the complete output schema for every emitted issue, including nature, reasoning, evidence_chain, suggested_revision, and available_actions. Never emit a no_conflict issue and never mix the new and legacy shapes.",
     "Classify nature as confirmed_conflict only when claim and cited facts cannot coexist under the same subject, scope, and time; say those scope and time links explicitly in reasoning. Use status conflict and only direct, sufficient contradicting evidence.",
+    "For every trustworthy issue, emit temporal_basis. claim_anchor and evidence_anchor must be exact substrings copied from the supplied claim and cited evidence, or null. relation must be explicit_overlap, timeless_rule, explicit_later_transition, or unknown. confirmed_conflict requires explicit_overlap with real time anchors in both texts, or timeless_rule grounded by a supplied static_canon rule. The words current narrative, current scene, or chapter order are never time anchors.",
     "Classify nature as state_change when a prior state and a later explicit transition can both be true. Explain the before/after ordering in reasoning; do not mislabel an ordinary transition as a confirmed conflict.",
+    "Chapter order gives narrative position only; it does not by itself prove story chronology. Determine same time, later time, flashback, or a bounded period only from explicit temporal language in the supplied text. Never invent a same-time link by saying only 'current narrative'. When text explicitly bounds a prior fact through an earlier period, a later changed state can coexist with it: use state_change for an explicit transition, or insufficient_evidence when the required learning, handoff, or transition is absent.",
     "Classify nature as possible_conflict when a reviewable tension remains but the supplied material does not establish a direct contradiction. Explain the uncertainty or open-thread boundary and do not claim certainty.",
     "Classify nature and status as insufficient_evidence when a required handoff, learning event, outcome, authority, or other logical link is absent. Cite only supplied context with sufficiency insufficient, use evidence_chain role missing_link, explain exactly why judgment stops, set available_actions to [], and omit proposed_memory_change.",
     "Every evidence item must copy a supplied allowed_evidence span and use only known related Memory ids. evidence_chain must contain each cited span exactly once with role prior_state, current_context, or missing_link.",
     "available_actions may contain only edit, apply_suggestion, keep_intentional, and false_positive. If apply_suggestion is present, suggested_revision must have exact before text occurring once in the bound draft and a distinct after text; otherwise suggested_revision must be null.",
+    "A suggested revision must remove every contradiction asserted by that issue, including governing actions or rules, not merely change a time label or repeat the conflict. If no grounded complete correction is possible, return null and omit apply_suggestion. Never propose changing Story Memory merely to make an unsupported draft claim true.",
     "Omit proposed_memory_change unless cited sufficient evidence fully grounds it. Add and replace use controlled memory types; replace must bind a supplied Memory id. Author action is still required before canon changes.",
     "Every emitted issue must include a valid category, severity, and non-empty explanation. Assign category only after deciding the status and complete Evidence set. Apply category by the core decision, not surface words or background context: attribute = an intrinsic, durable, or measured property, including a current measured count; object_state = a named object's state or location at a specific time, especially an operational state rather than a measured property; relationship = a named person or role holder's authorization, responsibility, duty, obligation, kinship, or role relation, even when the context contains a policy, emergency rule, or exception; character_knowledge = what a character knows, believes, has observed, or was told; world_rule = an abstract or global behavior constraint, mechanism, or exception whose subject is not a particular named role holder's authority or responsibility; timeline = event ordering; event_status = whether an event completed, failed, remains open, or has an unknown result; location_action = where a character acted or which action occurred at a location.",
 )
@@ -83,9 +87,10 @@ CONTINUITY_DECISION_EXAMPLES = (
 
 MEMORY_INITIALIZATION_RULES = (
     "Candidates are suggestions for an author, never canon. Do not claim facts that are not directly stated in the supplied source spans.",
-    "Every candidate must contain memory_type, subject, predicate, value, chapter_id, and source_span_id. memory_type must be static_canon, dynamic_state, event_timeline, character_knowledge, or open_thread.",
+    "Every candidate must contain memory_type, subject, predicate, value, chapter_id, and source_span_id. Copy memory_type exactly from this closed enum: static_canon, dynamic_state, event_timeline, character_knowledge, open_thread. Never put a predicate such as possession, rule, status, relationship, location, identity, affiliation, event_occurred, or knowledge into memory_type.",
     "Use exactly one supplied SourceSpan for each candidate. Do not invent chapter IDs or SourceSpan IDs. Keep subject concise and value directly grounded in its SourceSpan.",
-    "predicate must be exactly one value from controlled_predicates and chosen by semantic meaning: identity, relationship, affiliation, location, status, rule, possession, event_occurred, or knowledge. For open_thread, still select the closest controlled predicate; open_thread remains an author-review supporting suggestion, not a core candidate.",
+    "predicate is a separate field from memory_type. Copy predicate exactly from controlled_predicates: identity, relationship, affiliation, location, status, rule, possession, event_occurred, or knowledge. For open_thread, still select the closest controlled predicate; open_thread remains an author-review supporting suggestion, not a core candidate.",
+    "Use this general mapping: durable canon or world rule -> memory_type static_canon; current possession/location/status -> dynamic_state; an event that occurred -> event_timeline; what a character knows -> character_knowledge; unresolved setup -> open_thread. The corresponding predicate still goes in predicate, never in memory_type.",
     "Emit at most 4 candidates in this batch. Keep subject, predicate, and value within target lengths of 80, 80, and 240 Unicode characters respectively.",
     "Chunk metadata is prompt-only provenance. Never emit chunk_id; source_span_id must always be the supplied original SourceSpan ID.",
     "Prefer a small, non-duplicative set of durable facts. Omit uncertain inferences.",
@@ -102,6 +107,7 @@ MEMORY_DELTA_RULES = (
 )
 
 ANALYSIS_LAYER_RULES = (
+    "Write every author-facing summary, explanation, answer, finding, title, and description in the dominant language of the supplied current draft. Preserve proper nouns from the source.",
     "Keep the four layers separate: planned is Author Context, confirmed is Story Memory, written is draft or SourceSpan text, and analysis is your conclusion. Never present planned content as written or confirmed evidence.",
     "Use only supplied IDs. Every citation must resolve to a supplied item, and every conclusion must stay within the supplied bounded retrieval set.",
     "Return exactly the requested JSON shape, enums, and keys. Do not use Markdown, tools, external search, or facts outside the request.",
@@ -127,6 +133,16 @@ def memory_initialization_prompt(request: dict[str, Any]) -> str:
             "task": "Extract candidate Story Memory facts from the imported source only. Return exactly one JSON object with exactly one top-level key, candidates. Do not use Markdown.",
             "rules": list(MEMORY_INITIALIZATION_RULES),
             "controlled_predicates": request.get("controlled_predicates", list(CONTROLLED_PREDICATES)),
+            "field_contract": {
+                "memory_type": {"meaning": "fact lifecycle/evidence category", "allowed_values": ["static_canon", "dynamic_state", "event_timeline", "character_knowledge", "open_thread"]},
+                "predicate": {"meaning": "semantic relationship stated by the fact", "allowed_values": request.get("controlled_predicates", list(CONTROLLED_PREDICATES))},
+                "examples": [
+                    {"source_meaning": "an object is currently held by someone", "memory_type": "dynamic_state", "predicate": "possession"},
+                    {"source_meaning": "a world rule applies", "memory_type": "static_canon", "predicate": "rule"},
+                    {"source_meaning": "a character knows or does not know something", "memory_type": "character_knowledge", "predicate": "knowledge"},
+                    {"source_meaning": "an event happened", "memory_type": "event_timeline", "predicate": "event_occurred"},
+                ],
+            },
             "output_limits": {"max_candidates": MAX_MEMORY_CANDIDATES_PER_BATCH, "subject_max_chars": 80, "predicate_max_chars": 80, "value_max_chars": 240},
             "source_revision": request["source_revision"],
             "source_spans": [
@@ -139,7 +155,7 @@ def memory_initialization_prompt(request: dict[str, Any]) -> str:
         }
     repair=request.get("schema_repair")
     if isinstance(repair,dict):
-        repair_payload={"attempt":repair.get("attempt"),"global_attempt":repair.get("global_attempt"),"reason_code":repair.get("reason_code"),"instruction":"The previous response was rejected by the local schema validator. Re-extract from the same supplied spans and obey every output key, enum, count, type, and length constraint exactly. memory_type must be exactly one of static_canon, dynamic_state, event_timeline, character_knowledge, or open_thread. predicate must be exactly one supplied controlled_predicates value. Do not mention the previous response."}
+        repair_payload={"attempt":repair.get("attempt"),"global_attempt":repair.get("global_attempt"),"reason_code":repair.get("reason_code"),"instruction":"The previous response was rejected by the local schema validator. Rebuild the complete candidates array from the same supplied spans. For every candidate, copy memory_type from field_contract.memory_type.allowed_values and copy predicate separately from field_contract.predicate.allowed_values. Values such as possession and rule are predicates and are forbidden as memory_type. Obey every output key, enum, count, type, and length constraint exactly. Do not mention the previous response."}
         if repair.get("field") in {"memory_type","subject","predicate","value","chapter_id","source_span_id"}:
             repair_payload["field"]=repair["field"]
         if isinstance(repair.get("candidate_ordinal"),int) and not isinstance(repair.get("candidate_ordinal"),bool) and repair["candidate_ordinal"]>=1:
@@ -149,8 +165,7 @@ def memory_initialization_prompt(request: dict[str, Any]) -> str:
 
 
 def continuity_prompt(request: dict[str, Any]) -> str:
-    return json.dumps(
-        {
+    payload = {
             "task": "Review continuity only. Return exactly one JSON object with exactly one top-level key, issues. Do not use Markdown or include any other top-level key.",
             "rules": list(CONTINUITY_REVIEW_RULES), "decision_examples": list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
             "current_claims": [
@@ -160,8 +175,17 @@ def continuity_prompt(request: dict[str, Any]) -> str:
                 ]} for claim in request["claims"]
             ],
             "memory": request["memory"], "output_schema": request["output_schema"],
-        }, ensure_ascii=False, separators=(",", ":"),
-    )
+        }
+    repair = request.get("contract_repair")
+    if isinstance(repair, dict):
+        payload["contract_repair"] = {
+            "attempt": repair.get("attempt"),
+            "reason_code": repair.get("reason_code"),
+            "diagnostics": repair.get("diagnostics", []),
+            "rejected_issues": repair.get("rejected_issues", []),
+            "instruction": "The rejected_issues JSON is the exact rejected output. Rebuild the complete issues array from the original supplied evidence and correct every problem_code for every listed claim, not only reason_code. Never invent a time link or call 'current narrative' a time anchor. A mutable earlier state without a supplied same-time anchor is not a confirmed conflict: use state_change only for an explicit later transition, otherwise insufficient_evidence or omit the issue. Copy exact temporal anchors or use null. If the draft is Chinese, every author-facing explanation and reasoning must be Chinese. Any suggested revision must remove every cited contradiction, including prohibited actions; otherwise set it to null and omit apply_suggestion. Do not alter Story Memory just to make the draft true, and do not mention the rejected response in author-facing output.",
+        }
+    return json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
 
 
 def memory_delta_prompt(request: dict[str, Any]) -> str:
@@ -183,11 +207,11 @@ def memory_delta_prompt(request: dict[str, Any]) -> str:
 
 
 def context_brief_prompt(request: dict[str, Any]) -> str:
-    return json.dumps({"task":"Create a compact pre-writing chapter context brief. Return exactly summary, summary_sources, and items.","rules":[*ANALYSIS_LAYER_RULES,"Cover relevant plans, confirmed facts, character state, world rules, unresolved threads, and recent written sources when supported. Every item needs at least one citation."],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
+    return json.dumps({"task":"Create a compact pre-writing chapter context brief. Return exactly summary, summary_sources, and items.","rules":[*ANALYSIS_LAYER_RULES,"Return 1-3 summary_sources, 1-12 items, and 1-4 sources per item.","Cover relevant plans, confirmed facts, character state, world rules, unresolved threads, and recent written sources only when directly supported.","summary_sources must directly support every factual clause in summary. Item citations are not inherited by summary. Because summary_sources has a maximum of 3, omit lower-priority facts from summary instead of mentioning a fourth unsupported fact; detailed items may still cover it with their own citations.","Every item needs at least one citation that supports the full item text. A statement about the current saved draft must cite a supplied draft_claim; never label a SourceSpan as current draft evidence. A SourceSpan may support a recent_source item about that supplied prior chapter, but supports only its own text and chapter."],"output_limits":{"summary_sources":{"min":1,"max":3},"items":{"min":1,"max":12},"sources_per_item":{"min":1,"max":4}},"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
 
 
 def plan_alignment_prompt(request: dict[str, Any]) -> str:
-    return json.dumps({"task":"Compare the saved draft with each supplied story plan. Return exactly summary and items.","rules":[*ANALYSIS_LAYER_RULES,"Return exactly one item for every supplied story_plan_id.","Status must be planned_covered, planned_missing, planned_early, planned_changed, or insufficient_evidence.","planned_covered, planned_early, and planned_changed require direct current-draft claim or SourceSpan evidence. planned_missing may cite no written evidence only when the planned point is absent from the bounded draft. Never use Author Context itself as proof that something was written."],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
+    return json.dumps({"task":"Compare the saved draft with each supplied story plan at the event/state-change level. Return exactly summary and items.","rules":[*ANALYSIS_LAYER_RULES,"Return exactly one item for every supplied story_plan_id.","Status must be planned_covered, planned_missing, planned_early, planned_changed, or insufficient_evidence.","Judge the planned event, transition, or outcome itself, not shared names, objects, locations, themes, prerequisites, or background setup.","Use planned_early only when written evidence explicitly shows the planned event/transition/outcome has already occurred before its planned point. Entity overlap or continued pre-event state is never planned_early.","Use planned_missing when the planned event is absent, including when the draft explicitly remains before its trigger or timing; explain that it is not yet due rather than calling it a deviation.","Use planned_covered only when written evidence explicitly completes or realizes the plan. Use planned_changed only when written evidence explicitly realizes a materially different event or outcome.","planned_covered, planned_early, and planned_changed require direct current-draft claim or SourceSpan evidence. planned_missing may cite no written evidence only when the planned point is absent from the bounded draft. Never use Author Context itself as proof that something was written."],"decision_examples":[{"plan":"暴风夜发生一次未来交接","written":"暴风雨尚未来临，当前持有人仍持有物品","status":"planned_missing","reason":"交接尚未发生且尚未到时机；共享人物和物品只是铺垫。"},{"plan":"暴风夜发生一次未来交接","written":"暴风雨尚未来临，当前持有人已经明确把物品交给接收人","status":"planned_early","reason":"同一交接事件已在计划触发条件前明确发生。"}],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
 
 
 def change_impact_prompt(request: dict[str, Any]) -> str:
@@ -199,16 +223,19 @@ def story_qa_prompt(request: dict[str, Any]) -> str:
 
 
 def foreshadow_scan_prompt(request: dict[str, Any]) -> str:
-    return json.dumps({"task":"Find reviewable foreshadow candidates in supplied written evidence. Return exactly summary and candidates.","rules":[*ANALYSIS_LAYER_RULES,"Candidates are suggestions only; never create or modify an author foreshadow record.","Every candidate needs direct current draft claim or SourceSpan evidence and must label each citation as planted, developing, or resolved.","Do not duplicate an existing author record or another candidate. If there is no written evidence, return an empty candidate list.","Do not cite Story Memory or Author Context as written proof."],"author_records":request["author_records"],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
+    return json.dumps({"task":"Find reviewable foreshadow candidates in supplied written evidence. Return exactly summary and candidates.","rules":[*ANALYSIS_LAYER_RULES,"Candidates are suggestions only; never create or modify an author foreshadow record.","Every candidate needs direct current draft claim or SourceSpan evidence and must label each citation with relation and evidence_kind. Use current_clue for the present draft clue, specific_prior_unresolved_clue only for a concrete earlier unresolved setup, background_only for an ordinary rule or backdrop, and explicit_payoff only for a written answer or payoff.","Use planted when the candidate is newly introduced, or when its identity as the same earlier clue is only possible.","Use developing only when written evidence explicitly establishes that the same unresolved clue, mystery, question, or deliberate setup has materially recurred, evolved, or accumulated. A developing candidate must cite at least one earlier SourceSpan as specific_prior_unresolved_clue. An ordinary world rule, background fact, shared object, or thematic resemblance is background_only and is not an earlier planted clue. Future meaning may remain uncertain after a clue is clearly developing; uncertainty about eventual payoff alone does not force planted.","Use resolved only for an explicit payoff or answer in written evidence.","Do not duplicate an existing author record or another candidate. If there is no written evidence, return an empty candidate list.","Do not cite Story Memory or Author Context as written proof."],"decision_examples":[{"earlier_written":"港规写明雾钟每晚九点响起，所有船只随后停泊","current_written":"海面第一次传来三次无人回应的钟声","earlier_evidence_kind":"background_only","current_evidence_kind":"current_clue","status":"planted","reason":"即使没有 Story Memory，普通规则仍只是背景，不能把共享意象当成已经埋设并发展的线索。"},{"earlier_written":"港规写明雾钟每晚九点响起；钟后还留下来源不明的三短一长回声","current_written":"同样的三短一长回声再次出现，并新增半枚徽记","earlier_evidence_kind":"specific_prior_unresolved_clue","current_evidence_kind":"current_clue","status":"developing","reason":"同一段虽包含规则，但被引用的是其中具体且未解的回声线索；它明确复现并增加了信息。"}],"author_records":request["author_records"],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
 
 
 def revision_plan_prompt(request: dict[str, Any]) -> str:
     return json.dumps({"task":"Create one bounded revision-task suggestion for every selected continuity issue. Return exactly summary and candidates.","rules":[*ANALYSIS_LAYER_RULES,"Each candidate must reference exactly one supplied issue_id and at least one evidence id supplied for that same issue.","Write a concise editing action, not replacement fiction prose. Suggestions never edit the manuscript, resolve an Issue, change canon, or create a task without author acceptance.","Return each selected issue exactly once. Do not merge issues, invent references, duplicate titles, or add unselected work."],"source_run_id":request["source_run_id"],"selected_issues":request["selected_issues"],"bindings":request["bindings"],"layers":request["layers"],"author_records":request["author_records"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
 
+def author_material_comparison_prompt(request: dict[str, Any]) -> str:
+    return json.dumps({"task":"Compare one author-authored material snapshot with one real manuscript SourceSpan. Return exactly assessment, explanation, and evidence.","rules":[*ANALYSIS_LAYER_RULES,"assessment must be aligned, possible_tension, plan_deviation, or insufficient_evidence.","A plan deviation is not a factual contradiction. idea materials are not authoritative and are never supplied. hidden means not disclosed to readers; character knowledge is governed only by the separate knowledge field.","For every supported conclusion cite exactly the supplied author_material and source_span. Do not invent prose, edit records, or treat the conclusion as an author decision."],"comparison":request["comparison"],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
+
 
 def request_prompt_and_budget(request: dict[str, Any]) -> tuple[str, int]:
     task=request.get("task")
-    prompt = memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else context_brief_prompt(request) if task == "context_brief" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else story_qa_prompt(request) if task == "story_qa" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else revision_plan_prompt(request) if task == "revision_plan" else continuity_prompt(request)
+    prompt = memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else context_brief_prompt(request) if task == "context_brief" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else story_qa_prompt(request) if task == "story_qa" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else revision_plan_prompt(request) if task == "revision_plan" else author_material_comparison_prompt(request) if task == "author_material_comparison" else continuity_prompt(request)
     return prompt, estimate_prompt_budget_units(prompt)
 
 
