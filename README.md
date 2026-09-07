@@ -1,14 +1,14 @@
-# Story Continuity Copilot v1.3.0 local release candidate
+# Story Continuity Copilot v1.4.0
 
-The current repository state is the local **Story Continuity Copilot v1.3.0 release candidate**. It closes the author workflow from project planning and pre-writing context through saved-draft analysis, bounded revision tasks, explicit recheck, Evidence review, author decisions, and a new immutable Story Memory version. It does not write or rewrite prose: the author owns the text and every canon decision.
+The active product is **Story Continuity Copilot v1.4.0**. It adds canonical author materials and comparisons, unified planning and authoring pages, rich-text and immersive writing, and stricter AI evidence contracts to the author workflow. The author owns the prose and every canon decision.
 
-The active online product remains **Story Continuity Copilot v1.2.0**, release `v120-a35265e-20260902`, from source commit `a35265e`. The local v1.3.0 release candidate is not deployed. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
+The active online release is `v140-4bd8d93-20260908`, from source commit `4bd8d93`, deployed on 2026-09-08 (Australia/Sydney). Runtime code matches the accepted product commit `8a55f5b`; the later commit corrects deployment scanning of four images' public C2PA certificate metadata. See the [v1.4.0 deployment record](docs/v1.4.0-deployment.md). The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
 
 The canonical product description is [v1.3.0 product contract](docs/v1.3.0-product.md). The writing-analysis, [character-alias and change-impact](docs/v1.3.0-character-alias-impact.md), [bounded revision plan](docs/v1.3.0-revision-plan.md), and Memory-delta documents remain focused technical appendices. Release scope, verification assets, and protected local evidence are separated in the [v1.3.0 release allowlist](docs/v1.3.0-release-allowlist.json).
 
 The signed Stage 14 public-production baseline remains **Story Continuity Copilot v1.0 Public Release** as a historical evidence baseline. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility.
 
-## v1.3.0 local release candidate
+## v1.3.0 workflow foundation (included in v1.4.0)
 
 - Author Context stores editable future plans for story structure, characters, and world rules; it never proves that prose was written.
 - Character aliases are author-confirmed, versioned identity records; change-impact analysis binds them with draft, source, Memory, and Author Context state and never auto-writes a proposal.
@@ -32,12 +32,12 @@ The repository is designed for local reproduction. It contains the application s
 ## Public deployment
 
 - Active origin: [https://43-160-207-57.sslip.io](https://43-160-207-57.sslip.io)
-- Active version: **Story Continuity Copilot v1.2.0**
-- Source commit: `a35265e`
-- Production release ID: `v120-a35265e-20260902`
-- Deployment date: 2026-09-02
-- Deployment used a pre-release online SQLite backup, a server-side secret presence check, Compose preflight validation, health/readiness polling, and a retained v1.0 rollback target.
-- Post-deployment acceptance verified public health/readiness, all three v1.2 WebP assets, desktop authoring routes, the 390 px mobile layout, zero browser console/page/request errors, and the complete isolated new-account tutorial lifecycle. The tutorial returned the account to zero real works after completion and used only preloaded review evidence; this acceptance did not make a new external Provider call.
+- Active version: **Story Continuity Copilot v1.4.0**
+- Source commit: `4bd8d93`
+- Production release ID: `v140-4bd8d93-20260908`
+- Deployment date: 2026-09-08 (Australia/Sydney)
+- The verified off-instance SQLite backup, isolated migration rehearsal, and live post-migration comparison preserve all 41 preexisting business tables. Schema version is 145; integrity and foreign-key checks passed.
+- Linux images passed platform verification; public health/readiness, planning persistence, rich-text save/reload, and immersive writing were checked. The deployment smoke test did not invoke the external AI provider or send email. The previous v1.2.0 images and configuration remain available for rollback.
 
 ## Product overview
 
@@ -74,7 +74,7 @@ The public product story is organised around six milestones. Historical Stage id
 | Agent Reliability | Six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero partial business writes on non-completion | Stage 12 |
 | Web App Readiness | Visitor isolation, quotas, cleanup, recovery contracts, reproducible packaging, and browser/security verification | Stage 13 |
 | Public Release v1.0 | Historical signed baseline after the frozen Required Gates A–G passed at the public origin | Stage 14 |
-| Product Iteration v1.2.0 | Isolated first-run tutorial, durable progress, responsive authoring UI, bitmap narrative assets, local regression acceptance, and active public deployment | v1.2.0 tests and production smoke acceptance |
+| Product Iteration v1.2.0 | Isolated first-run tutorial, durable progress, responsive authoring UI, bitmap narrative assets, local regression acceptance, and historical public deployment | v1.2.0 tests and production smoke acceptance |
 
 The published repository baseline is the frozen **V4** set: 15 original, balanced three-class cases across three isolated corpora, plus 6 stability reruns. All 21 runs completed.
 
@@ -97,7 +97,7 @@ V5–V8 each retain one immutable first-valid formal result bundle with `gate_fa
 
 Long-form Workflow Validation, recorded under Stage 11, verified the author-controlled workflow on a real 100k-character prefix and a 300k-character prefix. The accepted 300k V2 result completed initialization plus two append/review/decision/commit rounds with bounded RAG, valid Evidence lineage, no automatic canon writes, and a 4,820,992-byte final SQLite database. The first 300k V1 capacity failure remains immutable alongside the V2 pass. The optional 1M-character Stage 11N pressure test has not been run.
 
-Agent Reliability, recorded under Stage 12, independently passed the six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero-partial-write Gates in V2; its V1 Provider-boundary incident remains `gate_failed`. Web App Readiness, recorded under Stage 13, independently passed its local product Gate in V4 after preserving the V2/V3 deployment-artifact failures: server-only integration boundaries, visitor isolation, limits and cleanup, real recovery contracts, two reproducible standalone builds, relocation, and the full browser matrix were verified without external Provider HTTP or SMTP. The historical v1.0 Public Release passed HTTPS/security, real SMTP/password recovery, restart persistence, backup/same-release redeploy, a real-provider two-round author workflow, visitor and registered-account isolation, quota separation, visitor cleanup, and public Cancel/Timeout/Retry atomicity checks. The active Tencent Cloud deployment is now v1.2.0; its post-deployment acceptance covered health/readiness, rollback state, desktop/mobile rendering, new-account tutorial isolation and persistence, and the empty real-workspace result without rerunning the external Provider workflow.
+Agent Reliability, recorded under Stage 12, independently passed the six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero-partial-write Gates in V2; its V1 Provider-boundary incident remains `gate_failed`. Web App Readiness, recorded under Stage 13, independently passed its local product Gate in V4 after preserving the V2/V3 deployment-artifact failures: server-only integration boundaries, visitor isolation, limits and cleanup, real recovery contracts, two reproducible standalone builds, relocation, and the full browser matrix were verified without external Provider HTTP or SMTP. The historical v1.0 Public Release passed HTTPS/security, real SMTP/password recovery, restart persistence, backup/same-release redeploy, a real-provider two-round author workflow, visitor and registered-account isolation, quota separation, visitor cleanup, and public Cancel/Timeout/Retry atomicity checks. The previous v1.2.0 deployment acceptance covered health/readiness, rollback state, desktop/mobile rendering, new-account tutorial isolation and persistence, and the empty real-workspace result without rerunning the external Provider workflow.
 
 Read [the verification record](docs/verification-and-limitations.md) for evidence scope and limitations, and [the product decisions record](docs/product-decisions-and-validation.md) for the rationale behind the workflow.
 
@@ -200,7 +200,7 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 
 ## Known limitations
 
-- The signed Stage 14 production baseline remains `Story Continuity Copilot v1.0 Public Release` as historical evidence. The active public deployment is v1.2.0, while the current local repository state is the undeployed v1.3.0 release candidate. Local acceptance does not re-sign Stage 14, constitute a commercial SLA, or claim that the retained Stage 10 `gate_failed` evaluation was later passed.
+- The signed Stage 14 production baseline remains `Story Continuity Copilot v1.0 Public Release` as historical evidence. The active public deployment is v1.4.0; its deployment and acceptance scope are recorded in docs/v1.4.0-deployment.md. Local acceptance does not re-sign Stage 14, constitute a commercial SLA, or claim that the retained Stage 10 `gate_failed` evaluation was later passed.
 - Real SMTP delivery, email verification, password reset, old-session revocation, new-password login, and used-link replay rejection have been accepted at the public origin. Email credentials and addresses remain server-only.
 - V4 is a small, frozen product evaluation; it supports the stated evaluation claims only and is not a general benchmark.
 - Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.
