@@ -1,0 +1,11 @@
+[Unit]
+Description=Story Continuity weekly isolated SQLite recovery rehearsal
+
+[Timer]
+OnCalendar=Sun *-*-* 03:30:00
+RandomizedDelaySec=120
+Persistent=true
+Unit=story-continuity-ops@drill.service
+
+[Install]
+WantedBy=timers.target

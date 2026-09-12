@@ -236,6 +236,56 @@ export function collectRepositoryChanges(repoRoot = DEFAULT_REPO_ROOT) {
   ])].sort();
 }
 
+// A historical v1.3 record never expands to describe later maintenance changes.
+// The current source manifest has exact files (including literal Next route
+// brackets) and a separate non-packaged verification inventory.
+export function validateMaintenanceManifest({ manifest, repoRoot, changedPaths }) {
+  if (manifest?.schema !== "story-continuity-maintenance-source-v1"
+      || !Array.isArray(manifest.include) || !Array.isArray(manifest.verification_files)) {
+    fail("invalid current maintenance manifest");
+  }
+  const exactPath = (value) => {
+    if (typeof value !== "string" || !value || /[\\:*?"<>|\0]/.test(value)
+        || value.split("/").some((part) => !part || part === "." || part === "..")) {
+      fail("current manifest needs normalized exact paths");
+    }
+    return value;
+  };
+  const targets = new Set();
+  for (const entry of manifest.include) {
+    const target = exactPath(entry.target);
+    if (targets.has(target.toLowerCase()) || isProtectedRepositoryPath(target)) {
+      fail("duplicate or protected current package target");
+    }
+    targets.add(target.toLowerCase());
+  }
+  const names = [...manifest.include.map((entry) => entry.source), ...manifest.verification_files].map(exactPath);
+  const seen = new Set();
+  for (const name of names) {
+    if (!(name === "README.md" || /^(backend|frontend|docs|deployment)\//.test(name))) {
+      fail("unknown current manifest source root");
+    }
+    if (seen.has(name.toLowerCase()) || isProtectedRepositoryPath(name)) {
+      fail("duplicate or protected current manifest source");
+    }
+    seen.add(name.toLowerCase());
+    let target = repoRoot;
+    for (const part of name.split("/")) {
+      target = path.join(target, part);
+      if (!existsSync(target) || lstatSync(target).isSymbolicLink()) {
+        fail(`current manifest file is missing or linked: ${name}`);
+      }
+    }
+    if (!lstatSync(target).isFile()) fail(`current manifest entries must be exact files: ${name}`);
+  }
+  const changes = [...new Set(changedPaths.map(normalizeChangedPath))];
+  const relevant = changes.filter((name) => name !== IMPLICIT_METADATA_PATH && !isProtectedRepositoryPath(name));
+  const missing = relevant.filter((name) => !seen.has(name.toLowerCase()));
+  if (missing.length) fail(`current maintenance changes are not allowlisted:\n${missing.join("\n")}`);
+  return { scope: "current_maintenance", allowlist_entries: names.length, changed_paths: changes.length,
+    release_relevant_changes: relevant.length, protected_or_implicit_changes: changes.length - relevant.length };
+}
+
 export function validateRepository({
   repoRoot = DEFAULT_REPO_ROOT,
   manifestPath = path.join(repoRoot, ...IMPLICIT_METADATA_PATH.split("/")),
@@ -246,6 +296,13 @@ export function validateRepository({
     manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
   } catch (error) {
     fail(`cannot read valid allowlist JSON at ${manifestPath}: ${error instanceof Error ? error.message : String(error)}`);
+  }
+  if (manifest.historical_scope && manifest.current_manifest) {
+    const relative = normalizeManifestPath(manifest.current_manifest);
+    if (relative.directory || !relative.trimmed.startsWith("docs/")) fail("invalid current manifest pointer");
+    assertEntryExists(repoRoot, relative);
+    const current = JSON.parse(readFileSync(path.join(repoRoot, relative.trimmed), "utf8"));
+    return validateMaintenanceManifest({ manifest: current, repoRoot, changedPaths });
   }
   return validateAllowlist({ manifest, repoRoot, changedPaths });
 }

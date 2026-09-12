@@ -1,0 +1,18 @@
+[Unit]
+Description=Story Continuity isolated maintenance (%i)
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 /opt/story-continuity-ops/operations.py --config /etc/story-continuity-ops/config.json %i
+TimeoutStartSec=20min
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+RestrictSUIDSGID=true
+LockPersonality=true

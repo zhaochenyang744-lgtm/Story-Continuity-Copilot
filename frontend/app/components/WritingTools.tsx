@@ -180,7 +180,7 @@ export function RichDraftEditor({id, value, format, disabled, label, placeholder
     content: format === "markdown" ? value : plainDocument(value),
     contentType: format === "markdown" ? "markdown" : undefined,
     editable: !disabled,
-    editorProps: {attributes: {id, role: "textbox", "aria-label": label, "aria-multiline": "true", class: "rich-draft-body", tabindex: "0", spellcheck: "false", "data-placeholder": placeholder ?? "", "data-body-format": format}},
+    editorProps: {attributes: {id, role: "textbox", "aria-label": label, "aria-multiline": "true", "aria-readonly": String(disabled), class: "rich-draft-body", tabindex: "0", spellcheck: "false", "data-placeholder": placeholder ?? "", "data-body-format": format}},
     onUpdate: ({editor: current}) => {
       if (formatRef.current === "plain_text" && hasRichStructure(current)) markAsMarkdown(current, formatRef);
       const nextFormat = formatRef.current;
@@ -209,7 +209,11 @@ export function RichDraftEditor({id, value, format, disabled, label, placeholder
     notify();
     return () => {if (editors.get(id) === binding) editors.delete(id); notify();};
   }, [editor, id]);
-  useEffect(() => {editor?.setEditable(!disabled, false);}, [editor, disabled]);
+  useEffect(() => {
+    if (!editor) return;
+    editor.setEditable(!disabled, false);
+    editor.setOptions({editorProps: {attributes: {...editor.options.editorProps.attributes, "aria-readonly": String(disabled), "aria-label": label}}});
+  }, [editor, disabled, label]);
   useEffect(() => {
     if (!editor || (lastValue.current === value && lastFormat.current === format)) return;
     lastValue.current = value;

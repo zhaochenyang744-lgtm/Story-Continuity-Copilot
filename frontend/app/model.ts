@@ -121,7 +121,7 @@ export type Chapter = {
   number: number;
   title: string;
   summary: string;
-  source_spans?: { span_id: string; label: string; source_revision?: number; text_excerpt: string }[];
+  source_spans?: { span_id: string; label: string; source_revision?: number; text_excerpt: string; is_current?: boolean }[];
 };
 export type Memory = {
   id: string;
@@ -132,6 +132,8 @@ export type Memory = {
   valid_from: number | null;
   valid_to: number | null;
   review_status: string;
+  requires_source_review?: boolean;
+  source_is_current?: boolean;
   source: { chapter_id: string; chapter_number: number; chapter_title: string; span_id: string; excerpt: string; source_path: string } | null;
 };
 export type MemoryInitialization = {
@@ -207,6 +209,7 @@ export type Issue = {
   )[];
   claim_span_id: string;
   claim_text?: string;
+  reused_decision?: { decision: string; status: string; source_issue_id: string; review_path: string; requires_new_decision: boolean } | null;
   decision?: { decision: string; resulting_revision: number | null } | null;
   evidence?: {
     id: string;

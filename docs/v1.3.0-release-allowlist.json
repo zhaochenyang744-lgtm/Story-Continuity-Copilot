@@ -99,5 +99,7 @@
     "publish",
     "external_provider",
     "external_smtp"
-  ]
+  ],
+  "historical_scope": "This manifest records the v1.3.0 local release candidate only. Its original version, file lists and action records are preserved and are not authorization for the current maintenance work.",
+  "current_manifest": "docs/maintenance-release-manifest.json"
 }

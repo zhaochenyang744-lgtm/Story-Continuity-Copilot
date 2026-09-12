@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -186,6 +186,25 @@ test("the allowlist document is implicit metadata and must not list itself", () 
     repoRoot,
     changedPaths: [IMPLICIT_METADATA_PATH],
   }), /is implicit metadata and must not list itself/);
+});
+
+test("historical manifest points to exact current maintenance files without widening original lists", () => {
+  const repoRoot = fixture();
+  const currentPath = "docs/maintenance-release-manifest.json";
+  const old = manifest({ historical_scope: "v1.3.0 only", current_manifest: currentPath });
+  const oldProductFiles = [...old.product_files];
+  writeFileSync(path.join(repoRoot, IMPLICIT_METADATA_PATH), JSON.stringify(old));
+  writeFileSync(path.join(repoRoot, currentPath), JSON.stringify({
+    schema: "story-continuity-maintenance-source-v1",
+    include: [{ source: "backend/app/main.py", target: "backend/app/main.py" }],
+    verification_files: [currentPath],
+  }));
+  const result = validateRepository({ repoRoot, changedPaths: ["backend/app/main.py", currentPath] });
+  assert.equal(result.scope, "current_maintenance");
+  assert.equal(result.release_relevant_changes, 2);
+  assert.deepEqual(JSON.parse(readFileSync(path.join(repoRoot, IMPLICIT_METADATA_PATH))).product_files, oldProductFiles);
+  assert.throws(() => validateRepository({ repoRoot, changedPaths: ["frontend/app/page.tsx"] }),
+    /current maintenance changes are not allowlisted/);
 });
 
 test("current release-candidate repository changes match the canonical allowlist", () => {

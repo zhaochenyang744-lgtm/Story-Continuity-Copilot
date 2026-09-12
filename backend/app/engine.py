@@ -4,7 +4,7 @@ import re
 from typing import Any
 
 from .memory_contract import CONTROLLED_PREDICATES
-from .provider import InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget
+from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget
 
 ALLOWED_STATUS={"conflict","insufficient_evidence"}
 ALLOWED_CATEGORY={"attribute","location_action","timeline","character_knowledge","object_state","relationship","world_rule","event_status"}
@@ -14,7 +14,7 @@ REVIEW_NATURES={"confirmed_conflict","possible_conflict","state_change","insuffi
 REVIEW_ACTIONS={"edit","apply_suggestion","keep_intentional","false_positive"}
 EVIDENCE_CHAIN_ROLES={"prior_state","current_context","missing_link"}
 MAX_RUN_TOKENS=8000
-PROMPT_VERSION="continuity-review-v13-conservative-postrepair"
+PROMPT_VERSION=CONTINUITY_PROMPT_VERSION
 MEMORY_PROMPT_VERSION="memory-initialization-v9-field-contract"
 RETRIEVAL_METHOD_VERSION="bounded-lexical-v4-longform"
 RELATED_MEMORY_LIMIT=15
@@ -31,13 +31,13 @@ MEMORY_CANDIDATE_FIELDS=("memory_type","subject","predicate","value","chapter_id
 MEMORY_DELTA_CANDIDATE_FIELDS=("change_kind","affected_memory_id","memory_type","subject","predicate","value","invalidation_reason","chapter_id","source_span_id")
 MEMORY_REPAIRABLE_ERRORS={"top_level_shape_invalid","candidate_collection_invalid","candidate_count_invalid","empty_candidates","candidate_fields_invalid","memory_type_invalid","required_field_type_invalid","required_field_blank","candidate_length_invalid","evidence_unresolvable"}
 ANALYSIS_RETRIEVAL_METHOD_VERSION="writing-analysis-lexical-v2-draft-claims"
-CONTEXT_BRIEF_PROMPT_VERSION="context-brief-v4-deterministic-summary-coverage"
-PLAN_ALIGNMENT_PROMPT_VERSION="plan-alignment-v3-event-language"
-CHANGE_IMPACT_PROMPT_VERSION="change-impact-v1-layered"
-STORY_QA_PROMPT_VERSION="story-qa-v1-bounded-layers"
-FORESHADOW_SCAN_PROMPT_VERSION="foreshadow-scan-v6-background-location-isolation"
-REVISION_PLAN_PROMPT_VERSION="revision-plan-v1-selected-issues"
-AUTHOR_MATERIAL_COMPARISON_PROMPT_VERSION="author-material-comparison-v1-bound-snapshots"
+CONTEXT_BRIEF_PROMPT_VERSION="context-brief-v5-clause-citations"
+PLAN_ALIGNMENT_PROMPT_VERSION="plan-alignment-v4-clause-citations"
+CHANGE_IMPACT_PROMPT_VERSION="change-impact-v2-bounded-citations"
+STORY_QA_PROMPT_VERSION="story-qa-v2-clause-citations"
+FORESHADOW_SCAN_PROMPT_VERSION="foreshadow-scan-v7-clause-citations"
+REVISION_PLAN_PROMPT_VERSION="revision-plan-v2-clause-citations"
+AUTHOR_MATERIAL_COMPARISON_PROMPT_VERSION="author-material-comparison-v2-clause-citations"
 CHANGE_IMPACT_INSUFFICIENT_SUMMARY="当前证据不足以支持影响结论。"
 STORY_QA_INSUFFICIENT_ANSWER="当前证据不足以回答这个问题。"
 FORESHADOW_INSUFFICIENT_SUMMARY="当前未发现有可采信已写证据的伏笔候选。"

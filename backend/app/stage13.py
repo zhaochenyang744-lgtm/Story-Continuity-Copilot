@@ -755,10 +755,28 @@ class Stage13Service:
             c.execute("BEGIN IMMEDIATE")
             visitors = c.execute("SELECT id FROM v2_users WHERE account_type='visitor' AND visitor_expires_at<=?", (_now(),)).fetchall()
             hashes = [self._digest("cleanup", row["id"]) for row in visitors]
+            existing_tables = {row[0] for row in c.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
             for visitor in visitors:
                 user_id = visitor["id"]
                 projects = [row[0] for row in c.execute("SELECT id FROM v2_projects WHERE user_id=?", (user_id,)).fetchall()]
                 for project_id in projects:
+                    # Later feature tables reference the runs, decisions, sources,
+                    # candidates and chapters removed by the original cleanup below.
+                    # Keep this explicit child-first order and tolerate older schemas.
+                    for table in (
+                        "v2_decision_reuse_events", "v2_decision_reuse", "v2_workflow_run_bindings",
+                        "v2_source_revision_reviews", "v2_chapter_revision_history",
+                        "v2_author_comparison_decisions", "v2_author_comparisons",
+                        "v2_author_material_versions", "v2_author_materials",
+                        "v2_foreshadow_candidate_decisions", "v2_foreshadow_candidates",
+                        "v2_foreshadow_versions", "v2_foreshadows",
+                        "v2_character_aliases", "v2_character_alias_state",
+                        "v2_memory_candidate_review_events", "v2_tutorial_progress_restarts",
+                    ):
+                        if table in existing_tables:
+                            c.execute(f"DELETE FROM {table} WHERE project_id=?", (project_id,))
+                    if "v2_chapter_content_formats" in existing_tables:
+                        c.execute("DELETE FROM v2_chapter_content_formats WHERE chapter_id IN (SELECT id FROM v2_chapters WHERE project_id=?)", (project_id,))
                     run_ids = [row[0] for row in c.execute("SELECT id FROM v2_runs WHERE project_id=?", (project_id,)).fetchall()]
                     change_ids = [row[0] for row in c.execute("SELECT id FROM v2_change_sets WHERE project_id=?", (project_id,)).fetchall()]
                     init_ids = [row[0] for row in c.execute("SELECT id FROM v2_memory_initializations WHERE project_id=?", (project_id,)).fetchall()]

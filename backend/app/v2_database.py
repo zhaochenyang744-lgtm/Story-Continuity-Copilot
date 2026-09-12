@@ -21,6 +21,7 @@ from .database import DomainError, digest
 from .memory_contract import is_controlled_candidate, normalize_memory_value, normalized_predicate
 from .seed_data import CHAPTERS, DEMO_REVIEW_ISSUES, DRAFT, MEMORY_RECORDS
 from .text_content import DRAFT_BODY_FORMATS, visible_draft_text
+from . import long_term_workflow as workflow
 
 
 RUN_ACTIVE_STATUSES = {"queued", "running"}
@@ -225,6 +226,7 @@ class V2Database:
     def initialize(self) -> None:
         with self.connection() as c:
             c.executescript(SCHEMA)
+            workflow.migrate(c)
             c.execute("CREATE TABLE IF NOT EXISTS schema_migrations(version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)")
             c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(5,?)", (utcnow(),))
             self._migrate_run_provenance(c)
@@ -253,6 +255,7 @@ class V2Database:
             self._migrate_v130_revision_plans(c)
             self._migrate_v140_author_materials(c)
             self._migrate_v140_rich_draft_formats(c)
+            c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(146,?)", (utcnow(),))
 
     def readiness_probe(self) -> bool:
         """Verify that the configured database is readable and fully initialized."""
@@ -822,6 +825,7 @@ class V2Database:
 
     @staticmethod
     def _append_run_event(c: sqlite3.Connection, run_id: str, status: str, stage: str, error_code: str | None, stamp: str) -> None:
+        if status == "queued": workflow.bind_run(c,run_id)
         sequence=c.execute("SELECT COALESCE(MAX(sequence),0)+1 FROM v2_run_events WHERE run_id=?",(run_id,)).fetchone()[0]
         c.execute("INSERT INTO v2_run_events(run_id,sequence,status,stage,error_code,created_at) VALUES(?,?,?,?,?,?)",(run_id,sequence,public_run_status(status),stage,public_run_error(status,error_code),stamp))
         c.execute("INSERT OR IGNORE INTO v2_run_stages(run_id,stage,created_at) VALUES(?,?,?)",(run_id,stage,stamp))
@@ -1365,11 +1369,11 @@ class V2Database:
             recent, pending, continuation = [], [], None
             for project in projects:
                 draft = c.execute("SELECT * FROM v2_drafts WHERE project_id=? ORDER BY saved_at DESC LIMIT 1", (project["id"],)).fetchone()
-                issue_count = c.execute("SELECT COUNT(*) FROM v2_issues WHERE project_id=? AND status='open'", (project["id"],)).fetchone()[0]
+                issue_count = workflow.open_issue_count(c,project["id"])
                 completed_check = c.execute("SELECT 1 FROM v2_runs WHERE project_id=? AND run_type IN ('continuity','memory_delta') AND status='completed' LIMIT 1", (project["id"],)).fetchone()
                 continuity_status = "pending" if issue_count else "checked_clear" if completed_check else "unchecked"
                 recent.append({"project_id":project["id"],"title":project["title"],"status":project["status"],"updated_at":project["updated_at"]})
-                levels={level:c.execute("SELECT COUNT(*) FROM v2_issues WHERE project_id=? AND status='open' AND severity=?",(project["id"],level)).fetchone()[0] for level in ("high","medium","low")}
+                levels={level:workflow.open_issue_count(c,project["id"],level) for level in ("high","medium","low")}
                 pending.append({"project_id":project["id"],"title":project["title"],"open_count":issue_count,"continuity_status":continuity_status,**levels})
                 if continuation is None and draft:
                     continuation = {"project_id":project["id"],"project_title":project["title"],"draft_id":draft["id"],"draft_title":draft["title"],"draft_revision":draft["revision"],"next_action":"continue_draft","updated_at":project["updated_at"]}
@@ -1397,7 +1401,7 @@ class V2Database:
                 if draft and str(draft["body"] or "").strip():
                     writing_by_chapter[int(draft["chapter_number"])] = str(draft["body"])
                 word_count = sum(len(re.sub(r"\s+", "", body)) for body in writing_by_chapter.values())
-                open_count = c.execute("SELECT COUNT(*) FROM v2_issues WHERE project_id=? AND status='open'", (project["id"],)).fetchone()[0]
+                open_count = workflow.open_issue_count(c,project["id"])
                 completed_check = c.execute("SELECT 1 FROM v2_runs WHERE project_id=? AND run_type IN ('continuity','memory_delta') AND status='completed' LIMIT 1", (project["id"],)).fetchone()
                 if has_open_issues is not None and bool(open_count) != has_open_issues:
                     continue
@@ -1422,7 +1426,7 @@ class V2Database:
             project = self._project(c,user_id,project_id)
             draft = c.execute("SELECT id,chapter_number,revision,status FROM v2_drafts WHERE project_id=? AND status IN ('draft','saved') ORDER BY saved_at DESC LIMIT 1", (project_id,)).fetchone()
             run = c.execute("SELECT id,status,created_at,result_origin FROM v2_runs WHERE project_id=? AND run_type IN ('continuity','memory_delta') ORDER BY created_at DESC,rowid DESC LIMIT 1", (project_id,)).fetchone()
-            open_count=c.execute("SELECT COUNT(*) FROM v2_issues WHERE project_id=? AND status='open'",(project_id,)).fetchone()[0]
+            open_count=workflow.open_issue_count(c,project_id)
             return {"id":project["id"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"author_context_version":project["author_context_version"],"foreshadow_version":project["foreshadow_version"],"chapter_count":c.execute("SELECT COUNT(*) FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0],"outline_progress":0,"current_memory_version":project["current_memory_version"],"source_revision":project["source_revision"],"current_draft":dict(draft) if draft else None,"latest_run":({"run_id":run["id"],"status":run["status"],"created_at":run["created_at"],"result_origin":run["result_origin"]} if run else None),"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if run and run["status"]=="completed" else "unchecked"),"updated_at":project["updated_at"],"data_origin":project["data_origin"],"is_tutorial":project["data_origin"]=="tutorial_seed","memory_initialization_status":self._memory_initialization_status(c,project_id,project["data_origin"]) }
 
     # --- v1.3 author intent: independent from confirmed Story Memory ---
@@ -1876,6 +1880,7 @@ class V2Database:
             c.execute("BEGIN IMMEDIATE")
             def create():
                 project=self._project(c,user_id,project_id,True);comparison=c.execute("SELECT * FROM v2_author_comparisons WHERE id=? AND project_id=?",(comparison_id,project_id)).fetchone()
+                workflow.require_review_complete(c,project_id)
                 if not comparison:raise DomainError("resource_not_found",404)
                 if comparison["decision_revision"]!=payload["base_decision_revision"]:raise DomainError("comparison_decision_revision_conflict",409,False,{"current_decision_revision":comparison["decision_revision"]})
                 public=self._comparison_public(c,comparison)
@@ -2174,7 +2179,7 @@ class V2Database:
             for chapter in c.execute("SELECT * FROM v2_chapters WHERE project_id=? ORDER BY chapter_number", (project_id,)).fetchall():
                 item={"id":chapter["id"],"number":chapter["chapter_number"],"title":chapter["title"],"summary":chapter["summary"],"source_revision":chapter["source_revision"]}
                 if include_excerpt:
-                    item["source_spans"]=[{"span_id":x["id"],"label":x["label"],"source_revision":x["source_revision"],"text_excerpt":x["body"][:500]} for x in c.execute("SELECT * FROM v2_source_spans WHERE project_id=? AND chapter_id=?",(project_id,chapter["id"])).fetchall()]
+                    item["source_spans"]=[{"span_id":x["id"],"label":x["label"],"source_revision":x["source_revision"],"is_current":x["source_revision"]==chapter["source_revision"],"text_excerpt":x["body"][:500]} for x in c.execute("SELECT * FROM v2_source_spans WHERE project_id=? AND chapter_id=? ORDER BY source_revision DESC,id",(project_id,chapter["id"])).fetchall()]
                 result.append(item)
             return {"project_id":project_id,"chapters":result}
 
@@ -2192,14 +2197,14 @@ class V2Database:
             rows=c.execute("SELECT m.*,s.chapter_id,s.id span_id,s.body excerpt,ch.chapter_number,ch.title chapter_title FROM v2_memory_records m LEFT JOIN v2_source_spans s ON s.id=m.source_span_id AND s.project_id=m.project_id LEFT JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=m.project_id WHERE m.project_id=? AND m.version=?",(project_id,version)).fetchall()
             for row in rows:
                 if row["source_span_id"] and not row["span_id"]: raise DomainError("source_unavailable",422)
-                records.append({"id":row["id"],"memory_type":row["memory_type"],"subject":row["subject"],"predicate":row["predicate"],"value":row["value"],"valid_from":row["valid_from"],"valid_to":row["valid_to"],"review_status":row["review_status"],"source":({"chapter_id":row["chapter_id"],"chapter_number":row["chapter_number"],"chapter_title":row["chapter_title"],"span_id":row["span_id"],"excerpt":row["excerpt"][:500],"source_path":f"/projects/{project_id}/sources#span-{row['span_id']}"} if row["span_id"] else None)})
+                records.append({**workflow.memory_review_flags(c,row,project["current_memory_version"]),"id":row["id"],"memory_type":row["memory_type"],"subject":row["subject"],"predicate":row["predicate"],"value":row["value"],"valid_from":row["valid_from"],"valid_to":row["valid_to"],"review_status":row["review_status"],"source":({"chapter_id":row["chapter_id"],"chapter_number":row["chapter_number"],"chapter_title":row["chapter_title"],"span_id":row["span_id"],"excerpt":row["excerpt"][:500],"source_path":f"/projects/{project_id}/sources#span-{row['span_id']}"} if row["span_id"] else None)})
             return {"project_id":project_id,"memory_version":version,"records":records}
 
     # --- imported-source Story Memory initialization ---
     def _import_sources(self, c: sqlite3.Connection, project_id: str) -> list[dict[str, Any]]:
         # Initialization is an immutable r1 snapshot. Later append-only spans
         # belong to Stage 11K delta review and must not invalidate V1 Evidence.
-        rows=c.execute("SELECT s.id,s.project_id,s.chapter_id,s.label,s.body,ch.chapter_number,ch.title chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.project_id=? AND s.source_revision=1 ORDER BY ch.chapter_number,s.id",(project_id,)).fetchall()
+        rows=c.execute("SELECT s.id,s.project_id,s.chapter_id,s.label,s.body,ch.chapter_number,COALESCE(h.title,ch.title) chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id LEFT JOIN v2_chapter_revision_history h ON h.chapter_id=ch.id AND h.source_revision=s.source_revision WHERE s.project_id=? AND s.source_revision=1 ORDER BY ch.chapter_number,s.id",(project_id,)).fetchall()
         return [{"id":row["id"],"chapter_id":row["chapter_id"],"chapter_number":row["chapter_number"],"chapter_title":row["chapter_title"],"label":row["label"],"body":row["body"]} for row in rows]
 
     def _source_snapshot_digest(self, sources: list[dict[str, Any]]) -> str:
@@ -2214,6 +2219,10 @@ class V2Database:
 
     def _memory_coverage(self, c: sqlite3.Connection, project_id: str) -> dict[str, Any]:
         project=c.execute("SELECT data_origin,current_memory_version FROM v2_projects WHERE id=?",(project_id,)).fetchone()
+        pending=workflow.pending_reviews(c,project_id)
+        if pending:
+            source_revision=c.execute("SELECT source_revision FROM v2_projects WHERE id=?",(project_id,)).fetchone()[0]
+            return {"project_id":project_id,"status":"update_pending","source_revision":source_revision,"memory_version":project["current_memory_version"],"counts":{"core_pending":pending,"supporting_pending":0,"confirmed":0,"confirmed_core":0,"pending_canon_count":0},"blocking_reason":"source_revision_review_required","review_path":f"/projects/{project_id}/sources#long-term-review"}
         delta=c.execute("SELECT * FROM v2_memory_delta_batches WHERE project_id=? AND source_revision=(SELECT source_revision FROM v2_projects WHERE id=?)",(project_id,project_id)).fetchone()
         if delta:
             rows=c.execute("SELECT review_priority,decision_status FROM v2_memory_delta_candidates WHERE batch_id=? AND project_id=?",(delta["id"],project_id)).fetchall()
@@ -2289,6 +2298,7 @@ class V2Database:
     def memory_initialization_input(self, user_id: str, project_id: str, source_revision: int) -> dict[str, Any] | None:
         with self.connection() as c:
             project=self._project(c,user_id,project_id,True)
+            workflow.require_review_complete(c,project_id)
             if project["data_origin"]!="user_import": raise DomainError("memory_initialization_not_available",409)
             if source_revision!=1: raise DomainError("source_revision_not_current",409)
             existing=c.execute("SELECT * FROM v2_memory_initializations WHERE project_id=? AND source_revision=?",(project_id,source_revision)).fetchone()
@@ -2390,6 +2400,7 @@ class V2Database:
         with self.connection() as c:
             def commit():
                 project=self._project(c,user_id,project_id,True)
+                workflow.require_review_complete(c,project_id)
                 initialization=c.execute("SELECT * FROM v2_memory_initializations WHERE id=? AND project_id=?",(initialization_id,project_id)).fetchone()
                 if not initialization: raise DomainError("resource_not_found",404)
                 if initialization["status"] in {"committed","rejected"}: return {"initialization":self._initialization_summary(initialization),"memory_version":1,"accepted_candidate_ids":[],"coverage":self._memory_coverage(c,project_id)}
@@ -2515,8 +2526,10 @@ class V2Database:
         with self.connection() as c:
             def create():
                 project=self._project(c,user_id,project_id,True); revision=payload["source_revision"]
+                workflow.require_review_complete(c,project_id)
                 if revision!=project["source_revision"] or revision<=1: raise DomainError("source_revision_not_current",409)
-                if not self._confirmed_memory(c,project_id,project["current_memory_version"]): raise DomainError("insufficient_project_context",422)
+                revision_change=c.execute("SELECT mode FROM v2_source_change_sets WHERE project_id=? AND target_source_revision=? AND status='committed'",(project_id,revision)).fetchone()
+                if not self._confirmed_memory(c,project_id,project["current_memory_version"]) and (not revision_change or revision_change["mode"]!="revise"): raise DomainError("insufficient_project_context",422)
                 if not self._delta_sources(c,project_id,revision): raise DomainError("source_revision_not_current",409)
                 existing=c.execute("SELECT * FROM v2_memory_delta_batches WHERE project_id=? AND source_revision=?",(project_id,revision)).fetchone()
                 if existing and existing["status"] not in {"failed","cancelled","timed_out"}:
@@ -2545,6 +2558,7 @@ class V2Database:
 
     def incremental_inputs(self,project_id,batch_id):
         with self.connection() as c:
+            workflow.require_review_complete(c,project_id)
             batch=c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=? AND project_id=?",(batch_id,project_id)).fetchone()
             if not batch: raise DomainError("resource_not_found",404)
             sources=self._delta_sources(c,project_id,batch["source_revision"]); memory=self._confirmed_memory(c,project_id,batch["base_memory_version"])
@@ -2553,7 +2567,8 @@ class V2Database:
             for source in sources:
                 for text in (part.strip() for part in re.split(r"(?<=[。！？])",source["body"])):
                     if text: claims.append({"id":f"claim-{batch['continuity_run_id']}-{len(claims)+1}","text":text,"allowed_evidence":allowed})
-            if not claims or not memory: raise DomainError("insufficient_project_context",422)
+            revision_change=c.execute("SELECT mode FROM v2_source_change_sets WHERE project_id=? AND target_source_revision=? AND status='committed'",(project_id,batch["source_revision"])).fetchone()
+            if not claims or (not memory and (not revision_change or revision_change["mode"]!="revise")): raise DomainError("insufficient_project_context",422)
             return {"claims":claims,"memory":memory,"draft":{"id":batch["continuity_run_id"],"revision":batch["source_revision"],"body":"\n".join(x["text"] for x in claims)}},{"source_revision":batch["source_revision"],"sources":sources,"memory":memory}
 
     def advance_incremental_runs(self,project_id,batch_id,stage):
@@ -2698,6 +2713,7 @@ class V2Database:
         with self.connection() as c:
             def commit():
                 project=self._project(c,user_id,project_id,True); batch=c.execute("SELECT * FROM v2_memory_delta_batches WHERE id=? AND project_id=?",(batch_id,project_id)).fetchone()
+                workflow.require_review_complete(c,project_id)
                 if not batch: raise DomainError("resource_not_found",404)
                 if batch["status"]=="covered":
                     audit=c.execute("SELECT * FROM v2_source_coverage_audits WHERE project_id=? AND delta_batch_id=?",(project_id,batch_id)).fetchone()
@@ -2793,6 +2809,7 @@ class V2Database:
             draft=c.execute("SELECT * FROM v2_drafts WHERE id=? AND project_id=?",(draft_id,project_id)).fetchone()
             if not draft: raise DomainError("resource_not_found",404)
             if draft["revision"]!=draft_revision: raise DomainError("draft_revision_not_current",409)
+            workflow.require_review_complete(c, project_id)
             coverage=self._memory_coverage(c,project_id)
             if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["confirmed_core"] < 1:
                 raise DomainError("insufficient_project_context",422)
@@ -2831,6 +2848,7 @@ class V2Database:
 
     def create_run(self, user_id: str, project_id: str, payload: dict[str, Any], key: str, provenance: dict[str, str]):
         with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
             def create():
                 project=self._project(c,user_id,project_id,True)
                 draft=c.execute("SELECT * FROM v2_drafts WHERE id=? AND project_id=?",(payload["draft_id"],project_id)).fetchone()
@@ -2907,8 +2925,10 @@ class V2Database:
             if not isinstance(issue_ids,list) or not 1<=len(issue_ids)<=REVISION_PLAN_MAX_ISSUES or len(set(issue_ids))!=len(issue_ids):raise DomainError("revision_plan_issue_invalid",422)
         elif payload.get("issue_ids") is not None:raise DomainError("analysis_input_invalid",422)
         with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
             def create():
                 project=self._project(c,user_id,project_id,True)
+                workflow.require_review_complete(c,project_id)
                 draft=c.execute("SELECT * FROM v2_drafts WHERE id=? AND project_id=?",(payload["draft_id"],project_id)).fetchone()
                 if not draft:raise DomainError("resource_not_found",404)
                 if draft["revision"]!=payload["draft_revision"]:raise DomainError("draft_revision_not_current",409)
@@ -2941,7 +2961,7 @@ class V2Database:
                 worlds=sorted(worlds,key=lambda item:(-self._analysis_rank(terms,item["name"],item["description"],item["notes"]),item["position"],item["id"]))[:2]
                 memory_rows=[dict(row) for row in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id",(project_id,project["current_memory_version"],project["current_memory_version"],project["current_memory_version"])).fetchall()]
                 memory=sorted(memory_rows,key=lambda item:(-self._analysis_rank(terms,item["subject"],item["predicate"],item["value"]),item["id"]))[:8]
-                span_rows=[dict(row) for row in c.execute("SELECT s.id,s.chapter_id,s.label,s.body,s.source_revision,ch.chapter_number,ch.title chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.project_id=? AND s.source_revision<=? ORDER BY s.source_revision DESC,ch.chapter_number DESC,s.id",(project_id,project["source_revision"])).fetchall()]
+                span_rows=[dict(row) for row in c.execute("SELECT s.id,s.chapter_id,s.label,s.body,s.source_revision,ch.chapter_number,ch.title chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id AND ch.source_revision=s.source_revision WHERE s.project_id=? AND s.source_revision<=? ORDER BY s.source_revision DESC,ch.chapter_number DESC,s.id",(project_id,project["source_revision"])).fetchall()]
                 spans=sorted(span_rows,key=lambda item:(-self._analysis_rank(terms,item["label"],item["body"]),-item["source_revision"],-item["chapter_number"],item["id"]))[:4]
                 run_id,stamp=new_id("run"),utcnow()
                 all_claims=[{"id":f"draft-claim-{draft['id']}-r{draft['revision']}-{ordinal}","text":text[:240],"ordinal":ordinal} for ordinal,text in enumerate((x.strip() for x in re.split(r"(?<=[。！？.!?])",draft_text) if x.strip()),1)]
@@ -2988,10 +3008,12 @@ class V2Database:
 
     def analysis_run_input(self, project_id: str, run_id: str) -> dict[str, Any]:
         with self.connection() as c:
+            workflow.require_review_complete(c,project_id)
             run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
             row=c.execute("SELECT * FROM v2_analysis_inputs WHERE run_id=? AND project_id=?",(run_id,project_id)).fetchone()
             if not run or not row:raise DomainError("resource_not_found",404)
             if run["status"] not in RUN_ACTIVE_STATUSES or run["cancel_requested_at"]:raise DomainError("run_cancelled",409)
+            if not workflow.binding_is_current(c,run):raise DomainError("run_basis_changed",409)
             data=json.loads(row["input_json"])
             if digest(data)!=row["input_digest"]:raise DomainError("analysis_input_invalid",409)
             return data
@@ -3200,6 +3222,7 @@ class V2Database:
             run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
             if not run: raise DomainError("resource_not_found",404)
             if run["status"] not in RUN_ACTIVE_STATUSES or run["cancel_requested_at"]: raise DomainError("run_cancelled",409)
+            if not workflow.binding_is_current(c,run): raise DomainError("run_basis_changed",409)
             coverage=self._memory_coverage(c,project_id)
             if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["pending_canon_count"] != 0:
                 raise DomainError("insufficient_project_context",422)
@@ -3213,7 +3236,7 @@ class V2Database:
             source_memory_version=run["source_memory_version"]
             memory=[dict(x) for x in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id",(project_id,source_memory_version,source_memory_version,source_memory_version)).fetchall()]
             if not memory: raise DomainError("insufficient_project_context",422)
-            spans=[dict(x) for x in c.execute("SELECT id,chapter_id,body,label FROM v2_source_spans WHERE project_id=?",(project_id,)).fetchall()]
+            spans=[dict(x) for x in c.execute("SELECT s.id,s.chapter_id,s.body,s.label FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id AND ch.source_revision=s.source_revision WHERE s.project_id=?",(project_id,)).fetchall()]
             for claim in claims:
                 characters="".join(re.findall(r"[\u4e00-\u9fffA-Za-z0-9]",claim["text"])); terms={characters[index:index+2] for index in range(max(0,len(characters)-1))}; scored=[]
                 for span in spans:
@@ -3415,6 +3438,7 @@ class V2Database:
             project=c.execute("SELECT source_revision,current_memory_version,author_context_version,alias_version FROM v2_projects WHERE id=?",(project_id,)).fetchone()
             alias_current=run["run_type"]!="change_impact" or project["alias_version"]==run["alias_version"]
             current=(draft["revision"]==run["draft_revision"] and project["source_revision"]==run["source_revision"] and project["current_memory_version"]==run["source_memory_version"] and project["author_context_version"]==run["author_context_version"] and alias_current) if analysis else (project["source_revision"]==run["source_revision"] and project["current_memory_version"]==run["source_memory_version"]) if incremental else run["run_type"]!="continuity" or draft["revision"]==run["source_revision"] or direct_successor
+            if not incremental and not direct_successor: current=current and workflow.binding_is_current(c,run)
             status=public_run_status(run["status"]); stage=status if run["status"]=="budget_paused" else run["stage"]; error_code=public_run_error(run["status"],run["error_code"])
             transitions=[{"sequence":row["sequence"],"status":public_run_status(row["status"]),"stage":row["stage"],"error_code":public_run_error(row["status"],row["error_code"]),"created_at":row["created_at"]} for row in c.execute("SELECT * FROM v2_run_events WHERE run_id=? ORDER BY sequence",(run_id,)).fetchall()]
             author_meta=None
@@ -3434,7 +3458,9 @@ class V2Database:
                     claim=c.execute("SELECT text FROM v2_run_claims WHERE id=? AND run_id=?",(issue["claim_span_id"],run_id)).fetchone()
                     if not claim: raise DomainError("evidence_unresolvable",422)
                     decision=c.execute("SELECT decision,resulting_revision FROM v2_decisions WHERE project_id=? AND issue_id=? AND source_revision=?",(project_id,issue["id"],run["source_revision"])).fetchone()
-                    item={"id":issue["id"],"claim_span_id":issue["claim_span_id"],"claim_text":claim["text"],"status":issue["status"],"classification":issue["classification"],"category":issue["category"],"severity":issue["severity"],"evidence_status":issue["evidence_status"],"explanation":issue["explanation"],"decision":dict(decision) if decision else None,**self._review_issue_contract(c,project_id,issue,run)}
+                    item={"id":issue["id"],"claim_span_id":issue["claim_span_id"],"claim_text":claim["text"],"status":issue["status"],"classification":issue["classification"],"category":issue["category"],"severity":issue["severity"],"evidence_status":issue["evidence_status"],"explanation":issue["explanation"],"decision":dict(decision) if decision else None,**self._review_issue_contract(c,project_id,issue,run),**workflow.issue_reuse(c,issue,run)}
+                    if not decision and item["reused_decision"]:
+                        item.update(raw_issue_status=issue["status"],status="decided",decision={"decision":item["reused_decision"]["decision"],"resulting_revision":None,"reused":True})
                     if "evidence" in include:
                         item["evidence"]=self._resolved_evidence(c,project_id,issue,run)
                     issues.append(item)
@@ -3449,11 +3475,14 @@ class V2Database:
 
     def decide(self, user_id: str, project_id: str, issue_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
             def decide() -> dict[str, Any]:
                 self._project(c,user_id,project_id,True)
+                workflow.require_review_complete(c,project_id)
                 issue=c.execute("SELECT * FROM v2_issues WHERE id=? AND project_id=?",(issue_id,project_id)).fetchone()
                 run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(payload["run_id"],project_id)).fetchone()
                 if not issue or not run or issue["run_id"]!=run["id"] or payload["source_revision"]!=run["source_revision"]: raise DomainError("resource_not_found",404)
+                workflow.require_run_context(c,run)
                 evidence=self._resolved_evidence(c,project_id,issue,run)
                 if issue["evidence_status"]!="sufficient" or not evidence or any(item["sufficiency"]!="sufficient" for item in evidence):raise DomainError("issue_decision_unavailable",409)
                 if c.execute("SELECT 1 FROM v2_decisions WHERE issue_id=? AND source_revision=?",(issue_id,run["source_revision"])).fetchone(): raise DomainError("already_decided",409)
@@ -3479,10 +3508,13 @@ class V2Database:
 
     def create_changeset(self, user_id: str, project_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
             def make() -> dict[str, Any]:
                 project=self._project(c,user_id,project_id,True)
+                workflow.require_review_complete(c,project_id)
                 run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(payload["run_id"],project_id)).fetchone()
                 if not run: raise DomainError("resource_not_found",404)
+                workflow.require_run_context(c,run)
                 if payload["source_run_revision"]!=run["source_revision"]: raise DomainError("revision_mismatch",422)
                 draft=c.execute("SELECT * FROM v2_drafts WHERE id=?",(run["draft_id"],)).fetchone()
                 successor=draft["revision"]==run["source_revision"]+1 and draft["edit_context_json"] and json.loads(draft["edit_context_json"]).get("source_run_id")==run["id"]
@@ -3490,10 +3522,12 @@ class V2Database:
                 issues=c.execute("SELECT * FROM v2_issues WHERE project_id=? AND run_id=?",(project_id,run["id"])).fetchall()
                 decisions=c.execute("SELECT * FROM v2_decisions WHERE project_id=? AND run_id=?",(project_id,run["id"])).fetchall()
                 required=set()
+                reused=set()
                 for issue in issues:
                     contract=self._review_issue_contract(c,project_id,issue,run)
                     if issue["evidence_status"]=="sufficient" and (contract["review_contract_version"]=="legacy_v3" or contract["available_actions"]):required.add(issue["id"])
-                if required!={decision["issue_id"] for decision in decisions}: raise DomainError("unresolved_required_decisions",409)
+                    if workflow.issue_reuse(c,issue,run)["reused_decision"]:reused.add(issue["id"])
+                if required!=({decision["issue_id"] for decision in decisions}|reused): raise DomainError("unresolved_required_decisions",409)
                 proposed=[]
                 for decision in decisions:
                     issue=next(item for item in issues if item["id"]==decision["issue_id"])
@@ -3519,8 +3553,10 @@ class V2Database:
 
     def commit_changeset(self, user_id: str, project_id: str, change_set_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
+            c.execute("BEGIN IMMEDIATE")
             def commit() -> dict[str, Any]:
                 project=self._project(c,user_id,project_id,True)
+                workflow.require_review_complete(c,project_id)
                 change_set=c.execute("SELECT * FROM v2_change_sets WHERE id=? AND project_id=?",(change_set_id,project_id)).fetchone()
                 if not change_set: raise DomainError("resource_not_found",404)
                 if change_set["status"]!="draft": raise DomainError("already_committed",409)
@@ -3533,6 +3569,7 @@ class V2Database:
                 if len(edited_ids)!=len(set(edited_ids)) or not set(edited_ids)<=accepted:
                     raise DomainError("invalid_item_edit",422)
                 run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(change_set["run_id"],project_id)).fetchone()
+                if run: workflow.require_run_context(c,run)
                 draft=c.execute("SELECT * FROM v2_drafts WHERE id=? AND project_id=?",(run["draft_id"],project_id)).fetchone() if run else None
                 successor=draft and draft["revision"]==run["source_revision"]+1 and draft["edit_context_json"] and json.loads(draft["edit_context_json"]).get("source_run_id")==run["id"]
                 if not run or not draft or run["source_revision"]!=change_set["source_run_revision"] or draft["revision"]!=change_set["resolved_revision"] or not (draft["revision"]==run["source_revision"] or successor):
@@ -3597,6 +3634,8 @@ class V2Database:
                 if payload.get("reason") not in {"fresh_start","demo_recovery"}: raise DomainError("invalid_request",400)
                 stamp=utcnow()
                 # dependent children first. The set is deliberately project-scoped.
+                for table in ("v2_decision_reuse_events","v2_decision_reuse","v2_workflow_run_bindings","v2_source_revision_reviews"):
+                    c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
                 for table in ("v2_author_story_plan_versions","v2_author_character_plan_versions","v2_author_world_plan_versions"):
                     c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_author_context_versions WHERE project_id=?",(project_id,))
@@ -3637,6 +3676,8 @@ class V2Database:
                 c.execute("DELETE FROM v2_memory_records WHERE project_id=?",(project_id,))
                 c.execute("DELETE FROM v2_memory_versions WHERE project_id=?",(project_id,))
                 if project["data_origin"] in {"demo_seed", "tutorial_seed"}:
+                    c.execute("DELETE FROM v2_chapter_revision_history WHERE project_id=?",(project_id,))
+                    c.execute("DELETE FROM v2_chapter_content_formats WHERE chapter_id IN (SELECT id FROM v2_chapters WHERE project_id=?)",(project_id,))
                     c.execute("DELETE FROM v2_characters WHERE project_id=?",(project_id,))
                     c.execute("DELETE FROM v2_world_entries WHERE project_id=?",(project_id,))
                     c.execute("DELETE FROM v2_outline_nodes WHERE project_id=?",(project_id,))
@@ -3878,6 +3919,7 @@ class V2Database:
                     self._project(c,user_id,project_id,True)
                     change=c.execute("SELECT * FROM v2_source_change_sets WHERE id=? AND project_id=? AND user_id=?",(change_id,project_id,user_id)).fetchone()
                     if not change: raise DomainError("source_change_set_not_found",404)
+                    if change["mode"]!="append": raise DomainError("source_revision_commit_route_required",409)
                     if change["status"]=="committed":
                         row=c.execute("SELECT * FROM v2_source_change_sets WHERE id=?",(change_id,)).fetchone(); return json.loads(row["commit_result_json"])
                     project=c.execute("SELECT * FROM v2_projects WHERE id=?",(project_id,)).fetchone()
@@ -3909,6 +3951,7 @@ class V2Database:
                     return result
                 return self._idem(c,user_id,"source_change_commit:"+project_id+":"+change_id,key,payload,commit,200)
         except DomainError as error:
+            if error.code=="source_revision_commit_route_required": raise
             # A rejected commit never writes a Chapter, Span, Revision, or Draft.  It may
             # still leave a project-scoped audit marker so a later preview/recovery is traceable.
             with self.connection() as c:

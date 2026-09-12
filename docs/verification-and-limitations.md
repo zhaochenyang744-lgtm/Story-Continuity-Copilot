@@ -1,5 +1,7 @@
 # Story Continuity Copilot v1.0 Public Release — validation evidence and known limitations
 
+> Historical verification record for the retained V4–V8, Stage 11–14 and v1.0 release evidence. Counts and outcomes below belong to those versions. Current implementation, production-model validation, and deployment scope are tracked separately in [current product and verification scope](current-product.md) and [maintenance acceptance](maintenance-acceptance.md).
+
 ## Published V4 baseline verification record
 
 The following results are the retained Stage 7 publication baseline for the local Web Demo. They describe completed verification, not a deployment or a claim of universal reliability. Later accepted work and retained failures are recorded separately below.
@@ -48,7 +50,7 @@ The reported V4 scope is deliberately narrow: it is a frozen 15-case product eva
 | Web App Readiness | Stage 13 |
 | Public Release v1.0 | Stage 14, frozen Required Gates A–G passed and signed |
 
-## Current evaluation status
+## Retained Stage 10 evaluation status
 
 Author Workflow & Model Evaluation retains the accepted Stage 8 and Stage 9 work alongside V5–V8, each with one immutable first-valid formal result bundle and `gate_failed`. Those results, integrity records, and workspaces are historical evidence rather than retuning inputs. V8 `first_valid_formal` ran once on frozen `deepseek-v4-pro` and `continuity-review-v6` inputs. All 30 calls completed; classification, macro F1, all three class recalls, retrieval, citation precision, grounding, schema validity, and Evidence completeness were 1.0000. Category accuracy was 0.875 and the designated category regression was 2/3 because one `location_action` case was classified as `event_status`. This single deviation is retained as a portfolio-level known limitation, while the immutable Stage 10 result remains `gate_failed`.
 

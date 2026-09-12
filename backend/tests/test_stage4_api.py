@@ -83,7 +83,7 @@ class DeepSeekProviderRegressionTests(unittest.TestCase):
             self.assertIn(boundary, joined)
         self.assertEqual(tuple(rules), CONTINUITY_REVIEW_RULES)
         examples = json.loads(prompt)['decision_examples']
-        self.assertEqual(len(examples), 4)
+        self.assertEqual(len(examples), 9)
         self.assertIn('confirmed_conflict', examples[0]['decision'])
         self.assertIn('insufficient_evidence', examples[2]['decision'])
         self.assertNotIn('eval-v', prompt.casefold())
@@ -260,7 +260,7 @@ class Stage4ContractTests(unittest.TestCase):
         reviewed=client.get(f"/api/projects/{grey}/checks/{queued['run_id']}?include=issues,evidence,metrics")
         self.assertEqual(reviewed.status_code,200)
         metrics=reviewed.json()['data']['metrics']; provenance=metrics['provenance']
-        self.assertEqual(provenance,{'provider_label':'contract-provider','model_label':'contract-model-v1','prompt_version':'continuity-review-v13-conservative-postrepair','schema_version':'continuity-issue-v5-temporal-basis','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4})
+        self.assertEqual(provenance,{'provider_label':'contract-provider','model_label':'contract-model-v1','prompt_version':'continuity-review-v14-narrative-scope','schema_version':'continuity-issue-v5-temporal-basis','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4})
         self.assertTrue(metrics['retrieval'])
         self.assertEqual(client.get(f"/api/projects/{other}/checks/{queued['run_id']}?include=metrics").status_code,404)
         self.assertEqual(client.post(f'/api/projects/{grey}/reset',json={'confirm':True,'reason':'demo_recovery'},headers=key()).status_code,200)

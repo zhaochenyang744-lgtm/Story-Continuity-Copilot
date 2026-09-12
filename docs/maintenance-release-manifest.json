@@ -1,0 +1,562 @@
+{
+  "schema": "story-continuity-maintenance-source-v1",
+  "candidate": "2026-09-maintenance-local",
+  "release_status": "local_source_candidate",
+  "include": [
+    {
+      "source": "README.md",
+      "target": "README.md"
+    },
+    {
+      "source": "backend/app/__init__.py",
+      "target": "backend/app/__init__.py"
+    },
+    {
+      "source": "backend/app/config.py",
+      "target": "backend/app/config.py"
+    },
+    {
+      "source": "backend/app/database.py",
+      "target": "backend/app/database.py"
+    },
+    {
+      "source": "backend/app/deployment.py",
+      "target": "backend/app/deployment.py"
+    },
+    {
+      "source": "backend/app/engine.py",
+      "target": "backend/app/engine.py"
+    },
+    {
+      "source": "backend/app/long_term_workflow.py",
+      "target": "backend/app/long_term_workflow.py"
+    },
+    {
+      "source": "backend/app/main.py",
+      "target": "backend/app/main.py"
+    },
+    {
+      "source": "backend/app/maintenance.py",
+      "target": "backend/app/maintenance.py"
+    },
+    {
+      "source": "backend/app/memory_contract.py",
+      "target": "backend/app/memory_contract.py"
+    },
+    {
+      "source": "backend/app/operations.py",
+      "target": "backend/app/operations.py"
+    },
+    {
+      "source": "backend/app/project_export.py",
+      "target": "backend/app/project_export.py"
+    },
+    {
+      "source": "backend/app/provider.py",
+      "target": "backend/app/provider.py"
+    },
+    {
+      "source": "backend/app/seed_data.py",
+      "target": "backend/app/seed_data.py"
+    },
+    {
+      "source": "backend/app/stage13.py",
+      "target": "backend/app/stage13.py"
+    },
+    {
+      "source": "backend/app/text_content.py",
+      "target": "backend/app/text_content.py"
+    },
+    {
+      "source": "backend/app/v2_database.py",
+      "target": "backend/app/v2_database.py"
+    },
+    {
+      "source": "backend/requirements.txt",
+      "target": "backend/requirements.txt"
+    },
+    {
+      "source": "deployment/.dockerignore",
+      "target": ".dockerignore"
+    },
+    {
+      "source": "deployment/Caddyfile",
+      "target": "deployment/Caddyfile"
+    },
+    {
+      "source": "deployment/Dockerfile.backend",
+      "target": "deployment/Dockerfile.backend"
+    },
+    {
+      "source": "deployment/Dockerfile.frontend",
+      "target": "deployment/Dockerfile.frontend"
+    },
+    {
+      "source": "deployment/backend-entrypoint.sh",
+      "target": "deployment/backend-entrypoint.sh"
+    },
+    {
+      "source": "deployment/build-maintenance-source.py",
+      "target": "deployment/build-maintenance-source.py"
+    },
+    {
+      "source": "deployment/compose.yaml",
+      "target": "deployment/compose.yaml"
+    },
+    {
+      "source": "deployment/deploy.env.example",
+      "target": "deployment/deploy.env.example"
+    },
+    {
+      "source": "deployment/ops-config.example.json",
+      "target": "deployment/ops-config.example.json"
+    },
+    {
+      "source": "deployment/ops-install.sh",
+      "target": "deployment/ops-install.sh"
+    },
+    {
+      "source": "deployment/release.sh",
+      "target": "deployment/release.sh"
+    },
+    {
+      "source": "deployment/restore.sh",
+      "target": "deployment/restore.sh"
+    },
+    {
+      "source": "deployment/rollback.sh",
+      "target": "deployment/rollback.sh"
+    },
+    {
+      "source": "deployment/secret-dir-check.sh",
+      "target": "deployment/secret-dir-check.sh"
+    },
+    {
+      "source": "deployment/systemd/story-continuity-ops-backup.timer",
+      "target": "deployment/systemd/story-continuity-ops-backup.timer"
+    },
+    {
+      "source": "deployment/systemd/story-continuity-ops-drill.timer",
+      "target": "deployment/systemd/story-continuity-ops-drill.timer"
+    },
+    {
+      "source": "deployment/systemd/story-continuity-ops-monitor.timer",
+      "target": "deployment/systemd/story-continuity-ops-monitor.timer"
+    },
+    {
+      "source": "deployment/systemd/story-continuity-ops@.service",
+      "target": "deployment/systemd/story-continuity-ops@.service"
+    },
+    {
+      "source": "deployment/verify-frontend-image.sh",
+      "target": "deployment/verify-frontend-image.sh"
+    },
+    {
+      "source": "docs/current-model-acceptance.md",
+      "target": "docs/current-model-acceptance.md"
+    },
+    {
+      "source": "docs/current-product.md",
+      "target": "docs/current-product.md"
+    },
+    {
+      "source": "docs/demo-guide.md",
+      "target": "docs/demo-guide.md"
+    },
+    {
+      "source": "docs/local-setup.md",
+      "target": "docs/local-setup.md"
+    },
+    {
+      "source": "docs/maintenance-acceptance.md",
+      "target": "docs/maintenance-acceptance.md"
+    },
+    {
+      "source": "docs/maintenance-deployment.md",
+      "target": "docs/maintenance-deployment.md"
+    },
+    {
+      "source": "docs/maintenance-release-manifest.json",
+      "target": "docs/maintenance-release-manifest.json"
+    },
+    {
+      "source": "docs/maintenance-source-package.md",
+      "target": "docs/maintenance-source-package.md"
+    },
+    {
+      "source": "docs/operations.md",
+      "target": "docs/operations.md"
+    },
+    {
+      "source": "docs/product-decisions-and-validation.md",
+      "target": "docs/product-decisions-and-validation.md"
+    },
+    {
+      "source": "docs/v1.4.0-deployment.md",
+      "target": "docs/v1.4.0-deployment.md"
+    },
+    {
+      "source": "docs/verification-and-limitations.md",
+      "target": "docs/verification-and-limitations.md"
+    },
+    {
+      "source": "frontend/app/[[...path]]/page.tsx",
+      "target": "frontend-source/app/[[...path]]/page.tsx"
+    },
+    {
+      "source": "frontend/app/api.ts",
+      "target": "frontend-source/app/api.ts"
+    },
+    {
+      "source": "frontend/app/author-context-preview.css",
+      "target": "frontend-source/app/author-context-preview.css"
+    },
+    {
+      "source": "frontend/app/components/AuthorContextAnalysis.tsx",
+      "target": "frontend-source/app/components/AuthorContextAnalysis.tsx"
+    },
+    {
+      "source": "frontend/app/components/AuthorContextPreview.tsx",
+      "target": "frontend-source/app/components/AuthorContextPreview.tsx"
+    },
+    {
+      "source": "frontend/app/components/CreateProject.tsx",
+      "target": "frontend-source/app/components/CreateProject.tsx"
+    },
+    {
+      "source": "frontend/app/components/LongTermReview.tsx",
+      "target": "frontend-source/app/components/LongTermReview.tsx"
+    },
+    {
+      "source": "frontend/app/components/ProjectExport.module.css",
+      "target": "frontend-source/app/components/ProjectExport.module.css"
+    },
+    {
+      "source": "frontend/app/components/ProjectExport.tsx",
+      "target": "frontend-source/app/components/ProjectExport.tsx"
+    },
+    {
+      "source": "frontend/app/components/VisualPrimitives.tsx",
+      "target": "frontend-source/app/components/VisualPrimitives.tsx"
+    },
+    {
+      "source": "frontend/app/components/Workbench.tsx",
+      "target": "frontend-source/app/components/Workbench.tsx"
+    },
+    {
+      "source": "frontend/app/components/WritingTools.tsx",
+      "target": "frontend-source/app/components/WritingTools.tsx"
+    },
+    {
+      "source": "frontend/app/components/author-context-api.ts",
+      "target": "frontend-source/app/components/author-context-api.ts"
+    },
+    {
+      "source": "frontend/app/components/author-context-model.ts",
+      "target": "frontend-source/app/components/author-context-model.ts"
+    },
+    {
+      "source": "frontend/app/draft-recovery.ts",
+      "target": "frontend-source/app/draft-recovery.ts"
+    },
+    {
+      "source": "frontend/app/globals.css",
+      "target": "frontend-source/app/globals.css"
+    },
+    {
+      "source": "frontend/app/icon.svg",
+      "target": "frontend-source/app/icon.svg"
+    },
+    {
+      "source": "frontend/app/layout.tsx",
+      "target": "frontend-source/app/layout.tsx"
+    },
+    {
+      "source": "frontend/app/maintenance.css",
+      "target": "frontend-source/app/maintenance.css"
+    },
+    {
+      "source": "frontend/app/model.ts",
+      "target": "frontend-source/app/model.ts"
+    },
+    {
+      "source": "frontend/app/pending-decision.ts",
+      "target": "frontend-source/app/pending-decision.ts"
+    },
+    {
+      "source": "frontend/app/reference-refresh.css",
+      "target": "frontend-source/app/reference-refresh.css"
+    },
+    {
+      "source": "frontend/app/visual-system.css",
+      "target": "frontend-source/app/visual-system.css"
+    },
+    {
+      "source": "frontend/build-id.mjs",
+      "target": "frontend-source/build-id.mjs"
+    },
+    {
+      "source": "frontend/build-origin.mjs",
+      "target": "frontend-source/build-origin.mjs"
+    },
+    {
+      "source": "frontend/next-env.d.ts",
+      "target": "frontend-source/next-env.d.ts"
+    },
+    {
+      "source": "frontend/next.config.mjs",
+      "target": "frontend-source/next.config.mjs"
+    },
+    {
+      "source": "frontend/package-lock.json",
+      "target": "frontend-source/package-lock.json"
+    },
+    {
+      "source": "frontend/package.json",
+      "target": "frontend-source/package.json"
+    },
+    {
+      "source": "frontend/public-config.mjs",
+      "target": "frontend-source/public-config.mjs"
+    },
+    {
+      "source": "frontend/public/assets/avatars/archive-blue.webp",
+      "target": "frontend-source/public/assets/avatars/archive-blue.webp"
+    },
+    {
+      "source": "frontend/public/assets/avatars/continuity-violet.webp",
+      "target": "frontend-source/public/assets/avatars/continuity-violet.webp"
+    },
+    {
+      "source": "frontend/public/assets/avatars/folio-rose.webp",
+      "target": "frontend-source/public/assets/avatars/folio-rose.webp"
+    },
+    {
+      "source": "frontend/public/assets/avatars/signal-amber.webp",
+      "target": "frontend-source/public/assets/avatars/signal-amber.webp"
+    },
+    {
+      "source": "frontend/public/assets/brand/story-continuity-lockup.svg",
+      "target": "frontend-source/public/assets/brand/story-continuity-lockup.svg"
+    },
+    {
+      "source": "frontend/public/assets/brand/story-continuity-mark.svg",
+      "target": "frontend-source/public/assets/brand/story-continuity-mark.svg"
+    },
+    {
+      "source": "frontend/public/assets/v120/empty-library-alpha.webp",
+      "target": "frontend-source/public/assets/v120/empty-library-alpha.webp"
+    },
+    {
+      "source": "frontend/public/assets/v120/empty-manuscript-alpha.webp",
+      "target": "frontend-source/public/assets/v120/empty-manuscript-alpha.webp"
+    },
+    {
+      "source": "frontend/public/assets/v120/tutorial-complete-alpha.webp",
+      "target": "frontend-source/public/assets/v120/tutorial-complete-alpha.webp"
+    },
+    {
+      "source": "frontend/public/assets/v140/creative-bulb.png",
+      "target": "frontend-source/public/assets/v140/creative-bulb.png"
+    },
+    {
+      "source": "frontend/public/assets/v140/home-cosmos.png",
+      "target": "frontend-source/public/assets/v140/home-cosmos.png"
+    },
+    {
+      "source": "frontend/public/assets/v140/manuscript-glass.png",
+      "target": "frontend-source/public/assets/v140/manuscript-glass.png"
+    },
+    {
+      "source": "frontend/public/assets/v140/story-door.png",
+      "target": "frontend-source/public/assets/v140/story-door.png"
+    },
+    {
+      "source": "frontend/tsconfig.json",
+      "target": "frontend-source/tsconfig.json"
+    }
+  ],
+  "complete_trees": [
+    "backend/app",
+    "frontend/app",
+    "frontend/public",
+    "deployment/systemd"
+  ],
+  "required_targets": [
+    "backend/app/main.py",
+    "backend/requirements.txt",
+    "frontend-source/app/layout.tsx",
+    "frontend-source/app/[[...path]]/page.tsx",
+    "frontend-source/package.json",
+    "frontend-source/package-lock.json",
+    "frontend-source/next.config.mjs",
+    "frontend-source/build-id.mjs",
+    "frontend-source/build-origin.mjs",
+    "frontend-source/public-config.mjs",
+    "frontend-source/tsconfig.json",
+    "frontend-source/next-env.d.ts",
+    ".dockerignore",
+    "deployment/Dockerfile.backend",
+    "deployment/Dockerfile.frontend",
+    "deployment/compose.yaml",
+    "deployment/Caddyfile",
+    "deployment/backend-entrypoint.sh",
+    "deployment/release.sh",
+    "deployment/restore.sh",
+    "deployment/rollback.sh",
+    "deployment/secret-dir-check.sh",
+    "deployment/verify-frontend-image.sh",
+    "deployment/ops-install.sh"
+  ],
+  "verification_files": [
+    "backend/tests/__init__.py",
+    "backend/tests/e2e_app.py",
+    "backend/tests/stage13_app.py",
+    "backend/tests/stage13_harness.py",
+    "backend/tests/test_long_term_independent.py",
+    "backend/tests/test_long_term_workflow.py",
+    "backend/tests/test_maintenance_package.py",
+    "backend/tests/test_operations.py",
+    "backend/tests/test_project_export.py",
+    "backend/tests/test_provider_narrative_scope.py",
+    "backend/tests/test_release_script.py",
+    "backend/tests/test_stage11_longform.py",
+    "backend/tests/test_stage11j_source_changes.py",
+    "backend/tests/test_stage11k_incremental_delta.py",
+    "backend/tests/test_stage11l_failure_observability.py",
+    "backend/tests/test_stage11l_two_rounds.py",
+    "backend/tests/test_stage11m_capacity_repair.py",
+    "backend/tests/test_stage11m_runner.py",
+    "backend/tests/test_stage12_run_lifecycle.py",
+    "backend/tests/test_stage13_public_app.py",
+    "backend/tests/test_stage14_deployment.py",
+    "backend/tests/test_stage2_api.py",
+    "backend/tests/test_stage4_api.py",
+    "backend/tests/test_stage8_review.py",
+    "backend/tests/test_stage9_memory_initialization.py",
+    "backend/tests/test_v110_onboarding.py",
+    "backend/tests/test_v120_tutorial_progress.py",
+    "backend/tests/test_v130_author_intent.py",
+    "backend/tests/test_v130_character_alias_change_impact.py",
+    "backend/tests/test_v130_memory_delta_fact_lifecycle.py",
+    "backend/tests/test_v130_profile.py",
+    "backend/tests/test_v130_revision_plan.py",
+    "backend/tests/test_v130_story_qa_foreshadow.py",
+    "backend/tests/test_v130_writing_analysis.py",
+    "backend/tests/test_v140_author_context.py",
+    "backend/tests/test_v140_backend_sync.py",
+    "backend/tests/test_v140_import_structure.py",
+    "backend/tests/test_v140_real_ai_contract_repairs.py",
+    "backend/tests/test_v140_rich_editor_compatibility.py",
+    "backend/tests/test_workflow_deployment.py",
+    "backend/tests/v140_candidate_app.py",
+    "deployment/ops-build-package.py",
+    "deployment/ops-local-acceptance.py",
+    "docs/stage11m-implementation.md",
+    "docs/stage14-deployment.md",
+    "docs/v1.3.0-character-alias-impact.md",
+    "docs/v1.3.0-memory-delta.md",
+    "docs/v1.3.0-product.md",
+    "docs/v1.3.0-release-notes.md",
+    "docs/v1.3.0-revision-plan.md",
+    "docs/v1.3.0-story-qa-foreshadow.md",
+    "docs/v1.3.0-writing-analysis.md",
+    "docs/v1.3.1-backlog.md",
+    "docs/v1.4.0-backend-sync.md",
+    "docs/v1.4.0-phase0-contract.md",
+    "frontend/e2e/auth-entry.spec.ts",
+    "frontend/e2e/maintenance.spec.ts",
+    "frontend/e2e/stage11i.spec.ts",
+    "frontend/e2e/stage11j.spec.ts",
+    "frontend/e2e/stage11k.spec.ts",
+    "frontend/e2e/stage11l.spec.ts",
+    "frontend/e2e/stage12.spec.ts",
+    "frontend/e2e/stage13.spec.ts",
+    "frontend/e2e/stage5.spec.ts",
+    "frontend/e2e/stage8.spec.ts",
+    "frontend/e2e/stage9.spec.ts",
+    "frontend/e2e/v110.spec.ts",
+    "frontend/e2e/v120.spec.ts",
+    "frontend/e2e/v130-author-planning.spec.ts",
+    "frontend/e2e/v130-character-alias-impact.spec.ts",
+    "frontend/e2e/v130-foundation.spec.ts",
+    "frontend/e2e/v130-global-experience.spec.ts",
+    "frontend/e2e/v130-immersive-writing.spec.ts",
+    "frontend/e2e/v130-memory-delta.spec.ts",
+    "frontend/e2e/v130-revision-plan.spec.ts",
+    "frontend/e2e/v130-story-qa-foreshadow.spec.ts",
+    "frontend/e2e/v130-writing-analysis.spec.ts",
+    "frontend/e2e/v140-frontend.spec.ts",
+    "frontend/e2e/v140-visual.spec.ts",
+    "frontend/eslint.config.mjs",
+    "frontend/playwright.config.ts",
+    "frontend/playwright.maintenance.config.ts",
+    "frontend/playwright.stage12-v2.config.ts",
+    "frontend/playwright.stage13.config.ts",
+    "frontend/playwright.v110.config.ts",
+    "frontend/playwright.v120.config.ts",
+    "frontend/playwright.v130.config.ts",
+    "frontend/playwright.v140-visual.config.ts",
+    "frontend/playwright.v140.config.ts",
+    "frontend/scripts/assert-api-rewrite.mjs",
+    "frontend/scripts/run-maintenance-local.mjs",
+    "frontend/scripts/run-v130-local-rc.mjs",
+    "frontend/scripts/run-v140-frontend.mjs",
+    "frontend/scripts/run-v140-visual.mjs",
+    "frontend/scripts/serve-stage12-v2.mjs",
+    "frontend/scripts/serve-stage13.mjs",
+    "frontend/scripts/stage13-v4-build.ps1",
+    "frontend/scripts/stage13-v4-compare.mjs",
+    "frontend/scripts/stage13-v4-policy.mjs",
+    "frontend/scripts/stage13-v4-runtime-scan.mjs",
+    "frontend/scripts/stage14-build.ps1",
+    "frontend/scripts/stage14-bundle-scan.mjs",
+    "frontend/scripts/stage14-bundle.ps1",
+    "frontend/scripts/stage14-local-v4-gate.ps1",
+    "frontend/scripts/start-stage13-v4-artifact.mjs",
+    "frontend/scripts/v130-allowlist-consistency.mjs",
+    "frontend/scripts/v130-release-scan.mjs",
+    "frontend/stage13-harness.mjs",
+    "frontend/tests/build-id.test.mjs",
+    "frontend/tests/build-origin.test.mjs",
+    "frontend/tests/image-provenance-scan.test.mjs",
+    "frontend/tests/public-config.test.mjs",
+    "frontend/tests/stage13-harness.test.mjs",
+    "frontend/tests/stage13-v4-policy.test.mjs",
+    "frontend/tests/stage13-v4-runtime.test.mjs",
+    "frontend/tests/stage14-deployment.test.mjs",
+    "frontend/tests/v130-allowlist-consistency.test.mjs",
+    "frontend/tests/v130-harness.test.mjs",
+    "frontend/tests/v130-release-scan.test.mjs",
+    "frontend/v130-harness.d.mts",
+    "frontend/v130-harness.mjs"
+  ],
+  "forbidden_package_roots": [
+    ".env*",
+    "runtime/",
+    "evidence/",
+    "artifacts/",
+    "evaluation/",
+    "tests/",
+    "e2e/",
+    "test-results/",
+    "playwright-report/",
+    "node_modules/",
+    ".next*/",
+    "AGENTS.md",
+    "CLAUDE.md"
+  ],
+  "actions_this_tool_performs": [
+    "local_read",
+    "local_source_archive",
+    "offline_hash_verification"
+  ],
+  "not_authorized_by_manifest": [
+    "deploy",
+    "commit",
+    "push",
+    "provider_call",
+    "smtp_call",
+    "read_real_credentials"
+  ]
+}

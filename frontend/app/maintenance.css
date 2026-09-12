@@ -1,0 +1,23 @@
+.long-term-review { margin-top: 2rem; padding: clamp(1rem, 3vw, 2rem); background: var(--surface, #fff); border: 1px solid var(--line, #e4e1eb); border-radius: 16px; }
+.maintenance-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+.maintenance-heading h2 { margin: .4rem 0; }
+.maintenance-heading p { max-width: 65ch; }
+.maintenance-details { border-top: 1px solid var(--line); padding: 1rem 0; }
+.maintenance-details > summary { cursor: pointer; font-weight: 600; padding: .5rem 0; }
+.maintenance-details > summary span, .source-reviews h3 span { color: var(--muted); font-size: .85em; margin-left: .5rem; }
+.maintenance-chapters { list-style: none; padding: 0; }
+.maintenance-chapters li { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .8rem 0; border-bottom: 1px solid var(--line); }
+.chapter-revision-form, .fact-source-review { display: grid; gap: 1rem; padding: 1rem 0; }
+.chapter-revision-form label, .fact-source-review label { display: grid; gap: .5rem; }
+.chapter-revision-form input, .chapter-revision-form textarea, .fact-source-review input { width: 100%; box-sizing: border-box; }
+.chapter-revision-form textarea { min-height: 18rem; line-height: 1.85; resize: vertical; }
+.revision-preview { padding: 1rem; border: 1px solid var(--line); border-radius: 10px; }
+.revision-comparison { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 1rem; }
+.revision-comparison section { min-width: 0; }
+.long-term-review pre { font: inherit; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 28rem; overflow-y: auto; color: var(--text); background: var(--ink-900, #14111f); padding: 1rem; border-radius: 8px; }
+.source-reviews { margin: 1rem 0; }
+.fact-source-review, .decision-policy { border-top: 1px solid var(--line); padding: 1rem 0; }
+.long-term-review button { cursor: pointer; }
+.long-term-review button:disabled { cursor: not-allowed; opacity: .55; }
+.long-term-review .actions { flex-wrap: wrap; }
+@media (max-width: 767px) { .maintenance-heading { flex-direction: column; } .revision-comparison { grid-template-columns: minmax(0,1fr); } .maintenance-chapters li { align-items: flex-start; flex-direction: column; } }

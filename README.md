@@ -2,9 +2,9 @@
 
 The active product is **Story Continuity Copilot v1.4.0**. It adds canonical author materials and comparisons, unified planning and authoring pages, rich-text and immersive writing, and stricter AI evidence contracts to the author workflow. The author owns the prose and every canon decision.
 
-The active online release is `v140-4bd8d93-20260908`, from source commit `4bd8d93`, deployed on 2026-09-08 (Australia/Sydney). Runtime code matches the accepted product commit `8a55f5b`; the later commit corrects deployment scanning of four images' public C2PA certificate metadata. See the [v1.4.0 deployment record](docs/v1.4.0-deployment.md). The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
+The active online release is `maint-e2d141c23d0c-20260913`, deployed on 2026-09-13 (Australia/Sydney) from a frozen source inventory identified by `e2d141c23d0c` (not a Git commit). See the [maintenance deployment record](docs/maintenance-deployment.md). The [2026-09-08 deployment record](docs/v1.4.0-deployment.md) remains historical evidence. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
 
-The canonical product description is [v1.3.0 product contract](docs/v1.3.0-product.md). The writing-analysis, [character-alias and change-impact](docs/v1.3.0-character-alias-impact.md), [bounded revision plan](docs/v1.3.0-revision-plan.md), and Memory-delta documents remain focused technical appendices. Release scope, verification assets, and protected local evidence are separated in the [v1.3.0 release allowlist](docs/v1.3.0-release-allowlist.json).
+The canonical product description is [current product and verification scope](docs/current-product.md). The [maintenance acceptance record](docs/maintenance-acceptance.md) separates local verification from the bounded production checks. The September maintenance update adds saved-work exports, reversible author-decision reuse, full-chapter revision with fact review, and independent operations tools. The [v1.3.0 product contract](docs/v1.3.0-product.md), writing-analysis, [character-alias and change-impact](docs/v1.3.0-character-alias-impact.md), [bounded revision plan](docs/v1.3.0-revision-plan.md), and Memory-delta documents remain historical or focused technical appendices. Current source packaging uses the [maintenance release manifest](docs/maintenance-release-manifest.json); the [v1.3 allowlist](docs/v1.3.0-release-allowlist.json) records its historical release scope. Current documentation was updated after the deployed source package was frozen; it does not change that archive or image identity.
 
 The signed Stage 14 public-production baseline remains **Story Continuity Copilot v1.0 Public Release** as a historical evidence baseline. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility.
 
@@ -33,11 +33,12 @@ The repository is designed for local reproduction. It contains the application s
 
 - Active origin: [https://43-160-207-57.sslip.io](https://43-160-207-57.sslip.io)
 - Active version: **Story Continuity Copilot v1.4.0**
-- Source commit: `4bd8d93`
-- Production release ID: `v140-4bd8d93-20260908`
-- Deployment date: 2026-09-08 (Australia/Sydney)
-- The verified off-instance SQLite backup, isolated migration rehearsal, and live post-migration comparison preserve all 41 preexisting business tables. Schema version is 145; integrity and foreign-key checks passed.
-- Linux images passed platform verification; public health/readiness, planning persistence, rich-text save/reload, and immersive writing were checked. The deployment smoke test did not invoke the external AI provider or send email. The previous v1.2.0 images and configuration remain available for rollback.
+- Frozen source inventory SHA256: `e2d141c23d0ccab25ccf1fd24b7f0ea0821493a6f892c7b784680f7f492b0402`
+- Production release ID: `maint-e2d141c23d0c-20260913`
+- Deployment date: 2026-09-13 (Australia/Sydney)
+- Isolated migration rehearsal and live comparison before browser acceptance preserved all 67 preexisting business tables and 661 rows. Schema is 146; integrity and foreign-key checks passed. Pre-deployment and post-deployment backups were manually downloaded to the operator workstation and independently hashed.
+- Public browser acceptance passed seven checks, including actual TXT/Markdown/ZIP downloads, maintenance-page chapter content, a revision guard rejecting changes, mobile read-only layout, and fresh JS/CSS loads. It did not rerun successful revision commits, decision reuse, or external AI calls online; those retain their separate local evidence.
+- Three operations timers are enabled; first-run checks and a subsequent monitor cycle were observed. The user has deferred automated off-instance replication and external alert delivery as optional follow-up work; the missing-copy warning remains visible. Old images are retained, but targets without the schema146 workflow contract are rejected; no actual rollback was performed. See the [deployment scope and limitations](docs/maintenance-deployment.md).
 
 ## Product overview
 
@@ -200,7 +201,7 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 
 ## Known limitations
 
-- The signed Stage 14 production baseline remains `Story Continuity Copilot v1.0 Public Release` as historical evidence. The active public deployment is v1.4.0; its deployment and acceptance scope are recorded in docs/v1.4.0-deployment.md. Local acceptance does not re-sign Stage 14, constitute a commercial SLA, or claim that the retained Stage 10 `gate_failed` evaluation was later passed.
+- The signed Stage 14 production baseline remains `Story Continuity Copilot v1.0 Public Release` as historical evidence. The active public deployment is the v1.4.0 maintenance update; its deployment and acceptance scope are recorded in [maintenance deployment](docs/maintenance-deployment.md). Local acceptance does not re-sign Stage 14, constitute a commercial SLA, or claim that the retained Stage 10 `gate_failed` evaluation was later passed.
 - Real SMTP delivery, email verification, password reset, old-session revocation, new-password login, and used-link replay rejection have been accepted at the public origin. Email credentials and addresses remain server-only.
 - V4 is a small, frozen product evaluation; it supports the stated evaluation claims only and is not a general benchmark.
 - Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.

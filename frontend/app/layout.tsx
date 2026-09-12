@@ -3,6 +3,7 @@ import "./globals.css";
 import "./visual-system.css";
 import "./author-context-preview.css";
 import "./reference-refresh.css";
+import "./maintenance.css";
 
 export const metadata: Metadata = {
   title: "Story Continuity Copilot",

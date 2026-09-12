@@ -1,0 +1,11 @@
+[Unit]
+Description=Story Continuity health, backup and run monitoring
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+RandomizedDelaySec=30
+Unit=story-continuity-ops@monitor.service
+
+[Install]
+WantedBy=timers.target

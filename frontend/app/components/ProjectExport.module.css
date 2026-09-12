@@ -1,0 +1,72 @@
+.panel {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.panel h3,
+.panel p {
+  margin: 0;
+}
+
+.panel h3 {
+  color: var(--text);
+  font-size: 18px;
+}
+
+.panel p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.panel select {
+  width: min(100%, 360px);
+  min-height: 42px;
+}
+
+.panel > label {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.draft {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  width: fit-content;
+  line-height: 1.6;
+}
+
+.draft input {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  min-height: 16px;
+  margin: 3px 0 0;
+  accent-color: var(--violet-400);
+}
+
+.download {
+  justify-self: start;
+  min-height: 42px;
+  margin-top: 3px;
+}
+
+.panel p[role="status"]:empty {
+  display: none;
+}
+
+.panel p[role="status"] {
+  color: var(--text);
+}
+
+@media (max-width: 520px) {
+  .panel {
+    padding: 18px 16px;
+  }
+}

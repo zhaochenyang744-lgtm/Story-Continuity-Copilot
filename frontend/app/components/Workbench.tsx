@@ -15,6 +15,8 @@ import {
 } from "react";
 import Image from "next/image";
 import { CreateProject } from "./CreateProject";
+import { ProjectExport } from "./ProjectExport";
+import { LongTermReview } from "./LongTermReview";
 import { WritingTools, RichDraftEditor, DraftWordCount, replaceVisibleDraftText, useDraftText } from "./WritingTools";
 import { AuthorContextPreviewProvider, ContextButton, ContextOverview, ContextInline, ContextDraftShelf, useCanonicalMaterialIds } from "./AuthorContextPreview";
 import { CreativeTips, DesignIcon, DesignAsset } from "./VisualPrimitives";
@@ -2433,6 +2435,17 @@ export function Workbench() {
       <AuthorContextPreviewProvider key={`${user?.id}:${project.id}`} project={project} userId={user?.id ?? ""} chapters={chapters} memories={memories} authorContext={authorContext} go={go}>
       <ProjectPage
         tab={tab}
+        actorId={user.id}
+        refreshReferences={async () => {
+          const id = project.id;
+          const [updated, chapterData, memoryData] = await Promise.all([
+            request<Project>(`/projects/${id}`),
+            request<{ chapters: Chapter[] }>(`/projects/${id}/chapters?include=excerpt`),
+            request<{ records: Memory[] }>(`/projects/${id}/memory`),
+          ]);
+          if (window.location.pathname.split("/")[2] !== id) return;
+          setProject(updated); setChapters(chapterData.chapters); setMemories(memoryData.records);
+        }}
         project={project}
         chapters={chapters}
         outline={outline}
@@ -3617,12 +3630,13 @@ function Rows({
   append?: (id: string) => void;
   filtered?: boolean;
 }) {
-  const [page, setPage] = useState(1);
+  const rowKey = rows.map((row) => row.id ?? row.project_id).join(",");
+  const [pagination, setPagination] = useState({ rowKey, page: 1 });
+  const page = pagination.rowKey === rowKey ? pagination.page : 1;
+  const setPage = (nextPage: number) => setPagination({ rowKey, page: nextPage });
   const pageSize = 8;
   const pageCount = Math.max(1, Math.ceil(rows.length / pageSize));
   const currentPage = Math.min(page, pageCount);
-  const rowKey = rows.map((row) => row.id ?? row.project_id).join(",");
-  useEffect(() => setPage(1), [rowKey]);
   return rows.length ? (
     <div className="project-table">
       <div className="project-rows-head" aria-hidden="true">
@@ -4161,7 +4175,7 @@ function EvidenceLinks({sources,navigate}:{sources:{source_id:string;source_type
 }
 
 function ForeshadowReferenceSelect({label,value,setValue,chapters,disabled}:{label:string;value:string;setValue:(value:string)=>void;chapters:Chapter[];disabled:boolean}){
-  return <label>{label}<select value={value} disabled={disabled} onChange={(event)=>setValue(event.target.value)}><option value="">不关联</option>{chapters.flatMap((chapter)=>[<option key={`chapter:${chapter.id}`} value={`${chapter.id}|`}>第 {chapter.number} 章《{chapter.title}》</option>,...(chapter.source_spans??[]).map((span)=><option key={span.span_id} value={`${chapter.id}|${span.span_id}`}>第 {chapter.number} 章 · {span.label}</option>)])}</select></label>;
+  return <label>{label}<select value={value} disabled={disabled} onChange={(event)=>setValue(event.target.value)}><option value="">不关联</option>{chapters.flatMap((chapter)=>[<option key={`chapter:${chapter.id}`} value={`${chapter.id}|`}>第 {chapter.number} 章《{chapter.title}》</option>,...(chapter.source_spans??[]).map((span)=><option key={span.span_id} value={`${chapter.id}|${span.span_id}`}>第 {chapter.number} 章 · {span.label === "chapter_revision" ? "修订正文" : span.label}</option>)])}</select></label>;
 }
 
 function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go}:{project:Project;draft:Draft|null;chapters:Chapter[];readOnly:boolean;dirty:boolean;go:(href:string)=>void}){
@@ -4258,7 +4272,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
   const hasActive=runs.some(activeAnalysis);
   useEffect(()=>{void draftRevision;void sourceRunId;const timer=window.setTimeout(()=>{setSelected([]);void refresh();},0);return()=>{window.clearTimeout(timer);refreshEpoch.current+=1;refreshAbort.current?.abort();};},[refresh,draftRevision,sourceRunId]);
   useEffect(()=>{if(!hasActive)return;const timer=window.setInterval(()=>void refresh(true),700);return()=>window.clearInterval(timer);},[refresh,hasActive]);
-  const eligible=(run?.status==="completed"&&!run.is_stale?run.issues??[]:[]).filter((issue)=>issue.status==="open"&&!issue.decision&&(issue.evidence??[]).some((source)=>source.sufficiency==="sufficient"));
+  const eligible=(run?.status==="completed"&&!run.is_stale?run.issues??[]:[]).filter((issue)=>issue.status==="open"&&!issue.decision&&!issue.reused_decision&&(issue.evidence??[]).some((source)=>source.sufficiency==="sufficient"));
   const eligibleIds=new Set(eligible.map((issue)=>issue.id)),effectiveSelected=selected.filter((issueId)=>eligibleIds.has(issueId));
   const toggleIssue=(issueId:string)=>setSelected((current)=>{const visible=current.filter((id)=>eligibleIds.has(id));return visible.includes(issueId)?visible.filter((id)=>id!==issueId):visible.length<8?[...visible,issueId]:visible;});
   const start=async()=>{if(!draft||!effectiveSelected.length)return;if(dirty){setNotice("请先显式保存当前草稿；修订建议只绑定已保存版本。");return;}setLocalBusy("start");setNotice("");try{await json(`/projects/${project.id}/analyses`,"POST",{analysis_type:"revision_plan",draft_id:draft.id,draft_revision:draft.revision,issue_ids:effectiveSelected});setSelected([]);setNotice("修订建议已提交；每条候选仍需作者接受、编辑后接受或拒绝。");await refresh(true);}catch(error){setNotice(labelError(error));}finally{setLocalBusy("");}};
@@ -4635,7 +4649,7 @@ function ImmersiveEditor({
                     >
                       <span><strong>{issueNatureLabel(issue.nature)}</strong><small>{impactLabel(issue.severity)}</small></span>
                       <span>{issue.claim_text || issue.explanation}</span>
-                      <small>{issue.decision || locallyResolvedIssueIds.includes(issue.id) ? "决定已记录" : `涉及：${categoryLabel(issue.category)} · 查看证据`}</small>
+                      <small>{issue.reused_decision ? "沿用作者此前判断" : issue.decision || locallyResolvedIssueIds.includes(issue.id) ? "决定已记录" : `涉及：${categoryLabel(issue.category)} · 查看证据`}</small>
                     </Button>
                   </li>
                 ))}
@@ -4670,6 +4684,8 @@ function ImmersiveEditor({
 
 function ProjectPage(p: {
   tab: string;
+  actorId: string;
+  refreshReferences: () => Promise<void>;
   project: Project;
   chapters: Chapter[];
   outline: {
@@ -4871,6 +4887,10 @@ function ProjectPage(p: {
           </section>
         </div>
         <ContextOverview />
+        <section className="project-section" aria-label="作品导出与历史修订">
+          <ProjectExport projectId={p.project.id} />
+          <Button onClick={() => p.go(`/projects/${p.project.id}/sources#long-term-review`)}>修订历史章节与复核事实</Button>
+        </section>
         <section className="project-section">
           <h2>资料摘要</h2>
           <div className="overview-grid overview-reference-grid">
@@ -5024,7 +5044,8 @@ function ProjectPage(p: {
     );
   if (p.tab === "sources")
     return (
-      <SourceAppend project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} context={contextNotices} />
+      <><SourceAppend project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} context={contextNotices} />
+      <LongTermReview key={`${p.actorId}:${p.project.id}`} userId={p.actorId} projectId={p.project.id} readOnly={p.readOnly} onChanged={p.refreshReferences} /></>
     );
   return (
     <section className="project-page workspace-page" data-mobile-pane={mobilePane}>
@@ -5145,7 +5166,7 @@ function ProjectPage(p: {
         </section>
         <aside className="issues">
           <header className="issues-top">
-            <DesignAsset name="bulb" /><div><h2>待处理提示 <span>{p.run?.issues?.length ?? 0}</span></h2><p>问题性质与影响程度分开显示</p></div>
+            <DesignAsset name="bulb" /><div><h2>待处理提示 <span>{(p.run?.issues ?? []).filter((issue) => !issue.decision && !issue.reused_decision && !p.locallyResolvedIssueIds.includes(issue.id)).length}</span></h2><p>问题性质与影响程度分开显示</p></div>
           </header>
           {p.run ? (
             <>
@@ -5165,7 +5186,7 @@ function ProjectPage(p: {
                     <ul>
                     {group.map((x) => <li key={x.id}>
                     <Button
-                      className={`issue-row severity-${x.severity}${p.selectedIssueId === x.id ? " selected" : ""}${x.decision || p.locallyResolvedIssueIds.includes(x.id) ? " resolved" : ""}`}
+                      className={`issue-row severity-${x.severity}${p.selectedIssueId === x.id ? " selected" : ""}${x.decision || x.reused_decision || p.locallyResolvedIssueIds.includes(x.id) ? " resolved" : ""}`}
                       ariaPressed={p.selectedIssueId === x.id}
                       onClick={(e) => p.select(x, e.currentTarget)}
                     >
@@ -5183,7 +5204,7 @@ function ProjectPage(p: {
                         <strong>{issueNatureLabel(x.nature)}</strong>
                       </span>
                       <span className="issue-claim">{x.claim_text || x.explanation}</span>
-                      <small className="issue-action-label">{x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "决定已记录" : `涉及：${categoryLabel(x.category)} · 查看证据`}</small>
+                      <small className="issue-action-label">{x.reused_decision ? "沿用作者此前判断" : x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "决定已记录" : `涉及：${categoryLabel(x.category)} · 查看证据`}</small>
                       <span className="issue-arrow" aria-hidden="true">›</span>
                     </Button>
                     </li>)}
@@ -5200,7 +5221,7 @@ function ProjectPage(p: {
                 (p.run.issues ?? []).length > 0 &&
                 !(p.run.issues ?? []).some(
                   (x) =>
-                    !x.decision && !p.locallyResolvedIssueIds.includes(x.id),
+                    !x.decision && !x.reused_decision && !p.locallyResolvedIssueIds.includes(x.id),
                 ) && (
                   <Button
                     className="primary"
@@ -5509,13 +5530,13 @@ function SourceAppend({ project, draft, chapters, readOnly, context }: { project
     try { const data = await json<{ source_change_set: SourceChangeSet; next_draft: Draft }>(`/projects/${project.id}/source-change-sets/${preview.id}/commit`, "POST", { confirm: true, content_sha256: preview.content_sha256 }); setPreview(data.source_change_set); setNextDraft(data.next_draft); }
     catch (cause) { setError(labelError(cause)); } finally { setBusy(""); }
   };
-  return <section className="project-page read-page"><header className="page-header"><div><p className="breadcrumb">项目 / {project.title} / 章节来源</p><h1>追加章节</h1><p>目标作品：{project.title} · source r{base} → r{base + 1}。P0 只追加，既有来源不覆盖。</p></div></header>{context}
+  return <section className="project-page read-page"><header className="page-header"><div><p className="breadcrumb">项目 / {project.title} / 章节来源</p><h1>追加章节</h1><p>目标作品：{project.title}。在此追加新章节，或在下方修订已有完整正文。提交后保留历史来源与审阅记录。</p></div></header>{context}
     {!readOnly && <section className="project-section"><h2>新增来源</h2><fieldset disabled={Boolean(busy)}><legend>入口</legend>{(["draft_complete", "paste", "file"] as const).map((value) => <label key={value}><input type="radio" checked={method === value} onChange={() => setMethod(value)} />{value === "draft_complete" ? "完成当前章节" : value === "paste" ? "粘贴追加" : "追加文件"}</label>)}</fieldset>
     {method === "draft_complete" ? <p>将完成当前草稿《{draft?.title ?? "—"}》并追加为新章节。</p> : <><label>章节正文<textarea value={content} onChange={(event) => setContent(event.target.value)} disabled={readOnly || Boolean(busy)} /></label>{method === "file" && <label>追加文件<input type="file" accept=".md,.txt,text/markdown,text/plain" disabled={readOnly || Boolean(busy)} onChange={async (event) => { const file = event.currentTarget.files?.[0]; if (!file) return; setFilename(file.name); setContent(await file.text()); }} /><small>{filename || "仅支持 UTF-8 .md / .txt"}</small></label>}</>}
     <Button className="primary" disabled={Boolean(busy) || (method !== "draft_complete" && !content.trim())} onClick={() => void makePreview()}>{busy || "预览追加"}</Button></section>}
     {error && <div className="notice error" role="alert">{error} 请保留当前内容，重新获取当前 source revision 后重试。</div>}
     {preview && <section className="notice success" role="status"><strong>SourceChangeSet 预览 · {preview.status}</strong><p>SHA-256 {preview.content_sha256} · {preview.chapter_count} 个章节 / {preview.source_span_count} 个 SourceSpan · r{preview.base_source_revision} → r{preview.target_source_revision}</p><small>预览于 {preview.previewed_at}；创建审计已记录。文件仅记录 basename。</small><ul>{preview.chapters.map((chapter) => <li key={chapter.preview_id}>第 {chapter.order} 个追加章节《{chapter.title}》· {chapter.character_count} 字</li>)}</ul>{!readOnly && (preview.status === "previewed" ? <Button className="primary" disabled={Boolean(busy)} onClick={() => void commit()}>确认追加并创建下一章草稿</Button> : <><p>已提交 source r{preview.target_source_revision}。</p>{nextDraft && <p>下一章草稿：第 {nextDraft.chapter_number} 章《{nextDraft.title}》 · {nextDraft.id}</p>}<Button className="primary" onClick={() => router.push(`/projects/${project.id}/workspace`)}>进入下一章草稿</Button></>)}</section>}
-    <Read title="现有章节来源" breadcrumb="Evidence 可回源" note="历史 Evidence 保持指向原 SourceSpan。" items={chapters.flatMap((chapter) => [<li key={`chapter-${chapter.id}`} id={`chapter-${chapter.id}`} className="source-chapter-anchor"><strong>第 {chapter.number} 章《{chapter.title}》</strong><span>{chapter.summary||"本章来源"}</span></li>,...(chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`}><strong>第 {chapter.number} 章《{chapter.title}》 · {span.label}</strong><span>{span.text_excerpt}</span></li>)])} empty="此作品还没有可回源的章节片段。" />
+    <Read title="现有章节来源" breadcrumb="Evidence 可回源" note="历史 Evidence 保持指向原 SourceSpan。" items={chapters.flatMap((chapter) => [<li key={`chapter-${chapter.id}`} id={`chapter-${chapter.id}`} className="source-chapter-anchor"><strong>第 {chapter.number} 章《{chapter.title}》</strong><span>{chapter.summary||"本章来源"}</span></li>,...(chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`}><strong>第 {chapter.number} 章《{chapter.title}》 · {span.label === "chapter_revision" ? "修订正文" : span.label}{span.is_current === false ? " · 历史来源（已修订）" : ""}</strong><span>{span.text_excerpt}</span></li>)])} empty="此作品还没有可回源的章节片段。" />
   </section>;
 }
 
@@ -6281,7 +6302,7 @@ function MemoryRecords({ records, openSource }: { records: Memory[]; openSource:
               <strong role="cell" className="memory-subject">{record.subject}</strong>
               <span role="cell" className="memory-field memory-value" data-label="事实内容"><small>{predicateLabel(record.predicate)}</small>{record.value}</span>
               <Button className="quiet memory-source" ariaLabel={record.source ? `查看 ${record.subject} 的来源` : `${record.subject} 暂无来源`} disabled={!record.source} onClick={(event) => openSource(record, event.currentTarget)}>{record.source ? `第 ${record.source.chapter_number} 章《${record.source.chapter_title || "未命名"}》 ↗` : "来源不可用"}</Button>
-              <span role="cell" data-label="当前状态" className={`memory-status ${record.valid_to != null ? "retired" : record.review_status === "author_confirmed" ? "confirmed" : "pending"}`}><I>{record.valid_to != null ? "—" : record.review_status === "author_confirmed" ? "✓" : "○"}</I>{record.valid_to != null ? "已失效" : "当前有效"}</span>
+              <span role="cell" data-label="当前状态" className={`memory-status ${record.valid_to != null ? "retired" : record.requires_source_review ? "pending" : record.review_status === "author_confirmed" ? "confirmed" : "pending"}`}><I>{record.valid_to != null ? "—" : record.requires_source_review ? "○" : "✓"}</I>{record.valid_to != null ? "已失效" : record.requires_source_review ? "来源待复核" : "当前有效"}</span>
               <details role="cell" className="memory-version-details"><summary>版本详情</summary><p>事实库版本 {record.valid_from == null ? "未提供" : `V${record.valid_from}`}—{record.valid_to == null ? "当前" : `V${record.valid_to}`}</p><p>故事时间：未提供</p><p>{reviewStatusLabel(record.review_status)} · {memoryTypeLabel(record.memory_type)}</p></details>
               <small className="memory-kind">{memoryTypeLabel(record.memory_type)}</small>
             </div>
@@ -6386,7 +6407,7 @@ function SourceDrawer({
           {chapter?.summary ? <div className="source-summary"><strong>章节摘要</strong><p>{chapter.summary}</p></div> : <p className="source-unavailable">章节摘要未提供。</p>}
           {contextSpans.length ? contextSpans.map((span) => (
             <article key={span.span_id}>
-              <strong>{span.label}</strong>
+              <strong>{span.label === "chapter_revision" ? "修订正文" : span.label}</strong>
               <p>{span.text_excerpt}</p>
             </article>
           )) : <p className="source-unavailable">当前接口未提供更多同章片段。</p>}
@@ -6559,6 +6580,7 @@ function Evidence({
         {!tutorialEvidenceGate && !readOnly && (
           <section className="evidence-section author-decision">
             <h3>作者决定</h3>
+            {issue.reused_decision && <p className="decision-feedback" role="status">沿用作者此前判断，无需重复处理。<a href={issue.reused_decision.review_path}>管理判断复用</a></p>}
             {issue.decision ? <p className="decision-feedback" role="status"><I>✓</I>决定已记录；此问题保留在列表中，便于后续追溯。</p> : <p>请选择如何处理此问题。</p>}
             {tutorial && tutorialStep === 4 && issue.decision && (
               <>

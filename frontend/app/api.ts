@@ -89,6 +89,7 @@ export const json = <T>(
 export const labelError = (cause: unknown) => {
   const code = (cause as ApiFailure)?.code;
   const labels: Record<string, string> = {
+    source_revision_review_required: "历史章节已修订。请到项目概览中的“修订历史章节与复核事实”，逐项确认受影响的资料后再运行 AI 检查。",
     authentication_required: "会话已失效；已清除当前作品上下文，请重新登录。",
     invalid_credentials: "账号或密码不正确。",
     authentication_rate_limited: "登录尝试过于频繁，请稍后再试。",

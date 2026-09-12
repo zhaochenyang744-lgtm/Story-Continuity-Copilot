@@ -1,5 +1,7 @@
 # Story Continuity Copilot v1.0 Public Release — product decisions and evidence
 
+> Historical v1.0 product-decision and evidence record. Its current-delivery wording refers to the signed Stage 14 baseline. Use [current product and verification scope](current-product.md) for the later v1.4.0 deployment and maintenance candidate. Original evaluation outcomes, failures, and scope remain unchanged below.
+
 ## Problem
 
 Long-form fiction accumulates facts that are difficult to keep consistent: event order, character state, world rules, knowledge boundaries, and previously established evidence. A review tool needs to help authors inspect these constraints without replacing authorial control.

@@ -1,9 +1,23 @@
-import { expect, test, type Page, type Route } from "@playwright/test";
+import { expect, test, type Locator, type Page, type Route } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
 import fixture from "./fixtures/v140/development.json";
 
 type JsonRecord = Record<string, unknown>;
+
+// The v1.4 editor is contenteditable; conflict recovery deliberately remains a
+// read-only textarea. Read the actual UI in either state, without accessing the
+// Tiptap instance or replacing the editor with a test-only implementation.
+async function draftText(editor: Locator) {
+  return editor.evaluate((element) => element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement
+    ? element.value
+    : (element as HTMLElement).innerText);
+}
+
+async function expectDraftText(editor: Locator, expected: string | RegExp) {
+  if (typeof expected === "string") await expect.poll(() => draftText(editor)).toBe(expected);
+  else await expect.poll(() => draftText(editor)).toMatch(expected);
+}
 
 async function register(page: Page, suffix: string) {
   const prefix = process.env.E2E_ACCOUNT_PREFIX ?? "v140";
@@ -116,15 +130,15 @@ test("v1.4 trustworthy review separates semantics and guards suggestion applicat
   await expect(drawer.getByText("判断理由", { exact: true })).toBeVisible();
   await expect(drawer.getByText(/只回到正文，不会自动改写或保存/)).toBeVisible();
   const body = page.locator("#draft-body");
-  const original = await body.inputValue();
+  const original = await draftText(body);
   await drawer.getByRole("button", { name: "预览修改建议", exact: true }).click();
   await expect(drawer.getByRole("region", { name: "修改差异预览" })).toContainText("修改前");
   await drawer.getByRole("button", { name: "取消预览", exact: true }).click();
-  expect(await body.inputValue()).toBe(original);
+  expect(await draftText(body)).toBe(original);
   await drawer.getByRole("button", { name: "预览修改建议", exact: true }).click();
   await drawer.getByRole("button", { name: "应用到未保存草稿", exact: true }).click();
   await expect(page.getByRole("status")).toContainText("修改建议已放入未保存草稿；请先检查正文，再决定是否保存。");
-  await expect(body).toHaveValue(original.replace("温岚把罗盘放在潮汐档案室的桌上。", "温岚暂时把罗盘放在潮汐档案室的桌上。"));
+  await expectDraftText(body, original.replace("温岚把罗盘放在潮汐档案室的桌上。", "温岚暂时把罗盘放在潮汐档案室的桌上。"));
   await expect(page.locator(".workspace-save-summary")).toContainText("未保存");
   await expect(page.locator(".run-meta")).toContainText("此检查针对先前正文");
   await page.locator(".issue-row").filter({ hasText: "状态变化" }).first().click();
@@ -141,7 +155,8 @@ test("v1.4 trustworthy review separates semantics and guards suggestion applicat
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.getByRole("navigation", { name: "手机浏览内容" })).toBeVisible();
-  await expect(page.locator("#draft-body")).toHaveCount(0);
+  await expect(page.getByRole("textbox", { name: "只读草稿正文", exact: true })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "只读草稿正文", exact: true })).not.toBeEditable();
   await page.getByRole("button", { name: /问题/ }).click();
   await expect(page.locator(".issue-list")).toBeVisible();
   await screenshot(page, "v140-02-mobile-review-390.png");
@@ -153,7 +168,7 @@ test("v1.4 local recovery preserves same-revision edits and blocks cross-revisio
   await beginTutorial(page);
   await page.getByRole("button", { name: "写作与检查", exact: true }).click();
   const body = page.locator("#draft-body");
-  const original = await body.inputValue();
+  const original = await draftText(body);
   await body.fill(`${original}\n当前设备恢复标记。`);
   await expect.poll(() => page.evaluate(() => Object.keys(localStorage).some((key) => key.startsWith("story-continuity:draft:v1:")))).toBe(true);
   page.once("dialog", (dialog) => dialog.accept());
@@ -173,7 +188,7 @@ test("v1.4 local recovery preserves same-revision edits and blocks cross-revisio
     const draftResponse = await fetch(`/api/projects/${projectId}/drafts/${project.current_draft.id}`);
     return { projectId, draft: (await draftResponse.json()).data };
   }) as { projectId: string; draft: { id: string; revision: number; title: string; body: string } };
-  await body.fill(`${current.draft.body}\n跨版本本地副本。`);
+  await body.fill(`${await draftText(body)}\n跨版本本地副本。`);
   await expect.poll(() => page.evaluate(() => Object.values(localStorage).some((value) => value.includes("跨版本本地副本")))).toBe(true);
   const external = await page.evaluate(async ({ projectId, draft }) => {
     const response = await fetch(`/api/projects/${projectId}/drafts/${draft.id}`, {
@@ -197,11 +212,11 @@ test("v1.4 local recovery preserves same-revision edits and blocks cross-revisio
   await expect(page.getByLabel("章节标题")).toBeDisabled();
   await expect(page.getByRole("button", { name: "进入沉浸写作", exact: true })).toBeDisabled();
   await expect(page.getByRole("button", { name: "保存草稿", exact: true })).toBeDisabled();
-  const recoveryText = await body.inputValue();
+  const recoveryText = await draftText(body);
   page.once("dialog", (dialog) => dialog.accept());
   await page.reload();
   await page.getByRole("dialog", { name: "发现两个不同版本的草稿", exact: true }).getByRole("button", { name: "查看恢复副本（禁止直接覆盖）", exact: true }).click();
-  await expect(body).toHaveValue(recoveryText);
+  await expectDraftText(body, recoveryText);
   await expect(body).toHaveAttribute("readonly", "");
   await screenshot(page, "v140-03-cross-revision-recovery.png");
 });
@@ -243,13 +258,15 @@ test("v1.4 controlled save locks input and reports decision failure separately",
   const drawer = await reachFullEvidence(page);
   await drawer.getByRole("button", { name: "前往修改", exact: true }).click();
   const body = page.locator("#draft-body");
-  await body.fill(`${await body.inputValue()}\n受控修订自测。`);
+  await body.fill(`${await draftText(body)}\n受控修订自测。`);
   let patchCalls = 0;
   let decisionCalls = 0;
+  let releasePatch = () => {};
+  const patchGate = new Promise<void>((resolve) => { releasePatch = resolve; });
   await page.route("**/api/projects/*/drafts/*", async (route) => {
     if (route.request().method() !== "PATCH") return route.continue();
     patchCalls += 1;
-    await new Promise((resolve) => setTimeout(resolve, 450));
+    await patchGate;
     await route.continue();
   });
   await page.route("**/api/projects/*/issues/*/decision", async (route) => {
@@ -258,8 +275,10 @@ test("v1.4 controlled save locks input and reports decision failure separately",
     await route.continue();
   });
   await page.getByRole("button", { name: "保存受控修订", exact: true }).click();
-  await expect(body).toBeDisabled();
-  await expect(page.locator(".workspace-save-summary")).toContainText("保存中");
+  try {
+    await expect(body).not.toBeEditable();
+    await expect(page.locator(".workspace-save-summary")).toContainText("保存中");
+  } finally { releasePatch(); }
   await expect(page.getByRole("status")).toContainText("正文已保存，但本条问题的修改决定未记录");
   await expect(page.locator(".workspace-save-summary")).toContainText("已保存");
   await expect(body).toHaveAttribute("readonly", "");
@@ -277,7 +296,7 @@ test("v1.4 pending decision survives refresh and retries without another draft s
   await beginTutorial(page);
   const drawer = await reachFullEvidence(page);
   await drawer.getByRole("button", { name: "前往修改", exact: true }).click();
-  await page.locator("#draft-body").fill(`${await page.locator("#draft-body").inputValue()}\n刷新后补记。`);
+  await page.locator("#draft-body").fill(`${await draftText(page.locator("#draft-body"))}\n刷新后补记。`);
   let patchCalls = 0;
   let decisionCalls = 0;
   const idempotencyKeys: string[] = [];
@@ -321,7 +340,7 @@ test("v1.4 lost decision response replays the same idempotent operation", async 
   await beginTutorial(page);
   const drawer = await reachFullEvidence(page);
   await drawer.getByRole("button", { name: "前往修改", exact: true }).click();
-  await page.locator("#draft-body").fill(`${await page.locator("#draft-body").inputValue()}\n响应丢失补记。`);
+  await page.locator("#draft-body").fill(`${await draftText(page.locator("#draft-body"))}\n响应丢失补记。`);
   let patchCalls = 0;
   const serverStatuses: number[] = [];
   const idempotencyKeys: string[] = [];
@@ -354,7 +373,7 @@ test("v1.4 newer server draft stops stale pending-decision replay", async ({ pag
   await beginTutorial(page);
   const drawer = await reachFullEvidence(page);
   await drawer.getByRole("button", { name: "前往修改", exact: true }).click();
-  await page.locator("#draft-body").fill(`${await page.locator("#draft-body").inputValue()}\n待补记版本冲突。`);
+  await page.locator("#draft-body").fill(`${await draftText(page.locator("#draft-body"))}\n待补记版本冲突。`);
   let patchCalls = 0;
   let decisionCalls = 0;
   await page.route("**/api/projects/*/drafts/*", async (route) => {
@@ -407,8 +426,8 @@ test("v1.4 newer server draft stops stale pending-decision replay", async ({ pag
   await expect(page.getByRole("button", { name: "停止追补并读取最新正文", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "停止追补并读取最新正文", exact: true }).click();
   await expect(page.getByRole("status")).toContainText(/保留在本机冲突历史.*服务器最新正文/);
-  await expect(page.locator("#draft-body")).toHaveValue(/服务器更新。/);
-  await expect(page.locator("#draft-body")).not.toHaveAttribute("readonly", "");
+  await expectDraftText(page.locator("#draft-body"), /服务器更新。/);
+  await expect(page.locator("#draft-body")).toBeEditable();
   const localState = await page.evaluate((key) => ({
     foreign: localStorage.getItem(key),
     pending: Object.keys(localStorage).filter((item) => item.startsWith("story-continuity:pending-decision:v1:") && !item.includes("foreign-user")),
@@ -429,7 +448,7 @@ test("v1.4 different server decision can be retained and left without replay", a
   await beginTutorial(page);
   const drawer = await reachFullEvidence(page);
   await drawer.getByRole("button", { name: "前往修改", exact: true }).click();
-  await page.locator("#draft-body").fill(`${await page.locator("#draft-body").inputValue()}\n不同决定冲突。`);
+  await page.locator("#draft-body").fill(`${await draftText(page.locator("#draft-body"))}\n不同决定冲突。`);
   let patchCalls = 0;
   let decisionCalls = 0;
   await page.route("**/api/projects/*/drafts/*", async (route) => {
@@ -487,7 +506,7 @@ test("v1.4 storage-unavailable pending decision gives an honest stay-on-page bou
   await beginTutorial(page);
   const drawer = await reachFullEvidence(page);
   await drawer.getByRole("button", { name: "前往修改", exact: true }).click();
-  await page.locator("#draft-body").fill(`${await page.locator("#draft-body").inputValue()}\n无存储补记。`);
+  await page.locator("#draft-body").fill(`${await draftText(page.locator("#draft-body"))}\n无存储补记。`);
   await page.route("**/api/projects/*/issues/*/decision", async (route) => {
     await route.fulfill({ status: 500, contentType: "application/json", body: JSON.stringify({ error: { code: "decision_test_failure", message: "fixture decision failure", retryable: true } }) });
   });
@@ -510,8 +529,9 @@ test("v1.4 mobile read mode sizes short and long chapters by content", async ({ 
   await beginTutorial(page);
   await page.getByRole("button", { name: "写作与检查", exact: true }).click();
   await page.setViewportSize({ width: 390, height: 844 });
-  const shortRead = page.locator(".draft-read");
+  const shortRead = page.getByRole("textbox", { name: "只读草稿正文", exact: true });
   await expect(shortRead).toBeVisible();
+  await expect(shortRead).not.toBeEditable();
   expect((await shortRead.boundingBox())!.height).toBeLessThan(420);
   await page.setViewportSize({ width: 1440, height: 900 });
   const longBody = Array.from({ length: 48 }, (_, index) => `第 ${index + 1} 段：潮声越过档案室，温岚逐页核对旧航线与人物去向。`).join("\n\n");
@@ -519,7 +539,8 @@ test("v1.4 mobile read mode sizes short and long chapters by content", async ({ 
   await page.getByRole("button", { name: "保存草稿", exact: true }).click();
   await expect(page.locator(".workspace-save-summary")).toContainText("已保存");
   await page.setViewportSize({ width: 390, height: 844 });
-  const longRead = page.locator(".draft-read");
+  const longRead = page.getByRole("textbox", { name: "只读草稿正文", exact: true });
+  await expect(longRead).not.toBeEditable();
   await expect(longRead).toContainText("第 48 段");
   const dimensions = await longRead.evaluate((element) => ({ client: element.clientHeight, scroll: element.scrollHeight }));
   expect(dimensions.client).toBeGreaterThan(540);

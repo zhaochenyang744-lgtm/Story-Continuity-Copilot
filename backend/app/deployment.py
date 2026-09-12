@@ -18,6 +18,66 @@ class DeploymentError(RuntimeError):
     pass
 
 
+WORKFLOW_CONTRACT = "historical-source-review-and-decision-reuse-v1"
+WORKFLOW_TABLES = frozenset({
+    "v2_workflow_run_bindings", "v2_decision_reuse", "v2_decision_reuse_events",
+    "v2_chapter_revision_history", "v2_chapter_content_formats", "v2_source_revision_reviews",
+})
+
+
+def rollback_capabilities() -> dict:
+    """Static image marker: this command never opens or initializes a database."""
+    return {"operation": "rollback-capabilities", "schema_max_supported": 146,
+            "workflow_contracts": [WORKFLOW_CONTRACT]}
+
+
+def rollback_preflight(paths: AppPaths, target_capabilities: str) -> dict:
+    """Read the current database and fail closed before selecting an old image."""
+    try:
+        envelope = json.loads(target_capabilities)
+        target = envelope["result"]
+        if envelope["ok"] is not True or target["operation"] != "rollback-capabilities":
+            raise ValueError
+        maximum = target["schema_max_supported"]
+        contracts = target["workflow_contracts"]
+        if type(maximum) is not int or maximum < 1 or not isinstance(contracts, list):
+            raise ValueError
+        if any(not isinstance(contract, str) or not contract for contract in contracts):
+            raise ValueError
+    except (ValueError, TypeError, KeyError):
+        raise DeploymentError("rollback_target_capabilities_invalid") from None
+
+    paths.validate_database_target()
+    if not paths.database_path.is_file():
+        raise DeploymentError("database_missing")
+    connection = sqlite3.connect(paths.database_path.as_uri() + "?mode=ro", uri=True, timeout=15)
+    try:
+        connection.execute("PRAGMA query_only=ON")
+        connection.execute("BEGIN")
+        names = {row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        if "schema_migrations" not in names or "v2_projects" not in names:
+            raise DeploymentError("rollback_application_schema_missing")
+        version = connection.execute("SELECT COALESCE(MAX(version),0) FROM schema_migrations").fetchone()[0]
+        if type(version) is not int or version < 1:
+            raise DeploymentError("rollback_application_schema_invalid")
+        required = bool(names & WORKFLOW_TABLES) or version >= 146
+        if "v2_source_change_sets" in names:
+            columns = {row[1] for row in connection.execute("PRAGMA table_info(v2_source_change_sets)")}
+            if "mode" in columns:
+                required = required or bool(connection.execute("SELECT 1 FROM v2_source_change_sets WHERE mode='revise' LIMIT 1").fetchone())
+        if required and WORKFLOW_CONTRACT not in contracts:
+            raise DeploymentError("rollback_workflow_contract_unsupported")
+        if version > maximum:
+            raise DeploymentError("rollback_schema_version_unsupported")
+        if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok" or connection.execute("PRAGMA foreign_key_check").fetchone():
+            raise DeploymentError("rollback_database_integrity_failed")
+        return {"operation": "rollback-preflight", "compatible": True, "read_only": True,
+                "schema_max_version": version, "target_schema_max_supported": maximum,
+                "required_workflow_contracts": [WORKFLOW_CONTRACT] if required else []}
+    finally:
+        connection.close()
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -159,6 +219,9 @@ def main() -> int:
     parser.add_argument("--project-root", type=Path, default=PROJECT_ROOT)
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("migrate")
+    subparsers.add_parser("rollback-capabilities")
+    preflight_parser = subparsers.add_parser("rollback-preflight")
+    preflight_parser.add_argument("--target-capabilities", required=True)
     backup_parser = subparsers.add_parser("backup")
     backup_parser.add_argument("--backup-dir", type=Path, required=True)
     backup_parser.add_argument("--label", default="manual")
@@ -169,8 +232,13 @@ def main() -> int:
     restore_parser.add_argument("--offline-confirmation", required=True)
     args = parser.parse_args()
     try:
+        if args.command == "rollback-capabilities":
+            print(json.dumps({"ok": True, "result": rollback_capabilities()}, sort_keys=True))
+            return 0
         paths = _paths(args.project_root)
-        if args.command == "migrate":
+        if args.command == "rollback-preflight":
+            result = rollback_preflight(paths, args.target_capabilities)
+        elif args.command == "migrate":
             result = migrate(paths)
         elif args.command == "backup":
             result = create_backup(paths, args.backup_dir, label=args.label)

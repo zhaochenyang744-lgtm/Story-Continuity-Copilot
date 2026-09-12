@@ -9,10 +9,10 @@ if [[ -z "$release_id" || ! "$release_id" =~ ^[a-zA-Z0-9._-]{7,80}$ || ! -f "$en
 fi
 
 cd "$bundle_root"
-export RELEASE_ID="$release_id"
 set -a
 source "$environment_file"
 set +a
+export RELEASE_ID="$release_id"
 bash "$bundle_root/deployment/secret-dir-check.sh" "${SCC_SECRET_DIR:-}"
 compose=(docker compose --env-file "$environment_file" -f deployment/compose.yaml)
 "${compose[@]}" config --quiet
