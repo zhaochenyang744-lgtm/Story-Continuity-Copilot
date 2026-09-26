@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-09-26T12:24:51.114292+00:00",
+  "changed": [],
+  "files": {
+    "evaluation/current_contract_compare_v2/actual-inputs.json": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+    "evaluation/current_contract_compare_v2/api-score-probe-results-v2.json": "b261629423eed61caccc9eb65b56bda2a69f68f927ea8c02e753fada070a8d0e",
+    "evaluation/current_contract_compare_v2/api_score_probe.py": "7240a990444e603c8a8d09620bdbc709b2731b7928f73c113a7c399373d24281",
+    "evaluation/current_contract_compare_v2/build.py": "48d6072e26062431c91c2f9c703fa501a67cd16b2642cc395f3509f837cc4c9b",
+    "evaluation/current_contract_compare_v2/cases.json": "a312282eef0ea34b91a55256b238a01e287705836c6c3387d5b68f34a6ba41c0",
+    "evaluation/current_contract_compare_v2/contract-probe-results.json": "6c0f66c99d7692bd1aea78c71c3f8cf167778b758829ab3a0b84186d7a648dbd",
+    "evaluation/current_contract_compare_v2/contract_probe.py": "02a0af5ed6d2876f1d2dfe727eb24e9d5ad7af50d3c56b3ffd133c59d2b5695a",
+    "evaluation/current_contract_compare_v2/freeze.py": "a92a836f75e405c89785ed341533715dc66a47d804c0cab1732465b9625f981e",
+    "evaluation/current_contract_compare_v2/frozen-inputs.json": "35b8a9559b9d5138f21795cdeb74439d010490dd5a9ee07a37cd48dbd44ca337",
+    "evaluation/current_contract_compare_v2/HANDOFF.md": "6e611e8752e9a1696611d380c55a39a0e8c1b202b965a198d77f16c08444cd71",
+    "evaluation/current_contract_compare_v2/PRECHECK_FAILURES.md": "8864f6daa1503e186e77e9c97e865419caf935bc1851b5483f1722dec05c5b7d",
+    "evaluation/current_contract_compare_v2/preflight.py": "ba2d500d460b85b4815ffea1c0ef48dc4e32a0a63060d5b26c37d7b2b6df73b5",
+    "evaluation/current_contract_compare_v2/RUBRIC.md": "f1c90ed975c254037c20a9fc4339b7e9f30204a49740c5b041f90125e3bbc624",
+    "evaluation/current_contract_compare_v2/score.py": "19b2fc2e14d0fdafd1ef54dccf7e885b16728c679e9da1045b24be586d27b94d",
+    "evaluation/current_contract_compare_v2/test_offline.py": "e83c0cfe0123b0cebbdccdfafa15a244b079583ec5cb699799d2186c768ac42a",
+    "evaluation/current_contract_compare_v2/v1-lineage.json": "4c2d03fb27ca53eb9fbada7ecb316aa4cf9d49c127de843d881b7d1c9b78b422",
+    "evaluation/current_contract_compare_v2/write_lineage.py": "f3e919d69ec2c1e8ee24c733eab5b68a134cf1ba7d7448b508f74b4cc5eaca01",
+    "evaluation/current_contract_compare_v2/corpora/basalt_observatory.json": "c6dbb54519030c228c2a2a464cfaf99e94cefeb31a91948d271a992732e2674e",
+    "evaluation/current_contract_compare_v2/corpora/harbor_signal.json": "b73e9e6764c8b3dad8e7d77367998d8f4c9254da26734bd5ce13d355222798a7",
+    "evaluation/current_contract_compare_v2/corpora/north_glass.json": "57aea727f02bfd27534783756a5e254e678695d6bdfeea2182959862afcb9510",
+    "evaluation/current_contract_compare_v2/corpora/orchard_restoration.json": "b65e422642a029d5e4fbdb5a04b89e2482ead83aed82ce9e1eed6618438f5614"
+  },
+  "real_provider_calls": 0
+}

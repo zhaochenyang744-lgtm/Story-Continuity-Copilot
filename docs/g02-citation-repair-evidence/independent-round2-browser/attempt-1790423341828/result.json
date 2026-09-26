@@ -1,0 +1,69 @@
+{
+  "started_at": "2026-09-26T11:49:01.838Z",
+  "status": "passed",
+  "root": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\story-v130-rc-g02-independent-r2-lVTl7U",
+  "artifact": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\story-v130-rc-g02-independent-r2-lVTl7U\\standalone",
+  "output": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\docs\\g02-citation-repair-evidence\\independent-round2-browser\\attempt-1790423341828",
+  "frontendOrigin": "http://127.0.0.1:3238",
+  "backendOrigin": "http://127.0.0.1:8238",
+  "build_id": "W52CgAUpNgqPizlf_vc_k",
+  "assets": [
+    {
+      "asset": "/_next/static/chunks/31joxizucgnl0.css",
+      "status": 200
+    },
+    {
+      "asset": "/_next/static/chunks/04-wioncx789h.css",
+      "status": 200
+    },
+    {
+      "asset": "/_next/static/chunks/2q7gkqgzhfdt9.css",
+      "status": 200
+    },
+    {
+      "asset": "/_next/static/chunks/3s6nzrbk-8mnv.js",
+      "status": 200
+    },
+    {
+      "asset": "/_next/static/chunks/0y-dctk-kmqss.js",
+      "status": 200
+    },
+    {
+      "asset": "/_next/static/chunks/1mkbuudhndal5.js",
+      "status": 200
+    },
+    {
+      "asset": "/_next/static/chunks/3ewp08ebnb49j.js",
+      "status": 200
+    },
+    {
+      "asset": "/_next/static/chunks/turbopack-3dnwwxq5ytect.js",
+      "status": 200
+    },
+    {
+      "asset": "/_next/static/chunks/3fntmmi971322.js",
+      "status": 200
+    },
+    {
+      "asset": "/_next/static/chunks/1nxld6h9npbdf.js",
+      "status": 200
+    },
+    {
+      "asset": "/_next/static/chunks/0cz1d0mv5g_q7.js",
+      "status": 200
+    }
+  ],
+  "session_status": 200,
+  "test_route_http_status": 200,
+  "test_route_has_harness": false,
+  "test_exit": 0,
+  "provider": {
+    "provider_mode": "injected_stub",
+    "external_provider_http_enabled": false,
+    "provider_calls": 6,
+    "provider_http_calls": 0,
+    "blocked": false,
+    "test_root": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\story-v130-rc-g02-independent-r2-lVTl7U"
+  },
+  "completed_at": "2026-09-26T11:49:34.925Z"
+}

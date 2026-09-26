@@ -32,3 +32,13 @@ evaluation/fixtures/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 evaluation/manifests/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 evaluation/results/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 evaluation/*semantic-review.json -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+
+# Flash and G02 acceptance records are frozen against exact byte hashes.
+# Preserve line endings in captured results, source snapshots, and audit evidence.
+evaluation/current_flash_v*/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/current_contract_compare_v*/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/g02_post_v4_offline/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/g02-citation-repair-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/flash-real-provider-independent-acceptance.md -text
+docs/g02-citation-repair-independent-acceptance.md -text whitespace=-blank-at-eof
+frontend/e2e/g02-controller-post-v4.spec.ts -text whitespace=cr-at-eol

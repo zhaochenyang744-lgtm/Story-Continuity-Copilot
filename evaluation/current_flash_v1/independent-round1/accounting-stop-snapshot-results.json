@@ -1,0 +1,110 @@
+{
+  "method": "AST-isolated current service-stop condition; first-model citation IDs checked against saved final product excerpts",
+  "counter_probes": [
+    {
+      "case": "two_evidence_failures",
+      "counts": [
+        1,
+        2
+      ],
+      "stops_matrix": true
+    },
+    {
+      "case": "two_provider_errors",
+      "counts": [
+        1,
+        2
+      ],
+      "stops_matrix": true
+    },
+    {
+      "case": "business_failure_then_completed",
+      "counts": [
+        1,
+        0
+      ],
+      "stops_matrix": false
+    }
+  ],
+  "snapshot_limitations": [
+    {
+      "case_id": "g02-three-sentences",
+      "product_status": "completed",
+      "source_memory_version": 4,
+      "input_digest": "21c43a32c0f52a6b6ccac0b779c25d781146f200322e1b91b557514cb098a459",
+      "memory_catalog_saved": false,
+      "first_model_memory_citation_count": 8,
+      "first_model_memory_citations_not_in_saved_product_excerpts": []
+    },
+    {
+      "case_id": "g02-long-sentence",
+      "product_status": "completed",
+      "source_memory_version": 4,
+      "input_digest": "4c15c9c66acff2c8cd481ade1adcb14265a4e654466541fe727b0335e47937d6",
+      "memory_catalog_saved": false,
+      "first_model_memory_citation_count": 8,
+      "first_model_memory_citations_not_in_saved_product_excerpts": []
+    },
+    {
+      "case_id": "g02-body-limit",
+      "product_status": "completed",
+      "source_memory_version": 4,
+      "input_digest": "7668d9976ed571553ece20eb0b7a9fb000da885e18ca9cff51233b81c68f56bb",
+      "memory_catalog_saved": false,
+      "first_model_memory_citation_count": 8,
+      "first_model_memory_citations_not_in_saved_product_excerpts": []
+    },
+    {
+      "case_id": "g02-identical-text",
+      "product_status": "completed",
+      "source_memory_version": 4,
+      "input_digest": "a494021527bd5d7c8904b92df18f018c4adc486c1d27803c9c37c4f559344b73",
+      "memory_catalog_saved": false,
+      "first_model_memory_citation_count": 8,
+      "first_model_memory_citations_not_in_saved_product_excerpts": []
+    },
+    {
+      "case_id": "g03-short-target",
+      "product_status": "failed",
+      "source_memory_version": 4,
+      "input_digest": "5bc0448ceed30de5ee94f611a195d91468582f2276952e5b2fa22be91e6ffd7b",
+      "memory_catalog_saved": false,
+      "first_model_memory_citation_count": 1,
+      "first_model_memory_citations_not_in_saved_product_excerpts": [
+        "mem-2e6dc0e0-53fd-4271-abbb-665dd1641043"
+      ]
+    },
+    {
+      "case_id": "g03-deep-target",
+      "product_status": "completed",
+      "source_memory_version": 4,
+      "input_digest": "1cf539b85b5c5b79a6e5c84a888dabbb043a3f612e944ae932dc4cdf2f504a04",
+      "memory_catalog_saved": false,
+      "first_model_memory_citation_count": 1,
+      "first_model_memory_citations_not_in_saved_product_excerpts": []
+    },
+    {
+      "case_id": "g03-fact-absent",
+      "product_status": "completed",
+      "source_memory_version": 4,
+      "input_digest": "bcb6f170cb9ed150c644071f6b2cfc0cd95dbe204dea6e19961182db87ab466f",
+      "memory_catalog_saved": false,
+      "first_model_memory_citation_count": 1,
+      "first_model_memory_citations_not_in_saved_product_excerpts": [
+        "mem-269139da-1286-4527-ac20-0ba58e1f660e"
+      ]
+    },
+    {
+      "case_id": "g03-other-chapter",
+      "product_status": "failed",
+      "source_memory_version": 4,
+      "input_digest": "9e78163981c65ff7b0778d19aea0e8c478d4c3ef778c2db640a8b5e9788cc457",
+      "memory_catalog_saved": false,
+      "first_model_memory_citation_count": 1,
+      "first_model_memory_citations_not_in_saved_product_excerpts": [
+        "mem-042fac32-8b2d-4ae6-9083-eb8e5e90e4a5"
+      ]
+    }
+  ],
+  "scope": "No HTTP, credentials, DB, product modifications, or implementation evidence modifications"
+}

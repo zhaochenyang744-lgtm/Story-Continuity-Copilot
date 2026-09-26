@@ -1,0 +1,158 @@
+{
+  "scope": "stdlib read-only lineage comparison; no scorer/product/API/DB import or execution",
+  "prior_round_protected_files_verified": 34,
+  "v3_manifest_bound_files_verified": 27,
+  "protected_files_before_after": 55,
+  "v3_manifest_sha256": "0afd9630d22aecc44d1fbc8a955787d12d1286b31ec85a3e0985dff132da8baf",
+  "exact_v2_hashes": {
+    "v2_cases_sha256": "a312282eef0ea34b91a55256b238a01e287705836c6c3387d5b68f34a6ba41c0",
+    "v2_capture_sha256": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+    "v2_saved_api_sha256": "b261629423eed61caccc9eb65b56bda2a69f68f927ea8c02e753fada070a8d0e"
+  },
+  "capture_cases": 24,
+  "saved_records": 26,
+  "raw_first_pass": 19,
+  "final_pass": 19,
+  "category_failure_rows": [
+    {
+      "v2_record_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+      "variant": "gold",
+      "v3_case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "preserved_raw_category": "world_rule",
+      "preserved_final_category": "world_rule",
+      "v3_declared_candidates": [
+        "object_state"
+      ]
+    },
+    {
+      "v2_record_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "v3_case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "preserved_raw_category": "object_state",
+      "preserved_final_category": "object_state",
+      "v3_declared_candidates": [
+        "relationship"
+      ]
+    },
+    {
+      "v2_record_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "variant": "gold",
+      "v3_case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "preserved_raw_category": "timeline",
+      "preserved_final_category": "timeline",
+      "v3_declared_candidates": [
+        "relationship"
+      ]
+    },
+    {
+      "v2_record_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "variant": "gold",
+      "v3_case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "preserved_raw_category": "character_knowledge",
+      "preserved_final_category": "character_knowledge",
+      "v3_declared_candidates": [
+        "relationship"
+      ]
+    },
+    {
+      "v2_record_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "variant": "gold",
+      "v3_case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "preserved_raw_category": "relationship",
+      "preserved_final_category": "relationship",
+      "v3_declared_candidates": [
+        "timeline"
+      ]
+    },
+    {
+      "v2_record_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+      "variant": "gold",
+      "v3_case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "preserved_raw_category": "event_status",
+      "preserved_final_category": "event_status",
+      "v3_declared_candidates": [
+        "relationship"
+      ]
+    },
+    {
+      "v2_record_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+      "variant": "gold",
+      "v3_case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "preserved_raw_category": "attribute",
+      "preserved_final_category": "attribute",
+      "v3_declared_candidates": [
+        "relationship"
+      ]
+    }
+  ],
+  "retained_control_corrections": [
+    {
+      "control": "raw_missing_chain",
+      "first_errors": [
+        "product_validator:evidence_unresolvable",
+        "raw_evidence_chain_mismatch",
+        "raw_target_or_category_mismatch"
+      ],
+      "second_errors": [
+        "product_validator:evidence_unresolvable",
+        "raw_evidence_chain_mismatch"
+      ],
+      "second_full_validator": "rejected"
+    },
+    {
+      "control": "raw_wrong_missing_link_role",
+      "first_errors": [
+        "product_validator:evidence_unresolvable",
+        "raw_missing_link_role_invalid",
+        "raw_target_or_category_mismatch"
+      ],
+      "second_errors": [
+        "product_validator:evidence_unresolvable",
+        "raw_missing_link_role_invalid"
+      ],
+      "second_full_validator": "rejected"
+    },
+    {
+      "control": "raw_insufficient_edit_action",
+      "first_errors": [
+        "product_validator:schema_invalid",
+        "raw_insufficient_actions_invalid",
+        "raw_target_or_category_mismatch"
+      ],
+      "second_errors": [
+        "product_validator:schema_invalid",
+        "raw_insufficient_actions_invalid"
+      ],
+      "second_full_validator": "rejected"
+    },
+    {
+      "control": "raw_insufficient_memory_change",
+      "first_errors": [
+        "product_validator:insufficient_evidence_memory_change",
+        "raw_insufficient_memory_change_invalid",
+        "raw_target_or_category_mismatch"
+      ],
+      "second_errors": [
+        "product_validator:insufficient_evidence_memory_change",
+        "raw_insufficient_memory_change_invalid"
+      ],
+      "second_full_validator": "rejected"
+    },
+    {
+      "control": "raw_unknown_memory_id",
+      "first_errors": [
+        "product_validator:evidence_unresolvable",
+        "raw_memory_link_mismatch",
+        "raw_target_or_category_mismatch"
+      ],
+      "second_errors": [
+        "product_validator:evidence_unresolvable",
+        "raw_memory_link_mismatch"
+      ],
+      "second_full_validator": "rejected"
+    }
+  ],
+  "new_api_runs": 0,
+  "real_provider_calls": 0,
+  "errors": []
+}

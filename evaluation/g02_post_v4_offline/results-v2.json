@@ -1,0 +1,103 @@
+{
+  "schema_version": "g02-post-v4-offline-replay",
+  "provider_calls": 0,
+  "engine_sha256": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+  "brief_citations_sha256": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+  "rows": [
+    {
+      "case_id": "g02-long-sentence",
+      "source_v4_case_sha256": "e4fca52f273c40ac794a64bfd4b85a7e4dbbd157ba82e3e111b4bf130881cfc3",
+      "selected_claim_count": 1,
+      "rendered_claim_count": 1,
+      "final_summary": "当前草稿句1原文：「林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。」 第6章所选原文：「电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。」 第4章所选原文：「温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。」",
+      "final_summary_source_count": 3,
+      "coverage": {
+        "status": "covered",
+        "source_ids": [
+          "draft-claim-draft-d5dd01bc-10a6-4dfd-b5d7-c9999fb9043a-r2-1"
+        ],
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-d5dd01bc-10a6-4dfd-b5d7-c9999fb9043a-r2-1",
+            "source_chars": 299,
+            "source_end": 299,
+            "source_start": 0,
+            "supplied_chars": 299,
+            "supplied_end": 299,
+            "truncated": false
+          }
+        ],
+        "uncovered_source_ids": [],
+        "unselected_count": 0,
+        "discarded_item_indices": [],
+        "reasons": []
+      },
+      "transform": {
+        "version": "source-rendered-v2",
+        "model_summary_used": false,
+        "model_item_count": 12,
+        "source_rendered_item_count": 12,
+        "added_source_count": 0,
+        "omitted_unmatched_clause_count": 1,
+        "discarded_model_item_indices": [],
+        "fallback_draft_claim_ids": [],
+        "duplicate_omitted_item_count": 0,
+        "overflow_omitted_item_count": 0
+      }
+    },
+    {
+      "case_id": "g02-time-bound",
+      "source_v4_case_sha256": "5f70951446ce13640c92b511b3e8bfefd052defd10c9e61b13ec0cf4be93b66a",
+      "selected_claim_count": 2,
+      "rendered_claim_count": 2,
+      "final_summary": "当前草稿句1原文：「昨日温岚尚未得知银钥匙的用途。」 当前草稿句2原文：「今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。」 第4章所选原文：「温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。」",
+      "final_summary_source_count": 3,
+      "coverage": {
+        "status": "covered",
+        "source_ids": [
+          "draft-claim-draft-2cef7d39-675b-4719-809e-5e85cfd0b868-r2-1",
+          "draft-claim-draft-2cef7d39-675b-4719-809e-5e85cfd0b868-r2-2"
+        ],
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-2cef7d39-675b-4719-809e-5e85cfd0b868-r2-1",
+            "source_chars": 15,
+            "source_end": 15,
+            "source_start": 0,
+            "supplied_chars": 15,
+            "supplied_end": 15,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-2cef7d39-675b-4719-809e-5e85cfd0b868-r2-2",
+            "source_chars": 25,
+            "source_end": 40,
+            "source_start": 15,
+            "supplied_chars": 25,
+            "supplied_end": 40,
+            "truncated": false
+          }
+        ],
+        "uncovered_source_ids": [],
+        "unselected_count": 0,
+        "discarded_item_indices": [],
+        "reasons": []
+      },
+      "transform": {
+        "version": "source-rendered-v2",
+        "model_summary_used": false,
+        "model_item_count": 12,
+        "source_rendered_item_count": 12,
+        "added_source_count": 0,
+        "omitted_unmatched_clause_count": 0,
+        "discarded_model_item_indices": [],
+        "fallback_draft_claim_ids": [
+          "draft-claim-draft-2cef7d39-675b-4719-809e-5e85cfd0b868-r2-1",
+          "draft-claim-draft-2cef7d39-675b-4719-809e-5e85cfd0b868-r2-2"
+        ],
+        "duplicate_omitted_item_count": 0,
+        "overflow_omitted_item_count": 2
+      }
+    }
+  ]
+}

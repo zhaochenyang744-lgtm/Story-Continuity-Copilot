@@ -1,0 +1,777 @@
+{
+  "case": "dialogue",
+  "body": "CTRL_G02_DIALOGUE 林默说‘我知道密码’，但叙述者明确指出这是谎言，林默其实并不知道密码。",
+  "run": {
+    "run_id": "run-4bb6c563-d560-45a3-81fe-70ac5ee12318",
+    "project_id": "prj-3f50b3e8-27de-4b84-9600-338e68b88cdc",
+    "run_type": "context_brief",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 1,
+    "draft_revision": 2,
+    "source_memory_version": 4,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T11:17:59.724461+00:00",
+    "started_at": "2026-09-26T11:17:59.756413+00:00",
+    "completed_at": "2026-09-26T11:17:59.815119+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 58,
+    "retry_of_run_id": null,
+    "root_run_id": "run-4bb6c563-d560-45a3-81fe-70ac5ee12318",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T11:17:59.724461+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "binding_context",
+        "error_code": null,
+        "created_at": "2026-09-26T11:17:59.756413+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "analyzing_layers",
+        "error_code": null,
+        "created_at": "2026-09-26T11:17:59.777993+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "assembling_results",
+        "error_code": null,
+        "created_at": "2026-09-26T11:17:59.802067+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T11:17:59.815119+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "browser-e2e-test-provider",
+      "model_label": "browser-e2e-test-provider",
+      "prompt_version": "context-brief-v5-clause-citations",
+      "schema_version": "writing-analysis-v1",
+      "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+      "source_memory_version": 4
+    },
+    "provider_metrics": {
+      "latency_ms": 1,
+      "input_tokens": 4,
+      "output_tokens": 3,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "analysis_type": "context_brief",
+    "current_draft_revision": 2,
+    "foreshadow_version": null,
+    "foreshadow_snapshot_digest": null,
+    "proposal": null,
+    "question": null,
+    "scope": null,
+    "issue_ids": [],
+    "source_run_id": null,
+    "retrieval": {
+      "counts": {
+        "author_context": {
+          "available": 0,
+          "selected": 0
+        },
+        "character_alias": {
+          "available": 0,
+          "selected": 0
+        },
+        "draft_claim": {
+          "available": 1,
+          "selected": 1
+        },
+        "foreshadow_record": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue_evidence": {
+          "available": 0,
+          "selected": 0
+        },
+        "memory_record": {
+          "available": 8,
+          "selected": 8
+        },
+        "source_span": {
+          "available": 10,
+          "selected": 4
+        }
+      },
+      "draft_claim_scope": {
+        "available": 1,
+        "body_chars": 53,
+        "excerpt_chars": 53,
+        "selected": [
+          {
+            "id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1",
+            "source_chars": 53,
+            "source_end": 53,
+            "source_start": 0,
+            "supplied_chars": 53,
+            "supplied_end": 53,
+            "truncated": false
+          }
+        ]
+      },
+      "method_version": "writing-analysis-lexical-v3-brief-540",
+      "selected_ids": {
+        "author_context": [],
+        "character_alias": [],
+        "draft_claim": [
+          "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1"
+        ],
+        "foreshadow_record": [],
+        "issue": [],
+        "issue_evidence": [],
+        "memory_record": [
+          "mem-a00a5eb2-21c8-4322-95e5-0f9cb2bcee4d",
+          "mem-c1be51c5-b446-4abf-92bc-6de0d766f945",
+          "mem-035abde3-9db1-4948-8cc6-d60b4c48eeae",
+          "mem-13ba9abd-4787-4584-aeb6-1945ae4544d4",
+          "mem-18495de1-41bb-4e18-a969-d68923754791",
+          "mem-9a7cbab6-b729-4151-9875-8d287b86a144",
+          "mem-b6cc5cd8-ebdc-4e77-b161-05ac22fd8ab6",
+          "mem-db5681ba-aed4-458c-a517-2c1c4724c000"
+        ],
+        "source_span": [
+          "span-93860076-18f7-4f5b-92e9-bedfe6843a33",
+          "span-725a5a1c-3f66-45a6-b386-74d1aa0520e4",
+          "span-12d2edde-7517-4040-8384-5401bb9aa6e0",
+          "span-a0363689-e938-47e9-a367-a1a504c880d3"
+        ]
+      },
+      "truncated": {
+        "author_context": false,
+        "character_alias": false,
+        "draft_body": false,
+        "draft_claim": false,
+        "foreshadow_record": false,
+        "issue": false,
+        "issue_evidence": false,
+        "memory_record": false,
+        "source_span": true,
+        "source_span_text": false
+      }
+    },
+    "input_digest": "60aba484b1f1d4f19bd9a9bb2ae95beffbefc470a3b0b9b727972fdcd655763a",
+    "analysis": {
+      "citation_transform": {
+        "added_source_count": 0,
+        "discarded_model_item_indices": [],
+        "model_item_count": 1,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 2,
+        "source_rendered_item_count": 1,
+        "version": "source-rendered-v1"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1",
+            "source_chars": 53,
+            "source_end": 53,
+            "source_start": 0,
+            "supplied_chars": 53,
+            "supplied_end": 53,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "evidence_status": "supported",
+      "items": [
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "CTRL_G02_DIALOGUE 林默说‘我知道密码’，但叙述者明确指出这是谎言，林默其实并不知道密码。",
+              "label": "当前草稿 · 句 1",
+              "source_id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1",
+              "source_path": "/projects/prj-3f50b3e8-27de-4b84-9600-338e68b88cdc/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句1原文：「CTRL_G02_DIALOGUE 林默说‘我知道密码’，但叙述者明确指出这是谎言，林默其实并不知道密码。」"
+        }
+      ],
+      "summary": "当前草稿句1原文：「CTRL_G02_DIALOGUE 林默说‘我知道密码’，但叙述者明确指出这是谎言，林默其实并不知道密码。」",
+      "summary_sources": [
+        {
+          "excerpt": "CTRL_G02_DIALOGUE 林默说‘我知道密码’，但叙述者明确指出这是谎言，林默其实并不知道密码。",
+          "label": "当前草稿 · 句 1",
+          "source_id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1",
+          "source_path": "/projects/prj-3f50b3e8-27de-4b84-9600-338e68b88cdc/workspace#draft-source",
+          "source_type": "draft_claim"
+        }
+      ]
+    }
+  },
+  "refreshed": {
+    "run_id": "run-4bb6c563-d560-45a3-81fe-70ac5ee12318",
+    "project_id": "prj-3f50b3e8-27de-4b84-9600-338e68b88cdc",
+    "run_type": "context_brief",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 1,
+    "draft_revision": 2,
+    "source_memory_version": 4,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T11:17:59.724461+00:00",
+    "started_at": "2026-09-26T11:17:59.756413+00:00",
+    "completed_at": "2026-09-26T11:17:59.815119+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 58,
+    "retry_of_run_id": null,
+    "root_run_id": "run-4bb6c563-d560-45a3-81fe-70ac5ee12318",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T11:17:59.724461+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "binding_context",
+        "error_code": null,
+        "created_at": "2026-09-26T11:17:59.756413+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "analyzing_layers",
+        "error_code": null,
+        "created_at": "2026-09-26T11:17:59.777993+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "assembling_results",
+        "error_code": null,
+        "created_at": "2026-09-26T11:17:59.802067+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T11:17:59.815119+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "browser-e2e-test-provider",
+      "model_label": "browser-e2e-test-provider",
+      "prompt_version": "context-brief-v5-clause-citations",
+      "schema_version": "writing-analysis-v1",
+      "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+      "source_memory_version": 4
+    },
+    "provider_metrics": {
+      "latency_ms": 1,
+      "input_tokens": 4,
+      "output_tokens": 3,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "analysis_type": "context_brief",
+    "current_draft_revision": 2,
+    "foreshadow_version": null,
+    "foreshadow_snapshot_digest": null,
+    "proposal": null,
+    "question": null,
+    "scope": null,
+    "issue_ids": [],
+    "source_run_id": null,
+    "retrieval": {
+      "counts": {
+        "author_context": {
+          "available": 0,
+          "selected": 0
+        },
+        "character_alias": {
+          "available": 0,
+          "selected": 0
+        },
+        "draft_claim": {
+          "available": 1,
+          "selected": 1
+        },
+        "foreshadow_record": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue_evidence": {
+          "available": 0,
+          "selected": 0
+        },
+        "memory_record": {
+          "available": 8,
+          "selected": 8
+        },
+        "source_span": {
+          "available": 10,
+          "selected": 4
+        }
+      },
+      "draft_claim_scope": {
+        "available": 1,
+        "body_chars": 53,
+        "excerpt_chars": 53,
+        "selected": [
+          {
+            "id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1",
+            "source_chars": 53,
+            "source_end": 53,
+            "source_start": 0,
+            "supplied_chars": 53,
+            "supplied_end": 53,
+            "truncated": false
+          }
+        ]
+      },
+      "method_version": "writing-analysis-lexical-v3-brief-540",
+      "selected_ids": {
+        "author_context": [],
+        "character_alias": [],
+        "draft_claim": [
+          "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1"
+        ],
+        "foreshadow_record": [],
+        "issue": [],
+        "issue_evidence": [],
+        "memory_record": [
+          "mem-a00a5eb2-21c8-4322-95e5-0f9cb2bcee4d",
+          "mem-c1be51c5-b446-4abf-92bc-6de0d766f945",
+          "mem-035abde3-9db1-4948-8cc6-d60b4c48eeae",
+          "mem-13ba9abd-4787-4584-aeb6-1945ae4544d4",
+          "mem-18495de1-41bb-4e18-a969-d68923754791",
+          "mem-9a7cbab6-b729-4151-9875-8d287b86a144",
+          "mem-b6cc5cd8-ebdc-4e77-b161-05ac22fd8ab6",
+          "mem-db5681ba-aed4-458c-a517-2c1c4724c000"
+        ],
+        "source_span": [
+          "span-93860076-18f7-4f5b-92e9-bedfe6843a33",
+          "span-725a5a1c-3f66-45a6-b386-74d1aa0520e4",
+          "span-12d2edde-7517-4040-8384-5401bb9aa6e0",
+          "span-a0363689-e938-47e9-a367-a1a504c880d3"
+        ]
+      },
+      "truncated": {
+        "author_context": false,
+        "character_alias": false,
+        "draft_body": false,
+        "draft_claim": false,
+        "foreshadow_record": false,
+        "issue": false,
+        "issue_evidence": false,
+        "memory_record": false,
+        "source_span": true,
+        "source_span_text": false
+      }
+    },
+    "input_digest": "60aba484b1f1d4f19bd9a9bb2ae95beffbefc470a3b0b9b727972fdcd655763a",
+    "analysis": {
+      "citation_transform": {
+        "added_source_count": 0,
+        "discarded_model_item_indices": [],
+        "model_item_count": 1,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 2,
+        "source_rendered_item_count": 1,
+        "version": "source-rendered-v1"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1",
+            "source_chars": 53,
+            "source_end": 53,
+            "source_start": 0,
+            "supplied_chars": 53,
+            "supplied_end": 53,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "evidence_status": "supported",
+      "items": [
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "CTRL_G02_DIALOGUE 林默说‘我知道密码’，但叙述者明确指出这是谎言，林默其实并不知道密码。",
+              "label": "当前草稿 · 句 1",
+              "source_id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1",
+              "source_path": "/projects/prj-3f50b3e8-27de-4b84-9600-338e68b88cdc/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句1原文：「CTRL_G02_DIALOGUE 林默说‘我知道密码’，但叙述者明确指出这是谎言，林默其实并不知道密码。」"
+        }
+      ],
+      "summary": "当前草稿句1原文：「CTRL_G02_DIALOGUE 林默说‘我知道密码’，但叙述者明确指出这是谎言，林默其实并不知道密码。」",
+      "summary_sources": [
+        {
+          "excerpt": "CTRL_G02_DIALOGUE 林默说‘我知道密码’，但叙述者明确指出这是谎言，林默其实并不知道密码。",
+          "label": "当前草稿 · 句 1",
+          "source_id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1",
+          "source_path": "/projects/prj-3f50b3e8-27de-4b84-9600-338e68b88cdc/workspace#draft-source",
+          "source_type": "draft_claim"
+        }
+      ]
+    }
+  },
+  "fixture": [
+    {
+      "project_id": "prj-3f50b3e8-27de-4b84-9600-338e68b88cdc",
+      "request": {
+        "bindings": {
+          "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+          "author_context_version": 0,
+          "draft_id": "draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c",
+          "draft_revision": 2,
+          "memory_version": 4,
+          "project_id": "prj-3f50b3e8-27de-4b84-9600-338e68b88cdc",
+          "source_revision": 1
+        },
+        "layers": {
+          "confirmed": {
+            "memory_records": [
+              {
+                "id": "mem-a00a5eb2-21c8-4322-95e5-0f9cb2bcee4d",
+                "memory_type": "dynamic_state",
+                "predicate": "location",
+                "source_span_id": "span-965f459b-8775-4b84-ab61-20c60433d797",
+                "subject": "航图",
+                "value": "雾线水门外锚柱"
+              },
+              {
+                "id": "mem-c1be51c5-b446-4abf-92bc-6de0d766f945",
+                "memory_type": "static_canon",
+                "predicate": "ring_condition",
+                "source_span_id": "span-68b99ebf-c290-46cf-a695-afb40f3cb5e2",
+                "subject": "灰港雾钟",
+                "value": "只在北潮闸完全关闭后敲响一次"
+              },
+              {
+                "id": "mem-035abde3-9db1-4948-8cc6-d60b4c48eeae",
+                "memory_type": "dynamic_state",
+                "predicate": "holder",
+                "source_span_id": "span-a0363689-e938-47e9-a367-a1a504c880d3",
+                "subject": "黄铜罗盘",
+                "value": "温岚"
+              },
+              {
+                "id": "mem-13ba9abd-4787-4584-aeb6-1945ae4544d4",
+                "memory_type": "open_thread",
+                "predicate": "status",
+                "source_span_id": "span-aa0fb5dc-9477-47a1-8dfe-6c72c8afbd2c",
+                "subject": "白色渡船",
+                "value": "没有靠岸，来源未明"
+              },
+              {
+                "id": "mem-18495de1-41bb-4e18-a969-d68923754791",
+                "memory_type": "event_timeline",
+                "predicate": "received",
+                "source_span_id": "span-725a5a1c-3f66-45a6-b386-74d1aa0520e4",
+                "subject": "低室电台",
+                "value": "第6章 21:05 收到三次求救码"
+              },
+              {
+                "id": "mem-9a7cbab6-b729-4151-9875-8d287b86a144",
+                "memory_type": "character_knowledge",
+                "predicate": "does_not_know",
+                "source_span_id": "span-93860076-18f7-4f5b-92e9-bedfe6843a33",
+                "subject": "温岚",
+                "value": "廊桥钥匙的含义"
+              },
+              {
+                "id": "mem-b6cc5cd8-ebdc-4e77-b161-05ac22fd8ab6",
+                "memory_type": "event_timeline",
+                "predicate": "time",
+                "source_span_id": "span-44351c1c-36eb-4921-8b8b-1048a48c5cbe",
+                "subject": "西航道退潮",
+                "value": "第3章 19:20"
+              },
+              {
+                "id": "mem-db5681ba-aed4-458c-a517-2c1c4724c000",
+                "memory_type": "open_thread",
+                "predicate": "status",
+                "source_span_id": "span-12d2edde-7517-4040-8384-5401bb9aa6e0",
+                "subject": "异常雾钟",
+                "value": "北潮闸未关闭时响起，原因未解"
+              }
+            ]
+          },
+          "planned": {
+            "character_plans": [],
+            "story_plans": [],
+            "world_plans": []
+          },
+          "written": {
+            "draft": {
+              "chapter_number": 11,
+              "excerpt": "CTRL_G02_DIALOGUE 林默说‘我知道密码’，但叙述者明确指出这是谎言，林默其实并不知道密码。",
+              "id": "draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c",
+              "revision": 2,
+              "title": "第十一章：未归的航标"
+            },
+            "draft_claims": [
+              {
+                "id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1",
+                "ordinal": 1,
+                "text": "CTRL_G02_DIALOGUE 林默说‘我知道密码’，但叙述者明确指出这是谎言，林默其实并不知道密码。"
+              }
+            ],
+            "source_spans": [
+              {
+                "body": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+                "chapter_id": "ch-e2ea46d0-e48e-4a4c-b5bb-c57e3329a723",
+                "chapter_number": 4,
+                "chapter_title": "无字潮表",
+                "id": "span-93860076-18f7-4f5b-92e9-bedfe6843a33",
+                "label": "知识边界",
+                "source_revision": 1
+              },
+              {
+                "body": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+                "chapter_id": "ch-dae2c492-a616-4673-993b-63093956d276",
+                "chapter_number": 6,
+                "chapter_title": "低室电台",
+                "id": "span-725a5a1c-3f66-45a6-b386-74d1aa0520e4",
+                "label": "事件记录",
+                "source_revision": 1
+              },
+              {
+                "body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+                "chapter_id": "ch-a310b1b0-f650-4cc4-9bac-4793d46a10ec",
+                "chapter_number": 10,
+                "chapter_title": "回声坐标",
+                "id": "span-12d2edde-7517-4040-8384-5401bb9aa6e0",
+                "label": "未解问题",
+                "source_revision": 1
+              },
+              {
+                "body": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+                "chapter_id": "ch-2f5fd923-6f62-4346-9ba6-ce1478337ba1",
+                "chapter_number": 9,
+                "chapter_title": "换手",
+                "id": "span-a0363689-e938-47e9-a367-a1a504c880d3",
+                "label": "动态状态",
+                "source_revision": 1
+              }
+            ]
+          }
+        },
+        "retrieval": {
+          "counts": {
+            "author_context": {
+              "available": 0,
+              "selected": 0
+            },
+            "character_alias": {
+              "available": 0,
+              "selected": 0
+            },
+            "draft_claim": {
+              "available": 1,
+              "selected": 1
+            },
+            "foreshadow_record": {
+              "available": 0,
+              "selected": 0
+            },
+            "issue": {
+              "available": 0,
+              "selected": 0
+            },
+            "issue_evidence": {
+              "available": 0,
+              "selected": 0
+            },
+            "memory_record": {
+              "available": 8,
+              "selected": 8
+            },
+            "source_span": {
+              "available": 10,
+              "selected": 4
+            }
+          },
+          "draft_claim_scope": {
+            "available": 1,
+            "body_chars": 53,
+            "excerpt_chars": 53,
+            "selected": [
+              {
+                "id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1",
+                "source_chars": 53,
+                "source_end": 53,
+                "source_start": 0,
+                "supplied_chars": 53,
+                "supplied_end": 53,
+                "truncated": false
+              }
+            ]
+          },
+          "method_version": "writing-analysis-lexical-v3-brief-540",
+          "selected_ids": {
+            "author_context": [],
+            "character_alias": [],
+            "draft_claim": [
+              "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1"
+            ],
+            "foreshadow_record": [],
+            "issue": [],
+            "issue_evidence": [],
+            "memory_record": [
+              "mem-a00a5eb2-21c8-4322-95e5-0f9cb2bcee4d",
+              "mem-c1be51c5-b446-4abf-92bc-6de0d766f945",
+              "mem-035abde3-9db1-4948-8cc6-d60b4c48eeae",
+              "mem-13ba9abd-4787-4584-aeb6-1945ae4544d4",
+              "mem-18495de1-41bb-4e18-a969-d68923754791",
+              "mem-9a7cbab6-b729-4151-9875-8d287b86a144",
+              "mem-b6cc5cd8-ebdc-4e77-b161-05ac22fd8ab6",
+              "mem-db5681ba-aed4-458c-a517-2c1c4724c000"
+            ],
+            "source_span": [
+              "span-93860076-18f7-4f5b-92e9-bedfe6843a33",
+              "span-725a5a1c-3f66-45a6-b386-74d1aa0520e4",
+              "span-12d2edde-7517-4040-8384-5401bb9aa6e0",
+              "span-a0363689-e938-47e9-a367-a1a504c880d3"
+            ]
+          },
+          "truncated": {
+            "author_context": false,
+            "character_alias": false,
+            "draft_body": false,
+            "draft_claim": false,
+            "foreshadow_record": false,
+            "issue": false,
+            "issue_evidence": false,
+            "memory_record": false,
+            "source_span": true,
+            "source_span_text": false
+          }
+        },
+        "task": "context_brief",
+        "output_schema": {
+          "summary": "1-400 chars",
+          "summary_sources": [
+            {
+              "source_type": "author_context|memory_record|source_span|draft_claim",
+              "source_id": "supplied id"
+            }
+          ],
+          "items": [
+            {
+              "section": "related_plan|confirmed_fact|character_state|world_rule|open_thread|recent_source",
+              "text": "1-600 chars",
+              "sources": [
+                {
+                  "source_type": "author_context|memory_record|source_span|draft_claim",
+                  "source_id": "supplied id"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "response": {
+        "summary": "模型编造：所有秘密已经公开。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "林默已经知道密码。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-draft-8b53d654-c556-4528-9acb-9a6a5bd86e0c-r2-1"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "external": []
+}

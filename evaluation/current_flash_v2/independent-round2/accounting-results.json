@@ -1,0 +1,1060 @@
+{
+  "scope": "No network, credentials, runner import, database SQL, product changes or implementation evidence changes; synthetic DB bytes only hashed within verified root",
+  "checks": [
+    {
+      "name": "logical_count",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "case_ids_unique",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "family_counts",
+      "actual": {
+        "g02": 4,
+        "g03": 4
+      },
+      "expected": {
+        "g02": 4,
+        "g03": 4
+      },
+      "pass": true
+    },
+    {
+      "name": "exact_sequence_summary_http",
+      "actual": [
+        {
+          "case_id": "g02-three-sentences",
+          "ordinal": 1,
+          "sent_at": "2026-09-26T10:05:59.899589+00:00",
+          "status": 200,
+          "latency_ms": 3766,
+          "usage": {
+            "prompt_tokens": 3156,
+            "completion_tokens": 1052,
+            "total_tokens": 4208
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g02-long-sentence",
+          "ordinal": 2,
+          "sent_at": "2026-09-26T10:06:05.084610+00:00",
+          "status": 200,
+          "latency_ms": 3961,
+          "usage": {
+            "prompt_tokens": 3233,
+            "completion_tokens": 1097,
+            "total_tokens": 4330
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g02-body-limit",
+          "ordinal": 3,
+          "sent_at": "2026-09-26T10:06:10.438933+00:00",
+          "status": 200,
+          "latency_ms": 4079,
+          "usage": {
+            "prompt_tokens": 4449,
+            "completion_tokens": 1070,
+            "total_tokens": 5519
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g02-identical-text",
+          "ordinal": 4,
+          "sent_at": "2026-09-26T10:06:15.905933+00:00",
+          "status": 200,
+          "latency_ms": 4209,
+          "usage": {
+            "prompt_tokens": 2943,
+            "completion_tokens": 1080,
+            "total_tokens": 4023
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g03-short-target",
+          "ordinal": 5,
+          "sent_at": "2026-09-26T10:06:21.236410+00:00",
+          "status": 200,
+          "latency_ms": 2464,
+          "usage": {
+            "prompt_tokens": 1568,
+            "completion_tokens": 382,
+            "total_tokens": 1950
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g03-deep-target",
+          "ordinal": 6,
+          "sent_at": "2026-09-26T10:06:24.829007+00:00",
+          "status": 200,
+          "latency_ms": 2106,
+          "usage": {
+            "prompt_tokens": 1957,
+            "completion_tokens": 312,
+            "total_tokens": 2269
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g03-fact-absent",
+          "ordinal": 7,
+          "sent_at": "2026-09-26T10:06:28.219261+00:00",
+          "status": 200,
+          "latency_ms": 2450,
+          "usage": {
+            "prompt_tokens": 1570,
+            "completion_tokens": 389,
+            "total_tokens": 1959
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g03-other-chapter",
+          "ordinal": 8,
+          "sent_at": "2026-09-26T10:06:31.849492+00:00",
+          "status": 200,
+          "latency_ms": 2342,
+          "usage": {
+            "prompt_tokens": 1968,
+            "completion_tokens": 352,
+            "total_tokens": 2320
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        }
+      ],
+      "expected": [
+        {
+          "case_id": "g02-three-sentences",
+          "ordinal": 1,
+          "sent_at": "2026-09-26T10:05:59.899589+00:00",
+          "status": 200,
+          "latency_ms": 3766,
+          "usage": {
+            "prompt_tokens": 3156,
+            "completion_tokens": 1052,
+            "total_tokens": 4208
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g02-long-sentence",
+          "ordinal": 2,
+          "sent_at": "2026-09-26T10:06:05.084610+00:00",
+          "status": 200,
+          "latency_ms": 3961,
+          "usage": {
+            "prompt_tokens": 3233,
+            "completion_tokens": 1097,
+            "total_tokens": 4330
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g02-body-limit",
+          "ordinal": 3,
+          "sent_at": "2026-09-26T10:06:10.438933+00:00",
+          "status": 200,
+          "latency_ms": 4079,
+          "usage": {
+            "prompt_tokens": 4449,
+            "completion_tokens": 1070,
+            "total_tokens": 5519
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g02-identical-text",
+          "ordinal": 4,
+          "sent_at": "2026-09-26T10:06:15.905933+00:00",
+          "status": 200,
+          "latency_ms": 4209,
+          "usage": {
+            "prompt_tokens": 2943,
+            "completion_tokens": 1080,
+            "total_tokens": 4023
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g03-short-target",
+          "ordinal": 5,
+          "sent_at": "2026-09-26T10:06:21.236410+00:00",
+          "status": 200,
+          "latency_ms": 2464,
+          "usage": {
+            "prompt_tokens": 1568,
+            "completion_tokens": 382,
+            "total_tokens": 1950
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g03-deep-target",
+          "ordinal": 6,
+          "sent_at": "2026-09-26T10:06:24.829007+00:00",
+          "status": 200,
+          "latency_ms": 2106,
+          "usage": {
+            "prompt_tokens": 1957,
+            "completion_tokens": 312,
+            "total_tokens": 2269
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g03-fact-absent",
+          "ordinal": 7,
+          "sent_at": "2026-09-26T10:06:28.219261+00:00",
+          "status": 200,
+          "latency_ms": 2450,
+          "usage": {
+            "prompt_tokens": 1570,
+            "completion_tokens": 389,
+            "total_tokens": 1959
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        },
+        {
+          "case_id": "g03-other-chapter",
+          "ordinal": 8,
+          "sent_at": "2026-09-26T10:06:31.849492+00:00",
+          "status": 200,
+          "latency_ms": 2342,
+          "usage": {
+            "prompt_tokens": 1968,
+            "completion_tokens": 352,
+            "total_tokens": 2320
+          },
+          "usage_status": "complete",
+          "usage_invalid_fields": [],
+          "response_model": "deepseek-flash",
+          "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+          "finish_reason": "stop",
+          "error_type": null
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "http_and_input_and_output_counts",
+      "actual": [
+        8,
+        8,
+        8
+      ],
+      "expected": [
+        8,
+        8,
+        8
+      ],
+      "pass": true
+    },
+    {
+      "name": "http_ordinals",
+      "actual": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "expected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "pass": true
+    },
+    {
+      "name": "business_request_ordinals",
+      "actual": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "expected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "pass": true
+    },
+    {
+      "name": "all_complete_valid_usage",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "recomputed_prompt_tokens",
+      "actual": 20844,
+      "expected": 20844,
+      "pass": true
+    },
+    {
+      "name": "recomputed_completion_tokens",
+      "actual": 5734,
+      "expected": 5734,
+      "pass": true
+    },
+    {
+      "name": "summary_usage",
+      "actual": [
+        20844,
+        5734,
+        0,
+        true
+      ],
+      "expected": [
+        20844,
+        5734,
+        0,
+        true
+      ],
+      "pass": true
+    },
+    {
+      "name": "http_200_no_error",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "model_all_flash",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "actual_no_repair",
+      "actual": 0,
+      "expected": 0,
+      "pass": true
+    },
+    {
+      "name": "exact_hash_bound_requests",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "output_schema_hashes",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "first_output_linked_request",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "observed_output_usage_and_product_usage",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "case_definition_hashes",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "required_request_snapshot_sections",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "bound_product_identity",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "frozen_manifest_start_binding",
+      "actual": "d2260a915dfcf32f6b23a9e9deac06f518f44fcc4e47dbce43e0fe9a4049b2ef",
+      "expected": "d2260a915dfcf32f6b23a9e9deac06f518f44fcc4e47dbce43e0fe9a4049b2ef",
+      "pass": true
+    },
+    {
+      "name": "source_hashes_match",
+      "actual": [],
+      "expected": [],
+      "pass": true
+    },
+    {
+      "name": "seed_dependency_frozen",
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "name": "v1_independent_baseline_hashes",
+      "actual": [],
+      "expected": [],
+      "pass": true
+    },
+    {
+      "name": "v1_all_frozen_inputs",
+      "actual": [],
+      "expected": [],
+      "pass": true
+    },
+    {
+      "name": "cost_unavailable",
+      "actual": "unavailable",
+      "expected": "unavailable",
+      "pass": true
+    },
+    {
+      "name": "harness_exceptions",
+      "actual": [],
+      "expected": [],
+      "pass": true
+    },
+    {
+      "name": "separate_models_preflight",
+      "actual": [
+        "GET /models",
+        200,
+        true,
+        null
+      ],
+      "expected": [
+        "GET /models",
+        200,
+        true,
+        null
+      ],
+      "pass": true
+    },
+    {
+      "name": "workspace_start_binding",
+      "actual": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\artifacts\\current_flash_v2\\flash-v2-20260926-01",
+      "expected": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\artifacts\\current_flash_v2\\flash-v2-20260926-01",
+      "pass": true
+    },
+    {
+      "name": "synthetic_database_count",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "database_hash_size_ignore",
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "name": "database_file_inventory",
+      "actual": [
+        "g02-body-limit/runtime/data/demo.sqlite3",
+        "g02-identical-text/runtime/data/demo.sqlite3",
+        "g02-long-sentence/runtime/data/demo.sqlite3",
+        "g02-three-sentences/runtime/data/demo.sqlite3",
+        "g03-deep-target/runtime/data/demo.sqlite3",
+        "g03-fact-absent/runtime/data/demo.sqlite3",
+        "g03-other-chapter/runtime/data/demo.sqlite3",
+        "g03-short-target/runtime/data/demo.sqlite3"
+      ],
+      "expected": [
+        "g02-body-limit/runtime/data/demo.sqlite3",
+        "g02-identical-text/runtime/data/demo.sqlite3",
+        "g02-long-sentence/runtime/data/demo.sqlite3",
+        "g02-three-sentences/runtime/data/demo.sqlite3",
+        "g03-deep-target/runtime/data/demo.sqlite3",
+        "g03-fact-absent/runtime/data/demo.sqlite3",
+        "g03-other-chapter/runtime/data/demo.sqlite3",
+        "g03-short-target/runtime/data/demo.sqlite3"
+      ],
+      "pass": true
+    },
+    {
+      "name": "usage_edge_probes",
+      "actual": 12,
+      "expected": 12,
+      "pass": true
+    },
+    {
+      "name": "stop_classifier_controls",
+      "actual": 8,
+      "expected": 8,
+      "pass": true
+    },
+    {
+      "name": "two_business_failures_no_stop",
+      "actual": [
+        0,
+        0
+      ],
+      "expected": [
+        0,
+        0
+      ],
+      "pass": true
+    },
+    {
+      "name": "precall_deepcopy_success_failure_controls",
+      "actual": 2,
+      "expected": 2,
+      "pass": true
+    },
+    {
+      "name": "saved_json_sensitive_scan",
+      "actual": [],
+      "expected": [],
+      "pass": true
+    }
+  ],
+  "all_checks_pass": true,
+  "usage_probes": [
+    {
+      "case": "absent",
+      "expected": "unknown",
+      "event": {
+        "case_id": "absent",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": null,
+        "usage_status": "unknown",
+        "usage_invalid_fields": [
+          "prompt_tokens",
+          "completion_tokens",
+          "total_tokens"
+        ],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    },
+    {
+      "case": "null",
+      "expected": "unknown",
+      "event": {
+        "case_id": "null",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": null,
+        "usage_status": "unknown",
+        "usage_invalid_fields": [
+          "prompt_tokens",
+          "completion_tokens",
+          "total_tokens"
+        ],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    },
+    {
+      "case": "empty",
+      "expected": "unknown",
+      "event": {
+        "case_id": "empty",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": {
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null
+        },
+        "usage_status": "unknown",
+        "usage_invalid_fields": [
+          "prompt_tokens",
+          "completion_tokens",
+          "total_tokens"
+        ],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    },
+    {
+      "case": "input_only",
+      "expected": "partial",
+      "event": {
+        "case_id": "input_only",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": {
+          "prompt_tokens": 11,
+          "completion_tokens": null,
+          "total_tokens": null
+        },
+        "usage_status": "partial",
+        "usage_invalid_fields": [
+          "completion_tokens",
+          "total_tokens"
+        ],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    },
+    {
+      "case": "missing_total",
+      "expected": "partial",
+      "event": {
+        "case_id": "missing_total",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": {
+          "prompt_tokens": 11,
+          "completion_tokens": 7,
+          "total_tokens": null
+        },
+        "usage_status": "partial",
+        "usage_invalid_fields": [
+          "total_tokens"
+        ],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    },
+    {
+      "case": "string_input",
+      "expected": "partial",
+      "event": {
+        "case_id": "string_input",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": {
+          "prompt_tokens": null,
+          "completion_tokens": 7,
+          "total_tokens": 18
+        },
+        "usage_status": "partial",
+        "usage_invalid_fields": [
+          "prompt_tokens"
+        ],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    },
+    {
+      "case": "negative_input",
+      "expected": "partial",
+      "event": {
+        "case_id": "negative_input",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": {
+          "prompt_tokens": null,
+          "completion_tokens": 7,
+          "total_tokens": 6
+        },
+        "usage_status": "partial",
+        "usage_invalid_fields": [
+          "prompt_tokens"
+        ],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    },
+    {
+      "case": "boolean_input",
+      "expected": "partial",
+      "event": {
+        "case_id": "boolean_input",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": {
+          "prompt_tokens": null,
+          "completion_tokens": 7,
+          "total_tokens": 8
+        },
+        "usage_status": "partial",
+        "usage_invalid_fields": [
+          "prompt_tokens"
+        ],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    },
+    {
+      "case": "float_input",
+      "expected": "partial",
+      "event": {
+        "case_id": "float_input",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": {
+          "prompt_tokens": null,
+          "completion_tokens": 7,
+          "total_tokens": 18
+        },
+        "usage_status": "partial",
+        "usage_invalid_fields": [
+          "prompt_tokens"
+        ],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    },
+    {
+      "case": "inconsistent_total",
+      "expected": "partial",
+      "event": {
+        "case_id": "inconsistent_total",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": {
+          "prompt_tokens": 11,
+          "completion_tokens": 7,
+          "total_tokens": 19
+        },
+        "usage_status": "partial",
+        "usage_invalid_fields": [
+          "total_tokens_inconsistent"
+        ],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    },
+    {
+      "case": "complete",
+      "expected": "complete",
+      "event": {
+        "case_id": "complete",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": {
+          "prompt_tokens": 11,
+          "completion_tokens": 7,
+          "total_tokens": 18
+        },
+        "usage_status": "complete",
+        "usage_invalid_fields": [],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    },
+    {
+      "case": "zero_complete",
+      "expected": "complete",
+      "event": {
+        "case_id": "zero_complete",
+        "ordinal": 1,
+        "sent_at": "offline-only",
+        "status": 200,
+        "latency_ms": 0,
+        "usage": {
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0
+        },
+        "usage_status": "complete",
+        "usage_invalid_fields": [],
+        "response_model": null,
+        "system_fingerprint": null,
+        "finish_reason": null,
+        "error_type": null
+      },
+      "pass": true
+    }
+  ],
+  "service_probes": [
+    {
+      "case": "evidence_quality",
+      "service": false,
+      "auth_or_model_stop": false,
+      "pass": true
+    },
+    {
+      "case": "schema_quality",
+      "service": false,
+      "auth_or_model_stop": false,
+      "pass": true
+    },
+    {
+      "case": "http_503",
+      "service": true,
+      "auth_or_model_stop": false,
+      "pass": true
+    },
+    {
+      "case": "http_429",
+      "service": true,
+      "auth_or_model_stop": false,
+      "pass": true
+    },
+    {
+      "case": "auth_401",
+      "service": true,
+      "auth_or_model_stop": true,
+      "pass": true
+    },
+    {
+      "case": "model_404",
+      "service": true,
+      "auth_or_model_stop": true,
+      "pass": true
+    },
+    {
+      "case": "timeout",
+      "service": true,
+      "auth_or_model_stop": false,
+      "pass": true
+    },
+    {
+      "case": "completed",
+      "service": false,
+      "auth_or_model_stop": false,
+      "pass": true
+    }
+  ],
+  "precall_snapshot_probes": [
+    {
+      "raised": false,
+      "snapshot_was_present_pre_base_call": true,
+      "deep_copy_unmutated": true,
+      "retained_request_count": 1,
+      "parsed_output_count": 1,
+      "expected_exception": true,
+      "pass": true
+    },
+    {
+      "raised": true,
+      "snapshot_was_present_pre_base_call": true,
+      "deep_copy_unmutated": true,
+      "retained_request_count": 1,
+      "parsed_output_count": 0,
+      "expected_exception": true,
+      "pass": true
+    }
+  ],
+  "database_verification": [
+    {
+      "path": "g02-body-limit/runtime/data/demo.sqlite3",
+      "exists": true,
+      "bytes_match": true,
+      "sha256_match": true,
+      "git_ignored": true
+    },
+    {
+      "path": "g02-identical-text/runtime/data/demo.sqlite3",
+      "exists": true,
+      "bytes_match": true,
+      "sha256_match": true,
+      "git_ignored": true
+    },
+    {
+      "path": "g02-long-sentence/runtime/data/demo.sqlite3",
+      "exists": true,
+      "bytes_match": true,
+      "sha256_match": true,
+      "git_ignored": true
+    },
+    {
+      "path": "g02-three-sentences/runtime/data/demo.sqlite3",
+      "exists": true,
+      "bytes_match": true,
+      "sha256_match": true,
+      "git_ignored": true
+    },
+    {
+      "path": "g03-deep-target/runtime/data/demo.sqlite3",
+      "exists": true,
+      "bytes_match": true,
+      "sha256_match": true,
+      "git_ignored": true
+    },
+    {
+      "path": "g03-fact-absent/runtime/data/demo.sqlite3",
+      "exists": true,
+      "bytes_match": true,
+      "sha256_match": true,
+      "git_ignored": true
+    },
+    {
+      "path": "g03-other-chapter/runtime/data/demo.sqlite3",
+      "exists": true,
+      "bytes_match": true,
+      "sha256_match": true,
+      "git_ignored": true
+    },
+    {
+      "path": "g03-short-target/runtime/data/demo.sqlite3",
+      "exists": true,
+      "bytes_match": true,
+      "sha256_match": true,
+      "git_ignored": true
+    }
+  ],
+  "observed_file_hashes": {
+    "run.py": "45e00b0d4ef117f862d0b059bb876942daf9469224f3ce1ba60d0b0517d6d0fe",
+    "frozen-inputs.json": "d2260a915dfcf32f6b23a9e9deac06f518f44fcc4e47dbce43e0fe9a4049b2ef",
+    "runs\\flash-v2-20260926-01\\cases\\01-g02-three-sentences.json": "89b5f148a39c8a0c57ff40dbc3e4c1c7a068cebc860d51a495dee2c7bf5c59f0",
+    "runs\\flash-v2-20260926-01\\cases\\02-g02-long-sentence.json": "7b7276cee12f955078e993928c2742e75f045b1dba5962fae2e3f099dc6f4921",
+    "runs\\flash-v2-20260926-01\\cases\\03-g02-body-limit.json": "ac5c70b43a28f9b20990b8602f1e6efd032f5e754efe5bed5a9cd70ced8aaae3",
+    "runs\\flash-v2-20260926-01\\cases\\04-g02-identical-text.json": "34a10437792380f8f75bcc51b43c26e62dd4fb80b1244d349c6d7826e1e74f24",
+    "runs\\flash-v2-20260926-01\\cases\\05-g03-short-target.json": "eaf4e90517d785d17d920aaafb932337b554aeacf327e9adc137e8c066875586",
+    "runs\\flash-v2-20260926-01\\cases\\06-g03-deep-target.json": "7668d32473e4da6a9516c3b8da3033054f50dea9e9df1a8c850abf5616833142",
+    "runs\\flash-v2-20260926-01\\cases\\07-g03-fact-absent.json": "59c9f02faa45dde80e89b9dda8ca601062d073f859e85755413aea02d74fc9ae",
+    "runs\\flash-v2-20260926-01\\cases\\08-g03-other-chapter.json": "bbe819a90181abc4f92aa725819597c1cc1efe6f5ecbca2520e8a020ef02c480",
+    "runs\\flash-v2-20260926-01\\models-preflight.json": "17883eb404608757b547b75bf65aa1d63739679e7f767a8f9c89ef98280af908",
+    "runs\\flash-v2-20260926-01\\start.json": "21f3f5709dad0139b5134ec83869884a4c9e2447b5f156a722f489df9c5d77cd",
+    "runs\\flash-v2-20260926-01\\summary.json": "68fcda57b1caf3f6fac5666c85a3772afea59396473d08be073abc1f8e6434ed",
+    "runs\\flash-v2-20260926-01\\workspace-manifest.json": "3e96f1cf7e7321a145699c4aa97ff84b3ebf901bb31d8bd45a7d6c060a29c004"
+  },
+  "limitation": "Snapshot is copied into memory before the base Provider call; case/failure disk persistence is after return or caught exception, not a crash-safe pre-dispatch journal."
+}

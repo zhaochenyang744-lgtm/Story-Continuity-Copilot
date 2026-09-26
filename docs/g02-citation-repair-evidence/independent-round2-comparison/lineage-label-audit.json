@@ -1,0 +1,11 @@
+{
+  "old_case_count": 24,
+  "new_case_count": 24,
+  "identical_target_drafts": [],
+  "lineage_covers_all_old_ids": true,
+  "establish_by_class": {
+    "conflict": 0,
+    "no_conflict": 0,
+    "insufficient_evidence": 8
+  }
+}

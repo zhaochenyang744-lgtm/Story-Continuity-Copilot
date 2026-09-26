@@ -1,0 +1,25 @@
+{
+  "case_id": "ccv2-north_glass-world_rule-conflict",
+  "draft": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+  "single_source": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+  "rationale_in_case": "The blue-only rule and Mira's red-only badge at the same 10点 jointly rule out her opening; neither source alone identifies both the rule and Mira's badge.",
+  "raw_score": {
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "errors": [
+      "raw_evidence_policy_mismatch"
+    ]
+  },
+  "final_score": {
+    "case_id": "ccv2-north_glass-world_rule-conflict",
+    "expected_class": "conflict",
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "result": "fail",
+    "errors": [
+      "minimum_evidence_missing"
+    ]
+  },
+  "human_root_judgment": "Draft itself specifies red-only; badge_rule forbids red-only opening. The roster is corroborating context, not required to refute this draft. The conflict gold remains sound, but the mandatory minimum is unnecessarily strict.",
+  "provider_calls": 0
+}

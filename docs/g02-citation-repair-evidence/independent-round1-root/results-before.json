@@ -1,0 +1,12 @@
+{
+  "evaluation/current_flash_v4/runs/flash-v4-g02-20260926-01/models-preflight.json": "1f79f55a1efab8644c6646ce154dbc861c097c258fdf7eb8b499cf937120bd01",
+  "evaluation/current_flash_v4/runs/flash-v4-g02-20260926-01/start.json": "082f491803c7804800ae8c6b878fa6495216a2907ebb7429f65d49cd26ecebc3",
+  "evaluation/current_flash_v4/runs/flash-v4-g02-20260926-01/summary.json": "be481a1c3dfb863cad497af0e3c79506c1b395242c72ea526905c4f8f7091863",
+  "evaluation/current_flash_v4/runs/flash-v4-g02-20260926-01/workspace-manifest.json": "1f99a84f8bdf90b07291e4c83f09698bbdb26e95db8ee6121e391997d5a04434",
+  "evaluation/current_flash_v4/runs/flash-v4-g02-20260926-01/cases/01-g02-three-sentences.json": "cc35d4e68d8a9c12e0c851c99477ee66e7c1af7a436323cd78f91b721f74df0a",
+  "evaluation/current_flash_v4/runs/flash-v4-g02-20260926-01/cases/02-g02-long-sentence.json": "e4fca52f273c40ac794a64bfd4b85a7e4dbbd157ba82e3e111b4bf130881cfc3",
+  "evaluation/current_flash_v4/runs/flash-v4-g02-20260926-01/cases/03-g02-body-limit.json": "d4b5608313661a78940581c16ab0993d06b33c69025f0266fe1efdd47f185dd5",
+  "evaluation/current_flash_v4/runs/flash-v4-g02-20260926-01/cases/04-g02-identical-text.json": "3cac6e38238a962ed24d158b054a432ed281935b60ee0ee3190a350272dbb462",
+  "evaluation/current_flash_v4/runs/flash-v4-g02-20260926-01/cases/05-g02-time-bound.json": "5f70951446ce13640c92b511b3e8bfefd052defd10c9e61b13ec0cf4be93b66a",
+  "evaluation/current_flash_v4/runs/flash-v4-g02-20260926-01/cases/06-g02-dialogue-attribution.json": "736c884326b73ca8ce717716b735dd386f4b1c53a462c669efccb665f7642b8f"
+}

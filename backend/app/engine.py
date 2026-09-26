@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from . import brief_citations
 from .memory_contract import CONTROLLED_PREDICATES
 from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget
 
@@ -31,6 +32,7 @@ MEMORY_CANDIDATE_FIELDS=("memory_type","subject","predicate","value","chapter_id
 MEMORY_DELTA_CANDIDATE_FIELDS=("change_kind","affected_memory_id","memory_type","subject","predicate","value","invalidation_reason","chapter_id","source_span_id")
 MEMORY_REPAIRABLE_ERRORS={"top_level_shape_invalid","candidate_collection_invalid","candidate_count_invalid","empty_candidates","candidate_fields_invalid","memory_type_invalid","required_field_type_invalid","required_field_blank","candidate_length_invalid","evidence_unresolvable"}
 ANALYSIS_RETRIEVAL_METHOD_VERSION="writing-analysis-lexical-v2-draft-claims"
+CONTEXT_BRIEF_RETRIEVAL_METHOD_VERSION="writing-analysis-lexical-v3-brief-540"
 CONTEXT_BRIEF_PROMPT_VERSION="context-brief-v5-clause-citations"
 PLAN_ALIGNMENT_PROMPT_VERSION="plan-alignment-v4-clause-citations"
 CHANGE_IMPACT_PROMPT_VERSION="change-impact-v2-bounded-citations"
@@ -414,7 +416,8 @@ class WritingAnalysisEngine:
     def provenance(self,analysis_type:str)->dict[str,str]:
         prompt_version=CONTEXT_BRIEF_PROMPT_VERSION if analysis_type=="context_brief" else PLAN_ALIGNMENT_PROMPT_VERSION if analysis_type=="plan_alignment" else CHANGE_IMPACT_PROMPT_VERSION if analysis_type=="change_impact" else STORY_QA_PROMPT_VERSION if analysis_type=="story_qa" else FORESHADOW_SCAN_PROMPT_VERSION if analysis_type=="foreshadow_scan" else AUTHOR_MATERIAL_COMPARISON_PROMPT_VERSION if analysis_type=="author_material_comparison" else REVISION_PLAN_PROMPT_VERSION
         schema_version="writing-analysis-v2-foreshadow-evidence-kind" if analysis_type=="foreshadow_scan" else "writing-analysis-v1"
-        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":prompt_version,"schema_version":schema_version,"retrieval_method_version":ANALYSIS_RETRIEVAL_METHOD_VERSION}
+        retrieval_version=CONTEXT_BRIEF_RETRIEVAL_METHOD_VERSION if analysis_type=="context_brief" else ANALYSIS_RETRIEVAL_METHOD_VERSION
+        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":prompt_version,"schema_version":schema_version,"retrieval_method_version":retrieval_version}
 
     @staticmethod
     def _schema(task:str)->dict[str,Any]:
@@ -492,30 +495,58 @@ class WritingAnalysisEngine:
         if task=="context_brief":
             if not isinstance(payload,dict) or set(payload)!={"summary","summary_sources","items"} or not isinstance(payload["summary_sources"],list) or not isinstance(payload["items"],list) or not 1<=len(payload["summary_sources"])<=3 or not 1<=len(payload["items"])<=12:raise ValueError("schema_invalid")
             summary_sources=[self._clean_source(item,maps,{"author_context","memory_record","source_span","draft_claim"},project_id) for item in payload["summary_sources"]]
-            items=[]
+            rendered_items=[]
             draft_claims=data["layers"]["written"]["draft_claims"]
             discarded_citation_mismatches=[]
-            for raw in payload["items"]:
+            citation_added=0;citation_omitted=0
+            def clean_brief_source(ref:dict[str,str])->dict[str,Any]:
+                return self._clean_source(ref,maps,{"author_context","memory_record","source_span","draft_claim"},project_id)
+            for index,raw in enumerate(payload["items"]):
                 if not isinstance(raw,dict) or set(raw)!={"section","text","sources"} or raw.get("section") not in CONTEXT_BRIEF_SECTIONS or not isinstance(raw.get("sources"),list) or not 1<=len(raw["sources"])<=4:raise ValueError("schema_invalid")
-                sources=[self._clean_source(item,maps,{"author_context","memory_record","source_span","draft_claim"},project_id) for item in raw["sources"]]
+                sources=[clean_brief_source(item) for item in raw["sources"]]
                 item_text=self._text(raw["text"],600)
-                cited_ids={source["source_id"] for source in sources if source["source_type"]=="draft_claim"}
-                copied_text_sources:dict[str,set[str]]={}
-                for claim in draft_claims:
-                    if claim["text"] and claim["text"] in item_text:
-                        copied_text_sources.setdefault(claim["text"],set()).add(claim["id"])
-                if cited_ids and any(not source_ids.intersection(cited_ids) for source_ids in copied_text_sources.values()):
-                    discarded_citation_mismatches.append(len(items)+len(discarded_citation_mismatches))
+                located,added,omitted=brief_citations.locate_sources(item_text,sources,maps,clean_brief_source)
+                citation_added+=added;citation_omitted+=omitted
+                if not located:
+                    discarded_citation_mismatches.append(index)
                     continue
-                items.append({"section":raw["section"],"text":item_text,"sources":sources})
+                groups=[located] if len(brief_citations.render_sources(located,maps,100000))<=600 else [[source] for source in located]
+                for group in groups:
+                    rendered=brief_citations.render_sources(group,maps)
+                    rendered_items.append({"section":brief_citations.section_for_sources(group,maps,raw["section"]),
+                                  "text":rendered,"sources":group})
             draft_text=str(data["layers"]["written"]["draft"].get("excerpt", ""))
+            model_cited_draft={source["source_id"] for item in rendered_items for source in item["sources"] if source["source_type"]=="draft_claim"}
+            fallback_draft_ids=[]
+            if draft_text.strip():
+                for claim in draft_claims:
+                    if claim["id"] in model_cited_draft:continue
+                    source=clean_brief_source({"source_type":"draft_claim","source_id":claim["id"]})
+                    rendered_items.append({"section":"recent_source","text":brief_citations.render_sources([source],maps),"sources":[source]})
+                    fallback_draft_ids.append(claim["id"])
+            unique_rendered=[]
+            for item in rendered_items:
+                if item not in unique_rendered:unique_rendered.append(item)
+            duplicate_omitted=len(rendered_items)-len(unique_rendered)
+            # Reserve a place for every selected saved-draft claim before optional background cards.
+            # A multi-source model item may otherwise consume all twelve visible slots.
+            items=[]
+            for claim in draft_claims:
+                candidate=next((item for item in unique_rendered if item not in items and any(
+                    source["source_type"]=="draft_claim" and source["source_id"]==claim["id"] for source in item["sources"])),None)
+                if candidate is not None:items.append(candidate)
+            for item in unique_rendered:
+                if len(items)>=12:break
+                if item not in items:items.append(item)
             cited_draft={source["source_id"] for item in items for source in item["sources"] if source["source_type"]=="draft_claim"}
-            if draft_text.strip() and draft_claims and not cited_draft:
-                claim=draft_claims[0]
-                source=self._clean_source({"source_type":"draft_claim","source_id":claim["id"]},maps,{"draft_claim"},project_id)
-                text=("当前已保存草稿写道：" if _requires_cjk(draft_text) else "The saved current draft says: ")+claim["text"]
-                items=[{"section":"recent_source","text":text[:600],"sources":[source]},*items[:11]]
-                cited_draft={claim["id"]}
+            overflow_omitted=max(0,len(unique_rendered)-len(items))
+            if not items:
+                for kind in ("memory_record","source_span","author_context"):
+                    for source_id in list(maps[kind])[:3-len(items)]:
+                        source=clean_brief_source({"source_type":kind,"source_id":source_id})
+                        items.append({"section":brief_citations.section_for_sources([source],maps,"confirmed_fact"),
+                                      "text":brief_citations.render_sources([source],maps),"sources":[source]})
+                    if len(items)>=3:break
             retrieval=data.get("retrieval",{})
             truncated=retrieval.get("truncated",{})
             scope=retrieval.get("draft_claim_scope",{})
@@ -545,7 +576,7 @@ class WritingAnalysisEngine:
                 draft_excerpt=str(data["layers"]["written"]["draft"].get("excerpt", ""))
                 fallback_summary="已根据所列来源整理当前写作上下文，具体事实与引用见分项。" if _requires_cjk(draft_excerpt) else "Writing context was organized from the listed sources; see item-level citations for factual details."
                 deterministic_summary=[fallback_summary];deterministic_sources=fallback_sources
-            return {"summary":" ".join(deterministic_summary),"summary_sources":deterministic_sources,"items":items,"evidence_status":"partial" if draft_reasons else "supported","draft_coverage":{"status":"partial" if draft_reasons else "covered" if draft_text.strip() else "empty","source_ids":sorted(cited_draft),"cited_ranges":[item for item in selected_scopes if item["id"] in cited_draft],"uncovered_source_ids":sorted(selected_ids-cited_draft),"unselected_count":max(0,scope.get("available",len(selected_scopes))-len(selected_scopes)),"discarded_item_indices":discarded_citation_mismatches,"reasons":draft_reasons}}
+            return {"summary":" ".join(deterministic_summary),"summary_sources":deterministic_sources,"items":items,"evidence_status":"partial" if draft_reasons else "supported","citation_transform":{"version":"source-rendered-v2","model_summary_used":False,"model_item_count":len(payload["items"]),"source_rendered_item_count":len(items),"added_source_count":citation_added,"omitted_unmatched_clause_count":citation_omitted,"discarded_model_item_indices":discarded_citation_mismatches,"fallback_draft_claim_ids":fallback_draft_ids,"duplicate_omitted_item_count":duplicate_omitted,"overflow_omitted_item_count":overflow_omitted},"draft_coverage":{"status":"partial" if draft_reasons else "covered" if draft_text.strip() else "empty","source_ids":sorted(cited_draft),"cited_ranges":[item for item in selected_scopes if item["id"] in cited_draft],"uncovered_source_ids":sorted(selected_ids-cited_draft),"unselected_count":max(0,scope.get("available",len(selected_scopes))-len(selected_scopes)),"discarded_item_indices":discarded_citation_mismatches,"reasons":draft_reasons}}
         if task=="change_impact":
             target_source=data.get("retrieval",{}).get("target_source")
             if target_source and target_source.get("status")!="selected":

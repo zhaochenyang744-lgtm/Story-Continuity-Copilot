@@ -1,0 +1,494 @@
+{
+  "time_utc": "2026-09-26T12:19:41.674640+00:00",
+  "scope": "V2 gold materials only; no capture or scorer acceptance",
+  "manifest_sha256": "35b8a9559b9d5138f21795cdeb74439d010490dd5a9ee07a37cd48dbd44ca337",
+  "file_hashes": {
+    "HANDOFF.md": "6e611e8752e9a1696611d380c55a39a0e8c1b202b965a198d77f16c08444cd71",
+    "RUBRIC.md": "f1c90ed975c254037c20a9fc4339b7e9f30204a49740c5b041f90125e3bbc624",
+    "build.py": "48d6072e26062431c91c2f9c703fa501a67cd16b2642cc395f3509f837cc4c9b",
+    "cases.json": "a312282eef0ea34b91a55256b238a01e287705836c6c3387d5b68f34a6ba41c0",
+    "v1-lineage.json": "4c2d03fb27ca53eb9fbada7ecb316aa4cf9d49c127de843d881b7d1c9b78b422",
+    "frozen-inputs.json": "35b8a9559b9d5138f21795cdeb74439d010490dd5a9ee07a37cd48dbd44ca337",
+    "corpora/north_glass.json": "57aea727f02bfd27534783756a5e254e678695d6bdfeea2182959862afcb9510",
+    "corpora/harbor_signal.json": "b73e9e6764c8b3dad8e7d77367998d8f4c9254da26734bd5ce13d355222798a7",
+    "corpora/orchard_restoration.json": "b65e422642a029d5e4fbdb5a04b89e2482ead83aed82ce9e1eed6618438f5614",
+    "corpora/basalt_observatory.json": "c6dbb54519030c228c2a2a464cfaf99e94cefeb31a91948d271a992732e2674e"
+  },
+  "manifest_mismatches": [],
+  "changed_during_inventory": [],
+  "class_counts": {
+    "conflict": 8,
+    "no_conflict": 8,
+    "insufficient_evidence": 8
+  },
+  "triplet_count": 8,
+  "corpus_count": 4,
+  "memory_source_errors": [],
+  "establish_by_class": {
+    "conflict": 0,
+    "no_conflict": 1,
+    "insufficient_evidence": 4
+  },
+  "http_calls": 0,
+  "provider_calls": 0,
+  "database_connections": 0,
+  "rows": [
+    {
+      "case_id": "ccv2-north_glass-world_rule-conflict",
+      "class": "conflict",
+      "category": "world_rule",
+      "draft": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+      "label_reason": "The blue-only rule and Mira's red-only badge at the same 10点 jointly rule out her opening; neither source alone identifies both the rule and Mira's badge.",
+      "time_scope": "The rule applies without an expiry; Mira's badge and claimed opening are both at 10点 on the same day.",
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "minimum_labels": [
+        [
+          "badge_rule",
+          "badge_roster"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-north_glass-world_rule-no_conflict",
+      "class": "no_conflict",
+      "category": "world_rule",
+      "draft": "At 10点 on the same day, Mira could not open North Glass with her only red badge.",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "time_scope": "The rule applies without an expiry; Mira's badge and claimed opening are both at 10点 on the same day.",
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "minimum_labels": [
+        [
+          "badge_rule",
+          "badge_roster"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+      "class": "insufficient_evidence",
+      "category": "world_rule",
+      "draft": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+      "label_reason": "The 10点 roster concerns Mira's red badge, while the 11点 spare-badge holder field is blank. Neither record identifies Mira as the later holder; this draft specifically claims the records establish that identity.",
+      "time_scope": "The rule applies without an expiry; Mira's badge and claimed opening are both at 10点 on the same day.",
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "minimum_labels": [
+        [
+          "spare_register"
+        ]
+      ],
+      "optional_labels": [
+        "badge_roster"
+      ],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-conflict",
+      "class": "conflict",
+      "category": "object_state",
+      "draft": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+      "label_reason": "The dispatch rule and same-minute loose-cap inspection jointly exclude ready status.",
+      "time_scope": "The rule applies without an expiry; the cap inspection and claimed ready status are both at 10点 on the same day.",
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "minimum_labels": [
+        [
+          "carrier_ready_rule",
+          "carrier_inspection"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-no_conflict",
+      "class": "no_conflict",
+      "category": "object_state",
+      "draft": "At 10点 on the same day, the North Glass pneumatic carrier was not ready despite its four-bar gauge.",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "time_scope": "The rule applies without an expiry; the cap inspection and claimed ready status are both at 10点 on the same day.",
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "minimum_labels": [
+        [
+          "carrier_ready_rule",
+          "carrier_inspection"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "class": "insufficient_evidence",
+      "category": "object_state",
+      "draft": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+      "label_reason": "The inspection establishes the loose cap, while the actor field is unrecorded. Neither source attributes the loosening to Mira.",
+      "time_scope": "The rule applies without an expiry; the cap inspection and claimed ready status are both at 10点 on the same day.",
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "minimum_labels": [
+        [
+          "cap_actor"
+        ]
+      ],
+      "optional_labels": [
+        "carrier_inspection"
+      ],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-conflict",
+      "class": "conflict",
+      "category": "timeline",
+      "draft": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+      "label_reason": "The same-day log establishes first opening before first closing; a claimed first closing before opening reverses the event order.",
+      "time_scope": "Opening and first closing are ordered within the same day; the conflict refers to 09点.",
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "minimum_labels": [
+        [
+          "gate_log"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "class": "no_conflict",
+      "category": "timeline",
+      "draft": "The gate logs establish that at 10点 the harbor signal gate first closed after its 09点 opening.",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "time_scope": "Opening and first closing are ordered within the same day; the conflict refers to 09点.",
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "minimum_labels": [
+        [
+          "gate_log"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "class": "insufficient_evidence",
+      "category": "timeline",
+      "draft": "The gate logs establish that Sera authorized a reopening at 11点.",
+      "label_reason": "The 09点 opening and 10点 closing do not establish an 11点 reopening or its authorizer; the 11点 field explicitly leaves both unknown.",
+      "time_scope": "Opening and first closing are ordered within the same day; the conflict refers to 09点.",
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "minimum_labels": [
+        [
+          "reopen_log"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-conflict",
+      "class": "conflict",
+      "category": "character_knowledge",
+      "draft": "At 11点 on the same day, Sera knew the telegram code.",
+      "label_reason": "The 11点 narrator record directly contradicts knowledge; the 13点 later transition is legitimate, while the messenger remains unknown.",
+      "time_scope": "Knowledge at 11点 and learning at 13点 are distinct same-day states.",
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "minimum_labels": [
+        [
+          "telegram_seal"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "class": "no_conflict",
+      "category": "character_knowledge",
+      "draft": "At 13点 Sera learned the telegram code after not knowing it at 11点.",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "time_scope": "Knowledge at 11点 and learning at 13点 are distinct same-day states.",
+      "allowed_outcomes": [
+        "no_issue",
+        "state_change"
+      ],
+      "minimum_labels": [
+        [
+          "telegram_seal",
+          "later_recipient"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "class": "insufficient_evidence",
+      "category": "character_knowledge",
+      "draft": "Vela delivered the telegram to Sera at 13点, according to the records.",
+      "label_reason": "The 11点 ignorance and 13点 learning fix Sera's knowledge transition, but neither identifies the courier. The draft asserts that the existing records establish Vela's role.",
+      "time_scope": "Knowledge at 11点 and learning at 13点 are distinct same-day states.",
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "minimum_labels": [
+        [
+          "later_recipient"
+        ]
+      ],
+      "optional_labels": [
+        "telegram_seal"
+      ],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-conflict",
+      "class": "conflict",
+      "category": "relationship",
+      "draft": "Nera is Oren's mother.",
+      "label_reason": "The actual permanent kinship rule plus twin registry jointly rule out Nera being Oren's mother; twin birth order remains unrecorded.",
+      "time_scope": "The permanent kinship rule and twin register concern the same pair without a time change.",
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "minimum_labels": [
+        [
+          "kinship_rule",
+          "twin_register"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-no_conflict",
+      "class": "no_conflict",
+      "category": "relationship",
+      "draft": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "time_scope": "The permanent kinship rule and twin register concern the same pair without a time change.",
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "minimum_labels": [
+        [
+          "kinship_rule",
+          "twin_register"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "class": "insufficient_evidence",
+      "category": "relationship",
+      "draft": "The birth register establishes that Nera was born before Oren.",
+      "label_reason": "The twin register fixes kinship but explicitly leaves birth order blank; firstborn status cannot be inferred from twins being listed in that order.",
+      "time_scope": "The permanent kinship rule and twin register concern the same pair without a time change.",
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "minimum_labels": [
+        [
+          "birth_order"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-conflict",
+      "class": "conflict",
+      "category": "event_status",
+      "draft": "At 10点 on the same day, the restoration boat had completed its launch.",
+      "label_reason": "The launch completion rule and the same-minute unsigned/no-departure log jointly exclude completed launch.",
+      "time_scope": "The completion rule applies without an expiry; unsigned manifest, no departure, and claimed completion are at 10点 on the same day.",
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "minimum_labels": [
+        [
+          "launch_rule",
+          "launch_log"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-no_conflict",
+      "class": "no_conflict",
+      "category": "event_status",
+      "draft": "At 10点 on the same day, the restoration boat had not completed launch while its manifest was unsigned and it remained at the quay.",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "time_scope": "The completion rule applies without an expiry; unsigned manifest, no departure, and claimed completion are at 10点 on the same day.",
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "minimum_labels": [
+        [
+          "launch_rule",
+          "launch_log"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+      "class": "insufficient_evidence",
+      "category": "event_status",
+      "draft": "Tala caused the restoration boat's delay, according to the launch and delay logs.",
+      "label_reason": "The unsigned launch log establishes an incomplete launch and a delay, but the cause log leaves responsibility unrecorded. There is no source link to Tala.",
+      "time_scope": "The completion rule applies without an expiry; unsigned manifest, no departure, and claimed completion are at 10点 on the same day.",
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "minimum_labels": [
+        [
+          "delay_cause"
+        ]
+      ],
+      "optional_labels": [
+        "launch_log"
+      ],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-conflict",
+      "class": "conflict",
+      "category": "attribute",
+      "draft": "At 18点 on the same day, lens R4 is amber glass.",
+      "label_reason": "Two same-time observations bind R4 to the western lens and identify its material as clear glass.",
+      "time_scope": "The R4 identity and glass observation are both at 18点 on the same day.",
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "minimum_labels": [
+        [
+          "lens_index",
+          "west_lens"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-no_conflict",
+      "class": "no_conflict",
+      "category": "attribute",
+      "draft": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "time_scope": "The R4 identity and glass observation are both at 18点 on the same day.",
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "minimum_labels": [
+        [
+          "lens_index",
+          "west_lens"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+      "class": "insufficient_evidence",
+      "category": "attribute",
+      "draft": "The index and maintenance sheet establish that Vela ground lens R4.",
+      "label_reason": "The index links R4 to the western lens, while the maintenance sheet omits the grinder's name. The claimed recorded attribution to Vela lacks the identity link.",
+      "time_scope": "The R4 identity and glass observation are both at 18点 on the same day.",
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "minimum_labels": [
+        [
+          "grinder_blank"
+        ]
+      ],
+      "optional_labels": [
+        "lens_index"
+      ],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-conflict",
+      "class": "conflict",
+      "category": "location_action",
+      "draft": "At 18点 on the same day, Vela stood on the east pier.",
+      "label_reason": "The direct 18点 watch record places Vela at Gate Four on the west pier; the 19点 move is a legitimate later transition.",
+      "time_scope": "The 18点 west location and 19点 east move are different same-day states.",
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "minimum_labels": [
+        [
+          "watch_log"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "class": "no_conflict",
+      "category": "location_action",
+      "draft": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "time_scope": "The 18点 west location and 19点 east move are different same-day states.",
+      "allowed_outcomes": [
+        "no_issue",
+        "state_change"
+      ],
+      "minimum_labels": [
+        [
+          "later_watch"
+        ]
+      ],
+      "optional_labels": [
+        "watch_log"
+      ],
+      "evidence_hash_errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-insufficient_evidence",
+      "class": "insufficient_evidence",
+      "category": "location_action",
+      "draft": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+      "label_reason": "The 19点 move is established, but the same watch record leaves the companion unnamed. It does not identify Sora.",
+      "time_scope": "The 18点 west location and 19点 east move are different same-day states.",
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "minimum_labels": [
+        [
+          "later_watch"
+        ]
+      ],
+      "optional_labels": [],
+      "evidence_hash_errors": []
+    }
+  ]
+}

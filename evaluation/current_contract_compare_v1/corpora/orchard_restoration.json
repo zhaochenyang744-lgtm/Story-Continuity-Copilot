@@ -1,0 +1,116 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "orchard_restoration",
+  "title": "The Orchard Restoration Register",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "synthetic_current_contract_adaptation",
+    "generator_version": "current-contract-compare-v1",
+    "source_inputs": [
+      "evaluation/case_sets/eval-set-v8-candidate.json"
+    ],
+    "lineage_note": "New works and wording; challenge shapes adapted from the seen V8 candidate. This set is exposed development material."
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Kinship Rule",
+      "source_label": "kinship_rule",
+      "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Twin Register",
+      "source_label": "twin_register",
+      "body": "The birth register identifies Nera and Oren as twins, both children of Tala."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Birth Order",
+      "source_label": "birth_order",
+      "body": "The birth register does not record which twin, Nera or Oren, was born first."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Launch Rule",
+      "source_label": "launch_rule",
+      "body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Launch Log",
+      "source_label": "launch_log",
+      "body": "The restoration boat manifest remains unsigned and the boat has not departed the orchard quay."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Delay Cause",
+      "source_label": "delay_cause",
+      "body": "The restoration log leaves the cause of the boat's delay unrecorded."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "Nera and Oren",
+      "predicate": "rule",
+      "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "kinship_rule"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Nera and Oren",
+      "predicate": "relationship",
+      "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "twin_register"
+      }
+    },
+    {
+      "memory_type": "open_thread",
+      "subject": "Nera and Oren",
+      "predicate": "status",
+      "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "birth_order"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "restoration boat",
+      "predicate": "rule",
+      "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "launch_rule"
+      }
+    },
+    {
+      "memory_type": "event_timeline",
+      "subject": "restoration boat",
+      "predicate": "event_occurred",
+      "value": "The restoration boat manifest remains unsigned and the boat has not departed the orchard quay.",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "launch_log"
+      }
+    },
+    {
+      "memory_type": "open_thread",
+      "subject": "restoration boat",
+      "predicate": "status",
+      "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "delay_cause"
+      }
+    }
+  ]
+}

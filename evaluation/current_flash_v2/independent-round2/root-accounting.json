@@ -1,0 +1,13 @@
+{
+  "case_files": 8,
+  "chat_completion_http": 8,
+  "http_200": 8,
+  "business_request_snapshots": 8,
+  "parsed_outputs": 8,
+  "prompt_tokens": 20844,
+  "completion_tokens": 5734,
+  "unknown_usage_attempts": 0,
+  "v1_plus_v2_chat_completion_http": 57,
+  "v1_plus_v2_prompt_tokens": 165144,
+  "v1_plus_v2_completion_tokens": 14242
+}

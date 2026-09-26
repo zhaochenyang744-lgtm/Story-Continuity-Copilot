@@ -1,0 +1,400 @@
+{
+  "case_id": "ccv2-north_glass-object_state-conflict",
+  "variant": "gold",
+  "status": "completed",
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-north-glass",
+      "revision": 2,
+      "body": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch."
+    },
+    "claims": [
+      {
+        "id": "claim-run-debd7c7f-02d1-4db4-a852-832a006a2216-1",
+        "text": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-north_glass-5",
+            "chapter_id": "fixture-chapter-north_glass-5",
+            "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "label": "carrier_inspection",
+            "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+          },
+          {
+            "id": "fixture-span-north_glass-4",
+            "chapter_id": "fixture-chapter-north_glass-4",
+            "body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "label": "carrier_ready_rule",
+            "prompt_excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked."
+          },
+          {
+            "id": "fixture-span-north_glass-2",
+            "chapter_id": "fixture-chapter-north_glass-2",
+            "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "label": "badge_roster",
+            "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-north_glass-1",
+        "memory_type": "static_canon",
+        "subject": "Mira",
+        "predicate": "rule",
+        "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+        "source_span_id": "fixture-span-north_glass-1"
+      },
+      {
+        "id": "fixture-memory-north_glass-2",
+        "memory_type": "dynamic_state",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+        "source_span_id": "fixture-span-north_glass-2"
+      },
+      {
+        "id": "fixture-memory-north_glass-3",
+        "memory_type": "open_thread",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "The spare blue badge register leaves its 11点 holder field blank.",
+        "source_span_id": "fixture-span-north_glass-3"
+      },
+      {
+        "id": "fixture-memory-north_glass-4",
+        "memory_type": "static_canon",
+        "subject": "pneumatic carrier",
+        "predicate": "rule",
+        "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+        "source_span_id": "fixture-span-north_glass-4"
+      },
+      {
+        "id": "fixture-memory-north_glass-5",
+        "memory_type": "dynamic_state",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+        "source_span_id": "fixture-span-north_glass-5"
+      },
+      {
+        "id": "fixture-memory-north_glass-6",
+        "memory_type": "open_thread",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "The carrier inspection does not record who loosened its valve cap.",
+        "source_span_id": "fixture-span-north_glass-6"
+      }
+    ],
+    "output_schema": {
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "raw_first": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-debd7c7f-02d1-4db4-a852-832a006a2216-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "high",
+        "explanation": "The cited record requires this review decision.",
+        "reasoning": "The dispatch rule and same-minute loose-cap inspection jointly exclude ready status.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "timeless_rule"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-4",
+            "span_id": "fixture-span-north_glass-4",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-4"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-north_glass-5",
+            "span_id": "fixture-span-north_glass-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-5"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-4",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "fixture-span-north_glass-5",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": [],
+        "proposed_memory_change": null
+      }
+    ]
+  },
+  "raw_repair": null,
+  "final_product": {
+    "run_id": "run-debd7c7f-02d1-4db4-a852-832a006a2216",
+    "project_id": "fixture-project-north-glass",
+    "run_type": "continuity",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 2,
+    "draft_revision": null,
+    "source_memory_version": 1,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T12:23:03.400461+00:00",
+    "started_at": "2026-09-26T12:23:03.428665+00:00",
+    "completed_at": "2026-09-26T12:23:03.505542+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 76,
+    "retry_of_run_id": null,
+    "root_run_id": "run-debd7c7f-02d1-4db4-a852-832a006a2216",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:03.400461+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "preparing_draft",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:03.428665+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "retrieving_confirmed_facts",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:03.441152+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "comparing_evidence",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:03.469590+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "running",
+        "stage": "assembling_reviewable_results",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:03.495646+00:00"
+      },
+      {
+        "sequence": 6,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:03.505542+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "independent-compare-v2-scripted",
+      "model_label": "not-a-real-model",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "provider_metrics": {
+      "latency_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "issues": [
+      {
+        "id": "issue-5ffd76bc-02d8-4a14-85a2-eef3ea6397e7",
+        "claim_span_id": "claim-run-debd7c7f-02d1-4db4-a852-832a006a2216-1",
+        "claim_text": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+        "status": "open",
+        "classification": "conflict",
+        "category": "object_state",
+        "severity": "high",
+        "evidence_status": "sufficient",
+        "explanation": "The cited record requires this review decision.",
+        "decision": null,
+        "review_contract_version": "trustworthy_review_v1",
+        "nature": "confirmed_conflict",
+        "reasoning": "The dispatch rule and same-minute loose-cap inspection jointly exclude ready status.",
+        "evidence_chain": [
+          {
+            "evidence_id": "evidence-34e48960-9a81-45ac-b55e-855753d2b44c",
+            "role": "prior_state"
+          },
+          {
+            "evidence_id": "evidence-07a3194b-9efd-4962-b36b-d94fd8dd79b3",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": [],
+        "reuse_policy": null,
+        "reused_decision": null,
+        "evidence": [
+          {
+            "id": "evidence-07a3194b-9efd-4962-b36b-d94fd8dd79b3",
+            "chapter_id": "fixture-chapter-north_glass-5",
+            "chapter_number": 5,
+            "chapter_title": "Carrier Inspection",
+            "span_id": "fixture-span-north_glass-5",
+            "source_revision": 2,
+            "excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "excerpt_context": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-5"
+            ],
+            "source_path": "/projects/fixture-project-north-glass/sources#span-fixture-span-north_glass-5"
+          },
+          {
+            "id": "evidence-34e48960-9a81-45ac-b55e-855753d2b44c",
+            "chapter_id": "fixture-chapter-north_glass-4",
+            "chapter_number": 4,
+            "chapter_title": "Carrier Ready Rule",
+            "span_id": "fixture-span-north_glass-4",
+            "source_revision": 2,
+            "excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "excerpt_context": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-4"
+            ],
+            "source_path": "/projects/fixture-project-north-glass/sources#span-fixture-span-north_glass-4"
+          }
+        ]
+      }
+    ],
+    "metrics": {
+      "latency_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_cny": null,
+      "cost_available": false,
+      "contract_normalization_count": 0,
+      "contract_normalizations": [],
+      "provenance": {
+        "provider_label": "independent-compare-v2-scripted",
+        "model_label": "not-a-real-model",
+        "prompt_version": "continuity-review-v15-knowledge-time",
+        "schema_version": "continuity-issue-v5-temporal-basis",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      },
+      "retrieval": [
+        {
+          "claim_ordinal": 1,
+          "returned_span_ids": [
+            "fixture-span-north_glass-4",
+            "fixture-span-north_glass-5",
+            "fixture-span-north_glass-2",
+            "fixture-span-north_glass-1",
+            "fixture-span-north_glass-6"
+          ],
+          "method_version": "bounded-lexical-v4-longform"
+        }
+      ]
+    }
+  },
+  "classification": "fresh synthetic product API with fixed saved scripted payload remapped to current claim IDs; not a model evaluation",
+  "fixture_root": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\docs\\g02-citation-repair-evidence\\independent-round3-capture\\synthetic-02-k5nz8a9m",
+  "storage_body_check": true,
+  "own_audit": {
+    "identity": [
+      "ccv2-north_glass-object_state-conflict",
+      "gold"
+    ],
+    "status": "completed",
+    "issue_count": 1,
+    "raw_natures": [
+      "confirmed_conflict"
+    ],
+    "final_natures": [
+      "confirmed_conflict"
+    ],
+    "errors": []
+  }
+}

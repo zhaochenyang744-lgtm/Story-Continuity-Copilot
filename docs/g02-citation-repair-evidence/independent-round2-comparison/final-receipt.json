@@ -1,0 +1,11 @@
+{
+  "time_utc": "2026-09-26T11:53:09.283414+00:00",
+  "manifest_sha256": "d0da4eb5037c5ce8e724d0263255654d97fb25cc975e5e419786ea5a60c8d29c",
+  "final_mismatches": [],
+  "independent_file_hashes": {
+    "lineage-label-audit.json": "5935dd222f9926e0e7e892c60db2fb6abd2126a7ab8e98e68179b370153ff924",
+    "probe.py": "9ca4b983eec579a4535462bc5b938f5df7c78318e19c6c0878eb181709fbde75",
+    "results.json": "11b0f4f4fbb3c1722f631d93b6a4da3c92812270865c8cb6fbd5e9100008b854",
+    "review.md": "b8ed8f7f55164f710b500e18d44c51b83340ab47ec0b3a4ee4069f79e307f043"
+  }
+}

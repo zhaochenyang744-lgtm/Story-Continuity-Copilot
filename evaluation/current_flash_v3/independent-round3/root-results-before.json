@@ -1,0 +1,9 @@
+{
+  "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/start.json": "2fbcfe903e8aad634f5e4c040d7c7f0bcfa9a8ceae8dd3f9c311a3e1cdc77424",
+  "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/summary.json": "ea091e5486b78b2e2659443c601e6b19185a9cf28a64a0dbb168deac2d78b6f8",
+  "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/workspace-manifest.json": "dbf5f19f7c20d57fc360f8a18fd5082949d7c8f051c8de0d7888d5c0ff0dfe0e",
+  "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/cases/g03-deep-target.json": "ecca91936af35767b73843d4d9d84318114937f38bd749c5e20ec807bcff5b1f",
+  "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/cases/g03-fact-absent.json": "2ca972a9697b0579bb7bc4adc2864ef9a2482167d56da0bf6be957e2b984a4c2",
+  "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/cases/g03-other-chapter.json": "1b5e90ded07e3dc39586eb67a349b614946b53bf45ab1173a719db36b1f459ae",
+  "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/cases/g03-short-target.json": "13948e52367fdd330205562811a2b74afce187c105a86eeb04a8e519c356f3d8"
+}

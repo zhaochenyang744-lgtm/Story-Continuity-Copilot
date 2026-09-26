@@ -1,0 +1,281 @@
+{
+  "family": "v8",
+  "case_id": "v8-opal-nursery-control-5",
+  "input_sha256": "feb83f0c04607e31d60e56d4296461fcc3ad45e6cbffd9eeb6c95a60689077da",
+  "expected": {
+    "class": "no_conflict",
+    "category": null,
+    "evidence": [
+      {
+        "chapter_number": 5,
+        "source_label": "cradle_fabric",
+        "body_sha256": "2bbab9ea20e5bb194579fb4dfe80bef33963538cae4a28ddaae74d56303ebf18"
+      }
+    ]
+  },
+  "score_row": {
+    "case_id": "v8-opal-nursery-control-5",
+    "seed_key": "opal_nursery",
+    "expected_class": "no_conflict",
+    "predicted_class": "no_conflict",
+    "expected_category": null,
+    "predicted_category": null,
+    "expected_severity": null,
+    "predicted_severity": null,
+    "category_severity": null,
+    "run_id": "run-f0b52b7b-d6a8-4251-9153-31e0e141d295",
+    "post_status": 202,
+    "post_state": "queued",
+    "idempotency_replay_same_run": true,
+    "terminal_status": "completed",
+    "terminal_error_code": null,
+    "schema_valid": true,
+    "retrieval_hit_at_5": true,
+    "retrieval_semantic_set": [
+      [
+        1,
+        "notice_knowledge_rule"
+      ],
+      [
+        3,
+        "dawn_tag_rule"
+      ],
+      [
+        5,
+        "cradle_fabric"
+      ],
+      [
+        6,
+        "dock_ledger_shelf"
+      ],
+      [
+        7,
+        "pending_count"
+      ]
+    ],
+    "cited_evidence_count": 0,
+    "cited_evidence_expected_count": 0,
+    "resolvable_evidence_count": 0,
+    "evidence_ids": [],
+    "evidence_semantic_set": [],
+    "challenge_tags": [
+      "supported_control"
+    ],
+    "requires_multiple_direct_evidence": false,
+    "expected_evidence_count": 0,
+    "cited_expected_evidence_unique_count": 0,
+    "expected_evidence_full_set_cited": null,
+    "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "latency_ms": 866,
+    "input_tokens": 2862,
+    "output_tokens": 5,
+    "cost_cny": null,
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    }
+  },
+  "product": {
+    "run_id": "run-f0b52b7b-d6a8-4251-9153-31e0e141d295",
+    "project_id": "fixture-project-opal-nursery",
+    "run_type": "continuity",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 2,
+    "draft_revision": null,
+    "source_memory_version": 1,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T09:38:09.398226+00:00",
+    "started_at": "2026-09-26T09:38:09.424178+00:00",
+    "completed_at": "2026-09-26T09:38:10.357748+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 933,
+    "retry_of_run_id": null,
+    "root_run_id": "run-f0b52b7b-d6a8-4251-9153-31e0e141d295",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:09.398226+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "preparing_draft",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:09.424178+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "retrieving_confirmed_facts",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:09.435211+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "comparing_evidence",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:09.458326+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "running",
+        "stage": "assembling_reviewable_results",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:10.339071+00:00"
+      },
+      {
+        "sequence": 6,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:10.357748+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "provider_metrics": {
+      "latency_ms": 866,
+      "input_tokens": 2862,
+      "output_tokens": 5,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "issues": [],
+    "metrics": {
+      "latency_ms": 866,
+      "input_tokens": 2862,
+      "output_tokens": 5,
+      "cost_cny": null,
+      "cost_available": false,
+      "contract_normalization_count": 0,
+      "contract_normalizations": [],
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v15-knowledge-time",
+        "schema_version": "continuity-issue-v5-temporal-basis",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      },
+      "retrieval": [
+        {
+          "claim_ordinal": 1,
+          "returned_span_ids": [
+            "fixture-span-opal_nursery-5",
+            "fixture-span-opal_nursery-1",
+            "fixture-span-opal_nursery-3",
+            "fixture-span-opal_nursery-7",
+            "fixture-span-opal_nursery-6"
+          ],
+          "method_version": "bounded-lexical-v4-longform"
+        }
+      ]
+    }
+  },
+  "model_outputs": [
+    {
+      "case_id": "v8-opal-nursery-control-5",
+      "task": "continuity_review",
+      "contract_repair": false,
+      "input_refs": {
+        "claims": [
+          {
+            "id": "claim-run-f0b52b7b-d6a8-4251-9153-31e0e141d295-1",
+            "text": "The Lantern Ward cradle is lined with amber felt.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-opal_nursery-1",
+                "chapter_id": "fixture-chapter-opal_nursery-1",
+                "body": "Before dawn, the sealed opal notice is the only permitted channel for the Lantern Ward transfer; a person knows the transfer only after signing that notice.",
+                "label": "notice_knowledge_rule",
+                "prompt_excerpt": "Before dawn, the sealed opal notice is the only permitted channel for the Lantern Ward transfer; a person knows the transfer only after signing that notice."
+              },
+              {
+                "id": "fixture-span-opal_nursery-5",
+                "chapter_id": "fixture-chapter-opal_nursery-5",
+                "body": "The Lantern Ward cradle is lined with amber felt; a dock blanket is described as green wool.",
+                "label": "cradle_fabric",
+                "prompt_excerpt": "The Lantern Ward cradle is lined with amber felt; a dock blanket is described as green wool."
+              },
+              {
+                "id": "fixture-span-opal_nursery-3",
+                "chapter_id": "fixture-chapter-opal_nursery-3",
+                "body": "A transfer tagged afterglow is logged after the ward's dawn bell has rung.",
+                "label": "dawn_tag_rule",
+                "prompt_excerpt": "A transfer tagged afterglow is logged after the ward's dawn bell has rung."
+              }
+            ]
+          }
+        ],
+        "draft_claims": [],
+        "source_spans": [],
+        "retrieval": null,
+        "proposal": null
+      },
+      "business_json": {
+        "issues": []
+      },
+      "usage": {
+        "input_tokens": 2862,
+        "output_tokens": 5,
+        "observed_response_input_tokens": 2862,
+        "observed_response_output_tokens": 5,
+        "cost_cny": null
+      },
+      "latency_ms": 866
+    }
+  ],
+  "http_attempts": [
+    {
+      "case_id": "v8-opal-nursery-control-5",
+      "ordinal": 22,
+      "sent_at": "2026-09-26T09:38:09.491593+00:00",
+      "status": 200,
+      "latency_ms": 844,
+      "usage": {
+        "prompt_tokens": 2862,
+        "completion_tokens": 5,
+        "total_tokens": 2867
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    }
+  ],
+  "actual_http_dispatches": 1,
+  "request_model": "deepseek-flash",
+  "source_case_ref": "evaluation/case_sets/eval-set-v8.json"
+}

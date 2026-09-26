@@ -1,0 +1,1182 @@
+{
+  "scope": "Saved JSON inspection only; not a model accuracy score or runtime test.",
+  "cases": [
+    {
+      "file": "01-g02-three-sentences.json",
+      "request_count": 1,
+      "model_answer_count": 1,
+      "repair_count": 0,
+      "dispatch_count": 1,
+      "first_item_count": 12,
+      "final_item_count": 12,
+      "summary_chars": {
+        "first": 111,
+        "final": 65
+      },
+      "first_summary_lines": [
+        459
+      ],
+      "final_summary_lines": [
+        425
+      ],
+      "first_item_lines": [
+        [
+          477
+        ],
+        [
+          487
+        ],
+        [
+          497
+        ],
+        [
+          507
+        ],
+        [
+          517
+        ],
+        [
+          527
+        ],
+        [
+          537
+        ],
+        [
+          547
+        ],
+        [
+          557
+        ],
+        [
+          567
+        ],
+        [
+          577
+        ],
+        [
+          587
+        ]
+      ],
+      "final_item_lines": [
+        [
+          279
+        ],
+        [
+          292
+        ],
+        [
+          305
+        ],
+        [
+          318
+        ],
+        [
+          331
+        ],
+        [
+          344
+        ],
+        [
+          357
+        ],
+        [
+          370
+        ],
+        [
+          383
+        ],
+        [
+          396
+        ],
+        [
+          409
+        ],
+        [
+          422
+        ]
+      ],
+      "draft_claims": [
+        {
+          "ordinal": 1,
+          "text": "林默走进北门。",
+          "id": "draft-claim-draft-b30ec413-fba0-4fe0-a97d-825cb67e0004-r2-1",
+          "lines": [
+            272,
+            428,
+            709
+          ],
+          "final_item_uses": 1,
+          "final_summary_uses": 1
+        },
+        {
+          "ordinal": 2,
+          "text": "银钥匙已经交给陈澈。",
+          "id": "draft-claim-draft-b30ec413-fba0-4fe0-a97d-825cb67e0004-r2-2",
+          "lines": [
+            285,
+            435,
+            714
+          ],
+          "final_item_uses": 1,
+          "final_summary_uses": 1
+        },
+        {
+          "ordinal": 3,
+          "text": "她此时已经知道弟弟还活着。",
+          "id": "draft-claim-draft-b30ec413-fba0-4fe0-a97d-825cb67e0004-r2-3",
+          "lines": [
+            298,
+            442,
+            719
+          ],
+          "final_item_uses": 1,
+          "final_summary_uses": 1
+        }
+      ],
+      "final_sections": {
+        "recent_source": 4,
+        "character_state": 3,
+        "confirmed_fact": 2,
+        "world_rule": 1,
+        "open_thread": 2
+      },
+      "citation_transform": {
+        "added_source_count": 0,
+        "discarded_model_item_indices": [],
+        "model_item_count": 12,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 3,
+        "source_rendered_item_count": 12,
+        "version": "source-rendered-v1"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-b30ec413-fba0-4fe0-a97d-825cb67e0004-r2-1",
+            "source_chars": 7,
+            "source_end": 7,
+            "source_start": 0,
+            "supplied_chars": 7,
+            "supplied_end": 7,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-b30ec413-fba0-4fe0-a97d-825cb67e0004-r2-2",
+            "source_chars": 10,
+            "source_end": 17,
+            "source_start": 7,
+            "supplied_chars": 10,
+            "supplied_end": 17,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-b30ec413-fba0-4fe0-a97d-825cb67e0004-r2-3",
+            "source_chars": 13,
+            "source_end": 30,
+            "source_start": 17,
+            "supplied_chars": 13,
+            "supplied_end": 30,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-b30ec413-fba0-4fe0-a97d-825cb67e0004-r2-1",
+          "draft-claim-draft-b30ec413-fba0-4fe0-a97d-825cb67e0004-r2-2",
+          "draft-claim-draft-b30ec413-fba0-4fe0-a97d-825cb67e0004-r2-3"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      }
+    },
+    {
+      "file": "02-g02-long-sentence.json",
+      "request_count": 1,
+      "model_answer_count": 1,
+      "repair_count": 0,
+      "dispatch_count": 1,
+      "first_item_count": 12,
+      "final_item_count": 12,
+      "summary_chars": {
+        "first": 83,
+        "final": 395
+      },
+      "first_summary_lines": [
+        419
+      ],
+      "final_summary_lines": [
+        385
+      ],
+      "first_item_lines": [
+        [
+          437
+        ],
+        [
+          447
+        ],
+        [
+          457
+        ],
+        [
+          467
+        ],
+        [
+          477
+        ],
+        [
+          487
+        ],
+        [
+          497
+        ],
+        [
+          507
+        ],
+        [
+          517
+        ],
+        [
+          527
+        ],
+        [
+          537
+        ],
+        [
+          547
+        ]
+      ],
+      "final_item_lines": [
+        [
+          239
+        ],
+        [
+          252
+        ],
+        [
+          265
+        ],
+        [
+          278
+        ],
+        [
+          291
+        ],
+        [
+          304
+        ],
+        [
+          317
+        ],
+        [
+          330
+        ],
+        [
+          343
+        ],
+        [
+          356
+        ],
+        [
+          369
+        ],
+        [
+          382
+        ]
+      ],
+      "draft_claims": [
+        {
+          "ordinal": 1,
+          "text": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。",
+          "id": "draft-claim-draft-d5dd01bc-10a6-4dfd-b5d7-c9999fb9043a-r2-1",
+          "lines": [
+            5,
+            232,
+            388,
+            660,
+            669
+          ],
+          "final_item_uses": 1,
+          "final_summary_uses": 1
+        }
+      ],
+      "final_sections": {
+        "recent_source": 4,
+        "character_state": 3,
+        "world_rule": 1,
+        "open_thread": 2,
+        "confirmed_fact": 2
+      },
+      "citation_transform": {
+        "added_source_count": 0,
+        "discarded_model_item_indices": [],
+        "model_item_count": 12,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 2,
+        "source_rendered_item_count": 12,
+        "version": "source-rendered-v1"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-d5dd01bc-10a6-4dfd-b5d7-c9999fb9043a-r2-1",
+            "source_chars": 299,
+            "source_end": 299,
+            "source_start": 0,
+            "supplied_chars": 299,
+            "supplied_end": 299,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-d5dd01bc-10a6-4dfd-b5d7-c9999fb9043a-r2-1"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      }
+    },
+    {
+      "file": "03-g02-body-limit.json",
+      "request_count": 1,
+      "model_answer_count": 1,
+      "repair_count": 0,
+      "dispatch_count": 1,
+      "first_item_count": 12,
+      "final_item_count": 12,
+      "summary_chars": {
+        "first": 96,
+        "final": 81
+      },
+      "first_summary_lines": [
+        517
+      ],
+      "final_summary_lines": [
+        483
+      ],
+      "first_item_lines": [
+        [
+          535
+        ],
+        [
+          549
+        ],
+        [
+          559
+        ],
+        [
+          569
+        ],
+        [
+          579
+        ],
+        [
+          589
+        ],
+        [
+          599
+        ],
+        [
+          609
+        ],
+        [
+          619
+        ],
+        [
+          629
+        ],
+        [
+          639
+        ],
+        [
+          649
+        ]
+      ],
+      "final_item_lines": [
+        [
+          337
+        ],
+        [
+          350
+        ],
+        [
+          363
+        ],
+        [
+          376
+        ],
+        [
+          389
+        ],
+        [
+          402
+        ],
+        [
+          415
+        ],
+        [
+          428
+        ],
+        [
+          441
+        ],
+        [
+          454
+        ],
+        [
+          467
+        ],
+        [
+          480
+        ]
+      ],
+      "draft_claims": [
+        {
+          "ordinal": 1,
+          "text": "林默在雾港核对潮汐表。",
+          "id": "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-1",
+          "lines": [
+            323,
+            330,
+            486,
+            493,
+            771,
+            776,
+            781,
+            786,
+            791,
+            796,
+            801,
+            806
+          ],
+          "final_item_uses": 1,
+          "final_summary_uses": 1
+        },
+        {
+          "ordinal": 2,
+          "text": "林默在雾港核对潮汐表。",
+          "id": "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-2",
+          "lines": [
+            323,
+            330,
+            486,
+            493,
+            771,
+            776,
+            781,
+            786,
+            791,
+            796,
+            801,
+            806
+          ],
+          "final_item_uses": 1,
+          "final_summary_uses": 1
+        },
+        {
+          "ordinal": 3,
+          "text": "林默在雾港核对潮汐表。",
+          "id": "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-3",
+          "lines": [
+            323,
+            330,
+            486,
+            493,
+            771,
+            776,
+            781,
+            786,
+            791,
+            796,
+            801,
+            806
+          ],
+          "final_item_uses": 0,
+          "final_summary_uses": 0
+        },
+        {
+          "ordinal": 4,
+          "text": "林默在雾港核对潮汐表。",
+          "id": "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-4",
+          "lines": [
+            323,
+            330,
+            486,
+            493,
+            771,
+            776,
+            781,
+            786,
+            791,
+            796,
+            801,
+            806
+          ],
+          "final_item_uses": 0,
+          "final_summary_uses": 0
+        },
+        {
+          "ordinal": 5,
+          "text": "林默在雾港核对潮汐表。",
+          "id": "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-5",
+          "lines": [
+            323,
+            330,
+            486,
+            493,
+            771,
+            776,
+            781,
+            786,
+            791,
+            796,
+            801,
+            806
+          ],
+          "final_item_uses": 0,
+          "final_summary_uses": 0
+        },
+        {
+          "ordinal": 6,
+          "text": "林默在雾港核对潮汐表。",
+          "id": "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-6",
+          "lines": [
+            323,
+            330,
+            486,
+            493,
+            771,
+            776,
+            781,
+            786,
+            791,
+            796,
+            801,
+            806
+          ],
+          "final_item_uses": 0,
+          "final_summary_uses": 0
+        },
+        {
+          "ordinal": 7,
+          "text": "林默在雾港核对潮汐表。",
+          "id": "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-7",
+          "lines": [
+            323,
+            330,
+            486,
+            493,
+            771,
+            776,
+            781,
+            786,
+            791,
+            796,
+            801,
+            806
+          ],
+          "final_item_uses": 0,
+          "final_summary_uses": 0
+        },
+        {
+          "ordinal": 8,
+          "text": "林默在雾港核对潮汐表。",
+          "id": "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-8",
+          "lines": [
+            323,
+            330,
+            486,
+            493,
+            771,
+            776,
+            781,
+            786,
+            791,
+            796,
+            801,
+            806
+          ],
+          "final_item_uses": 0,
+          "final_summary_uses": 0
+        }
+      ],
+      "final_sections": {
+        "recent_source": 4,
+        "confirmed_fact": 2,
+        "character_state": 3,
+        "open_thread": 2,
+        "world_rule": 1
+      },
+      "citation_transform": {
+        "added_source_count": 0,
+        "discarded_model_item_indices": [],
+        "model_item_count": 12,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 2,
+        "source_rendered_item_count": 12,
+        "version": "source-rendered-v1"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-1",
+            "source_chars": 11,
+            "source_end": 11,
+            "source_start": 0,
+            "supplied_chars": 11,
+            "supplied_end": 11,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-2",
+            "source_chars": 11,
+            "source_end": 22,
+            "source_start": 11,
+            "supplied_chars": 11,
+            "supplied_end": 22,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [
+          "draft_claim_uncovered",
+          "draft_claim_unselected",
+          "draft_body_truncated"
+        ],
+        "source_ids": [
+          "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-1",
+          "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-2"
+        ],
+        "status": "partial",
+        "uncovered_source_ids": [
+          "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-3",
+          "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-4",
+          "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-5",
+          "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-6",
+          "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-7",
+          "draft-claim-draft-1400e944-ce03-4794-8286-41710a95cec3-r2-8"
+        ],
+        "unselected_count": 172
+      }
+    },
+    {
+      "file": "04-g02-identical-text.json",
+      "request_count": 1,
+      "model_answer_count": 1,
+      "repair_count": 0,
+      "dispatch_count": 1,
+      "first_item_count": 12,
+      "final_item_count": 12,
+      "summary_chars": {
+        "first": 94,
+        "final": 85
+      },
+      "first_summary_lines": [
+        446
+      ],
+      "final_summary_lines": [
+        412
+      ],
+      "first_item_lines": [
+        [
+          464
+        ],
+        [
+          478
+        ],
+        [
+          488
+        ],
+        [
+          498
+        ],
+        [
+          508
+        ],
+        [
+          518
+        ],
+        [
+          528
+        ],
+        [
+          538
+        ],
+        [
+          548
+        ],
+        [
+          558
+        ],
+        [
+          568
+        ],
+        [
+          578
+        ]
+      ],
+      "final_item_lines": [
+        [
+          266
+        ],
+        [
+          279
+        ],
+        [
+          292
+        ],
+        [
+          305
+        ],
+        [
+          318
+        ],
+        [
+          331
+        ],
+        [
+          344
+        ],
+        [
+          357
+        ],
+        [
+          370
+        ],
+        [
+          383
+        ],
+        [
+          396
+        ],
+        [
+          409
+        ]
+      ],
+      "draft_claims": [
+        {
+          "ordinal": 1,
+          "text": "林默走进北门。",
+          "id": "draft-claim-draft-b6083ec5-da29-4831-b4fe-976ffa3ade40-r2-1",
+          "lines": [
+            252,
+            259,
+            415,
+            422,
+            700,
+            705
+          ],
+          "final_item_uses": 1,
+          "final_summary_uses": 1
+        },
+        {
+          "ordinal": 2,
+          "text": "林默走进北门。",
+          "id": "draft-claim-draft-b6083ec5-da29-4831-b4fe-976ffa3ade40-r2-2",
+          "lines": [
+            252,
+            259,
+            415,
+            422,
+            700,
+            705
+          ],
+          "final_item_uses": 1,
+          "final_summary_uses": 1
+        }
+      ],
+      "final_sections": {
+        "recent_source": 4,
+        "world_rule": 1,
+        "open_thread": 2,
+        "confirmed_fact": 2,
+        "character_state": 3
+      },
+      "citation_transform": {
+        "added_source_count": 0,
+        "discarded_model_item_indices": [],
+        "model_item_count": 12,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 1,
+        "source_rendered_item_count": 12,
+        "version": "source-rendered-v1"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-b6083ec5-da29-4831-b4fe-976ffa3ade40-r2-1",
+            "source_chars": 7,
+            "source_end": 7,
+            "source_start": 0,
+            "supplied_chars": 7,
+            "supplied_end": 7,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-b6083ec5-da29-4831-b4fe-976ffa3ade40-r2-2",
+            "source_chars": 7,
+            "source_end": 14,
+            "source_start": 7,
+            "supplied_chars": 7,
+            "supplied_end": 14,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-b6083ec5-da29-4831-b4fe-976ffa3ade40-r2-1",
+          "draft-claim-draft-b6083ec5-da29-4831-b4fe-976ffa3ade40-r2-2"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      }
+    },
+    {
+      "file": "05-g02-time-bound.json",
+      "request_count": 1,
+      "model_answer_count": 1,
+      "repair_count": 0,
+      "dispatch_count": 1,
+      "first_item_count": 12,
+      "final_item_count": 12,
+      "summary_chars": {
+        "first": 104,
+        "final": 117
+      },
+      "first_summary_lines": [
+        433
+      ],
+      "final_summary_lines": [
+        399
+      ],
+      "first_item_lines": [
+        [
+          451
+        ],
+        [
+          461
+        ],
+        [
+          471
+        ],
+        [
+          481
+        ],
+        [
+          491
+        ],
+        [
+          501
+        ],
+        [
+          511
+        ],
+        [
+          521
+        ],
+        [
+          531
+        ],
+        [
+          541
+        ],
+        [
+          551
+        ],
+        [
+          561
+        ]
+      ],
+      "final_item_lines": [
+        [
+          253
+        ],
+        [
+          266
+        ],
+        [
+          279
+        ],
+        [
+          292
+        ],
+        [
+          305
+        ],
+        [
+          318
+        ],
+        [
+          331
+        ],
+        [
+          344
+        ],
+        [
+          357
+        ],
+        [
+          370
+        ],
+        [
+          383
+        ],
+        [
+          396
+        ]
+      ],
+      "draft_claims": [
+        {
+          "ordinal": 1,
+          "text": "昨日温岚尚未得知银钥匙的用途。",
+          "id": "draft-claim-draft-2cef7d39-675b-4719-809e-5e85cfd0b868-r2-1",
+          "lines": [
+            246,
+            402,
+            683
+          ],
+          "final_item_uses": 1,
+          "final_summary_uses": 1
+        },
+        {
+          "ordinal": 2,
+          "text": "今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。",
+          "id": "draft-claim-draft-2cef7d39-675b-4719-809e-5e85cfd0b868-r2-2",
+          "lines": [
+            688
+          ],
+          "final_item_uses": 0,
+          "final_summary_uses": 0
+        }
+      ],
+      "final_sections": {
+        "recent_source": 4,
+        "character_state": 3,
+        "confirmed_fact": 2,
+        "open_thread": 2,
+        "world_rule": 1
+      },
+      "citation_transform": {
+        "added_source_count": 0,
+        "discarded_model_item_indices": [],
+        "model_item_count": 12,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 1,
+        "source_rendered_item_count": 12,
+        "version": "source-rendered-v1"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-2cef7d39-675b-4719-809e-5e85cfd0b868-r2-1",
+            "source_chars": 15,
+            "source_end": 15,
+            "source_start": 0,
+            "supplied_chars": 15,
+            "supplied_end": 15,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [
+          "draft_claim_uncovered"
+        ],
+        "source_ids": [
+          "draft-claim-draft-2cef7d39-675b-4719-809e-5e85cfd0b868-r2-1"
+        ],
+        "status": "partial",
+        "uncovered_source_ids": [
+          "draft-claim-draft-2cef7d39-675b-4719-809e-5e85cfd0b868-r2-2"
+        ],
+        "unselected_count": 0
+      }
+    },
+    {
+      "file": "06-g02-dialogue-attribution.json",
+      "request_count": 1,
+      "model_answer_count": 1,
+      "repair_count": 0,
+      "dispatch_count": 1,
+      "first_item_count": 12,
+      "final_item_count": 12,
+      "summary_chars": {
+        "first": 76,
+        "final": 115
+      },
+      "first_summary_lines": [
+        453
+      ],
+      "final_summary_lines": [
+        419
+      ],
+      "first_item_lines": [
+        [
+          471
+        ],
+        [
+          481
+        ],
+        [
+          491
+        ],
+        [
+          501
+        ],
+        [
+          511
+        ],
+        [
+          521
+        ],
+        [
+          531
+        ],
+        [
+          541
+        ],
+        [
+          551
+        ],
+        [
+          561
+        ],
+        [
+          571
+        ],
+        [
+          581
+        ]
+      ],
+      "final_item_lines": [
+        [
+          273
+        ],
+        [
+          286
+        ],
+        [
+          299
+        ],
+        [
+          312
+        ],
+        [
+          325
+        ],
+        [
+          338
+        ],
+        [
+          351
+        ],
+        [
+          364
+        ],
+        [
+          377
+        ],
+        [
+          390
+        ],
+        [
+          403
+        ],
+        [
+          416
+        ]
+      ],
+      "draft_claims": [
+        {
+          "ordinal": 1,
+          "text": "陈澈说：‘温岚已经把潮汐表交给林默。",
+          "id": "draft-claim-draft-e0cf9ee9-1c83-4b1c-8e4d-f1b4be12b399-r2-1",
+          "lines": [
+            266,
+            422,
+            703
+          ],
+          "final_item_uses": 1,
+          "final_summary_uses": 1
+        },
+        {
+          "ordinal": 2,
+          "text": "’温岚摇头说：‘我没有交出潮汐表，它仍在我的背包里。",
+          "id": "draft-claim-draft-e0cf9ee9-1c83-4b1c-8e4d-f1b4be12b399-r2-2",
+          "lines": [
+            279,
+            429,
+            708
+          ],
+          "final_item_uses": 1,
+          "final_summary_uses": 1
+        },
+        {
+          "ordinal": 3,
+          "text": "’",
+          "id": "draft-claim-draft-e0cf9ee9-1c83-4b1c-8e4d-f1b4be12b399-r2-3",
+          "lines": [
+            713
+          ],
+          "final_item_uses": 0,
+          "final_summary_uses": 0
+        }
+      ],
+      "final_sections": {
+        "recent_source": 4,
+        "character_state": 3,
+        "open_thread": 2,
+        "world_rule": 1,
+        "confirmed_fact": 2
+      },
+      "citation_transform": {
+        "added_source_count": 0,
+        "discarded_model_item_indices": [],
+        "model_item_count": 12,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 3,
+        "source_rendered_item_count": 12,
+        "version": "source-rendered-v1"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-e0cf9ee9-1c83-4b1c-8e4d-f1b4be12b399-r2-1",
+            "source_chars": 18,
+            "source_end": 18,
+            "source_start": 0,
+            "supplied_chars": 18,
+            "supplied_end": 18,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-e0cf9ee9-1c83-4b1c-8e4d-f1b4be12b399-r2-2",
+            "source_chars": 26,
+            "source_end": 44,
+            "source_start": 18,
+            "supplied_chars": 26,
+            "supplied_end": 44,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [
+          "draft_claim_uncovered"
+        ],
+        "source_ids": [
+          "draft-claim-draft-e0cf9ee9-1c83-4b1c-8e4d-f1b4be12b399-r2-1",
+          "draft-claim-draft-e0cf9ee9-1c83-4b1c-8e4d-f1b4be12b399-r2-2"
+        ],
+        "status": "partial",
+        "uncovered_source_ids": [
+          "draft-claim-draft-e0cf9ee9-1c83-4b1c-8e4d-f1b4be12b399-r2-3"
+        ],
+        "unselected_count": 0
+      }
+    }
+  ]
+}

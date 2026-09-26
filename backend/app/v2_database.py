@@ -17,6 +17,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Callable
 
 from .config import AppPaths
+from .brief_citations import split_draft_claims
 from .database import DomainError, digest
 from .memory_contract import is_controlled_candidate, normalize_memory_value, normalized_predicate
 from .seed_data import CHAPTERS, DEMO_REVIEW_ISSUES, DRAFT, MEMORY_RECORDS
@@ -2969,12 +2970,14 @@ class V2Database:
                 spans=([target_span]+[item for item in ranked_spans if item["id"]!=target_span["id"]][:3]) if target_span else ranked_spans[:4]
                 run_id,stamp=new_id("run"),utcnow()
                 all_claims=[];claim_scopes={};cursor=0
-                for ordinal,text in enumerate((x.strip() for x in re.split(r"(?<=[。！？.!?])",draft_text) if x.strip()),1):
+                draft_parts=(split_draft_claims(draft_text) if analysis_type=="context_brief" else
+                             [x.strip() for x in re.split(r"(?<=[。！？.!?])",draft_text) if x.strip()])
+                for ordinal,text in enumerate(draft_parts,1):
                     start=draft_text.find(text,cursor)
                     if start<0:start=draft_text.find(text)
                     cursor=start+len(text)
                     claim_id=f"draft-claim-{draft['id']}-r{draft['revision']}-{ordinal}"
-                    supplied=text[:240]
+                    supplied=text[:540 if analysis_type=="context_brief" else 240]
                     all_claims.append({"id":claim_id,"text":supplied,"ordinal":ordinal})
                     claim_scopes[claim_id]={"id":claim_id,"source_start":start,"source_end":cursor,"supplied_end":start+len(supplied),"source_chars":len(text),"supplied_chars":len(supplied),"truncated":len(text)>len(supplied)}
                 ranked_claims=sorted(all_claims,key=lambda item:(-self._analysis_rank(terms,item["text"]),item["ordinal"]))

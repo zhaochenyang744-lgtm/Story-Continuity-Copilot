@@ -1,0 +1,1290 @@
+{
+  "scope": "Pure validator plus extracted actual V2Database claim-construction statements; no Provider or SQL",
+  "source_hashes_before": {
+    "backend\\app\\brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "backend\\app\\engine.py": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+    "backend\\app\\v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754"
+  },
+  "source_hashes_after": {
+    "backend\\app\\brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "backend\\app\\engine.py": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+    "backend\\app\\v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754"
+  },
+  "source_unchanged": true,
+  "checks": [
+    {
+      "name": "one_unmatched_clause",
+      "actual": 1,
+      "expected": 1,
+      "pass": true,
+      "detail": {
+        "summary": "已确认记录：星钥的持有者为「乔霁」",
+        "summary_sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "m1",
+            "label": "星钥 · holder",
+            "excerpt": "乔霁",
+            "source_path": "/projects/synthetic-only/memory#memory-m1"
+          }
+        ],
+        "items": [
+          {
+            "section": "character_state",
+            "text": "已确认记录：星钥的持有者为「乔霁」",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "m1",
+                "label": "星钥 · holder",
+                "excerpt": "乔霁",
+                "source_path": "/projects/synthetic-only/memory#memory-m1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 1,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "empty",
+          "source_ids": [],
+          "cited_ranges": [],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "two_unmatched_clauses",
+      "actual": 2,
+      "expected": 2,
+      "pass": true,
+      "detail": {
+        "summary": "已确认记录：星钥的持有者为「乔霁」",
+        "summary_sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "m1",
+            "label": "星钥 · holder",
+            "excerpt": "乔霁",
+            "source_path": "/projects/synthetic-only/memory#memory-m1"
+          }
+        ],
+        "items": [
+          {
+            "section": "character_state",
+            "text": "已确认记录：星钥的持有者为「乔霁」",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "m1",
+                "label": "星钥 · holder",
+                "excerpt": "乔霁",
+                "source_path": "/projects/synthetic-only/memory#memory-m1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 2,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "empty",
+          "source_ids": [],
+          "cited_ranges": [],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "matched_clause",
+      "actual": 0,
+      "expected": 0,
+      "pass": true,
+      "detail": {
+        "summary": "已确认记录：星钥的持有者为「乔霁」",
+        "summary_sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "m1",
+            "label": "星钥 · holder",
+            "excerpt": "乔霁",
+            "source_path": "/projects/synthetic-only/memory#memory-m1"
+          }
+        ],
+        "items": [
+          {
+            "section": "character_state",
+            "text": "已确认记录：星钥的持有者为「乔霁」",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "m1",
+                "label": "星钥 · holder",
+                "excerpt": "乔霁",
+                "source_path": "/projects/synthetic-only/memory#memory-m1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 0,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "empty",
+          "source_ids": [],
+          "cited_ranges": [],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "duplicate_dedup_keeps_all_selected_draft",
+      "actual": {
+        "c1": true,
+        "c2": true,
+        "c3": true
+      },
+      "expected": {
+        "c1": true,
+        "c2": true,
+        "c3": true
+      },
+      "pass": true,
+      "detail": {
+        "summary": "当前草稿句1原文：「岑岚走进东门。」 当前草稿句2原文：「赤铜钥匙已经交给乔霁。」 当前草稿句3原文：「温岚此时不知道暗号。」",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "岑岚走进东门。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "赤铜钥匙已经交给乔霁。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c3",
+            "label": "当前草稿 · 句 3",
+            "excerpt": "温岚此时不知道暗号。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿句1原文：「岑岚走进东门。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "岑岚走进东门。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句2原文：「赤铜钥匙已经交给乔霁。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "赤铜钥匙已经交给乔霁。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句3原文：「温岚此时不知道暗号。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c3",
+                "label": "当前草稿 · 句 3",
+                "excerpt": "温岚此时不知道暗号。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 3,
+          "source_rendered_item_count": 3,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 0,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [
+            "c2",
+            "c3"
+          ],
+          "duplicate_omitted_item_count": 2,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "c1",
+            "c2",
+            "c3"
+          ],
+          "cited_ranges": [
+            {
+              "id": "c1",
+              "truncated": false
+            },
+            {
+              "id": "c2",
+              "truncated": false
+            },
+            {
+              "id": "c3",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "duplicate_omission_count",
+      "actual": 2,
+      "expected": 2,
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "missing_model_draft_fallback_ids",
+      "actual": [
+        "c2",
+        "c3"
+      ],
+      "expected": [
+        "c2",
+        "c3"
+      ],
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "duplicate_output_no_repeated_cards",
+      "actual": 3,
+      "expected": 3,
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "multisource_short_card_preserves_all_facts",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": {
+        "summary": "当前草稿句1原文：「岑岚走进东门。」 当前草稿句2原文：「赤铜钥匙已经交给乔霁。」 当前草稿句3原文：「温岚此时不知道暗号。」",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "岑岚走进东门。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "赤铜钥匙已经交给乔霁。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c3",
+            "label": "当前草稿 · 句 3",
+            "excerpt": "温岚此时不知道暗号。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿句1原文：「岑岚走进东门。」 当前草稿句2原文：「赤铜钥匙已经交给乔霁。」 当前草稿句3原文：「温岚此时不知道暗号。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "岑岚走进东门。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              },
+              {
+                "source_type": "draft_claim",
+                "source_id": "c2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "赤铜钥匙已经交给乔霁。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              },
+              {
+                "source_type": "draft_claim",
+                "source_id": "c3",
+                "label": "当前草稿 · 句 3",
+                "excerpt": "温岚此时不知道暗号。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 0,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "c1",
+            "c2",
+            "c3"
+          ],
+          "cited_ranges": [
+            {
+              "id": "c1",
+              "truncated": false
+            },
+            {
+              "id": "c2",
+              "truncated": false
+            },
+            {
+              "id": "c3",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "multisource_short_card_coverage",
+      "actual": "covered",
+      "expected": "covered",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "multisource_short_card_not_duplicated",
+      "actual": 1,
+      "expected": 1,
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "current_plan_shape_keeps_plan_layer",
+      "actual": "related_plan",
+      "expected": "related_plan",
+      "pass": true,
+      "detail": {
+        "summary": "作者计划记录：「钟楼计划   计划清晨关闭城门。」",
+        "summary_sources": [
+          {
+            "source_type": "author_context",
+            "source_id": "p1",
+            "label": "钟楼计划",
+            "excerpt": "计划清晨关闭城门。",
+            "source_path": "/projects/synthetic-only/outline#plan-p1"
+          }
+        ],
+        "items": [
+          {
+            "section": "related_plan",
+            "text": "作者计划记录：「钟楼计划   计划清晨关闭城门。」",
+            "sources": [
+              {
+                "source_type": "author_context",
+                "source_id": "p1",
+                "label": "钟楼计划",
+                "excerpt": "计划清晨关闭城门。",
+                "source_path": "/projects/synthetic-only/outline#plan-p1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 0,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "empty",
+          "source_ids": [],
+          "cited_ranges": [],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "current_plan_body_has_own_excerpt",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "curly_dialogue",
+      "actual": [
+        "温岚说：“我不知道密码。”",
+        "顾遥回答：“我也不知道。”"
+      ],
+      "expected": [
+        "温岚说：“我不知道密码。”",
+        "顾遥回答：“我也不知道。”"
+      ],
+      "pass": true,
+      "detail": {
+        "claims": [
+          {
+            "id": "draft-claim-independent-draft-r2-1",
+            "text": "温岚说：“我不知道密码。”",
+            "ordinal": 1
+          },
+          {
+            "id": "draft-claim-independent-draft-r2-2",
+            "text": "顾遥回答：“我也不知道。”",
+            "ordinal": 2
+          }
+        ],
+        "scopes": {
+          "draft-claim-independent-draft-r2-1": {
+            "id": "draft-claim-independent-draft-r2-1",
+            "source_start": 0,
+            "source_end": 13,
+            "supplied_end": 13,
+            "source_chars": 13,
+            "supplied_chars": 13,
+            "truncated": false
+          },
+          "draft-claim-independent-draft-r2-2": {
+            "id": "draft-claim-independent-draft-r2-2",
+            "source_start": 13,
+            "source_end": 26,
+            "supplied_end": 26,
+            "source_chars": 13,
+            "supplied_chars": 13,
+            "truncated": false
+          }
+        }
+      }
+    },
+    {
+      "name": "curly_dialogue_source_offsets",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "curly_dialogue_all_complete_quotes_rendered",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": {
+        "summary": "当前草稿句1原文：「温岚说：“我不知道密码。”」 当前草稿句2原文：「顾遥回答：“我也不知道。”」",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "温岚说：“我不知道密码。”",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "顾遥回答：“我也不知道。”",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿句1原文：「温岚说：“我不知道密码。”」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "温岚说：“我不知道密码。”",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句2原文：「顾遥回答：“我也不知道。”」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "顾遥回答：“我也不知道。”",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 2,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 1,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [
+            "c2"
+          ],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "c1",
+            "c2"
+          ],
+          "cited_ranges": [
+            {
+              "id": "c1",
+              "truncated": false
+            },
+            {
+              "id": "c2",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "nested_curly",
+      "actual": [
+        "温岚说：“顾遥曾喊‘不要开门！’，所以我没有开门。”",
+        "她随后离开。"
+      ],
+      "expected": [
+        "温岚说：“顾遥曾喊‘不要开门！’，所以我没有开门。”",
+        "她随后离开。"
+      ],
+      "pass": true,
+      "detail": {
+        "claims": [
+          {
+            "id": "draft-claim-independent-draft-r2-1",
+            "text": "温岚说：“顾遥曾喊‘不要开门！’，所以我没有开门。”",
+            "ordinal": 1
+          },
+          {
+            "id": "draft-claim-independent-draft-r2-2",
+            "text": "她随后离开。",
+            "ordinal": 2
+          }
+        ],
+        "scopes": {
+          "draft-claim-independent-draft-r2-1": {
+            "id": "draft-claim-independent-draft-r2-1",
+            "source_start": 0,
+            "source_end": 26,
+            "supplied_end": 26,
+            "source_chars": 26,
+            "supplied_chars": 26,
+            "truncated": false
+          },
+          "draft-claim-independent-draft-r2-2": {
+            "id": "draft-claim-independent-draft-r2-2",
+            "source_start": 26,
+            "source_end": 32,
+            "supplied_end": 32,
+            "source_chars": 6,
+            "supplied_chars": 6,
+            "truncated": false
+          }
+        }
+      }
+    },
+    {
+      "name": "nested_curly_source_offsets",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "nested_curly_all_complete_quotes_rendered",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": {
+        "summary": "当前草稿句1原文：「温岚说：“顾遥曾喊‘不要开门！’，所以我没有开门。”」 当前草稿句2原文：「她随后离开。」",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "温岚说：“顾遥曾喊‘不要开门！’，所以我没有开门。”",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "她随后离开。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿句1原文：「温岚说：“顾遥曾喊‘不要开门！’，所以我没有开门。”」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "温岚说：“顾遥曾喊‘不要开门！’，所以我没有开门。”",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句2原文：「她随后离开。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "她随后离开。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 2,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 1,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [
+            "c2"
+          ],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "c1",
+            "c2"
+          ],
+          "cited_ranges": [
+            {
+              "id": "c1",
+              "truncated": false
+            },
+            {
+              "id": "c2",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "nested_corner",
+      "actual": [
+        "温岚说：「顾遥说过『密码未知。』我也不知道。」",
+        "门外安静。"
+      ],
+      "expected": [
+        "温岚说：「顾遥说过『密码未知。』我也不知道。」",
+        "门外安静。"
+      ],
+      "pass": true,
+      "detail": {
+        "claims": [
+          {
+            "id": "draft-claim-independent-draft-r2-1",
+            "text": "温岚说：「顾遥说过『密码未知。』我也不知道。」",
+            "ordinal": 1
+          },
+          {
+            "id": "draft-claim-independent-draft-r2-2",
+            "text": "门外安静。",
+            "ordinal": 2
+          }
+        ],
+        "scopes": {
+          "draft-claim-independent-draft-r2-1": {
+            "id": "draft-claim-independent-draft-r2-1",
+            "source_start": 0,
+            "source_end": 23,
+            "supplied_end": 23,
+            "source_chars": 23,
+            "supplied_chars": 23,
+            "truncated": false
+          },
+          "draft-claim-independent-draft-r2-2": {
+            "id": "draft-claim-independent-draft-r2-2",
+            "source_start": 23,
+            "source_end": 28,
+            "supplied_end": 28,
+            "source_chars": 5,
+            "supplied_chars": 5,
+            "truncated": false
+          }
+        }
+      }
+    },
+    {
+      "name": "nested_corner_source_offsets",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "nested_corner_all_complete_quotes_rendered",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": {
+        "summary": "当前草稿句1原文：「温岚说：「顾遥说过『密码未知。』我也不知道。」」 当前草稿句2原文：「门外安静。」",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "温岚说：「顾遥说过『密码未知。』我也不知道。」",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "门外安静。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿句1原文：「温岚说：「顾遥说过『密码未知。』我也不知道。」」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "温岚说：「顾遥说过『密码未知。』我也不知道。」",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句2原文：「门外安静。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "门外安静。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 2,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 1,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [
+            "c2"
+          ],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "c1",
+            "c2"
+          ],
+          "cited_ranges": [
+            {
+              "id": "c1",
+              "truncated": false
+            },
+            {
+              "id": "c2",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "terminal_outside_quote",
+      "actual": [
+        "温岚说：“我不知道密码”。",
+        "顾遥离开。"
+      ],
+      "expected": [
+        "温岚说：“我不知道密码”。",
+        "顾遥离开。"
+      ],
+      "pass": true,
+      "detail": {
+        "claims": [
+          {
+            "id": "draft-claim-independent-draft-r2-1",
+            "text": "温岚说：“我不知道密码”。",
+            "ordinal": 1
+          },
+          {
+            "id": "draft-claim-independent-draft-r2-2",
+            "text": "顾遥离开。",
+            "ordinal": 2
+          }
+        ],
+        "scopes": {
+          "draft-claim-independent-draft-r2-1": {
+            "id": "draft-claim-independent-draft-r2-1",
+            "source_start": 0,
+            "source_end": 13,
+            "supplied_end": 13,
+            "source_chars": 13,
+            "supplied_chars": 13,
+            "truncated": false
+          },
+          "draft-claim-independent-draft-r2-2": {
+            "id": "draft-claim-independent-draft-r2-2",
+            "source_start": 13,
+            "source_end": 18,
+            "supplied_end": 18,
+            "source_chars": 5,
+            "supplied_chars": 5,
+            "truncated": false
+          }
+        }
+      }
+    },
+    {
+      "name": "terminal_outside_quote_source_offsets",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "terminal_outside_quote_all_complete_quotes_rendered",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": {
+        "summary": "当前草稿句1原文：「温岚说：“我不知道密码”。」 当前草稿句2原文：「顾遥离开。」",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "温岚说：“我不知道密码”。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "顾遥离开。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿句1原文：「温岚说：“我不知道密码”。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "温岚说：“我不知道密码”。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句2原文：「顾遥离开。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "顾遥离开。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 2,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 1,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [
+            "c2"
+          ],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "c1",
+            "c2"
+          ],
+          "cited_ranges": [
+            {
+              "id": "c1",
+              "truncated": false
+            },
+            {
+              "id": "c2",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "multiple_sentences_in_one_quote",
+      "actual": [
+        "温岚说：“我不知道密码。也不认识信使。”",
+        "顾遥点头。"
+      ],
+      "expected": [
+        "温岚说：“我不知道密码。也不认识信使。”",
+        "顾遥点头。"
+      ],
+      "pass": true,
+      "detail": {
+        "claims": [
+          {
+            "id": "draft-claim-independent-draft-r2-1",
+            "text": "温岚说：“我不知道密码。也不认识信使。”",
+            "ordinal": 1
+          },
+          {
+            "id": "draft-claim-independent-draft-r2-2",
+            "text": "顾遥点头。",
+            "ordinal": 2
+          }
+        ],
+        "scopes": {
+          "draft-claim-independent-draft-r2-1": {
+            "id": "draft-claim-independent-draft-r2-1",
+            "source_start": 0,
+            "source_end": 20,
+            "supplied_end": 20,
+            "source_chars": 20,
+            "supplied_chars": 20,
+            "truncated": false
+          },
+          "draft-claim-independent-draft-r2-2": {
+            "id": "draft-claim-independent-draft-r2-2",
+            "source_start": 20,
+            "source_end": 25,
+            "supplied_end": 25,
+            "source_chars": 5,
+            "supplied_chars": 5,
+            "truncated": false
+          }
+        }
+      }
+    },
+    {
+      "name": "multiple_sentences_in_one_quote_source_offsets",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "multiple_sentences_in_one_quote_all_complete_quotes_rendered",
+      "actual": true,
+      "expected": true,
+      "pass": true,
+      "detail": {
+        "summary": "当前草稿句1原文：「温岚说：“我不知道密码。也不认识信使。”」 当前草稿句2原文：「顾遥点头。」",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "温岚说：“我不知道密码。也不认识信使。”",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "顾遥点头。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿句1原文：「温岚说：“我不知道密码。也不认识信使。”」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "温岚说：“我不知道密码。也不认识信使。”",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句2原文：「顾遥点头。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "顾遥点头。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 2,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 1,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [
+            "c2"
+          ],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "c1",
+            "c2"
+          ],
+          "cited_ranges": [
+            {
+              "id": "c1",
+              "truncated": false
+            },
+            {
+              "id": "c2",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "only_brief_uses_540_limit",
+      "actual": [
+        289,
+        240
+      ],
+      "expected": [
+        289,
+        240
+      ],
+      "pass": true,
+      "detail": null
+    }
+  ],
+  "passed": 28,
+  "total": 28,
+  "recorded_splitter_limits": [
+    {
+      "name": "ascii_quote",
+      "input": "Wen said: \"I do not know the code.\" Gu replied: \"Neither do I.\"",
+      "claims": [
+        {
+          "id": "draft-claim-independent-draft-r2-1",
+          "text": "Wen said: \"I do not know the code.",
+          "ordinal": 1
+        },
+        {
+          "id": "draft-claim-independent-draft-r2-2",
+          "text": "\" Gu replied: \"Neither do I.",
+          "ordinal": 2
+        },
+        {
+          "id": "draft-claim-independent-draft-r2-3",
+          "text": "\"",
+          "ordinal": 3
+        }
+      ],
+      "note": "Bounded splitter observation; no general multilingual speech parser claim."
+    },
+    {
+      "name": "postposed_speaker",
+      "input": "“我不知道密码。”温岚低声回答。",
+      "claims": [
+        {
+          "id": "draft-claim-independent-draft-r2-1",
+          "text": "“我不知道密码。”",
+          "ordinal": 1
+        },
+        {
+          "id": "draft-claim-independent-draft-r2-2",
+          "text": "温岚低声回答。",
+          "ordinal": 2
+        }
+      ],
+      "note": "Bounded splitter observation; no general multilingual speech parser claim."
+    },
+    {
+      "name": "quote_embedded_in_larger_sentence",
+      "input": "温岚对“你知道密码吗？”这一问保持沉默。",
+      "claims": [
+        {
+          "id": "draft-claim-independent-draft-r2-1",
+          "text": "温岚对“你知道密码吗？”",
+          "ordinal": 1
+        },
+        {
+          "id": "draft-claim-independent-draft-r2-2",
+          "text": "这一问保持沉默。",
+          "ordinal": 2
+        }
+      ],
+      "note": "Bounded splitter observation; no general multilingual speech parser claim."
+    }
+  ]
+}

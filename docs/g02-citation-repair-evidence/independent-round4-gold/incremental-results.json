@@ -1,0 +1,139 @@
+{
+  "scope": "Incremental gold only; retains previous manual V2 semantic review",
+  "time_utc": "2026-09-26T12:42:58.475772+00:00",
+  "v3_manifest_sha256": "0afd9630d22aecc44d1fbc8a955787d12d1286b31ec85a3e0985dff132da8baf",
+  "file_hashes": {
+    "evaluation/current_contract_compare_v3/HANDOFF.md": "211c4d4d95f7ec020eaaf2f3ccfb16ebd9007ef551c06fffe1a1c1ad7294a5c4",
+    "evaluation/current_contract_compare_v3/RUBRIC.md": "c96cb3044517ed44987c18c840e6a6a73edb9df4304c25279d005ebaa7158dff",
+    "evaluation/current_contract_compare_v3/HISTORY_GAP.md": "606dbc9acae6c8e1d9f3a5c35e596cf9c98777b9808b2adffe67c67e43004e4a",
+    "evaluation/current_contract_compare_v3/build.py": "6f34b50ad324bfc4ad69566419d9a595076d7e4b19c6aee54278a9733913b247",
+    "evaluation/current_contract_compare_v3/cases.json": "99cf17ca8391be0438164eabecebf181f6e88b5f6a11cd20fb15f913854716f0",
+    "evaluation/current_contract_compare_v3/frozen-inputs.json": "0afd9630d22aecc44d1fbc8a955787d12d1286b31ec85a3e0985dff132da8baf",
+    "evaluation/current_contract_compare_v2/cases.json": "a312282eef0ea34b91a55256b238a01e287705836c6c3387d5b68f34a6ba41c0",
+    "evaluation/current_contract_compare_v2/actual-inputs.json": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+    "evaluation/current_contract_compare_v2/api-score-probe-results-v2.json": "b261629423eed61caccc9eb65b56bda2a69f68f927ea8c02e753fada070a8d0e",
+    "evaluation/current_contract_compare_v2/frozen-inputs.json": "35b8a9559b9d5138f21795cdeb74439d010490dd5a9ee07a37cd48dbd44ca337",
+    "evaluation/current_contract_compare_v2/corpora/north_glass.json": "57aea727f02bfd27534783756a5e254e678695d6bdfeea2182959862afcb9510",
+    "evaluation/current_contract_compare_v2/corpora/harbor_signal.json": "b73e9e6764c8b3dad8e7d77367998d8f4c9254da26734bd5ce13d355222798a7",
+    "evaluation/current_contract_compare_v2/corpora/orchard_restoration.json": "b65e422642a029d5e4fbdb5a04b89e2482ead83aed82ce9e1eed6618438f5614",
+    "evaluation/current_contract_compare_v2/corpora/basalt_observatory.json": "c6dbb54519030c228c2a2a464cfaf99e94cefeb31a91948d271a992732e2674e"
+  },
+  "frozen_hash_mismatches": [],
+  "v2_corpus_mismatches": [],
+  "case_count": 24,
+  "all_v2_ids_once": true,
+  "changed_business_or_classification_fields": [],
+  "conflict_categories_unchanged": true,
+  "exact_frozen_v2_capture_reused": true,
+  "capture_case_count": 24,
+  "badge_minimum_labels": [
+    [
+      "badge_rule"
+    ]
+  ],
+  "badge_expected_labels": [
+    "badge_rule"
+  ],
+  "badge_optional_labels": [
+    "badge_roster"
+  ],
+  "badge_requires_all": false,
+  "time_scope_minimum_text_label_mismatches": [
+    "ccv3-north_glass-world_rule-conflict"
+  ],
+  "insufficient_categories": [
+    {
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "target_draft": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+      "category_axis": "world_rule",
+      "decision_category": "object_state",
+      "category_reason": "The unknown 11点 holder of a named badge is the object's time-specific holder state.",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "object_state"
+      ]
+    },
+    {
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "target_draft": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+      "category_axis": "object_state",
+      "decision_category": "relationship",
+      "category_reason": "The missing fact is Mira's responsibility for loosening the cap, not whether the cap is loose.",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ]
+    },
+    {
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "target_draft": "The gate logs establish that Sera authorized a reopening at 11点.",
+      "category_axis": "timeline",
+      "decision_category": "relationship",
+      "category_reason": "Sera's named authorization for reopening is an authority relation; the reopening time is context.",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ]
+    },
+    {
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "target_draft": "Vela delivered the telegram to Sera at 13点, according to the records.",
+      "category_axis": "character_knowledge",
+      "decision_category": "relationship",
+      "category_reason": "The unknown courier is a named person's delivery role/responsibility; Sera's learning is context, not the decision.",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ]
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "target_draft": "The birth register establishes that Nera was born before Oren.",
+      "category_axis": "relationship",
+      "decision_category": "timeline",
+      "category_reason": "Whether Nera was born before Oren is birth-event ordering; twin kinship is context.",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "timeline"
+      ]
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "target_draft": "Tala caused the restoration boat's delay, according to the launch and delay logs.",
+      "category_axis": "event_status",
+      "decision_category": "relationship",
+      "category_reason": "The unknown cause attributed to Tala is named responsibility for the delay, not whether launch completed.",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ]
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "target_draft": "The index and maintenance sheet establish that Vela ground lens R4.",
+      "category_axis": "attribute",
+      "decision_category": "relationship",
+      "category_reason": "Who ground lens R4 is named responsibility for work; R4's material is context, not an intrinsic-property question.",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ]
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "target_draft": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+      "category_axis": "location_action",
+      "decision_category": "location_action",
+      "category_reason": "Who accompanied Vela during the 19点 move concerns an action at a location; companion-role relationship is also plausible and requires human adjudication.",
+      "category_policy": "manual_variant",
+      "category_candidates": [
+        "location_action",
+        "relationship"
+      ]
+    }
+  ],
+  "changed_during_audit": [],
+  "provider_calls": 0,
+  "http_calls": 0,
+  "database_connections": 0
+}

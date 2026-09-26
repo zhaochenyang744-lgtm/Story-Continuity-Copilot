@@ -74,10 +74,10 @@ class V130WritingAnalysisTests(unittest.TestCase):
         brief_view=self.client.get(f"/api/projects/{self.project_id}/analyses/{brief.json()['data']['run_id']}").json()["data"]
         self.assertEqual((brief_view["status"],brief_view["analysis_type"],brief_view["is_stale"]),("completed","context_brief",False))
         self.assertTrue(any(item["sources"][0]["source_type"]=="author_context" for item in brief_view["analysis"]["items"]))
-        self.assertEqual(brief_view["analysis"]["draft_coverage"]["status"],"partial")
-        self.assertIn("draft_claim_uncovered",brief_view["analysis"]["draft_coverage"]["reasons"])
+        self.assertEqual(brief_view["analysis"]["draft_coverage"]["status"],"covered")
+        self.assertTrue(brief_view["analysis"]["citation_transform"]["fallback_draft_claim_ids"])
         self.assertTrue(any(source["source_type"]=="draft_claim" for item in brief_view["analysis"]["items"] for source in item["sources"]))
-        self.assertEqual(brief_view["retrieval"]["method_version"],"writing-analysis-lexical-v2-draft-claims")
+        self.assertEqual(brief_view["retrieval"]["method_version"],"writing-analysis-lexical-v3-brief-540")
         self.assertTrue(brief_view["retrieval"]["selected_ids"]["draft_claim"])
         self.assertTrue(brief_view["retrieval"]["selected_ids"]["memory_record"])
         self.assertEqual(self.client.get(f"/api/projects/{self.project_id}/checks/{brief.json()['data']['run_id']}").status_code,404)
@@ -103,7 +103,7 @@ class V130WritingAnalysisTests(unittest.TestCase):
         self.assertTrue(viewed["analysis"]["draft_coverage"]["source_ids"])
         self.assertTrue(any(source["source_type"]=="draft_claim" for item in viewed["analysis"]["items"] for source in item["sources"]))
 
-    def test_single_sentence_claim_cut_at_240_is_reported_as_partial(self):
+    def test_single_sentence_claim_tail_is_citable_within_brief_limit(self):
         body="林默沿着长廊向前走，"*28+"最后把银钥匙交给陈澈并得知弟弟还活着。"
         self.assertLess(len(body),1200)
         self._save(body)
@@ -112,14 +112,28 @@ class V130WritingAnalysisTests(unittest.TestCase):
         scope=viewed["retrieval"]["draft_claim_scope"]
         coverage=viewed["analysis"]["draft_coverage"]
         self.assertEqual((scope["available"],len(scope["selected"])),(1,1))
-        self.assertTrue(scope["selected"][0]["truncated"])
+        self.assertFalse(scope["selected"][0]["truncated"])
         self.assertEqual(scope["selected"][0]["source_end"],len(body))
-        self.assertEqual(scope["selected"][0]["supplied_end"],240)
-        self.assertEqual((viewed["analysis"]["evidence_status"],coverage["status"]),("partial","partial"))
-        self.assertIn("draft_claim_truncated",coverage["reasons"])
+        self.assertEqual(scope["selected"][0]["supplied_end"],len(body))
+        self.assertEqual(coverage["cited_ranges"][0]["supplied_end"],len(body))
+        self.assertTrue(any(body in source["excerpt"] for item in viewed["analysis"]["items"] for source in item["sources"] if source["source_type"]=="draft_claim"))
         self.assertEqual(coverage["cited_ranges"][0]["id"],scope["selected"][0]["id"])
 
-    def test_selected_but_uncited_draft_sentences_remain_partial(self):
+    def test_context_brief_dialogue_keeps_each_speaker_frame_in_api_request(self):
+        body="陈澈说：‘温岚已经把潮汐表交给林默。’温岚摇头说：‘我没有交出潮汐表，它仍在我的背包里。’"
+        self._save(body)
+        response=self._run("context_brief")
+        self.assertEqual(response.status_code,202,response.text)
+        request=self.provider.requests[-1]
+        claims=request["layers"]["written"]["draft_claims"]
+        self.assertEqual(len(claims),2)
+        self.assertEqual("".join(claim["text"] for claim in claims),body)
+        viewed=self.client.get(f"/api/projects/{self.project_id}/analyses/{response.json()['data']['run_id']}").json()["data"]
+        analysis=viewed["analysis"]
+        self.assertEqual(analysis["draft_coverage"]["status"],"covered")
+        self.assertTrue(all(any(claim["text"] in item["text"] and any(source["source_id"]==claim["id"] for source in item["sources"]) for item in analysis["items"]) for claim in claims))
+
+    def test_selected_but_uncited_draft_sentences_are_source_rendered(self):
         body="林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。"
         self._save(body)
         response=self._run("context_brief")
@@ -128,10 +142,10 @@ class V130WritingAnalysisTests(unittest.TestCase):
         coverage=viewed["analysis"]["draft_coverage"]
         self.assertEqual((scope["available"],len(scope["selected"])),(3,3))
         self.assertFalse(any(item["truncated"] for item in scope["selected"]))
-        self.assertEqual((viewed["analysis"]["evidence_status"],coverage["status"]),("partial","partial"))
-        self.assertIn("draft_claim_uncovered",coverage["reasons"])
-        self.assertEqual(len(coverage["cited_ranges"]),1)
-        self.assertEqual(len(coverage["uncovered_source_ids"]),2)
+        self.assertEqual((viewed["analysis"]["evidence_status"],coverage["status"]),("supported","covered"))
+        self.assertEqual(len(coverage["cited_ranges"]),3)
+        self.assertEqual(len(coverage["uncovered_source_ids"]),0)
+        self.assertEqual(len(viewed["analysis"]["citation_transform"]["fallback_draft_claim_ids"]),3)
         self.assertEqual(coverage["unselected_count"],0)
 
     def test_existing_continuity_provider_input_stays_free_of_author_context(self):

@@ -1,0 +1,283 @@
+{
+  "family": "v8",
+  "case_id": "v8-flint-garden-insufficient-8",
+  "input_sha256": "44d8ab1217e85c9e94a3f1085f60eee35be44f7c0d057596eed22682c6699a78",
+  "expected": {
+    "class": "insufficient_evidence",
+    "category": null,
+    "evidence": [
+      {
+        "chapter_number": 8,
+        "source_label": "inspection_without_outcome",
+        "body_sha256": "c7a2639d2025afa5f226edbde81cd30381bdfb6c92378dde158e5358ff34530b"
+      }
+    ]
+  },
+  "score_row": {
+    "case_id": "v8-flint-garden-insufficient-8",
+    "seed_key": "flint_garden",
+    "expected_class": "insufficient_evidence",
+    "predicted_class": "no_conflict",
+    "expected_category": null,
+    "predicted_category": null,
+    "expected_severity": "low",
+    "predicted_severity": null,
+    "category_severity": null,
+    "run_id": "run-a42fbce7-8c8d-4411-a540-8cf74d0c22fd",
+    "post_status": 202,
+    "post_state": "queued",
+    "idempotency_replay_same_run": true,
+    "terminal_status": "completed",
+    "terminal_error_code": null,
+    "schema_valid": true,
+    "retrieval_hit_at_5": true,
+    "retrieval_semantic_set": [
+      [
+        1,
+        "route_code_map"
+      ],
+      [
+        3,
+        "completion_definition"
+      ],
+      [
+        5,
+        "pruning_tool"
+      ],
+      [
+        7,
+        "unconfirmed_cause"
+      ],
+      [
+        8,
+        "inspection_without_outcome"
+      ]
+    ],
+    "cited_evidence_count": 0,
+    "cited_evidence_expected_count": 0,
+    "resolvable_evidence_count": 0,
+    "evidence_ids": [],
+    "evidence_semantic_set": [],
+    "challenge_tags": [
+      "insufficient_evidence",
+      "ambiguous_evidence",
+      "inspection_without_outcome"
+    ],
+    "requires_multiple_direct_evidence": false,
+    "expected_evidence_count": 0,
+    "cited_expected_evidence_unique_count": 0,
+    "expected_evidence_full_set_cited": null,
+    "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "latency_ms": 837,
+    "input_tokens": 2850,
+    "output_tokens": 5,
+    "cost_cny": null,
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    }
+  },
+  "product": {
+    "run_id": "run-a42fbce7-8c8d-4411-a540-8cf74d0c22fd",
+    "project_id": "fixture-project-flint-garden",
+    "run_type": "continuity",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 2,
+    "draft_revision": null,
+    "source_memory_version": 1,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T09:38:01.514209+00:00",
+    "started_at": "2026-09-26T09:38:01.539479+00:00",
+    "completed_at": "2026-09-26T09:38:02.443887+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 904,
+    "retry_of_run_id": null,
+    "root_run_id": "run-a42fbce7-8c8d-4411-a540-8cf74d0c22fd",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:01.514209+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "preparing_draft",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:01.539479+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "retrieving_confirmed_facts",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:01.549729+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "comparing_evidence",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:01.573681+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "running",
+        "stage": "assembling_reviewable_results",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:02.425152+00:00"
+      },
+      {
+        "sequence": 6,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:02.443887+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "provider_metrics": {
+      "latency_ms": 837,
+      "input_tokens": 2850,
+      "output_tokens": 5,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "issues": [],
+    "metrics": {
+      "latency_ms": 837,
+      "input_tokens": 2850,
+      "output_tokens": 5,
+      "cost_cny": null,
+      "cost_available": false,
+      "contract_normalization_count": 0,
+      "contract_normalizations": [],
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v15-knowledge-time",
+        "schema_version": "continuity-issue-v5-temporal-basis",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      },
+      "retrieval": [
+        {
+          "claim_ordinal": 1,
+          "returned_span_ids": [
+            "fixture-span-flint_garden-8",
+            "fixture-span-flint_garden-7",
+            "fixture-span-flint_garden-5",
+            "fixture-span-flint_garden-1",
+            "fixture-span-flint_garden-3"
+          ],
+          "method_version": "bounded-lexical-v4-longform"
+        }
+      ]
+    }
+  },
+  "model_outputs": [
+    {
+      "case_id": "v8-flint-garden-insufficient-8",
+      "task": "continuity_review",
+      "contract_repair": false,
+      "input_refs": {
+        "claims": [
+          {
+            "id": "claim-run-a42fbce7-8c8d-4411-a540-8cf74d0c22fd-1",
+            "text": "The Kite Shed gate passed inspection.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-flint_garden-7",
+                "chapter_id": "fixture-chapter-flint_garden-7",
+                "body": "A cracked pot was found after rain, but no record identifies whether wind, frost, or a person caused it.",
+                "label": "unconfirmed_cause",
+                "prompt_excerpt": "A cracked pot was found after rain, but no record identifies whether wind, frost, or a person caused it."
+              },
+              {
+                "id": "fixture-span-flint_garden-1",
+                "chapter_id": "fixture-chapter-flint_garden-1",
+                "body": "On the Flint Garden registry, repair code K-4 denotes work performed in Frost Court; the map does not identify a particular repair.",
+                "label": "route_code_map",
+                "prompt_excerpt": "On the Flint Garden registry, repair code K-4 denotes work performed in Frost Court; the map does not identify a particular repair."
+              },
+              {
+                "id": "fixture-span-flint_garden-3",
+                "chapter_id": "fixture-chapter-flint_garden-3",
+                "body": "A seed-gate delivery is complete only if both the delivery stamp is present and the final gate latch is closed.",
+                "label": "completion_definition",
+                "prompt_excerpt": "A seed-gate delivery is complete only if both the delivery stamp is present and the final gate latch is closed."
+              }
+            ]
+          }
+        ],
+        "draft_claims": [],
+        "source_spans": [],
+        "retrieval": null,
+        "proposal": null
+      },
+      "business_json": {
+        "issues": []
+      },
+      "usage": {
+        "input_tokens": 2850,
+        "output_tokens": 5,
+        "observed_response_input_tokens": 2850,
+        "observed_response_output_tokens": 5,
+        "cost_cny": null
+      },
+      "latency_ms": 837
+    }
+  ],
+  "http_attempts": [
+    {
+      "case_id": "v8-flint-garden-insufficient-8",
+      "ordinal": 18,
+      "sent_at": "2026-09-26T09:38:01.605486+00:00",
+      "status": 200,
+      "latency_ms": 815,
+      "usage": {
+        "prompt_tokens": 2850,
+        "completion_tokens": 5,
+        "total_tokens": 2855
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    }
+  ],
+  "actual_http_dispatches": 1,
+  "request_model": "deepseek-flash",
+  "source_case_ref": "evaluation/case_sets/eval-set-v8.json"
+}

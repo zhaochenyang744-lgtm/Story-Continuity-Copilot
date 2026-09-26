@@ -1,0 +1,764 @@
+{
+  "family": "g02",
+  "case_id": "g02-identical-text",
+  "input": {
+    "saved_draft": "林默走进北门。林默走进北门。"
+  },
+  "expected": "duplicate wording may cite either matching claim, each item still needs semantic support",
+  "product": {
+    "run_id": "run-6c9da17d-0a4e-454e-ae4e-11c6d12d6e26",
+    "project_id": "prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c",
+    "run_type": "context_brief",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 1,
+    "draft_revision": 2,
+    "source_memory_version": 4,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T09:38:44.416723+00:00",
+    "started_at": "2026-09-26T09:38:44.441451+00:00",
+    "completed_at": "2026-09-26T09:38:48.513597+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 4072,
+    "retry_of_run_id": null,
+    "root_run_id": "run-6c9da17d-0a4e-454e-ae4e-11c6d12d6e26",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:44.416723+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "binding_context",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:44.441451+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "analyzing_layers",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:44.456624+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "assembling_results",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:48.493842+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T09:38:48.513597+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "context-brief-v5-clause-citations",
+      "schema_version": "writing-analysis-v1",
+      "retrieval_method_version": "writing-analysis-lexical-v2-draft-claims",
+      "source_memory_version": 4
+    },
+    "provider_metrics": {
+      "latency_ms": 4024,
+      "input_tokens": 3024,
+      "output_tokens": 1154,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "analysis_type": "context_brief",
+    "current_draft_revision": 2,
+    "foreshadow_version": null,
+    "foreshadow_snapshot_digest": null,
+    "proposal": null,
+    "question": null,
+    "scope": null,
+    "issue_ids": [],
+    "source_run_id": null,
+    "retrieval": {
+      "counts": {
+        "author_context": {
+          "available": 0,
+          "selected": 0
+        },
+        "character_alias": {
+          "available": 0,
+          "selected": 0
+        },
+        "draft_claim": {
+          "available": 2,
+          "selected": 2
+        },
+        "foreshadow_record": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue_evidence": {
+          "available": 0,
+          "selected": 0
+        },
+        "memory_record": {
+          "available": 8,
+          "selected": 8
+        },
+        "source_span": {
+          "available": 10,
+          "selected": 4
+        }
+      },
+      "draft_claim_scope": {
+        "available": 2,
+        "body_chars": 14,
+        "excerpt_chars": 14,
+        "selected": [
+          {
+            "id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1",
+            "source_chars": 7,
+            "source_end": 7,
+            "source_start": 0,
+            "supplied_chars": 7,
+            "supplied_end": 7,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2",
+            "source_chars": 7,
+            "source_end": 14,
+            "source_start": 7,
+            "supplied_chars": 7,
+            "supplied_end": 14,
+            "truncated": false
+          }
+        ]
+      },
+      "method_version": "writing-analysis-lexical-v2-draft-claims",
+      "selected_ids": {
+        "author_context": [],
+        "character_alias": [],
+        "draft_claim": [
+          "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1",
+          "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2"
+        ],
+        "foreshadow_record": [],
+        "issue": [],
+        "issue_evidence": [],
+        "memory_record": [
+          "mem-0f4c0cd7-51a0-4a22-bc3f-11003740f234",
+          "mem-164a607b-1c4d-4854-952e-069fd268577c",
+          "mem-169b98e2-9870-4791-be79-fd5da3aeac0d",
+          "mem-391a0f08-9a49-48fa-b66a-626237601898",
+          "mem-74ff994e-62e1-4e09-b584-612d55620c96",
+          "mem-b62fb5cb-528d-4734-825a-b49aa5f68150",
+          "mem-d482197a-8681-481f-8eb2-8c0806957716",
+          "mem-f7dca01f-e8a7-407c-859f-dbbefb4746c2"
+        ],
+        "source_span": [
+          "span-76e99dc8-ea41-4611-9224-fb2759bc8e20",
+          "span-ad52eef2-2db3-4631-b7ea-81e3df459182",
+          "span-959a4a80-8746-444b-b39e-7d0e180e13cb",
+          "span-873444f5-b354-46e0-a3f6-a92df3dbb36d"
+        ]
+      },
+      "truncated": {
+        "author_context": false,
+        "character_alias": false,
+        "draft_body": false,
+        "draft_claim": false,
+        "foreshadow_record": false,
+        "issue": false,
+        "issue_evidence": false,
+        "memory_record": false,
+        "source_span": true,
+        "source_span_text": false
+      }
+    },
+    "input_digest": "a494021527bd5d7c8904b92df18f018c4adc486c1d27803c9c37c4f559344b73",
+    "analysis": {
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1",
+            "source_chars": 7,
+            "source_end": 7,
+            "source_start": 0,
+            "supplied_chars": 7,
+            "supplied_end": 7,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2",
+            "source_chars": 7,
+            "source_end": 14,
+            "source_start": 7,
+            "supplied_chars": 7,
+            "supplied_end": 14,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1",
+          "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "evidence_status": "supported",
+      "items": [
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "林默走进北门。",
+              "label": "当前草稿 · 句 1",
+              "source_id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/workspace#draft-source",
+              "source_type": "draft_claim"
+            },
+            {
+              "excerpt": "林默走进北门。",
+              "label": "当前草稿 · 句 2",
+              "source_id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿第11章《未归的航标》正文仅见“林默走进北门。”，且该句在草稿中重复出现。"
+        },
+        {
+          "section": "world_rule",
+          "sources": [
+            {
+              "excerpt": "只在北潮闸完全关闭后敲响一次",
+              "label": "灰港雾钟 · ring_condition",
+              "source_id": "mem-0f4c0cd7-51a0-4a22-bc3f-11003740f234",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/memory#memory-mem-0f4c0cd7-51a0-4a22-bc3f-11003740f234",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "灰港雾钟的既定规则是：只在北潮闸完全关闭后敲响一次。"
+        },
+        {
+          "section": "open_thread",
+          "sources": [
+            {
+              "excerpt": "北潮闸未关闭时响起，原因未解",
+              "label": "异常雾钟 · status",
+              "source_id": "mem-b62fb5cb-528d-4734-825a-b49aa5f68150",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/memory#memory-mem-b62fb5cb-528d-4734-825a-b49aa5f68150",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "异常雾钟仍未解决：北潮闸未关闭时雾钟却响起，原因未解。"
+        },
+        {
+          "section": "open_thread",
+          "sources": [
+            {
+              "excerpt": "没有靠岸，来源未明",
+              "label": "白色渡船 · status",
+              "source_id": "mem-164a607b-1c4d-4854-952e-069fd268577c",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/memory#memory-mem-164a607b-1c4d-4854-952e-069fd268577c",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "白色渡船仍未靠岸，其来源未明。"
+        },
+        {
+          "section": "character_state",
+          "sources": [
+            {
+              "excerpt": "温岚",
+              "label": "黄铜罗盘 · holder",
+              "source_id": "mem-d482197a-8681-481f-8eb2-8c0806957716",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/memory#memory-mem-d482197a-8681-481f-8eb2-8c0806957716",
+              "source_type": "memory_record"
+            },
+            {
+              "excerpt": "廊桥钥匙的含义",
+              "label": "温岚 · does_not_know",
+              "source_id": "mem-169b98e2-9870-4791-be79-fd5da3aeac0d",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/memory#memory-mem-169b98e2-9870-4791-be79-fd5da3aeac0d",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "温岚目前持有带月牙裂纹的黄铜罗盘；她尚不知道廊桥钥匙的含义。"
+        },
+        {
+          "section": "confirmed_fact",
+          "sources": [
+            {
+              "excerpt": "雾线水门外锚柱",
+              "label": "航图 · location",
+              "source_id": "mem-f7dca01f-e8a7-407c-859f-dbbefb4746c2",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/memory#memory-mem-f7dca01f-e8a7-407c-859f-dbbefb4746c2",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "航图当前位于雾线水门外锚柱。"
+        },
+        {
+          "section": "confirmed_fact",
+          "sources": [
+            {
+              "excerpt": "第3章 19:20",
+              "label": "西航道退潮 · time",
+              "source_id": "mem-391a0f08-9a49-48fa-b66a-626237601898",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/memory#memory-mem-391a0f08-9a49-48fa-b66a-626237601898",
+              "source_type": "memory_record"
+            },
+            {
+              "excerpt": "第6章 21:05 收到三次求救码",
+              "label": "低室电台 · received",
+              "source_id": "mem-74ff994e-62e1-4e09-b584-612d55620c96",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/memory#memory-mem-74ff994e-62e1-4e09-b584-612d55620c96",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "时间线记录：西航道退潮发生在第3章19:20；低室电台在第6章21:05收到三次求救码。"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+              "label": "第 6 章 · 事件记录",
+              "source_id": "span-76e99dc8-ea41-4611-9224-fb2759bc8e20",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/sources#span-span-76e99dc8-ea41-4611-9224-fb2759bc8e20",
+              "source_type": "source_span"
+            }
+          ],
+          "text": "第6章《低室电台》记载：电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+              "label": "第 10 章 · 未解问题",
+              "source_id": "span-ad52eef2-2db3-4631-b7ea-81e3df459182",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/sources#span-span-ad52eef2-2db3-4631-b7ea-81e3df459182",
+              "source_type": "source_span"
+            }
+          ],
+          "text": "第10章《回声坐标》记载：北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+              "label": "第 9 章 · 动态状态",
+              "source_id": "span-959a4a80-8746-444b-b39e-7d0e180e13cb",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/sources#span-span-959a4a80-8746-444b-b39e-7d0e180e13cb",
+              "source_type": "source_span"
+            }
+          ],
+          "text": "第9章《换手》记载：进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+              "label": "第 8 章 · 关系变化",
+              "source_id": "span-873444f5-b354-46e0-a3f6-a92df3dbb36d",
+              "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/sources#span-span-873444f5-b354-46e0-a3f6-a92df3dbb36d",
+              "source_type": "source_span"
+            }
+          ],
+          "text": "第8章《北堤灯火》记载：温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。"
+        }
+      ],
+      "summary": "当前草稿第11章《未归的航标》正文仅见“林默走进北门。”，且该句在草稿中重复出现。 第6章《低室电台》记载：电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+      "summary_sources": [
+        {
+          "excerpt": "林默走进北门。",
+          "label": "当前草稿 · 句 1",
+          "source_id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1",
+          "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "林默走进北门。",
+          "label": "当前草稿 · 句 2",
+          "source_id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2",
+          "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+          "label": "第 6 章 · 事件记录",
+          "source_id": "span-76e99dc8-ea41-4611-9224-fb2759bc8e20",
+          "source_path": "/projects/prj-7c013cc5-8dad-4d9b-aa0a-c104a223ac6c/sources#span-span-76e99dc8-ea41-4611-9224-fb2759bc8e20",
+          "source_type": "source_span"
+        }
+      ]
+    }
+  },
+  "semantic_item_review": "pending_independent_human_review",
+  "model_outputs": [
+    {
+      "case_id": "g02-identical-text",
+      "task": "context_brief",
+      "contract_repair": false,
+      "input_refs": {
+        "claims": [],
+        "draft_claims": [
+          {
+            "id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1",
+            "ordinal": 1,
+            "text": "林默走进北门。"
+          },
+          {
+            "id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2",
+            "ordinal": 2,
+            "text": "林默走进北门。"
+          }
+        ],
+        "source_spans": [
+          {
+            "body": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+            "chapter_id": "ch-88bcdd96-b503-47c9-940c-c3024062c546",
+            "chapter_number": 6,
+            "chapter_title": "低室电台",
+            "id": "span-76e99dc8-ea41-4611-9224-fb2759bc8e20",
+            "label": "事件记录",
+            "source_revision": 1
+          },
+          {
+            "body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+            "chapter_id": "ch-19da33d1-cb66-4c10-9f74-f8bad70b5a11",
+            "chapter_number": 10,
+            "chapter_title": "回声坐标",
+            "id": "span-ad52eef2-2db3-4631-b7ea-81e3df459182",
+            "label": "未解问题",
+            "source_revision": 1
+          },
+          {
+            "body": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+            "chapter_id": "ch-41538ca4-c8e5-4ab2-9e4b-be5783bdd329",
+            "chapter_number": 9,
+            "chapter_title": "换手",
+            "id": "span-959a4a80-8746-444b-b39e-7d0e180e13cb",
+            "label": "动态状态",
+            "source_revision": 1
+          },
+          {
+            "body": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+            "chapter_id": "ch-995d8131-0607-4789-acff-889d2660a984",
+            "chapter_number": 8,
+            "chapter_title": "北堤灯火",
+            "id": "span-873444f5-b354-46e0-a3f6-a92df3dbb36d",
+            "label": "关系变化",
+            "source_revision": 1
+          }
+        ],
+        "retrieval": {
+          "counts": {
+            "author_context": {
+              "available": 0,
+              "selected": 0
+            },
+            "character_alias": {
+              "available": 0,
+              "selected": 0
+            },
+            "draft_claim": {
+              "available": 2,
+              "selected": 2
+            },
+            "foreshadow_record": {
+              "available": 0,
+              "selected": 0
+            },
+            "issue": {
+              "available": 0,
+              "selected": 0
+            },
+            "issue_evidence": {
+              "available": 0,
+              "selected": 0
+            },
+            "memory_record": {
+              "available": 8,
+              "selected": 8
+            },
+            "source_span": {
+              "available": 10,
+              "selected": 4
+            }
+          },
+          "draft_claim_scope": {
+            "available": 2,
+            "body_chars": 14,
+            "excerpt_chars": 14,
+            "selected": [
+              {
+                "id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1",
+                "source_chars": 7,
+                "source_end": 7,
+                "source_start": 0,
+                "supplied_chars": 7,
+                "supplied_end": 7,
+                "truncated": false
+              },
+              {
+                "id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2",
+                "source_chars": 7,
+                "source_end": 14,
+                "source_start": 7,
+                "supplied_chars": 7,
+                "supplied_end": 14,
+                "truncated": false
+              }
+            ]
+          },
+          "method_version": "writing-analysis-lexical-v2-draft-claims",
+          "selected_ids": {
+            "author_context": [],
+            "character_alias": [],
+            "draft_claim": [
+              "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1",
+              "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2"
+            ],
+            "foreshadow_record": [],
+            "issue": [],
+            "issue_evidence": [],
+            "memory_record": [
+              "mem-0f4c0cd7-51a0-4a22-bc3f-11003740f234",
+              "mem-164a607b-1c4d-4854-952e-069fd268577c",
+              "mem-169b98e2-9870-4791-be79-fd5da3aeac0d",
+              "mem-391a0f08-9a49-48fa-b66a-626237601898",
+              "mem-74ff994e-62e1-4e09-b584-612d55620c96",
+              "mem-b62fb5cb-528d-4734-825a-b49aa5f68150",
+              "mem-d482197a-8681-481f-8eb2-8c0806957716",
+              "mem-f7dca01f-e8a7-407c-859f-dbbefb4746c2"
+            ],
+            "source_span": [
+              "span-76e99dc8-ea41-4611-9224-fb2759bc8e20",
+              "span-ad52eef2-2db3-4631-b7ea-81e3df459182",
+              "span-959a4a80-8746-444b-b39e-7d0e180e13cb",
+              "span-873444f5-b354-46e0-a3f6-a92df3dbb36d"
+            ]
+          },
+          "truncated": {
+            "author_context": false,
+            "character_alias": false,
+            "draft_body": false,
+            "draft_claim": false,
+            "foreshadow_record": false,
+            "issue": false,
+            "issue_evidence": false,
+            "memory_record": false,
+            "source_span": true,
+            "source_span_text": false
+          }
+        },
+        "proposal": null
+      },
+      "business_json": {
+        "summary": "当前草稿第11章仅见林默走进北门的重复动作。已确认设定中，灰港雾钟只在北潮闸完全关闭后敲响一次，但第10章出现北潮闸未关闭时雾钟响起的异常，原因未解；白色渡船未靠岸且来源未明。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1"
+          },
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-0f4c0cd7-51a0-4a22-bc3f-11003740f234"
+          },
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-b62fb5cb-528d-4734-825a-b49aa5f68150"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿第11章《未归的航标》正文仅见“林默走进北门。”，且该句在草稿中重复出现。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1"
+              },
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2"
+              }
+            ]
+          },
+          {
+            "section": "world_rule",
+            "text": "灰港雾钟的既定规则是：只在北潮闸完全关闭后敲响一次。",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-0f4c0cd7-51a0-4a22-bc3f-11003740f234"
+              }
+            ]
+          },
+          {
+            "section": "open_thread",
+            "text": "异常雾钟仍未解决：北潮闸未关闭时雾钟却响起，原因未解。",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-b62fb5cb-528d-4734-825a-b49aa5f68150"
+              }
+            ]
+          },
+          {
+            "section": "open_thread",
+            "text": "白色渡船仍未靠岸，其来源未明。",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-164a607b-1c4d-4854-952e-069fd268577c"
+              }
+            ]
+          },
+          {
+            "section": "character_state",
+            "text": "温岚目前持有带月牙裂纹的黄铜罗盘；她尚不知道廊桥钥匙的含义。",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-d482197a-8681-481f-8eb2-8c0806957716"
+              },
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-169b98e2-9870-4791-be79-fd5da3aeac0d"
+              }
+            ]
+          },
+          {
+            "section": "confirmed_fact",
+            "text": "航图当前位于雾线水门外锚柱。",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-f7dca01f-e8a7-407c-859f-dbbefb4746c2"
+              }
+            ]
+          },
+          {
+            "section": "confirmed_fact",
+            "text": "时间线记录：西航道退潮发生在第3章19:20；低室电台在第6章21:05收到三次求救码。",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-391a0f08-9a49-48fa-b66a-626237601898"
+              },
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-74ff994e-62e1-4e09-b584-612d55620c96"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "第6章《低室电台》记载：电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-76e99dc8-ea41-4611-9224-fb2759bc8e20"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "第10章《回声坐标》记载：北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-ad52eef2-2db3-4631-b7ea-81e3df459182"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "第9章《换手》记载：进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-959a4a80-8746-444b-b39e-7d0e180e13cb"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "第8章《北堤灯火》记载：温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-873444f5-b354-46e0-a3f6-a92df3dbb36d"
+              }
+            ]
+          }
+        ]
+      },
+      "usage": {
+        "input_tokens": 3024,
+        "output_tokens": 1154,
+        "observed_response_input_tokens": 3024,
+        "observed_response_output_tokens": 1154,
+        "cost_cny": null
+      },
+      "latency_ms": 4024
+    }
+  ],
+  "http_attempts": [
+    {
+      "case_id": "g02-identical-text",
+      "ordinal": 39,
+      "sent_at": "2026-09-26T09:38:44.487898+00:00",
+      "status": 200,
+      "latency_ms": 4002,
+      "usage": {
+        "prompt_tokens": 3024,
+        "completion_tokens": 1154,
+        "total_tokens": 4178
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    }
+  ],
+  "actual_http_dispatches": 1,
+  "request_model": "deepseek-flash",
+  "input_sha256": "60b2594b7e5975d0d41a251a81faf00157c6289c0d7f7035f6abc212afd0ac60",
+  "source_case_ref": "independent-round3-g01-g02/composition-probe.py"
+}

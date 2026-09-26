@@ -53,8 +53,8 @@ test("v1.3.0 writing analysis closes brief, alignment, retry, stale, and mobile 
 
   await page.getByRole("button",{name:"生成章节简报",exact:true}).click();
   const brief=page.locator('.writing-analysis-result[aria-label="章节简报结果"]');
-  await expect(brief.getByText(/当前已保存草稿写道：林默带着潮汐表返回雾港/).first()).toBeVisible();
-  await expect(brief.getByRole("status").getByText(/当前已保存草稿：部分覆盖/)).toBeVisible();
+  await expect(brief.getByText(/当前草稿句1原文：.*林默带着潮汐表返回雾港/).first()).toBeVisible();
+  await expect(brief.getByRole("status").getByText(/当前已保存草稿：全部选入主张已引用/)).toBeVisible();
   await brief.getByText(/查看来源/).first().click();
   await expect(brief.getByText(/author_context/).first()).toBeVisible();
 

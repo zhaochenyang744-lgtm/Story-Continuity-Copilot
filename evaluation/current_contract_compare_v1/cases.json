@@ -1,0 +1,640 @@
+{
+  "schema_version": "current-contract-compare-v1",
+  "status": "seen_development_candidate",
+  "evaluation_only": true,
+  "real_provider_calls": 0,
+  "cases": [
+    {
+      "case_id": "ccv1-north_glass-world_rule-conflict",
+      "corpus_key": "north_glass",
+      "target_draft": "At 10点 Mira opened the North Glass door.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "world_rule",
+      "decision_category": "world_rule",
+      "expected_nature": "confirmed_conflict",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "badge_rule",
+          "body_sha256": "7fe32913a0d817f57f2a1927e8289cdfc3f4536b3cbcf44529a04e4c24178c96"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "badge_roster",
+          "body_sha256": "0a776d6f7499a678aceead6f3525ba9346a6150da919a80780af23cf65380688"
+        }
+      ],
+      "requires_all_expected_evidence": true,
+      "temporal_policy": "timeless_rule",
+      "label_reason": "The blue-only rule and Mira's red-only badge at 10点 jointly rule out her opening; neither source alone identifies both the rule and Mira's badge.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-north_glass-world_rule-no_conflict",
+      "corpus_key": "north_glass",
+      "target_draft": "At 10点 Mira could not open North Glass with her only red badge.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "decision_category": "world_rule",
+      "expected_nature": "none",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "badge_rule",
+          "body_sha256": "7fe32913a0d817f57f2a1927e8289cdfc3f4536b3cbcf44529a04e4c24178c96"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "badge_roster",
+          "body_sha256": "0a776d6f7499a678aceead6f3525ba9346a6150da919a80780af23cf65380688"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-north_glass-world_rule-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "target_draft": "The two badge registers establish that Mira held the spare blue badge at 11点.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "decision_category": "world_rule",
+      "expected_nature": "insufficient_evidence",
+      "expected_evidence": [
+        {
+          "chapter_number": 2,
+          "source_label": "badge_roster",
+          "body_sha256": "0a776d6f7499a678aceead6f3525ba9346a6150da919a80780af23cf65380688"
+        },
+        {
+          "chapter_number": 3,
+          "source_label": "spare_register",
+          "body_sha256": "da1bab5ad5141644712f8d031d3d0e70d470ede526827a70575f4f62f41471d6"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The 10点 roster concerns Mira's red badge, while the 11点 spare-badge holder field is blank. Neither record identifies Mira as the later holder; this draft specifically claims the records establish that identity.",
+      "forbidden_inference": "Do not infer a new fact from an empty, pending or unrecorded field.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-north_glass-object_state-conflict",
+      "corpus_key": "north_glass",
+      "target_draft": "The North Glass pneumatic carrier is ready for dispatch.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "object_state",
+      "decision_category": "object_state",
+      "expected_nature": "confirmed_conflict",
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "carrier_ready_rule",
+          "body_sha256": "40d64e7f17ef1ad124e08aec132c2a0a7c8828bf44afd46922afcc657fdb16e2"
+        },
+        {
+          "chapter_number": 5,
+          "source_label": "carrier_inspection",
+          "body_sha256": "b72e1179ce1881f460e37303a7fa937811858b55732cf9cad26112c4c5fe4118"
+        }
+      ],
+      "requires_all_expected_evidence": true,
+      "temporal_policy": "timeless_rule",
+      "label_reason": "The dispatch rule and loose-cap inspection jointly exclude ready status.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 2,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-north_glass-object_state-no_conflict",
+      "corpus_key": "north_glass",
+      "target_draft": "The North Glass pneumatic carrier is not ready despite its four-bar gauge.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "decision_category": "object_state",
+      "expected_nature": "none",
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "carrier_ready_rule",
+          "body_sha256": "40d64e7f17ef1ad124e08aec132c2a0a7c8828bf44afd46922afcc657fdb16e2"
+        },
+        {
+          "chapter_number": 5,
+          "source_label": "carrier_inspection",
+          "body_sha256": "b72e1179ce1881f460e37303a7fa937811858b55732cf9cad26112c4c5fe4118"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 2,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-north_glass-object_state-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "target_draft": "The inspection and cap record establish that Mira loosened the carrier valve cap.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "decision_category": "object_state",
+      "expected_nature": "insufficient_evidence",
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "carrier_inspection",
+          "body_sha256": "b72e1179ce1881f460e37303a7fa937811858b55732cf9cad26112c4c5fe4118"
+        },
+        {
+          "chapter_number": 6,
+          "source_label": "cap_actor",
+          "body_sha256": "868d2f904ee252c507b11050bc409d1f95e597225a359cdac3043ce2967f1947"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The inspection establishes the loose cap, while the actor field is unrecorded. Neither source attributes the loosening to Mira.",
+      "forbidden_inference": "Do not infer a new fact from an empty, pending or unrecorded field.",
+      "axis_index": 2,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-harbor_signal-timeline-conflict",
+      "corpus_key": "harbor_signal",
+      "target_draft": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "timeline",
+      "decision_category": "timeline",
+      "expected_nature": "confirmed_conflict",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "gate_log",
+          "body_sha256": "77d7377487559251053b9f3faa5dd0fbbafc3d49fafc4c15d44cc8891fb1a464"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "same_explicit_time",
+      "label_reason": "The same-day log establishes first opening before first closing; a claimed first closing before opening reverses the event order.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-harbor_signal-timeline-no_conflict",
+      "corpus_key": "harbor_signal",
+      "target_draft": "At 10点 the harbor signal gate first closed after its 09点 opening.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "decision_category": "timeline",
+      "expected_nature": "none",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "gate_log",
+          "body_sha256": "77d7377487559251053b9f3faa5dd0fbbafc3d49fafc4c15d44cc8891fb1a464"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-harbor_signal-timeline-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "target_draft": "The gate logs establish that Sera authorized a reopening at 11点.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "decision_category": "timeline",
+      "expected_nature": "insufficient_evidence",
+      "expected_evidence": [
+        {
+          "chapter_number": 2,
+          "source_label": "reopen_log",
+          "body_sha256": "1b0a1a8ad3ea83584b12ec7e77000d5bec476f168c92d963fcec02f5e5d283d3"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The 09点 opening and 10点 closing do not establish an 11点 reopening or its authorizer; the 11点 field explicitly leaves both unknown.",
+      "forbidden_inference": "Do not infer a new fact from an empty, pending or unrecorded field.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-harbor_signal-character_knowledge-conflict",
+      "corpus_key": "harbor_signal",
+      "target_draft": "At 11点 on the same day, Sera knew the telegram code.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "character_knowledge",
+      "decision_category": "character_knowledge",
+      "expected_nature": "confirmed_conflict",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "telegram_seal",
+          "body_sha256": "cff23b54e18923c4325cacd7e9533edc360856e1e893d24fcf4507e7ee20af45"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "same_explicit_time",
+      "label_reason": "The 11点 narrator record directly contradicts knowledge; the 13点 later transition is legitimate, while the messenger remains unknown.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 2,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-harbor_signal-character_knowledge-no_conflict",
+      "corpus_key": "harbor_signal",
+      "target_draft": "At 13点 Sera learned the telegram code after not knowing it at 11点.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "decision_category": "character_knowledge",
+      "expected_nature": "none",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "telegram_seal",
+          "body_sha256": "cff23b54e18923c4325cacd7e9533edc360856e1e893d24fcf4507e7ee20af45"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "later_recipient",
+          "body_sha256": "8d9b6fb9af11f324c7500261a6edc4e8e9e29ecff33fc81fc9da170e5f946b31"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 2,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-harbor_signal-character_knowledge-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "target_draft": "The telegram records establish that Vela delivered it to Sera at 13点.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "decision_category": "character_knowledge",
+      "expected_nature": "insufficient_evidence",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "telegram_seal",
+          "body_sha256": "cff23b54e18923c4325cacd7e9533edc360856e1e893d24fcf4507e7ee20af45"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "later_recipient",
+          "body_sha256": "8d9b6fb9af11f324c7500261a6edc4e8e9e29ecff33fc81fc9da170e5f946b31"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The 11点 ignorance and 13点 learning fix Sera's knowledge transition, but neither identifies the courier. The draft asserts that the existing records establish Vela's role.",
+      "forbidden_inference": "Do not infer a new fact from an empty, pending or unrecorded field.",
+      "axis_index": 2,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-relationship-conflict",
+      "corpus_key": "orchard_restoration",
+      "target_draft": "Nera is Oren's mother.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "relationship",
+      "decision_category": "relationship",
+      "expected_nature": "confirmed_conflict",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "kinship_rule",
+          "body_sha256": "df92a4dc5c1c210fd70f49c2397a49fcd7c04cc74a2b8c4675dab0c23423e444"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "twin_register",
+          "body_sha256": "ee6b5877c1f31b10ca147ebf15e24e53dfa2b0db175b86646294ca2c3c18b847"
+        }
+      ],
+      "requires_all_expected_evidence": true,
+      "temporal_policy": "timeless_rule",
+      "label_reason": "The actual permanent kinship rule plus twin registry jointly rule out Nera being Oren's mother; twin birth order remains unrecorded.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-relationship-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "target_draft": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "decision_category": "relationship",
+      "expected_nature": "none",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "kinship_rule",
+          "body_sha256": "df92a4dc5c1c210fd70f49c2397a49fcd7c04cc74a2b8c4675dab0c23423e444"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "twin_register",
+          "body_sha256": "ee6b5877c1f31b10ca147ebf15e24e53dfa2b0db175b86646294ca2c3c18b847"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-relationship-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "target_draft": "The birth register establishes that Nera was born before Oren.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "decision_category": "relationship",
+      "expected_nature": "insufficient_evidence",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "birth_order",
+          "body_sha256": "ed93d0de5cdb5ada73d6d2d3e0c83f26c312af10fb31b7588fa2dc5b7d726f48"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The twin register fixes kinship but explicitly leaves birth order blank; firstborn status cannot be inferred from twins being listed in that order.",
+      "forbidden_inference": "Do not infer a new fact from an empty, pending or unrecorded field.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-event_status-conflict",
+      "corpus_key": "orchard_restoration",
+      "target_draft": "The restoration boat has completed its launch.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "event_status",
+      "decision_category": "event_status",
+      "expected_nature": "confirmed_conflict",
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "launch_rule",
+          "body_sha256": "cad38e921e19a6040dd58382a11ff6afcbe3f3fd4c1448e905ece9adddb03337"
+        },
+        {
+          "chapter_number": 5,
+          "source_label": "launch_log",
+          "body_sha256": "d1986511d69b0a5bdb28fb83b4957380c9f98acbdd96d96da7633fc424706efc"
+        }
+      ],
+      "requires_all_expected_evidence": true,
+      "temporal_policy": "timeless_rule",
+      "label_reason": "The launch completion rule and the unsigned/no-departure log jointly exclude completed launch.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 2,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-event_status-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "target_draft": "The restoration boat has not completed launch while its manifest is unsigned and it remains at the quay.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "decision_category": "event_status",
+      "expected_nature": "none",
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "launch_rule",
+          "body_sha256": "cad38e921e19a6040dd58382a11ff6afcbe3f3fd4c1448e905ece9adddb03337"
+        },
+        {
+          "chapter_number": 5,
+          "source_label": "launch_log",
+          "body_sha256": "d1986511d69b0a5bdb28fb83b4957380c9f98acbdd96d96da7633fc424706efc"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 2,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-event_status-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "target_draft": "The launch and delay logs establish that Tala caused the restoration boat's delay.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "decision_category": "event_status",
+      "expected_nature": "insufficient_evidence",
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "launch_log",
+          "body_sha256": "d1986511d69b0a5bdb28fb83b4957380c9f98acbdd96d96da7633fc424706efc"
+        },
+        {
+          "chapter_number": 6,
+          "source_label": "delay_cause",
+          "body_sha256": "7ae83ffc418e2d3e6495440c90d1c765ac41532440123d10b76398fa43cb0565"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The unsigned launch log establishes an incomplete launch and a delay, but the cause log leaves responsibility unrecorded. There is no source link to Tala.",
+      "forbidden_inference": "Do not infer a new fact from an empty, pending or unrecorded field.",
+      "axis_index": 2,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-attribute-conflict",
+      "corpus_key": "basalt_observatory",
+      "target_draft": "At 18点 on the same day, lens R4 is amber glass.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "attribute",
+      "decision_category": "attribute",
+      "expected_nature": "confirmed_conflict",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "lens_index",
+          "body_sha256": "18f9afade86f2077bcffba6fe93ca5cfb6dcaf80e5d2b70aa4d9ac4ef738803e"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "west_lens",
+          "body_sha256": "6d076311a6e7a337c343d45286fb0ab882125356935f350ff805ba1aa4a5831f"
+        }
+      ],
+      "requires_all_expected_evidence": true,
+      "temporal_policy": "same_explicit_time",
+      "label_reason": "Two same-time observations bind R4 to the western lens and identify its material as clear glass.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-attribute-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "target_draft": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "decision_category": "attribute",
+      "expected_nature": "none",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "lens_index",
+          "body_sha256": "18f9afade86f2077bcffba6fe93ca5cfb6dcaf80e5d2b70aa4d9ac4ef738803e"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "west_lens",
+          "body_sha256": "6d076311a6e7a337c343d45286fb0ab882125356935f350ff805ba1aa4a5831f"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-attribute-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "target_draft": "The index and maintenance sheet establish that Vela ground lens R4.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "decision_category": "attribute",
+      "expected_nature": "insufficient_evidence",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "lens_index",
+          "body_sha256": "18f9afade86f2077bcffba6fe93ca5cfb6dcaf80e5d2b70aa4d9ac4ef738803e"
+        },
+        {
+          "chapter_number": 3,
+          "source_label": "grinder_blank",
+          "body_sha256": "d0f8251d884f4495426239fb6a0f6fb08af74c0dd51b1601b13d0166f6d8d212"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The index links R4 to the western lens, while the maintenance sheet omits the grinder's name. The claimed recorded attribution to Vela lacks the identity link.",
+      "forbidden_inference": "Do not infer a new fact from an empty, pending or unrecorded field.",
+      "axis_index": 1,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-location_action-conflict",
+      "corpus_key": "basalt_observatory",
+      "target_draft": "At 18点 on the same day, Vela stood on the east pier.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "location_action",
+      "decision_category": "location_action",
+      "expected_nature": "confirmed_conflict",
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "watch_log",
+          "body_sha256": "654e3875884b6afaf5b5391c945b0ea4662e10cd0eaf1933c697c5e3a158ba39"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "same_explicit_time",
+      "label_reason": "The direct 18点 watch record places Vela at Gate Four on the west pier; the 19点 move is a legitimate later transition.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 2,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-location_action-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "target_draft": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "decision_category": "location_action",
+      "expected_nature": "none",
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "later_watch",
+          "body_sha256": "16ebb983985d2fd50d6e83a4a0731e824979c8f0a1586cfaf15fb34410761c0b"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The cited sources and current draft permit this close control without a contradiction.",
+      "forbidden_inference": "Do not erase time or source attribution.",
+      "axis_index": 2,
+      "seen_development": true
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-location_action-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "target_draft": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "decision_category": "location_action",
+      "expected_nature": "insufficient_evidence",
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "later_watch",
+          "body_sha256": "16ebb983985d2fd50d6e83a4a0731e824979c8f0a1586cfaf15fb34410761c0b"
+        }
+      ],
+      "requires_all_expected_evidence": false,
+      "temporal_policy": "not_required",
+      "label_reason": "The 19点 move is established, but the same watch record leaves the companion unnamed. It does not identify Sora.",
+      "forbidden_inference": "Do not infer a new fact from an empty, pending or unrecorded field.",
+      "axis_index": 2,
+      "seen_development": true
+    }
+  ]
+}

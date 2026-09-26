@@ -1,0 +1,15 @@
+{
+  "time_utc": "2026-09-26T12:22:52.987529+00:00",
+  "manifest_sha256": "35b8a9559b9d5138f21795cdeb74439d010490dd5a9ee07a37cd48dbd44ca337",
+  "gold_files_changed_after_review": [],
+  "v1_manifest_sha256": "d0da4eb5037c5ce8e724d0263255654d97fb25cc975e5e419786ea5a60c8d29c",
+  "independent_file_hashes": {
+    "lineage-audit.json": "bc7382865ef6887c20a29a82c4b5fc4085978cea12959c497e596f45c032f132",
+    "material-audit-results.json": "f575489f54e1484511e9bb05b4bc437fa5a387e5c23a2758ef9b99e877b1e8d2",
+    "material-audit.py": "26cb143b2655a5cda78ada9e0e8ff19de3b85308d675e2e3e8ec4e5f29f29bc4",
+    "review.md": "bdebdb4225fecfc6e206e3c8feb8fc80d778c4d8ad12ff613d5284c29d1e7e64"
+  },
+  "http_calls": 0,
+  "provider_calls": 0,
+  "database_connections": 0
+}

@@ -1,0 +1,52 @@
+{
+  "version": "current-contract-compare-v1",
+  "status": "seen_development_candidate",
+  "frozen_at": "2026-09-26T11:41:58.530521+00:00",
+  "git_base": "c3bd54ab019447354e8b1387e16b9aca3258b4c9",
+  "real_provider_calls": 0,
+  "quality_scored": false,
+  "gold_independently_accepted": false,
+  "details": {
+    "case_count": 24,
+    "class_counts": {
+      "conflict": 8,
+      "no_conflict": 8,
+      "insufficient_evidence": 8
+    },
+    "corpus_count": 4,
+    "multi_evidence_conflicts": 5,
+    "multi_evidence_insufficient": 5
+  },
+  "source_hashes": {
+    "evaluation/current_contract_compare_v1/RUBRIC.md": "200f0e421934b58b60c3392f00c33f498e59e4ab3284de5edcd643b480e36268",
+    "evaluation/current_contract_compare_v1/PRECHECK_FAILURES.md": "163e9d006b05e8a428d2756b1bda75f1bc045e0589ca62c9fdaf07d1b1deda8b",
+    "evaluation/current_contract_compare_v1/build.py": "09ce651401dcd82c5bcf0aa1de7655abc4b81a44a451c2d75d119e221c6a4c29",
+    "evaluation/current_contract_compare_v1/preflight.py": "4fec4e57fe68d78ee3e417ac0199701f77704e900f3cad30d5045e283ea3e031",
+    "evaluation/current_contract_compare_v1/score.py": "8966de95c75000d34e228aa76eca3d6b1965b97fcf4ec3b52f8bd1f3d13342eb",
+    "evaluation/current_contract_compare_v1/contract_probe.py": "24d47576c947229c63a235f96ade0119e9698ffabbf8262290c64e38162810a4",
+    "evaluation/current_contract_compare_v1/api_score_probe.py": "559223ecc06156d595ea593e0c58db856d55add6a8f28a46b9ee4a48ba335306",
+    "evaluation/current_contract_compare_v1/test_offline.py": "5790f42e2144cc5456e656a487606904ad253ac4855aa27ccbaa1607b4420849",
+    "evaluation/current_contract_compare_v1/write_lineage.py": "c9f2741418899954537056459a6db22ac669cb615c83f5333ea94567bb8024d6",
+    "evaluation/current_contract_compare_v1/freeze.py": "7fcc6e32accc17a6e7ba38d0fae5b225f530229c6a9a8e58b6be9dfca13999ae",
+    "evaluation/current_contract_compare_v1/cases.json": "a751a2a110e03001a1c213cf2a88e21ca5567e6d0a72b9da87430be90d10ebcd",
+    "evaluation/current_contract_compare_v1/actual-inputs.json": "beaeb3c3ee5ccf5933c5b48d0bfcc9fa013fcc1f71da4040437cdf340f763d82",
+    "evaluation/current_contract_compare_v1/contract-probe-results.json": "d2379e461ff7dabe2cec19d5866656d2ead74bdfb662298a1ea91edbb038dc65",
+    "evaluation/current_contract_compare_v1/api-score-probe-results.json": "2427777b28efa407ab9a761a4695f4b50273a4cd1484d26ada0f0e1f61ef8454",
+    "evaluation/current_contract_compare_v1/api-score-probe-results-v2.json": "17571edb6b2c8f9ef5eb4ee744d724fcd0a6076bc6d6ae19429a476674ebee4d",
+    "evaluation/current_contract_compare_v1/v8-lineage.json": "487a3eab77e09ad99f051ff4f9c183f63a5856c394b74382f3924bcaa310a17a",
+    "evaluation/current_contract_compare_v1/corpora/basalt_observatory.json": "fe59d9b184c9207052aa5b8c23a3488df9fe86ed964ab7c24e0542fe42e126b4",
+    "evaluation/current_contract_compare_v1/corpora/harbor_signal.json": "ffba14a53c4b0cab4df63db02fb9fc8c62374c81294c8e4a8fda329214ffe178",
+    "evaluation/current_contract_compare_v1/corpora/north_glass.json": "4a09d09efd7286b793018a3252bcf68ed33f64496c61b0fb1a4919b81da456c0",
+    "evaluation/current_contract_compare_v1/corpora/orchard_restoration.json": "b74651c49d0dbd788247e66b180494e53d11fd01c0d36c46ca0eaa4cd58ed67c",
+    "backend/app/engine.py": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+    "backend/app/v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+    "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+    "backend/app/brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "evaluation/v2_fixture_loader.py": "863bab7bc5ea8ab00b40de1a6e5b6b8bc4788508661cc890e758ae2157a60c23",
+    "evaluation/case_sets/eval-set-v8-candidate.json": "ce165d5548c16537cdfe35906fd14d704f66de1b60c5f724255876282aeaac2d",
+    "backend/tests/test_g02_source_rendering.py": "a7790c8d9dbe630a652774424accc9b55eae60305fd9c1d7f56e446964992929",
+    "backend/tests/test_v130_writing_analysis.py": "dc450662f3c55baaffa3f56c326183af264c8bf7f9eb9fb002759a5bc4ecef40",
+    "frontend/e2e/v130-g02-citation.spec.ts": "1a84bef6682c9dd041b274041e1fa3346ab6494eacc3238bde0e8d30bffb35b5",
+    "frontend/e2e/v130-writing-analysis.spec.ts": "c0304f10f325b3909f762b4eeddb93967440a01c0b6e018dd9d131d2f8db2039"
+  }
+}

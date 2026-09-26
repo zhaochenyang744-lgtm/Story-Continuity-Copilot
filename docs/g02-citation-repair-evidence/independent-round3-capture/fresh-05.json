@@ -1,0 +1,367 @@
+{
+  "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+  "variant": "state_change",
+  "status": "completed",
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-basalt-observatory",
+      "revision": 2,
+      "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier."
+    },
+    "claims": [
+      {
+        "id": "claim-run-624c8bf9-3233-4ec8-bd9f-b2a7e9a9ffe6-1",
+        "text": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-basalt_observatory-6",
+            "chapter_id": "fixture-chapter-basalt_observatory-6",
+            "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "label": "later_watch",
+            "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-5",
+            "chapter_id": "fixture-chapter-basalt_observatory-5",
+            "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "label": "watch_log",
+            "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-4",
+            "chapter_id": "fixture-chapter-basalt_observatory-4",
+            "body": "Observatory Gate Four stands on the west pier, not the east pier.",
+            "label": "gate_map",
+            "prompt_excerpt": "Observatory Gate Four stands on the west pier, not the east pier."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-basalt_observatory-1",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "identity",
+        "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+        "source_span_id": "fixture-span-basalt_observatory-1"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-2",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+        "source_span_id": "fixture-span-basalt_observatory-2"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-3",
+        "memory_type": "open_thread",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+        "source_span_id": "fixture-span-basalt_observatory-3"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-4",
+        "memory_type": "static_canon",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-4"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-5",
+        "memory_type": "dynamic_state",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-5"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-6",
+        "memory_type": "event_timeline",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+        "source_span_id": "fixture-span-basalt_observatory-6"
+      }
+    ],
+    "output_schema": {
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "raw_first": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-624c8bf9-3233-4ec8-bd9f-b2a7e9a9ffe6-1",
+        "status": "conflict",
+        "nature": "state_change",
+        "category": "location_action",
+        "severity": "low",
+        "explanation": "The cited record requires this review decision.",
+        "reasoning": "The cited sources and current draft permit this close control without a contradiction.",
+        "temporal_basis": {
+          "claim_anchor": "19点",
+          "evidence_anchor": "19点",
+          "relation": "explicit_later_transition"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-6",
+            "span_id": "fixture-span-basalt_observatory-6",
+            "relation": "supports",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-6"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-6",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": [],
+        "proposed_memory_change": null
+      }
+    ]
+  },
+  "raw_repair": null,
+  "final_product": {
+    "run_id": "run-624c8bf9-3233-4ec8-bd9f-b2a7e9a9ffe6",
+    "project_id": "fixture-project-basalt-observatory",
+    "run_type": "continuity",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 2,
+    "draft_revision": null,
+    "source_memory_version": 1,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T12:23:06.977086+00:00",
+    "started_at": "2026-09-26T12:23:07.004205+00:00",
+    "completed_at": "2026-09-26T12:23:07.083273+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 79,
+    "retry_of_run_id": null,
+    "root_run_id": "run-624c8bf9-3233-4ec8-bd9f-b2a7e9a9ffe6",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:06.977086+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "preparing_draft",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:07.004205+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "retrieving_confirmed_facts",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:07.017309+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "comparing_evidence",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:07.044944+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "running",
+        "stage": "assembling_reviewable_results",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:07.071258+00:00"
+      },
+      {
+        "sequence": 6,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:07.083273+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "independent-compare-v2-scripted",
+      "model_label": "not-a-real-model",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "provider_metrics": {
+      "latency_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "issues": [
+      {
+        "id": "issue-f64993fb-6d94-40c4-8b3e-4b92e3789817",
+        "claim_span_id": "claim-run-624c8bf9-3233-4ec8-bd9f-b2a7e9a9ffe6-1",
+        "claim_text": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+        "status": "open",
+        "classification": "conflict",
+        "category": "location_action",
+        "severity": "low",
+        "evidence_status": "sufficient",
+        "explanation": "The cited record requires this review decision.",
+        "decision": null,
+        "review_contract_version": "trustworthy_review_v1",
+        "nature": "state_change",
+        "reasoning": "The cited sources and current draft permit this close control without a contradiction.",
+        "evidence_chain": [
+          {
+            "evidence_id": "evidence-105bd528-6208-41a9-91c7-8e138e2c722d",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": [],
+        "reuse_policy": null,
+        "reused_decision": null,
+        "evidence": [
+          {
+            "id": "evidence-105bd528-6208-41a9-91c7-8e138e2c722d",
+            "chapter_id": "fixture-chapter-basalt_observatory-6",
+            "chapter_number": 6,
+            "chapter_title": "Later Watch",
+            "span_id": "fixture-span-basalt_observatory-6",
+            "source_revision": 2,
+            "excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "excerpt_context": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "relation": "supports",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-6"
+            ],
+            "source_path": "/projects/fixture-project-basalt-observatory/sources#span-fixture-span-basalt_observatory-6"
+          }
+        ]
+      }
+    ],
+    "metrics": {
+      "latency_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_cny": null,
+      "cost_available": false,
+      "contract_normalization_count": 0,
+      "contract_normalizations": [],
+      "provenance": {
+        "provider_label": "independent-compare-v2-scripted",
+        "model_label": "not-a-real-model",
+        "prompt_version": "continuity-review-v15-knowledge-time",
+        "schema_version": "continuity-issue-v5-temporal-basis",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      },
+      "retrieval": [
+        {
+          "claim_ordinal": 1,
+          "returned_span_ids": [
+            "fixture-span-basalt_observatory-6",
+            "fixture-span-basalt_observatory-5",
+            "fixture-span-basalt_observatory-4",
+            "fixture-span-basalt_observatory-1",
+            "fixture-span-basalt_observatory-2"
+          ],
+          "method_version": "bounded-lexical-v4-longform"
+        }
+      ]
+    }
+  },
+  "classification": "fresh synthetic product API with fixed saved scripted payload remapped to current claim IDs; not a model evaluation",
+  "fixture_root": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\docs\\g02-citation-repair-evidence\\independent-round3-capture\\synthetic-05-i3f3jr0y",
+  "storage_body_check": true,
+  "own_audit": {
+    "identity": [
+      "ccv2-basalt_observatory-location_action-no_conflict",
+      "state_change"
+    ],
+    "status": "completed",
+    "issue_count": 1,
+    "raw_natures": [
+      "state_change"
+    ],
+    "final_natures": [
+      "state_change"
+    ],
+    "errors": []
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-09-26T12:48:51.582430+00:00",
+  "reviewer": "root Codex controller with independent audit agents",
+  "status": "independent_limited_pass",
+  "user_accepted": false,
+  "scope": [
+    "G02 product safeguards within documented regressions",
+    "24-case seen-development comparison preparation"
+  ],
+  "git_head": "c3bd54ab019447354e8b1387e16b9aca3258b4c9",
+  "comparison_version": "current-contract-compare-v3",
+  "manifest_sha256": "0afd9630d22aecc44d1fbc8a955787d12d1286b31ec85a3e0985dff132da8baf",
+  "canonical_report": "docs/g02-citation-repair-independent-acceptance.md",
+  "report_sha256": "7f4ef086dc6914435db8b0708db458089bb936289c1d2abd676cb707b27fcf69",
+  "comparison_real_model_run": false,
+  "this_review_new_api_runs": 0,
+  "this_review_real_provider_calls": 0,
+  "category_manual_adjudication_case": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+  "historical_v2_first_failure_chain": "unverified; summary only; not reconstructed",
+  "release_gate": "not_evaluated",
+  "commit_push_deploy_performed": false
+}

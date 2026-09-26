@@ -1,0 +1,10 @@
+{
+  "provider_mode": "injected_stub",
+  "external_provider_http_enabled": false,
+  "provider_calls": 1,
+  "provider_http_calls": 0,
+  "blocked": false,
+  "test_root": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\story-v130-rc-2026-09-26T11-39-11-138Z-28412",
+  "smtp_external_calls": 0,
+  "external_network_calls": 0
+}

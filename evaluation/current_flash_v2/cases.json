@@ -1,0 +1,16 @@
+{
+  "schema_version": "current-flash-v2-cases",
+  "classification": "exposed_development_regression",
+  "g02": [
+    {"id":"g02-three-sentences","body":"林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。","expected":"three saved-draft statements each supported by its own draft-claim citation; first summary independently cited","v1_case":"g02-three-sentences"},
+    {"id":"g02-long-sentence","body_repeat":"林默沿着长廊向前走，","repeat_count":28,"body_tail":"最后把银钥匙交给陈澈并得知弟弟还活着。","expected":"truncated claim disclosed; tail assertion must cite a supplied source that includes the tail","v1_case":"g02-long-sentence"},
+    {"id":"g02-body-limit","body_repeat":"林默在雾港核对潮汐表。","repeat_count":180,"expected":"unselected and truncated saved-draft scope disclosed; each output item separately supported","v1_case":"g02-body-limit"},
+    {"id":"g02-identical-text","body":"林默走进北门。林默走进北门。","expected":"duplicate wording may use either matching claim; every detail must appear in its own cited evidence","v1_case":"g02-identical-text"}
+  ],
+  "g03": [
+    {"id":"g03-short-target","mode":"short","target_body":"星钥始终由乔霁保管。平静的溪水流过石桥。","other_body":"第二章只记载岸边潮位，没有星钥保管事实。","expected":"direct target fact supplied; memory and chapter claims need their own source; no invalid draft-as-chapter target","v1_case":"g03-short-target","fixture_revision":"deterministic-g03-v2"},
+    {"id":"g03-deep-target","mode":"deep","target_prefix_repeat":"晴日里，绒草覆盖山坡。","repeat_count":100,"target_fact":"星钥始终由乔霁保管。","target_suffix_repeat":"平静的溪水流过石桥。","suffix_count":40,"other_body":"第二章只记载岸边潮位，没有星钥保管事实。","expected":"target fact included in bounded deep-source excerpt; impact claims cite own evidence","v1_case":"g03-deep-target","fixture_revision":"deterministic-g03-v2"},
+    {"id":"g03-fact-absent","mode":"absent","target_body":"山坡上没有关于星钥保管者的记载。平静的溪水流过石桥。","other_body":"第二章只记载岸边潮位，没有星钥保管事实。","expected":"target source unlocated; product remains insufficient; memory comparison may be conditional without claiming chapter impact","v1_case":"g03-fact-absent","fixture_revision":"deterministic-g03-v2"},
+    {"id":"g03-other-chapter","mode":"other_chapter","target_prefix_repeat":"晴日里，绒草覆盖山坡。","repeat_count":100,"target_fact":"星钥始终由乔霁保管。","target_suffix_repeat":"平静的溪水流过石桥。","suffix_count":40,"other_body":"第二章写明沈砚曾短暂触碰星钥，随后交还乔霁；星钥仍由乔霁保管。","expected":"target and interfering chapter both supplied; each chapter impact requires its own chapter's source span","v1_case":"g03-other-chapter","fixture_revision":"deterministic-g03-v2"}
+  ]
+}

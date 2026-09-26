@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-09-26T10:25:09.350660+00:00",
+  "head": "c3bd54ab019447354e8b1387e16b9aca3258b4c9",
+  "preserved_v1_v2_result_files": 12,
+  "preserved_v3_result_files": 7,
+  "source_hash_mismatches": [],
+  "historical_result_mismatches": [],
+  "v3_result_mismatches": [],
+  "exact_business_request_comparisons": [
+    {
+      "case_id": "g03-deep-target",
+      "equal": true,
+      "sha256": "fb4be4f58892a1c54aa244d1850400b72ca596d40bd91872b22c02012b63a52b"
+    },
+    {
+      "case_id": "g03-fact-absent",
+      "equal": true,
+      "sha256": "87e4258a5bb654c8c777e0ddfbcf78a3d629185400375291d475fb82c823ca15"
+    },
+    {
+      "case_id": "g03-other-chapter",
+      "equal": true,
+      "sha256": "2128c1bad9d1087ff5f3ac47e95c7263a6f00962ea698fcd950c0f791c4620f3"
+    },
+    {
+      "case_id": "g03-short-target",
+      "equal": true,
+      "sha256": "de140b22029c3ab345d7a1d7e8bca69b4b024d64a22ae873cb1af59dd3bdcbb2"
+    }
+  ],
+  "independent_v2_freeze_check": "passed",
+  "independent_v3_offline_tests": 3,
+  "product_diff": [],
+  "independent_real_provider_dispatches": 0,
+  "status": "evaluation_evidence_accepted_product_quality_has_open_findings"
+}

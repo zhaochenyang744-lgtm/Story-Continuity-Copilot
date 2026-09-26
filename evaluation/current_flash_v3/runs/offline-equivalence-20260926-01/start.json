@@ -1,0 +1,18 @@
+{
+  "run_id": "offline-equivalence-20260926-01",
+  "git_head": "c3bd54ab019447354e8b1387e16b9aca3258b4c9",
+  "source_hashes": {
+    "evaluation/current_flash_v2/run.py": "45e00b0d4ef117f862d0b059bb876942daf9469224f3ce1ba60d0b0517d6d0fe",
+    "evaluation/current_flash_v2/cases.json": "802e8e8f7dc24ea6bff62624aec84c54b7610a4ce869f03ce4daed61399073c9",
+    "evaluation/current_flash_v2/g03-corpus.json": "637d5a8df36b877804e1df49ac212d9bc2c6d2ad61772aa665fcfb02bd3838bb",
+    "evaluation/current_flash_v3/fixture.py": "24963b5028f8f0ce465d3b5b04912d45ee60b5e6fad62ef9fc3c4539e1e3a556",
+    "evaluation/current_flash_v3/test_offline.py": "abca377030af6323c1032c0472c4e11808a4471ee0b6e8a386f2250fc4062979",
+    "evaluation/current_flash_v3/offline_equivalence.py": "c1deafb2b1e296e5d855a3c853fee149cc2478d5a043a906af985bc160326815",
+    "evaluation/current_flash_v3/PLAN.md": "258c09b304653627a4f1875e81ffaf1d715ef8a8ef5ee49d24f9c9bc42452f6a",
+    "evaluation/v2_fixture_loader.py": "863bab7bc5ea8ab00b40de1a6e5b6b8bc4788508661cc890e758ae2157a60c23",
+    "backend/app/engine.py": "df9b2a19b07744b318743802679c22f67a49af13a67275cf81f74c0d06891ea4",
+    "backend/app/v2_database.py": "9f0b8c2b512f2d69f03cbc7193d83d9681fe42fe3ade51a7fcc4ad494fdba965"
+  },
+  "external_http_dispatches": 0,
+  "baseline_v2_run": "flash-v2-20260926-01"
+}

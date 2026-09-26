@@ -1,0 +1,92 @@
+{
+  "family": "g01",
+  "case_id": "g01-ordinal-day",
+  "input": {
+    "claim": "第二天十八点，秦渡已经知道信使身份。",
+    "evidence": "第一天十八点，秦渡还不知道信使身份。"
+  },
+  "expected": "no_conflict",
+  "first_model_class": "no_conflict",
+  "first_semantic_correct": true,
+  "last_model_class": "no_conflict",
+  "product_class": "no_conflict",
+  "product": {
+    "status": "completed",
+    "issues": [],
+    "retrieval_traces": [
+      {
+        "claim_id": "claim-1",
+        "returned_span_ids": [
+          "span-1"
+        ]
+      }
+    ],
+    "retrieval_method_version": "bounded-lexical-v4-longform",
+    "contract_normalization_count": 0,
+    "contract_normalizations": [],
+    "input_tokens": 2453,
+    "output_tokens": 5,
+    "latency_ms": 836,
+    "cost_cny": null
+  },
+  "model_outputs": [
+    {
+      "case_id": "g01-ordinal-day",
+      "task": "continuity_review",
+      "contract_repair": false,
+      "input_refs": {
+        "claims": [
+          {
+            "id": "claim-1",
+            "text": "第二天十八点，秦渡已经知道信使身份。",
+            "allowed_evidence": [
+              {
+                "id": "span-1",
+                "chapter_id": "chapter-1",
+                "body": "第一天十八点，秦渡还不知道信使身份。",
+                "prompt_excerpt": "第一天十八点，秦渡还不知道信使身份。"
+              }
+            ]
+          }
+        ],
+        "draft_claims": [],
+        "source_spans": [],
+        "retrieval": null,
+        "proposal": null
+      },
+      "business_json": {
+        "issues": []
+      },
+      "usage": {
+        "input_tokens": 2453,
+        "output_tokens": 5,
+        "observed_response_input_tokens": 2453,
+        "observed_response_output_tokens": 5,
+        "cost_cny": null
+      },
+      "latency_ms": 836
+    }
+  ],
+  "http_attempts": [
+    {
+      "case_id": "g01-ordinal-day",
+      "ordinal": 28,
+      "sent_at": "2026-09-26T09:38:18.354884+00:00",
+      "status": 200,
+      "latency_ms": 821,
+      "usage": {
+        "prompt_tokens": 2453,
+        "completion_tokens": 5,
+        "total_tokens": 2458
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    }
+  ],
+  "actual_http_dispatches": 1,
+  "request_model": "deepseek-flash",
+  "input_sha256": "02c5b75bcd392e6d16826e5944086d07ff44818c351582f338775914450ae16b",
+  "source_case_ref": "independent-round3-g01-g02/probe.py"
+}

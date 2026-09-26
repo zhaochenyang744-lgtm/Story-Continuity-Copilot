@@ -1,0 +1,526 @@
+{
+  "scope": "Pure validator, all 12 distinct valid model items, supplied spans each below 500 chars, eight selected Memory records, three complete draft claims",
+  "inputs": {
+    "task": "context_brief",
+    "bindings": {
+      "project_id": "synthetic-only",
+      "draft_revision": 1,
+      "memory_version": 1
+    },
+    "layers": {
+      "written": {
+        "draft": {
+          "id": "d",
+          "revision": 1,
+          "excerpt": "岑岚走进东门。赤铜钥匙已经交给乔霁。温岚此时不知道暗号。"
+        },
+        "draft_claims": [
+          {
+            "id": "c1",
+            "ordinal": 1,
+            "text": "岑岚走进东门。"
+          },
+          {
+            "id": "c2",
+            "ordinal": 2,
+            "text": "赤铜钥匙已经交给乔霁。"
+          },
+          {
+            "id": "c3",
+            "ordinal": 3,
+            "text": "温岚此时不知道暗号。"
+          }
+        ],
+        "source_spans": [
+          {
+            "id": "s1",
+            "chapter_id": "ch1",
+            "chapter_number": 1,
+            "label": "独立合成原文",
+            "body": "北塔挂着红灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。"
+          },
+          {
+            "id": "s2",
+            "chapter_id": "ch2",
+            "chapter_number": 2,
+            "label": "独立合成原文",
+            "body": "南塔挂着蓝灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。"
+          },
+          {
+            "id": "s3",
+            "chapter_id": "ch3",
+            "chapter_number": 3,
+            "label": "独立合成原文",
+            "body": "东塔挂着金灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。"
+          },
+          {
+            "id": "s4",
+            "chapter_id": "ch4",
+            "chapter_number": 4,
+            "label": "独立合成原文",
+            "body": "西塔挂着白灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。"
+          }
+        ]
+      },
+      "confirmed": {
+        "memory_records": [
+          {
+            "id": "m1",
+            "memory_type": "dynamic_state",
+            "subject": "青铜铃",
+            "predicate": "holder",
+            "value": "顾遥"
+          },
+          {
+            "id": "m2",
+            "memory_type": "dynamic_state",
+            "subject": "封蜡印",
+            "predicate": "holder",
+            "value": "顾遥"
+          },
+          {
+            "id": "m3",
+            "memory_type": "dynamic_state",
+            "subject": "星图筒",
+            "predicate": "holder",
+            "value": "顾遥"
+          },
+          {
+            "id": "m4",
+            "memory_type": "dynamic_state",
+            "subject": "银羽扇",
+            "predicate": "holder",
+            "value": "顾遥"
+          },
+          {
+            "id": "m5",
+            "memory_type": "dynamic_state",
+            "subject": "白瓷壶",
+            "predicate": "holder",
+            "value": "顾遥"
+          },
+          {
+            "id": "m6",
+            "memory_type": "dynamic_state",
+            "subject": "旧铜锁",
+            "predicate": "holder",
+            "value": "顾遥"
+          },
+          {
+            "id": "m7",
+            "memory_type": "dynamic_state",
+            "subject": "墨玉牌",
+            "predicate": "holder",
+            "value": "顾遥"
+          },
+          {
+            "id": "m8",
+            "memory_type": "dynamic_state",
+            "subject": "红丝带",
+            "predicate": "holder",
+            "value": "顾遥"
+          }
+        ]
+      },
+      "planned": {
+        "story_plans": [],
+        "character_plans": [],
+        "world_plans": []
+      }
+    },
+    "retrieval": {
+      "truncated": {},
+      "draft_claim_scope": {
+        "available": 3,
+        "selected": [
+          {
+            "id": "c1",
+            "truncated": false
+          },
+          {
+            "id": "c2",
+            "truncated": false
+          },
+          {
+            "id": "c3",
+            "truncated": false
+          }
+        ]
+      }
+    }
+  },
+  "model_items": [
+    {
+      "section": "recent_source",
+      "text": "北塔挂着红灯。南塔挂着蓝灯。东塔挂着金灯。西塔挂着白灯。",
+      "sources": [
+        {
+          "source_type": "source_span",
+          "source_id": "s1"
+        },
+        {
+          "source_type": "source_span",
+          "source_id": "s2"
+        },
+        {
+          "source_type": "source_span",
+          "source_id": "s3"
+        },
+        {
+          "source_type": "source_span",
+          "source_id": "s4"
+        }
+      ]
+    },
+    {
+      "section": "character_state",
+      "text": "青铜铃由顾遥保管。",
+      "sources": [
+        {
+          "source_type": "memory_record",
+          "source_id": "m1"
+        }
+      ]
+    },
+    {
+      "section": "character_state",
+      "text": "封蜡印由顾遥保管。",
+      "sources": [
+        {
+          "source_type": "memory_record",
+          "source_id": "m2"
+        }
+      ]
+    },
+    {
+      "section": "character_state",
+      "text": "星图筒由顾遥保管。",
+      "sources": [
+        {
+          "source_type": "memory_record",
+          "source_id": "m3"
+        }
+      ]
+    },
+    {
+      "section": "character_state",
+      "text": "银羽扇由顾遥保管。",
+      "sources": [
+        {
+          "source_type": "memory_record",
+          "source_id": "m4"
+        }
+      ]
+    },
+    {
+      "section": "character_state",
+      "text": "白瓷壶由顾遥保管。",
+      "sources": [
+        {
+          "source_type": "memory_record",
+          "source_id": "m5"
+        }
+      ]
+    },
+    {
+      "section": "character_state",
+      "text": "旧铜锁由顾遥保管。",
+      "sources": [
+        {
+          "source_type": "memory_record",
+          "source_id": "m6"
+        }
+      ]
+    },
+    {
+      "section": "character_state",
+      "text": "墨玉牌由顾遥保管。",
+      "sources": [
+        {
+          "source_type": "memory_record",
+          "source_id": "m7"
+        }
+      ]
+    },
+    {
+      "section": "character_state",
+      "text": "红丝带由顾遥保管。",
+      "sources": [
+        {
+          "source_type": "memory_record",
+          "source_id": "m8"
+        }
+      ]
+    },
+    {
+      "section": "recent_source",
+      "text": "岑岚走进东门。",
+      "sources": [
+        {
+          "source_type": "draft_claim",
+          "source_id": "c1"
+        }
+      ]
+    },
+    {
+      "section": "recent_source",
+      "text": "赤铜钥匙已经交给乔霁。",
+      "sources": [
+        {
+          "source_type": "draft_claim",
+          "source_id": "c2"
+        }
+      ]
+    },
+    {
+      "section": "recent_source",
+      "text": "温岚此时不知道暗号。",
+      "sources": [
+        {
+          "source_type": "draft_claim",
+          "source_id": "c3"
+        }
+      ]
+    }
+  ],
+  "result": {
+    "summary": "当前草稿句1原文：「岑岚走进东门。」 当前草稿句2原文：「赤铜钥匙已经交给乔霁。」 当前草稿句3原文：「温岚此时不知道暗号。」",
+    "summary_sources": [
+      {
+        "source_type": "draft_claim",
+        "source_id": "c1",
+        "label": "当前草稿 · 句 1",
+        "excerpt": "岑岚走进东门。",
+        "source_path": "/projects/synthetic-only/workspace#draft-source"
+      },
+      {
+        "source_type": "draft_claim",
+        "source_id": "c2",
+        "label": "当前草稿 · 句 2",
+        "excerpt": "赤铜钥匙已经交给乔霁。",
+        "source_path": "/projects/synthetic-only/workspace#draft-source"
+      },
+      {
+        "source_type": "draft_claim",
+        "source_id": "c3",
+        "label": "当前草稿 · 句 3",
+        "excerpt": "温岚此时不知道暗号。",
+        "source_path": "/projects/synthetic-only/workspace#draft-source"
+      }
+    ],
+    "items": [
+      {
+        "section": "recent_source",
+        "text": "当前草稿句1原文：「岑岚走进东门。」",
+        "sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "岑岚走进东门。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "当前草稿句2原文：「赤铜钥匙已经交给乔霁。」",
+        "sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "赤铜钥匙已经交给乔霁。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "当前草稿句3原文：「温岚此时不知道暗号。」",
+        "sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c3",
+            "label": "当前草稿 · 句 3",
+            "excerpt": "温岚此时不知道暗号。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "第1章所选原文：「北塔挂着红灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。」",
+        "sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "s1",
+            "label": "第 1 章 · 独立合成原文",
+            "excerpt": "北塔挂着红灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。",
+            "source_path": "/projects/synthetic-only/sources#span-s1"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "第4章所选原文：「西塔挂着白灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。」",
+        "sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "s4",
+            "label": "第 4 章 · 独立合成原文",
+            "excerpt": "西塔挂着白灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。",
+            "source_path": "/projects/synthetic-only/sources#span-s4"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "第3章所选原文：「东塔挂着金灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。」",
+        "sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "s3",
+            "label": "第 3 章 · 独立合成原文",
+            "excerpt": "东塔挂着金灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。",
+            "source_path": "/projects/synthetic-only/sources#span-s3"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "第2章所选原文：「南塔挂着蓝灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。」",
+        "sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "s2",
+            "label": "第 2 章 · 独立合成原文",
+            "excerpt": "南塔挂着蓝灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。",
+            "source_path": "/projects/synthetic-only/sources#span-s2"
+          }
+        ]
+      },
+      {
+        "section": "character_state",
+        "text": "已确认记录：青铜铃的持有者为「顾遥」",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "m1",
+            "label": "青铜铃 · holder",
+            "excerpt": "顾遥",
+            "source_path": "/projects/synthetic-only/memory#memory-m1"
+          }
+        ]
+      },
+      {
+        "section": "character_state",
+        "text": "已确认记录：封蜡印的持有者为「顾遥」",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "m2",
+            "label": "封蜡印 · holder",
+            "excerpt": "顾遥",
+            "source_path": "/projects/synthetic-only/memory#memory-m2"
+          }
+        ]
+      },
+      {
+        "section": "character_state",
+        "text": "已确认记录：星图筒的持有者为「顾遥」",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "m3",
+            "label": "星图筒 · holder",
+            "excerpt": "顾遥",
+            "source_path": "/projects/synthetic-only/memory#memory-m3"
+          }
+        ]
+      },
+      {
+        "section": "character_state",
+        "text": "已确认记录：银羽扇的持有者为「顾遥」",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "m4",
+            "label": "银羽扇 · holder",
+            "excerpt": "顾遥",
+            "source_path": "/projects/synthetic-only/memory#memory-m4"
+          }
+        ]
+      },
+      {
+        "section": "character_state",
+        "text": "已确认记录：白瓷壶的持有者为「顾遥」",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "m5",
+            "label": "白瓷壶 · holder",
+            "excerpt": "顾遥",
+            "source_path": "/projects/synthetic-only/memory#memory-m5"
+          }
+        ]
+      }
+    ],
+    "evidence_status": "supported",
+    "citation_transform": {
+      "version": "source-rendered-v2",
+      "model_summary_used": false,
+      "model_item_count": 12,
+      "source_rendered_item_count": 12,
+      "added_source_count": 0,
+      "omitted_unmatched_clause_count": 0,
+      "discarded_model_item_indices": [],
+      "fallback_draft_claim_ids": [],
+      "duplicate_omitted_item_count": 0,
+      "overflow_omitted_item_count": 3
+    },
+    "draft_coverage": {
+      "status": "covered",
+      "source_ids": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "cited_ranges": [
+        {
+          "id": "c1",
+          "truncated": false
+        },
+        {
+          "id": "c2",
+          "truncated": false
+        },
+        {
+          "id": "c3",
+          "truncated": false
+        }
+      ],
+      "uncovered_source_ids": [],
+      "unselected_count": 0,
+      "discarded_item_indices": [],
+      "reasons": []
+    }
+  },
+  "draft_facts_preserved": {
+    "c1": true,
+    "c2": true,
+    "c3": true
+  },
+  "failure": false,
+  "span_lengths": [
+    462,
+    462,
+    462,
+    462
+  ],
+  "source_hashes": {
+    "backend\\app\\brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "backend\\app\\engine.py": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+    "backend\\app\\v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754"
+  }
+}

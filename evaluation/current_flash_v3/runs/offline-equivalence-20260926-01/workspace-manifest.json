@@ -1,0 +1,27 @@
+{
+  "root": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\artifacts\\current_flash_v3\\offline-equivalence-20260926-01",
+  "git_ignored": true,
+  "retained_for_controller_review": true,
+  "database_files": [
+    {
+      "path": "g03-deep-target/runtime/data/demo.sqlite3",
+      "sha256": "5b2573f9847a7665703bfe6f040ab5ac352fc764f26a56ec13e44970aeb8d688",
+      "bytes": 987136
+    },
+    {
+      "path": "g03-fact-absent/runtime/data/demo.sqlite3",
+      "sha256": "f657caac95ed6070d1f020cb03caaf4ee7853758f8051ad63db2905fb4b0ebaa",
+      "bytes": 978944
+    },
+    {
+      "path": "g03-other-chapter/runtime/data/demo.sqlite3",
+      "sha256": "a5f76f2d8e191d3361c098c0faf55f3e813fc88a9f502b0997d88ad765b0aa86",
+      "bytes": 987136
+    },
+    {
+      "path": "g03-short-target/runtime/data/demo.sqlite3",
+      "sha256": "94dab8422c90a342bf90729e0078e339e37380c485af52a34496bad70e22b7cd",
+      "bytes": 978944
+    }
+  ]
+}

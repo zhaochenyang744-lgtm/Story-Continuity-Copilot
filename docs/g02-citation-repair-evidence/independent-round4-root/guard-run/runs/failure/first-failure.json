@@ -1,0 +1,7 @@
+{
+  "run_id": "failure",
+  "failed_at": "2026-09-26T12:43:25.703255+00:00",
+  "error_type": "RuntimeError",
+  "error": "independent-intentional-first-failure",
+  "note": "This is this V3 attempt's first failure, not a reconstruction of a V2 failure."
+}

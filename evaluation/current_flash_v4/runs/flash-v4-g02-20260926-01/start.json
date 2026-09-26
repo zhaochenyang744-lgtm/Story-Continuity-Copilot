@@ -1,0 +1,10 @@
+{
+  "run_id": "flash-v4-g02-20260926-01",
+  "started_at": "2026-09-26T11:10:02.861065+00:00",
+  "frozen_manifest_sha256": "62899b0791b40efa6c4ee389efbb8239466baba90faa7e762b8bd351fd36a06a",
+  "git_base": "c3bd54ab019447354e8b1387e16b9aca3258b4c9",
+  "model": "deepseek-flash",
+  "provider": "deepseek",
+  "local_evidence_root": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\artifacts\\current_flash_v4\\flash-v4-g02-20260926-01",
+  "cost": "unavailable_unless_returned"
+}

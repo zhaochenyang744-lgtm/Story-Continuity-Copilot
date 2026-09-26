@@ -1,0 +1,288 @@
+{
+  "scope": "PREHANDOFF snapshot, not model results or final acceptance",
+  "captured_utc": "2026-09-26T11:21:59.501260+00:00",
+  "provider_calls": 0,
+  "http_calls": 0,
+  "database_connections": 0,
+  "hashes": {
+    "build.py": "99003507b3bffe146498bb8fa99f1eebe1f501c5aedf1ce03c8c9d80b0571adc",
+    "preflight.py": "765d86bc50735d3c52b5a9b21ee561eb938afb55203297dcfdcc59d0012d404d",
+    "cases.json": "33ca67a0766ef645df831e9affdfb599fd0cd6fbc5c0158c42e52be8c1dfc21a",
+    "actual-inputs.json": "5d4b490833c0f75f245382337ad11f897a7560381dbbe44998ee316d6b2bf60d",
+    "score.py": "c29b392dda16ca0d12104a414c328088917f5579b43e93b05f0c5c88c1741f34",
+    "corpora/north_glass.json": "633bcd209550392d7386054215a16089551d1b8093cbb3f32234ae164b4fdf95",
+    "corpora/harbor_signal.json": "43ee3a9d2b9f8fdab865fa05a014bb0a589ad6af07fe7d8e959c7701425625d1",
+    "corpora/orchard_restoration.json": "90c51048ed05f941eece7fc63aa452beb259902e96a745f722232698668d7a56",
+    "corpora/basalt_observatory.json": "d8428b22f39273fd3cf567257ef12bdfafef727c82e4178da7b4789889cb7b31"
+  },
+  "dependency_hashes": {
+    "backend/app/engine.py": "4a10ead69c99f9c490c8f4f090157825e84385f4b4ee5df3610047fc431dd30a",
+    "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+    "backend/app/v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+    "evaluation/v2_fixture_loader.py": "863bab7bc5ea8ab00b40de1a6e5b6b8bc4788508661cc890e758ae2157a60c23"
+  },
+  "encoding_notes": [
+    {
+      "path": "actual-inputs.json",
+      "utf8_error": "'utf-8' codec can't decode byte 0xb5 in position 676: invalid start byte",
+      "diagnostic_decoder_only": "gbk"
+    }
+  ],
+  "case_count": 24,
+  "class_counts": {
+    "conflict": 8,
+    "no_conflict": 8,
+    "insufficient_evidence": 8
+  },
+  "triplet_count": 8,
+  "corpus_count": 4,
+  "multi_evidence_conflict_count": 6,
+  "multi_evidence_insufficient_count": 0,
+  "failed_empty_control": {
+    "case_id": "ccv1-north_glass-world_rule-no_conflict",
+    "result": "terminal_failure",
+    "errors": [
+      "run_not_completed"
+    ]
+  },
+  "rows": [
+    {
+      "case_id": "ccv1-north_glass-world_rule-conflict",
+      "input_problems": [],
+      "minimal_validator": "accepted",
+      "engine_output_has_temporal_basis": false,
+      "engine_output_score": {
+        "case_id": "ccv1-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "timeless_rule_contract_missing"
+        ]
+      },
+      "api_status_projection_score": {
+        "case_id": "ccv1-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      },
+      "possible_control": {
+        "case_id": "ccv1-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      }
+    },
+    {
+      "case_id": "ccv1-north_glass-world_rule-no_conflict",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-north_glass-world_rule-insufficient_evidence",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-north_glass-object_state-conflict",
+      "input_problems": [],
+      "minimal_validator": "accepted",
+      "engine_output_has_temporal_basis": false,
+      "engine_output_score": {
+        "case_id": "ccv1-north_glass-object_state-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "timeless_rule_contract_missing"
+        ]
+      },
+      "api_status_projection_score": {
+        "case_id": "ccv1-north_glass-object_state-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      },
+      "possible_control": {
+        "case_id": "ccv1-north_glass-object_state-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      }
+    },
+    {
+      "case_id": "ccv1-north_glass-object_state-no_conflict",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-north_glass-object_state-insufficient_evidence",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-harbor_signal-timeline-conflict",
+      "input_problems": [],
+      "minimal_validator": "temporal_overlap_unproven",
+      "possible_control": {
+        "case_id": "ccv1-harbor_signal-timeline-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      }
+    },
+    {
+      "case_id": "ccv1-harbor_signal-timeline-no_conflict",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-harbor_signal-timeline-insufficient_evidence",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-harbor_signal-character_knowledge-conflict",
+      "input_problems": [],
+      "minimal_validator": "temporal_overlap_unproven",
+      "possible_control": {
+        "case_id": "ccv1-harbor_signal-character_knowledge-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      }
+    },
+    {
+      "case_id": "ccv1-harbor_signal-character_knowledge-no_conflict",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-harbor_signal-character_knowledge-insufficient_evidence",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-relationship-conflict",
+      "input_problems": [],
+      "minimal_validator": "accepted",
+      "engine_output_has_temporal_basis": false,
+      "engine_output_score": {
+        "case_id": "ccv1-orchard_restoration-relationship-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "timeless_rule_contract_missing"
+        ]
+      },
+      "api_status_projection_score": {
+        "case_id": "ccv1-orchard_restoration-relationship-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      },
+      "possible_control": {
+        "case_id": "ccv1-orchard_restoration-relationship-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      }
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-relationship-no_conflict",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-relationship-insufficient_evidence",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-event_status-conflict",
+      "input_problems": [],
+      "minimal_validator": "accepted",
+      "engine_output_has_temporal_basis": false,
+      "engine_output_score": {
+        "case_id": "ccv1-orchard_restoration-event_status-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "timeless_rule_contract_missing"
+        ]
+      },
+      "api_status_projection_score": {
+        "case_id": "ccv1-orchard_restoration-event_status-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      },
+      "possible_control": {
+        "case_id": "ccv1-orchard_restoration-event_status-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      }
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-event_status-no_conflict",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-event_status-insufficient_evidence",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-attribute-conflict",
+      "input_problems": [],
+      "minimal_validator": "temporal_overlap_unproven",
+      "possible_control": {
+        "case_id": "ccv1-basalt_observatory-attribute-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      }
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-attribute-no_conflict",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-attribute-insufficient_evidence",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-location_action-conflict",
+      "input_problems": [],
+      "minimal_validator": "temporal_overlap_unproven",
+      "possible_control": {
+        "case_id": "ccv1-basalt_observatory-location_action-conflict",
+        "expected_class": "conflict",
+        "result": "fail",
+        "errors": [
+          "confirmed_conflict_class_mismatch"
+        ]
+      }
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-location_action-no_conflict",
+      "input_problems": []
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-location_action-insufficient_evidence",
+      "input_problems": []
+    }
+  ],
+  "files_changed_during_probe": [],
+  "dependencies_changed_during_probe": []
+}

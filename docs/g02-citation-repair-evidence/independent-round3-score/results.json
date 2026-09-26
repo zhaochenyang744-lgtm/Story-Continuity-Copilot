@@ -1,0 +1,3595 @@
+{
+  "scope": "Independent in-memory scorer controls; no Provider/DB; not gold or model accuracy",
+  "timestamp_utc": "2026-09-26T12:23:52.866881+00:00",
+  "manifest_sha256": "35b8a9559b9d5138f21795cdeb74439d010490dd5a9ee07a37cd48dbd44ca337",
+  "hashes_before": {
+    "evaluation/current_contract_compare_v2/RUBRIC.md": "f1c90ed975c254037c20a9fc4339b7e9f30204a49740c5b041f90125e3bbc624",
+    "evaluation/current_contract_compare_v2/PRECHECK_FAILURES.md": "8864f6daa1503e186e77e9c97e865419caf935bc1851b5483f1722dec05c5b7d",
+    "evaluation/current_contract_compare_v2/build.py": "48d6072e26062431c91c2f9c703fa501a67cd16b2642cc395f3509f837cc4c9b",
+    "evaluation/current_contract_compare_v2/preflight.py": "ba2d500d460b85b4815ffea1c0ef48dc4e32a0a63060d5b26c37d7b2b6df73b5",
+    "evaluation/current_contract_compare_v2/score.py": "19b2fc2e14d0fdafd1ef54dccf7e885b16728c679e9da1045b24be586d27b94d",
+    "evaluation/current_contract_compare_v2/contract_probe.py": "02a0af5ed6d2876f1d2dfe727eb24e9d5ad7af50d3c56b3ffd133c59d2b5695a",
+    "evaluation/current_contract_compare_v2/api_score_probe.py": "7240a990444e603c8a8d09620bdbc709b2731b7928f73c113a7c399373d24281",
+    "evaluation/current_contract_compare_v2/test_offline.py": "e83c0cfe0123b0cebbdccdfafa15a244b079583ec5cb699799d2186c768ac42a",
+    "evaluation/current_contract_compare_v2/write_lineage.py": "f3e919d69ec2c1e8ee24c733eab5b68a134cf1ba7d7448b508f74b4cc5eaca01",
+    "evaluation/current_contract_compare_v2/freeze.py": "a92a836f75e405c89785ed341533715dc66a47d804c0cab1732465b9625f981e",
+    "evaluation/current_contract_compare_v2/cases.json": "a312282eef0ea34b91a55256b238a01e287705836c6c3387d5b68f34a6ba41c0",
+    "evaluation/current_contract_compare_v2/actual-inputs.json": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+    "evaluation/current_contract_compare_v2/contract-probe-results.json": "6c0f66c99d7692bd1aea78c71c3f8cf167778b758829ab3a0b84186d7a648dbd",
+    "evaluation/current_contract_compare_v2/api-score-probe-results-v2.json": "b261629423eed61caccc9eb65b56bda2a69f68f927ea8c02e753fada070a8d0e",
+    "evaluation/current_contract_compare_v2/v1-lineage.json": "4c2d03fb27ca53eb9fbada7ecb316aa4cf9d49c127de843d881b7d1c9b78b422",
+    "evaluation/current_contract_compare_v2/corpora/basalt_observatory.json": "c6dbb54519030c228c2a2a464cfaf99e94cefeb31a91948d271a992732e2674e",
+    "evaluation/current_contract_compare_v2/corpora/harbor_signal.json": "b73e9e6764c8b3dad8e7d77367998d8f4c9254da26734bd5ce13d355222798a7",
+    "evaluation/current_contract_compare_v2/corpora/north_glass.json": "57aea727f02bfd27534783756a5e254e678695d6bdfeea2182959862afcb9510",
+    "evaluation/current_contract_compare_v2/corpora/orchard_restoration.json": "b65e422642a029d5e4fbdb5a04b89e2482ead83aed82ce9e1eed6618438f5614",
+    "backend/app/engine.py": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+    "backend/app/v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+    "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+    "backend/app/brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "evaluation/v2_fixture_loader.py": "863bab7bc5ea8ab00b40de1a6e5b6b8bc4788508661cc890e758ae2157a60c23",
+    "evaluation/case_sets/eval-set-v8-candidate.json": "ce165d5548c16537cdfe35906fd14d704f66de1b60c5f724255876282aeaac2d",
+    "backend/tests/test_g02_source_rendering.py": "a7790c8d9dbe630a652774424accc9b55eae60305fd9c1d7f56e446964992929",
+    "backend/tests/test_v130_writing_analysis.py": "dc450662f3c55baaffa3f56c326183af264c8bf7f9eb9fb002759a5bc4ecef40",
+    "frontend/e2e/v130-g02-citation.spec.ts": "1a84bef6682c9dd041b274041e1fa3346ab6494eacc3238bde0e8d30bffb35b5",
+    "frontend/e2e/v130-writing-analysis.spec.ts": "c0304f10f325b3909f762b4eeddb93967440a01c0b6e018dd9d131d2f8db2039",
+    "evaluation/current_contract_compare_v1/frozen-inputs.json": "d0da4eb5037c5ce8e724d0263255654d97fb25cc975e5e419786ea5a60c8d29c",
+    "evaluation/current_contract_compare_v1/cases.json": "a751a2a110e03001a1c213cf2a88e21ca5567e6d0a72b9da87430be90d10ebcd",
+    "docs/g02-citation-repair-evidence/independent-round2-comparison/review.md": "b8ed8f7f55164f710b500e18d44c51b83340ab47ec0b3a4ee4069f79e307f043",
+    "evaluation/current_contract_compare_v2/frozen-inputs.json": "35b8a9559b9d5138f21795cdeb74439d010490dd5a9ee07a37cd48dbd44ca337"
+  },
+  "hashes_after": {
+    "evaluation/current_contract_compare_v2/RUBRIC.md": "f1c90ed975c254037c20a9fc4339b7e9f30204a49740c5b041f90125e3bbc624",
+    "evaluation/current_contract_compare_v2/PRECHECK_FAILURES.md": "8864f6daa1503e186e77e9c97e865419caf935bc1851b5483f1722dec05c5b7d",
+    "evaluation/current_contract_compare_v2/build.py": "48d6072e26062431c91c2f9c703fa501a67cd16b2642cc395f3509f837cc4c9b",
+    "evaluation/current_contract_compare_v2/preflight.py": "ba2d500d460b85b4815ffea1c0ef48dc4e32a0a63060d5b26c37d7b2b6df73b5",
+    "evaluation/current_contract_compare_v2/score.py": "19b2fc2e14d0fdafd1ef54dccf7e885b16728c679e9da1045b24be586d27b94d",
+    "evaluation/current_contract_compare_v2/contract_probe.py": "02a0af5ed6d2876f1d2dfe727eb24e9d5ad7af50d3c56b3ffd133c59d2b5695a",
+    "evaluation/current_contract_compare_v2/api_score_probe.py": "7240a990444e603c8a8d09620bdbc709b2731b7928f73c113a7c399373d24281",
+    "evaluation/current_contract_compare_v2/test_offline.py": "e83c0cfe0123b0cebbdccdfafa15a244b079583ec5cb699799d2186c768ac42a",
+    "evaluation/current_contract_compare_v2/write_lineage.py": "f3e919d69ec2c1e8ee24c733eab5b68a134cf1ba7d7448b508f74b4cc5eaca01",
+    "evaluation/current_contract_compare_v2/freeze.py": "a92a836f75e405c89785ed341533715dc66a47d804c0cab1732465b9625f981e",
+    "evaluation/current_contract_compare_v2/cases.json": "a312282eef0ea34b91a55256b238a01e287705836c6c3387d5b68f34a6ba41c0",
+    "evaluation/current_contract_compare_v2/actual-inputs.json": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+    "evaluation/current_contract_compare_v2/contract-probe-results.json": "6c0f66c99d7692bd1aea78c71c3f8cf167778b758829ab3a0b84186d7a648dbd",
+    "evaluation/current_contract_compare_v2/api-score-probe-results-v2.json": "b261629423eed61caccc9eb65b56bda2a69f68f927ea8c02e753fada070a8d0e",
+    "evaluation/current_contract_compare_v2/v1-lineage.json": "4c2d03fb27ca53eb9fbada7ecb316aa4cf9d49c127de843d881b7d1c9b78b422",
+    "evaluation/current_contract_compare_v2/corpora/basalt_observatory.json": "c6dbb54519030c228c2a2a464cfaf99e94cefeb31a91948d271a992732e2674e",
+    "evaluation/current_contract_compare_v2/corpora/harbor_signal.json": "b73e9e6764c8b3dad8e7d77367998d8f4c9254da26734bd5ce13d355222798a7",
+    "evaluation/current_contract_compare_v2/corpora/north_glass.json": "57aea727f02bfd27534783756a5e254e678695d6bdfeea2182959862afcb9510",
+    "evaluation/current_contract_compare_v2/corpora/orchard_restoration.json": "b65e422642a029d5e4fbdb5a04b89e2482ead83aed82ce9e1eed6618438f5614",
+    "backend/app/engine.py": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+    "backend/app/v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+    "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+    "backend/app/brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "evaluation/v2_fixture_loader.py": "863bab7bc5ea8ab00b40de1a6e5b6b8bc4788508661cc890e758ae2157a60c23",
+    "evaluation/case_sets/eval-set-v8-candidate.json": "ce165d5548c16537cdfe35906fd14d704f66de1b60c5f724255876282aeaac2d",
+    "backend/tests/test_g02_source_rendering.py": "a7790c8d9dbe630a652774424accc9b55eae60305fd9c1d7f56e446964992929",
+    "backend/tests/test_v130_writing_analysis.py": "dc450662f3c55baaffa3f56c326183af264c8bf7f9eb9fb002759a5bc4ecef40",
+    "frontend/e2e/v130-g02-citation.spec.ts": "1a84bef6682c9dd041b274041e1fa3346ab6494eacc3238bde0e8d30bffb35b5",
+    "frontend/e2e/v130-writing-analysis.spec.ts": "c0304f10f325b3909f762b4eeddb93967440a01c0b6e018dd9d131d2f8db2039",
+    "evaluation/current_contract_compare_v1/frozen-inputs.json": "d0da4eb5037c5ce8e724d0263255654d97fb25cc975e5e419786ea5a60c8d29c",
+    "evaluation/current_contract_compare_v1/cases.json": "a751a2a110e03001a1c213cf2a88e21ca5567e6d0a72b9da87430be90d10ebcd",
+    "docs/g02-citation-repair-evidence/independent-round2-comparison/review.md": "b8ed8f7f55164f710b500e18d44c51b83340ab47ec0b3a4ee4069f79e307f043",
+    "evaluation/current_contract_compare_v2/frozen-inputs.json": "35b8a9559b9d5138f21795cdeb74439d010490dd5a9ee07a37cd48dbd44ca337"
+  },
+  "changed_files": [],
+  "baseline_rows": [
+    {
+      "case_id": "ccv2-north_glass-world_rule-conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-north_glass-world_rule-no_conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-north_glass-world_rule-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-north_glass-object_state-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-no_conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-north_glass-object_state-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-harbor_signal-timeline-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-harbor_signal-character_knowledge-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-orchard_restoration-relationship-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-no_conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-orchard_restoration-relationship-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-orchard_restoration-event_status-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-no_conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-orchard_restoration-event_status-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-basalt_observatory-attribute-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-no_conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-basalt_observatory-attribute-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-basalt_observatory-location_action-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-insufficient_evidence",
+      "variant": "gold",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-basalt_observatory-location_action-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "variant": "state_change",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "variant": "state_change",
+      "raw": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "final": {
+        "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "repair_absent": true,
+      "content_matched_capture": true
+    }
+  ],
+  "controls": [
+    {
+      "name": "supported_state_change_character_knowledge",
+      "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "variant": "state_change",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "raw_supported_state_change_character_knowledge",
+      "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "variant": "state_change",
+      "layer": "raw",
+      "expected_machine_result": "pass",
+      "score": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true,
+      "current_validator": "accepted"
+    },
+    {
+      "name": "possible_is_not_state_change_character_knowledge",
+      "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "variant": "state_change",
+      "layer": "final",
+      "expected_machine_result": "fail",
+      "score": {
+        "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "outcome_not_allowed"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "supported_state_change_location_action",
+      "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "variant": "state_change",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "raw_supported_state_change_location_action",
+      "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "variant": "state_change",
+      "layer": "raw",
+      "expected_machine_result": "pass",
+      "score": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true,
+      "current_validator": "accepted"
+    },
+    {
+      "name": "possible_is_not_state_change_location_action",
+      "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "variant": "state_change",
+      "layer": "final",
+      "expected_machine_result": "fail",
+      "score": {
+        "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "outcome_not_allowed"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "extra_unrelated_source_even_with_valid_chain",
+      "case_id": "ccv2-north_glass-world_rule-conflict",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "fail",
+      "score": {
+        "case_id": "ccv2-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "source_chapter_mismatch",
+          "undeclared_extra_evidence"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "wrong_chapter",
+      "case_id": "ccv2-north_glass-world_rule-conflict",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "fail",
+      "score": {
+        "case_id": "ccv2-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "source_content_mismatch"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "wrong_excerpt",
+      "case_id": "ccv2-north_glass-world_rule-conflict",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "fail",
+      "score": {
+        "case_id": "ccv2-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "source_content_mismatch"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "wrong_memory_link",
+      "case_id": "ccv2-north_glass-world_rule-conflict",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "fail",
+      "score": {
+        "case_id": "ccv2-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "memory_link_mismatch"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "wrong_final_chain_role",
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "fail",
+      "score": {
+        "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "evidence_chain_role_mismatch"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "missing_final_chain",
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "fail",
+      "score": {
+        "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "evidence_chain_mismatch"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "insuff_context_upgraded_to_contradiction",
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "fail",
+      "score": {
+        "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "evidence_relation_mismatch"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "insuff_action_upgrade",
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "fail",
+      "score": {
+        "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "uncertainty_action_upgrade"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "possible_is_not_confirmed",
+      "case_id": "ccv2-north_glass-world_rule-conflict",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "fail",
+      "score": {
+        "case_id": "ccv2-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "outcome_not_allowed"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "empty_issues_failed",
+      "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "terminal_failure",
+      "score": {
+        "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "terminal_failure",
+        "semantic_result": "not_reviewed",
+        "result": "terminal_failure",
+        "errors": [
+          "run_not_completed"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "empty_issues_timed_out",
+      "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "terminal_failure",
+      "score": {
+        "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "terminal_failure",
+        "semantic_result": "not_reviewed",
+        "result": "terminal_failure",
+        "errors": [
+          "run_not_completed"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "empty_issues_running",
+      "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "terminal_failure",
+      "score": {
+        "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "terminal_failure",
+        "semantic_result": "not_reviewed",
+        "result": "terminal_failure",
+        "errors": [
+          "run_not_completed"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "empty_issues_cancelled",
+      "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "terminal_failure",
+      "score": {
+        "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "terminal_failure",
+        "semantic_result": "not_reviewed",
+        "result": "terminal_failure",
+        "errors": [
+          "run_not_completed"
+        ]
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_only_world_rule",
+      "case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_plus_optional_world_rule",
+      "case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_only_object_state",
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_plus_optional_object_state",
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_only_timeline",
+      "case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_only_character_knowledge",
+      "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_plus_optional_character_knowledge",
+      "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_only_relationship",
+      "case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_only_event_status",
+      "case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_plus_optional_event_status",
+      "case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_only_attribute",
+      "case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_plus_optional_attribute",
+      "case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "minimum_only_location_action",
+      "case_id": "ccv2-basalt_observatory-location_action-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-basalt_observatory-location_action-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "state_change_with_optional_prior",
+      "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "variant": "state_change",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "raw_missing_link_chain_absent",
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "layer": "raw",
+      "expected_machine_result": "fail",
+      "score": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": false,
+      "current_validator": "ValueError: evidence_unresolvable",
+      "payload": {
+        "issues": [
+          {
+            "claim_span_id": "claim-run-1d99b256-9f54-4b76-9c9a-75917047adcf-1",
+            "status": "insufficient_evidence",
+            "nature": "insufficient_evidence",
+            "category": "object_state",
+            "severity": "low",
+            "explanation": "The cited record requires this review decision.",
+            "reasoning": "The inspection establishes the loose cap, while the actor field is unrecorded. Neither source attributes the loosening to Mira.",
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "unknown"
+            },
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-north_glass-6",
+                "span_id": "fixture-span-north_glass-6",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-north_glass-6"
+                ]
+              }
+            ],
+            "evidence_chain": [],
+            "suggested_revision": null,
+            "available_actions": [],
+            "proposed_memory_change": null
+          }
+        ]
+      },
+      "captured_request": {
+        "draft": {
+          "id": "fixture-draft-north-glass",
+          "revision": 2,
+          "body": "Mira loosened the carrier valve cap, according to the inspection and cap record."
+        },
+        "claims": [
+          {
+            "id": "claim-run-1d99b256-9f54-4b76-9c9a-75917047adcf-1",
+            "text": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-north_glass-6",
+                "chapter_id": "fixture-chapter-north_glass-6",
+                "body": "The carrier inspection does not record who loosened its valve cap.",
+                "label": "cap_actor",
+                "prompt_excerpt": "The carrier inspection does not record who loosened its valve cap."
+              },
+              {
+                "id": "fixture-span-north_glass-5",
+                "chapter_id": "fixture-chapter-north_glass-5",
+                "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                "label": "carrier_inspection",
+                "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+              },
+              {
+                "id": "fixture-span-north_glass-2",
+                "chapter_id": "fixture-chapter-north_glass-2",
+                "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                "label": "badge_roster",
+                "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-north_glass-1",
+            "memory_type": "static_canon",
+            "subject": "Mira",
+            "predicate": "rule",
+            "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "source_span_id": "fixture-span-north_glass-1"
+          },
+          {
+            "id": "fixture-memory-north_glass-2",
+            "memory_type": "dynamic_state",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "source_span_id": "fixture-span-north_glass-2"
+          },
+          {
+            "id": "fixture-memory-north_glass-3",
+            "memory_type": "open_thread",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "The spare blue badge register leaves its 11点 holder field blank.",
+            "source_span_id": "fixture-span-north_glass-3"
+          },
+          {
+            "id": "fixture-memory-north_glass-4",
+            "memory_type": "static_canon",
+            "subject": "pneumatic carrier",
+            "predicate": "rule",
+            "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "source_span_id": "fixture-span-north_glass-4"
+          },
+          {
+            "id": "fixture-memory-north_glass-5",
+            "memory_type": "dynamic_state",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "source_span_id": "fixture-span-north_glass-5"
+          },
+          {
+            "id": "fixture-memory-north_glass-6",
+            "memory_type": "open_thread",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "The carrier inspection does not record who loosened its valve cap.",
+            "source_span_id": "fixture-span-north_glass-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "raw_missing_link_wrong_role",
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "layer": "raw",
+      "expected_machine_result": "fail",
+      "score": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": false,
+      "current_validator": "ValueError: evidence_unresolvable",
+      "payload": {
+        "issues": [
+          {
+            "claim_span_id": "claim-run-1d99b256-9f54-4b76-9c9a-75917047adcf-1",
+            "status": "insufficient_evidence",
+            "nature": "insufficient_evidence",
+            "category": "object_state",
+            "severity": "low",
+            "explanation": "The cited record requires this review decision.",
+            "reasoning": "The inspection establishes the loose cap, while the actor field is unrecorded. Neither source attributes the loosening to Mira.",
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "unknown"
+            },
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-north_glass-6",
+                "span_id": "fixture-span-north_glass-6",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-north_glass-6"
+                ]
+              }
+            ],
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-north_glass-6",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": [],
+            "proposed_memory_change": null
+          }
+        ]
+      },
+      "captured_request": {
+        "draft": {
+          "id": "fixture-draft-north-glass",
+          "revision": 2,
+          "body": "Mira loosened the carrier valve cap, according to the inspection and cap record."
+        },
+        "claims": [
+          {
+            "id": "claim-run-1d99b256-9f54-4b76-9c9a-75917047adcf-1",
+            "text": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-north_glass-6",
+                "chapter_id": "fixture-chapter-north_glass-6",
+                "body": "The carrier inspection does not record who loosened its valve cap.",
+                "label": "cap_actor",
+                "prompt_excerpt": "The carrier inspection does not record who loosened its valve cap."
+              },
+              {
+                "id": "fixture-span-north_glass-5",
+                "chapter_id": "fixture-chapter-north_glass-5",
+                "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                "label": "carrier_inspection",
+                "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+              },
+              {
+                "id": "fixture-span-north_glass-2",
+                "chapter_id": "fixture-chapter-north_glass-2",
+                "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                "label": "badge_roster",
+                "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-north_glass-1",
+            "memory_type": "static_canon",
+            "subject": "Mira",
+            "predicate": "rule",
+            "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "source_span_id": "fixture-span-north_glass-1"
+          },
+          {
+            "id": "fixture-memory-north_glass-2",
+            "memory_type": "dynamic_state",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "source_span_id": "fixture-span-north_glass-2"
+          },
+          {
+            "id": "fixture-memory-north_glass-3",
+            "memory_type": "open_thread",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "The spare blue badge register leaves its 11点 holder field blank.",
+            "source_span_id": "fixture-span-north_glass-3"
+          },
+          {
+            "id": "fixture-memory-north_glass-4",
+            "memory_type": "static_canon",
+            "subject": "pneumatic carrier",
+            "predicate": "rule",
+            "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "source_span_id": "fixture-span-north_glass-4"
+          },
+          {
+            "id": "fixture-memory-north_glass-5",
+            "memory_type": "dynamic_state",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "source_span_id": "fixture-span-north_glass-5"
+          },
+          {
+            "id": "fixture-memory-north_glass-6",
+            "memory_type": "open_thread",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "The carrier inspection does not record who loosened its valve cap.",
+            "source_span_id": "fixture-span-north_glass-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "raw_insuff_action_upgrade",
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "layer": "raw",
+      "expected_machine_result": "fail",
+      "score": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": false,
+      "current_validator": "ValueError: schema_invalid",
+      "payload": {
+        "issues": [
+          {
+            "claim_span_id": "claim-run-1d99b256-9f54-4b76-9c9a-75917047adcf-1",
+            "status": "insufficient_evidence",
+            "nature": "insufficient_evidence",
+            "category": "object_state",
+            "severity": "low",
+            "explanation": "The cited record requires this review decision.",
+            "reasoning": "The inspection establishes the loose cap, while the actor field is unrecorded. Neither source attributes the loosening to Mira.",
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "unknown"
+            },
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-north_glass-6",
+                "span_id": "fixture-span-north_glass-6",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-north_glass-6"
+                ]
+              }
+            ],
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-north_glass-6",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": [
+              "edit"
+            ],
+            "proposed_memory_change": null
+          }
+        ]
+      },
+      "captured_request": {
+        "draft": {
+          "id": "fixture-draft-north-glass",
+          "revision": 2,
+          "body": "Mira loosened the carrier valve cap, according to the inspection and cap record."
+        },
+        "claims": [
+          {
+            "id": "claim-run-1d99b256-9f54-4b76-9c9a-75917047adcf-1",
+            "text": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-north_glass-6",
+                "chapter_id": "fixture-chapter-north_glass-6",
+                "body": "The carrier inspection does not record who loosened its valve cap.",
+                "label": "cap_actor",
+                "prompt_excerpt": "The carrier inspection does not record who loosened its valve cap."
+              },
+              {
+                "id": "fixture-span-north_glass-5",
+                "chapter_id": "fixture-chapter-north_glass-5",
+                "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                "label": "carrier_inspection",
+                "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+              },
+              {
+                "id": "fixture-span-north_glass-2",
+                "chapter_id": "fixture-chapter-north_glass-2",
+                "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                "label": "badge_roster",
+                "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-north_glass-1",
+            "memory_type": "static_canon",
+            "subject": "Mira",
+            "predicate": "rule",
+            "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "source_span_id": "fixture-span-north_glass-1"
+          },
+          {
+            "id": "fixture-memory-north_glass-2",
+            "memory_type": "dynamic_state",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "source_span_id": "fixture-span-north_glass-2"
+          },
+          {
+            "id": "fixture-memory-north_glass-3",
+            "memory_type": "open_thread",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "The spare blue badge register leaves its 11点 holder field blank.",
+            "source_span_id": "fixture-span-north_glass-3"
+          },
+          {
+            "id": "fixture-memory-north_glass-4",
+            "memory_type": "static_canon",
+            "subject": "pneumatic carrier",
+            "predicate": "rule",
+            "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "source_span_id": "fixture-span-north_glass-4"
+          },
+          {
+            "id": "fixture-memory-north_glass-5",
+            "memory_type": "dynamic_state",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "source_span_id": "fixture-span-north_glass-5"
+          },
+          {
+            "id": "fixture-memory-north_glass-6",
+            "memory_type": "open_thread",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "The carrier inspection does not record who loosened its valve cap.",
+            "source_span_id": "fixture-span-north_glass-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "raw_insuff_memory_change",
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "layer": "raw",
+      "expected_machine_result": "fail",
+      "score": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": false,
+      "current_validator": "ValueError: insufficient_evidence_memory_change",
+      "payload": {
+        "issues": [
+          {
+            "claim_span_id": "claim-run-1d99b256-9f54-4b76-9c9a-75917047adcf-1",
+            "status": "insufficient_evidence",
+            "nature": "insufficient_evidence",
+            "category": "object_state",
+            "severity": "low",
+            "explanation": "The cited record requires this review decision.",
+            "reasoning": "The inspection establishes the loose cap, while the actor field is unrecorded. Neither source attributes the loosening to Mira.",
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "unknown"
+            },
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-north_glass-6",
+                "span_id": "fixture-span-north_glass-6",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-north_glass-6"
+                ]
+              }
+            ],
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-north_glass-6",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": [],
+            "proposed_memory_change": {
+              "operation": "add",
+              "memory_type": "dynamic_state",
+              "subject": "Mira",
+              "predicate": "location",
+              "value": "North Glass"
+            }
+          }
+        ]
+      },
+      "captured_request": {
+        "draft": {
+          "id": "fixture-draft-north-glass",
+          "revision": 2,
+          "body": "Mira loosened the carrier valve cap, according to the inspection and cap record."
+        },
+        "claims": [
+          {
+            "id": "claim-run-1d99b256-9f54-4b76-9c9a-75917047adcf-1",
+            "text": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-north_glass-6",
+                "chapter_id": "fixture-chapter-north_glass-6",
+                "body": "The carrier inspection does not record who loosened its valve cap.",
+                "label": "cap_actor",
+                "prompt_excerpt": "The carrier inspection does not record who loosened its valve cap."
+              },
+              {
+                "id": "fixture-span-north_glass-5",
+                "chapter_id": "fixture-chapter-north_glass-5",
+                "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                "label": "carrier_inspection",
+                "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+              },
+              {
+                "id": "fixture-span-north_glass-2",
+                "chapter_id": "fixture-chapter-north_glass-2",
+                "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                "label": "badge_roster",
+                "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-north_glass-1",
+            "memory_type": "static_canon",
+            "subject": "Mira",
+            "predicate": "rule",
+            "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "source_span_id": "fixture-span-north_glass-1"
+          },
+          {
+            "id": "fixture-memory-north_glass-2",
+            "memory_type": "dynamic_state",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "source_span_id": "fixture-span-north_glass-2"
+          },
+          {
+            "id": "fixture-memory-north_glass-3",
+            "memory_type": "open_thread",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "The spare blue badge register leaves its 11点 holder field blank.",
+            "source_span_id": "fixture-span-north_glass-3"
+          },
+          {
+            "id": "fixture-memory-north_glass-4",
+            "memory_type": "static_canon",
+            "subject": "pneumatic carrier",
+            "predicate": "rule",
+            "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "source_span_id": "fixture-span-north_glass-4"
+          },
+          {
+            "id": "fixture-memory-north_glass-5",
+            "memory_type": "dynamic_state",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "source_span_id": "fixture-span-north_glass-5"
+          },
+          {
+            "id": "fixture-memory-north_glass-6",
+            "memory_type": "open_thread",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "The carrier inspection does not record who loosened its valve cap.",
+            "source_span_id": "fixture-span-north_glass-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "raw_unknown_memory_id",
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "layer": "raw",
+      "expected_machine_result": "fail",
+      "score": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "errors": []
+      },
+      "expectation_met": false,
+      "current_validator": "ValueError: evidence_unresolvable",
+      "payload": {
+        "issues": [
+          {
+            "claim_span_id": "claim-run-1d99b256-9f54-4b76-9c9a-75917047adcf-1",
+            "status": "insufficient_evidence",
+            "nature": "insufficient_evidence",
+            "category": "object_state",
+            "severity": "low",
+            "explanation": "The cited record requires this review decision.",
+            "reasoning": "The inspection establishes the loose cap, while the actor field is unrecorded. Neither source attributes the loosening to Mira.",
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "unknown"
+            },
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-north_glass-6",
+                "span_id": "fixture-span-north_glass-6",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "independent-missing-memory"
+                ]
+              }
+            ],
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-north_glass-6",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": [],
+            "proposed_memory_change": null
+          }
+        ]
+      },
+      "captured_request": {
+        "draft": {
+          "id": "fixture-draft-north-glass",
+          "revision": 2,
+          "body": "Mira loosened the carrier valve cap, according to the inspection and cap record."
+        },
+        "claims": [
+          {
+            "id": "claim-run-1d99b256-9f54-4b76-9c9a-75917047adcf-1",
+            "text": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-north_glass-6",
+                "chapter_id": "fixture-chapter-north_glass-6",
+                "body": "The carrier inspection does not record who loosened its valve cap.",
+                "label": "cap_actor",
+                "prompt_excerpt": "The carrier inspection does not record who loosened its valve cap."
+              },
+              {
+                "id": "fixture-span-north_glass-5",
+                "chapter_id": "fixture-chapter-north_glass-5",
+                "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                "label": "carrier_inspection",
+                "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+              },
+              {
+                "id": "fixture-span-north_glass-2",
+                "chapter_id": "fixture-chapter-north_glass-2",
+                "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                "label": "badge_roster",
+                "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-north_glass-1",
+            "memory_type": "static_canon",
+            "subject": "Mira",
+            "predicate": "rule",
+            "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "source_span_id": "fixture-span-north_glass-1"
+          },
+          {
+            "id": "fixture-memory-north_glass-2",
+            "memory_type": "dynamic_state",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "source_span_id": "fixture-span-north_glass-2"
+          },
+          {
+            "id": "fixture-memory-north_glass-3",
+            "memory_type": "open_thread",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "The spare blue badge register leaves its 11点 holder field blank.",
+            "source_span_id": "fixture-span-north_glass-3"
+          },
+          {
+            "id": "fixture-memory-north_glass-4",
+            "memory_type": "static_canon",
+            "subject": "pneumatic carrier",
+            "predicate": "rule",
+            "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "source_span_id": "fixture-span-north_glass-4"
+          },
+          {
+            "id": "fixture-memory-north_glass-5",
+            "memory_type": "dynamic_state",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "source_span_id": "fixture-span-north_glass-5"
+          },
+          {
+            "id": "fixture-memory-north_glass-6",
+            "memory_type": "open_thread",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "The carrier inspection does not record who loosened its valve cap.",
+            "source_span_id": "fixture-span-north_glass-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "raw_wrong_temporal_relation",
+      "case_id": "ccv2-harbor_signal-timeline-conflict",
+      "variant": "gold",
+      "layer": "raw",
+      "expected_machine_result": "fail",
+      "score": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "errors": [
+          "raw_temporal_policy_mismatch"
+        ]
+      },
+      "expectation_met": true,
+      "current_validator": "ContinuityContractValidationError: temporal_overlap_unproven"
+    },
+    {
+      "name": "raw_wrong_evidence_relation",
+      "case_id": "ccv2-harbor_signal-timeline-conflict",
+      "variant": "gold",
+      "layer": "raw",
+      "expected_machine_result": "fail",
+      "score": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "errors": [
+          "raw_relation_mismatch"
+        ]
+      },
+      "expectation_met": true,
+      "current_validator": "ValueError: conflict_evidence_not_direct"
+    },
+    {
+      "name": "question_category_character_knowledge_to_attribute",
+      "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "variant": "gold",
+      "layer": "raw",
+      "expected_machine_result": "pass",
+      "score": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "errors": [
+          "raw_target_or_category_mismatch"
+        ]
+      },
+      "expectation_met": false,
+      "current_validator": "accepted",
+      "payload": {
+        "issues": [
+          {
+            "claim_span_id": "claim-run-3086375b-a4ce-4e2c-953a-fb9214058756-1",
+            "status": "insufficient_evidence",
+            "nature": "insufficient_evidence",
+            "category": "attribute",
+            "severity": "low",
+            "explanation": "The cited record requires this review decision.",
+            "reasoning": "The 11点 ignorance and 13点 learning fix Sera's knowledge transition, but neither identifies the courier. The draft asserts that the existing records establish Vela's role.",
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "unknown"
+            },
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-harbor_signal-4",
+                "span_id": "fixture-span-harbor_signal-4",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-harbor_signal-4"
+                ]
+              }
+            ],
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-harbor_signal-4",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": [],
+            "proposed_memory_change": null
+          }
+        ]
+      },
+      "captured_request": {
+        "draft": {
+          "id": "fixture-draft-harbor-signal",
+          "revision": 2,
+          "body": "Vela delivered the telegram to Sera at 13点, according to the records."
+        },
+        "claims": [
+          {
+            "id": "claim-run-3086375b-a4ce-4e2c-953a-fb9214058756-1",
+            "text": "Vela delivered the telegram to Sera at 13点, according to the records.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-harbor_signal-4",
+                "chapter_id": "fixture-chapter-harbor_signal-4",
+                "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                "label": "later_recipient",
+                "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+              },
+              {
+                "id": "fixture-span-harbor_signal-3",
+                "chapter_id": "fixture-chapter-harbor_signal-3",
+                "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+                "label": "telegram_seal",
+                "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+              },
+              {
+                "id": "fixture-span-harbor_signal-2",
+                "chapter_id": "fixture-chapter-harbor_signal-2",
+                "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                "label": "reopen_log",
+                "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-harbor_signal-1",
+            "memory_type": "event_timeline",
+            "subject": "harbor signal gate",
+            "predicate": "event_occurred",
+            "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+            "source_span_id": "fixture-span-harbor_signal-1"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-2",
+            "memory_type": "open_thread",
+            "subject": "harbor signal gate",
+            "predicate": "status",
+            "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "source_span_id": "fixture-span-harbor_signal-2"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-3",
+            "memory_type": "character_knowledge",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "source_span_id": "fixture-span-harbor_signal-3"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-4",
+            "memory_type": "event_timeline",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "source_span_id": "fixture-span-harbor_signal-4"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "question_category_character_knowledge_to_attribute",
+      "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "expectation_met": false,
+      "payload": {
+        "run_id": "run-3086375b-a4ce-4e2c-953a-fb9214058756",
+        "project_id": "fixture-project-harbor-signal",
+        "run_type": "continuity",
+        "status": "completed",
+        "stage": "completed",
+        "source_revision": 2,
+        "draft_revision": null,
+        "source_memory_version": 1,
+        "author_context_version": 0,
+        "author_context_version_status": "recorded",
+        "author_context_resolvable": true,
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "alias_version": null,
+        "alias_snapshot_digest": null,
+        "source_change_set_id": null,
+        "source_span_ids": [],
+        "incremental_batch_id": null,
+        "current_revision": 2,
+        "is_stale": false,
+        "superseded": false,
+        "lineage_status": "current",
+        "result_origin": "provider",
+        "result_origin_label": "Provider 检查结果",
+        "error_code": null,
+        "retryable": false,
+        "created_at": "2026-09-26T12:11:44.665330+00:00",
+        "started_at": "2026-09-26T12:11:44.689940+00:00",
+        "completed_at": "2026-09-26T12:11:44.756464+00:00",
+        "cancel_requested_at": null,
+        "duration_ms": 66,
+        "retry_of_run_id": null,
+        "root_run_id": "run-3086375b-a4ce-4e2c-953a-fb9214058756",
+        "attempt_number": 1,
+        "transitions": [
+          {
+            "sequence": 1,
+            "status": "queued",
+            "stage": "queued",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:44.665330+00:00"
+          },
+          {
+            "sequence": 2,
+            "status": "running",
+            "stage": "preparing_draft",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:44.689940+00:00"
+          },
+          {
+            "sequence": 3,
+            "status": "running",
+            "stage": "retrieving_confirmed_facts",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:44.701098+00:00"
+          },
+          {
+            "sequence": 4,
+            "status": "running",
+            "stage": "comparing_evidence",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:44.723608+00:00"
+          },
+          {
+            "sequence": 5,
+            "status": "running",
+            "stage": "assembling_reviewable_results",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:44.746030+00:00"
+          },
+          {
+            "sequence": 6,
+            "status": "completed",
+            "stage": "completed",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:44.756464+00:00"
+          }
+        ],
+        "provenance": {
+          "provider_label": "compare-v2-scripted-offline",
+          "model_label": "compare-v2-no-model",
+          "prompt_version": "continuity-review-v15-knowledge-time",
+          "schema_version": "continuity-issue-v5-temporal-basis",
+          "retrieval_method_version": "bounded-lexical-v4-longform",
+          "source_memory_version": 1
+        },
+        "provider_metrics": {
+          "latency_ms": 1,
+          "input_tokens": 1,
+          "output_tokens": 1,
+          "cost_cny": null,
+          "cost_available": false
+        },
+        "issues": [
+          {
+            "id": "issue-6d0eab21-6488-4fed-a788-0bab502af10c",
+            "claim_span_id": "claim-run-3086375b-a4ce-4e2c-953a-fb9214058756-1",
+            "claim_text": "Vela delivered the telegram to Sera at 13点, according to the records.",
+            "status": "open",
+            "classification": "insufficient_evidence",
+            "category": "attribute",
+            "severity": "low",
+            "evidence_status": "insufficient",
+            "explanation": "The cited record requires this review decision.",
+            "decision": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "The 11点 ignorance and 13点 learning fix Sera's knowledge transition, but neither identifies the courier. The draft asserts that the existing records establish Vela's role.",
+            "evidence_chain": [
+              {
+                "evidence_id": "evidence-42564890-1b3f-4db8-b8a8-fc622ac764f2",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": [],
+            "reuse_policy": null,
+            "reused_decision": null,
+            "evidence": [
+              {
+                "id": "evidence-42564890-1b3f-4db8-b8a8-fc622ac764f2",
+                "chapter_id": "fixture-chapter-harbor_signal-4",
+                "chapter_number": 4,
+                "chapter_title": "Later Recipient",
+                "span_id": "fixture-span-harbor_signal-4",
+                "source_revision": 2,
+                "excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                "excerpt_context": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-harbor_signal-4"
+                ],
+                "source_path": "/projects/fixture-project-harbor-signal/sources#span-fixture-span-harbor_signal-4"
+              }
+            ]
+          }
+        ],
+        "metrics": {
+          "latency_ms": 1,
+          "input_tokens": 1,
+          "output_tokens": 1,
+          "cost_cny": null,
+          "cost_available": false,
+          "contract_normalization_count": 0,
+          "contract_normalizations": [],
+          "provenance": {
+            "provider_label": "compare-v2-scripted-offline",
+            "model_label": "compare-v2-no-model",
+            "prompt_version": "continuity-review-v15-knowledge-time",
+            "schema_version": "continuity-issue-v5-temporal-basis",
+            "retrieval_method_version": "bounded-lexical-v4-longform",
+            "source_memory_version": 1
+          },
+          "retrieval": [
+            {
+              "claim_ordinal": 1,
+              "returned_span_ids": [
+                "fixture-span-harbor_signal-4",
+                "fixture-span-harbor_signal-2",
+                "fixture-span-harbor_signal-3",
+                "fixture-span-harbor_signal-1"
+              ],
+              "method_version": "bounded-lexical-v4-longform"
+            }
+          ]
+        }
+      },
+      "captured_request": {
+        "draft": {
+          "id": "fixture-draft-harbor-signal",
+          "revision": 2,
+          "body": "Vela delivered the telegram to Sera at 13点, according to the records."
+        },
+        "claims": [
+          {
+            "id": "claim-run-3086375b-a4ce-4e2c-953a-fb9214058756-1",
+            "text": "Vela delivered the telegram to Sera at 13点, according to the records.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-harbor_signal-4",
+                "chapter_id": "fixture-chapter-harbor_signal-4",
+                "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                "label": "later_recipient",
+                "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+              },
+              {
+                "id": "fixture-span-harbor_signal-3",
+                "chapter_id": "fixture-chapter-harbor_signal-3",
+                "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+                "label": "telegram_seal",
+                "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+              },
+              {
+                "id": "fixture-span-harbor_signal-2",
+                "chapter_id": "fixture-chapter-harbor_signal-2",
+                "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                "label": "reopen_log",
+                "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-harbor_signal-1",
+            "memory_type": "event_timeline",
+            "subject": "harbor signal gate",
+            "predicate": "event_occurred",
+            "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+            "source_span_id": "fixture-span-harbor_signal-1"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-2",
+            "memory_type": "open_thread",
+            "subject": "harbor signal gate",
+            "predicate": "status",
+            "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "source_span_id": "fixture-span-harbor_signal-2"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-3",
+            "memory_type": "character_knowledge",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "source_span_id": "fixture-span-harbor_signal-3"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-4",
+            "memory_type": "event_timeline",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "source_span_id": "fixture-span-harbor_signal-4"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "question_category_relationship_to_timeline",
+      "case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "variant": "gold",
+      "layer": "raw",
+      "expected_machine_result": "pass",
+      "score": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "errors": [
+          "raw_target_or_category_mismatch"
+        ]
+      },
+      "expectation_met": false,
+      "current_validator": "accepted",
+      "payload": {
+        "issues": [
+          {
+            "claim_span_id": "claim-run-e35f60f2-5fde-486d-90c4-c1e87f722c3d-1",
+            "status": "insufficient_evidence",
+            "nature": "insufficient_evidence",
+            "category": "timeline",
+            "severity": "low",
+            "explanation": "The cited record requires this review decision.",
+            "reasoning": "The twin register fixes kinship but explicitly leaves birth order blank; firstborn status cannot be inferred from twins being listed in that order.",
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "unknown"
+            },
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-orchard_restoration-3",
+                "span_id": "fixture-span-orchard_restoration-3",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-orchard_restoration-3"
+                ]
+              }
+            ],
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-orchard_restoration-3",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": [],
+            "proposed_memory_change": null
+          }
+        ]
+      },
+      "captured_request": {
+        "draft": {
+          "id": "fixture-draft-orchard-restoration",
+          "revision": 2,
+          "body": "The birth register establishes that Nera was born before Oren."
+        },
+        "claims": [
+          {
+            "id": "claim-run-e35f60f2-5fde-486d-90c4-c1e87f722c3d-1",
+            "text": "The birth register establishes that Nera was born before Oren.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-orchard_restoration-3",
+                "chapter_id": "fixture-chapter-orchard_restoration-3",
+                "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+                "label": "birth_order",
+                "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-2",
+                "chapter_id": "fixture-chapter-orchard_restoration-2",
+                "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+                "label": "twin_register",
+                "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-1",
+                "chapter_id": "fixture-chapter-orchard_restoration-1",
+                "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+                "label": "kinship_rule",
+                "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-orchard_restoration-1",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "rule",
+            "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+            "source_span_id": "fixture-span-orchard_restoration-1"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-2",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "relationship",
+            "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+            "source_span_id": "fixture-span-orchard_restoration-2"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-3",
+            "memory_type": "open_thread",
+            "subject": "Nera and Oren",
+            "predicate": "status",
+            "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+            "source_span_id": "fixture-span-orchard_restoration-3"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-4",
+            "memory_type": "static_canon",
+            "subject": "restoration boat",
+            "predicate": "rule",
+            "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "source_span_id": "fixture-span-orchard_restoration-4"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-5",
+            "memory_type": "event_timeline",
+            "subject": "restoration boat",
+            "predicate": "event_occurred",
+            "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "source_span_id": "fixture-span-orchard_restoration-5"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-6",
+            "memory_type": "open_thread",
+            "subject": "restoration boat",
+            "predicate": "status",
+            "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+            "source_span_id": "fixture-span-orchard_restoration-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "question_category_relationship_to_timeline",
+      "case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "expectation_met": false,
+      "payload": {
+        "run_id": "run-e35f60f2-5fde-486d-90c4-c1e87f722c3d",
+        "project_id": "fixture-project-orchard-restoration",
+        "run_type": "continuity",
+        "status": "completed",
+        "stage": "completed",
+        "source_revision": 2,
+        "draft_revision": null,
+        "source_memory_version": 1,
+        "author_context_version": 0,
+        "author_context_version_status": "recorded",
+        "author_context_resolvable": true,
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "alias_version": null,
+        "alias_snapshot_digest": null,
+        "source_change_set_id": null,
+        "source_span_ids": [],
+        "incremental_batch_id": null,
+        "current_revision": 2,
+        "is_stale": false,
+        "superseded": false,
+        "lineage_status": "current",
+        "result_origin": "provider",
+        "result_origin_label": "Provider 检查结果",
+        "error_code": null,
+        "retryable": false,
+        "created_at": "2026-09-26T12:11:47.772594+00:00",
+        "started_at": "2026-09-26T12:11:47.796022+00:00",
+        "completed_at": "2026-09-26T12:11:47.861836+00:00",
+        "cancel_requested_at": null,
+        "duration_ms": 65,
+        "retry_of_run_id": null,
+        "root_run_id": "run-e35f60f2-5fde-486d-90c4-c1e87f722c3d",
+        "attempt_number": 1,
+        "transitions": [
+          {
+            "sequence": 1,
+            "status": "queued",
+            "stage": "queued",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:47.772594+00:00"
+          },
+          {
+            "sequence": 2,
+            "status": "running",
+            "stage": "preparing_draft",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:47.796022+00:00"
+          },
+          {
+            "sequence": 3,
+            "status": "running",
+            "stage": "retrieving_confirmed_facts",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:47.806622+00:00"
+          },
+          {
+            "sequence": 4,
+            "status": "running",
+            "stage": "comparing_evidence",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:47.830198+00:00"
+          },
+          {
+            "sequence": 5,
+            "status": "running",
+            "stage": "assembling_reviewable_results",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:47.851984+00:00"
+          },
+          {
+            "sequence": 6,
+            "status": "completed",
+            "stage": "completed",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:47.861836+00:00"
+          }
+        ],
+        "provenance": {
+          "provider_label": "compare-v2-scripted-offline",
+          "model_label": "compare-v2-no-model",
+          "prompt_version": "continuity-review-v15-knowledge-time",
+          "schema_version": "continuity-issue-v5-temporal-basis",
+          "retrieval_method_version": "bounded-lexical-v4-longform",
+          "source_memory_version": 1
+        },
+        "provider_metrics": {
+          "latency_ms": 1,
+          "input_tokens": 1,
+          "output_tokens": 1,
+          "cost_cny": null,
+          "cost_available": false
+        },
+        "issues": [
+          {
+            "id": "issue-241f0c78-44c8-4f00-ae23-94d1fd63485c",
+            "claim_span_id": "claim-run-e35f60f2-5fde-486d-90c4-c1e87f722c3d-1",
+            "claim_text": "The birth register establishes that Nera was born before Oren.",
+            "status": "open",
+            "classification": "insufficient_evidence",
+            "category": "timeline",
+            "severity": "low",
+            "evidence_status": "insufficient",
+            "explanation": "The cited record requires this review decision.",
+            "decision": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "The twin register fixes kinship but explicitly leaves birth order blank; firstborn status cannot be inferred from twins being listed in that order.",
+            "evidence_chain": [
+              {
+                "evidence_id": "evidence-f50a7ef0-6d52-484d-bf7a-911e4c9fa183",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": [],
+            "reuse_policy": null,
+            "reused_decision": null,
+            "evidence": [
+              {
+                "id": "evidence-f50a7ef0-6d52-484d-bf7a-911e4c9fa183",
+                "chapter_id": "fixture-chapter-orchard_restoration-3",
+                "chapter_number": 3,
+                "chapter_title": "Birth Order",
+                "span_id": "fixture-span-orchard_restoration-3",
+                "source_revision": 2,
+                "excerpt": "The birth register does not record which twin, Nera or Oren, was born first.",
+                "excerpt_context": "The birth register does not record which twin, Nera or Oren, was born first.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-orchard_restoration-3"
+                ],
+                "source_path": "/projects/fixture-project-orchard-restoration/sources#span-fixture-span-orchard_restoration-3"
+              }
+            ]
+          }
+        ],
+        "metrics": {
+          "latency_ms": 1,
+          "input_tokens": 1,
+          "output_tokens": 1,
+          "cost_cny": null,
+          "cost_available": false,
+          "contract_normalization_count": 0,
+          "contract_normalizations": [],
+          "provenance": {
+            "provider_label": "compare-v2-scripted-offline",
+            "model_label": "compare-v2-no-model",
+            "prompt_version": "continuity-review-v15-knowledge-time",
+            "schema_version": "continuity-issue-v5-temporal-basis",
+            "retrieval_method_version": "bounded-lexical-v4-longform",
+            "source_memory_version": 1
+          },
+          "retrieval": [
+            {
+              "claim_ordinal": 1,
+              "returned_span_ids": [
+                "fixture-span-orchard_restoration-3",
+                "fixture-span-orchard_restoration-2",
+                "fixture-span-orchard_restoration-1",
+                "fixture-span-orchard_restoration-4",
+                "fixture-span-orchard_restoration-5"
+              ],
+              "method_version": "bounded-lexical-v4-longform"
+            }
+          ]
+        }
+      },
+      "captured_request": {
+        "draft": {
+          "id": "fixture-draft-orchard-restoration",
+          "revision": 2,
+          "body": "The birth register establishes that Nera was born before Oren."
+        },
+        "claims": [
+          {
+            "id": "claim-run-e35f60f2-5fde-486d-90c4-c1e87f722c3d-1",
+            "text": "The birth register establishes that Nera was born before Oren.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-orchard_restoration-3",
+                "chapter_id": "fixture-chapter-orchard_restoration-3",
+                "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+                "label": "birth_order",
+                "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-2",
+                "chapter_id": "fixture-chapter-orchard_restoration-2",
+                "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+                "label": "twin_register",
+                "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-1",
+                "chapter_id": "fixture-chapter-orchard_restoration-1",
+                "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+                "label": "kinship_rule",
+                "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-orchard_restoration-1",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "rule",
+            "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+            "source_span_id": "fixture-span-orchard_restoration-1"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-2",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "relationship",
+            "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+            "source_span_id": "fixture-span-orchard_restoration-2"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-3",
+            "memory_type": "open_thread",
+            "subject": "Nera and Oren",
+            "predicate": "status",
+            "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+            "source_span_id": "fixture-span-orchard_restoration-3"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-4",
+            "memory_type": "static_canon",
+            "subject": "restoration boat",
+            "predicate": "rule",
+            "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "source_span_id": "fixture-span-orchard_restoration-4"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-5",
+            "memory_type": "event_timeline",
+            "subject": "restoration boat",
+            "predicate": "event_occurred",
+            "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "source_span_id": "fixture-span-orchard_restoration-5"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-6",
+            "memory_type": "open_thread",
+            "subject": "restoration boat",
+            "predicate": "status",
+            "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+            "source_span_id": "fixture-span-orchard_restoration-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "question_category_timeline_to_relationship",
+      "case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "variant": "gold",
+      "layer": "raw",
+      "expected_machine_result": "pass",
+      "score": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "errors": [
+          "raw_target_or_category_mismatch"
+        ]
+      },
+      "expectation_met": false,
+      "current_validator": "accepted",
+      "payload": {
+        "issues": [
+          {
+            "claim_span_id": "claim-run-db5e8e11-9194-4c96-a287-f7757c3e8010-1",
+            "status": "insufficient_evidence",
+            "nature": "insufficient_evidence",
+            "category": "relationship",
+            "severity": "low",
+            "explanation": "The cited record requires this review decision.",
+            "reasoning": "The 09点 opening and 10点 closing do not establish an 11点 reopening or its authorizer; the 11点 field explicitly leaves both unknown.",
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "unknown"
+            },
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-harbor_signal-2",
+                "span_id": "fixture-span-harbor_signal-2",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-harbor_signal-2"
+                ]
+              }
+            ],
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-harbor_signal-2",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": [],
+            "proposed_memory_change": null
+          }
+        ]
+      },
+      "captured_request": {
+        "draft": {
+          "id": "fixture-draft-harbor-signal",
+          "revision": 2,
+          "body": "The gate logs establish that Sera authorized a reopening at 11点."
+        },
+        "claims": [
+          {
+            "id": "claim-run-db5e8e11-9194-4c96-a287-f7757c3e8010-1",
+            "text": "The gate logs establish that Sera authorized a reopening at 11点.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-harbor_signal-2",
+                "chapter_id": "fixture-chapter-harbor_signal-2",
+                "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                "label": "reopen_log",
+                "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+              },
+              {
+                "id": "fixture-span-harbor_signal-1",
+                "chapter_id": "fixture-chapter-harbor_signal-1",
+                "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+                "label": "gate_log",
+                "prompt_excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+              },
+              {
+                "id": "fixture-span-harbor_signal-4",
+                "chapter_id": "fixture-chapter-harbor_signal-4",
+                "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                "label": "later_recipient",
+                "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-harbor_signal-1",
+            "memory_type": "event_timeline",
+            "subject": "harbor signal gate",
+            "predicate": "event_occurred",
+            "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+            "source_span_id": "fixture-span-harbor_signal-1"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-2",
+            "memory_type": "open_thread",
+            "subject": "harbor signal gate",
+            "predicate": "status",
+            "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "source_span_id": "fixture-span-harbor_signal-2"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-3",
+            "memory_type": "character_knowledge",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "source_span_id": "fixture-span-harbor_signal-3"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-4",
+            "memory_type": "event_timeline",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "source_span_id": "fixture-span-harbor_signal-4"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "question_category_timeline_to_relationship",
+      "case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "variant": "gold",
+      "layer": "final",
+      "expected_machine_result": "pass",
+      "score": {
+        "case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "expectation_met": false,
+      "payload": {
+        "run_id": "run-db5e8e11-9194-4c96-a287-f7757c3e8010",
+        "project_id": "fixture-project-harbor-signal",
+        "run_type": "continuity",
+        "status": "completed",
+        "stage": "completed",
+        "source_revision": 2,
+        "draft_revision": null,
+        "source_memory_version": 1,
+        "author_context_version": 0,
+        "author_context_version_status": "recorded",
+        "author_context_resolvable": true,
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "alias_version": null,
+        "alias_snapshot_digest": null,
+        "source_change_set_id": null,
+        "source_span_ids": [],
+        "incremental_batch_id": null,
+        "current_revision": 2,
+        "is_stale": false,
+        "superseded": false,
+        "lineage_status": "current",
+        "result_origin": "provider",
+        "result_origin_label": "Provider 检查结果",
+        "error_code": null,
+        "retryable": false,
+        "created_at": "2026-09-26T12:11:41.521869+00:00",
+        "started_at": "2026-09-26T12:11:41.545018+00:00",
+        "completed_at": "2026-09-26T12:11:41.610276+00:00",
+        "cancel_requested_at": null,
+        "duration_ms": 65,
+        "retry_of_run_id": null,
+        "root_run_id": "run-db5e8e11-9194-4c96-a287-f7757c3e8010",
+        "attempt_number": 1,
+        "transitions": [
+          {
+            "sequence": 1,
+            "status": "queued",
+            "stage": "queued",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:41.521869+00:00"
+          },
+          {
+            "sequence": 2,
+            "status": "running",
+            "stage": "preparing_draft",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:41.545018+00:00"
+          },
+          {
+            "sequence": 3,
+            "status": "running",
+            "stage": "retrieving_confirmed_facts",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:41.556022+00:00"
+          },
+          {
+            "sequence": 4,
+            "status": "running",
+            "stage": "comparing_evidence",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:41.578323+00:00"
+          },
+          {
+            "sequence": 5,
+            "status": "running",
+            "stage": "assembling_reviewable_results",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:41.600017+00:00"
+          },
+          {
+            "sequence": 6,
+            "status": "completed",
+            "stage": "completed",
+            "error_code": null,
+            "created_at": "2026-09-26T12:11:41.610276+00:00"
+          }
+        ],
+        "provenance": {
+          "provider_label": "compare-v2-scripted-offline",
+          "model_label": "compare-v2-no-model",
+          "prompt_version": "continuity-review-v15-knowledge-time",
+          "schema_version": "continuity-issue-v5-temporal-basis",
+          "retrieval_method_version": "bounded-lexical-v4-longform",
+          "source_memory_version": 1
+        },
+        "provider_metrics": {
+          "latency_ms": 1,
+          "input_tokens": 1,
+          "output_tokens": 1,
+          "cost_cny": null,
+          "cost_available": false
+        },
+        "issues": [
+          {
+            "id": "issue-9da2dff8-17f7-4cb5-9eed-c8dc9763339d",
+            "claim_span_id": "claim-run-db5e8e11-9194-4c96-a287-f7757c3e8010-1",
+            "claim_text": "The gate logs establish that Sera authorized a reopening at 11点.",
+            "status": "open",
+            "classification": "insufficient_evidence",
+            "category": "relationship",
+            "severity": "low",
+            "evidence_status": "insufficient",
+            "explanation": "The cited record requires this review decision.",
+            "decision": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "The 09点 opening and 10点 closing do not establish an 11点 reopening or its authorizer; the 11点 field explicitly leaves both unknown.",
+            "evidence_chain": [
+              {
+                "evidence_id": "evidence-7e20d823-9976-4870-807d-1a9f627d20aa",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": [],
+            "reuse_policy": null,
+            "reused_decision": null,
+            "evidence": [
+              {
+                "id": "evidence-7e20d823-9976-4870-807d-1a9f627d20aa",
+                "chapter_id": "fixture-chapter-harbor_signal-2",
+                "chapter_number": 2,
+                "chapter_title": "Reopen Log",
+                "span_id": "fixture-span-harbor_signal-2",
+                "source_revision": 2,
+                "excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                "excerpt_context": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-harbor_signal-2"
+                ],
+                "source_path": "/projects/fixture-project-harbor-signal/sources#span-fixture-span-harbor_signal-2"
+              }
+            ]
+          }
+        ],
+        "metrics": {
+          "latency_ms": 1,
+          "input_tokens": 1,
+          "output_tokens": 1,
+          "cost_cny": null,
+          "cost_available": false,
+          "contract_normalization_count": 0,
+          "contract_normalizations": [],
+          "provenance": {
+            "provider_label": "compare-v2-scripted-offline",
+            "model_label": "compare-v2-no-model",
+            "prompt_version": "continuity-review-v15-knowledge-time",
+            "schema_version": "continuity-issue-v5-temporal-basis",
+            "retrieval_method_version": "bounded-lexical-v4-longform",
+            "source_memory_version": 1
+          },
+          "retrieval": [
+            {
+              "claim_ordinal": 1,
+              "returned_span_ids": [
+                "fixture-span-harbor_signal-2",
+                "fixture-span-harbor_signal-1",
+                "fixture-span-harbor_signal-4",
+                "fixture-span-harbor_signal-3"
+              ],
+              "method_version": "bounded-lexical-v4-longform"
+            }
+          ]
+        }
+      },
+      "captured_request": {
+        "draft": {
+          "id": "fixture-draft-harbor-signal",
+          "revision": 2,
+          "body": "The gate logs establish that Sera authorized a reopening at 11点."
+        },
+        "claims": [
+          {
+            "id": "claim-run-db5e8e11-9194-4c96-a287-f7757c3e8010-1",
+            "text": "The gate logs establish that Sera authorized a reopening at 11点.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-harbor_signal-2",
+                "chapter_id": "fixture-chapter-harbor_signal-2",
+                "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                "label": "reopen_log",
+                "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+              },
+              {
+                "id": "fixture-span-harbor_signal-1",
+                "chapter_id": "fixture-chapter-harbor_signal-1",
+                "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+                "label": "gate_log",
+                "prompt_excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+              },
+              {
+                "id": "fixture-span-harbor_signal-4",
+                "chapter_id": "fixture-chapter-harbor_signal-4",
+                "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                "label": "later_recipient",
+                "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-harbor_signal-1",
+            "memory_type": "event_timeline",
+            "subject": "harbor signal gate",
+            "predicate": "event_occurred",
+            "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+            "source_span_id": "fixture-span-harbor_signal-1"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-2",
+            "memory_type": "open_thread",
+            "subject": "harbor signal gate",
+            "predicate": "status",
+            "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "source_span_id": "fixture-span-harbor_signal-2"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-3",
+            "memory_type": "character_knowledge",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "source_span_id": "fixture-span-harbor_signal-3"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-4",
+            "memory_type": "event_timeline",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "source_span_id": "fixture-span-harbor_signal-4"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "control_count": 46,
+  "expectations_met": 35,
+  "expectation_mismatches": [
+    "raw_missing_link_chain_absent",
+    "raw_missing_link_wrong_role",
+    "raw_insuff_action_upgrade",
+    "raw_insuff_memory_change",
+    "raw_unknown_memory_id",
+    "question_category_character_knowledge_to_attribute",
+    "question_category_character_knowledge_to_attribute",
+    "question_category_relationship_to_timeline",
+    "question_category_relationship_to_timeline",
+    "question_category_timeline_to_relationship",
+    "question_category_timeline_to_relationship"
+  ],
+  "real_provider_calls": 0,
+  "network_calls": 0,
+  "database_connections": 0
+}

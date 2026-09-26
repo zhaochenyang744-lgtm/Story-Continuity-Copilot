@@ -1,0 +1,84 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "harbor_signal",
+  "title": "The Harbor Signal Ledger",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "synthetic_current_contract_adaptation",
+    "generator_version": "current-contract-compare-v1",
+    "source_inputs": [
+      "evaluation/case_sets/eval-set-v8-candidate.json"
+    ],
+    "lineage_note": "New works and wording; challenge shapes adapted from the seen V8 candidate. This set is exposed development material."
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Gate Log",
+      "source_label": "gate_log",
+      "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Reopen Log",
+      "source_label": "reopen_log",
+      "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Telegram Seal",
+      "source_label": "telegram_seal",
+      "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Later Recipient",
+      "source_label": "later_recipient",
+      "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "event_timeline",
+      "subject": "harbor signal gate",
+      "predicate": "event_occurred",
+      "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "gate_log"
+      }
+    },
+    {
+      "memory_type": "open_thread",
+      "subject": "harbor signal gate",
+      "predicate": "status",
+      "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "reopen_log"
+      }
+    },
+    {
+      "memory_type": "character_knowledge",
+      "subject": "Sera",
+      "predicate": "knowledge",
+      "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "telegram_seal"
+      }
+    },
+    {
+      "memory_type": "event_timeline",
+      "subject": "Sera",
+      "predicate": "knowledge",
+      "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "later_recipient"
+      }
+    }
+  ]
+}

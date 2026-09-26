@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v1-20260926-01",
+  "started_at": "2026-09-26T09:37:25.111878+00:00",
+  "frozen_manifest_sha256": "8b0ec87416b728445dd974fb9491c3bcc3a72318ed8d115b270515439444df15",
+  "git_base": "c3bd54ab019447354e8b1387e16b9aca3258b4c9",
+  "model": "deepseek-flash",
+  "provider": "deepseek",
+  "cost": "unavailable_unless_returned"
+}

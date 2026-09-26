@@ -1,0 +1,29 @@
+{
+  "version": "current-flash-v1",
+  "classification": "exposed_development_regression",
+  "authorization": "synthetic evaluation-only material already present in this repository",
+  "g01": [
+    {"id":"g01-later-hour","claim":"黎青在今日二十二点认出信使。","evidence":"今日二十点，黎青还不知道信使身份。","expected":"no_conflict","source":"independent-round3-g01-g02/probe.py"},
+    {"id":"g01-relative-day","claim":"今日十八点，秦渡已经知道信使身份。","evidence":"昨日十八点，秦渡还不知道信使身份。","expected":"no_conflict","source":"independent-round3-g01-g02/probe.py"},
+    {"id":"g01-ordinal-day","claim":"第二天十八点，秦渡已经知道信使身份。","evidence":"第一天十八点，秦渡还不知道信使身份。","expected":"no_conflict","source":"independent-round3-g01-g02/probe.py"},
+    {"id":"g01-explicit-lie","claim":"今日十八点，黎青故意撒谎说自己不知道信使身份。","evidence":"今日十八点，黎青已经知道信使身份。","expected":"no_conflict","source":"independent-round3-g01-g02/probe.py"},
+    {"id":"g01-recollection","claim":"今日十八点，秦渡回忆昨日十八点尚不知道信使身份。","evidence":"今日十八点，秦渡已经知道信使身份。","expected":"no_conflict","source":"independent-round3-g01-g02/probe.py"},
+    {"id":"g01-within-day-change","claim":"今日十九点，秦渡已经知道信使身份。","evidence":"今日十八点，秦渡还不知道信使身份，直到十九点才从密信获知身份。","expected":"no_conflict","source":"independent-round3-g01-g02/controls-and-scope-probe.py"},
+    {"id":"g01-positive-relative","claim":"今日十八点，秦渡已经知道信使身份。","evidence":"今日十八点，秦渡还不知道信使身份。","expected":"conflict","source":"independent-round3-g01-g02/controls-and-scope-probe.py"},
+    {"id":"g01-positive-calendar","claim":"九月二十五日十八点，秦渡已经知道信使身份。","evidence":"九月二十五日十八点，秦渡还不知道信使身份。","expected":"conflict","source":"independent-round3-g01-g02/controls-and-scope-probe.py"},
+    {"id":"g01-positive-ordinal","claim":"第十一天十八点，秦渡已经知道信使身份。","evidence":"第十一天十八点，秦渡还不知道信使身份。","expected":"conflict","source":"independent-round3-g01-g02/controls-and-scope-probe.py"},
+    {"id":"g01-positive-unrelated-memory","claim":"今日十八点，秦渡已经知道信使身份。","evidence":"今日十八点，秦渡还不知道信使身份。另一间屋内，陈澈回忆童年的航海经历。","expected":"conflict","source":"independent-round3-g01-g02/controls-and-scope-probe.py"}
+  ],
+  "g02": [
+    {"id":"g02-three-sentences","body":"林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。","expected":"all three statements supported by each item's own draft-claim citation; otherwise partial","source":"independent-round3-g01-g02/coverage-semantics-probe.py"},
+    {"id":"g02-long-sentence","body_repeat":"林默沿着长廊向前走，","repeat_count":28,"body_tail":"最后把银钥匙交给陈澈并得知弟弟还活着。","expected":"truncated claim disclosed; tail must not be asserted without supplied citation","source":"independent-round3-g01-g02/probe.py"},
+    {"id":"g02-body-limit","body_repeat":"林默在雾港核对潮汐表。","repeat_count":180,"expected":"unselected/truncated scope disclosed; no complete-coverage claim","source":"independent-round3-g01-g02/probe.py"},
+    {"id":"g02-identical-text","body":"林默走进北门。林默走进北门。","expected":"duplicate wording may cite either matching claim, each item still needs semantic support","source":"independent-round3-g01-g02/composition-probe.py"}
+  ],
+  "g03": [
+    {"id":"g03-short-target","mode":"short","expected":"direct target source selected; impact may state proposed custody change with direct evidence"},
+    {"id":"g03-deep-target","mode":"deep","expected":"deep target fact included in bounded source excerpt; target impact cites it"},
+    {"id":"g03-fact-absent","mode":"absent","expected":"unlocated target; no determinate impact"},
+    {"id":"g03-other-chapter","mode":"other_chapter","expected":"chapter impact requires that chapter's own source citation; target source remains selected"}
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "scope": "Frozen summary AST only; fake events; no imports, HTTP, credentials or output overwrite",
+  "probes": [
+    {
+      "case": "complete",
+      "actual": {
+        "usage_unknown_attempts": 0,
+        "complete_total_usage_available": true,
+        "known_prompt_tokens_partial_sum": 11,
+        "known_completion_tokens_partial_sum": 7,
+        "prompt_tokens_total": 11,
+        "completion_tokens_total": 7
+      },
+      "expected": {
+        "usage_unknown_attempts": 0,
+        "complete_total_usage_available": true,
+        "known_prompt_tokens_partial_sum": 11,
+        "known_completion_tokens_partial_sum": 7,
+        "prompt_tokens_total": 11,
+        "completion_tokens_total": 7
+      },
+      "pass": true
+    },
+    {
+      "case": "missing",
+      "actual": {
+        "usage_unknown_attempts": 1,
+        "complete_total_usage_available": false,
+        "known_prompt_tokens_partial_sum": 0,
+        "known_completion_tokens_partial_sum": 0,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null
+      },
+      "expected": {
+        "usage_unknown_attempts": 1,
+        "complete_total_usage_available": false,
+        "known_prompt_tokens_partial_sum": 0,
+        "known_completion_tokens_partial_sum": 0,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null
+      },
+      "pass": true
+    },
+    {
+      "case": "partial_with_known_prior",
+      "actual": {
+        "usage_unknown_attempts": 1,
+        "complete_total_usage_available": false,
+        "known_prompt_tokens_partial_sum": 22,
+        "known_completion_tokens_partial_sum": 7,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null
+      },
+      "expected": {
+        "usage_unknown_attempts": 1,
+        "complete_total_usage_available": false,
+        "known_prompt_tokens_partial_sum": 22,
+        "known_completion_tokens_partial_sum": 7,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null
+      },
+      "pass": true
+    },
+    {
+      "case": "invalid_negative_with_known_prior",
+      "actual": {
+        "usage_unknown_attempts": 1,
+        "complete_total_usage_available": false,
+        "known_prompt_tokens_partial_sum": 11,
+        "known_completion_tokens_partial_sum": 14,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null
+      },
+      "expected": {
+        "usage_unknown_attempts": 1,
+        "complete_total_usage_available": false,
+        "known_prompt_tokens_partial_sum": 11,
+        "known_completion_tokens_partial_sum": 14,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null
+      },
+      "pass": true
+    },
+    {
+      "case": "mismatch_with_known_prior",
+      "actual": {
+        "usage_unknown_attempts": 1,
+        "complete_total_usage_available": false,
+        "known_prompt_tokens_partial_sum": 22,
+        "known_completion_tokens_partial_sum": 14,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null
+      },
+      "expected": {
+        "usage_unknown_attempts": 1,
+        "complete_total_usage_available": false,
+        "known_prompt_tokens_partial_sum": 22,
+        "known_completion_tokens_partial_sum": 14,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null
+      },
+      "pass": true
+    },
+    {
+      "case": "zero_valid",
+      "actual": {
+        "usage_unknown_attempts": 0,
+        "complete_total_usage_available": true,
+        "known_prompt_tokens_partial_sum": 0,
+        "known_completion_tokens_partial_sum": 0,
+        "prompt_tokens_total": 0,
+        "completion_tokens_total": 0
+      },
+      "expected": {
+        "usage_unknown_attempts": 0,
+        "complete_total_usage_available": true,
+        "known_prompt_tokens_partial_sum": 0,
+        "known_completion_tokens_partial_sum": 0,
+        "prompt_tokens_total": 0,
+        "completion_tokens_total": 0
+      },
+      "pass": true
+    },
+    {
+      "case": "no_dispatch",
+      "actual": {
+        "usage_unknown_attempts": 0,
+        "complete_total_usage_available": false,
+        "known_prompt_tokens_partial_sum": 0,
+        "known_completion_tokens_partial_sum": 0,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null
+      },
+      "expected": {
+        "usage_unknown_attempts": 0,
+        "complete_total_usage_available": false,
+        "known_prompt_tokens_partial_sum": 0,
+        "known_completion_tokens_partial_sum": 0,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null
+      },
+      "pass": true
+    }
+  ],
+  "all_pass": true
+}

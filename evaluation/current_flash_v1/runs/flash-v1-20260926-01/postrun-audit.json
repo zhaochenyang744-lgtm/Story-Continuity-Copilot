@@ -1,0 +1,754 @@
+{
+  "run_id": "flash-v1-20260926-01",
+  "method": "postrun_read_only_audit_v1",
+  "script_sha256": "2392022ff3bb309d67f104e496b807aa31c5d2f9a4f8fa655d96d8869f15dba2",
+  "v8": [
+    {
+      "case_id": "v8-dusk-viaduct-conflict-relationship",
+      "expected_class": "conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        1,
+        2
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        5,
+        7
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-dusk-viaduct-conflict-object_state",
+      "expected_class": "conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        3,
+        4
+      ],
+      "actual_prompt_evidence_chapters": [
+        3,
+        5,
+        7
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-dusk-viaduct-control-5",
+      "expected_class": "no_conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        5
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        5,
+        7
+      ],
+      "expected_in_actual_prompt": true,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-dusk-viaduct-control-6",
+      "expected_class": "no_conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        6
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        5,
+        7
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-dusk-viaduct-insufficient-7",
+      "expected_class": "insufficient_evidence",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        7
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        5,
+        7
+      ],
+      "expected_in_actual_prompt": true,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-dusk-viaduct-insufficient-8",
+      "expected_class": "insufficient_evidence",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        8
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        3,
+        5
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-sable-tideglass-conflict-world_rule",
+      "expected_class": "conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        1,
+        2
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        3,
+        5
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-sable-tideglass-conflict-attribute",
+      "expected_class": "conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        3,
+        4
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        3,
+        5
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-sable-tideglass-control-5",
+      "expected_class": "no_conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        5
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        3,
+        5
+      ],
+      "expected_in_actual_prompt": true,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-sable-tideglass-control-6",
+      "expected_class": "no_conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        6
+      ],
+      "actual_prompt_evidence_chapters": [
+        2,
+        3,
+        5
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-sable-tideglass-insufficient-7",
+      "expected_class": "insufficient_evidence",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        7
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        3,
+        5
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-sable-tideglass-insufficient-8",
+      "expected_class": "insufficient_evidence",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        8
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        3,
+        5
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-flint-garden-conflict-location_action",
+      "expected_class": "conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        1,
+        2
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        3,
+        7
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-flint-garden-conflict-event_status",
+      "expected_class": "conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        3,
+        4
+      ],
+      "actual_prompt_evidence_chapters": [
+        3,
+        5,
+        7
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-flint-garden-control-5",
+      "expected_class": "no_conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        5
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        5,
+        7
+      ],
+      "expected_in_actual_prompt": true,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-flint-garden-control-6",
+      "expected_class": "no_conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        6
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        5,
+        7
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-flint-garden-insufficient-7",
+      "expected_class": "insufficient_evidence",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        7
+      ],
+      "actual_prompt_evidence_chapters": [
+        3,
+        5,
+        7
+      ],
+      "expected_in_actual_prompt": true,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-flint-garden-insufficient-8",
+      "expected_class": "insufficient_evidence",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        8
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        3,
+        7
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-opal-nursery-conflict-character_knowledge",
+      "expected_class": "conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        1,
+        2
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        3,
+        5
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-opal-nursery-conflict-timeline",
+      "expected_class": "conflict",
+      "first_model_class": "conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 2,
+      "expected_evidence_chapters": [
+        3,
+        4
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        3,
+        5
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-opal-nursery-control-5",
+      "expected_class": "no_conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        5
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        3,
+        5
+      ],
+      "expected_in_actual_prompt": true,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-opal-nursery-control-6",
+      "expected_class": "no_conflict",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        6
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        5,
+        7
+      ],
+      "expected_in_actual_prompt": false,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-opal-nursery-insufficient-7",
+      "expected_class": "insufficient_evidence",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        7
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        5,
+        7
+      ],
+      "expected_in_actual_prompt": true,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    },
+    {
+      "case_id": "v8-opal-nursery-insufficient-8",
+      "expected_class": "insufficient_evidence",
+      "first_model_class": "no_conflict",
+      "product_class": "no_conflict",
+      "model_output_count": 1,
+      "expected_evidence_chapters": [
+        8
+      ],
+      "actual_prompt_evidence_chapters": [
+        1,
+        5,
+        8
+      ],
+      "expected_in_actual_prompt": true,
+      "retrieval_top5_hit": true,
+      "product_status": "completed"
+    }
+  ],
+  "v8_first_class_correct": 9,
+  "v8_product_class_correct": 8,
+  "v8_expected_evidence_in_actual_prompt": 8,
+  "v8_conflicts_with_full_expected_prompt_evidence": 0,
+  "g01": [
+    {
+      "case_id": "g01-later-hour",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "product": "no_conflict",
+      "status": "completed"
+    },
+    {
+      "case_id": "g01-relative-day",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "product": "no_conflict",
+      "status": "completed"
+    },
+    {
+      "case_id": "g01-ordinal-day",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "product": "no_conflict",
+      "status": "completed"
+    },
+    {
+      "case_id": "g01-explicit-lie",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "product": "no_conflict",
+      "status": "completed"
+    },
+    {
+      "case_id": "g01-recollection",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "product": "no_conflict",
+      "status": "completed"
+    },
+    {
+      "case_id": "g01-within-day-change",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "product": "no_conflict",
+      "status": "completed"
+    },
+    {
+      "case_id": "g01-positive-relative",
+      "expected": "conflict",
+      "first": "conflict",
+      "product": "conflict",
+      "status": "completed"
+    },
+    {
+      "case_id": "g01-positive-calendar",
+      "expected": "conflict",
+      "first": "conflict",
+      "product": "conflict",
+      "status": "completed"
+    },
+    {
+      "case_id": "g01-positive-ordinal",
+      "expected": "conflict",
+      "first": "conflict",
+      "product": "conflict",
+      "status": "completed"
+    },
+    {
+      "case_id": "g01-positive-unrelated-memory",
+      "expected": "conflict",
+      "first": "conflict",
+      "product": "conflict",
+      "status": "completed"
+    }
+  ],
+  "g02": [
+    {
+      "case_id": "g02-three-sentences",
+      "product_status": "completed",
+      "coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-57fdd5b0-b381-4ade-b9fb-1b79a3f34528-r2-1",
+            "source_chars": 7,
+            "source_end": 7,
+            "source_start": 0,
+            "supplied_chars": 7,
+            "supplied_end": 7,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-57fdd5b0-b381-4ade-b9fb-1b79a3f34528-r2-2",
+            "source_chars": 10,
+            "source_end": 17,
+            "source_start": 7,
+            "supplied_chars": 10,
+            "supplied_end": 17,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-57fdd5b0-b381-4ade-b9fb-1b79a3f34528-r2-3",
+            "source_chars": 13,
+            "source_end": 30,
+            "source_start": 17,
+            "supplied_chars": 13,
+            "supplied_end": 30,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-57fdd5b0-b381-4ade-b9fb-1b79a3f34528-r2-1",
+          "draft-claim-draft-57fdd5b0-b381-4ade-b9fb-1b79a3f34528-r2-2",
+          "draft-claim-draft-57fdd5b0-b381-4ade-b9fb-1b79a3f34528-r2-3"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "first_model_output_count": 1,
+      "human_item_semantics": "requires_review"
+    },
+    {
+      "case_id": "g02-long-sentence",
+      "product_status": "completed",
+      "coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-8900102d-25ee-4990-8182-1df6f99f30e3-r2-1",
+            "source_chars": 299,
+            "source_end": 299,
+            "source_start": 0,
+            "supplied_chars": 240,
+            "supplied_end": 240,
+            "truncated": true
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [
+          "draft_claim_truncated"
+        ],
+        "source_ids": [
+          "draft-claim-draft-8900102d-25ee-4990-8182-1df6f99f30e3-r2-1"
+        ],
+        "status": "partial",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "first_model_output_count": 1,
+      "human_item_semantics": "requires_review"
+    },
+    {
+      "case_id": "g02-body-limit",
+      "product_status": "completed",
+      "coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-4987ff5d-f87e-4c0a-8ece-abe8728aae0c-r2-1",
+            "source_chars": 11,
+            "source_end": 11,
+            "source_start": 0,
+            "supplied_chars": 11,
+            "supplied_end": 11,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-4987ff5d-f87e-4c0a-8ece-abe8728aae0c-r2-2",
+            "source_chars": 11,
+            "source_end": 22,
+            "source_start": 11,
+            "supplied_chars": 11,
+            "supplied_end": 22,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [
+          "draft_claim_uncovered",
+          "draft_claim_unselected",
+          "draft_body_truncated"
+        ],
+        "source_ids": [
+          "draft-claim-draft-4987ff5d-f87e-4c0a-8ece-abe8728aae0c-r2-1",
+          "draft-claim-draft-4987ff5d-f87e-4c0a-8ece-abe8728aae0c-r2-2"
+        ],
+        "status": "partial",
+        "uncovered_source_ids": [
+          "draft-claim-draft-4987ff5d-f87e-4c0a-8ece-abe8728aae0c-r2-3",
+          "draft-claim-draft-4987ff5d-f87e-4c0a-8ece-abe8728aae0c-r2-4",
+          "draft-claim-draft-4987ff5d-f87e-4c0a-8ece-abe8728aae0c-r2-5",
+          "draft-claim-draft-4987ff5d-f87e-4c0a-8ece-abe8728aae0c-r2-6",
+          "draft-claim-draft-4987ff5d-f87e-4c0a-8ece-abe8728aae0c-r2-7",
+          "draft-claim-draft-4987ff5d-f87e-4c0a-8ece-abe8728aae0c-r2-8"
+        ],
+        "unselected_count": 172
+      },
+      "first_model_output_count": 1,
+      "human_item_semantics": "requires_review"
+    },
+    {
+      "case_id": "g02-identical-text",
+      "product_status": "completed",
+      "coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1",
+            "source_chars": 7,
+            "source_end": 7,
+            "source_start": 0,
+            "supplied_chars": 7,
+            "supplied_end": 7,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2",
+            "source_chars": 7,
+            "source_end": 14,
+            "source_start": 7,
+            "supplied_chars": 7,
+            "supplied_end": 14,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-1",
+          "draft-claim-draft-18f7246a-0caa-4c58-8e43-ec6ce7f90f4a-r2-2"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "first_model_output_count": 1,
+      "human_item_semantics": "requires_review"
+    }
+  ],
+  "g03": [
+    {
+      "case_id": "g03-short-target",
+      "product_status": "failed",
+      "error_code": "evidence_unresolvable",
+      "target_status": "selected",
+      "target_fact_in_supplied_excerpt": true,
+      "product_evidence_status": null,
+      "human_item_semantics": "requires_review"
+    },
+    {
+      "case_id": "g03-deep-target",
+      "product_status": "completed",
+      "error_code": null,
+      "target_status": "selected",
+      "target_fact_in_supplied_excerpt": true,
+      "product_evidence_status": "supported",
+      "human_item_semantics": "requires_review"
+    },
+    {
+      "case_id": "g03-fact-absent",
+      "product_status": "completed",
+      "error_code": null,
+      "target_status": "unlocated",
+      "target_fact_in_supplied_excerpt": false,
+      "product_evidence_status": "insufficient",
+      "human_item_semantics": "requires_review"
+    },
+    {
+      "case_id": "g03-other-chapter",
+      "product_status": "failed",
+      "error_code": "evidence_unresolvable",
+      "target_status": "selected",
+      "target_fact_in_supplied_excerpt": true,
+      "product_evidence_status": null,
+      "human_item_semantics": "requires_review"
+    }
+  ],
+  "stability": [
+    {
+      "case_id": "v8-dusk-viaduct-conflict-relationship",
+      "classes": [
+        "no_conflict",
+        "no_conflict",
+        "no_conflict"
+      ],
+      "three_runs_present": true
+    },
+    {
+      "case_id": "v8-sable-tideglass-control-5",
+      "classes": [
+        "no_conflict",
+        "no_conflict",
+        "no_conflict"
+      ],
+      "three_runs_present": true
+    },
+    {
+      "case_id": "v8-opal-nursery-insufficient-7",
+      "classes": [
+        "no_conflict",
+        "no_conflict",
+        "no_conflict"
+      ],
+      "three_runs_present": true
+    }
+  ],
+  "scope_warning": "V8 frozen scorer uses DB top-five retrieval; current engine supplies only a selected subset to the model. Do not treat top-five hit as prompt evidence recall."
+}

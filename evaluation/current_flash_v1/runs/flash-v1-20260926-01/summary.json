@@ -1,0 +1,1001 @@
+{
+  "run_id": "flash-v1-20260926-01",
+  "ended_at": "2026-09-26T09:39:17.546606+00:00",
+  "executed_case_records": 48,
+  "v8_formal_count": 24,
+  "v8_stability_additional": 6,
+  "special_counts": {
+    "g01": 10,
+    "g02": 4,
+    "g03": 4
+  },
+  "v8_product_metrics": {
+    "confusion_matrix": {
+      "conflict": {
+        "conflict": 0,
+        "no_conflict": 8,
+        "insufficient_evidence": 0
+      },
+      "no_conflict": {
+        "conflict": 0,
+        "no_conflict": 8,
+        "insufficient_evidence": 0
+      },
+      "insufficient_evidence": {
+        "conflict": 0,
+        "no_conflict": 8,
+        "insufficient_evidence": 0
+      }
+    },
+    "accuracy": 0.3333333333333333,
+    "macro_f1": 0.16666666666666666,
+    "conflict": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "no_conflict_false_positive_rate": 0.0,
+    "insufficient_evidence_recall": 0.0,
+    "retrieval_expected_evidence_hit_at_5": 1.0,
+    "cited_evidence_precision": 0.0,
+    "evidence_resolvability_grounding": 1.0,
+    "schema_validity": 1.0,
+    "conflict_category_accuracy": 0.0,
+    "designated_category_mismatch_regression": {
+      "correct": 0,
+      "total": 3
+    },
+    "expected_evidence_recall": 0.0,
+    "multi_direct_evidence_full_set_recall": 0.0,
+    "latency_ms": {
+      "p50": 909,
+      "p95": 1110
+    },
+    "tokens": {
+      "input_total": 72412,
+      "output_total": 484
+    },
+    "cost": "unavailable"
+  },
+  "v8_first_model": [
+    {
+      "case_id": "v8-dusk-viaduct-conflict-relationship",
+      "expected": "conflict",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-dusk-viaduct-conflict-object_state",
+      "expected": "conflict",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-dusk-viaduct-control-5",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "correct": true
+    },
+    {
+      "case_id": "v8-dusk-viaduct-control-6",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "correct": true
+    },
+    {
+      "case_id": "v8-dusk-viaduct-insufficient-7",
+      "expected": "insufficient_evidence",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-dusk-viaduct-insufficient-8",
+      "expected": "insufficient_evidence",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-sable-tideglass-conflict-world_rule",
+      "expected": "conflict",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-sable-tideglass-conflict-attribute",
+      "expected": "conflict",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-sable-tideglass-control-5",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "correct": true
+    },
+    {
+      "case_id": "v8-sable-tideglass-control-6",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "correct": true
+    },
+    {
+      "case_id": "v8-sable-tideglass-insufficient-7",
+      "expected": "insufficient_evidence",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-sable-tideglass-insufficient-8",
+      "expected": "insufficient_evidence",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-flint-garden-conflict-location_action",
+      "expected": "conflict",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-flint-garden-conflict-event_status",
+      "expected": "conflict",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-flint-garden-control-5",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "correct": true
+    },
+    {
+      "case_id": "v8-flint-garden-control-6",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "correct": true
+    },
+    {
+      "case_id": "v8-flint-garden-insufficient-7",
+      "expected": "insufficient_evidence",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-flint-garden-insufficient-8",
+      "expected": "insufficient_evidence",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-opal-nursery-conflict-character_knowledge",
+      "expected": "conflict",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-opal-nursery-conflict-timeline",
+      "expected": "conflict",
+      "first": "conflict",
+      "correct": true
+    },
+    {
+      "case_id": "v8-opal-nursery-control-5",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "correct": true
+    },
+    {
+      "case_id": "v8-opal-nursery-control-6",
+      "expected": "no_conflict",
+      "first": "no_conflict",
+      "correct": true
+    },
+    {
+      "case_id": "v8-opal-nursery-insufficient-7",
+      "expected": "insufficient_evidence",
+      "first": "no_conflict",
+      "correct": false
+    },
+    {
+      "case_id": "v8-opal-nursery-insufficient-8",
+      "expected": "insufficient_evidence",
+      "first": "no_conflict",
+      "correct": false
+    }
+  ],
+  "g01_first_correct": 10,
+  "actual_http_dispatches": 49,
+  "successful_http_responses": 49,
+  "known_prompt_tokens": 144300,
+  "known_completion_tokens": 8508,
+  "usage_unknown_attempts": 0,
+  "cost": "unavailable",
+  "failures": [],
+  "all_attempt_metadata": [
+    {
+      "case_id": "v8-dusk-viaduct-conflict-relationship",
+      "ordinal": 1,
+      "sent_at": "2026-09-26T09:37:26.698385+00:00",
+      "status": 200,
+      "latency_ms": 857,
+      "usage": {
+        "prompt_tokens": 2903,
+        "completion_tokens": 5,
+        "total_tokens": 2908
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-dusk-viaduct-conflict-object_state",
+      "ordinal": 2,
+      "sent_at": "2026-09-26T09:37:28.566723+00:00",
+      "status": 200,
+      "latency_ms": 887,
+      "usage": {
+        "prompt_tokens": 2884,
+        "completion_tokens": 5,
+        "total_tokens": 2889
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-dusk-viaduct-control-5",
+      "ordinal": 3,
+      "sent_at": "2026-09-26T09:37:30.490862+00:00",
+      "status": 200,
+      "latency_ms": 951,
+      "usage": {
+        "prompt_tokens": 2899,
+        "completion_tokens": 5,
+        "total_tokens": 2904
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-dusk-viaduct-control-6",
+      "ordinal": 4,
+      "sent_at": "2026-09-26T09:37:32.584233+00:00",
+      "status": 200,
+      "latency_ms": 818,
+      "usage": {
+        "prompt_tokens": 2901,
+        "completion_tokens": 5,
+        "total_tokens": 2906
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-dusk-viaduct-insufficient-7",
+      "ordinal": 5,
+      "sent_at": "2026-09-26T09:37:34.479124+00:00",
+      "status": 200,
+      "latency_ms": 591,
+      "usage": {
+        "prompt_tokens": 2902,
+        "completion_tokens": 5,
+        "total_tokens": 2907
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-dusk-viaduct-insufficient-8",
+      "ordinal": 6,
+      "sent_at": "2026-09-26T09:37:36.110831+00:00",
+      "status": 200,
+      "latency_ms": 1000,
+      "usage": {
+        "prompt_tokens": 2901,
+        "completion_tokens": 5,
+        "total_tokens": 2906
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-sable-tideglass-conflict-world_rule",
+      "ordinal": 7,
+      "sent_at": "2026-09-26T09:37:38.118689+00:00",
+      "status": 200,
+      "latency_ms": 1001,
+      "usage": {
+        "prompt_tokens": 2863,
+        "completion_tokens": 5,
+        "total_tokens": 2868
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-sable-tideglass-conflict-attribute",
+      "ordinal": 8,
+      "sent_at": "2026-09-26T09:37:40.177964+00:00",
+      "status": 200,
+      "latency_ms": 796,
+      "usage": {
+        "prompt_tokens": 2859,
+        "completion_tokens": 5,
+        "total_tokens": 2864
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-sable-tideglass-control-5",
+      "ordinal": 9,
+      "sent_at": "2026-09-26T09:37:42.753801+00:00",
+      "status": 200,
+      "latency_ms": 878,
+      "usage": {
+        "prompt_tokens": 2866,
+        "completion_tokens": 5,
+        "total_tokens": 2871
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-sable-tideglass-control-6",
+      "ordinal": 10,
+      "sent_at": "2026-09-26T09:37:44.665764+00:00",
+      "status": 200,
+      "latency_ms": 747,
+      "usage": {
+        "prompt_tokens": 2874,
+        "completion_tokens": 5,
+        "total_tokens": 2879
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-sable-tideglass-insufficient-7",
+      "ordinal": 11,
+      "sent_at": "2026-09-26T09:37:46.931034+00:00",
+      "status": 200,
+      "latency_ms": 1075,
+      "usage": {
+        "prompt_tokens": 2860,
+        "completion_tokens": 5,
+        "total_tokens": 2865
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-sable-tideglass-insufficient-8",
+      "ordinal": 12,
+      "sent_at": "2026-09-26T09:37:49.011041+00:00",
+      "status": 200,
+      "latency_ms": 1081,
+      "usage": {
+        "prompt_tokens": 2859,
+        "completion_tokens": 5,
+        "total_tokens": 2864
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-flint-garden-conflict-location_action",
+      "ordinal": 13,
+      "sent_at": "2026-09-26T09:37:51.123683+00:00",
+      "status": 200,
+      "latency_ms": 897,
+      "usage": {
+        "prompt_tokens": 2858,
+        "completion_tokens": 5,
+        "total_tokens": 2863
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-flint-garden-conflict-event_status",
+      "ordinal": 14,
+      "sent_at": "2026-09-26T09:37:53.036675+00:00",
+      "status": 200,
+      "latency_ms": 1069,
+      "usage": {
+        "prompt_tokens": 2846,
+        "completion_tokens": 5,
+        "total_tokens": 2851
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-flint-garden-control-5",
+      "ordinal": 15,
+      "sent_at": "2026-09-26T09:37:55.175326+00:00",
+      "status": 200,
+      "latency_ms": 1088,
+      "usage": {
+        "prompt_tokens": 2863,
+        "completion_tokens": 5,
+        "total_tokens": 2868
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-flint-garden-control-6",
+      "ordinal": 16,
+      "sent_at": "2026-09-26T09:37:57.818392+00:00",
+      "status": 200,
+      "latency_ms": 831,
+      "usage": {
+        "prompt_tokens": 2856,
+        "completion_tokens": 5,
+        "total_tokens": 2861
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-flint-garden-insufficient-7",
+      "ordinal": 17,
+      "sent_at": "2026-09-26T09:37:59.677955+00:00",
+      "status": 200,
+      "latency_ms": 844,
+      "usage": {
+        "prompt_tokens": 2840,
+        "completion_tokens": 5,
+        "total_tokens": 2845
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-flint-garden-insufficient-8",
+      "ordinal": 18,
+      "sent_at": "2026-09-26T09:38:01.605486+00:00",
+      "status": 200,
+      "latency_ms": 815,
+      "usage": {
+        "prompt_tokens": 2850,
+        "completion_tokens": 5,
+        "total_tokens": 2855
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-opal-nursery-conflict-character_knowledge",
+      "ordinal": 19,
+      "sent_at": "2026-09-26T09:38:03.453416+00:00",
+      "status": 200,
+      "latency_ms": 793,
+      "usage": {
+        "prompt_tokens": 2877,
+        "completion_tokens": 5,
+        "total_tokens": 2882
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-opal-nursery-conflict-timeline",
+      "ordinal": 20,
+      "sent_at": "2026-09-26T09:38:05.269238+00:00",
+      "status": 200,
+      "latency_ms": 2062,
+      "usage": {
+        "prompt_tokens": 2860,
+        "completion_tokens": 364,
+        "total_tokens": 3224
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-opal-nursery-conflict-timeline",
+      "ordinal": 21,
+      "sent_at": "2026-09-26T09:38:07.368677+00:00",
+      "status": 200,
+      "latency_ms": 1063,
+      "usage": {
+        "prompt_tokens": 3558,
+        "completion_tokens": 5,
+        "total_tokens": 3563
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-opal-nursery-control-5",
+      "ordinal": 22,
+      "sent_at": "2026-09-26T09:38:09.491593+00:00",
+      "status": 200,
+      "latency_ms": 844,
+      "usage": {
+        "prompt_tokens": 2862,
+        "completion_tokens": 5,
+        "total_tokens": 2867
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-opal-nursery-control-6",
+      "ordinal": 23,
+      "sent_at": "2026-09-26T09:38:11.382477+00:00",
+      "status": 200,
+      "latency_ms": 914,
+      "usage": {
+        "prompt_tokens": 2867,
+        "completion_tokens": 5,
+        "total_tokens": 2872
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-opal-nursery-insufficient-7",
+      "ordinal": 24,
+      "sent_at": "2026-09-26T09:38:13.622740+00:00",
+      "status": 200,
+      "latency_ms": 817,
+      "usage": {
+        "prompt_tokens": 2850,
+        "completion_tokens": 5,
+        "total_tokens": 2855
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-opal-nursery-insufficient-8",
+      "ordinal": 25,
+      "sent_at": "2026-09-26T09:38:15.478324+00:00",
+      "status": 200,
+      "latency_ms": 1068,
+      "usage": {
+        "prompt_tokens": 2854,
+        "completion_tokens": 5,
+        "total_tokens": 2859
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g01-later-hour",
+      "ordinal": 26,
+      "sent_at": "2026-09-26T09:38:16.656083+00:00",
+      "status": 200,
+      "latency_ms": 694,
+      "usage": {
+        "prompt_tokens": 2449,
+        "completion_tokens": 5,
+        "total_tokens": 2454
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g01-relative-day",
+      "ordinal": 27,
+      "sent_at": "2026-09-26T09:38:17.367507+00:00",
+      "status": 200,
+      "latency_ms": 968,
+      "usage": {
+        "prompt_tokens": 2453,
+        "completion_tokens": 5,
+        "total_tokens": 2458
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g01-ordinal-day",
+      "ordinal": 28,
+      "sent_at": "2026-09-26T09:38:18.354884+00:00",
+      "status": 200,
+      "latency_ms": 821,
+      "usage": {
+        "prompt_tokens": 2453,
+        "completion_tokens": 5,
+        "total_tokens": 2458
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g01-explicit-lie",
+      "ordinal": 29,
+      "sent_at": "2026-09-26T09:38:19.193686+00:00",
+      "status": 200,
+      "latency_ms": 815,
+      "usage": {
+        "prompt_tokens": 2458,
+        "completion_tokens": 5,
+        "total_tokens": 2463
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g01-recollection",
+      "ordinal": 30,
+      "sent_at": "2026-09-26T09:38:20.026907+00:00",
+      "status": 200,
+      "latency_ms": 577,
+      "usage": {
+        "prompt_tokens": 2462,
+        "completion_tokens": 5,
+        "total_tokens": 2467
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g01-within-day-change",
+      "ordinal": 31,
+      "sent_at": "2026-09-26T09:38:20.620716+00:00",
+      "status": 200,
+      "latency_ms": 587,
+      "usage": {
+        "prompt_tokens": 2464,
+        "completion_tokens": 5,
+        "total_tokens": 2469
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g01-positive-relative",
+      "ordinal": 32,
+      "sent_at": "2026-09-26T09:38:21.227625+00:00",
+      "status": 200,
+      "latency_ms": 1561,
+      "usage": {
+        "prompt_tokens": 2453,
+        "completion_tokens": 261,
+        "total_tokens": 2714
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g01-positive-calendar",
+      "ordinal": 33,
+      "sent_at": "2026-09-26T09:38:22.816111+00:00",
+      "status": 200,
+      "latency_ms": 1689,
+      "usage": {
+        "prompt_tokens": 2459,
+        "completion_tokens": 263,
+        "total_tokens": 2722
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g01-positive-ordinal",
+      "ordinal": 34,
+      "sent_at": "2026-09-26T09:38:24.522983+00:00",
+      "status": 200,
+      "latency_ms": 1435,
+      "usage": {
+        "prompt_tokens": 2456,
+        "completion_tokens": 273,
+        "total_tokens": 2729
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g01-positive-unrelated-memory",
+      "ordinal": 35,
+      "sent_at": "2026-09-26T09:38:25.976307+00:00",
+      "status": 200,
+      "latency_ms": 1739,
+      "usage": {
+        "prompt_tokens": 2464,
+        "completion_tokens": 272,
+        "total_tokens": 2736
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-three-sentences",
+      "ordinal": 36,
+      "sent_at": "2026-09-26T09:38:28.863288+00:00",
+      "status": 200,
+      "latency_ms": 4477,
+      "usage": {
+        "prompt_tokens": 3209,
+        "completion_tokens": 1292,
+        "total_tokens": 4501
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-long-sentence",
+      "ordinal": 37,
+      "sent_at": "2026-09-26T09:38:34.513570+00:00",
+      "status": 200,
+      "latency_ms": 3718,
+      "usage": {
+        "prompt_tokens": 3216,
+        "completion_tokens": 1035,
+        "total_tokens": 4251
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-body-limit",
+      "ordinal": 38,
+      "sent_at": "2026-09-26T09:38:39.420132+00:00",
+      "status": 200,
+      "latency_ms": 3886,
+      "usage": {
+        "prompt_tokens": 4561,
+        "completion_tokens": 1076,
+        "total_tokens": 5637
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-identical-text",
+      "ordinal": 39,
+      "sent_at": "2026-09-26T09:38:44.487898+00:00",
+      "status": 200,
+      "latency_ms": 4002,
+      "usage": {
+        "prompt_tokens": 3024,
+        "completion_tokens": 1154,
+        "total_tokens": 4178
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g03-short-target",
+      "ordinal": 40,
+      "sent_at": "2026-09-26T09:38:49.636016+00:00",
+      "status": 200,
+      "latency_ms": 3097,
+      "usage": {
+        "prompt_tokens": 3799,
+        "completion_tokens": 659,
+        "total_tokens": 4458
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g03-deep-target",
+      "ordinal": 41,
+      "sent_at": "2026-09-26T09:38:53.975241+00:00",
+      "status": 200,
+      "latency_ms": 2959,
+      "usage": {
+        "prompt_tokens": 4247,
+        "completion_tokens": 537,
+        "total_tokens": 4784
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g03-fact-absent",
+      "ordinal": 42,
+      "sent_at": "2026-09-26T09:38:58.197855+00:00",
+      "status": 200,
+      "latency_ms": 2821,
+      "usage": {
+        "prompt_tokens": 3833,
+        "completion_tokens": 485,
+        "total_tokens": 4318
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g03-other-chapter",
+      "ordinal": 43,
+      "sent_at": "2026-09-26T09:39:02.188065+00:00",
+      "status": 200,
+      "latency_ms": 3209,
+      "usage": {
+        "prompt_tokens": 4194,
+        "completion_tokens": 657,
+        "total_tokens": 4851
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-dusk-viaduct-conflict-relationship:stability:2",
+      "ordinal": 44,
+      "sent_at": "2026-09-26T09:39:06.375899+00:00",
+      "status": 200,
+      "latency_ms": 1059,
+      "usage": {
+        "prompt_tokens": 2904,
+        "completion_tokens": 5,
+        "total_tokens": 2909
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-dusk-viaduct-conflict-relationship:stability:3",
+      "ordinal": 45,
+      "sent_at": "2026-09-26T09:39:08.498412+00:00",
+      "status": 200,
+      "latency_ms": 866,
+      "usage": {
+        "prompt_tokens": 2900,
+        "completion_tokens": 5,
+        "total_tokens": 2905
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-sable-tideglass-control-5:stability:2",
+      "ordinal": 46,
+      "sent_at": "2026-09-26T09:39:10.371353+00:00",
+      "status": 200,
+      "latency_ms": 777,
+      "usage": {
+        "prompt_tokens": 2866,
+        "completion_tokens": 5,
+        "total_tokens": 2871
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-sable-tideglass-control-5:stability:3",
+      "ordinal": 47,
+      "sent_at": "2026-09-26T09:39:12.761013+00:00",
+      "status": 200,
+      "latency_ms": 1006,
+      "usage": {
+        "prompt_tokens": 2865,
+        "completion_tokens": 5,
+        "total_tokens": 2870
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-opal-nursery-insufficient-7:stability:2",
+      "ordinal": 48,
+      "sent_at": "2026-09-26T09:39:14.755950+00:00",
+      "status": 200,
+      "latency_ms": 794,
+      "usage": {
+        "prompt_tokens": 2849,
+        "completion_tokens": 5,
+        "total_tokens": 2854
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "v8-opal-nursery-insufficient-7:stability:3",
+      "ordinal": 49,
+      "sent_at": "2026-09-26T09:39:16.586108+00:00",
+      "status": 200,
+      "latency_ms": 886,
+      "usage": {
+        "prompt_tokens": 2850,
+        "completion_tokens": 5,
+        "total_tokens": 2855
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    }
+  ],
+  "quality_gate_evaluated": "pending_independent_review"
+}

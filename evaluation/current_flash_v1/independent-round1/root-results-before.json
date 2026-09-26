@@ -1,0 +1,267 @@
+[
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/models-preflight.json",
+    "sha256": "21c1a62c9c8d3f56c52f18c6551ea975d2045ded297d4fdd2a5e83e5e18576ed",
+    "bytes": 121
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/postrun-audit.json",
+    "sha256": "a01892e2b26576ba5a061e2da744d57d826d896be8269903775717748ad7e4f1",
+    "bytes": 21471
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/start.json",
+    "sha256": "9810d1225b224198145bec493c89baa1fcfb1bbe94251689c3e544fdd3248271",
+    "bytes": 348
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/summary.json",
+    "sha256": "3c496ad80f72cf2a8aa9433775d31cff4604bb32ed1968e4323e851e15e0097f",
+    "bytes": 29162
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/v8-checkpoint.json",
+    "sha256": "39f8ef42907bc134155fbf06b7d8663de468f980ab925efd4bd480ce01d74ccc",
+    "bytes": 67627
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/01-v8-dusk-viaduct-conflict-relationship.json",
+    "sha256": "3c5641550d6f74871e44d8b8acb3bae3a2c384cbf637d509e6185896fcfe9c86",
+    "bytes": 9766
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/02-v8-dusk-viaduct-conflict-object_state.json",
+    "sha256": "4724b8580bc1a1e5c284fd86e77c7114fd0be25f2d5f933d6d7080ea1251f562",
+    "bytes": 9589
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/03-v8-dusk-viaduct-control-5.json",
+    "sha256": "867c4acb82d950072eb53e2f3686a5a75abad490f2c459e04b3c8e39f36b6968",
+    "bytes": 9423
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/04-v8-dusk-viaduct-control-6.json",
+    "sha256": "7619cb4fc5272122b13791ec5b1440edd25a0f5c1787388f88a4b21c04e0f5b2",
+    "bytes": 9423
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/05-v8-dusk-viaduct-insufficient-7.json",
+    "sha256": "babda1f51558d5586ec4ca43c85612c1953dad0c17afbc6cdfb19f2bb3cd7f0e",
+    "bytes": 9538
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/06-v8-dusk-viaduct-insufficient-8.json",
+    "sha256": "d0855820bd1f7f70100874ee051d3810856a0e0603be4d07530de2d0d401e23b",
+    "bytes": 9522
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/07-v8-sable-tideglass-conflict-world_rule.json",
+    "sha256": "848cb1c1a9f2d69dd5c5af487f78d7b31cc927ee655a156541cf38ead33e1b49",
+    "bytes": 9651
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/08-v8-sable-tideglass-conflict-attribute.json",
+    "sha256": "d0bca11357e533a5362aefff97e5db2b7f31773951d4dc7cc33ddd2787bf0aa4",
+    "bytes": 9629
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/09-v8-sable-tideglass-control-5.json",
+    "sha256": "d128f13040a2d91fee26c93f4d41a297f9c82bab3a4a9efde390aa76854bd76d",
+    "bytes": 9350
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/10-v8-sable-tideglass-control-6.json",
+    "sha256": "6cc4e30897f8347426d2a41ff82ae425019b40d772a1013b0735214fd54d48f6",
+    "bytes": 9383
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/11-v8-sable-tideglass-insufficient-7.json",
+    "sha256": "6d86dae90618af913e874f2db6ebb9530d49c54f3041ceeb5cf62b62377c5dec",
+    "bytes": 9432
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/12-v8-sable-tideglass-insufficient-8.json",
+    "sha256": "e547ac24f0054145b42dc522c179de8bbabf443da9b505b3a213683751af5b0b",
+    "bytes": 9456
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/13-v8-flint-garden-conflict-location_action.json",
+    "sha256": "3160b4d32bb6d2178f461f1ae497a2a2a276426cfb1a7a735b94bd9f1d89ff12",
+    "bytes": 9717
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/14-v8-flint-garden-conflict-event_status.json",
+    "sha256": "bfbf4703aa70fdd813265543d010d4b1776d058c9a8b4a7a50ac13bb59d9b4c9",
+    "bytes": 9592
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/15-v8-flint-garden-control-5.json",
+    "sha256": "a1a9695013bae67857ddb51766af855b2b361cd15f3d5bb44525e88c4de3b507",
+    "bytes": 9351
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/16-v8-flint-garden-control-6.json",
+    "sha256": "22ace70c0737d9bdbee3676b7299ccf1b8f9f648a0583494d0fcd08660d4d3d3",
+    "bytes": 9343
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/17-v8-flint-garden-insufficient-7.json",
+    "sha256": "516b3019b79feee8cb8d70ac345328bced86867dda7a0e2d4df4a8563e79ddcb",
+    "bytes": 9393
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/18-v8-flint-garden-insufficient-8.json",
+    "sha256": "75b8aeb5d74dddecd767b49dab740c02ad225913dfdf0cab3fb71c9fbd713809",
+    "bytes": 9484
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/19-v8-opal-nursery-conflict-character_knowledge.json",
+    "sha256": "9da55bdb67e31d918ed2281bbb1ce27520005a29ac95233da919783a8b325459",
+    "bytes": 9674
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/20-v8-opal-nursery-conflict-timeline.json",
+    "sha256": "2a3e2be7692f7726e1bbc708b7d9d83379dc5ce1d8d5e635b7d98c43d2317766",
+    "bytes": 14480
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/21-v8-opal-nursery-control-5.json",
+    "sha256": "68a898e856cc254eb62721156121291c3943d15edc31e33e3fb1d1b83e50c041",
+    "bytes": 9306
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/22-v8-opal-nursery-control-6.json",
+    "sha256": "60e6a22129077e990d493e0a12f40d708ecc02f5e07d64eae9d551d6f517b08e",
+    "bytes": 9357
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/23-v8-opal-nursery-insufficient-7.json",
+    "sha256": "49a58bef753840fa07970c6e11542762f83b79c09c1ebd370191360a2d46e36d",
+    "bytes": 9429
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/24-v8-opal-nursery-insufficient-8.json",
+    "sha256": "74fdf3a42dcd93c167618ee12a48ca444d60c371703ea019b279ea3440a8ad2f",
+    "bytes": 9449
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/25-g01-later-hour.json",
+    "sha256": "2ecf08cb3873c476a7fa120fbf83e4129e2145f674e16ed0abbef97b1ffc8afc",
+    "bytes": 2618
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/26-g01-relative-day.json",
+    "sha256": "c3ef1cdf6c4f20ce9d304aa219445c94308b73bd9b4019d52880b19e7ca40fbd",
+    "bytes": 2642
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/27-g01-ordinal-day.json",
+    "sha256": "a5d67890e905351b81c4203a58ab03b1bdffb5c8b93580d0caa54375bd7fba84",
+    "bytes": 2654
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/28-g01-explicit-lie.json",
+    "sha256": "188a0d746ac0c6348e9e460f719ea23b3afe3fade46f2897b21fa2c94b008c06",
+    "bytes": 2678
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/29-g01-recollection.json",
+    "sha256": "34108fdd76daa2d61cc864cfc4361861ffb505c33aaede7d33cf248511f67ff0",
+    "bytes": 2684
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/30-g01-within-day-change.json",
+    "sha256": "6f80b6f19d9188ba76a8eb7e2d419142241e9fb9dcb6ed2a6ce97913ae925543",
+    "bytes": 2802
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/31-g01-positive-relative.json",
+    "sha256": "61cc983d337dd819eaf8a9472c956a0eca8ffac723d084f228e220431c699141",
+    "bytes": 5936
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/32-g01-positive-calendar.json",
+    "sha256": "d2f5edf31546e1796e4d905c3afbe9a8316daf1388223390e0bdfa42400bc3b0",
+    "bytes": 6024
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/33-g01-positive-ordinal.json",
+    "sha256": "db32512377950f9d0ae453005ec45383b2739b1115484b01b8f20d01029e9746",
+    "bytes": 6069
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/34-g01-positive-unrelated-memory.json",
+    "sha256": "29346ffcb50fb851e7dfba94567c044463f79d0daaf2a616521aab1b0a08438d",
+    "bytes": 6254
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/35-g02-three-sentences.json",
+    "sha256": "dfe3a8ecbc405787e2e42646adf37456dd6ff415f59f982f129e2cdd7470bdec",
+    "bytes": 33261
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/36-g02-long-sentence.json",
+    "sha256": "771f93f68da3120d8649db4f5d945eaa327a9c211f9b8b710666924019b81e81",
+    "bytes": 30344
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/37-g02-body-limit.json",
+    "sha256": "444995b8fc25eb90f237b2be2b2339d38960f2813af3c4b5f63f06982ecc16ce",
+    "bytes": 41057
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/38-g02-identical-text.json",
+    "sha256": "32ffbf06cb3e908a55b5644d659e13b651ae65ef91808512ea3737bae7dbcd2f",
+    "bytes": 29662
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/39-g03-short-target.json",
+    "sha256": "bfcfd2f0dff42328b7d4062c8930585fd492db4ac698debb2512556aecd7bc51",
+    "bytes": 19717
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/40-g03-deep-target.json",
+    "sha256": "46aeebc263597b0a851540aa09a3b1970490f57c91ee52335bb5bc00a0971425",
+    "bytes": 31476
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/41-g03-fact-absent.json",
+    "sha256": "615d25fc575ccf2c99050c38594c874dde514a942b9c758da4212bec1d94e0bf",
+    "bytes": 19369
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/42-g03-other-chapter.json",
+    "sha256": "25fbe2c6e8e4302735d6d049b9e75c6a617debde9fb210c4f90f566fc4ca5749",
+    "bytes": 25495
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/43-v8-dusk-viaduct-conflict-relationship-repeat-2.json",
+    "sha256": "75d66b674eb108746cccead675411462ecf3a9a3e0462e315d9c0b39b6a64fa9",
+    "bytes": 5301
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/44-v8-dusk-viaduct-conflict-relationship-repeat-3.json",
+    "sha256": "4ef7277e77baedd04116ab1a2e4fb2268c1ae274c3e4415c4aca3b4977fcdad2",
+    "bytes": 5298
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/45-v8-sable-tideglass-control-5-repeat-2.json",
+    "sha256": "43bf1e973b3f6218ebc56c5e1f80dd0fba12bf2796304e14f702b636f640cbfa",
+    "bytes": 5061
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/46-v8-sable-tideglass-control-5-repeat-3.json",
+    "sha256": "f54c5aded1718dd582a963b6e2ff8fc149747558b604a0bce274305c627c8e90",
+    "bytes": 5064
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/47-v8-opal-nursery-insufficient-7-repeat-2.json",
+    "sha256": "9aa9719f383adffba50ea5fac82ccac601607687b4ca0a0985dd761c879e71f8",
+    "bytes": 5145
+  },
+  {
+    "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/48-v8-opal-nursery-insufficient-7-repeat-3.json",
+    "sha256": "c85190e74951be3d66883af28df294ab7f8219c8e60aaa36c1389ea18fa2244f",
+    "bytes": 5145
+  }
+]

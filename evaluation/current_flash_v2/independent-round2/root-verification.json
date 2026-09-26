@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-09-26T10:19:08.6828559Z",
+  "head": "c3bd54ab019447354e8b1387e16b9aca3258b4c9",
+  "v1_v2_preserved_result_files": 65,
+  "result_hash_mismatches": [],
+  "product_diff": [],
+  "independent_freeze_verification": "passed",
+  "independent_offline_tests": 4,
+  "independent_real_provider_dispatches": 0,
+  "status": "accounting_and_source_input_verified_fixture_parent_sync_returned_for_v3"
+}

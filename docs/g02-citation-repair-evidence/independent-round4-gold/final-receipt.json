@@ -1,0 +1,13 @@
+{
+  "time_utc": "2026-09-26T12:44:16.885077+00:00",
+  "manifest_sha256": "0afd9630d22aecc44d1fbc8a955787d12d1286b31ec85a3e0985dff132da8baf",
+  "files_changed_after_review": [],
+  "independent_file_hashes": {
+    "incremental-audit.py": "0b46cfb9c1aedb403ae3502e625b4b9a8faa7506d24ef05d10a19fffb28082ce",
+    "incremental-results.json": "738b5dc9b0c9cb9e04fc8424f74b068fe811ca0d0c21e0a97d8b883869ce6c50",
+    "review.md": "6718175b1c86b3b5a4e325b6b5146cfb847b8fbe040a5e3fcb1fa58e2a6a9570"
+  },
+  "provider_calls": 0,
+  "http_calls": 0,
+  "database_connections": 0
+}

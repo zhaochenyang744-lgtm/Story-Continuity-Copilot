@@ -1,5 +1,19 @@
 # Evaluation assets
 
+## Maintenance entry point (2026-09-26)
+
+The evaluation sets are long-term project assets. Follow the [evaluation maintenance policy](../docs/evaluation-maintenance.md) for case intake, independent review, development/comparison/unseen splits, versioning, recurring inventory, and change-triggered regression. This policy documents the current inventory and open preparation work; it does not introduce a new runner, CI job, scheduled task, or live evaluation.
+
+Latest independent delivery: [G02 citation repair and comparison-set preparation](../docs/g02-citation-repair-independent-acceptance.md). G02 product safeguards passed the bounded independent regressions and browser checks. [Current-contract comparison V3](current_contract_compare_v3/HANDOFF.md) is the accepted preparation version for 24 exposed synthetic development cases; it reuses immutable V2 business inputs. Narrative review remains separate from machine structural checks, including one declared category-adjudication case. No whole-set real Provider run has occurred. G02 Flash V4 added six real generation requests and one model preflight; cumulative real calls are 63 generation requests and three model preflights. The later product fixes and comparison revisions were offline, and do not change the six original first-summary citation findings.
+
+Previous delivery snapshot: [DeepSeek Flash real-provider acceptance](../docs/flash-real-provider-independent-acceptance.md). `current_flash_v1` and `current_flash_v2` retain 57 real generation requests and two model preflights; `current_flash_v3` repairs four synthetic fixtures offline with exact business-request equivalence. Evaluation evidence is accepted with explicit product-quality findings. These are exposed regression cases, not a new unseen set, and the historical V8 Gate remains failed. The versioned runners and original results must not be overwritten or rerun under their existing identities.
+
+V1/V2 comparison snapshots and V3 control failures remain historical evidence. The [V2 early first-failure record gap](current_contract_compare_v3/HISTORY_GAP.md) is disclosed and has not been reconstructed. V3 uses new run identities and create-only outputs. Acceptance is recorded in the linked independent report rather than by rewriting a pre-review freeze manifest.
+
+The sections below preserve historical publication and stage snapshots; their references to "current" or "not started" are historical, not the overall project's present status. V1–V8 frozen inputs/results remain immutable. The V8 first-formal runner has fixed inputs and output paths and cannot simply be redirected for a new evaluation. New runs require a separately reviewed entry point and identity; see the policy before preparing one.
+
+## Historical evaluation and publication record
+
 This directory contains the code and frozen assets used to validate the local Web Demo. The current published evidence is the V4 product evaluation: 15 original balanced three-class cases across three isolated corpora, plus 6 stability reruns. Its sanitised result bundle and post-run integrity record are retained in `results/`.
 
 The V5 candidate Gate was accepted by the controller and its 24 evaluation-only cases across four corpora were frozen as formal evaluation inputs. `eval-set-v5-manifest.json` has `status=approved_for_formal_run`, but this status approves the immutable input bundle only: its `real_provider_authorization_received=false`, `formal_run_executed=false`, and `provider_calls=0` fields are retained input-freeze snapshot fields, not the later execution record.

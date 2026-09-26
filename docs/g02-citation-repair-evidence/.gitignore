@@ -1,0 +1,3 @@
+# Keep local runtime output on disk; retain reviewed JSON, scripts and screenshots.
+*.log
+**/results/.last-run.json
