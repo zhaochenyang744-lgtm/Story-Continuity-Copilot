@@ -90,6 +90,12 @@ def _temporal_anchor_is_explicit(value: str) -> bool:
 def _explicit_temporal_overlap(claim_anchor: str, evidence_anchor: str) -> bool:
     if not _temporal_anchor_is_explicit(claim_anchor) or not _temporal_anchor_is_explicit(evidence_anchor):
         return False
+    day_aliases={"前天":"day_minus_2","昨日":"day_minus_1","昨天":"day_minus_1","今日":"day_0","今天":"day_0","明日":"day_plus_1","明天":"day_plus_1","后天":"day_plus_2","day before yesterday":"day_minus_2","yesterday":"day_minus_1","today":"day_0","tomorrow":"day_plus_1"}
+    def relative_day(value:str)->str|None:
+        match=re.search(r"前天|昨日|昨天|今日|今天|明日|明天|后天|\b(?:day before yesterday|yesterday|today|tomorrow)\b",value,re.IGNORECASE)
+        return day_aliases.get(match.group().casefold()) if match else None
+    claim_day=relative_day(claim_anchor);evidence_day=relative_day(evidence_anchor)
+    if (claim_day or evidence_day) and claim_day!=evidence_day:return False
     component_pattern=r"(\d{1,4}|[一二三四五六七八九十百零两]+)\s*(年|月|日|号|点|时|分|秒|章)"
     unit_group={"号":"日","时":"点"}
     digit_map={"零":"0","一":"1","二":"2","两":"2","三":"3","四":"4","五":"5","六":"6","七":"7","八":"8","九":"9"}
@@ -116,6 +122,39 @@ def _explicit_temporal_overlap(claim_anchor: str, evidence_anchor: str) -> bool:
     return bool(re.search(relational_pattern,claim_anchor,re.IGNORECASE) and re.search(relational_pattern,evidence_anchor,re.IGNORECASE))
 
 
+def _full_temporal_scope_supports_conflict(claim_text: str, evidence_text: str, claim_anchor: str, evidence_anchor: str) -> bool:
+    """Qualify model-selected anchors against the bound statements, not just their substrings."""
+    if not _explicit_temporal_overlap(claim_anchor,evidence_anchor):return False
+    def supporting_sentence(value:str,anchor:str)->str|None:
+        sentences=[match.group().strip() for match in re.finditer(r"[^。！？.!?]+[。！？.!?]?",value) if match.group().strip()]
+        matches=[sentence for sentence in sentences if anchor in sentence]
+        return matches[0] if len(matches)==1 else None
+    claim_scope=supporting_sentence(claim_text,claim_anchor)
+    evidence_scope=supporting_sentence(evidence_text,evidence_anchor)
+    if claim_scope is None or evidence_scope is None:return False
+    # A recalled event or attributed utterance has a different assertion scope
+    # from a narrator-confirmed state, even when its surface clock matches.
+    framed=r"回忆|追忆|想起|闪回|梦见|梦到|谎称|撒谎|说谎|假称|故意骗|声称|宣称|自称|说自己|表示自己|据称|引述|转述|听说|告诉|\b(?:recall|remember|flashback|dream|lied?|said|claimed|reported|told|falsely claimed)\b"
+    if re.search(framed,claim_scope,re.IGNORECASE) or re.search(framed,evidence_scope,re.IGNORECASE):return False
+    aliases={"前天":"relative:-2","昨日":"relative:-1","昨天":"relative:-1","今日":"relative:0","今天":"relative:0","明日":"relative:1","明天":"relative:1","后天":"relative:2","day before yesterday":"relative:-2","yesterday":"relative:-1","today":"relative:0","tomorrow":"relative:1"}
+    def days(value:str)->set[str]:
+        found={aliases[match.group().casefold()] for match in re.finditer(r"前天|昨日|昨天|今日|今天|明日|明天|后天|\b(?:day before yesterday|yesterday|today|tomorrow)\b",value,re.IGNORECASE)}
+        found.update("ordinal:"+match.group(1).translate(str.maketrans("零一二三四五六七八九", "0123456789")) for match in re.finditer(r"第\s*([零一二三四五六七八九十百两\d]+)\s*天",value))
+        return found
+    claim_days,evidence_days=days(claim_scope),days(evidence_scope)
+    if len(claim_days)>1 or len(evidence_days)>1 or (claim_days or evidence_days) and claim_days!=evidence_days:return False
+    if not _explicit_temporal_overlap(claim_scope,evidence_scope):return False
+    clock=r"(?:\d{1,2}|[一二三四五六七八九十两]+)\s*(?:点|时)|\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b"
+    def clock_values(value:str)->set[str]:
+        return {match.group().replace(" ","").translate(str.maketrans("一二三四五六七八九", "123456789")) for match in re.finditer(clock,value,re.IGNORECASE)}
+    if len(clock_values(claim_scope))>1 or len(clock_values(evidence_scope))>1:return False
+    calendar=r"(?:\d{1,4}|[一二三四五六七八九十百零两]+)\s*(?:年|月|日|号)"
+    shared_scope=r"同一(?:天|夜|晚|时刻|时间)|与此同时|同时|\b(?:same\s+(?:day|night|time|moment)|simultaneously)\b"
+    if re.search(clock,claim_anchor,re.IGNORECASE) and re.search(clock,evidence_anchor,re.IGNORECASE) and not claim_days:
+        if not (re.search(calendar,claim_scope) and re.search(calendar,evidence_scope)) and not (re.search(shared_scope,claim_scope,re.IGNORECASE) and re.search(shared_scope,evidence_scope,re.IGNORECASE)):return False
+    return True
+
+
 def _continuity_schema() -> dict[str, Any]:
     return {"issues":[{"claim_span_id":"current claim id","status":"conflict|insufficient_evidence","nature":"confirmed_conflict|possible_conflict|state_change|insufficient_evidence","category":"allowed category","severity":"low|medium|high","explanation":"short backwards-compatible summary","reasoning":"why the cited evidence supports this nature, or exactly what evidence is missing","temporal_basis":{"claim_anchor":"exact claim substring or null","evidence_anchor":"exact cited evidence substring or null","relation":"explicit_overlap|timeless_rule|explicit_later_transition|unknown"},"evidence":[{"chapter_id":"allowed chapter id","span_id":"allowed span id","relation":"supports|contradicts|context","sufficiency":"sufficient|insufficient","related_memory_ids":["known memory id"]}],"evidence_chain":[{"span_id":"one cited evidence span id","role":"prior_state|current_context|missing_link"}],"suggested_revision":{"before":"exact text occurring once in the bound draft","after":"specific replacement text"},"available_actions":["edit|apply_suggestion|keep_intentional|false_positive"],"proposed_memory_change":{"operation":"add|replace","memory_type":"allowed memory type","subject":"string","predicate":"string","value":"string","affected_memory_id":"required for replace only"}}]}
 
@@ -130,9 +169,16 @@ def _memory_delta_schema() -> dict[str, Any]:
 
 def _aggregate(results: list[Any]) -> dict[str, Any]:
     def total(field: str):
-        values=[getattr(result,field) for result in results if getattr(result,field) is not None]
-        return sum(values) if values else None
+        values=[getattr(result,field) for result in results]
+        return sum(values) if values and all(value is not None for value in values) else None
     return {"input_tokens":total("input_tokens"),"output_tokens":total("output_tokens"),"latency_ms":total("latency_ms"),"cost_cny":total("cost_cny")}
+
+
+def _aggregate_attempt_failure(results: list[Any], error: Exception) -> dict[str, Any]:
+    metrics=_aggregate(results)
+    if getattr(error,"usage_unknown",False):
+        return {field:None for field in metrics}
+    return metrics
 
 
 def _invalid_json_aggregate(results: list[Any], error: ProviderInvalidJson) -> dict[str, Any]:
@@ -227,7 +273,8 @@ class ContinuityEngine:
             if raw.get("nature")=="confirmed_conflict" and isinstance(temporal,dict):
                 claim_anchor=temporal.get("claim_anchor");evidence_anchor=temporal.get("evidence_anchor");relation=temporal.get("relation")
                 if relation=="explicit_overlap":
-                    if not isinstance(claim_anchor,str) or not isinstance(evidence_anchor,str) or not _explicit_temporal_overlap(claim_anchor,evidence_anchor):codes.append("temporal_overlap_unproven")
+                    excerpts=[allowed[evidence["span_id"]].get("prompt_excerpt",allowed[evidence["span_id"]]["body"]) for evidence in raw_evidence if isinstance(evidence,dict) and evidence.get("span_id") in allowed]
+                    if not isinstance(claim_anchor,str) or not isinstance(evidence_anchor,str) or not _explicit_temporal_overlap(claim_anchor,evidence_anchor) or (excerpts and not any(evidence_anchor in excerpt and _full_temporal_scope_supports_conflict(claim["text"],excerpt,claim_anchor,evidence_anchor) for excerpt in excerpts)):codes.append("temporal_overlap_unproven")
                 elif relation=="timeless_rule":
                     related_ids={memory_id for evidence in raw_evidence if isinstance(evidence,dict) and isinstance(evidence.get("related_memory_ids"),list) for memory_id in evidence["related_memory_ids"] if memory_id in mem}
                     if not any(mem[memory_id].get("memory_type")=="static_canon" and mem[memory_id].get("predicate")=="rule" for memory_id in related_ids):codes.append("timeless_rule_unproven")
@@ -272,10 +319,10 @@ class ContinuityEngine:
                     break
         except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True,**_aggregate(results)}
         except ProviderUnavailable:return {"status":"failed","error_code":"provider_unavailable","retryable":True,**_aggregate(results)}
-        except ProviderTimeout:return {"status":"timed_out","error_code":"provider_timeout","retryable":True,**_aggregate(results)}
+        except ProviderTimeout as error:return {"status":"timed_out","error_code":"provider_timeout","retryable":True,**_aggregate_attempt_failure(results,error)}
         except ProviderInvalidJson as error:return {"status":"failed","error_code":"invalid_json","retryable":True,**_invalid_json_aggregate(results,error)}
-        except ProviderFailure:return {"status":"failed","error_code":"provider_error","retryable":True,**_aggregate(results)}
-        except ValueError as error:return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate(results)}
+        except ProviderFailure as error:return {"status":"failed","error_code":"provider_error","retryable":True,**_aggregate_attempt_failure(results,error)}
+        except ValueError as error:return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate_attempt_failure(results,error)}
         order={claim["id"]:index for index,claim in enumerate(data["claims"])}
         if len({issue["claim_span_id"] for issue in issues}) != len(issues): return {"status":"failed","error_code":"schema_invalid","retryable":True,**_aggregate(results)}
         return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,**_aggregate(results)}
@@ -327,7 +374,7 @@ class ContinuityEngine:
                 temporal_failure=None
                 if nature=="confirmed_conflict":
                     if temporal["relation"]=="explicit_overlap":
-                        if not isinstance(claim_anchor,str) or not isinstance(evidence_anchor,str) or not _explicit_temporal_overlap(claim_anchor,evidence_anchor):temporal_failure="temporal_overlap_unproven"
+                        if not isinstance(claim_anchor,str) or not isinstance(evidence_anchor,str) or not any(evidence_anchor in item["excerpt"] and _full_temporal_scope_supports_conflict(claim_text,item["excerpt"],claim_anchor,evidence_anchor) for item in cleaned):temporal_failure="temporal_overlap_unproven"
                     elif temporal["relation"]=="timeless_rule":
                         related_ids={memory_id for item in cleaned for memory_id in item["related_memory_ids"]}
                         if not any(mem[memory_id].get("memory_type")=="static_canon" and mem[memory_id].get("predicate")=="rule" for memory_id in related_ids):temporal_failure="timeless_rule_unproven"
@@ -446,10 +493,42 @@ class WritingAnalysisEngine:
             if not isinstance(payload,dict) or set(payload)!={"summary","summary_sources","items"} or not isinstance(payload["summary_sources"],list) or not isinstance(payload["items"],list) or not 1<=len(payload["summary_sources"])<=3 or not 1<=len(payload["items"])<=12:raise ValueError("schema_invalid")
             summary_sources=[self._clean_source(item,maps,{"author_context","memory_record","source_span","draft_claim"},project_id) for item in payload["summary_sources"]]
             items=[]
+            draft_claims=data["layers"]["written"]["draft_claims"]
+            discarded_citation_mismatches=[]
             for raw in payload["items"]:
                 if not isinstance(raw,dict) or set(raw)!={"section","text","sources"} or raw.get("section") not in CONTEXT_BRIEF_SECTIONS or not isinstance(raw.get("sources"),list) or not 1<=len(raw["sources"])<=4:raise ValueError("schema_invalid")
                 sources=[self._clean_source(item,maps,{"author_context","memory_record","source_span","draft_claim"},project_id) for item in raw["sources"]]
-                items.append({"section":raw["section"],"text":self._text(raw["text"],600),"sources":sources})
+                item_text=self._text(raw["text"],600)
+                cited_ids={source["source_id"] for source in sources if source["source_type"]=="draft_claim"}
+                copied_text_sources:dict[str,set[str]]={}
+                for claim in draft_claims:
+                    if claim["text"] and claim["text"] in item_text:
+                        copied_text_sources.setdefault(claim["text"],set()).add(claim["id"])
+                if cited_ids and any(not source_ids.intersection(cited_ids) for source_ids in copied_text_sources.values()):
+                    discarded_citation_mismatches.append(len(items)+len(discarded_citation_mismatches))
+                    continue
+                items.append({"section":raw["section"],"text":item_text,"sources":sources})
+            draft_text=str(data["layers"]["written"]["draft"].get("excerpt", ""))
+            cited_draft={source["source_id"] for item in items for source in item["sources"] if source["source_type"]=="draft_claim"}
+            if draft_text.strip() and draft_claims and not cited_draft:
+                claim=draft_claims[0]
+                source=self._clean_source({"source_type":"draft_claim","source_id":claim["id"]},maps,{"draft_claim"},project_id)
+                text=("当前已保存草稿写道：" if _requires_cjk(draft_text) else "The saved current draft says: ")+claim["text"]
+                items=[{"section":"recent_source","text":text[:600],"sources":[source]},*items[:11]]
+                cited_draft={claim["id"]}
+            retrieval=data.get("retrieval",{})
+            truncated=retrieval.get("truncated",{})
+            scope=retrieval.get("draft_claim_scope",{})
+            selected_scopes=scope.get("selected",[{"id":item["id"],"truncated":False} for item in draft_claims])
+            selected_ids={item["id"] for item in selected_scopes}
+            draft_reasons=[]
+            if discarded_citation_mismatches:draft_reasons.append("draft_item_citation_mismatch")
+            if draft_text.strip() and not cited_draft:draft_reasons.append("draft_citation_missing")
+            if selected_ids-cited_draft:draft_reasons.append("draft_claim_uncovered")
+            if scope.get("available",len(selected_scopes))>len(selected_scopes):draft_reasons.append("draft_claim_unselected")
+            if any(item.get("truncated") for item in selected_scopes):draft_reasons.append("draft_claim_truncated")
+            if truncated.get("draft_body"):draft_reasons.append("draft_body_truncated")
+            if not items:draft_reasons.append("evidence_insufficient")
             deterministic_summary=[];deterministic_sources=[];source_keys=set()
             section_order={name:index for index,name in enumerate(("recent_source","related_plan","confirmed_fact","character_state","world_rule","open_thread"))}
             for item in sorted(items,key=lambda value:section_order[value["section"]]):
@@ -466,8 +545,11 @@ class WritingAnalysisEngine:
                 draft_excerpt=str(data["layers"]["written"]["draft"].get("excerpt", ""))
                 fallback_summary="已根据所列来源整理当前写作上下文，具体事实与引用见分项。" if _requires_cjk(draft_excerpt) else "Writing context was organized from the listed sources; see item-level citations for factual details."
                 deterministic_summary=[fallback_summary];deterministic_sources=fallback_sources
-            return {"summary":" ".join(deterministic_summary),"summary_sources":deterministic_sources,"items":items}
+            return {"summary":" ".join(deterministic_summary),"summary_sources":deterministic_sources,"items":items,"evidence_status":"partial" if draft_reasons else "supported","draft_coverage":{"status":"partial" if draft_reasons else "covered" if draft_text.strip() else "empty","source_ids":sorted(cited_draft),"cited_ranges":[item for item in selected_scopes if item["id"] in cited_draft],"uncovered_source_ids":sorted(selected_ids-cited_draft),"unselected_count":max(0,scope.get("available",len(selected_scopes))-len(selected_scopes)),"discarded_item_indices":discarded_citation_mismatches,"reasons":draft_reasons}}
         if task=="change_impact":
+            target_source=data.get("retrieval",{}).get("target_source")
+            if target_source and target_source.get("status")!="selected":
+                return {"summary":CHANGE_IMPACT_INSUFFICIENT_SUMMARY,"evidence_status":"insufficient","items":[],"proposal":data["proposal"]}
             if not isinstance(payload,dict) or set(payload)!={"summary","items"} or not isinstance(payload["items"],list) or len(payload["items"])>20:raise ValueError("schema_invalid")
             layers=data["layers"]
             targets={"chapter":{item["id"]:f"第 {item['chapter_number']} 章 · {item['title']}" for item in layers["reference"]["chapters"]},"character":{item["id"]:item["name"] for item in layers["identity"]["characters"]},"world":{item["id"]:item["name"] for item in layers["reference"]["world_entries"]},"memory":{item["id"]:f"{item['subject']} · {item['predicate']}" for item in layers["confirmed"]["memory_records"]},"plan":{item["id"]:(item.get("title") or item.get("name") or "创作计划") for group in layers["planned"].values() for item in group}}
@@ -475,6 +557,7 @@ class WritingAnalysisEngine:
             for raw in payload["items"]:
                 if not isinstance(raw,dict) or set(raw)!={"area","target_id","impact","evidence"} or raw.get("area") not in targets or raw.get("target_id") not in targets[raw["area"]] or (raw["area"],raw["target_id"]) in seen or not isinstance(raw.get("evidence"),list) or not 1<=len(raw["evidence"])<=5:raise ValueError("evidence_unresolvable")
                 evidence=[self._clean_source(item,maps,allowed,project_id) for item in raw["evidence"]]
+                if raw["area"]=="chapter" and not any(item["source_type"]=="source_span" and maps["source_span"][item["source_id"]]["chapter_id"]==raw["target_id"] for item in evidence):continue
                 seen.add((raw["area"],raw["target_id"]));items.append({"area":raw["area"],"target_id":raw["target_id"],"label":targets[raw["area"]][raw["target_id"]],"impact":self._text(raw["impact"],600),"evidence":evidence})
             if not items:return {"summary":CHANGE_IMPACT_INSUFFICIENT_SUMMARY,"evidence_status":"insufficient","items":[],"proposal":data["proposal"]}
             return {"summary":self._text(payload["summary"],400),"evidence_status":"supported","items":items,"proposal":data["proposal"]}

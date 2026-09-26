@@ -871,8 +871,19 @@ class UsageGuardProvider:
         context = _usage_context.get()
         if context is None:
             raise ValueError("usage_context_required")
-        try:
-            self._service.reserve_provider_attempt(context.user_id, context.reservation_id)
-        except DomainError as error:
-            raise ValueError(error.code) from error
+        from .provider import DeepSeekProvider, ProviderDispatchDenied, provider_dispatch_guard
+
+        def reserve_dispatch() -> None:
+            try:
+                self._service.reserve_provider_attempt(context.user_id, context.reservation_id)
+            except DomainError as error:
+                raise ProviderDispatchDenied(error.code) from error
+
+        # The real transport can retry inside one evaluate. Reserve each HTTP
+        # dispatch there; injected non-HTTP providers retain one reservation per
+        # evaluate for the existing offline contract.
+        if isinstance(self._provider, DeepSeekProvider):
+            with provider_dispatch_guard(reserve_dispatch):
+                return self._provider.evaluate(request)
+        reserve_dispatch()
         return self._provider.evaluate(request)

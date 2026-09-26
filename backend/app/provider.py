@@ -4,8 +4,10 @@ import json
 import math
 import os
 import time
+from contextlib import contextmanager
+from contextvars import ContextVar
 from dataclasses import dataclass
-from typing import Any, Protocol
+from typing import Any, Callable, Iterator, Protocol
 
 from .memory_contract import CONTROLLED_PREDICATES
 
@@ -23,11 +25,28 @@ class ProviderUnavailable(Exception):
 
 
 class ProviderTimeout(Exception):
-    pass
+    usage_unknown = True
 
 
 class ProviderFailure(Exception):
-    pass
+    usage_unknown = False
+
+
+class ProviderDispatchDenied(ValueError):
+    """The persistent quota rejected an HTTP dispatch before it was sent."""
+    usage_unknown = False
+
+
+_dispatch_guard: ContextVar[Callable[[], None] | None] = ContextVar("provider_dispatch_guard", default=None)
+
+
+@contextmanager
+def provider_dispatch_guard(guard: Callable[[], None]) -> Iterator[None]:
+    token = _dispatch_guard.set(guard)
+    try:
+        yield
+    finally:
+        _dispatch_guard.reset(token)
 
 
 class ProviderInvalidJson(Exception):
@@ -38,7 +57,10 @@ class ProviderInvalidJson(Exception):
     """
     def __init__(self, input_tokens: int | None = None, output_tokens: int | None = None,
                  cost_cny: float | None = None, latency_ms: int | None = None,
-                 finish_reason: str | None = None):
+                 finish_reason: str | None = None,
+                 observed_response_input_tokens: int | None = None,
+                 observed_response_output_tokens: int | None = None,
+                 observed_response_cost_cny: float | None = None):
         super().__init__("provider_invalid_json")
         self.input_tokens = input_tokens
         self.output_tokens = output_tokens
@@ -46,6 +68,9 @@ class ProviderInvalidJson(Exception):
         self.latency_ms = latency_ms
         self.finish_reason = finish_reason
         self.cost_available = cost_cny is not None
+        self.observed_response_input_tokens = observed_response_input_tokens
+        self.observed_response_output_tokens = observed_response_output_tokens
+        self.observed_response_cost_cny = observed_response_cost_cny
 
 
 class InputBudgetExceeded(Exception):
@@ -60,9 +85,14 @@ class ProviderResult:
     cost_cny: float | None = None
     latency_ms: int | None = None
     finish_reason: str | None = None
+    # A later successful response can be observed after a timed-out dispatch,
+    # while the total run usage remains unknown.
+    observed_response_input_tokens: int | None = None
+    observed_response_output_tokens: int | None = None
+    observed_response_cost_cny: float | None = None
 
 
-CONTINUITY_PROMPT_VERSION = "continuity-review-v14-narrative-scope"
+CONTINUITY_PROMPT_VERSION = "continuity-review-v15-knowledge-time"
 
 CONTINUITY_REVIEW_RULES = (
     "Write every author-facing explanation, reasoning, and suggested revision in the dominant language of the bound draft. Preserve proper nouns from the source.",
@@ -72,6 +102,7 @@ CONTINUITY_REVIEW_RULES = (
     "For every trustworthy issue, emit temporal_basis. claim_anchor and evidence_anchor must be exact substrings copied from the supplied claim and cited evidence, or null. relation must be explicit_overlap, timeless_rule, explicit_later_transition, or unknown. confirmed_conflict requires explicit_overlap with real time anchors in both texts, or timeless_rule grounded by a supplied static_canon rule. The words current narrative, current scene, or chapter order are never time anchors.",
     "A claim_anchor belongs only to the exact current_claims[id].text for the issue's claim_span_id. A time phrase in an adjacent sentence, another claim, or the overall draft cannot be copied as this claim's anchor. If the current claim has no literal time anchor, use null and unknown unless an actually supplied timeless rule applies. An evidence_anchor must likewise occur in that issue's cited excerpt. Do not manufacture anchors to justify a label.",
     "Classify nature as state_change when a prior state and a later explicit transition can both be true. Explain the before/after ordering in reasoning; do not mislabel an ordinary transition as a confirmed conflict.",
+    "For character knowledge, a bounded statement that someone did not know at an earlier time says nothing by itself about what they could learn later. A later discovery may be a compatible state change. Treat recollections as claims about the recalled time, and reported speech or a character's lie as an attributed claim rather than narrator-confirmed canon. Require cited evidence tying the same person's knowledge to the same story time before declaring a confirmed conflict; otherwise use insufficient_evidence or omit a compatible claim.",
     "Chapter order gives narrative position only; it does not by itself prove story chronology. Determine same time, later time, flashback, or a bounded period only from explicit temporal language in the supplied text. Never invent a same-time link by saying only 'current narrative'. When text explicitly bounds a prior fact through an earlier period, a later changed state can coexist with it: use state_change for an explicit transition, or insufficient_evidence when the required learning, handoff, or transition is absent.",
     "A recollection, flashback, or description of an earlier date does not assert that an earlier state still holds at a later date. Different dates or hours are not overlapping merely because they concern the same object. The current draft itself is supplied written evidence: when it explicitly states the later action that changes a prior mutable state, that action is the transition, not a missing intermediate event. Do not demand a second source proving every compatible new event.",
     "Distinguish a character's utterance or belief from the narrator's asserted world facts. An explicitly identified lie, deliberately false testimony, imagined event, or quotation is not an assertion by the narrator that its content is true. Use the supplied narrative framing and explicit correction; do not report an intentional false utterance as a factual continuity conflict merely because the utterance differs from canon. Do not invent deception when the text does not mark it.",
@@ -321,13 +352,19 @@ class DeepSeekProvider:
             "max_tokens": self.max_output_tokens,
         }
         started = time.perf_counter()
+        prior_dispatch_usage_unknown = False
         for attempt in range(self.max_retries + 1):
+            post_started = False
             try:
                 request_cap=getattr(self,"request_cap",None)
                 if request_cap is not None and self.request_attempts >= request_cap:
                     raise ProviderFailure()
-                self.request_attempts += 1
                 with self._factory() as client:
+                    guard = _dispatch_guard.get()
+                    if guard is not None:
+                        guard()
+                    self.request_attempts += 1
+                    post_started = True
                     response = client.post(
                         self.base_url.rstrip("/") + "/chat/completions",
                         headers={"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"},
@@ -343,20 +380,32 @@ class DeepSeekProvider:
                         parsed = parse_json_content(choice["message"]["content"])
                     except json.JSONDecodeError as error:
                         raise ProviderInvalidJson(
-                            usage.get("prompt_tokens"), usage.get("completion_tokens"), usage.get("cost_cny"),
+                            None if prior_dispatch_usage_unknown else usage.get("prompt_tokens"),
+                            None if prior_dispatch_usage_unknown else usage.get("completion_tokens"),
+                            None if prior_dispatch_usage_unknown else usage.get("cost_cny"),
                             latency_ms, finish_reason,
+                            usage.get("prompt_tokens"),usage.get("completion_tokens"),usage.get("cost_cny"),
                         ) from error
                     self.successful_responses += 1
                     return ProviderResult(
                         parsed,
+                        None if prior_dispatch_usage_unknown else usage.get("prompt_tokens"),
+                        None if prior_dispatch_usage_unknown else usage.get("completion_tokens"),
+                        None if prior_dispatch_usage_unknown else usage.get("cost_cny"),
+                        latency_ms,
+                        finish_reason,
                         usage.get("prompt_tokens"),
                         usage.get("completion_tokens"),
                         usage.get("cost_cny"),
-                        latency_ms,
-                        finish_reason,
                     )
             except TIMEOUT_ERRORS as error:
+                prior_dispatch_usage_unknown = True
                 if attempt == self.max_retries:
                     raise ProviderTimeout() from error
+            except ProviderDispatchDenied as error:
+                error.usage_unknown = prior_dispatch_usage_unknown
+                raise
             except HTTP_ERRORS + (AttributeError, ValueError, KeyError, TypeError) as error:
-                raise ProviderFailure() from error
+                failure = ProviderFailure()
+                failure.usage_unknown = prior_dispatch_usage_unknown or post_started
+                raise failure from error

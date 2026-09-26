@@ -20,8 +20,8 @@ async function register(page:Page){
 
 async function createProject(page:Page){
   await page.getByRole("button",{name:"作品管理",exact:true}).click();
-  await page.getByRole("button",{name:"新建作品",exact:true}).click();
-  await page.getByLabel("作品名称",{exact:true}).fill("雾钟返航闭环");
+  await page.getByRole("button",{name:"新建作品",exact:true}).first().click();
+  await page.getByRole("textbox",{name:/作品名称/}).fill("雾钟返航闭环");
   await page.getByRole("button",{name:"创建并进入作品",exact:true}).click();
   await expect(page).toHaveURL(/\/projects\/[^/]+\/overview$/);
   const match=page.url().match(/\/projects\/([^/]+)\//);
@@ -33,7 +33,7 @@ async function saveDraft(page:Page,body:string){
   const editor=page.locator("#draft-body");
   await editor.fill(body);
   await page.getByRole("button",{name:"保存草稿",exact:true}).click();
-  await expect(page.getByText(/草稿已保存为 revision/)).toBeVisible();
+  await expect(page.getByRole("status").getByText(/草稿已保存于/)).toBeVisible();
 }
 
 async function snap(page:Page,name:string){
@@ -53,7 +53,8 @@ test("v1.3.0 writing analysis closes brief, alignment, retry, stale, and mobile 
 
   await page.getByRole("button",{name:"生成章节简报",exact:true}).click();
   const brief=page.locator('.writing-analysis-result[aria-label="章节简报结果"]');
-  await expect(brief.getByText("写作前先守住返航目标、角色当前状态与雾港规则。",{exact:true})).toBeVisible();
+  await expect(brief.getByText(/当前已保存草稿写道：林默带着潮汐表返回雾港/).first()).toBeVisible();
+  await expect(brief.getByRole("status").getByText(/当前已保存草稿：部分覆盖/)).toBeVisible();
   await brief.getByText(/查看来源/).first().click();
   await expect(brief.getByText(/author_context/).first()).toBeVisible();
 
@@ -68,13 +69,14 @@ test("v1.3.0 writing analysis closes brief, alignment, retry, stale, and mobile 
   await page.getByRole("button",{name:"生成章节简报",exact:true}).click();
   await expect(brief.getByText(/结果未通过结构校验/)).toBeVisible();
   await brief.getByRole("button",{name:"重试",exact:true}).click();
-  await expect(brief.getByText("写作前先守住返航目标、角色当前状态与雾港规则。",{exact:true})).toBeVisible();
+  await expect(brief.getByRole("status").getByText(/当前已保存草稿：全部选入主张已引用/)).toBeVisible();
 
   await saveDraft(page,"林默改写了返航后的第一段。" );
   await expect(brief.getByText("依据已变化",{exact:true})).toBeVisible();
   await expect(alignment.getByText("依据已变化",{exact:true})).toBeVisible();
 
   await page.setViewportSize({width:390,height:844});
+  await page.getByRole("navigation",{name:"手机浏览内容"}).getByRole("button",{name:"资料"}).click();
   await expect(brief).toBeVisible();
   await expect(alignment).toBeVisible();
   await expect(page.getByRole("button",{name:"生成章节简报",exact:true})).toHaveCount(0);

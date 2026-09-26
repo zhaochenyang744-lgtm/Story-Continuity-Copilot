@@ -1,0 +1,940 @@
+{
+  "engine_sha256": "f79d2494a7bfe632da29c5ef9c2a7113c12b210e90b459df3e1ee773daccf863",
+  "g01": [
+    {
+      "name": "positive_same_relative_day",
+      "claim": "今日十八点，秦渡已经知道信使身份。",
+      "evidence": "今日十八点，秦渡还不知道信使身份。",
+      "anchors": {
+        "claim_anchor": "十八点",
+        "evidence_anchor": "十八点",
+        "relation": "explicit_overlap"
+      },
+      "validation": {
+        "accepted": true,
+        "output": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "今日十八点，秦渡还不知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ]
+      },
+      "execute": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "今日十八点，秦渡还不知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "retrieval_traces": [
+          {
+            "claim_id": "claim-1",
+            "returned_span_ids": [
+              "span-1"
+            ]
+          }
+        ],
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "contract_normalization_count": 0,
+        "contract_normalizations": [],
+        "input_tokens": 1,
+        "output_tokens": 1,
+        "latency_ms": null,
+        "cost_cny": null
+      },
+      "fake_calls": 1
+    },
+    {
+      "name": "positive_same_calendar_date",
+      "claim": "九月二十五日十八点，秦渡已经知道信使身份。",
+      "evidence": "九月二十五日十八点，秦渡还不知道信使身份。",
+      "anchors": {
+        "claim_anchor": "十八点",
+        "evidence_anchor": "十八点",
+        "relation": "explicit_overlap"
+      },
+      "validation": {
+        "accepted": true,
+        "output": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "九月二十五日十八点，秦渡还不知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ]
+      },
+      "execute": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "九月二十五日十八点，秦渡还不知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "retrieval_traces": [
+          {
+            "claim_id": "claim-1",
+            "returned_span_ids": [
+              "span-1"
+            ]
+          }
+        ],
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "contract_normalization_count": 0,
+        "contract_normalizations": [],
+        "input_tokens": 1,
+        "output_tokens": 1,
+        "latency_ms": null,
+        "cost_cny": null
+      },
+      "fake_calls": 1
+    },
+    {
+      "name": "positive_same_ordinal_day",
+      "claim": "第十一天十八点，秦渡已经知道信使身份。",
+      "evidence": "第十一天十八点，秦渡还不知道信使身份。",
+      "anchors": {
+        "claim_anchor": "十八点",
+        "evidence_anchor": "十八点",
+        "relation": "explicit_overlap"
+      },
+      "validation": {
+        "accepted": true,
+        "output": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "第十一天十八点，秦渡还不知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ]
+      },
+      "execute": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "第十一天十八点，秦渡还不知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "retrieval_traces": [
+          {
+            "claim_id": "claim-1",
+            "returned_span_ids": [
+              "span-1"
+            ]
+          }
+        ],
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "contract_normalization_count": 0,
+        "contract_normalizations": [],
+        "input_tokens": 1,
+        "output_tokens": 1,
+        "latency_ms": null,
+        "cost_cny": null
+      },
+      "fake_calls": 1
+    },
+    {
+      "name": "compatible_same_day_two_clock_transition",
+      "claim": "今日十九点，秦渡已经知道信使身份。",
+      "evidence": "今日十八点，秦渡还不知道信使身份，直到十九点才从密信获知身份。",
+      "anchors": {
+        "claim_anchor": "十九点",
+        "evidence_anchor": "十九点",
+        "relation": "explicit_overlap"
+      },
+      "validation": {
+        "accepted": true,
+        "output": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "今日十八点，秦渡还不知道信使身份，直到十九点才从密信获知身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ]
+      },
+      "execute": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "今日十八点，秦渡还不知道信使身份，直到十九点才从密信获知身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "retrieval_traces": [
+          {
+            "claim_id": "claim-1",
+            "returned_span_ids": [
+              "span-1"
+            ]
+          }
+        ],
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "contract_normalization_count": 0,
+        "contract_normalizations": [],
+        "input_tokens": 1,
+        "output_tokens": 1,
+        "latency_ms": null,
+        "cost_cny": null
+      },
+      "fake_calls": 1
+    },
+    {
+      "name": "positive_conflict_unrelated_recollection_in_source",
+      "claim": "今日十八点，秦渡已经知道信使身份。",
+      "evidence": "今日十八点，秦渡还不知道信使身份。另一间屋内，陈澈回忆童年的航海经历。",
+      "anchors": {
+        "claim_anchor": "十八点",
+        "evidence_anchor": "十八点",
+        "relation": "explicit_overlap"
+      },
+      "validation": {
+        "accepted": false,
+        "error": "temporal_overlap_unproven"
+      },
+      "execute": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "insufficient_evidence",
+            "category": "character_knowledge",
+            "severity": "medium",
+            "evidence_status": "insufficient",
+            "explanation": "现有材料不足以证明当前主张与引用事实在同一故事时间和范围内相互矛盾，暂不能判定为确定冲突。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "今日十八点，秦渡还不知道信使身份。另一间屋内，陈澈回忆童年的航海经历。",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "需要补充明确的时间锚点、适用范围或连接事件，才能判断两项陈述是否不能同时成立。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "retrieval_traces": [
+          {
+            "claim_id": "claim-1",
+            "returned_span_ids": [
+              "span-1"
+            ]
+          }
+        ],
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "contract_normalization_count": 1,
+        "contract_normalizations": [
+          {
+            "claim_span_id": "claim-1",
+            "reason_code": "temporal_overlap_unproven",
+            "outcome": "insufficient_evidence",
+            "provider_attempt": 2
+          }
+        ],
+        "input_tokens": 2,
+        "output_tokens": 2,
+        "latency_ms": null,
+        "cost_cny": null
+      },
+      "fake_calls": 2
+    }
+  ],
+  "g02": [
+    {
+      "case": "positive_every_item_correctly_cited",
+      "input": {
+        "task": "context_brief",
+        "bindings": {
+          "project_id": "independent-coverage",
+          "draft_id": "short",
+          "draft_revision": 2,
+          "source_revision": 1
+        },
+        "layers": {
+          "planned": {
+            "story_plans": [],
+            "character_plans": [],
+            "world_plans": []
+          },
+          "confirmed": {
+            "memory_records": []
+          },
+          "written": {
+            "draft": {
+              "id": "short",
+              "revision": 2,
+              "excerpt": "林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。"
+            },
+            "draft_claims": [
+              {
+                "id": "draft-claim-short-r2-1",
+                "ordinal": 1,
+                "text": "林默走进北门。"
+              },
+              {
+                "id": "draft-claim-short-r2-2",
+                "ordinal": 2,
+                "text": "银钥匙已经交给陈澈。"
+              },
+              {
+                "id": "draft-claim-short-r2-3",
+                "ordinal": 3,
+                "text": "她此时已经知道弟弟还活着。"
+              }
+            ],
+            "source_spans": [
+              {
+                "id": "span-1",
+                "chapter_id": "chapter-1",
+                "chapter_number": 1,
+                "chapter_title": "封锁",
+                "label": "历史正文",
+                "body": "渡口昨夜已经封锁。"
+              }
+            ]
+          }
+        },
+        "retrieval": {
+          "selected_ids": {
+            "author_context": [],
+            "memory_record": [],
+            "source_span": [
+              "span-1"
+            ],
+            "draft_claim": [
+              "draft-claim-short-r2-1",
+              "draft-claim-short-r2-2",
+              "draft-claim-short-r2-3"
+            ]
+          },
+          "counts": {
+            "author_context": {
+              "available": 0,
+              "selected": 0
+            },
+            "memory_record": {
+              "available": 0,
+              "selected": 0
+            },
+            "source_span": {
+              "available": 1,
+              "selected": 1
+            },
+            "draft_claim": {
+              "available": 3,
+              "selected": 3
+            }
+          },
+          "truncated": {
+            "author_context": false,
+            "memory_record": false,
+            "source_span": false,
+            "draft_body": false,
+            "draft_claim": false
+          }
+        }
+      },
+      "payload": {
+        "summary": "林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-1"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-2"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-3"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "林默走进北门。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-1"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "银钥匙已经交给陈澈。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-2"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "她此时已经知道弟弟还活着。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-3"
+              }
+            ]
+          }
+        ]
+      },
+      "result": {
+        "summary": "林默走进北门。 银钥匙已经交给陈澈。 她此时已经知道弟弟还活着。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "林默走进北门。",
+            "source_path": "/projects/independent-coverage/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "银钥匙已经交给陈澈。",
+            "source_path": "/projects/independent-coverage/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-3",
+            "label": "当前草稿 · 句 3",
+            "excerpt": "她此时已经知道弟弟还活着。",
+            "source_path": "/projects/independent-coverage/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "林默走进北门。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "林默走进北门。",
+                "source_path": "/projects/independent-coverage/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "银钥匙已经交给陈澈。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "银钥匙已经交给陈澈。",
+                "source_path": "/projects/independent-coverage/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "她此时已经知道弟弟还活着。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-3",
+                "label": "当前草稿 · 句 3",
+                "excerpt": "她此时已经知道弟弟还活着。",
+                "source_path": "/projects/independent-coverage/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "draft-claim-short-r2-1",
+            "draft-claim-short-r2-2",
+            "draft-claim-short-r2-3"
+          ],
+          "cited_ranges": [
+            {
+              "id": "draft-claim-short-r2-1",
+              "truncated": false
+            },
+            {
+              "id": "draft-claim-short-r2-2",
+              "truncated": false
+            },
+            {
+              "id": "draft-claim-short-r2-3",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "reasons": []
+        }
+      },
+      "all_item_texts_equal_their_own_source_excerpt": true
+    },
+    {
+      "case": "all_ids_cited_but_each_item_uses_wrong_source",
+      "input": {
+        "task": "context_brief",
+        "bindings": {
+          "project_id": "independent-coverage",
+          "draft_id": "short",
+          "draft_revision": 2,
+          "source_revision": 1
+        },
+        "layers": {
+          "planned": {
+            "story_plans": [],
+            "character_plans": [],
+            "world_plans": []
+          },
+          "confirmed": {
+            "memory_records": []
+          },
+          "written": {
+            "draft": {
+              "id": "short",
+              "revision": 2,
+              "excerpt": "林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。"
+            },
+            "draft_claims": [
+              {
+                "id": "draft-claim-short-r2-1",
+                "ordinal": 1,
+                "text": "林默走进北门。"
+              },
+              {
+                "id": "draft-claim-short-r2-2",
+                "ordinal": 2,
+                "text": "银钥匙已经交给陈澈。"
+              },
+              {
+                "id": "draft-claim-short-r2-3",
+                "ordinal": 3,
+                "text": "她此时已经知道弟弟还活着。"
+              }
+            ],
+            "source_spans": [
+              {
+                "id": "span-1",
+                "chapter_id": "chapter-1",
+                "chapter_number": 1,
+                "chapter_title": "封锁",
+                "label": "历史正文",
+                "body": "渡口昨夜已经封锁。"
+              }
+            ]
+          }
+        },
+        "retrieval": {
+          "selected_ids": {
+            "author_context": [],
+            "memory_record": [],
+            "source_span": [
+              "span-1"
+            ],
+            "draft_claim": [
+              "draft-claim-short-r2-1",
+              "draft-claim-short-r2-2",
+              "draft-claim-short-r2-3"
+            ]
+          },
+          "counts": {
+            "author_context": {
+              "available": 0,
+              "selected": 0
+            },
+            "memory_record": {
+              "available": 0,
+              "selected": 0
+            },
+            "source_span": {
+              "available": 1,
+              "selected": 1
+            },
+            "draft_claim": {
+              "available": 3,
+              "selected": 3
+            }
+          },
+          "truncated": {
+            "author_context": false,
+            "memory_record": false,
+            "source_span": false,
+            "draft_body": false,
+            "draft_claim": false
+          }
+        }
+      },
+      "payload": {
+        "summary": "林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-2"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-3"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-1"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "林默走进北门。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-2"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "银钥匙已经交给陈澈。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-3"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "她此时已经知道弟弟还活着。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-1"
+              }
+            ]
+          }
+        ]
+      },
+      "result": {
+        "summary": "林默走进北门。 银钥匙已经交给陈澈。 她此时已经知道弟弟还活着。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "银钥匙已经交给陈澈。",
+            "source_path": "/projects/independent-coverage/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-3",
+            "label": "当前草稿 · 句 3",
+            "excerpt": "她此时已经知道弟弟还活着。",
+            "source_path": "/projects/independent-coverage/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "林默走进北门。",
+            "source_path": "/projects/independent-coverage/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "林默走进北门。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "银钥匙已经交给陈澈。",
+                "source_path": "/projects/independent-coverage/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "银钥匙已经交给陈澈。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-3",
+                "label": "当前草稿 · 句 3",
+                "excerpt": "她此时已经知道弟弟还活着。",
+                "source_path": "/projects/independent-coverage/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "她此时已经知道弟弟还活着。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "林默走进北门。",
+                "source_path": "/projects/independent-coverage/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "draft-claim-short-r2-1",
+            "draft-claim-short-r2-2",
+            "draft-claim-short-r2-3"
+          ],
+          "cited_ranges": [
+            {
+              "id": "draft-claim-short-r2-1",
+              "truncated": false
+            },
+            {
+              "id": "draft-claim-short-r2-2",
+              "truncated": false
+            },
+            {
+              "id": "draft-claim-short-r2-3",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "reasons": []
+        }
+      },
+      "all_item_texts_equal_their_own_source_excerpt": false
+    }
+  ],
+  "scope": "offline fake provider / validation only; original evidence untouched"
+}

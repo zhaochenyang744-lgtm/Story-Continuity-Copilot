@@ -365,10 +365,13 @@ export type WritingAnalysisRun = {
     selected_ids: Record<string, string[]>;
     counts: Record<string, { available: number; selected: number }>;
     truncated: Record<string, boolean>;
+      target_source?: { memory_id: string; source_span_id: string | null; status: "selected" | "unlocated" | "missing"; source_revision: number | null; original_chars: number | null; excerpt_chars: number | null; excerpt_truncated: boolean };
+      draft_claim_scope?: { body_chars: number; excerpt_chars: number; available: number; selected: { id: string; source_start: number; source_end: number; supplied_end: number; source_chars: number; supplied_chars: number; truncated: boolean }[] };
   };
   analysis?: {
     summary: string;
-    evidence_status?: "supported" | "insufficient";
+    evidence_status?: "supported" | "partial" | "insufficient";
+    draft_coverage?: { status: "covered" | "partial" | "empty"; source_ids: string[]; cited_ranges?: { id: string; source_start: number; source_end: number; supplied_end: number; source_chars: number; supplied_chars: number; truncated: boolean }[]; uncovered_source_ids?: string[]; unselected_count?: number; discarded_item_indices?: number[]; reasons: string[] };
     summary_sources?: AnalysisSource[];
     proposal?: { target_type: "chapter" | "character" | "world" | "memory" | "plan" | "general"; target_id?: string | null; proposed_change: string };
     items: ({ section: "related_plan" | "confirmed_fact" | "character_state" | "world_rule" | "open_thread" | "recent_source"; text: string; sources: AnalysisSource[] } | { story_plan_id: string; story_plan_title: string; status: "planned_covered" | "planned_missing" | "planned_early" | "planned_changed" | "insufficient_evidence"; explanation: string; plan_source: AnalysisSource; evidence: AnalysisSource[] } | { area: "chapter" | "character" | "world" | "memory" | "plan"; target_id: string; label: string; impact: string; evidence: AnalysisSource[] })[];

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Editor, EditorContent, useEditor } from "@tiptap/react";
 import type { JSONContent } from "@tiptap/core";
+import { Mark } from "@tiptap/pm/model";
 import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "@tiptap/markdown";
 import type { DraftBodyFormat } from "../model";
@@ -126,7 +127,9 @@ export function DraftWordCount({targetId, body}: {targetId: string; body: string
 export function replaceVisibleDraftText(targetId: string, before: string, after: string) {
   const editor = editors.get(targetId)?.editor;
   if (!editor?.isEditable || !before || before === after) return false;
-  const matches: {from: number; to: number}[] = [];
+  // Hard breaks and cross-block replacements cannot preserve structure safely.
+  if (/[\r\n]/.test(before) || /[\r\n]/.test(after)) return false;
+  const matches: {from: number; to: number; marks: readonly Mark[]; safe: boolean}[] = [];
   editor.state.doc.descendants((node, position) => {
     if (!node.isTextblock) return true;
     let visible = "";
@@ -143,18 +146,21 @@ export function replaceVisibleDraftText(targetId: string, before: string, after:
       }
     });
     for (let index = visible.indexOf(before); index >= 0; index = visible.indexOf(before, index + 1)) {
-      matches.push({from: position + 1 + boundaries[index], to: position + 1 + boundaries[index + before.length]});
+      const start = boundaries[index], end = boundaries[index + before.length];
+      let marks: readonly Mark[] | null = null;
+      let safe = true;
+      node.forEach((child, offset) => {
+        if (offset >= end || offset + child.nodeSize <= start) return;
+        if (!child.isText || (marks !== null && !Mark.sameSet(marks, child.marks))) safe = false;
+        if (marks === null && child.isText) marks = child.marks;
+      });
+      matches.push({from: position + 1 + start, to: position + 1 + end, marks: marks ?? [], safe: safe && marks !== null});
     }
     return false;
   });
-  if (matches.length !== 1) return false;
+  if (matches.length !== 1 || !matches[0].safe) return false;
   return editor.chain().focus().command(({tr}) => {
-    const parts = after.replace(/\r\n/g, "\n").split("\n");
-    const content = parts.flatMap((part, index) => [
-      ...(index ? [editor.schema.nodes.hardBreak.create()] : []),
-      ...(part ? [editor.schema.text(part)] : []),
-    ]);
-    if (content.length) tr.replaceWith(matches[0].from, matches[0].to, content);
+    if (after) tr.replaceWith(matches[0].from, matches[0].to, editor.schema.text(after, matches[0].marks));
     else tr.delete(matches[0].from, matches[0].to);
     return true;
   }).run();

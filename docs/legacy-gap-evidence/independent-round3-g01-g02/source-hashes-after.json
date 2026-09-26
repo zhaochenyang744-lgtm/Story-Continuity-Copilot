@@ -1,0 +1,37 @@
+[
+  {
+    "path": "backend\\app\\engine.py",
+    "sha256": "DF9B2A19B07744B318743802679C22F67A49AF13A67275CF81F74C0D06891EA4",
+    "unchanged": true
+  },
+  {
+    "path": "backend\\app\\provider.py",
+    "sha256": "E415C36CC08114492E7AC5305EF67DB89EB58F1A06AA01A0A19C9C89B91B7380",
+    "unchanged": true
+  },
+  {
+    "path": "backend\\app\\v2_database.py",
+    "sha256": "9F0B8C2B512F2D69F03CBC7193D83D9681FE42FE3ADE51A7FCC4AD494FDBA965",
+    "unchanged": true
+  },
+  {
+    "path": "backend\\tests\\test_v140_real_ai_contract_repairs.py",
+    "sha256": "3BC5481CD33EC589620061F885FE5B516529C2DD2EC8E42C5CCB88CB0E740398",
+    "unchanged": true
+  },
+  {
+    "path": "backend\\tests\\test_v130_writing_analysis.py",
+    "sha256": "2770182D22A3BB37B0EBF1BFD38C85B704A19F9012CD07F93F2273781D9F78D6",
+    "unchanged": true
+  },
+  {
+    "path": "frontend\\app\\components\\Workbench.tsx",
+    "sha256": "BF76619E7AE5D3652A99D70FA5B440CAA8A38EA1235814180014DA1116823680",
+    "unchanged": true
+  },
+  {
+    "path": "frontend\\app\\model.ts",
+    "sha256": "D1999849318EAF94DC50F1321F37675BBF4CC2AD6AEB9C8E6C15AC7DF0DD9E1B",
+    "unchanged": true
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "backend/app/engine.py": "f79d2494a7bfe632da29c5ef9c2a7113c12b210e90b459df3e1ee773daccf863",
+  "backend/app/provider.py": "5138bc1563d4670c450d08d219cc9231be1cfe34ed165cadba39de24b37416d1",
+  "backend/app/stage13.py": "957c219bb3f8036e421c63ba7c204ed1767d2d334a39a08aa958f5119cfd9500",
+  "backend/app/v2_database.py": "9f0b8c2b512f2d69f03cbc7193d83d9681fe42fe3ade51a7fcc4ad494fdba965",
+  "backend/app/operations.py": "ea9d4628417a4056f187da25635c2deedb9e501faad648202d5be7570dcd405c",
+  "backend/tests/test_legacy_dispatch_quota.py": "3f861fa98b178010b4fba3207a78b63fc59e9b234d69529bc35318bd915fb33b",
+  "backend/tests/test_v130_character_alias_change_impact.py": "8e29a6ff6f19bfaa3b8a3251d2dab12a8c305011af188c603002aa9333be82d5",
+  "docs/legacy-gap-repair-handoff.md": "e94f3b2d943c1f8ccfa30e09835f5b2f4b7027d2e6b4886178eb8b7245287047",
+  "docs/legacy-gap-repair-plan.md": "e0c2ce36daa0d36420cfc263ce4b22208877a956fda9cb91ebaeaee08dc694ce"
+}

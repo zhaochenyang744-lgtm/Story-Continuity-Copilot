@@ -73,7 +73,10 @@ class V130WritingAnalysisTests(unittest.TestCase):
         self.assertEqual(brief.status_code,202,brief.text)
         brief_view=self.client.get(f"/api/projects/{self.project_id}/analyses/{brief.json()['data']['run_id']}").json()["data"]
         self.assertEqual((brief_view["status"],brief_view["analysis_type"],brief_view["is_stale"]),("completed","context_brief",False))
-        self.assertEqual(brief_view["analysis"]["items"][0]["sources"][0]["source_type"],"author_context")
+        self.assertTrue(any(item["sources"][0]["source_type"]=="author_context" for item in brief_view["analysis"]["items"]))
+        self.assertEqual(brief_view["analysis"]["draft_coverage"]["status"],"partial")
+        self.assertIn("draft_claim_uncovered",brief_view["analysis"]["draft_coverage"]["reasons"])
+        self.assertTrue(any(source["source_type"]=="draft_claim" for item in brief_view["analysis"]["items"] for source in item["sources"]))
         self.assertEqual(brief_view["retrieval"]["method_version"],"writing-analysis-lexical-v2-draft-claims")
         self.assertTrue(brief_view["retrieval"]["selected_ids"]["draft_claim"])
         self.assertTrue(brief_view["retrieval"]["selected_ids"]["memory_record"])
@@ -88,6 +91,48 @@ class V130WritingAnalysisTests(unittest.TestCase):
         request=self.provider.requests[-1]
         self.assertEqual(set(request["layers"]),{"planned","confirmed","written"})
         self.assertEqual(request["bindings"]["author_context_version"],1)
+
+    def test_long_saved_draft_is_cited_but_brief_stays_partial(self):
+        self._save("林默在雾港核对潮汐表。" * 180)
+        response=self._run("context_brief")
+        self.assertEqual(response.status_code,202,response.text)
+        viewed=self.client.get(f"/api/projects/{self.project_id}/analyses/{response.json()['data']['run_id']}").json()["data"]
+        self.assertEqual(viewed["status"],"completed")
+        self.assertEqual(viewed["analysis"]["evidence_status"],"partial")
+        self.assertIn("draft_body_truncated",viewed["analysis"]["draft_coverage"]["reasons"])
+        self.assertTrue(viewed["analysis"]["draft_coverage"]["source_ids"])
+        self.assertTrue(any(source["source_type"]=="draft_claim" for item in viewed["analysis"]["items"] for source in item["sources"]))
+
+    def test_single_sentence_claim_cut_at_240_is_reported_as_partial(self):
+        body="林默沿着长廊向前走，"*28+"最后把银钥匙交给陈澈并得知弟弟还活着。"
+        self.assertLess(len(body),1200)
+        self._save(body)
+        response=self._run("context_brief")
+        viewed=self.client.get(f"/api/projects/{self.project_id}/analyses/{response.json()['data']['run_id']}").json()["data"]
+        scope=viewed["retrieval"]["draft_claim_scope"]
+        coverage=viewed["analysis"]["draft_coverage"]
+        self.assertEqual((scope["available"],len(scope["selected"])),(1,1))
+        self.assertTrue(scope["selected"][0]["truncated"])
+        self.assertEqual(scope["selected"][0]["source_end"],len(body))
+        self.assertEqual(scope["selected"][0]["supplied_end"],240)
+        self.assertEqual((viewed["analysis"]["evidence_status"],coverage["status"]),("partial","partial"))
+        self.assertIn("draft_claim_truncated",coverage["reasons"])
+        self.assertEqual(coverage["cited_ranges"][0]["id"],scope["selected"][0]["id"])
+
+    def test_selected_but_uncited_draft_sentences_remain_partial(self):
+        body="林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。"
+        self._save(body)
+        response=self._run("context_brief")
+        viewed=self.client.get(f"/api/projects/{self.project_id}/analyses/{response.json()['data']['run_id']}").json()["data"]
+        scope=viewed["retrieval"]["draft_claim_scope"]
+        coverage=viewed["analysis"]["draft_coverage"]
+        self.assertEqual((scope["available"],len(scope["selected"])),(3,3))
+        self.assertFalse(any(item["truncated"] for item in scope["selected"]))
+        self.assertEqual((viewed["analysis"]["evidence_status"],coverage["status"]),("partial","partial"))
+        self.assertIn("draft_claim_uncovered",coverage["reasons"])
+        self.assertEqual(len(coverage["cited_ranges"]),1)
+        self.assertEqual(len(coverage["uncovered_source_ids"]),2)
+        self.assertEqual(coverage["unselected_count"],0)
 
     def test_existing_continuity_provider_input_stays_free_of_author_context(self):
         self._save()

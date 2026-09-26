@@ -18,6 +18,7 @@ from app.provider import (
     memory_initialization_prompt,
     plan_alignment_prompt,
 )
+from app.stage13 import Stage13Settings
 
 
 class ResultProvider:
@@ -65,6 +66,46 @@ def analysis_data() -> dict:
 
 
 class RealAiContractRepairTests(unittest.TestCase):
+    def test_full_statement_scope_blocks_short_anchor_bypass_but_allows_same_time_control(self):
+        cases=(
+            ("今日十八点，秦渡已经知道信使身份。","昨日十八点，秦渡还不知道信使身份。","十八点","十八点",False),
+            ("第二天十八点，秦渡已经知道信使身份。","第一天十八点，秦渡还不知道信使身份。","十八点","十八点",False),
+            ("今日十八点，黎青故意撒谎说自己不知道信使身份。","今日十八点，黎青已经知道信使身份。","今日十八点","今日十八点",False),
+            ("今日十八点，黎青声称自己不知道信使身份。","今日十八点，黎青已经知道信使身份。","今日十八点","今日十八点",False),
+            ("今日十八点，秦渡回忆昨日十八点尚不知道信使身份。","今日十八点，秦渡已经知道信使身份。","今日十八点","今日十八点",False),
+            ("今日十九点，秦渡已经知道信使身份。","今日十八点，秦渡还不知道信使身份，直到十九点才从密信获知身份。","十九点","十九点",False),
+            ("今日十八点，秦渡已经知道信使身份。","今日十八点，秦渡还不知道信使身份。","十八点","十八点",True),
+            ("今日十八点，秦渡已经知道信使身份。","今日十八点，秦渡还不知道信使身份。另一间屋内，陈澈回忆童年的航海经历。","十八点","十八点",True),
+        )
+        for claim,evidence,claim_anchor,evidence_anchor,confirmed in cases:
+            with self.subTest(claim=claim):
+                data={"draft":{"id":"draft","revision":1,"body":claim},"claims":[{"id":"claim-1","text":claim,"allowed_evidence":[{"id":"span-1","chapter_id":"chapter-1","body":evidence,"prompt_excerpt":evidence}]}],"memory":[]}
+                payload={"issues":[{"claim_span_id":"claim-1","status":"conflict","nature":"confirmed_conflict","category":"character_knowledge","severity":"high","explanation":"两处知情状态矛盾。","reasoning":"两处知情状态被标为同一时间。","temporal_basis":{"claim_anchor":claim_anchor,"evidence_anchor":evidence_anchor,"relation":"explicit_overlap"},"evidence":[{"chapter_id":"chapter-1","span_id":"span-1","relation":"contradicts","sufficiency":"sufficient","related_memory_ids":[]}],"evidence_chain":[{"span_id":"span-1","role":"prior_state"}],"suggested_revision":None,"available_actions":[],"proposed_memory_change":None}]}
+                engine=ContinuityEngine(ResultProvider(payload))
+                if confirmed:
+                    self.assertEqual(engine.validate(payload,data)[0]["nature"],"confirmed_conflict")
+                    self.assertEqual(engine.execute(data)["issues"][0]["nature"],"confirmed_conflict")
+                else:
+                    with self.assertRaisesRegex(ContinuityContractValidationError,"temporal_overlap_unproven"):
+                        engine.validate(payload,data)
+                    run=engine.execute(data)
+                    self.assertEqual(run["issues"][0]["nature"],"insufficient_evidence")
+                    self.assertEqual(run["contract_normalization_count"],1)
+
+    def test_new_synthetic_knowledge_cases_keep_time_and_attribution_boundaries(self):
+        rules=json.loads(continuity_prompt({"draft":{"id":"draft","revision":1,"body":"Short."},"claims":[],"memory":[],"output_schema":{"issues":[]}}))["rules"]
+        self.assertTrue(any("bounded statement" in rule and "later discovery" in rule for rule in rules))
+        self.assertTrue(any("recollections" in rule and "lie" in rule for rule in rules))
+        engine=ContinuityEngine(ResultProvider({}))
+        for claim,evidence in (
+            ("黎青在秋夜二十二点认出信使。","秋夜二十点，黎青还不知道信使身份。"),
+            ("秦渡回忆昨日十八点尚未看到船。","今日十八点，秦渡已在码头看见船。"),
+        ):
+            data={"draft":{"id":"draft","revision":1,"body":claim},"claims":[{"id":"claim-1","text":claim,"allowed_evidence":[{"id":"span-1","chapter_id":"chapter-1","body":evidence,"prompt_excerpt":evidence}]}],"memory":[]}
+            payload={"issues":[{"claim_span_id":"claim-1","status":"conflict","nature":"confirmed_conflict","category":"character_knowledge","severity":"high","explanation":"两段知情状态冲突。","reasoning":"两处时间相同，所以不能同时成立。","temporal_basis":{"claim_anchor":claim,"evidence_anchor":evidence,"relation":"explicit_overlap"},"evidence":[{"chapter_id":"chapter-1","span_id":"span-1","relation":"contradicts","sufficiency":"sufficient","related_memory_ids":[]}],"evidence_chain":[{"span_id":"span-1","role":"prior_state"}],"suggested_revision":None,"available_actions":[],"proposed_memory_change":None}]}
+            with self.assertRaisesRegex(ContinuityContractValidationError,"temporal_overlap_unproven"):
+                engine.validate(payload,data)
+
     def test_memory_prompt_separates_memory_type_from_predicate_in_normal_and_repair_calls(self):
         source = {
             "id": "span-1",
@@ -117,6 +158,36 @@ class RealAiContractRepairTests(unittest.TestCase):
         cleaned = engine.validate(payload, data)
         self.assertEqual(cleaned["items"][0]["sources"][0]["source_path"], "/projects/project-1/workspace#draft-source")
 
+    def test_context_brief_discloses_cyclic_draft_citation_mismatch(self):
+        data=analysis_data()
+        claims=["林默走进北门。","银钥匙已经交给陈澈。","她此时已经知道弟弟还活着。"]
+        data["layers"]["written"]["draft"]["excerpt"]="".join(claims)
+        data["layers"]["written"]["draft_claims"]=[{"id":f"claim-{index+1}","ordinal":index+1,"text":claim} for index,claim in enumerate(claims)]
+        data["retrieval"]["draft_claim_scope"]={"available":3,"selected":[{"id":f"claim-{index+1}","truncated":False} for index in range(3)]}
+        payload={"summary":"草稿三项。","summary_sources":[{"source_type":"draft_claim","source_id":"claim-1"}],"items":[{"section":"recent_source","text":"草稿写明："+claim,"sources":[{"source_type":"draft_claim","source_id":f"claim-{(index+1)%3+1}"}]} for index,claim in enumerate(claims)]}
+        cleaned=WritingAnalysisEngine(ResultProvider(payload)).validate(payload,data)
+        self.assertEqual(cleaned["evidence_status"],"partial")
+        self.assertEqual(cleaned["draft_coverage"]["status"],"partial")
+        self.assertEqual(cleaned["draft_coverage"]["discarded_item_indices"],[0,1,2])
+        self.assertIn("draft_item_citation_mismatch",cleaned["draft_coverage"]["reasons"])
+        self.assertNotIn("草稿写明：",cleaned["summary"])
+        self.assertTrue(all("草稿写明：" not in item["text"] for item in cleaned["items"]))
+        payload["items"]=[{"section":"recent_source","text":"草稿写明："+claim,"sources":[{"source_type":"draft_claim","source_id":f"claim-{index+1}"}]} for index,claim in enumerate(claims)]
+        correct=WritingAnalysisEngine(ResultProvider(payload)).validate(payload,data)
+        self.assertEqual(correct["draft_coverage"]["status"],"covered")
+        self.assertEqual(correct["draft_coverage"]["discarded_item_indices"],[])
+        payload["items"][0]["text"]="林默从北门进入。"
+        paraphrased=WritingAnalysisEngine(ResultProvider(payload)).validate(payload,data)
+        self.assertEqual(paraphrased["draft_coverage"]["status"],"covered")
+        payload["items"]=[{"section":"recent_source","text":"草稿写明："+claims[0]+claims[1],"sources":[{"source_type":"draft_claim","source_id":"claim-3"}]}]
+        combined=WritingAnalysisEngine(ResultProvider(payload)).validate(payload,data)
+        self.assertEqual(combined["draft_coverage"]["discarded_item_indices"],[0])
+        data["layers"]["written"]["draft_claims"].append({"id":"claim-4","ordinal":4,"text":claims[0]})
+        payload["items"]=[{"section":"recent_source","text":"草稿写明："+claims[0],"sources":[{"source_type":"draft_claim","source_id":"claim-4"}]}]
+        duplicate=WritingAnalysisEngine(ResultProvider(payload)).validate(payload,data)
+        self.assertEqual(duplicate["draft_coverage"]["discarded_item_indices"],[])
+        self.assertNotIn("draft_item_citation_mismatch",duplicate["draft_coverage"]["reasons"])
+
     def test_context_brief_accepts_legal_recent_prior_chapter_source_span_when_claims_exist(self):
         data = analysis_data()
         payload = {
@@ -131,7 +202,7 @@ class RealAiContractRepairTests(unittest.TestCase):
             ],
         }
         cleaned = WritingAnalysisEngine(ResultProvider({})).validate(payload, data)
-        self.assertEqual(cleaned["items"][0]["sources"][0]["source_path"], "/projects/project-1/sources#span-span-1")
+        self.assertTrue(any(source["source_path"]=="/projects/project-1/sources#span-span-1" for item in cleaned["items"] for source in item["sources"]))
 
     def test_schema_failure_preserves_real_provider_usage(self):
         result = WritingAnalysisEngine(ResultProvider({"summary": "missing required keys"})).execute(analysis_data())
@@ -162,12 +233,14 @@ class RealAiContractRepairTests(unittest.TestCase):
             ],
         }
         cleaned = WritingAnalysisEngine(ResultProvider({})).validate(payload, data)
-        self.assertEqual(cleaned["summary_sources"][0]["source_type"], "source_span")
-        self.assertEqual(cleaned["summary"], cleaned["items"][0]["text"])
-        self.assertEqual(cleaned["items"][0]["sources"][0]["source_type"], "source_span")
+        self.assertTrue(any(source["source_type"]=="source_span" for item in cleaned["items"] for source in item["sources"]))
+        self.assertTrue(any(source["source_type"]=="draft_claim" for item in cleaned["items"] for source in item["sources"]))
+        self.assertTrue(all(source in [cited for item in cleaned["items"] for cited in item["sources"]] for source in cleaned["summary_sources"]))
 
     def test_context_brief_uses_nonfactual_fallback_when_one_legal_item_needs_four_sources(self):
         data = analysis_data()
+        data["layers"]["written"]["draft"]["excerpt"] = "当前正文尚无可引用主张。"
+        data["layers"]["written"]["draft_claims"] = []
         data["layers"]["written"]["source_spans"] = [
             {**data["layers"]["written"]["source_spans"][0], "id": f"span-{index}", "body": f"来源 {index}。"}
             for index in range(1, 5)
@@ -347,9 +420,9 @@ class RealAiContractRepairTests(unittest.TestCase):
                 }]}, input_tokens=10, output_tokens=10, latency_ms=1)
 
         root = pathlib.Path(tempfile.mkdtemp(prefix="v140-qualification-metrics-"))
-        app = create_app(AppPaths.from_project_root(root, protected_poc_root=root / "protected"), provider=RepeatingProvider(), executor=lambda fn, *args: fn(*args))
+        app = create_app(AppPaths.from_project_root(root, protected_poc_root=root / "protected"), provider=RepeatingProvider(), executor=lambda fn, *args: fn(*args), settings=Stage13Settings.for_test())
         client = TestClient(app);headers = {"Idempotency-Key": str(uuid.uuid4())}
-        registered = client.post("/api/auth/register", headers=headers, json={"account_name": "qualificationmetrics", "display_name": "Qualification", "password": "valid-password-99"}).json()["data"]
+        registered = client.post("/api/auth/register", headers=headers, json={"account_name": "qualificationmetrics", "display_name": "Qualification", "password": "valid-password-99", "recovery_email": "qualificationmetrics@example.test"}).json()["data"]
         project_id = registered["onboarding"]["tutorial"]["project_id"]
         draft = client.get(f"/api/projects/{project_id}").json()["data"]["current_draft"]
         run_id = client.post(f"/api/projects/{project_id}/checks", headers={"Idempotency-Key": str(uuid.uuid4())}, json={"draft_id": draft["id"], "draft_revision": draft["revision"]}).json()["data"]["run_id"]

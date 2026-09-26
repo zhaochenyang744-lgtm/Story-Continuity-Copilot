@@ -6,6 +6,7 @@ import uuid
 from fastapi.testclient import TestClient
 
 from app.config import AppPaths
+from app.engine import WritingAnalysisEngine
 from app.main import create_app
 from app.provider import ProviderInvalidJson, ProviderResult
 from app.stage13 import Stage13Settings
@@ -107,6 +108,68 @@ class V130AliasImpactTests(unittest.TestCase):
         self.client.patch(f"/api/projects/{self.project_id}/characters/{self.character_id}/aliases/{alias_id}",headers=idem(),json={"base_version":1,"alias":"新小岚"})
         stale=self.client.get(f"/api/projects/{self.project_id}/analyses/{run_id}").json()["data"]
         self.assertTrue(stale["is_stale"])
+
+    def test_target_memory_direct_source_is_selected_and_missing_cross_project_source_is_not_used(self):
+        self._create_alias()
+        with self.app.state.database.connection() as c:
+            target=c.execute("SELECT id,source_span_id,value FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND source_span_id IS NOT NULL LIMIT 1",(self.project_id,self.project["current_memory_version"])).fetchone()
+            c.execute("UPDATE v2_source_spans SET body=body||? WHERE id=?",("\n"+target["value"],target["source_span_id"]))
+        self.assertIsNotNone(target)
+        draft=self.project["current_draft"]
+        def run():
+            response=self.client.post(f"/api/projects/{self.project_id}/analyses",headers=idem(),json={"analysis_type":"change_impact","draft_id":draft["id"],"draft_revision":draft["revision"],"proposal":{"target_type":"memory","target_id":target["id"],"proposed_change":"调整这一条已确认事实"}})
+            self.assertEqual(response.status_code,202,response.text)
+            return self.client.get(f"/api/projects/{self.project_id}/analyses/{response.json()['data']['run_id']}").json()["data"]
+        selected=run()
+        self.assertEqual(selected["retrieval"]["target_source"]["status"],"selected")
+        self.assertEqual(selected["retrieval"]["selected_ids"]["source_span"][0],target["source_span_id"])
+        self.assertEqual(selected["retrieval"]["selected_ids"]["memory_record"][0],target["id"])
+        outsider=TestClient(self.app)
+        registered=outsider.post("/api/auth/register",headers=idem(),json={"account_name":"source-outsider","display_name":"Other","password":"safe-password-v130","recovery_email":"source-outsider@example.test"})
+        other_project=registered.json()["data"]["onboarding"]["tutorial"]["project_id"]
+        with self.app.state.database.connection() as c:
+            other_span=c.execute("SELECT id FROM v2_source_spans WHERE project_id=? LIMIT 1",(other_project,)).fetchone()["id"]
+            c.execute("UPDATE v2_memory_records SET source_span_id=? WHERE id=? AND project_id=?",(other_span,target["id"],self.project_id))
+        missing=run()
+        self.assertEqual(missing["retrieval"]["target_source"]["status"],"missing")
+        self.assertNotIn(other_span,missing["retrieval"]["selected_ids"]["source_span"])
+        self.assertEqual((missing["analysis"]["evidence_status"],missing["analysis"]["items"]),("insufficient",[]))
+
+    def test_target_source_excerpt_reaches_late_fact_and_unlocated_fact_fails_closed(self):
+        self._create_alias()
+        with self.app.state.database.connection() as c:
+            target=dict(c.execute("SELECT id,source_span_id,value FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND source_span_id IS NOT NULL LIMIT 1",(self.project_id,self.project["current_memory_version"])).fetchone())
+            body="景物描写与人物活动。"*100+target["value"]+"溪水流过石桥。"*35
+            c.execute("UPDATE v2_source_spans SET body=? WHERE id=?",(body,target["source_span_id"]))
+        draft=self.project["current_draft"]
+        def run():
+            response=self.client.post(f"/api/projects/{self.project_id}/analyses",headers=idem(),json={"analysis_type":"change_impact","draft_id":draft["id"],"draft_revision":draft["revision"],"proposal":{"target_type":"memory","target_id":target["id"],"proposed_change":"调整这一条事实"}})
+            self.assertEqual(response.status_code,202,response.text)
+            return self.client.get(f"/api/projects/{self.project_id}/analyses/{response.json()['data']['run_id']}").json()["data"]
+        selected=run()
+        self.assertEqual(selected["retrieval"]["target_source"]["status"],"selected")
+        self.assertTrue(selected["retrieval"]["target_source"]["excerpt_truncated"])
+        self.assertEqual(selected["retrieval"]["target_source"]["original_chars"],len(body))
+        self.assertLess(selected["retrieval"]["target_source"]["excerpt_chars"],len(body))
+        supplied=next(item for item in self.provider.requests[-1]["layers"]["written"]["source_spans"] if item["id"]==target["source_span_id"])
+        self.assertIn(target["value"],supplied["body"])
+        self.assertLess(len(supplied["body"]),len(body))
+        with self.app.state.database.connection() as c:
+            c.execute("UPDATE v2_source_spans SET body=? WHERE id=?",("景物描写与人物活动。"*100,target["source_span_id"]))
+        unlocated=run()
+        self.assertEqual(unlocated["retrieval"]["target_source"]["status"],"unlocated")
+        self.assertEqual((unlocated["analysis"]["evidence_status"],unlocated["analysis"]["items"]),("insufficient",[]))
+
+    def test_chapter_impact_requires_source_span_from_that_chapter(self):
+        data={"task":"change_impact","bindings":{"project_id":"synthetic"},"proposal":{"target_type":"memory","target_id":"memory-B","proposed_change":"调整保管者"},"retrieval":{"target_source":{"status":"selected"}},"layers":{"planned":{"story_plans":[],"character_plans":[],"world_plans":[]},"confirmed":{"memory_records":[{"id":"memory-B","subject":"星钥","predicate":"保管者","value":"乔霁","source_span_id":"span-B"}]},"written":{"source_spans":[{"id":"span-A","chapter_id":"chapter-A","chapter_number":1,"label":"天气","body":"港口晴朗。"},{"id":"span-B","chapter_id":"chapter-B","chapter_number":2,"label":"保管","body":"星钥由乔霁保管。"}],"draft_claims":[]},"identity":{"characters":[],"aliases":[]},"reference":{"chapters":[{"id":"chapter-A","chapter_number":1,"title":"码头"},{"id":"chapter-B","chapter_number":2,"title":"保管"}],"world_entries":[]}}}
+        engine=WritingAnalysisEngine(self.provider)
+        def payload(target,source_type,source_id):
+            return {"summary":"原文章节需要修订。","items":[{"area":"chapter","target_id":target,"impact":"该章需要复核。","evidence":[{"source_type":source_type,"source_id":source_id}]}]}
+        self.assertEqual(engine.validate(payload("chapter-A","source_span","span-B"),data)["evidence_status"],"insufficient")
+        self.assertEqual(engine.validate(payload("chapter-B","source_span","span-B"),data)["evidence_status"],"supported")
+        self.assertEqual(engine.validate(payload("chapter-A","memory_record","memory-B"),data)["evidence_status"],"insufficient")
+        data["layers"]["written"]["source_spans"]=data["layers"]["written"]["source_spans"][1:]
+        self.assertEqual(engine.validate(payload("chapter-A","source_span","span-B"),data)["evidence_status"],"insufficient")
 
     def test_change_impact_invalid_json_fails_closed(self):
         self._create_alias();self.provider.mode="invalid_json"

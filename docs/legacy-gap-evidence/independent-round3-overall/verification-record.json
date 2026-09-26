@@ -1,0 +1,69 @@
+{
+  "checked_at": "2026-09-26T06:15:43.9789387Z",
+  "worktree": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair",
+  "branch": "codex/legacy-gap-repair",
+  "head": "39de855c005d77f7f02a132f5e807a0c1c476b7b",
+  "tracked_changed_files": [
+    "backend/app/engine.py",
+    "backend/app/provider.py",
+    "backend/app/stage13.py",
+    "backend/app/v2_database.py",
+    "backend/tests/test_stage2_api.py",
+    "backend/tests/test_stage4_api.py",
+    "backend/tests/test_v130_character_alias_change_impact.py",
+    "backend/tests/test_v130_writing_analysis.py",
+    "backend/tests/test_v140_real_ai_contract_repairs.py",
+    "frontend/app/components/Workbench.tsx",
+    "frontend/app/components/WritingTools.tsx",
+    "frontend/app/model.ts",
+    "frontend/e2e/v130-writing-analysis.spec.ts"
+  ],
+  "source_hashes": [
+    {
+      "Path": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\backend\\app\\engine.py",
+      "Hash": "DF9B2A19B07744B318743802679C22F67A49AF13A67275CF81F74C0D06891EA4"
+    },
+    {
+      "Path": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\backend\\app\\provider.py",
+      "Hash": "E415C36CC08114492E7AC5305EF67DB89EB58F1A06AA01A0A19C9C89B91B7380"
+    },
+    {
+      "Path": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\backend\\app\\stage13.py",
+      "Hash": "957C219BB3F8036E421C63BA7C204ED1767D2D334A39A08AA958F5119CFD9500"
+    },
+    {
+      "Path": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\backend\\app\\v2_database.py",
+      "Hash": "9F0B8C2B512F2D69F03CBC7193D83D9681FE42FE3ADE51A7FCC4AD494FDBA965"
+    },
+    {
+      "Path": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\frontend\\app\\components\\Workbench.tsx",
+      "Hash": "BF76619E7AE5D3652A99D70FA5B440CAA8A38EA1235814180014DA1116823680"
+    },
+    {
+      "Path": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\frontend\\app\\components\\WritingTools.tsx",
+      "Hash": "9903E8D8578E9970B4B9A9F44DB204A83CB676BFCC355707DFBE20EFFD0B87E1"
+    },
+    {
+      "Path": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\frontend\\app\\model.ts",
+      "Hash": "D1999849318EAF94DC50F1321F37675BBF4CC2AD6AEB9C8E6C15AC7DF0DD9E1B"
+    },
+    {
+      "Path": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\frontend\\e2e\\legacy-gap-independent.spec.ts",
+      "Hash": "33A04286612F903CC932C17B18EB96562108654D12BC9A39B5FA127065CF2C1D"
+    }
+  ],
+  "original_head": "39de855c005d77f7f02a132f5e807a0c1c476b7b",
+  "original_status_sha256": "D7D45F31720CBF4B5D18539186E73F9FFA032F062A3C3A3FBB8DDBF2CF963D8E",
+  "original_tracked_changes": [],
+  "original_untracked_count": 104,
+  "frontend_typecheck": "passed independently in root tool run",
+  "frontend_lint": "passed independently in root tool run",
+  "maintenance_plan": {
+    "inventory_sha256": "b02562e67b93bfd6fdae2b029df889c4d0f5792fe906af1a9c2c665c795e9595",
+    "total_bytes": 8052041,
+    "generated_archive": false,
+    "manifest_sha256": "ebbfe7183364e35c7dbdac0f200355eb2e8400de137366302e7fd36a5738839f",
+    "file_count": 93
+  },
+  "production_build_id": "zh0KdT5LoRWDgI31kwXkx"
+}

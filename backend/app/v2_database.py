@@ -2960,24 +2960,55 @@ class V2Database:
                 worlds=[{"id":item["_analysis_id"],"name":item["title"],"category":"other","description":item["content"],"notes":"","position":position,"archived_at":None,"created_at":item["created_at"],"updated_at":item["updated_at"],"nature":item["nature"],"disclosure":item["disclosure"],"knowledge":item["knowledge"]} for position,item in enumerate((item for item in canonical if item["kind"]=="world"),1)]
                 worlds=sorted(worlds,key=lambda item:(-self._analysis_rank(terms,item["name"],item["description"],item["notes"]),item["position"],item["id"]))[:2]
                 memory_rows=[dict(row) for row in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id",(project_id,project["current_memory_version"],project["current_memory_version"],project["current_memory_version"])).fetchall()]
-                memory=sorted(memory_rows,key=lambda item:(-self._analysis_rank(terms,item["subject"],item["predicate"],item["value"]),item["id"]))[:8]
+                target_memory=next((item for item in memory_rows if analysis_type=="change_impact" and payload["proposal"].get("target_type")=="memory" and item["id"]==payload["proposal"].get("target_id")),None)
+                ranked_memory=sorted(memory_rows,key=lambda item:(-self._analysis_rank(terms,item["subject"],item["predicate"],item["value"]),item["id"]))
+                memory=([target_memory]+[item for item in ranked_memory if item["id"]!=target_memory["id"]][:7]) if target_memory else ranked_memory[:8]
                 span_rows=[dict(row) for row in c.execute("SELECT s.id,s.chapter_id,s.label,s.body,s.source_revision,ch.chapter_number,ch.title chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id AND ch.source_revision=s.source_revision WHERE s.project_id=? AND s.source_revision<=? ORDER BY s.source_revision DESC,ch.chapter_number DESC,s.id",(project_id,project["source_revision"])).fetchall()]
-                spans=sorted(span_rows,key=lambda item:(-self._analysis_rank(terms,item["label"],item["body"]),-item["source_revision"],-item["chapter_number"],item["id"]))[:4]
+                ranked_spans=sorted(span_rows,key=lambda item:(-self._analysis_rank(terms,item["label"],item["body"]),-item["source_revision"],-item["chapter_number"],item["id"]))
+                target_span=next((item for item in span_rows if target_memory and item["id"]==target_memory["source_span_id"]),None)
+                spans=([target_span]+[item for item in ranked_spans if item["id"]!=target_span["id"]][:3]) if target_span else ranked_spans[:4]
                 run_id,stamp=new_id("run"),utcnow()
-                all_claims=[{"id":f"draft-claim-{draft['id']}-r{draft['revision']}-{ordinal}","text":text[:240],"ordinal":ordinal} for ordinal,text in enumerate((x.strip() for x in re.split(r"(?<=[。！？.!?])",draft_text) if x.strip()),1)]
+                all_claims=[];claim_scopes={};cursor=0
+                for ordinal,text in enumerate((x.strip() for x in re.split(r"(?<=[。！？.!?])",draft_text) if x.strip()),1):
+                    start=draft_text.find(text,cursor)
+                    if start<0:start=draft_text.find(text)
+                    cursor=start+len(text)
+                    claim_id=f"draft-claim-{draft['id']}-r{draft['revision']}-{ordinal}"
+                    supplied=text[:240]
+                    all_claims.append({"id":claim_id,"text":supplied,"ordinal":ordinal})
+                    claim_scopes[claim_id]={"id":claim_id,"source_start":start,"source_end":cursor,"supplied_end":start+len(supplied),"source_chars":len(text),"supplied_chars":len(supplied),"truncated":len(text)>len(supplied)}
                 ranked_claims=sorted(all_claims,key=lambda item:(-self._analysis_rank(terms,item["text"]),item["ordinal"]))
                 claims=sorted(({item["id"]:item for item in (all_claims[:2]+all_claims[-2:]+ranked_claims[:8])}).values(),key=lambda item:item["ordinal"])[:8]
                 selected_author={"story_plans":story,"character_plans":characters,"world_plans":worlds}
-                source_items=[{**item,"body":self._bounded_excerpt(item["body"],terms,500)} for item in spans]
+                source_items=[];target_passage_found=False
+                for item in spans:
+                    if target_span and item["id"]==target_span["id"]:
+                        passage=target_memory["value"].strip()
+                        position=item["body"].find(passage) if passage else -1
+                        if position>=0:
+                            start=max(0,min(position-160,len(item["body"])-500))
+                            excerpt=item["body"][start:start+500]
+                            target_passage_found=passage in excerpt
+                            body=("…" if start else "")+excerpt+("…" if start+500<len(item["body"]) else "")
+                        else:body=self._bounded_excerpt(item["body"],terms,500)
+                    else:body=self._bounded_excerpt(item["body"],terms,500)
+                    source_items.append({**item,"body":body})
+                draft_excerpt=self._analysis_draft_excerpt(draft_text,hints)
                 factual_characters=[dict(row) for row in c.execute("SELECT id,name,role_type,identity,goal,current_state,knowledge_boundary,source_ids_json FROM v2_characters WHERE project_id=? ORDER BY id",(project_id,)).fetchall()]
                 factual_world=[dict(row) for row in c.execute("SELECT id,entry_type,name,summary,source_ids_json FROM v2_world_entries WHERE project_id=? ORDER BY id",(project_id,)).fetchall()]
                 chapters=[]
                 for item in source_items:
                     if not any(row["id"]==item["chapter_id"] for row in chapters):chapters.append({"id":item["chapter_id"],"chapter_number":item["chapter_number"],"title":item["chapter_title"]})
                 retrieval={"method_version":provenance["retrieval_method_version"],"selected_ids":{"author_context":[item["id"] for group in selected_author.values() for item in group],"memory_record":[item["id"] for item in memory],"source_span":[item["id"] for item in source_items],"draft_claim":[item["id"] for item in claims],"character_alias":[item["id"] for item in aliases] if analysis_type=="change_impact" else [],"foreshadow_record":[item["id"] for item in foreshadows] if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else [],"issue":[item["id"] for item in selected_issues],"issue_evidence":[evidence["id"] for item in selected_issues for evidence in item["evidence"]]},"counts":{"author_context":{"available":len(canonical),"selected":sum(len(group) for group in selected_author.values())},"memory_record":{"available":len(memory_rows),"selected":len(memory)},"source_span":{"available":len(span_rows),"selected":len(source_items)},"draft_claim":{"available":len(all_claims),"selected":len(claims)},"character_alias":{"available":len(aliases),"selected":len(aliases) if analysis_type=="change_impact" else 0},"foreshadow_record":{"available":len(foreshadows),"selected":len(foreshadows) if analysis_type in {"story_qa","foreshadow_scan","revision_plan"} else 0},"issue":{"available":len(selected_issues),"selected":len(selected_issues)},"issue_evidence":{"available":sum(len(item["evidence"]) for item in selected_issues),"selected":sum(len(item["evidence"]) for item in selected_issues)}},"truncated":{"author_context":len(canonical)>sum(len(group) for group in selected_author.values()),"memory_record":len(memory_rows)>len(memory),"source_span":len(span_rows)>len(source_items),"draft_claim":len(all_claims)>len(claims),"draft_body":len(draft_text)>1200,"character_alias":False,"foreshadow_record":False,"issue":False,"issue_evidence":False}}
+                if target_memory:
+                    supplied_target=next((item for item in source_items if target_span and item["id"]==target_span["id"]),None)
+                    retrieval["target_source"]={"memory_id":target_memory["id"],"source_span_id":target_memory["source_span_id"],"status":"selected" if target_span and target_passage_found else "unlocated" if target_span else "missing","source_revision":target_span["source_revision"] if target_span else None,"original_chars":len(target_span["body"]) if target_span else None,"excerpt_chars":len(supplied_target["body"]) if supplied_target else None,"excerpt_truncated":bool(target_span and len(target_span["body"])>500)}
+                retrieval["truncated"]["source_span_text"]=any(len(item["body"])>500 for item in spans)
+                retrieval["draft_claim_scope"]={"body_chars":len(draft_text),"excerpt_chars":len(draft_excerpt),"available":len(all_claims),"selected":[claim_scopes[item["id"]] for item in claims]}
+                retrieval["truncated"]["draft_claim"]=retrieval["truncated"]["draft_claim"] or any(item["truncated"] for item in retrieval["draft_claim_scope"]["selected"])
                 if analysis_type=="context_brief" and not (retrieval["selected_ids"]["author_context"] or retrieval["selected_ids"]["memory_record"] or retrieval["selected_ids"]["source_span"]):raise DomainError("analysis_evidence_unavailable",422)
                 bindings={"project_id":project_id,"draft_id":draft["id"],"draft_revision":draft["revision"],"source_revision":project["source_revision"],"memory_version":project["current_memory_version"],"author_context_version":author_version,"author_context_snapshot_digest":author_digest}
-                layers={"planned":selected_author,"confirmed":{"memory_records":memory},"written":{"draft":{"id":draft["id"],"revision":draft["revision"],"chapter_number":draft["chapter_number"],"title":draft["title"],"excerpt":self._analysis_draft_excerpt(draft_text,hints)},"draft_claims":claims,"source_spans":source_items}}
+                layers={"planned":selected_author,"confirmed":{"memory_records":memory},"written":{"draft":{"id":draft["id"],"revision":draft["revision"],"chapter_number":draft["chapter_number"],"title":draft["title"],"excerpt":draft_excerpt},"draft_claims":claims,"source_spans":source_items}}
                 if analysis_type=="change_impact":
                     proposal=payload["proposal"]
                     targets={"chapter":{item["id"] for item in chapters},"character":{item["id"] for item in factual_characters},"world":{item["id"] for item in factual_world},"memory":{item["id"] for item in memory},"plan":{item["id"] for group in selected_author.values() for item in group}}
