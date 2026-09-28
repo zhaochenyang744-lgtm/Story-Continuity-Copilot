@@ -16,7 +16,8 @@ services:
       TRUSTED_HOSTS: backend:8000,127.0.0.1:8000,${PUBLIC_HOST:?public host required}
       TRUSTED_ORIGINS: https://${PUBLIC_HOST:?public host required}
       CONTINUITY_PROVIDER: deepseek
-      CONTINUITY_MODEL: deepseek-v4-pro
+      CONTINUITY_MODEL: deepseek-flash
+      CONTINUITY_REVIEW_THINKING: high
       CONTINUITY_BASE_URL: ${CONTINUITY_BASE_URL:?provider base url required}
       CONTINUITY_INPUT_CNY_PER_MILLION: ${CONTINUITY_INPUT_CNY_PER_MILLION:?input rate required}
       CONTINUITY_OUTPUT_CNY_PER_MILLION: ${CONTINUITY_OUTPUT_CNY_PER_MILLION:?output rate required}

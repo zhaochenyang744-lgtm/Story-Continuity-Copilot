@@ -12,6 +12,10 @@
       "target": "backend/app/__init__.py"
     },
     {
+      "source": "backend/app/brief_citations.py",
+      "target": "backend/app/brief_citations.py"
+    },
+    {
       "source": "backend/app/config.py",
       "target": "backend/app/config.py"
     },
