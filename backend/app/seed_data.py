@@ -37,7 +37,7 @@ DRAFT = {
 }
 
 MEMORY_RECORDS = [
-    ("mem-ghe-v4-001", "static_canon", "灰港雾钟", "ring_condition", "只在北潮闸完全关闭后敲响一次", "ghe-ch01-s01"),
+    ("mem-ghe-v4-001", "static_canon", "灰港雾钟", "rule", "只在北潮闸完全关闭后敲响一次", "ghe-ch01-s01"),
     ("mem-ghe-v4-002", "dynamic_state", "黄铜罗盘", "holder", "温岚", "ghe-ch09-s01"),
     ("mem-ghe-v4-003", "event_timeline", "西航道退潮", "time", "第3章 19:20", "ghe-ch03-s01"),
     ("mem-ghe-v4-004", "character_knowledge", "温岚", "does_not_know", "廊桥钥匙的含义", "ghe-ch04-s01"),

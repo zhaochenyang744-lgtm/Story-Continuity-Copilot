@@ -243,8 +243,10 @@ def _confirmed_temporal_failure(raw: dict[str, Any], claim_text: str, evidence: 
         related_ids = {memory_id for item in evidence for memory_id in item.get("related_memory_ids", [])
                        if isinstance(memory_id, str) and memory_id in memory}
         cited_ids = {item["span_id"] for item in evidence}
+        # static_canon is by definition durable canon or a world rule. Authors and legacy seeds use
+        # free-form predicates (e.g. entry_rule), so the predicate is not required to be "rule";
+        # requiring it sent every such conflict into an unsatisfiable repair.
         if any(memory[memory_id].get("memory_type") == "static_canon" and
-               memory[memory_id].get("predicate") == "rule" and
                memory[memory_id].get("source_span_id") in cited_ids for memory_id in related_ids):
             return None
         return "timeless_rule_unproven"

@@ -950,7 +950,7 @@ class V2Database:
                 ],
                 "character": ("陆栖", "独立作品的调查者", "追查章节线索", "正在记录发现", "只知道已出现的章节事实"),
                 "world": ("旧印刷厂", "纸月档案的可追溯地点"),
-                "memory": [("static_canon", "纸月档案", "unseal_rule", "只在月蚀夜用银墨揭封", 1), ("dynamic_state", "封蜡钥匙", "holder", "陆栖", 2), ("static_canon", "陆栖与姚笺", "agreement", "只交换编号，不交换姓名", 0)],
+                "memory": [("static_canon", "纸月档案", "rule", "只在月蚀夜用银墨揭封", 1), ("dynamic_state", "封蜡钥匙", "holder", "陆栖", 2), ("static_canon", "陆栖与姚笺", "agreement", "只交换编号，不交换姓名", 0)],
             },
             "zero_garden": {
                 "chapters": [
@@ -961,7 +961,7 @@ class V2Database:
                 ],
                 "character": ("程末", "独立作品的夜班园丁", "记录零点开放的花", "正在守夜", "只知道已验证的温室记录"),
                 "world": ("玻璃温室", "零点花园的可追溯地点"),
-                "memory": [("static_canon", "萤苔", "blue_light_window", "仅在零点到零点十分钟发蓝光", 0), ("dynamic_state", "无名花粉样本", "location", "北侧冷柜的低温盒", 2), ("static_canon", "培育区", "entry_rule", "访客不能自行进入", 1)],
+                "memory": [("static_canon", "萤苔", "rule", "仅在零点到零点十分钟发蓝光", 0), ("dynamic_state", "无名花粉样本", "location", "北侧冷柜的低温盒", 2), ("static_canon", "培育区", "rule", "访客不能自行进入", 1)],
             },
         }[seed_key]
         chapters = seed["chapters"]

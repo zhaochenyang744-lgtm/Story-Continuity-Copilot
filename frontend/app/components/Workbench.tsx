@@ -299,6 +299,7 @@ const predicateLabel = (value: unknown) =>
     status: "状态",
     next_action: "下一步行动",
     ring_condition: "触发条件",
+    rule: "规则",
     does_not_know: "尚未知晓",
     location: "所在位置",
     relationship: "关系",
