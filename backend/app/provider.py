@@ -94,7 +94,7 @@ class ProviderResult:
 
 MAX_CLAIM_BASIS_CODEPOINTS = 400
 MAX_ISSUE_REASONING_CODEPOINTS = 800
-CONTINUITY_PROMPT_VERSION = "continuity-review-v20-decisive-fact-category"
+CONTINUITY_PROMPT_VERSION = "continuity-review-v21-evidence-completeness"
 
 CONTINUITY_REVIEW_RULES = (
     "Write every author-facing explanation, reasoning, and suggested revision in the dominant language of the bound draft. Preserve proper nouns from the source.",
@@ -117,7 +117,7 @@ CONTINUITY_REVIEW_RULES = (
     "A suggested revision must remove every contradiction asserted by that issue, including governing actions or rules, not merely change a time label or repeat the conflict. If no grounded complete correction is possible, return null and omit apply_suggestion. Never propose changing Story Memory merely to make an unsupported draft claim true.",
     "Omit proposed_memory_change unless cited sufficient evidence fully grounds it. Add and replace use controlled memory types; replace must bind a supplied Memory id. Author action is still required before canon changes.",
     "Every emitted issue must include a valid category, severity, and non-empty explanation. Assign category only after deciding the status and complete Evidence set, by the decisive fact: the direct contradicting fact, or the missing link. Ignore verbs, time anchors, and context. attribute = an intrinsic property (material, colour, size, measured count), even at a stated time; object_state = a named object's mutable condition, holder, or placement at a time; relationship = who performed, caused, delivered, authorized, or is responsible for an act, or kinship or role; an act recorded without its actor or cause is relationship; character_knowledge = what a character knows, believes, observed, or was told; timeline = order of events, including birth order; event_status = whether an event started, completed, failed, or remains open, its actor undisputed; location_action = where a character was or acted; world_rule = a global constraint only when it alone contradicts the claim; a rule that only defines ready, complete, or permitted is a premise: use the category of the state or outcome it governs.",
-    "Before returning, cross-check each emitted object: confirmed_conflict needs at least one sufficient direct contradicts fact plus any necessary selected context premises and a proved shared time/scope; insufficient_evidence needs only insufficient context, missing_link for every evidence_chain entry, no actions and no proposed change. Omit unrelated optional context. If your explanation concludes that no issue exists, remove the object and explain the no_issue basis in claim_verdicts. A contract repair that removes an earlier issue must explain why the previous gap or contradiction no longer requires review. Do not include competing abandoned classifications or a transcript of internal deliberation.",
+    "Before returning, check each object. confirmed_conflict: your cited spans alone must prove the contradiction; if the contradicting fact names the subject by an alias, code, or role, or relies on a definition or rule, cite that premise as context; cite nothing the proof does not use. It needs a proved shared time/scope. insufficient_evidence: only insufficient context showing the gap, missing_link for every evidence_chain entry, no actions, no proposed change. If your explanation finds no issue, remove the object and give the no_issue basis in claim_verdicts; a repair that drops an earlier issue must say why. Do not include abandoned classifications or deliberation transcripts.",
 )
 
 CONTINUITY_DECISION_EXAMPLES = (
@@ -311,18 +311,27 @@ class ProviderPort(Protocol):
 
 
 CONTINUITY_REVIEW_THINKING_VALUES = ("disabled", "high")
-# Thinking tokens count inside completion. The V9 held-out formal run (eval-v9-first-formal) truncated
-# 4/36 answers at 6,000 output tokens and paused 3/36 over the 8,000-token run budget; the largest
-# single development response was 8,607 completion tokens. The engine compares each response's
-# input plus output with the run budget; 24,000 leaves room for a full 12,000-token answer on the
-# largest admitted input, including a repair request that carries the rejected output.
-# The V9 diagnostic reruns then saw one answer exhaust 12,000 output tokens and one repair request
-# exceed the 6,000-unit input estimate because it carries the full rejected answer. First requests
-# keep the 6,000-unit input limit and long-form batching is unchanged.
+# Thinking tokens count inside completion. Evidence for these limits (V9 held-out set):
+# - formal run: 4/36 answers truncated at 6,000 output tokens, 3/36 paused over an 8,000 run budget;
+# - diagnostic reruns: one answer filled 12,000 and later 16,000 tokens with thinking, and one repair
+#   request exceeded the 6,000-unit input estimate because it carries the full rejected answer.
+# A length stop is retried once at medium effort. The engine compares an evaluation's combined
+# input plus output with the run budget, so 40,000 (the V8-V11 experimental budget) covers the
+# truncated dispatch and its fallback. First requests keep the 6,000-unit input limit and long-form
+# batching is unchanged; every non-thinking path keeps the original limits.
 REVIEW_THINKING_MAX_OUTPUT_TOKENS = 16000
-REVIEW_THINKING_RUN_TOKEN_BUDGET = 24000
 REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS = 9000
+REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT = "medium"
+REVIEW_THINKING_RUN_TOKEN_BUDGET = 40000
 REVIEW_THINKING_TIMEOUT_SECONDS = 90
+
+
+def _combined_usage(first: Any, second: Any) -> tuple[int | None, int | None, float | None, int | None]:
+    """Totals across a truncated dispatch and its fallback; unknown stays unknown, never zero."""
+    def total(field: str):
+        values = (getattr(first, field), getattr(second, field))
+        return sum(values) if all(value is not None for value in values) else None
+    return total("input_tokens"), total("output_tokens"), total("cost_cny"), total("latency_ms")
 
 
 class DeepSeekProvider:
@@ -395,6 +404,24 @@ class DeepSeekProvider:
             raise InputBudgetExceeded()
         body = self.request_body(request, prompt)
         self._request_timeout = REVIEW_THINKING_TIMEOUT_SECONDS if body["thinking"]["type"] == "enabled" else self.timeout_seconds
+        try:
+            return self._send(body)
+        except ProviderInvalidJson as truncated:
+            if truncated.finish_reason != "length" or body.get("reasoning_effort") != "high":
+                raise
+            # Runaway high-effort thinking can fill the whole output cap. Retry once at medium
+            # effort and report the combined usage of both dispatches.
+            try:
+                result = self._send({**body, "reasoning_effort": REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT})
+            except ProviderInvalidJson as second:
+                raise ProviderInvalidJson(*_combined_usage(truncated, second), second.finish_reason,
+                                          second.observed_response_input_tokens, second.observed_response_output_tokens,
+                                          second.observed_response_cost_cny) from second
+            return ProviderResult(result.payload, *_combined_usage(truncated, result), result.finish_reason,
+                                  result.observed_response_input_tokens, result.observed_response_output_tokens,
+                                  result.observed_response_cost_cny)
+
+    def _send(self, body: dict[str, Any]) -> ProviderResult:
         started = time.perf_counter()
         prior_dispatch_usage_unknown = False
         for attempt in range(self.max_retries + 1):

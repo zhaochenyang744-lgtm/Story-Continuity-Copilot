@@ -157,6 +157,51 @@ class ReviewThinkingConfigTests(unittest.TestCase):
         self.assertEqual((refused["status"], refused["error_code"]), ("failed", "input_budget_exceeded"))
         self.assertEqual(admitted["status"], "completed", admitted)
 
+    def test_truncated_high_thinking_answer_is_retried_once_at_medium(self):
+        from app.provider import ProviderInvalidJson, REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT
+
+        class Scripted:
+            status_code = 200
+
+            def __init__(self, content, finish, prompt, completion):
+                self.payload = {"choices": [{"finish_reason": finish, "message": {"content": content}}],
+                                "usage": {"prompt_tokens": prompt, "completion_tokens": completion}}
+
+            def raise_for_status(self):
+                pass
+
+            def json(self):
+                return self.payload
+
+        truncated = Scripted('{"issues": [', "length", 4000, 16000)
+        valid = Scripted(json.dumps({"issues": [], "claim_verdicts": []}), "stop", 4000, 3000)
+        cases = (("high", [truncated, valid], "ok"), ("high", [truncated, truncated], "raise"),
+                 ("high", [Scripted("not json", "stop", 10, 5)], "raise"), (None, [truncated], "raise"))
+        for thinking, script, outcome in cases:
+            with self.subTest(thinking=thinking, responses=len(script), outcome=outcome):
+                sent, queue = [], list(script)
+
+                class SeqClient(Client):
+                    def post(self, url, headers, json):
+                        self.sink.append(json)
+                        return queue.pop(0)
+
+                env = dict(BASE_ENV, **({} if thinking is None else {"CONTINUITY_REVIEW_THINKING": thinking}))
+                with patch.dict(os.environ, env, clear=True):
+                    instance = DeepSeekProvider(client_factory=lambda: SeqClient(sent))
+                if outcome == "ok":
+                    result = instance.evaluate(CONTINUITY_REQUEST)
+                    self.assertEqual((result.input_tokens, result.output_tokens, result.finish_reason), (8000, 19000, "stop"))
+                else:
+                    with self.assertRaises(ProviderInvalidJson) as caught:
+                        instance.evaluate(CONTINUITY_REQUEST)
+                    if len(script) == 2:
+                        self.assertEqual((caught.exception.output_tokens, caught.exception.finish_reason), (32000, "length"))
+                self.assertEqual(len(sent), len(script))
+                if len(sent) == 2:
+                    self.assertEqual((sent[0]["reasoning_effort"], sent[1]["reasoning_effort"]),
+                                     ("high", REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT))
+
     def test_unknown_thinking_value_fails_closed(self):
         instance, _ = provider("medium")
         self.assertFalse(instance.available)

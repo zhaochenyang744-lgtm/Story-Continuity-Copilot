@@ -17,7 +17,7 @@ import httpx
 
 from evaluation.metrics import aggregate, prediction_for_target, stability
 from evaluation.validate_eval_set import canonical_sha256
-from evaluation.v2_fixture_loader import CORPUS_PATHS, V3_CORPUS_PATHS, V4_CORPUS_PATHS, V5_CORPUS_PATHS, V6_CORPUS_PATHS, V7_CORPUS_PATHS, V8_CORPUS_PATHS, V9_CORPUS_PATHS, corpus_manifest_payload, fixture_runtime_at
+from evaluation.v2_fixture_loader import CORPUS_PATHS, V3_CORPUS_PATHS, V4_CORPUS_PATHS, V5_CORPUS_PATHS, V6_CORPUS_PATHS, V7_CORPUS_PATHS, V8_CORPUS_PATHS, V9_CORPUS_PATHS, V10_CORPUS_PATHS, corpus_manifest_payload, fixture_runtime_at
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -159,6 +159,8 @@ def fixture_corpus_paths(corpus_manifest_path: pathlib.Path) -> dict[str, pathli
         return V8_CORPUS_PATHS
     if resolved == (ROOT / "evaluation" / "fixtures" / "eval-v9-corpus-manifest.json").resolve():
         return V9_CORPUS_PATHS
+    if resolved == (ROOT / "evaluation" / "fixtures" / "eval-v10-corpus-manifest.json").resolve():
+        return V10_CORPUS_PATHS
     raise RuntimeError("fixture_corpus_manifest_not_formally_recognized")
 
 
@@ -528,7 +530,7 @@ def bad_case(result: dict) -> dict | None:
 
 
 def gate(metrics: dict, safety: dict, thresholds: dict) -> tuple[bool, dict[str, bool]]:
-    checks = {"macro_f1": metrics["macro_f1"] >= thresholds["macro_f1_min"], "conflict_recall": metrics["conflict"]["recall"] >= thresholds["conflict_recall_min"], "insufficient_evidence_recall": metrics["insufficient_evidence_recall"] >= thresholds["insufficient_evidence_recall_min"], "no_conflict_false_positive_rate": metrics["no_conflict_false_positive_rate"] <= thresholds["no_conflict_false_positive_rate_max"], "retrieval_expected_evidence_hit_at_5": metrics["retrieval_expected_evidence_hit_at_5"] >= thresholds["retrieval_expected_evidence_hit_at_5_min"], "cited_evidence_precision": metrics["cited_evidence_precision"] == thresholds["cited_evidence_precision"], "schema_validity": metrics["schema_validity"] == thresholds["schema_validity"], "evidence_resolvability_grounding": metrics["evidence_resolvability_grounding"] == thresholds["evidence_resolvability_grounding"], "fail_closed_safety_paths": safety.get("validity") == thresholds["fail_closed_safety_paths"]}
+    checks = {"macro_f1": metrics["macro_f1"] >= thresholds["macro_f1_min"], "conflict_recall": metrics["conflict"]["recall"] >= thresholds["conflict_recall_min"], "insufficient_evidence_recall": metrics["insufficient_evidence_recall"] >= thresholds["insufficient_evidence_recall_min"], "no_conflict_false_positive_rate": metrics["no_conflict_false_positive_rate"] <= thresholds["no_conflict_false_positive_rate_max"], "retrieval_expected_evidence_hit_at_5": metrics["retrieval_expected_evidence_hit_at_5"] >= thresholds["retrieval_expected_evidence_hit_at_5_min"], "cited_evidence_precision": (metrics["cited_evidence_precision"] >= thresholds["cited_evidence_precision_min"] if "cited_evidence_precision_min" in thresholds else metrics["cited_evidence_precision"] == thresholds["cited_evidence_precision"]), "schema_validity": metrics["schema_validity"] == thresholds["schema_validity"], "evidence_resolvability_grounding": metrics["evidence_resolvability_grounding"] == thresholds["evidence_resolvability_grounding"], "fail_closed_safety_paths": safety.get("validity") == thresholds["fail_closed_safety_paths"]}
     if "conflict_category_accuracy_min" in thresholds:
         checks["conflict_category_accuracy"] = metrics["conflict_category_accuracy"] >= thresholds["conflict_category_accuracy_min"]
     if "designated_category_mismatch_regression_required_correct" in thresholds:
@@ -613,6 +615,9 @@ def execute_formal_run(
             validate_formal_freeze()
         elif config.case_set_path.resolve() == (ROOT / "evaluation" / "case_sets" / "eval-set-v9.json").resolve() and config.manifest_path.resolve() == (ROOT / "evaluation" / "manifests" / "eval-set-v9-manifest.json").resolve():
             from evaluation.validate_eval_set_v9 import validate_formal_freeze
+            validate_formal_freeze()
+        elif config.case_set_path.resolve() == (ROOT / "evaluation" / "case_sets" / "eval-set-v10.json").resolve() and config.manifest_path.resolve() == (ROOT / "evaluation" / "manifests" / "eval-set-v10-manifest.json").resolve():
+            from evaluation.validate_eval_set_v10 import validate_formal_freeze
             validate_formal_freeze()
         else:
             raise RuntimeError("fixture_formal_assets_must_use_frozen_paths")
