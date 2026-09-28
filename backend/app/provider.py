@@ -311,10 +311,18 @@ class ProviderPort(Protocol):
 
 
 CONTINUITY_REVIEW_THINKING_VALUES = ("disabled", "high")
-# Measured on the V9/V11 Flash-high matrix: completion p95 4,033 tokens, first-answer latency p95 17.6 s.
-# Thinking tokens count inside completion, so the 2,000 default would truncate about a third of answers.
-REVIEW_THINKING_MAX_OUTPUT_TOKENS = 6000
-REVIEW_THINKING_TIMEOUT_SECONDS = 60
+# Thinking tokens count inside completion. The V9 held-out formal run (eval-v9-first-formal) truncated
+# 4/36 answers at 6,000 output tokens and paused 3/36 over the 8,000-token run budget; the largest
+# single development response was 8,607 completion tokens. The engine compares each response's
+# input plus output with the run budget; 24,000 leaves room for a full 12,000-token answer on the
+# largest admitted input, including a repair request that carries the rejected output.
+# The V9 diagnostic reruns then saw one answer exhaust 12,000 output tokens and one repair request
+# exceed the 6,000-unit input estimate because it carries the full rejected answer. First requests
+# keep the 6,000-unit input limit and long-form batching is unchanged.
+REVIEW_THINKING_MAX_OUTPUT_TOKENS = 16000
+REVIEW_THINKING_RUN_TOKEN_BUDGET = 24000
+REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS = 9000
+REVIEW_THINKING_TIMEOUT_SECONDS = 90
 
 
 class DeepSeekProvider:
@@ -350,6 +358,21 @@ class DeepSeekProvider:
         return bool(self.enabled and self.model and self.base_url and self.api_key and
                     self.review_thinking in CONTINUITY_REVIEW_THINKING_VALUES)
 
+    @property
+    def continuity_run_token_budget(self) -> int | None:
+        """Per-check token budget override for thinking review; None keeps the engine default."""
+        return REVIEW_THINKING_RUN_TOKEN_BUDGET if self.review_thinking == "high" else None
+
+    @property
+    def continuity_repair_input_budget_units(self) -> int | None:
+        """Input-estimate allowance for a thinking review's single contract-repair request."""
+        return REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS if self.review_thinking == "high" else None
+
+    def input_budget_for(self, request: dict[str, Any]) -> int:
+        if request.get("task") is None and "contract_repair" in request and self.continuity_repair_input_budget_units:
+            return self.continuity_repair_input_budget_units
+        return MAX_INPUT_BUDGET_UNITS
+
     def request_body(self, request: dict[str, Any], prompt: str) -> dict[str, Any]:
         body = {"model": self.model, "messages": [{"role": "user", "content": prompt}],
                 "response_format": {"type": "json_object"}}
@@ -368,7 +391,7 @@ class DeepSeekProvider:
         if not self.available:
             raise ProviderUnavailable()
         prompt, input_budget_units = request_prompt_and_budget(request)
-        if input_budget_units > MAX_INPUT_BUDGET_UNITS:
+        if input_budget_units > self.input_budget_for(request):
             raise InputBudgetExceeded()
         body = self.request_body(request, prompt)
         self._request_timeout = REVIEW_THINKING_TIMEOUT_SECONDS if body["thinking"]["type"] == "enabled" else self.timeout_seconds

@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "frost_marker_observatory",
+  "title": "Morning above Frost Marker Ridge",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v9-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "Morning above Frost Marker Ridge",
+    "language": "en",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "The Ascent Register",
+      "source_label": "ascent_handbook",
+      "body": "At Frost Marker Observatory, an ascent is complete only when its balloon has landed and its data capsule has been recovered. A landed balloon with an unrecovered capsule is still an incomplete ascent. This definition always applies."
+    },
+    {
+      "chapter_number": 2,
+      "title": "R-8 at Daybreak",
+      "source_label": "recovery_log",
+      "body": "At 06:40 on 22 April, the balloon for ascent R-8 had landed. Its data capsule remained unrecovered on the eastern slope. The recovery team had reached only the foot of that slope."
+    },
+    {
+      "chapter_number": 3,
+      "title": "The Copperleaf Case",
+      "source_label": "storage_log",
+      "body": "At 07:10 on 22 April, the instrument case called Copperleaf was in Nessa Quill's possession alone. Orin Slate had no possession of it at that time."
+    },
+    {
+      "chapter_number": 4,
+      "title": "News over Breakfast",
+      "source_label": "breakfast_note",
+      "body": "At 08:00 on 22 April, Suri Bex knew that the northern trail was flooded. Cartographer Tovan Mer had told her five minutes earlier, and she had understood his warning."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Beside the Marker",
+      "source_label": "ridge_sketch",
+      "body": "At 08:20 on 22 April, Orin Slate stood beside the frost marker on Juniper Ridge. He sketched the valley from that spot while the observatory windows caught the sun."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Plans for Noon",
+      "source_label": "meeting_draft",
+      "body": "The meeting draft for 22 April records Nessa Quill's proposal for a second ascent at noon. Its approval field is empty. It records no decision by chief Ada Wren and is explicitly an unfinished draft."
+    },
+    {
+      "chapter_number": 7,
+      "title": "A Parcel in the Foyer",
+      "source_label": "return_receipt",
+      "body": "At 09:10 on 22 April, a courier left the sealed return parcel CR-4 in the observatory foyer. The receipt lists its parcel number and weight, but not its contents. No one opened it during the recorded handover."
+    },
+    {
+      "chapter_number": 8,
+      "title": "The Spare Vane",
+      "source_label": "packing_list",
+      "body": "The packing list for CR-4 calls for a spare wind vane. It is a plan prepared before dispatch and contains no confirmation that the vane was actually packed."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "Morning above Frost Marker Ridge",
+      "predicate": "rule",
+      "value": "At Frost Marker Observatory, an ascent is complete only when its balloon has landed and its data capsule has been recovered. A landed balloon with an unrecovered capsule is still an incomplete ascent. This definition always applies.",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "ascent_handbook"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Morning above Frost Marker Ridge",
+      "predicate": "status",
+      "value": "At 06:40 on 22 April, the balloon for ascent R-8 had landed. Its data capsule remained unrecovered on the eastern slope. The recovery team had reached only the foot of that slope.",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "recovery_log"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Morning above Frost Marker Ridge",
+      "predicate": "status",
+      "value": "At 07:10 on 22 April, the instrument case called Copperleaf was in Nessa Quill's possession alone. Orin Slate had no possession of it at that time.",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "storage_log"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Morning above Frost Marker Ridge",
+      "predicate": "status",
+      "value": "At 08:00 on 22 April, Suri Bex knew that the northern trail was flooded. Cartographer Tovan Mer had told her five minutes earlier, and she had understood his warning.",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "breakfast_note"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Morning above Frost Marker Ridge",
+      "predicate": "status",
+      "value": "At 08:20 on 22 April, Orin Slate stood beside the frost marker on Juniper Ridge. He sketched the valley from that spot while the observatory windows caught the sun.",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "ridge_sketch"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Morning above Frost Marker Ridge",
+      "predicate": "status",
+      "value": "The meeting draft for 22 April records Nessa Quill's proposal for a second ascent at noon. Its approval field is empty. It records no decision by chief Ada Wren and is explicitly an unfinished draft.",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "meeting_draft"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Morning above Frost Marker Ridge",
+      "predicate": "status",
+      "value": "At 09:10 on 22 April, a courier left the sealed return parcel CR-4 in the observatory foyer. The receipt lists its parcel number and weight, but not its contents. No one opened it during the recorded handover.",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "return_receipt"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Morning above Frost Marker Ridge",
+      "predicate": "status",
+      "value": "The packing list for CR-4 calls for a spare wind vane. It is a plan prepared before dispatch and contains no confirmation that the vane was actually packed.",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "packing_list"
+      }
+    }
+  ]
+}

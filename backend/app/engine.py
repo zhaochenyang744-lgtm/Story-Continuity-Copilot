@@ -103,11 +103,40 @@ def _clock_values(value: str) -> set[int] | None:
     return clocks
 
 
+_ENGLISH_MONTHS = {name: number for number, names in enumerate(
+    (("january", "jan"), ("february", "feb"), ("march", "mar"), ("april", "apr"), ("may",), ("june", "jun"),
+     ("july", "jul"), ("august", "aug"), ("september", "sep", "sept"), ("october", "oct"), ("november", "nov"),
+     ("december", "dec")), 1) for name in names}
+_MONTH_NAME = r"(" + "|".join(sorted(_ENGLISH_MONTHS, key=len, reverse=True)) + r")\.?"
+
+
+def _english_calendar(value: str) -> dict[str, set[str]]:
+    """Explicit English or ISO calendar dates as the same 年/月/日 components used for Chinese dates."""
+    parsed: dict[str, set[str]] = {}
+    def add(year: str | None, month: int | str, day: str) -> None:
+        if isinstance(month, str):
+            # "may" is also a common verb; only the capitalised month name counts.
+            if month.casefold() == "may" and month != "May":
+                return
+            month = _ENGLISH_MONTHS[month.casefold()]
+        if 1 <= month <= 12 and 1 <= int(day) <= 31:
+            parsed.setdefault("月", set()).add(str(month)); parsed.setdefault("日", set()).add(str(int(day)))
+            if year:
+                parsed.setdefault("年", set()).add(str(int(year)))
+    for day, month, year in re.findall(r"\b(\d{1,2})(?:st|nd|rd|th)?\s+(?:of\s+)?" + _MONTH_NAME + r"(?:,?\s+(\d{4}))?\b", value, re.IGNORECASE):
+        add(year, month, day)
+    for month, day, year in re.findall(r"\b" + _MONTH_NAME + r"\s+(\d{1,2})(?:st|nd|rd|th)?\b(?:,?\s+(\d{4}))?", value, re.IGNORECASE):
+        add(year, month, day)
+    for year, month, day in re.findall(r"\b(\d{4})-(\d{1,2})-(\d{1,2})\b", value):
+        add(year, int(month), day)
+    return parsed
+
+
 def _temporal_anchor_is_explicit(value: str) -> bool:
     clocks = _clock_values(value)
     if clocks is None:
         return False
-    if clocks:
+    if clocks or _english_calendar(value):
         return True
     return bool(re.search(
         r"(?:\d{1,4}\s*(?:年|月|日|号|点|时|分|秒|章)|[一二三四五六七八九十百零两]+\s*(?:年|月|日|号|点|时|分|秒|章)|"
@@ -146,6 +175,8 @@ def _explicit_temporal_overlap(claim_anchor: str, evidence_anchor: str) -> bool:
         parsed:dict[str,set[str]]={}
         for raw,unit in re.findall(component_pattern,value,re.IGNORECASE):
             parsed.setdefault(unit_group.get(unit,unit),set()).add(normalized_number(raw.casefold()))
+        for unit,values in _english_calendar(value).items():
+            parsed.setdefault(unit,set()).update(values)
         if clocks := _clock_values(value):
             parsed["clock"] = {str(clock) for clock in clocks}
         return parsed
@@ -187,7 +218,8 @@ def _full_temporal_scope_supports_conflict(claim_text: str, evidence_text: str, 
     calendar=r"(?:\d{1,4}|[一二三四五六七八九十百零两]+)\s*(?:年|月|日|号)"
     shared_scope=r"同一(?:天|夜|晚|时刻|时间)|与此同时|同时|\b(?:same\s+(?:day|night|time|moment)|simultaneously)\b"
     if re.search(clock,claim_anchor,re.IGNORECASE) and re.search(clock,evidence_anchor,re.IGNORECASE) and not claim_days:
-        if not (re.search(calendar,claim_scope) and re.search(calendar,evidence_scope)) and not (re.search(shared_scope,claim_scope,re.IGNORECASE) and re.search(shared_scope,evidence_scope,re.IGNORECASE)):return False
+        dated=lambda scope:bool(re.search(calendar,scope) or _english_calendar(scope))
+        if not (dated(claim_scope) and dated(evidence_scope)) and not (re.search(shared_scope,claim_scope,re.IGNORECASE) and re.search(shared_scope,evidence_scope,re.IGNORECASE)):return False
     return True
 
 
@@ -375,14 +407,17 @@ class ContinuityEngine:
         except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True}
         results=[]; issues=[];contract_normalizations=[]
         retrieval_traces=[{"claim_id":claim["id"],"returned_span_ids":[span["id"] for span in claim["allowed_evidence"]]} for batch in batches for claim in batch["claims"]]
+        # A thinking-review provider declares its own larger budget; everything else keeps MAX_RUN_TOKENS.
+        run_budget=getattr(self.provider,"continuity_run_token_budget",None) or MAX_RUN_TOKENS
         try:
             for batch in batches:
                 for contract_attempt in range(2):
                     request=batch if contract_attempt==0 else {**batch,"contract_repair":{"attempt":contract_attempt+1,"reason_code":repair_code,"diagnostics":repair_diagnostics,"rejected_issues":rejected_issues,"rejected_claim_verdicts":rejected_claim_verdicts}}
                     # Check the complete feedback as sent; never truncate rejected output to fit.
-                    if request_prompt_and_budget(request)[1]>MAX_INPUT_BUDGET_UNITS:raise InputBudgetExceeded()
+                    input_limit=(getattr(self.provider,"continuity_repair_input_budget_units",None) or MAX_INPUT_BUDGET_UNITS) if contract_attempt else MAX_INPUT_BUDGET_UNITS
+                    if request_prompt_and_budget(request)[1]>input_limit:raise InputBudgetExceeded()
                     result=self.provider.evaluate(request)
-                    if (result.input_tokens or 0)+(result.output_tokens or 0)>MAX_RUN_TOKENS:return {"status":"budget_paused","error_code":"budget_paused","retryable":True,**_aggregate(results+[result])}
+                    if (result.input_tokens or 0)+(result.output_tokens or 0)>run_budget:return {"status":"budget_paused","error_code":"budget_paused","retryable":True,**_aggregate(results+[result])}
                     results.append(result)
                     rejected_issues=result.payload.get("issues",[]) if isinstance(result.payload,dict) else []
                     rejected_claim_verdicts=result.payload.get("claim_verdicts",[]) if isinstance(result.payload,dict) else []
@@ -404,7 +439,10 @@ class ContinuityEngine:
         except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True,**_aggregate(results)}
         except ProviderUnavailable:return {"status":"failed","error_code":"provider_unavailable","retryable":True,**_aggregate(results)}
         except ProviderTimeout as error:return {"status":"timed_out","error_code":"provider_timeout","retryable":True,**_aggregate_attempt_failure(results,error)}
-        except ProviderInvalidJson as error:return {"status":"failed","error_code":"invalid_json","retryable":True,**_invalid_json_aggregate(results,error)}
+        except ProviderInvalidJson as error:
+            # A length stop cut the answer off; name it instead of calling it a JSON contract failure.
+            code="output_truncated" if error.finish_reason=="length" else "invalid_json"
+            return {"status":"failed","error_code":code,"retryable":True,**_invalid_json_aggregate(results,error)}
         except ProviderFailure as error:return {"status":"failed","error_code":"provider_error","retryable":True,**_aggregate_attempt_failure(results,error)}
         except ValueError as error:return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate_attempt_failure(results,error)}
         order={claim["id"]:index for index,claim in enumerate(data["claims"])}

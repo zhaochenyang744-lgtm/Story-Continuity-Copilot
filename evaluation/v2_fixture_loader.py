@@ -59,6 +59,10 @@ V8_CORPUS_PATHS = {
     "flint_garden": FIXTURES / "eval-v8-flint-garden.json",
     "opal_nursery": FIXTURES / "eval-v8-opal-nursery.json",
 }
+# V9 corpora are user-authored held-out data; their keys come from the generated corpus manifest.
+_V9_MANIFEST = FIXTURES / "eval-v9-corpus-manifest.json"
+V9_CORPUS_PATHS = ({item["corpus_key"]: ROOT / item["path"] for item in json.loads(_V9_MANIFEST.read_text(encoding="utf-8"))["files"]}
+                   if _V9_MANIFEST.is_file() else {})
 
 
 @dataclass(frozen=True)
@@ -199,6 +203,9 @@ def load_fixture(database: V2Database, corpus_key: str, fail_after: str | None =
             "INSERT INTO v2_projects(id,user_id,title,genre,summary,status,metadata_revision,data_origin,seed_key,created_at,updated_at,current_memory_version) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
             (ids["project"], ids["user"], corpus["title"], "evaluation", "Isolated evaluation fixture", "active", 1, "evaluation_fixture", corpus_key, stamp, stamp, 1),
         )
+        # Since v1.3 every product project starts with an empty Author Context version 0;
+        # a check refuses to run without it (author_context_snapshot_unresolvable).
+        V2Database._insert_empty_author_context_zero(connection, ids["project"], stamp)
         if fail_after == "project":
             raise RuntimeError("fixture_injected_failure")
         for chapter in corpus["chapters"]:

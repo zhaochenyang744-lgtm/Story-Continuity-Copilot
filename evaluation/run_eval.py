@@ -17,7 +17,7 @@ import httpx
 
 from evaluation.metrics import aggregate, prediction_for_target, stability
 from evaluation.validate_eval_set import canonical_sha256
-from evaluation.v2_fixture_loader import CORPUS_PATHS, V3_CORPUS_PATHS, V4_CORPUS_PATHS, V5_CORPUS_PATHS, V6_CORPUS_PATHS, V7_CORPUS_PATHS, V8_CORPUS_PATHS, corpus_manifest_payload, fixture_runtime_at
+from evaluation.v2_fixture_loader import CORPUS_PATHS, V3_CORPUS_PATHS, V4_CORPUS_PATHS, V5_CORPUS_PATHS, V6_CORPUS_PATHS, V7_CORPUS_PATHS, V8_CORPUS_PATHS, V9_CORPUS_PATHS, corpus_manifest_payload, fixture_runtime_at
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -157,6 +157,8 @@ def fixture_corpus_paths(corpus_manifest_path: pathlib.Path) -> dict[str, pathli
         return V7_CORPUS_PATHS
     if resolved == (ROOT / "evaluation" / "fixtures" / "eval-v8-corpus-manifest.json").resolve():
         return V8_CORPUS_PATHS
+    if resolved == (ROOT / "evaluation" / "fixtures" / "eval-v9-corpus-manifest.json").resolve():
+        return V9_CORPUS_PATHS
     raise RuntimeError("fixture_corpus_manifest_not_formally_recognized")
 
 
@@ -608,6 +610,9 @@ def execute_formal_run(
             validate_formal_freeze(config.case_set_path, config.manifest_path)
         elif config.case_set_path.resolve() == (ROOT / "evaluation" / "case_sets" / "eval-set-v8.json").resolve() and config.manifest_path.resolve() == (ROOT / "evaluation" / "manifests" / "eval-set-v8-manifest.json").resolve():
             from evaluation.validate_eval_set_v8 import validate_formal_freeze
+            validate_formal_freeze()
+        elif config.case_set_path.resolve() == (ROOT / "evaluation" / "case_sets" / "eval-set-v9.json").resolve() and config.manifest_path.resolve() == (ROOT / "evaluation" / "manifests" / "eval-set-v9-manifest.json").resolve():
+            from evaluation.validate_eval_set_v9 import validate_formal_freeze
             validate_formal_freeze()
         else:
             raise RuntimeError("fixture_formal_assets_must_use_frozen_paths")

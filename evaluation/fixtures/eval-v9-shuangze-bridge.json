@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "shuangze_bridge",
+  "title": "霜泽浮桥的潮表",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v9-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "霜泽浮桥的潮表",
+    "language": "zh",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "南四墩检测页",
+      "source_label": "pier_trial",
+      "body": "霜历十一年二月六日12点，南四墩承压试验仍在进行，尚未完成。检测员刚装上第二组砝码，第三组还放在推车里。这一状态由当班检测员写入12点的检测页。"
+    },
+    {
+      "chapter_number": 2,
+      "title": "闸房归档记录",
+      "source_label": "sluice_archive",
+      "body": "霜历十一年二月六日早晨，东闸在8点10分完全升到位；这是本日早晨唯一一次东闸升起。操作员在刻度尺旁盖上当班印章，把完成时刻记入闸房记录。"
+    },
+    {
+      "chapter_number": 3,
+      "title": "桥头的红绳",
+      "source_label": "red_cord",
+      "body": "霜历十一年二月六日10点，秦缃把一根红绳系在南桥头的铜铃上。她打了两个结，再沿桥栏慢慢走回值班棚，鞋底在湿木板上留下了一串暗印。"
+    },
+    {
+      "chapter_number": 4,
+      "title": "材料领用收条",
+      "source_label": "grease_receipt",
+      "body": "材料领用收条记录：霜历十一年二月五日，仓库向秦缃发出六桶防水脂，秦缃签字领走。收条只设品名、数量、领用人和日期四栏，没有填写施工地点或实际消耗量的位置。"
+    },
+    {
+      "chapter_number": 5,
+      "title": "系泊簿归档记录",
+      "source_label": "mooring_archive",
+      "body": "霜历十一年二月六日早晨，浮桥在8点25分才开始解缆；这是本日早晨唯一一次解缆，在此之前各条缆绳一直系牢。解缆人把用过的扳手留在北端木桩旁。"
+    },
+    {
+      "chapter_number": 6,
+      "title": "青篷棚午饭",
+      "source_label": "lunch_note",
+      "body": "霜历十一年二月六日13点，炊事员给青篷棚送来三碗热汤，每碗都放了一片姜。秦缃把最靠近棚口的一碗递给值班记录员，另外两碗仍放在桌上。"
+    },
+    {
+      "chapter_number": 7,
+      "title": "二格水位演练",
+      "source_label": "flag_drill",
+      "body": "演练札记记载：霜历十一年二月三日，水位计指在二格时，守桥人升起双蓝旗，随后允许货车通行。这一页的标题是“二格水位演练”，正文只叙述了这次演练中的操作经过。"
+    },
+    {
+      "chapter_number": 8,
+      "title": "暮色中的芦苇",
+      "source_label": "reeds_evening",
+      "body": "黄昏时，浮桥下游的芦苇随水流缓缓偏向一边。卖灯纸的小贩坐在岸边补伞，偶尔抬头看桥上的人影。他等到山后最后一线光消失，才把伞和纸卷背走。"
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "霜泽浮桥的潮表",
+      "predicate": "status",
+      "value": "霜历十一年二月六日12点，南四墩承压试验仍在进行，尚未完成。检测员刚装上第二组砝码，第三组还放在推车里。这一状态由当班检测员写入12点的检测页。",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "pier_trial"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "霜泽浮桥的潮表",
+      "predicate": "status",
+      "value": "霜历十一年二月六日早晨，东闸在8点10分完全升到位；这是本日早晨唯一一次东闸升起。操作员在刻度尺旁盖上当班印章，把完成时刻记入闸房记录。",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "sluice_archive"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "霜泽浮桥的潮表",
+      "predicate": "status",
+      "value": "霜历十一年二月六日10点，秦缃把一根红绳系在南桥头的铜铃上。她打了两个结，再沿桥栏慢慢走回值班棚，鞋底在湿木板上留下了一串暗印。",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "red_cord"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "霜泽浮桥的潮表",
+      "predicate": "status",
+      "value": "材料领用收条记录：霜历十一年二月五日，仓库向秦缃发出六桶防水脂，秦缃签字领走。收条只设品名、数量、领用人和日期四栏，没有填写施工地点或实际消耗量的位置。",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "grease_receipt"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "霜泽浮桥的潮表",
+      "predicate": "status",
+      "value": "霜历十一年二月六日早晨，浮桥在8点25分才开始解缆；这是本日早晨唯一一次解缆，在此之前各条缆绳一直系牢。解缆人把用过的扳手留在北端木桩旁。",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "mooring_archive"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "霜泽浮桥的潮表",
+      "predicate": "status",
+      "value": "霜历十一年二月六日13点，炊事员给青篷棚送来三碗热汤，每碗都放了一片姜。秦缃把最靠近棚口的一碗递给值班记录员，另外两碗仍放在桌上。",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "lunch_note"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "霜泽浮桥的潮表",
+      "predicate": "status",
+      "value": "演练札记记载：霜历十一年二月三日，水位计指在二格时，守桥人升起双蓝旗，随后允许货车通行。这一页的标题是“二格水位演练”，正文只叙述了这次演练中的操作经过。",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "flag_drill"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "霜泽浮桥的潮表",
+      "predicate": "status",
+      "value": "黄昏时，浮桥下游的芦苇随水流缓缓偏向一边。卖灯纸的小贩坐在岸边补伞，偶尔抬头看桥上的人影。他等到山后最后一线光消失，才把伞和纸卷背走。",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "reeds_evening"
+      }
+    }
+  ]
+}

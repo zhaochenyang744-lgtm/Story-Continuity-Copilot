@@ -1,0 +1,39 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-manifest-v1",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "files": [
+    {
+      "corpus_key": "bailu_foundry",
+      "path": "evaluation/fixtures/eval-v9-bailu-foundry.json",
+      "sha256": "7a346b575fc66bf76fac86129987dd1f961856d929b10eb0b32f0cdff159181f"
+    },
+    {
+      "corpus_key": "liting_paper_whale",
+      "path": "evaluation/fixtures/eval-v9-liting-paper-whale.json",
+      "sha256": "7ec00c75a325895206d10b4d0e7e5e8d629f552c24f2772f88dc4c89f0031237"
+    },
+    {
+      "corpus_key": "shuangze_bridge",
+      "path": "evaluation/fixtures/eval-v9-shuangze-bridge.json",
+      "sha256": "2a3db27350604c45e5135a633882ab3ea2b84357d78f1c0fa7d5d49dc2ae2893"
+    },
+    {
+      "corpus_key": "merrow_sound",
+      "path": "evaluation/fixtures/eval-v9-merrow-sound.json",
+      "sha256": "6c6fa1569ce08f3b18d4d460e1beb40350153a4c25192df3663100237208f4c6"
+    },
+    {
+      "corpus_key": "winter_market_workshop",
+      "path": "evaluation/fixtures/eval-v9-winter-market-workshop.json",
+      "sha256": "67037f97df3ded7092fc1819cdd69f4a8e4f6e7f22779f42c3ddbb8d78c20d14"
+    },
+    {
+      "corpus_key": "frost_marker_observatory",
+      "path": "evaluation/fixtures/eval-v9-frost-marker-observatory.json",
+      "sha256": "df022949053819e29cf3927530cfb60691add82b8b59cb1285748271febcbb47"
+    }
+  ],
+  "canonical_sha256": "5b52a5ccf0f232aec26a085d005be68e30a2beec0e17aee006e20b8501b23bd0"
+}

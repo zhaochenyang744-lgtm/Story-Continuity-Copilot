@@ -1,0 +1,187 @@
+{
+  "evaluation": "scc-web-demo-eval-v9-first-formal",
+  "bad_cases": [
+    {
+      "case_id": "v9-hv9-022",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "category": {
+        "expected": "location_action",
+        "predicted": null
+      },
+      "root_cause": "schema",
+      "failure_dimensions": [
+        "terminal_failure",
+        "classification_mismatch",
+        "category_mismatch",
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "invalid_json",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 0,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-025",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "category": {
+        "expected": "relationship",
+        "predicted": null
+      },
+      "root_cause": "schema",
+      "failure_dimensions": [
+        "terminal_failure",
+        "classification_mismatch",
+        "category_mismatch",
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "invalid_json",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 0,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-028",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "category": {
+        "expected": "attribute",
+        "predicted": null
+      },
+      "root_cause": "schema",
+      "failure_dimensions": [
+        "terminal_failure",
+        "classification_mismatch",
+        "category_mismatch",
+        "expected_evidence_recall_incomplete"
+      ],
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "invalid_json",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0,
+        "expected_evidence_count": 1,
+        "cited_expected_evidence_unique_count": 0,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-031",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "category": {
+        "expected": "object_state",
+        "predicted": null
+      },
+      "root_cause": "schema",
+      "failure_dimensions": [
+        "terminal_failure",
+        "classification_mismatch",
+        "category_mismatch",
+        "expected_evidence_recall_incomplete"
+      ],
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "budget_guard_exceeded",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0,
+        "expected_evidence_count": 1,
+        "cited_expected_evidence_unique_count": 0,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-033",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "category": {
+        "expected": null,
+        "predicted": null
+      },
+      "root_cause": "schema",
+      "failure_dimensions": [
+        "terminal_failure",
+        "classification_mismatch"
+      ],
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "budget_guard_exceeded",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0,
+        "expected_evidence_count": 0,
+        "cited_expected_evidence_unique_count": 0,
+        "expected_evidence_full_set_cited": null
+      }
+    },
+    {
+      "case_id": "v9-hv9-034",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "category": {
+        "expected": "event_status",
+        "predicted": null
+      },
+      "root_cause": "schema",
+      "failure_dimensions": [
+        "terminal_failure",
+        "classification_mismatch",
+        "category_mismatch",
+        "expected_evidence_recall_incomplete",
+        "multi_direct_evidence_full_set_miss"
+      ],
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "invalid_json",
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 0,
+        "expected_evidence_full_set_cited": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-036",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "category": {
+        "expected": null,
+        "predicted": null
+      },
+      "root_cause": "schema",
+      "failure_dimensions": [
+        "terminal_failure",
+        "retrieval_miss",
+        "classification_mismatch"
+      ],
+      "rationale": "The fail-closed schema/evidence guard ended the run with a terminal error.",
+      "evidence": {
+        "terminal_error_code": "budget_guard_exceeded",
+        "retrieval_hit_at_5": false,
+        "cited_evidence_count": 0,
+        "resolvable_evidence_count": 0,
+        "expected_evidence_count": 0,
+        "cited_expected_evidence_unique_count": 0,
+        "expected_evidence_full_set_cited": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "liting_paper_whale",
+  "title": "砾汀剧院的纸鲸",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v9-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "砾汀剧院的纸鲸",
+    "language": "zh",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "候场铃",
+      "source_label": "stage_bell",
+      "body": "雾历三年六月九日19点40分，舞台助手余苇亲手拉响了候场铃。铃响三次后，他把拉绳挂回墙钩，向等在帘后的演员举起了两根手指。"
+    },
+    {
+      "chapter_number": 2,
+      "title": "道具间值守页",
+      "source_label": "case_watch",
+      "body": "雾历三年六月九日20点05分，值守员检查了箱号P六：箱盖完全合拢，搭扣扣住，挂锁仍然锁着。他在该分钟的值守页上签名，随后转身清点墙边的竹撑杆。"
+    },
+    {
+      "chapter_number": 3,
+      "title": "本季演出手册",
+      "source_label": "program_name",
+      "body": "本季演出手册的人名页写明：演奏者朴绒使用的艺名是“玻雀”；朴绒与玻雀是同一个人。手册还列出她本季负责的两种乐器：木笛和小鼓。"
+    },
+    {
+      "chapter_number": 4,
+      "title": "幕布的位置",
+      "source_label": "curtain_message",
+      "body": "雾历三年六月九日20点20分，舞监柯沫已经知道备用幕布藏在西侧地窖。她刚听完保管员的说明，准确复述了“西侧地窖”，又在自己的工作本上写下这个地点。"
+    },
+    {
+      "chapter_number": 5,
+      "title": "箱名登记",
+      "source_label": "case_register",
+      "body": "雾历三年六月九日20点05分，道具管理员核对箱名登记：“折星匣”对应箱号P六。剧院没有第二只使用“折星匣”这个名称的箱子，P六也只有这一只。"
+    },
+    {
+      "chapter_number": 6,
+      "title": "门岗便笺",
+      "source_label": "gate_slip",
+      "body": "门岗便笺写着：雾历三年六月九日19点50分，一个戴银扣帽的人把月票放上窗台后离开。对方没有报姓名，门岗也没有认出他。便笺只画了一顶帽子，没有其他身份记录。"
+    },
+    {
+      "chapter_number": 7,
+      "title": "风机试转日志",
+      "source_label": "fan_trial",
+      "body": "风机试转日志的验收栏要求：持续保持规定压力三分钟，才能记为通过。雾历三年六月九日21点10分开始加压；21点12分压力仍在上升。日志到此结束，后面的纸页被雨水泡烂，验收栏没有留下可辨文字。"
+    },
+    {
+      "chapter_number": 8,
+      "title": "纸鲸的背影",
+      "source_label": "paper_whale_scene",
+      "body": "第二幕使用一条纸糊的鲸鱼。观众只能看见它的背影横过薄帘，舞台地板上则落着鱼鳍投下的淡影。负责记账的蒋屏坐在楼上小室，把当晚售出的座位票按排号分开。"
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "砾汀剧院的纸鲸",
+      "predicate": "status",
+      "value": "雾历三年六月九日19点40分，舞台助手余苇亲手拉响了候场铃。铃响三次后，他把拉绳挂回墙钩，向等在帘后的演员举起了两根手指。",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "stage_bell"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "砾汀剧院的纸鲸",
+      "predicate": "status",
+      "value": "雾历三年六月九日20点05分，值守员检查了箱号P六：箱盖完全合拢，搭扣扣住，挂锁仍然锁着。他在该分钟的值守页上签名，随后转身清点墙边的竹撑杆。",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "case_watch"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "砾汀剧院的纸鲸",
+      "predicate": "status",
+      "value": "本季演出手册的人名页写明：演奏者朴绒使用的艺名是“玻雀”；朴绒与玻雀是同一个人。手册还列出她本季负责的两种乐器：木笛和小鼓。",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "program_name"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "砾汀剧院的纸鲸",
+      "predicate": "status",
+      "value": "雾历三年六月九日20点20分，舞监柯沫已经知道备用幕布藏在西侧地窖。她刚听完保管员的说明，准确复述了“西侧地窖”，又在自己的工作本上写下这个地点。",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "curtain_message"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "砾汀剧院的纸鲸",
+      "predicate": "status",
+      "value": "雾历三年六月九日20点05分，道具管理员核对箱名登记：“折星匣”对应箱号P六。剧院没有第二只使用“折星匣”这个名称的箱子，P六也只有这一只。",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "case_register"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "砾汀剧院的纸鲸",
+      "predicate": "status",
+      "value": "门岗便笺写着：雾历三年六月九日19点50分，一个戴银扣帽的人把月票放上窗台后离开。对方没有报姓名，门岗也没有认出他。便笺只画了一顶帽子，没有其他身份记录。",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "gate_slip"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "砾汀剧院的纸鲸",
+      "predicate": "status",
+      "value": "风机试转日志的验收栏要求：持续保持规定压力三分钟，才能记为通过。雾历三年六月九日21点10分开始加压；21点12分压力仍在上升。日志到此结束，后面的纸页被雨水泡烂，验收栏没有留下可辨文字。",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "fan_trial"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "砾汀剧院的纸鲸",
+      "predicate": "status",
+      "value": "第二幕使用一条纸糊的鲸鱼。观众只能看见它的背影横过薄帘，舞台地板上则落着鱼鳍投下的淡影。负责记账的蒋屏坐在楼上小室，把当晚售出的座位票按排号分开。",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "paper_whale_scene"
+      }
+    }
+  ]
+}

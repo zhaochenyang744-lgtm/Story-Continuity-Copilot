@@ -1,0 +1,2717 @@
+{
+  "evaluation": "scc-web-demo-eval-v9-first-formal",
+  "execution_kind": "first_valid_formal",
+  "status": "gate_failed",
+  "abort_reason": null,
+  "case_set_sha256": "d020b5001e783a32001d1e799eaf87974e11292c7f8ab59fcc9c20da2d49fdd2",
+  "formal_case_results": [
+    {
+      "case_id": "v9-hv9-001",
+      "seed_key": "bailu_foundry",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "attribute",
+      "predicted_category": "attribute",
+      "expected_severity": "high",
+      "predicted_severity": "high",
+      "category_severity": [
+        "attribute",
+        "high"
+      ],
+      "run_id": "run-6a64903a-8440-4793-9726-23cee2abd01a",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "plate_register"
+        ],
+        [
+          2,
+          "engraving_scene"
+        ],
+        [
+          4,
+          "plate_measure"
+        ],
+        [
+          6,
+          "message_book"
+        ],
+        [
+          7,
+          "cover_acceptance"
+        ]
+      ],
+      "cited_evidence_count": 2,
+      "cited_evidence_expected_count": 2,
+      "resolvable_evidence_count": 2,
+      "evidence_ids": [
+        "evidence-6e57f06d-9d84-4655-9932-0ceb9599fe2c",
+        "evidence-d96b8958-4c8d-4eb7-9d6b-dc4aa09731dd"
+      ],
+      "evidence_semantic_set": [
+        [
+          1,
+          "plate_register"
+        ],
+        [
+          4,
+          "plate_measure"
+        ]
+      ],
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence",
+        "category_mismatch_regression"
+      ],
+      "requires_multiple_direct_evidence": true,
+      "expected_evidence_count": 2,
+      "cited_expected_evidence_unique_count": 2,
+      "expected_evidence_full_set_cited": true,
+      "explanation_sha256": "671b165b192f0782371676fb09983431c00a7afdbeb62190816462ce44a352f8",
+      "latency_ms": 5951,
+      "input_tokens": 4052,
+      "output_tokens": 1362,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-002",
+      "seed_key": "bailu_foundry",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-5a5e28a7-ed6d-4425-999d-af90090d9909",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          2,
+          "engraving_scene"
+        ],
+        [
+          3,
+          "packing_receipt"
+        ],
+        [
+          5,
+          "visitor_talk"
+        ],
+        [
+          6,
+          "message_book"
+        ],
+        [
+          7,
+          "cover_acceptance"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 2130,
+      "input_tokens": 4073,
+      "output_tokens": 340,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-003",
+      "seed_key": "bailu_foundry",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "character_knowledge",
+      "expected_severity": "low",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "character_knowledge",
+        "medium"
+      ],
+      "run_id": "run-acb4bbc1-ed70-4dcc-b417-3d6258a820b9",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "plate_register"
+        ],
+        [
+          2,
+          "engraving_scene"
+        ],
+        [
+          3,
+          "packing_receipt"
+        ],
+        [
+          5,
+          "visitor_talk"
+        ],
+        [
+          6,
+          "message_book"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-499032f2-ec08-40dc-b26a-1efa140149b9"
+      ],
+      "evidence_semantic_set": [
+        [
+          6,
+          "message_book"
+        ]
+      ],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "2f5818d941236f5aa35306b53d499c2fea0db2231ff30366194459f6277dde97",
+      "latency_ms": 9387,
+      "input_tokens": 4065,
+      "output_tokens": 2033,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-004",
+      "seed_key": "bailu_foundry",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "relationship",
+      "predicted_category": "relationship",
+      "expected_severity": "high",
+      "predicted_severity": "high",
+      "category_severity": [
+        "relationship",
+        "high"
+      ],
+      "run_id": "run-c9bf255d-9d19-4fc0-8b01-770d10cc602b",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          2,
+          "engraving_scene"
+        ],
+        [
+          3,
+          "packing_receipt"
+        ],
+        [
+          5,
+          "visitor_talk"
+        ],
+        [
+          6,
+          "message_book"
+        ],
+        [
+          7,
+          "cover_acceptance"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-d12f1395-1238-4e85-b55c-590b493ef345"
+      ],
+      "evidence_semantic_set": [
+        [
+          2,
+          "engraving_scene"
+        ]
+      ],
+      "challenge_tags": [
+        "conflict",
+        "category_mismatch_regression"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 1,
+      "cited_expected_evidence_unique_count": 1,
+      "expected_evidence_full_set_cited": true,
+      "explanation_sha256": "12d9b43949325e8e051d41b27e401849c5e6e4483c1ef3c6f863d546aa28ed88",
+      "latency_ms": 5869,
+      "input_tokens": 4177,
+      "output_tokens": 1292,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-005",
+      "seed_key": "bailu_foundry",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-05c04275-84c7-455e-8c44-5db33988e16b",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          2,
+          "engraving_scene"
+        ],
+        [
+          3,
+          "packing_receipt"
+        ],
+        [
+          5,
+          "visitor_talk"
+        ],
+        [
+          6,
+          "message_book"
+        ],
+        [
+          7,
+          "cover_acceptance"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 2236,
+      "input_tokens": 4063,
+      "output_tokens": 354,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-006",
+      "seed_key": "bailu_foundry",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "relationship",
+      "expected_severity": "low",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "relationship",
+        "medium"
+      ],
+      "run_id": "run-378a2015-afb7-42c3-8bd3-82007bf4dbfd",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "plate_register"
+        ],
+        [
+          2,
+          "engraving_scene"
+        ],
+        [
+          3,
+          "packing_receipt"
+        ],
+        [
+          5,
+          "visitor_talk"
+        ],
+        [
+          7,
+          "cover_acceptance"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-8ead733e-5d26-4d6b-97b3-529e0e7b1a2b"
+      ],
+      "evidence_semantic_set": [
+        [
+          7,
+          "cover_acceptance"
+        ]
+      ],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "235aeebdacab809233ebb94f0b3a03f756baa487fcb64a6d0b9919be68649f51",
+      "latency_ms": 8366,
+      "input_tokens": 4063,
+      "output_tokens": 1709,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-007",
+      "seed_key": "liting_paper_whale",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "object_state",
+      "predicted_category": "object_state",
+      "expected_severity": "high",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "object_state",
+        "medium"
+      ],
+      "run_id": "run-31d1f9ff-d594-4b74-82dc-c33396e6debd",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "stage_bell"
+        ],
+        [
+          2,
+          "case_watch"
+        ],
+        [
+          4,
+          "curtain_message"
+        ],
+        [
+          5,
+          "case_register"
+        ],
+        [
+          7,
+          "fan_trial"
+        ]
+      ],
+      "cited_evidence_count": 2,
+      "cited_evidence_expected_count": 2,
+      "resolvable_evidence_count": 2,
+      "evidence_ids": [
+        "evidence-03caa6fa-e89c-445e-b497-46a48fa6dc33",
+        "evidence-4d3f2e56-b150-4e8d-829b-d9042b4de354"
+      ],
+      "evidence_semantic_set": [
+        [
+          2,
+          "case_watch"
+        ],
+        [
+          5,
+          "case_register"
+        ]
+      ],
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "requires_multiple_direct_evidence": true,
+      "expected_evidence_count": 2,
+      "cited_expected_evidence_unique_count": 2,
+      "expected_evidence_full_set_cited": true,
+      "explanation_sha256": "3b7fd56869113b66a1b407e24e8865c5e938b3d01a81aa26c72d1e9c11ed71dd",
+      "latency_ms": 8288,
+      "input_tokens": 3899,
+      "output_tokens": 1915,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-008",
+      "seed_key": "liting_paper_whale",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-c9f88409-98b6-4220-ab98-5a3abfadef73",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "stage_bell"
+        ],
+        [
+          2,
+          "case_watch"
+        ],
+        [
+          4,
+          "curtain_message"
+        ],
+        [
+          6,
+          "gate_slip"
+        ],
+        [
+          7,
+          "fan_trial"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 3160,
+      "input_tokens": 3896,
+      "output_tokens": 536,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-009",
+      "seed_key": "liting_paper_whale",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "relationship",
+      "expected_severity": "low",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "relationship",
+        "medium"
+      ],
+      "run_id": "run-ff09d244-8c20-45ed-95e8-d0f5206b9b18",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "stage_bell"
+        ],
+        [
+          2,
+          "case_watch"
+        ],
+        [
+          4,
+          "curtain_message"
+        ],
+        [
+          6,
+          "gate_slip"
+        ],
+        [
+          7,
+          "fan_trial"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-6171ba06-9867-44ab-a589-e3e6770e08a1"
+      ],
+      "evidence_semantic_set": [
+        [
+          6,
+          "gate_slip"
+        ]
+      ],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "2020b05c08cb6c6c7e60c138049d4ac13c362a777d17e7a21b96a163b6060f75",
+      "latency_ms": 9734,
+      "input_tokens": 4130,
+      "output_tokens": 2105,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-010",
+      "seed_key": "liting_paper_whale",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "character_knowledge",
+      "predicted_category": "character_knowledge",
+      "expected_severity": "high",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "character_knowledge",
+        "medium"
+      ],
+      "run_id": "run-a599582e-0248-4e68-8b26-7581f4913301",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "stage_bell"
+        ],
+        [
+          2,
+          "case_watch"
+        ],
+        [
+          4,
+          "curtain_message"
+        ],
+        [
+          5,
+          "case_register"
+        ],
+        [
+          7,
+          "fan_trial"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-0d588124-8c7b-43f7-9894-280e6779c6ea"
+      ],
+      "evidence_semantic_set": [
+        [
+          4,
+          "curtain_message"
+        ]
+      ],
+      "challenge_tags": [
+        "conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 1,
+      "cited_expected_evidence_unique_count": 1,
+      "expected_evidence_full_set_cited": true,
+      "explanation_sha256": "14cf1f8098ddf2ce4ecae76baf34e177c4e8331d437d2f11c5521e7393e7eb14",
+      "latency_ms": 7907,
+      "input_tokens": 3904,
+      "output_tokens": 1670,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-011",
+      "seed_key": "liting_paper_whale",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-54580596-3654-4098-8f53-baaff1e0e6aa",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          3,
+          "program_name"
+        ],
+        [
+          6,
+          "gate_slip"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 2151,
+      "input_tokens": 3354,
+      "output_tokens": 330,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-012",
+      "seed_key": "liting_paper_whale",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "event_status",
+      "expected_severity": "low",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "event_status",
+        "medium"
+      ],
+      "run_id": "run-03224928-5683-480a-9488-6190a3b4c796",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "stage_bell"
+        ],
+        [
+          2,
+          "case_watch"
+        ],
+        [
+          4,
+          "curtain_message"
+        ],
+        [
+          5,
+          "case_register"
+        ],
+        [
+          7,
+          "fan_trial"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-22303042-9ef3-4b56-8cf9-625a4b4a66c2"
+      ],
+      "evidence_semantic_set": [
+        [
+          7,
+          "fan_trial"
+        ]
+      ],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "aa87ec33beb6bcb40091cf2605642a5ed10aac015b590634e0ebae1d23d0779d",
+      "latency_ms": 9994,
+      "input_tokens": 3920,
+      "output_tokens": 2255,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-013",
+      "seed_key": "shuangze_bridge",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "timeline",
+      "predicted_category": "timeline",
+      "expected_severity": "high",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "timeline",
+        "medium"
+      ],
+      "run_id": "run-080efac6-1616-44ff-93c1-1b165fe57598",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "pier_trial"
+        ],
+        [
+          2,
+          "sluice_archive"
+        ],
+        [
+          3,
+          "red_cord"
+        ],
+        [
+          5,
+          "mooring_archive"
+        ],
+        [
+          6,
+          "lunch_note"
+        ]
+      ],
+      "cited_evidence_count": 2,
+      "cited_evidence_expected_count": 2,
+      "resolvable_evidence_count": 2,
+      "evidence_ids": [
+        "evidence-0b03a678-66be-4875-879a-34baa40642a3",
+        "evidence-1fa3bb33-439a-471e-80c7-318db78871cb"
+      ],
+      "evidence_semantic_set": [
+        [
+          2,
+          "sluice_archive"
+        ],
+        [
+          5,
+          "mooring_archive"
+        ]
+      ],
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "requires_multiple_direct_evidence": true,
+      "expected_evidence_count": 2,
+      "cited_expected_evidence_unique_count": 2,
+      "expected_evidence_full_set_cited": true,
+      "explanation_sha256": "1653c8cc7d643bcabc19e6ef54a1bfb9ae7a309ef9b44a4929ce6a938c540a1e",
+      "latency_ms": 10194,
+      "input_tokens": 4074,
+      "output_tokens": 2353,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-014",
+      "seed_key": "shuangze_bridge",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-2e172fb7-d6a8-4369-b81e-7e6d78aab675",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "pier_trial"
+        ],
+        [
+          2,
+          "sluice_archive"
+        ],
+        [
+          3,
+          "red_cord"
+        ],
+        [
+          5,
+          "mooring_archive"
+        ],
+        [
+          6,
+          "lunch_note"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 2156,
+      "input_tokens": 3984,
+      "output_tokens": 320,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-015",
+      "seed_key": "shuangze_bridge",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "object_state",
+      "expected_severity": "low",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "object_state",
+        "medium"
+      ],
+      "run_id": "run-028c22c6-cd5a-4159-b247-a879345077b7",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "pier_trial"
+        ],
+        [
+          2,
+          "sluice_archive"
+        ],
+        [
+          3,
+          "red_cord"
+        ],
+        [
+          4,
+          "grease_receipt"
+        ],
+        [
+          6,
+          "lunch_note"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-8b0d641e-972e-452b-b762-bc5838bca8b1"
+      ],
+      "evidence_semantic_set": [
+        [
+          4,
+          "grease_receipt"
+        ]
+      ],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "97ce95b9c738361145aeda23cd1bf8bdb43d6bc539656de73c0244f404a78600",
+      "latency_ms": 12897,
+      "input_tokens": 4000,
+      "output_tokens": 2964,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-016",
+      "seed_key": "shuangze_bridge",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "event_status",
+      "predicted_category": "event_status",
+      "expected_severity": "high",
+      "predicted_severity": "high",
+      "category_severity": [
+        "event_status",
+        "high"
+      ],
+      "run_id": "run-4ce53d0e-8606-46fb-9a73-db732e8a32b5",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "pier_trial"
+        ],
+        [
+          2,
+          "sluice_archive"
+        ],
+        [
+          3,
+          "red_cord"
+        ],
+        [
+          5,
+          "mooring_archive"
+        ],
+        [
+          6,
+          "lunch_note"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-1d898995-ffdb-4a2d-868a-1ad7b9b74e89"
+      ],
+      "evidence_semantic_set": [
+        [
+          1,
+          "pier_trial"
+        ]
+      ],
+      "challenge_tags": [
+        "conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 1,
+      "cited_expected_evidence_unique_count": 1,
+      "expected_evidence_full_set_cited": true,
+      "explanation_sha256": "3d96d7be68547a3a29b3af3a1cddd6075571f5bef0fa72bf023c0b30dab4a2d6",
+      "latency_ms": 8049,
+      "input_tokens": 3973,
+      "output_tokens": 1846,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-017",
+      "seed_key": "shuangze_bridge",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-5c38fb66-d70a-4fdd-a81f-f04b19c83146",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "pier_trial"
+        ],
+        [
+          2,
+          "sluice_archive"
+        ],
+        [
+          3,
+          "red_cord"
+        ],
+        [
+          5,
+          "mooring_archive"
+        ],
+        [
+          6,
+          "lunch_note"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 2740,
+      "input_tokens": 3990,
+      "output_tokens": 466,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-018",
+      "seed_key": "shuangze_bridge",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "object_state",
+      "expected_severity": "low",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "object_state",
+        "medium"
+      ],
+      "run_id": "run-92f7640c-bd73-42c8-a820-18c8006fa5b6",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "pier_trial"
+        ],
+        [
+          2,
+          "sluice_archive"
+        ],
+        [
+          5,
+          "mooring_archive"
+        ],
+        [
+          7,
+          "flag_drill"
+        ],
+        [
+          8,
+          "reeds_evening"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-c9a03ebe-02ea-48fb-b0f6-6559136ef655"
+      ],
+      "evidence_semantic_set": [
+        [
+          7,
+          "flag_drill"
+        ]
+      ],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "4be8c09a2c4d9861799644aa409a0f8ef33046ddfd21d687eac348592e57f9de",
+      "latency_ms": 8685,
+      "input_tokens": 4086,
+      "output_tokens": 1806,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-019",
+      "seed_key": "merrow_sound",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "world_rule",
+      "predicted_category": "world_rule",
+      "expected_severity": "high",
+      "predicted_severity": "high",
+      "category_severity": [
+        "world_rule",
+        "high"
+      ],
+      "run_id": "run-c7d459f7-22ed-48fb-b210-ce6ccfd087bc",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "sound_and_shores"
+        ],
+        [
+          4,
+          "parcel_desk"
+        ],
+        [
+          5,
+          "supper_room"
+        ],
+        [
+          6,
+          "locker_entry"
+        ],
+        [
+          8,
+          "fleet_note"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-b039b454-88bd-4c7e-ba83-165a2effc879"
+      ],
+      "evidence_semantic_set": [
+        [
+          1,
+          "sound_and_shores"
+        ]
+      ],
+      "challenge_tags": [
+        "conflict",
+        "category_mismatch_regression"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 1,
+      "cited_expected_evidence_unique_count": 1,
+      "expected_evidence_full_set_cited": true,
+      "explanation_sha256": "193e8764fce12096f1936ef525e5a19785a7333b73e77d6039cfdf891196386f",
+      "latency_ms": 8160,
+      "input_tokens": 3905,
+      "output_tokens": 1823,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-020",
+      "seed_key": "merrow_sound",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-a520a1d6-ff69-4131-aab4-d93748d642aa",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "sound_and_shores"
+        ],
+        [
+          4,
+          "parcel_desk"
+        ],
+        [
+          5,
+          "supper_room"
+        ],
+        [
+          6,
+          "locker_entry"
+        ],
+        [
+          8,
+          "fleet_note"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 2111,
+      "input_tokens": 3914,
+      "output_tokens": 316,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-021",
+      "seed_key": "merrow_sound",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "character_knowledge",
+      "expected_severity": "low",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "character_knowledge",
+        "medium"
+      ],
+      "run_id": "run-8c29a033-7574-4bf7-83f1-c7af28159f1f",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "sound_and_shores"
+        ],
+        [
+          3,
+          "jetty_log"
+        ],
+        [
+          5,
+          "supper_room"
+        ],
+        [
+          6,
+          "locker_entry"
+        ],
+        [
+          7,
+          "moorings_sheet"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-13a83ebe-b0af-4b38-9583-045b2a3bd816"
+      ],
+      "evidence_semantic_set": [
+        [
+          6,
+          "locker_entry"
+        ]
+      ],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "734134fa6eaffa17427f8e7496772e4a59f0a6f9908fb67214684045f6bb9b96",
+      "latency_ms": 5661,
+      "input_tokens": 3925,
+      "output_tokens": 1271,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-022",
+      "seed_key": "merrow_sound",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": "location_action",
+      "predicted_category": null,
+      "expected_severity": "high",
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-5a05ff76-8277-49e7-94a5-8be49726110f",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "failed",
+      "terminal_error_code": "invalid_json",
+      "schema_valid": false,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          2,
+          "crew_register"
+        ],
+        [
+          3,
+          "jetty_log"
+        ],
+        [
+          5,
+          "supper_room"
+        ],
+        [
+          6,
+          "locker_entry"
+        ],
+        [
+          7,
+          "moorings_sheet"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "requires_multiple_direct_evidence": true,
+      "expected_evidence_count": 2,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": false,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 26813,
+      "input_tokens": 3902,
+      "output_tokens": 6000,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-023",
+      "seed_key": "merrow_sound",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-575e87e1-c252-40c8-bb9c-c8b7a3232fdc",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          3,
+          "jetty_log"
+        ],
+        [
+          5,
+          "supper_room"
+        ],
+        [
+          6,
+          "locker_entry"
+        ],
+        [
+          7,
+          "moorings_sheet"
+        ],
+        [
+          8,
+          "fleet_note"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 2258,
+      "input_tokens": 3904,
+      "output_tokens": 314,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-024",
+      "seed_key": "merrow_sound",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "attribute",
+      "expected_severity": "low",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "attribute",
+        "medium"
+      ],
+      "run_id": "run-b6287694-1747-4c74-84a4-d125f88abed4",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          3,
+          "jetty_log"
+        ],
+        [
+          5,
+          "supper_room"
+        ],
+        [
+          6,
+          "locker_entry"
+        ],
+        [
+          7,
+          "moorings_sheet"
+        ],
+        [
+          8,
+          "fleet_note"
+        ]
+      ],
+      "cited_evidence_count": 2,
+      "cited_evidence_expected_count": 2,
+      "resolvable_evidence_count": 2,
+      "evidence_ids": [
+        "evidence-23a39b25-4c82-458f-b35d-5584a65b59f5",
+        "evidence-a2227a4a-4fc6-4742-8218-c3c3a939de5e"
+      ],
+      "evidence_semantic_set": [
+        [
+          7,
+          "moorings_sheet"
+        ],
+        [
+          8,
+          "fleet_note"
+        ]
+      ],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "0815c2e3e81c68c268644e2183f46b59ae2389d8a889026b8214b5254d47d07c",
+      "latency_ms": 9450,
+      "input_tokens": 3921,
+      "output_tokens": 2245,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-025",
+      "seed_key": "winter_market_workshop",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": "relationship",
+      "predicted_category": null,
+      "expected_severity": "high",
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-6b5618ae-4514-49d4-a16f-6c018693d556",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "failed",
+      "terminal_error_code": "invalid_json",
+      "schema_valid": false,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "badge_list"
+        ],
+        [
+          2,
+          "workbench_entry"
+        ],
+        [
+          3,
+          "inspection_card"
+        ],
+        [
+          4,
+          "rehearsal_notes"
+        ],
+        [
+          7,
+          "dispatch_slip"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "requires_multiple_direct_evidence": true,
+      "expected_evidence_count": 2,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": false,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 36953,
+      "input_tokens": 9099,
+      "output_tokens": 8291,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-026",
+      "seed_key": "winter_market_workshop",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-5b76f2f4-f0ab-4300-8ea7-98ff3660eb8e",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "badge_list"
+        ],
+        [
+          2,
+          "workbench_entry"
+        ],
+        [
+          3,
+          "inspection_card"
+        ],
+        [
+          4,
+          "rehearsal_notes"
+        ],
+        [
+          5,
+          "folding_table"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 2148,
+      "input_tokens": 3970,
+      "output_tokens": 338,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-027",
+      "seed_key": "winter_market_workshop",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "object_state",
+      "expected_severity": "low",
+      "predicted_severity": "medium",
+      "category_severity": [
+        "object_state",
+        "medium"
+      ],
+      "run_id": "run-29292bc5-8221-413f-9f52-b45e7d4bc1d4",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          2,
+          "workbench_entry"
+        ],
+        [
+          4,
+          "rehearsal_notes"
+        ],
+        [
+          5,
+          "folding_table"
+        ],
+        [
+          7,
+          "dispatch_slip"
+        ],
+        [
+          8,
+          "closing_book"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-659a2935-2fe1-476c-a29b-b8cc01212724"
+      ],
+      "evidence_semantic_set": [
+        [
+          7,
+          "dispatch_slip"
+        ]
+      ],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "9cddda8d6fcb951b133d4c300eaaaa1d35d6101b759462831b8e8790c611a7a3",
+      "latency_ms": 7259,
+      "input_tokens": 3985,
+      "output_tokens": 1565,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-028",
+      "seed_key": "winter_market_workshop",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": "attribute",
+      "predicted_category": null,
+      "expected_severity": "high",
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-4dd63608-d358-408d-af60-f522e16353d3",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "failed",
+      "terminal_error_code": "invalid_json",
+      "schema_valid": false,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          3,
+          "inspection_card"
+        ],
+        [
+          4,
+          "rehearsal_notes"
+        ],
+        [
+          6,
+          "window_label"
+        ],
+        [
+          7,
+          "dispatch_slip"
+        ],
+        [
+          8,
+          "closing_book"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 1,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": false,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 28731,
+      "input_tokens": 8855,
+      "output_tokens": 6893,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-029",
+      "seed_key": "winter_market_workshop",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-2ceaa067-386d-459e-9a41-652119ec649f",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          3,
+          "inspection_card"
+        ],
+        [
+          5,
+          "folding_table"
+        ],
+        [
+          6,
+          "window_label"
+        ],
+        [
+          7,
+          "dispatch_slip"
+        ],
+        [
+          8,
+          "closing_book"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 2101,
+      "input_tokens": 3972,
+      "output_tokens": 370,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-030",
+      "seed_key": "winter_market_workshop",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "timeline",
+      "expected_severity": "low",
+      "predicted_severity": "low",
+      "category_severity": [
+        "timeline",
+        "low"
+      ],
+      "run_id": "run-ca53feeb-af9d-4a7e-9eb1-7590b30ed24c",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "badge_list"
+        ],
+        [
+          2,
+          "workbench_entry"
+        ],
+        [
+          3,
+          "inspection_card"
+        ],
+        [
+          7,
+          "dispatch_slip"
+        ],
+        [
+          8,
+          "closing_book"
+        ]
+      ],
+      "cited_evidence_count": 1,
+      "cited_evidence_expected_count": 1,
+      "resolvable_evidence_count": 1,
+      "evidence_ids": [
+        "evidence-823e6c20-a36f-486d-b325-5047e5d03e05"
+      ],
+      "evidence_semantic_set": [
+        [
+          8,
+          "closing_book"
+        ]
+      ],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "beb049bb4fd6d491afa4027b7afe6411ea4981eae8a173fe528bbc0754411fcc",
+      "latency_ms": 9829,
+      "input_tokens": 3981,
+      "output_tokens": 1855,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-031",
+      "seed_key": "frost_marker_observatory",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": "object_state",
+      "predicted_category": null,
+      "expected_severity": "high",
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-798a239b-2eff-479e-ac0a-08142b10ff17",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "failed",
+      "terminal_error_code": "budget_guard_exceeded",
+      "schema_valid": false,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          2,
+          "recovery_log"
+        ],
+        [
+          3,
+          "storage_log"
+        ],
+        [
+          5,
+          "ridge_sketch"
+        ],
+        [
+          6,
+          "meeting_draft"
+        ],
+        [
+          7,
+          "return_receipt"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 1,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": false,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 23813,
+      "input_tokens": 9008,
+      "output_tokens": 5433,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-032",
+      "seed_key": "frost_marker_observatory",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-849d6842-2bf6-43ea-b920-654dc7ad7240",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "ascent_handbook"
+        ],
+        [
+          2,
+          "recovery_log"
+        ],
+        [
+          3,
+          "storage_log"
+        ],
+        [
+          4,
+          "breakfast_note"
+        ],
+        [
+          7,
+          "return_receipt"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 2325,
+      "input_tokens": 3993,
+      "output_tokens": 283,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-033",
+      "seed_key": "frost_marker_observatory",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": "low",
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-d7bca32b-2294-4ee0-bbf2-faf99a04a886",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "failed",
+      "terminal_error_code": "budget_guard_exceeded",
+      "schema_valid": false,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "ascent_handbook"
+        ],
+        [
+          2,
+          "recovery_log"
+        ],
+        [
+          4,
+          "breakfast_note"
+        ],
+        [
+          6,
+          "meeting_draft"
+        ],
+        [
+          7,
+          "return_receipt"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 21564,
+      "input_tokens": 8969,
+      "output_tokens": 5228,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-034",
+      "seed_key": "frost_marker_observatory",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": "event_status",
+      "predicted_category": null,
+      "expected_severity": "high",
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-1a3c711c-503c-4637-9808-75a83a9ef49b",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "failed",
+      "terminal_error_code": "invalid_json",
+      "schema_valid": false,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "ascent_handbook"
+        ],
+        [
+          2,
+          "recovery_log"
+        ],
+        [
+          3,
+          "storage_log"
+        ],
+        [
+          6,
+          "meeting_draft"
+        ],
+        [
+          7,
+          "return_receipt"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "requires_multiple_direct_evidence": true,
+      "expected_evidence_count": 2,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": false,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 38445,
+      "input_tokens": 9031,
+      "output_tokens": 8640,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-035",
+      "seed_key": "frost_marker_observatory",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": null,
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-a7225e6d-ef9b-4cb3-808c-db2b7de7cf58",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "completed",
+      "terminal_error_code": null,
+      "schema_valid": true,
+      "retrieval_hit_at_5": true,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "ascent_handbook"
+        ],
+        [
+          3,
+          "storage_log"
+        ],
+        [
+          4,
+          "breakfast_note"
+        ],
+        [
+          5,
+          "ridge_sketch"
+        ],
+        [
+          7,
+          "return_receipt"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 3006,
+      "input_tokens": 4011,
+      "output_tokens": 462,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    },
+    {
+      "case_id": "v9-hv9-036",
+      "seed_key": "frost_marker_observatory",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "expected_severity": "low",
+      "predicted_severity": null,
+      "category_severity": null,
+      "run_id": "run-83bebcc5-2e5f-4dd9-8c65-bc8a7c4517cf",
+      "post_status": 202,
+      "post_state": "queued",
+      "idempotency_replay_same_run": true,
+      "terminal_status": "failed",
+      "terminal_error_code": "budget_guard_exceeded",
+      "schema_valid": false,
+      "retrieval_hit_at_5": false,
+      "retrieval_semantic_set": [
+        [
+          1,
+          "ascent_handbook"
+        ],
+        [
+          2,
+          "recovery_log"
+        ],
+        [
+          4,
+          "breakfast_note"
+        ],
+        [
+          6,
+          "meeting_draft"
+        ],
+        [
+          7,
+          "return_receipt"
+        ]
+      ],
+      "cited_evidence_count": 0,
+      "cited_evidence_expected_count": 0,
+      "resolvable_evidence_count": 0,
+      "evidence_ids": [],
+      "evidence_semantic_set": [],
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "requires_multiple_direct_evidence": false,
+      "expected_evidence_count": 0,
+      "cited_expected_evidence_unique_count": 0,
+      "expected_evidence_full_set_cited": null,
+      "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "latency_ms": 17212,
+      "input_tokens": 4031,
+      "output_tokens": 4137,
+      "cost_cny": null,
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v20-decisive-fact-category",
+        "schema_version": "continuity-issue-v7-repair-diagnostics",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      }
+    }
+  ],
+  "metrics": {
+    "confusion_matrix": {
+      "conflict": {
+        "conflict": 7,
+        "no_conflict": 5,
+        "insufficient_evidence": 0
+      },
+      "no_conflict": {
+        "conflict": 0,
+        "no_conflict": 12,
+        "insufficient_evidence": 0
+      },
+      "insufficient_evidence": {
+        "conflict": 0,
+        "no_conflict": 2,
+        "insufficient_evidence": 10
+      }
+    },
+    "accuracy": 0.8055555555555556,
+    "macro_f1": 0.8067088542470545,
+    "conflict": {
+      "precision": 1.0,
+      "recall": 0.5833333333333334,
+      "f1": 0.7368421052631579
+    },
+    "no_conflict_false_positive_rate": 0.0,
+    "insufficient_evidence_recall": 0.8333333333333334,
+    "retrieval_expected_evidence_hit_at_5": 0.9722222222222222,
+    "cited_evidence_precision": 1.0,
+    "evidence_resolvability_grounding": 1.0,
+    "schema_validity": 0.8055555555555556,
+    "conflict_category_accuracy": 0.5833333333333334,
+    "designated_category_mismatch_regression": {
+      "correct": 3,
+      "total": 3
+    },
+    "expected_evidence_recall": 0.5555555555555556,
+    "multi_direct_evidence_full_set_recall": 0.5,
+    "latency_ms": {
+      "p50": 8160,
+      "p95": 28731
+    },
+    "tokens": {
+      "input_total": 168079,
+      "output_total": 81120
+    },
+    "cost": "unavailable"
+  },
+  "gate_checks": {
+    "macro_f1": true,
+    "conflict_recall": false,
+    "insufficient_evidence_recall": true,
+    "no_conflict_false_positive_rate": true,
+    "retrieval_expected_evidence_hit_at_5": true,
+    "cited_evidence_precision": true,
+    "schema_validity": false,
+    "evidence_resolvability_grounding": true,
+    "fail_closed_safety_paths": true,
+    "conflict_category_accuracy": false,
+    "designated_category_mismatch_regression": true,
+    "expected_evidence_recall": false,
+    "multi_direct_evidence_full_set_recall": false
+  },
+  "safety_contract": {
+    "evaluation": "scc-web-demo-eval-v1",
+    "type": "deterministic_fail_closed_contract",
+    "provider_calls": 0,
+    "paths": [
+      {
+        "path": "unavailable",
+        "post_status": 503,
+        "error_code": "provider_unavailable",
+        "valid": true
+      },
+      {
+        "path": "timeout",
+        "post_status": 202,
+        "terminal_status": "timed_out",
+        "error_code": "provider_timeout",
+        "issue_count": 0,
+        "valid": true
+      },
+      {
+        "path": "invalid_json",
+        "post_status": 202,
+        "terminal_status": "failed",
+        "error_code": "invalid_json",
+        "issue_count": 0,
+        "valid": true
+      },
+      {
+        "path": "schema",
+        "post_status": 202,
+        "terminal_status": "failed",
+        "error_code": "schema_invalid",
+        "issue_count": 0,
+        "valid": true
+      },
+      {
+        "path": "evidence_grounding",
+        "post_status": 202,
+        "terminal_status": "failed",
+        "error_code": "evidence_unresolvable",
+        "issue_count": 0,
+        "valid": true
+      }
+    ],
+    "validity": 1.0
+  },
+  "run_metadata": {
+    "started_at": "2026-09-28T10:39:38.230497+00:00",
+    "completed_at": "2026-09-28T10:47:05.031037+00:00",
+    "runtime_mode": "evaluation_fixture",
+    "base_url_label": "isolated_evaluation_fixture",
+    "source_file_hashes": {
+      "backend\\app\\v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+      "backend\\app\\engine.py": "13cd36708c766c151d36044b90af2e6ac3741eef73e27ebdb0d6ffce4e964cfb",
+      "backend\\app\\provider.py": "5ac6f9b41ad803b48d44df90fc54da4dae4181c63bb966313607ef686104609e",
+      "evaluation\\case_sets\\eval-set-v9.json": "b4857a4e43756139814af70643243e87a9282af8b9546e3823798639a74a3f41",
+      "evaluation\\run_eval.py": "7df5cc4f429b6de56f8f0fade49af62fc386c09a13d58aba0ac51ba49a7a583a",
+      "evaluation\\manifests\\eval-set-v9-manifest.json": "77815327289cbb72be2adca49fc4bab753fa4dfcb03d6d46fe8bd5d2885b8f44",
+      "evaluation\\fixtures\\eval-v9-corpus-manifest.json": "22a62c2a640ad31d5adc2d85fa48e148409fd3813489f0bfa6743fe5c949424a",
+      "evaluation\\fixtures\\eval-v9-bailu-foundry.json": "7a346b575fc66bf76fac86129987dd1f961856d929b10eb0b32f0cdff159181f",
+      "evaluation\\fixtures\\eval-v9-frost-marker-observatory.json": "df022949053819e29cf3927530cfb60691add82b8b59cb1285748271febcbb47",
+      "evaluation\\fixtures\\eval-v9-liting-paper-whale.json": "7ec00c75a325895206d10b4d0e7e5e8d629f552c24f2772f88dc4c89f0031237",
+      "evaluation\\fixtures\\eval-v9-merrow-sound.json": "6c6fa1569ce08f3b18d4d460e1beb40350153a4c25192df3663100237208f4c6",
+      "evaluation\\fixtures\\eval-v9-shuangze-bridge.json": "2a3db27350604c45e5135a633882ab3ea2b84357d78f1c0fa7d5d49dc2ae2893",
+      "evaluation\\fixtures\\eval-v9-winter-market-workshop.json": "67037f97df3ded7092fc1819cdd69f4a8e4f6e7f22779f42c3ddbb8d78c20d14",
+      "evaluation\\v2_fixture_loader.py": "d39761d3ef37f531e1f240bd3c312d8bfbd752f71b1c92182d6ddc17003556d3"
+    },
+    "provider_configuration": "environment_only_not_recorded",
+    "provider_execution": {
+      "provider_run_records": 42,
+      "actual_provider_http_attempts": 47,
+      "successful_provider_responses": 43,
+      "terminal_status_counts": {
+        "completed": 35,
+        "failed": 7
+      },
+      "input_tokens_returned": 192460,
+      "output_tokens_returned": 88042,
+      "cost": "unavailable",
+      "elapsed_ms": 446801
+    }
+  }
+}

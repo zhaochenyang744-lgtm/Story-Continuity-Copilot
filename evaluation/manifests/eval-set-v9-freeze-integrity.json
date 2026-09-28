@@ -1,0 +1,27 @@
+{
+  "schema_version": "scc-eval-v9-freeze-integrity-v1",
+  "files": {
+    "backend/app/brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "backend/app/engine.py": "13cd36708c766c151d36044b90af2e6ac3741eef73e27ebdb0d6ffce4e964cfb",
+    "backend/app/provider.py": "5ac6f9b41ad803b48d44df90fc54da4dae4181c63bb966313607ef686104609e",
+    "backend/app/v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+    "evaluation/build_v9_formal_assets.py": "67af4662b2dfdde0d23ddc5ed559dfc270fbddc986d84c1d97d5e9f5a77ded97",
+    "evaluation/case_sets/eval-set-v9.json": "b4857a4e43756139814af70643243e87a9282af8b9546e3823798639a74a3f41",
+    "evaluation/eval_set_v9_authoring/cases.json": "fbf2b50ae8d16e35584b3e237924831ba8c5b6449717d8124ff3af3551f20524",
+    "evaluation/eval_set_v9_authoring/cases.sha256": "6f96d0395c2be439760a1a33ac4c10feca377294b4be968cd03bd30450e59543",
+    "evaluation/execute_v9_first_formal.py": "2e5305c5a6a53f39ee75a01a87a569b1c133ac7e2f47ba94bc6c3e441d1274b3",
+    "evaluation/fixtures/eval-v9-bailu-foundry.json": "7a346b575fc66bf76fac86129987dd1f961856d929b10eb0b32f0cdff159181f",
+    "evaluation/fixtures/eval-v9-corpus-manifest.json": "22a62c2a640ad31d5adc2d85fa48e148409fd3813489f0bfa6743fe5c949424a",
+    "evaluation/fixtures/eval-v9-frost-marker-observatory.json": "df022949053819e29cf3927530cfb60691add82b8b59cb1285748271febcbb47",
+    "evaluation/fixtures/eval-v9-liting-paper-whale.json": "7ec00c75a325895206d10b4d0e7e5e8d629f552c24f2772f88dc4c89f0031237",
+    "evaluation/fixtures/eval-v9-merrow-sound.json": "6c6fa1569ce08f3b18d4d460e1beb40350153a4c25192df3663100237208f4c6",
+    "evaluation/fixtures/eval-v9-shuangze-bridge.json": "2a3db27350604c45e5135a633882ab3ea2b84357d78f1c0fa7d5d49dc2ae2893",
+    "evaluation/fixtures/eval-v9-winter-market-workshop.json": "67037f97df3ded7092fc1819cdd69f4a8e4f6e7f22779f42c3ddbb8d78c20d14",
+    "evaluation/manifests/eval-set-v9-manifest.json": "77815327289cbb72be2adca49fc4bab753fa4dfcb03d6d46fe8bd5d2885b8f44",
+    "evaluation/metrics.py": "90a0efe4c8dfb04813cc263788f92121ed792c6cfd35d370b9e4418482d92bee",
+    "evaluation/results/fail-closed-contract.json": "8054c14f5640fcc65dbbe70471abae505724325879c5ae0850f325550c396a79",
+    "evaluation/run_eval.py": "7df5cc4f429b6de56f8f0fade49af62fc386c09a13d58aba0ac51ba49a7a583a",
+    "evaluation/v2_fixture_loader.py": "d39761d3ef37f531e1f240bd3c312d8bfbd752f71b1c92182d6ddc17003556d3",
+    "evaluation/validate_eval_set_v9.py": "165e9dac5af519a44a808a92e01605fcc8dd2f427d17a2d78fa57082d3175f38"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "schema_version": "scc-eval-v9-post-run-integrity-v1",
+  "status": "gate_failed",
+  "freeze_integrity_files": 22,
+  "case_set_sha256": "d020b5001e783a32001d1e799eaf87974e11292c7f8ab59fcc9c20da2d49fdd2"
+}

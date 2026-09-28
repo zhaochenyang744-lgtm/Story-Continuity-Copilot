@@ -1,0 +1,1344 @@
+{
+  "schema_version": "scc-eval-case-set-v9",
+  "status": "held_out_user_authored",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "formal_run_executed": false,
+  "provider_calls": 0,
+  "authoring_source_sha256": "fbf2b50ae8d16e35584b3e237924831ba8c5b6449717d8124ff3af3551f20524",
+  "cases": [
+    {
+      "case_id": "v9-hv9-001",
+      "authored_id": "hv9-001",
+      "corpus_key": "bailu_foundry",
+      "seed_key": "bailu_foundry",
+      "target_draft": "雨历八年四月十二日9点，青雨试音板的材质是纯铁。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "attribute",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "plate_register",
+          "body_sha256": "eb09792422e3040a70efd176eb76e8d8eea940e0e601e2033b85d91b41a85893"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "plate_measure",
+          "body_sha256": "672b36b732af287fe190cab201d6da24835ed81d153bd56cea3a03d821827636"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bailu_foundry",
+          "chapter_number": 1,
+          "source_label": "plate_register",
+          "body_sha256": "eb09792422e3040a70efd176eb76e8d8eea940e0e601e2033b85d91b41a85893"
+        },
+        {
+          "corpus_key": "bailu_foundry",
+          "chapter_number": 4,
+          "source_label": "plate_measure",
+          "body_sha256": "672b36b732af287fe190cab201d6da24835ed81d153bd56cea3a03d821827636"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence",
+        "category_mismatch_regression"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-002",
+      "authored_id": "hv9-002",
+      "corpus_key": "bailu_foundry",
+      "seed_key": "bailu_foundry",
+      "target_draft": "雨历八年四月十二日13点，花弥将三片软木垫装进了寄往蓼湾的木匣。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "packing_receipt",
+          "body_sha256": "85f78c7720a37d88699866d32efe484e67fc32e0baeed04bafeffe706185a8e3"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bailu_foundry",
+          "chapter_number": 3,
+          "source_label": "packing_receipt",
+          "body_sha256": "85f78c7720a37d88699866d32efe484e67fc32e0baeed04bafeffe706185a8e3"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-003",
+      "authored_id": "hv9-003",
+      "corpus_key": "bailu_foundry",
+      "seed_key": "bailu_foundry",
+      "target_draft": "送信簿证明，焦圃在雨历八年四月十二日17点前已经知道试音改到18点。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "message_book",
+          "body_sha256": "d86fc2f287affa3883bb2e36bec4525873c20fbf5425c1f4235b42d39a342e34"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bailu_foundry",
+          "chapter_number": 6,
+          "source_label": "message_book",
+          "body_sha256": "d86fc2f287affa3883bb2e36bec4525873c20fbf5425c1f4235b42d39a342e34"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-004",
+      "authored_id": "hv9-004",
+      "corpus_key": "bailu_foundry",
+      "seed_key": "bailu_foundry",
+      "target_draft": "雨历八年四月十二日10点，是花弥给听雨钟刻上了最后一笔铭文。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "relationship",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 2,
+          "source_label": "engraving_scene",
+          "body_sha256": "6c50097eeacf6f4c55b5d7cb9a60d3ea7beca1191fb557b8463d1816b66e7c3b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bailu_foundry",
+          "chapter_number": 2,
+          "source_label": "engraving_scene",
+          "body_sha256": "6c50097eeacf6f4c55b5d7cb9a60d3ea7beca1191fb557b8463d1816b66e7c3b"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "conflict",
+        "category_mismatch_regression"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 1,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-005",
+      "authored_id": "hv9-005",
+      "corpus_key": "bailu_foundry",
+      "seed_key": "bailu_foundry",
+      "target_draft": "雨历八年四月十二日15点，郁篆对来客说自己从未进过蓼湾，这是一句谎话。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "visitor_talk",
+          "body_sha256": "1bee14e476c9d80626375d826f89a294461d829bbd4f0484faac1191c4932fdf"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bailu_foundry",
+          "chapter_number": 5,
+          "source_label": "visitor_talk",
+          "body_sha256": "1bee14e476c9d80626375d826f89a294461d829bbd4f0484faac1191c4932fdf"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-006",
+      "authored_id": "hv9-006",
+      "corpus_key": "bailu_foundry",
+      "seed_key": "bailu_foundry",
+      "target_draft": "钟罩验收页证明，雨历八年四月十二日19点验收的钟罩北侧裂缝是郁篆补好的。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "cover_acceptance",
+          "body_sha256": "c7902f7037db1b5c06d784d816070f55de040b4719db2f6677a12d1b26dd17bc"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bailu_foundry",
+          "chapter_number": 7,
+          "source_label": "cover_acceptance",
+          "body_sha256": "c7902f7037db1b5c06d784d816070f55de040b4719db2f6677a12d1b26dd17bc"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-007",
+      "authored_id": "hv9-007",
+      "corpus_key": "liting_paper_whale",
+      "seed_key": "liting_paper_whale",
+      "target_draft": "雾历三年六月九日20点05分，折星匣的箱盖敞开着。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "object_state",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 2,
+          "source_label": "case_watch",
+          "body_sha256": "282b4f23b10b50e5c1fa2ad5d2e7e3850bf317be3574650697cbb594e0cb6500"
+        },
+        {
+          "chapter_number": 5,
+          "source_label": "case_register",
+          "body_sha256": "d6636edc01609e37565ae272cb75562b7a81f52ddd0a9f83e38170de048ce78e"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "liting_paper_whale",
+          "chapter_number": 2,
+          "source_label": "case_watch",
+          "body_sha256": "282b4f23b10b50e5c1fa2ad5d2e7e3850bf317be3574650697cbb594e0cb6500"
+        },
+        {
+          "corpus_key": "liting_paper_whale",
+          "chapter_number": 5,
+          "source_label": "case_register",
+          "body_sha256": "d6636edc01609e37565ae272cb75562b7a81f52ddd0a9f83e38170de048ce78e"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-008",
+      "authored_id": "hv9-008",
+      "corpus_key": "liting_paper_whale",
+      "seed_key": "liting_paper_whale",
+      "target_draft": "雾历三年六月九日19点40分，余苇亲手拉响了候场铃。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "stage_bell",
+          "body_sha256": "d380229d4a0d812594f9c5b27f25c188032f8772df98c6044e2ec1ee038b1d8f"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "liting_paper_whale",
+          "chapter_number": 1,
+          "source_label": "stage_bell",
+          "body_sha256": "d380229d4a0d812594f9c5b27f25c188032f8772df98c6044e2ec1ee038b1d8f"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-009",
+      "authored_id": "hv9-009",
+      "corpus_key": "liting_paper_whale",
+      "seed_key": "liting_paper_whale",
+      "target_draft": "门岗便笺证明，雾历三年六月九日19点50分把月票放上窗台的人是会计蒋屏。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "gate_slip",
+          "body_sha256": "2d5bec399372951aa3d1b194dadfde176936db64392700a65756955de47c2fb4"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "liting_paper_whale",
+          "chapter_number": 6,
+          "source_label": "gate_slip",
+          "body_sha256": "2d5bec399372951aa3d1b194dadfde176936db64392700a65756955de47c2fb4"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-010",
+      "authored_id": "hv9-010",
+      "corpus_key": "liting_paper_whale",
+      "seed_key": "liting_paper_whale",
+      "target_draft": "雾历三年六月九日20点20分，柯沫还不知道备用幕布藏在西侧地窖。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "character_knowledge",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "curtain_message",
+          "body_sha256": "9eb150074f3ca5575a0330996c6235e67450ddf58a1d729b3797d0612f460ab2"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "liting_paper_whale",
+          "chapter_number": 4,
+          "source_label": "curtain_message",
+          "body_sha256": "9eb150074f3ca5575a0330996c6235e67450ddf58a1d729b3797d0612f460ab2"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 1,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-011",
+      "authored_id": "hv9-011",
+      "corpus_key": "liting_paper_whale",
+      "seed_key": "liting_paper_whale",
+      "target_draft": "本季演出手册中的玻雀与朴绒是同一个演奏者。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "program_name",
+          "body_sha256": "ed731e3d937ee85ce0f2013ed668d5837d06f1ea761dd1f67e01c440105f9581"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "liting_paper_whale",
+          "chapter_number": 3,
+          "source_label": "program_name",
+          "body_sha256": "ed731e3d937ee85ce0f2013ed668d5837d06f1ea761dd1f67e01c440105f9581"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-012",
+      "authored_id": "hv9-012",
+      "corpus_key": "liting_paper_whale",
+      "seed_key": "liting_paper_whale",
+      "target_draft": "风机试转日志证明，这台风机在雾历三年六月九日21点15分已经通过试转验收。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "fan_trial",
+          "body_sha256": "8d080e711b80e0653b28e42a0577d5559c31dd4223aadf2a6d1690ad3703b615"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "liting_paper_whale",
+          "chapter_number": 7,
+          "source_label": "fan_trial",
+          "body_sha256": "8d080e711b80e0653b28e42a0577d5559c31dd4223aadf2a6d1690ad3703b615"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-013",
+      "authored_id": "hv9-013",
+      "corpus_key": "shuangze_bridge",
+      "seed_key": "shuangze_bridge",
+      "target_draft": "霜历十一年二月六日早晨，浮桥解缆发生在东闸升起之前。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "timeline",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 2,
+          "source_label": "sluice_archive",
+          "body_sha256": "af3b21251cb526901bd476228cd1405a633659fcd3cd971d22c89edf39cfd13f"
+        },
+        {
+          "chapter_number": 5,
+          "source_label": "mooring_archive",
+          "body_sha256": "afd047180b6b9bef272a39188d0c5259bf1e7389f2490ce74fc8fe39128da6e3"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "shuangze_bridge",
+          "chapter_number": 2,
+          "source_label": "sluice_archive",
+          "body_sha256": "af3b21251cb526901bd476228cd1405a633659fcd3cd971d22c89edf39cfd13f"
+        },
+        {
+          "corpus_key": "shuangze_bridge",
+          "chapter_number": 5,
+          "source_label": "mooring_archive",
+          "body_sha256": "afd047180b6b9bef272a39188d0c5259bf1e7389f2490ce74fc8fe39128da6e3"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-014",
+      "authored_id": "hv9-014",
+      "corpus_key": "shuangze_bridge",
+      "seed_key": "shuangze_bridge",
+      "target_draft": "霜历十一年二月六日10点，秦缃把红绳系在南桥头的铜铃上。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "red_cord",
+          "body_sha256": "c8a7e65447fd232cd9f156ad1b1bfb25dc62ebf739e9f091ab1082d553e5f92b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "shuangze_bridge",
+          "chapter_number": 3,
+          "source_label": "red_cord",
+          "body_sha256": "c8a7e65447fd232cd9f156ad1b1bfb25dc62ebf739e9f091ab1082d553e5f92b"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-015",
+      "authored_id": "hv9-015",
+      "corpus_key": "shuangze_bridge",
+      "seed_key": "shuangze_bridge",
+      "target_draft": "材料领用收条证明，秦缃在霜历十一年二月五日领走的六桶防水脂后来全部用在了南四墩。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "grease_receipt",
+          "body_sha256": "52551ea8190171675d662b914381aed22401e52d22cc65de944631f3783e9b71"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "shuangze_bridge",
+          "chapter_number": 4,
+          "source_label": "grease_receipt",
+          "body_sha256": "52551ea8190171675d662b914381aed22401e52d22cc65de944631f3783e9b71"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-016",
+      "authored_id": "hv9-016",
+      "corpus_key": "shuangze_bridge",
+      "seed_key": "shuangze_bridge",
+      "target_draft": "霜历十一年二月六日12点，南四墩承压试验已经完成。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "event_status",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "pier_trial",
+          "body_sha256": "b667c3b6cc62bbaae8c85548c6415f401b26de4c38f3ba56ffd4666682f38780"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "shuangze_bridge",
+          "chapter_number": 1,
+          "source_label": "pier_trial",
+          "body_sha256": "b667c3b6cc62bbaae8c85548c6415f401b26de4c38f3ba56ffd4666682f38780"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 1,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-017",
+      "authored_id": "hv9-017",
+      "corpus_key": "shuangze_bridge",
+      "seed_key": "shuangze_bridge",
+      "target_draft": "霜历十一年二月六日13点，炊事员送到青篷棚的三碗热汤每碗都有一片姜。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "lunch_note",
+          "body_sha256": "23642db5062f1fa9abc62eeffb69e5c8a33867cc47f4a5626f3e899671263ecf"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "shuangze_bridge",
+          "chapter_number": 6,
+          "source_label": "lunch_note",
+          "body_sha256": "23642db5062f1fa9abc62eeffb69e5c8a33867cc47f4a5626f3e899671263ecf"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-018",
+      "authored_id": "hv9-018",
+      "corpus_key": "shuangze_bridge",
+      "seed_key": "shuangze_bridge",
+      "target_draft": "这页演练札记足以证明，升起双蓝旗在任何水位下都能使浮桥准许货车通行。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "flag_drill",
+          "body_sha256": "f0f90f8e8eb2360f380cda4489bc4bbe337d40a210094f2d11caa3f5fc2e4e6b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "shuangze_bridge",
+          "chapter_number": 7,
+          "source_label": "flag_drill",
+          "body_sha256": "f0f90f8e8eb2360f380cda4489bc4bbe337d40a210094f2d11caa3f5fc2e4e6b"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-019",
+      "authored_id": "hv9-019",
+      "corpus_key": "merrow_sound",
+      "seed_key": "merrow_sound",
+      "target_draft": "At dawn, a spoken word carried by the sea wind traveled from one island of Merrow Sound to another.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "world_rule",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "sound_and_shores",
+          "body_sha256": "facce1f92ee7d1fe3e6d66b8ed0ed71a63af26f7f33f692359325e76fb784fbe"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "merrow_sound",
+          "chapter_number": 1,
+          "source_label": "sound_and_shores",
+          "body_sha256": "facce1f92ee7d1fe3e6d66b8ed0ed71a63af26f7f33f692359325e76fb784fbe"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "conflict",
+        "category_mismatch_regression"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 1,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-020",
+      "authored_id": "hv9-020",
+      "corpus_key": "merrow_sound",
+      "seed_key": "merrow_sound",
+      "target_draft": "At noon on 14 June, Edda Voss placed a packet of saffron under the parcel desk's blue tray.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "parcel_desk",
+          "body_sha256": "29d8bb43a750371b86871e003eea97330978e88dee75a89464a87864f5e66d1d"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "merrow_sound",
+          "chapter_number": 4,
+          "source_label": "parcel_desk",
+          "body_sha256": "29d8bb43a750371b86871e003eea97330978e88dee75a89464a87864f5e66d1d"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-021",
+      "authored_id": "hv9-021",
+      "corpus_key": "merrow_sound",
+      "seed_key": "merrow_sound",
+      "target_draft": "The locker entry establishes that Aven Rill knew tomorrow's landing place at 16:00 on 14 June.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "locker_entry",
+          "body_sha256": "0634e65714f0ca7f411a7a63ad9ce6e206f7d72b469f7e5ee782a9e41f215995"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "merrow_sound",
+          "chapter_number": 6,
+          "source_label": "locker_entry",
+          "body_sha256": "0634e65714f0ca7f411a7a63ad9ce6e206f7d72b469f7e5ee782a9e41f215995"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-022",
+      "authored_id": "hv9-022",
+      "corpus_key": "merrow_sound",
+      "seed_key": "merrow_sound",
+      "target_draft": "At 10:00 on 14 June, Aven Rill was aboard the offshore ferry.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "location_action",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 2,
+          "source_label": "crew_register",
+          "body_sha256": "51282933a2eaee1a0c57bd237c3a30b16fdc48366363fe7ebce1f8ac071798f7"
+        },
+        {
+          "chapter_number": 3,
+          "source_label": "jetty_log",
+          "body_sha256": "afc32e087c2ab68906577fb2798e0222bd06abedd05021cb30ceedf0c2617d39"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "merrow_sound",
+          "chapter_number": 2,
+          "source_label": "crew_register",
+          "body_sha256": "51282933a2eaee1a0c57bd237c3a30b16fdc48366363fe7ebce1f8ac071798f7"
+        },
+        {
+          "corpus_key": "merrow_sound",
+          "chapter_number": 3,
+          "source_label": "jetty_log",
+          "body_sha256": "afc32e087c2ab68906577fb2798e0222bd06abedd05021cb30ceedf0c2617d39"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-023",
+      "authored_id": "hv9-023",
+      "corpus_key": "merrow_sound",
+      "seed_key": "merrow_sound",
+      "target_draft": "At supper on 14 June, Brin Tal believed the eastern reef was a whale.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "supper_room",
+          "body_sha256": "ebbcc17c8a2caa91f30bb33c2e508d8f388cdd9814fdb85dc2a4ce8c09fd0f7f"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "merrow_sound",
+          "chapter_number": 5,
+          "source_label": "supper_room",
+          "body_sha256": "ebbcc17c8a2caa91f30bb33c2e508d8f388cdd9814fdb85dc2a4ce8c09fd0f7f"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-024",
+      "authored_id": "hv9-024",
+      "corpus_key": "merrow_sound",
+      "seed_key": "merrow_sound",
+      "target_draft": "The mooring sheet and fleet note identify the ferry tied up at East Pier at 18:00 on 14 June as Larkspur.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "moorings_sheet",
+          "body_sha256": "4cd6ede9f786c37b2d9372f046ecb8ac814a529d510542166e006b267ef896fb"
+        },
+        {
+          "chapter_number": 8,
+          "source_label": "fleet_note",
+          "body_sha256": "dd53799892dd559934518d5cc65dcb84c4e12f443df329755e94e26cf863ccdf"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "merrow_sound",
+          "chapter_number": 7,
+          "source_label": "moorings_sheet",
+          "body_sha256": "4cd6ede9f786c37b2d9372f046ecb8ac814a529d510542166e006b267ef896fb"
+        },
+        {
+          "corpus_key": "merrow_sound",
+          "chapter_number": 8,
+          "source_label": "fleet_note",
+          "body_sha256": "dd53799892dd559934518d5cc65dcb84c4e12f443df329755e94e26cf863ccdf"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-025",
+      "authored_id": "hv9-025",
+      "corpus_key": "winter_market_workshop",
+      "seed_key": "winter_market_workshop",
+      "target_draft": "At 15:20 on 9 October, Pell Dace cut the ceremonial ribbon from the red bolt.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "relationship",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "badge_list",
+          "body_sha256": "12f7d21fcc8a5ade016b13039db05cad5d46108c5bcf8c08b2e199d2dbc82fef"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "workbench_entry",
+          "body_sha256": "ec139ad7c57eb0f1537bffcd8a45e5f0b3a0185f7a88eeff83192352770eac92"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "winter_market_workshop",
+          "chapter_number": 1,
+          "source_label": "badge_list",
+          "body_sha256": "12f7d21fcc8a5ade016b13039db05cad5d46108c5bcf8c08b2e199d2dbc82fef"
+        },
+        {
+          "corpus_key": "winter_market_workshop",
+          "chapter_number": 2,
+          "source_label": "workbench_entry",
+          "body_sha256": "ec139ad7c57eb0f1537bffcd8a45e5f0b3a0185f7a88eeff83192352770eac92"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-026",
+      "authored_id": "hv9-026",
+      "corpus_key": "winter_market_workshop",
+      "seed_key": "winter_market_workshop",
+      "target_draft": "At 17:00 on 9 October, Orel Moss completed the market's opening-song rehearsal.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "rehearsal_notes",
+          "body_sha256": "9f498bb7567d86edda73408922a0216187a3151651cc1702bb740437a5866798"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "winter_market_workshop",
+          "chapter_number": 4,
+          "source_label": "rehearsal_notes",
+          "body_sha256": "9f498bb7567d86edda73408922a0216187a3151651cc1702bb740437a5866798"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-027",
+      "authored_id": "hv9-027",
+      "corpus_key": "winter_market_workshop",
+      "seed_key": "winter_market_workshop",
+      "target_draft": "The dispatch slip confirms that the wall hanging had arrived at Rowan Hall by 18:30 on 9 October.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "dispatch_slip",
+          "body_sha256": "58332be82128af2bf7e06d5522cbc37a5c764098943220e16ef9662d4ddf1c83"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "winter_market_workshop",
+          "chapter_number": 7,
+          "source_label": "dispatch_slip",
+          "body_sha256": "58332be82128af2bf7e06d5522cbc37a5c764098943220e16ef9662d4ddf1c83"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-028",
+      "authored_id": "hv9-028",
+      "corpus_key": "winter_market_workshop",
+      "seed_key": "winter_market_workshop",
+      "target_draft": "At 16:00 on 9 October, the Sable bowl measured exactly 18 cm across its rim.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "attribute",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "inspection_card",
+          "body_sha256": "93afd65136262ebd17a194478ffb861b4c8ef8d43227a5dcedb810404c1c72bb"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "winter_market_workshop",
+          "chapter_number": 3,
+          "source_label": "inspection_card",
+          "body_sha256": "93afd65136262ebd17a194478ffb861b4c8ef8d43227a5dcedb810404c1c72bb"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 1,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-029",
+      "authored_id": "hv9-029",
+      "corpus_key": "winter_market_workshop",
+      "seed_key": "winter_market_workshop",
+      "target_draft": "At 18:00 on 9 October, every paper crane in the display window was green.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "folding_table",
+          "body_sha256": "fdc86746015be5ff3380f030d7a7f935b082d0140f60fb78c5a6ba426065f840"
+        },
+        {
+          "chapter_number": 6,
+          "source_label": "window_label",
+          "body_sha256": "3baa8adfb6145dd3683e4852f863deeb2a1c57428a6dede0f39427795957a79a"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "winter_market_workshop",
+          "chapter_number": 5,
+          "source_label": "folding_table",
+          "body_sha256": "fdc86746015be5ff3380f030d7a7f935b082d0140f60fb78c5a6ba426065f840"
+        },
+        {
+          "corpus_key": "winter_market_workshop",
+          "chapter_number": 6,
+          "source_label": "window_label",
+          "body_sha256": "3baa8adfb6145dd3683e4852f863deeb2a1c57428a6dede0f39427795957a79a"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-030",
+      "authored_id": "hv9-030",
+      "corpus_key": "winter_market_workshop",
+      "seed_key": "winter_market_workshop",
+      "target_draft": "The closing book establishes that the cash tin was counted before the south shutter was lowered on 9 October.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "closing_book",
+          "body_sha256": "f6b9034e2c8ab15b8264bf4bb7a66ef0e1e42a46036329634d5e548ab4a655eb"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "winter_market_workshop",
+          "chapter_number": 8,
+          "source_label": "closing_book",
+          "body_sha256": "f6b9034e2c8ab15b8264bf4bb7a66ef0e1e42a46036329634d5e548ab4a655eb"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-031",
+      "authored_id": "hv9-031",
+      "corpus_key": "frost_marker_observatory",
+      "seed_key": "frost_marker_observatory",
+      "target_draft": "At 07:10 on 22 April, the instrument case called Copperleaf was in Orin Slate's possession.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "object_state",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "storage_log",
+          "body_sha256": "2ba10c53db2041b8c0976789292582d7157c72e42eac2f26ead804de515eed27"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "frost_marker_observatory",
+          "chapter_number": 3,
+          "source_label": "storage_log",
+          "body_sha256": "2ba10c53db2041b8c0976789292582d7157c72e42eac2f26ead804de515eed27"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 1,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-032",
+      "authored_id": "hv9-032",
+      "corpus_key": "frost_marker_observatory",
+      "seed_key": "frost_marker_observatory",
+      "target_draft": "At 08:00 on 22 April, Suri Bex knew that the northern trail was flooded.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "breakfast_note",
+          "body_sha256": "3770682aac8b1785d94848cf118a730b83b1689a5608635a435df1d863241849"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "frost_marker_observatory",
+          "chapter_number": 4,
+          "source_label": "breakfast_note",
+          "body_sha256": "3770682aac8b1785d94848cf118a730b83b1689a5608635a435df1d863241849"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-033",
+      "authored_id": "hv9-033",
+      "corpus_key": "frost_marker_observatory",
+      "seed_key": "frost_marker_observatory",
+      "target_draft": "The meeting draft establishes that chief Ada Wren authorized the proposed second ascent for noon on 22 April.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "meeting_draft",
+          "body_sha256": "a8e3da129ed8290164a02520551f8ac1f1f689ccb089840af3cd92527dd7d8d4"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "frost_marker_observatory",
+          "chapter_number": 6,
+          "source_label": "meeting_draft",
+          "body_sha256": "a8e3da129ed8290164a02520551f8ac1f1f689ccb089840af3cd92527dd7d8d4"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-034",
+      "authored_id": "hv9-034",
+      "corpus_key": "frost_marker_observatory",
+      "seed_key": "frost_marker_observatory",
+      "target_draft": "At 06:40 on 22 April, ascent R-8 was complete.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "event_status",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "ascent_handbook",
+          "body_sha256": "f628ed075ee7dcd3161bbc0ab4ee9e97750b205c4faf98307488bfb342a59e24"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "recovery_log",
+          "body_sha256": "3e1f28073ce9d72ae46bb2c82fcbaca3e8d5ba8db007b50cccc79ffa2662f035"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "frost_marker_observatory",
+          "chapter_number": 1,
+          "source_label": "ascent_handbook",
+          "body_sha256": "f628ed075ee7dcd3161bbc0ab4ee9e97750b205c4faf98307488bfb342a59e24"
+        },
+        {
+          "corpus_key": "frost_marker_observatory",
+          "chapter_number": 2,
+          "source_label": "recovery_log",
+          "body_sha256": "3e1f28073ce9d72ae46bb2c82fcbaca3e8d5ba8db007b50cccc79ffa2662f035"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v9-hv9-035",
+      "authored_id": "hv9-035",
+      "corpus_key": "frost_marker_observatory",
+      "seed_key": "frost_marker_observatory",
+      "target_draft": "At 08:20 on 22 April, Orin Slate stood beside the frost marker on Juniper Ridge.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "ridge_sketch",
+          "body_sha256": "fb78c32239c066c553b7a4cd1a16f9d549d0a5ff8dbc9303b41f4ba13c594b88"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "frost_marker_observatory",
+          "chapter_number": 5,
+          "source_label": "ridge_sketch",
+          "body_sha256": "fb78c32239c066c553b7a4cd1a16f9d549d0a5ff8dbc9303b41f4ba13c594b88"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v9-hv9-036",
+      "authored_id": "hv9-036",
+      "corpus_key": "frost_marker_observatory",
+      "seed_key": "frost_marker_observatory",
+      "target_draft": "The return receipt and packing list establish that a spare wind vane was inside CR-4 when it arrived at 09:10 on 22 April.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "return_receipt",
+          "body_sha256": "f84e51c5a15d8b1b39bda832656d1452800e810dc5c8563c55255b9f8e2d94f7"
+        },
+        {
+          "chapter_number": 8,
+          "source_label": "packing_list",
+          "body_sha256": "3bfb90dd2c9534dd56381fd9ac25d8b228ee009ac2fc012464a535d2899e7672"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "frost_marker_observatory",
+          "chapter_number": 7,
+          "source_label": "return_receipt",
+          "body_sha256": "f84e51c5a15d8b1b39bda832656d1452800e810dc5c8563c55255b9f8e2d94f7"
+        },
+        {
+          "corpus_key": "frost_marker_observatory",
+          "chapter_number": 8,
+          "source_label": "packing_list",
+          "body_sha256": "3bfb90dd2c9534dd56381fd9ac25d8b228ee009ac2fc012464a535d2899e7672"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    }
+  ]
+}

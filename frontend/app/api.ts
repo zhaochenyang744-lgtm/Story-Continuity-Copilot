@@ -121,6 +121,7 @@ export const labelError = (cause: unknown) => {
     candidate_conflict: "候选与当前事实相同或会产生重复事实；请修改决定后重试。",
     memory_delta_stale: "来源或 Story Memory 基线已变化；当前选择仍保留，请基于最新版本重新运行。",
     invalid_json: "结果未通过结构校验，系统没有写入任何问题。",
+    output_truncated: "模型回答超出长度上限被截断，系统没有写入任何问题；可以重试。",
     evidence_unresolvable:
       "证据来源不可解析，结果已安全关闭；请检查来源后重试。",
     review_contract_unresolvable: "审阅语义或证据链无法验证；当前结果已安全关闭。",

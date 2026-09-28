@@ -1,0 +1,25 @@
+{
+  "version": "eval-set-v9-authoring-1",
+  "author": "",
+  "corpora": [
+    {
+      "key": "example_lighthouse",
+      "title": "示例：灯塔记事",
+      "language": "zh",
+      "chapters": [
+        {"label": "lamp_rule", "title": "灯室规定", "is_rule": true, "body": "灯室的铜门只对佩戴白色徽章的人开启，红色徽章无法打开铜门。"},
+        {"label": "badge_log", "title": "徽章登记", "is_rule": false, "body": "今天10点，阿澄只佩戴着红色徽章。"},
+        {"label": "lens_note", "title": "镜片记录", "is_rule": false, "body": "今天10点，灯塔主镜片为无色玻璃，并非琥珀色。"},
+        {"label": "oil_log", "title": "灯油记录", "is_rule": false, "body": "灯油于傍晚补满，登记簿未写明由谁补的。"}
+      ]
+    }
+  ],
+  "cases": [
+    {"id": "ex-conflict-1", "corpus": "example_lighthouse", "draft": "今天10点，阿澄只戴着红色徽章就打开了灯室铜门。",
+     "expected_class": "conflict", "category": "world_rule", "evidence": ["lamp_rule", "badge_log"], "designated_regression": true, "note": "规则本身构成矛盾"},
+    {"id": "ex-no-conflict-1", "corpus": "example_lighthouse", "draft": "今天10点，灯塔主镜片是无色玻璃。",
+     "expected_class": "no_conflict", "category": null, "evidence": ["lens_note"], "designated_regression": false, "note": ""},
+    {"id": "ex-insufficient-1", "corpus": "example_lighthouse", "draft": "登记簿表明，是阿澄在傍晚补满了灯油。",
+     "expected_class": "insufficient_evidence", "category": null, "evidence": ["oil_log"], "designated_regression": false, "note": "缺执行者"}
+  ]
+}

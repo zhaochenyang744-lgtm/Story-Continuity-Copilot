@@ -6,8 +6,8 @@ import os
 import unittest
 from unittest.mock import patch
 
-from app.provider import (MAX_OUTPUT_BUDGET_UNITS, REVIEW_THINKING_MAX_OUTPUT_TOKENS, REVIEW_THINKING_TIMEOUT_SECONDS,
-                          DeepSeekProvider, InputBudgetExceeded)
+from app.provider import (MAX_OUTPUT_BUDGET_UNITS, REVIEW_THINKING_MAX_OUTPUT_TOKENS, REVIEW_THINKING_RUN_TOKEN_BUDGET,
+                          REVIEW_THINKING_TIMEOUT_SECONDS, DeepSeekProvider, InputBudgetExceeded)
 from app.stage13 import Stage13Settings
 
 
@@ -84,6 +84,78 @@ class ReviewThinkingConfigTests(unittest.TestCase):
         with self.assertRaises(InputBudgetExceeded):
             instance.evaluate(oversized)
         self.assertEqual(sent, [])
+
+    def test_run_budget_override_only_for_thinking_review(self):
+        self.assertIsNone(provider()[0].continuity_run_token_budget)
+        self.assertEqual(provider("high")[0].continuity_run_token_budget, REVIEW_THINKING_RUN_TOKEN_BUDGET)
+        self.assertIsNone(object.__new__(DeepSeekProvider).continuity_run_token_budget)
+
+    def test_engine_uses_provider_budget_and_names_truncation(self):
+        from app.engine import MAX_RUN_TOKENS, ContinuityEngine
+        from app.provider import ProviderInvalidJson, ProviderResult
+
+        class Stub:
+            available = True
+            continuity_contract_version = "v6"
+            label = model_label = "stub"
+
+            def __init__(self, outcome, budget=None):
+                self.outcome, self.continuity_run_token_budget = outcome, budget
+
+            def evaluate(self, request):
+                if isinstance(self.outcome, Exception):
+                    raise self.outcome
+                return self.outcome
+
+        data = {"draft": {"id": "d", "revision": 1, "body": "Mira holds the key."},
+                "claims": [{"id": "c", "text": "Mira holds the key.", "allowed_evidence": []}], "memory": []}
+        answer = {"issues": [], "claim_verdicts": [{"claim_span_id": "c", "verdict": "no_issue", "basis": "Compatible."}]}
+        large = ProviderResult(answer, input_tokens=4000, output_tokens=MAX_RUN_TOKENS)
+        self.assertEqual(ContinuityEngine(Stub(large)).execute(data)["status"], "budget_paused")
+        self.assertEqual(ContinuityEngine(Stub(large, REVIEW_THINKING_RUN_TOKEN_BUDGET)).execute(data)["status"], "completed")
+        truncated = ProviderInvalidJson(10, 12000, None, 1, "length")
+        self.assertEqual(ContinuityEngine(Stub(truncated)).execute(data)["error_code"], "output_truncated")
+        malformed = ProviderInvalidJson(10, 20, None, 1, "stop")
+        self.assertEqual(ContinuityEngine(Stub(malformed)).execute(data)["error_code"], "invalid_json")
+
+    def test_repair_input_allowance_only_for_thinking_review_repairs(self):
+        from app.provider import MAX_INPUT_BUDGET_UNITS, REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS
+        repair = {**CONTINUITY_REQUEST, "contract_repair": {"attempt": 2}}
+        default, _ = provider()
+        high, _ = provider("high")
+        self.assertEqual(default.input_budget_for(repair), MAX_INPUT_BUDGET_UNITS)
+        self.assertEqual(high.input_budget_for(CONTINUITY_REQUEST), MAX_INPUT_BUDGET_UNITS)
+        self.assertEqual(high.input_budget_for({**MEMORY_REQUEST, "contract_repair": {}}), MAX_INPUT_BUDGET_UNITS)
+        self.assertEqual(high.input_budget_for(repair), REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS)
+
+    def test_engine_admits_larger_repair_only_with_provider_allowance(self):
+        from app.engine import ContinuityEngine
+        from app.provider import ProviderResult, REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS
+
+        class Stub:
+            available = True
+            continuity_contract_version = "v6"
+            label = model_label = "stub"
+
+            def __init__(self, allowance=None):
+                self.continuity_repair_input_budget_units = allowance
+                self.calls = 0
+
+            def evaluate(self, request):
+                self.calls += 1
+                if "contract_repair" not in request:
+                    return ProviderResult({"issues": []}, input_tokens=1, output_tokens=1)  # missing verdicts -> repair
+                return ProviderResult({"issues": [], "claim_verdicts": [
+                    {"claim_span_id": "c", "verdict": "no_issue", "basis": "Compatible."}]}, input_tokens=1, output_tokens=1)
+
+        data = {"draft": {"id": "d", "revision": 1, "body": "Mira holds the key."},
+                "claims": [{"id": "c", "text": "Mira holds the key.", "allowed_evidence": []}], "memory": []}
+        sized = lambda request: ("", 7000 if "contract_repair" in request else 100)
+        with patch("app.engine.request_prompt_and_budget", side_effect=sized):
+            refused = ContinuityEngine(Stub()).execute(data)
+            admitted = ContinuityEngine(Stub(REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS)).execute(data)
+        self.assertEqual((refused["status"], refused["error_code"]), ("failed", "input_budget_exceeded"))
+        self.assertEqual(admitted["status"], "completed", admitted)
 
     def test_unknown_thinking_value_fails_closed(self):
         instance, _ = provider("medium")

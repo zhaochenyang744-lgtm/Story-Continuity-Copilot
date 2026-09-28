@@ -498,7 +498,7 @@ class Stage11BoundedContextTests(unittest.TestCase):
         claims = [{"id": f"claim-{index}", "text": "甲" * 600, "allowed_evidence": [{"id": f"span-{index}", "chapter_id": f"chapter-{index}", "body": "甲" * 2400, "prompt_excerpt": "甲" * 720}]} for index in range(1, 4)]
         provider = InvalidJsonSecondContinuityProvider()
         result = ContinuityEngine(provider).execute({"draft": {"id": "draft-invalid-json", "revision": 1, "body": ""}, "claims": claims, "memory": []})
-        self.assertEqual((len(provider.calls), result["status"], result["error_code"], result["input_tokens"], result["output_tokens"], result["latency_ms"], result["cost_cny"], result["finish_reason"], result["cost_available"]), (2, "failed", "invalid_json", 200, 20, 14, 0.2, "length", True))
+        self.assertEqual((len(provider.calls), result["status"], result["error_code"], result["input_tokens"], result["output_tokens"], result["latency_ms"], result["cost_cny"], result["finish_reason"], result["cost_available"]), (2, "failed", "output_truncated", 200, 20, 14, 0.2, "length", True))
 
     def test_second_continuity_batch_timeout_finishes_run_without_partial_persistence(self):
         root = pathlib.Path(tempfile.mkdtemp(prefix="scc-stage11-run-atomic-"))
