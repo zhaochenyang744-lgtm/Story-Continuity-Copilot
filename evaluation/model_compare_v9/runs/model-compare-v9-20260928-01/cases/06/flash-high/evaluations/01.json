@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "94c6dec4533d8b0ab78a81e667deb188284694a9308e5cf1db9c12442ce023d0",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "The draft attributes the loosening of the carrier valve cap to Mira on the authority of the inspection and cap record, but the cited record content does not name any actor, so the attribution is unsupported.",
+        "reasoning": "The claim rests on the inspection and cap record. The cited span is that record's content, and it states that the carrier inspection does not record who loosened its valve cap. It therefore supplies no attribution to Mira and cannot warrant the claim's assertion. No other supplied material ties Mira to the loosening, so the attribution remains unsupported and the actor unknown; judgment stops at this missing link.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-6",
+            "span_id": "fixture-span-north_glass-6",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-6"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-6",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The draft asserts Mira loosened the carrier valve cap per the inspection and cap record, but the supplied record content only says the inspection does not record who loosened the cap; the actor is never established."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3546,
+      "completion_tokens": 2140,
+      "total_tokens": 5686,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1732
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1242
+    },
+    "status": "complete",
+    "prompt_tokens": 3546,
+    "completion_tokens": 2140,
+    "total_tokens": 5686,
+    "reasoning_tokens": 1732,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

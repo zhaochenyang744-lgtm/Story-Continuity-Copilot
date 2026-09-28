@@ -1,0 +1,88 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "c87b75cd3e9cee712ccf0f70171a44824d0914362e0f466b3545a72555024b02",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "The draft places the gate's first closure at 09点 before its first opening, but canon gives the gate's first opening at 09点 and its first closure at 10点.",
+        "reasoning": "fixture-span-harbor_signal-1 (memory fixture-memory-harbor_signal-1) states that at 09点 the harbor signal gate first opened and had never closed before then, and that its first closure came at 10点 after that opening. The current claim asserts that the same object's first closure happened before its first opening, both at 09点 on the same day. Both texts name the same object and the same stated hour, so the states are mutually exclusive and the cited span alone is sufficient to refute the claim.",
+        "temporal_basis": {
+          "claim_anchor": "09点",
+          "evidence_anchor": "09点",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-1",
+            "span_id": "fixture-span-harbor_signal-1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-harbor_signal-1",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+          "after": "At 09点 on the same day, the harbor signal gate first opened; it first closed at 10点 on that day."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+        "verdict": "reviewed_issue",
+        "basis": "The claim places the gate's first closure at 09点 before its first opening, while the cited canon span fixes the first opening at 09点 and the first closure at 10点, so both share the same object and hour with incompatible states."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3461,
+      "completion_tokens": 1880,
+      "total_tokens": 5341,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1352
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1157
+    },
+    "status": "complete",
+    "prompt_tokens": 3461,
+    "completion_tokens": 1880,
+    "total_tokens": 5341,
+    "reasoning_tokens": 1352,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

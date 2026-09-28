@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "cc-claim-cc7-outcome-unknown-zh",
+      "status": "insufficient_evidence",
+      "category": "event_status",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "草稿声称工坊日志记载沈砚已经铸成铜钟，但证据仅说明初五开始铸造且此后未记录是否完成。",
+      "evidence": [
+        {
+          "chapter_id": "cc-chapter-cc7-outcome-unknown-zh-G1",
+          "span_id": "cc-span-cc7-outcome-unknown-zh-G1",
+          "excerpt": "工坊日志记载沈砚于初五开始铸造那口铜钟，此后没有记录铸造是否完成。",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "cc-memory-cc7-outcome-unknown-zh-G1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "证据只给出“初五开始铸造”这一进行中的行为，并明确“此后没有记录铸造是否完成”；从开始铸造不能推出已经铸成，缺少完成铸造的直接记录或后续结果。因此草稿的完成状态缺乏来源依据，属于事件状态未知。",
+      "evidence_chain": [
+        {
+          "span_id": "cc-span-cc7-outcome-unknown-zh-G1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "cc-claim-cc7-outcome-unknown-zh",
+      "returned_span_ids": [
+        "cc-span-cc7-outcome-unknown-zh-G1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3140,
+  "output_tokens": 2124,
+  "latency_ms": 28490,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

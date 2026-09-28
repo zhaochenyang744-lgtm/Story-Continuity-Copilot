@@ -1,0 +1,92 @@
+{
+  "business_request": {
+    "draft": {
+      "id": "cc-draft-cc2-actor-blank-zh",
+      "revision": 1,
+      "body": "据值班簿记载，林岫打开了东仓的铁锁。"
+    },
+    "claims": [
+      {
+        "id": "cc-claim-cc2-actor-blank-zh",
+        "text": "据值班簿记载，林岫打开了东仓的铁锁。",
+        "allowed_evidence": [
+          {
+            "id": "cc-span-cc2-actor-blank-zh-Z1",
+            "chapter_id": "cc-chapter-cc2-actor-blank-zh-Z1",
+            "body": "值班簿记载东仓铁锁于子夜被打开，未写明开锁之人。",
+            "label": "Z1",
+            "prompt_excerpt": "值班簿记载东仓铁锁于子夜被打开，未写明开锁之人。"
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "cc-memory-cc2-actor-blank-zh-Z1",
+        "memory_type": "dynamic_state",
+        "subject": "东仓铁锁",
+        "predicate": "status",
+        "value": "值班簿记载东仓铁锁于子夜被打开，未写明开锁之人。",
+        "source_span_id": "cc-span-cc2-actor-blank-zh-Z1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "non-empty string, at most 800 Unicode code points; why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "business_request_sha256": "f7fb79227578d2b2279ad197c942dfc39f9ddd33ca9c581e1af0083ec3890c18"
+}

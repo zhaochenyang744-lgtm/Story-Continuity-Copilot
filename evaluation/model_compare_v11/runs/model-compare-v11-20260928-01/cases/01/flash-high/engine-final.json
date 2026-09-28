@@ -1,0 +1,14 @@
+{
+  "status": "failed",
+  "error_code": "reasoning_too_long",
+  "retryable": true,
+  "input_tokens": 8300,
+  "output_tokens": 13457,
+  "latency_ms": 55954,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

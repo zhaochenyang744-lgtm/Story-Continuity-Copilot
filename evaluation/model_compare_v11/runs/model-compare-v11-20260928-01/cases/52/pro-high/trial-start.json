@@ -1,0 +1,19 @@
+{
+  "dispatch_order": 103,
+  "case_ordinal": 52,
+  "case_id": "cc18-kinship-zh",
+  "condition_id": "pro-high",
+  "position_in_case": 1,
+  "condition": {
+    "id": "pro-high",
+    "model": "deepseek-v4-pro",
+    "thinking": "enabled",
+    "reasoning_effort": "high",
+    "temperature": null
+  },
+  "started_at": "2026-09-28T09:37:22.871261+00:00",
+  "original_budget": 8000,
+  "effective_engine_budget": 40000,
+  "experiment_only": true,
+  "source_request": "evaluation/category_controls_v1/cases.json#cc18-kinship-zh"
+}

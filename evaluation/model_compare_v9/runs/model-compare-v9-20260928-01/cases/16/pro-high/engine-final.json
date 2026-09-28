@@ -1,0 +1,81 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+      "status": "conflict",
+      "category": "event_status",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "Draft states the restoration boat had completed its launch at 10点 on the same day, but evidence places the boat still unsigned and at the orchard quay at that exact time.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-4",
+          "span_id": "fixture-span-orchard_restoration-4",
+          "excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-4"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-5",
+          "span_id": "fixture-span-orchard_restoration-5",
+          "excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-5"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The rule in span 4 makes a signed manifest and departure from the orchard quay necessary for launch completion. Span 5 places the same restoration boat at 10点 on the same day with the manifest unsigned and the boat remaining at the orchard quay without departing throughout that minute. Together these exclude completed launch at the stated time, so the draft claim cannot coexist with the evidence.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-orchard_restoration-4",
+          "role": "current_context"
+        },
+        {
+          "span_id": "fixture-span-orchard_restoration-5",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 10点 on the same day, the restoration boat had completed its launch.",
+        "after": "At 10点 on the same day, the restoration boat had not completed its launch."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+      "returned_span_ids": [
+        "fixture-span-orchard_restoration-4",
+        "fixture-span-orchard_restoration-5",
+        "fixture-span-orchard_restoration-6"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3598,
+  "output_tokens": 3719,
+  "latency_ms": 50193,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

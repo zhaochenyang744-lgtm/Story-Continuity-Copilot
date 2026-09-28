@@ -1,0 +1,65 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+      "status": "conflict",
+      "category": "location_action",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "Vela's location at 18点 on the same day conflicts: the draft places her on the east pier, while evidence places her at Observatory Gate Four on the west pier, explicitly not the east pier.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-basalt_observatory-5",
+          "span_id": "fixture-span-basalt_observatory-5",
+          "excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-5"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The draft claim asserts Vela stood on the east pier at 18点 on the same day. The cited evidence states that at the same 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier. Both refer to the same person and the same moment, and the source directly denies the draft location, so they cannot both be true.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-basalt_observatory-5",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 18点 on the same day, Vela stood on the east pier.",
+        "after": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+      "returned_span_ids": [
+        "fixture-span-basalt_observatory-5",
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3634,
+  "output_tokens": 3852,
+  "latency_ms": 49186,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

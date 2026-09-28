@@ -1,0 +1,78 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1",
+      "status": "conflict",
+      "category": "object_state",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "At 10:00 today the courier capsule's valve cap was loose and unlocked, so under the readiness rule it was not ready for dispatch, contradicting the draft claim.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_carrier-1",
+          "span_id": "fixture-span-v6_carrier-1",
+          "excerpt": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_carrier-1"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-v6_carrier-2",
+          "span_id": "fixture-span-v6_carrier-2",
+          "excerpt": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": []
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "Span fixture-span-v6_carrier-2 fixes the same time as the claim (\"At 10:00 today\") and states the cap remains loose and unlocked throughout that minute, while pressure alone is four bars. Span fixture-span-v6_carrier-1 supplies the readiness condition backed by memory fixture-memory-v6_carrier-1: ready only when pressure is four bars AND the cap is locked. Under the same subject, scope and minute, both conditions do not hold, so the capsule was not ready; the draft's asserted readiness cannot coexist with this fact.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_carrier-1",
+          "role": "current_context"
+        },
+        {
+          "span_id": "fixture-span-v6_carrier-2",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 10:00 today the courier capsule was ready for dispatch.",
+        "after": "At 10:00 today the courier capsule was not ready for dispatch: its pressure was four bars, but its valve cap remained loose and unlocked."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1",
+      "returned_span_ids": [
+        "fixture-span-v6_carrier-1",
+        "fixture-span-v6_carrier-2",
+        "fixture-span-v6_carrier-3"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3184,
+  "output_tokens": 1811,
+  "latency_ms": 7914,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

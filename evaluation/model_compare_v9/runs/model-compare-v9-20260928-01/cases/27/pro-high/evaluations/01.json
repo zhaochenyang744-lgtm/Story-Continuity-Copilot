@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "8bfab1836560e7ade17a0e4853cf078042f35f1aa8ea857b9aacd7affbe6b281",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-11600b16-0ac6-422e-8a33-4caa7436309b-1",
+        "verdict": "no_issue",
+        "basis": "The cited evidence states at 10:00 the capsule pressure is four bars but the cap is loose and unlocked, and the readiness rule requires both four bars and a locked cap, so the current claim is supported."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3224,
+      "completion_tokens": 444,
+      "total_tokens": 3668,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 326
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 792
+    },
+    "status": "complete",
+    "prompt_tokens": 3224,
+    "completion_tokens": 444,
+    "total_tokens": 3668,
+    "reasoning_tokens": 326,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

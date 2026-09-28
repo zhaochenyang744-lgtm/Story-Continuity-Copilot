@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 58209,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "85c1596f-bdbd-4522-9c88-50d858ee8660",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"object_state\",\n      \"severity\": \"medium\",\n      \"explanation\": \"The draft says the capsule was ready at 10:00, but the supplied rule requires a locked valve cap and the evidence says the cap remained unlocked throughout that minute.\",\n      \"reasoning\": \"Evidence fixture-span-v6_carrier-1 establishes the readiness condition: pressure must be four bars and the valve cap must be locked. Evidence fixture-span-v6_carrier-2 establishes that at 10:00 today the pressure was four bars but the cap was loose and unlocked throughout that minute, so the locked-cap condition is false. Therefore the capsule cannot be ready at that same time, directly contradicting the current claim.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"At 10:00 today\",\n        \"evidence_anchor\": \"At 10:00 today\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-v6_carrier-1\",\n          \"span_id\": \"fixture-span-v6_carrier-1\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-v6_carrier-1\"]\n        },\n        {\n          \"chapter_id\": \"fixture-chapter-v6_carrier-2\",\n          \"span_id\": \"fixture-span-v6_carrier-2\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": []\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-v6_carrier-1\",\n          \"role\": \"current_context\"\n        },\n        {\n          \"span_id\": \"fixture-span-v6_carrier-2\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"At 10:00 today the courier capsule was ready for dispatch.\",\n        \"after\": \"At 10:00 today the courier capsule was not ready for dispatch.\"\n      },\n      \"available_actions\": [\"apply_suggestion\"]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"The cap is stated to remain loose and unlocked at the same 10:00 time, while the supplied rule requires a locked cap for readiness, so the claim is contradicted.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "c8aaf5b94c9a2b8e9e964b9ce028f095d0d90d6614542b857b8784bad11e2aa8",
+  "reasoning": {
+    "present": true,
+    "codepoints": 20109,
+    "utf8_bytes": 20109,
+    "sha256": "39ecefa18b7b2bfe70e9efb86dec1621aaeeea9f19f69efb0cf02b6bab921f7d"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3213,
+      "completion_tokens": 5060,
+      "total_tokens": 8273,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 4414
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 781
+    },
+    "status": "complete",
+    "prompt_tokens": 3213,
+    "completion_tokens": 5060,
+    "total_tokens": 8273,
+    "reasoning_tokens": 4414,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:54:03.036837+00:00"
+}

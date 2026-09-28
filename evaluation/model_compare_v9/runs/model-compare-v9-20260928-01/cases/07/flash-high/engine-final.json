@@ -1,0 +1,65 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+      "status": "conflict",
+      "category": "timeline",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "草稿称闸门在09点先关闭再首次开启，与已确认的时间线（09点首次开启，10点才首次关闭）直接矛盾。",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-harbor_signal-1",
+          "span_id": "fixture-span-harbor_signal-1",
+          "excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-harbor_signal-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "fixture-span-harbor_signal-1 在同一09点给出该闸门“首次开启且此前从未关闭”，并把“首次关闭”定在10点；而当前claim在同一09点声称“首次关闭先于首次开启”。同一对象、同一时间锚点下，首次关闭既不发生在09点也不可能先于09点开启，两者无法共存，故为确认冲突，而非可兼容的状态变化。",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-harbor_signal-1",
+          "role": "prior_state"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+        "after": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then; it first closed at 10点 on that day."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+      "returned_span_ids": [
+        "fixture-span-harbor_signal-1",
+        "fixture-span-harbor_signal-2",
+        "fixture-span-harbor_signal-3"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3439,
+  "output_tokens": 2777,
+  "latency_ms": 12755,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

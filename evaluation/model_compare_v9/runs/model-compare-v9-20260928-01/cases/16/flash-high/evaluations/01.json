@@ -1,0 +1,101 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "95afcbe2cd8655e67f146b24ad190f0e8bec37e0df08016066eb1cc07050b9bd",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "The draft asserts the restoration boat's launch was already complete at 10点 on the same day, but at that same minute the manifest was unsigned and the boat had not departed, which the register's rule defines as necessary for completion.",
+        "reasoning": "Both texts carry the identical time anchor \"At 10点 on the same day\", so they overlap. Span -5 states the state in that minute: the manifest was unsigned and the boat stayed at the orchard quay without departing. Span -4 (static canon memory-4) supplies the premise that launch completion requires both a signed manifest and departure from the quay. Jointly they make completion at that time impossible, so the claim's completed launch cannot coexist with the cited facts at the same subject, scope and time.",
+        "temporal_basis": {
+          "claim_anchor": "At 10点 on the same day",
+          "evidence_anchor": "At 10点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-5",
+            "span_id": "fixture-span-orchard_restoration-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-5"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-4",
+            "span_id": "fixture-span-orchard_restoration-4",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-4"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-5",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "fixture-span-orchard_restoration-4",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10点 on the same day, the restoration boat had completed its launch.",
+          "after": "At 10点 on the same day, the restoration boat's launch had not yet been completed."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+        "verdict": "reviewed_issue",
+        "basis": "Span -5 shows the same 10点 minute with the manifest unsigned and the boat still at the quay, and span -4 defines launch completion as requiring both; under the shared time anchor the asserted completed launch cannot stand."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3547,
+      "completion_tokens": 1435,
+      "total_tokens": 4982,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 845
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1243
+    },
+    "status": "complete",
+    "prompt_tokens": 3547,
+    "completion_tokens": 1435,
+    "total_tokens": 4982,
+    "reasoning_tokens": 845,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

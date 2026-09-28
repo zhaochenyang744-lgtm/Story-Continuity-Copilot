@@ -1,0 +1,101 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "776ebe9b99c7e5fb39ac8f6f12207cb7aad6e61e613fcc00406a16731b5cd9e6",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc18-kinship-zh",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "草稿称韩素是韩青的姑姑（姑侄关系），但宗谱记载两人是同父同母的亲姐妹，且宗谱规则规定亲姐妹不能互为姑侄，同一对人物的亲属关系无法同时成立。",
+        "reasoning": "Q1直接确立韩素与韩青为同父同母的亲姐妹，把两人的亲属关系定为同辈姐妹；Q2是宗谱提供的静态规则，明确同父同母亲姐妹彼此只是姐妹、不能互为姑侄，为排除姑侄关系提供了必要前提。两条证据主体、范围一致，无时间限定冲突，故与草稿的姑侄关系不能共存。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": "不能互为姑侄",
+          "relation": "timeless_rule"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc18-kinship-zh-Q1",
+            "span_id": "cc-span-cc18-kinship-zh-Q1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc18-kinship-zh-Q1"
+            ]
+          },
+          {
+            "chapter_id": "cc-chapter-cc18-kinship-zh-Q2",
+            "span_id": "cc-span-cc18-kinship-zh-Q2",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc18-kinship-zh-Q2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc18-kinship-zh-Q1",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "cc-span-cc18-kinship-zh-Q2",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "韩素是韩青的姑姑。",
+          "after": "韩素是韩青同父同母的亲姐妹。"
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc18-kinship-zh",
+        "verdict": "reviewed_issue",
+        "basis": "宗谱记载二人为同父同母亲姐妹，宗谱规则又规定亲姐妹不能互为姑侄，与草稿的姑侄关系直接冲突，故按 confirmed_conflict 立案。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3180,
+      "completion_tokens": 1358,
+      "total_tokens": 4538,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 835
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 876
+    },
+    "status": "complete",
+    "prompt_tokens": 3180,
+    "completion_tokens": 1358,
+    "total_tokens": 4538,
+    "reasoning_tokens": 835,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

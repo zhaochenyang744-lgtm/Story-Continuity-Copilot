@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 9087,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "31cd19a1-d4b1-402e-8657-e0729a9641e4",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim explicitly marks Aster's words as a lie, and the supplied evidence confirms Aster and Nilo are twins and twins cannot be one another's parent, so the statement and register are compatible.\"}]}",
+  "visible_content_sha256": "b8a001122f360dd0a3da3433bdc3e490351c83b47c36bd84c52fd22f0628e48c",
+  "reasoning": {
+    "present": true,
+    "codepoints": 2573,
+    "utf8_bytes": 2573,
+    "sha256": "d6c17f8d938c3a7efb609793e3034a133a7b0195eb7a60fe4ab5a6425e948fc9"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3146,
+      "completion_tokens": 664,
+      "total_tokens": 3810,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 568
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 714
+    },
+    "status": "complete",
+    "prompt_tokens": 3146,
+    "completion_tokens": 664,
+    "total_tokens": 3810,
+    "reasoning_tokens": 568,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:57:41.275779+00:00"
+}

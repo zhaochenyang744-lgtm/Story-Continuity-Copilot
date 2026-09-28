@@ -1,0 +1,63 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "cc-claim-cc12-material-en",
+      "status": "conflict",
+      "category": "attribute",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "The banner material/color conflicts at the same stated time: claim says green silk, evidence says red wool.",
+      "evidence": [
+        {
+          "chapter_id": "cc-chapter-cc12-material-en-E1",
+          "span_id": "cc-span-cc12-material-en-E1",
+          "excerpt": "At 17:00 today, the envoy's banner is red wool, not green silk.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "cc-memory-cc12-material-en-E1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The cited evidence directly states at 17:00 today the banner is red wool, not green silk. The current claim states green silk at the same moment. Shared subject and time make these contradictory; the red wool fact is sufficient to contradict the claim.",
+      "evidence_chain": [
+        {
+          "span_id": "cc-span-cc12-material-en-E1",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 17:00 today, the envoy's banner is green silk.",
+        "after": "At 17:00 today, the envoy's banner is red wool, not green silk."
+      },
+      "available_actions": [
+        "apply_suggestion",
+        "edit"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "cc-claim-cc12-material-en",
+      "returned_span_ids": [
+        "cc-span-cc12-material-en-E1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3105,
+  "output_tokens": 2263,
+  "latency_ms": 31408,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

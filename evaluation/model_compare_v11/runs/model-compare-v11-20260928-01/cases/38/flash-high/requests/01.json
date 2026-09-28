@@ -1,0 +1,109 @@
+{
+  "evaluation": 1,
+  "stage": "first",
+  "business_request_sha256": "84be104f39832b43bde8e9706a9a7bf05a27dbee8539d9261897a613b333888b",
+  "business_request": {
+    "draft": {
+      "id": "cc-draft-cc4-deliverer-blank-zh",
+      "revision": 1,
+      "body": "驿站记录表明，是阿蘅把药箱送到了北营。"
+    },
+    "claims": [
+      {
+        "id": "cc-claim-cc4-deliverer-blank-zh",
+        "text": "驿站记录表明，是阿蘅把药箱送到了北营。",
+        "allowed_evidence": [
+          {
+            "id": "cc-span-cc4-deliverer-blank-zh-Y1",
+            "chapter_id": "cc-chapter-cc4-deliverer-blank-zh-Y1",
+            "body": "驿站记录：药箱于辰时送达北营，送件人一栏空白。",
+            "label": "Y1",
+            "prompt_excerpt": "驿站记录：药箱于辰时送达北营，送件人一栏空白。"
+          },
+          {
+            "id": "cc-span-cc4-deliverer-blank-zh-Y2",
+            "chapter_id": "cc-chapter-cc4-deliverer-blank-zh-Y2",
+            "body": "北营位于驿站以北二十里。",
+            "label": "Y2",
+            "prompt_excerpt": "北营位于驿站以北二十里。"
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "cc-memory-cc4-deliverer-blank-zh-Y1",
+        "memory_type": "event_timeline",
+        "subject": "药箱",
+        "predicate": "event_occurred",
+        "value": "驿站记录：药箱于辰时送达北营，送件人一栏空白。",
+        "source_span_id": "cc-span-cc4-deliverer-blank-zh-Y1"
+      },
+      {
+        "id": "cc-memory-cc4-deliverer-blank-zh-Y2",
+        "memory_type": "static_canon",
+        "subject": "北营",
+        "predicate": "location",
+        "value": "北营位于驿站以北二十里。",
+        "source_span_id": "cc-span-cc4-deliverer-blank-zh-Y2"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "non-empty string, at most 800 Unicode code points; why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  }
+}

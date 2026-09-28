@@ -1,0 +1,146 @@
+{
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-orchard-restoration",
+      "revision": 2,
+      "body": "At 10点 on the same day, the restoration boat had completed its launch."
+    },
+    "claims": [
+      {
+        "id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+        "text": "At 10点 on the same day, the restoration boat had completed its launch.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-orchard_restoration-4",
+            "chapter_id": "fixture-chapter-orchard_restoration-4",
+            "body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "label": "launch_rule",
+            "prompt_excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay."
+          },
+          {
+            "id": "fixture-span-orchard_restoration-5",
+            "chapter_id": "fixture-chapter-orchard_restoration-5",
+            "body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "label": "launch_log",
+            "prompt_excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing."
+          },
+          {
+            "id": "fixture-span-orchard_restoration-6",
+            "chapter_id": "fixture-chapter-orchard_restoration-6",
+            "body": "The restoration log leaves the cause of the boat's delay unrecorded.",
+            "label": "delay_cause",
+            "prompt_excerpt": "The restoration log leaves the cause of the boat's delay unrecorded."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-orchard_restoration-1",
+        "memory_type": "static_canon",
+        "subject": "Nera and Oren",
+        "predicate": "rule",
+        "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+        "source_span_id": "fixture-span-orchard_restoration-1"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-2",
+        "memory_type": "static_canon",
+        "subject": "Nera and Oren",
+        "predicate": "relationship",
+        "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+        "source_span_id": "fixture-span-orchard_restoration-2"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-3",
+        "memory_type": "open_thread",
+        "subject": "Nera and Oren",
+        "predicate": "status",
+        "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+        "source_span_id": "fixture-span-orchard_restoration-3"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-4",
+        "memory_type": "static_canon",
+        "subject": "restoration boat",
+        "predicate": "rule",
+        "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+        "source_span_id": "fixture-span-orchard_restoration-4"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-5",
+        "memory_type": "event_timeline",
+        "subject": "restoration boat",
+        "predicate": "event_occurred",
+        "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+        "source_span_id": "fixture-span-orchard_restoration-5"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-6",
+        "memory_type": "open_thread",
+        "subject": "restoration boat",
+        "predicate": "status",
+        "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+        "source_span_id": "fixture-span-orchard_restoration-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "non-empty string, at most 800 Unicode code points; why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "business_request_sha256": "95afcbe2cd8655e67f146b24ad190f0e8bec37e0df08016066eb1cc07050b9bd"
+}

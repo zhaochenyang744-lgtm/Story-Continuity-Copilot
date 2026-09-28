@@ -1,0 +1,81 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+      "status": "conflict",
+      "category": "object_state",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "同一时刻10点，载体压力表读数为四巴，但阀盖未锁，因此不满足发运条件，与“ready for dispatch”矛盾。",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-north_glass-5",
+          "span_id": "fixture-span-north_glass-5",
+          "excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-5"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-north_glass-4",
+          "span_id": "fixture-span-north_glass-4",
+          "excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-4"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "span-north_glass-5 把载体定在“At 10点 on the same day”，表压四巴但阀盖整分钟松开未锁；static_canon span-north_glass-4 规定阀盖锁紧是发运就绪的必要条件。同一对象、同一字面时间锚点（claim 与证据均含“At 10点 on the same day”），两条共同排除该时刻的就绪状态，故为确认冲突。span-north_glass-2 只涉及 Mira 与门禁，与载体无关，未引用。",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-north_glass-4",
+          "role": "prior_state"
+        },
+        {
+          "span_id": "fixture-span-north_glass-5",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+        "after": "At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch, because its valve cap was not locked."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-4",
+        "fixture-span-north_glass-2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3560,
+  "output_tokens": 1780,
+  "latency_ms": 8027,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

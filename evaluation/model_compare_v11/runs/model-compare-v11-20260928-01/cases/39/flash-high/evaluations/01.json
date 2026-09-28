@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "8ebb80a6af98014e9fb9811bbd083999a6ef2d1564be65e24e70933577bd9916",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc5-authorizer-blank-en",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "议会记录只确认命令存在，未指明下令者，因此草稿把下令归给 Tamsin 缺乏依据。",
+        "reasoning": "所引记录证明河水闸门在黄昏时依命令关闭，却明确表示未记载下令者的姓名。因此“下令”这一行为确实发生，但行为者身份在供应商材料中缺失——正好是草稿归给 Tamsin 的那一环节。判断只能停留在“谁下令未知”，不能推断为 Tamsin，也不能推断为并非 Tamsin。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc5-authorizer-blank-en-C1",
+            "span_id": "cc-span-cc5-authorizer-blank-en-C1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc5-authorizer-blank-en-C1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc5-authorizer-blank-en-C1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc5-authorizer-blank-en",
+        "verdict": "insufficient_evidence",
+        "basis": "记录记载了依命令关闭闸门却未记下令者，草稿据以断定 Tamsin 下令缺少授权者这一关键环节。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3083,
+      "completion_tokens": 764,
+      "total_tokens": 3847,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 407
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 779
+    },
+    "status": "complete",
+    "prompt_tokens": 3083,
+    "completion_tokens": 764,
+    "total_tokens": 3847,
+    "reasoning_tokens": 407,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

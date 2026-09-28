@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 2184,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "6fc28774-5517-4598-affa-950a276c5ae5",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1\",\"verdict\":\"no_issue\",\"basis\":\"The draft explicitly frames \\\"I am Nilo's mother\\\" as Aster's lie and affirms the register's twin record, so the utterance is an attributed falsehood, not narrator-confirmed canon; it does not contradict the twin evidence.\"}]}",
+  "visible_content_sha256": "4116045193356966484be1eb1bdf67bbf368da3954cf049044278eacb9cd3510",
+  "reasoning": {
+    "present": true,
+    "codepoints": 736,
+    "utf8_bytes": 738,
+    "sha256": "92fd29492a42b7101708540bcf7ff49ea59d744a0f8a06fde7253946fe241b7d"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3117,
+      "completion_tokens": 264,
+      "total_tokens": 3381,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 160
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 813
+    },
+    "status": "complete",
+    "prompt_tokens": 3117,
+    "completion_tokens": 264,
+    "total_tokens": 3381,
+    "reasoning_tokens": 160,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T09:17:47.232795+00:00"
+}

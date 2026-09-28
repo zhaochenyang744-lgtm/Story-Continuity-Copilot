@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 8966,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "42b2f4ee-36c4-4c94-898a-ba508752aef2",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[{\"claim_span_id\":\"cc-claim-cc12-material-en\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"attribute\",\"severity\":\"medium\",\"explanation\":\"The draft says the envoy's banner is green silk at 17:00 today, but the cited span says it is red wool at the same time.\",\"reasoning\":\"The cited span directly contradicts the claim: it states the same subject, the envoy's banner, has red wool material/color at the same explicit time, 17:00 today. Because both texts use that time and the claim's material/color cannot be both green silk and red wool at once, they cannot coexist.\",\"temporal_basis\":{\"claim_anchor\":\"At 17:00 today\",\"evidence_anchor\":\"At 17:00 today\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"cc-chapter-cc12-material-en-E1\",\"span_id\":\"cc-span-cc12-material-en-E1\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"cc-memory-cc12-material-en-E1\"]}],\"evidence_chain\":[{\"span_id\":\"cc-span-cc12-material-en-E1\",\"role\":\"current_context\"}],\"suggested_revision\":{\"before\":\"At 17:00 today, the envoy's banner is green silk.\",\"after\":\"At 17:00 today, the envoy's banner is red wool, not green silk.\"},\"available_actions\":[\"apply_suggestion\",\"edit\"]}],\"claim_verdicts\":[{\"claim_span_id\":\"cc-claim-cc12-material-en\",\"verdict\":\"reviewed_issue\",\"basis\":\"The claim states green silk at 17:00 today; the cited span states red wool at the same time, a direct contradiction.\"}]}",
+  "visible_content_sha256": "1626386146160d2c0c638da4c72db1d2854a8005efaa398d3fa09b4d5a1928ad",
+  "reasoning": {
+    "present": true,
+    "codepoints": 6992,
+    "utf8_bytes": 6992,
+    "sha256": "8fb2f1c3c2395d9822e3544b185c422e5e93071de7b236ef3eafcad7fa6f12d6"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3054,
+      "completion_tokens": 1898,
+      "total_tokens": 4952,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1514
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 750
+    },
+    "status": "complete",
+    "prompt_tokens": 3054,
+    "completion_tokens": 1898,
+    "total_tokens": 4952,
+    "reasoning_tokens": 1514,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T09:32:23.299932+00:00"
+}

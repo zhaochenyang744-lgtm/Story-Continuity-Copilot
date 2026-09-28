@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "9974e6892c79847ee44f0fdfc9d5c2ebcaa344f40b40641c7148b40c8e078a60",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-5882fa2e-f178-494a-8fa7-9b5eed874e05-1",
+        "verdict": "no_issue",
+        "basis": "The claim's 10点 state matches span-5 exactly (manifest unsigned, boat still at the orchard quay), and span-4's completion rule is only a premise defining when launch is complete, so it is satisfied rather than contradicted. Span-1 concerns Nera/Oren kinship and is unrelated. No continuity issue."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3603,
+      "completion_tokens": 327,
+      "total_tokens": 3930,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 203
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1299
+    },
+    "status": "complete",
+    "prompt_tokens": 3603,
+    "completion_tokens": 327,
+    "total_tokens": 3930,
+    "reasoning_tokens": 203,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

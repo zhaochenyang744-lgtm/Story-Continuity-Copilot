@@ -93,11 +93,13 @@ class ProviderResult:
 
 
 MAX_CLAIM_BASIS_CODEPOINTS = 400
-CONTINUITY_PROMPT_VERSION = "continuity-review-v17-repair-diagnostics"
+MAX_ISSUE_REASONING_CODEPOINTS = 800
+CONTINUITY_PROMPT_VERSION = "continuity-review-v20-decisive-fact-category"
 
 CONTINUITY_REVIEW_RULES = (
     "Write every author-facing explanation, reasoning, and suggested revision in the dominant language of the bound draft. Preserve proper nouns from the source.",
     f"Decide every current claim before emitting output. Return exactly issues and claim_verdicts. Include one claim_verdict for every current claim in this request, with its exact claim_span_id, verdict reviewed_issue|insufficient_evidence|no_issue, and a non-empty basis of at most {MAX_CLAIM_BASIS_CODEPOINTS} Unicode code points (characters, not tokens); give one concise decision reason without restating all the evidence. Every emitted conflict-status issue, including a compatible state_change, needs reviewed_issue verdict; an insufficient_evidence issue needs insufficient_evidence verdict. An omitted issue needs no_issue verdict with a reason. Never emit a no_conflict issue or mix the new and legacy shapes.",
+    f"Every emitted issue's reasoning must be non-empty and at most {MAX_ISSUE_REASONING_CODEPOINTS} Unicode code points (characters, not tokens) after trimming surrounding whitespace. State what each cited span contributes and the decisive link or gap concisely; do not restate the full excerpts.",
     "Deciding every claim does not mean emitting an issue for every claim. First decide whether a claim actually needs review, then omit all claims that are consistent or merely add compatible information. If none need review, return an empty issues array and one explained no_issue claim_verdict for each claim. Never encode 'no contradiction', 'same person', 'consistent', or 'supported' as a confirmed_conflict object. The status, nature, explanation, reasoning, evidence relation and actions must express the same decision.",
     "Classify nature as confirmed_conflict only when the current story-fact claim and the complete cited evidence set cannot coexist under the same subject, scope, and time. Cite at least one direct, sufficient fact contradicting the current claim and every necessary identity, rule, or time/scope premise in the same issue. Explain what each cited span contributes to the joint proof. Evidence relation is relative to the current story-fact claim: a premise or relevant background is context, not contradicts; supports means it supports that claim and cannot be relabeled to pass the conflict contract. The sufficiency flag describes whether a cited text is complete for its own stated role; it does not make the whole set sufficient by itself.",
     "For every trustworthy issue, emit temporal_basis. claim_anchor and evidence_anchor must be exact substrings copied from the supplied claim and cited evidence, or null. relation must be explicit_overlap, timeless_rule, explicit_later_transition, or unknown. confirmed_conflict requires explicit_overlap with real time anchors in both texts, or timeless_rule grounded by a supplied static_canon rule. The words current narrative, current scene, or chapter order are never time anchors.",
@@ -114,7 +116,7 @@ CONTINUITY_REVIEW_RULES = (
     "available_actions may contain only edit, apply_suggestion, keep_intentional, and false_positive. If apply_suggestion is present, suggested_revision must have exact before text occurring once in the bound draft and a distinct after text; otherwise suggested_revision must be null.",
     "A suggested revision must remove every contradiction asserted by that issue, including governing actions or rules, not merely change a time label or repeat the conflict. If no grounded complete correction is possible, return null and omit apply_suggestion. Never propose changing Story Memory merely to make an unsupported draft claim true.",
     "Omit proposed_memory_change unless cited sufficient evidence fully grounds it. Add and replace use controlled memory types; replace must bind a supplied Memory id. Author action is still required before canon changes.",
-    "Every emitted issue must include a valid category, severity, and non-empty explanation. Assign category only after deciding the status and complete Evidence set. Apply category by the core decision, not surface words or background context: attribute = an intrinsic, durable, or measured property, including a current measured count; object_state = a named object's state or location at a specific time, especially an operational state rather than a measured property; relationship = a named person or role holder's authorization, responsibility, duty, obligation, kinship, or role relation, even when the context contains a policy, emergency rule, or exception; character_knowledge = what a character knows, believes, has observed, or was told; world_rule = an abstract or global behavior constraint, mechanism, or exception whose subject is not a particular named role holder's authority or responsibility; timeline = event ordering; event_status = whether an event completed, failed, remains open, or has an unknown result; location_action = where a character acted or which action occurred at a location.",
+    "Every emitted issue must include a valid category, severity, and non-empty explanation. Assign category only after deciding the status and complete Evidence set, by the decisive fact: the direct contradicting fact, or the missing link. Ignore verbs, time anchors, and context. attribute = an intrinsic property (material, colour, size, measured count), even at a stated time; object_state = a named object's mutable condition, holder, or placement at a time; relationship = who performed, caused, delivered, authorized, or is responsible for an act, or kinship or role; an act recorded without its actor or cause is relationship; character_knowledge = what a character knows, believes, observed, or was told; timeline = order of events, including birth order; event_status = whether an event started, completed, failed, or remains open, its actor undisputed; location_action = where a character was or acted; world_rule = a global constraint only when it alone contradicts the claim; a rule that only defines ready, complete, or permitted is a premise: use the category of the state or outcome it governs.",
     "Before returning, cross-check each emitted object: confirmed_conflict needs at least one sufficient direct contradicts fact plus any necessary selected context premises and a proved shared time/scope; insufficient_evidence needs only insufficient context, missing_link for every evidence_chain entry, no actions and no proposed change. Omit unrelated optional context. If your explanation concludes that no issue exists, remove the object and explain the no_issue basis in claim_verdicts. A contract repair that removes an earlier issue must explain why the previous gap or contradiction no longer requires review. Do not include competing abandoned classifications or a transcript of internal deliberation.",
 )
 
@@ -233,7 +235,7 @@ def continuity_prompt(request: dict[str, Any]) -> str:
             "diagnostics": repair.get("diagnostics", []),
             "rejected_issues": repair.get("rejected_issues", []),
             "rejected_claim_verdicts": repair.get("rejected_claim_verdicts", []),
-            "instruction": f"rejected_issues and rejected_claim_verdicts are the complete respective fields from the previous output. Rebuild both arrays under all original rules; correct every problem_code, not only reason_code. Every basis must be non-empty and at most {MAX_CLAIM_BASIS_CODEPOINTS} Unicode code points. For a length error, shorten the basis while preserving its evidence-based decision. An insufficient_evidence verdict requires an actual cited insufficient_evidence Issue with missing_link evidence_chain, no actions and no proposed change; basis alone is not the Issue. expected_verdict_for_returned_issues describes the mismatch, not an instruction to change a correct decision. Do not remove a source-warrant gap just because a record is silent. Remove an issue only if the supplied evidence establishes no reviewable problem, and explain why in no_issue basis. Never invent temporal or identity links; copy exact anchors or use null. Keep author text in the draft language. Suggested revisions must resolve every asserted contradiction; otherwise use null without apply_suggestion. Do not change Story Memory to make the draft true or mention the rejected response to the author.",
+            "instruction": f"rejected_issues and rejected_claim_verdicts are the complete respective fields from the previous output. Rebuild both arrays under all original rules; correct every problem_code, not only reason_code. Every basis must be non-empty and at most {MAX_CLAIM_BASIS_CODEPOINTS} Unicode code points. Every issue reasoning must be non-empty and at most {MAX_ISSUE_REASONING_CODEPOINTS} Unicode code points. For a length error, shorten only the named basis or reasoning while preserving its evidence-based decision, nature, category, and cited evidence. An insufficient_evidence verdict requires an actual cited insufficient_evidence Issue with missing_link evidence_chain, no actions and no proposed change; basis alone is not the Issue. expected_verdict_for_returned_issues describes the mismatch, not an instruction to change a correct decision. Do not remove a source-warrant gap just because a record is silent. Remove an issue only if the supplied evidence establishes no reviewable problem, and explain why in no_issue basis. Never invent temporal or identity links; copy exact anchors or use null. Keep author text in the draft language. Suggested revisions must resolve every asserted contradiction; otherwise use null without apply_suggestion. Do not change Story Memory to make the draft true or mention the rejected response to the author.",
         }
     return json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
 
@@ -308,6 +310,13 @@ class ProviderPort(Protocol):
     def evaluate(self, request: dict[str, Any]) -> ProviderResult: ...
 
 
+CONTINUITY_REVIEW_THINKING_VALUES = ("disabled", "high")
+# Measured on the V9/V11 Flash-high matrix: completion p95 4,033 tokens, first-answer latency p95 17.6 s.
+# Thinking tokens count inside completion, so the 2,000 default would truncate about a third of answers.
+REVIEW_THINKING_MAX_OUTPUT_TOKENS = 6000
+REVIEW_THINKING_TIMEOUT_SECONDS = 60
+
+
 class DeepSeekProvider:
     label = "deepseek"
     continuity_contract_version = "v6"
@@ -315,13 +324,19 @@ class DeepSeekProvider:
     max_output_tokens = MAX_OUTPUT_BUDGET_UNITS
     timeout_seconds = 30
     max_retries = 1
+    # Class defaults keep instances built without __init__ on the original behavior.
+    review_thinking = "disabled"
+    _request_timeout = timeout_seconds
 
     def __init__(self, client_factory=None):
         self.model = os.getenv("CONTINUITY_MODEL", "")
         self.base_url = os.getenv("CONTINUITY_BASE_URL", "")
         self.api_key = os.getenv("CONTINUITY_API_KEY", "")
         self.enabled = os.getenv("CONTINUITY_PROVIDER", "").lower() == "deepseek"
-        self._factory = client_factory or (lambda: httpx.Client(timeout=httpx.Timeout(self.timeout_seconds)))
+        # Only continuity review was evaluated with thinking; every other task keeps thinking disabled.
+        self.review_thinking = os.getenv("CONTINUITY_REVIEW_THINKING", "disabled").strip().lower()
+        self._request_timeout = self.timeout_seconds
+        self._factory = client_factory or (lambda: httpx.Client(timeout=httpx.Timeout(self._request_timeout)))
         self.request_attempts = 0
         self.successful_responses = 0
         self.request_cap: int | None = None
@@ -332,7 +347,16 @@ class DeepSeekProvider:
 
     @property
     def available(self):
-        return bool(self.enabled and self.model and self.base_url and self.api_key)
+        return bool(self.enabled and self.model and self.base_url and self.api_key and
+                    self.review_thinking in CONTINUITY_REVIEW_THINKING_VALUES)
+
+    def request_body(self, request: dict[str, Any], prompt: str) -> dict[str, Any]:
+        body = {"model": self.model, "messages": [{"role": "user", "content": prompt}],
+                "response_format": {"type": "json_object"}}
+        if request.get("task") is None and self.review_thinking == "high":
+            return {**body, "thinking": {"type": "enabled"}, "reasoning_effort": "high",
+                    "max_tokens": REVIEW_THINKING_MAX_OUTPUT_TOKENS}
+        return {**body, "thinking": {"type": "disabled"}, "temperature": 0, "max_tokens": self.max_output_tokens}
 
     def _memory_initialization_prompt(self, request: dict[str, Any]) -> str:
         return memory_initialization_prompt(request)
@@ -346,14 +370,8 @@ class DeepSeekProvider:
         prompt, input_budget_units = request_prompt_and_budget(request)
         if input_budget_units > MAX_INPUT_BUDGET_UNITS:
             raise InputBudgetExceeded()
-        body = {
-            "model": self.model,
-            "messages": [{"role": "user", "content": prompt}],
-            "response_format": {"type": "json_object"},
-            "thinking": {"type": "disabled"},
-            "temperature": 0,
-            "max_tokens": self.max_output_tokens,
-        }
+        body = self.request_body(request, prompt)
+        self._request_timeout = REVIEW_THINKING_TIMEOUT_SECONDS if body["thinking"]["type"] == "enabled" else self.timeout_seconds
         started = time.perf_counter()
         prior_dispatch_usage_unknown = False
         for attempt in range(self.max_retries + 1):

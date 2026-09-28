@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "d42e65d5539e2620bcafda85b02c608d7efffd6cbc05a5a1ce49231d68a395b6",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-514a8ccc-4b70-4a65-94d8-959d43bfa68b-1",
+        "verdict": "no_issue",
+        "basis": "Span-6 attests the claim verbatim. Span-5 and memory-5 give Vela at Gate Four on the west pier at 18点, an earlier bounded state that the draft's own 19点 move to the east pier legitimately follows; span-4 and memory-4 fix Gate Four on the west pier, matching both. No missing transition or time overlap, so nothing needs review."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3565,
+      "completion_tokens": 737,
+      "total_tokens": 4302,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 595
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1261
+    },
+    "status": "complete",
+    "prompt_tokens": 3565,
+    "completion_tokens": 737,
+    "total_tokens": 4302,
+    "reasoning_tokens": 595,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

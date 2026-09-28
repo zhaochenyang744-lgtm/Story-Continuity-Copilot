@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 7705,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "fecdb59c-c585-43f8-b7f4-20285e642861",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-ccc7ae64-39ad-4a3e-a38f-0e88a58e1d33-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"The supplied evidence shows Siva did not know the password at 09:00 and learned it at 12:00, so the claim's before/after learning transition is compatible and not a continuity issue.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "34e5a5c7b644a7fdd65115ea9d1cf4c08d6f0dbabcb960318cbc46aa64eb2e2b",
+  "reasoning": {
+    "present": true,
+    "codepoints": 1958,
+    "utf8_bytes": 1958,
+    "sha256": "53ea0df1d4b9e9a7742bc8838bef7c0fa62aa1cbb153712e6ebf3282c97b9c0b"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3211,
+      "completion_tokens": 583,
+      "total_tokens": 3794,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 464
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 779
+    },
+    "status": "complete",
+    "prompt_tokens": 3211,
+    "completion_tokens": 583,
+    "total_tokens": 3794,
+    "reasoning_tokens": 464,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T09:20:07.213968+00:00"
+}

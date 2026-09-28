@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+      "status": "insufficient_evidence",
+      "category": "relationship",
+      "severity": "low",
+      "evidence_status": "insufficient",
+      "explanation": "The inspection log does not identify who loosened the cap, so attributing the action to Ina is unsupported.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_actor_blank-1",
+          "span_id": "fixture-span-v6_actor_blank-1",
+          "excerpt": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_actor_blank-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The cited inspection log records the cap as loose at 10:00 but explicitly states it does not identify who loosened it. The draft asserts that Ina loosened the cap according to the inspection log, but no supplied evidence links Ina to the action. The missing link is an actor attribution for the loosening. This gap prevents confirming or denying the claim; it remains unsupported.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_actor_blank-1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+      "returned_span_ids": [
+        "fixture-span-v6_actor_blank-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3149,
+  "output_tokens": 3239,
+  "latency_ms": 43181,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

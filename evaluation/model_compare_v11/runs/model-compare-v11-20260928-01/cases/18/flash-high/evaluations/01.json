@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "493ff4401e17f8133bf8abf8619aeb5838b712a44d36f9be4e3e947c810115e4",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "The draft attributes the restoration boat's delay to Tala 'according to the launch and delay logs,' but the cited log evidence states the cause of that delay is unrecorded, so the attribution has no source warrant.",
+        "reasoning": "span-6 records that the restoration log leaves the cause of the boat's delay unrecorded. That is the only cited span bearing on causation, and it shows the log contains no causal act, actor, or entry linking Tala to the delay; the claim's warrant ('according to the launch and delay logs') therefore points to a record that is silent on the decisive fact. The gap is a missing link, not a contradiction: the log's silence does not establish that Tala was not the cause, so the actual cause remains unknown. Judgment stops here because no supplied span records any act by Tala affecting the boat's departure.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-6",
+            "span_id": "fixture-span-orchard_restoration-6",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-6"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-6",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The claim's stated warrant, the delay log, is cited evidence showing the cause of the delay is unrecorded, so no supplied span establishes Tala's causal act; report the missing link rather than a contradiction."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3574,
+      "completion_tokens": 1902,
+      "total_tokens": 5476,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1436
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1270
+    },
+    "status": "complete",
+    "prompt_tokens": 3574,
+    "completion_tokens": 1902,
+    "total_tokens": 5476,
+    "reasoning_tokens": 1436,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

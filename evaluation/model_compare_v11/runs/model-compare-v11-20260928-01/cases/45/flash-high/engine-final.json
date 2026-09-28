@@ -1,0 +1,65 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "cc-claim-cc11-location-zh",
+      "status": "conflict",
+      "category": "location_action",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "同一时间点，许棠的位置在南门城楼与北门城楼之间互相矛盾。",
+      "evidence": [
+        {
+          "chapter_id": "cc-chapter-cc11-location-zh-L1",
+          "span_id": "cc-span-cc11-location-zh-L1",
+          "excerpt": "今天10点，许棠一直守在北门城楼，没有离开。",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "cc-memory-cc11-location-zh-L1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "当前稿与证据都以「今天10点」为时间锚点，指向同一人物许棠的同一时刻状态，二者时间与对象范围完全重叠。证据表明许棠在该时刻一直守在北门城楼且没有离开，因此不可能同时位于南门城楼。两项关于同一人同一时刻位置的陈述无法共存，证据为该地点状态提供了直接且充分的反证。",
+      "evidence_chain": [
+        {
+          "span_id": "cc-span-cc11-location-zh-L1",
+          "role": "prior_state"
+        }
+      ],
+      "suggested_revision": {
+        "before": "许棠站在南门城楼上",
+        "after": "许棠守在北门城楼，没有离开"
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "cc-claim-cc11-location-zh",
+      "returned_span_ids": [
+        "cc-span-cc11-location-zh-L1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3052,
+  "output_tokens": 1077,
+  "latency_ms": 5330,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

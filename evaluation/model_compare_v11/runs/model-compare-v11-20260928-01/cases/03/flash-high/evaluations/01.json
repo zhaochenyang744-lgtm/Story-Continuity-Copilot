@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "23d76583388e84f657f3fc40dbd5514d5037cbd92f15ea7d93653791717617d0",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "草稿声称两份徽章登记册证明 Mira 在 11点 持有备用蓝色徽章，但所提供的登记册证据在 11点 的持有人栏为空白，因此该来源归属缺乏依据。",
+        "reasoning": "当前主张断言两份徽章登记册确立了 Mira 在 11点 的持有人身份。所提供的登记册证据显示，备用蓝色徽章登记册的 11点 持有人栏为空白，因此没有任何登记条目把 Mira 记为持有人；归属因此缺少来源依据，Mira 在 11点 是否持有该徽章仍属未知。10点 的记录是另一个时间点，无法补上缺失的 11点 条目。空白的登记栏是记录缺失，而非直接矛盾。",
+        "temporal_basis": {
+          "claim_anchor": "11点",
+          "evidence_anchor": "11点",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-3",
+            "span_id": "fixture-span-north_glass-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-3"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-3",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+        "verdict": "insufficient_evidence",
+        "basis": "被引用的 11点 持有人栏为空白，登记册并不能证明 Mira 是 11点 的持有人；该主张的来源归属缺乏支持，持有人身份仍属未知。缺失记录并非直接矛盾。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3569,
+      "completion_tokens": 1746,
+      "total_tokens": 5315,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1306
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1265
+    },
+    "status": "complete",
+    "prompt_tokens": 3569,
+    "completion_tokens": 1746,
+    "total_tokens": 5315,
+    "reasoning_tokens": 1306,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

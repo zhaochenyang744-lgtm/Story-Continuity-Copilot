@@ -1,0 +1,101 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "04ef7b8a82dc6aff40df3a0f0779d7550ab3ce92bfbd7c1135e7d8f32a2d29f0",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc10-salt-bridge-rule-en",
+        "verdict": "reviewed_issue",
+        "basis": "B1 is supplied static canon that iron cannot cross the salt bridge, and B2 fixes the same story time and Corin's iron sword at that bridge, so the claim's crossing with iron at midnight today cannot hold; a confirmed conflict issue is emitted."
+      }
+    ],
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc10-salt-bridge-rule-en",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "world_rule",
+        "severity": "medium",
+        "explanation": "The draft has Corin crossing the salt bridge while carrying an iron sword, but the supplied canon states the bridge repels iron so no one carrying iron can cross it.",
+        "reasoning": "B1 supplies a timeless canon constraint: carrying iron makes crossing the salt bridge impossible. B2 fixes the story time as midnight today and places Corin at that bridge with an iron sword at that moment, matching the claim's own time anchor and iron-carrying. Because the rule is timeless and B2 shows no later transition, the claim's crossing with iron cannot coexist with the rule; the iron-carrying premise comes from the claim itself.",
+        "temporal_basis": {
+          "claim_anchor": "At midnight today",
+          "evidence_anchor": "At midnight today",
+          "relation": "timeless_rule"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc10-salt-bridge-rule-en-B1",
+            "span_id": "cc-span-cc10-salt-bridge-rule-en-B1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc10-salt-bridge-rule-en-B1"
+            ]
+          },
+          {
+            "chapter_id": "cc-chapter-cc10-salt-bridge-rule-en-B2",
+            "span_id": "cc-span-cc10-salt-bridge-rule-en-B2",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc10-salt-bridge-rule-en-B2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc10-salt-bridge-rule-en-B1",
+            "role": "current_context"
+          },
+          {
+            "span_id": "cc-span-cc10-salt-bridge-rule-en-B2",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At midnight today, Corin crossed the salt bridge carrying an iron sword.",
+          "after": "At midnight today, Corin approached the salt bridge carrying an iron sword, but the bridge repelled the iron and he could not cross."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3221,
+      "completion_tokens": 2175,
+      "total_tokens": 5396,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1600
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 917
+    },
+    "status": "complete",
+    "prompt_tokens": 3221,
+    "completion_tokens": 2175,
+    "total_tokens": 5396,
+    "reasoning_tokens": 1600,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

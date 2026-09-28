@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "21f624cf4182caffa5ce7c15c6614a5a7f197d8d84a90c9398a3495ae2cec3d2",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-ccc7ae64-39ad-4a3e-a38f-0e88a58e1d33-1",
+        "verdict": "no_issue",
+        "basis": "The claim's two asserted times are each corroborated: the 09:00 span confirms Siva did not know the password, and the 12:00 span supplies the explicit later learning from the opened letter. These are compatible distinct moments, so no conflict, missing link, or reviewable tension remains."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3160,
+      "completion_tokens": 448,
+      "total_tokens": 3608,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 326
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 856
+    },
+    "status": "complete",
+    "prompt_tokens": 3160,
+    "completion_tokens": 448,
+    "total_tokens": 3608,
+    "reasoning_tokens": 326,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

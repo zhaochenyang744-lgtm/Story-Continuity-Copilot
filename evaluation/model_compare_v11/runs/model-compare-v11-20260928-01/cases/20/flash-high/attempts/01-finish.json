@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 4381,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "0f4254c5-b388-4f36-8ead-36642f28b80a",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim's 18点 state — lens R4 clear glass — matches span-2, with the R4/western-aperture identity supplied by span-1, so it is supported, not contradicted. The amber detail is a recollection of yesterday, a different time that can coexist with the 18点 clear-glass state. Span-5 concerns Vela's location, which the claim never asserts.\"}]}",
+  "visible_content_sha256": "4875713ad9d99cc031bb45f63a36847bc40c0902dc10a674f0c76c51cb67f91a",
+  "reasoning": {
+    "present": true,
+    "codepoints": 2925,
+    "utf8_bytes": 2963,
+    "sha256": "c326358d8a0a7865697ce65d2c290642d3113b88827c3e5a31b29130502f9621"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3593,
+      "completion_tokens": 893,
+      "total_tokens": 4486,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 750
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1289
+    },
+    "status": "complete",
+    "prompt_tokens": 3593,
+    "completion_tokens": 893,
+    "total_tokens": 4486,
+    "reasoning_tokens": 750,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T09:09:45.621841+00:00"
+}

@@ -1,0 +1,94 @@
+{
+  "evaluation": 1,
+  "stage": "first",
+  "business_request_sha256": "f452e17e63161cb536fcf9c8c30096803de7814d406d10cd05443208a1aa8912",
+  "business_request": {
+    "draft": {
+      "id": "cc-draft-cc17-order-en",
+      "revision": 1,
+      "body": "At 07:00 today, the watch bell rang before the east gate opened."
+    },
+    "claims": [
+      {
+        "id": "cc-claim-cc17-order-en",
+        "text": "At 07:00 today, the watch bell rang before the east gate opened.",
+        "allowed_evidence": [
+          {
+            "id": "cc-span-cc17-order-en-O1",
+            "chapter_id": "cc-chapter-cc17-order-en-O1",
+            "body": "At 07:00 today the east gate opened first; the watch bell rang only after the gate was already open.",
+            "label": "O1",
+            "prompt_excerpt": "At 07:00 today the east gate opened first; the watch bell rang only after the gate was already open."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "cc-memory-cc17-order-en-O1",
+        "memory_type": "event_timeline",
+        "subject": "east gate",
+        "predicate": "event_occurred",
+        "value": "At 07:00 today the east gate opened first; the watch bell rang only after the gate was already open.",
+        "source_span_id": "cc-span-cc17-order-en-O1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "non-empty string, at most 800 Unicode code points; why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  }
+}

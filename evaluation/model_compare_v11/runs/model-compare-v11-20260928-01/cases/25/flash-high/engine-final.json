@@ -1,0 +1,81 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-fcb3682e-1e06-46bd-9210-2860ea72fd61-1",
+      "status": "conflict",
+      "category": "attribute",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "At 14:00 today the draft makes lens Q8 amber glass, but the same lens is recorded as clear glass at the same time.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_lens-1",
+          "span_id": "fixture-span-v6_lens-1",
+          "excerpt": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_lens-1"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-v6_lens-2",
+          "span_id": "fixture-span-v6_lens-2",
+          "excerpt": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_lens-2"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The identity span fixes what lens Q8 is: the installed east aperture lens, stated at the same 14:00 today. The contradicting span states that this very east aperture lens is clear glass, not amber glass, at 14:00 today. Identity plus shared time plus incompatible material means the draft claim and the record cannot both be true; the cleaning log adds no material information and is not needed.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_lens-1",
+          "role": "current_context"
+        },
+        {
+          "span_id": "fixture-span-v6_lens-2",
+          "role": "prior_state"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 14:00 today, lens Q8 is amber glass.",
+        "after": "At 14:00 today, lens Q8 is clear glass."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-fcb3682e-1e06-46bd-9210-2860ea72fd61-1",
+      "returned_span_ids": [
+        "fixture-span-v6_lens-2",
+        "fixture-span-v6_lens-4",
+        "fixture-span-v6_lens-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3387,
+  "output_tokens": 1774,
+  "latency_ms": 7501,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

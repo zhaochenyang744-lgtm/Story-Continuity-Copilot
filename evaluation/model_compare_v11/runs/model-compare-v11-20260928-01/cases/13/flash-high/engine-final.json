@@ -1,0 +1,77 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-e08d793d-d9d6-4b86-8d72-a71eca4544c2-1",
+      "status": "conflict",
+      "category": "relationship",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "The draft makes Nera Oren's mother, but the birth register records them as twins and the Orchard Register's permanent kinship rule forbids a recorded twin being the other's parent.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-1",
+          "span_id": "fixture-span-orchard_restoration-1",
+          "excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-1"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-2",
+          "span_id": "fixture-span-orchard_restoration-2",
+          "excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-2"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "fixture-span-orchard_restoration-2 (memory fixture-memory-orchard_restoration-2) supplies the premise that the birth register identifies Nera and Oren as twins, both children of Tala. fixture-span-orchard_restoration-1 (memory fixture-memory-orchard_restoration-1, static_canon) supplies the permanent kinship rule that two people recorded as twins cannot be one another's parent. Jointly these two facts make the claim 'Nera is Oren's mother' impossible for the same two people; the rule is timeless, so no shared clock anchor is required. fixture-span-orchard_restoration-3 (birth order) is irrelevant here and is not cited.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-orchard_restoration-2",
+          "role": "prior_state"
+        },
+        {
+          "span_id": "fixture-span-orchard_restoration-1",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": [
+        "edit",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-e08d793d-d9d6-4b86-8d72-a71eca4544c2-1",
+      "returned_span_ids": [
+        "fixture-span-orchard_restoration-2",
+        "fixture-span-orchard_restoration-3",
+        "fixture-span-orchard_restoration-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3545,
+  "output_tokens": 2855,
+  "latency_ms": 12289,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

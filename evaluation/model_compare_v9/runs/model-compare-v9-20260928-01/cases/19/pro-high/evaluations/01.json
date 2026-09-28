@@ -1,0 +1,100 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "e9fd757f57e87d0a7b94e730220d970686f82005d9eeaba3943987be20aa1d87",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "attribute",
+        "severity": "medium",
+        "explanation": "Lens R4 is identified as the western aperture lens, which the evidence states is clear glass, not amber, at the same time.",
+        "reasoning": "The first cited evidence directly contradicts the claim: at 18点 on the same day the western aperture lens is clear glass, not amber glass. The second cited evidence ties that lens to lens R4 as the installed western aperture lens, proving the contradiction concerns the same object and same moment. The unrelated Vela location span is omitted.",
+        "temporal_basis": {
+          "claim_anchor": "At 18点 on the same day",
+          "evidence_anchor": "At 18点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-2",
+            "span_id": "fixture-span-basalt_observatory-2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-2"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "span_id": "fixture-span-basalt_observatory-1",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-2",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-basalt_observatory-1",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 18点 on the same day, lens R4 is amber glass.",
+          "after": "At 18点 on the same day, lens R4 is clear glass."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion"
+        ],
+        "proposed_memory_change": null
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+        "verdict": "reviewed_issue",
+        "basis": "The claim is directly contradicted: the same time index identifies lens R4 as the western aperture lens, which is clear glass, not amber."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3615,
+      "completion_tokens": 3167,
+      "total_tokens": 6782,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2510
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1183
+    },
+    "status": "complete",
+    "prompt_tokens": 3615,
+    "completion_tokens": 3167,
+    "total_tokens": 6782,
+    "reasoning_tokens": 2510,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

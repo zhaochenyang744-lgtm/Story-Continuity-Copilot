@@ -1,0 +1,88 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "bd0bdd3c8993903216e8cc013e82f9322cf020f3fd4ecf093caa39bf32bf20e4",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc11-location-zh",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "location_action",
+        "severity": "medium",
+        "explanation": "同一时间点，许棠的位置在南门城楼与北门城楼之间互相矛盾。",
+        "reasoning": "当前稿与证据都以「今天10点」为时间锚点，指向同一人物许棠的同一时刻状态，二者时间与对象范围完全重叠。证据表明许棠在该时刻一直守在北门城楼且没有离开，因此不可能同时位于南门城楼。两项关于同一人同一时刻位置的陈述无法共存，证据为该地点状态提供了直接且充分的反证。",
+        "temporal_basis": {
+          "claim_anchor": "今天10点",
+          "evidence_anchor": "今天10点",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc11-location-zh-L1",
+            "span_id": "cc-span-cc11-location-zh-L1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc11-location-zh-L1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc11-location-zh-L1",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "许棠站在南门城楼上",
+          "after": "许棠守在北门城楼，没有离开"
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc11-location-zh",
+        "verdict": "reviewed_issue",
+        "basis": "同一时间锚点「今天10点」下，许棠的所处城楼互相排斥，证据充分证明直接矛盾。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3052,
+      "completion_tokens": 1077,
+      "total_tokens": 4129,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 692
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 748
+    },
+    "status": "complete",
+    "prompt_tokens": 3052,
+    "completion_tokens": 1077,
+    "total_tokens": 4129,
+    "reasoning_tokens": 692,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

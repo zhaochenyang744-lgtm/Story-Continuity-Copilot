@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+      "status": "insufficient_evidence",
+      "category": "timeline",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The cited span shows the birth register records Aster and Nilo as twins but explicitly omits which twin was born first, so the draft's attribution that the register establishes Aster's prior birth is unsupported and the actual order remains unknown.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+          "span_id": "fixture-span-v6_birth_order_blank-1",
+          "excerpt": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_birth_order_blank-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The cited span is the register's own content: it records twinship and states outright that the order of birth is not recorded. That makes the span relevant context but insufficient to carry the draft's attribution; the decisive recorded detail (which twin was born first) is the missing link, so the claimed establishment cannot be verified, and the birth order stays unknown rather than disproved.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_birth_order_blank-1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+      "returned_span_ids": [
+        "fixture-span-v6_birth_order_blank-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3064,
+  "output_tokens": 1688,
+  "latency_ms": 7524,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

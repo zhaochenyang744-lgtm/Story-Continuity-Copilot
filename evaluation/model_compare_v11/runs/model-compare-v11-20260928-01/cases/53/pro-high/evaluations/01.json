@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "d53f8965b1cd6f485fc63f55db831a747717a8bc47875a5e07ffca00d5452e50",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc19-knowledge-zh",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "character_knowledge",
+        "severity": "medium",
+        "explanation": "据信件记载梅伊已知入口，但现有证据仅说明有人向她提起密道，未说明她是否得知入口。",
+        "reasoning": "提供的唯一证据（cc-span-cc19-knowledge-zh-W1）只说明信件记载有人曾向梅伊提起密道，并未说明她是否得知入口所在，因此无法从该信件得出梅伊已经知道入口的结论；缺少将“提起密道”连接到“知道入口”的信件内容，判断中止。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc19-knowledge-zh-W1",
+            "span_id": "cc-span-cc19-knowledge-zh-W1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc19-knowledge-zh-W1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc19-knowledge-zh-W1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc19-knowledge-zh",
+        "verdict": "insufficient_evidence",
+        "basis": "现有证据未说明梅伊是否得知入口，不能支持“据信件记载已经知道”。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3115,
+      "completion_tokens": 2530,
+      "total_tokens": 5645,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2105
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 683
+    },
+    "status": "complete",
+    "prompt_tokens": 3115,
+    "completion_tokens": 2530,
+    "total_tokens": 5645,
+    "reasoning_tokens": 2105,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

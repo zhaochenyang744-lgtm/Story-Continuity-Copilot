@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "8ebb80a6af98014e9fb9811bbd083999a6ef2d1564be65e24e70933577bd9916",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc5-authorizer-blank-en",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "The cited council minutes record that the river gate was closed by order at dusk but explicitly do not name who gave the order, so they cannot establish Tamsin ordered it.",
+        "reasoning": "The supplied excerpt states the closure was by order but then says the minutes do not name who gave the order. It therefore provides no evidence tying Tamsin to the act. The necessary attribution link is missing, so the draft claim that the minutes establish Tamsin ordered the closure remains unsupported.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc5-authorizer-blank-en-C1",
+            "span_id": "cc-span-cc5-authorizer-blank-en-C1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc5-authorizer-blank-en-C1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc5-authorizer-blank-en-C1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc5-authorizer-blank-en",
+        "verdict": "insufficient_evidence",
+        "basis": "The only supplied record says the river gate was closed by order but does not name who gave the order, so it cannot establish Tamsin as the order-giver."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3134,
+      "completion_tokens": 1774,
+      "total_tokens": 4908,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1331
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 702
+    },
+    "status": "complete",
+    "prompt_tokens": 3134,
+    "completion_tokens": 1774,
+    "total_tokens": 4908,
+    "reasoning_tokens": 1331,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,19 @@
+{
+  "dispatch_order": 69,
+  "case_ordinal": 35,
+  "case_id": "cc1-actor-blank-en",
+  "condition_id": "flash-high",
+  "position_in_case": 1,
+  "condition": {
+    "id": "flash-high",
+    "model": "deepseek-flash",
+    "thinking": "enabled",
+    "reasoning_effort": "high",
+    "temperature": null
+  },
+  "started_at": "2026-09-28T09:20:09.702996+00:00",
+  "original_budget": 8000,
+  "effective_engine_budget": 40000,
+  "experiment_only": true,
+  "source_request": "evaluation/category_controls_v1/cases.json#cc1-actor-blank-en"
+}

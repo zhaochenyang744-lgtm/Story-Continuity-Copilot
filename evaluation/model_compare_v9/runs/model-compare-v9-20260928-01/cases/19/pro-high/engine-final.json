@@ -1,0 +1,79 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+      "status": "conflict",
+      "category": "attribute",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "Lens R4 is identified as the western aperture lens, which the evidence states is clear glass, not amber, at the same time.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-basalt_observatory-2",
+          "span_id": "fixture-span-basalt_observatory-2",
+          "excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-2"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-basalt_observatory-1",
+          "span_id": "fixture-span-basalt_observatory-1",
+          "excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The first cited evidence directly contradicts the claim: at 18点 on the same day the western aperture lens is clear glass, not amber glass. The second cited evidence ties that lens to lens R4 as the installed western aperture lens, proving the contradiction concerns the same object and same moment. The unrelated Vela location span is omitted.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-basalt_observatory-2",
+          "role": "current_context"
+        },
+        {
+          "span_id": "fixture-span-basalt_observatory-1",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 18点 on the same day, lens R4 is amber glass.",
+        "after": "At 18点 on the same day, lens R4 is clear glass."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+      "returned_span_ids": [
+        "fixture-span-basalt_observatory-2",
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-5"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3615,
+  "output_tokens": 3167,
+  "latency_ms": 35603,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

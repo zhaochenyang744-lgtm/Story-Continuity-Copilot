@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+      "status": "insufficient_evidence",
+      "category": "location_action",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The watch record cited by the claim fixes Vela's 19点 move to the east pier but leaves her companion unnamed, so it does not establish that Sora accompanied her.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-basalt_observatory-6",
+          "span_id": "fixture-span-basalt_observatory-6",
+          "excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-6"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "Span 6 is the only cited text bearing on the claimed trip: it fixes Vela's 19点 move from Gate Four on the west pier to the east pier and states that the watch record leaves her companion unnamed. That supports the time and destination but supplies no link identifying Sora as the companion, so the claim's assertion that the record establishes Sora accompanied Vela depends on a detail the source withholds. Spans 4 and 5 only fix the 18点 west-pier position and say nothing about a companion, so the gap is a missing attribution link, not a contradiction.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-basalt_observatory-6",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+      "returned_span_ids": [
+        "fixture-span-basalt_observatory-6",
+        "fixture-span-basalt_observatory-4",
+        "fixture-span-basalt_observatory-5"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3559,
+  "output_tokens": 1899,
+  "latency_ms": 9120,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

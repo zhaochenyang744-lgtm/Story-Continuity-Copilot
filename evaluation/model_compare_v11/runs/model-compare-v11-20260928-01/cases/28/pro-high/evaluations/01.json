@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "c7fad010cc3d560e1be8704ef58324304800552610c2041ff45c8ecb5b9b12b7",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "low",
+        "explanation": "The inspection log does not identify who loosened the cap, so attributing the action to Ina is unsupported.",
+        "reasoning": "The cited inspection log records the cap as loose at 10:00 but explicitly states it does not identify who loosened it. The draft asserts that Ina loosened the cap according to the inspection log, but no supplied evidence links Ina to the action. The missing link is an actor attribution for the loosening. This gap prevents confirming or denying the claim; it remains unsupported.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_actor_blank-1",
+            "span_id": "fixture-span-v6_actor_blank-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_actor_blank-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_actor_blank-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The only supplied evidence states the cap was loose at 10:00 and does not identify who loosened it, so the claim that Ina loosened the cap is unsupported."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3149,
+      "completion_tokens": 3239,
+      "total_tokens": 6388,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2757
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 717
+    },
+    "status": "complete",
+    "prompt_tokens": 3149,
+    "completion_tokens": 3239,
+    "total_tokens": 6388,
+    "reasoning_tokens": 2757,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

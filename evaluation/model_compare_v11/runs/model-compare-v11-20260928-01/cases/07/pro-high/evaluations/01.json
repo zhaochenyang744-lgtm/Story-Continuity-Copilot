@@ -1,0 +1,85 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "c87b75cd3e9cee712ccf0f70171a44824d0914362e0f466b3545a72555024b02",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "timeline",
+        "severity": "high",
+        "explanation": "The draft claims the harbor signal gate first closed before it first opened at 09点, but the cited evidence says it first opened at 09点 and first closed at 10点 after opening.",
+        "reasoning": "Evidence span fixture-span-harbor_signal-1 states that at 09点 the gate first opened and had never closed before then, and that its first close occurred at 10点 after opening. These facts directly contradict the draft's order that the gate first closed before it first opened at 09点. The same 09点 anchor and same gate establish explicit overlap, so the order cannot be reconciled.",
+        "temporal_basis": {
+          "claim_anchor": "At 09点 on the same day",
+          "evidence_anchor": "At 09点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-1",
+            "span_id": "fixture-span-harbor_signal-1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-harbor_signal-1",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+          "after": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+        },
+        "available_actions": [
+          "apply_suggestion"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+        "verdict": "reviewed_issue",
+        "basis": "Direct contradiction: fixture-span-harbor_signal-1 says at 09点 the gate first opened and had never closed before, and first closed at 10点; the claim reverses that order."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3512,
+      "completion_tokens": 5424,
+      "total_tokens": 8936,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 4827
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1080
+    },
+    "status": "complete",
+    "prompt_tokens": 3512,
+    "completion_tokens": 5424,
+    "total_tokens": 8936,
+    "reasoning_tokens": 4827,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

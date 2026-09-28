@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "d43ed17ed9fdb4ad28b1f86e9f60e232b690b19b6e6d6f48d87229c8110644cb",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-6a43fecd-aa28-4576-8f84-a3b5c03e06e7-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded, so the draft's assertion that the gate logs establish Sera authorized the reopening is unsupported.",
+        "reasoning": "The cited 11点 log explicitly leaves any reopening and its operator unrecorded, which means no supplied record identifies Sera as the authorizer of a reopening at 11点. The draft claims the gate logs establish that Sera authorized the reopening, but the only relevant evidence reports the opposite: the operator is unrecorded. The missing link is Sera's authorization; no supplied context connects Sera to the 11点 event. This absence does not prove Sera did not authorize it, only that the evidentiary attribution is unsupported, so P remains unknown and judgment stops here.",
+        "temporal_basis": {
+          "claim_anchor": "11点",
+          "evidence_anchor": "11点",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-2",
+            "span_id": "fixture-span-harbor_signal-2",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-harbor_signal-2",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6a43fecd-aa28-4576-8f84-a3b5c03e06e7-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The 11点 log leaves any reopening and its operator unrecorded, so the claim that the gate logs establish Sera authorized a reopening is unsupported; Sera's authorization remains unknown."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3501,
+      "completion_tokens": 4221,
+      "total_tokens": 7722,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3678
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1069
+    },
+    "status": "complete",
+    "prompt_tokens": 3501,
+    "completion_tokens": 4221,
+    "total_tokens": 7722,
+    "reasoning_tokens": 3678,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

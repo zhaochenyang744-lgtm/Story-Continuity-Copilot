@@ -5,7 +5,7 @@ from typing import Any
 
 from . import brief_citations
 from .memory_contract import CONTROLLED_PREDICATES
-from .provider import MAX_CLAIM_BASIS_CODEPOINTS
+from .provider import MAX_CLAIM_BASIS_CODEPOINTS, MAX_ISSUE_REASONING_CODEPOINTS
 from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget
 
 ALLOWED_STATUS={"conflict","insufficient_evidence"}
@@ -225,8 +225,13 @@ def _contract_diagnostic(data: dict[str, Any], code: str, claim_id: str | None =
             "problem_codes": [code], "cited_evidence": [], **details}
 
 
+def _reasoning_length_diagnostic(data: dict[str, Any], claim_id: str, reasoning: str) -> dict[str, Any]:
+    return _contract_diagnostic(data, "reasoning_too_long", claim_id, invalid_field="reasoning", problem="too_long",
+                                observed_length=len(reasoning.strip()), limit=MAX_ISSUE_REASONING_CODEPOINTS)
+
+
 def _continuity_schema() -> dict[str, Any]:
-    return {"claim_verdicts":[{"claim_span_id":"every supplied current claim id exactly once","verdict":"reviewed_issue|insufficient_evidence|no_issue","basis":f"non-empty string, at most {MAX_CLAIM_BASIS_CODEPOINTS} Unicode code points; concise decision reason, not a reasoning transcript"}],"issues":[{"claim_span_id":"current claim id","status":"conflict|insufficient_evidence","nature":"confirmed_conflict|possible_conflict|state_change|insufficient_evidence","category":"allowed category","severity":"low|medium|high","explanation":"short backwards-compatible summary","reasoning":"why the cited evidence supports this nature, or exactly what evidence is missing","temporal_basis":{"claim_anchor":"exact claim substring or null","evidence_anchor":"exact cited evidence substring or null","relation":"explicit_overlap|timeless_rule|explicit_later_transition|unknown"},"evidence":[{"chapter_id":"allowed chapter id","span_id":"allowed span id","relation":"supports|contradicts|context","sufficiency":"sufficient|insufficient","related_memory_ids":["known memory id"]}],"evidence_chain":[{"span_id":"one cited evidence span id","role":"prior_state|current_context|missing_link"}],"suggested_revision":{"before":"exact text occurring once in the bound draft","after":"specific replacement text"},"available_actions":["edit|apply_suggestion|keep_intentional|false_positive"],"proposed_memory_change":{"operation":"add|replace","memory_type":"allowed memory type","subject":"string","predicate":"string","value":"string","affected_memory_id":"required for replace only"}}]}
+    return {"claim_verdicts":[{"claim_span_id":"every supplied current claim id exactly once","verdict":"reviewed_issue|insufficient_evidence|no_issue","basis":f"non-empty string, at most {MAX_CLAIM_BASIS_CODEPOINTS} Unicode code points; concise decision reason, not a reasoning transcript"}],"issues":[{"claim_span_id":"current claim id","status":"conflict|insufficient_evidence","nature":"confirmed_conflict|possible_conflict|state_change|insufficient_evidence","category":"allowed category","severity":"low|medium|high","explanation":"short backwards-compatible summary","reasoning":f"non-empty string, at most {MAX_ISSUE_REASONING_CODEPOINTS} Unicode code points; why the cited evidence supports this nature, or exactly what evidence is missing","temporal_basis":{"claim_anchor":"exact claim substring or null","evidence_anchor":"exact cited evidence substring or null","relation":"explicit_overlap|timeless_rule|explicit_later_transition|unknown"},"evidence":[{"chapter_id":"allowed chapter id","span_id":"allowed span id","relation":"supports|contradicts|context","sufficiency":"sufficient|insufficient","related_memory_ids":["known memory id"]}],"evidence_chain":[{"span_id":"one cited evidence span id","role":"prior_state|current_context|missing_link"}],"suggested_revision":{"before":"exact text occurring once in the bound draft","after":"specific replacement text"},"available_actions":["edit|apply_suggestion|keep_intentional|false_positive"],"proposed_memory_change":{"operation":"add|replace","memory_type":"allowed memory type","subject":"string","predicate":"string","value":"string","affected_memory_id":"required for replace only"}}]}
 
 
 def _memory_schema() -> dict[str, Any]:
@@ -338,6 +343,9 @@ class ContinuityEngine:
             if not isinstance(raw,dict) or not isinstance(raw.get("claim_span_id"),str) or raw["claim_span_id"] not in claims:continue
             review_keys={"nature","reasoning","temporal_basis","evidence_chain","suggested_revision","available_actions"}
             if not review_keys<=set(raw):continue
+            reasoning=raw.get("reasoning")
+            if isinstance(reasoning,str) and len(reasoning.strip())>MAX_ISSUE_REASONING_CODEPOINTS:
+                diagnostics.append(_reasoning_length_diagnostic(data,raw["claim_span_id"],reasoning))
             claim=claims[raw["claim_span_id"]];allowed={item["id"]:item for item in claim["allowed_evidence"]};codes=[]
             raw_evidence=raw.get("evidence") if isinstance(raw.get("evidence"),list) else []
             if _requires_cjk(data["draft"]["body"]):
@@ -496,7 +504,9 @@ class ContinuityEngine:
             review={"review_contract_version":"legacy_v3","nature":None,"reasoning":None,"evidence_chain":None,"suggested_revision":None,"available_actions":None}
             if trustworthy:
                 nature=raw.get("nature");reasoning=raw.get("reasoning");temporal=raw.get("temporal_basis");chain=raw.get("evidence_chain");suggestion=raw.get("suggested_revision");actions=raw.get("available_actions")
-                if nature not in REVIEW_NATURES or not isinstance(reasoning,str) or not reasoning.strip() or len(reasoning.strip())>800:raise ValueError("schema_invalid")
+                if nature not in REVIEW_NATURES or not isinstance(reasoning,str) or not reasoning.strip():raise ValueError("schema_invalid")
+                if len(reasoning.strip())>MAX_ISSUE_REASONING_CODEPOINTS:
+                    raise ContinuityContractValidationError("reasoning_too_long",diagnostics=[_reasoning_length_diagnostic(data,raw["claim_span_id"],reasoning)])
                 if not isinstance(temporal,dict) or set(temporal)!={"claim_anchor","evidence_anchor","relation"} or temporal.get("relation") not in {"explicit_overlap","timeless_rule","explicit_later_transition","unknown"}:raise ValueError("schema_invalid")
                 claim_text=claims[raw["claim_span_id"]]["text"]
                 claim_anchor=temporal.get("claim_anchor");evidence_anchor=temporal.get("evidence_anchor")

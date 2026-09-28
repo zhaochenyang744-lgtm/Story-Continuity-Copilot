@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "277dccb21cbd86e88a41326068676a409f1db11b5887938892f4e71343977712",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "The watch record's content names only Orin as walking to the east quay, so the draft's attribution that the record establishes Evi accompanied him is unsupported.",
+        "reasoning": "The cited span contributes the only available record content: at 19:00 the watch says Orin walked from the west quay to the east quay, and it expressly leaves the companion unnamed. That supports Orin's movement but says nothing about who, if anyone, accompanied him. The decisive link the claim needs is the record naming Evi as companion, and that link is absent from every supplied span, so the attribution that the record establishes her accompaniment cannot be verified. No supplied fact contradicts Evi's possible presence, so P simply remains unknown rather than disproved; judgment stops at the missing link.",
+        "temporal_basis": {
+          "claim_anchor": "19:00",
+          "evidence_anchor": "At 19:00",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_companion_blank-1",
+            "span_id": "fixture-span-v6_companion_blank-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_companion_blank-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_companion_blank-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The only supplied record span reports Orin's own 19:00 walk and explicitly leaves the companion unnamed, so the draft's attribution that the record establishes Evi's accompaniment lacks its decisive naming link; her presence is unverified, not contradicted."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3117,
+      "completion_tokens": 1233,
+      "total_tokens": 4350,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 765
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 813
+    },
+    "status": "complete",
+    "prompt_tokens": 3117,
+    "completion_tokens": 1233,
+    "total_tokens": 4350,
+    "reasoning_tokens": 765,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

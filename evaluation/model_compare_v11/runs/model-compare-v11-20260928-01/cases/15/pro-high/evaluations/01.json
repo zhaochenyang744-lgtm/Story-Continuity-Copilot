@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "4cca5330a36af6d1ef93a76d486682f2aa2db959e01e8419f4fd80b80eff77b1",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-6c780db8-1e48-4b4b-be5b-24e37812c727-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "timeline",
+        "severity": "low",
+        "explanation": "The birth register does not record which twin was born first, so the claim that it establishes Nera was born before Oren is unsupported.",
+        "reasoning": "The cited span states the birth register does not record which twin, Nera or Oren, was born first. The current claim asserts that the register establishes a specific order (Nera before Oren). Without a record of the order, the attribution to the register is unsupported, and the actual birth order remains unknown. No supplied evidence supplies the missing source warrant.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-3",
+            "span_id": "fixture-span-orchard_restoration-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-3"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-3",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6c780db8-1e48-4b4b-be5b-24e37812c727-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The birth register explicitly does not record which twin was born first, so the draft's attribution that it establishes Nera before Oren is unsupported."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3607,
+      "completion_tokens": 3892,
+      "total_tokens": 7499,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3416
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1175
+    },
+    "status": "complete",
+    "prompt_tokens": 3607,
+    "completion_tokens": 3892,
+    "total_tokens": 7499,
+    "reasoning_tokens": 3416,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

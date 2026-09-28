@@ -1,0 +1,81 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+      "status": "conflict",
+      "category": "event_status",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "上午10点整，清单尚未签署、船仍停在果园码头，因此该船此刻并未完成下水。",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-4",
+          "span_id": "fixture-span-orchard_restoration-4",
+          "excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-4"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-5",
+          "span_id": "fixture-span-orchard_restoration-5",
+          "excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-5"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "该主张把下水完成定在「10点 on the same day」。证据 span-...-4 是 static_canon 规则，规定只有在清单签署且船离开果园码头之后才算完成，它界定的是被断言的结果，因此只是前提。证据 span-...-5 用同一时间锚「10点 on the same day」记录：那一分钟内清单仍未签署、船始终停在码头且未离开。按该规则，这两个必要条件的当时均未满足，所以主张的完成状态与证据在同一时间、同一对象上无法并存。类别取 event_status，因为决定性事实是下水是否已完成，规则仅定义完成含义。",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-orchard_restoration-4",
+          "role": "prior_state"
+        },
+        {
+          "span_id": "fixture-span-orchard_restoration-5",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 10点 on the same day, the restoration boat had completed its launch.",
+        "after": "At 10点 on the same day, the restoration boat's launch had not been completed: its manifest was still unsigned and the boat had not left the orchard quay."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+      "returned_span_ids": [
+        "fixture-span-orchard_restoration-4",
+        "fixture-span-orchard_restoration-5",
+        "fixture-span-orchard_restoration-6"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3569,
+  "output_tokens": 1857,
+  "latency_ms": 8684,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

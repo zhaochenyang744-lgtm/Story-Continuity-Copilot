@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 51033,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "cdc66659-95c2-4f45-b83b-10d065337c50",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\n      \"status\": \"insufficient_evidence\",\n      \"nature\": \"insufficient_evidence\",\n      \"category\": \"relationship\",\n      \"severity\": \"medium\",\n      \"explanation\": \"The claim attributes the loosening of the carrier valve cap to Mira, but the cited inspection record explicitly does not record who loosened the cap and no other supplied evidence ties Mira to that action.\",\n      \"reasoning\": \"The inspection record (fixture-span-north_glass-6) states that it does not record who loosened the valve cap, so it provides no actor. The cap record (fixture-span-north_glass-5) shows the cap remained loose and not locked at 10点 but does not identify who loosened it. There is no supplied handoff, observation, or other link connecting Mira to the loosening; the door attempt in span-2 is unrelated to the cap. The attribution to Mira is therefore unsupported, and the record alone cannot establish the claim.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": null,\n        \"evidence_anchor\": null,\n        \"relation\": \"unknown\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-6\",\n          \"span_id\": \"fixture-span-north_glass-6\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"insufficient\",\n          \"related_memory_ids\": [\"fixture-memory-north_glass-6\"]\n        },\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-5\",\n          \"span_id\": \"fixture-span-north_glass-5\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"insufficient\",\n          \"related_memory_ids\": [\"fixture-memory-north_glass-5\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-north_glass-6\",\n          \"role\": \"missing_link\"\n        },\n        {\n          \"span_id\": \"fixture-span-north_glass-5\",\n          \"role\": \"missing_link\"\n        }\n      ],\n      \"suggested_revision\": null,\n      \"available_actions\": []\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\n      \"verdict\": \"insufficient_evidence\",\n      \"basis\": \"The cited inspection record explicitly says it does not record who loosened the valve cap; no other supplied evidence connects Mira to the action, so the attribution is unsupported.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "95ce727ae310293161890fa934760a0673b61a8cb1d588844fd7c5620efce9d2",
+  "reasoning": {
+    "present": true,
+    "codepoints": 12286,
+    "utf8_bytes": 12300,
+    "sha256": "ee291a71cc4e77024d0b79586bde8db059668b5005b96c9413e4ea14d0eea346"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3804,
+      "completion_tokens": 3375,
+      "total_tokens": 7179,
+      "prompt_tokens_details": {
+        "cached_tokens": 2688
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2750
+      },
+      "prompt_cache_hit_tokens": 2688,
+      "prompt_cache_miss_tokens": 1116
+    },
+    "status": "complete",
+    "prompt_tokens": 3804,
+    "completion_tokens": 3375,
+    "total_tokens": 7179,
+    "reasoning_tokens": 2750,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T08:41:00.521261+00:00"
+}

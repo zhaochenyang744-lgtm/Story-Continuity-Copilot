@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 64555,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "634e7f75-b588-4c8e-ba8c-be326bc8174c",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1\",\n      \"status\": \"insufficient_evidence\",\n      \"nature\": \"insufficient_evidence\",\n      \"category\": \"event_status\",\n      \"severity\": \"low\",\n      \"explanation\": \"The cited records omit the glass grinder's name and do not link Vela to lens R4's grinding, so they do not establish the claim.\",\n      \"reasoning\": \"The index span identifies R4 as the installed western aperture lens at 18点 but says nothing about who ground it. The maintenance sheet span explicitly leaves the glass grinder's name blank. No supplied evidence connects Vela to the grinding action; therefore the records cannot establish Vela as grinder and the fact remains unknown. Judgment stops at this missing source warrant.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": null,\n        \"evidence_anchor\": null,\n        \"relation\": \"unknown\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-basalt_observatory-1\",\n          \"span_id\": \"fixture-span-basalt_observatory-1\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"insufficient\",\n          \"related_memory_ids\": [\"fixture-memory-basalt_observatory-1\"]\n        },\n        {\n          \"chapter_id\": \"fixture-chapter-basalt_observatory-3\",\n          \"span_id\": \"fixture-span-basalt_observatory-3\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"insufficient\",\n          \"related_memory_ids\": [\"fixture-memory-basalt_observatory-3\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-basalt_observatory-1\",\n          \"role\": \"missing_link\"\n        },\n        {\n          \"span_id\": \"fixture-span-basalt_observatory-3\",\n          \"role\": \"missing_link\"\n        }\n      ],\n      \"suggested_revision\": null,\n      \"available_actions\": []\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1\",\n      \"verdict\": \"insufficient_evidence\",\n      \"basis\": \"The maintenance sheet leaves the grinder's name blank and the index only identifies R4 as installed; neither document links Vela to grinding, so the claim is unsupported.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "a3ec204e0530027efa81f87d514d1d685997a2a9be55ff49579e7efbfa0b4059",
+  "reasoning": {
+    "present": true,
+    "codepoints": 22363,
+    "utf8_bytes": 22397,
+    "sha256": "6b3fe03a905ce3d11b61ccef7f9f8b9af70cbfcadfef8c19077377420e43949a"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3606,
+      "completion_tokens": 5468,
+      "total_tokens": 9074,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 4876
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1174
+    },
+    "status": "complete",
+    "prompt_tokens": 3606,
+    "completion_tokens": 5468,
+    "total_tokens": 9074,
+    "reasoning_tokens": 4876,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:49:14.308979+00:00"
+}

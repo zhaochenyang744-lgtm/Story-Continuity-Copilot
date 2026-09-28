@@ -1,0 +1,93 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "97ef512d60e530606b03f8629a7a234f51556055a0b5060fa67467b757df5e6a",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The claim says the index and maintenance sheet establish that Vela ground lens R4, but the cited maintenance sheet leaves the glass grinder's name blank and the index only identifies lens R4 as the installed lens, so the attribution is unsupported."
+      }
+    ],
+    "issues": [
+      {
+        "claim_span_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "low",
+        "explanation": "Neither cited document establishes that Vela ground lens R4; the maintenance sheet leaves the grinder unnamed.",
+        "reasoning": "The maintenance-sheet span leaves the glass grinder's name blank, so it names no grinder, and the index span only identifies lens R4 as the installed western aperture lens. Neither span records who ground the lens or mentions Vela. The decisive link—a record naming Vela as the grinder—is absent, so the draft's attribution is unsupported and the grinding remains unknown rather than disproved.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-3",
+            "span_id": "fixture-span-basalt_observatory-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-3"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "span_id": "fixture-span-basalt_observatory-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-3",
+            "role": "missing_link"
+          },
+          {
+            "span_id": "fixture-span-basalt_observatory-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3555,
+      "completion_tokens": 3008,
+      "total_tokens": 6563,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2515
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1251
+    },
+    "status": "complete",
+    "prompt_tokens": 3555,
+    "completion_tokens": 3008,
+    "total_tokens": 6563,
+    "reasoning_tokens": 2515,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

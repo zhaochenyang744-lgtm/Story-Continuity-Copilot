@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+      "status": "insufficient_evidence",
+      "category": "relationship",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The watch record's content names only Orin as walking to the east quay, so the draft's attribution that the record establishes Evi accompanied him is unsupported.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_companion_blank-1",
+          "span_id": "fixture-span-v6_companion_blank-1",
+          "excerpt": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_companion_blank-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The cited span contributes the only available record content: at 19:00 the watch says Orin walked from the west quay to the east quay, and it expressly leaves the companion unnamed. That supports Orin's movement but says nothing about who, if anyone, accompanied him. The decisive link the claim needs is the record naming Evi as companion, and that link is absent from every supplied span, so the attribution that the record establishes her accompaniment cannot be verified. No supplied fact contradicts Evi's possible presence, so P simply remains unknown rather than disproved; judgment stops at the missing link.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_companion_blank-1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+      "returned_span_ids": [
+        "fixture-span-v6_companion_blank-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3117,
+  "output_tokens": 1233,
+  "latency_ms": 5646,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

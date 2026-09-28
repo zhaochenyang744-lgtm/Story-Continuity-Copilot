@@ -1,0 +1,72 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "cc-claim-cc8-holder-unknown-en",
+      "status": "insufficient_evidence",
+      "category": "object_state",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The registers do not establish that Ilse held the spare vault key at 15:00.",
+      "evidence": [
+        {
+          "chapter_id": "cc-chapter-cc8-holder-unknown-en-R1",
+          "span_id": "cc-span-cc8-holder-unknown-en-R1",
+          "excerpt": "Register A records that the spare vault key left its hook at 14:00.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "cc-memory-cc8-holder-unknown-en-R1"
+          ]
+        },
+        {
+          "chapter_id": "cc-chapter-cc8-holder-unknown-en-R2",
+          "span_id": "cc-span-cc8-holder-unknown-en-R2",
+          "excerpt": "Register B does not record who held the spare vault key after 14:00.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "cc-memory-cc8-holder-unknown-en-R2"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "Register A records only that the key left its hook at 14:00, and Register B specifically does not record who held it after 14:00. Neither record names Ilse or connects her to the key at 15:00, so the claim that the registers establish Ilse held the key lacks the required holder warrant and is unsupported.",
+      "evidence_chain": [
+        {
+          "span_id": "cc-span-cc8-holder-unknown-en-R1",
+          "role": "missing_link"
+        },
+        {
+          "span_id": "cc-span-cc8-holder-unknown-en-R2",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "cc-claim-cc8-holder-unknown-en",
+      "returned_span_ids": [
+        "cc-span-cc8-holder-unknown-en-R1",
+        "cc-span-cc8-holder-unknown-en-R2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3255,
+  "output_tokens": 5408,
+  "latency_ms": 74368,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

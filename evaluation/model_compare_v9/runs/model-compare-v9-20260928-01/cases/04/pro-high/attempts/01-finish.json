@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 79101,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "43240da8-6baa-4ea8-96f8-8f08cfa70cc0",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"object_state\",\n      \"severity\": \"high\",\n      \"explanation\": \"The carrier cannot be ready for dispatch at the same time its valve cap is not locked, because the static rule requires a locked valve cap.\",\n      \"reasoning\": \"The cited rule (span4) makes a locked valve cap a necessary condition for a North Glass pneumatic carrier to be ready for dispatch. The same-time evidence (span5) shows that at 10点 on the same day the carrier's valve cap remained loose and not locked throughout that minute, while its pressure gauge read four bars. Since the current claim asserts readiness at that exact time, the claim conflicts with the carrier's actual unlocked state under the rule.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"At 10点 on the same day\",\n        \"evidence_anchor\": \"At 10点 on the same day\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-5\",\n          \"span_id\": \"fixture-span-north_glass-5\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-north_glass-5\"]\n        },\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-4\",\n          \"span_id\": \"fixture-span-north_glass-4\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-north_glass-4\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-north_glass-4\",\n          \"role\": \"current_context\"\n        },\n        {\n          \"span_id\": \"fixture-span-north_glass-5\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.\",\n        \"after\": \"At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch because its valve cap remained loose.\"\n      },\n      \"available_actions\": [\"edit\", \"apply_suggestion\"]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"The same-time evidence says the valve cap remained loose and not locked; under the static rule, a locked valve cap is required for readiness, so the current claim conflicts with the evidence.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "bf7b3cc0f705f97bc2fc885e692f8ba393b812966fe3a1edb6cd765bb43358ab",
+  "reasoning": {
+    "present": true,
+    "codepoints": 21628,
+    "utf8_bytes": 21710,
+    "sha256": "3a54746755016eef49923e7b91116b4d91ebe490dcc65e428c9e3673dc0bb465"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3611,
+      "completion_tokens": 5460,
+      "total_tokens": 9071,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 4788
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1179
+    },
+    "status": "complete",
+    "prompt_tokens": 3611,
+    "completion_tokens": 5460,
+    "total_tokens": 9071,
+    "reasoning_tokens": 4788,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:33:48.492767+00:00"
+}

@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "1b2b14f8f14a920028fff8b103d57b11b723dd8c92bd6607c0136f5d994cfa92",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc7-outcome-unknown-zh",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "草稿声称工坊日志记载沈砚已经铸成铜钟，但证据仅说明初五开始铸造且此后未记录是否完成。",
+        "reasoning": "证据只给出“初五开始铸造”这一进行中的行为，并明确“此后没有记录铸造是否完成”；从开始铸造不能推出已经铸成，缺少完成铸造的直接记录或后续结果。因此草稿的完成状态缺乏来源依据，属于事件状态未知。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc7-outcome-unknown-zh-G1",
+            "span_id": "cc-span-cc7-outcome-unknown-zh-G1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc7-outcome-unknown-zh-G1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc7-outcome-unknown-zh-G1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc7-outcome-unknown-zh",
+        "verdict": "insufficient_evidence",
+        "basis": "日志只记载初五开始铸造，之后未记录是否完成，不能支撑“已经铸成”的完成状态。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3140,
+      "completion_tokens": 2124,
+      "total_tokens": 5264,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1688
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 708
+    },
+    "status": "complete",
+    "prompt_tokens": 3140,
+    "completion_tokens": 2124,
+    "total_tokens": 5264,
+    "reasoning_tokens": 1688,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "9f646536ff6f952f2e502b3246a92641a4131ef937a14ee7ef1b63267a097221",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc16-birth-order-zh",
+        "verdict": "insufficient_evidence",
+        "basis": "所引族谱记载仅言明两人为双生子，且明确未记载谁先出生，因此草稿把「阿岚先出生」归于族谱的断言缺乏依据；记录未载不等于相反事实，故成缺证而非确证冲突。"
+      }
+    ],
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc16-birth-order-zh",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "timeline",
+        "severity": "medium",
+        "explanation": "族谱只记载阿岚与阿岩为双生子且未记载出生先后，草稿却称族谱表明阿岚先出生，该归属缺少记录支持。",
+        "reasoning": "所引证据（cc-span-cc16-birth-order-zh-T1）说明族谱记载的内容只有「阿岚与阿岩为双生子」和「没有记载谁先出生」，并未给出任何出生先后的记载。草稿却把「阿岚比阿岩先出生」作为族谱所表明的事实陈述。记录未载先出生者，并不证明相反顺序，也不能推出该顺序，因此缺少把出生先后确立为族谱内容的必要依据；判断止于此处，阿岚与阿岩的出生先后仍属未知。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc16-birth-order-zh-T1",
+            "span_id": "cc-span-cc16-birth-order-zh-T1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc16-birth-order-zh-T1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc16-birth-order-zh-T1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3063,
+      "completion_tokens": 1320,
+      "total_tokens": 4383,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 890
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 759
+    },
+    "status": "complete",
+    "prompt_tokens": 3063,
+    "completion_tokens": 1320,
+    "total_tokens": 4383,
+    "reasoning_tokens": 890,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,81 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-567fef0f-3c7e-4a3c-a698-a0e3a6deaf2d-1",
+      "status": "conflict",
+      "category": "character_knowledge",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "草稿断言 Sera 在11点已知道电报代码，与记载同一时点她未拆开密封电报、尚不知代码的既有事实直接冲突。",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-harbor_signal-3",
+          "span_id": "fixture-span-harbor_signal-3",
+          "excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-harbor_signal-3"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-harbor_signal-4",
+          "span_id": "fixture-span-harbor_signal-4",
+          "excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-harbor_signal-4"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "当前 claim 以“At 11点 on the same day”为时点，断言 Sera 已知电报代码。span-3 用同样的“At 11点 on the same day”锚定同一主体 Sera，明确记载她尚未打开密封电报、不知其代码，构成同一人、同一时点的直接否证；两者无法并存。span-4 记载13点她才打开电报并得知代码，说明习得发生在11点之后，进一步排除她在11点已知的可能（该点为后续转变，不单独构成冲突）。主体同一由两处“Sera”直接确定，无需额外别名前提。",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-harbor_signal-3",
+          "role": "prior_state"
+        },
+        {
+          "span_id": "fixture-span-harbor_signal-4",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 11点 on the same day, Sera knew the telegram code.",
+        "after": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-567fef0f-3c7e-4a3c-a698-a0e3a6deaf2d-1",
+      "returned_span_ids": [
+        "fixture-span-harbor_signal-3",
+        "fixture-span-harbor_signal-4",
+        "fixture-span-harbor_signal-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3460,
+  "output_tokens": 1743,
+  "latency_ms": 7708,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

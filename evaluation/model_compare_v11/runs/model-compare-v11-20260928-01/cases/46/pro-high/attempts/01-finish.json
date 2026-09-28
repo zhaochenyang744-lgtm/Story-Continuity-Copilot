@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 31389,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "a305b6d1-c1ab-4bb2-92d3-15d8286d127f",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"cc-claim-cc12-material-en\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"attribute\",\n      \"severity\": \"high\",\n      \"explanation\": \"The banner material/color conflicts at the same stated time: claim says green silk, evidence says red wool.\",\n      \"reasoning\": \"The cited evidence directly states at 17:00 today the banner is red wool, not green silk. The current claim states green silk at the same moment. Shared subject and time make these contradictory; the red wool fact is sufficient to contradict the claim.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"At 17:00 today\",\n        \"evidence_anchor\": \"At 17:00 today\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"cc-chapter-cc12-material-en-E1\",\n          \"span_id\": \"cc-span-cc12-material-en-E1\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"cc-memory-cc12-material-en-E1\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"cc-span-cc12-material-en-E1\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"At 17:00 today, the envoy's banner is green silk.\",\n        \"after\": \"At 17:00 today, the envoy's banner is red wool, not green silk.\"\n      },\n      \"available_actions\": [\"apply_suggestion\", \"edit\"]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"cc-claim-cc12-material-en\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"The cited evidence directly states the banner is red wool, not green silk, at the same 17:00 today.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "8c3cbad5a72fafc51399940b666350399980d645575d8f337d9a9bf216e6791d",
+  "reasoning": {
+    "present": true,
+    "codepoints": 8179,
+    "utf8_bytes": 8179,
+    "sha256": "27d44afa502d3775caa54dcb95838256ca9fb5b9f8a5c4428a6b4664b8ed0bf2"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3105,
+      "completion_tokens": 2263,
+      "total_tokens": 5368,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1807
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 673
+    },
+    "status": "complete",
+    "prompt_tokens": 3105,
+    "completion_tokens": 2263,
+    "total_tokens": 5368,
+    "reasoning_tokens": 1807,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T09:32:14.287214+00:00"
+}

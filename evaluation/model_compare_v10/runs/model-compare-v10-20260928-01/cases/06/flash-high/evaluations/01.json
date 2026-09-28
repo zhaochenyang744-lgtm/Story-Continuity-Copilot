@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "94c6dec4533d8b0ab78a81e667deb188284694a9308e5cf1db9c12442ce023d0",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "The claim states Mira loosened the carrier valve cap \"according to the inspection and cap record,\" but the cited record does not name who loosened it, so the attribution to Mira is unsupported.",
+        "reasoning": "Span north_glass-6 states the carrier inspection \"does not record who loosened its valve cap,\" which removes the only supplied warrant for attributing that act to Mira: the record does not state an actor at all. No other supplied span names the loosener or ties the loose cap of north_glass-5 to Mira's hand, so the responsible person stays unknown and judgment stops at this missing attribution link rather than concluding Mira did or did not do it.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-6",
+            "span_id": "fixture-span-north_glass-6",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-6"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-6",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The claim attributes the loosening to Mira via the inspection and cap record, but span north_glass-6 says that record leaves the loosener unrecorded; the missing actor link makes the attribution unsupported and who loosened the cap unknown."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3753,
+      "completion_tokens": 1899,
+      "total_tokens": 5652,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1468
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1321
+    },
+    "status": "complete",
+    "prompt_tokens": 3753,
+    "completion_tokens": 1899,
+    "total_tokens": 5652,
+    "reasoning_tokens": 1468,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

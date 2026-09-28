@@ -1,0 +1,80 @@
+{
+  "evaluation": 2,
+  "business_request_sha256": "ef71aff70a74c3051d40841058922307ce72af978d8c0ecdde98602a8194d54e",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc16-birth-order-zh",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "timeline",
+        "severity": "medium",
+        "explanation": "当前摘要称族谱表明阿岚比阿岩先出生，但所引族谱未记载出生先后，缺乏依据。",
+        "reasoning": "该声明依赖族谱对出生顺序的记载这一来源依据。所引证据只说明族谱记载二人为双生子，并明确没有记载谁先出生；这不能支持“阿岚先于阿岩”的说法，也无法直接否定该说法。由于缺少关键来源记录，无法判定其真实性，判定止于证据不足。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc16-birth-order-zh-T1",
+            "span_id": "cc-span-cc16-birth-order-zh-T1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc16-birth-order-zh-T1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc16-birth-order-zh-T1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc16-birth-order-zh",
+        "verdict": "insufficient_evidence",
+        "basis": "族谱仅记载双生子且未记载出生先后，无法支持“阿岚先出生”的来源依据。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3896,
+      "completion_tokens": 4207,
+      "total_tokens": 8103,
+      "prompt_tokens_details": {
+        "cached_tokens": 3072
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3768
+      },
+      "prompt_cache_hit_tokens": 3072,
+      "prompt_cache_miss_tokens": 824
+    },
+    "status": "complete",
+    "prompt_tokens": 3896,
+    "completion_tokens": 4207,
+    "total_tokens": 8103,
+    "reasoning_tokens": 3768,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

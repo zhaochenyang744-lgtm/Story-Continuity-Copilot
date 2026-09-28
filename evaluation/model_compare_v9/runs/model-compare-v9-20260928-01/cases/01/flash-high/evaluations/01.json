@@ -1,0 +1,101 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "015f9d608b4d342179fb42ab8ed3f50b12f6c64a061925a1c3d4fde46d379004",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "world_rule",
+        "severity": "medium",
+        "explanation": "The claim has Mira opening the North Glass door at 10点 while wearing only a red badge, but the supplied static canon says a red badge cannot open that door.",
+        "reasoning": "Span north_glass-1 supplies the governing access rule: the North Glass door opens only for a blue-badge wearer and a red badge cannot open it. Span north_glass-2 fixes the same-time premise — at 10点 on the same day Mira wore only a red badge and carried no blue badge — so the one badge that could authorize the action was absent, and its closing note that the roster does not record an opening leaves the rule's denial standing rather than excusing the claim. Because the claim asserts that Mira opened that door under exactly those conditions, the supplied rule and the claim cannot both be true; the rule is timeless canon, so it binds the claim's 10点 moment.",
+        "temporal_basis": {
+          "claim_anchor": "At 10点 on the same day",
+          "evidence_anchor": "a red badge cannot open it",
+          "relation": "timeless_rule"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-1",
+            "span_id": "fixture-span-north_glass-1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-north_glass-2",
+            "span_id": "fixture-span-north_glass-2",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-2",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "fixture-span-north_glass-1",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+          "after": "At 10点 on the same day, Mira tried the North Glass door while wearing only her red badge, and it did not open."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+        "verdict": "reviewed_issue",
+        "basis": "Claim asserts Mira opened the North Glass door at 10点 wearing only a red badge, while supplied static canon states a red badge cannot open that door and the same-time span confirms she carried no blue badge; the two cannot coexist at that moment."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3568,
+      "completion_tokens": 3880,
+      "total_tokens": 7448,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3241
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 3568
+    },
+    "status": "complete",
+    "prompt_tokens": 3568,
+    "completion_tokens": 3880,
+    "total_tokens": 7448,
+    "reasoning_tokens": 3241,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 32196,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "de529839-f905-4952-8db6-401c90532992",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"cc-claim-cc17-order-en\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"timeline\",\n      \"severity\": \"high\",\n      \"explanation\": \"The draft states the watch bell rang before the east gate opened, but the source says the east gate opened first and the watch bell rang only after the gate was already open.\",\n      \"reasoning\": \"The cited evidence span explicitly records at 07:00 today the east gate opened first and the watch bell rang only after the gate was already open. This directly contradicts the current claim's order that the watch bell rang before the east gate opened. Both texts share the same time anchor and event scope, so the two statements cannot both be true at once.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"At 07:00 today\",\n        \"evidence_anchor\": \"At 07:00 today\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"cc-chapter-cc17-order-en-O1\",\n          \"span_id\": \"cc-span-cc17-order-en-O1\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"cc-memory-cc17-order-en-O1\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"cc-span-cc17-order-en-O1\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"the watch bell rang before the east gate opened\",\n        \"after\": \"the watch bell rang after the east gate opened\"\n      },\n      \"available_actions\": [\"apply_suggestion\"]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"cc-claim-cc17-order-en\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"The source explicitly says the east gate opened first at 07:00 today and the watch bell rang only after, contradicting the claim's order.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "16688e23523adc5703a95ba3278337c95fad73875bb18c9ad68129571168129d",
+  "reasoning": {
+    "present": true,
+    "codepoints": 8695,
+    "utf8_bytes": 8695,
+    "sha256": "97b69bd22c50cc976ff9df70748df3367d95b83dd607999de52adb891b73cad6"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3123,
+      "completion_tokens": 2363,
+      "total_tokens": 5486,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1884
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 691
+    },
+    "status": "complete",
+    "prompt_tokens": 3123,
+    "completion_tokens": 2363,
+    "total_tokens": 5486,
+    "reasoning_tokens": 1884,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T09:37:22.844374+00:00"
+}

@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "4a856d6b9967873d4607e83e60177e10183ab96a914b9f5c6e04290b6ce16b07",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc8-holder-unknown-en",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "The registers do not establish that Ilse held the spare vault key at 15:00; the holder after 14:00 is nowhere recorded, so the draft's attribution is unsupported.",
+        "reasoning": "The cited span states only that Register B does not record who held the spare vault key after 14:00. That leaves the holder at 15:00 unrecorded, so nothing in the supplied material warrants the draft's assertion that the registers establish Ilse as holder at that hour. The decisive link — an entry naming the holder at or after 15:00 — is missing, so judgment stops here; the fact remains unknown rather than disproved.",
+        "temporal_basis": {
+          "claim_anchor": "at 15:00",
+          "evidence_anchor": "after 14:00",
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc8-holder-unknown-en-R2",
+            "span_id": "cc-span-cc8-holder-unknown-en-R2",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc8-holder-unknown-en-R2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc8-holder-unknown-en-R2",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc8-holder-unknown-en",
+        "verdict": "insufficient_evidence",
+        "basis": "The registers are said to establish Ilse's holding of the spare vault key at 15:00, but the only supplied record covering that period (Register B) omits the holder, so the attribution is unsupported and the holder at 15:00 remains unknown."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3204,
+      "completion_tokens": 4033,
+      "total_tokens": 7237,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3616
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 900
+    },
+    "status": "complete",
+    "prompt_tokens": 3204,
+    "completion_tokens": 4033,
+    "total_tokens": 7237,
+    "reasoning_tokens": 3616,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

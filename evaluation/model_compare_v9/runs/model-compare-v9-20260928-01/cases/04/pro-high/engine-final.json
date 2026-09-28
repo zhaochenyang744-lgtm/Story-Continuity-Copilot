@@ -1,0 +1,79 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+      "status": "conflict",
+      "category": "object_state",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "The carrier cannot be ready for dispatch at the same time its valve cap is not locked, because the static rule requires a locked valve cap.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-north_glass-5",
+          "span_id": "fixture-span-north_glass-5",
+          "excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-5"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-north_glass-4",
+          "span_id": "fixture-span-north_glass-4",
+          "excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-4"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The cited rule (span4) makes a locked valve cap a necessary condition for a North Glass pneumatic carrier to be ready for dispatch. The same-time evidence (span5) shows that at 10点 on the same day the carrier's valve cap remained loose and not locked throughout that minute, while its pressure gauge read four bars. Since the current claim asserts readiness at that exact time, the claim conflicts with the carrier's actual unlocked state under the rule.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-north_glass-4",
+          "role": "current_context"
+        },
+        {
+          "span_id": "fixture-span-north_glass-5",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+        "after": "At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch because its valve cap remained loose."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-4",
+        "fixture-span-north_glass-2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3611,
+  "output_tokens": 5460,
+  "latency_ms": 79119,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

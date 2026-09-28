@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "01e1be900ed8d8d9383223dbbbb3215eb442a1e2281b394b5411cf6ab7afe9b2",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-8a6e2287-7768-4800-ade8-e193560230b0-1",
+        "verdict": "no_issue",
+        "basis": "The claim only states Ina entered the repair room at 11:00. The cited span records the capsule cap loose at 10:00 and that no actor was identified; it addresses neither Ina nor the repair room, so it neither contradicts nor leaves a needed link for this claim."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3087,
+      "completion_tokens": 413,
+      "total_tokens": 3500,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 298
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 783
+    },
+    "status": "complete",
+    "prompt_tokens": 3087,
+    "completion_tokens": 413,
+    "total_tokens": 3500,
+    "reasoning_tokens": 298,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

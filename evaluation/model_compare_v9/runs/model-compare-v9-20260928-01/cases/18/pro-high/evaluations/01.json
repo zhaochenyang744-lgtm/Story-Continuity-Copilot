@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "493ff4401e17f8133bf8abf8619aeb5838b712a44d36f9be4e3e947c810115e4",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "The draft attributes the boat's delay to Tala 'according to the launch and delay logs,' but the supplied restoration log leaves the cause unrecorded.",
+        "reasoning": "The current claim requires evidence that the launch and delay logs record Tala as the cause of the restoration boat's delay. The only cited log excerpt, fixture-span-orchard_restoration-6, states that the restoration log leaves the cause unrecorded, which is an omission rather than a direct attribution. No supplied span ties this restoration log to the 'launch and delay logs' or shows those logs naming Tala. This record-omission gap means the draft's attribution is unsupported and the cause remains unknown; judgment stops at the missing source warrant.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-6",
+            "span_id": "fixture-span-orchard_restoration-6",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-6"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-6",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The only supplied log excerpt about the cause leaves it unrecorded; no launch or delay log excerpt attributes the delay to Tala, so the attribution is unsupported."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3603,
+      "completion_tokens": 4709,
+      "total_tokens": 8312,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 4187
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1171
+    },
+    "status": "complete",
+    "prompt_tokens": 3603,
+    "completion_tokens": 4709,
+    "total_tokens": 8312,
+    "reasoning_tokens": 4187,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

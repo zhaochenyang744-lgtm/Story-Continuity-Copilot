@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "e7364d40e6ba3af7e87a1343baed8633ad02f5c9fe04dcaea159ef1708909d9e",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "The draft attributes Vela's delivery to the records, but the cited 13点 record does not identify who delivered the telegram, so the attribution is unsupported.",
+        "reasoning": "Span-4 is the very 13点 record the claim invokes: it confirms Sera opened the telegram and learned its code, yet states the record does not identify who delivered it. That omission cannot warrant the claim's 'Vela delivered', but it also names no other deliverer, so no direct contradiction exists. The missing link is a record or statement naming the person who delivered the telegram; until it is supplied the deliverer stays unknown and judgment stops here.",
+        "temporal_basis": {
+          "claim_anchor": "13点",
+          "evidence_anchor": "13点",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-4",
+            "span_id": "fixture-span-harbor_signal-4",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-4"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-harbor_signal-4",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The claim sources the 13点 delivery to 'the records', but the only supplied 13点 record (span-4) states it does not identify who delivered the telegram. That attribution is unsupported and the deliverer remains unknown; nothing shows another person delivered, so it is a gap, not a contradiction."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3443,
+      "completion_tokens": 2167,
+      "total_tokens": 5610,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1721
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1139
+    },
+    "status": "complete",
+    "prompt_tokens": 3443,
+    "completion_tokens": 2167,
+    "total_tokens": 5610,
+    "reasoning_tokens": 1721,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

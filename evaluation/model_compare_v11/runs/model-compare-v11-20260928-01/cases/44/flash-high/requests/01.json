@@ -1,0 +1,109 @@
+{
+  "evaluation": 1,
+  "stage": "first",
+  "business_request_sha256": "04ef7b8a82dc6aff40df3a0f0779d7550ab3ce92bfbd7c1135e7d8f32a2d29f0",
+  "business_request": {
+    "draft": {
+      "id": "cc-draft-cc10-salt-bridge-rule-en",
+      "revision": 1,
+      "body": "At midnight today, Corin crossed the salt bridge carrying an iron sword."
+    },
+    "claims": [
+      {
+        "id": "cc-claim-cc10-salt-bridge-rule-en",
+        "text": "At midnight today, Corin crossed the salt bridge carrying an iron sword.",
+        "allowed_evidence": [
+          {
+            "id": "cc-span-cc10-salt-bridge-rule-en-B1",
+            "chapter_id": "cc-chapter-cc10-salt-bridge-rule-en-B1",
+            "body": "No one carrying iron can cross the salt bridge; the bridge repels iron.",
+            "label": "B1",
+            "prompt_excerpt": "No one carrying iron can cross the salt bridge; the bridge repels iron."
+          },
+          {
+            "id": "cc-span-cc10-salt-bridge-rule-en-B2",
+            "chapter_id": "cc-chapter-cc10-salt-bridge-rule-en-B2",
+            "body": "At midnight today Corin approached the salt bridge with an iron sword; the watch did not see whether he crossed.",
+            "label": "B2",
+            "prompt_excerpt": "At midnight today Corin approached the salt bridge with an iron sword; the watch did not see whether he crossed."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "cc-memory-cc10-salt-bridge-rule-en-B1",
+        "memory_type": "static_canon",
+        "subject": "salt bridge",
+        "predicate": "rule",
+        "value": "No one carrying iron can cross the salt bridge; the bridge repels iron.",
+        "source_span_id": "cc-span-cc10-salt-bridge-rule-en-B1"
+      },
+      {
+        "id": "cc-memory-cc10-salt-bridge-rule-en-B2",
+        "memory_type": "dynamic_state",
+        "subject": "Corin",
+        "predicate": "location",
+        "value": "At midnight today Corin approached the salt bridge with an iron sword; the watch did not see whether he crossed.",
+        "source_span_id": "cc-span-cc10-salt-bridge-rule-en-B2"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "non-empty string, at most 800 Unicode code points; why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  }
+}

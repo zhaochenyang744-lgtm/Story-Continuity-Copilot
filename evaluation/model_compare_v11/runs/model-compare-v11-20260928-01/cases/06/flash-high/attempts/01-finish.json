@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 8701,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "ddc4fb54-fa2e-4d82-ae73-030a9d5db98b",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"relationship\",\"severity\":\"medium\",\"explanation\":\"草稿称“根据检查与阀门盖记录”是 Mira 拧松了载气阀门盖，但所引记录只说明它没有记录是谁拧松的；该归因缺乏依据，行为人仍属未知。\",\"reasoning\":\"fixture-span-north_glass-6 说明，草稿所依据的那份载气检查记录本身并未记录是谁拧松了阀门盖。由此，决定性的环节——拧松行为的行为人——缺失：没有任何所引片段指名 Mira 实施了该行为，也没有来源依据把她与该行为联系起来。判断止步于缺失的归因；该主张并未被证伪，只是缺乏支持，因此不给出作者可执行的修改动作。\",\"temporal_basis\":{\"claim_anchor\":null,\"evidence_anchor\":null,\"relation\":\"unknown\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-north_glass-6\",\"span_id\":\"fixture-span-north_glass-6\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-6\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-north_glass-6\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"该主张把拧松阀门盖归于 Mira 并称依据检查记录，但所引 fixture-span-north_glass-6 表明该记录不记载是谁拧松的：归因所需的行为人环节缺失，既不能确认为冲突，也不宜视为无问题。\"}]}",
+  "visible_content_sha256": "447a1a055d98c08cfd9e51ad8ce2f7e5b7f7a05bcc16a3a0783d9b759b979358",
+  "reasoning": {
+    "present": true,
+    "codepoints": 6406,
+    "utf8_bytes": 6444,
+    "sha256": "d30182fa67f1d72d7cf207132d615064629053de719d8753e70fd0c423ae993b"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3568,
+      "completion_tokens": 1872,
+      "total_tokens": 5440,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1428
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1264
+    },
+    "status": "complete",
+    "prompt_tokens": 3568,
+    "completion_tokens": 1872,
+    "total_tokens": 5440,
+    "reasoning_tokens": 1428,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T08:58:40.978635+00:00"
+}

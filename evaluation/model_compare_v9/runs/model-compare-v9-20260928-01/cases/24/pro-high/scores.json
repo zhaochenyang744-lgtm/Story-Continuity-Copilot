@@ -1,0 +1,79 @@
+{
+  "first": {
+    "machine_result": "fail",
+    "semantic_result": "pending_independent_review",
+    "score_layer": "raw_first_or_repair_v6",
+    "errors": [
+      "category_mismatch",
+      "outcome_not_allowed",
+      "product_validator:temporal_overlap_unproven",
+      "temporal_policy_mismatch"
+    ],
+    "layers": {
+      "decision": [
+        "outcome_not_allowed"
+      ],
+      "category": [
+        "category_mismatch"
+      ],
+      "citation": [],
+      "structure": [],
+      "temporal": [
+        "product_validator:temporal_overlap_unproven",
+        "temporal_policy_mismatch"
+      ],
+      "generation": []
+    },
+    "complete_answer": true,
+    "scoring_policy": "unchanged_v7"
+  },
+  "repair": [
+    {
+      "machine_result": "fail",
+      "semantic_result": "pending_independent_review",
+      "score_layer": "raw_first_or_repair_v6",
+      "errors": [
+        "category_mismatch"
+      ],
+      "layers": {
+        "decision": [],
+        "category": [
+          "category_mismatch"
+        ],
+        "citation": [],
+        "structure": [],
+        "temporal": [],
+        "generation": []
+      },
+      "complete_answer": true,
+      "scoring_policy": "unchanged_v7"
+    }
+  ],
+  "final": {
+    "machine_result": "fail",
+    "errors": [
+      "category_mismatch"
+    ],
+    "layers": {
+      "decision": [],
+      "category": [
+        "category_mismatch"
+      ],
+      "citation": [],
+      "structure": [],
+      "temporal": [],
+      "generation": []
+    },
+    "semantic_result": "pending_independent_review",
+    "output_layer": "experiment_engine_not_api_persistence",
+    "scoring_policy": "unchanged_v7",
+    "excluded_checks": [
+      "database_open_status",
+      "database_evidence_id_chain_mapping",
+      "persisted_revision_fields",
+      "API_excerpt_context"
+    ]
+  },
+  "manual_semantic_review": "pending",
+  "historical_v7_not_rescored_as_new_result": true
+}

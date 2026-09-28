@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "cc-claim-cc1-actor-blank-en",
+      "status": "insufficient_evidence",
+      "category": "relationship",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The ledger records the soup over-salted but names no cook, so Rurik's responsibility is unsupported.",
+      "evidence": [
+        {
+          "chapter_id": "cc-chapter-cc1-actor-blank-en-K1",
+          "span_id": "cc-span-cc1-actor-blank-en-K1",
+          "excerpt": "The kitchen ledger notes that the harvest soup was over-salted at noon; it names no cook.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "cc-memory-cc1-actor-blank-en-K1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The cited ledger note states the soup was over-salted at noon but explicitly names no cook. The current claim adds Rurik as the actor. Without an explicit ledger entry or other evidence attributing the over-salting to Rurik, the claim's relationship (who performed the act) is unsupported, and judgment stops.",
+      "evidence_chain": [
+        {
+          "span_id": "cc-span-cc1-actor-blank-en-K1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "cc-claim-cc1-actor-blank-en",
+      "returned_span_ids": [
+        "cc-span-cc1-actor-blank-en-K1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3124,
+  "output_tokens": 2159,
+  "latency_ms": 25314,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

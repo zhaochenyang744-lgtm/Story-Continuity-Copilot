@@ -1,0 +1,19 @@
+{
+  "dispatch_order": 45,
+  "case_ordinal": 23,
+  "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+  "condition_id": "flash-high",
+  "position_in_case": 1,
+  "condition": {
+    "id": "flash-high",
+    "model": "deepseek-flash",
+    "thinking": "enabled",
+    "reasoning_effort": "high",
+    "temperature": null
+  },
+  "started_at": "2026-09-28T07:50:12.403523+00:00",
+  "original_budget": 8000,
+  "effective_engine_budget": 40000,
+  "experiment_only": true,
+  "source_request": "evaluation\\current_flash_v7\\runs\\prep-v7-01\\cases\\23\\requests\\01.json"
+}

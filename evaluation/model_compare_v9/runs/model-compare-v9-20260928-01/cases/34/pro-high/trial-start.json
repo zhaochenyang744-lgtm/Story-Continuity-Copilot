@@ -1,0 +1,19 @@
+{
+  "dispatch_order": 67,
+  "case_ordinal": 34,
+  "case_id": "v6-v6s-12",
+  "condition_id": "pro-high",
+  "position_in_case": 1,
+  "condition": {
+    "id": "pro-high",
+    "model": "deepseek-v4-pro",
+    "thinking": "enabled",
+    "reasoning_effort": "high",
+    "temperature": null
+  },
+  "started_at": "2026-09-28T07:57:41.302141+00:00",
+  "original_budget": 8000,
+  "effective_engine_budget": 40000,
+  "experiment_only": true,
+  "source_request": "evaluation\\current_flash_v7\\runs\\prep-v7-01\\cases\\34\\requests\\01.json"
+}

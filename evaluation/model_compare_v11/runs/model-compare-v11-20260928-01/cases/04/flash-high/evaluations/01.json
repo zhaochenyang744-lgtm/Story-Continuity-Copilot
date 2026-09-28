@@ -1,0 +1,101 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "d9268ecb1efbf3b9eae75743806486b9592ca0fa1a67924f96a8345e33e2e33b",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "At 10点 on the same day the carrier's valve cap was loose and not locked, so the draft's assertion that the carrier was ready for dispatch at that moment cannot hold.",
+        "reasoning": "证据 span-north_glass-5 在同一时刻（10点）给出载具的实测状态：压力表为四条但阀盖始终松开、未锁闭；span-north_glass-4 给出规则：只有在压力表读数四条且阀盖锁闭时才可发运。两者在同一对象、同一“10点”时刻共同证明该分钟内的载具不满足发运的必备条件，而当前claim却断言此刻已“ready for dispatch”。两个证据均完整且角色充分：规则定义条件，状态记录条件之一缺失。",
+        "temporal_basis": {
+          "claim_anchor": "At 10点 on the same day",
+          "evidence_anchor": "At 10点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-5",
+            "span_id": "fixture-span-north_glass-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-5"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-north_glass-4",
+            "span_id": "fixture-span-north_glass-4",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-4"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-4",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-north_glass-5",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+          "after": "At 10点 on the same day, the North Glass pneumatic carrier's gauge read four bars, but its valve cap remained loose and not locked, so it was not ready for dispatch."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+        "verdict": "reviewed_issue",
+        "basis": "同一10点时刻，span-north_glass-5 记录阀盖松开未锁，span-north_glass-4 规定锁闭为发运必备条件，故“ready for dispatch”被直接反驳；span-north_glass-2 只涉及Mira与门，未引用且与载具无关。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3582,
+      "completion_tokens": 1697,
+      "total_tokens": 5279,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1062
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1278
+    },
+    "status": "complete",
+    "prompt_tokens": 3582,
+    "completion_tokens": 1697,
+    "total_tokens": 5279,
+    "reasoning_tokens": 1062,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 32235,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "3e96b67a-53f7-448f-8b8e-65407f4eb710",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1\",\n      \"status\": \"insufficient_evidence\",\n      \"nature\": \"insufficient_evidence\",\n      \"category\": \"event_status\",\n      \"severity\": \"medium\",\n      \"explanation\": \"The inspection log does not identify who loosened the cap; the draft's attribution to Ina is unsupported.\",\n      \"reasoning\": \"The current claim states that the inspection log shows Ina loosened the courier capsule valve cap. The cited span records only that the capsule cap was loose at 10:00 and explicitly says it does not identify who loosened the cap. The missing identity link between the recorded loosened state and Ina as the actor is not supplied, so the attribution is unsupported and the actor remains unknown. This is a lack of source warrant, not a direct contradiction.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": null,\n        \"evidence_anchor\": \"10:00\",\n        \"relation\": \"unknown\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-v6_actor_blank-1\",\n          \"span_id\": \"fixture-span-v6_actor_blank-1\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"insufficient\",\n          \"related_memory_ids\": [\"fixture-memory-v6_actor_blank-1\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-v6_actor_blank-1\",\n          \"role\": \"missing_link\"\n        }\n      ],\n      \"suggested_revision\": null,\n      \"available_actions\": []\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1\",\n      \"verdict\": \"insufficient_evidence\",\n      \"basis\": \"The cited inspection log says the cap was loose at 10:00 but does not identify who loosened it, so attributing the act to Ina is unsupported.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "70f04ae1bfadcca3d941db24adffef94e5f21cd9739f5c446422be4cdfc1fa24",
+  "reasoning": {
+    "present": true,
+    "codepoints": 9753,
+    "utf8_bytes": 9753,
+    "sha256": "dc22723ae4084db3c5bdff9468259bf338d39911cc9aa1cb085d58a13300ac17"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3127,
+      "completion_tokens": 2630,
+      "total_tokens": 5757,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2132
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 695
+    },
+    "status": "complete",
+    "prompt_tokens": 3127,
+    "completion_tokens": 2630,
+    "total_tokens": 5757,
+    "reasoning_tokens": 2132,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:54:55.385108+00:00"
+}

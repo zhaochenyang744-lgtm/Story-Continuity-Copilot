@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 10459,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "f3f318b7-fcc1-4e40-a2a2-ca3174ebcb03",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"event_status\",\"severity\":\"medium\",\"explanation\":\"The draft attributes the loosening of the carrier valve cap to Mira on the authority of the inspection and cap record, but the cited record content does not name any actor, so the attribution is unsupported.\",\"reasoning\":\"The claim rests on the inspection and cap record. The cited span is that record's content, and it states that the carrier inspection does not record who loosened its valve cap. It therefore supplies no attribution to Mira and cannot warrant the claim's assertion. No other supplied material ties Mira to the loosening, so the attribution remains unsupported and the actor unknown; judgment stops at this missing link.\",\"temporal_basis\":{\"claim_anchor\":null,\"evidence_anchor\":null,\"relation\":\"unknown\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-north_glass-6\",\"span_id\":\"fixture-span-north_glass-6\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-6\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-north_glass-6\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The draft asserts Mira loosened the carrier valve cap per the inspection and cap record, but the supplied record content only says the inspection does not record who loosened the cap; the actor is never established.\"}]}",
+  "visible_content_sha256": "11cb4e0ad5f98fecfd5fee18e2927465fdf54adf0e23c5f576166afd530182f8",
+  "reasoning": {
+    "present": true,
+    "codepoints": 7672,
+    "utf8_bytes": 7724,
+    "sha256": "5fb5d8fb66803a8db4deb670e1200b57ef68110450c4a1426b0649ca15e27c49"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3546,
+      "completion_tokens": 2140,
+      "total_tokens": 5686,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1732
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1242
+    },
+    "status": "complete",
+    "prompt_tokens": 3546,
+    "completion_tokens": 2140,
+    "total_tokens": 5686,
+    "reasoning_tokens": 1732,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:35:39.736144+00:00"
+}

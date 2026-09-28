@@ -1,0 +1,85 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "0c9742278b9266f7ce9d470b36a62282cfdbe14974967e0509a4193d0d1ecf64",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "location_action",
+        "severity": "high",
+        "explanation": "Vela's 18:00 location conflicts with the evidence placing her at Observatory Gate Four on the west pier, not the east pier.",
+        "reasoning": "The current claim places Vela on the east pier at 18:00. The cited span fixture-span-basalt_observatory-5 states at the same 18:00 she stood at Observatory Gate Four on the west pier, not the east pier. The explicit 'not the east pier' cannot coexist with the assertedeast pier at that exact timestamp, so this is a direct location contradiction.",
+        "temporal_basis": {
+          "claim_anchor": "At 18点 on the same day",
+          "evidence_anchor": "At 18点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-5",
+            "span_id": "fixture-span-basalt_observatory-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-5"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-5",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "the east pier",
+          "after": "the west pier"
+        },
+        "available_actions": [
+          "apply_suggestion"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+        "verdict": "reviewed_issue",
+        "basis": "Direct conflict at the same 18:00 timestamp: the claim says east pier while cited evidence explicitly says Vela stood on the west pier, not the east pier."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3612,
+      "completion_tokens": 3567,
+      "total_tokens": 7179,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3036
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1180
+    },
+    "status": "complete",
+    "prompt_tokens": 3612,
+    "completion_tokens": 3567,
+    "total_tokens": 7179,
+    "reasoning_tokens": 3036,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

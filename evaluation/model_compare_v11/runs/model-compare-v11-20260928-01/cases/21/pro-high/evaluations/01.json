@@ -1,0 +1,93 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "97ef512d60e530606b03f8629a7a234f51556055a0b5060fa67467b757df5e6a",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "The cited records do not identify Vela as the grinder; the maintenance sheet's grinder field is blank.",
+        "reasoning": "The maintenance sheet explicitly leaves the glass grinder's name blank, so it cannot establish that Vela ground lens R4. The index statement only identifies R4 as the installed western aperture lens and does not name the grinder. No supplied record ties Vela to the grinding of R4; the attribution is unsupported and the grinder remains unknown.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-3",
+            "span_id": "fixture-span-basalt_observatory-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-3"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "span_id": "fixture-span-basalt_observatory-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-3",
+            "role": "missing_link"
+          },
+          {
+            "span_id": "fixture-span-basalt_observatory-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The index and maintenance sheet do not name Vela as the grinder; the maintenance sheet leaves the grinder blank, so the claim that they establish Vela ground lens R4 is unsupported."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3628,
+      "completion_tokens": 4136,
+      "total_tokens": 7764,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3550
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1196
+    },
+    "status": "complete",
+    "prompt_tokens": 3628,
+    "completion_tokens": 4136,
+    "total_tokens": 7764,
+    "reasoning_tokens": 3550,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

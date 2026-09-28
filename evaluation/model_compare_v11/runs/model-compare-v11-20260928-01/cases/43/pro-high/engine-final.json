@@ -1,0 +1,77 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "cc-claim-cc9-ferry-rule-premise-en",
+      "status": "conflict",
+      "category": "event_status",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "Same-time contradiction: the rule requires mooring for a complete crossing, but the ferry was not moored at 12:00.",
+      "evidence": [
+        {
+          "chapter_id": "cc-chapter-cc9-ferry-rule-premise-en-F1",
+          "span_id": "cc-span-cc9-ferry-rule-premise-en-F1",
+          "excerpt": "A ferry crossing is complete only when the ferry is moored at the far bank.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "cc-memory-cc9-ferry-rule-premise-en-F1"
+          ]
+        },
+        {
+          "chapter_id": "cc-chapter-cc9-ferry-rule-premise-en-F2",
+          "span_id": "cc-span-cc9-ferry-rule-premise-en-F2",
+          "excerpt": "At 12:00 today the ferry was still mid-river and not moored at the far bank.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "cc-memory-cc9-ferry-rule-premise-en-F2"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "F1 states a ferry crossing is complete only when moored at the far bank. F2 states that at 12:00 today the ferry was still mid-river and not moored. Together they directly contradict the claim that the crossing was complete at 12:00.",
+      "evidence_chain": [
+        {
+          "span_id": "cc-span-cc9-ferry-rule-premise-en-F1",
+          "role": "current_context"
+        },
+        {
+          "span_id": "cc-span-cc9-ferry-rule-premise-en-F2",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 12:00 today the ferry crossing was complete.",
+        "after": "At 12:00 today the ferry crossing was not complete."
+      },
+      "available_actions": [
+        "apply_suggestion"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "cc-claim-cc9-ferry-rule-premise-en",
+      "returned_span_ids": [
+        "cc-span-cc9-ferry-rule-premise-en-F1",
+        "cc-span-cc9-ferry-rule-premise-en-F2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3267,
+  "output_tokens": 2312,
+  "latency_ms": 30645,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

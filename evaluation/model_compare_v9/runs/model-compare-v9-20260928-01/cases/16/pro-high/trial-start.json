@@ -1,0 +1,19 @@
+{
+  "dispatch_order": 31,
+  "case_ordinal": 16,
+  "case_id": "ccv3-orchard_restoration-event_status-conflict",
+  "condition_id": "pro-high",
+  "position_in_case": 1,
+  "condition": {
+    "id": "pro-high",
+    "model": "deepseek-v4-pro",
+    "thinking": "enabled",
+    "reasoning_effort": "high",
+    "temperature": null
+  },
+  "started_at": "2026-09-28T07:44:16.347230+00:00",
+  "original_budget": 8000,
+  "effective_engine_budget": 40000,
+  "experiment_only": true,
+  "source_request": "evaluation\\current_flash_v7\\runs\\prep-v7-01\\cases\\16\\requests\\01.json"
+}

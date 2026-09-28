@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "cc-claim-cc6-outcome-unknown-en",
+      "status": "insufficient_evidence",
+      "category": "event_status",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "Draft 声称调查日志证明 Doran 完成了南脊测绘，但所引日志只记录测绘开始，并明确未说明是否完成。",
+      "evidence": [
+        {
+          "chapter_id": "cc-chapter-cc6-outcome-unknown-en-S1",
+          "span_id": "cc-span-cc6-outcome-unknown-en-S1",
+          "excerpt": "Doran began mapping the south ridge on the third day; the survey log does not say whether the mapping was ever finished.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "cc-memory-cc6-outcome-unknown-en-S1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "唯一被引证据是背景缺失环节：Doran 在第三天开始测绘南脊，且日志未说明测绘是否完成。它支持“已开始”，但不支持“已完成”。缺失的环节是一条记录测绘完成（或未完成）的日志条目，因此判断在此中止：完成与否均未确立，草稿把“完成”归因于日志是没有来源支撑的。没有作者可用的更正动作能补上这条不存在的记录，故 available_actions 为空。",
+      "evidence_chain": [
+        {
+          "span_id": "cc-span-cc6-outcome-unknown-en-S1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "cc-claim-cc6-outcome-unknown-en",
+      "returned_span_ids": [
+        "cc-span-cc6-outcome-unknown-en-S1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3085,
+  "output_tokens": 1239,
+  "latency_ms": 6058,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

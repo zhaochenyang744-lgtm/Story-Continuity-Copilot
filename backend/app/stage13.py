@@ -186,7 +186,9 @@ class Stage13Settings:
             }
             if any(not value for value in required.values()):
                 raise RuntimeError("public_secrets_required")
-            if os.environ.get("CONTINUITY_PROVIDER") != "deepseek" or os.environ.get("CONTINUITY_MODEL") != "deepseek-v4-pro":
+            if (os.environ.get("CONTINUITY_PROVIDER") != "deepseek" or
+                    os.environ.get("CONTINUITY_MODEL") not in {"deepseek-v4-pro", "deepseek-flash"} or
+                    os.environ.get("CONTINUITY_REVIEW_THINKING", "disabled") not in {"disabled", "high"}):
                 raise RuntimeError("provider_config_invalid")
             provider_url = urlparse(str(required["CONTINUITY_BASE_URL"]))
             if provider_url.scheme != "https" or not provider_url.hostname or provider_url.username or provider_url.password:

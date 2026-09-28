@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "d42e65d5539e2620bcafda85b02c608d7efffd6cbc05a5a1ce49231d68a395b6",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-514a8ccc-4b70-4a65-94d8-959d43bfa68b-1",
+        "verdict": "no_issue",
+        "basis": "The current claim is directly supported by allowed evidence fixture-span-basalt_observatory-6; the 18点 earlier location in span 5 and the static gate location in span 4 are compatible with the movement described."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3616,
+      "completion_tokens": 619,
+      "total_tokens": 4235,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 497
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1184
+    },
+    "status": "complete",
+    "prompt_tokens": 3616,
+    "completion_tokens": 619,
+    "total_tokens": 4235,
+    "reasoning_tokens": 497,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,92 @@
+{
+  "business_request": {
+    "draft": {
+      "id": "cc-draft-cc15-loaded-zh",
+      "revision": 1,
+      "body": "今天6点，那艘货船已经装满、可以启航。"
+    },
+    "claims": [
+      {
+        "id": "cc-claim-cc15-loaded-zh",
+        "text": "今天6点，那艘货船已经装满、可以启航。",
+        "allowed_evidence": [
+          {
+            "id": "cc-span-cc15-loaded-zh-D1",
+            "chapter_id": "cc-chapter-cc15-loaded-zh-D1",
+            "body": "今天6点，那艘货船的舱位只装了一半，还不能启航。",
+            "label": "D1",
+            "prompt_excerpt": "今天6点，那艘货船的舱位只装了一半，还不能启航。"
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "cc-memory-cc15-loaded-zh-D1",
+        "memory_type": "dynamic_state",
+        "subject": "货船",
+        "predicate": "status",
+        "value": "今天6点，那艘货船的舱位只装了一半，还不能启航。",
+        "source_span_id": "cc-span-cc15-loaded-zh-D1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "non-empty string, at most 800 Unicode code points; why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "business_request_sha256": "8bafa6556beda3bc69446f31e4162bebfc1a9af88bf50193861759b7148b9619"
+}

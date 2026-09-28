@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "01e1be900ed8d8d9383223dbbbb3215eb442a1e2281b394b5411cf6ab7afe9b2",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-8a6e2287-7768-4800-ade8-e193560230b0-1",
+        "verdict": "no_issue",
+        "basis": "The claim places Ina entering the repair room at 11:00, while the supplied evidence records a loose capsule cap at 10:00 and does not identify who loosened it. The two statements describe different events and times, so no continuity issue requires review."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3116,
+      "completion_tokens": 777,
+      "total_tokens": 3893,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 650
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 684
+    },
+    "status": "complete",
+    "prompt_tokens": 3116,
+    "completion_tokens": 777,
+    "total_tokens": 3893,
+    "reasoning_tokens": 650,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

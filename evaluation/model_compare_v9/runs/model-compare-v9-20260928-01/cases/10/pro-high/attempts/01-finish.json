@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 32517,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "c36304ab-e1d1-453b-a9b9-a2479699e2ce",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-567fef0f-3c7e-4a3c-a698-a0e3a6deaf2d-1\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"character_knowledge\",\n      \"severity\": \"high\",\n      \"explanation\": \"The current claim states Sera knew the telegram code at 11点, but the supplied evidence states she had not opened it and did not know its code at the same time.\",\n      \"reasoning\": \"Cited span fixture-span-harbor_signal-3 explicitly states that at 11点 on the same day Sera had not opened the sealed telegram and did not know its code. The current claim asserts the opposite state for the same person, object, and time anchor (11点 on the same day). This direct contradiction is sufficient to establish confirmed conflict; the later 13点 learning does not make the 11点 assertion true.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"At 11点 on the same day\",\n        \"evidence_anchor\": \"At 11点 on the same day\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-harbor_signal-3\",\n          \"span_id\": \"fixture-span-harbor_signal-3\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-harbor_signal-3\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-harbor_signal-3\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"At 11点 on the same day, Sera knew the telegram code.\",\n        \"after\": \"At 11点 on the same day, Sera did not know the telegram code.\"\n      },\n      \"available_actions\": [\"apply_suggestion\"]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-567fef0f-3c7e-4a3c-a698-a0e3a6deaf2d-1\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"Direct evidence at the same time states Sera did not know the code, contradicting the claim.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "4031695e531091a4d52b600491f9e41efa09a85b7ce975dd0834ebc8d5c67bb5",
+  "reasoning": {
+    "present": true,
+    "codepoints": 7854,
+    "utf8_bytes": 7894,
+    "sha256": "09a44876f0f4a6fd3809c299abe1f2ac4cdc22c25e9638dac57b9ba6464c5572"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3489,
+      "completion_tokens": 2395,
+      "total_tokens": 5884,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1836
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1057
+    },
+    "status": "complete",
+    "prompt_tokens": 3489,
+    "completion_tokens": 2395,
+    "total_tokens": 5884,
+    "reasoning_tokens": 1836,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:39:00.657869+00:00"
+}

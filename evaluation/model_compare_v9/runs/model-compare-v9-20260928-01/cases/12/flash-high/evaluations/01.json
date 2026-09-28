@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "e7364d40e6ba3af7e87a1343baed8633ad02f5c9fe04dcaea159ef1708909d9e",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The draft asserts Vela delivered the telegram \"according to the records,\" but the only cited 13点 record says it does not identify who delivered it. The record-based attribution is unsupported and the deliverer stays unknown."
+      }
+    ],
+    "issues": [
+      {
+        "claim_span_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "location_action",
+        "severity": "medium",
+        "explanation": "The draft cites the records as the source for Vela delivering the telegram to Sera at 13点, but the cited record only shows Sera opening the telegram at 13点 and states the deliverer is unidentified, so the record-backed attribution to Vela is unsupported.",
+        "reasoning": "Span fixture-span-harbor_signal-4 fixes the 13点 moment and Sera's opening of the telegram, but explicitly leaves the deliverer unrecorded; that omission is the missing link between the 13点 record and the draft's claimed deliverer. No supplied span names Vela as the one who delivered it, so the \"according to the records\" warrant fails and the delivering action remains unknown.",
+        "temporal_basis": {
+          "claim_anchor": "13点",
+          "evidence_anchor": "13点",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-4",
+            "span_id": "fixture-span-harbor_signal-4",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-4"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-harbor_signal-4",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3421,
+      "completion_tokens": 2895,
+      "total_tokens": 6316,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2452
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1117
+    },
+    "status": "complete",
+    "prompt_tokens": 3421,
+    "completion_tokens": 2895,
+    "total_tokens": 6316,
+    "reasoning_tokens": 2452,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

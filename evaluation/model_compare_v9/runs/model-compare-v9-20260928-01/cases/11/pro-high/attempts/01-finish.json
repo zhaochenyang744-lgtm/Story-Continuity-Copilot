@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 12089,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "807491b7-21c8-4a9b-b59c-5965a2a52469",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-6a025154-212e-4524-b991-2fa7f7e1c23e-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"The cited evidence directly supports the claim: span 4 states Sera learned the code at 13点, and span 3 states she did not know it at 11点. The described knowledge transition is compatible and explicitly bounded in time.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "8f310ea63340671a59f6425246531b0d47cfa189c3d10619f0ce341935cbdb72",
+  "reasoning": {
+    "present": true,
+    "codepoints": 2371,
+    "utf8_bytes": 2389,
+    "sha256": "e10d3b51896f6a070f53348fc38e29627c1c41ebcb89dec92a8f8bf5fbf52e15"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3473,
+      "completion_tokens": 689,
+      "total_tokens": 4162,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 565
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1041
+    },
+    "status": "complete",
+    "prompt_tokens": 3473,
+    "completion_tokens": 689,
+    "total_tokens": 4162,
+    "reasoning_tokens": 565,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:39:29.264306+00:00"
+}

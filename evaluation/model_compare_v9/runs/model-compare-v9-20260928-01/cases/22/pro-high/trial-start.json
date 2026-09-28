@@ -1,0 +1,19 @@
+{
+  "dispatch_order": 43,
+  "case_ordinal": 22,
+  "case_id": "ccv3-basalt_observatory-location_action-conflict",
+  "condition_id": "pro-high",
+  "position_in_case": 1,
+  "condition": {
+    "id": "pro-high",
+    "model": "deepseek-v4-pro",
+    "thinking": "enabled",
+    "reasoning_effort": "high",
+    "temperature": null
+  },
+  "started_at": "2026-09-28T07:49:14.342021+00:00",
+  "original_budget": 8000,
+  "effective_engine_budget": 40000,
+  "experiment_only": true,
+  "source_request": "evaluation\\current_flash_v7\\runs\\prep-v7-01\\cases\\22\\requests\\01.json"
+}

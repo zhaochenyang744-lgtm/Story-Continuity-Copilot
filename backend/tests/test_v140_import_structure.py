@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from backend.app.v2_database import V2Database
+from app.v2_database import V2Database
 
 
 class ImportStructureTests(unittest.TestCase):

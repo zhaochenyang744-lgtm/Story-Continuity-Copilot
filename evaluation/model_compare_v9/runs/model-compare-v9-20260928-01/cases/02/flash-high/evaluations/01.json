@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "3d02994007b8eb02f55647adaf5d33db28fb93ebba682dfb5b7255b8111ef496",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-4fca066b-a350-449a-9291-36195efde7b4-1",
+        "verdict": "no_issue",
+        "basis": "Span-2 places Mira at the same 10点 wearing only a red badge and carrying no blue badge, and span-1's static rule states a red badge cannot open North Glass, so her inability to open it follows. Span-5 concerns the pneumatic carrier, a different object, and adds no contradiction."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3560,
+      "completion_tokens": 1293,
+      "total_tokens": 4853,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1174
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1256
+    },
+    "status": "complete",
+    "prompt_tokens": 3560,
+    "completion_tokens": 1293,
+    "total_tokens": 4853,
+    "reasoning_tokens": 1174,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}
