@@ -1,0 +1,3271 @@
+{
+  "schema_version": "flash-v5-independent-v3-material-matrix-v1",
+  "prepared_at": "2026-09-27T07:56:00.490155+00:00",
+  "baseline_commit": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "scope": "24 comparison cases only; excludes six G02 cases",
+  "rows": [
+    {
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "v2_case_id": "ccv2-north_glass-world_rule-conflict",
+      "corpus_key": "north_glass",
+      "corpus_title": "The North Glass Exchange",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+      "expected_class": "conflict",
+      "expected_nature": "confirmed_conflict",
+      "category_axis": "world_rule",
+      "decision_category": "world_rule",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "world_rule"
+      ],
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "temporal_policy": "timeless_rule",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 1,
+            "title": "Badge Rule",
+            "source_label": "badge_rule",
+            "body": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it."
+          }
+        ]
+      ],
+      "optional_sources": [
+        {
+          "chapter_number": 2,
+          "title": "Badge Roster",
+          "source_label": "badge_roster",
+          "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+        }
+      ],
+      "issue_evidence_relation_if_emitted": "contradicts",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "timeless_rule",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-a150e0f4-86f4-4126-baf5-8763eafcd27a-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-north_glass-2",
+          "chapter_id": "fixture-chapter-north_glass-2",
+          "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "label": "badge_roster",
+          "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+        },
+        {
+          "id": "fixture-span-north_glass-5",
+          "chapter_id": "fixture-chapter-north_glass-5",
+          "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "label": "carrier_inspection",
+          "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+        },
+        {
+          "id": "fixture-span-north_glass-1",
+          "chapter_id": "fixture-chapter-north_glass-1",
+          "body": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "label": "badge_rule",
+          "prompt_excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "carrier_inspection"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-north_glass-1",
+          "memory_type": "static_canon",
+          "subject": "Mira",
+          "predicate": "rule",
+          "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "source_span_id": "fixture-span-north_glass-1"
+        },
+        {
+          "id": "fixture-memory-north_glass-2",
+          "memory_type": "dynamic_state",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "source_span_id": "fixture-span-north_glass-2"
+        },
+        {
+          "id": "fixture-memory-north_glass-3",
+          "memory_type": "open_thread",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "The spare blue badge register leaves its 11点 holder field blank.",
+          "source_span_id": "fixture-span-north_glass-3"
+        },
+        {
+          "id": "fixture-memory-north_glass-4",
+          "memory_type": "static_canon",
+          "subject": "pneumatic carrier",
+          "predicate": "rule",
+          "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "source_span_id": "fixture-span-north_glass-4"
+        },
+        {
+          "id": "fixture-memory-north_glass-5",
+          "memory_type": "dynamic_state",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "source_span_id": "fixture-span-north_glass-5"
+        },
+        {
+          "id": "fixture-memory-north_glass-6",
+          "memory_type": "open_thread",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "The carrier inspection does not record who loosened its valve cap.",
+          "source_span_id": "fixture-span-north_glass-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "bd87030255d00a40f53f45deeadeb8e48ddc3c06d288e31e15b81ffb9a15b404",
+      "independent_manual_note": {
+        "case_id": "ccv3-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "category": "world_rule",
+        "minimum_labels": [
+          [
+            "badge_rule"
+          ]
+        ],
+        "optional_labels": [
+          "badge_roster"
+        ],
+        "semantic_check": "草稿自身断言10点只戴红徽章却打开门；全局规则明确红徽章不能开门，单条badge_rule已充分反驳。名单仅可选佐证。",
+        "citation_check": "引用必须实际落到badge_rule；不能拿名单中的未记录开门结果独自证明门没打开。",
+        "reject_if": "把规则本身当缺证据；强制要求可选名单才算语义充分；把名单未记录当绝未开门。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "v2_case_id": "ccv2-north_glass-world_rule-no_conflict",
+      "corpus_key": "north_glass",
+      "corpus_title": "The North Glass Exchange",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 10点 on the same day, Mira could not open North Glass with her only red badge.",
+      "expected_class": "no_conflict",
+      "expected_nature": "none",
+      "category_axis": "world_rule",
+      "decision_category": "world_rule",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "world_rule"
+      ],
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 1,
+            "title": "Badge Rule",
+            "source_label": "badge_rule",
+            "body": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it."
+          },
+          {
+            "chapter_number": 2,
+            "title": "Badge Roster",
+            "source_label": "badge_roster",
+            "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "supports",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": true,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-1fa8097f-c17f-4390-bac3-53b48843ec7b-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-north_glass-2",
+          "chapter_id": "fixture-chapter-north_glass-2",
+          "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "label": "badge_roster",
+          "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+        },
+        {
+          "id": "fixture-span-north_glass-5",
+          "chapter_id": "fixture-chapter-north_glass-5",
+          "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "label": "carrier_inspection",
+          "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+        },
+        {
+          "id": "fixture-span-north_glass-1",
+          "chapter_id": "fixture-chapter-north_glass-1",
+          "body": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "label": "badge_rule",
+          "prompt_excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "carrier_inspection"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-north_glass-1",
+          "memory_type": "static_canon",
+          "subject": "Mira",
+          "predicate": "rule",
+          "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "source_span_id": "fixture-span-north_glass-1"
+        },
+        {
+          "id": "fixture-memory-north_glass-2",
+          "memory_type": "dynamic_state",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "source_span_id": "fixture-span-north_glass-2"
+        },
+        {
+          "id": "fixture-memory-north_glass-3",
+          "memory_type": "open_thread",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "The spare blue badge register leaves its 11点 holder field blank.",
+          "source_span_id": "fixture-span-north_glass-3"
+        },
+        {
+          "id": "fixture-memory-north_glass-4",
+          "memory_type": "static_canon",
+          "subject": "pneumatic carrier",
+          "predicate": "rule",
+          "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "source_span_id": "fixture-span-north_glass-4"
+        },
+        {
+          "id": "fixture-memory-north_glass-5",
+          "memory_type": "dynamic_state",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "source_span_id": "fixture-span-north_glass-5"
+        },
+        {
+          "id": "fixture-memory-north_glass-6",
+          "memory_type": "open_thread",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "The carrier inspection does not record who loosened its valve cap.",
+          "source_span_id": "fixture-span-north_glass-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "aace4220c5dc78c3c036508bf1c2203f39a3bf2e69b031acd31bfb31725a0522",
+      "independent_manual_note": {
+        "case_id": "ccv3-north_glass-world_rule-no_conflict",
+        "expected_class": "no_conflict",
+        "category": "world_rule",
+        "minimum_labels": [
+          [
+            "badge_rule",
+            "badge_roster"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "只有红徽章不能打开门与规则一致；草稿为不能打开，而不是记录已明确写下一个失败动作。允许无issue。",
+        "citation_check": "声明集合供材料审阅；合法issues=[]无需输出引用或类别。若有解释，勿把名单的未记录结果夸大为直接失败记录。",
+        "reject_if": "把could not open误读为opened；仅因名单没记录结果就把相容的能力判断升级为冲突。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "v2_case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "corpus_title": "The North Glass Exchange",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+      "expected_class": "insufficient_evidence",
+      "expected_nature": "insufficient_evidence",
+      "category_axis": "world_rule",
+      "decision_category": "object_state",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "object_state"
+      ],
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 3,
+            "title": "Spare Register",
+            "source_label": "spare_register",
+            "body": "The spare blue badge register leaves its 11点 holder field blank."
+          }
+        ]
+      ],
+      "optional_sources": [
+        {
+          "chapter_number": 2,
+          "title": "Badge Roster",
+          "source_label": "badge_roster",
+          "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+        }
+      ],
+      "issue_evidence_relation_if_emitted": "context",
+      "issue_evidence_sufficiency_if_emitted": "insufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-1488b4a1-934c-437c-b12a-fb240729d012-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-north_glass-2",
+          "chapter_id": "fixture-chapter-north_glass-2",
+          "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "label": "badge_roster",
+          "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+        },
+        {
+          "id": "fixture-span-north_glass-3",
+          "chapter_id": "fixture-chapter-north_glass-3",
+          "body": "The spare blue badge register leaves its 11点 holder field blank.",
+          "label": "spare_register",
+          "prompt_excerpt": "The spare blue badge register leaves its 11点 holder field blank."
+        },
+        {
+          "id": "fixture-span-north_glass-5",
+          "chapter_id": "fixture-chapter-north_glass-5",
+          "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "label": "carrier_inspection",
+          "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "carrier_inspection"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-north_glass-1",
+          "memory_type": "static_canon",
+          "subject": "Mira",
+          "predicate": "rule",
+          "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "source_span_id": "fixture-span-north_glass-1"
+        },
+        {
+          "id": "fixture-memory-north_glass-2",
+          "memory_type": "dynamic_state",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "source_span_id": "fixture-span-north_glass-2"
+        },
+        {
+          "id": "fixture-memory-north_glass-3",
+          "memory_type": "open_thread",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "The spare blue badge register leaves its 11点 holder field blank.",
+          "source_span_id": "fixture-span-north_glass-3"
+        },
+        {
+          "id": "fixture-memory-north_glass-4",
+          "memory_type": "static_canon",
+          "subject": "pneumatic carrier",
+          "predicate": "rule",
+          "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "source_span_id": "fixture-span-north_glass-4"
+        },
+        {
+          "id": "fixture-memory-north_glass-5",
+          "memory_type": "dynamic_state",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "source_span_id": "fixture-span-north_glass-5"
+        },
+        {
+          "id": "fixture-memory-north_glass-6",
+          "memory_type": "open_thread",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "The carrier inspection does not record who loosened its valve cap.",
+          "source_span_id": "fixture-span-north_glass-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "5c7db829495b7cdfc958d63bde5b93deb6300c230477aa7065129b22c5ab2b45",
+      "independent_manual_note": {
+        "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "category": "object_state",
+        "minimum_labels": [
+          [
+            "spare_register"
+          ]
+        ],
+        "optional_labels": [
+          "badge_roster"
+        ],
+        "semantic_check": "11点备用蓝徽章持有人字段空白，无法据登记册认定Mira持有。10点红徽章状态不能填补11点持有人。",
+        "citation_check": "spare_register直接展示缺口；badge_roster只能作为较早背景。category按命名物件指定时刻持有状态判。",
+        "reject_if": "认定Mira一定持有或一定不持有；把10点没有蓝徽章直接外推到11点；沿用world_rule轴分类。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "v2_case_id": "ccv2-north_glass-object_state-conflict",
+      "corpus_key": "north_glass",
+      "corpus_title": "The North Glass Exchange",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+      "expected_class": "conflict",
+      "expected_nature": "confirmed_conflict",
+      "category_axis": "object_state",
+      "decision_category": "object_state",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "object_state"
+      ],
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "temporal_policy": "timeless_rule",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 4,
+            "title": "Carrier Ready Rule",
+            "source_label": "carrier_ready_rule",
+            "body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked."
+          },
+          {
+            "chapter_number": 5,
+            "title": "Carrier Inspection",
+            "source_label": "carrier_inspection",
+            "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "contradicts",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "timeless_rule",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-1bd08ef5-34bd-490b-9356-53a42c1dfd8a-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-north_glass-5",
+          "chapter_id": "fixture-chapter-north_glass-5",
+          "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "label": "carrier_inspection",
+          "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+        },
+        {
+          "id": "fixture-span-north_glass-4",
+          "chapter_id": "fixture-chapter-north_glass-4",
+          "body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "label": "carrier_ready_rule",
+          "prompt_excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked."
+        },
+        {
+          "id": "fixture-span-north_glass-2",
+          "chapter_id": "fixture-chapter-north_glass-2",
+          "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "label": "badge_roster",
+          "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "badge_roster"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-north_glass-1",
+          "memory_type": "static_canon",
+          "subject": "Mira",
+          "predicate": "rule",
+          "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "source_span_id": "fixture-span-north_glass-1"
+        },
+        {
+          "id": "fixture-memory-north_glass-2",
+          "memory_type": "dynamic_state",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "source_span_id": "fixture-span-north_glass-2"
+        },
+        {
+          "id": "fixture-memory-north_glass-3",
+          "memory_type": "open_thread",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "The spare blue badge register leaves its 11点 holder field blank.",
+          "source_span_id": "fixture-span-north_glass-3"
+        },
+        {
+          "id": "fixture-memory-north_glass-4",
+          "memory_type": "static_canon",
+          "subject": "pneumatic carrier",
+          "predicate": "rule",
+          "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "source_span_id": "fixture-span-north_glass-4"
+        },
+        {
+          "id": "fixture-memory-north_glass-5",
+          "memory_type": "dynamic_state",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "source_span_id": "fixture-span-north_glass-5"
+        },
+        {
+          "id": "fixture-memory-north_glass-6",
+          "memory_type": "open_thread",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "The carrier inspection does not record who loosened its valve cap.",
+          "source_span_id": "fixture-span-north_glass-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "170ca4696c02747e7dadca6764302d1398d964e186ea444c5e23d775103d2c06",
+      "independent_manual_note": {
+        "case_id": "ccv3-north_glass-object_state-conflict",
+        "expected_class": "conflict",
+        "category": "object_state",
+        "minimum_labels": [
+          [
+            "carrier_ready_rule",
+            "carrier_inspection"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "就绪要求四bar且阀帽锁紧；同日10点该分钟阀帽始终松动未锁，虽四bar仍不满足就绪。",
+        "citation_check": "规则与同刻检查共同构成最小证明；规则单独没有现状，检查单独没有就绪定义。",
+        "reject_if": "只见四bar就认定就绪；丢失AND条件或10点同一时间范围；只援引规则宣称已证明当前状态。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "v2_case_id": "ccv2-north_glass-object_state-no_conflict",
+      "corpus_key": "north_glass",
+      "corpus_title": "The North Glass Exchange",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 10点 on the same day, the North Glass pneumatic carrier was not ready despite its four-bar gauge.",
+      "expected_class": "no_conflict",
+      "expected_nature": "none",
+      "category_axis": "object_state",
+      "decision_category": "object_state",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "object_state"
+      ],
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 4,
+            "title": "Carrier Ready Rule",
+            "source_label": "carrier_ready_rule",
+            "body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked."
+          },
+          {
+            "chapter_number": 5,
+            "title": "Carrier Inspection",
+            "source_label": "carrier_inspection",
+            "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "supports",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": true,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-5957da21-0179-4c27-a58f-2eaadd7165ab-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-north_glass-5",
+          "chapter_id": "fixture-chapter-north_glass-5",
+          "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "label": "carrier_inspection",
+          "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+        },
+        {
+          "id": "fixture-span-north_glass-4",
+          "chapter_id": "fixture-chapter-north_glass-4",
+          "body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "label": "carrier_ready_rule",
+          "prompt_excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked."
+        },
+        {
+          "id": "fixture-span-north_glass-2",
+          "chapter_id": "fixture-chapter-north_glass-2",
+          "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "label": "badge_roster",
+          "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "badge_roster"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-north_glass-1",
+          "memory_type": "static_canon",
+          "subject": "Mira",
+          "predicate": "rule",
+          "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "source_span_id": "fixture-span-north_glass-1"
+        },
+        {
+          "id": "fixture-memory-north_glass-2",
+          "memory_type": "dynamic_state",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "source_span_id": "fixture-span-north_glass-2"
+        },
+        {
+          "id": "fixture-memory-north_glass-3",
+          "memory_type": "open_thread",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "The spare blue badge register leaves its 11点 holder field blank.",
+          "source_span_id": "fixture-span-north_glass-3"
+        },
+        {
+          "id": "fixture-memory-north_glass-4",
+          "memory_type": "static_canon",
+          "subject": "pneumatic carrier",
+          "predicate": "rule",
+          "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "source_span_id": "fixture-span-north_glass-4"
+        },
+        {
+          "id": "fixture-memory-north_glass-5",
+          "memory_type": "dynamic_state",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "source_span_id": "fixture-span-north_glass-5"
+        },
+        {
+          "id": "fixture-memory-north_glass-6",
+          "memory_type": "open_thread",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "The carrier inspection does not record who loosened its valve cap.",
+          "source_span_id": "fixture-span-north_glass-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "fd4a193751bca110f73a7ae2360373555fc96dd37328c155c829e2d9f5356441",
+      "independent_manual_note": {
+        "case_id": "ccv3-north_glass-object_state-no_conflict",
+        "expected_class": "no_conflict",
+        "category": "object_state",
+        "minimum_labels": [
+          [
+            "carrier_ready_rule",
+            "carrier_inspection"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "草稿承认四bar但尚未就绪，正好符合阀帽松动使合取条件失败。允许无issue。",
+        "citation_check": "检查记录和规则是审阅依据；issues=[]无需人为补充issue引用。",
+        "reject_if": "把despite its four-bar gauge理解成规则矛盾；忽略阀帽条件而误报冲突。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "v2_case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "corpus_title": "The North Glass Exchange",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+      "expected_class": "insufficient_evidence",
+      "expected_nature": "insufficient_evidence",
+      "category_axis": "object_state",
+      "decision_category": "relationship",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ],
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 6,
+            "title": "Cap Actor",
+            "source_label": "cap_actor",
+            "body": "The carrier inspection does not record who loosened its valve cap."
+          }
+        ]
+      ],
+      "optional_sources": [
+        {
+          "chapter_number": 5,
+          "title": "Carrier Inspection",
+          "source_label": "carrier_inspection",
+          "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+        }
+      ],
+      "issue_evidence_relation_if_emitted": "context",
+      "issue_evidence_sufficiency_if_emitted": "insufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-cc79fc75-ed87-4db7-ba79-4f4428fc91ea-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-north_glass-6",
+          "chapter_id": "fixture-chapter-north_glass-6",
+          "body": "The carrier inspection does not record who loosened its valve cap.",
+          "label": "cap_actor",
+          "prompt_excerpt": "The carrier inspection does not record who loosened its valve cap."
+        },
+        {
+          "id": "fixture-span-north_glass-5",
+          "chapter_id": "fixture-chapter-north_glass-5",
+          "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "label": "carrier_inspection",
+          "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+        },
+        {
+          "id": "fixture-span-north_glass-2",
+          "chapter_id": "fixture-chapter-north_glass-2",
+          "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "label": "badge_roster",
+          "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "badge_roster"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-north_glass-1",
+          "memory_type": "static_canon",
+          "subject": "Mira",
+          "predicate": "rule",
+          "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "source_span_id": "fixture-span-north_glass-1"
+        },
+        {
+          "id": "fixture-memory-north_glass-2",
+          "memory_type": "dynamic_state",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "source_span_id": "fixture-span-north_glass-2"
+        },
+        {
+          "id": "fixture-memory-north_glass-3",
+          "memory_type": "open_thread",
+          "subject": "Mira",
+          "predicate": "status",
+          "value": "The spare blue badge register leaves its 11点 holder field blank.",
+          "source_span_id": "fixture-span-north_glass-3"
+        },
+        {
+          "id": "fixture-memory-north_glass-4",
+          "memory_type": "static_canon",
+          "subject": "pneumatic carrier",
+          "predicate": "rule",
+          "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "source_span_id": "fixture-span-north_glass-4"
+        },
+        {
+          "id": "fixture-memory-north_glass-5",
+          "memory_type": "dynamic_state",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "source_span_id": "fixture-span-north_glass-5"
+        },
+        {
+          "id": "fixture-memory-north_glass-6",
+          "memory_type": "open_thread",
+          "subject": "pneumatic carrier",
+          "predicate": "status",
+          "value": "The carrier inspection does not record who loosened its valve cap.",
+          "source_span_id": "fixture-span-north_glass-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "b58b986006aea6fdddb1ea5c22a8cce3d373ec9083a61e1c3ebfadd8b096dd0a",
+      "independent_manual_note": {
+        "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "category": "relationship",
+        "minimum_labels": [
+          [
+            "cap_actor"
+          ]
+        ],
+        "optional_labels": [
+          "carrier_inspection"
+        ],
+        "semantic_check": "阀帽松动已知，谁松开的未记录；无法归责Mira。项目分类中具名实施者责任属于relationship。",
+        "citation_check": "cap_actor是归责缺口的直接来源；carrier_inspection只证实松动状态。",
+        "reject_if": "从物件松动推定Mira操作；把未记录归责说成Mira没有操作；按邻例object_state轴直接分类。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "v2_case_id": "ccv2-harbor_signal-timeline-conflict",
+      "corpus_key": "harbor_signal",
+      "corpus_title": "The Harbor Signal Ledger",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+      "expected_class": "conflict",
+      "expected_nature": "confirmed_conflict",
+      "category_axis": "timeline",
+      "decision_category": "timeline",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "timeline"
+      ],
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "temporal_policy": "same_explicit_time",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 1,
+            "title": "Gate Log",
+            "source_label": "gate_log",
+            "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "contradicts",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "explicit_overlap",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-ad633c8c-03cc-4d2b-91fa-d213ff3f593a-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-harbor_signal-1",
+          "chapter_id": "fixture-chapter-harbor_signal-1",
+          "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "label": "gate_log",
+          "prompt_excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+        },
+        {
+          "id": "fixture-span-harbor_signal-2",
+          "chapter_id": "fixture-chapter-harbor_signal-2",
+          "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "label": "reopen_log",
+          "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+        },
+        {
+          "id": "fixture-span-harbor_signal-3",
+          "chapter_id": "fixture-chapter-harbor_signal-3",
+          "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "label": "telegram_seal",
+          "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "reopen_log",
+        "telegram_seal"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-harbor_signal-1",
+          "memory_type": "event_timeline",
+          "subject": "harbor signal gate",
+          "predicate": "event_occurred",
+          "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "source_span_id": "fixture-span-harbor_signal-1"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-2",
+          "memory_type": "open_thread",
+          "subject": "harbor signal gate",
+          "predicate": "status",
+          "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "source_span_id": "fixture-span-harbor_signal-2"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-3",
+          "memory_type": "character_knowledge",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "source_span_id": "fixture-span-harbor_signal-3"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-4",
+          "memory_type": "event_timeline",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "source_span_id": "fixture-span-harbor_signal-4"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "09152ba1af1fbcb693bcdf95a28367b78b9e4d962853dff1e9abf39e1b109c4d",
+      "independent_manual_note": {
+        "case_id": "ccv3-harbor_signal-timeline-conflict",
+        "expected_class": "conflict",
+        "category": "timeline",
+        "minimum_labels": [
+          [
+            "gate_log"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "记录同日09点首次打开且此前从未关闭，10点才首次关闭；草稿09点先首次关闭再首次打开颠倒首次事件顺序。",
+        "citation_check": "gate_log一条含两个时刻和首次限定，足以证明矛盾；需保留09点/10点与before/after关系。",
+        "reject_if": "把11点未知重开记录用于推翻已明确的首次先后；把首次关闭与后续正常开闭混为一谈。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "v2_case_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "corpus_key": "harbor_signal",
+      "corpus_title": "The Harbor Signal Ledger",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "The gate logs establish that at 10点 the harbor signal gate first closed after its 09点 opening.",
+      "expected_class": "no_conflict",
+      "expected_nature": "none",
+      "category_axis": "timeline",
+      "decision_category": "timeline",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "timeline"
+      ],
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 1,
+            "title": "Gate Log",
+            "source_label": "gate_log",
+            "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "supports",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": true,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-279da746-55bc-48d5-ad40-9fbfa4b735f9-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-harbor_signal-1",
+          "chapter_id": "fixture-chapter-harbor_signal-1",
+          "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "label": "gate_log",
+          "prompt_excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+        },
+        {
+          "id": "fixture-span-harbor_signal-2",
+          "chapter_id": "fixture-chapter-harbor_signal-2",
+          "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "label": "reopen_log",
+          "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+        },
+        {
+          "id": "fixture-span-harbor_signal-3",
+          "chapter_id": "fixture-chapter-harbor_signal-3",
+          "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "label": "telegram_seal",
+          "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "reopen_log",
+        "telegram_seal"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-harbor_signal-1",
+          "memory_type": "event_timeline",
+          "subject": "harbor signal gate",
+          "predicate": "event_occurred",
+          "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "source_span_id": "fixture-span-harbor_signal-1"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-2",
+          "memory_type": "open_thread",
+          "subject": "harbor signal gate",
+          "predicate": "status",
+          "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "source_span_id": "fixture-span-harbor_signal-2"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-3",
+          "memory_type": "character_knowledge",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "source_span_id": "fixture-span-harbor_signal-3"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-4",
+          "memory_type": "event_timeline",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "source_span_id": "fixture-span-harbor_signal-4"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "7e882dfb77da375197cd3df42237477a89ee9f93a48c8afd7974ce6361a0b827",
+      "independent_manual_note": {
+        "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+        "expected_class": "no_conflict",
+        "category": "timeline",
+        "minimum_labels": [
+          [
+            "gate_log"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "草稿说10点首次关闭发生在09点首次打开之后，直接符合记录。允许无issue。",
+        "citation_check": "gate_log直接支持顺序，无需reopen_log补齐不同事件。",
+        "reject_if": "因为事件先开后关就误报状态冲突；把11点重开未知转嫁给09/10点已知顺序。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "v2_case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "corpus_title": "The Harbor Signal Ledger",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "The gate logs establish that Sera authorized a reopening at 11点.",
+      "expected_class": "insufficient_evidence",
+      "expected_nature": "insufficient_evidence",
+      "category_axis": "timeline",
+      "decision_category": "relationship",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ],
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 2,
+            "title": "Reopen Log",
+            "source_label": "reopen_log",
+            "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "context",
+      "issue_evidence_sufficiency_if_emitted": "insufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-eae1be1e-1ad4-43b4-957d-9eb13d4eec80-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-harbor_signal-2",
+          "chapter_id": "fixture-chapter-harbor_signal-2",
+          "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "label": "reopen_log",
+          "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+        },
+        {
+          "id": "fixture-span-harbor_signal-1",
+          "chapter_id": "fixture-chapter-harbor_signal-1",
+          "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "label": "gate_log",
+          "prompt_excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+        },
+        {
+          "id": "fixture-span-harbor_signal-4",
+          "chapter_id": "fixture-chapter-harbor_signal-4",
+          "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "label": "later_recipient",
+          "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "gate_log",
+        "later_recipient"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-harbor_signal-1",
+          "memory_type": "event_timeline",
+          "subject": "harbor signal gate",
+          "predicate": "event_occurred",
+          "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "source_span_id": "fixture-span-harbor_signal-1"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-2",
+          "memory_type": "open_thread",
+          "subject": "harbor signal gate",
+          "predicate": "status",
+          "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "source_span_id": "fixture-span-harbor_signal-2"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-3",
+          "memory_type": "character_knowledge",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "source_span_id": "fixture-span-harbor_signal-3"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-4",
+          "memory_type": "event_timeline",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "source_span_id": "fixture-span-harbor_signal-4"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "852331f8cd35b5fd9714224acd7a1ddfc3b317c1d0969363c20a026e8d5468d8",
+      "independent_manual_note": {
+        "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "category": "relationship",
+        "minimum_labels": [
+          [
+            "reopen_log"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "11点是否重开及操作者均未记录，尤其没有Sera授权关系；早先开关时间不能证明授权者。核心为具名授权关系。",
+        "citation_check": "reopen_log展示缺口，关系context/insufficient；不能把未记载说成发生了未经授权的重开。",
+        "reject_if": "猜定Sera授权或未授权；只因含11点就把核心类别判为timeline。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "v2_case_id": "ccv2-harbor_signal-character_knowledge-conflict",
+      "corpus_key": "harbor_signal",
+      "corpus_title": "The Harbor Signal Ledger",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 11点 on the same day, Sera knew the telegram code.",
+      "expected_class": "conflict",
+      "expected_nature": "confirmed_conflict",
+      "category_axis": "character_knowledge",
+      "decision_category": "character_knowledge",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "character_knowledge"
+      ],
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "temporal_policy": "same_explicit_time",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 3,
+            "title": "Telegram Seal",
+            "source_label": "telegram_seal",
+            "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "contradicts",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "explicit_overlap",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-cd7cf935-392d-4142-988e-b987432ff5ac-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-harbor_signal-3",
+          "chapter_id": "fixture-chapter-harbor_signal-3",
+          "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "label": "telegram_seal",
+          "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+        },
+        {
+          "id": "fixture-span-harbor_signal-4",
+          "chapter_id": "fixture-chapter-harbor_signal-4",
+          "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "label": "later_recipient",
+          "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+        },
+        {
+          "id": "fixture-span-harbor_signal-1",
+          "chapter_id": "fixture-chapter-harbor_signal-1",
+          "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "label": "gate_log",
+          "prompt_excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "later_recipient",
+        "gate_log"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-harbor_signal-1",
+          "memory_type": "event_timeline",
+          "subject": "harbor signal gate",
+          "predicate": "event_occurred",
+          "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "source_span_id": "fixture-span-harbor_signal-1"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-2",
+          "memory_type": "open_thread",
+          "subject": "harbor signal gate",
+          "predicate": "status",
+          "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "source_span_id": "fixture-span-harbor_signal-2"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-3",
+          "memory_type": "character_knowledge",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "source_span_id": "fixture-span-harbor_signal-3"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-4",
+          "memory_type": "event_timeline",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "source_span_id": "fixture-span-harbor_signal-4"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "db26eb095a96e4900a51ae39f5181ecb4c728ffbf19ffc6a923dbfbbeb844a83",
+      "independent_manual_note": {
+        "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+        "expected_class": "conflict",
+        "category": "character_knowledge",
+        "minimum_labels": [
+          [
+            "telegram_seal"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "同日11点原文明确Sera尚未拆信且不知道密码，草稿称同刻知道，构成直接矛盾。13点后来学会不能回填11点。",
+        "citation_check": "telegram_seal直接反证；仅引用13点later_recipient不能支撑11点已知道。",
+        "reject_if": "把13点合法学习转移当11点已知的证明；把同刻明确否定降成普通未知并称模型首答正确。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "v2_case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "corpus_key": "harbor_signal",
+      "corpus_title": "The Harbor Signal Ledger",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 13点 Sera learned the telegram code after not knowing it at 11点.",
+      "expected_class": "no_conflict",
+      "expected_nature": "none",
+      "category_axis": "character_knowledge",
+      "decision_category": "character_knowledge",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "character_knowledge"
+      ],
+      "allowed_outcomes": [
+        "no_issue",
+        "state_change"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 3,
+            "title": "Telegram Seal",
+            "source_label": "telegram_seal",
+            "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+          },
+          {
+            "chapter_number": 4,
+            "title": "Later Recipient",
+            "source_label": "later_recipient",
+            "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "supports",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": true,
+      "raw_temporal_relation_if_issue": "explicit_later_transition",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-a9c7695e-7a22-4ada-b7c1-26a8995eaf91-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-harbor_signal-4",
+          "chapter_id": "fixture-chapter-harbor_signal-4",
+          "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "label": "later_recipient",
+          "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+        },
+        {
+          "id": "fixture-span-harbor_signal-3",
+          "chapter_id": "fixture-chapter-harbor_signal-3",
+          "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "label": "telegram_seal",
+          "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+        },
+        {
+          "id": "fixture-span-harbor_signal-2",
+          "chapter_id": "fixture-chapter-harbor_signal-2",
+          "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "label": "reopen_log",
+          "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "reopen_log"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-harbor_signal-1",
+          "memory_type": "event_timeline",
+          "subject": "harbor signal gate",
+          "predicate": "event_occurred",
+          "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "source_span_id": "fixture-span-harbor_signal-1"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-2",
+          "memory_type": "open_thread",
+          "subject": "harbor signal gate",
+          "predicate": "status",
+          "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "source_span_id": "fixture-span-harbor_signal-2"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-3",
+          "memory_type": "character_knowledge",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "source_span_id": "fixture-span-harbor_signal-3"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-4",
+          "memory_type": "event_timeline",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "source_span_id": "fixture-span-harbor_signal-4"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "8fec2bea1bcb5395303a07f4770b52c6183d511ed9a6f2bc1656603f097d93c6",
+      "independent_manual_note": {
+        "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+        "expected_class": "no_conflict",
+        "category": "character_knowledge",
+        "minimum_labels": [
+          [
+            "telegram_seal",
+            "later_recipient"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "11点不知道而13点学会是明确且相容的知识变化；允许issues=[]，也允许有充分支持的state_change。",
+        "citation_check": "若输出state_change，须覆盖11点旧状态与13点新状态两条，supports/sufficient，并证明显式后续转变。",
+        "reject_if": "因前后知识不同就报confirmed或possible conflict；无视已写出的学习事件而称缺少知识转移；把合法state_change的非空issues算冲突。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "v2_case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "corpus_title": "The Harbor Signal Ledger",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "Vela delivered the telegram to Sera at 13点, according to the records.",
+      "expected_class": "insufficient_evidence",
+      "expected_nature": "insufficient_evidence",
+      "category_axis": "character_knowledge",
+      "decision_category": "relationship",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ],
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 4,
+            "title": "Later Recipient",
+            "source_label": "later_recipient",
+            "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+          }
+        ]
+      ],
+      "optional_sources": [
+        {
+          "chapter_number": 3,
+          "title": "Telegram Seal",
+          "source_label": "telegram_seal",
+          "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+        }
+      ],
+      "issue_evidence_relation_if_emitted": "context",
+      "issue_evidence_sufficiency_if_emitted": "insufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-b95b6c92-b249-4cb7-9af2-a44eb04f2814-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-harbor_signal-4",
+          "chapter_id": "fixture-chapter-harbor_signal-4",
+          "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "label": "later_recipient",
+          "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+        },
+        {
+          "id": "fixture-span-harbor_signal-3",
+          "chapter_id": "fixture-chapter-harbor_signal-3",
+          "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "label": "telegram_seal",
+          "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+        },
+        {
+          "id": "fixture-span-harbor_signal-2",
+          "chapter_id": "fixture-chapter-harbor_signal-2",
+          "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "label": "reopen_log",
+          "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "reopen_log"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-harbor_signal-1",
+          "memory_type": "event_timeline",
+          "subject": "harbor signal gate",
+          "predicate": "event_occurred",
+          "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "source_span_id": "fixture-span-harbor_signal-1"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-2",
+          "memory_type": "open_thread",
+          "subject": "harbor signal gate",
+          "predicate": "status",
+          "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "source_span_id": "fixture-span-harbor_signal-2"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-3",
+          "memory_type": "character_knowledge",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "source_span_id": "fixture-span-harbor_signal-3"
+        },
+        {
+          "id": "fixture-memory-harbor_signal-4",
+          "memory_type": "event_timeline",
+          "subject": "Sera",
+          "predicate": "knowledge",
+          "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "source_span_id": "fixture-span-harbor_signal-4"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "e2e6f4ed8f904d35ff918dbf0738d7f2db8aadf2889dc00076c19a7500d41a18",
+      "independent_manual_note": {
+        "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "category": "relationship",
+        "minimum_labels": [
+          [
+            "later_recipient"
+          ]
+        ],
+        "optional_labels": [
+          "telegram_seal"
+        ],
+        "semantic_check": "13点Sera学会已记录，但递送者未识别；据记录断定Vela递送缺具名递送角色/责任联系。",
+        "citation_check": "later_recipient同段明确递送身份缺失；telegram_seal只作为早先知识背景。",
+        "reject_if": "把学会密码推成Vela递送；认定Vela未递送；把Sera知识背景当核心character_knowledge类别。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "v2_case_id": "ccv2-orchard_restoration-relationship-conflict",
+      "corpus_key": "orchard_restoration",
+      "corpus_title": "The Orchard Restoration Register",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "Nera is Oren's mother.",
+      "expected_class": "conflict",
+      "expected_nature": "confirmed_conflict",
+      "category_axis": "relationship",
+      "decision_category": "relationship",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ],
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "temporal_policy": "timeless_rule",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 1,
+            "title": "Kinship Rule",
+            "source_label": "kinship_rule",
+            "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+          },
+          {
+            "chapter_number": 2,
+            "title": "Twin Register",
+            "source_label": "twin_register",
+            "body": "The birth register identifies Nera and Oren as twins, both children of Tala."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "contradicts",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "timeless_rule",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-89a4bda1-684b-46c9-8598-92d4c4a90d02-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-orchard_restoration-2",
+          "chapter_id": "fixture-chapter-orchard_restoration-2",
+          "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "label": "twin_register",
+          "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-3",
+          "chapter_id": "fixture-chapter-orchard_restoration-3",
+          "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+          "label": "birth_order",
+          "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-1",
+          "chapter_id": "fixture-chapter-orchard_restoration-1",
+          "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "label": "kinship_rule",
+          "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "birth_order"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-orchard_restoration-1",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "rule",
+          "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "source_span_id": "fixture-span-orchard_restoration-1"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-2",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "relationship",
+          "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "source_span_id": "fixture-span-orchard_restoration-2"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-3",
+          "memory_type": "open_thread",
+          "subject": "Nera and Oren",
+          "predicate": "status",
+          "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+          "source_span_id": "fixture-span-orchard_restoration-3"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-4",
+          "memory_type": "static_canon",
+          "subject": "restoration boat",
+          "predicate": "rule",
+          "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "source_span_id": "fixture-span-orchard_restoration-4"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-5",
+          "memory_type": "event_timeline",
+          "subject": "restoration boat",
+          "predicate": "event_occurred",
+          "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "source_span_id": "fixture-span-orchard_restoration-5"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-6",
+          "memory_type": "open_thread",
+          "subject": "restoration boat",
+          "predicate": "status",
+          "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+          "source_span_id": "fixture-span-orchard_restoration-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "6121104e060489a3b2ffc5c9f57e325c91b4a62d30156e34ff88da23b6126a5a",
+      "independent_manual_note": {
+        "case_id": "ccv3-orchard_restoration-relationship-conflict",
+        "expected_class": "conflict",
+        "category": "relationship",
+        "minimum_labels": [
+          [
+            "kinship_rule",
+            "twin_register"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "永久规则规定登记双胞胎不能互为父母，登记册把Nera与Oren明确列为双胞胎；草稿Nera是Oren母亲与两条联合矛盾。",
+        "citation_check": "亲属规则与具体双胞胎绑定两条均必要；不能只凭一般世界常识或Tala名字推断。",
+        "reject_if": "只援引抽象规则而未绑定这两个人；借出生先后未知降低已明确的亲属冲突。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "v2_case_id": "ccv2-orchard_restoration-relationship-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "corpus_title": "The Orchard Restoration Register",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+      "expected_class": "no_conflict",
+      "expected_nature": "none",
+      "category_axis": "relationship",
+      "decision_category": "relationship",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ],
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 1,
+            "title": "Kinship Rule",
+            "source_label": "kinship_rule",
+            "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+          },
+          {
+            "chapter_number": 2,
+            "title": "Twin Register",
+            "source_label": "twin_register",
+            "body": "The birth register identifies Nera and Oren as twins, both children of Tala."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "supports",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": true,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-169f8d3f-6a8b-45ec-8e0f-c091ec96c43b-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-orchard_restoration-1",
+          "chapter_id": "fixture-chapter-orchard_restoration-1",
+          "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "label": "kinship_rule",
+          "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-3",
+          "chapter_id": "fixture-chapter-orchard_restoration-3",
+          "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+          "label": "birth_order",
+          "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-2",
+          "chapter_id": "fixture-chapter-orchard_restoration-2",
+          "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "label": "twin_register",
+          "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "birth_order"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-orchard_restoration-1",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "rule",
+          "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "source_span_id": "fixture-span-orchard_restoration-1"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-2",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "relationship",
+          "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "source_span_id": "fixture-span-orchard_restoration-2"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-3",
+          "memory_type": "open_thread",
+          "subject": "Nera and Oren",
+          "predicate": "status",
+          "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+          "source_span_id": "fixture-span-orchard_restoration-3"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-4",
+          "memory_type": "static_canon",
+          "subject": "restoration boat",
+          "predicate": "rule",
+          "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "source_span_id": "fixture-span-orchard_restoration-4"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-5",
+          "memory_type": "event_timeline",
+          "subject": "restoration boat",
+          "predicate": "event_occurred",
+          "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "source_span_id": "fixture-span-orchard_restoration-5"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-6",
+          "memory_type": "open_thread",
+          "subject": "restoration boat",
+          "predicate": "status",
+          "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+          "source_span_id": "fixture-span-orchard_restoration-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "7375c6cfd7c24b8064b34ea1af1459349ff147e2b0571c5344d4c4b8b8c865f8",
+      "independent_manual_note": {
+        "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+        "expected_class": "no_conflict",
+        "category": "relationship",
+        "minimum_labels": [
+          [
+            "kinship_rule",
+            "twin_register"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "叙述者明确Nera在撒谎，同时指出登记册真实记录为双胞胎；引语中的自称不是叙述者认可的canon。允许无issue。",
+        "citation_check": "必须阅读lied与while后真相，不能单取引号内母亲声明作为被认可事实。",
+        "reject_if": "把人物故意假话当作者设定冲突；建议改掉合法撒谎内容或真实纠正。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "v2_case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "corpus_title": "The Orchard Restoration Register",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "The birth register establishes that Nera was born before Oren.",
+      "expected_class": "insufficient_evidence",
+      "expected_nature": "insufficient_evidence",
+      "category_axis": "relationship",
+      "decision_category": "timeline",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "timeline"
+      ],
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 3,
+            "title": "Birth Order",
+            "source_label": "birth_order",
+            "body": "The birth register does not record which twin, Nera or Oren, was born first."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "context",
+      "issue_evidence_sufficiency_if_emitted": "insufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-bd2aa929-2177-45e9-ab7a-93d8ad041803-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-orchard_restoration-3",
+          "chapter_id": "fixture-chapter-orchard_restoration-3",
+          "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+          "label": "birth_order",
+          "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-2",
+          "chapter_id": "fixture-chapter-orchard_restoration-2",
+          "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "label": "twin_register",
+          "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-1",
+          "chapter_id": "fixture-chapter-orchard_restoration-1",
+          "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "label": "kinship_rule",
+          "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "twin_register",
+        "kinship_rule"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-orchard_restoration-1",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "rule",
+          "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "source_span_id": "fixture-span-orchard_restoration-1"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-2",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "relationship",
+          "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "source_span_id": "fixture-span-orchard_restoration-2"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-3",
+          "memory_type": "open_thread",
+          "subject": "Nera and Oren",
+          "predicate": "status",
+          "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+          "source_span_id": "fixture-span-orchard_restoration-3"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-4",
+          "memory_type": "static_canon",
+          "subject": "restoration boat",
+          "predicate": "rule",
+          "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "source_span_id": "fixture-span-orchard_restoration-4"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-5",
+          "memory_type": "event_timeline",
+          "subject": "restoration boat",
+          "predicate": "event_occurred",
+          "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "source_span_id": "fixture-span-orchard_restoration-5"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-6",
+          "memory_type": "open_thread",
+          "subject": "restoration boat",
+          "predicate": "status",
+          "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+          "source_span_id": "fixture-span-orchard_restoration-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "95fa6f2385d611f286125ffcfd4075b4b0d893461b239bd4c3bb0aef82db98b8",
+      "independent_manual_note": {
+        "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "category": "timeline",
+        "minimum_labels": [
+          [
+            "birth_order"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "登记册明确未记录哪个双胞胎先出生；排列顺序及亲属关系不能推出Nera先于Oren。核心是出生事件先后。",
+        "citation_check": "birth_order单条展示缺口；关系context/insufficient，不能用双胞胎身份补齐先后。",
+        "reject_if": "从列名顺序推出生顺序；称Oren一定先出生；沿用relationship轴类别。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "v2_case_id": "ccv2-orchard_restoration-event_status-conflict",
+      "corpus_key": "orchard_restoration",
+      "corpus_title": "The Orchard Restoration Register",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 10点 on the same day, the restoration boat had completed its launch.",
+      "expected_class": "conflict",
+      "expected_nature": "confirmed_conflict",
+      "category_axis": "event_status",
+      "decision_category": "event_status",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "event_status"
+      ],
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "temporal_policy": "timeless_rule",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 4,
+            "title": "Launch Rule",
+            "source_label": "launch_rule",
+            "body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay."
+          },
+          {
+            "chapter_number": 5,
+            "title": "Launch Log",
+            "source_label": "launch_log",
+            "body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "contradicts",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "timeless_rule",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-4abf7ade-5a35-46fc-880c-fc1de4837024-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-orchard_restoration-4",
+          "chapter_id": "fixture-chapter-orchard_restoration-4",
+          "body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "label": "launch_rule",
+          "prompt_excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-5",
+          "chapter_id": "fixture-chapter-orchard_restoration-5",
+          "body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "label": "launch_log",
+          "prompt_excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-6",
+          "chapter_id": "fixture-chapter-orchard_restoration-6",
+          "body": "The restoration log leaves the cause of the boat's delay unrecorded.",
+          "label": "delay_cause",
+          "prompt_excerpt": "The restoration log leaves the cause of the boat's delay unrecorded."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "delay_cause"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-orchard_restoration-1",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "rule",
+          "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "source_span_id": "fixture-span-orchard_restoration-1"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-2",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "relationship",
+          "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "source_span_id": "fixture-span-orchard_restoration-2"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-3",
+          "memory_type": "open_thread",
+          "subject": "Nera and Oren",
+          "predicate": "status",
+          "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+          "source_span_id": "fixture-span-orchard_restoration-3"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-4",
+          "memory_type": "static_canon",
+          "subject": "restoration boat",
+          "predicate": "rule",
+          "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "source_span_id": "fixture-span-orchard_restoration-4"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-5",
+          "memory_type": "event_timeline",
+          "subject": "restoration boat",
+          "predicate": "event_occurred",
+          "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "source_span_id": "fixture-span-orchard_restoration-5"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-6",
+          "memory_type": "open_thread",
+          "subject": "restoration boat",
+          "predicate": "status",
+          "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+          "source_span_id": "fixture-span-orchard_restoration-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "bb690f0fa48ca58ee411f025f000401d0c6f22af8962cfa084db4ee1685051e5",
+      "independent_manual_note": {
+        "case_id": "ccv3-orchard_restoration-event_status-conflict",
+        "expected_class": "conflict",
+        "category": "event_status",
+        "minimum_labels": [
+          [
+            "launch_rule",
+            "launch_log"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "下水完成须签署且离岸；同日10点该分钟一直未签且未离岸，草稿已完成下水不成立。",
+        "citation_check": "完成条件与同刻日志共同充分；保留同日10点和整分钟未离开的范围。",
+        "reject_if": "只读规则不看当前事件进度；把完成事件判为物件属性；将延误原因未知混入完成状态判断。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "v2_case_id": "ccv2-orchard_restoration-event_status-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "corpus_title": "The Orchard Restoration Register",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 10点 on the same day, the restoration boat had not completed launch while its manifest was unsigned and it remained at the quay.",
+      "expected_class": "no_conflict",
+      "expected_nature": "none",
+      "category_axis": "event_status",
+      "decision_category": "event_status",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "event_status"
+      ],
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 4,
+            "title": "Launch Rule",
+            "source_label": "launch_rule",
+            "body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay."
+          },
+          {
+            "chapter_number": 5,
+            "title": "Launch Log",
+            "source_label": "launch_log",
+            "body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "supports",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": true,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-db249a13-7f86-4972-a14c-04feac8462e6-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-orchard_restoration-5",
+          "chapter_id": "fixture-chapter-orchard_restoration-5",
+          "body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "label": "launch_log",
+          "prompt_excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-4",
+          "chapter_id": "fixture-chapter-orchard_restoration-4",
+          "body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "label": "launch_rule",
+          "prompt_excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-1",
+          "chapter_id": "fixture-chapter-orchard_restoration-1",
+          "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "label": "kinship_rule",
+          "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "kinship_rule"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-orchard_restoration-1",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "rule",
+          "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "source_span_id": "fixture-span-orchard_restoration-1"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-2",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "relationship",
+          "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "source_span_id": "fixture-span-orchard_restoration-2"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-3",
+          "memory_type": "open_thread",
+          "subject": "Nera and Oren",
+          "predicate": "status",
+          "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+          "source_span_id": "fixture-span-orchard_restoration-3"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-4",
+          "memory_type": "static_canon",
+          "subject": "restoration boat",
+          "predicate": "rule",
+          "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "source_span_id": "fixture-span-orchard_restoration-4"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-5",
+          "memory_type": "event_timeline",
+          "subject": "restoration boat",
+          "predicate": "event_occurred",
+          "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "source_span_id": "fixture-span-orchard_restoration-5"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-6",
+          "memory_type": "open_thread",
+          "subject": "restoration boat",
+          "predicate": "status",
+          "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+          "source_span_id": "fixture-span-orchard_restoration-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "937a5e4dbceda0fef230df6c633974b717b7543c5324659cd062ecc0ea9f3481",
+      "independent_manual_note": {
+        "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+        "expected_class": "no_conflict",
+        "category": "event_status",
+        "minimum_labels": [
+          [
+            "launch_rule",
+            "launch_log"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "草稿未完成下水且仍未签、未离岸，与规则和同刻日志一致。允许无issue。",
+        "citation_check": "两条是审阅事实依据；合法空issue不要求发出引用。",
+        "reject_if": "把未完成与日志延误混成新增矛盾；猜测稍后完成并倒灌10点。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "v2_case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "corpus_title": "The Orchard Restoration Register",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "Tala caused the restoration boat's delay, according to the launch and delay logs.",
+      "expected_class": "insufficient_evidence",
+      "expected_nature": "insufficient_evidence",
+      "category_axis": "event_status",
+      "decision_category": "relationship",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ],
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 6,
+            "title": "Delay Cause",
+            "source_label": "delay_cause",
+            "body": "The restoration log leaves the cause of the boat's delay unrecorded."
+          }
+        ]
+      ],
+      "optional_sources": [
+        {
+          "chapter_number": 5,
+          "title": "Launch Log",
+          "source_label": "launch_log",
+          "body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing."
+        }
+      ],
+      "issue_evidence_relation_if_emitted": "context",
+      "issue_evidence_sufficiency_if_emitted": "insufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-466b6108-452d-4985-be59-a0b0cb810c10-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-orchard_restoration-4",
+          "chapter_id": "fixture-chapter-orchard_restoration-4",
+          "body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "label": "launch_rule",
+          "prompt_excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-6",
+          "chapter_id": "fixture-chapter-orchard_restoration-6",
+          "body": "The restoration log leaves the cause of the boat's delay unrecorded.",
+          "label": "delay_cause",
+          "prompt_excerpt": "The restoration log leaves the cause of the boat's delay unrecorded."
+        },
+        {
+          "id": "fixture-span-orchard_restoration-5",
+          "chapter_id": "fixture-chapter-orchard_restoration-5",
+          "body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "label": "launch_log",
+          "prompt_excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "launch_rule"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-orchard_restoration-1",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "rule",
+          "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "source_span_id": "fixture-span-orchard_restoration-1"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-2",
+          "memory_type": "static_canon",
+          "subject": "Nera and Oren",
+          "predicate": "relationship",
+          "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "source_span_id": "fixture-span-orchard_restoration-2"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-3",
+          "memory_type": "open_thread",
+          "subject": "Nera and Oren",
+          "predicate": "status",
+          "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+          "source_span_id": "fixture-span-orchard_restoration-3"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-4",
+          "memory_type": "static_canon",
+          "subject": "restoration boat",
+          "predicate": "rule",
+          "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "source_span_id": "fixture-span-orchard_restoration-4"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-5",
+          "memory_type": "event_timeline",
+          "subject": "restoration boat",
+          "predicate": "event_occurred",
+          "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "source_span_id": "fixture-span-orchard_restoration-5"
+        },
+        {
+          "id": "fixture-memory-orchard_restoration-6",
+          "memory_type": "open_thread",
+          "subject": "restoration boat",
+          "predicate": "status",
+          "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+          "source_span_id": "fixture-span-orchard_restoration-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "4af2fdadc9a9319fc49401d3e9f8f2cbf0ab63d2400a3b9eb2b9c931f7b1e5e3",
+      "independent_manual_note": {
+        "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "category": "relationship",
+        "minimum_labels": [
+          [
+            "delay_cause"
+          ]
+        ],
+        "optional_labels": [
+          "launch_log"
+        ],
+        "semantic_check": "延误/未完成已知，原因与Tala责任未记录；不能从Tala在亲属材料出现就归责。核心为具名责任关系。",
+        "citation_check": "delay_cause直接指出归因缺口；launch_log只可支持确有延误背景。",
+        "reject_if": "用未签或未离岸推定Tala导致；称Tala没有责任；按事件状态背景直接分类。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "v2_case_id": "ccv2-basalt_observatory-attribute-conflict",
+      "corpus_key": "basalt_observatory",
+      "corpus_title": "The Basalt Observatory Journal",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 18点 on the same day, lens R4 is amber glass.",
+      "expected_class": "conflict",
+      "expected_nature": "confirmed_conflict",
+      "category_axis": "attribute",
+      "decision_category": "attribute",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "attribute"
+      ],
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "temporal_policy": "same_explicit_time",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 1,
+            "title": "Lens Index",
+            "source_label": "lens_index",
+            "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+          },
+          {
+            "chapter_number": 2,
+            "title": "West Lens",
+            "source_label": "west_lens",
+            "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "contradicts",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "explicit_overlap",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-4335fc5d-81d0-4bef-99f2-08b90aa08cec-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-basalt_observatory-2",
+          "chapter_id": "fixture-chapter-basalt_observatory-2",
+          "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "label": "west_lens",
+          "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-1",
+          "chapter_id": "fixture-chapter-basalt_observatory-1",
+          "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "label": "lens_index",
+          "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-5",
+          "chapter_id": "fixture-chapter-basalt_observatory-5",
+          "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "label": "watch_log",
+          "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "watch_log"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-basalt_observatory-1",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "identity",
+          "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "source_span_id": "fixture-span-basalt_observatory-1"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-2",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "source_span_id": "fixture-span-basalt_observatory-2"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-3",
+          "memory_type": "open_thread",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+          "source_span_id": "fixture-span-basalt_observatory-3"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-4",
+          "memory_type": "static_canon",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-4"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-5",
+          "memory_type": "dynamic_state",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-5"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-6",
+          "memory_type": "event_timeline",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+          "source_span_id": "fixture-span-basalt_observatory-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "a7aa032a8845775671ec3e55e612a6d2bafae39fc1000a6640b57ae8d694d090",
+      "independent_manual_note": {
+        "case_id": "ccv3-basalt_observatory-attribute-conflict",
+        "expected_class": "conflict",
+        "category": "attribute",
+        "minimum_labels": [
+          [
+            "lens_index",
+            "west_lens"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "同日18点索引把R4绑定为西侧孔径镜片，同刻该镜片为透明而非琥珀玻璃；草稿R4琥珀材质被联合反驳。",
+        "citation_check": "索引身份链接与玻璃属性两条均需覆盖；只引west_lens缺R4身份链接。",
+        "reject_if": "忽略实体同一性或18点同刻；把物件的材料属性错误看作人物行动；借昨日外观覆盖当前客观材质。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "v2_case_id": "ccv2-basalt_observatory-attribute-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "corpus_title": "The Basalt Observatory Journal",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+      "expected_class": "no_conflict",
+      "expected_nature": "none",
+      "category_axis": "attribute",
+      "decision_category": "attribute",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "attribute"
+      ],
+      "allowed_outcomes": [
+        "no_issue"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 1,
+            "title": "Lens Index",
+            "source_label": "lens_index",
+            "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+          },
+          {
+            "chapter_number": 2,
+            "title": "West Lens",
+            "source_label": "west_lens",
+            "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "supports",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": true,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-b0a0c60e-8ce8-4369-9bda-6d8a0106d25a-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-basalt_observatory-2",
+          "chapter_id": "fixture-chapter-basalt_observatory-2",
+          "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "label": "west_lens",
+          "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-1",
+          "chapter_id": "fixture-chapter-basalt_observatory-1",
+          "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "label": "lens_index",
+          "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-5",
+          "chapter_id": "fixture-chapter-basalt_observatory-5",
+          "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "label": "watch_log",
+          "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "watch_log"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-basalt_observatory-1",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "identity",
+          "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "source_span_id": "fixture-span-basalt_observatory-1"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-2",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "source_span_id": "fixture-span-basalt_observatory-2"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-3",
+          "memory_type": "open_thread",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+          "source_span_id": "fixture-span-basalt_observatory-3"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-4",
+          "memory_type": "static_canon",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-4"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-5",
+          "memory_type": "dynamic_state",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-5"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-6",
+          "memory_type": "event_timeline",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+          "source_span_id": "fixture-span-basalt_observatory-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "6ebeb059fcf0a8cdfaf85d5957ca6e1427944e4b0d056b62234bf6f586d32796",
+      "independent_manual_note": {
+        "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+        "expected_class": "no_conflict",
+        "category": "attribute",
+        "minimum_labels": [
+          [
+            "lens_index",
+            "west_lens"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "18点R4为透明玻璃符合来源；Vela回忆昨日看起来琥珀色既为较早时间又为人物外观回忆，不等于当下客观材质。允许无issue。",
+        "citation_check": "需保留18点、yesterday、recalls、looked四个限定，不能把昨日主观外观变成当前材料断言。",
+        "reject_if": "把不同日期/人物回忆提升成同刻材质冲突；输出未被此case允许的state_change来证明客观材质必然曾改变。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "v2_case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "corpus_title": "The Basalt Observatory Journal",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "The index and maintenance sheet establish that Vela ground lens R4.",
+      "expected_class": "insufficient_evidence",
+      "expected_nature": "insufficient_evidence",
+      "category_axis": "attribute",
+      "decision_category": "relationship",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "relationship"
+      ],
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 3,
+            "title": "Grinder Blank",
+            "source_label": "grinder_blank",
+            "body": "The western lens R4 maintenance sheet leaves the glass grinder's name blank."
+          }
+        ]
+      ],
+      "optional_sources": [
+        {
+          "chapter_number": 1,
+          "title": "Lens Index",
+          "source_label": "lens_index",
+          "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+        }
+      ],
+      "issue_evidence_relation_if_emitted": "context",
+      "issue_evidence_sufficiency_if_emitted": "insufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-2ab66bc3-39ff-498b-a34d-f5a2f2c0ab2e-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-basalt_observatory-3",
+          "chapter_id": "fixture-chapter-basalt_observatory-3",
+          "body": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+          "label": "grinder_blank",
+          "prompt_excerpt": "The western lens R4 maintenance sheet leaves the glass grinder's name blank."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-1",
+          "chapter_id": "fixture-chapter-basalt_observatory-1",
+          "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "label": "lens_index",
+          "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-6",
+          "chapter_id": "fixture-chapter-basalt_observatory-6",
+          "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+          "label": "later_watch",
+          "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "later_watch"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-basalt_observatory-1",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "identity",
+          "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "source_span_id": "fixture-span-basalt_observatory-1"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-2",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "source_span_id": "fixture-span-basalt_observatory-2"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-3",
+          "memory_type": "open_thread",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+          "source_span_id": "fixture-span-basalt_observatory-3"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-4",
+          "memory_type": "static_canon",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-4"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-5",
+          "memory_type": "dynamic_state",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-5"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-6",
+          "memory_type": "event_timeline",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+          "source_span_id": "fixture-span-basalt_observatory-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "5e894f0c5787398b8dc21666234adf5aa04a7dcd79401a0db856e1cc64a92627",
+      "independent_manual_note": {
+        "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "category": "relationship",
+        "minimum_labels": [
+          [
+            "grinder_blank"
+          ]
+        ],
+        "optional_labels": [
+          "lens_index"
+        ],
+        "semantic_check": "R4维护单磨制者姓名空白，索引只绑定镜片身份；两者不足以证明Vela磨制。核心为具名工作实施者责任。",
+        "citation_check": "grinder_blank自身明确western lens R4且磨制者空白；lens_index可选而非必需补链。",
+        "reject_if": "从Vela在观测站出现推为磨制者；把姓名空白当Vela没做；沿用attribute轴分类。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "v2_case_id": "ccv2-basalt_observatory-location_action-conflict",
+      "corpus_key": "basalt_observatory",
+      "corpus_title": "The Basalt Observatory Journal",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 18点 on the same day, Vela stood on the east pier.",
+      "expected_class": "conflict",
+      "expected_nature": "confirmed_conflict",
+      "category_axis": "location_action",
+      "decision_category": "location_action",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "location_action"
+      ],
+      "allowed_outcomes": [
+        "confirmed_conflict"
+      ],
+      "temporal_policy": "same_explicit_time",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 5,
+            "title": "Watch Log",
+            "source_label": "watch_log",
+            "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "contradicts",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "explicit_overlap",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-a4c140c3-443a-4a3a-8283-4898e3046fda-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-basalt_observatory-5",
+          "chapter_id": "fixture-chapter-basalt_observatory-5",
+          "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "label": "watch_log",
+          "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-1",
+          "chapter_id": "fixture-chapter-basalt_observatory-1",
+          "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "label": "lens_index",
+          "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-2",
+          "chapter_id": "fixture-chapter-basalt_observatory-2",
+          "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "label": "west_lens",
+          "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "lens_index",
+        "west_lens"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-basalt_observatory-1",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "identity",
+          "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "source_span_id": "fixture-span-basalt_observatory-1"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-2",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "source_span_id": "fixture-span-basalt_observatory-2"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-3",
+          "memory_type": "open_thread",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+          "source_span_id": "fixture-span-basalt_observatory-3"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-4",
+          "memory_type": "static_canon",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-4"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-5",
+          "memory_type": "dynamic_state",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-5"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-6",
+          "memory_type": "event_timeline",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+          "source_span_id": "fixture-span-basalt_observatory-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "24a45a9fffb63bbe18fdca86cf60dbadfedbb60992e6374f89b09ff2148a592e",
+      "independent_manual_note": {
+        "case_id": "ccv3-basalt_observatory-location_action-conflict",
+        "expected_class": "conflict",
+        "category": "location_action",
+        "minimum_labels": [
+          [
+            "watch_log"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "18点记录直接写Vela在西码头而非东码头；草稿同刻东码头明确冲突。19点后续到东码头不改变18点事实。",
+        "citation_check": "watch_log单条已直接含人物、地点、时刻和否定；gate_map没有18点人物位置，不能替代。",
+        "reject_if": "把19点移动回填成18点位置；只凭门的静态地图判人物当时位置。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "v2_case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "corpus_title": "The Basalt Observatory Journal",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+      "expected_class": "no_conflict",
+      "expected_nature": "none",
+      "category_axis": "location_action",
+      "decision_category": "location_action",
+      "category_policy": "fixed",
+      "category_candidates": [
+        "location_action"
+      ],
+      "allowed_outcomes": [
+        "no_issue",
+        "state_change"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 6,
+            "title": "Later Watch",
+            "source_label": "later_watch",
+            "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+          }
+        ]
+      ],
+      "optional_sources": [
+        {
+          "chapter_number": 5,
+          "title": "Watch Log",
+          "source_label": "watch_log",
+          "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+        }
+      ],
+      "issue_evidence_relation_if_emitted": "supports",
+      "issue_evidence_sufficiency_if_emitted": "sufficient",
+      "no_issue_requires_no_emitted_citations": true,
+      "raw_temporal_relation_if_issue": "explicit_later_transition",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-2fca2d31-b60b-40b2-9851-05d5a805dd01-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-basalt_observatory-6",
+          "chapter_id": "fixture-chapter-basalt_observatory-6",
+          "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+          "label": "later_watch",
+          "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-5",
+          "chapter_id": "fixture-chapter-basalt_observatory-5",
+          "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "label": "watch_log",
+          "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-4",
+          "chapter_id": "fixture-chapter-basalt_observatory-4",
+          "body": "Observatory Gate Four stands on the west pier, not the east pier.",
+          "label": "gate_map",
+          "prompt_excerpt": "Observatory Gate Four stands on the west pier, not the east pier."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "gate_map"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-basalt_observatory-1",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "identity",
+          "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "source_span_id": "fixture-span-basalt_observatory-1"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-2",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "source_span_id": "fixture-span-basalt_observatory-2"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-3",
+          "memory_type": "open_thread",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+          "source_span_id": "fixture-span-basalt_observatory-3"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-4",
+          "memory_type": "static_canon",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-4"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-5",
+          "memory_type": "dynamic_state",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-5"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-6",
+          "memory_type": "event_timeline",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+          "source_span_id": "fixture-span-basalt_observatory-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "78516dc33b33e8c9e6a242c4b377410cb857a4c92140a07e0f125ad3d7769044",
+      "independent_manual_note": {
+        "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+        "expected_class": "no_conflict",
+        "category": "location_action",
+        "minimum_labels": [
+          [
+            "later_watch"
+          ]
+        ],
+        "optional_labels": [
+          "watch_log"
+        ],
+        "semantic_check": "19点由西码头Gate Four移到东码头是明确记录的正常移动，允许无issue或充分支持的state_change。",
+        "citation_check": "later_watch单条已经写全起点、终点、时刻和移动；18点watch_log可选。若state_change，supports/sufficient并证明19点显式后续转变。",
+        "reject_if": "将18/19点不同位置当同刻冲突；强制加可选旧状态来源才承认语义充分；把非空state_change自动算冲突。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "fixed_gold_still_needs_per_answer_review"
+      }
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "v2_case_id": "ccv2-basalt_observatory-location_action-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "corpus_title": "The Basalt Observatory Journal",
+      "material_status": "seen_development_reviewed_before_v5_results",
+      "draft": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+      "expected_class": "insufficient_evidence",
+      "expected_nature": "insufficient_evidence",
+      "category_axis": "location_action",
+      "decision_category": "location_action",
+      "category_policy": "manual_variant",
+      "category_candidates": [
+        "location_action",
+        "relationship"
+      ],
+      "allowed_outcomes": [
+        "insufficient_evidence"
+      ],
+      "temporal_policy": "not_required",
+      "minimum_source_sets": [
+        [
+          {
+            "chapter_number": 6,
+            "title": "Later Watch",
+            "source_label": "later_watch",
+            "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+          }
+        ]
+      ],
+      "optional_sources": [],
+      "issue_evidence_relation_if_emitted": "context",
+      "issue_evidence_sufficiency_if_emitted": "insufficient",
+      "no_issue_requires_no_emitted_citations": false,
+      "raw_temporal_relation_if_issue": "unknown",
+      "capture_origin": "frozen_v2_actual_inputs_not_v5_dispatch",
+      "captured_claim_id": "claim-run-17f3d98a-56e2-45c0-a93b-08d1d58ffd2d-1",
+      "captured_selected_sources": [
+        {
+          "id": "fixture-span-basalt_observatory-6",
+          "chapter_id": "fixture-chapter-basalt_observatory-6",
+          "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+          "label": "later_watch",
+          "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-4",
+          "chapter_id": "fixture-chapter-basalt_observatory-4",
+          "body": "Observatory Gate Four stands on the west pier, not the east pier.",
+          "label": "gate_map",
+          "prompt_excerpt": "Observatory Gate Four stands on the west pier, not the east pier."
+        },
+        {
+          "id": "fixture-span-basalt_observatory-5",
+          "chapter_id": "fixture-chapter-basalt_observatory-5",
+          "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "label": "watch_log",
+          "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+        }
+      ],
+      "captured_selected_but_not_declared_for_issue": [
+        "gate_map",
+        "watch_log"
+      ],
+      "captured_memory": [
+        {
+          "id": "fixture-memory-basalt_observatory-1",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "identity",
+          "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "source_span_id": "fixture-span-basalt_observatory-1"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-2",
+          "memory_type": "dynamic_state",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "source_span_id": "fixture-span-basalt_observatory-2"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-3",
+          "memory_type": "open_thread",
+          "subject": "lens R4",
+          "predicate": "status",
+          "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+          "source_span_id": "fixture-span-basalt_observatory-3"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-4",
+          "memory_type": "static_canon",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-4"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-5",
+          "memory_type": "dynamic_state",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "source_span_id": "fixture-span-basalt_observatory-5"
+        },
+        {
+          "id": "fixture-memory-basalt_observatory-6",
+          "memory_type": "event_timeline",
+          "subject": "Vela",
+          "predicate": "location",
+          "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+          "source_span_id": "fixture-span-basalt_observatory-6"
+        }
+      ],
+      "captured_business_request_canonical_sha256": "34f75909f613a6ba1b99e362f2f60e524c3ee8610d640141f863c71aedfee1bb",
+      "independent_manual_note": {
+        "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "category": "location_action",
+        "minimum_labels": [
+          [
+            "later_watch"
+          ]
+        ],
+        "optional_labels": [],
+        "semantic_check": "19点Vela移动已记录，同伴姓名未记，无法说记录确证Sora同行。类别可按同行行动location_action或同行角色relationship读；必须逐答人工裁定。",
+        "citation_check": "later_watch的companion unnamed是身份缺口，不是Sora未同行或Vela独行的证据。两候选只有结构允许，语义正确和类别准确均不能自动记账。",
+        "reject_if": "认定Sora同行、不同行或Vela独行；只凭候选枚举通过就宣称类别正确；引用gate_map或18点watch_log填补19点同伴身份。"
+      },
+      "future_result_review": {
+        "raw_first": "pending_actual_result",
+        "raw_repair": "pending_actual_result",
+        "final_product": "pending_actual_result",
+        "category_adjudication": "pending_per_answer_manual_adjudication"
+      }
+    }
+  ]
+}

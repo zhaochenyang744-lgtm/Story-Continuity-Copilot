@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-04",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "d9497f06ed4cc40fecf00e52f8622d4478ea9106781001d7a7be6813bc2397d1",
+  "finished_at": "2026-09-27T10:03:19.144880+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-1c65a68b-e7b1-447a-8f6c-f13a20f56e1b-1",
+        "verdict": "no_issue",
+        "basis": "The claim states the capsule was not ready at 10:00 because its valve cap was loose. The cited evidence confirms that at 10:00 the pressure was four bars but the cap remained loose and unlocked throughout that minute, and the rule states readiness requires both four bars and a locked cap. The loose cap therefore makes the capsule not ready, so the claim is consistent with the evidence and needs no review."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3061,
+    "output_tokens": 144,
+    "observed_response_input_tokens": 3061,
+    "observed_response_output_tokens": 144
+  }
+}

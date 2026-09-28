@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "2c4ed543e071c1a6802f8bc9ee4513262a7941792f418a6e0eb87a4695058a99",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-5882fa2e-f178-494a-8fa7-9b5eed874e05-1",
+        "verdict": "no_issue",
+        "basis": "The draft claim is consistent with the cited evidence: at 10点 the manifest remained unsigned and the boat stayed at the quay, so by the stated launch rule the launch could not be complete."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3565,
+      "completion_tokens": 1011,
+      "total_tokens": 4576,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 897
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1133
+    },
+    "status": "complete",
+    "prompt_tokens": 3565,
+    "completion_tokens": 1011,
+    "total_tokens": 4576,
+    "reasoning_tokens": 897,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,183 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-14",
+  "stage": "followup",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:49:51.750004+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-14",
+      "response_alias": "answer-80a2dc",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确区分叙述者确认的谎言台词与故事事实；双胞胎登记及不能互为父母规则不因台词变更，合法空Issue。",
+          "visible_quote": "explicitly frames Nera’s utterance as a lie",
+          "evidence_pointer": "responses[response_alias=answer-80a2dc].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].text / fixture-span-orchard_restoration-1 / -2"
+        }
+      ],
+      "other_dimensions_checked": "纯冻结validator.validate通过；raw/parsed一致、精确claim、basis 194≤400；类别及显式引用N/A，无时序或操作要求。",
+      "attribution_tags": [],
+      "overall_reason": "无 repair，completed且normalization=0；逐字段核final保持首答输出，新增excerpt精确绑定。保留话语归属与叙述事实边界；没有把明示谎言误报为连续性冲突，strict通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "substantive_issue_unchanged": true,
+        "normalization_count": 0,
+        "strict_transition": "pass_to_pass",
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-14.json",
+        "F_basis": "保留final可见reasoning；空结果对应已接受首答basis，不假定final再次携带ledger。"
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-14",
+      "response_alias": "answer-10bd32",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确区分叙述者确认的谎言台词与故事事实；双胞胎登记及不能互为父母规则不因台词变更，合法空Issue。",
+          "visible_quote": "an attributed utterance, not asserted world fact",
+          "evidence_pointer": "responses[response_alias=answer-10bd32].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].text / fixture-span-orchard_restoration-1 / -2"
+        }
+      ],
+      "other_dimensions_checked": "纯冻结validator.validate通过；raw/parsed一致、精确claim、basis 313≤400；类别及显式引用N/A，无时序或操作要求。",
+      "attribution_tags": [],
+      "overall_reason": "无 repair，completed且normalization=0；逐字段核final保持首答输出，新增excerpt精确绑定。保留话语归属与叙述事实边界；没有把明示谎言误报为连续性冲突，strict通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "substantive_issue_unchanged": true,
+        "normalization_count": 0,
+        "strict_transition": "pass_to_pass",
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-14.json",
+        "F_basis": "保留final可见reasoning；空结果对应已接受首答basis，不假定final再次携带ledger。"
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-14",
+      "response_alias": "answer-98a756",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确区分叙述者确认的谎言台词与故事事实；双胞胎登记及不能互为父母规则不因台词变更，合法空Issue。",
+          "visible_quote": "an attributed false utterance, not narrator-confirmed canon",
+          "evidence_pointer": "responses[response_alias=answer-98a756].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].text / fixture-span-orchard_restoration-1 / -2"
+        }
+      ],
+      "other_dimensions_checked": "纯冻结validator.validate通过；raw/parsed一致、精确claim、basis 255≤400；类别及显式引用N/A，无时序或操作要求。",
+      "attribution_tags": [],
+      "overall_reason": "无 repair，completed且normalization=0；逐字段核final保持首答输出，新增excerpt精确绑定。保留话语归属与叙述事实边界；没有把明示谎言误报为连续性冲突，strict通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "substantive_issue_unchanged": true,
+        "normalization_count": 0,
+        "strict_transition": "pass_to_pass",
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-14.json",
+        "F_basis": "保留final可见reasoning；空结果对应已接受首答basis，不假定final再次携带ledger。"
+      }
+    }
+  ],
+  "repair_records": [],
+  "summary": {
+    "responses": 3,
+    "repair_attempted": 0,
+    "final_F_pass": 3,
+    "final_strict_pass": 3,
+    "normalization_contribution": 0
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/14.json",
+      "sha256_observed": "4bc24a732971fab236db16edd37c7a5fdd67cb151caf38ee13ef9a45a2f096a9",
+      "sha256_after_review": "4bc24a732971fab236db16edd37c7a5fdd67cb151caf38ee13ef9a45a2f096a9"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-14.json",
+      "sha256_observed": "bad3a0261220a9c8a52745a19ba25c980d61bdacd846fca3ee820dd3f2f3b0bf",
+      "sha256_after_review": "bad3a0261220a9c8a52745a19ba25c980d61bdacd846fca3ee820dd3f2f3b0bf"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/14.json",
+      "sha256_observed": "1948c02db0bfb6062c71b149b8e524ae7549ca5a6d4c99d0fa2feb828fe0776f",
+      "sha256_after_review": "1948c02db0bfb6062c71b149b8e524ae7549ca5a6d4c99d0fa2feb828fe0776f"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    }
+  ],
+  "read_hashes_stable": true
+}

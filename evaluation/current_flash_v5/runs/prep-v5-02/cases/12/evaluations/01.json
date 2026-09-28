@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "011eee09fd735747f5e3dac6535f69f26f679f2c31a400989eab892a6531568c",
+  "finished_at": "2026-09-27T08:03:58.966806+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

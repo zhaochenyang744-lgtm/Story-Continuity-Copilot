@@ -1,0 +1,69 @@
+{
+  "created_at_utc": "2026-09-27T10:13:08.489739+00:00",
+  "run_id": "flash-v6-20260927-01",
+  "decision": {
+    "execution_and_ledger": "pass",
+    "product_quality": "not_accepted",
+    "user_acceptance": "not_established",
+    "release": "not_authorized_or_performed"
+  },
+  "first_answer_full_pass": {
+    "old_comparison": 8,
+    "new_controls": 4,
+    "total": 12,
+    "denominator": 34
+  },
+  "final_full_pass": {
+    "old_comparison": 10,
+    "new_controls": 4,
+    "total": 14,
+    "denominator": 34
+  },
+  "final_by_expected_class": {
+    "conflict": {
+      "pass": 3,
+      "total": 10
+    },
+    "no_conflict": {
+      "pass": 11,
+      "total": 13
+    },
+    "insufficient_evidence": {
+      "pass": 0,
+      "total": 11
+    }
+  },
+  "product_failed": 14,
+  "completed_quality_failed": 6,
+  "completed_quality_passed": 14,
+  "generation_post": 49,
+  "models_get": 1,
+  "contract_repairs": 15,
+  "transport_retries": 0,
+  "unfinished_attempts": 0,
+  "usage": {
+    "input_tokens": 168459,
+    "output_tokens": 12568,
+    "total_tokens": 181027,
+    "complete_dispatch_records": 49,
+    "cost": null
+  },
+  "run_files_rechecked_unchanged": 420,
+  "evidence_hashes": {
+    "LIVE-ACCEPTANCE.md": "f814ec8a18d743b02bcb1ed57b90b17f2b95f905dc72caf8654e74ca1dd6af20",
+    "semantics/live-01-review.md": "accf1d80984ec19309c7f15fb869d9d13424364c675084cda4e131998accea5a",
+    "semantics/live-01-review.json": "04b9979a9062b6c2657bc71071bd3d50f2dc52497f471645d2ede13115316d49",
+    "new-controls/live-01-review.md": "9bde81045e0da7fa7e8ff853ffe54f226fa164458843699d70e27229e1b41ec0",
+    "new-controls/live-01-review.json": "cda1060b5bbe48f480da41795078d72a4239d74a7b9192e2cce30aebb22bd6a7",
+    "engineering/live-01-engineering-review-final.md": "bb7d6c479f447a09c3c4c736635517f7c23dea910abd17771aa996b4c433ace5",
+    "engineering/live-01-engineering-review-final.json": "dbb62ebd009d2cdc6fc97d3eb5c9f4b31b9f3f6f44f99dac0c5e58da333f1fe3",
+    "engineering/live-01-version-field-addendum.json": "9c4fe0b57cd7fe8fc97539720e81db9bc1fcee660a022635004816633799e6e3",
+    "ROOT-LIVE-FAILURE-DIAGNOSTICS.json": "64f14f73144c9ebc27ccc7780d84e9d7cbccc41a3584d841880755e0e2a1ac47",
+    "ROOT-CLOSEOUT-INTEGRITY.json": "7855a907c68d42691f08cae7a156012ad361ea3a348cc0ddb81d0f1738bb66ae",
+    "post-live-history-audit.json": "7de51a2d4f643971e35838d6b1afad308586b7a0f05995fb0ee13d8d510e2dd8",
+    "NEXT-ROUND-HANDOFF.md": "c8e92e009a5a146f7544fddd2471dfe57d65b7e2d956feb078bd52d9a5cc81ba"
+  },
+  "next_round": "NEXT-ROUND-HANDOFF.md; not executed in this acceptance",
+  "root_provider_calls": 0,
+  "root_database_connections": 0
+}

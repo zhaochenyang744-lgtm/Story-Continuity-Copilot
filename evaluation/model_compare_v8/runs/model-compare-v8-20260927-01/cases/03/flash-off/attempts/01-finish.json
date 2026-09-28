@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 2596,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "27e853fe-b8c0-4c11-af8a-5f8a11d9f599",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"object_state\",\"severity\":\"medium\",\"explanation\":\"草稿声称两份徽章登记册显示 Mira 在 11点持有备用蓝色徽章，但所引证据只显示 11点持有人字段为空白，无法支持该归属。\",\"reasoning\":\"引用的登记册证据表明 11点持有人字段为空，因此草稿关于 Mira 在 11点持有备用蓝色徽章的断言缺乏来源依据；10点红徽章记录与气压载具记录均与 11点徽章归属无关，不能补足这一缺失环节。\",\"temporal_basis\":{\"claim_anchor\":\"11点\",\"evidence_anchor\":\"11点 holder field blank\",\"relation\":\"unknown\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-north_glass-3\",\"span_id\":\"fixture-span-north_glass-3\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-3\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-north_glass-3\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"登记册证据显示 11点持有人字段为空，无法证明 Mira 在 11点持有备用蓝色徽章；该归属缺少来源依据。\"}]}",
+  "visible_content_sha256": "c585ffee8d1191be72a0e68a8d75c299980ea6eee728210ce58fb17fcf0b0627",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3456,
+      "completion_tokens": 374,
+      "total_tokens": 3830,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1280
+    },
+    "status": "complete",
+    "prompt_tokens": 3456,
+    "completion_tokens": 374,
+    "total_tokens": 3830,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:36:32.392641+00:00"
+}

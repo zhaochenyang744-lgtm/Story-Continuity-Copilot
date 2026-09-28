@@ -1,0 +1,28 @@
+{
+  "run_id": "flash-v5-service-stop",
+  "mode": "live",
+  "finished_at": "2026-09-27T08:16:23.610592+00:00",
+  "logical_cases_finished": 2,
+  "logical_cases_planned": 30,
+  "service_stop": true,
+  "semantic_status": "pending_manual_review",
+  "post_attempt_start_records": 4,
+  "transport_attempts_finished": 4,
+  "http_responses_received": 2,
+  "server_receipt_for_unfinished_attempts": "unknown",
+  "usage_counts": {
+    "complete": 2,
+    "missing": 0,
+    "partial": 0,
+    "unknown": 2
+  },
+  "known_prompt_tokens_partial_sum": 14,
+  "known_completion_tokens_partial_sum": 6,
+  "prompt_tokens_total": null,
+  "completion_tokens_total": null,
+  "all_dispatch_usage_complete": false,
+  "unfinished_attempt_count": 0,
+  "models_get_start_records": 0,
+  "models_get_finish_observed": 0,
+  "models_server_receipt_if_unfinished": "unknown"
+}

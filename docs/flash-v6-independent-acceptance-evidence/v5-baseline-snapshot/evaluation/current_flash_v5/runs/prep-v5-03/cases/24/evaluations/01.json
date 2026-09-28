@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "3c1b665ef7534c6a7d1669ab5ceadca17bbc36979d5f6bc237ad5e713a899116",
+  "finished_at": "2026-09-27T08:08:05.379004+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

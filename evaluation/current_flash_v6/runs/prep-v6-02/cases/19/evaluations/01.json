@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "c78ce6ec426b5b8eb1ada6fa5ddc6fd446f9ff47b992d761cb7348c61bd3ed58",
+  "finished_at": "2026-09-27T09:39:40.173616+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-8f098342-f51e-4691-b4bb-0a66704d1a52-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "evaluation": 2,
+  "business_request_sha256": "eb0c6bf73a61b4eb95101dc1757ea373f779a59ce2ea3391ff05cc78e3baa4bb",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "event_status",
+        "severity": "high",
+        "explanation": "草稿称修复船在当天10点已完成下水，但同一时刻的证据显示舱单仍未签署、船仍停在果园码头，按既定规则此时下水不可能完成。",
+        "reasoning": "静态规则规定：修复船的下水只有在舱单签署且船离开果园码头之后才算完成。事件时间线证据给出同一时间锚点“当天10点”，并说明该分钟内舱单始终未签署、船始终停在码头未离开。草稿却断言在同一时刻下水已经完成，两者在同一主体、同一时间、同一事件状态下无法并存：完成所需的两个条件在同一时刻被明确否定。",
+        "temporal_basis": {
+          "claim_anchor": "At 10点 on the same day",
+          "evidence_anchor": "At 10点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-4",
+            "span_id": "fixture-span-orchard_restoration-4",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-4"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-5",
+            "span_id": "fixture-span-orchard_restoration-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-5"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-4",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-orchard_restoration-5",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10点 on the same day, the restoration boat had completed its launch.",
+          "after": "At 10点 on the same day, the restoration boat's launch had not yet completed: its manifest remained unsigned and the boat remained at the orchard quay."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+        "verdict": "reviewed_issue",
+        "basis": "草稿断言当天10点下水已完成，而同一时间锚点的证据显示舱单未签署且船未离开码头，按下水完成规则构成直接矛盾。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 4368,
+      "completion_tokens": 558,
+      "total_tokens": 4926,
+      "prompt_tokens_details": {
+        "cached_tokens": 3328
+      },
+      "prompt_cache_hit_tokens": 3328,
+      "prompt_cache_miss_tokens": 1040
+    },
+    "status": "complete",
+    "prompt_tokens": 4368,
+    "completion_tokens": 558,
+    "total_tokens": 4926,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

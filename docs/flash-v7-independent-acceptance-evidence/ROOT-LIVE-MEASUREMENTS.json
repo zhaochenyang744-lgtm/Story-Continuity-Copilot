@@ -1,0 +1,1638 @@
+{
+  "created_at": "2026-09-27T10:50:17.203028+00:00",
+  "layer": "machine_and_ledger_not_manual_semantics",
+  "run_summary": {
+    "run_id": "flash-v7-20260927-01",
+    "mode": "live",
+    "finished_at": "2026-09-27T10:49:13.471392+00:00",
+    "logical_cases_finished": 34,
+    "logical_cases_planned": 34,
+    "service_stop": false,
+    "semantic_status": "pending_manual_review",
+    "post_attempt_start_records": 40,
+    "transport_attempts_finished": 40,
+    "http_responses_received": 40,
+    "server_receipt_for_unfinished_attempts": "unknown",
+    "usage_counts": {
+      "complete": 40,
+      "missing": 0,
+      "partial": 0,
+      "unknown": 0
+    },
+    "known_prompt_tokens_partial_sum": 136159,
+    "known_completion_tokens_partial_sum": 11938,
+    "prompt_tokens_total": 136159,
+    "completion_tokens_total": 11938,
+    "all_dispatch_usage_complete": true,
+    "unfinished_attempt_count": 0,
+    "models_get_start_records": 1,
+    "models_get_finish_observed": 1,
+    "models_server_receipt_if_unfinished": "unknown"
+  },
+  "counts": {
+    "all": {
+      "n": 34,
+      "first_machine_pass": 18,
+      "final_machine_pass": 19,
+      "product_completed": 33,
+      "terminal": 1
+    },
+    "old24": {
+      "n": 24,
+      "first_machine_pass": 12,
+      "final_machine_pass": 13,
+      "product_completed": 23,
+      "terminal": 1
+    },
+    "new10": {
+      "n": 10,
+      "first_machine_pass": 6,
+      "final_machine_pass": 6,
+      "product_completed": 10,
+      "terminal": 0
+    }
+  },
+  "rows": [
+    {
+      "ordinal": 1,
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          209
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 2,
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          235
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 3,
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "product_validator:claim_verdicts_issue_mismatch",
+          "required_issue_missing"
+        ]
+      },
+      "repairs": [
+        {
+          "machine_result": "pass",
+          "semantic_result": "pending_manual_review",
+          "score_layer": "raw_first_or_repair_v6",
+          "errors": []
+        }
+      ],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          261
+        ],
+        [
+          84
+        ]
+      ],
+      "repair_diagnostics": [
+        [
+          {
+            "claim_span_id": "claim-run-db468eb9-4f82-429e-b9e2-51a578673bf2-1",
+            "claim_text": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+            "problem_codes": [
+              "claim_verdicts_issue_mismatch"
+            ],
+            "cited_evidence": [],
+            "invalid_field": "verdict",
+            "actual_verdict": "insufficient_evidence",
+            "expected_verdict_for_returned_issues": "no_issue",
+            "issue_present": false,
+            "required_issue_status_for_verdict": "insufficient_evidence",
+            "requirement": "Keep the evidence-based decision. An insufficient_evidence decision needs a cited missing_link Issue with no actions. Change a verdict only when the original evidence justifies that change."
+          }
+        ]
+      ]
+    },
+    {
+      "ordinal": 4,
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          48
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 5,
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          267
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 6,
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "required_issue_missing"
+        ]
+      },
+      "repairs": [],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "required_issue_missing"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          388
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 7,
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          162
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 8,
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          169
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 9,
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "repairs": [],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          197
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 10,
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "undeclared_extra_evidence"
+        ]
+      },
+      "repairs": [],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "undeclared_extra_evidence"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          68
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 11,
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          201
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 12,
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "product_validator:claim_verdicts_issue_mismatch",
+          "required_issue_missing"
+        ]
+      },
+      "repairs": [
+        {
+          "machine_result": "fail",
+          "semantic_result": "not_reviewed",
+          "score_layer": "raw_first_or_repair_v6",
+          "errors": [
+            "category_mismatch"
+          ]
+        }
+      ],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          281
+        ],
+        [
+          79
+        ]
+      ],
+      "repair_diagnostics": [
+        [
+          {
+            "claim_span_id": "claim-run-39de51eb-b748-4ebf-b329-1c5f212dfc3a-1",
+            "claim_text": "Vela delivered the telegram to Sera at 13点, according to the records.",
+            "problem_codes": [
+              "claim_verdicts_issue_mismatch"
+            ],
+            "cited_evidence": [],
+            "invalid_field": "verdict",
+            "actual_verdict": "insufficient_evidence",
+            "expected_verdict_for_returned_issues": "no_issue",
+            "issue_present": false,
+            "required_issue_status_for_verdict": "insufficient_evidence",
+            "requirement": "Keep the evidence-based decision. An insufficient_evidence decision needs a cited missing_link Issue with no actions. Change a verdict only when the original evidence justifies that change."
+          }
+        ]
+      ]
+    },
+    {
+      "ordinal": 13,
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "direct_fact_mislabeled_context",
+          "premise_mislabeled_direct_contradiction"
+        ]
+      },
+      "repairs": [],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "direct_fact_mislabeled_context",
+          "premise_mislabeled_direct_contradiction"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          182
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 14,
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          243
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 15,
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "category_mismatch",
+          "undeclared_extra_evidence"
+        ]
+      },
+      "repairs": [],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "category_mismatch",
+          "undeclared_extra_evidence"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          208
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 16,
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          212
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 17,
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          250
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 18,
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "product_validator:claim_verdicts_issue_mismatch",
+          "required_issue_missing"
+        ]
+      },
+      "repairs": [
+        {
+          "machine_result": "fail",
+          "semantic_result": "not_reviewed",
+          "score_layer": "raw_first_or_repair_v6",
+          "errors": [
+            "category_mismatch"
+          ]
+        }
+      ],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          207
+        ],
+        [
+          53
+        ]
+      ],
+      "repair_diagnostics": [
+        [
+          {
+            "claim_span_id": "claim-run-a4b1dbd6-e966-4c05-9d06-d6b20efea737-1",
+            "claim_text": "Tala caused the restoration boat's delay, according to the launch and delay logs.",
+            "problem_codes": [
+              "claim_verdicts_issue_mismatch"
+            ],
+            "cited_evidence": [],
+            "invalid_field": "verdict",
+            "actual_verdict": "insufficient_evidence",
+            "expected_verdict_for_returned_issues": "no_issue",
+            "issue_present": false,
+            "required_issue_status_for_verdict": "insufficient_evidence",
+            "requirement": "Keep the evidence-based decision. An insufficient_evidence decision needs a cited missing_link Issue with no actions. Change a verdict only when the original evidence justifies that change."
+          }
+        ]
+      ]
+    },
+    {
+      "ordinal": 19,
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "repairs": [],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          76
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 20,
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          217
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 21,
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "product_validator:claim_verdicts_issue_mismatch",
+          "required_issue_missing"
+        ]
+      },
+      "repairs": [
+        {
+          "machine_result": "fail",
+          "semantic_result": "not_reviewed",
+          "score_layer": "raw_first_or_repair_v6",
+          "errors": [
+            "category_mismatch"
+          ]
+        }
+      ],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          331
+        ],
+        [
+          72
+        ]
+      ],
+      "repair_diagnostics": [
+        [
+          {
+            "claim_span_id": "claim-run-904e5f94-8b13-4ebc-831f-a922ef809686-1",
+            "claim_text": "The index and maintenance sheet establish that Vela ground lens R4.",
+            "problem_codes": [
+              "claim_verdicts_issue_mismatch"
+            ],
+            "cited_evidence": [],
+            "invalid_field": "verdict",
+            "actual_verdict": "insufficient_evidence",
+            "expected_verdict_for_returned_issues": "no_issue",
+            "issue_present": false,
+            "required_issue_status_for_verdict": "insufficient_evidence",
+            "requirement": "Keep the evidence-based decision. An insufficient_evidence decision needs a cited missing_link Issue with no actions. Change a verdict only when the original evidence justifies that change."
+          }
+        ]
+      ]
+    },
+    {
+      "ordinal": 22,
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "product_validator:evidence_unresolvable",
+          "source_not_selected_or_wrong_chapter",
+          "undeclared_extra_evidence"
+        ]
+      },
+      "repairs": [],
+      "final": {
+        "result": "terminal_failure",
+        "machine_result": "terminal_failure",
+        "semantic_result": "not_reviewed",
+        "errors": [
+          "evidence_unresolvable"
+        ]
+      },
+      "product_status": "failed",
+      "error_code": "evidence_unresolvable",
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          83
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 23,
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "group": "old24",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          263
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 24,
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "group": "old24",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "product_validator:claim_verdicts_issue_mismatch",
+          "required_issue_missing"
+        ]
+      },
+      "repairs": [
+        {
+          "machine_result": "fail",
+          "semantic_result": "not_reviewed",
+          "score_layer": "raw_first_or_repair_v6",
+          "errors": [
+            "category_mismatch"
+          ]
+        }
+      ],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          182
+        ],
+        [
+          50
+        ]
+      ],
+      "repair_diagnostics": [
+        [
+          {
+            "claim_span_id": "claim-run-e01c8e32-6186-4e0d-957c-8666ee2fccdb-1",
+            "claim_text": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+            "problem_codes": [
+              "claim_verdicts_issue_mismatch"
+            ],
+            "cited_evidence": [],
+            "invalid_field": "verdict",
+            "actual_verdict": "insufficient_evidence",
+            "expected_verdict_for_returned_issues": "no_issue",
+            "issue_present": false,
+            "required_issue_status_for_verdict": "insufficient_evidence",
+            "requirement": "Keep the evidence-based decision. An insufficient_evidence decision needs a cited missing_link Issue with no actions. Change a verdict only when the original evidence justifies that change."
+          }
+        ]
+      ]
+    },
+    {
+      "ordinal": 25,
+      "case_id": "v6-v6s-01",
+      "group": "new10",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "repairs": [],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          178
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 26,
+      "case_id": "v6-v6s-03",
+      "group": "new10",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          149
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 27,
+      "case_id": "v6-v6s-04",
+      "group": "new10",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          235
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 28,
+      "case_id": "v6-v6s-06",
+      "group": "new10",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "product_validator:claim_verdicts_issue_mismatch",
+          "required_issue_missing"
+        ]
+      },
+      "repairs": [
+        {
+          "machine_result": "fail",
+          "semantic_result": "not_reviewed",
+          "score_layer": "raw_first_or_repair_v6",
+          "errors": [
+            "category_mismatch"
+          ]
+        }
+      ],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          275
+        ],
+        [
+          275
+        ]
+      ],
+      "repair_diagnostics": [
+        [
+          {
+            "claim_span_id": "claim-run-ded38ccc-dc5f-4e82-a56c-f764f83acedf-1",
+            "claim_text": "According to the inspection log, Ina loosened the courier capsule valve cap.",
+            "problem_codes": [
+              "claim_verdicts_issue_mismatch"
+            ],
+            "cited_evidence": [],
+            "invalid_field": "verdict",
+            "actual_verdict": "insufficient_evidence",
+            "expected_verdict_for_returned_issues": "no_issue",
+            "issue_present": false,
+            "required_issue_status_for_verdict": "insufficient_evidence",
+            "requirement": "Keep the evidence-based decision. An insufficient_evidence decision needs a cited missing_link Issue with no actions. Change a verdict only when the original evidence justifies that change."
+          }
+        ]
+      ]
+    },
+    {
+      "ordinal": 29,
+      "case_id": "v6-v6s-07",
+      "group": "new10",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          347
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 30,
+      "case_id": "v6-v6s-08",
+      "group": "new10",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          190
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 31,
+      "case_id": "v6-v6s-09",
+      "group": "new10",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "repairs": [],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          167
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 32,
+      "case_id": "v6-v6s-10",
+      "group": "new10",
+      "first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "repairs": [],
+      "final": {
+        "result": "fail",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "score_layer": "final_product_v6",
+        "errors": [
+          "category_mismatch"
+        ]
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          156
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 33,
+      "case_id": "v6-v6s-11",
+      "group": "new10",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          310
+        ]
+      ],
+      "repair_diagnostics": []
+    },
+    {
+      "ordinal": 34,
+      "case_id": "v6-v6s-12",
+      "group": "new10",
+      "first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "raw_first_or_repair_v6",
+        "errors": []
+      },
+      "repairs": [],
+      "final": {
+        "result": "pending_manual_review",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "score_layer": "final_product_v6",
+        "errors": []
+      },
+      "product_status": "completed",
+      "error_code": null,
+      "normalization_count": 0,
+      "basis_lengths": [
+        [
+          232
+        ]
+      ],
+      "repair_diagnostics": []
+    }
+  ],
+  "v7_manifest_sha256": "361f4d7d778d6818b258e51caec65a8fd6e4a762b52c78181de35c5f7f8abe47",
+  "v7_frozen_files": 632,
+  "v7_drift": [],
+  "v6_manifest_differences": [
+    "backend/app/provider.py",
+    "backend/app/engine.py"
+  ],
+  "v7_run_hashes": {
+    "models-finish.json": "48717ca0a0ad8e60d12d177199f3902ab31f948794ceb5c70ddd062ba479a59c",
+    "models-start.json": "9e3a37e58b14af94354e9acbad6aafa8f9f762733aa8cd086847b0e28dee1b7b",
+    "start.json": "c9d27a752f71e5a894dc97cdf5e16949d01b326c1c292dbe174ee842106377aa",
+    "summary.json": "28e231bf0ebf97508c9437759919b4f7663b0dca07e4adddb376152e3d47b021",
+    "workspace-manifest.json": "c3200ae4598390fd643a2f6965234157f18a550d6f28b1cef67e5a863869f8d2",
+    "cases/01/case-finish.json": "35c8bfc8d029d638cd11ab5ae894f9fd86cab48a301e83fdd971389026641606",
+    "cases/01/case-start.json": "43629cb4593603bad02bc0f0e832ca9ba884a3e207dfc625aa07a398079ef5bc",
+    "cases/01/final-product.json": "16dd363dc8ec933c225d2869079e539ae631ca01c6a3f124c814028eb26c3a16",
+    "cases/01/runtime-binding.json": "cd90944a141ca3e893b0aa2fadfd300d07f9abb54ea78b5f138233c8dfe7873e",
+    "cases/01/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/02/case-finish.json": "1811addc251640663deb203789e8f4d55d0ed8eada634ff1b2bbfebf20971ae0",
+    "cases/02/case-start.json": "cafcdf916491a8074972efb5feda8e63fd42eb99a9f6b7c3085c3d90286d7585",
+    "cases/02/final-product.json": "5ec03d55f8debdf81a6671dce6d96805f03f889f3e279c1122b58d2387c76140",
+    "cases/02/runtime-binding.json": "7fd791614a49cda84e3185ef60372cdbaf5dd11b9f6ef3246ae60787d9084c44",
+    "cases/02/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/03/case-finish.json": "d84e7e5e13711c917b5469b1b85dfba218384301b66aa00cfa810fce6e1e2048",
+    "cases/03/case-start.json": "78058f4e2875e51cb64884429e5de71f654b0fa325fa407a979a765209f211c4",
+    "cases/03/final-product.json": "c85a5cc652eb42f79ac3b9f9de04da80a2801a081c59d2188ce83c28dbd64a47",
+    "cases/03/runtime-binding.json": "c3def9c082ce8a93466e409009f2b06ef0baa76eb21d2b35299a8b2f7dda26dc",
+    "cases/03/scores.json": "0d96daa4b6abf9a25400033e3b4ca0d58e45c5a5a90e7947c2a1c44802d11e27",
+    "cases/04/case-finish.json": "e2a53f5a5059fbed9d7f9abf7aa0346768796938a98a06505948c3248dce9675",
+    "cases/04/case-start.json": "22e1f81e52a79370ecd8f8766d865d7364eb6357f2b9fb29b34d47fcf741571e",
+    "cases/04/final-product.json": "bc69236bfc541132641752bca1ee96cc484435a0ed8e09d01b7339c24ac1472e",
+    "cases/04/runtime-binding.json": "0950de7be6a86e6fa1353a9b31e13f51a6dd827c3b080524423e0e841ea6b59e",
+    "cases/04/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/05/case-finish.json": "6722a4476b60948f117929f008e6e9a6be36cee83b184dcd5b9e39389bc15411",
+    "cases/05/case-start.json": "fa0aa5200180ddcece70d57f9a693619871dfc6dfe93369de5344efaedb238f0",
+    "cases/05/final-product.json": "c5de6b4b2133f42580a3e177be0b4ea8a10b7a47a05eef94215b51a0b1762744",
+    "cases/05/runtime-binding.json": "0544aee975c41cafa08fbf5dd0e02dca762d66358ead44286cecaf3ccf7be89b",
+    "cases/05/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/06/case-finish.json": "595627c80086303781f415d139f3be36f027f24866c6baf0d73a7e3616b46974",
+    "cases/06/case-start.json": "e4f6217d1b9bc93fc074290855711ce14cf9b4f9c6f272feb866cd94d95d0625",
+    "cases/06/final-product.json": "bc4e846f8d87383e185d6637787830c4e90718ff1448db465aeba572ecffdd79",
+    "cases/06/runtime-binding.json": "6aebd308048f220cc1d88b15c66be2917418946016f7ffede2d620757c2d1ddf",
+    "cases/06/scores.json": "8e709ed5c03bb2477a80d73b02d79a14e1dfd0236937997eddbe179ecede6a0d",
+    "cases/07/case-finish.json": "5138e290bbcfa144612236aae8c56ed206f7f651591d71fa16efdf07a9b41ef2",
+    "cases/07/case-start.json": "872659f92ce5fa512b8e6715b5598dd50772e5c570f4d837b3939f51d3b9432c",
+    "cases/07/final-product.json": "6e076e0b6e890b19377266ff2d6aa36c9ae672f7f924f9eebf0a82d72218514b",
+    "cases/07/runtime-binding.json": "f24e6f6a489faffa68aab464772918c6fb5f88f83f2abb3131e36bf0fc9a4065",
+    "cases/07/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/08/case-finish.json": "30f4b0b82b6d4e821a72ccaff5dbb2dc939d0b243014b228d19cd2d489910296",
+    "cases/08/case-start.json": "3713a563f0a6a43ed165e76f7aef75baf007480677052b1924685fc6d0381d6b",
+    "cases/08/final-product.json": "8a41af5173613f2995fec548ccbd42f99a29afe798c1a5a2ea9f0acebb896171",
+    "cases/08/runtime-binding.json": "bc9f1b98b4983bbab8f9ccea0bfd54006728b23c01070179bb6fe8e32ea0f5d5",
+    "cases/08/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/09/case-finish.json": "819e72d3e4afb34e2f69bfefb0bbf1f3ab58893620673aefbc596077255d0aff",
+    "cases/09/case-start.json": "bd836d3bea4bdd1d9051052945dbdec4427368e4b4ecc6d41e78c80bfb555f80",
+    "cases/09/final-product.json": "addd99459ddebc8d76c739784e14f62c8aa358d5b86543fa10ea028a3f4132b0",
+    "cases/09/runtime-binding.json": "7f0c197f9de33a897bd7dbe75db449df28aa0aa01d8554a8a3250daca576469e",
+    "cases/09/scores.json": "7564486e3ea0f6f2313182773908c3b01f2b03721df09a5844d79fdbb96fa332",
+    "cases/10/case-finish.json": "9979c35b6f70584604a72cd464a4640f28e7530b7cb56cd37464d3941edbd957",
+    "cases/10/case-start.json": "49ddedb9b4d9cad23949de205fed172d9860612d59c447762aab46b93144e1dd",
+    "cases/10/final-product.json": "b76d559eb6efb54117d1899dbb3e9dcfa2791a35cb4d651c6527823bbf472bea",
+    "cases/10/runtime-binding.json": "2b6121f591dc2ef4c65bec01b73673093c64e1f238e71317c62fbf5e098b0dac",
+    "cases/10/scores.json": "7fc7c4dca091152ab5f61f0f65e840e171f5945c9f6ac8c2b306966d2f098cfa",
+    "cases/11/case-finish.json": "668990ea7ad8a9fe4206a6873df0a7e4ebac33dfea94ef9d41e56e84ed320b7f",
+    "cases/11/case-start.json": "80ecccd156ae78f90b0f832db53c9df1f391c69ff3dff7ec4f3e1cd12eb62401",
+    "cases/11/final-product.json": "13bb8648306ee8cd5d4b11c5e9f172a8f87a254ec6b9de78e80fd93e1605b273",
+    "cases/11/runtime-binding.json": "ed377948ac281f69e431cce24ceb25cf19b517997c6959269e31c32c312c92a9",
+    "cases/11/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/12/case-finish.json": "f8c8e92ca2e4dab77555ff471fb78e5e862643d631f0db55635e63d3b85d6e0c",
+    "cases/12/case-start.json": "de0f7787d64bba8c39277727f7e9989d06f8ef5e08b5a1c2545b69ce5cb27d54",
+    "cases/12/final-product.json": "31dc459568715463d31de1e47ab445c6245cc55f4e2986114b1e54e25b0a239c",
+    "cases/12/runtime-binding.json": "c102a95d43449c8edc50f398abe2c69b8d2013e087618b66bb836a4b5820b255",
+    "cases/12/scores.json": "a196c189e3239cebcaa970107bfe6e07a39f53c6059b95021e6db4eaf93afc44",
+    "cases/13/case-finish.json": "c24ac8b0e52e5179f55ab2c6fecb41477c0b7ca84df97c8f7aa9bd83c76ada84",
+    "cases/13/case-start.json": "d1e40cb0e2be1e17dd3fcf375c88e341f23738c7c0eb6ecde99e70f68ecd2da3",
+    "cases/13/final-product.json": "be17c390458b3ce422086acf70509f0d3dc6085087165ff8e9318e03e9a6782d",
+    "cases/13/runtime-binding.json": "780f1281340353dd6da1551e5e543be651ccb7cfc95b3a9f89c168730dfcee91",
+    "cases/13/scores.json": "310416d26fdf2975be201a51ce4aaa82f9d52044b3be9961bfee8812d8f874ac",
+    "cases/14/case-finish.json": "6db2b381fa9b08a9550470656cbf35896461d54383871a71227e822520bb7b70",
+    "cases/14/case-start.json": "b471791ee693e982511901cc8be25e12eb935daf3d455ff0e9eec16e455a0769",
+    "cases/14/final-product.json": "d55e4745dc2060837b51ef20e630eae90b67e2730b28cd97bf3d9fc1db7731f0",
+    "cases/14/runtime-binding.json": "e45064f95280c97050f3d2ac43b1c6f5f97adab503a50e84f47dff7ff4ae2418",
+    "cases/14/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/15/case-finish.json": "0ba99e904f530bf344718c58033d1428986160316e8145a828782554fbb6afcf",
+    "cases/15/case-start.json": "9f557add93cdcc605cc48350ba65b62d6d9dc157e2d023f8e3944f4a79b9d2fa",
+    "cases/15/final-product.json": "53abe50659572e9432d91d0982132bc6f700c2e57f1c569cbc8863f2aadeb7ac",
+    "cases/15/runtime-binding.json": "8fc12cf88d5bcbcf6abc47c2d093cf557fbcee5116a0306952faa5d25320a629",
+    "cases/15/scores.json": "c5c15fcebd7e6b02e91ddb5412d81cb720f8859d71c58e736c38d690e0bed606",
+    "cases/16/case-finish.json": "8f9529778b941d630a6a478c09c84f976d57b8c1a3cc0cccc59d69b7bb37d144",
+    "cases/16/case-start.json": "0e2da398998970e1cf50d2e6b4b276ffe38941789d57cfbb9cb534d3fbac6f07",
+    "cases/16/final-product.json": "cc88bef3b6620e23342504604bfd1eea9c3c365490437a73d8cf8b3dfa619034",
+    "cases/16/runtime-binding.json": "5487c01dbcd1904727de936deeec33d3b2aa6ad70c648a8302440016ee37e5b1",
+    "cases/16/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/17/case-finish.json": "c14a800b67da22682617854d845edcf7b21a522d3b8e3eda03be1af9ea141c75",
+    "cases/17/case-start.json": "e23b4d899de99e1d1a871366845e9f3ad13641c8a04c8ee43f6f804a153ca8f0",
+    "cases/17/final-product.json": "e942b26190579e7f26eedf88791267f5262f90b14947d5d22d0523480ac9852e",
+    "cases/17/runtime-binding.json": "fa8e100a32ac06745e0190db3ef89f369079f576cf44c76bbe33f1b23fa808db",
+    "cases/17/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/18/case-finish.json": "3fbc865fa2bfdb69e78e19616c7ebfdee9faca90288550944c7cbe9390d0159c",
+    "cases/18/case-start.json": "3f84fb6fd1ab4f51ae4d84a8c63ec1b3dad66f98acb7b773f07e23756ff80735",
+    "cases/18/final-product.json": "2f5deb2fd7923cc4d94024100edc57b2a0fe48d74b2cf3a9a71c557e883aaa03",
+    "cases/18/runtime-binding.json": "6240d4f6a85c602155973d267b1ff58c882c2371aa8783cf0eb29eff99bae567",
+    "cases/18/scores.json": "a196c189e3239cebcaa970107bfe6e07a39f53c6059b95021e6db4eaf93afc44",
+    "cases/19/case-finish.json": "c9c6c76f5eefcb3ec9f8b8deb4dd9ea285a7a2d4d28535e029a064f387aa05e2",
+    "cases/19/case-start.json": "ab710d88fe0b1a06736ab7712f96a33ed040ecc49eee0cf14274b6c9076d2f31",
+    "cases/19/final-product.json": "4c2c6c1b29554391c8f000c18c4c06dd562b3c3773fe308ae1063f869233f27b",
+    "cases/19/runtime-binding.json": "c2065360b27d9c87bc61b0833775744705190cfd1d6eb1ba2959597e2670f0e5",
+    "cases/19/scores.json": "7564486e3ea0f6f2313182773908c3b01f2b03721df09a5844d79fdbb96fa332",
+    "cases/20/case-finish.json": "d7be6bf4b06558696b03b2ed297756d7401073818f3eb3f41a0e1c0235cd3ebc",
+    "cases/20/case-start.json": "0634b639e625e2b7c71050d4a3ce353433befe10a4a7f10d4d7806e02a675599",
+    "cases/20/final-product.json": "8782fda155a9ee1203fcd6d78ef5358c08d564ce2654046e9815443317138517",
+    "cases/20/runtime-binding.json": "5f894ae306fc6532f4c05acea8ca76928b33b504ceca2b28e3f803102dcba56f",
+    "cases/20/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/21/case-finish.json": "b53c83dd1d38b1d8c93cb36808ac72db2e2e63a12f47d5f17e7cf1a20bd0c62a",
+    "cases/21/case-start.json": "7ca3ba2b59c9e27aeb9734908319e3b3ba701d4f2becbe564f6928c847f54432",
+    "cases/21/final-product.json": "30f8292cf85baee981a513e0688e2f9bb906d4f33ab9e1322d5e91e3f22494f4",
+    "cases/21/runtime-binding.json": "e54555274a0fd6d210da1a9548055606ba84c62cf2069b355affb543cf549149",
+    "cases/21/scores.json": "a196c189e3239cebcaa970107bfe6e07a39f53c6059b95021e6db4eaf93afc44",
+    "cases/22/case-finish.json": "5cd6ac98d4d8589c71d96356ce0741ec099e21d2d290d42f6430640e79bc37e2",
+    "cases/22/case-start.json": "07857a5a15cab0277caea6e43d4ce4d29b84a5eaa5a89ba49c81671dc32b7a0e",
+    "cases/22/final-product.json": "b176a4bc0a1bbae680a333d90b1e4045aba9f3687f7317fc7822925e99b5023e",
+    "cases/22/runtime-binding.json": "b56ef57c5de73a86fcb3dc0b656bfc7034741906b99645382657782150e12271",
+    "cases/22/scores.json": "f546ee187215557703127c1b0361f62ab29f2446bf2865a4b4f44e1182628a18",
+    "cases/23/case-finish.json": "26d909ec58a18c7a40de130830244459397b4308da19b8234e60f7469c83d758",
+    "cases/23/case-start.json": "06522b8ab673b10ce11af384690897f91da1c6c866c589edd50739971440eadf",
+    "cases/23/final-product.json": "3b3ec5326e2bcad952afed0f67cc82f93aa1d4b386e6ca90dc9e77bb7beb6e5b",
+    "cases/23/runtime-binding.json": "b61b5a2b20d6dc3c19494d9d6036ecee0e07faa96d79706c9762d0a9a80eecdd",
+    "cases/23/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/24/case-finish.json": "3dcb4db476c8e2a8d212bda3c3da1c1f7d7fab4aad0eb6d4816b538f01299fc0",
+    "cases/24/case-start.json": "4433fc92f6a11cfe8bbfd379998d99b78e91ad2e0129ce79168b5eef6d8a43b3",
+    "cases/24/final-product.json": "8387178d9d87419747a9040ec2ee030c3f98e39986c2bacadab748cd6531e956",
+    "cases/24/runtime-binding.json": "ecfe83f2ebaa3ab41aefb4ff5852363b12bfcfc213447904f67d0bcde75d0097",
+    "cases/24/scores.json": "a196c189e3239cebcaa970107bfe6e07a39f53c6059b95021e6db4eaf93afc44",
+    "cases/25/case-finish.json": "e3a8974b79432f9d5d6aa5537971d5408bc766dabccdd9f0f0bf342575a35b32",
+    "cases/25/case-start.json": "e34f5867aa5782993e8526c8bee8a6ad8c80915956b9dc666abc09aa8366b9d9",
+    "cases/25/final-product.json": "67dc6d7da4643f30a6612a594aa4626f9c86b8462ba3db24488c4a4172aa8e85",
+    "cases/25/runtime-binding.json": "a5c1ebc10e550dd1aa81e593cc620cb69c74dd8e44948f8a1654454ecac7ebf1",
+    "cases/25/scores.json": "7564486e3ea0f6f2313182773908c3b01f2b03721df09a5844d79fdbb96fa332",
+    "cases/26/case-finish.json": "9b895fcd3b52e816f198eb43cca713376e05082724e822772ca041c52e0b24ce",
+    "cases/26/case-start.json": "bf853ace3a507d64b27f3d2c50ca818c9199fb9afac3d750bb9de01802ff9f47",
+    "cases/26/final-product.json": "5b7e602315d723ce4b14489347e56a9d85c6d6268cfecccf34a9e3e967567308",
+    "cases/26/runtime-binding.json": "035d0c87c7ecf03744186a525d1ed69fa16aa967182405b36765af9667a09fc5",
+    "cases/26/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/27/case-finish.json": "e5adba9ed7f357fa5c0c441d57a5052731974f32c6377ef3f9d8efbdaa3c3e6e",
+    "cases/27/case-start.json": "eeadfdf4a23943eaff913e3a5d5f17d9a06d4d67ca6ffbeecc93bc5f759bfb51",
+    "cases/27/final-product.json": "53a62fababf46fdd4b19a3e1d0224202d067155f23da3bf7fab2d900d0b7bfe2",
+    "cases/27/runtime-binding.json": "8e6a9c1409230ce270f351722835efe1c8209392127199646f359bd9dc78d488",
+    "cases/27/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/28/case-finish.json": "f1b381252a91958964fc3ce531bd07fdcf6bfd56bba1d5c720682d875fce2e57",
+    "cases/28/case-start.json": "c891aefc5688b0a2bac180ac4192dd7960482fcb2ce6f3d24e81ea5946d10121",
+    "cases/28/final-product.json": "fbbeb67879a5fbdff6e763d383b5ddb082f298f7ce85a5566bec9060886b54d1",
+    "cases/28/runtime-binding.json": "d3dd44a3b8499250980c49fe7c9cfbaa9adf979810f899a5a233a178e2827034",
+    "cases/28/scores.json": "a196c189e3239cebcaa970107bfe6e07a39f53c6059b95021e6db4eaf93afc44",
+    "cases/29/case-finish.json": "126e983052204db73578eac754de0072778b729dfa780ce6750a35c782fffdf5",
+    "cases/29/case-start.json": "8f13ca903dfa974724b5587411e8968400e992f22d9bc97beceb738214b0fa8c",
+    "cases/29/final-product.json": "4ca65090fa9181df8c35215cb297280d1faaf241fb4880737d80585be7eaf67c",
+    "cases/29/runtime-binding.json": "0f57f23b6b560dbe3390aa8a36c6e76afabd8df3fc6274ad0a53966817a77c0d",
+    "cases/29/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/30/case-finish.json": "7609690388633163c3c0d0a2d9e24cb1b6eefb5c690da0704b87b0f94c4c9c5b",
+    "cases/30/case-start.json": "5008c2c1c45d82fac19367ce0d6e46fe06e52ef345d510c6e2d3fabf786acb2b",
+    "cases/30/final-product.json": "3cdbf739673849ba8cba9e2427d17bd28fee57d30cef37337113e5e08a418df8",
+    "cases/30/runtime-binding.json": "6f0faa788814826c530bb022e6665f028137186b4b0d04c236cb9294c312676d",
+    "cases/30/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/31/case-finish.json": "0dbc1da51952f429e9d220c6926b70f311540c8aa1624f94599cc2eca711f46f",
+    "cases/31/case-start.json": "12454a8627f5a29d9420b85ffd112bf26cbf13cbe9ed2fa77484c638bfbbce68",
+    "cases/31/final-product.json": "30f2944893bb917281fc547f72bc13de4024a8ac522ea81a6083c18378cc7a93",
+    "cases/31/runtime-binding.json": "bb8f20a407b10304c68901c4b26539b5fc42d5e60b1f70145a72fea99a57ceae",
+    "cases/31/scores.json": "7564486e3ea0f6f2313182773908c3b01f2b03721df09a5844d79fdbb96fa332",
+    "cases/32/case-finish.json": "42d9287fcfecf5186a0e6826652fd777582c540ca9c2da893009de6e2cb80539",
+    "cases/32/case-start.json": "50f9fe6d59d02b2ced48e80b93cb4f7a1819b8019f48e998a1e09802344de152",
+    "cases/32/final-product.json": "04dca1ad9c2be2235ea2b0a9eb3c05b3498fd8679defe743117e417237ee794d",
+    "cases/32/runtime-binding.json": "3154d021753abecd7dca859274f2b12a810adc861d3ccb8e14349eeccb78ac83",
+    "cases/32/scores.json": "7564486e3ea0f6f2313182773908c3b01f2b03721df09a5844d79fdbb96fa332",
+    "cases/33/case-finish.json": "071f4f19ec980a9a5c8ded9ae6c41dbd38f446d67665c720c6e8cc38f00b1948",
+    "cases/33/case-start.json": "ee7c412a175e808fd9b133c7f9c0b0393c1d24c52d3917c95c55b167fa59f50e",
+    "cases/33/final-product.json": "8d5dd689b254993bbabc1d609ea16314ea0b19c534ef800b6668135f3da7573c",
+    "cases/33/runtime-binding.json": "7a200e7f70683cc2b5e7981b070098dc22634663d38d88270ce541be84bbeb58",
+    "cases/33/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/34/case-finish.json": "13fea22381d6870ddd38e60b35fd0e2cc0d3ae58a3a919045a1895141562f1eb",
+    "cases/34/case-start.json": "25903a0669ee4b0a5d946ea316f174a1292904c5b7d692b46c1e2332c930d9c5",
+    "cases/34/final-product.json": "6817909ea2a58ce29332cb3e3a44848e1ae09529a6474672dda56e5e1926efdd",
+    "cases/34/runtime-binding.json": "6a10a9bacf9d427950f47de68718eb9778ac301cd48d611df45fc75ce697c733",
+    "cases/34/scores.json": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+    "cases/01/attempts/01-finish.json": "5d4480392efe06db8c086cdfcda5d0f096a08105324f48a88b32e2338bb0e18e",
+    "cases/01/attempts/01-start.json": "091dc85fcee6f84e22a4f62475d1096ce136a825dae03df8e73480926cbd7916",
+    "cases/01/evaluations/01.json": "b1725f9fba978d3f623e822de1c6b0eae32337812a87fb77950f1bd0f8a9e543",
+    "cases/01/input-audit/01.json": "801bd9d7d1dbd1018c3689afcc0b6817715279fb4996fca3c4902eb8446afd55",
+    "cases/01/requests/01.json": "ca83c92fbf17c42477789e607f5eb69c27fe61be6129a272bdfbe9d0861183c1",
+    "cases/02/attempts/01-finish.json": "e2f7d767b0aa150d63e93bb6154a0433a90d8d51e8ce9053d93803a5464b45d2",
+    "cases/02/attempts/01-start.json": "58982fb0c81a9fdab4fcc2d012a5a5b9cc120a149d4d6ba621e3a46223edfc38",
+    "cases/02/evaluations/01.json": "262926052a87039e549d2a91a035cb5cf3f7cb799ddc35d4c77f767b224f4b26",
+    "cases/02/input-audit/01.json": "4f72f32d2222ef82e2d2fa3d7b68d708fb0e9fd42f57040b8f248ca90c91373f",
+    "cases/02/requests/01.json": "1a24ca1cb1351e4670106b568b0eb83852ee368e11c1a3c99448997aedf87ce6",
+    "cases/03/attempts/01-finish.json": "92dcba06da09848bbf1699673e75cbabf215bd19c13e191e4bca7bcc1adbbd2f",
+    "cases/03/attempts/01-start.json": "9395b623166b64660db3535ecb6c061d32b69a5d79a37c3ba60db9b207bcd41c",
+    "cases/03/attempts/02-finish.json": "7eb36c151ac132d1c62bee592c2c1c3a61a982948efa11ce485235e17e4e7f76",
+    "cases/03/attempts/02-start.json": "8822d79d85fce66c502f3e58bd96e8662f95a667db0ac3102c296dccd04d5c4b",
+    "cases/03/evaluations/01.json": "3154ebc40d6fc0dc91df8f3b131dacbf09f54173aced4837555afe3d1c6479c2",
+    "cases/03/evaluations/02.json": "1e91c9204efbbffc534d1b0fed9b95bd0ef8ecaac89f8c694f1953592c87c228",
+    "cases/03/input-audit/01.json": "431e0d3654b3c9cda276e3f8f84a931862a57a1373334740c8a63a40445b4fd6",
+    "cases/03/input-audit/02.json": "f9b8b9c696c57b467d4c98dc50935f89975ed5b415de64aad344d51da426fd34",
+    "cases/03/requests/01.json": "8b9ef662a1da0f16bfdf4572c79790d278228894f8393591a54e3e7e64fc43a3",
+    "cases/03/requests/02.json": "3d6d204500b1bb11b3b614c45ca240f677e760d07c5a79d8e2610558b7c13142",
+    "cases/04/attempts/01-finish.json": "ca2a3fbd164307b729152423a1ac6b3204c278e1f449a2eeb852211e85cbff00",
+    "cases/04/attempts/01-start.json": "e10cae00919a274b9f5c05c92416e19f77ccdc931802c01fb2834837b565d9ed",
+    "cases/04/evaluations/01.json": "2094d00713ade0772d13797530492c60dacf0521cc46ccb859329abea1142b30",
+    "cases/04/input-audit/01.json": "d74af823bf02c9a4f9d4e266bccb2de56661deba1f81ef533b8e6c817afc5e21",
+    "cases/04/requests/01.json": "b8fc66197a5286f16f5a62ce592d3fbd3e5c687f5f6269d967b629a5894a1049",
+    "cases/05/attempts/01-finish.json": "0a3964b10e7e1ddcaf6448b29c549d66751f299fa2ae516d7fefa46d960f6af8",
+    "cases/05/attempts/01-start.json": "ef9c01f964ab2fe15e0e6fae0057d4a2f0da222cc29d0ba0c04c85bd7e54d3da",
+    "cases/05/evaluations/01.json": "8fe0f7ce03425bd0726e1d9d44034ce3eb08727b6de90cf24e4d1c1a026b3944",
+    "cases/05/input-audit/01.json": "d96eeebfcb39be1f3e4fa65de7d0bc9581d6dede941c40a9a5cb54e737fd37f9",
+    "cases/05/requests/01.json": "835f9c26827824478df2189b739d4dd3db78d589e6f5566439283326eaa71b1c",
+    "cases/06/attempts/01-finish.json": "12175ce6231d9ad157afd43ad91e11eb2bef7dca49e87d9724e117d83671be12",
+    "cases/06/attempts/01-start.json": "16f3c11737911b890963d8bd76bc03ee061f3f10c7bf9a452fa4f69647f93bca",
+    "cases/06/evaluations/01.json": "37df63108c99d059d5a417803099a708fda71c154887512e6af46f3bc47c9f81",
+    "cases/06/input-audit/01.json": "e5a40c9d5033fc16b04db5063d83ee56734dfc42d853fb34fda987ebb5af86cd",
+    "cases/06/requests/01.json": "57f2fccc3d034653cb01fafe88c92da7f42ce02999e1412a9599849c11056c38",
+    "cases/07/attempts/01-finish.json": "87acc9b3157d0ef26749ab5ebb7834c8da59136ab147272594937df84bc900d8",
+    "cases/07/attempts/01-start.json": "2d1df6c0edcdab15b294c1379e9c49c5236ca215199e13783f3eccf31d819474",
+    "cases/07/evaluations/01.json": "7b8061a995fdc670535745446be5ddaf748febf9545e885c53e5bae292bfa2e9",
+    "cases/07/input-audit/01.json": "a82ae7d84669af0a397f6f68173113044d620131b96e372c110f138a65926223",
+    "cases/07/requests/01.json": "826adf169c05553247e1ec73c65c8a229cfedbe5786a449aeac07cb18f00510a",
+    "cases/08/attempts/01-finish.json": "5bb216babebe11fce41b70979a50129ec2ce3e3a5932e7070dcd1585cb767e91",
+    "cases/08/attempts/01-start.json": "a70da0f8e6729a9f018891f5391aea4b2082733233365664db1228f2b9146ff2",
+    "cases/08/evaluations/01.json": "2da2a54b3f739f404ca9b58ac40ee1663f8e2c93105a29a58938be2078766b2d",
+    "cases/08/input-audit/01.json": "36e0212aad2e91d7b2634065eea6bff1fa021b36ead5a37b096c63827a784190",
+    "cases/08/requests/01.json": "2159df5815fef6e499bc7d7246360737216d19dcf03bb31c5eb9378714e14f2a",
+    "cases/09/attempts/01-finish.json": "a92939901d6143975a0c056f60c028cf88c3146fe8cbbe36a1dc4bdf1c1b6179",
+    "cases/09/attempts/01-start.json": "e56da05d6a256b554418b4d17f4e7a1c332b850571a30553f573a8e6dd44f84a",
+    "cases/09/evaluations/01.json": "56b162bd0d0f34f48e49c8c4b26d08fe523b3fd3b4a8b318103110575d31964f",
+    "cases/09/input-audit/01.json": "3e38bbb8505df4158aff50dcb828a36ab5cdd5ae06e11813e7815d2bc073eede",
+    "cases/09/requests/01.json": "eddce68567196bcd7ba41f6d33b820394fea4d28ef6fce551bbecc4cb68230b0",
+    "cases/10/attempts/01-finish.json": "e2f69bae93898fe5667840b46d6a496f27e68b2b445f2feb5af2c4bfbcae5dc2",
+    "cases/10/attempts/01-start.json": "6b65a5df72c9a91f55caa21063c2c5cd9489912875a574ac323dd39ba35cc930",
+    "cases/10/evaluations/01.json": "a4d29fd70cad7d0caeec3302327b1174457179b8de3e513d94835a92881f88a3",
+    "cases/10/input-audit/01.json": "fc5ff27a58c07db4350ca9cab938d2f5bef89f4b1c58ce2d10621318bc4ffccb",
+    "cases/10/requests/01.json": "d8099d6e5eecec4064a98c9173cc7927bac434f83f6f7f52d1bc7b29d50943ab",
+    "cases/11/attempts/01-finish.json": "94217df5592e5fd25411a68edcd00a2d774be81b5fb7811064f00b54111a5151",
+    "cases/11/attempts/01-start.json": "8d16f4b688725347b38311ec097d26d52365e11730fc7f655098e158c1f74773",
+    "cases/11/evaluations/01.json": "9d546dfc546ddda98c2a3d510d359e7dc045c1291b726656a8261c8634b771f1",
+    "cases/11/input-audit/01.json": "2bdd9275962b031118c8eb55ffb92ac17b077652b87abb90d350ffc47b1592f2",
+    "cases/11/requests/01.json": "08fa0193f94aeaba343ab70f03da82bc787a9407d0a8ab11a6828e84e026572b",
+    "cases/12/attempts/01-finish.json": "99a5e23f1934f17e7f13ad863be8064ed4afd262737c514cec55f0142411eac7",
+    "cases/12/attempts/01-start.json": "f5a570974d1c8216e42fd5f38a7be7bbfd96c64a4309127878ccbe2cf5f9878e",
+    "cases/12/attempts/02-finish.json": "cb84c8d60786f4377390c7e17885ed33e7ac57b35662c5f832ac6ffc4c3d98c9",
+    "cases/12/attempts/02-start.json": "8cca605cd540ac4773ca1940aa0104f6800066f1ae95fab0efc68d3ae6f37079",
+    "cases/12/evaluations/01.json": "4e32479a7e4c8ade095bd925e0fdb31663afcf41aa308d07cfddde80b4f49533",
+    "cases/12/evaluations/02.json": "265267862cb4fa4e50c13d801ab7d3e8056d035b4712a6e0daff01707bc66df3",
+    "cases/12/input-audit/01.json": "13860d6df6daef30b2f8e59855923bd957e3bf1273ecd22aada05e0e614cbf15",
+    "cases/12/input-audit/02.json": "cdde53a70d9a3c9dded98899977ba2e40c8b7741e455d86d21ad238ca795db92",
+    "cases/12/requests/01.json": "18e97874b200a1da9255a9dc02d009b46c5587efd63b2227869f58eaccbb49e9",
+    "cases/12/requests/02.json": "74fa256b430e44b6049344eac5a21ffff76e4a277927049351f064aaa42cd458",
+    "cases/13/attempts/01-finish.json": "a99df58c2944a3c6e2711b6ce24d406121aa7efa29bb7bc9749fcb249a8c4ae3",
+    "cases/13/attempts/01-start.json": "cc0a7c19804a9cff97e3a1d5e21f1bb237167f75b33cfb443f9dede4098c9473",
+    "cases/13/evaluations/01.json": "8e16bd9c067bdd426e8d3ba7380830d19f1bfb6efc65916f6f488624472985c4",
+    "cases/13/input-audit/01.json": "4a48dd20137bef18ca4a2f999db11f4ece4b70379b04805de88a6187a0da6ba6",
+    "cases/13/requests/01.json": "0ef2a7d6d645c405a0d00296b164ca26c4de35e4bd678bd4572c522c97b94baa",
+    "cases/14/attempts/01-finish.json": "d59ca87a815cc0be17cf28e0c663a57ef95b6848f95979b841333f2ed8494d4b",
+    "cases/14/attempts/01-start.json": "03aeda4524bb292be395ceae2b4c21a588efc0d245ec23a88911bbd0b4d9cd06",
+    "cases/14/evaluations/01.json": "9bb7fda5497791eb4c61bf6e080f5bc31f0b2fc613a0d46c2cd65241aa580a0f",
+    "cases/14/input-audit/01.json": "e98c47cd185c5265be778ddad324025e82827fed25d1d6832f103f739f3bbd97",
+    "cases/14/requests/01.json": "7ff687948e93510d7a9af39331d2ccfea56c07dcaa4e47e31c3d66d91f5430de",
+    "cases/15/attempts/01-finish.json": "525e5215cc44c910fddfca84c062b7478d3de8186a4025d59e5e5609016ca4f8",
+    "cases/15/attempts/01-start.json": "0b43e280e4686198b437578a2a34060d04e40e549a028da56049cce5003dfb8f",
+    "cases/15/evaluations/01.json": "e26f293d59430a4ed277d46523d5ea46d914e562c2fa3a2064ba20abbb28cfd7",
+    "cases/15/input-audit/01.json": "0ea0de656b615b82a7c63894f48f5b1fcbe781afcd632182634a00d5cfb40262",
+    "cases/15/requests/01.json": "8b26809b7aba4375d475996098f752c09e9b914153a350258d6913a68a39d592",
+    "cases/16/attempts/01-finish.json": "b9a8e8b39c03ad8c0bf7d9d707f54f293d55d3b78ad2763b325312be93de9388",
+    "cases/16/attempts/01-start.json": "cd342e1986c8f531d2783a5b0dc7564cc81ea588e2b6417191d9e6eac5b6b0ab",
+    "cases/16/evaluations/01.json": "e48c7a2cdcb2a160d463ba8f810363ac29254f737132a01c6bc16ce83268ffaf",
+    "cases/16/input-audit/01.json": "7a70b0d3b2b2d5c6e738af21d5177213a3027d9832debbd92786ac884c73cb68",
+    "cases/16/requests/01.json": "9428ec949c1cacd1ed1a1d479e427b221694619a51b9cade57c89544fea9085b",
+    "cases/17/attempts/01-finish.json": "d050dda167243fce120d558db7a44978361d69b951df692c583586f125ed458d",
+    "cases/17/attempts/01-start.json": "4d6f1feb933005af848fe7a1e96960868a338c963a38959d9cf6ffb44cee5389",
+    "cases/17/evaluations/01.json": "e3773cc816fe4c67e043688c59ac426d7fd527b87de0ea34c182e65d8c35e7aa",
+    "cases/17/input-audit/01.json": "a17b35b3dd92def82d68ebe960a6dede1a204fdb0d5a1edc42393f196ed3f3bf",
+    "cases/17/requests/01.json": "df7c903f485470ff572acbcc9bde523e0e59ef03dd6024941b3aac4d153a886e",
+    "cases/18/attempts/01-finish.json": "7c569254f15714ec05382f4de2bfa3d0bb399ee50e8fd8805679a836a568d62a",
+    "cases/18/attempts/01-start.json": "117cb983055a790f26ee55798e1eb254b5b985b8e3596183951b034c39c32f26",
+    "cases/18/attempts/02-finish.json": "84616356fe1e26af7d0b7f5d66caf4abab69c232cce237370d0d4d89bef24248",
+    "cases/18/attempts/02-start.json": "c14f233e391fcb099fd83e18a87b091252ed124965f6cd54e371718c7e68df7b",
+    "cases/18/evaluations/01.json": "44dec3488b4f2a68befa3c85ae5fbf33434ac01c67777d4db076391e5114ec89",
+    "cases/18/evaluations/02.json": "431e28a55dcf366683163b298056958af6685aa85b4de133cb4d93a1448f168a",
+    "cases/18/input-audit/01.json": "08b58c50c6d2eb0c2ca37a238b4aa0fdd7ff25e2fa01dc55326cdb7c32cc065d",
+    "cases/18/input-audit/02.json": "dcf187c2422f3d4314cb467756dd554688557d370ef3ad7b220de86ff67be3c4",
+    "cases/18/requests/01.json": "057c3a8f95664daed6fb3a0b6498abd879bb78085728467bc197b49bcd0a3383",
+    "cases/18/requests/02.json": "9d5318ef171ab3a9232bc50f5817e66038766153a1135a86b6496e26dc6c76b5",
+    "cases/19/attempts/01-finish.json": "27f9a37858a85c5f660209fb729207e0c6dddb69f8271a38d337f693423c4391",
+    "cases/19/attempts/01-start.json": "5289fef2d06da21232b544243b4efb05c003e43a52f600bbc0dfc11723296aae",
+    "cases/19/evaluations/01.json": "c8739b173bdb7b07724f1a921161ee7d06d1f0a25b246942b13b2d0f8445b57f",
+    "cases/19/input-audit/01.json": "602bba8c8b082550b0b2fc997746d58b216274a350ec06f7bc7b9de88d3bf489",
+    "cases/19/requests/01.json": "2bf3717f543a0dac77494975837f4bbd75eb83f35d31eb2f7df3ef2bb2a75d0d",
+    "cases/20/attempts/01-finish.json": "8755deb13dac6bb8adbb839a08f0c7f92ea68197c5df7b1a4021838a73075348",
+    "cases/20/attempts/01-start.json": "ced25169a546f8239c8c5ed75ddbe269d3da9a793301e7cc23e260af1adb8800",
+    "cases/20/evaluations/01.json": "ae9ac23fd8aa27d68fb6289830912cc897b476012d14cf941f227174a5318821",
+    "cases/20/input-audit/01.json": "d87375f4c9076357bf5fef017700b9dc83f6f10c4149b9357233a64411c43cc8",
+    "cases/20/requests/01.json": "e4ba93fe6b2f8eaa9ad363ff1d39fa4f54119b09452a92929a45ba1225c49344",
+    "cases/21/attempts/01-finish.json": "0261a1e6461a53a33d469ccb98e62f16e67b49c6dd53862aab10dd1e52ada815",
+    "cases/21/attempts/01-start.json": "40d80ae439734b8929c54fc00b425bb118d7b3b05a4edbe094614b4e4b9559a7",
+    "cases/21/attempts/02-finish.json": "0b4836d3719b31f3c75b0b40106fee2c65519af118f2d8ba94c629f78bb7d9d2",
+    "cases/21/attempts/02-start.json": "d2f9925ed544e574a23781a8fa484434fdaca72fc314a7bf12fa881084efb25d",
+    "cases/21/evaluations/01.json": "dcd286507e919ebe2eb4b2c7f6eebd90040985129c1c2273349c5c4951d5b254",
+    "cases/21/evaluations/02.json": "3748e9e080bc3fb7c9b997b3a17fc345fad47707e806a00061318e75a29130b3",
+    "cases/21/input-audit/01.json": "18bcbfa826960f206d964d819a522ac5cbe2df3554e53a159eded7bd08f3f3fc",
+    "cases/21/input-audit/02.json": "ed64889a9acd74d551987778dc975125e23ac6afdf0d9abe3b4bb13bd72b51f4",
+    "cases/21/requests/01.json": "1e476d2ffaee14e81c8997a14889e4fd4daed987fb2e61e35f5b6672a4f6e8be",
+    "cases/21/requests/02.json": "06abb4199f330d4b03c4cb8a4175126e636d66e1d8a04f37cb40f216d808a9ce",
+    "cases/22/attempts/01-finish.json": "8ae53835338bea72c0f64d126c2fd09a58f85678e33ae3b39fe6c4aaef61432e",
+    "cases/22/attempts/01-start.json": "ff01b4c0faadf032e38e57c6d56d2c61749b15f0d805192637360a138a44b5a0",
+    "cases/22/evaluations/01.json": "6ec8d1a0d040c2761fd51180eebfbebedc1f30049e58d6005f097f8e21de04e9",
+    "cases/22/input-audit/01.json": "8683552c90b65a203d895590eee1c6593637dc46c1c83e9524badd8084a0b793",
+    "cases/22/requests/01.json": "64253e294e3b966329c3ce0a18b35c2337cff79356b9ab66d169e11b508e88bb",
+    "cases/23/attempts/01-finish.json": "3e8087027bc1adcb8b4c4c09c8d2fde2f4c5556e99e72c7a493dd55e4208e95e",
+    "cases/23/attempts/01-start.json": "66e5e7e775d4994b0eb5037dfa22417416cd72d51d9bdefff2c3eeade581df31",
+    "cases/23/evaluations/01.json": "a64bed05e5b715ec957f5bc9778b7509e05d468a2e7b9ad1409799281eaed17b",
+    "cases/23/input-audit/01.json": "5c8c746028295342f8f00697de8d83dde2c2afdd70db63e3e6b8fa577c57b508",
+    "cases/23/requests/01.json": "5863655eef03b891eaeafd9226faea8d20a35d1396e83886e35724c099f4bcd0",
+    "cases/24/attempts/01-finish.json": "250101fe6e2a46248f1f19f56e3a1236d908532630e3c8255c67bb27f126010c",
+    "cases/24/attempts/01-start.json": "e2d88af83c8fb165a852d8a6c10a7cb3b50003d74fe45d723f4f3ca97773407f",
+    "cases/24/attempts/02-finish.json": "58691b41082cc67c6bb81d3f3b443acaf4c71e3d3c59bf39152eb5455f77b10d",
+    "cases/24/attempts/02-start.json": "1557f7f0be6690c148a6927f471a683d9a93ccf2a3e6a54c95caecad07145389",
+    "cases/24/evaluations/01.json": "38c15681ca6e2f05a8e0e93863a8760d016fa4dce1e127a61d88d0904f9c8464",
+    "cases/24/evaluations/02.json": "eaa9b88927f165f3ffb02309847fac9f84433def697e393516b0c610cbb7e37f",
+    "cases/24/input-audit/01.json": "e93f52cfd06c1ff3b2a4170165d583160cfa168c2f00444c205e3c21d3d352a6",
+    "cases/24/input-audit/02.json": "79951f3ba4bc92baabe1e1cdfc65e0fc063689e85223f34a2f67c5f644db8550",
+    "cases/24/requests/01.json": "a32a78021e6b94455214c434eda8f23a0e3b4153320356f844547b32649c4b0f",
+    "cases/24/requests/02.json": "3ec0344a6be8217225b1fd82bc1911e5d31c42d9057ce2f200ba89cd5406e549",
+    "cases/25/attempts/01-finish.json": "33e8d848e2ab9f27db169f51eff374ab352f1df38a4b7a3290abd5dec01d4188",
+    "cases/25/attempts/01-start.json": "8191e5c351a955f6d069d95969111f3bd6b4077c9c3a97d01d5a93ca8b3c9dbc",
+    "cases/25/evaluations/01.json": "3fbf40e6dd9eb2dc29358d485882abcbaccc7eaf1dab9d49629820f32dcb2a6a",
+    "cases/25/input-audit/01.json": "96cd43ceda3581de0b717463da8190956c80031e3acbd79b813c81edbb64fb5a",
+    "cases/25/requests/01.json": "24cde448328d9b6c98fa8c9f9ed6cff641a4935fbc961baa5a454978dd4733de",
+    "cases/26/attempts/01-finish.json": "53e52924e63237bc0dad57d3be92e7b6daac6aa92d3316d3fedd510163a3fd2c",
+    "cases/26/attempts/01-start.json": "029d35255d0ab9af1eaba1569c14f3c3924df31c1b3932b4ab4bd5743990fe8f",
+    "cases/26/evaluations/01.json": "8b9a046f8332c108fc3e29713133dd050f9aafb8c5b4d53ce800388a7331e11a",
+    "cases/26/input-audit/01.json": "c7cbca4ffa235b60742d68136899f25e1bd627cce5c120a680848fe93cc910d3",
+    "cases/26/requests/01.json": "a3ae17b04ebdad2d3bc3c4da6a47d66cd11d9dfeea8937e265afccb95b7eab33",
+    "cases/27/attempts/01-finish.json": "e37e0ffe415eecfe1dacf2c185d8a62d81503dff8b2946b06744a9c44b14ec74",
+    "cases/27/attempts/01-start.json": "08dfdf64dc29810f223beb745397a60dc04bbcac381234a1dc5786a233360d66",
+    "cases/27/evaluations/01.json": "201abe97f9a67621fa1e8958e45ecc57df6cf021f1eb3bb1a6a81c12e8a060da",
+    "cases/27/input-audit/01.json": "4cf3cd2ada1c75524f620db1ef97f23dde6be1fac3ab1a62205189d8ffe368f4",
+    "cases/27/requests/01.json": "be6a846def62971697e496941801ca8154a941eb982bfc851e48aa563e82b0fd",
+    "cases/28/attempts/01-finish.json": "1cef991ea834c1eddbe5a913fe50e9179ec8c9d0fa818e8264d727644f42599a",
+    "cases/28/attempts/01-start.json": "c9f24ab99708cd60dbcfbe7075372afa38d5ac232d9bd68962c370c17bf73eec",
+    "cases/28/attempts/02-finish.json": "aa66a598ab732ba5819304b546bdd12e7bbae6fd2aee4a2d8276e003e852425a",
+    "cases/28/attempts/02-start.json": "880f010a5bb7c63bd59207a8ecf986263db6c88c02969dffa15d99680ce76694",
+    "cases/28/evaluations/01.json": "18831becaad418907a24a62bda457e44e0ca6484cb09d4c1932d98d0db6db8ba",
+    "cases/28/evaluations/02.json": "e1f7bcafa536927e50f647791fc78e80a07efe0d1bcce918f4a409b9eb8f8210",
+    "cases/28/input-audit/01.json": "3794741b086dabbdd753d6ac13714fce083f79da1d2c3e38c164a0fae91c348e",
+    "cases/28/input-audit/02.json": "8b7f987ab2f0e691772ed7bc94fce4e8c0627a1146059b88311d3f9dc2042873",
+    "cases/28/requests/01.json": "913e45db49f15e1dc8cacd7ff3fb5c742e8ba5a962a420ae7333f538230f308b",
+    "cases/28/requests/02.json": "da4f7e0f67e2555c67bc83ff704a3ba1b72cebd7b5c88a7fa322ecfcf32d5b41",
+    "cases/29/attempts/01-finish.json": "2ce98483dd4d5e19764cd0421563128833cbf3304eb8163784f271fb27b1f38c",
+    "cases/29/attempts/01-start.json": "0c310d086c959914145e42e179cb4573339bda690da756d84b23bc64fdd18928",
+    "cases/29/evaluations/01.json": "4da92bf14b4fc9b6d170d89585720fbf128c1842535ddd9ad9d5096261747aa7",
+    "cases/29/input-audit/01.json": "7ce73b2378f3a4c34b2f1dd4d5ea6af82b56a48d312debb78d9c286b56c3e41f",
+    "cases/29/requests/01.json": "f53922b552e69fa8f58bb0f870175429626a0f4c9251988c03498035366c3d66",
+    "cases/30/attempts/01-finish.json": "85e1eaaa15cbe50035807ded927b64e7cf2642c1ccd994ced306e69e6fc3f65b",
+    "cases/30/attempts/01-start.json": "4e3717b353450b775566fc2e29a4be7130223b0ac544082e314690e544a4f7e4",
+    "cases/30/evaluations/01.json": "3911d3707ba22f464ecac89642f300b958c539afa3f1d46e488302dbf8df7899",
+    "cases/30/input-audit/01.json": "55494124672312555c5a903d5a15e7253aae7f7a6029be54ff6cae06f635ced2",
+    "cases/30/requests/01.json": "7404fc26dbec86935d4cd2871051ff3e4a2973cb22d112c4a621c139f2444ddf",
+    "cases/31/attempts/01-finish.json": "90ca543a2ac86a310e4a29a0a79e89077e29e8ebbd2c3d39b2ca63c00c531e6e",
+    "cases/31/attempts/01-start.json": "ec0538472315b1183fdbe24aa56b1f565af4cd351342e90bf4e93ac98f30f68b",
+    "cases/31/evaluations/01.json": "8e40f63961b61e254ea06a886b8947cab9a25d93f4b8386e923e70432db5b773",
+    "cases/31/input-audit/01.json": "57b463f49c9e902c944d2b9a8e290b87b1c1784ad7d37f989f4e8222247fd522",
+    "cases/31/requests/01.json": "eadbf5ea0082439ca7714582b274482785d113a44f7707f97f8f202b303167f3",
+    "cases/32/attempts/01-finish.json": "229e9f60d88bb4d859788eac2342ce1c5a09bdb8fca88d43753e24642c11a5a6",
+    "cases/32/attempts/01-start.json": "4067a7488d17bd58056e553659e511b60e3bbe9a2ce5c922aab1d7b35a922fd4",
+    "cases/32/evaluations/01.json": "7475486e72da4fb6ce4b7919bb4f6aecc80ce95f43a3efe75d1e3a45ecf88e88",
+    "cases/32/input-audit/01.json": "9ae8cc5103ae11f3f0c400b57dd1f5e0b537e8e49e7fb36c12c88f2e177b374c",
+    "cases/32/requests/01.json": "f4ab75d7b9b7bb8f709023e07ccf635667c945b1d924fb8c76c234ac9caa93b2",
+    "cases/33/attempts/01-finish.json": "c75b7883c440de403f630db9d03e0c73a52dc3bc1398ead38129398783df88a2",
+    "cases/33/attempts/01-start.json": "20ad8c6cb7d15fa0c4a41bdafd06e5382d99f35cf54ee36002237d345ec0bca3",
+    "cases/33/evaluations/01.json": "9ace226b1b88f7fec4cda76c85f6947f7919a23c5ec7d588cdc134780c948282",
+    "cases/33/input-audit/01.json": "6ff83ef7526acaec1c090e05dbf78cc7994918c8e91bc28366124199356f7989",
+    "cases/33/requests/01.json": "eb7879c1ecdc1a36fe482247bccc290dd3eccf4b822ce67aa50b14b2d442c7ee",
+    "cases/34/attempts/01-finish.json": "a767f10157dea3f6d8a1cc29c820563ca9f5339d6bf4e5237a9c7a8fd65d84e4",
+    "cases/34/attempts/01-start.json": "97e6a4ff7848b8b00e272abdeeb71677a929cdf3507b7e802d9df8c5b1019987",
+    "cases/34/evaluations/01.json": "f466327f674552a57a9b2c61d5f3b7af812a45dbc6da5604489f448beb360dfd",
+    "cases/34/input-audit/01.json": "afa02d6caa119568540fbd1a32d90138e2ba8fc5619bd587ca36163030099fe6",
+    "cases/34/requests/01.json": "c449d9c730ba2705dc4bf93d326a0150ae144cd6d52b7a4e20bbc4116d89902d"
+  }
+}

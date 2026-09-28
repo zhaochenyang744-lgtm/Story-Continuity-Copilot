@@ -1,0 +1,15 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+  "family": "comparison",
+  "evaluation_kind": "preserved_v5_comparison",
+  "status": "v2_capture_exact_except_claim_id_and_v6_output_schema",
+  "historical_capture_sha256": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+  "same_run_request_sha256": "2a2c29ce3a9175eadef79f58de012c9197e7afb88378c1728c49e0383a4e1fac",
+  "selected_source_count": 3,
+  "minimum_source_selected": true,
+  "repair": false,
+  "database_binding": "matched_persisted_isolated_database",
+  "database_selected_source_count": 3,
+  "database_selected_memory_count": 6,
+  "database_unselected_memory_sources_allowed": 3
+}

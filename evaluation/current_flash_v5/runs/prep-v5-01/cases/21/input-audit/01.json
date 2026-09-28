@@ -1,0 +1,11 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+  "family": "comparison",
+  "status": "exact_content_after_claim_id_normalization",
+  "historical_capture_sha256": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+  "same_run_request_sha256": "22eeef0b9fc348b3970128dca44322169961de45c9eee66ca68fb5e504900370",
+  "selected_source_count": 3,
+  "selected_memory_count": 6,
+  "minimum_source_selected": true,
+  "repair": false
+}

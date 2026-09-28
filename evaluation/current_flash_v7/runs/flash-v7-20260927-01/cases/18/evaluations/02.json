@@ -1,0 +1,58 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "63d64dc2ac6f5abb07be72ce6fba276c486053d37a08eae1ead4bd2f63c2dcfa",
+  "finished_at": "2026-09-27T10:48:17.903712+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-a4b1dbd6-e966-4c05-9d06-d6b20efea737-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "草稿声称根据下水与延误日志，Tala 造成了修复船的延误，但日志并未记录延误原因，因此该归因缺乏依据，延误原因仍属未知。",
+        "reasoning": "草稿把延误原因归于 Tala，并称依据是下水与延误日志。所引日志明确表示延误原因未被记录，因此没有任何已提供的事实支持 Tala 造成延误这一归因；判断在此停止，不能推断出相反结论，也不能认定 Tala 无辜。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-6",
+            "span_id": "fixture-span-orchard_restoration-6",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-6"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-6",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-a4b1dbd6-e966-4c05-9d06-d6b20efea737-1",
+        "verdict": "insufficient_evidence",
+        "basis": "草稿将延误原因归于 Tala 并称依据日志，但所引日志明确记载延误原因未被记录，归因缺乏依据，原因仍未知。"
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3986,
+    "output_tokens": 378,
+    "observed_response_input_tokens": 3986,
+    "observed_response_output_tokens": 378
+  }
+}

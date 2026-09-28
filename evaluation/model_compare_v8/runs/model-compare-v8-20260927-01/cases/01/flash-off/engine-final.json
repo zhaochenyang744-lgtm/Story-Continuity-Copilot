@@ -1,0 +1,80 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+      "status": "insufficient_evidence",
+      "category": "object_state",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The supplied material does not establish that the current claim and cited fact conflict in the same story time and scope, so a confirmed conflict cannot be established.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-north_glass-1",
+          "span_id": "fixture-span-north_glass-1",
+          "excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-1"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-north_glass-2",
+          "span_id": "fixture-span-north_glass-2",
+          "excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-2"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "An explicit time anchor, applicable scope, or connecting event is required before deciding that the two statements cannot coexist.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-north_glass-1",
+          "role": "missing_link"
+        },
+        {
+          "span_id": "fixture-span-north_glass-2",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-2",
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 1,
+  "contract_normalizations": [
+    {
+      "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+      "reason_code": "temporal_overlap_unproven",
+      "outcome": "insufficient_evidence",
+      "provider_attempt": 2
+    }
+  ],
+  "input_tokens": 7975,
+  "output_tokens": 1220,
+  "latency_ms": 5325,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

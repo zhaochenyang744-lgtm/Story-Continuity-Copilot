@@ -1,0 +1,14 @@
+{
+  "name": "malformed_results_do_not_swallow_next_cases",
+  "passed": true,
+  "details": {
+    "scope": "runner_control_simulation_with_mock_fixture_and_no_transport",
+    "visited_ordinals": [
+      1,
+      2,
+      3
+    ],
+    "logical_cases_finished": 3,
+    "service_stop": false
+  }
+}

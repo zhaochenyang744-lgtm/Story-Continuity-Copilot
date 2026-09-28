@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "e5f753b9a279ff9b04a9a320d2ef4c86e905da40868c96c9ac48af62afb6f14c",
+  "finished_at": "2026-09-27T08:08:01.711257+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v5-20260927-01",
+  "ordinal": 19,
+  "case_id": "ccv3-basalt_observatory-attribute-conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:20:47.331083+00:00",
+  "case_input_sha256": "e42caa5a9f4669a8d21d7b9b2cbde4ea1c226f7b56178061a3efa3dbd2ed437a",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "68d94d16ee2cd5f1429f0860abd9f77e62e405c4fa67793a14efe9a89e2e021e",
+  "finished_at": "2026-09-27T10:02:50.913735+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-7d27914c-6b7c-4068-b61a-0cbf7391d36b-1",
+        "verdict": "no_issue",
+        "basis": "The claim is a truncated sentence fragment asserting that the index and maintenance sheet establish something about Vela ground lens R4. The cited evidence shows the index identifies lens R4 as the installed western aperture lens and the maintenance sheet leaves the glass grinder's name blank. These are compatible with the claim; no contradiction, missing handoff, or reviewable tension is established."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3439,
+    "output_tokens": 133,
+    "observed_response_input_tokens": 3439,
+    "observed_response_output_tokens": 133
+  }
+}

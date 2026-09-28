@@ -1,0 +1,6 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "reason": "two_consecutive_service_failures",
+  "consecutive_service_failures": 2,
+  "stopped_at": "2026-09-27T08:16:23.599781+00:00"
+}

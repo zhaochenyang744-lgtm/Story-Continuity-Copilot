@@ -1,0 +1,45 @@
+{
+  "evaluation": 2,
+  "trial_post_ordinal": 2,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 2253,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "de033c9e-d1b3-4b45-a5eb-1cc4b5813665",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"character_knowledge\",\"severity\":\"medium\",\"explanation\":\"The draft asserts that the 19:00 watch record establishes Evi accompanied Orin, but the cited record only names Orin and leaves the companion unnamed.\",\"reasoning\":\"The cited span states only that Orin walked from the west quay to the east quay at 19:00 and that the companion is unnamed. It supplies no fact identifying Evi as the companion, so the draft's attribution of Evi rests on a missing link between the record and Evi's presence. Judgment stops at that gap; the record's silence does not establish that Evi was absent, only that the draft's claim is unsupported.\",\"temporal_basis\":{\"claim_anchor\":\"19:00\",\"evidence_anchor\":\"At 19:00\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-v6_companion_blank-1\",\"span_id\":\"fixture-span-v6_companion_blank-1\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-v6_companion_blank-1\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-v6_companion_blank-1\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The cited watch record names only Orin and leaves the companion unnamed, so it does not establish that Evi accompanied him; the draft's attribution depends on a missing link and remains unsupported.\"}]}",
+  "visible_content_sha256": "8cbb198fb8076eb3ef6d5fb362578284f63abbf8be12d834a26bf6d27c8ad1f3",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3534,
+      "completion_tokens": 426,
+      "total_tokens": 3960,
+      "prompt_tokens_details": {
+        "cached_tokens": 2944
+      },
+      "prompt_cache_hit_tokens": 2944,
+      "prompt_cache_miss_tokens": 590
+    },
+    "status": "complete",
+    "prompt_tokens": 3534,
+    "completion_tokens": 426,
+    "total_tokens": 3960,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:55:57.166708+00:00"
+}

@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "status": "completed",
+  "error_code": null,
+  "post_attempt_start_records": 2,
+  "evaluation_count": 2,
+  "score_status": "pending_manual_review",
+  "finished_at": "2026-09-27T10:47:25.491359+00:00"
+}

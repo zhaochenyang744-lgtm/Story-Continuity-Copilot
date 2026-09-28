@@ -1,0 +1,79 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "b7b08138b22788e70edcaa0616179cde072e09bd6b14d4fd927fa82c1601e2b4",
+  "finished_at": "2026-09-27T10:48:21.625969+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-ff2b9c41-73f1-4056-b6ff-2f79f13ea451-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "high",
+        "explanation": "同一时刻18点，镜头R4被同时描述为琥珀色玻璃和透明玻璃，二者不能共存。",
+        "reasoning": "证据 span-1 确认镜头R4就是已安装的西侧孔径镜头；证据 span-2 在同一时间18点指出该西侧孔径镜头是透明玻璃而非琥珀色玻璃。两条证据共同证明同一对象在同一时间具有互斥状态，与当前主张直接矛盾。",
+        "temporal_basis": {
+          "claim_anchor": "At 18点 on the same day",
+          "evidence_anchor": "At 18点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "span_id": "fixture-span-basalt_observatory-1",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-2",
+            "span_id": "fixture-span-basalt_observatory-2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-1",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-basalt_observatory-2",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 18点 on the same day, lens R4 is amber glass.",
+          "after": "At 18点 on the same day, lens R4 is clear glass, not amber glass."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-ff2b9c41-73f1-4056-b6ff-2f79f13ea451-1",
+        "verdict": "reviewed_issue",
+        "basis": "同一时间18点，镜头R4被同时描述为琥珀色玻璃和透明玻璃，证据 span-1 确认R4即西侧孔径镜头，span-2 指出该镜头为透明玻璃，构成直接矛盾。"
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3471,
+    "output_tokens": 537,
+    "observed_response_input_tokens": 3471,
+    "observed_response_output_tokens": 537
+  }
+}

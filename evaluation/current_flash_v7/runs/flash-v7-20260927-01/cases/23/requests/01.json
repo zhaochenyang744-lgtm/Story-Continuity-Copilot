@@ -1,0 +1,228 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+  "evaluation_ordinal": 1,
+  "stage": "first",
+  "recorded_before_dispatch_at": "2026-09-27T10:48:34.588393+00:00",
+  "business_request_sha256": "25b5274ca1f6913bc490d04c59219a91d90f8467561a5d6478a81064db836059",
+  "bindings": {
+    "draft_id": "fixture-draft-basalt-observatory",
+    "draft_revision": 2
+  },
+  "selected_source_bindings": [
+    {
+      "kind": "target_claim",
+      "id": "claim-run-61caead0-b32f-4a8b-a3aa-6c00472fc2b2-1",
+      "text": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+      "sha256": "eedf909d95c8108bef65d72bce50abb5f35456b2863993f7cb19badbeffec12d"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-basalt_observatory-6",
+      "chapter_id": "fixture-chapter-basalt_observatory-6",
+      "text": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+      "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+      "sha256": "c8b4de8fcdf85b60a0b91dda47f003913812d6ab7126c636095b1d56a6e9acbe"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-basalt_observatory-5",
+      "chapter_id": "fixture-chapter-basalt_observatory-5",
+      "text": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+      "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+      "sha256": "2ff80d42200cdcec59424bef9bb6a8cf01d565c763505028bc978e6cb41ebd61"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-basalt_observatory-4",
+      "chapter_id": "fixture-chapter-basalt_observatory-4",
+      "text": "Observatory Gate Four stands on the west pier, not the east pier.",
+      "prompt_excerpt": "Observatory Gate Four stands on the west pier, not the east pier.",
+      "sha256": "e3c395c7b47eedca5641e8ef3eab200600e488cfc0314dd61fd606ee33301b5f"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-basalt_observatory-1",
+      "source_span_id": "fixture-span-basalt_observatory-1",
+      "text": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+      "sha256": "bd8225b6d0f99d992b531899a603e88d9b256b0ea5c1dc06dd514d85e8946944"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-basalt_observatory-2",
+      "source_span_id": "fixture-span-basalt_observatory-2",
+      "text": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+      "sha256": "f7048c2b980c34b68489b99f8f0ee6748144245320fdcf292c630b58193b135c"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-basalt_observatory-3",
+      "source_span_id": "fixture-span-basalt_observatory-3",
+      "text": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+      "sha256": "2026e163eb05b371436eea27bc41c925ccfeaf64ca6e4ffd60ca52910d714a06"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-basalt_observatory-4",
+      "source_span_id": "fixture-span-basalt_observatory-4",
+      "text": "Observatory Gate Four stands on the west pier, not the east pier.",
+      "sha256": "e3c395c7b47eedca5641e8ef3eab200600e488cfc0314dd61fd606ee33301b5f"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-basalt_observatory-5",
+      "source_span_id": "fixture-span-basalt_observatory-5",
+      "text": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+      "sha256": "2ff80d42200cdcec59424bef9bb6a8cf01d565c763505028bc978e6cb41ebd61"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-basalt_observatory-6",
+      "source_span_id": "fixture-span-basalt_observatory-6",
+      "text": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+      "sha256": "c8b4de8fcdf85b60a0b91dda47f003913812d6ab7126c636095b1d56a6e9acbe"
+    }
+  ],
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-basalt-observatory",
+      "revision": 2,
+      "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier."
+    },
+    "claims": [
+      {
+        "id": "claim-run-61caead0-b32f-4a8b-a3aa-6c00472fc2b2-1",
+        "text": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-basalt_observatory-6",
+            "chapter_id": "fixture-chapter-basalt_observatory-6",
+            "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "label": "later_watch",
+            "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-5",
+            "chapter_id": "fixture-chapter-basalt_observatory-5",
+            "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "label": "watch_log",
+            "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-4",
+            "chapter_id": "fixture-chapter-basalt_observatory-4",
+            "body": "Observatory Gate Four stands on the west pier, not the east pier.",
+            "label": "gate_map",
+            "prompt_excerpt": "Observatory Gate Four stands on the west pier, not the east pier."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-basalt_observatory-1",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "identity",
+        "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+        "source_span_id": "fixture-span-basalt_observatory-1"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-2",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+        "source_span_id": "fixture-span-basalt_observatory-2"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-3",
+        "memory_type": "open_thread",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+        "source_span_id": "fixture-span-basalt_observatory-3"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-4",
+        "memory_type": "static_canon",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-4"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-5",
+        "memory_type": "dynamic_state",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-5"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-6",
+        "memory_type": "event_timeline",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+        "source_span_id": "fixture-span-basalt_observatory-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  }
+}

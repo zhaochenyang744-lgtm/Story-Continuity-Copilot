@@ -1,0 +1,26 @@
+{
+  "created_at_utc": "2026-09-27T09:47:10.010371+00:00",
+  "kind": "controller_provenance_metadata_increment_only",
+  "source_hashes": {
+    "backend/app/provider.py": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643",
+    "backend/app/engine.py": "527f986d6441aa226f239a0e67d928200f26d77b6b90e65cbc6d14e512d7fd39",
+    "backend/app/brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "backend/app/v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+    "backend/app/main.py": "bd7fdfab5ff2dd18f369d6bf22c6cdfc83ee177d8245b91954f21ed20faf3cca",
+    "backend/app/seed_data.py": "cd1ec7e535eb5dc5706a36c7cfa2f96adef7fd3a7b691263bef0c88a8a9c68de",
+    "backend/app/config.py": "71ecb142047916cba315dcbb8fff9c31f294d8e1109be888cad42c5e80ab9f9e",
+    "backend/app/database.py": "82afa645a8b092bfd3001bf667378ccc56646a9900e905209e9243c6357a2d33",
+    "backend/app/stage13.py": "957c219bb3f8036e421c63ba7c204ed1767d2d334a39a08aa958f5119cfd9500",
+    "backend/app/__init__.py": "35f78b2beef7082e8d47277da699bc8662a2e7c3b1cb87ba3cd30e525bcf4bfc",
+    "backend/app/memory_contract.py": "d8afc7e9f85f296f5762aaf1f03e4baafb7a163312bc93a06a4744e5e4355d51",
+    "backend/app/text_content.py": "d1f04d4b7ec2fd5f87c1f706960bdfff6c77f61b9bf5ee3699ec902e48443290",
+    "backend/app/long_term_workflow.py": "e5eb9874ccdeb019545a42c121ed98cd42af2252a52ed066f6361ee638b7ca59",
+    "backend/app/project_export.py": "b8227673e20a68bd79a2f4694eb5a15bca77145623fb7c4e5bb1a1f3d0a3420f",
+    "backend/tests/test_v6_continuity_contract.py": "7f1a9325e01e0ce2f31177566313acf0905b7a72cb3a02cec034780bc4fbc57f",
+    "docs/flash-v6-independent-acceptance-evidence/g02/replay_v5.py": "641df1326c4296c595f189b9be30bcde7a4be5db0f8b57a9f45395d26ebcce32"
+  },
+  "engine_semantics_outside_continuity_provenance_unchanged_ast": true,
+  "previous_core_acceptance_carried": "core-stable-01 and core-enum-fix-02; G02 unchanged AST",
+  "provider_calls": 0,
+  "database_connections": 0
+}

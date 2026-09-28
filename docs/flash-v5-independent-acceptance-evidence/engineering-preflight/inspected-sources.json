@@ -1,0 +1,24 @@
+{
+  "status": "criteria_only_v5_not_yet_reviewed",
+  "recorded_at": "2026-09-27T07:52:55.1012862Z",
+  "real_provider_calls": 0,
+  "network_calls": 0,
+  "tests_executed": 0,
+  "database_connections": 0,
+  "source_hashes": {
+    "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+    "backend/app/engine.py": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+    "evaluation/current_flash_v2/run.py": "45e00b0d4ef117f862d0b059bb876942daf9469224f3ce1ba60d0b0517d6d0fe",
+    "evaluation/current_flash_v4/run.py": "0422fd13812c2a9ef6ccc1a2b82f547b03b9cec22e7d23aa04ec9dbbbc4d5c89",
+    "evaluation/current_flash_v3/fixture.py": "24963b5028f8f0ce465d3b5b04912d45ee60b5e6fad62ef9fc3c4539e1e3a556",
+    "evaluation/v2_fixture_loader.py": "863bab7bc5ea8ab00b40de1a6e5b6b8bc4788508661cc890e758ae2157a60c23",
+    "evaluation/current_contract_compare_v3/score.py": "89afed19eb6ba9dbad63b4e95c24f4d687c97e076f38d44767633b6db727243d",
+    "evaluation/current_contract_compare_v3/freeze.py": "0af6ce6189e2b2866e4bf42b5bbc0a21a99f42225719c8b4d76b29c580849708",
+    "evaluation/current_contract_compare_v3/run.py": "dbf5da020d7b9b96fe4ee081b133a7fdd4451d73fbedd315d3eb0f8fb359fa2c",
+    "evaluation/current_contract_compare_v2/score.py": "19b2fc2e14d0fdafd1ef54dccf7e885b16728c679e9da1045b24be586d27b94d",
+    "evaluation/current_contract_compare_v2/preflight.py": "ba2d500d460b85b4815ffea1c0ef48dc4e32a0a63060d5b26c37d7b2b6df73b5",
+    "evaluation/current_contract_compare_v2/api_score_probe.py": "7240a990444e603c8a8d09620bdbc709b2731b7928f73c113a7c399373d24281",
+    "docs/evaluation-maintenance.md": "761dba472611df7b2e88d8bc0122b01e849ba22bf2e1d609ad17abd4c9e8b25f",
+    "evaluation/README.md": "16440586f3d6090b0a06341162693bc2977e6c4c23e545b51862c35a0fe3929f"
+  }
+}

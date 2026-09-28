@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T08:20:41.510105+00:00",
+  "latency_ms": 2692,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3077,
+      "completion_tokens": 520,
+      "total_tokens": 3597
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-72d1460c-4d4b-4987-88bb-c3a91d62dd29-1\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"event_status\",\"severity\":\"high\",\"explanation\":\"The claim says the restoration boat's launch was already complete at 10点 on the same day, but the cited evidence places the boat still at the quay with an unsigned manifest at that exact time.\",\"reasoning\":\"The claim asserts completion of the launch at 10点 on the same day. The cited event_timeline evidence explicitly covers that same minute: at 10点 on the same day the manifest remained unsigned and the boat remained at the orchard quay without departing. The static_canon rule states the launch is complete only after both the manifest is signed and the boat departs the quay. Because the claim and evidence share the same subject (the restoration boat), the same scope (launch completion), and the same explicit time anchor (10点 on the same day), they cannot both be true.\",\"temporal_basis\":{\"claim_anchor\":\"At 10点 on the same day\",\"evidence_anchor\":\"At 10点 on the same day\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-orchard_restoration-4\",\"span_id\":\"fixture-span-orchard_restoration-4\",\"relation\":\"supports\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-orchard_restoration-4\"]},{\"chapter_id\":\"fixture-chapter-orchard_restoration-5\",\"span_id\":\"fixture-span-orchard_restoration-5\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-orchard_restoration-5\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-orchard_restoration-4\",\"role\":\"current_context\"},{\"span_id\":\"fixture-span-orchard_restoration-5\",\"role\":\"prior_state\"}],\"suggested_revision\":{\"before\":\"At 10点 on the same day, the restoration boat had completed its launch.\",\"after\":\"At 10点 on the same day, the restoration boat had not completed its launch: its manifest remained unsigned and it remained at the orchard quay.\"},\"available_actions\":[\"edit\",\"apply_suggestion\",\"keep_intentional\",\"false_positive\"]}]}",
+  "message_content_sha256": "3fc425f7ad9d34b1280e2b089bab770d322d3a9da7b43c78e6bd5f6ade0199dc",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

@@ -1,0 +1,11 @@
+{
+  "run_id": "prep-v6-02",
+  "mode": "prepare",
+  "started_at": "2026-09-27T09:39:13.533771+00:00",
+  "git_base": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "case_count": 34,
+  "frozen_manifest_sha256": null,
+  "max_generation_post": 136,
+  "max_models_get": 0,
+  "provider": "offline-stub"
+}

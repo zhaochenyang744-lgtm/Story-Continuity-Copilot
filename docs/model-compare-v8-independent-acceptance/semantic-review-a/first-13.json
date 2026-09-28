@@ -1,0 +1,198 @@
+{
+  "schema_version": "v8-blinded-case-first-review-v1",
+  "case_alias": "case-13",
+  "stage": "first",
+  "reviewer": "semantic-review-a",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-13",
+      "response_alias": "answer-a08286",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "fail",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "fail",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        165
+      ],
+      "reasoning_codepoints": [
+        273
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "双胞胎身份事实加永久亲属规则完整否定母子命题；没有借未知出生先后作反证，时间使用永久规则合理。",
+          "visible_quote": "Together these facts exclude Nera being Oren's mother",
+          "evidence_pointer": "responses[answer-a08286].first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "fail",
+          "reason": "冻结premises包含规则span1，须context；具体twins事实span2须contradicts。回答两者倒置，联合推理正确不抵扣角色错误。",
+          "visible_quote": "\"relation\": \"context\"",
+          "evidence_pointer": "responses[answer-a08286].first.parsed_business_json.issues[0].evidence; policy.premises"
+        },
+        {
+          "dimension": "T",
+          "verdict": "fail",
+          "reason": "建议由仅明示twins的来源新增twin sister及his性别细节，原来源不保证这些细节。时间部分timeless_rule本身正确；该项仅针对建议支持范围，不改变F核心命题通过。",
+          "visible_quote": "Nera is Oren's twin sister, not his mother.",
+          "evidence_pointer": "responses[answer-a08286].first.parsed_business_json.issues[0].suggested_revision.after; business_request.claims[0].allowed_evidence[twin_register]"
+        }
+      ],
+      "passed_dimensions_note": "relationship正确；最低span1+2同属该Issue，chapter/Memory/原文绑定正确且无额外来源；JSON、唯一claim/ledger、chain、reasoning≤800、basis≤400及实际Issue交付合规。永久规则允许null claim anchor，evidence anchor原文可解析。",
+      "attribution_tags": [
+        "role_error",
+        "suggestion_unsupported_detail"
+      ],
+      "overall_reason": "事实联合推理正确，但冻结证据角色倒置；strict失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-13",
+      "response_alias": "answer-d59f4e",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "fail",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        190
+      ],
+      "reasoning_codepoints": [
+        349
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "双胞胎身份事实加永久亲属规则完整否定母子命题；没有借未知出生先后作反证，时间使用永久规则合理。",
+          "visible_quote": "Together these premises directly contradict",
+          "evidence_pointer": "responses[answer-d59f4e].first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "fail",
+          "reason": "冻结premises包含规则span1，须context；具体twins事实span2须contradicts。回答两者倒置，联合推理正确不抵扣角色错误。",
+          "visible_quote": "\"relation\": \"context\"",
+          "evidence_pointer": "responses[answer-d59f4e].first.parsed_business_json.issues[0].evidence; policy.premises"
+        }
+      ],
+      "passed_dimensions_note": "relationship正确；最低span1+2同属该Issue，chapter/Memory/原文绑定正确且无额外来源；JSON、唯一claim/ledger、chain、reasoning≤800、basis≤400及实际Issue交付合规。永久规则允许null claim anchor，evidence anchor原文可解析。",
+      "attribution_tags": [
+        "role_error"
+      ],
+      "overall_reason": "事实联合推理正确，但冻结证据角色倒置；strict失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-13",
+      "response_alias": "answer-ee967f",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        140
+      ],
+      "reasoning_codepoints": [
+        373
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "双胞胎身份事实加永久亲属规则完整否定母子命题；没有借未知出生先后作反证，时间使用永久规则合理。",
+          "visible_quote": "Together these sufficient spans directly contradict",
+          "evidence_pointer": "responses[answer-ee967f].first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "passed_dimensions_note": "relationship正确；最低span1+2同属该Issue，chapter/Memory/原文绑定正确且无额外来源；JSON、唯一claim/ledger、chain、reasoning≤800、basis≤400及实际Issue交付合规。永久规则允许null claim anchor，evidence anchor原文可解析。",
+      "attribution_tags": [],
+      "overall_reason": "事实、类别、联合证据角色、时间及建议均正确，strict通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "within_case_comparison_after_individual_review": {
+    "strict_pass": 1,
+    "total": 3,
+    "strict_pass_aliases": [
+      "answer-ee967f"
+    ],
+    "F_pass_aliases": [
+      "answer-a08286",
+      "answer-d59f4e",
+      "answer-ee967f"
+    ],
+    "distinction": "三条核心联合推理相同地正确；只有answer-ee967f遵守规则context/事实contradicts的冻结角色，另两条角色失败。"
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/13.json",
+    "sha256_before": "6a800ae27471c67856d87adf26ce40bc18bae2fb22cb365323bc8bf77e2f359b",
+    "sha256_after_review": "6a800ae27471c67856d87adf26ce40bc18bae2fb22cb365323bc8bf77e2f359b",
+    "unchanged": true,
+    "all_response_business_requests_equal_packet": true,
+    "all_visible_json_equal_saved_parsed": true
+  },
+  "lock": {
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "repair_or_final_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

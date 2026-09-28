@@ -1,0 +1,65 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "v6_lens",
+  "title": "V6 synthetic lens",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "v6_control_matrix_exact_source_body",
+    "control_matrix_sha256": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "classification": "seen_development"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Synthetic lens source L1",
+      "source_label": "L1",
+      "body": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Synthetic lens source L2",
+      "source_label": "L2",
+      "body": "At 14:00 today, the east aperture lens is clear glass, not amber glass."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Synthetic lens source L3",
+      "source_label": "L3",
+      "body": "At 15:00 today, lens Q8 was moved from the east aperture to the storage box."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "lens",
+      "predicate": "identity",
+      "value": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "L1"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "lens",
+      "predicate": "status",
+      "value": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "L2"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "lens",
+      "predicate": "status",
+      "value": "At 15:00 today, lens Q8 was moved from the east aperture to the storage box.",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "L3"
+      }
+    }
+  ]
+}

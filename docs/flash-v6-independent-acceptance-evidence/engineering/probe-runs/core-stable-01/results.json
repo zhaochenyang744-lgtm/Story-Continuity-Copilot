@@ -1,0 +1,130 @@
+{
+  "after_sha256": {
+    "backend/app/__init__.py": "35f78b2beef7082e8d47277da699bc8662a2e7c3b1cb87ba3cd30e525bcf4bfc",
+    "backend/app/brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "backend/app/engine.py": "0f0d34335636bf05b551dbfe8ec88ffff07fabb0d7a6a577dd987ebd1ffcee59",
+    "backend/app/memory_contract.py": "d8afc7e9f85f296f5762aaf1f03e4baafb7a163312bc93a06a4744e5e4355d51",
+    "backend/app/provider.py": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643",
+    "evaluation/current_flash_v6/CONTRACT.md": "89bf179652e71f9b271a7ebcc6ae42ab592ce55cac3e1e7e3173a261d9192203",
+    "evaluation/current_flash_v6/DESIGN-ADDENDUM-02.md": "d841e0350dd4644f0894431c1e64e5f686589fed10bcac914e7cbc4915699cc6",
+    "evaluation/current_flash_v6/DESIGN-ADDENDUM.md": "5b40c2d78b9eeb5a19c145529b381f37bca37bb7fef5bd9e793937e46f8c7f12",
+    "independent_probe": "65d68db3c97dd2a83d5935d1e39b24cb1b8d116e3089a8590043986d5f548062"
+  },
+  "before_sha256": {
+    "backend/app/__init__.py": "35f78b2beef7082e8d47277da699bc8662a2e7c3b1cb87ba3cd30e525bcf4bfc",
+    "backend/app/brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "backend/app/engine.py": "0f0d34335636bf05b551dbfe8ec88ffff07fabb0d7a6a577dd987ebd1ffcee59",
+    "backend/app/memory_contract.py": "d8afc7e9f85f296f5762aaf1f03e4baafb7a163312bc93a06a4744e5e4355d51",
+    "backend/app/provider.py": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643",
+    "evaluation/current_flash_v6/CONTRACT.md": "89bf179652e71f9b271a7ebcc6ae42ab592ce55cac3e1e7e3173a261d9192203",
+    "evaluation/current_flash_v6/DESIGN-ADDENDUM-02.md": "d841e0350dd4644f0894431c1e64e5f686589fed10bcac914e7cbc4915699cc6",
+    "evaluation/current_flash_v6/DESIGN-ADDENDUM.md": "5b40c2d78b9eeb5a19c145529b381f37bca37bb7fef5bd9e793937e46f8c7f12",
+    "independent_probe": "65d68db3c97dd2a83d5935d1e39b24cb1b8d116e3089a8590043986d5f548062"
+  },
+  "blocked_boundary_attempts": {
+    "http": 0,
+    "real_provider": 0,
+    "socket": 0,
+    "sqlite": 0
+  },
+  "controls": [
+    {
+      "detail": {
+        "exact_claims": 3,
+        "issues": 2,
+        "preserved_state_change": true
+      },
+      "name": "exact-multiclaim-cover-and-state-change",
+      "status": "pass"
+    },
+    {
+      "detail": {
+        "array": "claim_verdicts_invalid",
+        "blank_basis": "claim_verdicts_invalid",
+        "duplicate": "claim_verdicts_invalid",
+        "foreign": "claim_verdicts_invalid",
+        "missing": "claim_verdicts_incomplete",
+        "missing_ledger": "claim_verdicts_required",
+        "null": "claim_verdicts_invalid",
+        "number": "claim_verdicts_invalid",
+        "object": "claim_verdicts_invalid"
+      },
+      "name": "malformed-or-missing-cover",
+      "status": "pass"
+    },
+    {
+      "detail": {
+        "duplicate_issue": "claim_verdicts_issue_mismatch",
+        "foreign_issue": "claim_verdicts_issue_mismatch",
+        "insufficient_as_reviewed": "claim_verdicts_issue_mismatch",
+        "no_issue_with_issue": "claim_verdicts_issue_mismatch",
+        "nonstring_issue": "claim_verdicts_issue_mismatch",
+        "reviewed_without_issue": "claim_verdicts_issue_mismatch",
+        "wrong_issue_status": "claim_verdicts_issue_mismatch"
+      },
+      "name": "contradictory-issue-mapping",
+      "status": "pass"
+    },
+    {
+      "detail": {
+        "claims": 3,
+        "stub_evaluations": 1
+      },
+      "name": "explained-compatible-no-issue",
+      "status": "pass"
+    },
+    {
+      "detail": {
+        "explained_removal": "completed",
+        "stub_evaluations_each": 2,
+        "uncovered_removal": "claim_verdicts_incomplete"
+      },
+      "name": "repair-removal-still-covered",
+      "status": "pass"
+    },
+    {
+      "detail": {
+        "batches": 3,
+        "foreign_batch_evaluations": 3,
+        "foreign_error": "claim_verdicts_invalid",
+        "positive_evaluations": 3
+      },
+      "name": "actual-batch-local-cover",
+      "status": "pass"
+    },
+    {
+      "detail": {
+        "execute_terminal": "completed",
+        "normalization_count": 1,
+        "strict_rejection": "timeless_rule_unproven"
+      },
+      "name": "borrowed-uncited-rule-rejected",
+      "status": "pass"
+    },
+    {
+      "detail": {
+        "separate_rule_citation": "accepted",
+        "unselected_rule_source": "evidence_unresolvable"
+      },
+      "name": "separately-cited-rule-and-selection-boundary",
+      "status": "pass"
+    },
+    {
+      "detail": {
+        "association": "retained",
+        "nature": "state_change",
+        "proof_qualification": "not_used"
+      },
+      "name": "ordinary-cross-source-association-retained",
+      "status": "pass"
+    }
+  ],
+  "fatal": null,
+  "limitations": [
+    "Synthetic stub answers; zero live-model evidence.",
+    "Structural coverage and rule-source binding only; no general semantic proof.",
+    "V5 durability/usage controls are intentionally not repeated."
+  ],
+  "source_hashes_stable": true,
+  "status": "pass"
+}

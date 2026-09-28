@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "efe828c340346620635a2c90149094b3ca3903c6e203a53b5543cba7e390c9de",
+  "finished_at": "2026-09-27T08:04:10.417639+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-object_state-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "e048ef990ab0e59cae0706be0c9934c8cad137705621d818405983948d5a8de4",
+  "finished_at": "2026-09-27T10:47:31.787225+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-f8eba218-1a2c-45c3-942b-d84a1db71327-1",
+        "verdict": "no_issue",
+        "basis": "The claim that the carrier was not ready at 10点 is fully consistent with the cited evidence: the gauge read four bars but the valve cap remained loose and not locked, and the static rule requires both four bars and a locked cap for readiness. No contradiction exists."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3476,
+    "output_tokens": 110,
+    "observed_response_input_tokens": 3476,
+    "observed_response_output_tokens": 110
+  }
+}

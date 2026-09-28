@@ -1,0 +1,11 @@
+{
+  "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+  "family": "comparison",
+  "status": "exact_content_after_claim_id_normalization",
+  "historical_capture_sha256": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+  "same_run_request_sha256": "0b599a73bae3c9e6b982bacfd5c068709fc82dc1fecd57dadd29fcb1b0cc74b9",
+  "selected_source_count": 3,
+  "selected_memory_count": 6,
+  "minimum_source_selected": true,
+  "repair": false
+}

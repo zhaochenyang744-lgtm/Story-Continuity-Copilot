@@ -1,0 +1,557 @@
+{
+  "run_id": "run-fdecebd4-367d-42aa-832b-2db90e838bef",
+  "project_id": "prj-1e04b682-604e-41d1-abf7-663717500533",
+  "run_type": "context_brief",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 1,
+  "draft_revision": 2,
+  "source_memory_version": 4,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T08:21:20.294851+00:00",
+  "started_at": "2026-09-27T08:21:20.326605+00:00",
+  "completed_at": "2026-09-27T08:21:24.330329+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 4003,
+  "retry_of_run_id": null,
+  "root_run_id": "run-fdecebd4-367d-42aa-832b-2db90e838bef",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T08:21:20.294851+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "binding_context",
+      "error_code": null,
+      "created_at": "2026-09-27T08:21:20.326605+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "analyzing_layers",
+      "error_code": null,
+      "created_at": "2026-09-27T08:21:20.342781+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "assembling_results",
+      "error_code": null,
+      "created_at": "2026-09-27T08:21:24.318457+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T08:21:24.330329+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "deepseek",
+    "model_label": "deepseek-flash",
+    "prompt_version": "context-brief-v5-clause-citations",
+    "schema_version": "writing-analysis-v1",
+    "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+    "source_memory_version": 4
+  },
+  "provider_metrics": {
+    "latency_ms": 3944,
+    "input_tokens": 4591,
+    "output_tokens": 1063,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "analysis_type": "context_brief",
+  "current_draft_revision": 2,
+  "foreshadow_version": null,
+  "foreshadow_snapshot_digest": null,
+  "proposal": null,
+  "question": null,
+  "scope": null,
+  "issue_ids": [],
+  "source_run_id": null,
+  "retrieval": {
+    "counts": {
+      "author_context": {
+        "available": 0,
+        "selected": 0
+      },
+      "character_alias": {
+        "available": 0,
+        "selected": 0
+      },
+      "draft_claim": {
+        "available": 180,
+        "selected": 8
+      },
+      "foreshadow_record": {
+        "available": 0,
+        "selected": 0
+      },
+      "issue": {
+        "available": 0,
+        "selected": 0
+      },
+      "issue_evidence": {
+        "available": 0,
+        "selected": 0
+      },
+      "memory_record": {
+        "available": 8,
+        "selected": 8
+      },
+      "source_span": {
+        "available": 10,
+        "selected": 4
+      }
+    },
+    "draft_claim_scope": {
+      "available": 180,
+      "body_chars": 1980,
+      "excerpt_chars": 600,
+      "selected": [
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-1",
+          "source_chars": 11,
+          "source_end": 11,
+          "source_start": 0,
+          "supplied_chars": 11,
+          "supplied_end": 11,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-2",
+          "source_chars": 11,
+          "source_end": 22,
+          "source_start": 11,
+          "supplied_chars": 11,
+          "supplied_end": 22,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-3",
+          "source_chars": 11,
+          "source_end": 33,
+          "source_start": 22,
+          "supplied_chars": 11,
+          "supplied_end": 33,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-4",
+          "source_chars": 11,
+          "source_end": 44,
+          "source_start": 33,
+          "supplied_chars": 11,
+          "supplied_end": 44,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-5",
+          "source_chars": 11,
+          "source_end": 55,
+          "source_start": 44,
+          "supplied_chars": 11,
+          "supplied_end": 55,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-6",
+          "source_chars": 11,
+          "source_end": 66,
+          "source_start": 55,
+          "supplied_chars": 11,
+          "supplied_end": 66,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-7",
+          "source_chars": 11,
+          "source_end": 77,
+          "source_start": 66,
+          "supplied_chars": 11,
+          "supplied_end": 77,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-8",
+          "source_chars": 11,
+          "source_end": 88,
+          "source_start": 77,
+          "supplied_chars": 11,
+          "supplied_end": 88,
+          "truncated": false
+        }
+      ]
+    },
+    "method_version": "writing-analysis-lexical-v3-brief-540",
+    "selected_ids": {
+      "author_context": [],
+      "character_alias": [],
+      "draft_claim": [
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-1",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-2",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-3",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-4",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-5",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-6",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-7",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-8"
+      ],
+      "foreshadow_record": [],
+      "issue": [],
+      "issue_evidence": [],
+      "memory_record": [
+        "mem-3c35a467-72aa-4680-a224-359dcadc9954",
+        "mem-3e33a17c-cf1a-46ec-8c43-c434928bd39f",
+        "mem-41790fbb-5bb3-454a-bd38-fe633b26bae4",
+        "mem-918f3d79-776c-4ec7-acc9-8f8f512be894",
+        "mem-b6a3c6d3-2d0a-430a-86d6-71b1d8ea0d68",
+        "mem-ca32f291-3015-498f-834a-5eb097ec2908",
+        "mem-cfb987d8-9bf8-488a-a210-1073d9db5048",
+        "mem-eaf25836-9bff-4567-8817-b1ee36b3b1ec"
+      ],
+      "source_span": [
+        "span-21258d7d-d874-474d-85e8-001d3010e852",
+        "span-33cc02cf-af60-4d82-aa03-034c3146dc2c",
+        "span-e754f1a3-1d84-4240-a9de-c5fac568eb39",
+        "span-8e8a76b8-a7fa-4895-a593-6b99f955a710"
+      ]
+    },
+    "truncated": {
+      "author_context": false,
+      "character_alias": false,
+      "draft_body": true,
+      "draft_claim": true,
+      "foreshadow_record": false,
+      "issue": false,
+      "issue_evidence": false,
+      "memory_record": false,
+      "source_span": true,
+      "source_span_text": false
+    }
+  },
+  "input_digest": "11d55127bb447cb8a05f0c9c205b85a6fb8dce0e23b9821195b637aa85353d47",
+  "analysis": {
+    "citation_transform": {
+      "added_source_count": 0,
+      "discarded_model_item_indices": [],
+      "duplicate_omitted_item_count": 0,
+      "fallback_draft_claim_ids": [
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-2",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-3",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-4",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-5",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-6",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-7",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-8"
+      ],
+      "model_item_count": 12,
+      "model_summary_used": false,
+      "omitted_unmatched_clause_count": 0,
+      "overflow_omitted_item_count": 7,
+      "source_rendered_item_count": 12,
+      "version": "source-rendered-v2"
+    },
+    "draft_coverage": {
+      "cited_ranges": [
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-1",
+          "source_chars": 11,
+          "source_end": 11,
+          "source_start": 0,
+          "supplied_chars": 11,
+          "supplied_end": 11,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-2",
+          "source_chars": 11,
+          "source_end": 22,
+          "source_start": 11,
+          "supplied_chars": 11,
+          "supplied_end": 22,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-3",
+          "source_chars": 11,
+          "source_end": 33,
+          "source_start": 22,
+          "supplied_chars": 11,
+          "supplied_end": 33,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-4",
+          "source_chars": 11,
+          "source_end": 44,
+          "source_start": 33,
+          "supplied_chars": 11,
+          "supplied_end": 44,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-5",
+          "source_chars": 11,
+          "source_end": 55,
+          "source_start": 44,
+          "supplied_chars": 11,
+          "supplied_end": 55,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-6",
+          "source_chars": 11,
+          "source_end": 66,
+          "source_start": 55,
+          "supplied_chars": 11,
+          "supplied_end": 66,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-7",
+          "source_chars": 11,
+          "source_end": 77,
+          "source_start": 66,
+          "supplied_chars": 11,
+          "supplied_end": 77,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-8",
+          "source_chars": 11,
+          "source_end": 88,
+          "source_start": 77,
+          "supplied_chars": 11,
+          "supplied_end": 88,
+          "truncated": false
+        }
+      ],
+      "discarded_item_indices": [],
+      "reasons": [
+        "draft_claim_unselected",
+        "draft_body_truncated"
+      ],
+      "source_ids": [
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-1",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-2",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-3",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-4",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-5",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-6",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-7",
+        "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-8"
+      ],
+      "status": "partial",
+      "uncovered_source_ids": [],
+      "unselected_count": 172
+    },
+    "evidence_status": "partial",
+    "items": [
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "林默在雾港核对潮汐表。",
+            "label": "当前草稿 · 句 1",
+            "source_id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-1",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句1原文：「林默在雾港核对潮汐表。」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "林默在雾港核对潮汐表。",
+            "label": "当前草稿 · 句 2",
+            "source_id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-2",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句2原文：「林默在雾港核对潮汐表。」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "林默在雾港核对潮汐表。",
+            "label": "当前草稿 · 句 3",
+            "source_id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-3",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句3原文：「林默在雾港核对潮汐表。」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "林默在雾港核对潮汐表。",
+            "label": "当前草稿 · 句 4",
+            "source_id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-4",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句4原文：「林默在雾港核对潮汐表。」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "林默在雾港核对潮汐表。",
+            "label": "当前草稿 · 句 5",
+            "source_id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-5",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句5原文：「林默在雾港核对潮汐表。」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "林默在雾港核对潮汐表。",
+            "label": "当前草稿 · 句 6",
+            "source_id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-6",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句6原文：「林默在雾港核对潮汐表。」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "林默在雾港核对潮汐表。",
+            "label": "当前草稿 · 句 7",
+            "source_id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-7",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句7原文：「林默在雾港核对潮汐表。」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "林默在雾港核对潮汐表。",
+            "label": "当前草稿 · 句 8",
+            "source_id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-8",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句8原文：「林默在雾港核对潮汐表。」"
+      },
+      {
+        "section": "character_state",
+        "sources": [
+          {
+            "excerpt": "雾线水门外锚柱",
+            "label": "航图 · location",
+            "source_id": "mem-3e33a17c-cf1a-46ec-8c43-c434928bd39f",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/memory#memory-mem-3e33a17c-cf1a-46ec-8c43-c434928bd39f",
+            "source_type": "memory_record"
+          }
+        ],
+        "text": "已确认记录：航图位于「雾线水门外锚柱」"
+      },
+      {
+        "section": "character_state",
+        "sources": [
+          {
+            "excerpt": "温岚",
+            "label": "黄铜罗盘 · holder",
+            "source_id": "mem-b6a3c6d3-2d0a-430a-86d6-71b1d8ea0d68",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/memory#memory-mem-b6a3c6d3-2d0a-430a-86d6-71b1d8ea0d68",
+            "source_type": "memory_record"
+          }
+        ],
+        "text": "已确认记录：黄铜罗盘的持有者为「温岚」"
+      },
+      {
+        "section": "confirmed_fact",
+        "sources": [
+          {
+            "excerpt": "第6章 21:05 收到三次求救码",
+            "label": "低室电台 · received",
+            "source_id": "mem-ca32f291-3015-498f-834a-5eb097ec2908",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/memory#memory-mem-ca32f291-3015-498f-834a-5eb097ec2908",
+            "source_type": "memory_record"
+          }
+        ],
+        "text": "已确认记忆记录（低室电台 · received）：「第6章 21:05 收到三次求救码」"
+      },
+      {
+        "section": "confirmed_fact",
+        "sources": [
+          {
+            "excerpt": "第3章 19:20",
+            "label": "西航道退潮 · time",
+            "source_id": "mem-918f3d79-776c-4ec7-acc9-8f8f512be894",
+            "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/memory#memory-mem-918f3d79-776c-4ec7-acc9-8f8f512be894",
+            "source_type": "memory_record"
+          }
+        ],
+        "text": "已确认记忆记录（西航道退潮 · time）：「第3章 19:20」"
+      }
+    ],
+    "summary": "当前草稿句1原文：「林默在雾港核对潮汐表。」 当前草稿句2原文：「林默在雾港核对潮汐表。」 当前草稿句3原文：「林默在雾港核对潮汐表。」",
+    "summary_sources": [
+      {
+        "excerpt": "林默在雾港核对潮汐表。",
+        "label": "当前草稿 · 句 1",
+        "source_id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-1",
+        "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/workspace#draft-source",
+        "source_type": "draft_claim"
+      },
+      {
+        "excerpt": "林默在雾港核对潮汐表。",
+        "label": "当前草稿 · 句 2",
+        "source_id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-2",
+        "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/workspace#draft-source",
+        "source_type": "draft_claim"
+      },
+      {
+        "excerpt": "林默在雾港核对潮汐表。",
+        "label": "当前草稿 · 句 3",
+        "source_id": "draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-3",
+        "source_path": "/projects/prj-1e04b682-604e-41d1-abf7-663717500533/workspace#draft-source",
+        "source_type": "draft_claim"
+      }
+    ]
+  }
+}

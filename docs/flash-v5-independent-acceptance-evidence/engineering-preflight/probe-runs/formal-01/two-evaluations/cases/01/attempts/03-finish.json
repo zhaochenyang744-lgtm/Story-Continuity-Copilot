@@ -1,0 +1,28 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "http_ordinal_in_case": 3,
+  "finished_at": "2026-09-27T08:14:43.892449+00:00",
+  "latency_ms": 1,
+  "status": null,
+  "error_type": "ReadTimeout",
+  "usage": {
+    "status": "unknown",
+    "values": {
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "total_tokens": null
+    },
+    "invalid_fields": [
+      "prompt_tokens",
+      "completion_tokens",
+      "total_tokens"
+    ]
+  },
+  "response_model": null,
+  "system_fingerprint": null,
+  "finish_reason": null,
+  "message_content": null,
+  "message_content_sha256": null,
+  "response_body_sha256": null,
+  "response_json_status": "unavailable"
+}

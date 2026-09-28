@@ -1,0 +1,184 @@
+{
+  "schema_version": "v8-blinded-case-followup-review-v1",
+  "case_alias": "case-13",
+  "stage": "followup",
+  "reviewer": "semantic-review-a",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-13",
+      "response_alias": "answer-a08286",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "fail",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "source_first_review": "semantic-review-a/first-13.json",
+      "normalization_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "与已锁首答一致，双胞胎事实加永久亲属规则共同否定母子命题。",
+          "visible_quote": "Together these facts exclude",
+          "evidence_pointer": "responses[answer-a08286].final.issues[0].reasoning"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "fail",
+          "reason": "final仍将一般亲属规则span1标contradicts、具体双胞胎事实span2标context，违反冻结premise角色。",
+          "visible_quote": "context",
+          "evidence_pointer": "responses[answer-a08286].final.issues[0].evidence; policy.premises"
+        },
+        {
+          "dimension": "T",
+          "verdict": "pass",
+          "reason": "final删除suggested_revision及apply_suggestion，首答新增性别细节不再交付；永久规则时间判断正确。该变更不回改首答T。",
+          "visible_quote": "\"suggested_revision\":null",
+          "evidence_pointer": "responses[answer-a08286].final.issues[0].suggested_revision; semantic-review-a/first-13.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；类别relationship、minimum集合及selected/chapter/Memory/excerpt正确；实际Issue和适用final合同正确。timeless按既有合同移除建议/apply，角色失败另列。",
+      "attribution_tags": [
+        "role_error"
+      ],
+      "overall_reason": "事实联合反证正确，最终证据角色错误仍阻断完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-13",
+      "response_alias": "answer-d59f4e",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "fail",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "source_first_review": "semantic-review-a/first-13.json",
+      "normalization_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "与已锁首答一致，双胞胎事实加永久亲属规则共同否定母子命题。",
+          "visible_quote": "Together these premises directly contradict",
+          "evidence_pointer": "responses[answer-d59f4e].final.issues[0].reasoning"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "fail",
+          "reason": "final仍将一般亲属规则span1标contradicts、具体双胞胎事实span2标context，违反冻结premise角色。",
+          "visible_quote": "context",
+          "evidence_pointer": "responses[answer-d59f4e].final.issues[0].evidence; policy.premises"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；类别relationship、minimum集合及selected/chapter/Memory/excerpt正确；实际Issue和适用final合同正确。timeless按既有合同移除建议/apply，角色失败另列。",
+      "attribution_tags": [
+        "role_error"
+      ],
+      "overall_reason": "事实联合反证正确，最终证据角色错误仍阻断完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-13",
+      "response_alias": "answer-ee967f",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "source_first_review": "semantic-review-a/first-13.json",
+      "normalization_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "与已锁首答一致，双胞胎事实加永久亲属规则共同否定母子命题。",
+          "visible_quote": "Together these sufficient spans directly contradict",
+          "evidence_pointer": "responses[answer-ee967f].final.issues[0].reasoning"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；类别relationship、minimum集合及selected/chapter/Memory/excerpt正确；实际Issue和适用final合同正确。timeless按既有合同移除建议/apply，角色失败另列。",
+      "attribution_tags": [],
+      "overall_reason": "核心推理及适用合同完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "comparison": {
+    "strict_pass": 1,
+    "total": 3,
+    "strict_pass_aliases": [
+      "answer-ee967f"
+    ],
+    "F_pass_aliases": [
+      "answer-a08286",
+      "answer-d59f4e",
+      "answer-ee967f"
+    ],
+    "repair_count": 0,
+    "first_scores_unchanged": true
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/13.json",
+    "sha256_before": "92fa3accaff7e504c450fd4fe75d8fa6b81cea695789be9faf80b37ff18a2ca3",
+    "sha256_after_review": "92fa3accaff7e504c450fd4fe75d8fa6b81cea695789be9faf80b37ff18a2ca3",
+    "unchanged": true
+  },
+  "lock": {
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "identity_inferred": false,
+    "first_locked_before_followup": true
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

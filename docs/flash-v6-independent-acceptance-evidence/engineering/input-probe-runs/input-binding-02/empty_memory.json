@@ -1,0 +1,6 @@
+{
+  "control": "empty_memory",
+  "rejection": "input_contract:v6-v6s-01:control_selected_memory_set_drift",
+  "request_sha256": "acc94e673724f91a83bdeb47f38efabcd674ec9d2ea36a02e9853b4ce3afa088",
+  "status": "pass"
+}

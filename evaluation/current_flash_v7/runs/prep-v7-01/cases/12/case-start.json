@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v7-01",
+  "ordinal": 12,
+  "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "family": "comparison",
+  "started_at": "2026-09-27T10:40:54.208844+00:00",
+  "case_input_sha256": "b6e0f7b71bdb5585d8c2fbdd1a9f69efa362c3440871b1c9cbf175c3c670dae4",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

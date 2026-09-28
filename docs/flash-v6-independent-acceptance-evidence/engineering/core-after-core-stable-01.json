@@ -1,0 +1,110 @@
+{
+  "stage": "after_core_stable_01",
+  "timestamp": "2026-09-27T09:32:12.6728988Z",
+  "status": "pass",
+  "before_receipt": "core-before-formal-01.json",
+  "actual_probe_run_id": "core-stable-01",
+  "manifest_sha256": "d340e009af4687fce098159f45ba6e99cb1542705107824faa4000f1080238e1",
+  "probe_sha256": "65d68db3c97dd2a83d5935d1e39b24cb1b8d116e3089a8590043986d5f548062",
+  "core_files": [
+    {
+      "path": "backend/app/provider.py",
+      "expected": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643",
+      "actual": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643",
+      "match": true
+    },
+    {
+      "path": "backend/app/engine.py",
+      "expected": "0f0d34335636bf05b551dbfe8ec88ffff07fabb0d7a6a577dd987ebd1ffcee59",
+      "actual": "0f0d34335636bf05b551dbfe8ec88ffff07fabb0d7a6a577dd987ebd1ffcee59",
+      "match": true
+    },
+    {
+      "path": "backend/app/brief_citations.py",
+      "expected": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+      "actual": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+      "match": true
+    },
+    {
+      "path": "backend/app/v2_database.py",
+      "expected": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+      "actual": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+      "match": true
+    },
+    {
+      "path": "backend/app/main.py",
+      "expected": "bd7fdfab5ff2dd18f369d6bf22c6cdfc83ee177d8245b91954f21ed20faf3cca",
+      "actual": "bd7fdfab5ff2dd18f369d6bf22c6cdfc83ee177d8245b91954f21ed20faf3cca",
+      "match": true
+    },
+    {
+      "path": "backend/app/seed_data.py",
+      "expected": "cd1ec7e535eb5dc5706a36c7cfa2f96adef7fd3a7b691263bef0c88a8a9c68de",
+      "actual": "cd1ec7e535eb5dc5706a36c7cfa2f96adef7fd3a7b691263bef0c88a8a9c68de",
+      "match": true
+    },
+    {
+      "path": "backend/app/config.py",
+      "expected": "71ecb142047916cba315dcbb8fff9c31f294d8e1109be888cad42c5e80ab9f9e",
+      "actual": "71ecb142047916cba315dcbb8fff9c31f294d8e1109be888cad42c5e80ab9f9e",
+      "match": true
+    },
+    {
+      "path": "backend/app/database.py",
+      "expected": "82afa645a8b092bfd3001bf667378ccc56646a9900e905209e9243c6357a2d33",
+      "actual": "82afa645a8b092bfd3001bf667378ccc56646a9900e905209e9243c6357a2d33",
+      "match": true
+    },
+    {
+      "path": "backend/app/stage13.py",
+      "expected": "957c219bb3f8036e421c63ba7c204ed1767d2d334a39a08aa958f5119cfd9500",
+      "actual": "957c219bb3f8036e421c63ba7c204ed1767d2d334a39a08aa958f5119cfd9500",
+      "match": true
+    },
+    {
+      "path": "backend/app/__init__.py",
+      "expected": "35f78b2beef7082e8d47277da699bc8662a2e7c3b1cb87ba3cd30e525bcf4bfc",
+      "actual": "35f78b2beef7082e8d47277da699bc8662a2e7c3b1cb87ba3cd30e525bcf4bfc",
+      "match": true
+    },
+    {
+      "path": "backend/app/memory_contract.py",
+      "expected": "d8afc7e9f85f296f5762aaf1f03e4baafb7a163312bc93a06a4744e5e4355d51",
+      "actual": "d8afc7e9f85f296f5762aaf1f03e4baafb7a163312bc93a06a4744e5e4355d51",
+      "match": true
+    },
+    {
+      "path": "backend/app/text_content.py",
+      "expected": "d1f04d4b7ec2fd5f87c1f706960bdfff6c77f61b9bf5ee3699ec902e48443290",
+      "actual": "d1f04d4b7ec2fd5f87c1f706960bdfff6c77f61b9bf5ee3699ec902e48443290",
+      "match": true
+    },
+    {
+      "path": "backend/app/long_term_workflow.py",
+      "expected": "e5eb9874ccdeb019545a42c121ed98cd42af2252a52ed066f6361ee638b7ca59",
+      "actual": "e5eb9874ccdeb019545a42c121ed98cd42af2252a52ed066f6361ee638b7ca59",
+      "match": true
+    },
+    {
+      "path": "backend/app/project_export.py",
+      "expected": "b8227673e20a68bd79a2f4694eb5a15bca77145623fb7c4e5bb1a1f3d0a3420f",
+      "actual": "b8227673e20a68bd79a2f4694eb5a15bca77145623fb7c4e5bb1a1f3d0a3420f",
+      "match": true
+    },
+    {
+      "path": "backend/tests/test_v6_continuity_contract.py",
+      "expected": "c976efb224b00b4f039dc77bf2f558c724eeb60d9e7aec429016fe9049bda357",
+      "actual": "c976efb224b00b4f039dc77bf2f558c724eeb60d9e7aec429016fe9049bda357",
+      "match": true
+    },
+    {
+      "path": "docs/flash-v6-independent-acceptance-evidence/g02/replay_v5.py",
+      "expected": "641df1326c4296c595f189b9be30bcde7a4be5db0f8b57a9f45395d26ebcce32",
+      "actual": "641df1326c4296c595f189b9be30bcde7a4be5db0f8b57a9f45395d26ebcce32",
+      "match": true
+    }
+  ],
+  "probe_results_sha256": "d044b82a0e6dbe73ef6a4b02fb1ae9fbb24c50692596e26d22dd4d6da789b172",
+  "provider_calls": 0,
+  "database_connections": 0
+}

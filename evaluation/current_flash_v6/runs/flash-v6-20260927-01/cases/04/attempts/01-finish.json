@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-object_state-conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:01:46.722299+00:00",
+  "latency_ms": 3263,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3443,
+      "completion_tokens": 597,
+      "total_tokens": 4040
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-601ea7fc-ba23-45b7-8bb6-32521704af3d-1\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"object_state\",\"severity\":\"high\",\"explanation\":\"同一时刻，North Glass 气动载具被描述为已可发运，但证据显示其阀盖当时未锁紧，按规则不满足发运条件。\",\"reasoning\":\"当前草稿声称在当天10点该载具已可发运。静态规则 fixture-span-north_glass-4 规定，载具只有在压力表读数为四巴且阀盖锁紧时才可发运。动态状态 fixture-span-north_glass-5 明确在同一时刻（当天10点）压力表读数为四巴，但阀盖在整个那一分钟内保持松动且未锁紧。两者时间锚点均为“At 10点 on the same day”，构成显式重叠；同一对象、同一时间下，未锁紧的阀盖与“可发运”不能同时成立。\",\"temporal_basis\":{\"claim_anchor\":\"At 10点 on the same day\",\"evidence_anchor\":\"At 10点 on the same day\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-north_glass-4\",\"span_id\":\"fixture-span-north_glass-4\",\"relation\":\"context\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-4\"]},{\"chapter_id\":\"fixture-chapter-north_glass-5\",\"span_id\":\"fixture-span-north_glass-5\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-5\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-north_glass-4\",\"role\":\"current_context\"},{\"span_id\":\"fixture-span-north_glass-5\",\"role\":\"prior_state\"}],\"suggested_revision\":{\"before\":\"At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.\",\"after\":\"At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch because its valve cap remained loose and not locked.\"},\"available_actions\":[\"edit\",\"apply_suggestion\",\"keep_intentional\",\"false_positive\"]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-601ea7fc-ba23-45b7-8bb6-32521704af3d-1\",\"verdict\":\"reviewed_issue\",\"basis\":\"同一时刻的规则与状态证据共同证明该载具不满足发运条件，与草稿声称的“可发运”直接冲突。\"}]}",
+  "message_content_sha256": "8f1f365e22111a9c61f00ccc6204ae4d70a568c212a6d2f1c7f5dc140bf9b403",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

@@ -1,0 +1,184 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-08",
+  "stage": "followup",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:47:53.606364+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-08",
+      "response_alias": "answer-89220d",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-timeline-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "09点首次开启、10点开启后首次关闭与日志逐项一致；后续11点未知及另一主体知识不改变当前命题。",
+          "visible_quote": "the gate first opened at 09点 and first closed at 10点",
+          "evidence_pointer": "responses[response_alias=answer-89220d].first.parsed_business_json.claim_verdicts[0].basis; fixture-span-harbor_signal-1"
+        }
+      ],
+      "other_dimensions_checked": "正确无冲突故类别/显式引用 N/A；合法空 issues、精确 claim ID、针对性 no_issue basis 206 字符≤400。时序说明正确，无操作或建议。",
+      "attribution_tags": [],
+      "overall_reason": "无 repair，completed且normalization=0；逐字段核对实际final保持首答输出。目标事实由日志直接支持，合法空结果且理由具体，全部适用维度通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "substantive_issue_unchanged": true,
+        "normalization_count": 0,
+        "strict_transition": "pass_to_pass",
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-08.json",
+        "F_basis": "final保留reasoning；合法/错误空结果的F沿同一已接受首答basis，final本身不重发ledger。"
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-08",
+      "response_alias": "answer-9af458",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-timeline-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "09点首次开启、10点开启后首次关闭与日志逐项一致；后续11点未知及另一主体知识不改变当前命题。",
+          "visible_quote": "exactly matching the claim's 10点 first-closure after the 09点 opening",
+          "evidence_pointer": "responses[response_alias=answer-9af458].first.parsed_business_json.claim_verdicts[0].basis; fixture-span-harbor_signal-1"
+        }
+      ],
+      "other_dimensions_checked": "正确无冲突故类别/显式引用 N/A；合法空 issues、精确 claim ID、针对性 no_issue basis 326 字符≤400。时序说明正确，无操作或建议。",
+      "attribution_tags": [],
+      "overall_reason": "无 repair，completed且normalization=0；逐字段核对实际final保持首答输出。目标事实由日志直接支持，合法空结果且理由具体，全部适用维度通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "substantive_issue_unchanged": true,
+        "normalization_count": 0,
+        "strict_transition": "pass_to_pass",
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-08.json",
+        "F_basis": "final保留reasoning；合法/错误空结果的F沿同一已接受首答basis，final本身不重发ledger。"
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-08",
+      "response_alias": "answer-0af21c",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-timeline-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "09点首次开启、10点开启后首次关闭与日志逐项一致；后续11点未知及另一主体知识不改变当前命题。",
+          "visible_quote": "The cited 09点/10点 gate log directly supports the claim",
+          "evidence_pointer": "responses[response_alias=answer-0af21c].first.parsed_business_json.claim_verdicts[0].basis; fixture-span-harbor_signal-1"
+        }
+      ],
+      "other_dimensions_checked": "正确无冲突故类别/显式引用 N/A；合法空 issues、精确 claim ID、针对性 no_issue basis 122 字符≤400。时序说明正确，无操作或建议。",
+      "attribution_tags": [],
+      "overall_reason": "无 repair，completed且normalization=0；逐字段核对实际final保持首答输出。目标事实由日志直接支持，合法空结果且理由具体，全部适用维度通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "substantive_issue_unchanged": true,
+        "normalization_count": 0,
+        "strict_transition": "pass_to_pass",
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-08.json",
+        "F_basis": "final保留reasoning；合法/错误空结果的F沿同一已接受首答basis，final本身不重发ledger。"
+      }
+    }
+  ],
+  "repair_records": [],
+  "summary": {
+    "responses": 3,
+    "repair_attempted": 0,
+    "final_F_pass": 3,
+    "final_F_partial": 0,
+    "final_strict_pass": 3,
+    "normalization_contribution": 0
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/08.json",
+      "sha256_observed": "429e9119c5e11b085bc1a71fca72c86d1c7febb960a1292dce84c6eeecbdaa48",
+      "sha256_after_review": "429e9119c5e11b085bc1a71fca72c86d1c7febb960a1292dce84c6eeecbdaa48"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-08.json",
+      "sha256_observed": "350574a6a5b59c082861a3a8d4f753ff4d155d6023319275e23f75036e207edc",
+      "sha256_after_review": "350574a6a5b59c082861a3a8d4f753ff4d155d6023319275e23f75036e207edc"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/08.json",
+      "sha256_observed": "8ddd54989f5eceeb500809c34194fcfe4a5fa03e960c55522c513fb271c5c738",
+      "sha256_after_review": "8ddd54989f5eceeb500809c34194fcfe4a5fa03e960c55522c513fb271c5c738"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    }
+  ],
+  "read_hashes_stable": true
+}

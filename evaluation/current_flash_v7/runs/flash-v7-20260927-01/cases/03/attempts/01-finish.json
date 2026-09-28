@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:47:22.520502+00:00",
+  "latency_ms": 1517,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3458,
+      "completion_tokens": 109,
+      "total_tokens": 3567
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-db468eb9-4f82-429e-b9e2-51a578673bf2-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The claim asserts Mira held the spare blue badge at 11点 based on the two badge registers, but the cited register span shows the 11点 holder field blank; the attribution is unsupported and the holding remains unknown, so no confirmed contradiction is established.\"}]}",
+  "message_content_sha256": "8ce27e450800d160e2583b36c71dd85d1ffaef0c38ca7b6731bbba716c7f449f",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

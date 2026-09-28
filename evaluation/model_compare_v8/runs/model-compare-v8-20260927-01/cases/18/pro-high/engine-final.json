@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1",
+      "status": "insufficient_evidence",
+      "category": "relationship",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The draft asserts that the launch and delay logs attribute the restoration boat's delay to Tala, but the supplied restoration log leaves the cause unrecorded.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-6",
+          "span_id": "fixture-span-orchard_restoration-6",
+          "excerpt": "The restoration log leaves the cause of the boat's delay unrecorded.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-6"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The claim depends on a record establishing Tala as the cause of the delay. The only directly relevant log evidence states that the restoration log leaves the cause of the boat's delay unrecorded, so the attribution to Tala is unsupported. The supplied launch-condition spans do not name Tala or assign a cause. No direct contradiction or supporting warrant is established, so the causal fact remains unknown.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-orchard_restoration-6",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1",
+      "returned_span_ids": [
+        "fixture-span-orchard_restoration-4",
+        "fixture-span-orchard_restoration-6",
+        "fixture-span-orchard_restoration-5"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 7875,
+  "output_tokens": 8955,
+  "latency_ms": 82801,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

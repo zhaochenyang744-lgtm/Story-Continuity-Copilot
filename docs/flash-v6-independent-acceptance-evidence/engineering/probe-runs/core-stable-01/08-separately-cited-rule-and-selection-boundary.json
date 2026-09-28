@@ -1,0 +1,8 @@
+{
+  "detail": {
+    "separate_rule_citation": "accepted",
+    "unselected_rule_source": "evidence_unresolvable"
+  },
+  "name": "separately-cited-rule-and-selection-boundary",
+  "status": "pass"
+}

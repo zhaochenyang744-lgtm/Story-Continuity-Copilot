@@ -1,0 +1,15 @@
+{
+  "before_sha256": {
+    "backend/app/__init__.py": "35f78b2beef7082e8d47277da699bc8662a2e7c3b1cb87ba3cd30e525bcf4bfc",
+    "backend/app/brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "backend/app/engine.py": "0f0d34335636bf05b551dbfe8ec88ffff07fabb0d7a6a577dd987ebd1ffcee59",
+    "backend/app/memory_contract.py": "d8afc7e9f85f296f5762aaf1f03e4baafb7a163312bc93a06a4744e5e4355d51",
+    "backend/app/provider.py": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643",
+    "evaluation/current_flash_v6/CONTRACT.md": "89bf179652e71f9b271a7ebcc6ae42ab592ce55cac3e1e7e3173a261d9192203",
+    "evaluation/current_flash_v6/DESIGN-ADDENDUM-02.md": "d841e0350dd4644f0894431c1e64e5f686589fed10bcac914e7cbc4915699cc6",
+    "evaluation/current_flash_v6/DESIGN-ADDENDUM.md": "5b40c2d78b9eeb5a19c145529b381f37bca37bb7fef5bd9e793937e46f8c7f12",
+    "independent_probe": "65d68db3c97dd2a83d5935d1e39b24cb1b8d116e3089a8590043986d5f548062"
+  },
+  "scope": "synthetic offline changed-contract paths only",
+  "started_utc": "2026-09-27T09:31:38.501250+00:00"
+}

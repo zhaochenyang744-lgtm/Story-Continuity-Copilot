@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "baf507a38e2f362d50360b0f3688b57e1e7959ca79c8dbe01a29ab46ddd3292e",
+  "finished_at": "2026-09-27T10:02:48.486706+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-8ea536a9-f67e-4693-bec4-45abfbfafa8d-1",
+        "verdict": "no_issue",
+        "basis": "当前草稿称18点时透镜R4为透明玻璃，并让Vela回忆它昨天呈琥珀色。证据显示同一日18点西侧孔径透镜（即索引确认的透镜R4）为透明玻璃而非琥珀色，与草稿当前状态一致；Vela对昨天的回忆是对更早时间的陈述，与18点的状态并不冲突，因此无需审查。"
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3756,
+    "output_tokens": 135,
+    "observed_response_input_tokens": 3756,
+    "observed_response_output_tokens": 135
+  }
+}

@@ -1,0 +1,724 @@
+{
+  "case_alias": "case-06",
+  "stage": "first",
+  "expected_policy_reference": "ccv3-north_glass-object_state-insufficient_evidence",
+  "policy": {
+    "allowed_outcomes": [
+      "insufficient_evidence"
+    ],
+    "minimum": [
+      [
+        "fixture-span-north_glass-6"
+      ]
+    ],
+    "optional": [
+      "fixture-span-north_glass-5"
+    ],
+    "premises": [
+      "fixture-span-north_glass-4"
+    ],
+    "category": "relationship",
+    "category_candidates": [
+      "relationship"
+    ],
+    "manual_variant": false,
+    "temporal_relations": []
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-north-glass",
+      "revision": 2,
+      "body": "Mira loosened the carrier valve cap, according to the inspection and cap record."
+    },
+    "claims": [
+      {
+        "id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+        "text": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-north_glass-6",
+            "chapter_id": "fixture-chapter-north_glass-6",
+            "body": "The carrier inspection does not record who loosened its valve cap.",
+            "label": "cap_actor",
+            "prompt_excerpt": "The carrier inspection does not record who loosened its valve cap."
+          },
+          {
+            "id": "fixture-span-north_glass-5",
+            "chapter_id": "fixture-chapter-north_glass-5",
+            "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "label": "carrier_inspection",
+            "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+          },
+          {
+            "id": "fixture-span-north_glass-2",
+            "chapter_id": "fixture-chapter-north_glass-2",
+            "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "label": "badge_roster",
+            "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-north_glass-1",
+        "memory_type": "static_canon",
+        "subject": "Mira",
+        "predicate": "rule",
+        "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+        "source_span_id": "fixture-span-north_glass-1"
+      },
+      {
+        "id": "fixture-memory-north_glass-2",
+        "memory_type": "dynamic_state",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+        "source_span_id": "fixture-span-north_glass-2"
+      },
+      {
+        "id": "fixture-memory-north_glass-3",
+        "memory_type": "open_thread",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "The spare blue badge register leaves its 11点 holder field blank.",
+        "source_span_id": "fixture-span-north_glass-3"
+      },
+      {
+        "id": "fixture-memory-north_glass-4",
+        "memory_type": "static_canon",
+        "subject": "pneumatic carrier",
+        "predicate": "rule",
+        "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+        "source_span_id": "fixture-span-north_glass-4"
+      },
+      {
+        "id": "fixture-memory-north_glass-5",
+        "memory_type": "dynamic_state",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+        "source_span_id": "fixture-span-north_glass-5"
+      },
+      {
+        "id": "fixture-memory-north_glass-6",
+        "memory_type": "open_thread",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "The carrier inspection does not record who loosened its valve cap.",
+        "source_span_id": "fixture-span-north_glass-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-2119c6",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-north-glass",
+            "revision": 2,
+            "body": "Mira loosened the carrier valve cap, according to the inspection and cap record."
+          },
+          "claims": [
+            {
+              "id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+              "text": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-north_glass-6",
+                  "chapter_id": "fixture-chapter-north_glass-6",
+                  "body": "The carrier inspection does not record who loosened its valve cap.",
+                  "label": "cap_actor",
+                  "prompt_excerpt": "The carrier inspection does not record who loosened its valve cap."
+                },
+                {
+                  "id": "fixture-span-north_glass-5",
+                  "chapter_id": "fixture-chapter-north_glass-5",
+                  "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                  "label": "carrier_inspection",
+                  "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+                },
+                {
+                  "id": "fixture-span-north_glass-2",
+                  "chapter_id": "fixture-chapter-north_glass-2",
+                  "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                  "label": "badge_roster",
+                  "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-north_glass-1",
+              "memory_type": "static_canon",
+              "subject": "Mira",
+              "predicate": "rule",
+              "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+              "source_span_id": "fixture-span-north_glass-1"
+            },
+            {
+              "id": "fixture-memory-north_glass-2",
+              "memory_type": "dynamic_state",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+              "source_span_id": "fixture-span-north_glass-2"
+            },
+            {
+              "id": "fixture-memory-north_glass-3",
+              "memory_type": "open_thread",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "The spare blue badge register leaves its 11点 holder field blank.",
+              "source_span_id": "fixture-span-north_glass-3"
+            },
+            {
+              "id": "fixture-memory-north_glass-4",
+              "memory_type": "static_canon",
+              "subject": "pneumatic carrier",
+              "predicate": "rule",
+              "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+              "source_span_id": "fixture-span-north_glass-4"
+            },
+            {
+              "id": "fixture-memory-north_glass-5",
+              "memory_type": "dynamic_state",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+              "source_span_id": "fixture-span-north_glass-5"
+            },
+            {
+              "id": "fixture-memory-north_glass-6",
+              "memory_type": "open_thread",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "The carrier inspection does not record who loosened its valve cap.",
+              "source_span_id": "fixture-span-north_glass-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"object_state\",\"severity\":\"medium\",\"explanation\":\"The draft asserts Mira loosened the carrier valve cap \\\"according to the inspection and cap record,\\\" but the supplied record explicitly does not record who loosened the valve cap. The attribution therefore lacks its stated source warrant, and the person who left the cap loose remains unknown.\",\"reasoning\":\"The cited span fixture-span-north_glass-6 states that the carrier inspection does not record who loosened its valve cap. That span is the missing link the draft claim depends on: it removes the source warrant (\\\"according to the inspection and cap record\\\") but does not itself assert that Mira did not loosen the cap, so no direct contradiction and no shared time/scope anchors exist. Judgment stops at an unsupported attribution; the actor stays unknown, which is why this is insufficient_evidence rather than a confirmed conflict or a state change, and no author decision actions are exposed.\",\"temporal_basis\":{\"claim_anchor\":null,\"evidence_anchor\":null,\"relation\":\"unknown\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-north_glass-6\",\"span_id\":\"fixture-span-north_glass-6\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-6\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-north_glass-6\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The claim grounds Mira's loosening of the valve cap in the inspection and cap record, yet the cited record (fixture-span-north_glass-6) explicitly does not record who loosened the cap. The attribution is unsupported and the responsible person remains unknown; no contradicting fact or shared time anchor exists.\"}]}",
+        "parsed_business_json": {
+          "issues": [
+            {
+              "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+              "status": "insufficient_evidence",
+              "nature": "insufficient_evidence",
+              "category": "object_state",
+              "severity": "medium",
+              "explanation": "The draft asserts Mira loosened the carrier valve cap \"according to the inspection and cap record,\" but the supplied record explicitly does not record who loosened the valve cap. The attribution therefore lacks its stated source warrant, and the person who left the cap loose remains unknown.",
+              "reasoning": "The cited span fixture-span-north_glass-6 states that the carrier inspection does not record who loosened its valve cap. That span is the missing link the draft claim depends on: it removes the source warrant (\"according to the inspection and cap record\") but does not itself assert that Mira did not loosen the cap, so no direct contradiction and no shared time/scope anchors exist. Judgment stops at an unsupported attribution; the actor stays unknown, which is why this is insufficient_evidence rather than a confirmed conflict or a state change, and no author decision actions are exposed.",
+              "temporal_basis": {
+                "claim_anchor": null,
+                "evidence_anchor": null,
+                "relation": "unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "fixture-chapter-north_glass-6",
+                  "span_id": "fixture-span-north_glass-6",
+                  "relation": "context",
+                  "sufficiency": "insufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-north_glass-6"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "fixture-span-north_glass-6",
+                  "role": "missing_link"
+                }
+              ],
+              "suggested_revision": null,
+              "available_actions": []
+            }
+          ],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+              "verdict": "insufficient_evidence",
+              "basis": "The claim grounds Mira's loosening of the valve cap in the inspection and cap record, yet the cited record (fixture-span-north_glass-6) explicitly does not record who loosened the cap. The attribution is unsupported and the responsible person remains unknown; no contradicting fact or shared time anchor exists."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-ba63bf",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-north-glass",
+            "revision": 2,
+            "body": "Mira loosened the carrier valve cap, according to the inspection and cap record."
+          },
+          "claims": [
+            {
+              "id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+              "text": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-north_glass-6",
+                  "chapter_id": "fixture-chapter-north_glass-6",
+                  "body": "The carrier inspection does not record who loosened its valve cap.",
+                  "label": "cap_actor",
+                  "prompt_excerpt": "The carrier inspection does not record who loosened its valve cap."
+                },
+                {
+                  "id": "fixture-span-north_glass-5",
+                  "chapter_id": "fixture-chapter-north_glass-5",
+                  "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                  "label": "carrier_inspection",
+                  "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+                },
+                {
+                  "id": "fixture-span-north_glass-2",
+                  "chapter_id": "fixture-chapter-north_glass-2",
+                  "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                  "label": "badge_roster",
+                  "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-north_glass-1",
+              "memory_type": "static_canon",
+              "subject": "Mira",
+              "predicate": "rule",
+              "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+              "source_span_id": "fixture-span-north_glass-1"
+            },
+            {
+              "id": "fixture-memory-north_glass-2",
+              "memory_type": "dynamic_state",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+              "source_span_id": "fixture-span-north_glass-2"
+            },
+            {
+              "id": "fixture-memory-north_glass-3",
+              "memory_type": "open_thread",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "The spare blue badge register leaves its 11点 holder field blank.",
+              "source_span_id": "fixture-span-north_glass-3"
+            },
+            {
+              "id": "fixture-memory-north_glass-4",
+              "memory_type": "static_canon",
+              "subject": "pneumatic carrier",
+              "predicate": "rule",
+              "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+              "source_span_id": "fixture-span-north_glass-4"
+            },
+            {
+              "id": "fixture-memory-north_glass-5",
+              "memory_type": "dynamic_state",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+              "source_span_id": "fixture-span-north_glass-5"
+            },
+            {
+              "id": "fixture-memory-north_glass-6",
+              "memory_type": "open_thread",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "The carrier inspection does not record who loosened its valve cap.",
+              "source_span_id": "fixture-span-north_glass-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\n      \"status\": \"insufficient_evidence\",\n      \"nature\": \"insufficient_evidence\",\n      \"category\": \"event_status\",\n      \"severity\": \"medium\",\n      \"explanation\": \"The draft attributes the loosening of the carrier valve cap to Mira based on the inspection and cap record, but the supplied inspection span only says the record does not identify who loosened it.\",\n      \"reasoning\": \"The current claim states Mira loosened the cap according to the inspection and cap record. The only supplied record evidence about the inspection says it does not record who loosened the valve cap; no supplied cap record or other direct evidence identifies a person. Therefore the record-based attribution is unsupported and the identity of the actor remains unknown. Judgment stops because the missing attribution is not supplied.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": null,\n        \"evidence_anchor\": null,\n        \"relation\": \"unknown\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-6\",\n          \"span_id\": \"fixture-span-north_glass-6\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"insufficient\",\n          \"related_memory_ids\": [\n            \"fixture-memory-north_glass-6\"\n          ]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-north_glass-6\",\n          \"role\": \"missing_link\"\n        }\n      ],\n      \"suggested_revision\": null,\n      \"available_actions\": []\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\n      \"verdict\": \"insufficient_evidence\",\n      \"basis\": \"The cited inspection span says it does not record who loosened the valve cap, so the record-based attribution to Mira is unsupported and requires missing evidence.\"\n    }\n  ]\n}",
+        "parsed_business_json": {
+          "issues": [
+            {
+              "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+              "status": "insufficient_evidence",
+              "nature": "insufficient_evidence",
+              "category": "event_status",
+              "severity": "medium",
+              "explanation": "The draft attributes the loosening of the carrier valve cap to Mira based on the inspection and cap record, but the supplied inspection span only says the record does not identify who loosened it.",
+              "reasoning": "The current claim states Mira loosened the cap according to the inspection and cap record. The only supplied record evidence about the inspection says it does not record who loosened the valve cap; no supplied cap record or other direct evidence identifies a person. Therefore the record-based attribution is unsupported and the identity of the actor remains unknown. Judgment stops because the missing attribution is not supplied.",
+              "temporal_basis": {
+                "claim_anchor": null,
+                "evidence_anchor": null,
+                "relation": "unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "fixture-chapter-north_glass-6",
+                  "span_id": "fixture-span-north_glass-6",
+                  "relation": "context",
+                  "sufficiency": "insufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-north_glass-6"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "fixture-span-north_glass-6",
+                  "role": "missing_link"
+                }
+              ],
+              "suggested_revision": null,
+              "available_actions": []
+            }
+          ],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+              "verdict": "insufficient_evidence",
+              "basis": "The cited inspection span says it does not record who loosened the valve cap, so the record-based attribution to Mira is unsupported and requires missing evidence."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-0caac1",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-north-glass",
+            "revision": 2,
+            "body": "Mira loosened the carrier valve cap, according to the inspection and cap record."
+          },
+          "claims": [
+            {
+              "id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+              "text": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-north_glass-6",
+                  "chapter_id": "fixture-chapter-north_glass-6",
+                  "body": "The carrier inspection does not record who loosened its valve cap.",
+                  "label": "cap_actor",
+                  "prompt_excerpt": "The carrier inspection does not record who loosened its valve cap."
+                },
+                {
+                  "id": "fixture-span-north_glass-5",
+                  "chapter_id": "fixture-chapter-north_glass-5",
+                  "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                  "label": "carrier_inspection",
+                  "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+                },
+                {
+                  "id": "fixture-span-north_glass-2",
+                  "chapter_id": "fixture-chapter-north_glass-2",
+                  "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                  "label": "badge_roster",
+                  "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-north_glass-1",
+              "memory_type": "static_canon",
+              "subject": "Mira",
+              "predicate": "rule",
+              "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+              "source_span_id": "fixture-span-north_glass-1"
+            },
+            {
+              "id": "fixture-memory-north_glass-2",
+              "memory_type": "dynamic_state",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+              "source_span_id": "fixture-span-north_glass-2"
+            },
+            {
+              "id": "fixture-memory-north_glass-3",
+              "memory_type": "open_thread",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "The spare blue badge register leaves its 11点 holder field blank.",
+              "source_span_id": "fixture-span-north_glass-3"
+            },
+            {
+              "id": "fixture-memory-north_glass-4",
+              "memory_type": "static_canon",
+              "subject": "pneumatic carrier",
+              "predicate": "rule",
+              "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+              "source_span_id": "fixture-span-north_glass-4"
+            },
+            {
+              "id": "fixture-memory-north_glass-5",
+              "memory_type": "dynamic_state",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+              "source_span_id": "fixture-span-north_glass-5"
+            },
+            {
+              "id": "fixture-memory-north_glass-6",
+              "memory_type": "open_thread",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "The carrier inspection does not record who loosened its valve cap.",
+              "source_span_id": "fixture-span-north_glass-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim that Mira loosened the carrier valve cap is consistent with the cited evidence: the inspection record only omits who loosened it, and the 10点 state of a loose, unlocked cap does not contradict Mira having loosened it. No supplied fact establishes a conflicting actor or time.\"}]}",
+        "parsed_business_json": {
+          "issues": [],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+              "verdict": "no_issue",
+              "basis": "The claim that Mira loosened the carrier valve cap is consistent with the cited evidence: the inspection record only omits who loosened it, and the 10点 state of a loose, unlocked cap does not contradict Mira having loosened it. No supplied fact establishes a conflicting actor or time."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    }
+  ]
+}

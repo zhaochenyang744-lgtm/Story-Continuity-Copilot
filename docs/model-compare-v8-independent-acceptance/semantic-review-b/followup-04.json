@@ -1,0 +1,179 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-04",
+  "stage": "followup",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:44:16.580849+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-04",
+      "response_alias": "answer-b3976c",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-object_state-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合必要条件规则与同分钟未锁阀盖；四巴仅满足一个条件，不能推出已就绪。",
+          "visible_quote": "缺少锁紧这一必要条件",
+          "evidence_pointer": "responses[response_alias=answer-b3976c].final.issues[0].reasoning"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "无 repair，final 逐字段保持首答联合推理、类别、角色及建议；新增 excerpt 精确匹配，completed 且 normalization=0。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "strict_transition": "pass_to_pass",
+        "repair_attempted": false,
+        "substantive_issue_unchanged": true,
+        "normalization_count": 0
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-04",
+      "response_alias": "answer-158e9a",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-object_state-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合必要条件规则与同分钟未锁阀盖；四巴仅满足一个条件，不能推出已就绪。",
+          "visible_quote": "The locked condition fails at the exact time asserted",
+          "evidence_pointer": "responses[response_alias=answer-158e9a].final.issues[0].reasoning"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "无 repair，final 逐字段保持首答联合推理、类别、角色及建议；新增 excerpt 精确匹配，completed 且 normalization=0。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "strict_transition": "pass_to_pass",
+        "repair_attempted": false,
+        "substantive_issue_unchanged": true,
+        "normalization_count": 0
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-04",
+      "response_alias": "answer-113e51",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "no_visible_output",
+      "expected_policy_reference": "ccv3-north_glass-object_state-conflict",
+      "ratings": {
+        "F": "unassessable",
+        "C": "not_delivered",
+        "E_roles": "not_delivered",
+        "E_set": "not_delivered",
+        "E_binding": "not_delivered",
+        "S": "fail",
+        "D": "fail",
+        "T": "unassessable",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "unavailable",
+      "actual_issue_count": null,
+      "findings": [
+        {
+          "dimension": "D",
+          "verdict": "fail",
+          "reason": "final为failed/schema_invalid，无Issue交付。首答语义推理初判正确不能替代实验引擎交付。",
+          "visible_quote": "schema_invalid",
+          "evidence_pointer": "responses[response_alias=answer-113e51].final.error_code"
+        }
+      ],
+      "attribution_tags": [
+        "schema_error",
+        "product_change_pending_technical_trace"
+      ],
+      "overall_reason": "final 终态失败，完整未通过；具体触发的原合同字段待技术定位，首答原始判断保留不覆写。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "strict_transition": "initial_first_pass_to_final_failure",
+        "repair_attempted": false,
+        "original_first_rating_preserved": true,
+        "technical_cause": "pending_exact_validator_rule"
+      }
+    }
+  ],
+  "repair_records": [],
+  "summary": {
+    "responses": 3,
+    "repair_attempted": 0,
+    "final_F_pass": 2,
+    "final_F_unassessable": 1,
+    "final_strict_pass": 2,
+    "terminal_failures": 1,
+    "normalization_contribution": 0
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/04.json",
+      "sha256_observed": "4c78cd40db79f710ced18bd2693b8b6adc3c7f5aecc79ee85f1c90a4e647c972",
+      "sha256_after_review": "4c78cd40db79f710ced18bd2693b8b6adc3c7f5aecc79ee85f1c90a4e647c972"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-04.json",
+      "sha256_observed": "73266de055eea564ac232e1f0e641810589de086b0fba27a766c791e5da14816",
+      "sha256_after_review": "73266de055eea564ac232e1f0e641810589de086b0fba27a766c791e5da14816"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/04.json",
+      "sha256_observed": "6bb18ce4f243c69e24f9c85a4966c8006902c0a0894a2473d89bb4a7af506989",
+      "sha256_after_review": "6bb18ce4f243c69e24f9c85a4966c8006902c0a0894a2473d89bb4a7af506989"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    }
+  ],
+  "read_hashes_stable": true
+}

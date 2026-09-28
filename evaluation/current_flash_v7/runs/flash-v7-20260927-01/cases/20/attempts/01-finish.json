@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:48:24.471670+00:00",
+  "latency_ms": 1348,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3479,
+      "completion_tokens": 105,
+      "total_tokens": 3584
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-1c23fdfa-eb15-4dae-90fb-d7e0559f9733-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim's present state (lens R4 clear at 18点) matches the cited evidence, and Vela's recollection of amber yesterday is a bounded earlier state that can coexist with the later clear state; no contradiction remains.\"}]}",
+  "message_content_sha256": "120bbb289041304a7a98a849d09f4519a7c7b1b968f22981399629ba43a752c4",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

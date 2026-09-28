@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+      "status": "insufficient_evidence",
+      "category": "event_status",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The cited 19:00 watch record leaves the companion unnamed, so the draft's claim that it establishes Evi accompanied Orin is unsupported.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_companion_blank-1",
+          "span_id": "fixture-span-v6_companion_blank-1",
+          "excerpt": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_companion_blank-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The only supplied evidence states that the watch record says Orin walked from the west quay to the east quay and leaves the companion unnamed. It does not identify Evi or support the claim that the record establishes her accompaniment. Without a supplied identity link or named companion, the attribution remains unknown.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_companion_blank-1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+      "returned_span_ids": [
+        "fixture-span-v6_companion_blank-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3079,
+  "output_tokens": 3217,
+  "latency_ms": 31069,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

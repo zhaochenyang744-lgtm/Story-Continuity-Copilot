@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-11",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "46bc14a7aa09d21839427b28e070f1f0f261886dd1905274908d9c7e8820f40f",
+  "finished_at": "2026-09-27T10:03:40.301526+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-09aab163-d2dc-498c-a343-4d49f0719b87-1",
+        "verdict": "no_issue",
+        "basis": "The draft explicitly frames Aster's statement as a lie (\"Aster lied\"), so it is an attributed false utterance, not a narrator-asserted fact. The register evidence (twins cannot be one another's parent) and the twin relationship are consistent with the lie being false; no continuity conflict exists."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 2978,
+    "output_tokens": 118,
+    "observed_response_input_tokens": 2978,
+    "observed_response_output_tokens": 118
+  }
+}

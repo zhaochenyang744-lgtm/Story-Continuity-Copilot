@@ -1,0 +1,25 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "score_layer": "raw_first_or_repair_v6",
+    "errors": [
+      "product_validator:evidence_unresolvable",
+      "source_not_selected_or_wrong_chapter",
+      "undeclared_extra_evidence"
+    ]
+  },
+  "repair_raw": [],
+  "final": {
+    "result": "terminal_failure",
+    "machine_result": "terminal_failure",
+    "semantic_result": "not_reviewed",
+    "errors": [
+      "evidence_unresolvable"
+    ]
+  },
+  "request_count": 1,
+  "parsed_output_count": 1,
+  "manual_semantic_review": "pending_manual_review"
+}

@@ -1,0 +1,57 @@
+{
+  "project_id": "fixture-project-north-glass",
+  "draft_id": "fixture-draft-north-glass",
+  "draft_revision": 2,
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-north_glass-1",
+      "chapter_number": 1,
+      "source_revision": 1,
+      "chapter_body_sha256": "7fe32913a0d817f57f2a1927e8289cdfc3f4536b3cbcf44529a04e4c24178c96",
+      "span_id": "fixture-span-north_glass-1",
+      "span_body_sha256": "7fe32913a0d817f57f2a1927e8289cdfc3f4536b3cbcf44529a04e4c24178c96"
+    },
+    {
+      "chapter_id": "fixture-chapter-north_glass-2",
+      "chapter_number": 2,
+      "source_revision": 1,
+      "chapter_body_sha256": "0a776d6f7499a678aceead6f3525ba9346a6150da919a80780af23cf65380688",
+      "span_id": "fixture-span-north_glass-2",
+      "span_body_sha256": "0a776d6f7499a678aceead6f3525ba9346a6150da919a80780af23cf65380688"
+    },
+    {
+      "chapter_id": "fixture-chapter-north_glass-3",
+      "chapter_number": 3,
+      "source_revision": 1,
+      "chapter_body_sha256": "da1bab5ad5141644712f8d031d3d0e70d470ede526827a70575f4f62f41471d6",
+      "span_id": "fixture-span-north_glass-3",
+      "span_body_sha256": "da1bab5ad5141644712f8d031d3d0e70d470ede526827a70575f4f62f41471d6"
+    },
+    {
+      "chapter_id": "fixture-chapter-north_glass-4",
+      "chapter_number": 4,
+      "source_revision": 1,
+      "chapter_body_sha256": "40d64e7f17ef1ad124e08aec132c2a0a7c8828bf44afd46922afcc657fdb16e2",
+      "span_id": "fixture-span-north_glass-4",
+      "span_body_sha256": "40d64e7f17ef1ad124e08aec132c2a0a7c8828bf44afd46922afcc657fdb16e2"
+    },
+    {
+      "chapter_id": "fixture-chapter-north_glass-5",
+      "chapter_number": 5,
+      "source_revision": 1,
+      "chapter_body_sha256": "b41b18852fc07123ca3aea7034717f7e71a13c10e1914d1f5d1fc899569c669f",
+      "span_id": "fixture-span-north_glass-5",
+      "span_body_sha256": "b41b18852fc07123ca3aea7034717f7e71a13c10e1914d1f5d1fc899569c669f"
+    },
+    {
+      "chapter_id": "fixture-chapter-north_glass-6",
+      "chapter_number": 6,
+      "source_revision": 1,
+      "chapter_body_sha256": "868d2f904ee252c507b11050bc409d1f95e597225a359cdac3043ce2967f1947",
+      "span_id": "fixture-span-north_glass-6",
+      "span_body_sha256": "868d2f904ee252c507b11050bc409d1f95e597225a359cdac3043ce2967f1947"
+    }
+  ]
+}

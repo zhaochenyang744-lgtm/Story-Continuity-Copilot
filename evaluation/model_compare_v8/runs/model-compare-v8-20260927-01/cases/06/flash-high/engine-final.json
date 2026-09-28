@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+      "status": "insufficient_evidence",
+      "category": "object_state",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The draft asserts Mira loosened the carrier valve cap \"according to the inspection and cap record,\" but the supplied record explicitly does not record who loosened the valve cap. The attribution therefore lacks its stated source warrant, and the person who left the cap loose remains unknown.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-north_glass-6",
+          "span_id": "fixture-span-north_glass-6",
+          "excerpt": "The carrier inspection does not record who loosened its valve cap.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-6"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The cited span fixture-span-north_glass-6 states that the carrier inspection does not record who loosened its valve cap. That span is the missing link the draft claim depends on: it removes the source warrant (\"according to the inspection and cap record\") but does not itself assert that Mira did not loosen the cap, so no direct contradiction and no shared time/scope anchors exist. Judgment stops at an unsupported attribution; the actor stays unknown, which is why this is insufficient_evidence rather than a confirmed conflict or a state change, and no author decision actions are exposed.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-north_glass-6",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-6",
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3479,
+  "output_tokens": 2766,
+  "latency_ms": 12238,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

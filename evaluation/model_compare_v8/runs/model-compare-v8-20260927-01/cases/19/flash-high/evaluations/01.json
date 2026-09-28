@@ -1,0 +1,101 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "9bb354dd868c9ef12c1a09fa3bb91be3d45e0d7f37521661bdb979fcb90fd669",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+        "verdict": "reviewed_issue",
+        "basis": "The claim gives lens R4 an amber-glass state at 18点; span-2 records the same time and the same lens (via span-1's identity premise) as clear glass, not amber. Same subject, scope, and time, so the contradiction is confirmed and an issue is emitted."
+      }
+    ],
+    "issues": [
+      {
+        "claim_span_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "The draft states that lens R4 is amber glass at 18点 on the same day, but the record gives that same lens a clear-glass state at that same time.",
+        "reasoning": "Span-1 establishes the identity premise needed to compare the two texts: at 18点 on the same day the observatory index identifies lens R4 as the installed western aperture lens, so the named object in the claim and the object in span-2 are one and the same. Span-2 states, at the same explicit time (18点 on the same day), that the western aperture lens is clear glass, not amber glass. Because the subject (lens R4 = the western aperture lens), the scope (which glass is installed in the aperture), and the time (18点 on the same day) all coincide, the claim's amber-glass state and span-2's clear-glass state cannot both hold; this is a direct contradiction rather than a transition, since no later change or replacement is supplied.",
+        "temporal_basis": {
+          "claim_anchor": "At 18点 on the same day",
+          "evidence_anchor": "At 18点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "span_id": "fixture-span-basalt_observatory-1",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-2",
+            "span_id": "fixture-span-basalt_observatory-2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-1",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-basalt_observatory-2",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 18点 on the same day, lens R4 is amber glass.",
+          "after": "At 18点 on the same day, lens R4 is clear glass, not amber glass."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3497,
+      "completion_tokens": 1976,
+      "total_tokens": 5473,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1304
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1321
+    },
+    "status": "complete",
+    "prompt_tokens": 3497,
+    "completion_tokens": 1976,
+    "total_tokens": 5473,
+    "reasoning_tokens": 1304,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

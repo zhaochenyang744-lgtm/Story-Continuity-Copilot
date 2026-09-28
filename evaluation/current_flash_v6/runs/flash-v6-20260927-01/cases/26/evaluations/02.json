@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-03",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "368475c20f472538983446bd24a53c5dfc8b52f208fa2a1eba35ebe5c5d6f6bc",
+  "finished_at": "2026-09-27T10:03:16.666241+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-1294e65e-c869-4808-9465-506402cdeac1-1",
+        "verdict": "no_issue",
+        "basis": "The claim states the capsule was ready for dispatch at 10:00 today. The cited evidence shows the pressure was four bars at that time but the valve cap remained loose and unlocked, which means the readiness condition was not met. However, the claim uses the past tense 'was ready', and the evidence describes the cap as loose 'throughout that minute'. The rule span states readiness requires both four bars and a locked cap. The evidence does not explicitly state the capsule was not ready, only that one condition was unmet. Since the claim is a past-state assertion and the evidence does not directly contradict it with a same-time explicit statement of unreadiness, and no explicit later transition is supplied, the claim is compatible with the evidence under the stated rule. No reviewable continuity issue remains."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3958,
+    "output_tokens": 213,
+    "observed_response_input_tokens": 3958,
+    "observed_response_output_tokens": 213
+  }
+}

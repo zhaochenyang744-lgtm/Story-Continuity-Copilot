@@ -1,0 +1,12 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "run_id": "flash-v5-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 3,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "778345bea3859af77fbf08fb5276979f45014f2fa70f7aef40b9da49fe3df7fe",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "57bb3e286e2a96d0220c98b030abcb1ffa7900a0c38b584a47e8e9ae2b1966e2",
+  "started_at": "2026-09-27T08:19:56.211858+00:00",
+  "usage_status": "unknown_until_response"
+}

@@ -1,0 +1,11 @@
+# G02 核心增量02核查
+
+结论：未发现G02依赖路径行为变化，无需因此重复六例。
+
+已验证CORE-REVIEW-FREEZE-02摘要及全部16份文件。相对freeze01仅engine.py与定向测试文件变化。旧engine快照SHA与core-stable-01正式回放记录一致；新engine与snapshot02一致。
+
+WritingAnalysisEngine整类AST完全相同；从两份engine AST排除ContinuityEngine._v6_issues后，其余整个模块完全相同，覆盖G02使用的helper、全局常量和入口。provider全文件字节与先前冻结/回放一致，context_brief提示、formatter、预算和参数未变；brief_citations、v2_database、memory_contract亦与旧回放hash一致。实际差异仅在verdict集合成员判断前增加str类型检查。
+
+因此承接runs/core-stable-01/results.json的六例、6条summary/72条item逐对象一致证据（SHA256 5be9ed10c7b3f687e8d8fbcf6b7e899581834d1db005545f58609fa19894a728），不重复回放。此次仅源码AST/hash核查，零Provider/DB/产品执行；所读文件前后hash一致。
+
+本结论不重算模型分数，原首摘要缺口、三个P3、10空父章节及snippet+Memory范围继续保留。详细检查与局部diff见同目录core-incremental-02-review.json。

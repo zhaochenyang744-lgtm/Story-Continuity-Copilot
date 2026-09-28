@@ -1,0 +1,198 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "stage": "first",
+  "recorded_before_dispatch_at": "2026-09-27T10:40:55.303806+00:00",
+  "business_request_sha256": "5b80922f06eed56fef064d22f4ebccf0bf6efb7bf65c8a9a037050b60954c1f1",
+  "bindings": {
+    "draft_id": "fixture-draft-harbor-signal",
+    "draft_revision": 2
+  },
+  "selected_source_bindings": [
+    {
+      "kind": "target_claim",
+      "id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+      "text": "Vela delivered the telegram to Sera at 13点, according to the records.",
+      "sha256": "2fa852bedef40e785c0ba1d5ec5e8f63b5fc2d2599da833c8bf44ef3fba1784d"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-harbor_signal-4",
+      "chapter_id": "fixture-chapter-harbor_signal-4",
+      "text": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+      "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+      "sha256": "247ffb516c3f14235069388a60548417a588d1bc830a4efe185bc984e335a25e"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-harbor_signal-3",
+      "chapter_id": "fixture-chapter-harbor_signal-3",
+      "text": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+      "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+      "sha256": "815023212c48c05151cfe89885255338c30212160caf2f3088179ab3a4aa81db"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-harbor_signal-2",
+      "chapter_id": "fixture-chapter-harbor_signal-2",
+      "text": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+      "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+      "sha256": "874dea3eb7d6bb261d8ff3e8a24b3c0641f6715a9c0686dfac63b0cda8cc5d5d"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-harbor_signal-1",
+      "source_span_id": "fixture-span-harbor_signal-1",
+      "text": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+      "sha256": "a456cae7269688b5cb1d31d9ef7130707bce9152854054957144132559a20cd8"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-harbor_signal-2",
+      "source_span_id": "fixture-span-harbor_signal-2",
+      "text": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+      "sha256": "874dea3eb7d6bb261d8ff3e8a24b3c0641f6715a9c0686dfac63b0cda8cc5d5d"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-harbor_signal-3",
+      "source_span_id": "fixture-span-harbor_signal-3",
+      "text": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+      "sha256": "815023212c48c05151cfe89885255338c30212160caf2f3088179ab3a4aa81db"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-harbor_signal-4",
+      "source_span_id": "fixture-span-harbor_signal-4",
+      "text": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+      "sha256": "247ffb516c3f14235069388a60548417a588d1bc830a4efe185bc984e335a25e"
+    }
+  ],
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-harbor-signal",
+      "revision": 2,
+      "body": "Vela delivered the telegram to Sera at 13点, according to the records."
+    },
+    "claims": [
+      {
+        "id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+        "text": "Vela delivered the telegram to Sera at 13点, according to the records.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-harbor_signal-4",
+            "chapter_id": "fixture-chapter-harbor_signal-4",
+            "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "label": "later_recipient",
+            "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+          },
+          {
+            "id": "fixture-span-harbor_signal-3",
+            "chapter_id": "fixture-chapter-harbor_signal-3",
+            "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "label": "telegram_seal",
+            "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+          },
+          {
+            "id": "fixture-span-harbor_signal-2",
+            "chapter_id": "fixture-chapter-harbor_signal-2",
+            "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "label": "reopen_log",
+            "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-harbor_signal-1",
+        "memory_type": "event_timeline",
+        "subject": "harbor signal gate",
+        "predicate": "event_occurred",
+        "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+        "source_span_id": "fixture-span-harbor_signal-1"
+      },
+      {
+        "id": "fixture-memory-harbor_signal-2",
+        "memory_type": "open_thread",
+        "subject": "harbor signal gate",
+        "predicate": "status",
+        "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+        "source_span_id": "fixture-span-harbor_signal-2"
+      },
+      {
+        "id": "fixture-memory-harbor_signal-3",
+        "memory_type": "character_knowledge",
+        "subject": "Sera",
+        "predicate": "knowledge",
+        "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+        "source_span_id": "fixture-span-harbor_signal-3"
+      },
+      {
+        "id": "fixture-memory-harbor_signal-4",
+        "memory_type": "event_timeline",
+        "subject": "Sera",
+        "predicate": "knowledge",
+        "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+        "source_span_id": "fixture-span-harbor_signal-4"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  }
+}

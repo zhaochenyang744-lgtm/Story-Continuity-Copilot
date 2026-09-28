@@ -1,0 +1,33 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "category_status": "fixed_gold",
+    "full_validator_result": "rejected",
+    "score_layer": "raw_first_or_repair",
+    "errors": [
+      "product_validator:evidence_unresolvable",
+      "raw_evidence_policy_mismatch",
+      "raw_relation_mismatch",
+      "raw_source_unbound"
+    ]
+  },
+  "repair_raw": [],
+  "final": {
+    "case_id": "ccv3-basalt_observatory-location_action-conflict",
+    "expected_class": "conflict",
+    "machine_result": "terminal_failure",
+    "semantic_result": "not_reviewed",
+    "result": "terminal_failure",
+    "errors": [
+      "evidence_unresolvable"
+    ],
+    "category_status": "fixed_gold",
+    "score_layer": "final_product",
+    "input_origin": "caller_supplied_capture"
+  },
+  "request_count": 1,
+  "parsed_output_count": 1,
+  "manual_semantic_review": "pending_manual_review"
+}

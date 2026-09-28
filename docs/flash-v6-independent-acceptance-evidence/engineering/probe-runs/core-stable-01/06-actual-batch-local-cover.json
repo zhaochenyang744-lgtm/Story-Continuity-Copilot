@@ -1,0 +1,10 @@
+{
+  "detail": {
+    "batches": 3,
+    "foreign_batch_evaluations": 3,
+    "foreign_error": "claim_verdicts_invalid",
+    "positive_evaluations": 3
+  },
+  "name": "actual-batch-local-cover",
+  "status": "pass"
+}

@@ -1,0 +1,77 @@
+{
+  "name": "four_usage_states_and_invalid_counts",
+  "passed": true,
+  "details": [
+    {
+      "status": "complete",
+      "values": {
+        "prompt_tokens": 1,
+        "completion_tokens": 2,
+        "total_tokens": 3
+      },
+      "invalid_fields": []
+    },
+    {
+      "status": "missing",
+      "values": {
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null
+      },
+      "invalid_fields": [
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens"
+      ]
+    },
+    {
+      "status": "partial",
+      "values": {
+        "prompt_tokens": 4,
+        "completion_tokens": null,
+        "total_tokens": null
+      },
+      "invalid_fields": [
+        "completion_tokens",
+        "total_tokens"
+      ]
+    },
+    {
+      "status": "unknown",
+      "values": {
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null
+      },
+      "invalid_fields": [
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens"
+      ]
+    },
+    {
+      "status": "unknown",
+      "values": {
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null
+      },
+      "invalid_fields": [
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens"
+      ]
+    },
+    {
+      "status": "partial",
+      "values": {
+        "prompt_tokens": 1,
+        "completion_tokens": 2,
+        "total_tokens": 99
+      },
+      "invalid_fields": [
+        "total_tokens_inconsistent"
+      ]
+    }
+  ]
+}

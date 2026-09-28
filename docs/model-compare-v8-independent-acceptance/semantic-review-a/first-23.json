@@ -1,0 +1,165 @@
+{
+  "schema_version": "v8-blinded-case-first-review-v1",
+  "case_alias": "case-23",
+  "stage": "first",
+  "reviewer": "semantic-review-a",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-23",
+      "response_alias": "answer-c29f6d",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        239
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确区分18点西码头状态与19点向东码头移动，Gate Four固定在西码头不妨碍人离开；没有把合法移动或未具名同伴转成当前claim冲突。",
+          "visible_quote": "an explicit transition, not a contradiction",
+          "evidence_pointer": "responses[answer-c29f6d].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].allowed_evidence"
+        }
+      ],
+      "passed_dimensions_note": "JSON/parsed一致，唯一claim/no_issue账本与空Issue合规，basis≤400。C/E/T显式Issue字段N/A；basis讨论正确选中背景不构成正式Issue多余引用错误。",
+      "attribution_tags": [],
+      "overall_reason": "合法位置变化与旧状态相容，首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-23",
+      "response_alias": "answer-f61ba6",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        329
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确区分18点西码头状态与19点向东码头移动，Gate Four固定在西码头不妨碍人离开；没有把合法移动或未具名同伴转成当前claim冲突。",
+          "visible_quote": "all cited material coexists",
+          "evidence_pointer": "responses[answer-f61ba6].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].allowed_evidence"
+        }
+      ],
+      "passed_dimensions_note": "JSON/parsed一致，唯一claim/no_issue账本与空Issue合规，basis≤400。C/E/T显式Issue字段N/A；basis讨论正确选中背景不构成正式Issue多余引用错误。",
+      "attribution_tags": [],
+      "overall_reason": "合法位置变化与旧状态相容，首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-23",
+      "response_alias": "answer-703432",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        238
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确区分18点西码头状态与19点向东码头移动，Gate Four固定在西码头不妨碍人离开；没有把合法移动或未具名同伴转成当前claim冲突。",
+          "visible_quote": "the later explicit transition makes both states compatible",
+          "evidence_pointer": "responses[answer-703432].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].allowed_evidence"
+        }
+      ],
+      "passed_dimensions_note": "JSON/parsed一致，唯一claim/no_issue账本与空Issue合规，basis≤400。C/E/T显式Issue字段N/A；basis讨论正确选中背景不构成正式Issue多余引用错误。",
+      "attribution_tags": [],
+      "overall_reason": "合法位置变化与旧状态相容，首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "comparison": {
+    "strict_pass": 3,
+    "total": 3,
+    "strict_pass_aliases": [
+      "answer-c29f6d",
+      "answer-f61ba6",
+      "answer-703432"
+    ],
+    "F_pass_aliases": [
+      "answer-c29f6d",
+      "answer-f61ba6",
+      "answer-703432"
+    ],
+    "distinction": "三条均正确处理合法移动，完整通过并列。"
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/23.json",
+    "sha256_before": "4d22f041baefb18995b54f9b37a3e0efc48734b1937bfaf9d1147ca8be78029c",
+    "sha256_after_review": "4d22f041baefb18995b54f9b37a3e0efc48734b1937bfaf9d1147ca8be78029c",
+    "unchanged": true,
+    "all_response_business_requests_equal_packet": true,
+    "all_visible_json_equal_saved_parsed": true
+  },
+  "lock": {
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "repair_or_final_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

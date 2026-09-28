@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1263,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "0cf1651a-01f6-4b46-86b4-4a34765af2d3",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-5882fa2e-f178-494a-8fa7-9b5eed874e05-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim's three components (launch not complete, manifest unsigned, boat at quay at 10点) are all directly supported by span orchard_restoration-5, and the launch-completion rule in span orchard_restoration-4 is consistent with them. No contradiction exists.\"}]}",
+  "visible_content_sha256": "adb5942616e909854ea8d543a89df139c59f1b04d36366a389681c4f802f21d9",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3490,
+      "completion_tokens": 115,
+      "total_tokens": 3605,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1186
+    },
+    "status": "complete",
+    "prompt_tokens": 3490,
+    "completion_tokens": 115,
+    "total_tokens": 3605,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:46:02.381929+00:00"
+}

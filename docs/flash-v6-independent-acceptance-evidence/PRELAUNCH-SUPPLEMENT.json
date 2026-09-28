@@ -1,0 +1,11 @@
+{
+  "created_at_utc": "2026-09-27T10:00:16.948515+00:00",
+  "manifest_sha256": "f0e2cb3d5c44a1a92000f703423a0d26ea1fab5aef750b7a3393102ea98ed696",
+  "additional_source_hashes": {
+    "evaluation/__init__.py": "4ac37fe3ac5b99e494187cd7439b71a422595cc8c0825c5b725c1703d7f990b5"
+  },
+  "reason": "Repository package initializer runs before evaluation module import; supplement the unchanged original 876-file manifest.",
+  "launch_requirement": "Check this package initializer SHA256 in PowerShell before starting Python module import, then use original live_guard with exact frozen manifest SHA.",
+  "provider_calls": 0,
+  "database_connections": 0
+}

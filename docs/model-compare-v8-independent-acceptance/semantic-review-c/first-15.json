@@ -1,0 +1,177 @@
+{
+  "schema_version": "v8-blinded-case-review-v1",
+  "case_alias": "case-15",
+  "stage": "first",
+  "reviewer": "reviewer-c",
+  "locked_at_utc": "2026-09-27T11:47:28.189632+00:00",
+  "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/15.json",
+  "packet_sha256": "f1a6f23bc018bf9a4dbd9bbf90367a9a644ee2d893292798d0d2e0843868c9f1",
+  "criteria_sha256": {
+    "SEMANTIC-CRITERIA.md": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+    "SEMANTIC-CRITERIA.json": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+  },
+  "condition_visibility": "hidden",
+  "exposure_note": "此前看过其他案例01/02工程trace及条件身份；未读本例live arms/机器成绩/映射，不声称严格双盲。",
+  "review_basis": "仅匿名首答packet、固定policy；S另用无Provider/DB的原v6合同validate核查，包括未在prompt明示的reasoning 800上限。",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-15",
+      "response_alias": "answer-e6f001",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "fail",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "contract_checks": {
+        "basis_codepoints": [
+          255
+        ],
+        "reasoning_codepoints": [
+          424
+        ],
+        "original_product_contract": "pass"
+      },
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "抓住出生先后未知；名册未记载不等于证明相反顺序，双胞胎身份和亲缘规则均不能补足。",
+          "visible_quote": "the birth order remains unknown; this is a missing-link gap, not a proven contradiction.",
+          "evidence_pointer": "answer-e6f001.first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "固定 gold 为出生先后的 timeline，所发 event_status 不符合本例类别。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "answer-e6f001.first.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "fail",
+          "reason": "最低集合仅来源3，optional为空；实际又正式引用来源2和1。两者真实且已选中，不是幻觉或绑定错误，但超出冻结证据集合。",
+          "visible_quote": "fixture-span-orchard_restoration-2",
+          "evidence_pointer": "answer-e6f001.first.parsed_business_json.issues[0].evidence[1:3]; policy.minimum/optional"
+        }
+      ],
+      "attribution_tags": [
+        "category_mismatch",
+        "set_error"
+      ],
+      "overall_reason": "F、实际不足Issue及引用绑定正确，角色/链与无操作处理合规；类别和多余正式证据导致strict失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-15",
+      "response_alias": "answer-674ee1",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "contract_checks": {
+        "basis_codepoints": [
+          157
+        ],
+        "reasoning_codepoints": [
+          372
+        ],
+        "original_product_contract": "pass"
+      },
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "清楚指出名册缺少出生先后这一决定性细节，保留Nera/Oren顺序未知，不升级为反证。",
+          "visible_quote": "the attribution is unsupported and the birth order remains unknown.",
+          "evidence_pointer": "answer-674ee1.first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "不足结论、timeline、唯一来源3及父章/Memory、context/insufficient+missing_link、完整ledger、unknown时间及无建议/动作均合规，strict通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-15",
+      "response_alias": "answer-672597",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "contract_checks": {
+        "basis_codepoints": [
+          251
+        ],
+        "reasoning_codepoints": [
+          618
+        ],
+        "original_product_contract": "pass"
+      },
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确区分未记载与相反事实，并排除双胞胎身份和亲缘规则对先后顺序的无关推导。",
+          "visible_quote": "That silence does not prove Oren came first",
+          "evidence_pointer": "answer-672597.first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "决定性未知边界与不足交付正确；只正式引用来源3，timeline及全部适用合同、来源绑定和安全操作均通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "case_comparison": {
+    "F": "三回答均pass。",
+    "strict_composite": "answer-674ee1与answer-672597通过；answer-e6f001因C/E_set失败。"
+  },
+  "locked_before_followup": true,
+  "provider_calls": 0,
+  "database_connections": 0
+}

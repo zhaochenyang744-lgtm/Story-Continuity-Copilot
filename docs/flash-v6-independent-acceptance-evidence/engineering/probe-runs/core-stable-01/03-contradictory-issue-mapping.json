@@ -1,0 +1,13 @@
+{
+  "detail": {
+    "duplicate_issue": "claim_verdicts_issue_mismatch",
+    "foreign_issue": "claim_verdicts_issue_mismatch",
+    "insufficient_as_reviewed": "claim_verdicts_issue_mismatch",
+    "no_issue_with_issue": "claim_verdicts_issue_mismatch",
+    "nonstring_issue": "claim_verdicts_issue_mismatch",
+    "reviewed_without_issue": "claim_verdicts_issue_mismatch",
+    "wrong_issue_status": "claim_verdicts_issue_mismatch"
+  },
+  "name": "contradictory-issue-mapping",
+  "status": "pass"
+}

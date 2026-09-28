@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-06",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "8de06e77a4528ca94d849e0fa6388f3b88ebef2b83b3c1a6db98cb5fc3979df0",
+  "finished_at": "2026-09-27T10:48:53.443019+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-ded38ccc-dc5f-4e82-a56c-f764f83acedf-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The draft attributes the loosening to Ina via the inspection log, but the cited span only records the cap as loose at 10:00 and explicitly does not identify who loosened it. The attribution lacks a supporting source link, so the claim is unsupported rather than contradicted."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 2981,
+    "output_tokens": 113,
+    "observed_response_input_tokens": 2981,
+    "observed_response_output_tokens": 113
+  }
+}

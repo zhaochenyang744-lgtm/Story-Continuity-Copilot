@@ -1,0 +1,81 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+      "status": "conflict",
+      "category": "object_state",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "The draft states that lens R4 is amber glass at 18点 on the same day, but the record gives that same lens a clear-glass state at that same time.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-basalt_observatory-1",
+          "span_id": "fixture-span-basalt_observatory-1",
+          "excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-1"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-basalt_observatory-2",
+          "span_id": "fixture-span-basalt_observatory-2",
+          "excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-2"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "Span-1 establishes the identity premise needed to compare the two texts: at 18点 on the same day the observatory index identifies lens R4 as the installed western aperture lens, so the named object in the claim and the object in span-2 are one and the same. Span-2 states, at the same explicit time (18点 on the same day), that the western aperture lens is clear glass, not amber glass. Because the subject (lens R4 = the western aperture lens), the scope (which glass is installed in the aperture), and the time (18点 on the same day) all coincide, the claim's amber-glass state and span-2's clear-glass state cannot both hold; this is a direct contradiction rather than a transition, since no later change or replacement is supplied.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-basalt_observatory-1",
+          "role": "current_context"
+        },
+        {
+          "span_id": "fixture-span-basalt_observatory-2",
+          "role": "prior_state"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 18点 on the same day, lens R4 is amber glass.",
+        "after": "At 18点 on the same day, lens R4 is clear glass, not amber glass."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+      "returned_span_ids": [
+        "fixture-span-basalt_observatory-2",
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-5"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3497,
+  "output_tokens": 1976,
+  "latency_ms": 8549,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

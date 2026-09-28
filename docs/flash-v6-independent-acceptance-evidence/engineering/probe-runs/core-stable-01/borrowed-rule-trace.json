@@ -1,0 +1,468 @@
+{
+  "input": {
+    "claims": [
+      {
+        "allowed_evidence": [
+          {
+            "body": "Mara is a mortal.",
+            "chapter_id": "chapter-mara-mortal",
+            "id": "mara-mortal"
+          },
+          {
+            "body": "Mortals can never cast a spell.",
+            "chapter_id": "chapter-mortal-rule",
+            "id": "mortal-rule"
+          }
+        ],
+        "id": "c-rule",
+        "text": "Mara cast a spell."
+      }
+    ],
+    "draft": {
+      "body": "Mara cast a spell.",
+      "id": "synthetic-rule",
+      "revision": 1
+    },
+    "memory": [
+      {
+        "chapter_id": "chapter-mara-mortal",
+        "id": "m-person",
+        "memory_type": "static_canon",
+        "predicate": "identity",
+        "source_span_id": "mara-mortal",
+        "subject": "Mara",
+        "value": "mortal"
+      },
+      {
+        "chapter_id": "chapter-mortal-rule",
+        "id": "m-rule",
+        "memory_type": "static_canon",
+        "predicate": "rule",
+        "source_span_id": "mortal-rule",
+        "subject": "Mortals",
+        "value": "cannot cast spells"
+      }
+    ]
+  },
+  "requests": [
+    {
+      "claims": [
+        {
+          "allowed_evidence": [
+            {
+              "body": "Mortals can never cast a spell.",
+              "chapter_id": "chapter-mortal-rule",
+              "id": "mortal-rule",
+              "prompt_excerpt": "Mortals can never cast a spell."
+            },
+            {
+              "body": "Mara is a mortal.",
+              "chapter_id": "chapter-mara-mortal",
+              "id": "mara-mortal",
+              "prompt_excerpt": "Mara is a mortal."
+            }
+          ],
+          "id": "c-rule",
+          "text": "Mara cast a spell."
+        }
+      ],
+      "draft": {
+        "body": "Mara cast a spell.",
+        "id": "synthetic-rule",
+        "revision": 1
+      },
+      "memory": [
+        {
+          "chapter_id": "chapter-mara-mortal",
+          "id": "m-person",
+          "memory_type": "static_canon",
+          "predicate": "identity",
+          "source_span_id": "mara-mortal",
+          "subject": "Mara",
+          "value": "mortal"
+        },
+        {
+          "chapter_id": "chapter-mortal-rule",
+          "id": "m-rule",
+          "memory_type": "static_canon",
+          "predicate": "rule",
+          "source_span_id": "mortal-rule",
+          "subject": "Mortals",
+          "value": "cannot cast spells"
+        }
+      ],
+      "output_schema": {
+        "claim_verdicts": [
+          {
+            "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review",
+            "claim_span_id": "every supplied current claim id exactly once",
+            "verdict": "reviewed_issue|insufficient_evidence|no_issue"
+          }
+        ],
+        "issues": [
+          {
+            "available_actions": [
+              "edit|apply_suggestion|keep_intentional|false_positive"
+            ],
+            "category": "allowed category",
+            "claim_span_id": "current claim id",
+            "evidence": [
+              {
+                "chapter_id": "allowed chapter id",
+                "related_memory_ids": [
+                  "known memory id"
+                ],
+                "relation": "supports|contradicts|context",
+                "span_id": "allowed span id",
+                "sufficiency": "sufficient|insufficient"
+              }
+            ],
+            "evidence_chain": [
+              {
+                "role": "prior_state|current_context|missing_link",
+                "span_id": "one cited evidence span id"
+              }
+            ],
+            "explanation": "short backwards-compatible summary",
+            "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+            "proposed_memory_change": {
+              "affected_memory_id": "required for replace only",
+              "memory_type": "allowed memory type",
+              "operation": "add|replace",
+              "predicate": "string",
+              "subject": "string",
+              "value": "string"
+            },
+            "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+            "severity": "low|medium|high",
+            "status": "conflict|insufficient_evidence",
+            "suggested_revision": {
+              "after": "specific replacement text",
+              "before": "exact text occurring once in the bound draft"
+            },
+            "temporal_basis": {
+              "claim_anchor": "exact claim substring or null",
+              "evidence_anchor": "exact cited evidence substring or null",
+              "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "claims": [
+        {
+          "allowed_evidence": [
+            {
+              "body": "Mortals can never cast a spell.",
+              "chapter_id": "chapter-mortal-rule",
+              "id": "mortal-rule",
+              "prompt_excerpt": "Mortals can never cast a spell."
+            },
+            {
+              "body": "Mara is a mortal.",
+              "chapter_id": "chapter-mara-mortal",
+              "id": "mara-mortal",
+              "prompt_excerpt": "Mara is a mortal."
+            }
+          ],
+          "id": "c-rule",
+          "text": "Mara cast a spell."
+        }
+      ],
+      "contract_repair": {
+        "attempt": 2,
+        "diagnostics": [
+          {
+            "cited_evidence": [
+              {
+                "excerpt": "Mara is a mortal.",
+                "span_id": "mara-mortal"
+              }
+            ],
+            "claim_span_id": "c-rule",
+            "claim_text": "Mara cast a spell.",
+            "problem_codes": [
+              "timeless_rule_unproven"
+            ]
+          }
+        ],
+        "reason_code": "timeless_rule_unproven",
+        "rejected_issues": [
+          {
+            "available_actions": [],
+            "category": "world_rule",
+            "claim_span_id": "c-rule",
+            "evidence": [
+              {
+                "chapter_id": "chapter-mara-mortal",
+                "related_memory_ids": [
+                  "m-person",
+                  "m-rule"
+                ],
+                "relation": "contradicts",
+                "span_id": "mara-mortal",
+                "sufficiency": "sufficient"
+              }
+            ],
+            "evidence_chain": [
+              {
+                "role": "prior_state",
+                "span_id": "mara-mortal"
+              }
+            ],
+            "explanation": "Mara is mortal and the cited rule prohibits mortal spellcasting.",
+            "nature": "confirmed_conflict",
+            "proposed_memory_change": null,
+            "reasoning": "Mara's mortal identity plus the governing prohibition jointly contradict her casting a spell.",
+            "severity": "medium",
+            "status": "conflict",
+            "suggested_revision": null,
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "timeless_rule"
+            }
+          }
+        ]
+      },
+      "draft": {
+        "body": "Mara cast a spell.",
+        "id": "synthetic-rule",
+        "revision": 1
+      },
+      "memory": [
+        {
+          "chapter_id": "chapter-mara-mortal",
+          "id": "m-person",
+          "memory_type": "static_canon",
+          "predicate": "identity",
+          "source_span_id": "mara-mortal",
+          "subject": "Mara",
+          "value": "mortal"
+        },
+        {
+          "chapter_id": "chapter-mortal-rule",
+          "id": "m-rule",
+          "memory_type": "static_canon",
+          "predicate": "rule",
+          "source_span_id": "mortal-rule",
+          "subject": "Mortals",
+          "value": "cannot cast spells"
+        }
+      ],
+      "output_schema": {
+        "claim_verdicts": [
+          {
+            "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review",
+            "claim_span_id": "every supplied current claim id exactly once",
+            "verdict": "reviewed_issue|insufficient_evidence|no_issue"
+          }
+        ],
+        "issues": [
+          {
+            "available_actions": [
+              "edit|apply_suggestion|keep_intentional|false_positive"
+            ],
+            "category": "allowed category",
+            "claim_span_id": "current claim id",
+            "evidence": [
+              {
+                "chapter_id": "allowed chapter id",
+                "related_memory_ids": [
+                  "known memory id"
+                ],
+                "relation": "supports|contradicts|context",
+                "span_id": "allowed span id",
+                "sufficiency": "sufficient|insufficient"
+              }
+            ],
+            "evidence_chain": [
+              {
+                "role": "prior_state|current_context|missing_link",
+                "span_id": "one cited evidence span id"
+              }
+            ],
+            "explanation": "short backwards-compatible summary",
+            "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+            "proposed_memory_change": {
+              "affected_memory_id": "required for replace only",
+              "memory_type": "allowed memory type",
+              "operation": "add|replace",
+              "predicate": "string",
+              "subject": "string",
+              "value": "string"
+            },
+            "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+            "severity": "low|medium|high",
+            "status": "conflict|insufficient_evidence",
+            "suggested_revision": {
+              "after": "specific replacement text",
+              "before": "exact text occurring once in the bound draft"
+            },
+            "temporal_basis": {
+              "claim_anchor": "exact claim substring or null",
+              "evidence_anchor": "exact cited evidence substring or null",
+              "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "responses": [
+    {
+      "claim_verdicts": [
+        {
+          "basis": "The identity and governing rule jointly establish the contradiction.",
+          "claim_span_id": "c-rule",
+          "verdict": "reviewed_issue"
+        }
+      ],
+      "issues": [
+        {
+          "available_actions": [],
+          "category": "world_rule",
+          "claim_span_id": "c-rule",
+          "evidence": [
+            {
+              "chapter_id": "chapter-mara-mortal",
+              "related_memory_ids": [
+                "m-person",
+                "m-rule"
+              ],
+              "relation": "contradicts",
+              "span_id": "mara-mortal",
+              "sufficiency": "sufficient"
+            }
+          ],
+          "evidence_chain": [
+            {
+              "role": "prior_state",
+              "span_id": "mara-mortal"
+            }
+          ],
+          "explanation": "Mara is mortal and the cited rule prohibits mortal spellcasting.",
+          "nature": "confirmed_conflict",
+          "proposed_memory_change": null,
+          "reasoning": "Mara's mortal identity plus the governing prohibition jointly contradict her casting a spell.",
+          "severity": "medium",
+          "status": "conflict",
+          "suggested_revision": null,
+          "temporal_basis": {
+            "claim_anchor": null,
+            "evidence_anchor": null,
+            "relation": "timeless_rule"
+          }
+        }
+      ]
+    },
+    {
+      "claim_verdicts": [
+        {
+          "basis": "The identity and governing rule jointly establish the contradiction.",
+          "claim_span_id": "c-rule",
+          "verdict": "reviewed_issue"
+        }
+      ],
+      "issues": [
+        {
+          "available_actions": [],
+          "category": "world_rule",
+          "claim_span_id": "c-rule",
+          "evidence": [
+            {
+              "chapter_id": "chapter-mara-mortal",
+              "related_memory_ids": [
+                "m-person",
+                "m-rule"
+              ],
+              "relation": "contradicts",
+              "span_id": "mara-mortal",
+              "sufficiency": "sufficient"
+            }
+          ],
+          "evidence_chain": [
+            {
+              "role": "prior_state",
+              "span_id": "mara-mortal"
+            }
+          ],
+          "explanation": "Mara is mortal and the cited rule prohibits mortal spellcasting.",
+          "nature": "confirmed_conflict",
+          "proposed_memory_change": null,
+          "reasoning": "Mara's mortal identity plus the governing prohibition jointly contradict her casting a spell.",
+          "severity": "medium",
+          "status": "conflict",
+          "suggested_revision": null,
+          "temporal_basis": {
+            "claim_anchor": null,
+            "evidence_anchor": null,
+            "relation": "timeless_rule"
+          }
+        }
+      ]
+    }
+  ],
+  "result": {
+    "contract_normalization_count": 1,
+    "contract_normalizations": [
+      {
+        "claim_span_id": "c-rule",
+        "outcome": "insufficient_evidence",
+        "provider_attempt": 2,
+        "reason_code": "timeless_rule_unproven"
+      }
+    ],
+    "cost_cny": null,
+    "input_tokens": 2,
+    "issues": [
+      {
+        "available_actions": [],
+        "category": "world_rule",
+        "claim_span_id": "c-rule",
+        "evidence": [
+          {
+            "chapter_id": "chapter-mara-mortal",
+            "excerpt": "Mara is a mortal.",
+            "related_memory_ids": [
+              "m-person",
+              "m-rule"
+            ],
+            "relation": "context",
+            "span_id": "mara-mortal",
+            "sufficiency": "insufficient"
+          }
+        ],
+        "evidence_chain": [
+          {
+            "role": "missing_link",
+            "span_id": "mara-mortal"
+          }
+        ],
+        "evidence_status": "insufficient",
+        "explanation": "The supplied material does not establish that the current claim and cited fact conflict in the same story time and scope, so a confirmed conflict cannot be established.",
+        "nature": "insufficient_evidence",
+        "proposed_memory_change": null,
+        "reasoning": "An explicit time anchor, applicable scope, or connecting event is required before deciding that the two statements cannot coexist.",
+        "review_contract_version": "trustworthy_review_v1",
+        "severity": "medium",
+        "status": "insufficient_evidence",
+        "suggested_revision": null
+      }
+    ],
+    "latency_ms": 0,
+    "output_tokens": 2,
+    "retrieval_method_version": "bounded-lexical-v4-longform",
+    "retrieval_traces": [
+      {
+        "claim_id": "c-rule",
+        "returned_span_ids": [
+          "mortal-rule",
+          "mara-mortal"
+        ]
+      }
+    ],
+    "status": "completed"
+  }
+}

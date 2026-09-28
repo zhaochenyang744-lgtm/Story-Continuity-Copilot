@@ -1,0 +1,658 @@
+{
+  "case_alias": "case-12",
+  "stage": "first",
+  "expected_policy_reference": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "policy": {
+    "allowed_outcomes": [
+      "insufficient_evidence"
+    ],
+    "minimum": [
+      [
+        "fixture-span-harbor_signal-4"
+      ]
+    ],
+    "optional": [
+      "fixture-span-harbor_signal-3"
+    ],
+    "premises": [],
+    "category": "relationship",
+    "category_candidates": [
+      "relationship"
+    ],
+    "manual_variant": false,
+    "temporal_relations": []
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-harbor-signal",
+      "revision": 2,
+      "body": "Vela delivered the telegram to Sera at 13点, according to the records."
+    },
+    "claims": [
+      {
+        "id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+        "text": "Vela delivered the telegram to Sera at 13点, according to the records.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-harbor_signal-4",
+            "chapter_id": "fixture-chapter-harbor_signal-4",
+            "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "label": "later_recipient",
+            "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+          },
+          {
+            "id": "fixture-span-harbor_signal-3",
+            "chapter_id": "fixture-chapter-harbor_signal-3",
+            "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "label": "telegram_seal",
+            "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+          },
+          {
+            "id": "fixture-span-harbor_signal-2",
+            "chapter_id": "fixture-chapter-harbor_signal-2",
+            "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "label": "reopen_log",
+            "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-harbor_signal-1",
+        "memory_type": "event_timeline",
+        "subject": "harbor signal gate",
+        "predicate": "event_occurred",
+        "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+        "source_span_id": "fixture-span-harbor_signal-1"
+      },
+      {
+        "id": "fixture-memory-harbor_signal-2",
+        "memory_type": "open_thread",
+        "subject": "harbor signal gate",
+        "predicate": "status",
+        "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+        "source_span_id": "fixture-span-harbor_signal-2"
+      },
+      {
+        "id": "fixture-memory-harbor_signal-3",
+        "memory_type": "character_knowledge",
+        "subject": "Sera",
+        "predicate": "knowledge",
+        "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+        "source_span_id": "fixture-span-harbor_signal-3"
+      },
+      {
+        "id": "fixture-memory-harbor_signal-4",
+        "memory_type": "event_timeline",
+        "subject": "Sera",
+        "predicate": "knowledge",
+        "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+        "source_span_id": "fixture-span-harbor_signal-4"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-aa049b",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-harbor-signal",
+            "revision": 2,
+            "body": "Vela delivered the telegram to Sera at 13点, according to the records."
+          },
+          "claims": [
+            {
+              "id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+              "text": "Vela delivered the telegram to Sera at 13点, according to the records.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-harbor_signal-4",
+                  "chapter_id": "fixture-chapter-harbor_signal-4",
+                  "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                  "label": "later_recipient",
+                  "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+                },
+                {
+                  "id": "fixture-span-harbor_signal-3",
+                  "chapter_id": "fixture-chapter-harbor_signal-3",
+                  "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+                  "label": "telegram_seal",
+                  "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+                },
+                {
+                  "id": "fixture-span-harbor_signal-2",
+                  "chapter_id": "fixture-chapter-harbor_signal-2",
+                  "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                  "label": "reopen_log",
+                  "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-harbor_signal-1",
+              "memory_type": "event_timeline",
+              "subject": "harbor signal gate",
+              "predicate": "event_occurred",
+              "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+              "source_span_id": "fixture-span-harbor_signal-1"
+            },
+            {
+              "id": "fixture-memory-harbor_signal-2",
+              "memory_type": "open_thread",
+              "subject": "harbor signal gate",
+              "predicate": "status",
+              "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+              "source_span_id": "fixture-span-harbor_signal-2"
+            },
+            {
+              "id": "fixture-memory-harbor_signal-3",
+              "memory_type": "character_knowledge",
+              "subject": "Sera",
+              "predicate": "knowledge",
+              "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+              "source_span_id": "fixture-span-harbor_signal-3"
+            },
+            {
+              "id": "fixture-memory-harbor_signal-4",
+              "memory_type": "event_timeline",
+              "subject": "Sera",
+              "predicate": "knowledge",
+              "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+              "source_span_id": "fixture-span-harbor_signal-4"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1\",\n      \"status\": \"insufficient_evidence\",\n      \"nature\": \"insufficient_evidence\",\n      \"category\": \"event_status\",\n      \"severity\": \"low\",\n      \"explanation\": \"The claim attributes the delivery to Vela per records, but the cited record does not identify who delivered.\",\n      \"reasoning\": \"The cited record at 13点 states Sera opened the telegram and learned its code but explicitly does not identify who delivered it. The claim depends on the record establishing that Vela was the deliverer, but that identity is absent. The fact of Vela's delivery remains unknown, so the attribution is unsupported.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"13点\",\n        \"evidence_anchor\": \"13点\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-harbor_signal-4\",\n          \"span_id\": \"fixture-span-harbor_signal-4\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"insufficient\",\n          \"related_memory_ids\": [\n            \"fixture-memory-harbor_signal-4\"\n          ]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-harbor_signal-4\",\n          \"role\": \"missing_link\"\n        }\n      ],\n      \"suggested_revision\": null,\n      \"available_actions\": []\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1\",\n      \"verdict\": \"insufficient_evidence\",\n      \"basis\": \"The cited record at 13点 does not identify who delivered the telegram, so the claim that Vela delivered it according to the records is unsupported.\"\n    }\n  ]\n}",
+        "parsed_business_json": {
+          "issues": [
+            {
+              "claim_span_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+              "status": "insufficient_evidence",
+              "nature": "insufficient_evidence",
+              "category": "event_status",
+              "severity": "low",
+              "explanation": "The claim attributes the delivery to Vela per records, but the cited record does not identify who delivered.",
+              "reasoning": "The cited record at 13点 states Sera opened the telegram and learned its code but explicitly does not identify who delivered it. The claim depends on the record establishing that Vela was the deliverer, but that identity is absent. The fact of Vela's delivery remains unknown, so the attribution is unsupported.",
+              "temporal_basis": {
+                "claim_anchor": "13点",
+                "evidence_anchor": "13点",
+                "relation": "explicit_overlap"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "fixture-chapter-harbor_signal-4",
+                  "span_id": "fixture-span-harbor_signal-4",
+                  "relation": "context",
+                  "sufficiency": "insufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-harbor_signal-4"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "fixture-span-harbor_signal-4",
+                  "role": "missing_link"
+                }
+              ],
+              "suggested_revision": null,
+              "available_actions": []
+            }
+          ],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+              "verdict": "insufficient_evidence",
+              "basis": "The cited record at 13点 does not identify who delivered the telegram, so the claim that Vela delivered it according to the records is unsupported."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-6bc1e1",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-harbor-signal",
+            "revision": 2,
+            "body": "Vela delivered the telegram to Sera at 13点, according to the records."
+          },
+          "claims": [
+            {
+              "id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+              "text": "Vela delivered the telegram to Sera at 13点, according to the records.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-harbor_signal-4",
+                  "chapter_id": "fixture-chapter-harbor_signal-4",
+                  "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                  "label": "later_recipient",
+                  "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+                },
+                {
+                  "id": "fixture-span-harbor_signal-3",
+                  "chapter_id": "fixture-chapter-harbor_signal-3",
+                  "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+                  "label": "telegram_seal",
+                  "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+                },
+                {
+                  "id": "fixture-span-harbor_signal-2",
+                  "chapter_id": "fixture-chapter-harbor_signal-2",
+                  "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                  "label": "reopen_log",
+                  "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-harbor_signal-1",
+              "memory_type": "event_timeline",
+              "subject": "harbor signal gate",
+              "predicate": "event_occurred",
+              "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+              "source_span_id": "fixture-span-harbor_signal-1"
+            },
+            {
+              "id": "fixture-memory-harbor_signal-2",
+              "memory_type": "open_thread",
+              "subject": "harbor signal gate",
+              "predicate": "status",
+              "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+              "source_span_id": "fixture-span-harbor_signal-2"
+            },
+            {
+              "id": "fixture-memory-harbor_signal-3",
+              "memory_type": "character_knowledge",
+              "subject": "Sera",
+              "predicate": "knowledge",
+              "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+              "source_span_id": "fixture-span-harbor_signal-3"
+            },
+            {
+              "id": "fixture-memory-harbor_signal-4",
+              "memory_type": "event_timeline",
+              "subject": "Sera",
+              "predicate": "knowledge",
+              "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+              "source_span_id": "fixture-span-harbor_signal-4"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"location_action\",\"severity\":\"medium\",\"explanation\":\"The draft says the records establish that Vela delivered the telegram at 13点, but the cited record only confirms that the telegram was opened at 13点 and explicitly states the deliverer is unidentified. The actor attribution has no source warrant.\",\"reasoning\":\"The 13点 record confirms the opening of the telegram but directly states that it 'does not identify who delivered it.' Nothing supplied ties Vela to the delivery, so the draft's assertion that the records show Vela as the deliverer stops at a missing link: the delivery event is real, but its actor remains unknown. No supplied span contradicts the possibility that Vela delivered it, so this is not a conflict; the judgment stops at the absent record evidence for the named actor.\",\"temporal_basis\":{\"claim_anchor\":\"at 13点\",\"evidence_anchor\":\"At 13点\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-harbor_signal-4\",\"span_id\":\"fixture-span-harbor_signal-4\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-harbor_signal-4\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-harbor_signal-4\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The 13点 record confirms Sera opened the telegram but states the deliverer is unidentified. The draft's claim that the records show Vela delivered it lacks the decisive record detail, so the actor is unsupported and remains unknown rather than contradicted.\"}]}",
+        "parsed_business_json": {
+          "issues": [
+            {
+              "claim_span_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+              "status": "insufficient_evidence",
+              "nature": "insufficient_evidence",
+              "category": "location_action",
+              "severity": "medium",
+              "explanation": "The draft says the records establish that Vela delivered the telegram at 13点, but the cited record only confirms that the telegram was opened at 13点 and explicitly states the deliverer is unidentified. The actor attribution has no source warrant.",
+              "reasoning": "The 13点 record confirms the opening of the telegram but directly states that it 'does not identify who delivered it.' Nothing supplied ties Vela to the delivery, so the draft's assertion that the records show Vela as the deliverer stops at a missing link: the delivery event is real, but its actor remains unknown. No supplied span contradicts the possibility that Vela delivered it, so this is not a conflict; the judgment stops at the absent record evidence for the named actor.",
+              "temporal_basis": {
+                "claim_anchor": "at 13点",
+                "evidence_anchor": "At 13点",
+                "relation": "explicit_overlap"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "fixture-chapter-harbor_signal-4",
+                  "span_id": "fixture-span-harbor_signal-4",
+                  "relation": "context",
+                  "sufficiency": "insufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-harbor_signal-4"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "fixture-span-harbor_signal-4",
+                  "role": "missing_link"
+                }
+              ],
+              "suggested_revision": null,
+              "available_actions": []
+            }
+          ],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+              "verdict": "insufficient_evidence",
+              "basis": "The 13点 record confirms Sera opened the telegram but states the deliverer is unidentified. The draft's claim that the records show Vela delivered it lacks the decisive record detail, so the actor is unsupported and remains unknown rather than contradicted."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-8b757a",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-harbor-signal",
+            "revision": 2,
+            "body": "Vela delivered the telegram to Sera at 13点, according to the records."
+          },
+          "claims": [
+            {
+              "id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+              "text": "Vela delivered the telegram to Sera at 13点, according to the records.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-harbor_signal-4",
+                  "chapter_id": "fixture-chapter-harbor_signal-4",
+                  "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                  "label": "later_recipient",
+                  "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+                },
+                {
+                  "id": "fixture-span-harbor_signal-3",
+                  "chapter_id": "fixture-chapter-harbor_signal-3",
+                  "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+                  "label": "telegram_seal",
+                  "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+                },
+                {
+                  "id": "fixture-span-harbor_signal-2",
+                  "chapter_id": "fixture-chapter-harbor_signal-2",
+                  "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                  "label": "reopen_log",
+                  "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-harbor_signal-1",
+              "memory_type": "event_timeline",
+              "subject": "harbor signal gate",
+              "predicate": "event_occurred",
+              "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+              "source_span_id": "fixture-span-harbor_signal-1"
+            },
+            {
+              "id": "fixture-memory-harbor_signal-2",
+              "memory_type": "open_thread",
+              "subject": "harbor signal gate",
+              "predicate": "status",
+              "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+              "source_span_id": "fixture-span-harbor_signal-2"
+            },
+            {
+              "id": "fixture-memory-harbor_signal-3",
+              "memory_type": "character_knowledge",
+              "subject": "Sera",
+              "predicate": "knowledge",
+              "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+              "source_span_id": "fixture-span-harbor_signal-3"
+            },
+            {
+              "id": "fixture-memory-harbor_signal-4",
+              "memory_type": "event_timeline",
+              "subject": "Sera",
+              "predicate": "knowledge",
+              "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+              "source_span_id": "fixture-span-harbor_signal-4"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The claim asserts Vela delivered the telegram at 13点, but the cited record only states Sera opened it at 13点 and explicitly does not identify the deliverer; the delivery attribution lacks a supporting handoff or source warrant.\"}]}",
+        "parsed_business_json": {
+          "issues": [],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+              "verdict": "insufficient_evidence",
+              "basis": "The claim asserts Vela delivered the telegram at 13点, but the cited record only states Sera opened it at 13点 and explicitly does not identify the deliverer; the delivery attribution lacks a supporting handoff or source warrant."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    }
+  ]
+}

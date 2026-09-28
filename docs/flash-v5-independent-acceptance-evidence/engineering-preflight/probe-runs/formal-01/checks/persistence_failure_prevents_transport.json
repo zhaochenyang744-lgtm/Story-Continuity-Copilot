@@ -1,0 +1,22 @@
+{
+  "name": "persistence_failure_prevents_transport",
+  "passed": true,
+  "details": [
+    {
+      "stage": "requests",
+      "transport_calls": 0,
+      "error": {
+        "type": "OSError",
+        "message": "independent injected persistence failure"
+      }
+    },
+    {
+      "stage": "attempts",
+      "transport_calls": 0,
+      "error": {
+        "type": "OSError",
+        "message": "independent injected persistence failure"
+      }
+    }
+  ]
+}

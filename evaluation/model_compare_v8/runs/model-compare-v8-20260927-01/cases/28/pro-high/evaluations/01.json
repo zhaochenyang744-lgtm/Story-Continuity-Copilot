@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "b0f6cc86e1e5fcac4fe1e50cd595f910e800a0318edc17a10702430223636860",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "The draft attributes the loosening to Ina based on the inspection log, but the log only records a loose cap at 10:00 and does not identify who loosened it.",
+        "reasoning": "The supplied evidence states the cap was loose at 10:00 but explicitly does not identify who loosened it. No other evidence ties Ina to the loosening, so the source warrant for the claim is missing and the attribution remains unknown.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_actor_blank-1",
+            "span_id": "fixture-span-v6_actor_blank-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_actor_blank-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_actor_blank-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The log records a loose cap at 10:00 but does not identify who loosened it, so the claim that Ina did so based on the log lacks the required source warrant."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3060,
+      "completion_tokens": 3789,
+      "total_tokens": 6849,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3322
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 628
+    },
+    "status": "complete",
+    "prompt_tokens": 3060,
+    "completion_tokens": 3789,
+    "total_tokens": 6849,
+    "reasoning_tokens": 3322,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

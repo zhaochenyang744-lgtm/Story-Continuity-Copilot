@@ -1,0 +1,281 @@
+{
+  "kind": "controller_final_preparation_input_audit",
+  "run_id": "prep-v5-03",
+  "cases_checked": 30,
+  "failed_cases": 0,
+  "provider_calls": 0,
+  "database_connections": 0,
+  "method": "JSON only; independently recompute request hashes, compare full comparison captures after claim ID normalization, inspect same-run source/Memory snapshot binding",
+  "rows": [
+    {
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "dcc71cc6b15a4c1ddc8a5a14baebf9b3eb2ba7daf4da2cab9ecf1f58a918cbf2",
+      "runtime_snapshot_sha256": "cd90944a141ca3e893b0aa2fadfd300d07f9abb54ea78b5f138233c8dfe7873e"
+    },
+    {
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "318e456115fba2f51a0fadb2125766fb714ef5793990822178983b1130997ade",
+      "runtime_snapshot_sha256": "7fd791614a49cda84e3185ef60372cdbaf5dd11b9f6ef3246ae60787d9084c44"
+    },
+    {
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "b692c90f4895682b8697f9ba0115e8b1706f04ee0b11ecdf8ce610c37786c033",
+      "runtime_snapshot_sha256": "c3def9c082ce8a93466e409009f2b06ef0baa76eb21d2b35299a8b2f7dda26dc"
+    },
+    {
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "09cb032fb5bb918114db916c9883431871bb0a381296f064ebdcfcef51a7bf41",
+      "runtime_snapshot_sha256": "0950de7be6a86e6fa1353a9b31e13f51a6dd827c3b080524423e0e841ea6b59e"
+    },
+    {
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "76372f0f7096f54b16a64088bee1088ee2690d8290687c312ab7d48eed43d47a",
+      "runtime_snapshot_sha256": "0544aee975c41cafa08fbf5dd0e02dca762d66358ead44286cecaf3ccf7be89b"
+    },
+    {
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "8f24a0c3087f344a26cb5a26a96c9bafcad53378eca6c5ed5b8c7bb313b06051",
+      "runtime_snapshot_sha256": "6aebd308048f220cc1d88b15c66be2917418946016f7ffede2d620757c2d1ddf"
+    },
+    {
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 4,
+      "errors": [],
+      "request_file_sha256": "92c1152b8f11426bcfb655f1e1baee004ecdda4afde12779f74564069875b966",
+      "runtime_snapshot_sha256": "f24e6f6a489faffa68aab464772918c6fb5f88f83f2abb3131e36bf0fc9a4065"
+    },
+    {
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 4,
+      "errors": [],
+      "request_file_sha256": "6f03e12424de980f63079c407fac1cac730d509664a38d31a525385fdb0c8e31",
+      "runtime_snapshot_sha256": "bc9f1b98b4983bbab8f9ccea0bfd54006728b23c01070179bb6fe8e32ea0f5d5"
+    },
+    {
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 4,
+      "errors": [],
+      "request_file_sha256": "d2ba87567557f6ff7bf770ac89dc3a3755ec5ee6e905cb7a44e97e7dbbf2cae4",
+      "runtime_snapshot_sha256": "7f0c197f9de33a897bd7dbe75db449df28aa0aa01d8554a8a3250daca576469e"
+    },
+    {
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 4,
+      "errors": [],
+      "request_file_sha256": "4c0c00ba77cc19bd014b9027f49b0496353b1f5916d0e8b7902eb00346c69500",
+      "runtime_snapshot_sha256": "2b6121f591dc2ef4c65bec01b73673093c64e1f238e71317c62fbf5e098b0dac"
+    },
+    {
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 4,
+      "errors": [],
+      "request_file_sha256": "3f7eddc4d82bfaabd464079f62ccede8d68d4545eeef8759ac06de54c82f5318",
+      "runtime_snapshot_sha256": "ed377948ac281f69e431cce24ceb25cf19b517997c6959269e31c32c312c92a9"
+    },
+    {
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 4,
+      "errors": [],
+      "request_file_sha256": "ae3be761b26d5059ee4ba9a96d1cea9b493278eee88812e39b171793d86b8ded",
+      "runtime_snapshot_sha256": "c102a95d43449c8edc50f398abe2c69b8d2013e087618b66bb836a4b5820b255"
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "cef93a789559c253fbdecc0c1ae9f9f19a4550721e96f14f690412b37579654c",
+      "runtime_snapshot_sha256": "780f1281340353dd6da1551e5e543be651ccb7cfc95b3a9f89c168730dfcee91"
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "0508eaf2edd83d3d66b282049cbbc47cf820988744a71896b5f39aa2e0b38408",
+      "runtime_snapshot_sha256": "e45064f95280c97050f3d2ac43b1c6f5f97adab503a50e84f47dff7ff4ae2418"
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "4b9e1523fc41dfbfb5a9372be07926a1e54873d1b51f24d8a45889553557fedf",
+      "runtime_snapshot_sha256": "8fc12cf88d5bcbcf6abc47c2d093cf557fbcee5116a0306952faa5d25320a629"
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "520413926abc21a7cdf6de7bc09363cdf5132f6ce9f6420c46cff9575be20143",
+      "runtime_snapshot_sha256": "5487c01dbcd1904727de936deeec33d3b2aa6ad70c648a8302440016ee37e5b1"
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "107019b714d4850bdc0b410bdcf2eac1a629fc3798402685c272f3628b91a142",
+      "runtime_snapshot_sha256": "fa8e100a32ac06745e0190db3ef89f369079f576cf44c76bbe33f1b23fa808db"
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "1176fc7e5308e81173c77753b112305356980be6c79399fea65cfed4c2da2f18",
+      "runtime_snapshot_sha256": "6240d4f6a85c602155973d267b1ff58c882c2371aa8783cf0eb29eff99bae567"
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "f2ba91794e5cf84ab7e89289916fbeb27224ab68f93f387750fc7ffbbb748529",
+      "runtime_snapshot_sha256": "c2065360b27d9c87bc61b0833775744705190cfd1d6eb1ba2959597e2670f0e5"
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "b7e7cff45714a3eb7b2bd100428122008f0b82654476f28bddf50df9773a71e8",
+      "runtime_snapshot_sha256": "5f894ae306fc6532f4c05acea8ca76928b33b504ceca2b28e3f803102dcba56f"
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "61767ff3bf442c8c60319c98895d4c780f0b1cd4e232451173a59f3c9da68c45",
+      "runtime_snapshot_sha256": "e54555274a0fd6d210da1a9548055606ba84c62cf2069b355affb543cf549149"
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "6dc0470c7a8535a79bbf76297517be56ee8008494c854e96c2b0697207de5726",
+      "runtime_snapshot_sha256": "b56ef57c5de73a86fcb3dc0b656bfc7034741906b99645382657782150e12271"
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "f4d8c820b73e49bd2ee6086d775e09ab8fc6bb4d298260f8cbeb04075e97fa05",
+      "runtime_snapshot_sha256": "b61b5a2b20d6dc3c19494d9d6036ecee0e07faa96d79706c9762d0a9a80eecdd"
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "family": "comparison",
+      "selected_sources": 3,
+      "selected_memory": 6,
+      "errors": [],
+      "request_file_sha256": "5b7904f6857c2dad3d3cee4118000818a65f885d593b9472be06af35e933dd71",
+      "runtime_snapshot_sha256": "ecfe83f2ebaa3ab41aefb4ff5852363b12bfcfc213447904f67d0bcde75d0097"
+    },
+    {
+      "case_id": "g02-three-sentences",
+      "family": "g02",
+      "selected_sources": 4,
+      "selected_memory": 8,
+      "errors": [],
+      "request_file_sha256": "8d188f79ec71c32e9e53daedc090c9ab9ee2a52a6856b1367af601b69d64cb31",
+      "runtime_snapshot_sha256": "bc53af44286f86b9804f1166897ed704178a402c7983decfd44b9c470eb317e4"
+    },
+    {
+      "case_id": "g02-long-sentence",
+      "family": "g02",
+      "selected_sources": 4,
+      "selected_memory": 8,
+      "errors": [],
+      "request_file_sha256": "34836544ae4f74a8f0f708863f0dc01584ebf0ce2565dbd3274595344ba0fada",
+      "runtime_snapshot_sha256": "861f76cfa0b097f50933a082e79a88a1ea3ba5bcb06d9afd54d8de1028ccb9ab"
+    },
+    {
+      "case_id": "g02-body-limit",
+      "family": "g02",
+      "selected_sources": 4,
+      "selected_memory": 8,
+      "errors": [],
+      "request_file_sha256": "a4fc5efd196abec4ef3726eca71bca2efcfc4e6c3e3d5de2517c5cfdd9be80c0",
+      "runtime_snapshot_sha256": "3d38ad65058865f8053d1feb31bf7799fcf75e4559fb0330d4907b86ae467582"
+    },
+    {
+      "case_id": "g02-identical-text",
+      "family": "g02",
+      "selected_sources": 4,
+      "selected_memory": 8,
+      "errors": [],
+      "request_file_sha256": "fd88b27418a15c492bcc1f64a5a5d4c456a2d4ae44244e2300aead46c4cb4c92",
+      "runtime_snapshot_sha256": "9a00fd653395ddb1754f1ec7fe5aa5323e90cc32bdf6f49afbe88ce3e83a9d7e"
+    },
+    {
+      "case_id": "g02-time-bound",
+      "family": "g02",
+      "selected_sources": 4,
+      "selected_memory": 8,
+      "errors": [],
+      "request_file_sha256": "2f40251eaa7ccf7a148a79dac6df05f81d3ab281b26f0e5ee31fdb9dd26557d0",
+      "runtime_snapshot_sha256": "96b57e27e74924a0d0cfc04d77b8280e8a6fe4b1a15179d3c61aeb1e0a2451c7"
+    },
+    {
+      "case_id": "g02-dialogue-attribution",
+      "family": "g02",
+      "selected_sources": 4,
+      "selected_memory": 8,
+      "errors": [],
+      "request_file_sha256": "bebc9a11cd9c998c393c6bb51b901dc837021e0e8df9a7facc0b3e9c359e47fa",
+      "runtime_snapshot_sha256": "b067524fdf349750b9f56d895c80ce8ad30de98dd975f6ac35a5c6bbe749bf82"
+    }
+  ]
+}

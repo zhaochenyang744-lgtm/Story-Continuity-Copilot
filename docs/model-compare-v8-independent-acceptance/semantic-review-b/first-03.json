@@ -1,0 +1,293 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-03",
+  "stage": "first",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:39:00.697775+00:00",
+  "locked_before_condition_reveal": true,
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_scope": "Only assigned blind packet and frozen SEMANTIC-CRITERIA.md/json. No condition mapping, live arm output, machine score or usage read.",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-03",
+      "response_alias": "answer-7ddc5c",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "登记册 11点持有人栏空白，仅能判定来源不能证明 Mira 持有，不推出她未持有。",
+          "visible_quote": "Mira's actual possession remains unknown.",
+          "evidence_pointer": "responses[response_alias=answer-7ddc5c].first.parsed_business_json.issues[0].reasoning / claim_verdicts[0].basis; business_request.claims[0].text; fixture-span-north_glass-3"
+        },
+        {
+          "dimension": "C",
+          "verdict": "pass",
+          "reason": "实际交付 object_state，符合本例冻结类别；没有由 case 名 world_rule 推断类别。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[response_alias=answer-7ddc5c].first.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "pass",
+          "reason": "空白登记项作为 context/insufficient，链中 missing_link 正确表达未知，不冒充直接反证。",
+          "visible_quote": "missing_link",
+          "evidence_pointer": "responses[response_alias=answer-7ddc5c].first.parsed_business_json.issues[0].evidence[0] / evidence_chain[0]"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "pass",
+          "reason": "只引 span-3，满足最小集合；未引无关载具来源。span-2 为可选而非必需。",
+          "visible_quote": "fixture-span-north_glass-3",
+          "evidence_pointer": "responses[response_alias=answer-7ddc5c].first.parsed_business_json.issues[0].evidence; policy.minimum / optional"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "pass",
+          "reason": "当前 claim、selected span-3、chapter-3、Memory-3 均精确绑定；所述空白栏得到正文支持。",
+          "visible_quote": "fixture-memory-north_glass-3",
+          "evidence_pointer": "responses[response_alias=answer-7ddc5c].first.parsed_business_json.issues[0]; business_request.claims[0].allowed_evidence[id=fixture-span-north_glass-3]; business_request.memory[id=fixture-memory-north_glass-3]"
+        },
+        {
+          "dimension": "S",
+          "verdict": "pass",
+          "reason": "首个可见 JSON 与 parsed 相同；ledger/Issue 同为 insufficient，basis 长度 192，均满足 400 上限。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[response_alias=answer-7ddc5c].first.parsed_business_json; first.visible_content; first.finish_reason"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "真实交付一条针对当前命题的不足 Issue，没有用正确 basis 替代交付。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[response_alias=answer-7ddc5c].first.parsed_business_json.issues[0].status"
+        },
+        {
+          "dimension": "T",
+          "verdict": "pass",
+          "reason": "时间锚点均为输入精确子串；不足判定允许此 temporal 取值，没有倒推事实、替换建议或操作升级。",
+          "visible_quote": "explicit_overlap",
+          "evidence_pointer": "responses[response_alias=answer-7ddc5c].first.parsed_business_json.issues[0].temporal_basis / suggested_revision / available_actions"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "正确判断 11点徽章持有事实缺少登记依据并保持未知；类别、最低证据、绑定、ledger、实际不足 Issue 和操作限制均合格。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-03",
+      "response_alias": "answer-78e9bc",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确拆开来源归属与故事事实，并正确排除 10点和另一对象的材料。",
+          "visible_quote": "A blank holder field is an omission, not a statement that no one held the badge",
+          "evidence_pointer": "responses[response_alias=answer-78e9bc].first.parsed_business_json.issues[0].reasoning / claim_verdicts[0].basis; business_request.claims[0].text; fixture-span-north_glass-3"
+        },
+        {
+          "dimension": "C",
+          "verdict": "pass",
+          "reason": "实际交付 object_state，符合本例冻结类别；没有由 case 名 world_rule 推断类别。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[response_alias=answer-78e9bc].first.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "pass",
+          "reason": "空白登记项作为 context/insufficient，链中 missing_link 正确表达未知，不冒充直接反证。",
+          "visible_quote": "missing_link",
+          "evidence_pointer": "responses[response_alias=answer-78e9bc].first.parsed_business_json.issues[0].evidence[0] / evidence_chain[0]"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "pass",
+          "reason": "只引 span-3，满足最小集合；未引无关载具来源。span-2 为可选而非必需。",
+          "visible_quote": "fixture-span-north_glass-3",
+          "evidence_pointer": "responses[response_alias=answer-78e9bc].first.parsed_business_json.issues[0].evidence; policy.minimum / optional"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "pass",
+          "reason": "当前 claim、selected span-3、chapter-3、Memory-3 均精确绑定；所述空白栏得到正文支持。",
+          "visible_quote": "fixture-memory-north_glass-3",
+          "evidence_pointer": "responses[response_alias=answer-78e9bc].first.parsed_business_json.issues[0]; business_request.claims[0].allowed_evidence[id=fixture-span-north_glass-3]; business_request.memory[id=fixture-memory-north_glass-3]"
+        },
+        {
+          "dimension": "S",
+          "verdict": "pass",
+          "reason": "首个可见 JSON 与 parsed 相同；ledger/Issue 同为 insufficient，basis 长度 281，均满足 400 上限。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[response_alias=answer-78e9bc].first.parsed_business_json; first.visible_content; first.finish_reason"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "真实交付一条针对当前命题的不足 Issue，没有用正确 basis 替代交付。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[response_alias=answer-78e9bc].first.parsed_business_json.issues[0].status"
+        },
+        {
+          "dimension": "T",
+          "verdict": "pass",
+          "reason": "时间锚点均为输入精确子串；不足判定允许此 temporal 取值，没有倒推事实、替换建议或操作升级。",
+          "visible_quote": "explicit_overlap",
+          "evidence_pointer": "responses[response_alias=answer-78e9bc].first.parsed_business_json.issues[0].temporal_basis / suggested_revision / available_actions"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "正确判断 11点徽章持有事实缺少登记依据并保持未知；类别、最低证据、绑定、ledger、实际不足 Issue 和操作限制均合格。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-03",
+      "response_alias": "answer-b2fcfd",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "对具体持有命题停在来源依据缺失，没有将空白记录升级为否定事实。",
+          "visible_quote": "无法证明 Mira 在 11点持有备用蓝色徽章",
+          "evidence_pointer": "responses[response_alias=answer-b2fcfd].first.parsed_business_json.issues[0].reasoning / claim_verdicts[0].basis; business_request.claims[0].text; fixture-span-north_glass-3"
+        },
+        {
+          "dimension": "C",
+          "verdict": "pass",
+          "reason": "实际交付 object_state，符合本例冻结类别；没有由 case 名 world_rule 推断类别。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[response_alias=answer-b2fcfd].first.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "pass",
+          "reason": "空白登记项作为 context/insufficient，链中 missing_link 正确表达未知，不冒充直接反证。",
+          "visible_quote": "missing_link",
+          "evidence_pointer": "responses[response_alias=answer-b2fcfd].first.parsed_business_json.issues[0].evidence[0] / evidence_chain[0]"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "pass",
+          "reason": "只引 span-3，满足最小集合；未引无关载具来源。span-2 为可选而非必需。",
+          "visible_quote": "fixture-span-north_glass-3",
+          "evidence_pointer": "responses[response_alias=answer-b2fcfd].first.parsed_business_json.issues[0].evidence; policy.minimum / optional"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "pass",
+          "reason": "当前 claim、selected span-3、chapter-3、Memory-3 均精确绑定；所述空白栏得到正文支持。",
+          "visible_quote": "fixture-memory-north_glass-3",
+          "evidence_pointer": "responses[response_alias=answer-b2fcfd].first.parsed_business_json.issues[0]; business_request.claims[0].allowed_evidence[id=fixture-span-north_glass-3]; business_request.memory[id=fixture-memory-north_glass-3]"
+        },
+        {
+          "dimension": "S",
+          "verdict": "pass",
+          "reason": "首个可见 JSON 与 parsed 相同；ledger/Issue 同为 insufficient，basis 长度 53，均满足 400 上限。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[response_alias=answer-b2fcfd].first.parsed_business_json; first.visible_content; first.finish_reason"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "真实交付一条针对当前命题的不足 Issue，没有用正确 basis 替代交付。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[response_alias=answer-b2fcfd].first.parsed_business_json.issues[0].status"
+        },
+        {
+          "dimension": "T",
+          "verdict": "pass",
+          "reason": "时间锚点均为输入精确子串；不足判定允许此 temporal 取值，没有倒推事实、替换建议或操作升级。",
+          "visible_quote": "unknown",
+          "evidence_pointer": "responses[response_alias=answer-b2fcfd].first.parsed_business_json.issues[0].temporal_basis / suggested_revision / available_actions"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "正确判断 11点徽章持有事实缺少登记依据并保持未知；类别、最低证据、绑定、ledger、实际不足 Issue 和操作限制均合格。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "summary": {
+    "responses": 3,
+    "F_pass": 3,
+    "strict_pass": 3,
+    "comparison": "three-way tie on frozen dimensions"
+  },
+  "non_gating_observation": "answer-b2fcfd 使用中文作者说明，其余两条使用英文；仅记录语言差异，不据此猜模型身份，未将未单列的语言指标临时加入冻结 strict。",
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/03.json",
+      "sha256_observed": "495e30754c26f079af8f939f6fb84d99bb5de9b7dcbe730c242efc016886a2aa",
+      "sha256_after_review": "495e30754c26f079af8f939f6fb84d99bb5de9b7dcbe730c242efc016886a2aa"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    }
+  ],
+  "read_hashes_stable": true
+}

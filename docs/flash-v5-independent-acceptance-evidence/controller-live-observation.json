@@ -1,0 +1,363 @@
+{
+  "kind": "controller_post_live_readonly_observation",
+  "run_id": "flash-v5-20260927-01",
+  "created_at": "2026-09-27T08:27:04.663044+00:00",
+  "inventory_sha256": "40fe43b68bcc2772b8ba76e60f4160858171800d97551a1195f275d941c3f838",
+  "inventory_file_count": 320,
+  "inventory_mismatches": [],
+  "logical_finished_not_equivalent_to_quality_pass": 30,
+  "groups": {
+    "comparison/conflict": {
+      "first_machine": {
+        "fail": 6,
+        "pass": 2
+      },
+      "final_machine": {
+        "terminal_failure": 6,
+        "pass": 2
+      },
+      "api_status": {
+        "failed": 6,
+        "completed": 2
+      }
+    },
+    "comparison/no_conflict": {
+      "first_machine": {
+        "pass": 8
+      },
+      "final_machine": {
+        "pass": 8
+      },
+      "api_status": {
+        "completed": 8
+      }
+    },
+    "comparison/insufficient_evidence": {
+      "first_machine": {
+        "fail": 8
+      },
+      "final_machine": {
+        "fail": 6,
+        "terminal_failure": 2
+      },
+      "api_status": {
+        "completed": 6,
+        "failed": 2
+      }
+    },
+    "g02/g02": {
+      "first_machine": {
+        "pass": 6
+      },
+      "final_machine": {
+        "pass": 6
+      },
+      "api_status": {
+        "completed": 6
+      }
+    }
+  },
+  "cases": [
+    {
+      "ordinal": 1,
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "first_machine": "fail",
+      "repair_count": 0,
+      "final_machine": "terminal_failure",
+      "api_status": "failed",
+      "error_code": "conflict_evidence_not_direct"
+    },
+    {
+      "ordinal": 2,
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 3,
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "first_machine": "fail",
+      "repair_count": 1,
+      "final_machine": "fail",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 4,
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "first_machine": "fail",
+      "repair_count": 0,
+      "final_machine": "terminal_failure",
+      "api_status": "failed",
+      "error_code": "conflict_evidence_not_direct"
+    },
+    {
+      "ordinal": 5,
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 6,
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "first_machine": "fail",
+      "repair_count": 0,
+      "final_machine": "fail",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 7,
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 8,
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 9,
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "first_machine": "fail",
+      "repair_count": 0,
+      "final_machine": "fail",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 10,
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "first_machine": "fail",
+      "repair_count": 0,
+      "final_machine": "terminal_failure",
+      "api_status": "failed",
+      "error_code": "conflict_evidence_not_direct"
+    },
+    {
+      "ordinal": 11,
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 12,
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "first_machine": "fail",
+      "repair_count": 0,
+      "final_machine": "fail",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 13,
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 14,
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 15,
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "first_machine": "fail",
+      "repair_count": 1,
+      "final_machine": "terminal_failure",
+      "api_status": "failed",
+      "error_code": "conflict_evidence_not_direct"
+    },
+    {
+      "ordinal": 16,
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "first_machine": "fail",
+      "repair_count": 0,
+      "final_machine": "terminal_failure",
+      "api_status": "failed",
+      "error_code": "conflict_evidence_not_direct"
+    },
+    {
+      "ordinal": 17,
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 18,
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "first_machine": "fail",
+      "repair_count": 0,
+      "final_machine": "fail",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 19,
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "first_machine": "fail",
+      "repair_count": 0,
+      "final_machine": "terminal_failure",
+      "api_status": "failed",
+      "error_code": "conflict_evidence_not_direct"
+    },
+    {
+      "ordinal": 20,
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 21,
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "first_machine": "fail",
+      "repair_count": 0,
+      "final_machine": "fail",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 22,
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "first_machine": "fail",
+      "repair_count": 0,
+      "final_machine": "terminal_failure",
+      "api_status": "failed",
+      "error_code": "evidence_unresolvable"
+    },
+    {
+      "ordinal": 23,
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 24,
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "first_machine": "fail",
+      "repair_count": 1,
+      "final_machine": "terminal_failure",
+      "api_status": "failed",
+      "error_code": "conflict_evidence_not_direct"
+    },
+    {
+      "ordinal": 25,
+      "case_id": "g02-three-sentences",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 26,
+      "case_id": "g02-long-sentence",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 27,
+      "case_id": "g02-body-limit",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 28,
+      "case_id": "g02-identical-text",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 29,
+      "case_id": "g02-time-bound",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    },
+    {
+      "ordinal": 30,
+      "case_id": "g02-dialogue-attribution",
+      "first_machine": "pass",
+      "repair_count": 0,
+      "final_machine": "pass",
+      "api_status": "completed",
+      "error_code": null
+    }
+  ],
+  "original_summary": {
+    "run_id": "flash-v5-20260927-01",
+    "mode": "live",
+    "finished_at": "2026-09-27T08:21:41.047450+00:00",
+    "logical_cases_finished": 30,
+    "logical_cases_planned": 30,
+    "service_stop": false,
+    "semantic_status": "pending_manual_review",
+    "post_attempt_start_records": 33,
+    "transport_attempts_finished": 33,
+    "http_responses_received": 33,
+    "server_receipt_for_unfinished_attempts": "unknown",
+    "usage_counts": {
+      "complete": 33,
+      "missing": 0,
+      "partial": 0,
+      "unknown": 0
+    },
+    "known_prompt_tokens_partial_sum": 105167,
+    "known_completion_tokens_partial_sum": 13459,
+    "prompt_tokens_total": 105167,
+    "completion_tokens_total": 13459,
+    "all_dispatch_usage_complete": true,
+    "unfinished_attempt_count": 0,
+    "models_get_start_records": 1,
+    "models_get_finish_observed": 1,
+    "models_server_receipt_if_unfinished": "unknown"
+  },
+  "controller_provider_calls": 0,
+  "controller_database_connections": 0,
+  "semantic_review": "separately_delegated_and_root_crosschecked"
+}

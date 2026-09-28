@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-timeline-conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:01:57.577286+00:00",
+  "latency_ms": 2773,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3320,
+      "completion_tokens": 495,
+      "total_tokens": 3815
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-12d83dd8-f7be-4d5b-91cf-40e077f64672-1\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"timeline\",\"severity\":\"high\",\"explanation\":\"草稿声称港口信号闸门在09点先关闭后开启，但证据显示09点闸门先开启且此前从未关闭，首次关闭发生在10点。\",\"reasoning\":\"证据 span-1 明确记载：09点闸门先开启且此前从未关闭，10点才首次关闭。草稿却称09点先关闭后开启，这与同一时间点（09点）的同一对象（港口信号闸门）的首次状态顺序直接矛盾。两个文本都使用“09点 on the same day”作为明确时间锚点，构成显式重叠。\",\"temporal_basis\":{\"claim_anchor\":\"At 09点 on the same day\",\"evidence_anchor\":\"At 09点 on the same day\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-harbor_signal-1\",\"span_id\":\"fixture-span-harbor_signal-1\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-harbor_signal-1\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-harbor_signal-1\",\"role\":\"current_context\"}],\"suggested_revision\":{\"before\":\"At 09点 on the same day, the harbor signal gate first closed before it first opened.\",\"after\":\"At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.\"},\"available_actions\":[\"edit\",\"apply_suggestion\",\"keep_intentional\",\"false_positive\"]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-12d83dd8-f7be-4d5b-91cf-40e077f64672-1\",\"verdict\":\"reviewed_issue\",\"basis\":\"草稿的09点闸门先关闭后开启与证据中09点先开启、10点才首次关闭在同一时间与对象上直接矛盾，已发出确认冲突问题。\"}]}",
+  "message_content_sha256": "c363f268f5f96e7ac831d78f34ee337659c0d43314c984b27bccd1a9e40e8588",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

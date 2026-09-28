@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "617cecc8987c9d4dbcfb959c621527bdaf97770c8847fc71782c8ded47b1d470",
+  "finished_at": "2026-09-27T10:01:53.599490+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-55fa9378-b612-4f74-a5ca-e99cccb013c4-1",
+        "verdict": "no_issue",
+        "basis": "The claim attributes the loosening to the inspection and cap record, but the cited evidence (fixture-span-north_glass-6) states the inspection does not record who loosened the valve cap. This is an unsupported attribution rather than a direct contradiction of a story fact, and no supplied evidence establishes a conflicting actor or time, so no continuity issue is warranted."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3426,
+    "output_tokens": 129,
+    "observed_response_input_tokens": 3426,
+    "observed_response_output_tokens": 129
+  }
+}

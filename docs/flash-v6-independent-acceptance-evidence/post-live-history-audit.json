@@ -1,0 +1,20 @@
+{
+  "time": "2026-09-27T10:07:17.566600+00:00",
+  "checks": [
+    {
+      "group": "historical_artifacts",
+      "count": 1463,
+      "changed": []
+    },
+    {
+      "group": "recoverable_v5_bytes",
+      "count": 280,
+      "changed": []
+    }
+  ],
+  "git_head": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "head_unchanged": true,
+  "provider_calls": 0,
+  "database_connections": 0,
+  "current_product_changes": "authorized; reviewed separately from historical preservation"
+}

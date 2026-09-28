@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+  "status": "completed",
+  "error_code": null,
+  "post_attempt_start_records": 1,
+  "evaluation_count": 1,
+  "score_status": "pending_manual_review",
+  "finished_at": "2026-09-27T10:48:36.199833+00:00"
+}

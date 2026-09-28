@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "f4e3d8293914ea9cc1b4883a22f974d0683703e1e9a4dea9ab82c5932ce8a662",
+  "finished_at": "2026-09-27T10:02:23.752979+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-73585ea2-2a02-42e6-8623-4ce3d4b66719-1",
+        "verdict": "no_issue",
+        "basis": "The draft explicitly frames Nera's statement as a lie, so it is an attributed false utterance rather than a narrator-asserted fact. The cited register evidence (twins, both children of Tala) and the permanent kinship rule are consistent with the narrator's framing that the mother claim is false; no continuity conflict requires review."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3432,
+    "output_tokens": 125,
+    "observed_response_input_tokens": 3432,
+    "observed_response_output_tokens": 125
+  }
+}

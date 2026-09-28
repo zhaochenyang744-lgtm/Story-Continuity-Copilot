@@ -1,0 +1,9 @@
+{
+  "detail": {
+    "execute_terminal": "completed",
+    "normalization_count": 1,
+    "strict_rejection": "timeless_rule_unproven"
+  },
+  "name": "borrowed-uncited-rule-rejected",
+  "status": "pass"
+}

@@ -1,0 +1,366 @@
+{
+  "case_alias": "case-19",
+  "stage": "followup",
+  "expected_policy_reference": "ccv3-basalt_observatory-attribute-conflict",
+  "policy": {
+    "allowed_outcomes": [
+      "confirmed_conflict"
+    ],
+    "minimum": [
+      [
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-2"
+      ]
+    ],
+    "optional": [],
+    "premises": [
+      "fixture-span-basalt_observatory-1"
+    ],
+    "category": "attribute",
+    "category_candidates": [
+      "attribute"
+    ],
+    "manual_variant": false,
+    "temporal_relations": [
+      "explicit_overlap"
+    ]
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-basalt-observatory",
+      "revision": 2,
+      "body": "At 18点 on the same day, lens R4 is amber glass."
+    },
+    "claims": [
+      {
+        "id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+        "text": "At 18点 on the same day, lens R4 is amber glass.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-basalt_observatory-2",
+            "chapter_id": "fixture-chapter-basalt_observatory-2",
+            "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+            "label": "west_lens",
+            "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-1",
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+            "label": "lens_index",
+            "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-5",
+            "chapter_id": "fixture-chapter-basalt_observatory-5",
+            "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "label": "watch_log",
+            "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-basalt_observatory-1",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "identity",
+        "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+        "source_span_id": "fixture-span-basalt_observatory-1"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-2",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+        "source_span_id": "fixture-span-basalt_observatory-2"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-3",
+        "memory_type": "open_thread",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+        "source_span_id": "fixture-span-basalt_observatory-3"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-4",
+        "memory_type": "static_canon",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-4"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-5",
+        "memory_type": "dynamic_state",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-5"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-6",
+        "memory_type": "event_timeline",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+        "source_span_id": "fixture-span-basalt_observatory-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-ca0df8",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+            "status": "conflict",
+            "category": "object_state",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "同一时刻，镜头 R4 被同时断言为琥珀色玻璃和透明玻璃。",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-1",
+                "span_id": "fixture-span-basalt_observatory-1",
+                "excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                "relation": "context",
+                "sufficiency": "sufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-1"
+                ]
+              },
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-2",
+                "span_id": "fixture-span-basalt_observatory-2",
+                "excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-2"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "证据 span-1 确认 R4 就是已安装的西侧孔径镜头；证据 span-2 在同一时间点（18点，同一天）明确说明该西侧孔径镜头是透明玻璃，而非琥珀色玻璃。两条证据共同证明：同一对象、同一时间、同一属性上存在直接矛盾。",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-basalt_observatory-1",
+                "role": "current_context"
+              },
+              {
+                "span_id": "fixture-span-basalt_observatory-2",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": {
+              "before": "At 18点 on the same day, lens R4 is amber glass.",
+              "after": "At 18点 on the same day, lens R4 is clear glass, not amber glass."
+            },
+            "available_actions": [
+              "edit",
+              "apply_suggestion",
+              "keep_intentional",
+              "false_positive"
+            ]
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    },
+    {
+      "response_alias": "answer-dce86a",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+            "status": "conflict",
+            "category": "attribute",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "Lens R4 is identified as the western aperture lens, which is clear glass at the same 18点 time.",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-1",
+                "span_id": "fixture-span-basalt_observatory-1",
+                "excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                "relation": "context",
+                "sufficiency": "sufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-1"
+                ]
+              },
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-2",
+                "span_id": "fixture-span-basalt_observatory-2",
+                "excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-2"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "The current claim says lens R4 is amber glass at 18点. Evidence span fixture-span-basalt_observatory-1 identifies lens R4 as the installed western aperture lens, and span fixture-span-basalt_observatory-2 states that same western aperture lens is clear glass, not amber glass, at the same 18点. Both spans share the same subject, scope, and time, so the claim cannot coexist with the evidence.",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-basalt_observatory-1",
+                "role": "current_context"
+              },
+              {
+                "span_id": "fixture-span-basalt_observatory-2",
+                "role": "current_context"
+              }
+            ],
+            "suggested_revision": {
+              "before": "amber glass",
+              "after": "clear glass"
+            },
+            "available_actions": [
+              "apply_suggestion"
+            ]
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    },
+    {
+      "response_alias": "answer-b4fda5",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+            "status": "conflict",
+            "category": "object_state",
+            "severity": "medium",
+            "evidence_status": "sufficient",
+            "explanation": "The draft states that lens R4 is amber glass at 18点 on the same day, but the record gives that same lens a clear-glass state at that same time.",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-1",
+                "span_id": "fixture-span-basalt_observatory-1",
+                "excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                "relation": "context",
+                "sufficiency": "sufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-1"
+                ]
+              },
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-2",
+                "span_id": "fixture-span-basalt_observatory-2",
+                "excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-2"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "Span-1 establishes the identity premise needed to compare the two texts: at 18点 on the same day the observatory index identifies lens R4 as the installed western aperture lens, so the named object in the claim and the object in span-2 are one and the same. Span-2 states, at the same explicit time (18点 on the same day), that the western aperture lens is clear glass, not amber glass. Because the subject (lens R4 = the western aperture lens), the scope (which glass is installed in the aperture), and the time (18点 on the same day) all coincide, the claim's amber-glass state and span-2's clear-glass state cannot both hold; this is a direct contradiction rather than a transition, since no later change or replacement is supplied.",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-basalt_observatory-1",
+                "role": "current_context"
+              },
+              {
+                "span_id": "fixture-span-basalt_observatory-2",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": {
+              "before": "At 18点 on the same day, lens R4 is amber glass.",
+              "after": "At 18点 on the same day, lens R4 is clear glass, not amber glass."
+            },
+            "available_actions": [
+              "edit",
+              "apply_suggestion",
+              "keep_intentional",
+              "false_positive"
+            ]
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    }
+  ]
+}

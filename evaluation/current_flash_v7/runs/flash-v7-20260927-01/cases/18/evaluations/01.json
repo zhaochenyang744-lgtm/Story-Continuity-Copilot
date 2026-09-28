@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "67874c66bfa850ee8df37b79fd43f74db98816e704a54f8411b58b5499fa263b",
+  "finished_at": "2026-09-27T10:48:15.363074+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-a4b1dbd6-e966-4c05-9d06-d6b20efea737-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The draft attributes the delay's cause to Tala via the launch and delay logs, but the cited log span states the cause of the delay is unrecorded; the attribution is unsupported and the cause remains unknown."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3460,
+    "output_tokens": 102,
+    "observed_response_input_tokens": 3460,
+    "observed_response_output_tokens": 102
+  }
+}

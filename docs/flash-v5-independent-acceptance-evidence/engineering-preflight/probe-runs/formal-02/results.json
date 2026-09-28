@@ -1,0 +1,87 @@
+{
+  "kind": "independent_offline_engineering_controls",
+  "run_id": "formal-02",
+  "manifest_sha256": "aabea4b8f99d2d4282ed627e98da98a57e46a1c526a7a45064af22acfd87682b",
+  "probe_sha256": "5c28d59cdb4167e9c06754d816a5bb898325d156011707c81ae3a482731adb5c",
+  "checks": [
+    {
+      "name": "malformed_results_do_not_swallow_next_cases",
+      "passed": true,
+      "details": {
+        "scope": "runner_control_simulation_with_mock_fixture_and_no_transport",
+        "visited_ordinals": [
+          1,
+          2,
+          3
+        ],
+        "logical_cases_finished": 3,
+        "service_stop": false
+      }
+    },
+    {
+      "name": "two_recovered_service_failures_stop_third_case",
+      "passed": true,
+      "details": {
+        "scope": "runner_control_simulation_with_mock_fixture_and_no_transport",
+        "visited_ordinals": [
+          1,
+          2
+        ],
+        "logical_cases_finished": 2,
+        "service_stop": true
+      }
+    },
+    {
+      "name": "controller_dependency_guard",
+      "passed": true,
+      "details": {
+        "positive_verify_only": {
+          "run_id": "flash-v5-audit-guard-check",
+          "git_head": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+          "files_checked": 280,
+          "v5_manifest_sha256": "aabea4b8f99d2d4282ed627e98da98a57e46a1c526a7a45064af22acfd87682b",
+          "controller_manifest_sha256": "bcc424e1a372b1e98b1d81d00f368e94075613ab559b1fceb68c7681c371747b",
+          "verified": true
+        },
+        "supplement_identity_rejection": {
+          "type": "RuntimeError",
+          "message": "controller_dependency_manifest_changed"
+        },
+        "mock_dependency_drift_rejection": {
+          "type": "RuntimeError",
+          "message": "frozen_dependency_changed:backend/app/text_content.py"
+        },
+        "occupied_identity_early_rejection": {
+          "type": "FileExistsError",
+          "message": "live_run_identity_already_exists"
+        },
+        "source_hashes_unchanged": true,
+        "launch_called": false
+      }
+    }
+  ],
+  "passed": 3,
+  "total": 3,
+  "network_calls": 0,
+  "real_provider_calls": 0,
+  "database_connections": 0,
+  "blocked_attempts": {
+    "network": 0,
+    "database": 0,
+    "out_of_scope_write": 0
+  },
+  "frozen_sources_unchanged": true,
+  "fixture_json_unchanged": true,
+  "fixture_hashes": {
+    "evaluation\\current_flash_v5\\runs\\prep-v5-03\\cases\\01\\requests\\01.json": "dcc71cc6b15a4c1ddc8a5a14baebf9b3eb2ba7daf4da2cab9ecf1f58a918cbf2",
+    "evaluation\\current_flash_v5\\runs\\prep-v5-03\\cases\\25\\requests\\01.json": "8d188f79ec71c32e9e53daedc090c9ab9ee2a52a6856b1367af601b69d64cb31",
+    "evaluation\\current_flash_v5\\runs\\prep-v5-03\\cases\\25\\runtime-binding.json": "bc53af44286f86b9804f1166897ed704178a402c7983decfd44b9c470eb317e4"
+  },
+  "selected_groups": [
+    "controller_dependency_guard",
+    "malformed_results_do_not_swallow_next_cases",
+    "two_recovered_service_failures_stop_third_case"
+  ],
+  "limitations": "No real DB/API/browser/model execution; runner-loop tests replace fixture/API and models preflight. Semantic acceptance is separate.",
+  "all_passed": true
+}

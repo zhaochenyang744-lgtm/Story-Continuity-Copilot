@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-08",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "7285fca79129c1ddbc7e3675344dcab7ed4a2dba7933ae7fcd275aa716c6cc1a",
+  "finished_at": "2026-09-27T10:49:00.704044+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-796234c3-6856-49b3-b487-c0b51775c660-1",
+        "verdict": "no_issue",
+        "basis": "The cited span directly supports the claim: the inspector watched Ina loosen the courier capsule valve cap at 10:00 and logged her name, matching the draft's actor, action, object, and time."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 2995,
+    "output_tokens": 97,
+    "observed_response_input_tokens": 2995,
+    "observed_response_output_tokens": 97
+  }
+}

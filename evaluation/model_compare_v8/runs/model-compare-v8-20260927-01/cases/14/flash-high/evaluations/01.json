@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "36333c48360f9c97b291084f8b9ebf92c4c1b228181493821d639a016190252c",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1",
+        "verdict": "no_issue",
+        "basis": "Nera's 'I am Oren's mother' is explicitly framed by the narrator as a lie, so it is an attributed utterance, not asserted world fact. The register's twin record (span 2) and the twins-cannot-be-parents rule (span 1) stay consistent, and the unrecorded birth order (span 3) only adds compatible open-thread detail."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3480,
+      "completion_tokens": 437,
+      "total_tokens": 3917,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 299
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1304
+    },
+    "status": "complete",
+    "prompt_tokens": 3480,
+    "completion_tokens": 437,
+    "total_tokens": 3917,
+    "reasoning_tokens": 299,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

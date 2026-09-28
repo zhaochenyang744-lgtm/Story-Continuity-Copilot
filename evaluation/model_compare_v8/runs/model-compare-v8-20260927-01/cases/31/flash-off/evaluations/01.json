@@ -1,0 +1,77 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "047129c4a85190a0cad268495c2cc33bcd5b355cee6bfba6e6f3f61746014754",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "The cited register span does not establish the claimed birth order; it only records that Aster and Nilo are twins and that the register omits which was born first.",
+        "reasoning": "The draft asserts that the birth register establishes Aster was born before Nilo, but the only supplied evidence says the register does not record which twin was born first. The decisive detail supporting the claim is absent, so the attribution is unsupported and the birth order remains unknown.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+            "span_id": "fixture-span-v6_birth_order_blank-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_birth_order_blank-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_birth_order_blank-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The only cited span states the register does not record which twin was born first, so it cannot establish the claimed birth order; the decisive detail is missing."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 2973,
+      "completion_tokens": 371,
+      "total_tokens": 3344,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 797
+    },
+    "status": "complete",
+    "prompt_tokens": 2973,
+    "completion_tokens": 371,
+    "total_tokens": 3344,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

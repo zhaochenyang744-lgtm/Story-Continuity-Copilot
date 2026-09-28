@@ -1,0 +1,8 @@
+{
+  "name": "auth_and_quality_failure_classification",
+  "passed": true,
+  "details": {
+    "auth_401_stop": true,
+    "schema_failure_is_not_service_failure": true
+  }
+}

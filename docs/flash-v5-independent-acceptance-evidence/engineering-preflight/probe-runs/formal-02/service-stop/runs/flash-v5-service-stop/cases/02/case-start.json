@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v5-service-stop",
+  "ordinal": 2,
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:16:23.548908+00:00",
+  "case_input_sha256": "87d268bb0fa52f87d395a6004591e2654508531b6f2344b2538c7051b902f76f",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

@@ -1,0 +1,660 @@
+{
+  "control": "number",
+  "direct_rejection": "claim_verdicts_invalid",
+  "repaired": {
+    "requests": [
+      {
+        "claims": [
+          {
+            "allowed_evidence": [
+              {
+                "body": "Before dawn, the bronze lamp was dark.",
+                "chapter_id": "chapter-prior-lamp",
+                "id": "prior-lamp",
+                "prompt_excerpt": "Before dawn, the bronze lamp was dark."
+              }
+            ],
+            "id": "c-lamp",
+            "text": "After dawn, the bronze lamp was lit."
+          }
+        ],
+        "draft": {
+          "body": "After dawn, the bronze lamp was lit.",
+          "id": "synthetic-draft",
+          "revision": 1
+        },
+        "memory": [],
+        "output_schema": {
+          "claim_verdicts": [
+            {
+              "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review",
+              "claim_span_id": "every supplied current claim id exactly once",
+              "verdict": "reviewed_issue|insufficient_evidence|no_issue"
+            }
+          ],
+          "issues": [
+            {
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "category": "allowed category",
+              "claim_span_id": "current claim id",
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ],
+                  "relation": "supports|contradicts|context",
+                  "span_id": "allowed span id",
+                  "sufficiency": "sufficient|insufficient"
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "role": "prior_state|current_context|missing_link",
+                  "span_id": "one cited evidence span id"
+                }
+              ],
+              "explanation": "short backwards-compatible summary",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "proposed_memory_change": {
+                "affected_memory_id": "required for replace only",
+                "memory_type": "allowed memory type",
+                "operation": "add|replace",
+                "predicate": "string",
+                "subject": "string",
+                "value": "string"
+              },
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "severity": "low|medium|high",
+              "status": "conflict|insufficient_evidence",
+              "suggested_revision": {
+                "after": "specific replacement text",
+                "before": "exact text occurring once in the bound draft"
+              },
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "claims": [
+          {
+            "allowed_evidence": [
+              {
+                "body": "Before dawn, the bronze lamp was dark.",
+                "chapter_id": "chapter-prior-lamp",
+                "id": "prior-lamp",
+                "prompt_excerpt": "Before dawn, the bronze lamp was dark."
+              }
+            ],
+            "id": "c-lamp",
+            "text": "After dawn, the bronze lamp was lit."
+          }
+        ],
+        "contract_repair": {
+          "attempt": 2,
+          "diagnostics": [
+            {
+              "cited_evidence": [],
+              "claim_span_id": null,
+              "claim_text": null,
+              "problem_codes": [
+                "claim_verdicts_invalid"
+              ]
+            }
+          ],
+          "reason_code": "claim_verdicts_invalid",
+          "rejected_issues": [
+            {
+              "available_actions": [],
+              "category": "object_state",
+              "claim_span_id": "c-lamp",
+              "evidence": [
+                {
+                  "chapter_id": "chapter-prior-lamp",
+                  "related_memory_ids": [],
+                  "relation": "context",
+                  "span_id": "prior-lamp",
+                  "sufficiency": "sufficient"
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "role": "prior_state",
+                  "span_id": "prior-lamp"
+                }
+              ],
+              "explanation": "The lamp's earlier and later states can coexist.",
+              "nature": "state_change",
+              "proposed_memory_change": null,
+              "reasoning": "Before dawn it was dark; after dawn it was lit.",
+              "severity": "medium",
+              "status": "conflict",
+              "suggested_revision": null,
+              "temporal_basis": {
+                "claim_anchor": null,
+                "evidence_anchor": null,
+                "relation": "explicit_later_transition"
+              }
+            }
+          ]
+        },
+        "draft": {
+          "body": "After dawn, the bronze lamp was lit.",
+          "id": "synthetic-draft",
+          "revision": 1
+        },
+        "memory": [],
+        "output_schema": {
+          "claim_verdicts": [
+            {
+              "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review",
+              "claim_span_id": "every supplied current claim id exactly once",
+              "verdict": "reviewed_issue|insufficient_evidence|no_issue"
+            }
+          ],
+          "issues": [
+            {
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "category": "allowed category",
+              "claim_span_id": "current claim id",
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ],
+                  "relation": "supports|contradicts|context",
+                  "span_id": "allowed span id",
+                  "sufficiency": "sufficient|insufficient"
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "role": "prior_state|current_context|missing_link",
+                  "span_id": "one cited evidence span id"
+                }
+              ],
+              "explanation": "short backwards-compatible summary",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "proposed_memory_change": {
+                "affected_memory_id": "required for replace only",
+                "memory_type": "allowed memory type",
+                "operation": "add|replace",
+                "predicate": "string",
+                "subject": "string",
+                "value": "string"
+              },
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "severity": "low|medium|high",
+              "status": "conflict|insufficient_evidence",
+              "suggested_revision": {
+                "after": "specific replacement text",
+                "before": "exact text occurring once in the bound draft"
+              },
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "responses": [
+      {
+        "claim_verdicts": [
+          {
+            "basis": "This is a compatible explicit transition.",
+            "claim_span_id": "c-lamp",
+            "verdict": 7
+          }
+        ],
+        "issues": [
+          {
+            "available_actions": [],
+            "category": "object_state",
+            "claim_span_id": "c-lamp",
+            "evidence": [
+              {
+                "chapter_id": "chapter-prior-lamp",
+                "related_memory_ids": [],
+                "relation": "context",
+                "span_id": "prior-lamp",
+                "sufficiency": "sufficient"
+              }
+            ],
+            "evidence_chain": [
+              {
+                "role": "prior_state",
+                "span_id": "prior-lamp"
+              }
+            ],
+            "explanation": "The lamp's earlier and later states can coexist.",
+            "nature": "state_change",
+            "proposed_memory_change": null,
+            "reasoning": "Before dawn it was dark; after dawn it was lit.",
+            "severity": "medium",
+            "status": "conflict",
+            "suggested_revision": null,
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "explicit_later_transition"
+            }
+          }
+        ]
+      },
+      {
+        "claim_verdicts": [
+          {
+            "basis": "This is a compatible explicit transition.",
+            "claim_span_id": "c-lamp",
+            "verdict": "reviewed_issue"
+          }
+        ],
+        "issues": [
+          {
+            "available_actions": [],
+            "category": "object_state",
+            "claim_span_id": "c-lamp",
+            "evidence": [
+              {
+                "chapter_id": "chapter-prior-lamp",
+                "related_memory_ids": [],
+                "relation": "context",
+                "span_id": "prior-lamp",
+                "sufficiency": "sufficient"
+              }
+            ],
+            "evidence_chain": [
+              {
+                "role": "prior_state",
+                "span_id": "prior-lamp"
+              }
+            ],
+            "explanation": "The lamp's earlier and later states can coexist.",
+            "nature": "state_change",
+            "proposed_memory_change": null,
+            "reasoning": "Before dawn it was dark; after dawn it was lit.",
+            "severity": "medium",
+            "status": "conflict",
+            "suggested_revision": null,
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "explicit_later_transition"
+            }
+          }
+        ]
+      }
+    ],
+    "result": {
+      "contract_normalization_count": 0,
+      "contract_normalizations": [],
+      "cost_cny": null,
+      "input_tokens": 2,
+      "issues": [
+        {
+          "available_actions": [],
+          "category": "object_state",
+          "claim_span_id": "c-lamp",
+          "evidence": [
+            {
+              "chapter_id": "chapter-prior-lamp",
+              "excerpt": "Before dawn, the bronze lamp was dark.",
+              "related_memory_ids": [],
+              "relation": "context",
+              "span_id": "prior-lamp",
+              "sufficiency": "sufficient"
+            }
+          ],
+          "evidence_chain": [
+            {
+              "role": "prior_state",
+              "span_id": "prior-lamp"
+            }
+          ],
+          "evidence_status": "sufficient",
+          "explanation": "The lamp's earlier and later states can coexist.",
+          "nature": "state_change",
+          "proposed_memory_change": null,
+          "reasoning": "Before dawn it was dark; after dawn it was lit.",
+          "review_contract_version": "trustworthy_review_v1",
+          "severity": "medium",
+          "status": "conflict",
+          "suggested_revision": null
+        }
+      ],
+      "latency_ms": null,
+      "output_tokens": 2,
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "retrieval_traces": [
+        {
+          "claim_id": "c-lamp",
+          "returned_span_ids": [
+            "prior-lamp"
+          ]
+        }
+      ],
+      "status": "completed"
+    }
+  },
+  "status": "pass",
+  "terminal": {
+    "requests": [
+      {
+        "claims": [
+          {
+            "allowed_evidence": [
+              {
+                "body": "Before dawn, the bronze lamp was dark.",
+                "chapter_id": "chapter-prior-lamp",
+                "id": "prior-lamp",
+                "prompt_excerpt": "Before dawn, the bronze lamp was dark."
+              }
+            ],
+            "id": "c-lamp",
+            "text": "After dawn, the bronze lamp was lit."
+          }
+        ],
+        "draft": {
+          "body": "After dawn, the bronze lamp was lit.",
+          "id": "synthetic-draft",
+          "revision": 1
+        },
+        "memory": [],
+        "output_schema": {
+          "claim_verdicts": [
+            {
+              "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review",
+              "claim_span_id": "every supplied current claim id exactly once",
+              "verdict": "reviewed_issue|insufficient_evidence|no_issue"
+            }
+          ],
+          "issues": [
+            {
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "category": "allowed category",
+              "claim_span_id": "current claim id",
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ],
+                  "relation": "supports|contradicts|context",
+                  "span_id": "allowed span id",
+                  "sufficiency": "sufficient|insufficient"
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "role": "prior_state|current_context|missing_link",
+                  "span_id": "one cited evidence span id"
+                }
+              ],
+              "explanation": "short backwards-compatible summary",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "proposed_memory_change": {
+                "affected_memory_id": "required for replace only",
+                "memory_type": "allowed memory type",
+                "operation": "add|replace",
+                "predicate": "string",
+                "subject": "string",
+                "value": "string"
+              },
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "severity": "low|medium|high",
+              "status": "conflict|insufficient_evidence",
+              "suggested_revision": {
+                "after": "specific replacement text",
+                "before": "exact text occurring once in the bound draft"
+              },
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "claims": [
+          {
+            "allowed_evidence": [
+              {
+                "body": "Before dawn, the bronze lamp was dark.",
+                "chapter_id": "chapter-prior-lamp",
+                "id": "prior-lamp",
+                "prompt_excerpt": "Before dawn, the bronze lamp was dark."
+              }
+            ],
+            "id": "c-lamp",
+            "text": "After dawn, the bronze lamp was lit."
+          }
+        ],
+        "contract_repair": {
+          "attempt": 2,
+          "diagnostics": [
+            {
+              "cited_evidence": [],
+              "claim_span_id": null,
+              "claim_text": null,
+              "problem_codes": [
+                "claim_verdicts_invalid"
+              ]
+            }
+          ],
+          "reason_code": "claim_verdicts_invalid",
+          "rejected_issues": [
+            {
+              "available_actions": [],
+              "category": "object_state",
+              "claim_span_id": "c-lamp",
+              "evidence": [
+                {
+                  "chapter_id": "chapter-prior-lamp",
+                  "related_memory_ids": [],
+                  "relation": "context",
+                  "span_id": "prior-lamp",
+                  "sufficiency": "sufficient"
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "role": "prior_state",
+                  "span_id": "prior-lamp"
+                }
+              ],
+              "explanation": "The lamp's earlier and later states can coexist.",
+              "nature": "state_change",
+              "proposed_memory_change": null,
+              "reasoning": "Before dawn it was dark; after dawn it was lit.",
+              "severity": "medium",
+              "status": "conflict",
+              "suggested_revision": null,
+              "temporal_basis": {
+                "claim_anchor": null,
+                "evidence_anchor": null,
+                "relation": "explicit_later_transition"
+              }
+            }
+          ]
+        },
+        "draft": {
+          "body": "After dawn, the bronze lamp was lit.",
+          "id": "synthetic-draft",
+          "revision": 1
+        },
+        "memory": [],
+        "output_schema": {
+          "claim_verdicts": [
+            {
+              "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review",
+              "claim_span_id": "every supplied current claim id exactly once",
+              "verdict": "reviewed_issue|insufficient_evidence|no_issue"
+            }
+          ],
+          "issues": [
+            {
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "category": "allowed category",
+              "claim_span_id": "current claim id",
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ],
+                  "relation": "supports|contradicts|context",
+                  "span_id": "allowed span id",
+                  "sufficiency": "sufficient|insufficient"
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "role": "prior_state|current_context|missing_link",
+                  "span_id": "one cited evidence span id"
+                }
+              ],
+              "explanation": "short backwards-compatible summary",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "proposed_memory_change": {
+                "affected_memory_id": "required for replace only",
+                "memory_type": "allowed memory type",
+                "operation": "add|replace",
+                "predicate": "string",
+                "subject": "string",
+                "value": "string"
+              },
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "severity": "low|medium|high",
+              "status": "conflict|insufficient_evidence",
+              "suggested_revision": {
+                "after": "specific replacement text",
+                "before": "exact text occurring once in the bound draft"
+              },
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "responses": [
+      {
+        "claim_verdicts": [
+          {
+            "basis": "This is a compatible explicit transition.",
+            "claim_span_id": "c-lamp",
+            "verdict": 7
+          }
+        ],
+        "issues": [
+          {
+            "available_actions": [],
+            "category": "object_state",
+            "claim_span_id": "c-lamp",
+            "evidence": [
+              {
+                "chapter_id": "chapter-prior-lamp",
+                "related_memory_ids": [],
+                "relation": "context",
+                "span_id": "prior-lamp",
+                "sufficiency": "sufficient"
+              }
+            ],
+            "evidence_chain": [
+              {
+                "role": "prior_state",
+                "span_id": "prior-lamp"
+              }
+            ],
+            "explanation": "The lamp's earlier and later states can coexist.",
+            "nature": "state_change",
+            "proposed_memory_change": null,
+            "reasoning": "Before dawn it was dark; after dawn it was lit.",
+            "severity": "medium",
+            "status": "conflict",
+            "suggested_revision": null,
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "explicit_later_transition"
+            }
+          }
+        ]
+      },
+      {
+        "claim_verdicts": [
+          {
+            "basis": "This is a compatible explicit transition.",
+            "claim_span_id": "c-lamp",
+            "verdict": 7
+          }
+        ],
+        "issues": [
+          {
+            "available_actions": [],
+            "category": "object_state",
+            "claim_span_id": "c-lamp",
+            "evidence": [
+              {
+                "chapter_id": "chapter-prior-lamp",
+                "related_memory_ids": [],
+                "relation": "context",
+                "span_id": "prior-lamp",
+                "sufficiency": "sufficient"
+              }
+            ],
+            "evidence_chain": [
+              {
+                "role": "prior_state",
+                "span_id": "prior-lamp"
+              }
+            ],
+            "explanation": "The lamp's earlier and later states can coexist.",
+            "nature": "state_change",
+            "proposed_memory_change": null,
+            "reasoning": "Before dawn it was dark; after dawn it was lit.",
+            "severity": "medium",
+            "status": "conflict",
+            "suggested_revision": null,
+            "temporal_basis": {
+              "claim_anchor": null,
+              "evidence_anchor": null,
+              "relation": "explicit_later_transition"
+            }
+          }
+        ]
+      }
+    ],
+    "result": {
+      "cost_cny": null,
+      "error_code": "claim_verdicts_invalid",
+      "input_tokens": 2,
+      "latency_ms": null,
+      "output_tokens": 2,
+      "retryable": true,
+      "status": "failed"
+    }
+  }
+}

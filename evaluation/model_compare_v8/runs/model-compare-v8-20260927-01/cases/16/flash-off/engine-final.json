@@ -1,0 +1,81 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+      "status": "conflict",
+      "category": "event_status",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "草稿称修复船在当天10点已完成下水，但同一时刻的证据显示舱单仍未签署、船仍停在果园码头，按既定规则此时下水不可能完成。",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-4",
+          "span_id": "fixture-span-orchard_restoration-4",
+          "excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-4"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-5",
+          "span_id": "fixture-span-orchard_restoration-5",
+          "excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-5"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "静态规则规定：修复船的下水只有在舱单签署且船离开果园码头之后才算完成。事件时间线证据给出同一时间锚点“当天10点”，并说明该分钟内舱单始终未签署、船始终停在码头未离开。草稿却断言在同一时刻下水已经完成，两者在同一主体、同一时间、同一事件状态下无法并存：完成所需的两个条件在同一时刻被明确否定。",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-orchard_restoration-4",
+          "role": "current_context"
+        },
+        {
+          "span_id": "fixture-span-orchard_restoration-5",
+          "role": "prior_state"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 10点 on the same day, the restoration boat had completed its launch.",
+        "after": "At 10点 on the same day, the restoration boat's launch had not yet completed: its manifest remained unsigned and the boat remained at the orchard quay."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+      "returned_span_ids": [
+        "fixture-span-orchard_restoration-4",
+        "fixture-span-orchard_restoration-5",
+        "fixture-span-orchard_restoration-6"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 7824,
+  "output_tokens": 1143,
+  "latency_ms": 5805,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "efebdc6051e444f14f5f23fb9b4318c2b168f5a266c1738a3b9a314cf8cc24e1",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-8a6e2287-7768-4800-ade8-e193560230b0-1",
+        "verdict": "no_issue",
+        "basis": "The claim that Ina walked into the repair room at 11:00 is compatible with the inspection record that the capsule cap was loose at 10:00 and no actor identified; no contradiction and no reviewable gap."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3049,
+      "completion_tokens": 596,
+      "total_tokens": 3645,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 478
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 617
+    },
+    "status": "complete",
+    "prompt_tokens": 3049,
+    "completion_tokens": 596,
+    "total_tokens": 3645,
+    "reasoning_tokens": 478,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "272247c9746a182c1a7097684fc14c1b551aa51d9e946398e62d96fa9aa58acb",
+  "finished_at": "2026-09-27T10:02:03.214112+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-f0ef1167-5df0-4b51-9fd6-fcc32a46ef5e-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The draft asserts that the gate logs establish Sera authorized a reopening at 11点, but the cited 11点 log span states any reopening and its operator are unrecorded, so the attribution is unsupported and the authorization remains unknown. No direct contradiction is established, so no conflict issue is emitted."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3311,
+    "output_tokens": 121,
+    "observed_response_input_tokens": 3311,
+    "observed_response_output_tokens": 121
+  }
+}

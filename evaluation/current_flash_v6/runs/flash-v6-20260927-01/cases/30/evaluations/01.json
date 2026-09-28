@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-08",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "f172d1e874befcff7caded8eb8528b1feb3d9afac821f7ffde4b9e224ddcc462",
+  "finished_at": "2026-09-27T10:03:30.255807+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-c7bf025d-e9b7-4fca-9947-923295b9351a-1",
+        "verdict": "no_issue",
+        "basis": "The claim attributes the action to the inspection log, and the cited evidence directly confirms that the inspector watched Ina loosen the courier capsule valve cap at 10:00 and entered her name in the inspection log. The claim and evidence are consistent in subject, action, time, and attribution; no continuity issue requires review."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 2972,
+    "output_tokens": 121,
+    "observed_response_input_tokens": 2972,
+    "observed_response_output_tokens": 121
+  }
+}

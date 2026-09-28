@@ -1,0 +1,77 @@
+{
+  "case_id": "v6-v6s-03",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "07d3ede07b30a6212e0cd4eca5515f4b5803e230e4bcb4ca5b57cbb882eb434a",
+  "finished_at": "2026-09-27T10:03:14.788786+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-1294e65e-c869-4808-9465-506402cdeac1-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "high",
+        "explanation": "At 10:00 today the capsule is claimed ready for dispatch, but the cited evidence shows that at 10:00 today its valve cap remains loose and unlocked, so the readiness condition is not met.",
+        "reasoning": "The current claim asserts that at 10:00 today the courier capsule was ready for dispatch. The timeless rule span states that the capsule is ready only when its pressure is four bars and its valve cap is locked. The overlapping-time span states that at 10:00 today the pressure is four bars but the cap remains loose and unlocked throughout that minute. Together these premises share the same subject (the courier capsule), the same time (10:00 today), and the same scope (readiness for dispatch), and they jointly contradict the current claim: the required locked-cap condition is explicitly unmet at the claimed time.",
+        "temporal_basis": {
+          "claim_anchor": "At 10:00 today",
+          "evidence_anchor": "At 10:00 today",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_carrier-1",
+            "span_id": "fixture-span-v6_carrier-1",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_carrier-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-v6_carrier-2",
+            "span_id": "fixture-span-v6_carrier-2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": []
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_carrier-1",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "fixture-span-v6_carrier-2",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10:00 today the courier capsule was ready for dispatch.",
+          "after": "At 10:00 today the courier capsule was not ready for dispatch because its valve cap remained loose and unlocked."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-1294e65e-c869-4808-9465-506402cdeac1-1",
+        "verdict": "reviewed_issue",
+        "basis": "The claim asserts readiness at 10:00 today, but the cited evidence establishes that at that same time the valve cap was loose and unlocked, violating the stated readiness condition."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3044,
+    "output_tokens": 580,
+    "observed_response_input_tokens": 3044,
+    "observed_response_output_tokens": 580
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "predispatch_snapshot_timeout_usage_and_redaction",
+  "passed": true,
+  "details": {
+    "post_attempt_start_records": 2,
+    "transport_attempts_finished": 2,
+    "http_responses_received": 1,
+    "server_receipt_for_unfinished_attempts": "unknown",
+    "usage_counts": {
+      "complete": 1,
+      "missing": 0,
+      "partial": 0,
+      "unknown": 1
+    },
+    "known_prompt_tokens_partial_sum": 7,
+    "known_completion_tokens_partial_sum": 3,
+    "prompt_tokens_total": null,
+    "completion_tokens_total": null,
+    "all_dispatch_usage_complete": false,
+    "unfinished_attempt_count": 0,
+    "models_get_start_records": 0,
+    "models_get_finish_observed": 0,
+    "models_server_receipt_if_unfinished": "unknown"
+  }
+}

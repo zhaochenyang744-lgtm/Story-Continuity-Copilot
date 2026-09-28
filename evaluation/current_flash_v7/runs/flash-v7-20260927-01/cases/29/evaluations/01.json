@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-07",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "37806f9e64a45c3af927b79833720e19f9827667a1d79182dc688223d60c4d47",
+  "finished_at": "2026-09-27T10:48:58.443456+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-eb229c7c-4f22-416a-938f-162546f479e6-1",
+        "verdict": "no_issue",
+        "basis": "The claim states Ina walked into the repair room at 11:00. The only cited evidence concerns the capsule cap being loose at 10:00 and does not identify who loosened it. These facts are compatible: the cap's state at 10:00 and an unrelated entry at 11:00 can coexist, and no identity, time, or scope overlap is established to create a contradiction."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 2975,
+    "output_tokens": 138,
+    "observed_response_input_tokens": 2975,
+    "observed_response_output_tokens": 138
+  }
+}

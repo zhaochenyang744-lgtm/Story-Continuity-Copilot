@@ -1,0 +1,98 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "9bb354dd868c9ef12c1a09fa3bb91be3d45e0d7f37521661bdb979fcb90fd669",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "attribute",
+        "severity": "high",
+        "explanation": "Lens R4 is identified as the western aperture lens, which is clear glass at the same 18点 time.",
+        "reasoning": "The current claim says lens R4 is amber glass at 18点. Evidence span fixture-span-basalt_observatory-1 identifies lens R4 as the installed western aperture lens, and span fixture-span-basalt_observatory-2 states that same western aperture lens is clear glass, not amber glass, at the same 18点. Both spans share the same subject, scope, and time, so the claim cannot coexist with the evidence.",
+        "temporal_basis": {
+          "claim_anchor": "At 18点 on the same day",
+          "evidence_anchor": "At 18点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "span_id": "fixture-span-basalt_observatory-1",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-2",
+            "span_id": "fixture-span-basalt_observatory-2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-1",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-basalt_observatory-2",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "amber glass",
+          "after": "clear glass"
+        },
+        "available_actions": [
+          "apply_suggestion"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1",
+        "verdict": "reviewed_issue",
+        "basis": "Direct contradiction: the same lens is identified as clear glass at the same 18点 time."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3548,
+      "completion_tokens": 4096,
+      "total_tokens": 7644,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3467
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1116
+    },
+    "status": "complete",
+    "prompt_tokens": 3548,
+    "completion_tokens": 4096,
+    "total_tokens": 7644,
+    "reasoning_tokens": 3467,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v5-20260927-01",
+  "ordinal": 7,
+  "case_id": "ccv3-harbor_signal-timeline-conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:20:08.105085+00:00",
+  "case_input_sha256": "9d80920b429e871f12f4ed2b12fb13d03d9203638dc0c8fc323c3cfc1f93f97d",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

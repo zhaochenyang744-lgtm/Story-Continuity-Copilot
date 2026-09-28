@@ -1,0 +1,1193 @@
+{
+  "schema_version": "flash-v5-independent-prep02-comparison-input-review-v1",
+  "reviewed_at": "2026-09-27T08:09:15.761414+00:00",
+  "run_id": "prep-v5-02",
+  "scope": "Only comparison cases 01-24; stub prepare inputs, not model performance or a live dispatch audit.",
+  "result": "pass",
+  "input_blocker_count": 0,
+  "global_errors": [],
+  "case_failures": [],
+  "passed_case_count": 24,
+  "case_count": 24,
+  "hash_algorithm": "SHA-256",
+  "canonical_json_recipe": "json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')",
+  "hash_distinction": "Request/case hashes use canonical JSON; selected binding text hashes use canonical JSON string encoding including quotes; runtime body hashes use raw UTF-8. All three were checked independently.",
+  "read_file_count": 108,
+  "hashes_before": {
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/case-matrix.json": "ea113b1ee64403f19dec9375941b0316e14e67776c3d5feba25baa5d5656268c",
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/inputs-audit.json": "92045e8116e459f511aef8eb22e896f61974ddf02018b7ad7244ef981ad7609d",
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/manual-expectations.json": "b2e42f96234232abbff432439ecc7abcee4ec248dd2d01123614f56cd2effff9",
+    "evaluation/current_contract_compare_v2/actual-inputs.json": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+    "evaluation/current_contract_compare_v2/corpora/basalt_observatory.json": "c6dbb54519030c228c2a2a464cfaf99e94cefeb31a91948d271a992732e2674e",
+    "evaluation/current_contract_compare_v2/corpora/harbor_signal.json": "b73e9e6764c8b3dad8e7d77367998d8f4c9254da26734bd5ce13d355222798a7",
+    "evaluation/current_contract_compare_v2/corpora/north_glass.json": "57aea727f02bfd27534783756a5e254e678695d6bdfeea2182959862afcb9510",
+    "evaluation/current_contract_compare_v2/corpora/orchard_restoration.json": "b65e422642a029d5e4fbdb5a04b89e2482ead83aed82ce9e1eed6618438f5614",
+    "evaluation/current_contract_compare_v3/cases.json": "99cf17ca8391be0438164eabecebf181f6e88b5f6a11cd20fb15f913854716f0",
+    "evaluation/current_flash_v5/cases.json": "83fb36bd9d933036ae57b741410704c65de13af3120aeb587762e1d608a6f6d8",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/01/case-start.json": "540929b09d7800ba2f921c31d1be8677f2bb149a2960a27ec7d2f52213e60923",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/01/input-audit/01.json": "5f0a3ae67a422a89d6d2dfacbfc73c12ce8ed496aaa2e7c11e539110712ff7e1",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/01/requests/01.json": "0175f8214a005b9437b90511738b9ae7a960433009a8e94e42694f518931d917",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/01/runtime-binding.json": "cd90944a141ca3e893b0aa2fadfd300d07f9abb54ea78b5f138233c8dfe7873e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/02/case-start.json": "3ebac1bf824512bfd90193ee935f8d7370845bdc70979c68ac2f0b33b5a96a0d",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/02/input-audit/01.json": "faef15c98e66d4ec0af6f7376caad0b67641e60a8f39e5d7e89ff3dcd7051690",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/02/requests/01.json": "123db73d2a849ffe4b17ae8870f4c3f84fae0795ffd835d2a0011069ea77a22e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/02/runtime-binding.json": "7fd791614a49cda84e3185ef60372cdbaf5dd11b9f6ef3246ae60787d9084c44",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/03/case-start.json": "ae3bbe9fb170f683dd237eeb208fe222d954b4dbe6652ba1fcb6267146b24937",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/03/input-audit/01.json": "01d34f8834c12afdfa30762626a392dfe3b7aaa2ad4ed6f4543cacfd44063ab7",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/03/requests/01.json": "9cff2bcb0bb0808ed5a0762dd50cc7493c5ea6565df0940782ff56289548f3fc",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/03/runtime-binding.json": "c3def9c082ce8a93466e409009f2b06ef0baa76eb21d2b35299a8b2f7dda26dc",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/04/case-start.json": "cce2a319c77b708aaaa18e27db82a90e095ab1431765e869679e69cda2929af4",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/04/input-audit/01.json": "bc5450078a33977d81452cc2e3e1b391a4a172eb00b5dc838aa6a6846141719a",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/04/requests/01.json": "395623ca907450d9b4ea23e3c95904d2a1c0f81517805eb70e5b0c2d201c510f",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/04/runtime-binding.json": "0950de7be6a86e6fa1353a9b31e13f51a6dd827c3b080524423e0e841ea6b59e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/05/case-start.json": "7c00cd3b15f63811965d9dcc35befefa3bde383a624fac776cfb6f4a0db317a1",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/05/input-audit/01.json": "e47fb071a7a9e1bbc081d206f984f9fce9c37194a99135a5aac3479d70b821a6",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/05/requests/01.json": "73be2b3ef3ce20fb04846d119ccfdb13094ab149b0727069943a717ef6dc6796",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/05/runtime-binding.json": "0544aee975c41cafa08fbf5dd0e02dca762d66358ead44286cecaf3ccf7be89b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/06/case-start.json": "910772980e2fe7d9b2421ac16f03e47e861ef9e7c40e713779bd8601bd80c752",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/06/input-audit/01.json": "82bb1012a2612062d2c9fdf26d56df2e64773e2948d5e4bc9a3d4ec1c93bb323",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/06/requests/01.json": "786c20217d1cce72b5101d9a22bc83b3eda4248e5d543db28295838469e4b4b3",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/06/runtime-binding.json": "6aebd308048f220cc1d88b15c66be2917418946016f7ffede2d620757c2d1ddf",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/07/case-start.json": "48d336d98ffcb5d424770bd1f66f0bc31e50d0a949cc1ca607e6f810353fb636",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/07/input-audit/01.json": "011a5bf9faee40e5394a5752e2ae78c197ab447e1a666eb27ad971ba89e77809",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/07/requests/01.json": "55076b9c62c4e3a7eef660ab4b664285d291d2aabf1409b6cc36693ee29aa9e2",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/07/runtime-binding.json": "f24e6f6a489faffa68aab464772918c6fb5f88f83f2abb3131e36bf0fc9a4065",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/08/case-start.json": "0d90938d9f8238597b394772bd71a098927857282bd9f76c4d5fb4efd19f563c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/08/input-audit/01.json": "f702c5abfb02a2489bd52c8edb284f671816b1f08aed70ac52f808ae53bae0f3",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/08/requests/01.json": "c4c6048b539309291766e4be98c37f5e39ca6f271c554a52b181f33332cdfc02",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/08/runtime-binding.json": "bc9f1b98b4983bbab8f9ccea0bfd54006728b23c01070179bb6fe8e32ea0f5d5",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/09/case-start.json": "77a58e0b137249e1e2b10c41b13b0440a8ebadefc33e51eeccd754cdbd0b1a10",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/09/input-audit/01.json": "caa5170f8f2769c487a3c3d57ceff44e934228797b9c368f16823382439cf49c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/09/requests/01.json": "96d7103db105102dd527cfa4a8346ec43c3f16d306a152cf3d303cb2722c7773",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/09/runtime-binding.json": "7f0c197f9de33a897bd7dbe75db449df28aa0aa01d8554a8a3250daca576469e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/10/case-start.json": "6a765574014f4fe59a905dce232376e87adec4c655ab902989dd1b8226dcca7b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/10/input-audit/01.json": "33a70c60e8ef4cfebad4cf64a59845413c1d3bf050da57c0aeffabca837806d5",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/10/requests/01.json": "ef8881ad5832d858e8cabf6939d0e788f38c81e3e7121195122d17c26c5c3545",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/10/runtime-binding.json": "2b6121f591dc2ef4c65bec01b73673093c64e1f238e71317c62fbf5e098b0dac",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/11/case-start.json": "19dede8e43c9a5cee6deee76edab26852721666340942547d0ab823a51e85d17",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/11/input-audit/01.json": "2b63c81a09367defef9c36706dcbf3b6cbbf8d897c980b6a835e09cee1d97540",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/11/requests/01.json": "2e43624732ba6c61f5c4cd1809778649a6ac0830185dd2c5bdfe7242f1c8ba94",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/11/runtime-binding.json": "ed377948ac281f69e431cce24ceb25cf19b517997c6959269e31c32c312c92a9",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/12/case-start.json": "9a27edb76d81bba5caf7f99aca2d8405b60a40d7908d48b0fa6ac881008abc60",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/12/input-audit/01.json": "6e570cfc35cf5975c20bf8e4c980c1398b49292433cbe9134bf3e827ba409c69",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/12/requests/01.json": "bcc2010c31b6fd6e2fb732bc39093ac7d0a8d319e7ad817cbfc31e02b1367885",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/12/runtime-binding.json": "c102a95d43449c8edc50f398abe2c69b8d2013e087618b66bb836a4b5820b255",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/13/case-start.json": "0ab5120ff7e4ca009f2f2e610635f76bf7a01b6b20f559505d96c404de60de39",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/13/input-audit/01.json": "8480d945227bbe44ecb6802b3067d7d911be72677984a0b65783da2b629c0105",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/13/requests/01.json": "065d6e95b2ac843979da95e4863fee9a6b452836e85d0c3187e4cd44b0bef0ab",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/13/runtime-binding.json": "780f1281340353dd6da1551e5e543be651ccb7cfc95b3a9f89c168730dfcee91",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/14/case-start.json": "a9952f0809e88af157a563a5f32eef1298cac5d56734b9433c383ae007eb605c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/14/input-audit/01.json": "3da0864e4ea6184ac931abca6557f45e3bb1dd6d74267fc7a9a6e3a1075305cd",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/14/requests/01.json": "178cca9dbcfbdee563947c94b19f6b160efbbd956668f7eefe475ccabe5de532",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/14/runtime-binding.json": "e45064f95280c97050f3d2ac43b1c6f5f97adab503a50e84f47dff7ff4ae2418",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/15/case-start.json": "b509d4d489eafa4c3af3ba21d9cb47eaa5783385631ab1e0696ba6b33b86929b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/15/input-audit/01.json": "3d0a05d62f68c8164a00f3466a6af7565b227b5cbb94d36262f06fe4315ad498",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/15/requests/01.json": "ad87485e3ed76c5ab7054c66cab250ed1f8dcf354259c4d218ee46ab08cf2ad1",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/15/runtime-binding.json": "8fc12cf88d5bcbcf6abc47c2d093cf557fbcee5116a0306952faa5d25320a629",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/16/case-start.json": "4dcb9ac7fdd5ea11f6603084829a458a79120e96cb56e191224378a9301c27a0",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/16/input-audit/01.json": "f9778b3548187c78cd05f47da18e24caa999c89caf93135b17dcdc1d7cd484ca",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/16/requests/01.json": "7e7a2bb192d935ae5621d27ca8966d844080f46c7e3d952c530e7d2392640b9c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/16/runtime-binding.json": "5487c01dbcd1904727de936deeec33d3b2aa6ad70c648a8302440016ee37e5b1",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/17/case-start.json": "1c6de7087e84a8786bc31bb6118014352211030ddfc718f144d8892c62aedcdc",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/17/input-audit/01.json": "315ac79dec03c1ae31379862bbf7acf739d68edd84f1ce1b1ab9fc068a54715c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/17/requests/01.json": "9a72150c4cec3c6618318f402ae97bca5ac835cf7254dc681f5d471886ee8098",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/17/runtime-binding.json": "fa8e100a32ac06745e0190db3ef89f369079f576cf44c76bbe33f1b23fa808db",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/18/case-start.json": "4e26571dd886498dad06b5b31c8a6c5f12c7a5242b7f4b1a24d7e4915b23d2a9",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/18/input-audit/01.json": "49e9221c4755567915fffe82680fcb68279b2dd08c9a6ff857721c8eb4bcbf68",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/18/requests/01.json": "3a71ec6f4b6b359df8290533c2cd6e50cc59d158969ea83922a1fbb8aecd547e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/18/runtime-binding.json": "6240d4f6a85c602155973d267b1ff58c882c2371aa8783cf0eb29eff99bae567",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/19/case-start.json": "7703bfe1725f97de5a1182e36d81ceb5278c35008c92a6e2e0bf6a851386f867",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/19/input-audit/01.json": "9fa4ed484885e1376890614f763d6ce860a1b99f84d712688aab21b94f77747c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/19/requests/01.json": "91993c539ca75ec6b8b5a5f8612256fd48078b1880398dba43b674e5119bace4",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/19/runtime-binding.json": "c2065360b27d9c87bc61b0833775744705190cfd1d6eb1ba2959597e2670f0e5",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/20/case-start.json": "cb729a0ed5ed054ffecfeefa2c14f4fba60d8d467e0e80ada31212656d225cef",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/20/input-audit/01.json": "8b4c44a2dc7f386f713204273e678ee54fe95296014b38e4cd9c586d2de8d077",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/20/requests/01.json": "fbd012a8433ece077dd92006b3b480dbac62e610e3bed907f90e51605a58c9ff",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/20/runtime-binding.json": "5f894ae306fc6532f4c05acea8ca76928b33b504ceca2b28e3f803102dcba56f",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/21/case-start.json": "8307d32b81c0ed2537c0982ac0ef50de7d69838f3cac81fa4adee577b6f665bc",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/21/input-audit/01.json": "9b32279354c6b13029f95167e58eead4f95769c5089b4984c8fdb8aaa41e7cd1",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/21/requests/01.json": "84f7472676fcf0b24edac40de0b4ae73dc9ec7435b3792b6bd2574cdc217ad8a",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/21/runtime-binding.json": "e54555274a0fd6d210da1a9548055606ba84c62cf2069b355affb543cf549149",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/22/case-start.json": "2914f56c6d1c6fb35e6dc3678702ec3b38bfe45f021e7292607f3bab4a43a8c4",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/22/input-audit/01.json": "9df2bb857b69571084d86089f2778b4d6e70f9e6bbc49c18326a0ca00bb99ec7",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/22/requests/01.json": "346185e6a84504140992ab5508441773633a8cbbea5ff47427aa0d11ebfacb36",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/22/runtime-binding.json": "b56ef57c5de73a86fcb3dc0b656bfc7034741906b99645382657782150e12271",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/23/case-start.json": "2b215ab345d20cc50d0e23d48c09f28acf6b4b778954617238b9a914298abb24",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/23/input-audit/01.json": "b6b65fa744c06cb6bd72ef46ae2f1caf39e7c6680510a0a5699096195db303e4",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/23/requests/01.json": "59fbb886f348e044123b670846bec0351621493a340dc4713ee6774f3a810ce0",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/23/runtime-binding.json": "b61b5a2b20d6dc3c19494d9d6036ecee0e07faa96d79706c9762d0a9a80eecdd",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/24/case-start.json": "371211e4e45e6218dfe07e7f5fbe5a584924c24493747554b05420c6a49e8240",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/24/input-audit/01.json": "04c3da092e61b7c0e3b8ba4a451aed8ae539ab14a3623e4b94dd1991911aae51",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/24/requests/01.json": "49daea9aea124818f3b1c1f795170a8b58fefef56936534806cfaac0020dfae3",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/24/runtime-binding.json": "ecfe83f2ebaa3ab41aefb4ff5852363b12bfcfc213447904f67d0bcde75d0097",
+    "evaluation/current_flash_v5/runs/prep-v5-02/start.json": "de35ed18b7f61ff16c471afae09f8f44f5e6b7c1cc07fe567105b5bf05eb9420",
+    "evaluation/current_flash_v5/runs/prep-v5-02/summary.json": "d8a2b687b7b91a6a8b6ad9d0911042a66f7ee28a88368abe51cd9985a7db3102"
+  },
+  "hashes_after": {
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/case-matrix.json": "ea113b1ee64403f19dec9375941b0316e14e67776c3d5feba25baa5d5656268c",
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/inputs-audit.json": "92045e8116e459f511aef8eb22e896f61974ddf02018b7ad7244ef981ad7609d",
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/manual-expectations.json": "b2e42f96234232abbff432439ecc7abcee4ec248dd2d01123614f56cd2effff9",
+    "evaluation/current_contract_compare_v2/actual-inputs.json": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+    "evaluation/current_contract_compare_v2/corpora/basalt_observatory.json": "c6dbb54519030c228c2a2a464cfaf99e94cefeb31a91948d271a992732e2674e",
+    "evaluation/current_contract_compare_v2/corpora/harbor_signal.json": "b73e9e6764c8b3dad8e7d77367998d8f4c9254da26734bd5ce13d355222798a7",
+    "evaluation/current_contract_compare_v2/corpora/north_glass.json": "57aea727f02bfd27534783756a5e254e678695d6bdfeea2182959862afcb9510",
+    "evaluation/current_contract_compare_v2/corpora/orchard_restoration.json": "b65e422642a029d5e4fbdb5a04b89e2482ead83aed82ce9e1eed6618438f5614",
+    "evaluation/current_contract_compare_v3/cases.json": "99cf17ca8391be0438164eabecebf181f6e88b5f6a11cd20fb15f913854716f0",
+    "evaluation/current_flash_v5/cases.json": "83fb36bd9d933036ae57b741410704c65de13af3120aeb587762e1d608a6f6d8",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/01/case-start.json": "540929b09d7800ba2f921c31d1be8677f2bb149a2960a27ec7d2f52213e60923",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/01/input-audit/01.json": "5f0a3ae67a422a89d6d2dfacbfc73c12ce8ed496aaa2e7c11e539110712ff7e1",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/01/requests/01.json": "0175f8214a005b9437b90511738b9ae7a960433009a8e94e42694f518931d917",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/01/runtime-binding.json": "cd90944a141ca3e893b0aa2fadfd300d07f9abb54ea78b5f138233c8dfe7873e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/02/case-start.json": "3ebac1bf824512bfd90193ee935f8d7370845bdc70979c68ac2f0b33b5a96a0d",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/02/input-audit/01.json": "faef15c98e66d4ec0af6f7376caad0b67641e60a8f39e5d7e89ff3dcd7051690",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/02/requests/01.json": "123db73d2a849ffe4b17ae8870f4c3f84fae0795ffd835d2a0011069ea77a22e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/02/runtime-binding.json": "7fd791614a49cda84e3185ef60372cdbaf5dd11b9f6ef3246ae60787d9084c44",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/03/case-start.json": "ae3bbe9fb170f683dd237eeb208fe222d954b4dbe6652ba1fcb6267146b24937",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/03/input-audit/01.json": "01d34f8834c12afdfa30762626a392dfe3b7aaa2ad4ed6f4543cacfd44063ab7",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/03/requests/01.json": "9cff2bcb0bb0808ed5a0762dd50cc7493c5ea6565df0940782ff56289548f3fc",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/03/runtime-binding.json": "c3def9c082ce8a93466e409009f2b06ef0baa76eb21d2b35299a8b2f7dda26dc",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/04/case-start.json": "cce2a319c77b708aaaa18e27db82a90e095ab1431765e869679e69cda2929af4",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/04/input-audit/01.json": "bc5450078a33977d81452cc2e3e1b391a4a172eb00b5dc838aa6a6846141719a",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/04/requests/01.json": "395623ca907450d9b4ea23e3c95904d2a1c0f81517805eb70e5b0c2d201c510f",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/04/runtime-binding.json": "0950de7be6a86e6fa1353a9b31e13f51a6dd827c3b080524423e0e841ea6b59e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/05/case-start.json": "7c00cd3b15f63811965d9dcc35befefa3bde383a624fac776cfb6f4a0db317a1",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/05/input-audit/01.json": "e47fb071a7a9e1bbc081d206f984f9fce9c37194a99135a5aac3479d70b821a6",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/05/requests/01.json": "73be2b3ef3ce20fb04846d119ccfdb13094ab149b0727069943a717ef6dc6796",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/05/runtime-binding.json": "0544aee975c41cafa08fbf5dd0e02dca762d66358ead44286cecaf3ccf7be89b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/06/case-start.json": "910772980e2fe7d9b2421ac16f03e47e861ef9e7c40e713779bd8601bd80c752",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/06/input-audit/01.json": "82bb1012a2612062d2c9fdf26d56df2e64773e2948d5e4bc9a3d4ec1c93bb323",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/06/requests/01.json": "786c20217d1cce72b5101d9a22bc83b3eda4248e5d543db28295838469e4b4b3",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/06/runtime-binding.json": "6aebd308048f220cc1d88b15c66be2917418946016f7ffede2d620757c2d1ddf",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/07/case-start.json": "48d336d98ffcb5d424770bd1f66f0bc31e50d0a949cc1ca607e6f810353fb636",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/07/input-audit/01.json": "011a5bf9faee40e5394a5752e2ae78c197ab447e1a666eb27ad971ba89e77809",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/07/requests/01.json": "55076b9c62c4e3a7eef660ab4b664285d291d2aabf1409b6cc36693ee29aa9e2",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/07/runtime-binding.json": "f24e6f6a489faffa68aab464772918c6fb5f88f83f2abb3131e36bf0fc9a4065",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/08/case-start.json": "0d90938d9f8238597b394772bd71a098927857282bd9f76c4d5fb4efd19f563c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/08/input-audit/01.json": "f702c5abfb02a2489bd52c8edb284f671816b1f08aed70ac52f808ae53bae0f3",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/08/requests/01.json": "c4c6048b539309291766e4be98c37f5e39ca6f271c554a52b181f33332cdfc02",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/08/runtime-binding.json": "bc9f1b98b4983bbab8f9ccea0bfd54006728b23c01070179bb6fe8e32ea0f5d5",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/09/case-start.json": "77a58e0b137249e1e2b10c41b13b0440a8ebadefc33e51eeccd754cdbd0b1a10",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/09/input-audit/01.json": "caa5170f8f2769c487a3c3d57ceff44e934228797b9c368f16823382439cf49c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/09/requests/01.json": "96d7103db105102dd527cfa4a8346ec43c3f16d306a152cf3d303cb2722c7773",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/09/runtime-binding.json": "7f0c197f9de33a897bd7dbe75db449df28aa0aa01d8554a8a3250daca576469e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/10/case-start.json": "6a765574014f4fe59a905dce232376e87adec4c655ab902989dd1b8226dcca7b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/10/input-audit/01.json": "33a70c60e8ef4cfebad4cf64a59845413c1d3bf050da57c0aeffabca837806d5",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/10/requests/01.json": "ef8881ad5832d858e8cabf6939d0e788f38c81e3e7121195122d17c26c5c3545",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/10/runtime-binding.json": "2b6121f591dc2ef4c65bec01b73673093c64e1f238e71317c62fbf5e098b0dac",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/11/case-start.json": "19dede8e43c9a5cee6deee76edab26852721666340942547d0ab823a51e85d17",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/11/input-audit/01.json": "2b63c81a09367defef9c36706dcbf3b6cbbf8d897c980b6a835e09cee1d97540",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/11/requests/01.json": "2e43624732ba6c61f5c4cd1809778649a6ac0830185dd2c5bdfe7242f1c8ba94",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/11/runtime-binding.json": "ed377948ac281f69e431cce24ceb25cf19b517997c6959269e31c32c312c92a9",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/12/case-start.json": "9a27edb76d81bba5caf7f99aca2d8405b60a40d7908d48b0fa6ac881008abc60",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/12/input-audit/01.json": "6e570cfc35cf5975c20bf8e4c980c1398b49292433cbe9134bf3e827ba409c69",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/12/requests/01.json": "bcc2010c31b6fd6e2fb732bc39093ac7d0a8d319e7ad817cbfc31e02b1367885",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/12/runtime-binding.json": "c102a95d43449c8edc50f398abe2c69b8d2013e087618b66bb836a4b5820b255",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/13/case-start.json": "0ab5120ff7e4ca009f2f2e610635f76bf7a01b6b20f559505d96c404de60de39",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/13/input-audit/01.json": "8480d945227bbe44ecb6802b3067d7d911be72677984a0b65783da2b629c0105",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/13/requests/01.json": "065d6e95b2ac843979da95e4863fee9a6b452836e85d0c3187e4cd44b0bef0ab",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/13/runtime-binding.json": "780f1281340353dd6da1551e5e543be651ccb7cfc95b3a9f89c168730dfcee91",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/14/case-start.json": "a9952f0809e88af157a563a5f32eef1298cac5d56734b9433c383ae007eb605c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/14/input-audit/01.json": "3da0864e4ea6184ac931abca6557f45e3bb1dd6d74267fc7a9a6e3a1075305cd",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/14/requests/01.json": "178cca9dbcfbdee563947c94b19f6b160efbbd956668f7eefe475ccabe5de532",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/14/runtime-binding.json": "e45064f95280c97050f3d2ac43b1c6f5f97adab503a50e84f47dff7ff4ae2418",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/15/case-start.json": "b509d4d489eafa4c3af3ba21d9cb47eaa5783385631ab1e0696ba6b33b86929b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/15/input-audit/01.json": "3d0a05d62f68c8164a00f3466a6af7565b227b5cbb94d36262f06fe4315ad498",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/15/requests/01.json": "ad87485e3ed76c5ab7054c66cab250ed1f8dcf354259c4d218ee46ab08cf2ad1",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/15/runtime-binding.json": "8fc12cf88d5bcbcf6abc47c2d093cf557fbcee5116a0306952faa5d25320a629",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/16/case-start.json": "4dcb9ac7fdd5ea11f6603084829a458a79120e96cb56e191224378a9301c27a0",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/16/input-audit/01.json": "f9778b3548187c78cd05f47da18e24caa999c89caf93135b17dcdc1d7cd484ca",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/16/requests/01.json": "7e7a2bb192d935ae5621d27ca8966d844080f46c7e3d952c530e7d2392640b9c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/16/runtime-binding.json": "5487c01dbcd1904727de936deeec33d3b2aa6ad70c648a8302440016ee37e5b1",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/17/case-start.json": "1c6de7087e84a8786bc31bb6118014352211030ddfc718f144d8892c62aedcdc",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/17/input-audit/01.json": "315ac79dec03c1ae31379862bbf7acf739d68edd84f1ce1b1ab9fc068a54715c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/17/requests/01.json": "9a72150c4cec3c6618318f402ae97bca5ac835cf7254dc681f5d471886ee8098",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/17/runtime-binding.json": "fa8e100a32ac06745e0190db3ef89f369079f576cf44c76bbe33f1b23fa808db",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/18/case-start.json": "4e26571dd886498dad06b5b31c8a6c5f12c7a5242b7f4b1a24d7e4915b23d2a9",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/18/input-audit/01.json": "49e9221c4755567915fffe82680fcb68279b2dd08c9a6ff857721c8eb4bcbf68",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/18/requests/01.json": "3a71ec6f4b6b359df8290533c2cd6e50cc59d158969ea83922a1fbb8aecd547e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/18/runtime-binding.json": "6240d4f6a85c602155973d267b1ff58c882c2371aa8783cf0eb29eff99bae567",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/19/case-start.json": "7703bfe1725f97de5a1182e36d81ceb5278c35008c92a6e2e0bf6a851386f867",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/19/input-audit/01.json": "9fa4ed484885e1376890614f763d6ce860a1b99f84d712688aab21b94f77747c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/19/requests/01.json": "91993c539ca75ec6b8b5a5f8612256fd48078b1880398dba43b674e5119bace4",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/19/runtime-binding.json": "c2065360b27d9c87bc61b0833775744705190cfd1d6eb1ba2959597e2670f0e5",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/20/case-start.json": "cb729a0ed5ed054ffecfeefa2c14f4fba60d8d467e0e80ada31212656d225cef",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/20/input-audit/01.json": "8b4c44a2dc7f386f713204273e678ee54fe95296014b38e4cd9c586d2de8d077",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/20/requests/01.json": "fbd012a8433ece077dd92006b3b480dbac62e610e3bed907f90e51605a58c9ff",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/20/runtime-binding.json": "5f894ae306fc6532f4c05acea8ca76928b33b504ceca2b28e3f803102dcba56f",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/21/case-start.json": "8307d32b81c0ed2537c0982ac0ef50de7d69838f3cac81fa4adee577b6f665bc",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/21/input-audit/01.json": "9b32279354c6b13029f95167e58eead4f95769c5089b4984c8fdb8aaa41e7cd1",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/21/requests/01.json": "84f7472676fcf0b24edac40de0b4ae73dc9ec7435b3792b6bd2574cdc217ad8a",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/21/runtime-binding.json": "e54555274a0fd6d210da1a9548055606ba84c62cf2069b355affb543cf549149",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/22/case-start.json": "2914f56c6d1c6fb35e6dc3678702ec3b38bfe45f021e7292607f3bab4a43a8c4",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/22/input-audit/01.json": "9df2bb857b69571084d86089f2778b4d6e70f9e6bbc49c18326a0ca00bb99ec7",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/22/requests/01.json": "346185e6a84504140992ab5508441773633a8cbbea5ff47427aa0d11ebfacb36",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/22/runtime-binding.json": "b56ef57c5de73a86fcb3dc0b656bfc7034741906b99645382657782150e12271",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/23/case-start.json": "2b215ab345d20cc50d0e23d48c09f28acf6b4b778954617238b9a914298abb24",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/23/input-audit/01.json": "b6b65fa744c06cb6bd72ef46ae2f1caf39e7c6680510a0a5699096195db303e4",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/23/requests/01.json": "59fbb886f348e044123b670846bec0351621493a340dc4713ee6774f3a810ce0",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/23/runtime-binding.json": "b61b5a2b20d6dc3c19494d9d6036ecee0e07faa96d79706c9762d0a9a80eecdd",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/24/case-start.json": "371211e4e45e6218dfe07e7f5fbe5a584924c24493747554b05420c6a49e8240",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/24/input-audit/01.json": "04c3da092e61b7c0e3b8ba4a451aed8ae539ab14a3623e4b94dd1991911aae51",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/24/requests/01.json": "49daea9aea124818f3b1c1f795170a8b58fefef56936534806cfaac0020dfae3",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/24/runtime-binding.json": "ecfe83f2ebaa3ab41aefb4ff5852363b12bfcfc213447904f67d0bcde75d0097",
+    "evaluation/current_flash_v5/runs/prep-v5-02/start.json": "de35ed18b7f61ff16c471afae09f8f44f5e6b7c1cc07fe567105b5bf05eb9420",
+    "evaluation/current_flash_v5/runs/prep-v5-02/summary.json": "d8a2b687b7b91a6a8b6ad9d0911042a66f7ee28a88368abe51cd9985a7db3102"
+  },
+  "read_hashes_unchanged": true,
+  "reviewer_provider_calls": 0,
+  "reviewer_api_calls": 0,
+  "reviewer_database_connections": 0,
+  "observed_prepare_transport_summary": {
+    "post_attempt_start_records": 0,
+    "transport_attempts_finished": 0,
+    "http_responses_received": 0,
+    "models_get_start_records": 0,
+    "models_get_finish_observed": 0
+  },
+  "rows": [
+    {
+      "ordinal": 1,
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-621e68de-b569-4c4d-b3f8-ea7843f9371e-1",
+      "draft_id": "fixture-draft-north-glass",
+      "project_id": "fixture-project-north-glass",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "6ee87a3e66f8850f90b3f185b8a737a0136a276d25ccc0e4e3bda775c2cca12e",
+      "business_request_sha256_canonical_json": "40ef3f8c419247dcd3e30014ac9992d38c3f75784854560de47b7489b312c7cd",
+      "selected_source_ids": [
+        "fixture-span-north_glass-2",
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-1"
+      ],
+      "selected_source_labels": [
+        "badge_roster",
+        "carrier_inspection",
+        "badge_rule"
+      ],
+      "minimum_labels": [
+        [
+          "badge_rule"
+        ]
+      ],
+      "optional_labels": [
+        "badge_roster"
+      ],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "fc4dde27734814102e2251d3db6b4fe7ebae746abcc5a82ce32b4be9938e2aac"
+    },
+    {
+      "ordinal": 2,
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-a3c66701-54b2-42ce-958c-0f740ac252be-1",
+      "draft_id": "fixture-draft-north-glass",
+      "project_id": "fixture-project-north-glass",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "8349bcce9216b270da66232e9e8b1619edc5fcb5efd9e9aff4db9ab445065770",
+      "business_request_sha256_canonical_json": "5756fcdecbdbcd7b2280ef1478571a5cb2ec0b0ebcdd2e254d96ebd954ce988e",
+      "selected_source_ids": [
+        "fixture-span-north_glass-2",
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-1"
+      ],
+      "selected_source_labels": [
+        "badge_roster",
+        "carrier_inspection",
+        "badge_rule"
+      ],
+      "minimum_labels": [
+        [
+          "badge_rule",
+          "badge_roster"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "6a8bd5f5ed8c5aa93d5398f2e7d979281bd37e34ad11d1308a2d8d29f649e217"
+    },
+    {
+      "ordinal": 3,
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-a0a4f462-72c4-459f-9382-bfe8e28100d8-1",
+      "draft_id": "fixture-draft-north-glass",
+      "project_id": "fixture-project-north-glass",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "64c1d97c148617cbf210bba4365220541bb9e29332a7349773477dc14a56c538",
+      "business_request_sha256_canonical_json": "f136364349a5d946ea4bbaa55391cd0618a938db3460c95748444804fa31ee83",
+      "selected_source_ids": [
+        "fixture-span-north_glass-2",
+        "fixture-span-north_glass-3",
+        "fixture-span-north_glass-5"
+      ],
+      "selected_source_labels": [
+        "badge_roster",
+        "spare_register",
+        "carrier_inspection"
+      ],
+      "minimum_labels": [
+        [
+          "spare_register"
+        ]
+      ],
+      "optional_labels": [
+        "badge_roster"
+      ],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "9b6e8d229643c883a5a19cfe5b3be1bd365ff4031e993353ac1f1082fbaebebf"
+    },
+    {
+      "ordinal": 4,
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-365c7b9a-c43d-499a-a0e6-a88bed13338d-1",
+      "draft_id": "fixture-draft-north-glass",
+      "project_id": "fixture-project-north-glass",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "72003aceec901cce100af1e733c3586650e2bbadeca73801f4344aacaf00a701",
+      "business_request_sha256_canonical_json": "0156dc5d5d1d9ff3c25483973eedb8ceb35f817a314222de8397a5cfabf6a64a",
+      "selected_source_ids": [
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-4",
+        "fixture-span-north_glass-2"
+      ],
+      "selected_source_labels": [
+        "carrier_inspection",
+        "carrier_ready_rule",
+        "badge_roster"
+      ],
+      "minimum_labels": [
+        [
+          "carrier_ready_rule",
+          "carrier_inspection"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "b0f395d8b3d0a98f81ba3927f15a0aaab00ae2ff84fc932067b9ebfe18a3cf20"
+    },
+    {
+      "ordinal": 5,
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-8667357e-e160-4f8c-8920-c3fb75d6f52d-1",
+      "draft_id": "fixture-draft-north-glass",
+      "project_id": "fixture-project-north-glass",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "49c6e23cc5d84ee31d9911d54af666e312222140b6f85970c93cf8106ce06054",
+      "business_request_sha256_canonical_json": "466935fbd393c069226e6369ebc098e7b72f7ea3cd499db0262605bb7d36dc13",
+      "selected_source_ids": [
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-4",
+        "fixture-span-north_glass-2"
+      ],
+      "selected_source_labels": [
+        "carrier_inspection",
+        "carrier_ready_rule",
+        "badge_roster"
+      ],
+      "minimum_labels": [
+        [
+          "carrier_ready_rule",
+          "carrier_inspection"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "98343cd8444271f6ee13c27209b8788120d283689ce6a065d6a3dfd4ecaaae20"
+    },
+    {
+      "ordinal": 6,
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-c3995d53-4c25-415a-94a7-c84385ab158a-1",
+      "draft_id": "fixture-draft-north-glass",
+      "project_id": "fixture-project-north-glass",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "6beda63123808d2aa15596cab31b9c574de1dfba467cde610ab1c1b2c0e27e54",
+      "business_request_sha256_canonical_json": "c8475f5e0c715d1e67168571e11229d9bdbe96ef0db13c19d01ee02282ca8e1c",
+      "selected_source_ids": [
+        "fixture-span-north_glass-6",
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-2"
+      ],
+      "selected_source_labels": [
+        "cap_actor",
+        "carrier_inspection",
+        "badge_roster"
+      ],
+      "minimum_labels": [
+        [
+          "cap_actor"
+        ]
+      ],
+      "optional_labels": [
+        "carrier_inspection"
+      ],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "e98e84aff15836fa85740ff3a91249ccb94daa5c26312b89aae44939b3e2a05d"
+    },
+    {
+      "ordinal": 7,
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-1e1fcf88-4df4-46af-adb3-94993018404d-1",
+      "draft_id": "fixture-draft-harbor-signal",
+      "project_id": "fixture-project-harbor-signal",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "38089e6826dc79ce71e932cc4e4dd05fdef445533cf38e3a68b122c6922befae",
+      "business_request_sha256_canonical_json": "a4725d1b25cdb4f0901d3ea54561176a5b69ca1bd707009548c3cfcc6b88a19c",
+      "selected_source_ids": [
+        "fixture-span-harbor_signal-1",
+        "fixture-span-harbor_signal-2",
+        "fixture-span-harbor_signal-3"
+      ],
+      "selected_source_labels": [
+        "gate_log",
+        "reopen_log",
+        "telegram_seal"
+      ],
+      "minimum_labels": [
+        [
+          "gate_log"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 4,
+      "memory_sources_outside_selected_evidence_count": 1,
+      "all_runtime_chapters_checked": 4,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "9d80920b429e871f12f4ed2b12fb13d03d9203638dc0c8fc323c3cfc1f93f97d"
+    },
+    {
+      "ordinal": 8,
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-f971115c-f8af-487a-980d-afac126deed6-1",
+      "draft_id": "fixture-draft-harbor-signal",
+      "project_id": "fixture-project-harbor-signal",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "ae4defd9735b71e997acd9faf0677801402ced2370aeb68af9466ee98dcd1b57",
+      "business_request_sha256_canonical_json": "1f8e7ccfde0ff2669241154a3d572456f0a2d55a1758404b729bc26cb5c84e2f",
+      "selected_source_ids": [
+        "fixture-span-harbor_signal-1",
+        "fixture-span-harbor_signal-2",
+        "fixture-span-harbor_signal-3"
+      ],
+      "selected_source_labels": [
+        "gate_log",
+        "reopen_log",
+        "telegram_seal"
+      ],
+      "minimum_labels": [
+        [
+          "gate_log"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 4,
+      "memory_sources_outside_selected_evidence_count": 1,
+      "all_runtime_chapters_checked": 4,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "d916e01e43352809c4e4c53766d2773a3169a9b798ec67b321050262b08a90a4"
+    },
+    {
+      "ordinal": 9,
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-1be87c5c-4766-46ac-9a4b-74c78123333e-1",
+      "draft_id": "fixture-draft-harbor-signal",
+      "project_id": "fixture-project-harbor-signal",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "30daeb150fcceaf2d6217d30dea81325339dcb3383c059dee3f1f3c0ee558885",
+      "business_request_sha256_canonical_json": "3e6c75ae79c1899902d2261826771c5a0bd3cd3c9b0cdeb0b142ecad2fd9052d",
+      "selected_source_ids": [
+        "fixture-span-harbor_signal-2",
+        "fixture-span-harbor_signal-1",
+        "fixture-span-harbor_signal-4"
+      ],
+      "selected_source_labels": [
+        "reopen_log",
+        "gate_log",
+        "later_recipient"
+      ],
+      "minimum_labels": [
+        [
+          "reopen_log"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 4,
+      "memory_sources_outside_selected_evidence_count": 1,
+      "all_runtime_chapters_checked": 4,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "7f87ece208ed915c402627f345c098d3624bef6bb3fa3fa5daf88c6e21db097e"
+    },
+    {
+      "ordinal": 10,
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-d9d8144b-22ed-4124-a229-8fb0092c3356-1",
+      "draft_id": "fixture-draft-harbor-signal",
+      "project_id": "fixture-project-harbor-signal",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "2273f3d64cc9c04599e1998a73e3ffc317923db048ef966d62e1c088829d5ee8",
+      "business_request_sha256_canonical_json": "cf857e453464df6c093eec4d98b16808d49adfb7f72b86e3d2ef64c709a1510d",
+      "selected_source_ids": [
+        "fixture-span-harbor_signal-3",
+        "fixture-span-harbor_signal-4",
+        "fixture-span-harbor_signal-1"
+      ],
+      "selected_source_labels": [
+        "telegram_seal",
+        "later_recipient",
+        "gate_log"
+      ],
+      "minimum_labels": [
+        [
+          "telegram_seal"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 4,
+      "memory_sources_outside_selected_evidence_count": 1,
+      "all_runtime_chapters_checked": 4,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "77e73cdf9fab0b7d186d7a34298a51163865f6be13345e0a5475ffb2765d9eca"
+    },
+    {
+      "ordinal": 11,
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-6e48d88d-e9d7-4abc-a3e4-78635c30cb1a-1",
+      "draft_id": "fixture-draft-harbor-signal",
+      "project_id": "fixture-project-harbor-signal",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "ce544ab252c0639be19bef488e450a8ba2a0ea6c6954957ce7c6d13cc21ee860",
+      "business_request_sha256_canonical_json": "b4eaefa1d625a8fea463bc6c8c1ecd31b14edb823c9cbdec8428d39735db8511",
+      "selected_source_ids": [
+        "fixture-span-harbor_signal-4",
+        "fixture-span-harbor_signal-3",
+        "fixture-span-harbor_signal-2"
+      ],
+      "selected_source_labels": [
+        "later_recipient",
+        "telegram_seal",
+        "reopen_log"
+      ],
+      "minimum_labels": [
+        [
+          "telegram_seal",
+          "later_recipient"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 4,
+      "memory_sources_outside_selected_evidence_count": 1,
+      "all_runtime_chapters_checked": 4,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "43a9a6d1cb0638f74786d91c04f83213f0cbd38de2d8029a180b223586441764"
+    },
+    {
+      "ordinal": 12,
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-693d8ebb-617a-4c7e-9311-427b1b2aa13b-1",
+      "draft_id": "fixture-draft-harbor-signal",
+      "project_id": "fixture-project-harbor-signal",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "6398f49581de7305972fbf7748c161a2496dbd13d18a641019982189f3d38c06",
+      "business_request_sha256_canonical_json": "011eee09fd735747f5e3dac6535f69f26f679f2c31a400989eab892a6531568c",
+      "selected_source_ids": [
+        "fixture-span-harbor_signal-4",
+        "fixture-span-harbor_signal-3",
+        "fixture-span-harbor_signal-2"
+      ],
+      "selected_source_labels": [
+        "later_recipient",
+        "telegram_seal",
+        "reopen_log"
+      ],
+      "minimum_labels": [
+        [
+          "later_recipient"
+        ]
+      ],
+      "optional_labels": [
+        "telegram_seal"
+      ],
+      "memory_count": 4,
+      "memory_sources_outside_selected_evidence_count": 1,
+      "all_runtime_chapters_checked": 4,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "2b56cebeac9b937f97ddbe8791412607aad44c94b9d0662c60e1ac2bbe1e6461"
+    },
+    {
+      "ordinal": 13,
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-97efd79e-9431-4209-8215-6deab866e654-1",
+      "draft_id": "fixture-draft-orchard-restoration",
+      "project_id": "fixture-project-orchard-restoration",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "b96559a047b24e1661220cfe33588b2a0cab5f3871dcc8446e6ceb708f83b0a2",
+      "business_request_sha256_canonical_json": "41efb0b300c9e5a42e691fb03c85f0d4dd1959df8c090c86551e05d41f3f40ed",
+      "selected_source_ids": [
+        "fixture-span-orchard_restoration-2",
+        "fixture-span-orchard_restoration-3",
+        "fixture-span-orchard_restoration-1"
+      ],
+      "selected_source_labels": [
+        "twin_register",
+        "birth_order",
+        "kinship_rule"
+      ],
+      "minimum_labels": [
+        [
+          "kinship_rule",
+          "twin_register"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "eb086b8472c4aa331b3208bab3ef1af69a24a6b8e53cf32fb24b9b36b663c56f"
+    },
+    {
+      "ordinal": 14,
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-4c326ad7-dd8b-4bf2-8a5d-41f3005238f9-1",
+      "draft_id": "fixture-draft-orchard-restoration",
+      "project_id": "fixture-project-orchard-restoration",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "fa91d039f19eed84b6901c40f49d5d2758c5bf14ae6f643bb0da4fb172a1e3e5",
+      "business_request_sha256_canonical_json": "7254a17c92b794309766581afa650d67ec20e3633dde11f1fd3652f004d64eb0",
+      "selected_source_ids": [
+        "fixture-span-orchard_restoration-1",
+        "fixture-span-orchard_restoration-3",
+        "fixture-span-orchard_restoration-2"
+      ],
+      "selected_source_labels": [
+        "kinship_rule",
+        "birth_order",
+        "twin_register"
+      ],
+      "minimum_labels": [
+        [
+          "kinship_rule",
+          "twin_register"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "76ef680961f75837dfae1a370df3ac2bca8b025fe46e968d159ac0a5f8fc3589"
+    },
+    {
+      "ordinal": 15,
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-51f276f3-fc69-408b-8cc6-79bd2206b551-1",
+      "draft_id": "fixture-draft-orchard-restoration",
+      "project_id": "fixture-project-orchard-restoration",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "9ed155cd945a03f67ec7a0af437f435156233d39aa5448c10ae973be29e43c00",
+      "business_request_sha256_canonical_json": "b31a0adca19d319f767bf40119880f8e8591e8065d0988bb634a160fd9cdecd9",
+      "selected_source_ids": [
+        "fixture-span-orchard_restoration-3",
+        "fixture-span-orchard_restoration-2",
+        "fixture-span-orchard_restoration-1"
+      ],
+      "selected_source_labels": [
+        "birth_order",
+        "twin_register",
+        "kinship_rule"
+      ],
+      "minimum_labels": [
+        [
+          "birth_order"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "8c5d4b6c65b17c2816cedea765e9cbfa611452df12dde24855642832b34cc299"
+    },
+    {
+      "ordinal": 16,
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-98761201-3963-4e86-b136-675537db841f-1",
+      "draft_id": "fixture-draft-orchard-restoration",
+      "project_id": "fixture-project-orchard-restoration",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "e058b7d4bcc058fa587269bcccb69d7733874b2f206e1a47098d6bca394999ad",
+      "business_request_sha256_canonical_json": "427f70b41210d32827e8bab8b5db0b228d2d1b8ad23baa2a88cb421d7cf596b2",
+      "selected_source_ids": [
+        "fixture-span-orchard_restoration-4",
+        "fixture-span-orchard_restoration-5",
+        "fixture-span-orchard_restoration-6"
+      ],
+      "selected_source_labels": [
+        "launch_rule",
+        "launch_log",
+        "delay_cause"
+      ],
+      "minimum_labels": [
+        [
+          "launch_rule",
+          "launch_log"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "3667c0b94dd2fbd7f3a04b44123c58ebc229fc2f76c8ed140b4dc77b56c9c127"
+    },
+    {
+      "ordinal": 17,
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-2b89fc94-b143-48bf-8108-bf5ba989a6ed-1",
+      "draft_id": "fixture-draft-orchard-restoration",
+      "project_id": "fixture-project-orchard-restoration",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "206c07877930832b3b247b9dfde264d2fbb8e640114dc01e8a210df840f94a8e",
+      "business_request_sha256_canonical_json": "099a7500062a62a06484b3bb6a8c89efd85999fa35429505bb3ba796455e0be3",
+      "selected_source_ids": [
+        "fixture-span-orchard_restoration-5",
+        "fixture-span-orchard_restoration-4",
+        "fixture-span-orchard_restoration-1"
+      ],
+      "selected_source_labels": [
+        "launch_log",
+        "launch_rule",
+        "kinship_rule"
+      ],
+      "minimum_labels": [
+        [
+          "launch_rule",
+          "launch_log"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "237d1a8cf0929ae7f465714e90adaf6612e4a7837e676cc2a11908dfe1cefccc"
+    },
+    {
+      "ordinal": 18,
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-547a8c49-1dd4-4ec9-b631-4f364984f68f-1",
+      "draft_id": "fixture-draft-orchard-restoration",
+      "project_id": "fixture-project-orchard-restoration",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "e81c3d7507fe0c709ec7bd76b152a6413cfcd3a3f0d491a71e6fa5f96affd47f",
+      "business_request_sha256_canonical_json": "608f127362f619911412d10058f4aa916b15dd1fea3ba0e91fa719885c6c9923",
+      "selected_source_ids": [
+        "fixture-span-orchard_restoration-4",
+        "fixture-span-orchard_restoration-6",
+        "fixture-span-orchard_restoration-5"
+      ],
+      "selected_source_labels": [
+        "launch_rule",
+        "delay_cause",
+        "launch_log"
+      ],
+      "minimum_labels": [
+        [
+          "delay_cause"
+        ]
+      ],
+      "optional_labels": [
+        "launch_log"
+      ],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "d9acdfcc41564375453498296b1f9629b1297e2d38fa6c4e845862a1e2d1bfaf"
+    },
+    {
+      "ordinal": 19,
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-703150d8-d797-4b17-afa7-610e99c5d198-1",
+      "draft_id": "fixture-draft-basalt-observatory",
+      "project_id": "fixture-project-basalt-observatory",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "228160b95ace6b96f4191a7180987273dec2a50a26d5d1753520f5535a3c74d2",
+      "business_request_sha256_canonical_json": "d989dc54e157173ed329986ff6eaf2b026dfb183adf5becc8502ab642117193d",
+      "selected_source_ids": [
+        "fixture-span-basalt_observatory-2",
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-5"
+      ],
+      "selected_source_labels": [
+        "west_lens",
+        "lens_index",
+        "watch_log"
+      ],
+      "minimum_labels": [
+        [
+          "lens_index",
+          "west_lens"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "e42caa5a9f4669a8d21d7b9b2cbde4ea1c226f7b56178061a3efa3dbd2ed437a"
+    },
+    {
+      "ordinal": 20,
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-f2d04260-60b7-4e36-ad04-802e1f531c53-1",
+      "draft_id": "fixture-draft-basalt-observatory",
+      "project_id": "fixture-project-basalt-observatory",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "bbced60cc22358b026d4c9654e03f5b14e9c21901130719189784925a86e3016",
+      "business_request_sha256_canonical_json": "efe828c340346620635a2c90149094b3ca3903c6e203a53b5543cba7e390c9de",
+      "selected_source_ids": [
+        "fixture-span-basalt_observatory-2",
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-5"
+      ],
+      "selected_source_labels": [
+        "west_lens",
+        "lens_index",
+        "watch_log"
+      ],
+      "minimum_labels": [
+        [
+          "lens_index",
+          "west_lens"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "1de6400d500582b4083694151c39d8eb216afb0c715e75c215d4d107c5483ac5"
+    },
+    {
+      "ordinal": 21,
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-f94a9e6c-2e65-42c0-bca8-180889f6db2c-1",
+      "draft_id": "fixture-draft-basalt-observatory",
+      "project_id": "fixture-project-basalt-observatory",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "90698354588d050253c2b2e033a074d164fc4abf4bce0167158c7be25fb84bda",
+      "business_request_sha256_canonical_json": "0a2efcc1202e8b0a1026d1fcded7281455d279fad69ea8317fa9b508ba1daf62",
+      "selected_source_ids": [
+        "fixture-span-basalt_observatory-3",
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-6"
+      ],
+      "selected_source_labels": [
+        "grinder_blank",
+        "lens_index",
+        "later_watch"
+      ],
+      "minimum_labels": [
+        [
+          "grinder_blank"
+        ]
+      ],
+      "optional_labels": [
+        "lens_index"
+      ],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "8b9b401c18a483841be8fef12efebd56002d5138d9b3f62388b118d9d01e2664"
+    },
+    {
+      "ordinal": 22,
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-d9ed4416-7e84-47d8-b5a0-b06a999466db-1",
+      "draft_id": "fixture-draft-basalt-observatory",
+      "project_id": "fixture-project-basalt-observatory",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "fa72d0592dd35c44290ae3f64225ece3631169e7a607b4596e81c649eddc1aa3",
+      "business_request_sha256_canonical_json": "2bfccffa74b8dd0d144ba2a8b8f946497ebf2cd0120b81b4c8d889ec81e1872b",
+      "selected_source_ids": [
+        "fixture-span-basalt_observatory-5",
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-2"
+      ],
+      "selected_source_labels": [
+        "watch_log",
+        "lens_index",
+        "west_lens"
+      ],
+      "minimum_labels": [
+        [
+          "watch_log"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "d2a7bc27ac512bc7c22e04a6f87689e130abad6f4002502da8ca13ca9a268556"
+    },
+    {
+      "ordinal": 23,
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-8b93486c-1b84-4b5c-9b06-3f79c556937e-1",
+      "draft_id": "fixture-draft-basalt-observatory",
+      "project_id": "fixture-project-basalt-observatory",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "2fd18e8fa67fc81d372ca884112b6d77423099655351cdf663d2515c1bb908f6",
+      "business_request_sha256_canonical_json": "16eacdf62ca6234f64cd71cfa4af4e92da45a4040aa94142fc01e8f83a63ee88",
+      "selected_source_ids": [
+        "fixture-span-basalt_observatory-6",
+        "fixture-span-basalt_observatory-5",
+        "fixture-span-basalt_observatory-4"
+      ],
+      "selected_source_labels": [
+        "later_watch",
+        "watch_log",
+        "gate_map"
+      ],
+      "minimum_labels": [
+        [
+          "later_watch"
+        ]
+      ],
+      "optional_labels": [
+        "watch_log"
+      ],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "23af0bf0c6b7bb25146a223b186bfebf66c2d1ce2e347162529d83a352fec95a"
+    },
+    {
+      "ordinal": 24,
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "result": "pass",
+      "errors": [],
+      "claim_id": "claim-run-7c146e65-6aa0-4fd3-9391-51380f63362e-1",
+      "draft_id": "fixture-draft-basalt-observatory",
+      "project_id": "fixture-project-basalt-observatory",
+      "revisions": {
+        "draft": 2,
+        "source": 1,
+        "memory": 1
+      },
+      "draft_sha256_raw_utf8": "b5fc210ae9f278033d715946cc13da09d135ba83d5d4a95a522603f4bf1090c0",
+      "business_request_sha256_canonical_json": "051db519ad8b7c9dd066e65be182cc040d5a53a99cd0835085dc94a2a20eebfd",
+      "selected_source_ids": [
+        "fixture-span-basalt_observatory-6",
+        "fixture-span-basalt_observatory-4",
+        "fixture-span-basalt_observatory-5"
+      ],
+      "selected_source_labels": [
+        "later_watch",
+        "gate_map",
+        "watch_log"
+      ],
+      "minimum_labels": [
+        [
+          "later_watch"
+        ]
+      ],
+      "optional_labels": [],
+      "memory_count": 6,
+      "memory_sources_outside_selected_evidence_count": 3,
+      "all_runtime_chapters_checked": 6,
+      "exact_historical_content_after_only_claim_id_normalization": true,
+      "manual_result_review": "pending_real_outputs",
+      "case_start_input_hash": "ccaa7ad3bf6e2334748c44b300b3d5150a11802fc5fee0a43ba7e6e557eab8a5"
+    }
+  ],
+  "limitations": [
+    "No database was opened. runtime-binding is an implementation-produced snapshot; this review verifies its JSON/content consistency, not independently queried persistence.",
+    "No runner, provider, scorer, validator, or old entry point was imported or executed.",
+    "Preparation start has frozen_manifest_sha256=null; final V5 freeze/runner review remains the controller separate prerequisite.",
+    "Cases 25-30/G02 are outside this review.",
+    "Real V5 first response, repairs, final product and same-run actual dispatch snapshots still require review.",
+    "The 24 cases remain seen development material; two allowed state_change outcomes and the companion per-answer category adjudication remain unchanged."
+  ]
+}

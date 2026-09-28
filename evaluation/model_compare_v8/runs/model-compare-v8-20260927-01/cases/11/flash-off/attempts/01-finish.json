@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1337,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "61ed7303-d824-47da-8c9a-a50fbb8482e9",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-6a025154-212e-4524-b991-2fa7f7e1c23e-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim's earlier not-knowing at 11点 and later learning at 13点 are both supported by the cited evidence; the explicit later transition makes them compatible, so no continuity issue remains.\"}]}",
+  "visible_content_sha256": "c4bd6f7f02315199b8eb429d455a14e2d74d78cf8262d282ca43262962bb9fce",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3331,
+      "completion_tokens": 97,
+      "total_tokens": 3428,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1155
+    },
+    "status": "complete",
+    "prompt_tokens": 3331,
+    "completion_tokens": 97,
+    "total_tokens": 3428,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:41:41.707256+00:00"
+}

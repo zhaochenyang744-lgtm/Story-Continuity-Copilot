@@ -5,6 +5,7 @@ from typing import Any
 
 from . import brief_citations
 from .memory_contract import CONTROLLED_PREDICATES
+from .provider import MAX_CLAIM_BASIS_CODEPOINTS
 from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget
 
 ALLOWED_STATUS={"conflict","insufficient_evidence"}
@@ -68,6 +69,10 @@ class MemoryCandidateValidationError(ValueError):
 class ContinuityContractValidationError(ValueError):
     """A semantic contract failure that permits one bounded provider repair."""
 
+    def __init__(self, code: str, *, diagnostics: list[dict[str, Any]] | None = None):
+        super().__init__(code)
+        self.diagnostics = diagnostics or []
+
 
 def _contains_cjk(value: str) -> bool:
     return bool(re.search(r"[\u4e00-\u9fff]", value))
@@ -79,7 +84,31 @@ def _requires_cjk(value: str) -> bool:
     return cjk >= 4 and cjk >= latin
 
 
+def _clock_values(value: str) -> set[int] | None:
+    """Return explicit clock minutes; None means an invalid/unsupported colon clock."""
+    pattern = r"(?<![\w:])(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b|(?<![A-Za-z0-9_:])(\d{1,2}):(\d{2})(?![A-Za-z0-9_:])(?!\s*(?:am|pm)[A-Za-z0-9_])"
+    clocks: set[int] = set()
+    matches = list(re.finditer(pattern, value, re.IGNORECASE))
+    for token in re.finditer(r"\d+(?::\d+)+", value):
+        if not any(match.start() <= token.start() and match.end() >= token.end() for match in matches):
+            return None
+    for match in matches:
+        hour, minute = int(match[1] or match[4]), int(match[2] or match[5] or 0)
+        meridiem = (match[3] or "").lower()
+        if minute > 59 or hour > (12 if meridiem else 23) or (meridiem and hour < 1):
+            return None
+        if meridiem:
+            hour = hour % 12 + (12 if meridiem == "pm" else 0)
+        clocks.add(hour * 60 + minute)
+    return clocks
+
+
 def _temporal_anchor_is_explicit(value: str) -> bool:
+    clocks = _clock_values(value)
+    if clocks is None:
+        return False
+    if clocks:
+        return True
     return bool(re.search(
         r"(?:\d{1,4}\s*(?:年|月|日|号|点|时|分|秒|章)|[一二三四五六七八九十百零两]+\s*(?:年|月|日|号|点|时|分|秒|章)|"
         r"同一(?:天|夜|晚|时刻|时间)|与此同时|同时|当时|此刻|刚落|之后|以前|以前|直到|"
@@ -91,6 +120,11 @@ def _temporal_anchor_is_explicit(value: str) -> bool:
 
 def _explicit_temporal_overlap(claim_anchor: str, evidence_anchor: str) -> bool:
     if not _temporal_anchor_is_explicit(claim_anchor) or not _temporal_anchor_is_explicit(evidence_anchor):
+        return False
+    claim_clocks, evidence_clocks = _clock_values(claim_anchor), _clock_values(evidence_anchor)
+    if claim_clocks is None or evidence_clocks is None:
+        return False
+    if (claim_clocks or evidence_clocks) and (len(claim_clocks) != 1 or claim_clocks != evidence_clocks):
         return False
     day_aliases={"前天":"day_minus_2","昨日":"day_minus_1","昨天":"day_minus_1","今日":"day_0","今天":"day_0","明日":"day_plus_1","明天":"day_plus_1","后天":"day_plus_2","day before yesterday":"day_minus_2","yesterday":"day_minus_1","today":"day_0","tomorrow":"day_plus_1"}
     def relative_day(value:str)->str|None:
@@ -112,8 +146,8 @@ def _explicit_temporal_overlap(claim_anchor: str, evidence_anchor: str) -> bool:
         parsed:dict[str,set[str]]={}
         for raw,unit in re.findall(component_pattern,value,re.IGNORECASE):
             parsed.setdefault(unit_group.get(unit,unit),set()).add(normalized_number(raw.casefold()))
-        for raw in re.findall(r"\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b",value,re.IGNORECASE):
-            parsed.setdefault("clock",set()).add(re.sub(r"\s+","",raw).casefold())
+        if clocks := _clock_values(value):
+            parsed["clock"] = {str(clock) for clock in clocks}
         return parsed
     claim_components=components(claim_anchor);evidence_components=components(evidence_anchor)
     shared_units=set(claim_components)&set(evidence_components)
@@ -146,7 +180,7 @@ def _full_temporal_scope_supports_conflict(claim_text: str, evidence_text: str, 
     claim_days,evidence_days=days(claim_scope),days(evidence_scope)
     if len(claim_days)>1 or len(evidence_days)>1 or (claim_days or evidence_days) and claim_days!=evidence_days:return False
     if not _explicit_temporal_overlap(claim_scope,evidence_scope):return False
-    clock=r"(?:\d{1,2}|[一二三四五六七八九十两]+)\s*(?:点|时)|\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b"
+    clock=r"(?:\d{1,2}|[一二三四五六七八九十两]+)\s*(?:点|时)|\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b|(?<![\d:])\d{1,2}:\d{2}(?![\d:])"
     def clock_values(value:str)->set[str]:
         return {match.group().replace(" ","").translate(str.maketrans("一二三四五六七八九", "123456789")) for match in re.finditer(clock,value,re.IGNORECASE)}
     if len(clock_values(claim_scope))>1 or len(clock_values(evidence_scope))>1:return False
@@ -157,8 +191,42 @@ def _full_temporal_scope_supports_conflict(claim_text: str, evidence_text: str, 
     return True
 
 
+def _confirmed_temporal_failure(raw: dict[str, Any], claim_text: str, evidence: list[dict[str, Any]], memory: dict[str, Any]) -> str | None:
+    """One qualification rule for both repair diagnostics and persisted Issues."""
+    if raw.get("nature") != "confirmed_conflict":
+        return None
+    temporal = raw.get("temporal_basis")
+    if not isinstance(temporal, dict):
+        return "temporal_overlap_unproven"
+    claim_anchor, evidence_anchor = temporal.get("claim_anchor"), temporal.get("evidence_anchor")
+    if temporal.get("relation") == "explicit_overlap":
+        if (isinstance(claim_anchor, str) and isinstance(evidence_anchor, str) and
+            any(item.get("relation") == "contradicts" and item.get("sufficiency") == "sufficient" and
+                evidence_anchor in item["excerpt"] and
+                _full_temporal_scope_supports_conflict(claim_text, item["excerpt"], claim_anchor, evidence_anchor)
+                for item in evidence)):
+            return None
+        return "temporal_overlap_unproven"
+    if temporal.get("relation") == "timeless_rule":
+        related_ids = {memory_id for item in evidence for memory_id in item.get("related_memory_ids", [])
+                       if isinstance(memory_id, str) and memory_id in memory}
+        cited_ids = {item["span_id"] for item in evidence}
+        if any(memory[memory_id].get("memory_type") == "static_canon" and
+               memory[memory_id].get("predicate") == "rule" and
+               memory[memory_id].get("source_span_id") in cited_ids for memory_id in related_ids):
+            return None
+        return "timeless_rule_unproven"
+    return "temporal_overlap_unproven"
+
+
+def _contract_diagnostic(data: dict[str, Any], code: str, claim_id: str | None = None, **details: Any) -> dict[str, Any]:
+    claim = next((item for item in data["claims"] if item["id"] == claim_id), None)
+    return {"claim_span_id": claim["id"] if claim else None, "claim_text": claim["text"] if claim else None,
+            "problem_codes": [code], "cited_evidence": [], **details}
+
+
 def _continuity_schema() -> dict[str, Any]:
-    return {"issues":[{"claim_span_id":"current claim id","status":"conflict|insufficient_evidence","nature":"confirmed_conflict|possible_conflict|state_change|insufficient_evidence","category":"allowed category","severity":"low|medium|high","explanation":"short backwards-compatible summary","reasoning":"why the cited evidence supports this nature, or exactly what evidence is missing","temporal_basis":{"claim_anchor":"exact claim substring or null","evidence_anchor":"exact cited evidence substring or null","relation":"explicit_overlap|timeless_rule|explicit_later_transition|unknown"},"evidence":[{"chapter_id":"allowed chapter id","span_id":"allowed span id","relation":"supports|contradicts|context","sufficiency":"sufficient|insufficient","related_memory_ids":["known memory id"]}],"evidence_chain":[{"span_id":"one cited evidence span id","role":"prior_state|current_context|missing_link"}],"suggested_revision":{"before":"exact text occurring once in the bound draft","after":"specific replacement text"},"available_actions":["edit|apply_suggestion|keep_intentional|false_positive"],"proposed_memory_change":{"operation":"add|replace","memory_type":"allowed memory type","subject":"string","predicate":"string","value":"string","affected_memory_id":"required for replace only"}}]}
+    return {"claim_verdicts":[{"claim_span_id":"every supplied current claim id exactly once","verdict":"reviewed_issue|insufficient_evidence|no_issue","basis":f"non-empty string, at most {MAX_CLAIM_BASIS_CODEPOINTS} Unicode code points; concise decision reason, not a reasoning transcript"}],"issues":[{"claim_span_id":"current claim id","status":"conflict|insufficient_evidence","nature":"confirmed_conflict|possible_conflict|state_change|insufficient_evidence","category":"allowed category","severity":"low|medium|high","explanation":"short backwards-compatible summary","reasoning":"why the cited evidence supports this nature, or exactly what evidence is missing","temporal_basis":{"claim_anchor":"exact claim substring or null","evidence_anchor":"exact cited evidence substring or null","relation":"explicit_overlap|timeless_rule|explicit_later_transition|unknown"},"evidence":[{"chapter_id":"allowed chapter id","span_id":"allowed span id","relation":"supports|contradicts|context","sufficiency":"sufficient|insufficient","related_memory_ids":["known memory id"]}],"evidence_chain":[{"span_id":"one cited evidence span id","role":"prior_state|current_context|missing_link"}],"suggested_revision":{"before":"exact text occurring once in the bound draft","after":"specific replacement text"},"available_actions":["edit|apply_suggestion|keep_intentional|false_positive"],"proposed_memory_change":{"operation":"add|replace","memory_type":"allowed memory type","subject":"string","predicate":"string","value":"string","affected_memory_id":"required for replace only"}}]}
 
 
 def _memory_schema() -> dict[str, Any]:
@@ -215,7 +283,7 @@ def _bounded_excerpt(body:str,hints:list[str],limit:int=CONTINUITY_EVIDENCE_EXCE
 class ContinuityEngine:
     def __init__(self,provider:ProviderPort): self.provider=provider
     def provenance(self)->dict[str,str]:
-        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":PROMPT_VERSION,"schema_version":"continuity-issue-v5-temporal-basis","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
+        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":PROMPT_VERSION,"schema_version":"continuity-issue-v7-repair-diagnostics","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
 
     def _selected_evidence(self,claim:dict[str,Any],memory:list[dict[str,Any]])->list[dict[str,Any]]:
         unique={span["id"]:span for span in claim["allowed_evidence"]}
@@ -260,10 +328,14 @@ class ContinuityEngine:
 
     def _repair_diagnostics(self,payload:Any,data:dict[str,Any])->list[dict[str,Any]]:
         """Collect all independently detectable semantic contract failures for one repair call."""
-        if not isinstance(payload,dict) or not isinstance(payload.get("issues"),list):return []
-        claims={item["id"]:item for item in data["claims"]};mem={item["id"]:item for item in data["memory"]};diagnostics=[]
+        diagnostics=[]
+        if getattr(self.provider,"continuity_contract_version",None)=="v6":
+            try:self._v6_issues(payload,data)
+            except ContinuityContractValidationError as error:diagnostics.extend(error.diagnostics)
+        if not isinstance(payload,dict) or not isinstance(payload.get("issues"),list):return diagnostics
+        claims={item["id"]:item for item in data["claims"]};mem={item["id"]:item for item in data["memory"]}
         for raw in payload["issues"]:
-            if not isinstance(raw,dict) or raw.get("claim_span_id") not in claims:continue
+            if not isinstance(raw,dict) or not isinstance(raw.get("claim_span_id"),str) or raw["claim_span_id"] not in claims:continue
             review_keys={"nature","reasoning","temporal_basis","evidence_chain","suggested_revision","available_actions"}
             if not review_keys<=set(raw):continue
             claim=claims[raw["claim_span_id"]];allowed={item["id"]:item for item in claim["allowed_evidence"]};codes=[]
@@ -271,20 +343,19 @@ class ContinuityEngine:
             if _requires_cjk(data["draft"]["body"]):
                 author_texts=[raw.get("explanation"),raw.get("reasoning")]
                 if any(not isinstance(text,str) or not _contains_cjk(text) for text in author_texts):codes.append("author_language_mismatch")
-            temporal=raw.get("temporal_basis")
-            if raw.get("nature")=="confirmed_conflict" and isinstance(temporal,dict):
-                claim_anchor=temporal.get("claim_anchor");evidence_anchor=temporal.get("evidence_anchor");relation=temporal.get("relation")
-                if relation=="explicit_overlap":
-                    excerpts=[allowed[evidence["span_id"]].get("prompt_excerpt",allowed[evidence["span_id"]]["body"]) for evidence in raw_evidence if isinstance(evidence,dict) and evidence.get("span_id") in allowed]
-                    if not isinstance(claim_anchor,str) or not isinstance(evidence_anchor,str) or not _explicit_temporal_overlap(claim_anchor,evidence_anchor) or (excerpts and not any(evidence_anchor in excerpt and _full_temporal_scope_supports_conflict(claim["text"],excerpt,claim_anchor,evidence_anchor) for excerpt in excerpts)):codes.append("temporal_overlap_unproven")
-                elif relation=="timeless_rule":
-                    related_ids={memory_id for evidence in raw_evidence if isinstance(evidence,dict) and isinstance(evidence.get("related_memory_ids"),list) for memory_id in evidence["related_memory_ids"] if memory_id in mem}
-                    if not any(mem[memory_id].get("memory_type")=="static_canon" and mem[memory_id].get("predicate")=="rule" for memory_id in related_ids):codes.append("timeless_rule_unproven")
-                else:codes.append("temporal_overlap_unproven")
+            bound_evidence=[]
+            for item in raw_evidence:
+                if isinstance(item,dict) and isinstance(item.get("span_id"),str) and item["span_id"] in allowed:
+                    span=allowed[item["span_id"]]
+                    bound_evidence.append({**item,"excerpt":span.get("prompt_excerpt",span["body"]),
+                                           "related_memory_ids":item.get("related_memory_ids") if isinstance(item.get("related_memory_ids"),list) else []})
+            temporal_failure=_confirmed_temporal_failure(raw,claim["text"],bound_evidence,mem)
+            # Missing/unresolvable evidence is a binding failure, not a proved time mismatch.
+            if temporal_failure and bound_evidence:codes.append(temporal_failure)
             if codes:
                 evidence_excerpts=[]
                 for evidence in raw_evidence:
-                    if isinstance(evidence,dict) and evidence.get("span_id") in allowed:
+                    if isinstance(evidence,dict) and isinstance(evidence.get("span_id"),str) and evidence["span_id"] in allowed:
                         span=allowed[evidence["span_id"]]
                         evidence_excerpts.append({"span_id":span["id"],"excerpt":span.get("prompt_excerpt",span["body"])})
                 diagnostics.append({"claim_span_id":claim["id"],"claim_text":claim["text"],"problem_codes":list(dict.fromkeys(codes)),"cited_evidence":evidence_excerpts})
@@ -299,22 +370,25 @@ class ContinuityEngine:
         try:
             for batch in batches:
                 for contract_attempt in range(2):
-                    request=batch if contract_attempt==0 else {**batch,"contract_repair":{"attempt":contract_attempt+1,"reason_code":repair_code,"diagnostics":repair_diagnostics,"rejected_issues":rejected_issues}}
+                    request=batch if contract_attempt==0 else {**batch,"contract_repair":{"attempt":contract_attempt+1,"reason_code":repair_code,"diagnostics":repair_diagnostics,"rejected_issues":rejected_issues,"rejected_claim_verdicts":rejected_claim_verdicts}}
+                    # Check the complete feedback as sent; never truncate rejected output to fit.
+                    if request_prompt_and_budget(request)[1]>MAX_INPUT_BUDGET_UNITS:raise InputBudgetExceeded()
                     result=self.provider.evaluate(request)
                     if (result.input_tokens or 0)+(result.output_tokens or 0)>MAX_RUN_TOKENS:return {"status":"budget_paused","error_code":"budget_paused","retryable":True,**_aggregate(results+[result])}
                     results.append(result)
+                    rejected_issues=result.payload.get("issues",[]) if isinstance(result.payload,dict) else []
+                    rejected_claim_verdicts=result.payload.get("claim_verdicts",[]) if isinstance(result.payload,dict) else []
                     repair_diagnostics=self._repair_diagnostics(result.payload,batch)
                     if contract_attempt==0 and repair_diagnostics:
                         repair_code=repair_diagnostics[0]["problem_codes"][0]
-                        rejected_issues=result.payload.get("issues",[]) if isinstance(result.payload,dict) else []
                         continue
                     try:
                         validated=self.validate(result.payload,batch,allow_conservative_temporal_normalization=contract_attempt==1,normalization_sink=contract_normalizations)
                     except ContinuityContractValidationError as error:
                         if contract_attempt==0:
                             repair_code=str(error)
-                            repair_diagnostics=[{"claim_span_id":None,"claim_text":None,"problem_codes":[repair_code],"cited_evidence":[]}]
-                            rejected_issues=result.payload.get("issues",[]) if isinstance(result.payload,dict) else []
+                            claim_id=batch["claims"][0]["id"] if len(batch["claims"])==1 else None
+                            repair_diagnostics=error.diagnostics or [_contract_diagnostic(batch,repair_code,claim_id)]
                             continue
                         raise
                     issues.extend(validated)
@@ -329,13 +403,70 @@ class ContinuityEngine:
         if len({issue["claim_span_id"] for issue in issues}) != len(issues): return {"status":"failed","error_code":"schema_invalid","retryable":True,**_aggregate(results)}
         return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,**_aggregate(results)}
 
+    def _v6_issues(self,payload:Any,data:dict[str,Any])->dict[str,Any]:
+        """Validate the compatible V6 ledger shape, retaining every detectable fault."""
+        if not isinstance(payload,dict) or set(payload)!={"issues","claim_verdicts"} or not isinstance(payload.get("issues"),list) or not isinstance(payload.get("claim_verdicts"),list):
+            code="claim_verdicts_required"
+            raise ContinuityContractValidationError(code,diagnostics=[_contract_diagnostic(data,code,invalid_field="claim_verdicts",requirement="Return exactly issues and claim_verdicts arrays.")])
+        claim_ids={item["id"] for item in data["claims"]}
+        verdicts={};diagnostics=[]
+        def fault(code,claim_id=None,**details):
+            diagnostics.append(_contract_diagnostic(data,code,claim_id,**details))
+        for index,item in enumerate(payload["claim_verdicts"]):
+            if not isinstance(item,dict):
+                fault("claim_verdicts_invalid",invalid_field="claim_verdicts",row_index=index,problem="row_type")
+                continue
+            claim_id=item.get("claim_span_id")
+            if not isinstance(claim_id,str) or claim_id not in claim_ids:
+                fault("claim_verdicts_invalid",invalid_field="claim_span_id",row_index=index,problem="unknown_claim")
+                continue
+            if claim_id in verdicts:
+                fault("claim_verdicts_invalid",claim_id,invalid_field="claim_span_id",row_index=index,problem="duplicate_claim")
+                continue
+            verdicts[claim_id]=item.get("verdict")
+            if set(item)!={"claim_span_id","verdict","basis"}:
+                fault("claim_verdicts_invalid",claim_id,invalid_field="claim_verdicts",row_index=index,problem="row_fields",required_fields=["claim_span_id","verdict","basis"])
+            verdict=item.get("verdict")
+            if not isinstance(verdict,str) or verdict not in {"reviewed_issue","insufficient_evidence","no_issue"}:
+                fault("claim_verdicts_invalid",claim_id,invalid_field="verdict",row_index=index,problem="invalid_enum",allowed_values=["reviewed_issue","insufficient_evidence","no_issue"])
+            basis=item.get("basis")
+            if not isinstance(basis,str) or not basis.strip() or len(basis)>MAX_CLAIM_BASIS_CODEPOINTS:
+                fault("claim_verdicts_invalid",claim_id,invalid_field="basis",row_index=index,
+                      problem="invalid_type" if not isinstance(basis,str) else "blank" if not basis.strip() else "too_long",
+                      observed_length=len(basis) if isinstance(basis,str) else None,limit=MAX_CLAIM_BASIS_CODEPOINTS)
+        for claim_id in sorted(claim_ids-set(verdicts)):
+            fault("claim_verdicts_incomplete",claim_id,invalid_field="claim_verdicts",problem="missing_claim")
+        issue_status={}
+        for index,item in enumerate(payload["issues"]):
+            claim_id=item.get("claim_span_id") if isinstance(item,dict) else None
+            if not isinstance(claim_id,str) or claim_id not in claim_ids or claim_id in issue_status:
+                fault("claim_verdicts_issue_mismatch",claim_id if isinstance(claim_id,str) else None,invalid_field="issues",row_index=index,problem="invalid_or_duplicate_claim")
+                continue
+            issue_status[claim_id]=item.get("status")
+        for claim_id,verdict in verdicts.items():
+            if not isinstance(verdict,str) or verdict not in {"reviewed_issue","insufficient_evidence","no_issue"}:
+                continue
+            expected=("insufficient_evidence" if issue_status.get(claim_id)=="insufficient_evidence" else
+                      "reviewed_issue" if claim_id in issue_status else "no_issue")
+            if verdict!=expected:
+                fault("claim_verdicts_issue_mismatch",claim_id,invalid_field="verdict",actual_verdict=verdict,
+                      expected_verdict_for_returned_issues=expected,issue_present=claim_id in issue_status,
+                      required_issue_status_for_verdict="insufficient_evidence" if verdict=="insufficient_evidence" else "conflict" if verdict=="reviewed_issue" else None,
+                      requirement="Keep the evidence-based decision. An insufficient_evidence decision needs a cited missing_link Issue with no actions. Change a verdict only when the original evidence justifies that change.")
+        if diagnostics:
+            raise ContinuityContractValidationError(diagnostics[0]["problem_codes"][0],diagnostics=diagnostics)
+        return {"issues":payload["issues"]}
+
     def validate(self,payload:Any,data:dict[str,Any],allow_conservative_temporal_normalization:bool=False,normalization_sink:list[dict[str,Any]]|None=None):
+        if getattr(self.provider,"continuity_contract_version",None)=="v6":
+            payload=self._v6_issues(payload,data)
         if not isinstance(payload,dict) or set(payload)!={"issues"} or not isinstance(payload.get("issues"),list):raise ValueError("schema_invalid")
         claims={x["id"]:x for x in data["claims"]}; mem={x["id"]:x for x in data["memory"]}; output=[]
         for raw in payload["issues"]:
+            if not isinstance(raw,dict):raise ValueError("schema_invalid")
             if raw.get("status")=="no_conflict":raise ValueError("no_conflict_issue_forbidden")
             explanation=raw.get("explanation") if isinstance(raw,dict) else None
-            if not isinstance(raw,dict) or raw.get("claim_span_id") not in claims or raw.get("status") not in ALLOWED_STATUS or raw.get("category") not in ALLOWED_CATEGORY or raw.get("severity") not in ALLOWED_SEVERITY or not isinstance(explanation,str) or not explanation.strip():raise ValueError("schema_invalid")
+            if not isinstance(raw.get("claim_span_id"),str) or raw["claim_span_id"] not in claims or raw.get("status") not in ALLOWED_STATUS or raw.get("category") not in ALLOWED_CATEGORY or raw.get("severity") not in ALLOWED_SEVERITY or not isinstance(explanation,str) or not explanation.strip():raise ValueError("schema_invalid")
             review_keys={"nature","reasoning","temporal_basis","evidence_chain","suggested_revision","available_actions"}
             present=review_keys & set(raw)
             if not present and not getattr(self.provider,"allows_legacy_continuity_contract",False):raise ContinuityContractValidationError("trustworthy_review_required")
@@ -348,9 +479,13 @@ class ContinuityEngine:
             if raw["status"]=="insufficient_evidence" and raw.get("proposed_memory_change") is not None:raise ValueError("insufficient_evidence_memory_change")
             cleaned=[]
             for ev in evs:
-                if not isinstance(ev,dict) or ev.get("span_id") not in allowed:raise ValueError("evidence_unresolvable")
+                if not isinstance(ev,dict) or not isinstance(ev.get("span_id"),str) or ev["span_id"] not in allowed:raise ValueError("evidence_unresolvable")
                 s=allowed[ev["span_id"]]
-                if ev.get("chapter_id")!=s["chapter_id"] or ev.get("relation") not in {"supports","contradicts","context"} or ev.get("sufficiency") not in {"sufficient","insufficient"} or not set(ev.get("related_memory_ids",[]))<=set(mem):raise ValueError("evidence_unresolvable")
+                related_ids=ev.get("related_memory_ids")
+                if (ev.get("chapter_id")!=s["chapter_id"] or ev.get("relation") not in {"supports","contradicts","context"} or
+                    ev.get("sufficiency") not in {"sufficient","insufficient"} or not isinstance(related_ids,list) or
+                    any(not isinstance(memory_id,str) or memory_id not in mem for memory_id in related_ids)):
+                    raise ValueError("evidence_unresolvable")
                 if raw["status"]=="conflict" and not trustworthy and (ev.get("relation")!="contradicts" or ev.get("sufficiency")!="sufficient"):raise ValueError("conflict_evidence_not_direct")
                 if raw["status"]=="insufficient_evidence" and ev.get("sufficiency")!="insufficient":raise ValueError("insufficient_evidence_upgraded")
                 cleaned.append({"chapter_id":s["chapter_id"],"span_id":s["id"],"excerpt":s.get("prompt_excerpt",s["body"]),"relation":ev["relation"],"sufficiency":ev["sufficiency"],"related_memory_ids":ev.get("related_memory_ids",[])})
@@ -372,16 +507,11 @@ class ContinuityEngine:
                     if any(not _contains_cjk(text) for text in author_texts):raise ContinuityContractValidationError("author_language_mismatch")
                 if raw["status"]=="insufficient_evidence" and nature!="insufficient_evidence":raise ValueError("schema_invalid")
                 if raw["status"]=="conflict" and nature=="insufficient_evidence":raise ValueError("schema_invalid")
-                if nature=="confirmed_conflict" and any(ev["relation"]!="contradicts" or ev["sufficiency"]!="sufficient" for ev in cleaned):raise ValueError("conflict_evidence_not_direct")
-                temporal_failure=None
-                if nature=="confirmed_conflict":
-                    if temporal["relation"]=="explicit_overlap":
-                        if not isinstance(claim_anchor,str) or not isinstance(evidence_anchor,str) or not any(evidence_anchor in item["excerpt"] and _full_temporal_scope_supports_conflict(claim_text,item["excerpt"],claim_anchor,evidence_anchor) for item in cleaned):temporal_failure="temporal_overlap_unproven"
-                    elif temporal["relation"]=="timeless_rule":
-                        related_ids={memory_id for item in cleaned for memory_id in item["related_memory_ids"]}
-                        if not any(mem[memory_id].get("memory_type")=="static_canon" and mem[memory_id].get("predicate")=="rule" for memory_id in related_ids):temporal_failure="timeless_rule_unproven"
-                    else:temporal_failure="temporal_overlap_unproven"
-                    if temporal_failure and not allow_conservative_temporal_normalization:raise ContinuityContractValidationError(temporal_failure)
+                if nature=="confirmed_conflict" and (not any(ev["relation"]=="contradicts" and ev["sufficiency"]=="sufficient" for ev in cleaned) or any(ev["relation"]=="supports" or ev["sufficiency"]!="sufficient" for ev in cleaned)):
+                    raise ContinuityContractValidationError("conflict_evidence_not_direct")
+                temporal_failure=_confirmed_temporal_failure(raw,claim_text,cleaned,mem)
+                if temporal_failure and not allow_conservative_temporal_normalization:
+                    raise ContinuityContractValidationError(temporal_failure)
                 if nature in {"possible_conflict","state_change"} and any(ev["sufficiency"]!="sufficient" for ev in cleaned):raise ValueError("evidence_unresolvable")
                 if nature=="insufficient_evidence" and (not cleaned or any(ev["sufficiency"]!="insufficient" for ev in cleaned)):raise ValueError("evidence_unresolvable")
                 if not isinstance(chain,list) or len(chain)!=len(cleaned) or any(not isinstance(item,dict) or set(item)!={"span_id","role"} or item.get("role") not in EVIDENCE_CHAIN_ROLES for item in chain):raise ValueError("evidence_unresolvable")

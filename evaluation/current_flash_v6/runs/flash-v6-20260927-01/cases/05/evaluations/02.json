@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-object_state-no_conflict",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "af6e11322b593c42db6ce620784e6e12e6c951c8a43de5e647560b01430d81ee",
+  "finished_at": "2026-09-27T10:01:50.745035+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-36b0cdc4-f3db-4a91-bab6-c440d8fdc0b7-1",
+        "verdict": "no_issue",
+        "basis": "The claim states the carrier was not ready at 10点 despite a four-bar gauge. The cited rule (fixture-span-north_glass-4) requires both four bars and a locked valve cap for readiness, and the cited state (fixture-span-north_glass-5) explicitly says the valve cap remained loose and not locked throughout that minute. The claim is fully consistent with both spans; no reviewable continuity issue exists."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3758,
+    "output_tokens": 148,
+    "observed_response_input_tokens": 3758,
+    "observed_response_output_tokens": 148
+  }
+}

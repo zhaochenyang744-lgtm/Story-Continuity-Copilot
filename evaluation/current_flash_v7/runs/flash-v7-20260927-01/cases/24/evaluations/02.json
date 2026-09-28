@@ -1,0 +1,58 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "4c6fe7a60ea75372145f19e6a25377934d10dcace6bfd2b0ea68e34501a57b53",
+  "finished_at": "2026-09-27T10:48:40.780013+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-e01c8e32-6186-4e0d-957c-8666ee2fccdb-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "character_knowledge",
+        "severity": "medium",
+        "explanation": "19点 watch record只记录Vela从西码头Gate Four移动到东码头，并未指明同行者；草稿却断言Sora陪同，缺少来源依据。",
+        "reasoning": "引用的watch record明确说Vela的同伴未具名，因此无法支持Sora同行的断言；缺少将Sora与Vela同行联系起来的记录或证词。",
+        "temporal_basis": {
+          "claim_anchor": "19点",
+          "evidence_anchor": "the watch record leaves her companion unnamed",
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-6",
+            "span_id": "fixture-span-basalt_observatory-6",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-6"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-6",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-e01c8e32-6186-4e0d-957c-8666ee2fccdb-1",
+        "verdict": "insufficient_evidence",
+        "basis": "watch record明确说Vela的同伴未具名，草稿断言Sora陪同缺少来源依据，属于缺失链接。"
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3993,
+    "output_tokens": 360,
+    "observed_response_input_tokens": 3993,
+    "observed_response_output_tokens": 360
+  }
+}

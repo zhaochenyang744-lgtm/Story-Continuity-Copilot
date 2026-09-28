@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 8184,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "52cdac50-63d3-4658-8154-c3ed746d6b89",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-9da63740-96e6-408a-989d-40b2d396b294-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"Cited evidence shows at 10点 the gauge read four bars and the valve cap was loose and not locked; the rule requires both four bars and a locked valve cap for readiness, so the claim that the carrier was not ready despite its four-bar gauge is fully supported.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "ad3eb7d7f7b45f08a5cb8b613584ea2a2fea16dfeb92c6ab80b6ac6ae0a38576",
+  "reasoning": {
+    "present": true,
+    "codepoints": 2952,
+    "utf8_bytes": 2962,
+    "sha256": "e1333ecc8dae42da37e332365ce16c36df2f8a0b39c4339b4a3e3af8fdac7334"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3551,
+      "completion_tokens": 806,
+      "total_tokens": 4357,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 678
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1119
+    },
+    "status": "complete",
+    "prompt_tokens": 3551,
+    "completion_tokens": 806,
+    "total_tokens": 4357,
+    "reasoning_tokens": 678,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:37:50.718935+00:00"
+}

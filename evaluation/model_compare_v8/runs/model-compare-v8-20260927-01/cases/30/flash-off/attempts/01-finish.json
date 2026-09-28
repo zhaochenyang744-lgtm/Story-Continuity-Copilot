@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1335,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "07f6eea9-4565-4209-8eae-e3d143cb7a99",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-63e5e36e-d68f-4302-bb11-16c926521596-1\",\"verdict\":\"no_issue\",\"basis\":\"The cited span directly supports the claim: the inspector watched Ina loosen the courier capsule valve cap at 10:00 and logged her name, matching the draft's attributed statement.\"}]}",
+  "visible_content_sha256": "f2407ff1c5a4d46dbf0ab3cacf77cae69ea13f0d5ca44621193dc8de5eef4f57",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 2996,
+      "completion_tokens": 92,
+      "total_tokens": 3088,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 692
+    },
+    "status": "complete",
+    "prompt_tokens": 2996,
+    "completion_tokens": 92,
+    "total_tokens": 3088,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:54:34.658391+00:00"
+}

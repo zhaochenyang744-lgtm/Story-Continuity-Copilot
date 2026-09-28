@@ -1,0 +1,1666 @@
+{
+  "schema": "flash-v6-new-controls-independent-semantic-review-v1",
+  "run_id": "flash-v6-20260927-01",
+  "scope": "10 deduplicated seen-development controls, ord25-34; independent read of completed records only",
+  "authority": "Pre-output semantic criteria/control-matrix plus input-v2 and scoring policy/addenda; no post-output label change.",
+  "reviewer_actions": {
+    "provider_calls": 0,
+    "database_connections": 0,
+    "product_imports": 0,
+    "offline_replays": 0,
+    "core_edits": 0
+  },
+  "definitions": {
+    "complete_acceptance": "Fixed request-bound contract/product validation plus predeclared category, necessary source proof and independent semantic reading; all must pass.",
+    "substantive_content": "pass = supplied explanation and required issue content semantically correct; partial = correct core reasoning or uncertainty with wrong category / missing issue / incomplete required explanation; fail = materially wrong conclusion. This dimension does not override contract failures."
+  },
+  "totals": {
+    "cases": 10,
+    "first_complete_pass": 4,
+    "first_complete_pass_ordinals": [
+      29,
+      30,
+      33,
+      34
+    ],
+    "first_substantive_pass": 6,
+    "first_substantive_partial": 4,
+    "first_substantive_fail": 0,
+    "repair_cases": 5,
+    "repair_complete_pass": 0,
+    "repair_substantive_pass": 1,
+    "repair_substantive_partial": 2,
+    "repair_substantive_fail": 2,
+    "final_complete_pass": 4,
+    "final_complete_pass_ordinals": [
+      29,
+      30,
+      33,
+      34
+    ],
+    "final_terminal_failure": 5,
+    "final_completed_semantic_failure": 1,
+    "compatible_controls": 5,
+    "compatible_first_substance_pass": 5,
+    "compatible_final_pass": 4,
+    "insufficient_controls": 3,
+    "insufficient_first_or_final_complete_pass": 0,
+    "confirmed_controls": 2,
+    "confirmed_first_or_final_complete_pass": 0
+  },
+  "observations": [
+    "25/26 first answers establish complete same-issue joint proofs. 25 additionally misclassifies material as object_state. Both receive temporal_overlap_unproven and their repairs wrongly switch to no_issue.",
+    "Read-only engine inspection: _temporal_anchor_is_explicit at lines 82-89 does not recognize bare 24-hour HH:MM; _explicit_temporal_overlap immediately rejects these anchors at lines 92-94. The saved first anchors At 14:00 today / At 10:00 today are semantically explicit. No engine execution was used to make this diagnosis.",
+    "engine.py lines 338-344 sets basis length <=400. 27 first/repair 408/487, 25 repair874, 26 repair818, 32 repair442 exceed it. Saved repair feedback uses generic claim_verdicts_invalid rather than a length-specific diagnostic.",
+    "28/32 maintain correct unknown-world-fact reasoning in the ledger but omit required insufficient issues. 31 has the issue and bound missing-link evidence, yet wrong event_status category and does not explicitly finish the unknown-underlying-order distinction.",
+    "29/30/33/34 have independently supported no_issue reasons: compatible later visit, resolved named responsibility, deliberate lie, explicit later learning."
+  ],
+  "input_and_raw_integrity": {
+    "prep_comparison": [
+      {
+        "ordinal": 25,
+        "business_except_ephemeral_claim_id_equal": true,
+        "runtime_binding_equal": true
+      },
+      {
+        "ordinal": 26,
+        "business_except_ephemeral_claim_id_equal": true,
+        "runtime_binding_equal": true
+      },
+      {
+        "ordinal": 27,
+        "business_except_ephemeral_claim_id_equal": true,
+        "runtime_binding_equal": true
+      },
+      {
+        "ordinal": 28,
+        "business_except_ephemeral_claim_id_equal": true,
+        "runtime_binding_equal": true
+      },
+      {
+        "ordinal": 29,
+        "business_except_ephemeral_claim_id_equal": true,
+        "runtime_binding_equal": true
+      },
+      {
+        "ordinal": 30,
+        "business_except_ephemeral_claim_id_equal": true,
+        "runtime_binding_equal": true
+      },
+      {
+        "ordinal": 31,
+        "business_except_ephemeral_claim_id_equal": true,
+        "runtime_binding_equal": true
+      },
+      {
+        "ordinal": 32,
+        "business_except_ephemeral_claim_id_equal": true,
+        "runtime_binding_equal": true
+      },
+      {
+        "ordinal": 33,
+        "business_except_ephemeral_claim_id_equal": true,
+        "runtime_binding_equal": true
+      },
+      {
+        "ordinal": 34,
+        "business_except_ephemeral_claim_id_equal": true,
+        "runtime_binding_equal": true
+      }
+    ],
+    "all_15_visible_contents_parse_equal_saved_business_json": true,
+    "all_15_verdict_claim_ids_match_own_request": true,
+    "all_5_repair_requests_preserve_first_business_content": true,
+    "first_inputs_lens_selected_order": [
+      "L2",
+      "L4",
+      "L1"
+    ],
+    "lens_L3": "Known Memory and stored source only; not allowed_evidence; no raw citation uses it.",
+    "runtime_snapshot_note": "All ten runtime-binding snapshots match prep, with draft revision2, source revision1, Memory version1. Final run metadata reports source_revision2. This review uses supplied request/source texts and snapshots and does not independently query persistence."
+  },
+  "observed_run_usage": {
+    "post_attempts": 15,
+    "logical_first": 10,
+    "contract_repairs": 5,
+    "transport_retries": 0,
+    "http_status_200": 15,
+    "finish_stop": 15,
+    "usage_complete": 15,
+    "prompt_tokens": 48182,
+    "completion_tokens": 3317,
+    "total_tokens": 51499
+  },
+  "cases": [
+    {
+      "ordinal": 25,
+      "case_id": "v6-v6s-01",
+      "expected": "confirmed_conflict / attribute",
+      "input": {
+        "matches_prep_v6_02_except_ephemeral_claim_id": true,
+        "runtime_binding_matches_prep": true,
+        "selected_source_labels": [
+          "L2",
+          "L4",
+          "L1"
+        ]
+      },
+      "first": {
+        "complete_acceptance": "fail",
+        "substantive_content": "partial",
+        "reason": "L1 在 14:00 将 Q8 绑定为 east aperture lens，L2 同刻明确 clear / not amber；同 issue 的 context+contradicts 联合证明成立，未引用未选 L3。object_state 错分，应为 attribute；产品另以 temporal_overlap_unproven 拒绝。",
+        "issues_count": 1,
+        "basis_characters": 193,
+        "machine_errors": [
+          "category_mismatch",
+          "product_validator:temporal_overlap_unproven"
+        ],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/requests/01.json",
+          "first_visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/attempts/01-finish.json",
+          "first_parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/evaluations/01.json"
+        }
+      },
+      "repair": {
+        "complete_acceptance": "fail",
+        "substantive_content": "fail",
+        "reason": "修复虽承认同体同刻链接，却称未证明同体同刻而给 no_issue，自相矛盾地撤销真实冲突；basis 874 字符。",
+        "basis_characters": 874,
+        "machine_errors": [
+          "product_validator:claim_verdicts_invalid",
+          "required_issue_missing"
+        ],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/requests/02.json",
+          "visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/attempts/02-finish.json",
+          "parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/evaluations/02.json"
+        }
+      },
+      "final": {
+        "complete_acceptance": "fail",
+        "status": "failed",
+        "semantic_or_terminal_result": "terminal_failure",
+        "reason": "claim_verdicts_invalid，不能作为无冲突结果。",
+        "evidence": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/final-product.json"
+      },
+      "case_finish": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/case-finish.json"
+    },
+    {
+      "ordinal": 26,
+      "case_id": "v6-v6s-03",
+      "expected": "confirmed_conflict / object_state",
+      "input": {
+        "matches_prep_v6_02_except_ephemeral_claim_id": true,
+        "runtime_binding_matches_prep": true,
+        "selected_source_labels": [
+          "R1",
+          "R2",
+          "R3"
+        ]
+      },
+      "first": {
+        "complete_acceptance": "fail",
+        "substantive_content": "pass",
+        "reason": "R1 的必要就绪条件与 R2 同一 10:00 的 loose/unlocked 状态齐备，context+contradicts 方向正确；explicit_overlap 有真实锚。建议未就绪由来源支持。产品时间校验拒绝。",
+        "issues_count": 1,
+        "basis_characters": 181,
+        "machine_errors": [
+          "product_validator:temporal_overlap_unproven"
+        ],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/requests/01.json",
+          "first_visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/attempts/01-finish.json",
+          "first_parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/evaluations/01.json"
+        }
+      },
+      "repair": {
+        "complete_acceptance": "fail",
+        "substantive_content": "fail",
+        "reason": "修复要求原文直接写未就绪，忽略必要条件不满足的联合推论；过去式不消除同刻冲突。错误 no_issue；basis 818 字符。",
+        "basis_characters": 818,
+        "machine_errors": [
+          "product_validator:claim_verdicts_invalid",
+          "required_issue_missing"
+        ],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/requests/02.json",
+          "visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/attempts/02-finish.json",
+          "parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/evaluations/02.json"
+        }
+      },
+      "final": {
+        "complete_acceptance": "fail",
+        "status": "failed",
+        "semantic_or_terminal_result": "terminal_failure",
+        "reason": "claim_verdicts_invalid。",
+        "evidence": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/final-product.json"
+      },
+      "case_finish": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/case-finish.json"
+    },
+    {
+      "ordinal": 27,
+      "case_id": "v6-v6s-04",
+      "expected": "no_issue",
+      "input": {
+        "matches_prep_v6_02_except_ephemeral_claim_id": true,
+        "runtime_binding_matches_prep": true,
+        "selected_source_labels": [
+          "R1",
+          "R2",
+          "R3"
+        ]
+      },
+      "first": {
+        "complete_acceptance": "fail",
+        "substantive_content": "pass",
+        "reason": "R1 要求 locked cap，R2 证明 10:00 loose/unlocked，因而与草稿未就绪一致；no_issue 理由完整。但 basis 408 超过产品 400 字符。",
+        "issues_count": 0,
+        "basis_characters": 408,
+        "machine_errors": [
+          "product_validator:claim_verdicts_invalid"
+        ],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/requests/01.json",
+          "first_visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/attempts/01-finish.json",
+          "first_parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/evaluations/01.json"
+        }
+      },
+      "repair": {
+        "complete_acceptance": "fail",
+        "substantive_content": "pass",
+        "reason": "修复仍正确解释同刻阀帽状态与规则一致，basis 487 仍超限。",
+        "basis_characters": 487,
+        "machine_errors": [
+          "product_validator:claim_verdicts_invalid"
+        ],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/requests/02.json",
+          "visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/attempts/02-finish.json",
+          "parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/evaluations/02.json"
+        }
+      },
+      "final": {
+        "complete_acceptance": "fail",
+        "status": "failed",
+        "semantic_or_terminal_result": "terminal_failure",
+        "reason": "claim_verdicts_invalid；兼容推理正确不等于交付成功。",
+        "evidence": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/final-product.json"
+      },
+      "case_finish": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/case-finish.json"
+    },
+    {
+      "ordinal": 28,
+      "case_id": "v6-v6s-06",
+      "expected": "insufficient_evidence / relationship",
+      "input": {
+        "matches_prep_v6_02_except_ephemeral_claim_id": true,
+        "runtime_binding_matches_prep": true,
+        "selected_source_labels": [
+          "A1"
+        ]
+      },
+      "first": {
+        "complete_acceptance": "fail",
+        "substantive_content": "partial",
+        "reason": "ledger 指出日志未记录行为者、Ina 责任未知，没有把未知改为否定；但 issues=[]，缺 relationship 不足 issue、A1 自身引用与 missing_link。",
+        "issues_count": 0,
+        "basis_characters": 271,
+        "machine_errors": [
+          "product_validator:claim_verdicts_issue_mismatch",
+          "required_issue_missing"
+        ],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/requests/01.json",
+          "first_visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/attempts/01-finish.json",
+          "first_parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/evaluations/01.json"
+        }
+      },
+      "repair": {
+        "complete_acceptance": "fail",
+        "substantive_content": "partial",
+        "reason": "仍指出 Ina 归属未获记录支持而非相反事实，但继续遗漏必需 issue。",
+        "basis_characters": 312,
+        "machine_errors": [
+          "product_validator:claim_verdicts_issue_mismatch",
+          "required_issue_missing"
+        ],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/requests/02.json",
+          "visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/attempts/02-finish.json",
+          "parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/evaluations/02.json"
+        }
+      },
+      "final": {
+        "complete_acceptance": "fail",
+        "status": "failed",
+        "semantic_or_terminal_result": "terminal_failure",
+        "reason": "claim_verdicts_issue_mismatch。",
+        "evidence": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/final-product.json"
+      },
+      "case_finish": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/case-finish.json"
+    },
+    {
+      "ordinal": 29,
+      "case_id": "v6-v6s-07",
+      "expected": "no_issue",
+      "input": {
+        "matches_prep_v6_02_except_ephemeral_claim_id": true,
+        "runtime_binding_matches_prep": true,
+        "selected_source_labels": [
+          "A1"
+        ]
+      },
+      "first": {
+        "complete_acceptance": "pass",
+        "substantive_content": "pass",
+        "reason": "11:00 Ina 入修理室是合法后续新事件；10:00 阀帽日志既不否定也不限制该行动。未以旧文缺席制造不足。",
+        "issues_count": 0,
+        "basis_characters": 336,
+        "machine_errors": [],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/requests/01.json",
+          "first_visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/attempts/01-finish.json",
+          "first_parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/evaluations/01.json"
+        }
+      },
+      "repair": null,
+      "final": {
+        "complete_acceptance": "pass",
+        "status": "completed",
+        "semantic_or_terminal_result": "pass",
+        "reason": "completed / issues=[]，与首答合理 no_issue 一致。",
+        "evidence": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/final-product.json"
+      },
+      "case_finish": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/case-finish.json"
+    },
+    {
+      "ordinal": 30,
+      "case_id": "v6-v6s-08",
+      "expected": "no_issue",
+      "input": {
+        "matches_prep_v6_02_except_ephemeral_claim_id": true,
+        "runtime_binding_matches_prep": true,
+        "selected_source_labels": [
+          "A2"
+        ]
+      },
+      "first": {
+        "complete_acceptance": "pass",
+        "substantive_content": "pass",
+        "reason": "A2 同时具备 Ina、松阀帽行为、10:00 与检察员登记，明确补齐 28 的责任归属缺口；无问题理由有来源支持。",
+        "issues_count": 0,
+        "basis_characters": 334,
+        "machine_errors": [],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/requests/01.json",
+          "first_visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/attempts/01-finish.json",
+          "first_parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/evaluations/01.json"
+        }
+      },
+      "repair": null,
+      "final": {
+        "complete_acceptance": "pass",
+        "status": "completed",
+        "semantic_or_terminal_result": "pass",
+        "reason": "completed / issues=[]。",
+        "evidence": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/final-product.json"
+      },
+      "case_finish": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/case-finish.json"
+    },
+    {
+      "ordinal": 31,
+      "case_id": "v6-v6s-09",
+      "expected": "insufficient_evidence / timeline",
+      "input": {
+        "matches_prep_v6_02_except_ephemeral_claim_id": true,
+        "runtime_binding_matches_prep": true,
+        "selected_source_labels": [
+          "B1"
+        ]
+      },
+      "first": {
+        "complete_acceptance": "fail",
+        "substantive_content": "partial",
+        "reason": "B1 的 context/insufficient、missing_link、unknown 时间与无操作均恰当，未捏造相反出生顺序；但 category=event_status，应为 timeline。解释仅强调记录担保不成立，未明确说实际先后仍未知，未满足双命题完整说明。",
+        "issues_count": 1,
+        "basis_characters": 208,
+        "machine_errors": [
+          "category_mismatch"
+        ],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/requests/01.json",
+          "first_visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/attempts/01-finish.json",
+          "first_parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/evaluations/01.json"
+        }
+      },
+      "repair": null,
+      "final": {
+        "complete_acceptance": "fail",
+        "status": "completed",
+        "semantic_or_terminal_result": "fail",
+        "reason": "completed，保留上述错误类别与解释缺口；不能因 completed 判通过。",
+        "evidence": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/final-product.json"
+      },
+      "case_finish": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/case-finish.json"
+    },
+    {
+      "ordinal": 32,
+      "case_id": "v6-v6s-10",
+      "expected": "insufficient_evidence / location_action or relationship (manual)",
+      "input": {
+        "matches_prep_v6_02_except_ephemeral_claim_id": true,
+        "runtime_binding_matches_prep": true,
+        "selected_source_labels": [
+          "C1"
+        ]
+      },
+      "first": {
+        "complete_acceptance": "fail",
+        "substantive_content": "partial",
+        "reason": "ledger 准确区分已记录 Orin 移动与未命名同伴，Evi 在场未知；issues=[] 遗漏必需不足 issue、C1 引用、missing_link 与类别，不能自动赋予候选类别通过。",
+        "issues_count": 0,
+        "basis_characters": 303,
+        "machine_errors": [
+          "product_validator:claim_verdicts_issue_mismatch",
+          "required_issue_missing"
+        ],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/requests/01.json",
+          "first_visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/attempts/01-finish.json",
+          "first_parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/evaluations/01.json"
+        }
+      },
+      "repair": {
+        "complete_acceptance": "fail",
+        "substantive_content": "partial",
+        "reason": "修复明确沉默不能证明 Evi 不在，实质谨慎，但继续无 issue；basis 442 超限。",
+        "basis_characters": 442,
+        "machine_errors": [
+          "product_validator:claim_verdicts_invalid",
+          "required_issue_missing"
+        ],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/requests/02.json",
+          "visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/attempts/02-finish.json",
+          "parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/evaluations/02.json"
+        }
+      },
+      "final": {
+        "complete_acceptance": "fail",
+        "status": "failed",
+        "semantic_or_terminal_result": "terminal_failure",
+        "reason": "claim_verdicts_invalid。",
+        "evidence": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/final-product.json"
+      },
+      "case_finish": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/case-finish.json"
+    },
+    {
+      "ordinal": 33,
+      "case_id": "v6-v6s-11",
+      "expected": "no_issue",
+      "input": {
+        "matches_prep_v6_02_except_ephemeral_claim_id": true,
+        "runtime_binding_matches_prep": true,
+        "selected_source_labels": [
+          "T1",
+          "T2"
+        ]
+      },
+      "first": {
+        "complete_acceptance": "pass",
+        "substantive_content": "pass",
+        "reason": "lied 明确标记人物的虚假引语，叙述者同时承認双胞胎；T1/T2 相容。没有把引语当叙述者认可的母子事实。",
+        "issues_count": 0,
+        "basis_characters": 299,
+        "machine_errors": [],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/requests/01.json",
+          "first_visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/attempts/01-finish.json",
+          "first_parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/evaluations/01.json"
+        }
+      },
+      "repair": null,
+      "final": {
+        "complete_acceptance": "pass",
+        "status": "completed",
+        "semantic_or_terminal_result": "pass",
+        "reason": "completed / issues=[]；保留合理谎言框架。",
+        "evidence": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/final-product.json"
+      },
+      "case_finish": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/case-finish.json"
+    },
+    {
+      "ordinal": 34,
+      "case_id": "v6-v6s-12",
+      "expected": "no_issue or supported state_change",
+      "input": {
+        "matches_prep_v6_02_except_ephemeral_claim_id": true,
+        "runtime_binding_matches_prep": true,
+        "selected_source_labels": [
+          "K1",
+          "K2"
+        ]
+      },
+      "first": {
+        "complete_acceptance": "pass",
+        "substantive_content": "pass",
+        "reason": "K1 的 09:00 不知与 K2 的 12:00 学会构成合法知识变化；没有把后来知识倒置到早时。no_issue 合法，无需强造 state_change。",
+        "issues_count": 0,
+        "basis_characters": 232,
+        "machine_errors": [],
+        "evidence": {
+          "request": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/requests/01.json",
+          "first_visible": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/attempts/01-finish.json",
+          "first_parsed": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/evaluations/01.json"
+        }
+      },
+      "repair": null,
+      "final": {
+        "complete_acceptance": "pass",
+        "status": "completed",
+        "semantic_or_terminal_result": "pass",
+        "reason": "completed / issues=[]。",
+        "evidence": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/final-product.json"
+      },
+      "case_finish": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/case-finish.json"
+    }
+  ],
+  "limits": [
+    "Exposed synthetic development controls, not blind evaluation or a stability estimate.",
+    "Twelve semantic candidates reduce to ten inputs; V6S-01/02/05 share ord25 and are not three model samples.",
+    "Mirrored Memory and neutral L4 are the predeclared input-v2 adaptation. Repair cannot be substituted for first-answer scoring.",
+    "Final failed states are terminal failures, never compatible empty results. No Provider, DB, replay, product change, or frozen-evidence edit was performed by this reviewer.",
+    "No G02 live rerun occurred in this review. Its separate limited snippet+Memory, empty-parent-chapter and repeated-body boundaries remain unchanged."
+  ],
+  "hash_evidence": {
+    "file_count": 155,
+    "all_unchanged": true,
+    "files": [
+      {
+        "path": "docs/flash-v6-independent-acceptance-evidence/TECHNICAL-ACCEPTANCE.md",
+        "sha256_before": "d5ef24d2c8a4ef5731d2f35d32af948347c72db8963598cb1278f56edee63478",
+        "sha256_after_read": "d5ef24d2c8a4ef5731d2f35d32af948347c72db8963598cb1278f56edee63478",
+        "sha256_after_review": "d5ef24d2c8a4ef5731d2f35d32af948347c72db8963598cb1278f56edee63478",
+        "unchanged": true
+      },
+      {
+        "path": "docs/flash-v6-independent-acceptance-evidence/PRELAUNCH-SUPPLEMENT.json",
+        "sha256_before": "c8da7a578bfc82ddfadbe2bd9cad488a2f3c12b7e817c6a323d0cc6997b5eeec",
+        "sha256_after_read": "c8da7a578bfc82ddfadbe2bd9cad488a2f3c12b7e817c6a323d0cc6997b5eeec",
+        "sha256_after_review": "c8da7a578bfc82ddfadbe2bd9cad488a2f3c12b7e817c6a323d0cc6997b5eeec",
+        "unchanged": true
+      },
+      {
+        "path": "docs/flash-v6-independent-acceptance-evidence/semantics/criteria.md",
+        "sha256_before": "a09185a0cfcb9b9541140a296db8d63d609410dca48159944bf5ce0007715263",
+        "sha256_after_read": "a09185a0cfcb9b9541140a296db8d63d609410dca48159944bf5ce0007715263",
+        "sha256_after_review": "a09185a0cfcb9b9541140a296db8d63d609410dca48159944bf5ce0007715263",
+        "unchanged": true
+      },
+      {
+        "path": "docs/flash-v6-independent-acceptance-evidence/semantics/control-matrix.json",
+        "sha256_before": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+        "sha256_after_read": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+        "sha256_after_review": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/INPUT-ADAPTATION.md",
+        "sha256_before": "eaaceb74f501bd6158d6f2f3d28a28e9d8a21beaf1e6c80788fd2bd132eb6cbe",
+        "sha256_after_read": "eaaceb74f501bd6158d6f2f3d28a28e9d8a21beaf1e6c80788fd2bd132eb6cbe",
+        "sha256_after_review": "eaaceb74f501bd6158d6f2f3d28a28e9d8a21beaf1e6c80788fd2bd132eb6cbe",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/SCORING-POLICY.md",
+        "sha256_before": "c14868eab3c4c6b419a8c98cfcb173b05b1bd8f7bb559f85b05eeaacbccd2672",
+        "sha256_after_read": "c14868eab3c4c6b419a8c98cfcb173b05b1bd8f7bb559f85b05eeaacbccd2672",
+        "sha256_after_review": "c14868eab3c4c6b419a8c98cfcb173b05b1bd8f7bb559f85b05eeaacbccd2672",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/SCORING-ADDENDUM.md",
+        "sha256_before": "51d5fb0a83dbeebd43eea20f04a2bbcf73d83cbba8d435d193dbf6f72dc0bbf8",
+        "sha256_after_read": "51d5fb0a83dbeebd43eea20f04a2bbcf73d83cbba8d435d193dbf6f72dc0bbf8",
+        "sha256_after_review": "51d5fb0a83dbeebd43eea20f04a2bbcf73d83cbba8d435d193dbf6f72dc0bbf8",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/SCORING-ADDENDUM-02.md",
+        "sha256_before": "4531e56ede716ecd400c5683b6cd0654327f3e4ac1bd170d0e852453b41c5d5c",
+        "sha256_after_read": "4531e56ede716ecd400c5683b6cd0654327f3e4ac1bd170d0e852453b41c5d5c",
+        "sha256_after_review": "4531e56ede716ecd400c5683b6cd0654327f3e4ac1bd170d0e852453b41c5d5c",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/SCORING-ADDENDUM-03.md",
+        "sha256_before": "c423410b515e6e91bf482ce39f07f7df8a13fdae6d5ea5a835a83dd06bb4d915",
+        "sha256_after_read": "c423410b515e6e91bf482ce39f07f7df8a13fdae6d5ea5a835a83dd06bb4d915",
+        "sha256_after_review": "c423410b515e6e91bf482ce39f07f7df8a13fdae6d5ea5a835a83dd06bb4d915",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/attempts/01-finish.json",
+        "sha256_before": "7244ec07aa1d337e03d6f3c898f63f0483e890ed4c2169f014a2318bdc20d023",
+        "sha256_after_read": "7244ec07aa1d337e03d6f3c898f63f0483e890ed4c2169f014a2318bdc20d023",
+        "sha256_after_review": "7244ec07aa1d337e03d6f3c898f63f0483e890ed4c2169f014a2318bdc20d023",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/attempts/01-start.json",
+        "sha256_before": "341356830cc1dcb4305bf7060cf611e52a36341b7bd40d6dbfd18d9f2de94fe5",
+        "sha256_after_read": "341356830cc1dcb4305bf7060cf611e52a36341b7bd40d6dbfd18d9f2de94fe5",
+        "sha256_after_review": "341356830cc1dcb4305bf7060cf611e52a36341b7bd40d6dbfd18d9f2de94fe5",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/attempts/02-finish.json",
+        "sha256_before": "c14858e6b893f45698e60da64f2b614fa4bb98019f6a443ab44b8dce85a14ee9",
+        "sha256_after_read": "c14858e6b893f45698e60da64f2b614fa4bb98019f6a443ab44b8dce85a14ee9",
+        "sha256_after_review": "c14858e6b893f45698e60da64f2b614fa4bb98019f6a443ab44b8dce85a14ee9",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/attempts/02-start.json",
+        "sha256_before": "f473d68a370ce80e92b1cc539bb9f6dd88aae97bc0ddfcbcd085df169a9cadd1",
+        "sha256_after_read": "f473d68a370ce80e92b1cc539bb9f6dd88aae97bc0ddfcbcd085df169a9cadd1",
+        "sha256_after_review": "f473d68a370ce80e92b1cc539bb9f6dd88aae97bc0ddfcbcd085df169a9cadd1",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/case-finish.json",
+        "sha256_before": "bb608e4d4a26d1ab51033d59bccc3cda944cff9a522115f1c6f699930a58c3b0",
+        "sha256_after_read": "bb608e4d4a26d1ab51033d59bccc3cda944cff9a522115f1c6f699930a58c3b0",
+        "sha256_after_review": "bb608e4d4a26d1ab51033d59bccc3cda944cff9a522115f1c6f699930a58c3b0",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/case-start.json",
+        "sha256_before": "5a8707fb1c45039e7a67763e3e4fb42460e2da028c178a7b4d98efdb9741accf",
+        "sha256_after_read": "5a8707fb1c45039e7a67763e3e4fb42460e2da028c178a7b4d98efdb9741accf",
+        "sha256_after_review": "5a8707fb1c45039e7a67763e3e4fb42460e2da028c178a7b4d98efdb9741accf",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/evaluations/01.json",
+        "sha256_before": "6828ee3910fbc267d2942317f7a1940baed5ea20e5de49a3dd0baaa8d54841bc",
+        "sha256_after_read": "6828ee3910fbc267d2942317f7a1940baed5ea20e5de49a3dd0baaa8d54841bc",
+        "sha256_after_review": "6828ee3910fbc267d2942317f7a1940baed5ea20e5de49a3dd0baaa8d54841bc",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/evaluations/02.json",
+        "sha256_before": "303cd074ad2ed048e3b20dfd646718cc097d8d7182684b192d40b96743daeb74",
+        "sha256_after_read": "303cd074ad2ed048e3b20dfd646718cc097d8d7182684b192d40b96743daeb74",
+        "sha256_after_review": "303cd074ad2ed048e3b20dfd646718cc097d8d7182684b192d40b96743daeb74",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/final-product.json",
+        "sha256_before": "f04fe210a9d4073e7c88f3f1d9b76ec2c2c61e451288008e2ea3acfb52bafe34",
+        "sha256_after_read": "f04fe210a9d4073e7c88f3f1d9b76ec2c2c61e451288008e2ea3acfb52bafe34",
+        "sha256_after_review": "f04fe210a9d4073e7c88f3f1d9b76ec2c2c61e451288008e2ea3acfb52bafe34",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/input-audit/01.json",
+        "sha256_before": "1437298bb65c53dd0306ae459d1aa2e20d2bc7b0e46616b9300fd19e60c049d2",
+        "sha256_after_read": "1437298bb65c53dd0306ae459d1aa2e20d2bc7b0e46616b9300fd19e60c049d2",
+        "sha256_after_review": "1437298bb65c53dd0306ae459d1aa2e20d2bc7b0e46616b9300fd19e60c049d2",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/input-audit/02.json",
+        "sha256_before": "731ed6ab37176242ed5dd1a2a0bdf7818a255c1bae160823170ce3b2c9fca983",
+        "sha256_after_read": "731ed6ab37176242ed5dd1a2a0bdf7818a255c1bae160823170ce3b2c9fca983",
+        "sha256_after_review": "731ed6ab37176242ed5dd1a2a0bdf7818a255c1bae160823170ce3b2c9fca983",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/requests/01.json",
+        "sha256_before": "12a5871fe46bb807ed7b969c8610efb8e15db26e9b0cb1e346363d23dfb5d888",
+        "sha256_after_read": "12a5871fe46bb807ed7b969c8610efb8e15db26e9b0cb1e346363d23dfb5d888",
+        "sha256_after_review": "12a5871fe46bb807ed7b969c8610efb8e15db26e9b0cb1e346363d23dfb5d888",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/requests/02.json",
+        "sha256_before": "4ddcfcbfd37b28f60b4ad554efee5305a9788d887b13278a35a1b76fe1e143eb",
+        "sha256_after_read": "4ddcfcbfd37b28f60b4ad554efee5305a9788d887b13278a35a1b76fe1e143eb",
+        "sha256_after_review": "4ddcfcbfd37b28f60b4ad554efee5305a9788d887b13278a35a1b76fe1e143eb",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/runtime-binding.json",
+        "sha256_before": "a5c1ebc10e550dd1aa81e593cc620cb69c74dd8e44948f8a1654454ecac7ebf1",
+        "sha256_after_read": "a5c1ebc10e550dd1aa81e593cc620cb69c74dd8e44948f8a1654454ecac7ebf1",
+        "sha256_after_review": "a5c1ebc10e550dd1aa81e593cc620cb69c74dd8e44948f8a1654454ecac7ebf1",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/scores.json",
+        "sha256_before": "13ee1a06efd33f22e92a50256029a5afe3eab58d267653e7bfeb5f277450d23e",
+        "sha256_after_read": "13ee1a06efd33f22e92a50256029a5afe3eab58d267653e7bfeb5f277450d23e",
+        "sha256_after_review": "13ee1a06efd33f22e92a50256029a5afe3eab58d267653e7bfeb5f277450d23e",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/attempts/01-finish.json",
+        "sha256_before": "bc6fb538f993d7b38c2027c160b971b3c12b9157d8fb7969f333307dad5f8a7c",
+        "sha256_after_read": "bc6fb538f993d7b38c2027c160b971b3c12b9157d8fb7969f333307dad5f8a7c",
+        "sha256_after_review": "bc6fb538f993d7b38c2027c160b971b3c12b9157d8fb7969f333307dad5f8a7c",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/attempts/01-start.json",
+        "sha256_before": "b3444d526fa70260b1815b233123722195061866d31d4209740bcaac74cc4b4c",
+        "sha256_after_read": "b3444d526fa70260b1815b233123722195061866d31d4209740bcaac74cc4b4c",
+        "sha256_after_review": "b3444d526fa70260b1815b233123722195061866d31d4209740bcaac74cc4b4c",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/attempts/02-finish.json",
+        "sha256_before": "4b929801b8d6026975b40dc5f87ebe29fb97e69e1a0f02f73b2badccf75ca52d",
+        "sha256_after_read": "4b929801b8d6026975b40dc5f87ebe29fb97e69e1a0f02f73b2badccf75ca52d",
+        "sha256_after_review": "4b929801b8d6026975b40dc5f87ebe29fb97e69e1a0f02f73b2badccf75ca52d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/attempts/02-start.json",
+        "sha256_before": "720b7f4dde87605f1ae0df3e1806f6b348a3437737b63636b0ba91bb972bf2b7",
+        "sha256_after_read": "720b7f4dde87605f1ae0df3e1806f6b348a3437737b63636b0ba91bb972bf2b7",
+        "sha256_after_review": "720b7f4dde87605f1ae0df3e1806f6b348a3437737b63636b0ba91bb972bf2b7",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/case-finish.json",
+        "sha256_before": "91d8cb10176b741abdd35fb474fcdbf4e8d431a03d4c193230a1087eec8f61b6",
+        "sha256_after_read": "91d8cb10176b741abdd35fb474fcdbf4e8d431a03d4c193230a1087eec8f61b6",
+        "sha256_after_review": "91d8cb10176b741abdd35fb474fcdbf4e8d431a03d4c193230a1087eec8f61b6",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/case-start.json",
+        "sha256_before": "890089b39c0ced5899274a164e3b8d60780d87cf30ca4212454c439ec089f0e1",
+        "sha256_after_read": "890089b39c0ced5899274a164e3b8d60780d87cf30ca4212454c439ec089f0e1",
+        "sha256_after_review": "890089b39c0ced5899274a164e3b8d60780d87cf30ca4212454c439ec089f0e1",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/evaluations/01.json",
+        "sha256_before": "cfaf1b1c452470ae2e96ad1be4e2c6d0287269454b652dd23a40256136e0ed9a",
+        "sha256_after_read": "cfaf1b1c452470ae2e96ad1be4e2c6d0287269454b652dd23a40256136e0ed9a",
+        "sha256_after_review": "cfaf1b1c452470ae2e96ad1be4e2c6d0287269454b652dd23a40256136e0ed9a",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/evaluations/02.json",
+        "sha256_before": "8ee4c79868af9627f2aca652dc6d4b1b4586a393396becd8f097d1888afa665f",
+        "sha256_after_read": "8ee4c79868af9627f2aca652dc6d4b1b4586a393396becd8f097d1888afa665f",
+        "sha256_after_review": "8ee4c79868af9627f2aca652dc6d4b1b4586a393396becd8f097d1888afa665f",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/final-product.json",
+        "sha256_before": "e39129040a48d61d87e8e0f63b125b9a17d24264eef347465e460268cbad4a4b",
+        "sha256_after_read": "e39129040a48d61d87e8e0f63b125b9a17d24264eef347465e460268cbad4a4b",
+        "sha256_after_review": "e39129040a48d61d87e8e0f63b125b9a17d24264eef347465e460268cbad4a4b",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/input-audit/01.json",
+        "sha256_before": "b473aff954e5eadb6c6ffcaa3d8c1f34caf915f2917bde993b0592beb7434088",
+        "sha256_after_read": "b473aff954e5eadb6c6ffcaa3d8c1f34caf915f2917bde993b0592beb7434088",
+        "sha256_after_review": "b473aff954e5eadb6c6ffcaa3d8c1f34caf915f2917bde993b0592beb7434088",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/input-audit/02.json",
+        "sha256_before": "8a972f4b3aee79c8461f8e315519ea4d75ab5fb90e2ce446c9549662f757c273",
+        "sha256_after_read": "8a972f4b3aee79c8461f8e315519ea4d75ab5fb90e2ce446c9549662f757c273",
+        "sha256_after_review": "8a972f4b3aee79c8461f8e315519ea4d75ab5fb90e2ce446c9549662f757c273",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/requests/01.json",
+        "sha256_before": "b5851ad711393695623b98b9a694f8248cf57a0e6f2a133b5a517fda307a4efb",
+        "sha256_after_read": "b5851ad711393695623b98b9a694f8248cf57a0e6f2a133b5a517fda307a4efb",
+        "sha256_after_review": "b5851ad711393695623b98b9a694f8248cf57a0e6f2a133b5a517fda307a4efb",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/requests/02.json",
+        "sha256_before": "b106c5d48f6dbb4e5138d5c9b0dfa1956f90c198a4ab57de6c35d5744f045e6e",
+        "sha256_after_read": "b106c5d48f6dbb4e5138d5c9b0dfa1956f90c198a4ab57de6c35d5744f045e6e",
+        "sha256_after_review": "b106c5d48f6dbb4e5138d5c9b0dfa1956f90c198a4ab57de6c35d5744f045e6e",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/runtime-binding.json",
+        "sha256_before": "035d0c87c7ecf03744186a525d1ed69fa16aa967182405b36765af9667a09fc5",
+        "sha256_after_read": "035d0c87c7ecf03744186a525d1ed69fa16aa967182405b36765af9667a09fc5",
+        "sha256_after_review": "035d0c87c7ecf03744186a525d1ed69fa16aa967182405b36765af9667a09fc5",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/scores.json",
+        "sha256_before": "6ef09993d7afe70c5b43c063d3738f0271b9ec0f25ff8ffac30b341b1e950a62",
+        "sha256_after_read": "6ef09993d7afe70c5b43c063d3738f0271b9ec0f25ff8ffac30b341b1e950a62",
+        "sha256_after_review": "6ef09993d7afe70c5b43c063d3738f0271b9ec0f25ff8ffac30b341b1e950a62",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/attempts/01-finish.json",
+        "sha256_before": "45c11af6933535b2359f3903a30017cbee8958adeba2848fb790c89c4f372dc8",
+        "sha256_after_read": "45c11af6933535b2359f3903a30017cbee8958adeba2848fb790c89c4f372dc8",
+        "sha256_after_review": "45c11af6933535b2359f3903a30017cbee8958adeba2848fb790c89c4f372dc8",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/attempts/01-start.json",
+        "sha256_before": "53627f8671b3f069d3f6158a41ba7325ed883372a5ead83b693197879cfbc252",
+        "sha256_after_read": "53627f8671b3f069d3f6158a41ba7325ed883372a5ead83b693197879cfbc252",
+        "sha256_after_review": "53627f8671b3f069d3f6158a41ba7325ed883372a5ead83b693197879cfbc252",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/attempts/02-finish.json",
+        "sha256_before": "f00e4b7ddfe8adc1d09b8cbb39b9bcfaef0015fa40a18764990a3f80791165a2",
+        "sha256_after_read": "f00e4b7ddfe8adc1d09b8cbb39b9bcfaef0015fa40a18764990a3f80791165a2",
+        "sha256_after_review": "f00e4b7ddfe8adc1d09b8cbb39b9bcfaef0015fa40a18764990a3f80791165a2",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/attempts/02-start.json",
+        "sha256_before": "a75377881eda6527713e241c7f08714e64b86cc847ad3366cc0c12abd6de71d3",
+        "sha256_after_read": "a75377881eda6527713e241c7f08714e64b86cc847ad3366cc0c12abd6de71d3",
+        "sha256_after_review": "a75377881eda6527713e241c7f08714e64b86cc847ad3366cc0c12abd6de71d3",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/case-finish.json",
+        "sha256_before": "da47b728426d53e07bc7b0bc1050de3006b5e841b57fc8d0fc93701023c57438",
+        "sha256_after_read": "da47b728426d53e07bc7b0bc1050de3006b5e841b57fc8d0fc93701023c57438",
+        "sha256_after_review": "da47b728426d53e07bc7b0bc1050de3006b5e841b57fc8d0fc93701023c57438",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/case-start.json",
+        "sha256_before": "b753abc8f8b7ed701eee34912cb1253bc65186025c24507e417999ae28d5cab9",
+        "sha256_after_read": "b753abc8f8b7ed701eee34912cb1253bc65186025c24507e417999ae28d5cab9",
+        "sha256_after_review": "b753abc8f8b7ed701eee34912cb1253bc65186025c24507e417999ae28d5cab9",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/evaluations/01.json",
+        "sha256_before": "8fe8be77fa53815927118e1b3de4901732dabbe8b1bc67f2c7744faa1f237148",
+        "sha256_after_read": "8fe8be77fa53815927118e1b3de4901732dabbe8b1bc67f2c7744faa1f237148",
+        "sha256_after_review": "8fe8be77fa53815927118e1b3de4901732dabbe8b1bc67f2c7744faa1f237148",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/evaluations/02.json",
+        "sha256_before": "79135a94cc224108925295eddb7ba5208a40707daf69903ca79e36089b448764",
+        "sha256_after_read": "79135a94cc224108925295eddb7ba5208a40707daf69903ca79e36089b448764",
+        "sha256_after_review": "79135a94cc224108925295eddb7ba5208a40707daf69903ca79e36089b448764",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/final-product.json",
+        "sha256_before": "02bacc6099167d4525ec820d8b6e5f5db5df16b659e6c387e9bc3e2ca4ca0c72",
+        "sha256_after_read": "02bacc6099167d4525ec820d8b6e5f5db5df16b659e6c387e9bc3e2ca4ca0c72",
+        "sha256_after_review": "02bacc6099167d4525ec820d8b6e5f5db5df16b659e6c387e9bc3e2ca4ca0c72",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/input-audit/01.json",
+        "sha256_before": "47702b1810416e859cb2add6db3f7fd9d4ae751b0dd9cde0dad61187291abb5d",
+        "sha256_after_read": "47702b1810416e859cb2add6db3f7fd9d4ae751b0dd9cde0dad61187291abb5d",
+        "sha256_after_review": "47702b1810416e859cb2add6db3f7fd9d4ae751b0dd9cde0dad61187291abb5d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/input-audit/02.json",
+        "sha256_before": "bbad73db2419d2d722243371cd0002f6352add4f2a0b90310a2e6268dc1daf4f",
+        "sha256_after_read": "bbad73db2419d2d722243371cd0002f6352add4f2a0b90310a2e6268dc1daf4f",
+        "sha256_after_review": "bbad73db2419d2d722243371cd0002f6352add4f2a0b90310a2e6268dc1daf4f",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/requests/01.json",
+        "sha256_before": "0d343a67bbae2e66a24f0e62e34eadec1903b63d73718610fd38cd8fe03e747e",
+        "sha256_after_read": "0d343a67bbae2e66a24f0e62e34eadec1903b63d73718610fd38cd8fe03e747e",
+        "sha256_after_review": "0d343a67bbae2e66a24f0e62e34eadec1903b63d73718610fd38cd8fe03e747e",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/requests/02.json",
+        "sha256_before": "ecf43eefb0caf69972a2e3fd5aa50dea9355b15ac30f542d239cc294c035e324",
+        "sha256_after_read": "ecf43eefb0caf69972a2e3fd5aa50dea9355b15ac30f542d239cc294c035e324",
+        "sha256_after_review": "ecf43eefb0caf69972a2e3fd5aa50dea9355b15ac30f542d239cc294c035e324",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/runtime-binding.json",
+        "sha256_before": "8e6a9c1409230ce270f351722835efe1c8209392127199646f359bd9dc78d488",
+        "sha256_after_read": "8e6a9c1409230ce270f351722835efe1c8209392127199646f359bd9dc78d488",
+        "sha256_after_review": "8e6a9c1409230ce270f351722835efe1c8209392127199646f359bd9dc78d488",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/scores.json",
+        "sha256_before": "10f8f5a03effa19ec8b1721ca0e42e4e8bac4e6ee783299390a1f831200a1a84",
+        "sha256_after_read": "10f8f5a03effa19ec8b1721ca0e42e4e8bac4e6ee783299390a1f831200a1a84",
+        "sha256_after_review": "10f8f5a03effa19ec8b1721ca0e42e4e8bac4e6ee783299390a1f831200a1a84",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/attempts/01-finish.json",
+        "sha256_before": "53a844da426492cc2a242d90f8b201349bbe5fa70be0655043c5dbe221bcd5d8",
+        "sha256_after_read": "53a844da426492cc2a242d90f8b201349bbe5fa70be0655043c5dbe221bcd5d8",
+        "sha256_after_review": "53a844da426492cc2a242d90f8b201349bbe5fa70be0655043c5dbe221bcd5d8",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/attempts/01-start.json",
+        "sha256_before": "3cee245bb9e3337e2b30ce20e15d9f0770bbe50773115e1f0863f0b7f097c78a",
+        "sha256_after_read": "3cee245bb9e3337e2b30ce20e15d9f0770bbe50773115e1f0863f0b7f097c78a",
+        "sha256_after_review": "3cee245bb9e3337e2b30ce20e15d9f0770bbe50773115e1f0863f0b7f097c78a",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/attempts/02-finish.json",
+        "sha256_before": "f878b00dfa6987b3f8b3895e3c301d14feef19f761c5ef7f570fed27e28a6c09",
+        "sha256_after_read": "f878b00dfa6987b3f8b3895e3c301d14feef19f761c5ef7f570fed27e28a6c09",
+        "sha256_after_review": "f878b00dfa6987b3f8b3895e3c301d14feef19f761c5ef7f570fed27e28a6c09",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/attempts/02-start.json",
+        "sha256_before": "93b9e942ce6cf40d6d16d5fd79831e4d836bc49d3f5b3d5c10b6198f0a7c6791",
+        "sha256_after_read": "93b9e942ce6cf40d6d16d5fd79831e4d836bc49d3f5b3d5c10b6198f0a7c6791",
+        "sha256_after_review": "93b9e942ce6cf40d6d16d5fd79831e4d836bc49d3f5b3d5c10b6198f0a7c6791",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/case-finish.json",
+        "sha256_before": "1fb670da5e8856e316cc663e194e387e5f67ae41da6487a316e7a8477b8b3eaf",
+        "sha256_after_read": "1fb670da5e8856e316cc663e194e387e5f67ae41da6487a316e7a8477b8b3eaf",
+        "sha256_after_review": "1fb670da5e8856e316cc663e194e387e5f67ae41da6487a316e7a8477b8b3eaf",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/case-start.json",
+        "sha256_before": "b558f8ae4f0d24801c17a183066e4ea47d9f3a57f8d10efde7263f6b4ce18ed0",
+        "sha256_after_read": "b558f8ae4f0d24801c17a183066e4ea47d9f3a57f8d10efde7263f6b4ce18ed0",
+        "sha256_after_review": "b558f8ae4f0d24801c17a183066e4ea47d9f3a57f8d10efde7263f6b4ce18ed0",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/evaluations/01.json",
+        "sha256_before": "6c06ac51f9a540f956b9603f3c64123163dee3fdfb7fa94dfe25c6a4d830980b",
+        "sha256_after_read": "6c06ac51f9a540f956b9603f3c64123163dee3fdfb7fa94dfe25c6a4d830980b",
+        "sha256_after_review": "6c06ac51f9a540f956b9603f3c64123163dee3fdfb7fa94dfe25c6a4d830980b",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/evaluations/02.json",
+        "sha256_before": "9d3f6f75be4d5d60b7eb94a4e725337a010799fe9487155a1a44de56e9b1e224",
+        "sha256_after_read": "9d3f6f75be4d5d60b7eb94a4e725337a010799fe9487155a1a44de56e9b1e224",
+        "sha256_after_review": "9d3f6f75be4d5d60b7eb94a4e725337a010799fe9487155a1a44de56e9b1e224",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/final-product.json",
+        "sha256_before": "9dd2b48f00649da77ef7e32c2865e68ab79a430ba7a35ab22227a0112094901c",
+        "sha256_after_read": "9dd2b48f00649da77ef7e32c2865e68ab79a430ba7a35ab22227a0112094901c",
+        "sha256_after_review": "9dd2b48f00649da77ef7e32c2865e68ab79a430ba7a35ab22227a0112094901c",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/input-audit/01.json",
+        "sha256_before": "3e29711a52ab8461c3a7c5c4c659e3f03150ef2c46744461a4e7e9122cecb6c4",
+        "sha256_after_read": "3e29711a52ab8461c3a7c5c4c659e3f03150ef2c46744461a4e7e9122cecb6c4",
+        "sha256_after_review": "3e29711a52ab8461c3a7c5c4c659e3f03150ef2c46744461a4e7e9122cecb6c4",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/input-audit/02.json",
+        "sha256_before": "c11f29d2c4dbf775b9d20e99d44a2af43ebaea0ca1b091b2a7c297a8af7cad8d",
+        "sha256_after_read": "c11f29d2c4dbf775b9d20e99d44a2af43ebaea0ca1b091b2a7c297a8af7cad8d",
+        "sha256_after_review": "c11f29d2c4dbf775b9d20e99d44a2af43ebaea0ca1b091b2a7c297a8af7cad8d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/requests/01.json",
+        "sha256_before": "61f5cbf60707d3cae2cc1d12866e03e4952bfaf0f0c343ed6267a849db83f3f1",
+        "sha256_after_read": "61f5cbf60707d3cae2cc1d12866e03e4952bfaf0f0c343ed6267a849db83f3f1",
+        "sha256_after_review": "61f5cbf60707d3cae2cc1d12866e03e4952bfaf0f0c343ed6267a849db83f3f1",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/requests/02.json",
+        "sha256_before": "e4709a683c0027e9fa7a87fe13741355510f9625efe3909cc1c8b4225d440950",
+        "sha256_after_read": "e4709a683c0027e9fa7a87fe13741355510f9625efe3909cc1c8b4225d440950",
+        "sha256_after_review": "e4709a683c0027e9fa7a87fe13741355510f9625efe3909cc1c8b4225d440950",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/runtime-binding.json",
+        "sha256_before": "d3dd44a3b8499250980c49fe7c9cfbaa9adf979810f899a5a233a178e2827034",
+        "sha256_after_read": "d3dd44a3b8499250980c49fe7c9cfbaa9adf979810f899a5a233a178e2827034",
+        "sha256_after_review": "d3dd44a3b8499250980c49fe7c9cfbaa9adf979810f899a5a233a178e2827034",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/scores.json",
+        "sha256_before": "2837b9e3254dc91cf955443f0dc1886f6dac313d05a2c3e45b1058984b8dd3ca",
+        "sha256_after_read": "2837b9e3254dc91cf955443f0dc1886f6dac313d05a2c3e45b1058984b8dd3ca",
+        "sha256_after_review": "2837b9e3254dc91cf955443f0dc1886f6dac313d05a2c3e45b1058984b8dd3ca",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/attempts/01-finish.json",
+        "sha256_before": "a538c6d43e3eb16916fba330fa27dd4602de7a087784d0cd5fd2739d39c5c892",
+        "sha256_after_read": "a538c6d43e3eb16916fba330fa27dd4602de7a087784d0cd5fd2739d39c5c892",
+        "sha256_after_review": "a538c6d43e3eb16916fba330fa27dd4602de7a087784d0cd5fd2739d39c5c892",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/attempts/01-start.json",
+        "sha256_before": "4a13be66cdd37fd15fc05541508d871c9a8fd5bdfd459ad2f3c584175fd22919",
+        "sha256_after_read": "4a13be66cdd37fd15fc05541508d871c9a8fd5bdfd459ad2f3c584175fd22919",
+        "sha256_after_review": "4a13be66cdd37fd15fc05541508d871c9a8fd5bdfd459ad2f3c584175fd22919",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/case-finish.json",
+        "sha256_before": "634b641d1753de1a32f09a8c090620a2e27198d77bd5dd2a30cc6117904eabec",
+        "sha256_after_read": "634b641d1753de1a32f09a8c090620a2e27198d77bd5dd2a30cc6117904eabec",
+        "sha256_after_review": "634b641d1753de1a32f09a8c090620a2e27198d77bd5dd2a30cc6117904eabec",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/case-start.json",
+        "sha256_before": "1c9af3003681898f221a49345f40c1409ff98f2df6f55cfe0e9a8fd1649b84d0",
+        "sha256_after_read": "1c9af3003681898f221a49345f40c1409ff98f2df6f55cfe0e9a8fd1649b84d0",
+        "sha256_after_review": "1c9af3003681898f221a49345f40c1409ff98f2df6f55cfe0e9a8fd1649b84d0",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/evaluations/01.json",
+        "sha256_before": "23caa79c098c966f4de0d04090bb29149cd94e6c9669d5954b0b0ff5d67dfb4d",
+        "sha256_after_read": "23caa79c098c966f4de0d04090bb29149cd94e6c9669d5954b0b0ff5d67dfb4d",
+        "sha256_after_review": "23caa79c098c966f4de0d04090bb29149cd94e6c9669d5954b0b0ff5d67dfb4d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/final-product.json",
+        "sha256_before": "0ba780bb54effb363eaa3508474efe6cfc985aed07b63496a10d91e53527ad39",
+        "sha256_after_read": "0ba780bb54effb363eaa3508474efe6cfc985aed07b63496a10d91e53527ad39",
+        "sha256_after_review": "0ba780bb54effb363eaa3508474efe6cfc985aed07b63496a10d91e53527ad39",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/input-audit/01.json",
+        "sha256_before": "f82d220a1ec7233476d1f45668715fe45b95c7e4097954252a88b4efe98e204a",
+        "sha256_after_read": "f82d220a1ec7233476d1f45668715fe45b95c7e4097954252a88b4efe98e204a",
+        "sha256_after_review": "f82d220a1ec7233476d1f45668715fe45b95c7e4097954252a88b4efe98e204a",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/requests/01.json",
+        "sha256_before": "76921f67c700d276ed953fbd0ee18442cdf381dc79163f9bc06984de15f79fec",
+        "sha256_after_read": "76921f67c700d276ed953fbd0ee18442cdf381dc79163f9bc06984de15f79fec",
+        "sha256_after_review": "76921f67c700d276ed953fbd0ee18442cdf381dc79163f9bc06984de15f79fec",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/runtime-binding.json",
+        "sha256_before": "0f57f23b6b560dbe3390aa8a36c6e76afabd8df3fc6274ad0a53966817a77c0d",
+        "sha256_after_read": "0f57f23b6b560dbe3390aa8a36c6e76afabd8df3fc6274ad0a53966817a77c0d",
+        "sha256_after_review": "0f57f23b6b560dbe3390aa8a36c6e76afabd8df3fc6274ad0a53966817a77c0d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/scores.json",
+        "sha256_before": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "sha256_after_read": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "sha256_after_review": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/attempts/01-finish.json",
+        "sha256_before": "201f5bcea44011c8dbf22184f4df9167e698f54b5a2a32a7db96a83ccba44023",
+        "sha256_after_read": "201f5bcea44011c8dbf22184f4df9167e698f54b5a2a32a7db96a83ccba44023",
+        "sha256_after_review": "201f5bcea44011c8dbf22184f4df9167e698f54b5a2a32a7db96a83ccba44023",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/attempts/01-start.json",
+        "sha256_before": "11786cb05dc34dd60b6b330c8740c5b13eef9232d5e51a93d5e270c6a1dec0ef",
+        "sha256_after_read": "11786cb05dc34dd60b6b330c8740c5b13eef9232d5e51a93d5e270c6a1dec0ef",
+        "sha256_after_review": "11786cb05dc34dd60b6b330c8740c5b13eef9232d5e51a93d5e270c6a1dec0ef",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/case-finish.json",
+        "sha256_before": "2c585b06570f96ae43caec8a69d64506cee57bf7466defead488296fa8cc7f6d",
+        "sha256_after_read": "2c585b06570f96ae43caec8a69d64506cee57bf7466defead488296fa8cc7f6d",
+        "sha256_after_review": "2c585b06570f96ae43caec8a69d64506cee57bf7466defead488296fa8cc7f6d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/case-start.json",
+        "sha256_before": "0a52e35f623a8901cbe4c271d28b86e63893144569e23553e23a6c76cd8d8cdc",
+        "sha256_after_read": "0a52e35f623a8901cbe4c271d28b86e63893144569e23553e23a6c76cd8d8cdc",
+        "sha256_after_review": "0a52e35f623a8901cbe4c271d28b86e63893144569e23553e23a6c76cd8d8cdc",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/evaluations/01.json",
+        "sha256_before": "3c178d2c8401911bc3d33948481023d947cc89189cf5983e008323a880897867",
+        "sha256_after_read": "3c178d2c8401911bc3d33948481023d947cc89189cf5983e008323a880897867",
+        "sha256_after_review": "3c178d2c8401911bc3d33948481023d947cc89189cf5983e008323a880897867",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/final-product.json",
+        "sha256_before": "1304188d90894c0938784e8f922cac6b2a88321301bb50a49ba74ae48b6813b5",
+        "sha256_after_read": "1304188d90894c0938784e8f922cac6b2a88321301bb50a49ba74ae48b6813b5",
+        "sha256_after_review": "1304188d90894c0938784e8f922cac6b2a88321301bb50a49ba74ae48b6813b5",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/input-audit/01.json",
+        "sha256_before": "b1d8a4da89e14b1a590709cf155bbcd79c3a7e108b368f230261dfd7e1753dce",
+        "sha256_after_read": "b1d8a4da89e14b1a590709cf155bbcd79c3a7e108b368f230261dfd7e1753dce",
+        "sha256_after_review": "b1d8a4da89e14b1a590709cf155bbcd79c3a7e108b368f230261dfd7e1753dce",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/requests/01.json",
+        "sha256_before": "0c685c2ce96816458165168e5e0eee46a91b9e3cda206c17d0aec9e047e05799",
+        "sha256_after_read": "0c685c2ce96816458165168e5e0eee46a91b9e3cda206c17d0aec9e047e05799",
+        "sha256_after_review": "0c685c2ce96816458165168e5e0eee46a91b9e3cda206c17d0aec9e047e05799",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/runtime-binding.json",
+        "sha256_before": "6f0faa788814826c530bb022e6665f028137186b4b0d04c236cb9294c312676d",
+        "sha256_after_read": "6f0faa788814826c530bb022e6665f028137186b4b0d04c236cb9294c312676d",
+        "sha256_after_review": "6f0faa788814826c530bb022e6665f028137186b4b0d04c236cb9294c312676d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/scores.json",
+        "sha256_before": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "sha256_after_read": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "sha256_after_review": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/attempts/01-finish.json",
+        "sha256_before": "880989ffe79426a62899eb33e4bd319cd85ee77bc6eacbdbc121816fbef82c7b",
+        "sha256_after_read": "880989ffe79426a62899eb33e4bd319cd85ee77bc6eacbdbc121816fbef82c7b",
+        "sha256_after_review": "880989ffe79426a62899eb33e4bd319cd85ee77bc6eacbdbc121816fbef82c7b",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/attempts/01-start.json",
+        "sha256_before": "b0ffb3822640961ae56b8284440e29704de34d79618a267af4c150d2443f7a04",
+        "sha256_after_read": "b0ffb3822640961ae56b8284440e29704de34d79618a267af4c150d2443f7a04",
+        "sha256_after_review": "b0ffb3822640961ae56b8284440e29704de34d79618a267af4c150d2443f7a04",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/case-finish.json",
+        "sha256_before": "cda523309791527e7d41a9160015561f737ac8138944ade0e15d1b5980006a85",
+        "sha256_after_read": "cda523309791527e7d41a9160015561f737ac8138944ade0e15d1b5980006a85",
+        "sha256_after_review": "cda523309791527e7d41a9160015561f737ac8138944ade0e15d1b5980006a85",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/case-start.json",
+        "sha256_before": "9171c58216060a1dcf06e3561cef0c21fcadeab2dca5795e8eedcac4b05c799d",
+        "sha256_after_read": "9171c58216060a1dcf06e3561cef0c21fcadeab2dca5795e8eedcac4b05c799d",
+        "sha256_after_review": "9171c58216060a1dcf06e3561cef0c21fcadeab2dca5795e8eedcac4b05c799d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/evaluations/01.json",
+        "sha256_before": "7559fbac9fdb1ebfa92fcc5099effa22a2ab5099c60c9711964111c2fb31fec0",
+        "sha256_after_read": "7559fbac9fdb1ebfa92fcc5099effa22a2ab5099c60c9711964111c2fb31fec0",
+        "sha256_after_review": "7559fbac9fdb1ebfa92fcc5099effa22a2ab5099c60c9711964111c2fb31fec0",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/final-product.json",
+        "sha256_before": "dd41c168226fb1700bd88decda51b6a9c5e60aed0d6eeaaff220d85ec62263ac",
+        "sha256_after_read": "dd41c168226fb1700bd88decda51b6a9c5e60aed0d6eeaaff220d85ec62263ac",
+        "sha256_after_review": "dd41c168226fb1700bd88decda51b6a9c5e60aed0d6eeaaff220d85ec62263ac",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/input-audit/01.json",
+        "sha256_before": "85c1d9b0e49220cba14ea3c7cc9261c63a8be1ece1971c37a2976b8cf20d548c",
+        "sha256_after_read": "85c1d9b0e49220cba14ea3c7cc9261c63a8be1ece1971c37a2976b8cf20d548c",
+        "sha256_after_review": "85c1d9b0e49220cba14ea3c7cc9261c63a8be1ece1971c37a2976b8cf20d548c",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/requests/01.json",
+        "sha256_before": "36893596d0cb7c2b0ece61604f94b4bb4e1e651be6e09773868f7acc6b61b688",
+        "sha256_after_read": "36893596d0cb7c2b0ece61604f94b4bb4e1e651be6e09773868f7acc6b61b688",
+        "sha256_after_review": "36893596d0cb7c2b0ece61604f94b4bb4e1e651be6e09773868f7acc6b61b688",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/runtime-binding.json",
+        "sha256_before": "bb8f20a407b10304c68901c4b26539b5fc42d5e60b1f70145a72fea99a57ceae",
+        "sha256_after_read": "bb8f20a407b10304c68901c4b26539b5fc42d5e60b1f70145a72fea99a57ceae",
+        "sha256_after_review": "bb8f20a407b10304c68901c4b26539b5fc42d5e60b1f70145a72fea99a57ceae",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/scores.json",
+        "sha256_before": "7564486e3ea0f6f2313182773908c3b01f2b03721df09a5844d79fdbb96fa332",
+        "sha256_after_read": "7564486e3ea0f6f2313182773908c3b01f2b03721df09a5844d79fdbb96fa332",
+        "sha256_after_review": "7564486e3ea0f6f2313182773908c3b01f2b03721df09a5844d79fdbb96fa332",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/attempts/01-finish.json",
+        "sha256_before": "ea25c76ec278b8ab8e9297bf46a52382dfef9ec174713d4fa8d3c50f8f72a237",
+        "sha256_after_read": "ea25c76ec278b8ab8e9297bf46a52382dfef9ec174713d4fa8d3c50f8f72a237",
+        "sha256_after_review": "ea25c76ec278b8ab8e9297bf46a52382dfef9ec174713d4fa8d3c50f8f72a237",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/attempts/01-start.json",
+        "sha256_before": "370ce8cb8b393d62512cc30c00fe67bf84ebdfd27cee8c6264a913316471da06",
+        "sha256_after_read": "370ce8cb8b393d62512cc30c00fe67bf84ebdfd27cee8c6264a913316471da06",
+        "sha256_after_review": "370ce8cb8b393d62512cc30c00fe67bf84ebdfd27cee8c6264a913316471da06",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/attempts/02-finish.json",
+        "sha256_before": "aa76277bf40542c09d59d8609fd58508ee74c97307004297b1d76ac4fba523e8",
+        "sha256_after_read": "aa76277bf40542c09d59d8609fd58508ee74c97307004297b1d76ac4fba523e8",
+        "sha256_after_review": "aa76277bf40542c09d59d8609fd58508ee74c97307004297b1d76ac4fba523e8",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/attempts/02-start.json",
+        "sha256_before": "46a4fceef1144ceef6aaf716903852f0874bcb4f8b0fb99720d89c06e4186c7c",
+        "sha256_after_read": "46a4fceef1144ceef6aaf716903852f0874bcb4f8b0fb99720d89c06e4186c7c",
+        "sha256_after_review": "46a4fceef1144ceef6aaf716903852f0874bcb4f8b0fb99720d89c06e4186c7c",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/case-finish.json",
+        "sha256_before": "81165d21f7f5e2af6e0053a3f1e62024a82ea53440bb600dc2729e3cc29a948c",
+        "sha256_after_read": "81165d21f7f5e2af6e0053a3f1e62024a82ea53440bb600dc2729e3cc29a948c",
+        "sha256_after_review": "81165d21f7f5e2af6e0053a3f1e62024a82ea53440bb600dc2729e3cc29a948c",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/case-start.json",
+        "sha256_before": "dffef5557094fa7742d0c8a158fd53866d095d270b5db13ad1e7beecb1a64070",
+        "sha256_after_read": "dffef5557094fa7742d0c8a158fd53866d095d270b5db13ad1e7beecb1a64070",
+        "sha256_after_review": "dffef5557094fa7742d0c8a158fd53866d095d270b5db13ad1e7beecb1a64070",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/evaluations/01.json",
+        "sha256_before": "a905f349d3e06c8cca4d36c6c43e62d727b29060382f8d8a3d990ddcec7e88a2",
+        "sha256_after_read": "a905f349d3e06c8cca4d36c6c43e62d727b29060382f8d8a3d990ddcec7e88a2",
+        "sha256_after_review": "a905f349d3e06c8cca4d36c6c43e62d727b29060382f8d8a3d990ddcec7e88a2",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/evaluations/02.json",
+        "sha256_before": "13c72b98db7ebb1708c51d4e6f50d9ac14d946189a413e51775b68a6b034c674",
+        "sha256_after_read": "13c72b98db7ebb1708c51d4e6f50d9ac14d946189a413e51775b68a6b034c674",
+        "sha256_after_review": "13c72b98db7ebb1708c51d4e6f50d9ac14d946189a413e51775b68a6b034c674",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/final-product.json",
+        "sha256_before": "664d31089296f6ce7f13df4b4cc9ea3c0346509404ec3e02d49d0481c2d80c9d",
+        "sha256_after_read": "664d31089296f6ce7f13df4b4cc9ea3c0346509404ec3e02d49d0481c2d80c9d",
+        "sha256_after_review": "664d31089296f6ce7f13df4b4cc9ea3c0346509404ec3e02d49d0481c2d80c9d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/input-audit/01.json",
+        "sha256_before": "b914b4a30ad572c9b72996d407a14dcefe13c62e009963b34816dc39e015583e",
+        "sha256_after_read": "b914b4a30ad572c9b72996d407a14dcefe13c62e009963b34816dc39e015583e",
+        "sha256_after_review": "b914b4a30ad572c9b72996d407a14dcefe13c62e009963b34816dc39e015583e",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/input-audit/02.json",
+        "sha256_before": "530d16802b98b2f6cd28d063b9ad1fe27441e422be8eb8546805a130c697c621",
+        "sha256_after_read": "530d16802b98b2f6cd28d063b9ad1fe27441e422be8eb8546805a130c697c621",
+        "sha256_after_review": "530d16802b98b2f6cd28d063b9ad1fe27441e422be8eb8546805a130c697c621",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/requests/01.json",
+        "sha256_before": "d61e1392dd96bb9c03b332b8a27419204e181c05ba3604d270573be52b9c2a0f",
+        "sha256_after_read": "d61e1392dd96bb9c03b332b8a27419204e181c05ba3604d270573be52b9c2a0f",
+        "sha256_after_review": "d61e1392dd96bb9c03b332b8a27419204e181c05ba3604d270573be52b9c2a0f",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/requests/02.json",
+        "sha256_before": "851dc655d0df4920654cc7fe04722a5aa6159797a2e836981b38277282772090",
+        "sha256_after_read": "851dc655d0df4920654cc7fe04722a5aa6159797a2e836981b38277282772090",
+        "sha256_after_review": "851dc655d0df4920654cc7fe04722a5aa6159797a2e836981b38277282772090",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/runtime-binding.json",
+        "sha256_before": "3154d021753abecd7dca859274f2b12a810adc861d3ccb8e14349eeccb78ac83",
+        "sha256_after_read": "3154d021753abecd7dca859274f2b12a810adc861d3ccb8e14349eeccb78ac83",
+        "sha256_after_review": "3154d021753abecd7dca859274f2b12a810adc861d3ccb8e14349eeccb78ac83",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/scores.json",
+        "sha256_before": "b489c207eecbcbd1eca460368b38bf096ff8f2051f9bae484ab4882ddc5153a6",
+        "sha256_after_read": "b489c207eecbcbd1eca460368b38bf096ff8f2051f9bae484ab4882ddc5153a6",
+        "sha256_after_review": "b489c207eecbcbd1eca460368b38bf096ff8f2051f9bae484ab4882ddc5153a6",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/attempts/01-finish.json",
+        "sha256_before": "15c63c0a2aef2fcb242b720acd57b9fd8dce9c19d84a7f33710e44ac5720dd7b",
+        "sha256_after_read": "15c63c0a2aef2fcb242b720acd57b9fd8dce9c19d84a7f33710e44ac5720dd7b",
+        "sha256_after_review": "15c63c0a2aef2fcb242b720acd57b9fd8dce9c19d84a7f33710e44ac5720dd7b",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/attempts/01-start.json",
+        "sha256_before": "17b6f5fe94c2d623611e4b00ce53d38e0a1be1c1a3518f25dabb9724dee25d9e",
+        "sha256_after_read": "17b6f5fe94c2d623611e4b00ce53d38e0a1be1c1a3518f25dabb9724dee25d9e",
+        "sha256_after_review": "17b6f5fe94c2d623611e4b00ce53d38e0a1be1c1a3518f25dabb9724dee25d9e",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/case-finish.json",
+        "sha256_before": "f938b770e0cf3d0b91d3c65d85e7875fbbc01c4a9f27aae526fddb64d2896354",
+        "sha256_after_read": "f938b770e0cf3d0b91d3c65d85e7875fbbc01c4a9f27aae526fddb64d2896354",
+        "sha256_after_review": "f938b770e0cf3d0b91d3c65d85e7875fbbc01c4a9f27aae526fddb64d2896354",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/case-start.json",
+        "sha256_before": "e8c0a82a6e5ef964980dfb523bf5a41c751c349d9803b801b5b21a4f2d89cb0b",
+        "sha256_after_read": "e8c0a82a6e5ef964980dfb523bf5a41c751c349d9803b801b5b21a4f2d89cb0b",
+        "sha256_after_review": "e8c0a82a6e5ef964980dfb523bf5a41c751c349d9803b801b5b21a4f2d89cb0b",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/evaluations/01.json",
+        "sha256_before": "621656be32e3661c1388df55e5b00361dfbd598aed10a5c1f7b21f3646f3b3a1",
+        "sha256_after_read": "621656be32e3661c1388df55e5b00361dfbd598aed10a5c1f7b21f3646f3b3a1",
+        "sha256_after_review": "621656be32e3661c1388df55e5b00361dfbd598aed10a5c1f7b21f3646f3b3a1",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/final-product.json",
+        "sha256_before": "12cca004ce7fec1718878affac9c8cc5768a3504d6280027e1d8c7c7f71d70f7",
+        "sha256_after_read": "12cca004ce7fec1718878affac9c8cc5768a3504d6280027e1d8c7c7f71d70f7",
+        "sha256_after_review": "12cca004ce7fec1718878affac9c8cc5768a3504d6280027e1d8c7c7f71d70f7",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/input-audit/01.json",
+        "sha256_before": "f7e1dfcff03e9a788c4a8ddb6e364663de891dccf52b351095456d8a2086e47f",
+        "sha256_after_read": "f7e1dfcff03e9a788c4a8ddb6e364663de891dccf52b351095456d8a2086e47f",
+        "sha256_after_review": "f7e1dfcff03e9a788c4a8ddb6e364663de891dccf52b351095456d8a2086e47f",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/requests/01.json",
+        "sha256_before": "b0f49e6063073974d8a3de5e899ff69077312cb57c1e03cb491dc4b73d44413b",
+        "sha256_after_read": "b0f49e6063073974d8a3de5e899ff69077312cb57c1e03cb491dc4b73d44413b",
+        "sha256_after_review": "b0f49e6063073974d8a3de5e899ff69077312cb57c1e03cb491dc4b73d44413b",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/runtime-binding.json",
+        "sha256_before": "7a200e7f70683cc2b5e7981b070098dc22634663d38d88270ce541be84bbeb58",
+        "sha256_after_read": "7a200e7f70683cc2b5e7981b070098dc22634663d38d88270ce541be84bbeb58",
+        "sha256_after_review": "7a200e7f70683cc2b5e7981b070098dc22634663d38d88270ce541be84bbeb58",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/scores.json",
+        "sha256_before": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "sha256_after_read": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "sha256_after_review": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/attempts/01-finish.json",
+        "sha256_before": "359ecf56d1c2d541bd05bf99aa218e09130c2f8b0f13559ae1aa0a448740d705",
+        "sha256_after_read": "359ecf56d1c2d541bd05bf99aa218e09130c2f8b0f13559ae1aa0a448740d705",
+        "sha256_after_review": "359ecf56d1c2d541bd05bf99aa218e09130c2f8b0f13559ae1aa0a448740d705",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/attempts/01-start.json",
+        "sha256_before": "f859379dc6a31fbfb394a2f22ae26419b28a00957a53b8efbb97e337a25a28d2",
+        "sha256_after_read": "f859379dc6a31fbfb394a2f22ae26419b28a00957a53b8efbb97e337a25a28d2",
+        "sha256_after_review": "f859379dc6a31fbfb394a2f22ae26419b28a00957a53b8efbb97e337a25a28d2",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/case-finish.json",
+        "sha256_before": "da9d0305d20cef3c2f8a9e10002b56875a509f3a60420b9e4f5feea99f686b77",
+        "sha256_after_read": "da9d0305d20cef3c2f8a9e10002b56875a509f3a60420b9e4f5feea99f686b77",
+        "sha256_after_review": "da9d0305d20cef3c2f8a9e10002b56875a509f3a60420b9e4f5feea99f686b77",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/case-start.json",
+        "sha256_before": "a2793272ceee25e235377175a7655f319c1bef520a3790a001111b3c4c5ac1ba",
+        "sha256_after_read": "a2793272ceee25e235377175a7655f319c1bef520a3790a001111b3c4c5ac1ba",
+        "sha256_after_review": "a2793272ceee25e235377175a7655f319c1bef520a3790a001111b3c4c5ac1ba",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/evaluations/01.json",
+        "sha256_before": "c082c3db06c0f72de078d291e6ccc0d1679a20a378844ad706282e1a8476ecc7",
+        "sha256_after_read": "c082c3db06c0f72de078d291e6ccc0d1679a20a378844ad706282e1a8476ecc7",
+        "sha256_after_review": "c082c3db06c0f72de078d291e6ccc0d1679a20a378844ad706282e1a8476ecc7",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/final-product.json",
+        "sha256_before": "9b54b1dfac6a5ed53158f5bc6c96ad02ab7cf96730915d357ede0651d954dd4f",
+        "sha256_after_read": "9b54b1dfac6a5ed53158f5bc6c96ad02ab7cf96730915d357ede0651d954dd4f",
+        "sha256_after_review": "9b54b1dfac6a5ed53158f5bc6c96ad02ab7cf96730915d357ede0651d954dd4f",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/input-audit/01.json",
+        "sha256_before": "3a24dd9aeb62ce75eb6f1980c9ab1d5ddc945e5327f81f559fc84998a8021c96",
+        "sha256_after_read": "3a24dd9aeb62ce75eb6f1980c9ab1d5ddc945e5327f81f559fc84998a8021c96",
+        "sha256_after_review": "3a24dd9aeb62ce75eb6f1980c9ab1d5ddc945e5327f81f559fc84998a8021c96",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/requests/01.json",
+        "sha256_before": "4088eb27e68ba2bad18689ec3fa631db63f4ff556913ce1d80b7befe8e51bcb2",
+        "sha256_after_read": "4088eb27e68ba2bad18689ec3fa631db63f4ff556913ce1d80b7befe8e51bcb2",
+        "sha256_after_review": "4088eb27e68ba2bad18689ec3fa631db63f4ff556913ce1d80b7befe8e51bcb2",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/runtime-binding.json",
+        "sha256_before": "6a10a9bacf9d427950f47de68718eb9778ac301cd48d611df45fc75ce697c733",
+        "sha256_after_read": "6a10a9bacf9d427950f47de68718eb9778ac301cd48d611df45fc75ce697c733",
+        "sha256_after_review": "6a10a9bacf9d427950f47de68718eb9778ac301cd48d611df45fc75ce697c733",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/scores.json",
+        "sha256_before": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "sha256_after_read": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "sha256_after_review": "70f75452374f01768296975ee684d4e4c80969a889f8eed0b896bbc2f0ab56db",
+        "unchanged": true
+      },
+      {
+        "path": "backend/app/engine.py",
+        "sha256_before": "527f986d6441aa226f239a0e67d928200f26d77b6b90e65cbc6d14e512d7fd39",
+        "sha256_after_read": "527f986d6441aa226f239a0e67d928200f26d77b6b90e65cbc6d14e512d7fd39",
+        "sha256_after_review": "527f986d6441aa226f239a0e67d928200f26d77b6b90e65cbc6d14e512d7fd39",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/25/requests/01.json",
+        "sha256_before": "96063b8873a269603270ebbc05e344ed282f4f78590301812e9d22a89a714fd2",
+        "sha256_after_read": "96063b8873a269603270ebbc05e344ed282f4f78590301812e9d22a89a714fd2",
+        "sha256_after_review": "96063b8873a269603270ebbc05e344ed282f4f78590301812e9d22a89a714fd2",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/25/runtime-binding.json",
+        "sha256_before": "a5c1ebc10e550dd1aa81e593cc620cb69c74dd8e44948f8a1654454ecac7ebf1",
+        "sha256_after_read": "a5c1ebc10e550dd1aa81e593cc620cb69c74dd8e44948f8a1654454ecac7ebf1",
+        "sha256_after_review": "a5c1ebc10e550dd1aa81e593cc620cb69c74dd8e44948f8a1654454ecac7ebf1",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/26/requests/01.json",
+        "sha256_before": "2685e853771af17a7d2e0dcf5f43fac2450a58dd01b4e657d4a321229566c93c",
+        "sha256_after_read": "2685e853771af17a7d2e0dcf5f43fac2450a58dd01b4e657d4a321229566c93c",
+        "sha256_after_review": "2685e853771af17a7d2e0dcf5f43fac2450a58dd01b4e657d4a321229566c93c",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/26/runtime-binding.json",
+        "sha256_before": "035d0c87c7ecf03744186a525d1ed69fa16aa967182405b36765af9667a09fc5",
+        "sha256_after_read": "035d0c87c7ecf03744186a525d1ed69fa16aa967182405b36765af9667a09fc5",
+        "sha256_after_review": "035d0c87c7ecf03744186a525d1ed69fa16aa967182405b36765af9667a09fc5",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/27/requests/01.json",
+        "sha256_before": "8a7a40d6ca01b549c2653c757b1e5f5afb760fd1ace526f7dd4cd8c6d661e28f",
+        "sha256_after_read": "8a7a40d6ca01b549c2653c757b1e5f5afb760fd1ace526f7dd4cd8c6d661e28f",
+        "sha256_after_review": "8a7a40d6ca01b549c2653c757b1e5f5afb760fd1ace526f7dd4cd8c6d661e28f",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/27/runtime-binding.json",
+        "sha256_before": "8e6a9c1409230ce270f351722835efe1c8209392127199646f359bd9dc78d488",
+        "sha256_after_read": "8e6a9c1409230ce270f351722835efe1c8209392127199646f359bd9dc78d488",
+        "sha256_after_review": "8e6a9c1409230ce270f351722835efe1c8209392127199646f359bd9dc78d488",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/28/requests/01.json",
+        "sha256_before": "14d0893e9b32679e51fb51b3c4f7de412870e3397d9e8621882f4446ed2ca5c4",
+        "sha256_after_read": "14d0893e9b32679e51fb51b3c4f7de412870e3397d9e8621882f4446ed2ca5c4",
+        "sha256_after_review": "14d0893e9b32679e51fb51b3c4f7de412870e3397d9e8621882f4446ed2ca5c4",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/28/runtime-binding.json",
+        "sha256_before": "d3dd44a3b8499250980c49fe7c9cfbaa9adf979810f899a5a233a178e2827034",
+        "sha256_after_read": "d3dd44a3b8499250980c49fe7c9cfbaa9adf979810f899a5a233a178e2827034",
+        "sha256_after_review": "d3dd44a3b8499250980c49fe7c9cfbaa9adf979810f899a5a233a178e2827034",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/29/requests/01.json",
+        "sha256_before": "1ab3762e4eef3847c417e71f86a2c2cfaf30c5dd084179f5c7823b4bac930aa4",
+        "sha256_after_read": "1ab3762e4eef3847c417e71f86a2c2cfaf30c5dd084179f5c7823b4bac930aa4",
+        "sha256_after_review": "1ab3762e4eef3847c417e71f86a2c2cfaf30c5dd084179f5c7823b4bac930aa4",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/29/runtime-binding.json",
+        "sha256_before": "0f57f23b6b560dbe3390aa8a36c6e76afabd8df3fc6274ad0a53966817a77c0d",
+        "sha256_after_read": "0f57f23b6b560dbe3390aa8a36c6e76afabd8df3fc6274ad0a53966817a77c0d",
+        "sha256_after_review": "0f57f23b6b560dbe3390aa8a36c6e76afabd8df3fc6274ad0a53966817a77c0d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/30/requests/01.json",
+        "sha256_before": "8d52b3c5afd70e2dfdcd67a3775c587b33dbf5016e5b65f91c1813436a9080f3",
+        "sha256_after_read": "8d52b3c5afd70e2dfdcd67a3775c587b33dbf5016e5b65f91c1813436a9080f3",
+        "sha256_after_review": "8d52b3c5afd70e2dfdcd67a3775c587b33dbf5016e5b65f91c1813436a9080f3",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/30/runtime-binding.json",
+        "sha256_before": "6f0faa788814826c530bb022e6665f028137186b4b0d04c236cb9294c312676d",
+        "sha256_after_read": "6f0faa788814826c530bb022e6665f028137186b4b0d04c236cb9294c312676d",
+        "sha256_after_review": "6f0faa788814826c530bb022e6665f028137186b4b0d04c236cb9294c312676d",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/31/requests/01.json",
+        "sha256_before": "322f68afbaae35c96489d26e2d2a298342eb6c37bd0db41f8a7e537974da2adb",
+        "sha256_after_read": "322f68afbaae35c96489d26e2d2a298342eb6c37bd0db41f8a7e537974da2adb",
+        "sha256_after_review": "322f68afbaae35c96489d26e2d2a298342eb6c37bd0db41f8a7e537974da2adb",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/31/runtime-binding.json",
+        "sha256_before": "bb8f20a407b10304c68901c4b26539b5fc42d5e60b1f70145a72fea99a57ceae",
+        "sha256_after_read": "bb8f20a407b10304c68901c4b26539b5fc42d5e60b1f70145a72fea99a57ceae",
+        "sha256_after_review": "bb8f20a407b10304c68901c4b26539b5fc42d5e60b1f70145a72fea99a57ceae",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/32/requests/01.json",
+        "sha256_before": "3b4eeedbfcf6265db37dd585e72a5c4f18ac7f81f73c36e30248d2cb1a40e677",
+        "sha256_after_read": "3b4eeedbfcf6265db37dd585e72a5c4f18ac7f81f73c36e30248d2cb1a40e677",
+        "sha256_after_review": "3b4eeedbfcf6265db37dd585e72a5c4f18ac7f81f73c36e30248d2cb1a40e677",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/32/runtime-binding.json",
+        "sha256_before": "3154d021753abecd7dca859274f2b12a810adc861d3ccb8e14349eeccb78ac83",
+        "sha256_after_read": "3154d021753abecd7dca859274f2b12a810adc861d3ccb8e14349eeccb78ac83",
+        "sha256_after_review": "3154d021753abecd7dca859274f2b12a810adc861d3ccb8e14349eeccb78ac83",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/33/requests/01.json",
+        "sha256_before": "5a8a93190e94e23a9383e3888067513e33ee46b633dff96ba2a6f5f38679a790",
+        "sha256_after_read": "5a8a93190e94e23a9383e3888067513e33ee46b633dff96ba2a6f5f38679a790",
+        "sha256_after_review": "5a8a93190e94e23a9383e3888067513e33ee46b633dff96ba2a6f5f38679a790",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/33/runtime-binding.json",
+        "sha256_before": "7a200e7f70683cc2b5e7981b070098dc22634663d38d88270ce541be84bbeb58",
+        "sha256_after_read": "7a200e7f70683cc2b5e7981b070098dc22634663d38d88270ce541be84bbeb58",
+        "sha256_after_review": "7a200e7f70683cc2b5e7981b070098dc22634663d38d88270ce541be84bbeb58",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/34/requests/01.json",
+        "sha256_before": "a4c0705fc98759c2634829c9a717ab4bd1be6f1e7b2f103bdd164e254077cc00",
+        "sha256_after_read": "a4c0705fc98759c2634829c9a717ab4bd1be6f1e7b2f103bdd164e254077cc00",
+        "sha256_after_review": "a4c0705fc98759c2634829c9a717ab4bd1be6f1e7b2f103bdd164e254077cc00",
+        "unchanged": true
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/prep-v6-02/cases/34/runtime-binding.json",
+        "sha256_before": "6a10a9bacf9d427950f47de68718eb9778ac301cd48d611df45fc75ce697c733",
+        "sha256_after_read": "6a10a9bacf9d427950f47de68718eb9778ac301cd48d611df45fc75ce697c733",
+        "sha256_after_review": "6a10a9bacf9d427950f47de68718eb9778ac301cd48d611df45fc75ce697c733",
+        "unchanged": true
+      }
+    ]
+  }
+}

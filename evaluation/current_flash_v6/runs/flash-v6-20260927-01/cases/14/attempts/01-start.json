@@ -1,0 +1,12 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+  "run_id": "flash-v6-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 19,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "f4e3d8293914ea9cc1b4883a22f974d0683703e1e9a4dea9ab82c5932ce8a662",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "7db0827b6d74a1f3e85fbb0555b5f9a69e7254703ef142534d94268f82e567b5",
+  "started_at": "2026-09-27T10:02:22.092520+00:00",
+  "usage_status": "unknown_until_response"
+}

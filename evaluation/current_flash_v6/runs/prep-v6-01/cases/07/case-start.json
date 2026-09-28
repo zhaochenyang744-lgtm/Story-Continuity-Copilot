@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v6-01",
+  "ordinal": 7,
+  "case_id": "ccv3-harbor_signal-timeline-conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T09:34:32.205754+00:00",
+  "case_input_sha256": "77420c86243e2c97c04704cf28a891f98836de3599c9569fa5aa587e91c143cc",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

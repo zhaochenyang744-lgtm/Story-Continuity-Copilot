@@ -1,0 +1,90 @@
+{
+  "evaluation": 2,
+  "business_request_sha256": "2c99e393da6932d2f0f282ffd90d2638500761a50a3c26dba0485af7b829a84a",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-6a43fecd-aa28-4576-8f84-a3b5c03e06e7-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "草稿声称门禁日志证明 Sera 在 11点授权重新开启，但所引证据并未记录任何重新开启或授权，该断言缺乏来源支持。",
+        "reasoning": "11点日志明确记载任何重新开启及其操作者均未被记录，因此日志无法证明 Sera 曾授权重新开启；Sera 在 11点尚未打开电报、不知其密码，也无法支持该授权。缺失的是记录中关于重新开启及授权者的关键环节，判断在此停止，不能据此推断授权事实，也不能推断其反面。",
+        "temporal_basis": {
+          "claim_anchor": "11点",
+          "evidence_anchor": "11点",
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-2",
+            "span_id": "fixture-span-harbor_signal-2",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-2"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-4",
+            "span_id": "fixture-span-harbor_signal-4",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-4"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-harbor_signal-2",
+            "role": "missing_link"
+          },
+          {
+            "span_id": "fixture-span-harbor_signal-4",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6a43fecd-aa28-4576-8f84-a3b5c03e06e7-1",
+        "verdict": "insufficient_evidence",
+        "basis": "11点日志未记录任何重新开启及其操作者，Sera 在 11点也尚未打开电报、不知其密码，因此日志无法证明 Sera 曾授权重新开启；该断言缺乏来源支持，但也不构成直接矛盾。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3893,
+      "completion_tokens": 494,
+      "total_tokens": 4387,
+      "prompt_tokens_details": {
+        "cached_tokens": 3328
+      },
+      "prompt_cache_hit_tokens": 3328,
+      "prompt_cache_miss_tokens": 565
+    },
+    "status": "complete",
+    "prompt_tokens": 3893,
+    "completion_tokens": 494,
+    "total_tokens": 4387,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

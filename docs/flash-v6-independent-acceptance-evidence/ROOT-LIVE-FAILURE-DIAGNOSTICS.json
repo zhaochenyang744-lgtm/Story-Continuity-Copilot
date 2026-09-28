@@ -1,0 +1,118 @@
+{
+  "created_at_utc": "2026-09-27T10:06:19.667886+00:00",
+  "engine_sha256": "527f986d6441aa226f239a0e67d928200f26d77b6b90e65cbc6d14e512d7fd39",
+  "method": "standard-library AST extraction of unchanged pure temporal helpers; no product module import, no Provider/DB",
+  "temporal_probe": [
+    {
+      "claim_anchor": "At 14:00 today",
+      "evidence_anchor": "At 14:00 today",
+      "explicit_claim": false,
+      "overlap": false
+    },
+    {
+      "claim_anchor": "At 10:00 today",
+      "evidence_anchor": "At 10:00 today",
+      "explicit_claim": false,
+      "overlap": false
+    },
+    {
+      "claim_anchor": "今天10点",
+      "evidence_anchor": "今天10点",
+      "explicit_claim": true,
+      "overlap": true
+    },
+    {
+      "claim_anchor": "At 10:00 today",
+      "evidence_anchor": "At 11:00 today",
+      "explicit_claim": false,
+      "overlap": false
+    }
+  ],
+  "overlength_actual_outputs": [
+    {
+      "case": "01",
+      "evaluation": "02",
+      "characters": 811,
+      "verdict": "no_issue"
+    },
+    {
+      "case": "05",
+      "evaluation": "01",
+      "characters": 609,
+      "verdict": "no_issue"
+    },
+    {
+      "case": "12",
+      "evaluation": "01",
+      "characters": 439,
+      "verdict": "no_issue"
+    },
+    {
+      "case": "17",
+      "evaluation": "01",
+      "characters": 472,
+      "verdict": "no_issue"
+    },
+    {
+      "case": "17",
+      "evaluation": "02",
+      "characters": 552,
+      "verdict": "no_issue"
+    },
+    {
+      "case": "20",
+      "evaluation": "01",
+      "characters": 447,
+      "verdict": "no_issue"
+    },
+    {
+      "case": "21",
+      "evaluation": "01",
+      "characters": 404,
+      "verdict": "no_issue"
+    },
+    {
+      "case": "21",
+      "evaluation": "02",
+      "characters": 439,
+      "verdict": "insufficient_evidence"
+    },
+    {
+      "case": "24",
+      "evaluation": "02",
+      "characters": 544,
+      "verdict": "insufficient_evidence"
+    },
+    {
+      "case": "25",
+      "evaluation": "02",
+      "characters": 874,
+      "verdict": "no_issue"
+    },
+    {
+      "case": "26",
+      "evaluation": "02",
+      "characters": 818,
+      "verdict": "no_issue"
+    },
+    {
+      "case": "27",
+      "evaluation": "01",
+      "characters": 408,
+      "verdict": "no_issue"
+    },
+    {
+      "case": "27",
+      "evaluation": "02",
+      "characters": 487,
+      "verdict": "no_issue"
+    },
+    {
+      "case": "32",
+      "evaluation": "02",
+      "characters": 442,
+      "verdict": "insufficient_evidence"
+    }
+  ],
+  "no_output_or_source_changes": true
+}

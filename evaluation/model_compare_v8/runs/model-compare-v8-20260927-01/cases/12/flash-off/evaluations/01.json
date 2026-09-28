@@ -1,0 +1,43 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "5b80922f06eed56fef064d22f4ebccf0bf6efb7bf65c8a9a037050b60954c1f1",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The claim asserts Vela delivered the telegram at 13点, but the cited record only states Sera opened it at 13点 and explicitly does not identify the deliverer; the delivery attribution lacks a supporting handoff or source warrant."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3330,
+      "completion_tokens": 107,
+      "total_tokens": 3437,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1154
+    },
+    "status": "complete",
+    "prompt_tokens": 3330,
+    "completion_tokens": 107,
+    "total_tokens": 3437,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

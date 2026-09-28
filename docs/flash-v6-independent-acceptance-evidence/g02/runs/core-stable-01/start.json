@@ -1,0 +1,7 @@
+{
+  "run_id": "core-stable-01",
+  "kind": "offline_saved_answer_replay",
+  "created_at": "2026-09-27T09:30:55.787662+00:00",
+  "freeze_manifest": "docs\\flash-v6-independent-acceptance-evidence\\CORE-REVIEW-FREEZE-01.json",
+  "provider_calls": 0
+}

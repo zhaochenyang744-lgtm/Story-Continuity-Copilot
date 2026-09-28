@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "6e54048a212b62f7f53fc2f96011970d0fc54965704e153f94818c967776fd3d",
+  "finished_at": "2026-09-27T09:39:21.983499+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-397903ba-1ac8-416f-b1fd-9369d3f3808f-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

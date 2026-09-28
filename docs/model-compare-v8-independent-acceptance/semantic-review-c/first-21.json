@@ -1,0 +1,171 @@
+{
+  "schema_version": "v8-blinded-case-review-v1",
+  "case_alias": "case-21",
+  "stage": "first",
+  "reviewer": "reviewer-c",
+  "packet_sha256": "609b576665215479f921eeca1c397d4fa842fee6a635aa636c69fdece3d264f4",
+  "condition_visibility": "hidden",
+  "exposure_note": "仅其他案例01/02曾有工程身份曝光；本例匿名，不称严格双盲。",
+  "contract_checks": [
+    {
+      "alias": "answer-b12af0",
+      "error": null,
+      "basis": [
+        353
+      ],
+      "reasoning": []
+    },
+    {
+      "alias": "answer-29b098",
+      "error": null,
+      "basis": [
+        173
+      ],
+      "reasoning": [
+        267
+      ]
+    },
+    {
+      "alias": "answer-2401a1",
+      "error": null,
+      "basis": [
+        263
+      ],
+      "reasoning": [
+        436
+      ]
+    }
+  ],
+  "records": [
+    {
+      "case_alias": "case-21",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "response_alias": "answer-b12af0",
+      "ratings": {
+        "F": "fail",
+        "C": "not_delivered",
+        "E_roles": "not_delivered",
+        "E_set": "not_delivered",
+        "E_binding": "not_delivered",
+        "S": "pass",
+        "D": "fail",
+        "T": "not_applicable",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "把完整的过去时行为命题误读为残缺句，并认为姓名空白不构成缺口；因此遗漏Vela磨制R4的具名行为归属未知。",
+          "visible_quote": "The claim is a truncated fragment",
+          "evidence_pointer": "answer-b12af0.first.claim_verdicts[0].basis"
+        },
+        {
+          "dimension": "D",
+          "reason": "预期不足Issue但实际空结果；C/E未交付。",
+          "visible_quote": "\"issues\":[]",
+          "evidence_pointer": "answer-b12af0.first.visible_content"
+        }
+      ],
+      "attribution_tags": [
+        "observed_semantic_error",
+        "delivery_missing"
+      ],
+      "overall_reason": "结构合法不能抵扣误读与漏交付。"
+    },
+    {
+      "case_alias": "case-21",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "response_alias": "answer-29b098",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "识别索引只说明镜片身份、维护表未记磨制者；保留Vela归属未知。",
+          "visible_quote": "Therefore the attribution is unsupported and remains unknown.",
+          "evidence_pointer": "answer-29b098.first.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "reason": "attribute不符合冻结relationship：目标是具名行为人归属。",
+          "visible_quote": "attribute",
+          "evidence_pointer": "answer-29b098.first.issues[0].category"
+        }
+      ],
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "其余适用层通过；来源3加可选1、绑定、缺口链和无操作均合规。"
+    },
+    {
+      "case_alias": "case-21",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "response_alias": "answer-2401a1",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "识别索引只说明镜片身份、维护表未记磨制者；保留Vela归属未知。",
+          "visible_quote": "judgment stops at an unsupported attribution rather than a contradiction.",
+          "evidence_pointer": "answer-2401a1.first.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "reason": "attribute不符合冻结relationship：目标是具名行为人归属。",
+          "visible_quote": "attribute",
+          "evidence_pointer": "answer-2401a1.first.issues[0].category"
+        }
+      ],
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "其余适用层通过；来源3加可选1、绑定、缺口链和无操作均合规。"
+    }
+  ],
+  "locked_before_followup": true,
+  "provider_calls": 0,
+  "database_connections": 0
+}

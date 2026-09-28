@@ -1,0 +1,49 @@
+{
+  "name": "g02_same_run_database_binding_without_database",
+  "passed": true,
+  "details": {
+    "positive": {
+      "case_id": "g02-three-sentences",
+      "family": "g02",
+      "status": "same_run_api_input_bound",
+      "same_run_request_sha256": "2ad1028f03ac66368508aecbb73c1e0d5ce04fb993310c852b205b3faaf57e7d",
+      "saved_draft_sha256": "28ef08a3a19dedc412b26bdcb3db58db626110d8cc45a41f5de2fa752c29783f",
+      "draft_chars": 30,
+      "claim_available": 3,
+      "claim_selected": 3,
+      "claim_unselected": 0,
+      "selected_source_span_count": 4,
+      "selected_memory_count": 8,
+      "memory_source_selected_count": 3,
+      "memory_source_unselected_count": 5,
+      "dialogue_two_complete_quotes": false,
+      "database_binding": "matched_persisted_isolated_database",
+      "database_selected_source_count": 4,
+      "database_selected_memory_count": 8,
+      "database_unselected_memory_sources_allowed": 5
+    },
+    "negative": [
+      {
+        "mutation": "chapter",
+        "error": {
+          "type": "RuntimeError",
+          "message": "input_contract:g02-three-sentences:selected_source_database_chapter_body_revision"
+        }
+      },
+      {
+        "mutation": "memory_value",
+        "error": {
+          "type": "RuntimeError",
+          "message": "input_contract:g02-three-sentences:selected_memory_database_source_binding"
+        }
+      },
+      {
+        "mutation": "memory_source",
+        "error": {
+          "type": "RuntimeError",
+          "message": "input_contract:g02-three-sentences:selected_memory_database_source_binding"
+        }
+      }
+    ]
+  }
+}

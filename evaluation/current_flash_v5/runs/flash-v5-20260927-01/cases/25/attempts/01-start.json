@@ -1,0 +1,12 @@
+{
+  "case_id": "g02-three-sentences",
+  "run_id": "flash-v5-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 28,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "72630335e64a6d122e65b2d60a879efe7fea7bdd20701e7d587612bdfd2f0086",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "57fa42f4e0b7d8f6183c837daabca587b4f9d4c311fb35cc9142cc869c1ae9e4",
+  "started_at": "2026-09-27T08:21:09.776779+00:00",
+  "usage_status": "unknown_until_response"
+}

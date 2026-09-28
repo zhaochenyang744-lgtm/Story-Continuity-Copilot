@@ -1,0 +1,12 @@
+{
+  "case_id": "g02-long-sentence",
+  "run_id": "flash-v5-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 29,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "b1772f46f9f3520f5fb85c6a776a800b5529c2454a76e6427e91fdc822c3decc",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "bcc25f7fc423f014847bff46095014f0dc42db2d14de840f3bed86fc4b0145e4",
+  "started_at": "2026-09-27T08:21:14.862079+00:00",
+  "usage_status": "unknown_until_response"
+}

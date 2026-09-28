@@ -1,0 +1,72 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "8dd86d73dab41a87391a6b8212f571feb723c4a3e16662b3de646a0700b46391",
+  "finished_at": "2026-09-27T08:20:50.994220+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-46ba5957-69f4-4dda-a0ee-6e0c97cb8fb6-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "high",
+        "explanation": "同一时刻，草稿称镜头 R4 是琥珀色玻璃，而证据称 R4 所对应的西侧孔径镜头是透明玻璃而非琥珀色玻璃。",
+        "reasoning": "草稿声称“At 18点 on the same day, lens R4 is amber glass.”，证据 span fixture-span-basalt_observatory-1 在同一时间“At 18点 on the same day”确认镜头 R4 就是已安装的西侧孔径镜头，证据 span fixture-span-basalt_observatory-2 又在同一时间“At 18点 on the same day”说明该西侧孔径镜头是透明玻璃而非琥珀色玻璃。两者主体（镜头 R4 / 西侧孔径镜头）、范围（玻璃状态）和时间（同一天 18点）完全重叠，因此不能同时为真。",
+        "temporal_basis": {
+          "claim_anchor": "At 18点 on the same day",
+          "evidence_anchor": "At 18点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "span_id": "fixture-span-basalt_observatory-1",
+            "relation": "supports",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-2",
+            "span_id": "fixture-span-basalt_observatory-2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-1",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-basalt_observatory-2",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 18点 on the same day, lens R4 is amber glass.",
+          "after": "At 18点 on the same day, lens R4 is clear glass, not amber glass."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3088,
+    "output_tokens": 524,
+    "observed_response_input_tokens": 3088,
+    "observed_response_output_tokens": 524
+  }
+}

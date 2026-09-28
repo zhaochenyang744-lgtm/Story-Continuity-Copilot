@@ -1,0 +1,58 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "e23d54e297c73dc630ceed2991fa22fe9a7392d4faff3dd07ca427daf5ea98c3",
+  "finished_at": "2026-09-27T10:47:25.429730+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-db468eb9-4f82-429e-b9e2-51a578673bf2-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "草稿声称Mira在11点持有备用蓝色徽章，并称依据两本徽章登记册，但登记册的11点持有人栏为空白，该归属缺乏依据，持有状态仍属未知。",
+        "reasoning": "草稿把“两本徽章登记册”当作确立Mira在11点持有备用蓝色徽章的依据，但所引登记册证据只显示11点持有人栏空白，并未记录Mira为持有人，也缺少任何交接或登记事件把该持有状态与Mira联系起来。因此判断止于缺失环节：该归属无依据，Mira是否在11点持有备用蓝色徽章仍未知，不能据此推断相反结论。",
+        "temporal_basis": {
+          "claim_anchor": "11点",
+          "evidence_anchor": "11点",
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-3",
+            "span_id": "fixture-span-north_glass-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-3"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-3",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-db468eb9-4f82-429e-b9e2-51a578673bf2-1",
+        "verdict": "insufficient_evidence",
+        "basis": "草稿称依据两本徽章登记册，Mira在11点持有备用蓝色徽章，但所引登记册的11点持有人栏为空白，缺少把该持有状态归于Mira的登记或交接环节，归属无依据且持有状态未知。"
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3992,
+    "output_tokens": 440,
+    "observed_response_input_tokens": 3992,
+    "observed_response_output_tokens": 440
+  }
+}

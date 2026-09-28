@@ -1,0 +1,193 @@
+{
+  "run_id": "run-7faad2a8-c418-4b75-be80-06654ec757e2",
+  "project_id": "fixture-project-orchard-restoration",
+  "run_type": "continuity",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 2,
+  "draft_revision": null,
+  "source_memory_version": 1,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T08:20:26.763568+00:00",
+  "started_at": "2026-09-27T08:20:26.792325+00:00",
+  "completed_at": "2026-09-27T08:20:29.068737+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 2276,
+  "retry_of_run_id": null,
+  "root_run_id": "run-7faad2a8-c418-4b75-be80-06654ec757e2",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:26.763568+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "preparing_draft",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:26.792325+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "retrieving_confirmed_facts",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:26.804900+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "comparing_evidence",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:26.832638+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "running",
+      "stage": "assembling_reviewable_results",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:29.054368+00:00"
+    },
+    {
+      "sequence": 6,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:29.068737+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "deepseek",
+    "model_label": "deepseek-flash",
+    "prompt_version": "continuity-review-v15-knowledge-time",
+    "schema_version": "continuity-issue-v5-temporal-basis",
+    "retrieval_method_version": "bounded-lexical-v4-longform",
+    "source_memory_version": 1
+  },
+  "provider_metrics": {
+    "latency_ms": 2195,
+    "input_tokens": 3046,
+    "output_tokens": 452,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "issues": [
+    {
+      "id": "issue-1e71ab42-f410-4f99-bbf7-428087709628",
+      "claim_span_id": "claim-run-7faad2a8-c418-4b75-be80-06654ec757e2-1",
+      "claim_text": "Nera is Oren's mother.",
+      "status": "open",
+      "classification": "conflict",
+      "category": "relationship",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "The draft says Nera is Oren's mother, but the birth register records Nera and Oren as twins, and the Orchard Register's permanent kinship rule forbids a twin from being the other's parent.",
+      "decision": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The claim asserts a parent-child relationship between Nera and Oren. The cited birth register identifies Nera and Oren as twins, and the cited permanent kinship rule states that two people recorded as twins cannot be one another's parent. These facts share the same subjects (Nera and Oren) and the same relationship scope, and the rule is timeless, so the claim and the cited facts cannot coexist.",
+      "evidence_chain": [
+        {
+          "evidence_id": "evidence-1ab13c89-039c-4c49-81cf-dc4dfdd90398",
+          "role": "prior_state"
+        },
+        {
+          "evidence_id": "evidence-9bcffde3-0127-466e-a615-7fba82f40692",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": [
+        "edit",
+        "keep_intentional",
+        "false_positive"
+      ],
+      "reuse_policy": null,
+      "reused_decision": null,
+      "evidence": [
+        {
+          "id": "evidence-1ab13c89-039c-4c49-81cf-dc4dfdd90398",
+          "chapter_id": "fixture-chapter-orchard_restoration-2",
+          "chapter_number": 2,
+          "chapter_title": "Twin Register",
+          "span_id": "fixture-span-orchard_restoration-2",
+          "source_revision": 2,
+          "excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "excerpt_context": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-2"
+          ],
+          "source_path": "/projects/fixture-project-orchard-restoration/sources#span-fixture-span-orchard_restoration-2"
+        },
+        {
+          "id": "evidence-9bcffde3-0127-466e-a615-7fba82f40692",
+          "chapter_id": "fixture-chapter-orchard_restoration-1",
+          "chapter_number": 1,
+          "chapter_title": "Kinship Rule",
+          "span_id": "fixture-span-orchard_restoration-1",
+          "source_revision": 2,
+          "excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "excerpt_context": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-1"
+          ],
+          "source_path": "/projects/fixture-project-orchard-restoration/sources#span-fixture-span-orchard_restoration-1"
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "latency_ms": 2195,
+    "input_tokens": 3046,
+    "output_tokens": 452,
+    "cost_cny": null,
+    "cost_available": false,
+    "contract_normalization_count": 0,
+    "contract_normalizations": [],
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "retrieval": [
+      {
+        "claim_ordinal": 1,
+        "returned_span_ids": [
+          "fixture-span-orchard_restoration-2",
+          "fixture-span-orchard_restoration-3",
+          "fixture-span-orchard_restoration-1",
+          "fixture-span-orchard_restoration-4",
+          "fixture-span-orchard_restoration-5"
+        ],
+        "method_version": "bounded-lexical-v4-longform"
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "f1e4eb2cd13b7852aaf927e8b285ce349fda41537e6cbc1f001d58084cb0a22c",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-9da63740-96e6-408a-989d-40b2d396b294-1",
+        "verdict": "no_issue",
+        "basis": "时间点10点一致：证据5显示该分钟表压为四巴但阀盖未锁，规则证据4要求四巴且阀盖锁紧才算就绪，因此“四巴却未就绪”与规则和证据完全兼容，无需审查。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3500,
+      "completion_tokens": 298,
+      "total_tokens": 3798,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 185
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1196
+    },
+    "status": "complete",
+    "prompt_tokens": 3500,
+    "completion_tokens": 298,
+    "total_tokens": 3798,
+    "reasoning_tokens": 185,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

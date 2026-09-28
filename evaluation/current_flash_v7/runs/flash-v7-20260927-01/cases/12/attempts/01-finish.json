@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:47:53.367779+00:00",
+  "latency_ms": 1437,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3328,
+      "completion_tokens": 114,
+      "total_tokens": 3442
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-39de51eb-b748-4ebf-b329-1c5f212dfc3a-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The cited record at 13点 confirms Sera opened the telegram and learned its code but explicitly does not identify the deliverer, so the draft's attribution of delivery to Vela lacks a supporting source warrant; the 11点 knowledge and gate-log spans are unrelated to delivery identity.\"}]}",
+  "message_content_sha256": "2a9375b6508aa007642194d5d13ab7765be6a0073a9f83392eb9278b6256b2f9",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

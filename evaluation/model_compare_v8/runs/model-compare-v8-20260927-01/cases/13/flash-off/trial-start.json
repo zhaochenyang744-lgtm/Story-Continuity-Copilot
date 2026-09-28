@@ -1,0 +1,19 @@
+{
+  "dispatch_order": 37,
+  "case_ordinal": 13,
+  "case_id": "ccv3-orchard_restoration-relationship-conflict",
+  "condition_id": "flash-off",
+  "position_in_case": 1,
+  "condition": {
+    "id": "flash-off",
+    "model": "deepseek-flash",
+    "thinking": "disabled",
+    "reasoning_effort": null,
+    "temperature": 0
+  },
+  "started_at": "2026-09-27T11:42:40.960025+00:00",
+  "original_budget": 8000,
+  "effective_engine_budget": 40000,
+  "experiment_only": true,
+  "source_request": "evaluation\\current_flash_v7\\runs\\prep-v7-01\\cases\\13\\requests\\01.json"
+}

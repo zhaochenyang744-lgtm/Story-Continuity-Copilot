@@ -1,0 +1,297 @@
+{
+  "case_alias": "case-21",
+  "stage": "followup",
+  "expected_policy_reference": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+  "policy": {
+    "allowed_outcomes": [
+      "insufficient_evidence"
+    ],
+    "minimum": [
+      [
+        "fixture-span-basalt_observatory-3"
+      ]
+    ],
+    "optional": [
+      "fixture-span-basalt_observatory-1"
+    ],
+    "premises": [
+      "fixture-span-basalt_observatory-1"
+    ],
+    "category": "relationship",
+    "category_candidates": [
+      "relationship"
+    ],
+    "manual_variant": false,
+    "temporal_relations": []
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-basalt-observatory",
+      "revision": 2,
+      "body": "The index and maintenance sheet establish that Vela ground lens R4."
+    },
+    "claims": [
+      {
+        "id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+        "text": "The index and maintenance sheet establish that Vela ground lens R4.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-basalt_observatory-3",
+            "chapter_id": "fixture-chapter-basalt_observatory-3",
+            "body": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+            "label": "grinder_blank",
+            "prompt_excerpt": "The western lens R4 maintenance sheet leaves the glass grinder's name blank."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-1",
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+            "label": "lens_index",
+            "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-6",
+            "chapter_id": "fixture-chapter-basalt_observatory-6",
+            "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "label": "later_watch",
+            "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-basalt_observatory-1",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "identity",
+        "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+        "source_span_id": "fixture-span-basalt_observatory-1"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-2",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+        "source_span_id": "fixture-span-basalt_observatory-2"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-3",
+        "memory_type": "open_thread",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+        "source_span_id": "fixture-span-basalt_observatory-3"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-4",
+        "memory_type": "static_canon",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-4"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-5",
+        "memory_type": "dynamic_state",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-5"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-6",
+        "memory_type": "event_timeline",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+        "source_span_id": "fixture-span-basalt_observatory-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-b12af0",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    },
+    {
+      "response_alias": "answer-29b098",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+            "status": "insufficient_evidence",
+            "category": "attribute",
+            "severity": "medium",
+            "evidence_status": "insufficient",
+            "explanation": "The draft claims the records establish Vela ground lens R4, but none of the cited records names Vela as the grinder.",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-3",
+                "span_id": "fixture-span-basalt_observatory-3",
+                "excerpt": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-3"
+                ]
+              },
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-1",
+                "span_id": "fixture-span-basalt_observatory-1",
+                "excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-1"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "The maintenance sheet leaves the glass grinder's name blank, so it cannot establish Vela as grinder. The observatory index identifies lens R4 only as the installed western aperture lens, not who ground it. Therefore the attribution is unsupported and remains unknown.",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-basalt_observatory-3",
+                "role": "missing_link"
+              },
+              {
+                "span_id": "fixture-span-basalt_observatory-1",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    },
+    {
+      "response_alias": "answer-2401a1",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+            "status": "insufficient_evidence",
+            "category": "attribute",
+            "severity": "medium",
+            "evidence_status": "insufficient",
+            "explanation": "The draft says the index and maintenance sheet establish that Vela ground lens R4, but the maintenance sheet leaves the glass grinder's name blank and the index only identifies lens R4 as the installed western aperture lens. The attribution is unsupported, so who ground lens R4 remains unknown.",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-3",
+                "span_id": "fixture-span-basalt_observatory-3",
+                "excerpt": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-3"
+                ]
+              },
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-1",
+                "span_id": "fixture-span-basalt_observatory-1",
+                "excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-1"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "Span-3 shows the maintenance sheet leaves the grinder unnamed, and span-1 records only that the index identifies lens R4 as the installed western aperture lens at 18点; neither supplied text ties Vela to grinding lens R4, and the required attribution/handoff is absent. The record is not shown to be wrong, only insufficient to establish the draft's assertion, so judgment stops at an unsupported attribution rather than a contradiction.",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-basalt_observatory-3",
+                "role": "missing_link"
+              },
+              {
+                "span_id": "fixture-span-basalt_observatory-1",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    }
+  ]
+}

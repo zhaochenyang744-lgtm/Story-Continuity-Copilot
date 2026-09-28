@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "1120d0c9cbe27e375e443cb18c1ec5504872ee7a0b9ee938cdc00e070bede6b3",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "The draft states that the two badge registers show Mira holding the spare blue badge at 11点, but the cited register leaves its 11点 holder field blank, so the register attribution is unsupported and the holding fact stays unknown.",
+        "reasoning": "The claim's warrant is the registers themselves. The only supplied register evidence reports that the spare blue badge register leaves its 11点 holder field blank. A blank holder field is an omission, not a statement that no one held the badge, so it neither proves nor disproves that Mira held it; it only shows that the cited record does not contain the entry the draft attributes to it. Judgment therefore stops at the missing source warrant: the holding at 11点 remains unknown rather than contradicted. The 10点 red-badge attempt and the pneumatic-carrier gauge reading concern other times or objects and are omitted as compatible or unrelated.",
+        "temporal_basis": {
+          "claim_anchor": "11点",
+          "evidence_anchor": "11点",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-3",
+            "span_id": "fixture-span-north_glass-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-3"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-3",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The claim rests on the badge registers, but the supplied register evidence shows the spare blue badge register's 11点 holder field blank. A blank field neither confirms nor denies the holding, so the register attribution lacks its source warrant and the 11点 holding remains unknown."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3480,
+      "completion_tokens": 2727,
+      "total_tokens": 6207,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2255
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1304
+    },
+    "status": "complete",
+    "prompt_tokens": 3480,
+    "completion_tokens": 2727,
+    "total_tokens": 6207,
+    "reasoning_tokens": 2255,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

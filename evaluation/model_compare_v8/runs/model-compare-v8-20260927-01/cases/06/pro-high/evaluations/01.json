@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "1a79cbaf942f1b7676eb229f7d44d9c3e554d04f2792cfb9527bd1eff599ad33",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "The draft attributes the loosening of the carrier valve cap to Mira based on the inspection and cap record, but the supplied inspection span only says the record does not identify who loosened it.",
+        "reasoning": "The current claim states Mira loosened the cap according to the inspection and cap record. The only supplied record evidence about the inspection says it does not record who loosened the valve cap; no supplied cap record or other direct evidence identifies a person. Therefore the record-based attribution is unsupported and the identity of the actor remains unknown. Judgment stops because the missing attribution is not supplied.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-6",
+            "span_id": "fixture-span-north_glass-6",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-6"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-6",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The cited inspection span says it does not record who loosened the valve cap, so the record-based attribution to Mira is unsupported and requires missing evidence."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3530,
+      "completion_tokens": 2411,
+      "total_tokens": 5941,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1927
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1098
+    },
+    "status": "complete",
+    "prompt_tokens": 3530,
+    "completion_tokens": 2411,
+    "total_tokens": 5941,
+    "reasoning_tokens": 1927,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

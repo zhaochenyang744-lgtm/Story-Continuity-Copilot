@@ -1,0 +1,122 @@
+{
+  "evaluation": 2,
+  "stage": "repair",
+  "business_request_sha256": "8192f9f8bff5c1413f17df5d1ebfbcfe16c798bc83327c2876d1429eb0516447",
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-v6-companion-blank",
+      "revision": 2,
+      "body": "The 19:00 watch record establishes that Evi accompanied Orin to the east quay."
+    },
+    "claims": [
+      {
+        "id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+        "text": "The 19:00 watch record establishes that Evi accompanied Orin to the east quay.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-v6_companion_blank-1",
+            "chapter_id": "fixture-chapter-v6_companion_blank-1",
+            "body": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+            "label": "C1",
+            "prompt_excerpt": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-v6_companion_blank-1",
+        "memory_type": "dynamic_state",
+        "subject": "companion_blank",
+        "predicate": "status",
+        "value": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+        "source_span_id": "fixture-span-v6_companion_blank-1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    },
+    "contract_repair": {
+      "attempt": 2,
+      "reason_code": "claim_verdicts_issue_mismatch",
+      "diagnostics": [
+        {
+          "claim_span_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+          "claim_text": "The 19:00 watch record establishes that Evi accompanied Orin to the east quay.",
+          "problem_codes": [
+            "claim_verdicts_issue_mismatch"
+          ],
+          "cited_evidence": [],
+          "invalid_field": "verdict",
+          "actual_verdict": "insufficient_evidence",
+          "expected_verdict_for_returned_issues": "no_issue",
+          "issue_present": false,
+          "required_issue_status_for_verdict": "insufficient_evidence",
+          "requirement": "Keep the evidence-based decision. An insufficient_evidence decision needs a cited missing_link Issue with no actions. Change a verdict only when the original evidence justifies that change."
+        }
+      ],
+      "rejected_issues": [],
+      "rejected_claim_verdicts": [
+        {
+          "claim_span_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+          "verdict": "insufficient_evidence",
+          "basis": "The cited watch record only states Orin walked from the west quay to the east quay and leaves the companion unnamed; it does not establish that Evi accompanied him, so the draft's attribution of Evi as companion is unsupported."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "probe": "engineering-generation-fix-probe-04",
+  "passed": true,
+  "source_sha256_before": "d3308031a9ed850706bbd802058fb6c72e3eb136a3ede5bbaa40b618bc0ad01d",
+  "source_sha256_after": "d3308031a9ed850706bbd802058fb6c72e3eb136a3ede5bbaa40b618bc0ad01d",
+  "script_sha256": "6fd33ae3805e5810698bc789caf8918079597d90d7eba5784352b5f69aebce3c",
+  "score": {
+    "machine_result": "score_error",
+    "errors": [
+      "generation:finish_reason_length",
+      "scorer_exception:TypeError"
+    ],
+    "layers": {
+      "decision": [],
+      "category": [],
+      "citation": [],
+      "structure": [
+        "scorer_exception:TypeError"
+      ],
+      "temporal": [],
+      "generation": [
+        "generation:finish_reason_length"
+      ],
+      "scoring": [
+        "TypeError"
+      ]
+    },
+    "semantic_result": "pending_independent_review",
+    "complete_answer": false,
+    "scoring_policy": "unchanged_v7"
+  },
+  "error": null,
+  "external_attempts_blocked": {
+    "network": 0,
+    "sqlite": 0
+  },
+  "real_provider_calls": 0,
+  "database_connections": 0,
+  "first_failure_preserved": "engineering-targeted-probe-03.json",
+  "prior_guard_controls_not_repeated": true,
+  "full_replay_not_repeated": true
+}

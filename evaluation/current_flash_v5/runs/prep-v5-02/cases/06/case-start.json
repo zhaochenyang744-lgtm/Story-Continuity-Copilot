@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-02",
+  "ordinal": 6,
+  "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:03:49.084695+00:00",
+  "case_input_sha256": "e98e84aff15836fa85740ff3a91249ccb94daa5c26312b89aae44939b3e2a05d",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

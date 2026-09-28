@@ -1,0 +1,10 @@
+{
+  "docs\\flash-v5-independent-acceptance-evidence\\live_guard.py": "fe1e753c5b6e0840ba9a30bf1b9dd75bbcf4c10a5c4a76200b3677da5f28980a",
+  "docs\\flash-v5-independent-acceptance-evidence\\controller-dependency-freeze.json": "bcc424e1a372b1e98b1d81d00f368e94075613ab559b1fceb68c7681c371747b",
+  "backend/app/__init__.py": "35f78b2beef7082e8d47277da699bc8662a2e7c3b1cb87ba3cd30e525bcf4bfc",
+  "backend/app/memory_contract.py": "d8afc7e9f85f296f5762aaf1f03e4baafb7a163312bc93a06a4744e5e4355d51",
+  "backend/app/text_content.py": "d1f04d4b7ec2fd5f87c1f706960bdfff6c77f61b9bf5ee3699ec902e48443290",
+  "backend/app/long_term_workflow.py": "e5eb9874ccdeb019545a42c121ed98cd42af2252a52ed066f6361ee638b7ca59",
+  "backend/app/project_export.py": "b8227673e20a68bd79a2f4694eb5a15bca77145623fb7c4e5bb1a1f3d0a3420f",
+  "docs/flash-v5-independent-acceptance-evidence/live_guard.py": "fe1e753c5b6e0840ba9a30bf1b9dd75bbcf4c10a5c4a76200b3677da5f28980a"
+}

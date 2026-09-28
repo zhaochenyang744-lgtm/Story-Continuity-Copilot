@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "1714d6545368dd96aa01bca0acd73d055a0f3b4a0b458bbf1c76b3ce30d64a07",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-556fd1e5-211e-493c-9e96-6c3bb147e7f3-1",
+        "verdict": "no_issue",
+        "basis": "fixture-span-harbor_signal-1 states the gate first opened at 09点 and first closed at 10点, exactly matching the claim's 10点 first-closure after the 09点 opening. The 11点 unrecorded reopening (span 2) and Sera's 11点 telegram knowledge (span 3) are compatible context about other times and subjects, so no continuity issue exists."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3375,
+      "completion_tokens": 679,
+      "total_tokens": 4054,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 532
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1199
+    },
+    "status": "complete",
+    "prompt_tokens": 3375,
+    "completion_tokens": 679,
+    "total_tokens": 4054,
+    "reasoning_tokens": 532,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

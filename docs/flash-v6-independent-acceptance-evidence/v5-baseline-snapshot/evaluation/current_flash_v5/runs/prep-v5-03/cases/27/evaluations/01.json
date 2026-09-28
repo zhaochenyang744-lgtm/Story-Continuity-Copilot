@@ -1,0 +1,35 @@
+{
+  "case_id": "g02-body-limit",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "a7058bcc20b55bc390ad5640d3f71007863ab9d248d7a40576402134b28600f3",
+  "finished_at": "2026-09-27T08:08:10.127932+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "summary": "林默在雾港核对潮汐表。",
+    "summary_sources": [
+      {
+        "source_type": "draft_claim",
+        "source_id": "draft-claim-draft-4263de02-63e3-4673-a6fe-0645b9d1b9e7-r2-1"
+      }
+    ],
+    "items": [
+      {
+        "section": "recent_source",
+        "text": "林默在雾港核对潮汐表。",
+        "sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-draft-4263de02-63e3-4673-a6fe-0645b9d1b9e7-r2-1"
+          }
+        ]
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

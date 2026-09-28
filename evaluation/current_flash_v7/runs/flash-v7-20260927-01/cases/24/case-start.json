@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v7-20260927-01",
+  "ordinal": 24,
+  "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+  "family": "comparison",
+  "started_at": "2026-09-27T10:48:36.204105+00:00",
+  "case_input_sha256": "f56cc827774d171bd032e16db04f020627a60edbd4111c1dbcf506da3bdfe8f5",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

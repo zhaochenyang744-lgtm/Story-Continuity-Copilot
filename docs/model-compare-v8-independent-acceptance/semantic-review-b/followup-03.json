@@ -1,0 +1,196 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-03",
+  "stage": "followup",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:41:16.694325+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-03",
+      "response_alias": "answer-7ddc5c",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "无 repair；final 原样保留锁定首答的未知性判断及具体缺口，非 normalization 恢复。",
+          "visible_quote": "Mira's actual possession remains unknown.",
+          "evidence_pointer": "responses[response_alias=answer-7ddc5c].final.issues[0].reasoning; locked first-03.json"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "pass",
+          "reason": "逐字段比对原首答与 final；核心文本、角色、类别及集合不变，新增 excerpt 与 selected span-3 精确一致。completed 且 normalization=0，建议/操作/Memory change 均为空。",
+          "visible_quote": "The spare blue badge register leaves its 11点 holder field blank.",
+          "evidence_pointer": "responses[response_alias=answer-7ddc5c].final.issues[0].evidence[0]"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "继承已锁首答评级并逐字段核 final：真实不足 Issue、证据及安全限制保持，实验引擎 completed，无修复或归一化贡献。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "substantive_issue_unchanged": true,
+        "normalization_count": 0,
+        "strict_transition": "pass_to_pass"
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-03",
+      "response_alias": "answer-78e9bc",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "无 repair；final 原样保留锁定首答的未知性判断及具体缺口，非 normalization 恢复。",
+          "visible_quote": "A blank holder field is an omission, not a statement that no one held the badge",
+          "evidence_pointer": "responses[response_alias=answer-78e9bc].final.issues[0].reasoning; locked first-03.json"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "pass",
+          "reason": "逐字段比对原首答与 final；核心文本、角色、类别及集合不变，新增 excerpt 与 selected span-3 精确一致。completed 且 normalization=0，建议/操作/Memory change 均为空。",
+          "visible_quote": "The spare blue badge register leaves its 11点 holder field blank.",
+          "evidence_pointer": "responses[response_alias=answer-78e9bc].final.issues[0].evidence[0]"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "继承已锁首答评级并逐字段核 final：真实不足 Issue、证据及安全限制保持，实验引擎 completed，无修复或归一化贡献。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "substantive_issue_unchanged": true,
+        "normalization_count": 0,
+        "strict_transition": "pass_to_pass"
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-03",
+      "response_alias": "answer-b2fcfd",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "无 repair；final 原样保留锁定首答的未知性判断及具体缺口，非 normalization 恢复。",
+          "visible_quote": "无法证明 Mira 在 11点持有备用蓝色徽章",
+          "evidence_pointer": "responses[response_alias=answer-b2fcfd].final.issues[0].reasoning; locked first-03.json"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "pass",
+          "reason": "逐字段比对原首答与 final；核心文本、角色、类别及集合不变，新增 excerpt 与 selected span-3 精确一致。completed 且 normalization=0，建议/操作/Memory change 均为空。",
+          "visible_quote": "The spare blue badge register leaves its 11点 holder field blank.",
+          "evidence_pointer": "responses[response_alias=answer-b2fcfd].final.issues[0].evidence[0]"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "继承已锁首答评级并逐字段核 final：真实不足 Issue、证据及安全限制保持，实验引擎 completed，无修复或归一化贡献。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "substantive_issue_unchanged": true,
+        "normalization_count": 0,
+        "strict_transition": "pass_to_pass"
+      }
+    }
+  ],
+  "repair_records": [],
+  "summary": {
+    "responses": 3,
+    "repair_attempted": 0,
+    "final_F_pass": 3,
+    "final_strict_pass": 3,
+    "strict_recoveries": 0,
+    "normalization_contribution": 0
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/03.json",
+      "sha256_observed": "2383f0dd0868e466ba0a59f85a3c17dfab2e04edfd31448f403f3fae27351202",
+      "sha256_after_review": "2383f0dd0868e466ba0a59f85a3c17dfab2e04edfd31448f403f3fae27351202"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-03.json",
+      "sha256_observed": "f2690acae7f4e793d6c0575ef84ab2b912950b09d1b996c0ea8b0d5dc7264bd0",
+      "sha256_after_review": "f2690acae7f4e793d6c0575ef84ab2b912950b09d1b996c0ea8b0d5dc7264bd0"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/03.json",
+      "sha256_observed": "495e30754c26f079af8f939f6fb84d99bb5de9b7dcbe730c242efc016886a2aa",
+      "sha256_after_review": "495e30754c26f079af8f939f6fb84d99bb5de9b7dcbe730c242efc016886a2aa"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    }
+  ],
+  "read_hashes_stable": true
+}

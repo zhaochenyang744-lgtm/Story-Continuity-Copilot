@@ -1,0 +1,53 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "category_status": "fixed_gold",
+    "full_validator_result": "rejected",
+    "score_layer": "raw_first_or_repair",
+    "errors": [
+      "product_validator:conflict_evidence_not_direct",
+      "raw_evidence_policy_mismatch",
+      "raw_outcome_invalid",
+      "raw_relation_mismatch",
+      "raw_target_or_category_mismatch",
+      "raw_temporal_anchor_unbound",
+      "raw_temporal_policy_mismatch"
+    ]
+  },
+  "repair_raw": [
+    {
+      "machine_result": "fail",
+      "semantic_result": "not_reviewed",
+      "category_status": "fixed_gold",
+      "full_validator_result": "rejected",
+      "score_layer": "raw_first_or_repair",
+      "errors": [
+        "product_validator:conflict_evidence_not_direct",
+        "raw_evidence_policy_mismatch",
+        "raw_outcome_invalid",
+        "raw_relation_mismatch",
+        "raw_target_or_category_mismatch",
+        "raw_temporal_anchor_unbound",
+        "raw_temporal_policy_mismatch"
+      ]
+    }
+  ],
+  "final": {
+    "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+    "expected_class": "insufficient_evidence",
+    "machine_result": "terminal_failure",
+    "semantic_result": "not_reviewed",
+    "result": "terminal_failure",
+    "errors": [
+      "conflict_evidence_not_direct"
+    ],
+    "category_status": "fixed_gold",
+    "score_layer": "final_product",
+    "input_origin": "caller_supplied_capture"
+  },
+  "request_count": 2,
+  "parsed_output_count": 2,
+  "manual_semantic_review": "pending_manual_review"
+}

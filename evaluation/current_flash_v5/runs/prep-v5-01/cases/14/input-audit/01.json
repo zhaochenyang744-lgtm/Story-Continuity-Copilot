@@ -1,0 +1,11 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+  "family": "comparison",
+  "status": "exact_content_after_claim_id_normalization",
+  "historical_capture_sha256": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+  "same_run_request_sha256": "f4a77a8fa5fb675baaa8bbe35e9923f5c077cc896bded711fce32ce912a533c9",
+  "selected_source_count": 3,
+  "selected_memory_count": 6,
+  "minimum_source_selected": true,
+  "repair": false
+}

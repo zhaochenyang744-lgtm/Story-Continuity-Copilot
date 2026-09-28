@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "8a617b2a540f9ddd03b7a4802a636252f07886cafab67bdd6eb1a066df5161ee",
+  "finished_at": "2026-09-27T10:01:38.361706+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-c150571e-5031-4646-b9d6-1b0b1180c065-1",
+        "verdict": "no_issue",
+        "basis": "The claim that Mira could not open North Glass with only a red badge is fully consistent with the supplied evidence: the static canon rule states the door opens only for a blue badge and a red badge cannot open it, and the dynamic state confirms Mira tried at 10点 wearing only a red badge with no blue badge. No contradiction or missing link exists."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3445,
+    "output_tokens": 127,
+    "observed_response_input_tokens": 3445,
+    "observed_response_output_tokens": 127
+  }
+}

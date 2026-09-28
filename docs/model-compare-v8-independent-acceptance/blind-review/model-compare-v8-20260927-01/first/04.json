@@ -1,0 +1,820 @@
+{
+  "case_alias": "case-04",
+  "stage": "first",
+  "expected_policy_reference": "ccv3-north_glass-object_state-conflict",
+  "policy": {
+    "allowed_outcomes": [
+      "confirmed_conflict"
+    ],
+    "minimum": [
+      [
+        "fixture-span-north_glass-4",
+        "fixture-span-north_glass-5"
+      ]
+    ],
+    "optional": [],
+    "premises": [
+      "fixture-span-north_glass-4"
+    ],
+    "category": "object_state",
+    "category_candidates": [
+      "object_state"
+    ],
+    "manual_variant": false,
+    "temporal_relations": [
+      "explicit_overlap",
+      "timeless_rule"
+    ]
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-north-glass",
+      "revision": 2,
+      "body": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch."
+    },
+    "claims": [
+      {
+        "id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+        "text": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-north_glass-5",
+            "chapter_id": "fixture-chapter-north_glass-5",
+            "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "label": "carrier_inspection",
+            "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+          },
+          {
+            "id": "fixture-span-north_glass-4",
+            "chapter_id": "fixture-chapter-north_glass-4",
+            "body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "label": "carrier_ready_rule",
+            "prompt_excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked."
+          },
+          {
+            "id": "fixture-span-north_glass-2",
+            "chapter_id": "fixture-chapter-north_glass-2",
+            "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "label": "badge_roster",
+            "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-north_glass-1",
+        "memory_type": "static_canon",
+        "subject": "Mira",
+        "predicate": "rule",
+        "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+        "source_span_id": "fixture-span-north_glass-1"
+      },
+      {
+        "id": "fixture-memory-north_glass-2",
+        "memory_type": "dynamic_state",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+        "source_span_id": "fixture-span-north_glass-2"
+      },
+      {
+        "id": "fixture-memory-north_glass-3",
+        "memory_type": "open_thread",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "The spare blue badge register leaves its 11点 holder field blank.",
+        "source_span_id": "fixture-span-north_glass-3"
+      },
+      {
+        "id": "fixture-memory-north_glass-4",
+        "memory_type": "static_canon",
+        "subject": "pneumatic carrier",
+        "predicate": "rule",
+        "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+        "source_span_id": "fixture-span-north_glass-4"
+      },
+      {
+        "id": "fixture-memory-north_glass-5",
+        "memory_type": "dynamic_state",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+        "source_span_id": "fixture-span-north_glass-5"
+      },
+      {
+        "id": "fixture-memory-north_glass-6",
+        "memory_type": "open_thread",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "The carrier inspection does not record who loosened its valve cap.",
+        "source_span_id": "fixture-span-north_glass-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-b3976c",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-north-glass",
+            "revision": 2,
+            "body": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch."
+          },
+          "claims": [
+            {
+              "id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+              "text": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-north_glass-5",
+                  "chapter_id": "fixture-chapter-north_glass-5",
+                  "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                  "label": "carrier_inspection",
+                  "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+                },
+                {
+                  "id": "fixture-span-north_glass-4",
+                  "chapter_id": "fixture-chapter-north_glass-4",
+                  "body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+                  "label": "carrier_ready_rule",
+                  "prompt_excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked."
+                },
+                {
+                  "id": "fixture-span-north_glass-2",
+                  "chapter_id": "fixture-chapter-north_glass-2",
+                  "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                  "label": "badge_roster",
+                  "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-north_glass-1",
+              "memory_type": "static_canon",
+              "subject": "Mira",
+              "predicate": "rule",
+              "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+              "source_span_id": "fixture-span-north_glass-1"
+            },
+            {
+              "id": "fixture-memory-north_glass-2",
+              "memory_type": "dynamic_state",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+              "source_span_id": "fixture-span-north_glass-2"
+            },
+            {
+              "id": "fixture-memory-north_glass-3",
+              "memory_type": "open_thread",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "The spare blue badge register leaves its 11点 holder field blank.",
+              "source_span_id": "fixture-span-north_glass-3"
+            },
+            {
+              "id": "fixture-memory-north_glass-4",
+              "memory_type": "static_canon",
+              "subject": "pneumatic carrier",
+              "predicate": "rule",
+              "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+              "source_span_id": "fixture-span-north_glass-4"
+            },
+            {
+              "id": "fixture-memory-north_glass-5",
+              "memory_type": "dynamic_state",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+              "source_span_id": "fixture-span-north_glass-5"
+            },
+            {
+              "id": "fixture-memory-north_glass-6",
+              "memory_type": "open_thread",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "The carrier inspection does not record who loosened its valve cap.",
+              "source_span_id": "fixture-span-north_glass-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"object_state\",\"severity\":\"high\",\"explanation\":\"同一时刻，载体被描述为可发运，但证据显示其阀盖未锁，按规则不满足可发运条件。\",\"reasoning\":\"当前草稿断言10点时该气动载体已可发运。证据 span north_glass-4 给出静态规则：只有压力表读数为四巴且阀盖锁紧时才可发运；span north_glass-5 在同一10点时刻记录压力表为四巴但阀盖整分钟未锁紧。两条证据共同证明同一对象、同一时间下缺少锁紧这一必要条件，因此与“可发运”直接矛盾。\",\"temporal_basis\":{\"claim_anchor\":\"At 10点 on the same day\",\"evidence_anchor\":\"At 10点 on the same day\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-north_glass-4\",\"span_id\":\"fixture-span-north_glass-4\",\"relation\":\"context\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-4\"]},{\"chapter_id\":\"fixture-chapter-north_glass-5\",\"span_id\":\"fixture-span-north_glass-5\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-5\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-north_glass-4\",\"role\":\"current_context\"},{\"span_id\":\"fixture-span-north_glass-5\",\"role\":\"prior_state\"}],\"suggested_revision\":{\"before\":\"At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.\",\"after\":\"At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch because its valve cap remained loose and not locked.\"},\"available_actions\":[\"edit\",\"apply_suggestion\",\"keep_intentional\",\"false_positive\"]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1\",\"verdict\":\"reviewed_issue\",\"basis\":\"同一10点时刻，规则要求阀盖锁紧才可发运，而证据显示阀盖未锁紧，故当前“可发运”断言与证据直接冲突。\"}]}",
+        "parsed_business_json": {
+          "issues": [
+            {
+              "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+              "status": "conflict",
+              "nature": "confirmed_conflict",
+              "category": "object_state",
+              "severity": "high",
+              "explanation": "同一时刻，载体被描述为可发运，但证据显示其阀盖未锁，按规则不满足可发运条件。",
+              "reasoning": "当前草稿断言10点时该气动载体已可发运。证据 span north_glass-4 给出静态规则：只有压力表读数为四巴且阀盖锁紧时才可发运；span north_glass-5 在同一10点时刻记录压力表为四巴但阀盖整分钟未锁紧。两条证据共同证明同一对象、同一时间下缺少锁紧这一必要条件，因此与“可发运”直接矛盾。",
+              "temporal_basis": {
+                "claim_anchor": "At 10点 on the same day",
+                "evidence_anchor": "At 10点 on the same day",
+                "relation": "explicit_overlap"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "fixture-chapter-north_glass-4",
+                  "span_id": "fixture-span-north_glass-4",
+                  "relation": "context",
+                  "sufficiency": "sufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-north_glass-4"
+                  ]
+                },
+                {
+                  "chapter_id": "fixture-chapter-north_glass-5",
+                  "span_id": "fixture-span-north_glass-5",
+                  "relation": "contradicts",
+                  "sufficiency": "sufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-north_glass-5"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "fixture-span-north_glass-4",
+                  "role": "current_context"
+                },
+                {
+                  "span_id": "fixture-span-north_glass-5",
+                  "role": "prior_state"
+                }
+              ],
+              "suggested_revision": {
+                "before": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+                "after": "At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch because its valve cap remained loose and not locked."
+              },
+              "available_actions": [
+                "edit",
+                "apply_suggestion",
+                "keep_intentional",
+                "false_positive"
+              ]
+            }
+          ],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+              "verdict": "reviewed_issue",
+              "basis": "同一10点时刻，规则要求阀盖锁紧才可发运，而证据显示阀盖未锁紧，故当前“可发运”断言与证据直接冲突。"
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-158e9a",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-north-glass",
+            "revision": 2,
+            "body": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch."
+          },
+          "claims": [
+            {
+              "id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+              "text": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-north_glass-5",
+                  "chapter_id": "fixture-chapter-north_glass-5",
+                  "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                  "label": "carrier_inspection",
+                  "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+                },
+                {
+                  "id": "fixture-span-north_glass-4",
+                  "chapter_id": "fixture-chapter-north_glass-4",
+                  "body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+                  "label": "carrier_ready_rule",
+                  "prompt_excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked."
+                },
+                {
+                  "id": "fixture-span-north_glass-2",
+                  "chapter_id": "fixture-chapter-north_glass-2",
+                  "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                  "label": "badge_roster",
+                  "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-north_glass-1",
+              "memory_type": "static_canon",
+              "subject": "Mira",
+              "predicate": "rule",
+              "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+              "source_span_id": "fixture-span-north_glass-1"
+            },
+            {
+              "id": "fixture-memory-north_glass-2",
+              "memory_type": "dynamic_state",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+              "source_span_id": "fixture-span-north_glass-2"
+            },
+            {
+              "id": "fixture-memory-north_glass-3",
+              "memory_type": "open_thread",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "The spare blue badge register leaves its 11点 holder field blank.",
+              "source_span_id": "fixture-span-north_glass-3"
+            },
+            {
+              "id": "fixture-memory-north_glass-4",
+              "memory_type": "static_canon",
+              "subject": "pneumatic carrier",
+              "predicate": "rule",
+              "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+              "source_span_id": "fixture-span-north_glass-4"
+            },
+            {
+              "id": "fixture-memory-north_glass-5",
+              "memory_type": "dynamic_state",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+              "source_span_id": "fixture-span-north_glass-5"
+            },
+            {
+              "id": "fixture-memory-north_glass-6",
+              "memory_type": "open_thread",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "The carrier inspection does not record who loosened its valve cap.",
+              "source_span_id": "fixture-span-north_glass-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"object_state\",\n      \"severity\": \"medium\",\n      \"explanation\": \"The draft says the carrier was ready for dispatch at 10点, but the same-minute evidence shows its valve cap remained loose and not locked, and the readiness rule requires a locked valve cap.\",\n      \"reasoning\": \"Fixture-span-north_glass-4 states the rule that a North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked. Fixture-span-north_glass-5 states that at 10点 on the same day the gauge read four bars but the valve cap remained loose and not locked throughout that minute. The locked condition fails at the exact time asserted, so the carrier could not be ready, directly contradicting the current claim.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"10点\",\n        \"evidence_anchor\": \"10点\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-4\",\n          \"span_id\": \"fixture-span-north_glass-4\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\n            \"fixture-memory-north_glass-4\"\n          ]\n        },\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-5\",\n          \"span_id\": \"fixture-span-north_glass-5\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\n            \"fixture-memory-north_glass-5\"\n          ]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-north_glass-4\",\n          \"role\": \"current_context\"\n        },\n        {\n          \"span_id\": \"fixture-span-north_glass-5\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.\",\n        \"after\": \"At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch because its valve cap remained loose and not locked.\"\n      },\n      \"available_actions\": [\n        \"apply_suggestion\"\n      ]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"The draft says the carrier was ready at 10点, but the same-minute evidence shows the valve cap remained loose and not locked, while the rule requires a locked valve cap.\"\n    }\n  ]\n}",
+        "parsed_business_json": {
+          "issues": [
+            {
+              "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+              "status": "conflict",
+              "nature": "confirmed_conflict",
+              "category": "object_state",
+              "severity": "medium",
+              "explanation": "The draft says the carrier was ready for dispatch at 10点, but the same-minute evidence shows its valve cap remained loose and not locked, and the readiness rule requires a locked valve cap.",
+              "reasoning": "Fixture-span-north_glass-4 states the rule that a North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked. Fixture-span-north_glass-5 states that at 10点 on the same day the gauge read four bars but the valve cap remained loose and not locked throughout that minute. The locked condition fails at the exact time asserted, so the carrier could not be ready, directly contradicting the current claim.",
+              "temporal_basis": {
+                "claim_anchor": "10点",
+                "evidence_anchor": "10点",
+                "relation": "explicit_overlap"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "fixture-chapter-north_glass-4",
+                  "span_id": "fixture-span-north_glass-4",
+                  "relation": "context",
+                  "sufficiency": "sufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-north_glass-4"
+                  ]
+                },
+                {
+                  "chapter_id": "fixture-chapter-north_glass-5",
+                  "span_id": "fixture-span-north_glass-5",
+                  "relation": "contradicts",
+                  "sufficiency": "sufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-north_glass-5"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "fixture-span-north_glass-4",
+                  "role": "current_context"
+                },
+                {
+                  "span_id": "fixture-span-north_glass-5",
+                  "role": "current_context"
+                }
+              ],
+              "suggested_revision": {
+                "before": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+                "after": "At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch because its valve cap remained loose and not locked."
+              },
+              "available_actions": [
+                "apply_suggestion"
+              ]
+            }
+          ],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+              "verdict": "reviewed_issue",
+              "basis": "The draft says the carrier was ready at 10点, but the same-minute evidence shows the valve cap remained loose and not locked, while the rule requires a locked valve cap."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-113e51",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-north-glass",
+            "revision": 2,
+            "body": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch."
+          },
+          "claims": [
+            {
+              "id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+              "text": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-north_glass-5",
+                  "chapter_id": "fixture-chapter-north_glass-5",
+                  "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                  "label": "carrier_inspection",
+                  "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+                },
+                {
+                  "id": "fixture-span-north_glass-4",
+                  "chapter_id": "fixture-chapter-north_glass-4",
+                  "body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+                  "label": "carrier_ready_rule",
+                  "prompt_excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked."
+                },
+                {
+                  "id": "fixture-span-north_glass-2",
+                  "chapter_id": "fixture-chapter-north_glass-2",
+                  "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                  "label": "badge_roster",
+                  "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-north_glass-1",
+              "memory_type": "static_canon",
+              "subject": "Mira",
+              "predicate": "rule",
+              "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+              "source_span_id": "fixture-span-north_glass-1"
+            },
+            {
+              "id": "fixture-memory-north_glass-2",
+              "memory_type": "dynamic_state",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+              "source_span_id": "fixture-span-north_glass-2"
+            },
+            {
+              "id": "fixture-memory-north_glass-3",
+              "memory_type": "open_thread",
+              "subject": "Mira",
+              "predicate": "status",
+              "value": "The spare blue badge register leaves its 11点 holder field blank.",
+              "source_span_id": "fixture-span-north_glass-3"
+            },
+            {
+              "id": "fixture-memory-north_glass-4",
+              "memory_type": "static_canon",
+              "subject": "pneumatic carrier",
+              "predicate": "rule",
+              "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+              "source_span_id": "fixture-span-north_glass-4"
+            },
+            {
+              "id": "fixture-memory-north_glass-5",
+              "memory_type": "dynamic_state",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+              "source_span_id": "fixture-span-north_glass-5"
+            },
+            {
+              "id": "fixture-memory-north_glass-6",
+              "memory_type": "open_thread",
+              "subject": "pneumatic carrier",
+              "predicate": "status",
+              "value": "The carrier inspection does not record who loosened its valve cap.",
+              "source_span_id": "fixture-span-north_glass-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1\",\"verdict\":\"reviewed_issue\",\"basis\":\"At 10点 on the same day the cited canon rule requires both four bars and a locked valve cap for dispatch readiness; the same-minute evidence records the cap loose and not locked, so the claim's readiness cannot hold at that time. Confirmed conflict at object_state level.\"}],\"issues\":[{\"claim_span_id\":\"claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"object_state\",\"severity\":\"medium\",\"explanation\":\"At 10点 the carrier's valve cap was loose and not locked, so under the dispatch-readiness rule the carrier was not ready for dispatch at that minute.\",\"reasoning\":\"The static_canon rule (fixture-memory-north_glass-4) defines readiness for dispatch as requiring both a four-bar gauge reading and a locked valve cap; it is subject-neutral, timeless, and its subject 'pneumatic carrier' is the same named object as in the claim. The dynamic_state span (fixture-memory-north_glass-5) carries the identical time anchor 'At 10点 on the same day' and states that the valve cap remained loose and not locked throughout that minute. Gauge at four bars satisfies only one of the two required conditions, so both texts describe the carrier at the same time, same object, same scope (readiness for dispatch), where the evidence asserts the necessary condition was unmet and the claim asserts readiness held. The two cannot coexist; this is a confirmed conflict, not a state change, because no later transition is supplied and the time is explicitly the same.\",\"temporal_basis\":{\"claim_anchor\":\"At 10点 on the same day\",\"evidence_anchor\":\"At 10点 on the same day\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-north_glass-5\",\"span_id\":\"fixture-span-north_glass-5\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-5\"]},{\"chapter_id\":\"fixture-chapter-north_glass-4\",\"span_id\":\"fixture-span-north_glass-4\",\"relation\":\"context\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-4\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-north_glass-5\",\"role\":\"prior_state\"},{\"span_id\":\"fixture-span-north_glass-4\",\"role\":\"current_context\"}],\"suggested_revision\":{\"before\":\"At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.\",\"after\":\"At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch: its gauge read four bars, but its valve cap remained loose and not locked.\"},\"available_actions\":[\"edit\",\"apply_suggestion\",\"keep_intentional\",\"false_positive\"]}]}",
+        "parsed_business_json": {
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+              "verdict": "reviewed_issue",
+              "basis": "At 10点 on the same day the cited canon rule requires both four bars and a locked valve cap for dispatch readiness; the same-minute evidence records the cap loose and not locked, so the claim's readiness cannot hold at that time. Confirmed conflict at object_state level."
+            }
+          ],
+          "issues": [
+            {
+              "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+              "status": "conflict",
+              "nature": "confirmed_conflict",
+              "category": "object_state",
+              "severity": "medium",
+              "explanation": "At 10点 the carrier's valve cap was loose and not locked, so under the dispatch-readiness rule the carrier was not ready for dispatch at that minute.",
+              "reasoning": "The static_canon rule (fixture-memory-north_glass-4) defines readiness for dispatch as requiring both a four-bar gauge reading and a locked valve cap; it is subject-neutral, timeless, and its subject 'pneumatic carrier' is the same named object as in the claim. The dynamic_state span (fixture-memory-north_glass-5) carries the identical time anchor 'At 10点 on the same day' and states that the valve cap remained loose and not locked throughout that minute. Gauge at four bars satisfies only one of the two required conditions, so both texts describe the carrier at the same time, same object, same scope (readiness for dispatch), where the evidence asserts the necessary condition was unmet and the claim asserts readiness held. The two cannot coexist; this is a confirmed conflict, not a state change, because no later transition is supplied and the time is explicitly the same.",
+              "temporal_basis": {
+                "claim_anchor": "At 10点 on the same day",
+                "evidence_anchor": "At 10点 on the same day",
+                "relation": "explicit_overlap"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "fixture-chapter-north_glass-5",
+                  "span_id": "fixture-span-north_glass-5",
+                  "relation": "contradicts",
+                  "sufficiency": "sufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-north_glass-5"
+                  ]
+                },
+                {
+                  "chapter_id": "fixture-chapter-north_glass-4",
+                  "span_id": "fixture-span-north_glass-4",
+                  "relation": "context",
+                  "sufficiency": "sufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-north_glass-4"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "fixture-span-north_glass-5",
+                  "role": "prior_state"
+                },
+                {
+                  "span_id": "fixture-span-north_glass-4",
+                  "role": "current_context"
+                }
+              ],
+              "suggested_revision": {
+                "before": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+                "after": "At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch: its gauge read four bars, but its valve cap remained loose and not locked."
+              },
+              "available_actions": [
+                "edit",
+                "apply_suggestion",
+                "keep_intentional",
+                "false_positive"
+              ]
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    }
+  ]
+}

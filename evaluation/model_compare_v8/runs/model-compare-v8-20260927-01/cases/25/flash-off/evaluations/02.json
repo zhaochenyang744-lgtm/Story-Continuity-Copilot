@@ -1,0 +1,43 @@
+{
+  "evaluation": 2,
+  "business_request_sha256": "b4fec0a6a1f48574dfa263c169609ef927497213604325eb13b867b5e79ee18f",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-fcb3682e-1e06-46bd-9210-2860ea72fd61-1",
+        "verdict": "no_issue",
+        "basis": "The cited spans do not directly contradict the claim. The index span only identifies lens Q8 as the installed east aperture lens; the status span describes the east aperture lens as clear glass, not amber glass, but does not state that lens Q8 is that lens at 14:00 today. The cleaning log does not identify the aperture or material. No supplied evidence establishes the identity link needed to prove a contradiction."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 4241,
+      "completion_tokens": 138,
+      "total_tokens": 4379,
+      "prompt_tokens_details": {
+        "cached_tokens": 3200
+      },
+      "prompt_cache_hit_tokens": 3200,
+      "prompt_cache_miss_tokens": 1041
+    },
+    "status": "complete",
+    "prompt_tokens": 4241,
+    "completion_tokens": 138,
+    "total_tokens": 4379,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

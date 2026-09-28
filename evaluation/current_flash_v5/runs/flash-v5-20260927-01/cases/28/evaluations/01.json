@@ -1,0 +1,157 @@
+{
+  "case_id": "g02-identical-text",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "1b2a71d1e287285dd934219b2bb0acb1fa92ccf7f964adf8c2c35158acbcbac8",
+  "finished_at": "2026-09-27T08:21:30.210502+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "summary": "当前草稿为第十一章《未归的航标》修订版2，仅含林默走进北门的重复动作。已确认记忆显示：第6章21:05低室电台收到三次求救码；白色渡船未靠岸、来源未明；异常雾钟在北潮闸未关闭时响起，原因未解。",
+    "summary_sources": [
+      {
+        "source_type": "draft_claim",
+        "source_id": "draft-claim-draft-432b11b1-c704-4170-a352-446cb6064878-r2-1"
+      },
+      {
+        "source_type": "memory_record",
+        "source_id": "mem-34d22780-d49a-40b8-9e9c-5b5b136b1042"
+      },
+      {
+        "source_type": "memory_record",
+        "source_id": "mem-bb9e7ece-bd0b-498a-98d6-fb60d3e4040a"
+      }
+    ],
+    "items": [
+      {
+        "section": "recent_source",
+        "text": "当前草稿第十一章《未归的航标》修订版2的正文仅有两句相同内容：林默走进北门。",
+        "sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-draft-432b11b1-c704-4170-a352-446cb6064878-r2-1"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-draft-432b11b1-c704-4170-a352-446cb6064878-r2-2"
+          }
+        ]
+      },
+      {
+        "section": "confirmed_fact",
+        "text": "已确认事件时间线：第6章21:05，低室电台收到三次求救码。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-34d22780-d49a-40b8-9e9c-5b5b136b1042"
+          }
+        ]
+      },
+      {
+        "section": "confirmed_fact",
+        "text": "已确认事件时间线：第3章19:20为西航道退潮。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-7d875922-a0a2-4be1-8d2f-3ca8fb815a6d"
+          }
+        ]
+      },
+      {
+        "section": "confirmed_fact",
+        "text": "已确认静态设定：灰港雾钟只在北潮闸完全关闭后敲响一次。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-de68ba88-54dc-4080-a24a-81cd913fde20"
+          }
+        ]
+      },
+      {
+        "section": "character_state",
+        "text": "已确认动态状态：黄铜罗盘当前由温岚持有。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-aa6343e8-53f3-4600-b650-9ce1c31b1432"
+          }
+        ]
+      },
+      {
+        "section": "character_state",
+        "text": "已确认人物知识：温岚不知道廊桥钥匙的含义。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-9c5a6a0a-2069-4169-9f87-d8cb073942f1"
+          }
+        ]
+      },
+      {
+        "section": "world_rule",
+        "text": "已确认动态状态：航图位于雾线水门外锚柱。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-6cb41d9d-983c-4326-bb3f-1743e217b4ab"
+          }
+        ]
+      },
+      {
+        "section": "open_thread",
+        "text": "未解线索：白色渡船没有靠岸，来源未明。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-4d12166c-bccc-4728-a051-f7e0b7614087"
+          }
+        ]
+      },
+      {
+        "section": "open_thread",
+        "text": "未解线索：异常雾钟在北潮闸未关闭时响起，原因未解。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-bb9e7ece-bd0b-498a-98d6-fb60d3e4040a"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "第6章《低室电台》原文：电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+        "sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "span-62ae7d78-95f9-41d5-8297-234791dd5ca7"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "第10章《回声坐标》原文：北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+        "sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "span-77b2fe59-b0b0-498f-acfc-3115ae14df94"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "第9章《换手》原文：进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+        "sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "span-01df0d99-a5c7-4a55-883b-066c998b4f23"
+          }
+        ]
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 2996,
+    "output_tokens": 1117,
+    "observed_response_input_tokens": 2996,
+    "observed_response_output_tokens": 1117
+  }
+}

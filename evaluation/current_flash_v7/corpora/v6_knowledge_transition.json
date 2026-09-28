@@ -1,0 +1,40 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "v6_knowledge_transition",
+  "title": "V6 synthetic knowledge_transition",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "v6_control_matrix_exact_source_body",
+    "control_matrix_sha256": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "input_adaptation_sha256": "eaaceb74f501bd6158d6f2f3d28a28e9d8a21beaf1e6c80788fd2bd132eb6cbe",
+    "classification": "seen_development"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Synthetic knowledge_transition source K1",
+      "source_label": "K1",
+      "body": "At 09:00 today, Siva had not opened the letter and did not know the password."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Synthetic knowledge_transition source K2",
+      "source_label": "K2",
+      "body": "At 12:00 today, Siva opened the letter and learned the password from it."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "knowledge_transition",
+      "predicate": "status",
+      "value": "At 09:00 today, Siva had not opened the letter and did not know the password.",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "K1"
+      }
+    }
+  ]
+}

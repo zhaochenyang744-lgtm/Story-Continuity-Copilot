@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-11",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "518f13d224f67e6edc9f5c42b0605a924a71fae59733468c247b1e623a1ac17d",
+  "finished_at": "2026-09-27T10:49:10.396530+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-28669392-b5e5-4700-8986-4ac7a503526c-1",
+        "verdict": "no_issue",
+        "basis": "The draft explicitly frames Aster's statement as a lie, so it is an attributed false utterance, not narrator-asserted canon. The cited evidence (twins, both children of Eda; register rule that twins cannot be one another's parent) is consistent with the narrator's correction, so no continuity conflict exists."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3003,
+    "output_tokens": 119,
+    "observed_response_input_tokens": 3003,
+    "observed_response_output_tokens": 119
+  }
+}

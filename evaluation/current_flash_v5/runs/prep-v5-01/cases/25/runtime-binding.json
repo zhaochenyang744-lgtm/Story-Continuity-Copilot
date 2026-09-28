@@ -1,0 +1,89 @@
+{
+  "project_id": "prj-05935fdb-59bd-4708-b52d-859c3c2b1ec9",
+  "draft_id": "draft-68b0bbb3-8d9d-4bb7-950f-c87dd032dfb8",
+  "draft_revision": 2,
+  "source_revision": 1,
+  "memory_version": 4,
+  "chapters": [
+    {
+      "chapter_id": "ch-9b79cddd-cc10-4d58-8b91-3f8505e183e8",
+      "chapter_number": 1,
+      "source_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_id": "span-146d9a8f-9a10-4c57-a99a-8398dcc9c6ac",
+      "span_body_sha256": "94ba09a3cf9e29cb6a363a03322de398f60a9af31d2a89b50a916f392ec5e12e"
+    },
+    {
+      "chapter_id": "ch-620f232e-877c-463f-9f77-993e9b8e6252",
+      "chapter_number": 2,
+      "source_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_id": "span-88aafe41-3b0e-4b58-a83d-e66c188665de",
+      "span_body_sha256": "68dacbc00263341e60fdeb68f264492dc0953140827d264994dcd12e9a26b422"
+    },
+    {
+      "chapter_id": "ch-dde24552-9ff6-458d-a0da-9d86dc290e84",
+      "chapter_number": 3,
+      "source_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_id": "span-769485ab-4a45-4154-96d6-e77abe1b02c7",
+      "span_body_sha256": "bfc55c345ab2ca0d5d343ea3733b01bf801a9aac8b040685f711076b08bd8b03"
+    },
+    {
+      "chapter_id": "ch-bf39f563-b476-4424-ab29-fd51c9f6c5d9",
+      "chapter_number": 4,
+      "source_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_id": "span-af570fef-79a0-40aa-8597-c7474da21f5a",
+      "span_body_sha256": "2b42960d67fb622a2484050f9afe31dea302dd059c7dda3cf0d31eab4a70bbd3"
+    },
+    {
+      "chapter_id": "ch-93fd3132-004f-485d-ae3a-6f3f98d07cf6",
+      "chapter_number": 5,
+      "source_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_id": "span-f64681b0-c4b6-4f93-b0ab-857cecea1e17",
+      "span_body_sha256": "8a0f8a53b219be663bc27b02decd36f0f5600f1e703c9b71f82dae2b4b3f1387"
+    },
+    {
+      "chapter_id": "ch-7b06f67e-fab0-4db6-b016-0597cfab1456",
+      "chapter_number": 6,
+      "source_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_id": "span-ef405034-f9a2-41bb-b40f-ccb46d5fe365",
+      "span_body_sha256": "8cfce58f0ce8de9ee07de1a3123b29e091c5b1917928caf4f6a90dfc79f04c3e"
+    },
+    {
+      "chapter_id": "ch-7389b882-b67f-45ed-aa33-d54a42e2661b",
+      "chapter_number": 7,
+      "source_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_id": "span-0e192391-0b84-4a91-ae6f-a5413b942394",
+      "span_body_sha256": "82d77670ec3f945f5da30dd608e7accd6640a3f09bf103c54114bcf52141e1ff"
+    },
+    {
+      "chapter_id": "ch-2cced0c5-2d42-4be5-a08f-27dadb44c5b6",
+      "chapter_number": 8,
+      "source_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_id": "span-a88fb61a-7bcb-471b-be26-03dc4085dd7e",
+      "span_body_sha256": "ab75da7e0d3ec24955927e77a13bcf72efac68cf8d8d7d84922e5f0cbfb6dbcd"
+    },
+    {
+      "chapter_id": "ch-1e411c8d-d749-4e73-bfec-d4173874870d",
+      "chapter_number": 9,
+      "source_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_id": "span-df9f78ac-f891-4dd6-a08d-61d35d266855",
+      "span_body_sha256": "b07ea48fcdc8ed1f76041a0cd9188055ec40adeef4a969b63b212357bef229dd"
+    },
+    {
+      "chapter_id": "ch-985425be-29af-4b18-8cff-93c3b86c5c37",
+      "chapter_number": 10,
+      "source_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_id": "span-7dd18f4c-26e7-400d-aa52-8278e2c154f7",
+      "span_body_sha256": "b3265433a0a1022e4d049a4768879f6763f8db0dbca1c858802e228639ea3e6c"
+    }
+  ]
+}

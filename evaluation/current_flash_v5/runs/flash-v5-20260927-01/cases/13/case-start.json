@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v5-20260927-01",
+  "ordinal": 13,
+  "case_id": "ccv3-orchard_restoration-relationship-conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:20:25.768845+00:00",
+  "case_input_sha256": "eb086b8472c4aa331b3208bab3ef1af69a24a6b8e53cf32fb24b9b36b663c56f",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

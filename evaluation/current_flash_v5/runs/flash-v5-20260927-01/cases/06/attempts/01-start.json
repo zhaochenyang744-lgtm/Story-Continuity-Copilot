@@ -1,0 +1,12 @@
+{
+  "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+  "run_id": "flash-v5-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 7,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "517b00f4a3ad42812f5fe63791076d3516e99734fb429ef7db094c22261407be",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "757ae7d858cc3691703084f968b17df7de7b3d57614828c2ba37eaca216bd062",
+  "started_at": "2026-09-27T08:20:07.304955+00:00",
+  "usage_status": "unknown_until_response"
+}

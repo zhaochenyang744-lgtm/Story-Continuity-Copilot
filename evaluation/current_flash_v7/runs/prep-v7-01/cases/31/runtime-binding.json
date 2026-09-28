@@ -1,0 +1,34 @@
+{
+  "project_id": "fixture-project-v6-birth-order-blank",
+  "draft_id": "fixture-draft-v6-birth-order-blank",
+  "draft_revision": 2,
+  "draft_body": "The birth register establishes that Aster was born before Nilo.",
+  "draft_body_sha256": "8cb699cd62cd4b0cadf19e6ea3b2330d3f734f77bcde83350fca866305bc60ca",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+      "chapter_number": 1,
+      "chapter_title": "Synthetic birth_order_blank source B1",
+      "chapter_body": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_birth_order_blank-1",
+      "span_body": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+      "span_revision": 1,
+      "chapter_body_sha256": "544b037ecd45c8f28d19a9013d682dfb522fbed485197ba147e2871bdff7b6f2",
+      "span_body_sha256": "544b037ecd45c8f28d19a9013d682dfb522fbed485197ba147e2871bdff7b6f2"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-v6_birth_order_blank-1",
+      "memory_type": "dynamic_state",
+      "subject": "birth_order_blank",
+      "predicate": "status",
+      "value": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+      "source_span_id": "fixture-span-v6_birth_order_blank-1",
+      "version": 1
+    }
+  ]
+}

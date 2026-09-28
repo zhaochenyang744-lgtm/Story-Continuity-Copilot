@@ -1,0 +1,172 @@
+{
+  "schema_version": "v8-blinded-case-review-v1",
+  "case_alias": "case-12",
+  "stage": "first",
+  "reviewer": "reviewer-c",
+  "locked_at_utc": "2026-09-27T11:45:05.220086+00:00",
+  "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/12.json",
+  "packet_sha256": "689c738d2d93a01c24dc5f2db389d3f7dd169c77e16fac5a0223c58a0f150581",
+  "criteria_sha256": {
+    "SEMANTIC-CRITERIA.md": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+    "SEMANTIC-CRITERIA.json": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+  },
+  "condition_visibility": "hidden",
+  "exposure_note": "此前作为工程审阅者看过其他案例01/02的条件身份及trace；未读本例live arms、机器成绩或root-only mapping。不声称严格双盲，未推测本例模型身份。",
+  "review_basis": "本例固定匿名packet的业务输入、policy及首答可见内容；先分别判断再比较，未读repair/final。",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-12",
+      "response_alias": "answer-aa049b",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "basis_codepoints": 146,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "保留命名行为主体 Vela 的递送事实为未知；13点开报并不能证明递送人，也没有反推出 Vela 未递送。",
+          "visible_quote": "The fact of Vela's delivery remains unknown",
+          "evidence_pointer": "answer-aa049b.first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "固定 policy 要求 relationship：缺的是 Vela 与递送行为的归属，而不是把开报或递送事件是否发生作为 event_status 类。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "answer-aa049b.first.parsed_business_json.issues[0].category; policy.category"
+        }
+      ],
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "不足判断及真实 Issue 交付正确；唯一最低来源4、Memory4、context/insufficient 与 missing_link 均正确，basis/ledger一致，时间锚点为原文且无升级操作。类别不符固定 relationship，strict失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-12",
+      "response_alias": "answer-6bc1e1",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "basis_codepoints": 256,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确记录不能绑定 Vela，且不把未记载当作否认递送；保留行为人未知。开报与收报背景不构成 Vela 身份证明。",
+          "visible_quote": "No supplied span contradicts the possibility that Vela delivered it",
+          "evidence_pointer": "answer-6bc1e1.first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "所发 location_action 不在此例冻结 relationship 类别内；主缺口是具名行为人的归属。",
+          "visible_quote": "location_action",
+          "evidence_pointer": "answer-6bc1e1.first.parsed_business_json.issues[0].category; policy.category"
+        }
+      ],
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "F和不足交付正确，selected来源4及父章/Memory绑定、证据角色/集合/链、ledger和安全操作合规；仅类别错误使strict失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-12",
+      "response_alias": "answer-8b757a",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "not_delivered",
+        "E_roles": "not_delivered",
+        "E_set": "not_delivered",
+        "E_binding": "not_delivered",
+        "S": "fail",
+        "D": "fail",
+        "T": "not_applicable",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 0,
+      "basis_codepoints": 227,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "basis准确指出记录只有 Sera 开报，未指认递送人；Vela归属欠证，而非证实 Vela 未递送。",
+          "visible_quote": "the delivery attribution lacks a supporting handoff or source warrant.",
+          "evidence_pointer": "answer-8b757a.first.parsed_business_json.claim_verdicts[0].basis"
+        },
+        {
+          "dimension": "S",
+          "verdict": "fail",
+          "reason": "insufficient_evidence verdict必须对应不足 Issue；当前 ledger 与空 issues 不一致。",
+          "visible_quote": "\"issues\":[]",
+          "evidence_pointer": "answer-8b757a.first.visible_content; claim_verdicts[0].verdict"
+        },
+        {
+          "dimension": "D",
+          "verdict": "fail",
+          "reason": "冻结预期不足 Issue，必须实际交付引用来源4的 missing_link 说明；只有正确basis不能抵扣空结果。",
+          "visible_quote": "\"verdict\":\"insufficient_evidence\"",
+          "evidence_pointer": "answer-8b757a.first.visible_content; policy.minimum"
+        }
+      ],
+      "attribution_tags": [
+        "schema_error",
+        "delivery_missing"
+      ],
+      "overall_reason": "事实未知判断正确且basis在400内，但未交付不足Issue；C及三项E记not_delivered，S/D失败。没有实际时间/操作字段可评，T记不适用，不据此抵消漏交付。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "case_comparison": {
+    "F": "三回答均pass，保留具名递送人未知。",
+    "strict_composite": "三回答均fail；前两份类别错，第三份漏交付且ledger不一致。",
+    "delivery": "answer-aa049b与answer-6bc1e1真实交付不足Issue；answer-8b757a未交付。"
+  },
+  "locked_before_followup": true,
+  "provider_calls": 0,
+  "database_connections": 0
+}

@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 5853,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "14b24be6-34aa-4df5-b0db-dad6990ce675",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-11600b16-0ac6-422e-8a33-4caa7436309b-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"The draft claim is consistent with the supplied rule and the 10:00 evidence: pressure is four bars, but the valve cap remains loose and unlocked, so the capsule is not ready at that time. No contradiction.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "4fc1840f2db0395c2a31949e54b51f37fc585788fdfff073cb4b2c9e7bf2dddc",
+  "reasoning": {
+    "present": true,
+    "codepoints": 1667,
+    "utf8_bytes": 1667,
+    "sha256": "998f6f95cfd334c639e714019982a4e15e31227349f1c6e59c1f7c998e00bfba"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3157,
+      "completion_tokens": 503,
+      "total_tokens": 3660,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 384
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 725
+    },
+    "status": "complete",
+    "prompt_tokens": 3157,
+    "completion_tokens": 503,
+    "total_tokens": 3660,
+    "reasoning_tokens": 384,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:53:28.298861+00:00"
+}

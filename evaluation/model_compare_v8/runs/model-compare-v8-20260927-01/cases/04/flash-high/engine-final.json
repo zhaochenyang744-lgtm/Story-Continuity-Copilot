@@ -1,0 +1,14 @@
+{
+  "status": "failed",
+  "error_code": "schema_invalid",
+  "retryable": true,
+  "input_tokens": 3493,
+  "output_tokens": 1620,
+  "latency_ms": 7257,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

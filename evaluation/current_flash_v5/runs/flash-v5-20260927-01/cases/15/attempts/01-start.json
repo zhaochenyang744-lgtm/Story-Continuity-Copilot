@@ -1,0 +1,12 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+  "run_id": "flash-v5-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 16,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "fd0da6ff77f05799ae1501621f005d07d309eb262e2e51732ba5d30fc6dae05a",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "297641ef2a6c293813911b6f2656eca421755da2c5fdf94ac048b09b6a1b477b",
+  "started_at": "2026-09-27T08:20:32.541952+00:00",
+  "usage_status": "unknown_until_response"
+}

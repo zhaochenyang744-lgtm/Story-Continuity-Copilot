@@ -1,0 +1,116 @@
+{
+  "case_alias": "case-30",
+  "stage": "final",
+  "reviewer": "root",
+  "locked_at_utc": "2026-09-27T11:58:44.025133+00:00",
+  "packet_sha256": "56d9f15b7aaf748e8dd1340bfb4da6ac4a4ae59de5ab50c7b21f7cb923d4703b",
+  "prior_first_sha256": "e201ca4d1ba1ab7bebef86a0f700cd4123ab4f22446e00d0fe311e8b09ede2c0",
+  "records": [
+    {
+      "case_alias": "case-30",
+      "response_alias": "answer-f0bd43",
+      "stage": "final",
+      "reviewer": "root",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-08",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "The single source explicitly names Ina, the witnessed loosening action, the capsule and 10:00, and says the name was entered in the log. The answer correctly accepts this supported attribution instead of inventing a missing actor link.",
+          "visible_quote": "The cited span is the inspection log's own content: the inspector watched Ina loosen the courier capsule valve cap at 10:00 and entered her name. Actor, action, object, and time all match the draft claim, so nothing contradicts and no reviewable gap remains.",
+          "evidence_pointer": "claim_verdicts[0].basis; business_request.claims[0].allowed_evidence[0]"
+        }
+      ],
+      "other_dimensions": "No repair/normalization; final completed with exactly the empty issue list justified in the locked first response. Applicable engine contract and no-false-positive delivery remain correct.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "inherited_locked_first": "first-30.json"
+    },
+    {
+      "case_alias": "case-30",
+      "response_alias": "answer-391996",
+      "stage": "final",
+      "reviewer": "root",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-08",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "The single source explicitly names Ina, the witnessed loosening action, the capsule and 10:00, and says the name was entered in the log. The answer correctly accepts this supported attribution instead of inventing a missing actor link.",
+          "visible_quote": "The cited evidence directly states that at 10:00 the inspector watched Ina loosen the courier capsule valve cap and entered her name in the inspection log, fully supporting the draft claim.",
+          "evidence_pointer": "claim_verdicts[0].basis; business_request.claims[0].allowed_evidence[0]"
+        }
+      ],
+      "other_dimensions": "No repair/normalization; final completed with exactly the empty issue list justified in the locked first response. Applicable engine contract and no-false-positive delivery remain correct.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "inherited_locked_first": "first-30.json"
+    },
+    {
+      "case_alias": "case-30",
+      "response_alias": "answer-863773",
+      "stage": "final",
+      "reviewer": "root",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-08",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "The single source explicitly names Ina, the witnessed loosening action, the capsule and 10:00, and says the name was entered in the log. The answer correctly accepts this supported attribution instead of inventing a missing actor link.",
+          "visible_quote": "The cited span directly supports the claim: the inspector watched Ina loosen the courier capsule valve cap at 10:00 and logged her name, matching the draft's attributed statement.",
+          "evidence_pointer": "claim_verdicts[0].basis; business_request.claims[0].allowed_evidence[0]"
+        }
+      ],
+      "other_dimensions": "No repair/normalization; final completed with exactly the empty issue list justified in the locked first response. Applicable engine contract and no-false-positive delivery remain correct.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "inherited_locked_first": "first-30.json"
+    }
+  ],
+  "repair_count": 0,
+  "normalization_count": 0,
+  "provider_calls": 0,
+  "database_connections": 0
+}

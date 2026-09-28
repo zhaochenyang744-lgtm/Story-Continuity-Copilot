@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+  "status": "completed",
+  "error_code": null,
+  "post_attempt_start_records": 2,
+  "evaluation_count": 2,
+  "score_status": "fail",
+  "finished_at": "2026-09-27T10:48:17.969129+00:00"
+}

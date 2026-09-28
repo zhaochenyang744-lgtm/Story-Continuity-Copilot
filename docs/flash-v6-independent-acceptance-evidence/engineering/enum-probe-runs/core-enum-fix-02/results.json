@@ -1,0 +1,30 @@
+{
+  "blocked_boundary_attempts": {
+    "http": 0,
+    "real_provider": 0,
+    "socket": 0,
+    "sqlite": 0
+  },
+  "controls": [
+    {
+      "control": "list",
+      "status": "pass"
+    },
+    {
+      "control": "dict",
+      "status": "pass"
+    },
+    {
+      "control": "null",
+      "status": "pass"
+    },
+    {
+      "control": "number",
+      "status": "pass"
+    }
+  ],
+  "fatal": null,
+  "frozen_sources_stable": true,
+  "scope": "new verdict value types through validate, one repair, and terminal failure only",
+  "status": "pass"
+}

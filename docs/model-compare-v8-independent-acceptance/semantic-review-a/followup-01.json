@@ -1,0 +1,240 @@
+{
+  "schema_version": "v8-blinded-case-followup-review-v1",
+  "case_alias": "case-01",
+  "reviewer": "semantic-review-a",
+  "stage": "followup",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-01",
+      "response_alias": "answer-1f9716",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "与首答同一正确规则反证，reasoning和evidence一致。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[answer-1f9716].final; semantic-review-a/first-01.json"
+        }
+      ],
+      "passed_dimensions_note": "绑定selected span/chapter/Memory及excerpt正确，minimum/optional与角色保持，实际Issue及适用final合同正确；保留的类别错误另计。",
+      "attribution_tags": [],
+      "overall_reason": "无repair；final保留命题、类别和证据，按timeless处理移除建议/apply_suggestion；normalization_count=0。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-01.json",
+      "normalization_count": 0
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-01",
+      "response_alias": "answer-c116ce",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "与首答同一正确规则反证，reasoning和evidence一致。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[answer-c116ce].final; semantic-review-a/first-01.json"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "event_status未被最终处理纠正，固定类别应world_rule。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "responses[answer-c116ce].final.issues[0].category"
+        }
+      ],
+      "passed_dimensions_note": "绑定selected span/chapter/Memory及excerpt正确，minimum/optional与角色保持，实际Issue及适用final合同正确；保留的类别错误另计。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "无repair；final保留命题、类别和证据，按timeless处理移除建议/apply_suggestion；normalization_count=0。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-01.json",
+      "normalization_count": 0
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-01",
+      "response_alias": "answer-f22145",
+      "stage": "repair",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "fail",
+        "D": "pass",
+        "T": "fail",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        154
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "仍正确指出永久蓝徽章规则与仅红徽章开门矛盾，未丢失主体或必要条件。",
+          "visible_quote": "红色徽章无法打开它",
+          "evidence_pointer": "responses[answer-f22145].repair.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "类别仍object_state，应world_rule。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[answer-f22145].repair.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "S/T",
+          "verdict": "fail",
+          "reason": "虽收到temporal_overlap_unproven反馈，仍用context的10点锚点为无时钟静态直接反证填explicit_overlap；违反本例timeless_rule及直接反证时间合同。",
+          "visible_quote": "explicit_overlap",
+          "evidence_pointer": "responses[answer-f22145].repair.business_request.contract_repair; repair.parsed_business_json.issues[0].temporal_basis"
+        }
+      ],
+      "passed_dimensions_note": "E_roles/E_set/E_binding和实际Issue交付保持；JSON/claim/ledger/chain基本结构合规，S失败仅时间合同。",
+      "attribution_tags": [
+        "category_mismatch",
+        "temporal_contract_error"
+      ],
+      "overall_reason": "修复未纠正类别或时间合同，F仍正确而strict失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-01.json"
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-01",
+      "response_alias": "answer-f22145",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-conflict",
+      "ratings": {
+        "F": "fail",
+        "C": "fail",
+        "E_roles": "fail",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "fail",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F/T",
+          "verdict": "fail",
+          "reason": "永久规则与草稿仅红徽章条件已足够反驳；final却声称缺适用时刻/范围，误作不足。该失败属于观察到的产品normalization，不能归入模型首答。",
+          "visible_quote": "An explicit time anchor, applicable scope, or connecting event is required",
+          "evidence_pointer": "responses[answer-f22145].final.issues[0].reasoning; final.contract_normalizations"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "object_state仍不符world_rule。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[answer-f22145].final.issues[0].category"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "fail",
+          "reason": "规则直接反证被改成context/insufficient和missing_link，针对本例充分永久规则的角色判断不正确；ID/正文/集合仍有效。",
+          "visible_quote": "insufficient",
+          "evidence_pointer": "responses[answer-f22145].final.issues[0].evidence/evidence_chain"
+        }
+      ],
+      "passed_dimensions_note": "集合与绑定正确，适用final结构合规且真实交付一个不足Issue；D仅指实际交付，不能抵扣F/T/角色错误。",
+      "attribution_tags": [
+        "product_normalization_semantic_downgrade",
+        "category_mismatch",
+        "role_error",
+        "temporal_scope_error"
+      ],
+      "overall_reason": "1次保守normalization把冲突改成不足；不是模型repair的新语义。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-01.json",
+      "normalization_count": 1
+    }
+  ],
+  "comparison": {
+    "repair_count": 1,
+    "repair_strict_pass": 0,
+    "final_strict_pass": 1,
+    "final_count": 3,
+    "first_scores_unchanged": true
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/01.json",
+    "sha256_before": "3051952639aba69e3704b2982f7ad174c75e191d114ec6e29cb8cdce76024787",
+    "sha256_after_review": "3051952639aba69e3704b2982f7ad174c75e191d114ec6e29cb8cdce76024787",
+    "unchanged": true,
+    "repair_business_unchanged_except_contract_repair": true,
+    "repair_visible_equals_parsed": true
+  },
+  "lock": {
+    "first_locked_before_followup": true,
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

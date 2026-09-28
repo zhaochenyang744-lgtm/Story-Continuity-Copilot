@@ -1,0 +1,412 @@
+{
+  "adjudication": {
+    "classification": "audit_assumption_error",
+    "code": "final_runtime_versions",
+    "explanation": "Regular continuity create_run stores draft.revision in v2_runs.source_revision and leaves draft_revision NULL. It is not the source-chapter revision. Confirmed from current frozen v2_database.py:2850-2868 and :3488; all 34 records match their same-run saved draft and memory version.",
+    "rows": [
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 1,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 2,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 3,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 4,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 5,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 6,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 7,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 8,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 9,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 10,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 11,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 12,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 13,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 14,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 15,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 16,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 17,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 18,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 19,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 20,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 21,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 22,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 23,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 24,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 25,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 26,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 27,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 28,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 29,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 30,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 31,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 32,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 33,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      },
+      {
+        "draft_revision_from_binding": 2,
+        "memory_version": 1,
+        "ordinal": 34,
+        "pass": true,
+        "product_draft_revision": null,
+        "product_source_revision": 2
+      }
+    ],
+    "source_sha256": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754"
+  },
+  "all_dispatch_usage_complete": true,
+  "all_protected_hashes_match_before_after": true,
+  "audit_database_connections": 0,
+  "audit_network_calls": 0,
+  "audit_provider_calls": 0,
+  "completion_tokens_total": 12568,
+  "contract_repairs": [
+    {
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "reason_code": "temporal_overlap_unproven"
+    },
+    {
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "reason_code": "claim_verdicts_issue_mismatch"
+    },
+    {
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "reason_code": "claim_verdicts_invalid"
+    },
+    {
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "reason_code": "claim_verdicts_issue_mismatch"
+    },
+    {
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "reason_code": "claim_verdicts_invalid"
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "reason_code": "claim_verdicts_invalid"
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "reason_code": "claim_verdicts_issue_mismatch"
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "reason_code": "claim_verdicts_invalid"
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "reason_code": "claim_verdicts_invalid"
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "reason_code": "temporal_overlap_unproven"
+    },
+    {
+      "case_id": "v6-v6s-01",
+      "reason_code": "temporal_overlap_unproven"
+    },
+    {
+      "case_id": "v6-v6s-03",
+      "reason_code": "temporal_overlap_unproven"
+    },
+    {
+      "case_id": "v6-v6s-04",
+      "reason_code": "claim_verdicts_invalid"
+    },
+    {
+      "case_id": "v6-v6s-06",
+      "reason_code": "claim_verdicts_issue_mismatch"
+    },
+    {
+      "case_id": "v6-v6s-10",
+      "reason_code": "claim_verdicts_issue_mismatch"
+    }
+  ],
+  "cost": "unavailable_not_inferred",
+  "findings": [],
+  "frozen_manifest_sha256": "f0e2cb3d5c44a1a92000f703423a0d26ea1fab5aef750b7a3393102ea98ed696",
+  "generation_evaluations": 49,
+  "http_responses_received": 49,
+  "http_status_counts": {
+    "200": 49
+  },
+  "initial_finding_preserved": true,
+  "known_completion_tokens_partial_sum": 12568,
+  "known_prompt_tokens_partial_sum": 168459,
+  "known_total_tokens_partial_sum": 181027,
+  "limits": [
+    "Technical ledger acceptance only; semantic/model quality judged separately.",
+    "Usage independently reconciled from retained observer metadata; no cost inferred.",
+    "No product module import; pure text functions only reconstruct prompt and JSON parsing."
+  ],
+  "logical_cases_finished": 34,
+  "logical_cases_planned": 34,
+  "logical_service_failures": 0,
+  "models_get_finish_records": 1,
+  "models_get_http_status": 200,
+  "models_get_start_records": 1,
+  "models_unfinished": false,
+  "not_run": [],
+  "original_audit_path": "docs/flash-v6-independent-acceptance-evidence/engineering/live-01-engineering-review.json",
+  "original_audit_sha256": "4f86a34193b01c4a6057eae52dc1df0245aee17ab7024c543893d4b421403aeb",
+  "post_attempt_start_records": 49,
+  "prelaunch_receipt": {
+    "before_run_start": true,
+    "path": "docs\\flash-v6-independent-acceptance-evidence\\PRELAUNCH-RECEIPT.json",
+    "sha256": "20bf6a1d883d23dadcd51268aff2dbba0186a7baf7f34d7e3a2123469659579f"
+  },
+  "prelaunch_supplement_sha256": "c8da7a578bfc82ddfadbe2bd9cad488a2f3c12b7e817c6a323d0cc6997b5eeec",
+  "product_errors": {
+    "claim_verdicts_invalid": 8,
+    "claim_verdicts_issue_mismatch": 5,
+    "evidence_unresolvable": 1
+  },
+  "product_statuses": {
+    "completed": 20,
+    "failed": 14
+  },
+  "prompt_tokens_total": 168459,
+  "protected_file_count": 877,
+  "run_file_count": 420,
+  "run_files_unchanged_on_targeted_followup": true,
+  "run_id": "flash-v6-20260927-01",
+  "run_stable_during_read": true,
+  "sensitive_flags": [],
+  "service_stop": false,
+  "status": "independent_live_engineering_pass",
+  "total_tokens": 181027,
+  "transport_attempts_finished": 49,
+  "transport_retries": 0,
+  "unfinished_post_starts": 0,
+  "usage_counts": {
+    "complete": 49,
+    "missing": 0,
+    "partial": 0,
+    "unknown": 0
+  }
+}

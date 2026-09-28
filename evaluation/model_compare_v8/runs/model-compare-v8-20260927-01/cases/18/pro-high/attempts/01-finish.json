@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 42468,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "638de4f1-c228-4161-9ea1-809890f6cf0e",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1\",\n      \"status\": \"insufficient_evidence\",\n      \"nature\": \"insufficient_evidence\",\n      \"category\": \"relationship\",\n      \"severity\": \"medium\",\n      \"explanation\": \"The draft asserts that the launch and delay logs attribute the restoration boat's delay to Tala, but the supplied log evidence leaves the cause unrecorded.\",\n      \"reasoning\": \"The claim depends on a record establishing Tala as the cause of the delay. The only relevant log evidence states that the restoration log leaves the cause unrecorded, and the other supplied spans describe launch conditions without naming Tala. The attribution is therefore unsupported; no direct contradiction is established, but the source warrant is missing.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": null,\n        \"evidence_anchor\": null,\n        \"relation\": \"unknown\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-orchard_restoration-6\",\n          \"span_id\": \"fixture-span-orchard_restoration-6\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"insufficient\",\n          \"related_memory_ids\": [\"fixture-memory-orchard_restoration-6\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-orchard_restoration-6\",\n          \"role\": \"missing_link\"\n        }\n      ],\n      \"suggested_revision\": null,\n      \"available_actions\": []\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"The supplied restoration log leaves the cause unrecorded, so the draft's attribution of the delay to Tala is unsupported; no direct contradiction or supporting warrant exists.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "1262c72d5cd9c292a0b4757ab453624014712604fcaf382fa68e4b8ea969ace8",
+  "reasoning": {
+    "present": true,
+    "codepoints": 18553,
+    "utf8_bytes": 18561,
+    "sha256": "e4487216e1cda5208093e03ed22d83bafdf82e3bbfc700bf4e6675f47c1d8f28"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3536,
+      "completion_tokens": 4447,
+      "total_tokens": 7983,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3978
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1104
+    },
+    "status": "complete",
+    "prompt_tokens": 3536,
+    "completion_tokens": 4447,
+    "total_tokens": 7983,
+    "reasoning_tokens": 3978,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:46:44.893318+00:00"
+}

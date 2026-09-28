@@ -1,0 +1,286 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-32",
+  "stage": "followup",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T12:02:44.174765+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-32",
+      "response_alias": "answer-5258a9",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-10",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确来源只记Orin行走、同伴未命名；不能担保Evi陪同行为，但不因此否定该故事事实。",
+          "visible_quote": "the attribution remains unknown",
+          "evidence_pointer": "responses[response_alias=answer-5258a9].first.parsed_business_json.claim_verdicts[0].basis / issues[0].reasoning; fixture-span-v6_companion_blank-1"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "冻结manual_variant只允许relationship/location_action且理由需贴合；实际event_status不在候选。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "responses[response_alias=answer-5258a9].first.parsed_business_json.issues[0].category; policy.category_candidates"
+        }
+      ],
+      "other_dimensions_checked": "basis 128≤400；有Issue的两条纯validator通过，最小C1、context/insufficient+missing_link、chapter/Memory均绑定；19:00锚点为精确子串，未输出建议或操作。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "final与实际接受答案所有实质字段一致，新增excerpt绑定正确；completed且normalization=0。来源归属与P未知边界正确；类别或交付合同失败，不能抵扣为事实推理失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "strict_transition": "fail_to_fail",
+        "normalization_count": 0,
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-32.json",
+        "F_basis": "final保留reasoning；空结果沿实际接受首答basis，不宣称final重发ledger。"
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-32",
+      "response_alias": "answer-2d5c12",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-10",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确来源只记Orin行走、同伴未命名；不能担保Evi陪同行为，但不因此否定该故事事实。",
+          "visible_quote": "whether Evi accompanied Orin remains unknown, not disproved",
+          "evidence_pointer": "responses[response_alias=answer-2d5c12].first.parsed_business_json.claim_verdicts[0].basis / issues[0].reasoning; fixture-span-v6_companion_blank-1"
+        },
+        {
+          "dimension": "C",
+          "verdict": "pass",
+          "reason": "location_action是允许候选；可见理由具体讨论Evi在19:00陪Orin到东码头这一行动/在场归属缺口，与类别语义吻合。",
+          "visible_quote": "Evi's presence remains unknown",
+          "evidence_pointer": "responses[response_alias=answer-2d5c12].first.parsed_business_json.claim_verdicts[0].basis / issues[0].category"
+        }
+      ],
+      "other_dimensions_checked": "basis 250≤400；有Issue的两条纯validator通过，最小C1、context/insufficient+missing_link、chapter/Memory均绑定；19:00锚点为精确子串，未输出建议或操作。",
+      "attribution_tags": [],
+      "overall_reason": "final与实际接受答案所有实质字段一致，新增excerpt绑定正确；completed且normalization=0。来源归属与P未知边界正确；完整交付且候选类别语义贴合，strict通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "strict_transition": "pass_to_pass",
+        "normalization_count": 0,
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-32.json",
+        "F_basis": "final保留reasoning；空结果沿实际接受首答basis，不宣称final重发ledger。"
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-32",
+      "response_alias": "answer-767b1e",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-10",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "保留来源没有命名责任人/同伴这一具体缺口，并正确不把未记录等同不存在；新增不足Issue与正确basis一致。",
+          "visible_quote": "the record's silence does not establish that Evi was absent",
+          "evidence_pointer": "responses[response_alias=answer-767b1e].repair.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "本例允许候选为relationship/location_action，实际character_knowledge不符合；不能把记录不知道谁视为角色知识状态。",
+          "visible_quote": "character_knowledge",
+          "evidence_pointer": "responses[response_alias=answer-767b1e].repair.parsed_business_json.issues[0].category; policy"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "从空issues补为一条不足Issue，最小来源、context/insufficient+missing_link、绑定、空建议/actions均正确；纯validator通过，S/D恢复但strict未恢复。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[response_alias=answer-767b1e].repair.parsed_business_json.issues[0]"
+        }
+      ],
+      "other_dimensions_checked": "修复请求与原业务输入完全相同，只追加真实拒绝答案与诊断；raw/parsed一致、basis≤400，新增Issue来源与Memory精确绑定，无操作升级。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "final与实际接受答案所有实质字段一致，新增excerpt绑定正确；completed且normalization=0。事实判断首答已正确；repair补足Issue和结构，但选错character_knowledge，strict仍失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": true,
+        "strict_transition": "fail_to_fail",
+        "normalization_count": 0,
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-32.json",
+        "F_basis": "final保留reasoning；空结果沿实际接受首答basis，不宣称final重发ledger。"
+      }
+    }
+  ],
+  "repair_records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-32",
+      "response_alias": "answer-767b1e",
+      "stage": "repair",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-10",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "保留来源没有命名责任人/同伴这一具体缺口，并正确不把未记录等同不存在；新增不足Issue与正确basis一致。",
+          "visible_quote": "the record's silence does not establish that Evi was absent",
+          "evidence_pointer": "responses[response_alias=answer-767b1e].repair.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "本例允许候选为relationship/location_action，实际character_knowledge不符合；不能把记录不知道谁视为角色知识状态。",
+          "visible_quote": "character_knowledge",
+          "evidence_pointer": "responses[response_alias=answer-767b1e].repair.parsed_business_json.issues[0].category; policy"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "从空issues补为一条不足Issue，最小来源、context/insufficient+missing_link、绑定、空建议/actions均正确；纯validator通过，S/D恢复但strict未恢复。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[response_alias=answer-767b1e].repair.parsed_business_json.issues[0]"
+        }
+      ],
+      "other_dimensions_checked": "修复请求与原业务输入完全相同，只追加真实拒绝答案与诊断；raw/parsed一致、basis≤400，新增Issue来源与Memory精确绑定，无操作升级。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "事实判断首答已正确；repair补足Issue和结构，但选错character_knowledge，strict仍失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "F_transition": "pass_to_pass",
+        "S_transition": "fail_to_pass",
+        "D_transition": "fail_to_pass",
+        "C_transition": "not_delivered_to_fail",
+        "strict_transition": "fail_to_fail"
+      }
+    }
+  ],
+  "summary": {
+    "responses": 3,
+    "repair_attempted": 1,
+    "repair_F_pass": 1,
+    "repair_strict_pass": 0,
+    "structure_recoveries": 1,
+    "delivery_recoveries": 1,
+    "F_recoveries": 0,
+    "strict_recoveries": 0,
+    "final_F_pass": 3,
+    "final_F_unassessable": 0,
+    "final_strict_pass": 1,
+    "terminal_failures": 0,
+    "normalization_contribution": 0
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/32.json",
+      "sha256_observed": "3dd7164d7680c5a4d54eed7a21f1690550e358af188cbb42de62590110612b5d",
+      "sha256_after_review": "3dd7164d7680c5a4d54eed7a21f1690550e358af188cbb42de62590110612b5d"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-32.json",
+      "sha256_observed": "b88f264a68934131d339f738db29459db89e4328b335f87e514805b4b5eb0488",
+      "sha256_after_review": "b88f264a68934131d339f738db29459db89e4328b335f87e514805b4b5eb0488"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/32.json",
+      "sha256_observed": "32ea64b775ed7c5af8a8bffbc8ffc52f2d3969618a67ab394ff93a7a086cde54",
+      "sha256_after_review": "32ea64b775ed7c5af8a8bffbc8ffc52f2d3969618a67ab394ff93a7a086cde54"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    },
+    {
+      "path": "backend/app/engine.py",
+      "sha256_observed": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd",
+      "sha256_after_review": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd"
+    }
+  ],
+  "read_hashes_stable": true
+}

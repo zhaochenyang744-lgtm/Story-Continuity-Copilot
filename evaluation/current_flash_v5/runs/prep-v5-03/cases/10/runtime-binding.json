@@ -1,0 +1,97 @@
+{
+  "project_id": "fixture-project-harbor-signal",
+  "draft_id": "fixture-draft-harbor-signal",
+  "draft_revision": 2,
+  "draft_body": "At 11点 on the same day, Sera knew the telegram code.",
+  "draft_body_sha256": "2273f3d64cc9c04599e1998a73e3ffc317923db048ef966d62e1c088829d5ee8",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-harbor_signal-1",
+      "chapter_number": 1,
+      "chapter_title": "Gate Log",
+      "chapter_body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-harbor_signal-1",
+      "span_body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+      "span_revision": 1,
+      "chapter_body_sha256": "77d7377487559251053b9f3faa5dd0fbbafc3d49fafc4c15d44cc8891fb1a464",
+      "span_body_sha256": "77d7377487559251053b9f3faa5dd0fbbafc3d49fafc4c15d44cc8891fb1a464"
+    },
+    {
+      "chapter_id": "fixture-chapter-harbor_signal-2",
+      "chapter_number": 2,
+      "chapter_title": "Reopen Log",
+      "chapter_body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-harbor_signal-2",
+      "span_body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+      "span_revision": 1,
+      "chapter_body_sha256": "1b0a1a8ad3ea83584b12ec7e77000d5bec476f168c92d963fcec02f5e5d283d3",
+      "span_body_sha256": "1b0a1a8ad3ea83584b12ec7e77000d5bec476f168c92d963fcec02f5e5d283d3"
+    },
+    {
+      "chapter_id": "fixture-chapter-harbor_signal-3",
+      "chapter_number": 3,
+      "chapter_title": "Telegram Seal",
+      "chapter_body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-harbor_signal-3",
+      "span_body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+      "span_revision": 1,
+      "chapter_body_sha256": "cff23b54e18923c4325cacd7e9533edc360856e1e893d24fcf4507e7ee20af45",
+      "span_body_sha256": "cff23b54e18923c4325cacd7e9533edc360856e1e893d24fcf4507e7ee20af45"
+    },
+    {
+      "chapter_id": "fixture-chapter-harbor_signal-4",
+      "chapter_number": 4,
+      "chapter_title": "Later Recipient",
+      "chapter_body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-harbor_signal-4",
+      "span_body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+      "span_revision": 1,
+      "chapter_body_sha256": "8d9b6fb9af11f324c7500261a6edc4e8e9e29ecff33fc81fc9da170e5f946b31",
+      "span_body_sha256": "8d9b6fb9af11f324c7500261a6edc4e8e9e29ecff33fc81fc9da170e5f946b31"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-harbor_signal-1",
+      "memory_type": "event_timeline",
+      "subject": "harbor signal gate",
+      "predicate": "event_occurred",
+      "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+      "source_span_id": "fixture-span-harbor_signal-1",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-harbor_signal-2",
+      "memory_type": "open_thread",
+      "subject": "harbor signal gate",
+      "predicate": "status",
+      "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+      "source_span_id": "fixture-span-harbor_signal-2",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-harbor_signal-3",
+      "memory_type": "character_knowledge",
+      "subject": "Sera",
+      "predicate": "knowledge",
+      "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+      "source_span_id": "fixture-span-harbor_signal-3",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-harbor_signal-4",
+      "memory_type": "event_timeline",
+      "subject": "Sera",
+      "predicate": "knowledge",
+      "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+      "source_span_id": "fixture-span-harbor_signal-4",
+      "version": 1
+    }
+  ]
+}

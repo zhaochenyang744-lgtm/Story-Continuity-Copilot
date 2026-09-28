@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "c7007a0ba24209510a63384504def0a488944736622c9cadc06d4fd961239631",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1",
+        "verdict": "no_issue",
+        "basis": "The cited evidence supports the current clear-glass state and identity of lens R4; the recollection of amber yesterday is a compatible earlier state and does not conflict with the later clear condition."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3555,
+      "completion_tokens": 1188,
+      "total_tokens": 4743,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1075
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1123
+    },
+    "status": "complete",
+    "prompt_tokens": 3555,
+    "completion_tokens": 1188,
+    "total_tokens": 4743,
+    "reasoning_tokens": 1075,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

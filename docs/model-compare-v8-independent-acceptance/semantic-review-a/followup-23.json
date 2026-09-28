@@ -1,0 +1,151 @@
+{
+  "schema_version": "v8-blinded-case-followup-review-v1",
+  "case_alias": "case-23",
+  "reviewer": "semantic-review-a",
+  "stage": "followup",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-23",
+      "response_alias": "answer-c29f6d",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "继承锁定首答：19点向东移动与18点西码头状态兼容，final完成且仍为空Issue，未改变语义判断。",
+          "visible_quote": "completed",
+          "evidence_pointer": "responses[answer-c29f6d].final; semantic-review-a/first-23.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair、无normalization；实验final S/D通过，C/E/T显式Issue字段N/A；没有新增API持久化检查。",
+      "source_first_review": "semantic-review-a/first-23.json",
+      "normalization_count": 0,
+      "attribution_tags": [],
+      "overall_reason": "最终保持完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-23",
+      "response_alias": "answer-f61ba6",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "继承锁定首答：19点向东移动与18点西码头状态兼容，final完成且仍为空Issue，未改变语义判断。",
+          "visible_quote": "completed",
+          "evidence_pointer": "responses[answer-f61ba6].final; semantic-review-a/first-23.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair、无normalization；实验final S/D通过，C/E/T显式Issue字段N/A；没有新增API持久化检查。",
+      "source_first_review": "semantic-review-a/first-23.json",
+      "normalization_count": 0,
+      "attribution_tags": [],
+      "overall_reason": "最终保持完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-23",
+      "response_alias": "answer-703432",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "继承锁定首答：19点向东移动与18点西码头状态兼容，final完成且仍为空Issue，未改变语义判断。",
+          "visible_quote": "completed",
+          "evidence_pointer": "responses[answer-703432].final; semantic-review-a/first-23.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair、无normalization；实验final S/D通过，C/E/T显式Issue字段N/A；没有新增API持久化检查。",
+      "source_first_review": "semantic-review-a/first-23.json",
+      "normalization_count": 0,
+      "attribution_tags": [],
+      "overall_reason": "最终保持完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "comparison": {
+    "repair_count": 0,
+    "final_strict_pass": 3,
+    "final_count": 3,
+    "first_scores_unchanged": true
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/23.json",
+    "sha256_before": "364a08dc864024162afbb46a752c4044ea74f735b11a2c5dabdadafe30bab2b5",
+    "sha256_after_review": "364a08dc864024162afbb46a752c4044ea74f735b11a2c5dabdadafe30bab2b5",
+    "unchanged": true
+  },
+  "lock": {
+    "first_locked_before_followup": true,
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

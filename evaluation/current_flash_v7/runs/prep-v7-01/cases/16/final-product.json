@@ -1,0 +1,125 @@
+{
+  "run_id": "run-370d340d-cc85-4520-aaff-e227c8bd93bb",
+  "project_id": "fixture-project-orchard-restoration",
+  "run_type": "continuity",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 2,
+  "draft_revision": null,
+  "source_memory_version": 1,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T10:41:01.479891+00:00",
+  "started_at": "2026-09-27T10:41:01.508849+00:00",
+  "completed_at": "2026-09-27T10:41:01.599187+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 90,
+  "retry_of_run_id": null,
+  "root_run_id": "run-370d340d-cc85-4520-aaff-e227c8bd93bb",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T10:41:01.479891+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "preparing_draft",
+      "error_code": null,
+      "created_at": "2026-09-27T10:41:01.508849+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "retrieving_confirmed_facts",
+      "error_code": null,
+      "created_at": "2026-09-27T10:41:01.521588+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "comparing_evidence",
+      "error_code": null,
+      "created_at": "2026-09-27T10:41:01.549768+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "running",
+      "stage": "assembling_reviewable_results",
+      "error_code": null,
+      "created_at": "2026-09-27T10:41:01.587391+00:00"
+    },
+    {
+      "sequence": 6,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T10:41:01.599187+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "flash-v7-offline-stub",
+    "model_label": "no-model",
+    "prompt_version": "continuity-review-v17-repair-diagnostics",
+    "schema_version": "continuity-issue-v7-repair-diagnostics",
+    "retrieval_method_version": "bounded-lexical-v4-longform",
+    "source_memory_version": 1
+  },
+  "provider_metrics": {
+    "latency_ms": 1,
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "issues": [],
+  "metrics": {
+    "latency_ms": 1,
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "cost_cny": null,
+    "cost_available": false,
+    "contract_normalization_count": 0,
+    "contract_normalizations": [],
+    "provenance": {
+      "provider_label": "flash-v7-offline-stub",
+      "model_label": "no-model",
+      "prompt_version": "continuity-review-v17-repair-diagnostics",
+      "schema_version": "continuity-issue-v7-repair-diagnostics",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "retrieval": [
+      {
+        "claim_ordinal": 1,
+        "returned_span_ids": [
+          "fixture-span-orchard_restoration-4",
+          "fixture-span-orchard_restoration-5",
+          "fixture-span-orchard_restoration-6",
+          "fixture-span-orchard_restoration-1",
+          "fixture-span-orchard_restoration-2"
+        ],
+        "method_version": "bounded-lexical-v4-longform"
+      }
+    ]
+  }
+}

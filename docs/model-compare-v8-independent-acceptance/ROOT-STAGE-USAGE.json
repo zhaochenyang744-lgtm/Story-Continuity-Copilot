@@ -1,0 +1,129 @@
+{
+  "flash-off": {
+    "first_usage": {
+      "prompt_tokens": 112823,
+      "completion_tokens": 9575,
+      "total_tokens": 122398
+    },
+    "repair_usage": {
+      "prompt_tokens": 35898,
+      "completion_tokens": 4031,
+      "total_tokens": 39929
+    },
+    "response_finish": {
+      "stop": 43
+    },
+    "original8000_compatible_strict_final_cases_accounting_only": [
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      11,
+      14,
+      16,
+      17,
+      20,
+      23,
+      27,
+      29,
+      30,
+      33,
+      34
+    ],
+    "incompatible_cases": []
+  },
+  "flash-high": {
+    "first_usage": {
+      "prompt_tokens": 113639,
+      "completion_tokens": 62737,
+      "total_tokens": 176376
+    },
+    "repair_usage": {
+      "prompt_tokens": 4010,
+      "completion_tokens": 447,
+      "total_tokens": 4457
+    },
+    "response_finish": {
+      "stop": 35
+    },
+    "original8000_compatible_strict_final_cases_accounting_only": [
+      2,
+      3,
+      5,
+      8,
+      9,
+      10,
+      11,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34
+    ],
+    "incompatible_cases": [
+      1
+    ]
+  },
+  "pro-high": {
+    "first_usage": {
+      "prompt_tokens": 115373,
+      "completion_tokens": 94475,
+      "total_tokens": 209848
+    },
+    "repair_usage": {
+      "prompt_tokens": 4339,
+      "completion_tokens": 4508,
+      "total_tokens": 8847
+    },
+    "response_finish": {
+      "stop": 35
+    },
+    "original8000_compatible_strict_final_cases_accounting_only": [
+      1,
+      2,
+      3,
+      5,
+      7,
+      8,
+      10,
+      11,
+      14,
+      15,
+      17,
+      19,
+      20,
+      22,
+      23,
+      26,
+      27,
+      29,
+      30,
+      31,
+      33,
+      34
+    ],
+    "incompatible_cases": [
+      4,
+      9,
+      16,
+      18,
+      24,
+      25
+    ]
+  }
+}

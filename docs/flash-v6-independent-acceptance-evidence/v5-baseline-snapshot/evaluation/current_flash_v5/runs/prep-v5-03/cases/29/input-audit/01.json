@@ -1,0 +1,20 @@
+{
+  "case_id": "g02-time-bound",
+  "family": "g02",
+  "status": "same_run_api_input_bound",
+  "same_run_request_sha256": "5ae204e738814245d74b90c370bdfb895fc07e337940b0d9c3f318e91d76d971",
+  "saved_draft_sha256": "c4127523dcbbd745a7742fc3448bfb655c5a28854a362b097c244ebb683b50d3",
+  "draft_chars": 40,
+  "claim_available": 2,
+  "claim_selected": 2,
+  "claim_unselected": 0,
+  "selected_source_span_count": 4,
+  "selected_memory_count": 8,
+  "memory_source_selected_count": 3,
+  "memory_source_unselected_count": 5,
+  "dialogue_two_complete_quotes": false,
+  "database_binding": "matched_persisted_isolated_database",
+  "database_selected_source_count": 4,
+  "database_selected_memory_count": 8,
+  "database_unselected_memory_sources_allowed": 5
+}

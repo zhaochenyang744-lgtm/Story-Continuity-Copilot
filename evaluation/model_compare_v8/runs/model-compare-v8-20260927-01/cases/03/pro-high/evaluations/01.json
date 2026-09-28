@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "1120d0c9cbe27e375e443cb18c1ec5504872ee7a0b9ee938cdc00e070bede6b3",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "The cited badge register blanks the 11点 holder field, so the registers do not support the claim that Mira held the spare blue badge at that time.",
+        "reasoning": "The only supplied register evidence for the 11点 time is the spare blue badge register with an empty holder field. It omits the decisive holder entry, so the draft's attribution that the registers show Mira holding the badge is unsupported; Mira's actual possession remains unknown. No cited evidence supplies a handoff or second register.",
+        "temporal_basis": {
+          "claim_anchor": "11点",
+          "evidence_anchor": "11点",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-3",
+            "span_id": "fixture-span-north_glass-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-3"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-3",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The only cited register at 11点 leaves the holder field blank, so the claim that the registers establish Mira held the spare blue badge has no source warrant; actual possession remains unknown."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3531,
+      "completion_tokens": 4051,
+      "total_tokens": 7582,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3583
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1099
+    },
+    "status": "complete",
+    "prompt_tokens": 3531,
+    "completion_tokens": 4051,
+    "total_tokens": 7582,
+    "reasoning_tokens": 3583,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

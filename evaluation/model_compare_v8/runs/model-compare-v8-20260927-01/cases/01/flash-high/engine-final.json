@@ -1,0 +1,77 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+      "status": "conflict",
+      "category": "event_status",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "The draft states that Mira opened the North Glass door at 10点 while wearing only her red badge, but the standing canon rule says the door opens only for a blue-badge wearer and a red badge cannot open it, so that opening cannot have taken place as asserted.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-north_glass-1",
+          "span_id": "fixture-span-north_glass-1",
+          "excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-1"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-north_glass-2",
+          "span_id": "fixture-span-north_glass-2",
+          "excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-2"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "fixture-span-north_glass-1 carries the supplied static_canon rule (fixture-memory-north_glass-1) that the North Glass door opens only for a wearer of a blue badge and that a red badge cannot open it. Because this is a timeless rule, it governs the draft's own stated moment, and the draft itself supplies the decisive badge fact: Mira wore only her red badge. Rule plus claim cannot coexist, so the opening event asserted in the claim cannot stand as completed. fixture-span-north_glass-2 is background for the same moment: it records only that Mira tried the door with a red badge and no blue badge and that no record shows it opened, so it is context rather than an independent contradiction. The carrier-gauge span concerns a different object and was not cited.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-north_glass-1",
+          "role": "prior_state"
+        },
+        {
+          "span_id": "fixture-span-north_glass-2",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": [
+        "edit",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-2",
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3501,
+  "output_tokens": 6308,
+  "latency_ms": 26773,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

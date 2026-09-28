@@ -1,0 +1,359 @@
+{
+  "kind": "independent_offline_engineering_controls",
+  "run_id": "formal-01",
+  "manifest_sha256": "aabea4b8f99d2d4282ed627e98da98a57e46a1c526a7a45064af22acfd87682b",
+  "probe_sha256": "f7548850b8b491d651cdece23ad42e5169910ee6a80726151a3c19f5d5f1b304",
+  "checks": [
+    {
+      "name": "identity_before_material_and_environment",
+      "passed": true,
+      "details": [
+        {
+          "type": "FileExistsError",
+          "message": "run_identity_already_exists:flash-v5-independent-duplicate"
+        },
+        {
+          "type": "FileExistsError",
+          "message": "run_identity_already_exists:flash-v5-workspace-existing"
+        },
+        {
+          "type": "ValueError",
+          "message": "run_id_invalid"
+        }
+      ]
+    },
+    {
+      "name": "predispatch_snapshot_timeout_usage_and_redaction",
+      "passed": true,
+      "details": {
+        "post_attempt_start_records": 2,
+        "transport_attempts_finished": 2,
+        "http_responses_received": 1,
+        "server_receipt_for_unfinished_attempts": "unknown",
+        "usage_counts": {
+          "complete": 1,
+          "missing": 0,
+          "partial": 0,
+          "unknown": 1
+        },
+        "known_prompt_tokens_partial_sum": 7,
+        "known_completion_tokens_partial_sum": 3,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null,
+        "all_dispatch_usage_complete": false,
+        "unfinished_attempt_count": 0,
+        "models_get_start_records": 0,
+        "models_get_finish_observed": 0,
+        "models_server_receipt_if_unfinished": "unknown"
+      }
+    },
+    {
+      "name": "persistence_failure_prevents_transport",
+      "passed": true,
+      "details": [
+        {
+          "stage": "requests",
+          "transport_calls": 0,
+          "error": {
+            "type": "OSError",
+            "message": "independent injected persistence failure"
+          }
+        },
+        {
+          "stage": "attempts",
+          "transport_calls": 0,
+          "error": {
+            "type": "OSError",
+            "message": "independent injected persistence failure"
+          }
+        }
+      ]
+    },
+    {
+      "name": "four_usage_states_and_invalid_counts",
+      "passed": true,
+      "details": [
+        {
+          "status": "complete",
+          "values": {
+            "prompt_tokens": 1,
+            "completion_tokens": 2,
+            "total_tokens": 3
+          },
+          "invalid_fields": []
+        },
+        {
+          "status": "missing",
+          "values": {
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null
+          },
+          "invalid_fields": [
+            "prompt_tokens",
+            "completion_tokens",
+            "total_tokens"
+          ]
+        },
+        {
+          "status": "partial",
+          "values": {
+            "prompt_tokens": 4,
+            "completion_tokens": null,
+            "total_tokens": null
+          },
+          "invalid_fields": [
+            "completion_tokens",
+            "total_tokens"
+          ]
+        },
+        {
+          "status": "unknown",
+          "values": {
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null
+          },
+          "invalid_fields": [
+            "prompt_tokens",
+            "completion_tokens",
+            "total_tokens"
+          ]
+        },
+        {
+          "status": "unknown",
+          "values": {
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null
+          },
+          "invalid_fields": [
+            "prompt_tokens",
+            "completion_tokens",
+            "total_tokens"
+          ]
+        },
+        {
+          "status": "partial",
+          "values": {
+            "prompt_tokens": 1,
+            "completion_tokens": 2,
+            "total_tokens": 99
+          },
+          "invalid_fields": [
+            "total_tokens_inconsistent"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "orphan_post_and_models_start_are_unknown",
+      "passed": true,
+      "details": {
+        "post_attempt_start_records": 1,
+        "transport_attempts_finished": 0,
+        "http_responses_received": 0,
+        "server_receipt_for_unfinished_attempts": "unknown",
+        "usage_counts": {
+          "complete": 0,
+          "missing": 0,
+          "partial": 0,
+          "unknown": 1
+        },
+        "known_prompt_tokens_partial_sum": 0,
+        "known_completion_tokens_partial_sum": 0,
+        "prompt_tokens_total": null,
+        "completion_tokens_total": null,
+        "all_dispatch_usage_complete": false,
+        "unfinished_attempt_count": 1,
+        "models_get_start_records": 1,
+        "models_get_finish_observed": 0,
+        "models_server_receipt_if_unfinished": "unknown"
+      }
+    },
+    {
+      "name": "parseable_null_and_bad_shape_preserved",
+      "passed": true,
+      "details": [
+        {
+          "kind": "live",
+          "first_raw": {
+            "machine_result": "unscorable",
+            "semantic_result": "not_reviewed",
+            "reason": "parsed_business_json_not_object",
+            "payload_type": "NoneType"
+          },
+          "repair_raw": [],
+          "final": {
+            "case_id": "ccv3-north_glass-world_rule-conflict",
+            "expected_class": "conflict",
+            "machine_result": "terminal_failure",
+            "semantic_result": "not_reviewed",
+            "result": "terminal_failure",
+            "errors": [
+              "schema_invalid"
+            ],
+            "category_status": "fixed_gold",
+            "score_layer": "final_product",
+            "input_origin": "caller_supplied_capture"
+          },
+          "request_count": 1,
+          "parsed_output_count": 1,
+          "manual_semantic_review": "pending_manual_review"
+        },
+        {
+          "kind": "live",
+          "first_raw": {
+            "machine_result": "unscorable",
+            "semantic_result": "not_reviewed",
+            "reason": "parsed_business_json_not_object",
+            "payload_type": "list"
+          },
+          "repair_raw": [],
+          "final": {
+            "case_id": "ccv3-north_glass-world_rule-conflict",
+            "expected_class": "conflict",
+            "machine_result": "terminal_failure",
+            "semantic_result": "not_reviewed",
+            "result": "terminal_failure",
+            "errors": [
+              "schema_invalid"
+            ],
+            "category_status": "fixed_gold",
+            "score_layer": "final_product",
+            "input_origin": "caller_supplied_capture"
+          },
+          "request_count": 1,
+          "parsed_output_count": 1,
+          "manual_semantic_review": "pending_manual_review"
+        },
+        {
+          "kind": "live",
+          "first_raw": {
+            "machine_result": "score_error",
+            "semantic_result": "not_reviewed",
+            "result": "score_error",
+            "error_type": "AttributeError",
+            "error": "'NoneType' object has no attribute 'get'"
+          },
+          "repair_raw": [],
+          "final": {
+            "case_id": "ccv3-north_glass-world_rule-conflict",
+            "expected_class": "conflict",
+            "machine_result": "terminal_failure",
+            "semantic_result": "not_reviewed",
+            "result": "terminal_failure",
+            "errors": [
+              "schema_invalid"
+            ],
+            "category_status": "fixed_gold",
+            "score_layer": "final_product",
+            "input_origin": "caller_supplied_capture"
+          },
+          "request_count": 1,
+          "parsed_output_count": 1,
+          "manual_semantic_review": "pending_manual_review"
+        }
+      ]
+    },
+    {
+      "name": "g02_same_run_database_binding_without_database",
+      "passed": true,
+      "details": {
+        "positive": {
+          "case_id": "g02-three-sentences",
+          "family": "g02",
+          "status": "same_run_api_input_bound",
+          "same_run_request_sha256": "2ad1028f03ac66368508aecbb73c1e0d5ce04fb993310c852b205b3faaf57e7d",
+          "saved_draft_sha256": "28ef08a3a19dedc412b26bdcb3db58db626110d8cc45a41f5de2fa752c29783f",
+          "draft_chars": 30,
+          "claim_available": 3,
+          "claim_selected": 3,
+          "claim_unselected": 0,
+          "selected_source_span_count": 4,
+          "selected_memory_count": 8,
+          "memory_source_selected_count": 3,
+          "memory_source_unselected_count": 5,
+          "dialogue_two_complete_quotes": false,
+          "database_binding": "matched_persisted_isolated_database",
+          "database_selected_source_count": 4,
+          "database_selected_memory_count": 8,
+          "database_unselected_memory_sources_allowed": 5
+        },
+        "negative": [
+          {
+            "mutation": "chapter",
+            "error": {
+              "type": "RuntimeError",
+              "message": "input_contract:g02-three-sentences:selected_source_database_chapter_body_revision"
+            }
+          },
+          {
+            "mutation": "memory_value",
+            "error": {
+              "type": "RuntimeError",
+              "message": "input_contract:g02-three-sentences:selected_memory_database_source_binding"
+            }
+          },
+          {
+            "mutation": "memory_source",
+            "error": {
+              "type": "RuntimeError",
+              "message": "input_contract:g02-three-sentences:selected_memory_database_source_binding"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "two_evaluations_transport_and_global_caps",
+      "passed": true,
+      "details": {
+        "mock_transport_calls_in_two_evaluations": 4,
+        "global_boundary_injected": 107,
+        "last_allowed_mock_transport_calls": 1,
+        "post_cap": 108,
+        "g02_evaluation_cap": 1
+      }
+    },
+    {
+      "name": "malformed_results_do_not_swallow_next_cases",
+      "passed": false,
+      "error_type": "FileNotFoundError",
+      "error": "[WinError 206] 文件名或扩展名太长。: 'C:\\\\Users\\\\赵晨阳\\\\Documents\\\\ChatGPT\\\\Agent 搭建\\\\Story-Continuity-Copilot\\\\产出\\\\交付物\\\\story-continuity-legacy-gap-repair\\\\docs\\\\flash-v5-independent-acceptance-evidence\\\\engineering-preflight\\\\probe-runs\\\\formal-01\\\\quality-continue\\\\workspaces\\\\flash-v5-quality-continue'"
+    },
+    {
+      "name": "two_recovered_service_failures_stop_third_case",
+      "passed": false,
+      "error_type": "FileNotFoundError",
+      "error": "[Errno 2] No such file or directory: 'C:\\\\Users\\\\赵晨阳\\\\Documents\\\\ChatGPT\\\\Agent 搭建\\\\Story-Continuity-Copilot\\\\产出\\\\交付物\\\\story-continuity-legacy-gap-repair\\\\docs\\\\flash-v5-independent-acceptance-evidence\\\\engineering-preflight\\\\probe-runs\\\\formal-01\\\\service-stop\\\\runs\\\\flash-v5-service-stop\\\\cases\\\\01\\\\case-start.json'"
+    },
+    {
+      "name": "auth_and_quality_failure_classification",
+      "passed": true,
+      "details": {
+        "auth_401_stop": true,
+        "schema_failure_is_not_service_failure": true
+      }
+    }
+  ],
+  "passed": 9,
+  "total": 11,
+  "network_calls": 0,
+  "real_provider_calls": 0,
+  "database_connections": 0,
+  "blocked_attempts": {
+    "network": 0,
+    "database": 0,
+    "out_of_scope_write": 0
+  },
+  "frozen_sources_unchanged": true,
+  "fixture_json_unchanged": true,
+  "fixture_hashes": {
+    "evaluation\\current_flash_v5\\runs\\prep-v5-03\\cases\\01\\requests\\01.json": "dcc71cc6b15a4c1ddc8a5a14baebf9b3eb2ba7daf4da2cab9ecf1f58a918cbf2",
+    "evaluation\\current_flash_v5\\runs\\prep-v5-03\\cases\\25\\requests\\01.json": "8d188f79ec71c32e9e53daedc090c9ab9ee2a52a6856b1367af601b69d64cb31",
+    "evaluation\\current_flash_v5\\runs\\prep-v5-03\\cases\\25\\runtime-binding.json": "bc53af44286f86b9804f1166897ed704178a402c7983decfd44b9c470eb317e4"
+  },
+  "limitations": "No real DB/API/browser/model execution; runner-loop tests replace fixture/API and models preflight. Semantic acceptance is separate.",
+  "all_passed": false
+}

@@ -1,0 +1,160 @@
+{
+  "case_alias": "case-27",
+  "stage": "followup",
+  "expected_policy_reference": "v6-v6s-04",
+  "policy": {
+    "allowed_outcomes": [
+      "no_issue"
+    ],
+    "minimum": [
+      [
+        "fixture-span-v6_carrier-1",
+        "fixture-span-v6_carrier-2"
+      ]
+    ],
+    "optional": [],
+    "premises": [
+      "fixture-span-v6_carrier-1"
+    ],
+    "category": null,
+    "category_candidates": [],
+    "manual_variant": false,
+    "temporal_relations": []
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-v6-carrier",
+      "revision": 2,
+      "body": "At 10:00 today the courier capsule was not ready because its valve cap was loose."
+    },
+    "claims": [
+      {
+        "id": "claim-run-11600b16-0ac6-422e-8a33-4caa7436309b-1",
+        "text": "At 10:00 today the courier capsule was not ready because its valve cap was loose.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-v6_carrier-1",
+            "chapter_id": "fixture-chapter-v6_carrier-1",
+            "body": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+            "label": "R1",
+            "prompt_excerpt": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked."
+          },
+          {
+            "id": "fixture-span-v6_carrier-2",
+            "chapter_id": "fixture-chapter-v6_carrier-2",
+            "body": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute.",
+            "label": "R2",
+            "prompt_excerpt": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute."
+          },
+          {
+            "id": "fixture-span-v6_carrier-3",
+            "chapter_id": "fixture-chapter-v6_carrier-3",
+            "body": "The 10:00 courier capsule inspection was performed at the north workbench.",
+            "label": "R3",
+            "prompt_excerpt": "The 10:00 courier capsule inspection was performed at the north workbench."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-v6_carrier-1",
+        "memory_type": "dynamic_state",
+        "subject": "carrier",
+        "predicate": "status",
+        "value": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+        "source_span_id": "fixture-span-v6_carrier-1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-15a477",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    },
+    {
+      "response_alias": "answer-22d97c",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    },
+    {
+      "response_alias": "answer-b79398",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    }
+  ]
+}

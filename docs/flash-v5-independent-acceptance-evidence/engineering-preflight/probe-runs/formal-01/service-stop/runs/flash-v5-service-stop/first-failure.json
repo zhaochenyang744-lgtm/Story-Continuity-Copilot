@@ -1,0 +1,28 @@
+{
+  "run_id": "flash-v5-service-stop",
+  "mode": "live",
+  "error_type": "FileNotFoundError",
+  "error": "[Errno 2] No such file or directory: 'C:\\\\Users\\\\赵晨阳\\\\Documents\\\\ChatGPT\\\\Agent 搭建\\\\Story-Continuity-Copilot\\\\产出\\\\交付物\\\\story-continuity-legacy-gap-repair\\\\docs\\\\flash-v5-independent-acceptance-evidence\\\\engineering-preflight\\\\probe-runs\\\\formal-01\\\\service-stop\\\\runs\\\\flash-v5-service-stop\\\\cases\\\\01\\\\case-start.json'",
+  "failed_at": "2026-09-27T08:14:43.983759+00:00",
+  "ledger_at_failure": {
+    "post_attempt_start_records": 0,
+    "transport_attempts_finished": 0,
+    "http_responses_received": 0,
+    "server_receipt_for_unfinished_attempts": "unknown",
+    "usage_counts": {
+      "complete": 0,
+      "missing": 0,
+      "partial": 0,
+      "unknown": 0
+    },
+    "known_prompt_tokens_partial_sum": 0,
+    "known_completion_tokens_partial_sum": 0,
+    "prompt_tokens_total": null,
+    "completion_tokens_total": null,
+    "all_dispatch_usage_complete": false,
+    "unfinished_attempt_count": 0,
+    "models_get_start_records": 0,
+    "models_get_finish_observed": 0,
+    "models_server_receipt_if_unfinished": "unknown"
+  }
+}

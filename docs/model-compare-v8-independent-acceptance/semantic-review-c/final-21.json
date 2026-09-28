@@ -1,0 +1,169 @@
+{
+ "schema_version": "v8-blinded-case-review-v1",
+ "case_alias": "case-21",
+ "stage": "final",
+ "reviewer": "reviewer-c",
+ "condition_visibility": "hidden",
+ "locked_at_utc": "2026-09-27T12:01:36.157709+00:00",
+ "packet_sha256": "a1bbbe6c4dbc5d8d4644db1adf8c475a934048fd820b0b10682587e177e1ee91",
+ "prior_review_hashes": {
+  "first-21.json": "7ed2143537085e2cee4414a0c41a59477d62c729b2a95118d3f225983482310d"
+ },
+ "exposure_note": "Only other cases01/02 engineering traces exposed labels; this case remained hidden; not strict double blind.",
+ "repair_attempted": 0,
+ "comparisons": {
+  "answer-b12af0": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "first"
+  },
+  "answer-29b098": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "first"
+  },
+  "answer-2401a1": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "first"
+  }
+ },
+ "records": [
+  {
+   "case_alias": "case-21",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "response_alias": "answer-b12af0",
+   "ratings": {
+    "F": "fail",
+    "C": "not_delivered",
+    "E_roles": "not_delivered",
+    "E_set": "not_delivered",
+    "E_binding": "not_delivered",
+    "S": "pass",
+    "D": "fail",
+    "T": "not_applicable",
+    "strict_composite": "fail"
+   },
+   "observed_decision": "no_issue",
+   "actual_issue_count": 0,
+   "findings": [
+    {
+     "dimension": "F",
+     "reason": "把完整的过去时行为命题误读为残缺句，并认为姓名空白不构成缺口；因此遗漏Vela磨制R4的具名行为归属未知。",
+     "visible_quote": "The claim is a truncated fragment",
+     "evidence_pointer": "accepted answer-b12af0.first.claim_verdicts[0].basis"
+    },
+    {
+     "dimension": "D",
+     "reason": "预期不足Issue但实际空结果；C/E未交付。",
+     "visible_quote": "\"issues\":[]",
+     "evidence_pointer": "accepted answer-b12af0.first.visible_content"
+    }
+   ],
+   "attribution_tags": [
+    "observed_semantic_error",
+    "delivery_missing"
+   ],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "inherited_from": "first-21.json#answer-b12af0"
+  },
+  {
+   "case_alias": "case-21",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "response_alias": "answer-29b098",
+   "ratings": {
+    "F": "pass",
+    "C": "fail",
+    "E_roles": "pass",
+    "E_set": "pass",
+    "E_binding": "pass",
+    "S": "pass",
+    "D": "pass",
+    "T": "pass",
+    "strict_composite": "fail"
+   },
+   "observed_decision": "insufficient_evidence",
+   "actual_issue_count": 1,
+   "findings": [
+    {
+     "dimension": "F",
+     "reason": "识别索引只说明镜片身份、维护表未记磨制者；保留Vela归属未知。",
+     "visible_quote": "Therefore the attribution is unsupported and remains unknown.",
+     "evidence_pointer": "answer-29b098.final.issues[0].reasoning"
+    },
+    {
+     "dimension": "C",
+     "reason": "attribute不符合冻结relationship：目标是具名行为人归属。",
+     "visible_quote": "attribute",
+     "evidence_pointer": "answer-29b098.final.issues[0].category"
+    }
+   ],
+   "attribution_tags": [
+    "category_mismatch"
+   ],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "inherited_from": "first-21.json#answer-29b098"
+  },
+  {
+   "case_alias": "case-21",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "response_alias": "answer-2401a1",
+   "ratings": {
+    "F": "pass",
+    "C": "fail",
+    "E_roles": "pass",
+    "E_set": "pass",
+    "E_binding": "pass",
+    "S": "pass",
+    "D": "pass",
+    "T": "pass",
+    "strict_composite": "fail"
+   },
+   "observed_decision": "insufficient_evidence",
+   "actual_issue_count": 1,
+   "findings": [
+    {
+     "dimension": "F",
+     "reason": "识别索引只说明镜片身份、维护表未记磨制者；保留Vela归属未知。",
+     "visible_quote": "judgment stops at an unsupported attribution rather than a contradiction.",
+     "evidence_pointer": "answer-2401a1.final.issues[0].reasoning"
+    },
+    {
+     "dimension": "C",
+     "reason": "attribute不符合冻结relationship：目标是具名行为人归属。",
+     "visible_quote": "attribute",
+     "evidence_pointer": "answer-2401a1.final.issues[0].category"
+    }
+   ],
+   "attribution_tags": [
+    "category_mismatch"
+   ],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "inherited_from": "first-21.json#answer-2401a1"
+  }
+ ],
+ "locked_before_condition_reveal": true,
+ "provider_calls": 0,
+ "database_connections": 0
+}

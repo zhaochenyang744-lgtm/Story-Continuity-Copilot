@@ -1,0 +1,17 @@
+{
+  "status": "static_review_of_in_progress_modules_not_final_acceptance",
+  "observed_at": "2026-09-27T08:02:29.6094401Z",
+  "note": "Implementer edited concurrently. These are end-of-read hashes for follow-up identification, not a frozen-version acceptance receipt.",
+  "tests_executed": 0,
+  "real_provider_calls": 0,
+  "network_calls": 0,
+  "database_connections": 0,
+  "source_hashes": {
+    "evaluation/current_flash_v5/journal.py": "70cfe203122ce65c7589bebeb2fddf749ba1221b05067e6e61c58030ab96a561",
+    "evaluation/current_flash_v5/inputs.py": "daced263ad5d630c0e5a2f51f0c2e13fe62dda07cb94dcd815eac1dddca86465",
+    "evaluation/current_flash_v5/run.py": "6c39e4944c11e7d990c000c7e13264d7697ae23918ce1aee593b6760dad878ad",
+    "evaluation/current_flash_v5/score.py": "e9e1f86d0a95adfa003f71798ba7f754e1437fae5164d7da3d14eb6fb66a507f",
+    "evaluation/current_flash_v5/build_cases.py": "233172fde89468adb4bb9dea39d820a6d0328f2c8f2079dbf949574d50696a20",
+    "evaluation/current_flash_v5/cases.json": "83fb36bd9d933036ae57b741410704c65de13af3120aeb587762e1d608a6f6d8"
+  }
+}

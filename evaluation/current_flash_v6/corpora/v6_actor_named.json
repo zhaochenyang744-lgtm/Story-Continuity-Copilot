@@ -1,0 +1,22 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "v6_actor_named",
+  "title": "V6 synthetic actor_named",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "v6_control_matrix_exact_source_body",
+    "control_matrix_sha256": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "classification": "seen_development"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Synthetic actor_named source A2",
+      "source_label": "A2",
+      "body": "At 10:00 the inspector watched Ina loosen the courier capsule valve cap and entered her name in the inspection log."
+    }
+  ],
+  "memory": []
+}

@@ -1,0 +1,16 @@
+{
+  "automatic_groups_passed": 2,
+  "boundary_attempts": {
+    "environment_read": 0,
+    "http": 0,
+    "product_import": 0,
+    "socket": 0,
+    "sqlite": 0
+  },
+  "original_result_preserved": true,
+  "original_trace_proves_intended_dependency_rejection_before_import": true,
+  "probe_error": "Windows path stored with backslashes, assertion used forward slashes",
+  "reruns": 0,
+  "scope": "adjudication of saved evidence; no new guard execution",
+  "third_group_automatic_status": "fail"
+}

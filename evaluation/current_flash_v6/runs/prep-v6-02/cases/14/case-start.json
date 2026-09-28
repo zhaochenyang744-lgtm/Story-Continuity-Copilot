@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v6-02",
+  "ordinal": 14,
+  "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T09:39:32.567338+00:00",
+  "case_input_sha256": "722a6d650cb4c1bdecf693525e96307d68868ada34d1e9c75ca55b40ecf55dce",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

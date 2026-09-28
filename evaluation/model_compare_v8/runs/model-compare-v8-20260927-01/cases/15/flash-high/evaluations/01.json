@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "1a34369ea7c52856eb9223266c26b00e10709a88c5220f601eeee0b56ba0a8cd",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-6c780db8-1e48-4b4b-be5b-24e37812c727-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "timeline",
+        "severity": "medium",
+        "explanation": "The draft says the birth register establishes that Nera was born before Oren, but the only supplied text about what the register records states that it does not record which twin, Nera or Oren, was born first. The attribution to the register is unsupported and the birth order remains unknown.",
+        "reasoning": "Span 3 is the sole evidence describing the register's content on birth order, and it says the register does not record which twin, Nera or Oren, was born first. That silence does not prove Oren came first, so this is not a contradiction; it simply removes the warrant the draft claims. Span 2 (the register names them as twins, children of Tala) and the memory 1 kinship rule about twins not being one another's parent say nothing about precedence, so neither supplies the missing record content. Judgment stops at the absent decisive detail: no supplied text states that Nera preceded Oren or that Oren preceded Nera.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-3",
+            "span_id": "fixture-span-orchard_restoration-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-3"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-3",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6c780db8-1e48-4b4b-be5b-24e37812c727-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The cited register span states the register does not record which twin, Nera or Oren, was born first, so the draft's attribution that the register establishes Nera's precedence lacks warrant and the order stays unknown; silence is not a contradiction."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3467,
+      "completion_tokens": 1901,
+      "total_tokens": 5368,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1408
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1291
+    },
+    "status": "complete",
+    "prompt_tokens": 3467,
+    "completion_tokens": 1901,
+    "total_tokens": 5368,
+    "reasoning_tokens": 1408,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

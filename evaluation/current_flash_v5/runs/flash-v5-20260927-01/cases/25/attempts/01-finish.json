@@ -1,0 +1,24 @@
+{
+  "case_id": "g02-three-sentences",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T08:21:13.434699+00:00",
+  "latency_ms": 3654,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3189,
+      "completion_tokens": 1056,
+      "total_tokens": 4245
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"summary\":\"当前草稿第11章显示：林默走进北门，银钥匙已交给陈澈，她此时已知道弟弟还活着。已确认记忆显示温岚仍持有黄铜罗盘，且她尚不知廊桥钥匙的含义。\",\"summary_sources\":[{\"source_type\":\"draft_claim\",\"source_id\":\"draft-claim-draft-f546f392-553e-4908-9f0e-32fb4f79052b-r2-1\"},{\"source_type\":\"draft_claim\",\"source_id\":\"draft-claim-draft-f546f392-553e-4908-9f0e-32fb4f79052b-r2-2\"},{\"source_type\":\"draft_claim\",\"source_id\":\"draft-claim-draft-f546f392-553e-4908-9f0e-32fb4f79052b-r2-3\"}],\"items\":[{\"section\":\"character_state\",\"text\":\"当前草稿中，林默走进北门。\",\"sources\":[{\"source_type\":\"draft_claim\",\"source_id\":\"draft-claim-draft-f546f392-553e-4908-9f0e-32fb4f79052b-r2-1\"}]},{\"section\":\"character_state\",\"text\":\"当前草稿中，银钥匙已经交给陈澈。\",\"sources\":[{\"source_type\":\"draft_claim\",\"source_id\":\"draft-claim-draft-f546f392-553e-4908-9f0e-32fb4f79052b-r2-2\"}]},{\"section\":\"character_state\",\"text\":\"当前草稿中，她此时已经知道弟弟还活着。\",\"sources\":[{\"source_type\":\"draft_claim\",\"source_id\":\"draft-claim-draft-f546f392-553e-4908-9f0e-32fb4f79052b-r2-3\"}]},{\"section\":\"confirmed_fact\",\"text\":\"已确认记忆：温岚尚不知道廊桥钥匙的含义。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-ea6a6e39-5451-4062-9b49-04baa995b04a\"}]},{\"section\":\"confirmed_fact\",\"text\":\"已确认记忆：黄铜罗盘的持有者是温岚。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-ccb0d23e-6ab5-4727-a8ef-c1efcb2c25ef\"}]},{\"section\":\"confirmed_fact\",\"text\":\"已确认记忆：航图位于雾线水门外锚柱。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-1bae8ca8-8c8f-4fdc-9025-3b52ed60c022\"}]},{\"section\":\"world_rule\",\"text\":\"已确认设定：灰港雾钟只在北潮闸完全关闭后敲响一次。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-aff6a46f-1198-4253-a8bb-c2cbb961ce50\"}]},{\"section\":\"open_thread\",\"text\":\"未解线索：白色渡船没有靠岸，来源未明。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-2a0fbf9a-d8c0-4d42-925f-ef98fb415962\"}]},{\"section\":\"open_thread\",\"text\":\"未解线索：异常雾钟在北潮闸未关闭时响起，原因未解。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-5aecb1c7-6309-417d-be1a-0671d794c1fc\"}]},{\"section\":\"recent_source\",\"text\":\"第10章《回声坐标》中，北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。\",\"sources\":[{\"source_type\":\"source_span\",\"source_id\":\"span-cde21f23-d9eb-479b-af46-2c873ccd4cad\"}]},{\"section\":\"recent_source\",\"text\":\"第8章《北堤灯火》中，温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。\",\"sources\":[{\"source_type\":\"source_span\",\"source_id\":\"span-3ce58396-ae48-433e-8112-243b79f05a16\"}]},{\"section\":\"recent_source\",\"text\":\"第6章《低室电台》中，电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。\",\"sources\":[{\"source_type\":\"source_span\",\"source_id\":\"span-b7a883d4-f40a-4f54-97eb-9061ad0e6694\"}]}]}",
+  "message_content_sha256": "96d7a177bbc82eb32b3fdc242c17fc09fbbab7d8f2a88a033486f2d8ebce85d4",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

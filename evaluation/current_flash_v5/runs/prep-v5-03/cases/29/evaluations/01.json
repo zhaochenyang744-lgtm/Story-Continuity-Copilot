@@ -1,0 +1,35 @@
+{
+  "case_id": "g02-time-bound",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "5ae204e738814245d74b90c370bdfb895fc07e337940b0d9c3f318e91d76d971",
+  "finished_at": "2026-09-27T08:08:12.866378+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "summary": "昨日温岚尚未得知银钥匙的用途。",
+    "summary_sources": [
+      {
+        "source_type": "draft_claim",
+        "source_id": "draft-claim-draft-9951c5d3-e78e-48ae-be4e-f6af3b411f5f-r2-1"
+      }
+    ],
+    "items": [
+      {
+        "section": "recent_source",
+        "text": "昨日温岚尚未得知银钥匙的用途。",
+        "sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-draft-9951c5d3-e78e-48ae-be4e-f6af3b411f5f-r2-1"
+          }
+        ]
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "47095856a7b59ed3da4ac1064d5426086a0ed7311fcb2887ba52d7b5c4be31cf",
+  "finished_at": "2026-09-27T10:02:11.790629+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-07b5a77f-7602-4a1c-94d8-91c9831c4c28-1",
+        "verdict": "no_issue",
+        "basis": "The claim describes a compatible knowledge state change: Sera did not know the telegram code at 11点 and learned it at 13点. The cited evidence (fixture-span-harbor_signal-3 and fixture-span-harbor_signal-4) supports both the prior state and the later transition, with no contradiction."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3310,
+    "output_tokens": 129,
+    "observed_response_input_tokens": 3310,
+    "observed_response_output_tokens": 129
+  }
+}

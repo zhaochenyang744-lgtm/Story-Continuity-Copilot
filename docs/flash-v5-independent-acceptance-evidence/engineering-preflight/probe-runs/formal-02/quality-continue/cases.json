@@ -1,0 +1,28 @@
+{
+  "cases": [
+    {
+      "ordinal": 1,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 2,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 3,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    }
+  ]
+}

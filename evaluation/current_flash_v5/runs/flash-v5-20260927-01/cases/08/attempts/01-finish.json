@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T08:20:14.023979+00:00",
+  "latency_ms": 1165,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 2966,
+      "completion_tokens": 5,
+      "total_tokens": 2971
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[]}",
+  "message_content_sha256": "9bf40c18a4b22428c00ae5ddb17ff9e721207f22ebe705fd7dffdfd150749e3b",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

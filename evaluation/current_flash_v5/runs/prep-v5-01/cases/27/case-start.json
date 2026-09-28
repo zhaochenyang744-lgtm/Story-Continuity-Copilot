@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-01",
+  "ordinal": 27,
+  "case_id": "g02-body-limit",
+  "family": "g02",
+  "started_at": "2026-09-27T07:58:52.715492+00:00",
+  "case_input_sha256": "48b9b17ef957e710a6806f2a4811509ddb15d7d4fe167bcabec6070b701d8354",
+  "source_ref": "evaluation/current_flash_v4/cases.json"
+}

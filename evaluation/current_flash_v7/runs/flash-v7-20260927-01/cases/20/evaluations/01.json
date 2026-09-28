@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "ac3704a1b804c09664bb7c6febc8acf1a747a6a355cecb50f160932bd4e0778c",
+  "finished_at": "2026-09-27T10:48:24.474300+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-1c23fdfa-eb15-4dae-90fb-d7e0559f9733-1",
+        "verdict": "no_issue",
+        "basis": "The claim's present state (lens R4 clear at 18点) matches the cited evidence, and Vela's recollection of amber yesterday is a bounded earlier state that can coexist with the later clear state; no contradiction remains."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3479,
+    "output_tokens": 105,
+    "observed_response_input_tokens": 3479,
+    "observed_response_output_tokens": 105
+  }
+}

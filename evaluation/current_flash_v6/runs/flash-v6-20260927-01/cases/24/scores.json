@@ -1,0 +1,37 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "score_layer": "raw_first_or_repair_v6",
+    "errors": [
+      "category_mismatch",
+      "outcome_not_allowed",
+      "product_validator:temporal_overlap_unproven",
+      "temporal_policy_mismatch",
+      "undeclared_extra_evidence"
+    ]
+  },
+  "repair_raw": [
+    {
+      "machine_result": "fail",
+      "semantic_result": "not_reviewed",
+      "score_layer": "raw_first_or_repair_v6",
+      "errors": [
+        "product_validator:claim_verdicts_invalid",
+        "required_issue_missing"
+      ]
+    }
+  ],
+  "final": {
+    "result": "terminal_failure",
+    "machine_result": "terminal_failure",
+    "semantic_result": "not_reviewed",
+    "errors": [
+      "claim_verdicts_invalid"
+    ]
+  },
+  "request_count": 2,
+  "parsed_output_count": 2,
+  "manual_semantic_review": "pending_manual_review"
+}

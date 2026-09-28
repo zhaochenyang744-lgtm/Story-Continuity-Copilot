@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v6-01",
+  "ordinal": 2,
+  "case_id": "ccv3-north_glass-world_rule-no_conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T09:34:25.892776+00:00",
+  "case_input_sha256": "fa45e1894ed54b91662b83db201a0981a9d8b9663b6cb8c10c13b20306bfa775",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

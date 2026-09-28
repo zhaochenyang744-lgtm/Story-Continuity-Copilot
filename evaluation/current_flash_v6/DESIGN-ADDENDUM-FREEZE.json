@@ -1,0 +1,5 @@
+{
+  "parent_design_sha256": "535d4503b480b01958e39a49fafe6ab8da843a2deb0e160fc7f57db71a56ff8a",
+  "addendum_sha256": "5b40c2d78b9eeb5a19c145529b381f37bca37bb7fef5bd9e793937e46f8c7f12",
+  "purpose": "state_change_verdict_and_per_batch_coverage"
+}

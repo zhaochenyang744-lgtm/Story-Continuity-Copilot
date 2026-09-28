@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v7-20260927-01",
+  "ordinal": 1,
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T10:47:13.425388+00:00",
+  "case_input_sha256": "c3149573ea455c54ae94b74538e56940cfb906d704090fbf6c5f7b6dbbcf83e9",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

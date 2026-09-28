@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:02:44.420058+00:00",
+  "latency_ms": 3108,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3445,
+      "completion_tokens": 595,
+      "total_tokens": 4040
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-4d22313d-5822-4ac4-a560-2d1ed51fe2ce-1\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"object_state\",\"severity\":\"high\",\"explanation\":\"同一时刻同一镜片 R4 的玻璃状态与证据矛盾：证据表明 R4 是西侧孔径镜片，而该镜片在 18点 是透明玻璃，不是琥珀玻璃。\",\"reasoning\":\"当前草稿断言 18点 时 R4 是琥珀玻璃。证据 span-1 在同一时间 18点 确认 R4 就是已安装的西侧孔径镜片，建立了主体同一性；证据 span-2 在同一时间 18点 直接说明西侧孔径镜片是透明玻璃而非琥珀玻璃。两条证据共享同一时间锚点“At 18点 on the same day”，且主体经 span-1 绑定为同一镜片，因此当前断言与证据无法同时成立。\",\"temporal_basis\":{\"claim_anchor\":\"At 18点 on the same day\",\"evidence_anchor\":\"At 18点 on the same day\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-basalt_observatory-1\",\"span_id\":\"fixture-span-basalt_observatory-1\",\"relation\":\"context\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-basalt_observatory-1\"]},{\"chapter_id\":\"fixture-chapter-basalt_observatory-2\",\"span_id\":\"fixture-span-basalt_observatory-2\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-basalt_observatory-2\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-basalt_observatory-1\",\"role\":\"current_context\"},{\"span_id\":\"fixture-span-basalt_observatory-2\",\"role\":\"prior_state\"}],\"suggested_revision\":{\"before\":\"At 18点 on the same day, lens R4 is amber glass.\",\"after\":\"At 18点 on the same day, lens R4 is clear glass, not amber glass.\"},\"available_actions\":[\"edit\",\"apply_suggestion\",\"keep_intentional\",\"false_positive\"]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-4d22313d-5822-4ac4-a560-2d1ed51fe2ce-1\",\"verdict\":\"reviewed_issue\",\"basis\":\"当前断言与同一时间证据直接矛盾：R4 被确认为西侧孔径镜片，而该镜片在 18点 是透明玻璃而非琥珀玻璃。\"}]}",
+  "message_content_sha256": "f4d4b41db4e1949dcc49119cf1d2df1741bbee4ea8a420855285dc8ab7fad4f0",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

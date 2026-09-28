@@ -1,0 +1,162 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-26",
+  "stage": "first",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:56:41.051841+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-26",
+      "response_alias": "answer-dfc325",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-03",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合R1双必要条件与R2同分钟压力达标但阀盖未锁事实，确认就绪主张冲突；不是仅见四巴就认定就绪。",
+          "visible_quote": "makes a locked valve cap a necessary condition for readiness",
+          "evidence_pointer": "responses[response_alias=answer-dfc325].first.parsed_business_json.issues[0].reasoning; fixture-span-v6_carrier-1 / -2"
+        }
+      ],
+      "other_dimensions_checked": "object_state正确；最小R1/R2齐全且无未许可多余来源，R3仅第三回答引用并获许可。claim/chapter/Memory绑定正确；R2无Memory时空列表正确。直接R2本身承载同分钟锚点，建议未就绪受支持。basis 185≤400、reasoning 285≤800；其余两回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "联合判断正确；时间、证据分工与交付完整合格。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-26",
+      "response_alias": "answer-dfb2bb",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-03",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合R1双必要条件与R2同分钟压力达标但阀盖未锁事实，确认就绪主张冲突；不是仅见四巴就认定就绪。",
+          "visible_quote": "the locking condition fails at the very time the draft calls the capsule ready",
+          "evidence_pointer": "responses[response_alias=answer-dfb2bb].first.parsed_business_json.issues[0].reasoning; fixture-span-v6_carrier-1 / -2"
+        }
+      ],
+      "other_dimensions_checked": "object_state正确；最小R1/R2齐全且无未许可多余来源，R3仅第三回答引用并获许可。claim/chapter/Memory绑定正确；R2无Memory时空列表正确。直接R2本身承载同分钟锚点，建议未就绪受支持。basis 170≤400、reasoning 460≤800；其余两回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "联合判断正确；时间、证据分工与交付完整合格。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-26",
+      "response_alias": "answer-ca94df",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-03",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "fail",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "fail",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合R1双必要条件与R2同分钟压力达标但阀盖未锁事实，确认就绪主张冲突；不是仅见四巴就认定就绪。",
+          "visible_quote": "confirms the pressure condition but states the cap remained loose and unlocked",
+          "evidence_pointer": "responses[response_alias=answer-ca94df].first.parsed_business_json.issues[0].reasoning; fixture-span-v6_carrier-1 / -2"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "fail",
+          "reason": "R1为相对于就绪命题的一般必要条件前提，应context，实际supports；纯validator conflict_evidence_not_direct。引用R3是冻结optional，不能记为extra-set失败。",
+          "visible_quote": "supports",
+          "evidence_pointer": "responses[response_alias=answer-ca94df].first.parsed_business_json.issues[0].evidence[0].relation; policy.optional"
+        }
+      ],
+      "other_dimensions_checked": "object_state正确；最小R1/R2齐全且无未许可多余来源，R3仅第三回答引用并获许可。claim/chapter/Memory绑定正确；R2无Memory时空列表正确。直接R2本身承载同分钟锚点，建议未就绪受支持。basis 135≤400、reasoning 406≤800；其余两回答纯validator通过。",
+      "attribution_tags": [
+        "role_error",
+        "schema_error"
+      ],
+      "overall_reason": "联合判断正确；规则前提supports误标，角色/S失败，optional额外来源不扣分。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "summary": {
+    "responses": 3,
+    "F_pass": 3,
+    "strict_pass": 2,
+    "role_and_contract_failures": 1
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/26.json",
+      "sha256_observed": "105a4dbe27e8485ac8effd3a3366eedcc1f857b66738d0a5ca3145e0511df8c6",
+      "sha256_after_review": "105a4dbe27e8485ac8effd3a3366eedcc1f857b66738d0a5ca3145e0511df8c6"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    },
+    {
+      "path": "backend/app/engine.py",
+      "sha256_observed": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd",
+      "sha256_after_review": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd"
+    }
+  ],
+  "read_hashes_stable": true
+}

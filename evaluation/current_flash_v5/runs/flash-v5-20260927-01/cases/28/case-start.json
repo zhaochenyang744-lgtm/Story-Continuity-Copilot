@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v5-20260927-01",
+  "ordinal": 28,
+  "case_id": "g02-identical-text",
+  "family": "g02",
+  "started_at": "2026-09-27T08:21:24.374296+00:00",
+  "case_input_sha256": "c31fd9f02b2aaad5162b1c9efef20e44f58e5bbf40aa344594b9a297c5f37f17",
+  "source_ref": "evaluation/current_flash_v4/cases.json"
+}

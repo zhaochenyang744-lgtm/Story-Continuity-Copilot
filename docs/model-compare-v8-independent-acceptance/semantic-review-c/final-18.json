@@ -1,0 +1,164 @@
+{
+ "schema_version": "v8-blinded-case-review-v1",
+ "case_alias": "case-18",
+ "stage": "final",
+ "reviewer": "reviewer-c",
+ "condition_visibility": "hidden",
+ "locked_at_utc": "2026-09-27T12:01:36.154686+00:00",
+ "packet_sha256": "81e0ba3026dfeac8a53b17713e3b3991044c31e750e10b0ffdee3f97e9fd27d0",
+ "prior_review_hashes": {
+  "first-18.json": "5e200e56958baf06638f7aec6e57d2fcda24f2b32eefaaa6a6783fa6adc1897f",
+  "repair-18.json": "ffb6ecb7b84692dda95fbd6e7ecf77b70088ccfe94847350acf22f0ac5ee72c2"
+ },
+ "exposure_note": "Only other cases01/02 engineering traces exposed labels; this case remained hidden; not strict double blind.",
+ "repair_attempted": 2,
+ "comparisons": {
+  "answer-e12146": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "first"
+  },
+  "answer-c69253": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "repair"
+  },
+  "answer-adde01": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "repair"
+  }
+ },
+ "records": [
+  {
+   "schema_version": "v8-blinded-semantic-review-record-v1",
+   "case_alias": "case-18",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+   "observed_decision": "insufficient_evidence",
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "response_alias": "answer-e12146",
+   "ratings": {
+    "F": "pass",
+    "C": "fail",
+    "E_roles": "pass",
+    "E_set": "pass",
+    "E_binding": "pass",
+    "S": "pass",
+    "D": "pass",
+    "T": "pass",
+    "strict_composite": "fail"
+   },
+   "actual_issue_count": 1,
+   "findings": [
+    {
+     "dimension": "F",
+     "verdict": "pass",
+     "reason": "保留Tala致使延迟为未知，未记录原因不等于证明Tala不是原因。",
+     "visible_quote": "does not prove Tala was not the cause",
+     "evidence_pointer": "answer-e12146.final.issues[0].reasoning"
+    },
+    {
+     "dimension": "C",
+     "verdict": "fail",
+     "reason": "具名责任归属按冻结relationship分类，不能改作event_status。",
+     "visible_quote": "event_status",
+     "evidence_pointer": "answer-e12146.final.issues[0].category; policy.category"
+    }
+   ],
+   "attribution_tags": [
+    "category_mismatch"
+   ],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "inherited_from": "first-18.json#answer-e12146"
+  },
+  {
+   "case_alias": "case-18",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+   "observed_decision": "insufficient_evidence",
+   "actual_issue_count": 1,
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "response_alias": "answer-c69253",
+   "ratings": {
+    "F": "pass",
+    "C": "fail",
+    "E_roles": "pass",
+    "E_set": "pass",
+    "E_binding": "pass",
+    "S": "pass",
+    "D": "pass",
+    "T": "pass",
+    "strict_composite": "fail"
+   },
+   "findings": [
+    {
+     "dimension": "F",
+     "reason": "仍保留Tala责任未知，现补齐不足Issue。",
+     "visible_quote": "判断在此停止，原因仍未知。",
+     "evidence_pointer": "answer-c69253.final.issues[0].reasoning"
+    },
+    {
+     "dimension": "C",
+     "reason": "event_status不符冻结relationship。",
+     "visible_quote": "event_status",
+     "evidence_pointer": "answer-c69253.final.issues[0].category"
+    }
+   ],
+   "attribution_tags": [
+    "category_mismatch"
+   ],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "inherited_from": "repair-18.json#answer-c69253"
+  },
+  {
+   "case_alias": "case-18",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+   "observed_decision": "insufficient_evidence",
+   "actual_issue_count": 1,
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "response_alias": "answer-adde01",
+   "ratings": {
+    "F": "pass",
+    "C": "pass",
+    "E_roles": "pass",
+    "E_set": "pass",
+    "E_binding": "pass",
+    "S": "pass",
+    "D": "pass",
+    "T": "pass",
+    "strict_composite": "pass"
+   },
+   "findings": [
+    {
+     "dimension": "F",
+     "reason": "没有把日志欠证改判反事实；原因保持未知。",
+     "visible_quote": "the causal fact remains unknown.",
+     "evidence_pointer": "answer-adde01.final.issues[0].reasoning"
+    }
+   ],
+   "attribution_tags": [],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "inherited_from": "repair-18.json#answer-adde01"
+  }
+ ],
+ "locked_before_condition_reveal": true,
+ "provider_calls": 0,
+ "database_connections": 0
+}

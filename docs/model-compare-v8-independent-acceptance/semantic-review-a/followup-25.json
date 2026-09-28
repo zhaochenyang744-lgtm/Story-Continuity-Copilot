@@ -1,0 +1,216 @@
+{
+  "schema_version": "v8-blinded-case-followup-review-v1",
+  "case_alias": "case-25",
+  "reviewer": "semantic-review-a",
+  "stage": "followup",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-25",
+      "response_alias": "answer-d6fe99",
+      "stage": "repair",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-01",
+      "ratings": {
+        "F": "fail",
+        "C": "not_delivered",
+        "E_roles": "not_delivered",
+        "E_set": "not_delivered",
+        "E_binding": "not_delivered",
+        "S": "fail",
+        "D": "fail",
+        "T": "unassessable",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        417
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "fail",
+          "reason": "否认已有身份链接并判no_issue，实质错误。固定L1原文明示14:00 Q8就是east aperture lens，须与L2同刻clear/not amber联合；不要求L2再独立重复Q8身份。",
+          "visible_quote": "No supplied evidence establishes the identity link needed to prove a contradiction.",
+          "evidence_pointer": "responses[answer-d6fe99].repair.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].allowed_evidence[L1,L2]"
+        },
+        {
+          "dimension": "S",
+          "verdict": "fail",
+          "reason": "basis为417 Unicode code points，超过明确400上限。JSON能解析不等于合同通过。",
+          "visible_quote": "no_issue",
+          "evidence_pointer": "responses[answer-d6fe99].repair.parsed_business_json.claim_verdicts[0].basis"
+        },
+        {
+          "dimension": "D",
+          "verdict": "fail",
+          "reason": "修复把应交付的确定冲突Issue删除为issues=[]，类别/证据字段未交付，不能按N/A免责。",
+          "visible_quote": "\"issues\":[]",
+          "evidence_pointer": "responses[answer-d6fe99].repair.parsed_business_json.issues"
+        }
+      ],
+      "passed_dimensions_note": "基础JSON可解析且当前claim ID相符；无可接受的Issue/证据/时间合同输出。修复请求业务内容未换，完整原Issue和ledger仍在反馈中。",
+      "attribution_tags": [
+        "observed_semantic_error",
+        "delivery_missing",
+        "schema_error",
+        "repair_regression"
+      ],
+      "overall_reason": "由首答正确联合推理退化为错误no_issue，同时basis超限；修复完整失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-25.json"
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-25",
+      "response_alias": "answer-d6fe99",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "terminal_no_business_output",
+      "expected_policy_reference": "v6-v6s-01",
+      "ratings": {
+        "F": "unassessable",
+        "C": "not_delivered",
+        "E_roles": "not_delivered",
+        "E_set": "not_delivered",
+        "E_binding": "not_delivered",
+        "S": "fail",
+        "D": "fail",
+        "T": "unassessable",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "unavailable",
+      "actual_issue_count": null,
+      "findings": [
+        {
+          "dimension": "S/D",
+          "verdict": "fail",
+          "reason": "实验引擎终止，error_code=claim_verdicts_invalid；没有final业务Issue，不能计无冲突。可见repair的417字basis已显示超限，repair语义另有独立失败，不互相替代。",
+          "visible_quote": "claim_verdicts_invalid",
+          "evidence_pointer": "responses[answer-d6fe99].final.error_code; responses[answer-d6fe99].repair.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "passed_dimensions_note": "final无可见业务答复，F标unassessable，绝不继承首答F或把terminal算no_issue；strict仍失败。",
+      "attribution_tags": [
+        "terminal_contract_failure"
+      ],
+      "overall_reason": "最终终止失败，无业务输出；repair语义退化另列。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-25.json",
+      "terminal_error_code": "claim_verdicts_invalid"
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-25",
+      "response_alias": "answer-c3e170",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "v6-v6s-01",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确Q8身份+同刻属性联合反证及适用建议保持首答。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[answer-c3e170].final; semantic-review-a/first-25.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；已逐alias比较，selected/chapter/Memory/正文转录、角色集合及适用输出合同与首答一致，类别失配如有另计。",
+      "attribution_tags": [],
+      "overall_reason": "最终保持完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-25.json",
+      "normalization_count": 0
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-25",
+      "response_alias": "answer-806d3f",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "v6-v6s-01",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确Q8身份+同刻属性联合反证及适用建议保持首答。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[answer-806d3f].final; semantic-review-a/first-25.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；已逐alias比较，selected/chapter/Memory/正文转录、角色集合及适用输出合同与首答一致，类别失配如有另计。",
+      "attribution_tags": [],
+      "overall_reason": "最终保持完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-25.json",
+      "normalization_count": 0
+    }
+  ],
+  "comparison": {
+    "repair_count": 1,
+    "repair_strict_pass": 0,
+    "final_strict_pass": 2,
+    "final_count": 3,
+    "first_scores_unchanged": true
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/25.json",
+    "sha256_before": "1c1511da9ea0de4816d085c6aa3b882c6c66f9d6bf94e432fa292f6231bbf0cd",
+    "sha256_after_review": "1c1511da9ea0de4816d085c6aa3b882c6c66f9d6bf94e432fa292f6231bbf0cd",
+    "unchanged": true,
+    "repair_business_unchanged_except_contract_repair": true,
+    "repair_visible_equals_parsed": true
+  },
+  "lock": {
+    "first_locked_before_followup": true,
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

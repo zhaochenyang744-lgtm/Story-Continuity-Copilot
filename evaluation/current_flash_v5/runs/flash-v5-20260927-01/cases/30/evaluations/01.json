@@ -1,0 +1,153 @@
+{
+  "case_id": "g02-dialogue-attribution",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "f49468067a90a6bf7fad100226b49eb3d2b45c78cde390f1cb5a4f369dda4322",
+  "finished_at": "2026-09-27T08:21:40.914293+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "summary": "当前草稿第十一章中，陈澈声称温岚已把潮汐表交给林默，温岚否认并称潮汐表仍在自己的背包里。已确认的设定中，黄铜罗盘由温岚保管，白色渡船未靠岸且来源未明，异常雾钟在北潮闸未关闭时响起而原因未解。",
+    "summary_sources": [
+      {
+        "source_type": "draft_claim",
+        "source_id": "draft-claim-draft-7f16782b-1da5-4e8f-b6e0-1fc0fbb34a49-r2-1"
+      },
+      {
+        "source_type": "draft_claim",
+        "source_id": "draft-claim-draft-7f16782b-1da5-4e8f-b6e0-1fc0fbb34a49-r2-2"
+      },
+      {
+        "source_type": "memory_record",
+        "source_id": "mem-807f70d5-5c26-454d-851d-9e10d9bae6ba"
+      }
+    ],
+    "items": [
+      {
+        "section": "recent_source",
+        "text": "当前草稿第十一章中，陈澈说温岚已经把潮汐表交给林默。",
+        "sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-draft-7f16782b-1da5-4e8f-b6e0-1fc0fbb34a49-r2-1"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "当前草稿第十一章中，温岚摇头否认交出潮汐表，并说潮汐表仍在她自己的背包里。",
+        "sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-draft-7f16782b-1da5-4e8f-b6e0-1fc0fbb34a49-r2-2"
+          }
+        ]
+      },
+      {
+        "section": "confirmed_fact",
+        "text": "已确认：带月牙裂纹的黄铜罗盘由温岚保管。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-807f70d5-5c26-454d-851d-9e10d9bae6ba"
+          }
+        ]
+      },
+      {
+        "section": "confirmed_fact",
+        "text": "已确认：温岚不知道廊桥钥匙的含义。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-139e4143-2d56-4445-ac39-862ef8a7cd59"
+          }
+        ]
+      },
+      {
+        "section": "world_rule",
+        "text": "已确认的设定：灰港雾钟只在北潮闸完全关闭后敲响一次。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-48d61d3f-f13c-4e29-8817-5fc85536b951"
+          }
+        ]
+      },
+      {
+        "section": "open_thread",
+        "text": "未解线索：白色渡船没有靠岸，来源未明。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-1a953a06-39c5-458f-801a-ef8bba96b1bc"
+          }
+        ]
+      },
+      {
+        "section": "open_thread",
+        "text": "未解线索：异常雾钟在北潮闸未关闭时响起，原因未解。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-ce244a38-7e11-440f-bd57-537ec744ef38"
+          }
+        ]
+      },
+      {
+        "section": "confirmed_fact",
+        "text": "已确认：航图位于雾线水门外锚柱。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-a4f2583d-942d-47ec-b38c-eff72dbac73d"
+          }
+        ]
+      },
+      {
+        "section": "confirmed_fact",
+        "text": "已确认：西航道退潮发生在第3章 19:20。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-06f7d847-fad6-428b-b8df-1c44605e88fc"
+          }
+        ]
+      },
+      {
+        "section": "confirmed_fact",
+        "text": "已确认：低室电台在第6章 21:05 收到三次求救码。",
+        "sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-c93efc56-af5b-4318-b601-69569a14bcff"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "第8章《北堤灯火》中，温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+        "sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "span-9d05fc0f-d74a-4d18-8f38-30952007fd7a"
+          }
+        ]
+      },
+      {
+        "section": "recent_source",
+        "text": "第10章《回声坐标》中，北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+        "sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "span-4ef72f2d-41a4-4588-8222-6db01d0f4622"
+          }
+        ]
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3084,
+    "output_tokens": 1092,
+    "observed_response_input_tokens": 3084,
+    "observed_response_output_tokens": 1092
+  }
+}

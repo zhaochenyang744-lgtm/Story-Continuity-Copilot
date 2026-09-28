@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-01",
+  "ordinal": 16,
+  "case_id": "ccv3-orchard_restoration-event_status-conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T07:58:37.099494+00:00",
+  "case_input_sha256": "3667c0b94dd2fbd7f3a04b44123c58ebc229fc2f76c8ed140b4dc77b56c9c127",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

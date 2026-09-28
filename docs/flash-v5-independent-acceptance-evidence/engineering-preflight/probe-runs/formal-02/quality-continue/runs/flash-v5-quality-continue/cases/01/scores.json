@@ -1,0 +1,19 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "unscorable",
+    "semantic_result": "not_reviewed",
+    "reason": "parsed_business_json_not_object",
+    "payload_type": "list"
+  },
+  "repair_raw": [],
+  "final": {
+    "result": "unscorable",
+    "machine_result": "unscorable",
+    "semantic_result": "not_reviewed",
+    "reason": "no_persisted_api_product"
+  },
+  "request_count": 1,
+  "parsed_output_count": 1,
+  "manual_semantic_review": "pending_manual_review"
+}

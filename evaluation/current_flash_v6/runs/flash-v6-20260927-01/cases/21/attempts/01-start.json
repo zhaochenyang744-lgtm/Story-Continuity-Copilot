@@ -1,0 +1,12 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+  "run_id": "flash-v6-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 29,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "68d94d16ee2cd5f1429f0860abd9f77e62e405c4fa67793a14efe9a89e2e021e",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "c5e2293b4b61b6a38e11195ca39fe100290fafcbebaa9d72bda2904d7e7bd7c4",
+  "started_at": "2026-09-27T10:02:49.642444+00:00",
+  "usage_status": "unknown_until_response"
+}

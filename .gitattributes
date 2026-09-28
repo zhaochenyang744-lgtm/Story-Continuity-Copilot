@@ -37,8 +37,17 @@ evaluation/*semantic-review.json -text whitespace=-blank-at-eol,-blank-at-eof,-c
 # Preserve line endings in captured results, source snapshots, and audit evidence.
 evaluation/current_flash_v*/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 evaluation/current_contract_compare_v*/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/model_compare_v8/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 evaluation/g02_post_v4_offline/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/flash-v5-independent-acceptance-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/flash-v6-independent-acceptance-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/flash-v7-independent-acceptance-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/model-compare-v8-independent-acceptance/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 docs/g02-citation-repair-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 docs/flash-real-provider-independent-acceptance.md -text
 docs/g02-citation-repair-independent-acceptance.md -text whitespace=-blank-at-eof
 frontend/e2e/g02-controller-post-v4.spec.ts -text whitespace=cr-at-eol
+
+# The V7/V8 manifests pin the captured bytes of these changed runtime sources.
+backend/app/engine.py -text whitespace=cr-at-eol
+backend/app/provider.py -text whitespace=cr-at-eol

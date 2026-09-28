@@ -1,0 +1,16 @@
+{
+  "case_id": "g02-three-sentences",
+  "family": "g02",
+  "status": "same_run_api_input_bound",
+  "same_run_request_sha256": "c2b9461771ce2bd8bc925ab82202b70d3dcfb3fe97c995300072c8e21f3ae63a",
+  "saved_draft_sha256": "28ef08a3a19dedc412b26bdcb3db58db626110d8cc45a41f5de2fa752c29783f",
+  "draft_chars": 30,
+  "claim_available": 3,
+  "claim_selected": 3,
+  "claim_unselected": 0,
+  "selected_source_span_count": 4,
+  "selected_memory_count": 8,
+  "memory_source_selected_count": 3,
+  "memory_source_unselected_count": 5,
+  "dialogue_two_complete_quotes": false
+}

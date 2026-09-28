@@ -1,0 +1,98 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "b5290bcc192b203b7ced9ff0392fead1f8d3d6f29fd9b09713928cd16158d672",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "high",
+        "explanation": "同一时刻，载体被描述为可发运，但证据显示其阀盖未锁，按规则不满足可发运条件。",
+        "reasoning": "当前草稿断言10点时该气动载体已可发运。证据 span north_glass-4 给出静态规则：只有压力表读数为四巴且阀盖锁紧时才可发运；span north_glass-5 在同一10点时刻记录压力表为四巴但阀盖整分钟未锁紧。两条证据共同证明同一对象、同一时间下缺少锁紧这一必要条件，因此与“可发运”直接矛盾。",
+        "temporal_basis": {
+          "claim_anchor": "At 10点 on the same day",
+          "evidence_anchor": "At 10点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-4",
+            "span_id": "fixture-span-north_glass-4",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-4"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-north_glass-5",
+            "span_id": "fixture-span-north_glass-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-5"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-4",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-north_glass-5",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+          "after": "At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch because its valve cap remained loose and not locked."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+        "verdict": "reviewed_issue",
+        "basis": "同一10点时刻，规则要求阀盖锁紧才可发运，而证据显示阀盖未锁紧，故当前“可发运”断言与证据直接冲突。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3469,
+      "completion_tokens": 564,
+      "total_tokens": 4033,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1293
+    },
+    "status": "complete",
+    "prompt_tokens": 3469,
+    "completion_tokens": 564,
+    "total_tokens": 4033,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

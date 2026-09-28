@@ -1,0 +1,16 @@
+{
+  "case_id": "g02-identical-text",
+  "family": "g02",
+  "status": "same_run_api_input_bound",
+  "same_run_request_sha256": "7a92edfca767ba1bf0599075c400b4348a86d19c3e2a8f670f5cea0267419355",
+  "saved_draft_sha256": "3e296b4f2262e0655b7a88d79bc09fdb99b25b1720d6c3533ebf1df0a3125223",
+  "draft_chars": 14,
+  "claim_available": 2,
+  "claim_selected": 2,
+  "claim_unselected": 0,
+  "selected_source_span_count": 4,
+  "selected_memory_count": 8,
+  "memory_source_selected_count": 3,
+  "memory_source_unselected_count": 5,
+  "dialogue_two_complete_quotes": false
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "unscorable",
+    "semantic_result": "not_reviewed",
+    "reason": "parsed_business_json_not_object",
+    "payload_type": "list"
+  },
+  "repair_raw": [],
+  "final": {
+    "case_id": "ccv3-north_glass-world_rule-conflict",
+    "expected_class": "conflict",
+    "machine_result": "terminal_failure",
+    "semantic_result": "not_reviewed",
+    "result": "terminal_failure",
+    "errors": [
+      "schema_invalid"
+    ],
+    "category_status": "fixed_gold",
+    "score_layer": "final_product",
+    "input_origin": "caller_supplied_capture"
+  },
+  "request_count": 1,
+  "parsed_output_count": 1,
+  "manual_semantic_review": "pending_manual_review"
+}

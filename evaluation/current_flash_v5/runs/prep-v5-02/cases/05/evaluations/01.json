@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-north_glass-object_state-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "466935fbd393c069226e6369ebc098e7b72f7ea3cd499db0262605bb7d36dc13",
+  "finished_at": "2026-09-27T08:03:49.022922+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "778345bea3859af77fbf08fb5276979f45014f2fa70f7aef40b9da49fe3df7fe",
+  "finished_at": "2026-09-27T08:19:58.168010+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-f0e3ded3-8581-4744-9890-d1de0920ce70-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "The draft says Mira held the spare blue badge at 11点, but the spare blue badge register leaves its 11点 holder field blank.",
+        "reasoning": "Both statements concern the same object (the spare blue badge) and the same explicit time (11点 on the same day). The draft asserts Mira as the 11点 holder, while the cited register evidence states that the 11点 holder field is blank. These cannot both be true under the same subject, scope, and time.",
+        "temporal_basis": {
+          "claim_anchor": "at 11点",
+          "evidence_anchor": "11点 holder field blank",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-3",
+            "span_id": "fixture-span-north_glass-3",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-3"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-3",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+          "after": "The spare blue badge register leaves its 11点 holder field blank."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3073,
+    "output_tokens": 346,
+    "observed_response_input_tokens": 3073,
+    "observed_response_output_tokens": 346
+  }
+}

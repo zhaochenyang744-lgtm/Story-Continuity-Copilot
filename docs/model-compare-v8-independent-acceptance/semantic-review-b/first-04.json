@@ -1,0 +1,293 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-04",
+  "stage": "first",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:40:12.043451+00:00",
+  "locked_before_condition_reveal": true,
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_scope": "Assigned first/04 blind packet and frozen criteria only; no mapping or live arm score/output read.",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-04",
+      "response_alias": "answer-b3976c",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-object_state-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合必要条件规则与同分钟未锁阀盖；四巴仅满足一个条件，不能推出已就绪。",
+          "visible_quote": "缺少锁紧这一必要条件",
+          "evidence_pointer": "responses[response_alias=answer-b3976c].first.parsed_business_json.issues[0].reasoning; fixture-span-north_glass-4 / -5"
+        },
+        {
+          "dimension": "C",
+          "verdict": "pass",
+          "reason": "实际 Issue 为 object_state，符合冻结类别。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[response_alias=answer-b3976c].first.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "pass",
+          "reason": "span-4 为一般必要条件前提 context/sufficient；span-5 为直接反证 contradicts/sufficient，未倒置。",
+          "visible_quote": "contradicts",
+          "evidence_pointer": "responses[response_alias=answer-b3976c].first.parsed_business_json.issues[0].evidence / evidence_chain"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "pass",
+          "reason": "在同一 Issue 引齐 span-4、span-5，且无额外来源。",
+          "visible_quote": "fixture-span-north_glass-4",
+          "evidence_pointer": "responses[response_alias=answer-b3976c].first.parsed_business_json.issues[0].evidence; policy.minimum"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "pass",
+          "reason": "同一 claim、selected span、chapter 与相应 Memory 精确绑定；阀盖未锁和规则均受正文支持。",
+          "visible_quote": "fixture-memory-north_glass-5",
+          "evidence_pointer": "responses[response_alias=answer-b3976c].first.parsed_business_json.issues[0].evidence; business_request.claims[0].allowed_evidence / memory"
+        },
+        {
+          "dimension": "S",
+          "verdict": "pass",
+          "reason": "可见 JSON 与 parsed 相同，ledger 为 reviewed_issue，与 conflict 一致；basis 50 字符，chain及 actions 合同合格。",
+          "visible_quote": "reviewed_issue",
+          "evidence_pointer": "responses[response_alias=answer-b3976c].first.parsed_business_json; first.visible_content"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "真实交付一条明确冲突 Issue，未仅交付正确 ledger。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[response_alias=answer-b3976c].first.parsed_business_json.issues[0].nature"
+        },
+        {
+          "dimension": "T",
+          "verdict": "pass",
+          "reason": "explicit_overlap 的锚点为当前 claim 与直接反证 span-5 的精确子串；建议仅改为未就绪并指明未锁阀盖，来源充分。",
+          "visible_quote": "explicit_overlap",
+          "evidence_pointer": "responses[response_alias=answer-b3976c].first.parsed_business_json.issues[0].temporal_basis / suggested_revision"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "三个关键点均明确：就绪要求双条件、同分钟阀盖未锁、压力满足不能补足缺项；引用角色、时间与修订均正确。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-04",
+      "response_alias": "answer-158e9a",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-object_state-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合必要条件规则与同分钟未锁阀盖；四巴仅满足一个条件，不能推出已就绪。",
+          "visible_quote": "The locked condition fails at the exact time asserted",
+          "evidence_pointer": "responses[response_alias=answer-158e9a].first.parsed_business_json.issues[0].reasoning; fixture-span-north_glass-4 / -5"
+        },
+        {
+          "dimension": "C",
+          "verdict": "pass",
+          "reason": "实际 Issue 为 object_state，符合冻结类别。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[response_alias=answer-158e9a].first.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "pass",
+          "reason": "span-4 为一般必要条件前提 context/sufficient；span-5 为直接反证 contradicts/sufficient，未倒置。",
+          "visible_quote": "contradicts",
+          "evidence_pointer": "responses[response_alias=answer-158e9a].first.parsed_business_json.issues[0].evidence / evidence_chain"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "pass",
+          "reason": "在同一 Issue 引齐 span-4、span-5，且无额外来源。",
+          "visible_quote": "fixture-span-north_glass-4",
+          "evidence_pointer": "responses[response_alias=answer-158e9a].first.parsed_business_json.issues[0].evidence; policy.minimum"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "pass",
+          "reason": "同一 claim、selected span、chapter 与相应 Memory 精确绑定；阀盖未锁和规则均受正文支持。",
+          "visible_quote": "fixture-memory-north_glass-5",
+          "evidence_pointer": "responses[response_alias=answer-158e9a].first.parsed_business_json.issues[0].evidence; business_request.claims[0].allowed_evidence / memory"
+        },
+        {
+          "dimension": "S",
+          "verdict": "pass",
+          "reason": "可见 JSON 与 parsed 相同，ledger 为 reviewed_issue，与 conflict 一致；basis 168 字符，chain及 actions 合同合格。",
+          "visible_quote": "reviewed_issue",
+          "evidence_pointer": "responses[response_alias=answer-158e9a].first.parsed_business_json; first.visible_content"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "真实交付一条明确冲突 Issue，未仅交付正确 ledger。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[response_alias=answer-158e9a].first.parsed_business_json.issues[0].nature"
+        },
+        {
+          "dimension": "T",
+          "verdict": "pass",
+          "reason": "explicit_overlap 的锚点为当前 claim 与直接反证 span-5 的精确子串；建议仅改为未就绪并指明未锁阀盖，来源充分。",
+          "visible_quote": "explicit_overlap",
+          "evidence_pointer": "responses[response_alias=answer-158e9a].first.parsed_business_json.issues[0].temporal_basis / suggested_revision"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "三个关键点均明确：就绪要求双条件、同分钟阀盖未锁、压力满足不能补足缺项；引用角色、时间与修订均正确。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-04",
+      "response_alias": "answer-113e51",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-object_state-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合必要条件规则与同分钟未锁阀盖；四巴仅满足一个条件，不能推出已就绪。",
+          "visible_quote": "Gauge at four bars satisfies only one of the two required conditions",
+          "evidence_pointer": "responses[response_alias=answer-113e51].first.parsed_business_json.issues[0].reasoning; fixture-span-north_glass-4 / -5"
+        },
+        {
+          "dimension": "C",
+          "verdict": "pass",
+          "reason": "实际 Issue 为 object_state，符合冻结类别。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[response_alias=answer-113e51].first.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "pass",
+          "reason": "span-4 为一般必要条件前提 context/sufficient；span-5 为直接反证 contradicts/sufficient，未倒置。",
+          "visible_quote": "contradicts",
+          "evidence_pointer": "responses[response_alias=answer-113e51].first.parsed_business_json.issues[0].evidence / evidence_chain"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "pass",
+          "reason": "在同一 Issue 引齐 span-4、span-5，且无额外来源。",
+          "visible_quote": "fixture-span-north_glass-4",
+          "evidence_pointer": "responses[response_alias=answer-113e51].first.parsed_business_json.issues[0].evidence; policy.minimum"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "pass",
+          "reason": "同一 claim、selected span、chapter 与相应 Memory 精确绑定；阀盖未锁和规则均受正文支持。",
+          "visible_quote": "fixture-memory-north_glass-5",
+          "evidence_pointer": "responses[response_alias=answer-113e51].first.parsed_business_json.issues[0].evidence; business_request.claims[0].allowed_evidence / memory"
+        },
+        {
+          "dimension": "S",
+          "verdict": "pass",
+          "reason": "可见 JSON 与 parsed 相同，ledger 为 reviewed_issue，与 conflict 一致；basis 270 字符，chain及 actions 合同合格。",
+          "visible_quote": "reviewed_issue",
+          "evidence_pointer": "responses[response_alias=answer-113e51].first.parsed_business_json; first.visible_content"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "真实交付一条明确冲突 Issue，未仅交付正确 ledger。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[response_alias=answer-113e51].first.parsed_business_json.issues[0].nature"
+        },
+        {
+          "dimension": "T",
+          "verdict": "pass",
+          "reason": "explicit_overlap 的锚点为当前 claim 与直接反证 span-5 的精确子串；建议仅改为未就绪并指明未锁阀盖，来源充分。",
+          "visible_quote": "explicit_overlap",
+          "evidence_pointer": "responses[response_alias=answer-113e51].first.parsed_business_json.issues[0].temporal_basis / suggested_revision"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "三个关键点均明确：就绪要求双条件、同分钟阀盖未锁、压力满足不能补足缺项；引用角色、时间与修订均正确。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "summary": {
+    "responses": 3,
+    "F_pass": 3,
+    "strict_pass": 3,
+    "comparison": "three-way tie on frozen dimensions"
+  },
+  "non_gating_observation": "answer-b3976c 的说明为中文；仅记语言差异，不猜条件。answer-158e9a 的直接事实 chain 使用 current_context，仍在冻结允许角色范围，relation 仍是正确的 contradicts。",
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/04.json",
+      "sha256_observed": "6bb18ce4f243c69e24f9c85a4966c8006902c0a0894a2473d89bb4a7af506989",
+      "sha256_after_review": "6bb18ce4f243c69e24f9c85a4966c8006902c0a0894a2473d89bb4a7af506989"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    }
+  ],
+  "read_hashes_stable": true
+}

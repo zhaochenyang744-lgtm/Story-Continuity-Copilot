@@ -1,0 +1,79 @@
+{
+  "case_id": "v6-v6s-01",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "fe204224d6aabb28cd105802a008034f828b0daf80dc60bf8a9fb62f0e9b5d1c",
+  "finished_at": "2026-09-27T10:48:44.389466+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-efe5521c-d849-4bb4-b03f-35ef242306bf-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "At 14:00 today, lens Q8 is identified as the installed east aperture lens, but that same lens is recorded as clear glass, not amber glass, at the same time.",
+        "reasoning": "The index span establishes that lens Q8 is the installed east aperture lens at 14:00 today. The status span states that the east aperture lens is clear glass, not amber glass, at 14:00 today. Because both facts share the same subject (lens Q8 as the east aperture lens), the same time (14:00 today), and the same scope (installed material), the draft claim that lens Q8 is amber glass cannot coexist with the cited evidence.",
+        "temporal_basis": {
+          "claim_anchor": "At 14:00 today",
+          "evidence_anchor": "At 14:00 today",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_lens-1",
+            "span_id": "fixture-span-v6_lens-1",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_lens-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-v6_lens-2",
+            "span_id": "fixture-span-v6_lens-2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_lens-2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_lens-1",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-v6_lens-2",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 14:00 today, lens Q8 is amber glass.",
+          "after": "At 14:00 today, lens Q8 is clear glass, not amber glass."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-efe5521c-d849-4bb4-b03f-35ef242306bf-1",
+        "verdict": "reviewed_issue",
+        "basis": "The draft places lens Q8 as the installed east aperture lens at 14:00 today, while the cited status span records that same lens as clear glass, not amber glass, at the same time."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3272,
+    "output_tokens": 550,
+    "observed_response_input_tokens": 3272,
+    "observed_response_output_tokens": 550
+  }
+}

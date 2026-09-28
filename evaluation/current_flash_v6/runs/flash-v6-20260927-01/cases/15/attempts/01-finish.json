@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:02:27.208248+00:00",
+  "latency_ms": 2216,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3418,
+      "completion_tokens": 464,
+      "total_tokens": 3882
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-55307b4a-807c-49c2-b3d0-6ea6676fdbb0-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"event_status\",\"severity\":\"medium\",\"explanation\":\"出生登记册并未记录 Nera 与 Oren 谁先出生，因此草稿中“登记册证明 Nera 先于 Oren 出生”的说法缺乏依据。\",\"reasoning\":\"引用的证据仅说明登记册将 Nera 与 Oren 认定为双胞胎，并明确表示登记册没有记录谁先出生。该证据无法支持“登记册证明 Nera 先于 Oren 出生”这一断言；缺失的是登记册中关于出生顺序的决定性记录。\",\"temporal_basis\":{\"claim_anchor\":null,\"evidence_anchor\":null,\"relation\":\"unknown\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-orchard_restoration-3\",\"span_id\":\"fixture-span-orchard_restoration-3\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-orchard_restoration-3\"]},{\"chapter_id\":\"fixture-chapter-orchard_restoration-2\",\"span_id\":\"fixture-span-orchard_restoration-2\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-orchard_restoration-2\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-orchard_restoration-3\",\"role\":\"missing_link\"},{\"span_id\":\"fixture-span-orchard_restoration-2\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-55307b4a-807c-49c2-b3d0-6ea6676fdbb0-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"出生登记册被明确记载为未记录 Nera 与 Oren 谁先出生，因此草稿关于登记册证明出生顺序的断言缺少决定性记录支持。\"}]}",
+  "message_content_sha256": "f650ba9cfa4681e9d79f668b97f4800835867928c5c28037d6855984e08cfc08",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

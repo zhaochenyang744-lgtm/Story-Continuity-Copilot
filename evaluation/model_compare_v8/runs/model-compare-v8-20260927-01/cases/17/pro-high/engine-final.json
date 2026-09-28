@@ -1,0 +1,26 @@
+{
+  "status": "completed",
+  "issues": [],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-5882fa2e-f178-494a-8fa7-9b5eed874e05-1",
+      "returned_span_ids": [
+        "fixture-span-orchard_restoration-5",
+        "fixture-span-orchard_restoration-4",
+        "fixture-span-orchard_restoration-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3565,
+  "output_tokens": 1011,
+  "latency_ms": 10186,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

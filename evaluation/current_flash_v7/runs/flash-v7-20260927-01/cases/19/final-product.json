@@ -1,0 +1,197 @@
+{
+  "run_id": "run-ff2b9c41-73f1-4056-b6ff-2f79f13ea451",
+  "project_id": "fixture-project-basalt-observatory",
+  "run_type": "continuity",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 2,
+  "draft_revision": null,
+  "source_memory_version": 1,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T10:48:18.998945+00:00",
+  "started_at": "2026-09-27T10:48:19.028799+00:00",
+  "completed_at": "2026-09-27T10:48:21.645923+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 2617,
+  "retry_of_run_id": null,
+  "root_run_id": "run-ff2b9c41-73f1-4056-b6ff-2f79f13ea451",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T10:48:18.998945+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "preparing_draft",
+      "error_code": null,
+      "created_at": "2026-09-27T10:48:19.028799+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "retrieving_confirmed_facts",
+      "error_code": null,
+      "created_at": "2026-09-27T10:48:19.041760+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "comparing_evidence",
+      "error_code": null,
+      "created_at": "2026-09-27T10:48:19.069865+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "running",
+      "stage": "assembling_reviewable_results",
+      "error_code": null,
+      "created_at": "2026-09-27T10:48:21.632971+00:00"
+    },
+    {
+      "sequence": 6,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T10:48:21.645923+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "deepseek",
+    "model_label": "deepseek-flash",
+    "prompt_version": "continuity-review-v17-repair-diagnostics",
+    "schema_version": "continuity-issue-v7-repair-diagnostics",
+    "retrieval_method_version": "bounded-lexical-v4-longform",
+    "source_memory_version": 1
+  },
+  "provider_metrics": {
+    "latency_ms": 2535,
+    "input_tokens": 3471,
+    "output_tokens": 537,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "issues": [
+    {
+      "id": "issue-dcde90f7-1ac4-4a98-bf1e-4e4e64d8b46c",
+      "claim_span_id": "claim-run-ff2b9c41-73f1-4056-b6ff-2f79f13ea451-1",
+      "claim_text": "At 18点 on the same day, lens R4 is amber glass.",
+      "status": "open",
+      "classification": "conflict",
+      "category": "object_state",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "同一时刻18点，镜头R4被同时描述为琥珀色玻璃和透明玻璃，二者不能共存。",
+      "decision": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "证据 span-1 确认镜头R4就是已安装的西侧孔径镜头；证据 span-2 在同一时间18点指出该西侧孔径镜头是透明玻璃而非琥珀色玻璃。两条证据共同证明同一对象在同一时间具有互斥状态，与当前主张直接矛盾。",
+      "evidence_chain": [
+        {
+          "evidence_id": "evidence-16b6ac1c-a81c-4b5f-9f0f-2f0c033f3d4d",
+          "role": "current_context"
+        },
+        {
+          "evidence_id": "evidence-52e44b0a-3ca4-4f2e-863c-0f2504192d6a",
+          "role": "prior_state"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 18点 on the same day, lens R4 is amber glass.",
+        "after": "At 18点 on the same day, lens R4 is clear glass, not amber glass."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ],
+      "reuse_policy": null,
+      "reused_decision": null,
+      "evidence": [
+        {
+          "id": "evidence-16b6ac1c-a81c-4b5f-9f0f-2f0c033f3d4d",
+          "chapter_id": "fixture-chapter-basalt_observatory-1",
+          "chapter_number": 1,
+          "chapter_title": "Lens Index",
+          "span_id": "fixture-span-basalt_observatory-1",
+          "source_revision": 2,
+          "excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "excerpt_context": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-1"
+          ],
+          "source_path": "/projects/fixture-project-basalt-observatory/sources#span-fixture-span-basalt_observatory-1"
+        },
+        {
+          "id": "evidence-52e44b0a-3ca4-4f2e-863c-0f2504192d6a",
+          "chapter_id": "fixture-chapter-basalt_observatory-2",
+          "chapter_number": 2,
+          "chapter_title": "West Lens",
+          "span_id": "fixture-span-basalt_observatory-2",
+          "source_revision": 2,
+          "excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "excerpt_context": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-2"
+          ],
+          "source_path": "/projects/fixture-project-basalt-observatory/sources#span-fixture-span-basalt_observatory-2"
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "latency_ms": 2535,
+    "input_tokens": 3471,
+    "output_tokens": 537,
+    "cost_cny": null,
+    "cost_available": false,
+    "contract_normalization_count": 0,
+    "contract_normalizations": [],
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v17-repair-diagnostics",
+      "schema_version": "continuity-issue-v7-repair-diagnostics",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "retrieval": [
+      {
+        "claim_ordinal": 1,
+        "returned_span_ids": [
+          "fixture-span-basalt_observatory-2",
+          "fixture-span-basalt_observatory-1",
+          "fixture-span-basalt_observatory-3",
+          "fixture-span-basalt_observatory-5",
+          "fixture-span-basalt_observatory-6"
+        ],
+        "method_version": "bounded-lexical-v4-longform"
+      }
+    ]
+  }
+}

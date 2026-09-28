@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-conflict",
+  "status": "completed",
+  "error_code": null,
+  "http_post_dispatches": 0,
+  "evaluation_count": 1,
+  "score_status": "not_scored_offline_stub",
+  "finished_at": "2026-09-27T07:58:46.925306+00:00"
+}

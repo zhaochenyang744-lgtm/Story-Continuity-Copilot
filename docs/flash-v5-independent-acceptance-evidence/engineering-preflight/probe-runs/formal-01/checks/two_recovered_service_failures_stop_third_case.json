@@ -1,0 +1,6 @@
+{
+  "name": "two_recovered_service_failures_stop_third_case",
+  "passed": false,
+  "error_type": "FileNotFoundError",
+  "error": "[Errno 2] No such file or directory: 'C:\\\\Users\\\\赵晨阳\\\\Documents\\\\ChatGPT\\\\Agent 搭建\\\\Story-Continuity-Copilot\\\\产出\\\\交付物\\\\story-continuity-legacy-gap-repair\\\\docs\\\\flash-v5-independent-acceptance-evidence\\\\engineering-preflight\\\\probe-runs\\\\formal-01\\\\service-stop\\\\runs\\\\flash-v5-service-stop\\\\cases\\\\01\\\\case-start.json'"
+}

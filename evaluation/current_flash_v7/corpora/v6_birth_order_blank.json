@@ -1,0 +1,34 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "v6_birth_order_blank",
+  "title": "V6 synthetic birth_order_blank",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "v6_control_matrix_exact_source_body",
+    "control_matrix_sha256": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "input_adaptation_sha256": "eaaceb74f501bd6158d6f2f3d28a28e9d8a21beaf1e6c80788fd2bd132eb6cbe",
+    "classification": "seen_development"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Synthetic birth_order_blank source B1",
+      "source_label": "B1",
+      "body": "The birth register records Aster and Nilo as twins, but does not record which twin was born first."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "birth_order_blank",
+      "predicate": "status",
+      "value": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "B1"
+      }
+    }
+  ]
+}

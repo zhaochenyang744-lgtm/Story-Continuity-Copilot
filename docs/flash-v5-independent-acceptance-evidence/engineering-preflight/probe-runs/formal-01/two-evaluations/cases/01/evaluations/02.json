@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "78be1470c33ae9110c8aed57427f372dd375a470f206013639a03c39a3318727",
+  "finished_at": "2026-09-27T08:14:43.905812+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "observed_response_input_tokens": 7,
+    "observed_response_output_tokens": 3
+  }
+}

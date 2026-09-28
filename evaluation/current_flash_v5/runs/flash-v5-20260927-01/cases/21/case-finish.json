@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+  "status": "completed",
+  "error_code": null,
+  "post_attempt_start_records": 1,
+  "evaluation_count": 1,
+  "score_status": "fail",
+  "finished_at": "2026-09-27T08:20:55.452196+00:00"
+}

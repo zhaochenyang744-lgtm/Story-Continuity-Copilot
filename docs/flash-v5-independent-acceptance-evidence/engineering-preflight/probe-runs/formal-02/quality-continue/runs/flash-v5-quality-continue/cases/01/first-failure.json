@@ -1,0 +1,7 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "error_type": "AttributeError",
+  "error": "offline product shape failure",
+  "failed_at": "2026-09-27T08:16:23.381197+00:00",
+  "post_attempt_start_records_so_far": 0
+}

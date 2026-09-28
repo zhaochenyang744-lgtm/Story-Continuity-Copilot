@@ -1,0 +1,73 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-6a43fecd-aa28-4576-8f84-a3b5c03e06e7-1",
+      "status": "insufficient_evidence",
+      "category": "event_status",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "草稿声称门禁日志证明 Sera 在 11点授权重新开启，但所引证据并未记录任何重新开启或授权，该断言缺乏来源支持。",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-harbor_signal-2",
+          "span_id": "fixture-span-harbor_signal-2",
+          "excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-harbor_signal-2"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-harbor_signal-4",
+          "span_id": "fixture-span-harbor_signal-4",
+          "excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-harbor_signal-4"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "11点日志明确记载任何重新开启及其操作者均未被记录，因此日志无法证明 Sera 曾授权重新开启；Sera 在 11点尚未打开电报、不知其密码，也无法支持该授权。缺失的是记录中关于重新开启及授权者的关键环节，判断在此停止，不能据此推断授权事实，也不能推断其反面。",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-harbor_signal-2",
+          "role": "missing_link"
+        },
+        {
+          "span_id": "fixture-span-harbor_signal-4",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-6a43fecd-aa28-4576-8f84-a3b5c03e06e7-1",
+      "returned_span_ids": [
+        "fixture-span-harbor_signal-2",
+        "fixture-span-harbor_signal-1",
+        "fixture-span-harbor_signal-4"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 7230,
+  "output_tokens": 626,
+  "latency_ms": 3796,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

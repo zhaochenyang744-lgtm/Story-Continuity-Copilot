@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "51ded0ec4e7b5c0d01828fac517452193f5cd92b739f1ac322e7ad897aa3ac77",
+  "finished_at": "2026-09-27T10:02:46.848168+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-8ea536a9-f67e-4693-bec4-45abfbfafa8d-1",
+        "verdict": "no_issue",
+        "basis": "The claim states lens R4 is clear glass at 18点 and that Vela recalls it looked amber yesterday. The cited evidence confirms the western aperture lens (identified as lens R4) is clear glass at 18点 on the same day, and the amber appearance is explicitly framed as Vela's recollection of yesterday, a different time. The earlier amber state and the current clear state can coexist as a compatible state change, so no continuity issue requires review."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3452,
+    "output_tokens": 149,
+    "observed_response_input_tokens": 3452,
+    "observed_response_output_tokens": 149
+  }
+}

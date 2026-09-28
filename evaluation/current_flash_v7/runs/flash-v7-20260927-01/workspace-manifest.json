@@ -1,0 +1,177 @@
+{
+  "root": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\evaluation\\current_flash_v7\\workspaces\\flash-v7-20260927-01",
+  "isolated_evaluation_only": true,
+  "database_count": 34,
+  "databases": [
+    {
+      "relative_path": "01/runtime/data/demo.sqlite3",
+      "sha256": "968cd5d93b6703e7219015362cbb3a1efa6e723c86cd57cbc6f851fea6515024",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "02/runtime/data/demo.sqlite3",
+      "sha256": "8879a3741f3c3cfb83799bcd10224c2c45f29cf6f70ae999d9f995c8f6707f37",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "03/runtime/data/demo.sqlite3",
+      "sha256": "c6799f2576ab9360917b9e4c177826b54865c778048bec19a3e6cef36f2199d6",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "04/runtime/data/demo.sqlite3",
+      "sha256": "af43f491e989554dd65980a10f18004a39bb2a65afec952ede6eaf96d31ea996",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "05/runtime/data/demo.sqlite3",
+      "sha256": "a841cc38e70ed0a3d54bda4a65fb5384333d5f9e1d1fddea12da568276f168fa",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "06/runtime/data/demo.sqlite3",
+      "sha256": "8cad83d74bbcb0b72455805ff4dca0fde243a75eb64844173c8a5c7d29866efc",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "07/runtime/data/demo.sqlite3",
+      "sha256": "49318a5931c2ffb8f4f523d9a9b6ff67ab8f10fd079b791b96b8924e8d2c26ca",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "08/runtime/data/demo.sqlite3",
+      "sha256": "e2b2ed99046cd3a8cef9fe3b55a92aed9779900f98cd2ca4d0f67c76d98def48",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "09/runtime/data/demo.sqlite3",
+      "sha256": "ecb63412a3f5ef7512e41f7a559ed1a41c40623432e08490238ac67c2bfdae1a",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "10/runtime/data/demo.sqlite3",
+      "sha256": "d54390f3bf2a2d345a13d9302ab616744136a6dc0566e5bbb9542b6f6cc96eb5",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "11/runtime/data/demo.sqlite3",
+      "sha256": "71498dc62127362f0c68dadd23e1ccc62750f8cd6310349ff03d18b85fca3850",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "12/runtime/data/demo.sqlite3",
+      "sha256": "b665ff1ea769c3e6454a2955d441d15865188406df07df0174b46358bf88c357",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "13/runtime/data/demo.sqlite3",
+      "sha256": "0e018ca5354f86637e5a1f32a45816051e2c0230f629c8b94553a54ffb1f068b",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "14/runtime/data/demo.sqlite3",
+      "sha256": "9121491307371fe526eae9595b2f94b0e68c2d16446908e20c4c106a1e83ca1d",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "15/runtime/data/demo.sqlite3",
+      "sha256": "5efa073d931e82b0221bd9530caf57fe38357222617c491d21f9ff2db69d9e57",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "16/runtime/data/demo.sqlite3",
+      "sha256": "df27b681450f204eb3fc9ca996195cca16b71c0a4e119445f57619815bf98f52",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "17/runtime/data/demo.sqlite3",
+      "sha256": "906cee4e03a7a9547001424f53688e100d8de17c967666b03e0740f7a645af95",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "18/runtime/data/demo.sqlite3",
+      "sha256": "92a53a5e8aa8e633b0c0b37175d5100b6c3b7bef804965c9da86dbd9859d4a17",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "19/runtime/data/demo.sqlite3",
+      "sha256": "2fb12779eebb6fcfe292712378a6abe76a7a1ae2b26dd583f2445ae103115f34",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "20/runtime/data/demo.sqlite3",
+      "sha256": "e10ff31aff0cb3021d3fdfe244f152e6f2541eb22427ab01b7c5b9f3ac616fe1",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "21/runtime/data/demo.sqlite3",
+      "sha256": "e91f17ff5087ee5105961c5a3518e10fd60b048b8618cd32902794ac9c59bf49",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "22/runtime/data/demo.sqlite3",
+      "sha256": "4348983bc1020738d43b84374d6520fcfb32368643a3ce3cebc5c33e7a6cba9b",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "23/runtime/data/demo.sqlite3",
+      "sha256": "5f6de68307ab3ca9694f04d77df29f346a9cbc14a944f2e05a06c19b43e86a5c",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "24/runtime/data/demo.sqlite3",
+      "sha256": "7bc617eca745274a6a1fc6711d3988e3bce6c975553fb67e5e2d833f7a8422ad",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "25/runtime/data/demo.sqlite3",
+      "sha256": "0f4a1439af43c4d61510e187c9f7854f06e23c8dc96875fb27d26f8d3ea696a4",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "26/runtime/data/demo.sqlite3",
+      "sha256": "55d016d67e13c080d1f1284d83600d44a6149da45f13257b8873d3a7750a6c19",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "27/runtime/data/demo.sqlite3",
+      "sha256": "15a170008f8753722e97c42ada4dfe648b7914473dc950a16e116152a2bca5ab",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "28/runtime/data/demo.sqlite3",
+      "sha256": "a5d7e25d3930e99fd6f29b300bced61eb58cf72e32635264756dae513dbbfc8e",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "29/runtime/data/demo.sqlite3",
+      "sha256": "cfc57618305423646e286dff278213494e2661efc2c6dc6ebe9c8f3ed1997328",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "30/runtime/data/demo.sqlite3",
+      "sha256": "207c7c4b1fcbea372eb899f5d866ea4074b519c5f304008abc16107d39efb4d0",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "31/runtime/data/demo.sqlite3",
+      "sha256": "3f777328950bb50986d2cc8cb860050ca366ab978973e9ebd5cbfd4aac59ba81",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "32/runtime/data/demo.sqlite3",
+      "sha256": "eeb7e037bd43213729faf3d5439c371a319fab48f6c1d86514ddb2f3c033ce2c",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "33/runtime/data/demo.sqlite3",
+      "sha256": "bd4ba124617f195a6012b417cc1353a548db98089235ac043cb8663681337ecf",
+      "bytes": 974848
+    },
+    {
+      "relative_path": "34/runtime/data/demo.sqlite3",
+      "sha256": "692e8e4b226a9f903f8b67f043134d857c6782ea648b865b88f75f79dd97e496",
+      "bytes": 974848
+    }
+  ]
+}

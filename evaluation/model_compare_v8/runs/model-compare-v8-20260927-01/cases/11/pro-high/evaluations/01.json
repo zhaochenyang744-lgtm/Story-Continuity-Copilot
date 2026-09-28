@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "97c268e66dc7c40a0e70705071f0ed52867eb3e70eeebcd4b12cdf1bd5e8ae3a",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6a025154-212e-4524-b991-2fa7f7e1c23e-1",
+        "verdict": "no_issue",
+        "basis": "The claim is directly supported by allowed evidence spans 4 and 3: at 13点 Sera learned the code, and at 11点 she did not know it. No contradiction or missing link exists."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3406,
+      "completion_tokens": 1130,
+      "total_tokens": 4536,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1012
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 974
+    },
+    "status": "complete",
+    "prompt_tokens": 3406,
+    "completion_tokens": 1130,
+    "total_tokens": 4536,
+    "reasoning_tokens": 1012,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

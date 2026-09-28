@@ -1,0 +1,156 @@
+{
+  "schema_version": "v8-blinded-case-first-review-v1",
+  "case_alias": "case-11",
+  "stage": "first",
+  "reviewer": "semantic-review-a",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-11",
+      "response_alias": "answer-1e6d8b",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        191
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确把11点未知和13点获知作为受两条来源支持的合法知识变化；不倒推早知，不把未具名递送人转成当前claim缺口。",
+          "visible_quote": "earlier not-knowing at 11点 and later learning at 13点",
+          "evidence_pointer": "responses[answer-1e6d8b].first.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "passed_dimensions_note": "三组固定request一致；JSON与parsed一致，唯一claim/no_issue账本及basis≤400合规。实际合法空Issue；C/E/T显式Issue字段N/A，知识时序已在F核对。",
+      "attribution_tags": [],
+      "overall_reason": "合法知识变化，首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-11",
+      "response_alias": "answer-c3c07c",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        148
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确把11点未知和13点获知作为受两条来源支持的合法知识变化；不倒推早知，不把未具名递送人转成当前claim缺口。",
+          "visible_quote": "span-4 明确记载 13点 Sera 打开电报并学到密码",
+          "evidence_pointer": "responses[answer-c3c07c].first.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "passed_dimensions_note": "三组固定request一致；JSON与parsed一致，唯一claim/no_issue账本及basis≤400合规。实际合法空Issue；C/E/T显式Issue字段N/A，知识时序已在F核对。",
+      "attribution_tags": [],
+      "overall_reason": "合法知识变化，首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-11",
+      "response_alias": "answer-94cb00",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        169
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确把11点未知和13点获知作为受两条来源支持的合法知识变化；不倒推早知，不把未具名递送人转成当前claim缺口。",
+          "visible_quote": "at 13点 Sera learned the code, and at 11点 she did not know it",
+          "evidence_pointer": "responses[answer-94cb00].first.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "passed_dimensions_note": "三组固定request一致；JSON与parsed一致，唯一claim/no_issue账本及basis≤400合规。实际合法空Issue；C/E/T显式Issue字段N/A，知识时序已在F核对。",
+      "attribution_tags": [],
+      "overall_reason": "合法知识变化，首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "comparison": {
+    "strict_pass": 3,
+    "total": 3,
+    "repair_count": 0,
+    "distinction": "三条独立判断均正确解释合法获知，完整通过并列。"
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/11.json",
+    "sha256_before": "db3693f3176f5fae70ac0e0fb3cf00634884da7b2c14a3fe83918a349f05d401",
+    "sha256_after_review": "db3693f3176f5fae70ac0e0fb3cf00634884da7b2c14a3fe83918a349f05d401",
+    "unchanged": true,
+    "all_response_business_requests_equal_packet": true,
+    "all_visible_json_equal_saved_parsed": true
+  },
+  "lock": {
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "identity_inferred": false,
+    "repair_or_final_read": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

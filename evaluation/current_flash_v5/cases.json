@@ -1,0 +1,263 @@
+{
+  "schema_version": "current-flash-v5-30",
+  "classification": "seen_development",
+  "model": "deepseek-flash",
+  "base_url": "https://api.deepseek.com",
+  "logical_count": 30,
+  "comparison_count": 24,
+  "g02_count": 6,
+  "source_hashes": {
+    "evaluation/current_contract_compare_v3/cases.json": "99cf17ca8391be0438164eabecebf181f6e88b5f6a11cd20fb15f913854716f0",
+    "evaluation/current_flash_v2/cases.json": "802e8e8f7dc24ea6bff62624aec84c54b7610a4ce869f03ce4daed61399073c9",
+    "evaluation/current_flash_v4/cases.json": "fe86ad24e73345d458c983800d36f4bd91f2daa2f707a911cce53a97089c9d18"
+  },
+  "dialogue_note": "The V4 draft body is reused verbatim. Current quote-aware claim splitting must yield two complete attributed quotations; the old V4 captured request had three pieces including a closing-quote-only tail.",
+  "cases": [
+    {
+      "ordinal": 1,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 2,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, Mira could not open North Glass with her only red badge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 3,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "saved_draft": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 4,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 5,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, the North Glass pneumatic carrier was not ready despite its four-bar gauge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 6,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "saved_draft": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 7,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 8,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "The gate logs establish that at 10点 the harbor signal gate first closed after its 09点 opening.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 9,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "The gate logs establish that Sera authorized a reopening at 11点.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 10,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 11点 on the same day, Sera knew the telegram code.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 11,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 13点 Sera learned the telegram code after not knowing it at 11点.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 12,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "Vela delivered the telegram to Sera at 13点, according to the records.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 13,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Nera is Oren's mother.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 14,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 15,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "The birth register establishes that Nera was born before Oren.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 16,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "At 10点 on the same day, the restoration boat had completed its launch.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 17,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "At 10点 on the same day, the restoration boat had not completed launch while its manifest was unsigned and it remained at the quay.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 18,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Tala caused the restoration boat's delay, according to the launch and delay logs.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 19,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 on the same day, lens R4 is amber glass.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 20,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 21,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "The index and maintenance sheet establish that Vela ground lens R4.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 22,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 on the same day, Vela stood on the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 23,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 24,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json"
+    },
+    {
+      "ordinal": 25,
+      "family": "g02",
+      "case_id": "g02-three-sentences",
+      "saved_draft": "林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。",
+      "expected": "Each displayed item and final summary has its own bound citation; record first-model defects separately.",
+      "accepted_case_ref": "evaluation/current_flash_v4/cases.json",
+      "body_lineage": "byte_identical_v2"
+    },
+    {
+      "ordinal": 26,
+      "family": "g02",
+      "case_id": "g02-long-sentence",
+      "saved_draft": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。",
+      "expected": "The cited draft claim contains the full 299-character sentence including its tail; any displayed tail and summary have their own full source.",
+      "accepted_case_ref": "evaluation/current_flash_v4/cases.json",
+      "body_lineage": "byte_identical_v2"
+    },
+    {
+      "ordinal": 27,
+      "family": "g02",
+      "case_id": "g02-body-limit",
+      "saved_draft": "林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。",
+      "expected": "Unselected saved-draft scope remains disclosed; all displayed items and summary cite their own bound sources.",
+      "accepted_case_ref": "evaluation/current_flash_v4/cases.json",
+      "body_lineage": "byte_identical_v2"
+    },
+    {
+      "ordinal": 28,
+      "family": "g02",
+      "case_id": "g02-identical-text",
+      "saved_draft": "林默走进北门。林默走进北门。",
+      "expected": "Duplicate claims stay separately addressable; each displayed item and summary has an own source.",
+      "accepted_case_ref": "evaluation/current_flash_v4/cases.json",
+      "body_lineage": "byte_identical_v2"
+    },
+    {
+      "ordinal": 29,
+      "family": "g02",
+      "case_id": "g02-time-bound",
+      "saved_draft": "昨日温岚尚未得知银钥匙的用途。今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。",
+      "expected": "Keep yesterday's unknown and today's knowledge as distinct time-bound quotations; do not merge them into a timeless fact.",
+      "accepted_case_ref": "evaluation/current_flash_v4/cases.json",
+      "body_lineage": "byte_identical_v4"
+    },
+    {
+      "ordinal": 30,
+      "family": "g02",
+      "case_id": "g02-dialogue-attribution",
+      "saved_draft": "陈澈说：‘温岚已经把潮汐表交给林默。’温岚摇头说：‘我没有交出潮汐表，它仍在我的背包里。’",
+      "expected": "Render reported speech as attributed draft quotation; do not promote either conflicting speaker statement into narrator-confirmed fact.",
+      "accepted_case_ref": "evaluation/current_flash_v4/cases.json",
+      "body_lineage": "byte_identical_v4"
+    }
+  ]
+}

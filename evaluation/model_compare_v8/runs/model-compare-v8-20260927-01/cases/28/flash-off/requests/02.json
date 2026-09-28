@@ -1,0 +1,122 @@
+{
+  "evaluation": 2,
+  "stage": "repair",
+  "business_request_sha256": "ff2534fbe9f7fdad9c7f879090812b48c229efac25065d22aca6d76786b1de00",
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-v6-actor-blank",
+      "revision": 2,
+      "body": "According to the inspection log, Ina loosened the courier capsule valve cap."
+    },
+    "claims": [
+      {
+        "id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+        "text": "According to the inspection log, Ina loosened the courier capsule valve cap.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-v6_actor_blank-1",
+            "chapter_id": "fixture-chapter-v6_actor_blank-1",
+            "body": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+            "label": "A1",
+            "prompt_excerpt": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-v6_actor_blank-1",
+        "memory_type": "dynamic_state",
+        "subject": "actor_blank",
+        "predicate": "status",
+        "value": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+        "source_span_id": "fixture-span-v6_actor_blank-1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    },
+    "contract_repair": {
+      "attempt": 2,
+      "reason_code": "claim_verdicts_issue_mismatch",
+      "diagnostics": [
+        {
+          "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+          "claim_text": "According to the inspection log, Ina loosened the courier capsule valve cap.",
+          "problem_codes": [
+            "claim_verdicts_issue_mismatch"
+          ],
+          "cited_evidence": [],
+          "invalid_field": "verdict",
+          "actual_verdict": "insufficient_evidence",
+          "expected_verdict_for_returned_issues": "no_issue",
+          "issue_present": false,
+          "required_issue_status_for_verdict": "insufficient_evidence",
+          "requirement": "Keep the evidence-based decision. An insufficient_evidence decision needs a cited missing_link Issue with no actions. Change a verdict only when the original evidence justifies that change."
+        }
+      ],
+      "rejected_issues": [],
+      "rejected_claim_verdicts": [
+        {
+          "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+          "verdict": "insufficient_evidence",
+          "basis": "The draft attributes the loosening to Ina via the inspection log, but the cited span only records the cap as loose at 10:00 and explicitly does not identify who loosened it. The attribution to Ina lacks a supporting link, so the claim is unsupported rather than contradicted."
+        }
+      ]
+    }
+  }
+}

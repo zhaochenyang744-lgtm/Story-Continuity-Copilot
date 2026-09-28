@@ -1,0 +1,73 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+      "status": "conflict",
+      "category": "world_rule",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "The draft claims Mira opened the North Glass door with only a red badge, but a canon rule states a red badge cannot open that door.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-north_glass-1",
+          "span_id": "fixture-span-north_glass-1",
+          "excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-1"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-north_glass-2",
+          "span_id": "fixture-span-north_glass-2",
+          "excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-2"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The cited timeless rule directly contradicts the claim that a red badge wearer opened the North Glass door. The 10点 attempt record places Mira at the same time wearing only a red badge and carrying no blue badge, so the draft action cannot coexist with the canon rule.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-north_glass-1",
+          "role": "current_context"
+        },
+        {
+          "span_id": "fixture-span-north_glass-2",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-2",
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3552,
+  "output_tokens": 3191,
+  "latency_ms": 31771,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

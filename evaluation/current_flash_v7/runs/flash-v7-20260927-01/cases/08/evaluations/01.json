@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "ee7ea1ef98c65c459d9df5873cff7c4b76ff97b25eac50f1a5875300b1aa3aa3",
+  "finished_at": "2026-09-27T10:47:40.769530+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-a40f5eb4-67f7-4504-9f1c-19cc0c893e8d-1",
+        "verdict": "no_issue",
+        "basis": "The claim matches the cited evidence: the gate first opened at 09点 and first closed at 10点, so the draft's 10点 first-closure statement is consistent and needs no review."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3352,
+    "output_tokens": 101,
+    "observed_response_input_tokens": 3352,
+    "observed_response_output_tokens": 101
+  }
+}

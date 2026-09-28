@@ -1,0 +1,80 @@
+{
+  "evaluation": 2,
+  "business_request_sha256": "0cceb1633af95530bad8b8c194fc0796c2b75432fe81086fe6db03f543ab7013",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "The draft asserts that the launch and delay logs attribute the restoration boat's delay to Tala, but the supplied restoration log leaves the cause unrecorded.",
+        "reasoning": "The claim depends on a record establishing Tala as the cause of the delay. The only directly relevant log evidence states that the restoration log leaves the cause of the boat's delay unrecorded, so the attribution to Tala is unsupported. The supplied launch-condition spans do not name Tala or assign a cause. No direct contradiction or supporting warrant is established, so the causal fact remains unknown.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-6",
+            "span_id": "fixture-span-orchard_restoration-6",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-6"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-6",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The restoration log leaves the cause of the boat's delay unrecorded, so the draft's attribution of the delay to Tala is unsupported; the causal fact remains unknown."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 4339,
+      "completion_tokens": 4508,
+      "total_tokens": 8847,
+      "prompt_tokens_details": {
+        "cached_tokens": 3456
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 4023
+      },
+      "prompt_cache_hit_tokens": 3456,
+      "prompt_cache_miss_tokens": 883
+    },
+    "status": "complete",
+    "prompt_tokens": 4339,
+    "completion_tokens": 4508,
+    "total_tokens": 8847,
+    "reasoning_tokens": 4023,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

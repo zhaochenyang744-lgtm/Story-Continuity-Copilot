@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-01",
+  "ordinal": 29,
+  "case_id": "g02-time-bound",
+  "family": "g02",
+  "started_at": "2026-09-27T07:58:57.001506+00:00",
+  "case_input_sha256": "f0cec794d4bed4d9e0e4598f25f4be792a73963d0b24636f6f555745e8ace2ec",
+  "source_ref": "evaluation/current_flash_v4/cases.json"
+}

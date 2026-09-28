@@ -1,0 +1,83 @@
+{
+  "schema_version": "v8-blinded-case-review-v1",
+  "case_alias": "case-12",
+  "stage": "repair",
+  "reviewer": "reviewer-c",
+  "locked_at_utc": "2026-09-27T11:49:58.948853+00:00",
+  "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/12.json",
+  "packet_sha256": "160e720e68bfc50a4d0b6e158e15011888586f74a5dbf58371f3e65e0caea0f8",
+  "first_review_sha256": "abbffdab5ae42bc133dc68ba1363f24be3206d54af5535618eaa9aa36e18c7f8",
+  "condition_visibility": "hidden",
+  "exposure_note": "曾审其他案例01/02工程trace；本例模型条件/arms/机器成绩/映射均未读，不称严格双盲。",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-12",
+      "response_alias": "answer-8b757a",
+      "stage": "repair",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "contract_checks": {
+        "original_product_validate": "pass",
+        "basis_codepoints": 88,
+        "reasoning_codepoints": 98
+      },
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "仍将Vela递送归属留为未知，并补齐引用缺口Issue；没有把记录缺失当作反事实。",
+          "visible_quote": "判断只能停在递送者未知。",
+          "evidence_pointer": "answer-8b757a.repair.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "所发event_status不符合冻结relationship类别；缺口是具名行为人归属。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "answer-8b757a.repair.parsed_business_json.issues[0].category; policy.category"
+        }
+      ],
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "repair恢复S及实际不足Issue交付，唯一最低来源4、父章/Memory、context/insufficient和missing_link正确；unknown时间不升级动作。类别仍失败，不能回填首答或记完整恢复。",
+      "special_observations": [
+        "draft主要英文，repair解释/理由改用中文；root确认沿冻结validator/schema评分，语言偏差仅作prompt遵循观察，不新增S或strict失败，不改F。"
+      ],
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "not_attempted_response_aliases": [
+    "answer-aa049b",
+    "answer-6bc1e1"
+  ],
+  "repair_transition": {
+    "answer-8b757a": {
+      "F": "pass_to_pass",
+      "S": "fail_to_pass",
+      "D": "fail_to_pass",
+      "strict_composite": "fail_to_fail",
+      "remaining_failure": "C"
+    }
+  },
+  "locked_before_final": true,
+  "provider_calls": 0,
+  "database_connections": 0
+}

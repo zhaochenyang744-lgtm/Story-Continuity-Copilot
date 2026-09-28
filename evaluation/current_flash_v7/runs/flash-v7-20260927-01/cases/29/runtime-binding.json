@@ -1,0 +1,34 @@
+{
+  "project_id": "fixture-project-v6-actor-blank",
+  "draft_id": "fixture-draft-v6-actor-blank",
+  "draft_revision": 2,
+  "draft_body": "At 11:00 Ina walked into the repair room.",
+  "draft_body_sha256": "d0c8b45e86e60e660ca37a8cee8ca34693571e296f3e6cdea1634503c00048a0",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-v6_actor_blank-1",
+      "chapter_number": 1,
+      "chapter_title": "Synthetic actor_blank source A1",
+      "chapter_body": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_actor_blank-1",
+      "span_body": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+      "span_revision": 1,
+      "chapter_body_sha256": "db0bf1eb4e03b3efd22120a9ff8b6d4816cc0e90fcffcc56743ee62bea05a741",
+      "span_body_sha256": "db0bf1eb4e03b3efd22120a9ff8b6d4816cc0e90fcffcc56743ee62bea05a741"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-v6_actor_blank-1",
+      "memory_type": "dynamic_state",
+      "subject": "actor_blank",
+      "predicate": "status",
+      "value": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+      "source_span_id": "fixture-span-v6_actor_blank-1",
+      "version": 1
+    }
+  ]
+}

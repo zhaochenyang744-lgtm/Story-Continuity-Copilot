@@ -1,0 +1,15 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-conflict",
+  "family": "comparison",
+  "status": "exact_content_after_claim_id_normalization",
+  "historical_capture_sha256": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+  "same_run_request_sha256": "2bfccffa74b8dd0d144ba2a8b8f946497ebf2cd0120b81b4c8d889ec81e1872b",
+  "selected_source_count": 3,
+  "selected_memory_count": 6,
+  "minimum_source_selected": true,
+  "repair": false,
+  "database_binding": "matched_persisted_isolated_database",
+  "database_selected_source_count": 3,
+  "database_selected_memory_count": 6,
+  "database_unselected_memory_sources_allowed": 3
+}

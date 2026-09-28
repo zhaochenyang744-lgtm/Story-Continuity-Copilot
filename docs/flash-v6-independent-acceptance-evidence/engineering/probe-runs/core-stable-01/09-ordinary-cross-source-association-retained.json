@@ -1,0 +1,9 @@
+{
+  "detail": {
+    "association": "retained",
+    "nature": "state_change",
+    "proof_qualification": "not_used"
+  },
+  "name": "ordinary-cross-source-association-retained",
+  "status": "pass"
+}

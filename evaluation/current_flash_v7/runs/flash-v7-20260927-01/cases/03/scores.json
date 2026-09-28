@@ -1,0 +1,30 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "score_layer": "raw_first_or_repair_v6",
+    "errors": [
+      "product_validator:claim_verdicts_issue_mismatch",
+      "required_issue_missing"
+    ]
+  },
+  "repair_raw": [
+    {
+      "machine_result": "pass",
+      "semantic_result": "pending_manual_review",
+      "score_layer": "raw_first_or_repair_v6",
+      "errors": []
+    }
+  ],
+  "final": {
+    "result": "pending_manual_review",
+    "machine_result": "pass",
+    "semantic_result": "pending_manual_review",
+    "score_layer": "final_product_v6",
+    "errors": []
+  },
+  "request_count": 2,
+  "parsed_output_count": 2,
+  "manual_semantic_review": "pending_manual_review"
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "a8ce2f4bbd40238dc49e3887ab9961ab12936117a476a16a6eba45bbb55e617d",
+  "finished_at": "2026-09-27T10:48:13.064722+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-3cceb69c-5c78-4797-aa9b-5d208fe91dfb-1",
+        "verdict": "no_issue",
+        "basis": "The claim's three states (launch incomplete, manifest unsigned, boat at quay) at 10点 match the cited event span exactly, and the launch rule span is consistent with launch being incomplete while the manifest is unsigned and the boat has not departed."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3493,
+    "output_tokens": 111,
+    "observed_response_input_tokens": 3493,
+    "observed_response_output_tokens": 111
+  }
+}

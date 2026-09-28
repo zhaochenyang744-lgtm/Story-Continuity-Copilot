@@ -1,0 +1,122 @@
+{
+  "case_alias": "case-24",
+  "stage": "final",
+  "reviewer": "root",
+  "locked_at_utc": "2026-09-27T11:56:44.082825+00:00",
+  "packet_sha256": "47707ebbc4a33b298332bbd9e9c12e22b1ba27a9c655c77793f7d0dc7635aba2",
+  "prior_first_sha256": "4a96416a054fefd6d5eeb19e9326fdce9af60f6da007a16be71c3abdaf490367",
+  "records": [
+    {
+      "case_alias": "case-24",
+      "response_alias": "answer-599e7a",
+      "stage": "final",
+      "reviewer": "root",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "The record omits the companion identity. The answer correctly separates unsupported attribution from a denial that Sora accompanied Vela.",
+          "visible_quote": "this is not evidence that Sora did not accompany Vela.",
+          "evidence_pointer": "responses[answer-599e7a].final.issues[0].reasoning"
+        }
+      ],
+      "other_dimensions": "No repair or normalization. Final issues exactly equal original validator output from the locked first response; categories, facts, evidence roles/sets and actions are preserved; applicable engine output contract passes.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "inherited_locked_first": "first-24.json"
+    },
+    {
+      "case_alias": "case-24",
+      "response_alias": "answer-66d82d",
+      "stage": "final",
+      "reviewer": "root",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "The record omits the companion identity. The answer correctly separates unsupported attribution from a denial that Sora accompanied Vela.",
+          "visible_quote": "Sora's presence remains unknown.",
+          "evidence_pointer": "responses[answer-66d82d].final.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "reason": "The missing identity of the actor/companion is location_action or relationship under the fixed manual variant; character_knowledge is outside both allowed categories.",
+          "visible_quote": "character_knowledge",
+          "evidence_pointer": "issues[0].category"
+        }
+      ],
+      "other_dimensions": "No repair or normalization. Final issues exactly equal original validator output from the locked first response; categories, facts, evidence roles/sets and actions are preserved; applicable engine output contract passes.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "inherited_locked_first": "first-24.json"
+    },
+    {
+      "case_alias": "case-24",
+      "response_alias": "answer-c702b9",
+      "stage": "final",
+      "reviewer": "root",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "The record omits the companion identity. The answer correctly separates unsupported attribution from a denial that Sora accompanied Vela.",
+          "visible_quote": "Sora 是否陪同 Vela 属于未知，而非被直接否定。",
+          "evidence_pointer": "responses[answer-c702b9].final.issues[0].reasoning"
+        }
+      ],
+      "other_dimensions": "No repair or normalization. Final issues exactly equal original validator output from the locked first response; categories, facts, evidence roles/sets and actions are preserved; applicable engine output contract passes.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "inherited_locked_first": "first-24.json"
+    }
+  ],
+  "repair_count": 0,
+  "normalization_count": 0,
+  "provider_calls": 0,
+  "database_connections": 0
+}

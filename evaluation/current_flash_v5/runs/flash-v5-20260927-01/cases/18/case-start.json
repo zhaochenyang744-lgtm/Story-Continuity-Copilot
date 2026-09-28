@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v5-20260927-01",
+  "ordinal": 18,
+  "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:20:43.928477+00:00",
+  "case_input_sha256": "d9acdfcc41564375453498296b1f9629b1297e2d38fa6c4e845862a1e2d1bfaf",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

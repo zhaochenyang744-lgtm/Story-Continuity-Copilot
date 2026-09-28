@@ -1,0 +1,35 @@
+{
+  "case_id": "g02-dialogue-attribution",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "5a1493abef89e9d8a7cf8d01d7c6ad32eb2085d6e800b29a8d61af00196635c3",
+  "finished_at": "2026-09-27T08:08:14.244042+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "summary": "陈澈说：‘温岚已经把潮汐表交给林默。’",
+    "summary_sources": [
+      {
+        "source_type": "draft_claim",
+        "source_id": "draft-claim-draft-720faa70-dfa4-4c24-a343-5010a04949fb-r2-1"
+      }
+    ],
+    "items": [
+      {
+        "section": "recent_source",
+        "text": "陈澈说：‘温岚已经把潮汐表交给林默。’",
+        "sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-draft-720faa70-dfa4-4c24-a343-5010a04949fb-r2-1"
+          }
+        ]
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

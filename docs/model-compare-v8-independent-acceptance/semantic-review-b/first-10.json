@@ -1,0 +1,170 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-10",
+  "stage": "first",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:45:56.301158+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-10",
+      "response_alias": "answer-6f43ef",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-character_knowledge-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "已直接根据 span-3 判断同一Sera、同一密码、同一11点的知道/不知道矛盾，不把未打开本身当唯一不知情依据。",
+          "visible_quote": "directly contradicting the claim that she knew it",
+          "evidence_pointer": "responses[response_alias=answer-6f43ef].first.parsed_business_json.issues[0].reasoning; fixture-span-harbor_signal-3"
+        }
+      ],
+      "other_dimensions_checked": "character_knowledge类别、claim/chapter/Memory绑定正确；直接span-3为contradicts/sufficient。纯冻结validator.validate均通过，无HTTP；basis 82≤400、reasoning 330≤800。建议改为11点尚未获知有直接支持。",
+      "attribution_tags": [],
+      "overall_reason": "主命题矛盾与类别均正确；仅使用允许直接证据，结构、时间及交付合格，strict通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-10",
+      "response_alias": "answer-c7f11d",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-character_knowledge-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "已直接根据 span-3 判断同一Sera、同一密码、同一11点的知道/不知道矛盾，不把未打开本身当唯一不知情依据。",
+          "visible_quote": "the two states cannot coexist under the same subject and time",
+          "evidence_pointer": "responses[response_alias=answer-c7f11d].first.parsed_business_json.issues[0].reasoning; fixture-span-harbor_signal-3"
+        }
+      ],
+      "other_dimensions_checked": "character_knowledge类别、claim/chapter/Memory绑定正确；直接span-3为contradicts/sufficient。纯冻结validator.validate均通过，无HTTP；basis 156≤400、reasoning 291≤800。建议改为11点尚未获知有直接支持。",
+      "attribution_tags": [],
+      "overall_reason": "主命题矛盾与类别均正确；仅使用允许直接证据，结构、时间及交付合格，strict通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-10",
+      "response_alias": "answer-68a8ec",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-character_knowledge-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "fail",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "fail",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "已直接根据 span-3 判断同一Sera、同一密码、同一11点的知道/不知道矛盾，不把未打开本身当唯一不知情依据。",
+          "visible_quote": "主体（Sera）、对象（电报密码）、时间（11点）完全重合，无法同时成立",
+          "evidence_pointer": "responses[response_alias=answer-68a8ec].first.parsed_business_json.issues[0].reasoning; fixture-span-harbor_signal-3"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "fail",
+          "reason": "冻结最小集合只有span-3、optional为空；额外span-4虽真实且selected，仍越出允许引用集合，非幻觉。",
+          "visible_quote": "fixture-span-harbor_signal-4",
+          "evidence_pointer": "responses[response_alias=answer-68a8ec].first.parsed_business_json.issues[0].evidence[1]; policy.optional"
+        },
+        {
+          "dimension": "T",
+          "verdict": "fail",
+          "reason": "次要推理把13点获知进一步倒推为11点未知；独立成立的是span-3的11点直接否定，后来的获知不能额外证明较早状态。主结论F仍正确，明确将此时间论证缺陷分开。",
+          "visible_quote": "进一步确认11点时她尚不知情",
+          "evidence_pointer": "responses[response_alias=answer-68a8ec].first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "other_dimensions_checked": "character_knowledge类别、claim/chapter/Memory绑定正确；直接span-3为contradicts/sufficient。纯冻结validator.validate均通过，无HTTP；basis 67≤400、reasoning 162≤800。建议改为11点尚未获知有直接支持。",
+      "attribution_tags": [
+        "set_error",
+        "secondary_temporal_back_inference"
+      ],
+      "overall_reason": "主命题矛盾与类别均正确；额外span-4违规且有次要时间倒推，strict失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "summary": {
+    "responses": 3,
+    "F_pass": 3,
+    "strict_pass": 2,
+    "extra_evidence_failures": 1,
+    "secondary_temporal_inference_failures": 1
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/10.json",
+      "sha256_observed": "09cfa7acbac0d0d39dd328fb57300c8a4884b533c233b3cbb27c2b5ade75e9b7",
+      "sha256_after_review": "09cfa7acbac0d0d39dd328fb57300c8a4884b533c233b3cbb27c2b5ade75e9b7"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    },
+    {
+      "path": "backend/app/engine.py",
+      "sha256_observed": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd",
+      "sha256_after_review": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd"
+    }
+  ],
+  "read_hashes_stable": true
+}

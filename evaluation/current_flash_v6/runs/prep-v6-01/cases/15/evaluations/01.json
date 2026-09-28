@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "1d42e3328a08c5deb1fb71379ab2626a11463aa02f62744c877cc3ec7af85763",
+  "finished_at": "2026-09-27T09:34:44.478884+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-28ec3800-c286-45e7-98e4-6d6cfaa6340e-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "first": {
+    "machine_result": "fail",
+    "semantic_result": "pending_independent_review",
+    "score_layer": "raw_first_or_repair_v6",
+    "errors": [
+      "product_validator:evidence_unresolvable",
+      "source_not_selected_or_wrong_chapter",
+      "undeclared_extra_evidence"
+    ],
+    "layers": {
+      "decision": [],
+      "category": [],
+      "citation": [
+        "product_validator:evidence_unresolvable",
+        "source_not_selected_or_wrong_chapter",
+        "undeclared_extra_evidence"
+      ],
+      "structure": [],
+      "temporal": [],
+      "generation": []
+    },
+    "complete_answer": true,
+    "scoring_policy": "unchanged_v7"
+  },
+  "repair": [],
+  "final": {
+    "machine_result": "terminal_failure",
+    "errors": [
+      "evidence_unresolvable"
+    ],
+    "layers": {
+      "decision": [],
+      "category": [],
+      "citation": [
+        "evidence_unresolvable"
+      ],
+      "structure": [],
+      "temporal": [],
+      "generation": []
+    },
+    "semantic_result": "not_delivered",
+    "output_layer": "experiment_engine_not_api_persistence"
+  },
+  "manual_semantic_review": "pending",
+  "historical_v7_not_rescored_as_new_result": true
+}

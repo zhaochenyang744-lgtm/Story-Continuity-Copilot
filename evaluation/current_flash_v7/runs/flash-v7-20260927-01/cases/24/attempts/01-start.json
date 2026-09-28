@@ -1,0 +1,12 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+  "run_id": "flash-v7-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 28,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "dc93e8f191ccf87134b01c769a060c5507cba171076a78994aad7d11e2e99749",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "b4c95e97069854bfc34b1dc212c1af31d46e96b32f5491d23e51ef93be3bf3f3",
+  "started_at": "2026-09-27T10:48:37.329269+00:00",
+  "usage_status": "unknown_until_response"
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-timeline-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "1f269554f590049b24cc0eec979403c5213fac1444f84b1d859683a951a32189",
+  "finished_at": "2026-09-27T09:34:33.328807+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-72afd5b8-2500-4a86-8e75-52610e7ca957-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

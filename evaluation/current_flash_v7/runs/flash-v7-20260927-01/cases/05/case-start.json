@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v7-20260927-01",
+  "ordinal": 5,
+  "case_id": "ccv3-north_glass-object_state-no_conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T10:47:29.413437+00:00",
+  "case_input_sha256": "f9b4035b83e6f6774d690883978d9dc7c180f829feaf0f45a684ff9409fbdd88",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

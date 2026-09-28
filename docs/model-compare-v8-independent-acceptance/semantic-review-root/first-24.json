@@ -1,0 +1,119 @@
+{
+  "schema_version": "v8-blinded-case-first-review-v1",
+  "case_alias": "case-24",
+  "stage": "first",
+  "reviewer": "root",
+  "locked_at_utc": "2026-09-27T11:54:51.358816+00:00",
+  "packet_sha256": "8aeefb12ea8807366f0705db1a9508c0e170479c0e1c1323741a79b1d7c051df",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "exposure_note": "Root has seen aggregate per-condition machine totals, but not the per-case mapping; not claimed double-blind.",
+  "records": [
+    {
+      "case_alias": "case-24",
+      "response_alias": "answer-599e7a",
+      "stage": "first",
+      "reviewer": "root",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "The record omits the companion identity. The answer correctly separates unsupported attribution from a denial that Sora accompanied Vela.",
+          "visible_quote": "this is not evidence that Sora did not accompany Vela.",
+          "evidence_pointer": "responses[answer-599e7a].first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "other_dimensions": "Only the minimum selected span6 is cited, with its matching chapter and Memory, context/insufficient and missing_link; no actions/revision; ledger agrees; exact time substrings; pure original validator passes. location_action in the other two answers is justified by the identity of the companion in the pier movement.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "case_alias": "case-24",
+      "response_alias": "answer-66d82d",
+      "stage": "first",
+      "reviewer": "root",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "The record omits the companion identity. The answer correctly separates unsupported attribution from a denial that Sora accompanied Vela.",
+          "visible_quote": "Sora's presence remains unknown.",
+          "evidence_pointer": "responses[answer-66d82d].first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "reason": "The missing identity of the actor/companion is location_action or relationship under the fixed manual variant; character_knowledge is outside both allowed categories.",
+          "visible_quote": "character_knowledge",
+          "evidence_pointer": "issues[0].category"
+        }
+      ],
+      "other_dimensions": "Only the minimum selected span6 is cited, with its matching chapter and Memory, context/insufficient and missing_link; no actions/revision; ledger agrees; exact time substrings; pure original validator passes. location_action in the other two answers is justified by the identity of the companion in the pier movement.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "case_alias": "case-24",
+      "response_alias": "answer-c702b9",
+      "stage": "first",
+      "reviewer": "root",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "The record omits the companion identity. The answer correctly separates unsupported attribution from a denial that Sora accompanied Vela.",
+          "visible_quote": "Sora 是否陪同 Vela 属于未知，而非被直接否定。",
+          "evidence_pointer": "responses[answer-c702b9].first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "other_dimensions": "Only the minimum selected span6 is cited, with its matching chapter and Memory, context/insufficient and missing_link; no actions/revision; ledger agrees; exact time substrings; pure original validator passes. location_action in the other two answers is justified by the identity of the companion in the pier movement.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "provider_calls": 0,
+  "database_connections": 0
+}

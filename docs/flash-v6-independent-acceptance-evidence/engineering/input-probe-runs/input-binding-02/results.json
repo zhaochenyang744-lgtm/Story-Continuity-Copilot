@@ -1,0 +1,65 @@
+{
+  "api_cases_replayed": 0,
+  "blocked_boundary_attempts": {
+    "http": 0,
+    "real_provider": 0,
+    "socket": 0,
+    "sqlite": 0
+  },
+  "controls": [
+    {
+      "audit": {
+        "case_id": "v6-v6s-01",
+        "control_ids": [
+          "V6S-01",
+          "V6S-02",
+          "V6S-05"
+        ],
+        "database_binding": "matched_persisted_isolated_database",
+        "database_selected_memory_count": 4,
+        "database_selected_source_count": 3,
+        "database_unselected_memory_sources_allowed": 1,
+        "evaluation_kind": "v6_seen_control",
+        "family": "comparison",
+        "repair": false,
+        "same_run_request_sha256": "ad1f6228c135186b3e35c405a27fff75ae831312799def485326f7ce37a7bd11",
+        "selected_memory_count": 4,
+        "selected_source_labels": [
+          "L1",
+          "L2",
+          "L4"
+        ],
+        "status": "v6_control_source_set_and_body_bound"
+      },
+      "control": "unchanged_captured_input",
+      "status": "pass"
+    },
+    {
+      "control": "wrong_draft_id",
+      "rejection": "input_contract:v6-v6s-01:control_draft_id_or_revision_database_binding",
+      "request_sha256": "92479662f91dc3efac27ad9a0003e0f479394dd44d7f1ba42d4ca59f15491a47",
+      "status": "pass"
+    },
+    {
+      "control": "wrong_draft_revision",
+      "rejection": "input_contract:v6-v6s-01:control_draft_id_or_revision_database_binding",
+      "request_sha256": "55aa86c95312f93933d72de4ffab85800acc5a647adee95b508205f638f451c9",
+      "status": "pass"
+    },
+    {
+      "control": "empty_memory",
+      "rejection": "input_contract:v6-v6s-01:control_selected_memory_set_drift",
+      "request_sha256": "acc94e673724f91a83bdeb47f38efabcd674ec9d2ea36a02e9853b4ce3afa088",
+      "status": "pass"
+    },
+    {
+      "control": "duplicate_memory_same_count",
+      "rejection": "input_contract:v6-v6s-01:control_selected_memory_set_drift",
+      "request_sha256": "9e81dd1127433a77296deeff89bde975ea1f40a373e881b54af0cb1c0afc3f4b",
+      "status": "pass"
+    }
+  ],
+  "fatal": null,
+  "sources_and_capture_stable": true,
+  "status": "pass"
+}

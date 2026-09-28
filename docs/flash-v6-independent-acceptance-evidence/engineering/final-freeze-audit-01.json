@@ -1,0 +1,444 @@
+{
+  "all_frozen_hashes_match": true,
+  "captures": [
+    {
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "v6-v6s-01",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "v6-v6s-03",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "v6-v6s-04",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "v6-v6s-06",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "v6-v6s-07",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "v6-v6s-08",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "v6-v6s-09",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "v6-v6s-10",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "v6-v6s-11",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    },
+    {
+      "case_id": "v6-v6s-12",
+      "request_count": 1,
+      "request_digest_matches": true,
+      "single_full_claim": true
+    }
+  ],
+  "current_schema_v6_confirmed": true,
+  "database_connections": 0,
+  "dependency_edges": {
+    "backend/app/__init__.py": [],
+    "backend/app/brief_citations.py": [],
+    "backend/app/config.py": [],
+    "backend/app/database.py": [
+      "backend/app/__init__.py",
+      "backend/app/config.py",
+      "backend/app/seed_data.py"
+    ],
+    "backend/app/engine.py": [
+      "backend/app/__init__.py",
+      "backend/app/brief_citations.py",
+      "backend/app/memory_contract.py",
+      "backend/app/provider.py"
+    ],
+    "backend/app/long_term_workflow.py": [
+      "backend/app/__init__.py",
+      "backend/app/database.py",
+      "backend/app/text_content.py",
+      "backend/app/v2_database.py"
+    ],
+    "backend/app/main.py": [
+      "backend/app/__init__.py",
+      "backend/app/config.py",
+      "backend/app/database.py",
+      "backend/app/engine.py",
+      "backend/app/long_term_workflow.py",
+      "backend/app/project_export.py",
+      "backend/app/provider.py",
+      "backend/app/stage13.py",
+      "backend/app/v2_database.py"
+    ],
+    "backend/app/memory_contract.py": [],
+    "backend/app/project_export.py": [
+      "backend/app/__init__.py",
+      "backend/app/database.py",
+      "backend/app/text_content.py",
+      "backend/app/v2_database.py"
+    ],
+    "backend/app/provider.py": [
+      "backend/app/__init__.py",
+      "backend/app/memory_contract.py"
+    ],
+    "backend/app/seed_data.py": [],
+    "backend/app/stage13.py": [
+      "backend/app/__init__.py",
+      "backend/app/database.py",
+      "backend/app/provider.py",
+      "backend/app/v2_database.py"
+    ],
+    "backend/app/text_content.py": [],
+    "backend/app/v2_database.py": [
+      "backend/app/__init__.py",
+      "backend/app/brief_citations.py",
+      "backend/app/config.py",
+      "backend/app/database.py",
+      "backend/app/long_term_workflow.py",
+      "backend/app/memory_contract.py",
+      "backend/app/seed_data.py",
+      "backend/app/text_content.py"
+    ],
+    "evaluation/__init__.py": [],
+    "evaluation/current_flash_v5/inputs.py": [
+      "evaluation/__init__.py",
+      "evaluation/current_flash_v5/journal.py"
+    ],
+    "evaluation/current_flash_v5/journal.py": [
+      "backend/app/__init__.py",
+      "backend/app/provider.py"
+    ],
+    "evaluation/current_flash_v6/build_cases.py": [],
+    "evaluation/current_flash_v6/freeze.py": [
+      "backend/app/__init__.py",
+      "backend/app/provider.py",
+      "evaluation/__init__.py",
+      "evaluation/current_flash_v6/build_cases.py",
+      "evaluation/current_flash_v6/run.py"
+    ],
+    "evaluation/current_flash_v6/inputs.py": [
+      "evaluation/__init__.py",
+      "evaluation/current_flash_v5/inputs.py",
+      "evaluation/current_flash_v5/journal.py",
+      "evaluation/current_flash_v6/build_cases.py"
+    ],
+    "evaluation/current_flash_v6/live_guard.py": [
+      "evaluation/__init__.py",
+      "evaluation/current_flash_v6/freeze.py",
+      "evaluation/current_flash_v6/run.py"
+    ],
+    "evaluation/current_flash_v6/run.py": [
+      "backend/app/__init__.py",
+      "backend/app/config.py",
+      "backend/app/main.py",
+      "backend/app/provider.py",
+      "backend/app/stage13.py",
+      "evaluation/__init__.py",
+      "evaluation/current_flash_v5/journal.py",
+      "evaluation/current_flash_v6/build_cases.py",
+      "evaluation/current_flash_v6/freeze.py",
+      "evaluation/current_flash_v6/inputs.py",
+      "evaluation/current_flash_v6/score.py",
+      "evaluation/v2_fixture_loader.py"
+    ],
+    "evaluation/current_flash_v6/score.py": [
+      "backend/app/__init__.py",
+      "backend/app/engine.py",
+      "evaluation/__init__.py",
+      "evaluation/current_flash_v6/build_cases.py"
+    ],
+    "evaluation/v2_fixture_loader.py": [
+      "backend/app/__init__.py",
+      "backend/app/config.py",
+      "backend/app/database.py",
+      "backend/app/main.py",
+      "backend/app/v2_database.py"
+    ]
+  },
+  "engine_logic_same_as_enum_accepted_snapshot_except_provenance": true,
+  "frozen_file_count": 876,
+  "guard_adjudication": {
+    "automatic_groups_passed": 2,
+    "boundary_attempts": {
+      "environment_read": 0,
+      "http": 0,
+      "product_import": 0,
+      "socket": 0,
+      "sqlite": 0
+    },
+    "original_result_preserved": true,
+    "original_trace_proves_intended_dependency_rejection_before_import": true,
+    "probe_error": "Windows path stored with backslashes, assertion used forward slashes",
+    "reruns": 0,
+    "scope": "adjudication of saved evidence; no new guard execution",
+    "third_group_automatic_status": "fail"
+  },
+  "input_probe_inheritance": {
+    "adaptation": true,
+    "build_cases": true,
+    "case_document": true,
+    "inputs": true,
+    "matrix": true,
+    "v5_inputs": true,
+    "v5_journal": true
+  },
+  "limitations": [
+    "Repo-local Python dependency closure, not a lock of third-party runtime packages.",
+    "No live launch; controller must invoke verified CLI with pinned SHA and fresh identity."
+  ],
+  "limits": {
+    "contract_evaluations_per_case": 2,
+    "logical_cases": 34,
+    "max_models_get": 1,
+    "max_post": 136,
+    "max_tokens": 2000,
+    "timeout_seconds": 30,
+    "transport_retries": 1
+  },
+  "manifest_sha256": "f0e2cb3d5c44a1a92000f703423a0d26ea1fab5aef750b7a3393102ea98ed696",
+  "missing_dependencies": [
+    "evaluation/__init__.py"
+  ],
+  "other_core_sources_inherited": {
+    "backend/app/__init__.py": true,
+    "backend/app/brief_citations.py": true,
+    "backend/app/config.py": true,
+    "backend/app/database.py": true,
+    "backend/app/long_term_workflow.py": true,
+    "backend/app/main.py": true,
+    "backend/app/memory_contract.py": true,
+    "backend/app/project_export.py": true,
+    "backend/app/provider.py": true,
+    "backend/app/seed_data.py": true,
+    "backend/app/stage13.py": true,
+    "backend/app/text_content.py": true,
+    "backend/app/v2_database.py": true,
+    "backend/tests/test_v6_continuity_contract.py": true
+  },
+  "policy_files_frozen": {
+    "evaluation/current_flash_v6/INPUT-ADAPTATION.md": true,
+    "evaluation/current_flash_v6/SCORING-ADDENDUM-02.md": true,
+    "evaluation/current_flash_v6/SCORING-ADDENDUM-03.md": true,
+    "evaluation/current_flash_v6/SCORING-ADDENDUM.md": true,
+    "evaluation/current_flash_v6/SCORING-POLICY.md": true
+  },
+  "product_imports": 0,
+  "provider_calls": 0,
+  "repository_python_dependency_closure": [
+    "backend/app/__init__.py",
+    "backend/app/brief_citations.py",
+    "backend/app/config.py",
+    "backend/app/database.py",
+    "backend/app/engine.py",
+    "backend/app/long_term_workflow.py",
+    "backend/app/main.py",
+    "backend/app/memory_contract.py",
+    "backend/app/project_export.py",
+    "backend/app/provider.py",
+    "backend/app/seed_data.py",
+    "backend/app/stage13.py",
+    "backend/app/text_content.py",
+    "backend/app/v2_database.py",
+    "evaluation/__init__.py",
+    "evaluation/current_flash_v5/inputs.py",
+    "evaluation/current_flash_v5/journal.py",
+    "evaluation/current_flash_v6/build_cases.py",
+    "evaluation/current_flash_v6/freeze.py",
+    "evaluation/current_flash_v6/inputs.py",
+    "evaluation/current_flash_v6/live_guard.py",
+    "evaluation/current_flash_v6/run.py",
+    "evaluation/current_flash_v6/score.py",
+    "evaluation/v2_fixture_loader.py"
+  ],
+  "status": "fail",
+  "unchanged_v5_helper_ast": {
+    "_attempts": true,
+    "_auth_or_model_rejection": true,
+    "_models_preflight": true,
+    "_service_failure": true,
+    "usage_ledger": true,
+    "workspace_inventory": true
+  },
+  "unchanged_v5_inheritance": {
+    "evaluation/current_flash_v5/inputs.py": {
+      "current": "daced263ad5d630c0e5a2f51f0c2e13fe62dda07cb94dcd815eac1dddca86465",
+      "unchanged": true,
+      "v5_frozen": "daced263ad5d630c0e5a2f51f0c2e13fe62dda07cb94dcd815eac1dddca86465"
+    },
+    "evaluation/current_flash_v5/journal.py": {
+      "current": "3e8870d42ca4cc13fb605aa1527cc53fa45908cc3ba1958d99ecac710e508a87",
+      "unchanged": true,
+      "v5_frozen": "3e8870d42ca4cc13fb605aa1527cc53fa45908cc3ba1958d99ecac710e508a87"
+    }
+  }
+}

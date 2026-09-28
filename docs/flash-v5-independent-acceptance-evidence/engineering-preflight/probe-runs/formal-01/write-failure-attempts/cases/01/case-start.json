@@ -1,0 +1,9 @@
+{
+  "run_id": "independent-write-failure-attempts",
+  "ordinal": 1,
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:14:43.720898+00:00",
+  "case_input_sha256": "fc4dde27734814102e2251d3db6b4fe7ebae746abcc5a82ce32b4be9938e2aac",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

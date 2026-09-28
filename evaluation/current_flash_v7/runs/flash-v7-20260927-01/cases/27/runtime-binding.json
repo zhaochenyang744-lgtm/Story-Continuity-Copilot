@@ -1,0 +1,58 @@
+{
+  "project_id": "fixture-project-v6-carrier",
+  "draft_id": "fixture-draft-v6-carrier",
+  "draft_revision": 2,
+  "draft_body": "At 10:00 today the courier capsule was not ready because its valve cap was loose.",
+  "draft_body_sha256": "2c12e0c1918070a812bf80155b702c90aca740765938f113e5d92ecdec58edfb",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-v6_carrier-1",
+      "chapter_number": 1,
+      "chapter_title": "Synthetic carrier source R1",
+      "chapter_body": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_carrier-1",
+      "span_body": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+      "span_revision": 1,
+      "chapter_body_sha256": "9a3f67cc7c0fa73f5ea55edc5da0e97a85cb85e7ad493f20985481913921dcfb",
+      "span_body_sha256": "9a3f67cc7c0fa73f5ea55edc5da0e97a85cb85e7ad493f20985481913921dcfb"
+    },
+    {
+      "chapter_id": "fixture-chapter-v6_carrier-2",
+      "chapter_number": 2,
+      "chapter_title": "Synthetic carrier source R2",
+      "chapter_body": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_carrier-2",
+      "span_body": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute.",
+      "span_revision": 1,
+      "chapter_body_sha256": "48d5ca745339eae72ca7a661f3f3a261fd942d05f936f77cbff1aea841111366",
+      "span_body_sha256": "48d5ca745339eae72ca7a661f3f3a261fd942d05f936f77cbff1aea841111366"
+    },
+    {
+      "chapter_id": "fixture-chapter-v6_carrier-3",
+      "chapter_number": 3,
+      "chapter_title": "Synthetic carrier source R3",
+      "chapter_body": "The 10:00 courier capsule inspection was performed at the north workbench.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_carrier-3",
+      "span_body": "The 10:00 courier capsule inspection was performed at the north workbench.",
+      "span_revision": 1,
+      "chapter_body_sha256": "e30f6a3fccb83788317b3262ad9a603573be7cbc24cc35ba226ba7993273b1ea",
+      "span_body_sha256": "e30f6a3fccb83788317b3262ad9a603573be7cbc24cc35ba226ba7993273b1ea"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-v6_carrier-1",
+      "memory_type": "dynamic_state",
+      "subject": "carrier",
+      "predicate": "status",
+      "value": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+      "source_span_id": "fixture-span-v6_carrier-1",
+      "version": 1
+    }
+  ]
+}

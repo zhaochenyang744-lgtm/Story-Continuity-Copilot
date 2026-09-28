@@ -1,0 +1,414 @@
+{
+  "schema_version": "current-flash-v6-34-input-v2",
+  "classification": "seen_development",
+  "logical_count": 34,
+  "comparison_lineage_count": 24,
+  "new_control_count": 10,
+  "source_hashes": {
+    "v5_cases": "83fb36bd9d933036ae57b741410704c65de13af3120aeb587762e1d608a6f6d8",
+    "v6_control_matrix": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "v6_input_adaptation": "eaaceb74f501bd6158d6f2f3d28a28e9d8a21beaf1e6c80788fd2bd132eb6cbe"
+  },
+  "cases": [
+    {
+      "ordinal": 1,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-world_rule-conflict"
+    },
+    {
+      "ordinal": 2,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, Mira could not open North Glass with her only red badge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-world_rule-no_conflict"
+    },
+    {
+      "ordinal": 3,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "saved_draft": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-world_rule-insufficient_evidence"
+    },
+    {
+      "ordinal": 4,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-object_state-conflict"
+    },
+    {
+      "ordinal": 5,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, the North Glass pneumatic carrier was not ready despite its four-bar gauge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-object_state-no_conflict"
+    },
+    {
+      "ordinal": 6,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "saved_draft": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-object_state-insufficient_evidence"
+    },
+    {
+      "ordinal": 7,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-timeline-conflict"
+    },
+    {
+      "ordinal": 8,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "The gate logs establish that at 10点 the harbor signal gate first closed after its 09点 opening.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-timeline-no_conflict"
+    },
+    {
+      "ordinal": 9,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "The gate logs establish that Sera authorized a reopening at 11点.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-timeline-insufficient_evidence"
+    },
+    {
+      "ordinal": 10,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 11点 on the same day, Sera knew the telegram code.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-character_knowledge-conflict"
+    },
+    {
+      "ordinal": 11,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 13点 Sera learned the telegram code after not knowing it at 11点.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-character_knowledge-no_conflict"
+    },
+    {
+      "ordinal": 12,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "Vela delivered the telegram to Sera at 13点, according to the records.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence"
+    },
+    {
+      "ordinal": 13,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Nera is Oren's mother.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-relationship-conflict"
+    },
+    {
+      "ordinal": 14,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-relationship-no_conflict"
+    },
+    {
+      "ordinal": 15,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "The birth register establishes that Nera was born before Oren.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence"
+    },
+    {
+      "ordinal": 16,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "At 10点 on the same day, the restoration boat had completed its launch.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-event_status-conflict"
+    },
+    {
+      "ordinal": 17,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "At 10点 on the same day, the restoration boat had not completed launch while its manifest was unsigned and it remained at the quay.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-event_status-no_conflict"
+    },
+    {
+      "ordinal": 18,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Tala caused the restoration boat's delay, according to the launch and delay logs.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence"
+    },
+    {
+      "ordinal": 19,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 on the same day, lens R4 is amber glass.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-attribute-conflict"
+    },
+    {
+      "ordinal": 20,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-attribute-no_conflict"
+    },
+    {
+      "ordinal": 21,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "The index and maintenance sheet establish that Vela ground lens R4.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence"
+    },
+    {
+      "ordinal": 22,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 on the same day, Vela stood on the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-location_action-conflict"
+    },
+    {
+      "ordinal": 23,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-location_action-no_conflict"
+    },
+    {
+      "ordinal": 24,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence"
+    },
+    {
+      "ordinal": 25,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-01",
+      "corpus_key": "v6_lens",
+      "fixture_key": "lens",
+      "saved_draft": "At 14:00 today, lens Q8 is amber glass.",
+      "control_ids": [
+        "V6S-01",
+        "V6S-02",
+        "V6S-05"
+      ],
+      "selected_source_labels": [
+        "L1",
+        "L2",
+        "L4"
+      ]
+    },
+    {
+      "ordinal": 26,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-03",
+      "corpus_key": "v6_carrier",
+      "fixture_key": "carrier",
+      "saved_draft": "At 10:00 today the courier capsule was ready for dispatch.",
+      "control_ids": [
+        "V6S-03"
+      ],
+      "selected_source_labels": [
+        "R1",
+        "R2",
+        "R3"
+      ]
+    },
+    {
+      "ordinal": 27,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-04",
+      "corpus_key": "v6_carrier",
+      "fixture_key": "carrier",
+      "saved_draft": "At 10:00 today the courier capsule was not ready because its valve cap was loose.",
+      "control_ids": [
+        "V6S-04"
+      ],
+      "selected_source_labels": [
+        "R1",
+        "R2",
+        "R3"
+      ]
+    },
+    {
+      "ordinal": 28,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-06",
+      "corpus_key": "v6_actor_blank",
+      "fixture_key": "actor_blank",
+      "saved_draft": "According to the inspection log, Ina loosened the courier capsule valve cap.",
+      "control_ids": [
+        "V6S-06"
+      ],
+      "selected_source_labels": [
+        "A1"
+      ]
+    },
+    {
+      "ordinal": 29,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-07",
+      "corpus_key": "v6_actor_blank",
+      "fixture_key": "actor_blank",
+      "saved_draft": "At 11:00 Ina walked into the repair room.",
+      "control_ids": [
+        "V6S-07"
+      ],
+      "selected_source_labels": [
+        "A1"
+      ]
+    },
+    {
+      "ordinal": 30,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-08",
+      "corpus_key": "v6_actor_named",
+      "fixture_key": "actor_named",
+      "saved_draft": "According to the inspection log, Ina loosened the courier capsule valve cap at 10:00.",
+      "control_ids": [
+        "V6S-08"
+      ],
+      "selected_source_labels": [
+        "A2"
+      ]
+    },
+    {
+      "ordinal": 31,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-09",
+      "corpus_key": "v6_birth_order_blank",
+      "fixture_key": "birth_order_blank",
+      "saved_draft": "The birth register establishes that Aster was born before Nilo.",
+      "control_ids": [
+        "V6S-09"
+      ],
+      "selected_source_labels": [
+        "B1"
+      ]
+    },
+    {
+      "ordinal": 32,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-10",
+      "corpus_key": "v6_companion_blank",
+      "fixture_key": "companion_blank",
+      "saved_draft": "The 19:00 watch record establishes that Evi accompanied Orin to the east quay.",
+      "control_ids": [
+        "V6S-10"
+      ],
+      "selected_source_labels": [
+        "C1"
+      ]
+    },
+    {
+      "ordinal": 33,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-11",
+      "corpus_key": "v6_lie",
+      "fixture_key": "lie",
+      "saved_draft": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins.",
+      "control_ids": [
+        "V6S-11"
+      ],
+      "selected_source_labels": [
+        "T1",
+        "T2"
+      ]
+    },
+    {
+      "ordinal": 34,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-12",
+      "corpus_key": "v6_knowledge_transition",
+      "fixture_key": "knowledge_transition",
+      "saved_draft": "At 12:00 today Siva learned the password after not knowing it at 09:00.",
+      "control_ids": [
+        "V6S-12"
+      ],
+      "selected_source_labels": [
+        "K1",
+        "K2"
+      ]
+    }
+  ]
+}

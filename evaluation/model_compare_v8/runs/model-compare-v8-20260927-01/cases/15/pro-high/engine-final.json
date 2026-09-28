@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-6c780db8-1e48-4b4b-be5b-24e37812c727-1",
+      "status": "insufficient_evidence",
+      "category": "timeline",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The birth register does not record which twin was born first, so it cannot establish that Nera was born before Oren.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-3",
+          "span_id": "fixture-span-orchard_restoration-3",
+          "excerpt": "The birth register does not record which twin, Nera or Oren, was born first.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-3"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The current claim asserts that the birth register establishes a specific birth order. The supplied evidence about the register's content states that it does not record which twin, Nera or Oren, was born first. That omission means the register does not provide the decisive detail needed for the claim, so the attribution is unsupported and the birth order remains unknown.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-orchard_restoration-3",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-6c780db8-1e48-4b4b-be5b-24e37812c727-1",
+      "returned_span_ids": [
+        "fixture-span-orchard_restoration-3",
+        "fixture-span-orchard_restoration-2",
+        "fixture-span-orchard_restoration-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3518,
+  "output_tokens": 4462,
+  "latency_ms": 40881,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}
