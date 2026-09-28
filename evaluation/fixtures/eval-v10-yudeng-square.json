@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "yudeng_square",
+  "title": "榆灯广场的一天",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v10-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "榆灯广场的一天",
+    "language": "zh",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "喷泉当班安排",
+      "source_label": "fountain_roster",
+      "body": "2028年11月6日17点，榆灯广场的当班安排确认：关闭喷泉的授权已经且仅发给廖素、严涤两人中的一人，没有第三名候选人，也没有共同授权。负责人把这项当班安排念给接班人员听，请他们按授权决定工作分工。"
+    },
+    {
+      "chapter_number": 2,
+      "title": "午间的叫号屏",
+      "source_label": "queue_glance",
+      "body": "2028年11月6日12点，施榕看见叫号屏显示“等待人数零”，便相信等候队列已经空了。她不知道屏幕刚刚失去连接，隔壁休息区其实还有四个人在等；她放下水杯，开始慢慢收拾服务台上的宣传单。"
+    },
+    {
+      "chapter_number": 3,
+      "title": "临时换证约定",
+      "source_label": "renewal_procedure",
+      "body": "2028年11月6日15点，临时换证点执行的当天专用约定是：本次乘车证换证须由领证人和当班见证人在交接页上双签，双签齐全才算办理完成。这套约定只用于当天的集中换证活动，次日恢复原有窗口流程。"
+    },
+    {
+      "chapter_number": 4,
+      "title": "住户登记表",
+      "source_label": "household_sheet",
+      "body": "住户登记表把程浔和时苒列在同一个门牌地址下，两人的入住日期也相同。填写人提供了各自的姓名和联系方式，却没有填写两人之间的关系；登记员把表放进该楼栋的资料夹，准备下次走访时再补全空栏。"
+    },
+    {
+      "chapter_number": 5,
+      "title": "廖素的交班条",
+      "source_label": "liao_handover",
+      "body": "2028年11月6日17点，廖素在交班条上明确写道：“截至本时刻，我没有获得关闭榆灯广场喷泉的本班授权。”她把这句话念了一遍，请接班人确认文字清楚，然后带着当天收集的落叶袋去了清运点。"
+    },
+    {
+      "chapter_number": 6,
+      "title": "免费的修伞摊",
+      "source_label": "umbrella_stall",
+      "body": "2028年11月6日16点，陆渺在社区修伞摊替一位老人修好了伞骨，明确表示这次服务免费，没有收取任何费用。老人坚持递来硬币，她笑着推回去，转而请老人帮忙按住容易被风吹走的摊位说明纸。"
+    },
+    {
+      "chapter_number": 7,
+      "title": "孟畔的交接页",
+      "source_label": "renewal_handover",
+      "body": "2028年11月6日15点，孟畔已经领到新的乘车证，并在交接页的领证人一栏签了名；同一时刻，该页的当班见证人签名栏仍为空白。办理员确认了证件上的照片，请孟畔先在长凳上坐一会儿，随即接起了电话。"
+    },
+    {
+      "chapter_number": 8,
+      "title": "被雨沾湿的通知",
+      "source_label": "office_notice",
+      "body": "2028年11月6日，社区办公室门上贴出“明天下午照常”的通知，落款清楚，但活动名称一栏被雨水洇得无法辨认。办公室原本在第二天下午安排了水彩入门课和庭院读诗会，看到通知的人一时辨不出它说的是哪一场。"
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "榆灯广场的一天",
+      "predicate": "status",
+      "value": "2028年11月6日17点，榆灯广场的当班安排确认：关闭喷泉的授权已经且仅发给廖素、严涤两人中的一人，没有第三名候选人，也没有共同授权。负责人把这项当班安排念给接班人员听，请他们按授权决定工作分工。",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "fountain_roster"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "榆灯广场的一天",
+      "predicate": "status",
+      "value": "2028年11月6日12点，施榕看见叫号屏显示“等待人数零”，便相信等候队列已经空了。她不知道屏幕刚刚失去连接，隔壁休息区其实还有四个人在等；她放下水杯，开始慢慢收拾服务台上的宣传单。",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "queue_glance"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "榆灯广场的一天",
+      "predicate": "status",
+      "value": "2028年11月6日15点，临时换证点执行的当天专用约定是：本次乘车证换证须由领证人和当班见证人在交接页上双签，双签齐全才算办理完成。这套约定只用于当天的集中换证活动，次日恢复原有窗口流程。",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "renewal_procedure"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "榆灯广场的一天",
+      "predicate": "status",
+      "value": "住户登记表把程浔和时苒列在同一个门牌地址下，两人的入住日期也相同。填写人提供了各自的姓名和联系方式，却没有填写两人之间的关系；登记员把表放进该楼栋的资料夹，准备下次走访时再补全空栏。",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "household_sheet"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "榆灯广场的一天",
+      "predicate": "status",
+      "value": "2028年11月6日17点，廖素在交班条上明确写道：“截至本时刻，我没有获得关闭榆灯广场喷泉的本班授权。”她把这句话念了一遍，请接班人确认文字清楚，然后带着当天收集的落叶袋去了清运点。",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "liao_handover"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "榆灯广场的一天",
+      "predicate": "status",
+      "value": "2028年11月6日16点，陆渺在社区修伞摊替一位老人修好了伞骨，明确表示这次服务免费，没有收取任何费用。老人坚持递来硬币，她笑着推回去，转而请老人帮忙按住容易被风吹走的摊位说明纸。",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "umbrella_stall"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "榆灯广场的一天",
+      "predicate": "status",
+      "value": "2028年11月6日15点，孟畔已经领到新的乘车证，并在交接页的领证人一栏签了名；同一时刻，该页的当班见证人签名栏仍为空白。办理员确认了证件上的照片，请孟畔先在长凳上坐一会儿，随即接起了电话。",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "renewal_handover"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "榆灯广场的一天",
+      "predicate": "status",
+      "value": "2028年11月6日，社区办公室门上贴出“明天下午照常”的通知，落款清楚，但活动名称一栏被雨水洇得无法辨认。办公室原本在第二天下午安排了水彩入门课和庭院读诗会，看到通知的人一时辨不出它说的是哪一场。",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "office_notice"
+      }
+    }
+  ]
+}

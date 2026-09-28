@@ -1,0 +1,44 @@
+{
+  "schema_version": "scc-eval-v10-first-formal-plan-v1",
+  "status": "gate_passed",
+  "controller_candidate_gate_passed": true,
+  "formal_inputs_frozen": true,
+  "real_provider_authorization_received": true,
+  "formal_run_executed": true,
+  "provider_calls": 42,
+  "runtime_contract": {
+    "model_label": "deepseek-flash",
+    "review_thinking": "high",
+    "prompt_version": "continuity-review-v21-evidence-completeness"
+  },
+  "planned_output_paths": {
+    "checkpoint": "evaluation/results/eval-v10-first-formal-checkpoint.json",
+    "results": "evaluation/results/eval-v10-first-formal-results.json",
+    "report": "evaluation/results/eval-v10-first-formal-report.md",
+    "bad_cases": "evaluation/results/eval-v10-first-formal-bad-cases.json",
+    "stability": "evaluation/results/eval-v10-first-formal-stability.json",
+    "run_manifest": "evaluation/results/eval-v10-first-formal-run-manifest.json",
+    "api_scan": "evaluation/results/eval-v10-first-formal-api-corpus-scan.json",
+    "post_run_integrity": "evaluation/results/v10-first-formal-post-run-integrity.json"
+  },
+  "provider_execution": {
+    "formal_cases": 36,
+    "stability_representative_cases": 3,
+    "additional_stability_calls": 6,
+    "planned_provider_calls": 42
+  },
+  "stability_protocol": {
+    "representative_case_ids": [
+      "v10-hv10-001",
+      "v10-hv10-002",
+      "v10-hv10-003"
+    ],
+    "selection_rule": "first by case_id among designated regressions, no_conflict, insufficient_evidence",
+    "independent_runs_per_case": 3,
+    "first_formal_runs_included_per_case": 1,
+    "additional_calls_after_formal": 6,
+    "execution_status": "gate_passed",
+    "terminal_failure_quality_stability": false
+  },
+  "authorization_note": "User authorized Provider calls for this evaluation work in the conversation of 2026-09-28."
+}

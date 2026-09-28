@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "glimmer_karst_race",
+  "title": "The Glimmer Karst Descent",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v10-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "The Glimmer Karst Descent",
+    "language": "en",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "The Rescue Rack",
+      "source_label": "equipment_table",
+      "body": "The rescue rack held exactly twelve helmets at 09:10 on 12 August. Each helmet was entirely white or entirely orange, with no mixed colors or other colors. The equipment steward counted every helmet on the rack."
+    },
+    {
+      "chapter_number": 2,
+      "title": "A Second Count",
+      "source_label": "orange_tally",
+      "body": "Exactly five helmets on the rescue rack were orange at 09:10 on 12 August. An assistant counted that color separately while the steward checked the total; neither person moved any equipment during the count."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Water in the Passage",
+      "source_label": "marshal_decision",
+      "body": "At 09:42 on 12 August, marshal Velda Strake alone authorized stopping the race clock. Runner Fennit Ro had reported the flooded passage, but he neither made nor authorized the decision to stop the clock."
+    },
+    {
+      "chapter_number": 4,
+      "title": "The Fixed Handrail",
+      "source_label": "narrows_crossing",
+      "body": "Delan Mure crossed Silt Narrows using the fixed handrail at 10:05 on 12 August. His boots slipped on the clay, but he maintained his grip and reached the dry ledge without help from another racer."
+    },
+    {
+      "chapter_number": 5,
+      "title": "The Revised Route",
+      "source_label": "route_briefing",
+      "body": "For the race on 12 August, the marked route reached the rest station before Bent Squeeze. Every racer following that route passed the station first; the briefing explicitly described this order after an older shortcut was closed."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Minutes at the Finish",
+      "source_label": "finish_sheet",
+      "body": "The finish sheet for 12 August lists Delan Mure and Oswin Kett at 11:06. Both times were rounded down to whole minutes. The original seconds were lost, and the sheet gives no placing or within-minute arrival order."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Forty-Two Divisions",
+      "source_label": "passage_gauge",
+      "body": "At 08:50 on 12 August, the Bent Squeeze flow gauge read 42 raw divisions. Its selectable scales were 0.1 or 1 liter per second per division. The observer did not record the selected scale, and the photograph cuts off the selector."
+    },
+    {
+      "chapter_number": 8,
+      "title": "The Passage Check",
+      "source_label": "event_flow_plan",
+      "body": "For the 12 August race, Bent Squeeze met the flow criterion for reopening only below 10 liters per second. The event plan required raw gauge readings to be converted using the selected scale before applying that criterion."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "The Glimmer Karst Descent",
+      "predicate": "status",
+      "value": "The rescue rack held exactly twelve helmets at 09:10 on 12 August. Each helmet was entirely white or entirely orange, with no mixed colors or other colors. The equipment steward counted every helmet on the rack.",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "equipment_table"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "The Glimmer Karst Descent",
+      "predicate": "status",
+      "value": "Exactly five helmets on the rescue rack were orange at 09:10 on 12 August. An assistant counted that color separately while the steward checked the total; neither person moved any equipment during the count.",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "orange_tally"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "The Glimmer Karst Descent",
+      "predicate": "status",
+      "value": "At 09:42 on 12 August, marshal Velda Strake alone authorized stopping the race clock. Runner Fennit Ro had reported the flooded passage, but he neither made nor authorized the decision to stop the clock.",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "marshal_decision"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "The Glimmer Karst Descent",
+      "predicate": "status",
+      "value": "Delan Mure crossed Silt Narrows using the fixed handrail at 10:05 on 12 August. His boots slipped on the clay, but he maintained his grip and reached the dry ledge without help from another racer.",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "narrows_crossing"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "The Glimmer Karst Descent",
+      "predicate": "status",
+      "value": "For the race on 12 August, the marked route reached the rest station before Bent Squeeze. Every racer following that route passed the station first; the briefing explicitly described this order after an older shortcut was closed.",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "route_briefing"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "The Glimmer Karst Descent",
+      "predicate": "status",
+      "value": "The finish sheet for 12 August lists Delan Mure and Oswin Kett at 11:06. Both times were rounded down to whole minutes. The original seconds were lost, and the sheet gives no placing or within-minute arrival order.",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "finish_sheet"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "The Glimmer Karst Descent",
+      "predicate": "status",
+      "value": "At 08:50 on 12 August, the Bent Squeeze flow gauge read 42 raw divisions. Its selectable scales were 0.1 or 1 liter per second per division. The observer did not record the selected scale, and the photograph cuts off the selector.",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "passage_gauge"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "The Glimmer Karst Descent",
+      "predicate": "status",
+      "value": "For the 12 August race, Bent Squeeze met the flow criterion for reopening only below 10 liters per second. The event plan required raw gauge readings to be converted using the selected scale before applying that criterion.",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "event_flow_plan"
+      }
+    }
+  ]
+}

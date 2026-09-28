@@ -1,0 +1,37 @@
+{
+  "evaluation": "scc-web-demo-eval-v10-first-formal",
+  "execution_kind": "first_valid_formal",
+  "status": "gate_passed",
+  "case_set_sha256": "f8260d92f2beae79f8fb402fe8286a90903552878eb0c04647b581876b07410c",
+  "source_file_hashes": {
+    "backend\\app\\v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+    "backend\\app\\engine.py": "dc589618d87e4336b6b10aede2fe730c80f9b8f918e17d98db3e4a275b05f178",
+    "backend\\app\\provider.py": "7b204598f68bd58649dfd1ec3295e13fe4c811ccf6773032239111d6a0979252",
+    "evaluation\\case_sets\\eval-set-v10.json": "096c851b33e5ff2a637826d94da7d42fdaeaebe429b2ba3b83a4b2fc90f6d3ba",
+    "evaluation\\run_eval.py": "c736cce306c627a05a4020e4689c73628b2543811937ee51f96b24898084e6aa",
+    "evaluation\\manifests\\eval-set-v10-manifest.json": "b0a4dd43a9f2335ba591ee1211339ec5563d32aa08263359065db7a8b94ed2c4",
+    "evaluation\\fixtures\\eval-v10-corpus-manifest.json": "ac292bb1d3b6714bd15fde3264e53cc763266e40d1056f767100753ee85b28cc",
+    "evaluation\\fixtures\\eval-v10-bellor-ward-bake.json": "bf8ace4324e172e81e3d965d28842667156e2c2650feecf9ef51b55cef757ffa",
+    "evaluation\\fixtures\\eval-v10-glimmer-karst-race.json": "fd408031df055ab937936ee5e2cf0f8face6007bf54a840a7c76b85b2335ce2a",
+    "evaluation\\fixtures\\eval-v10-jiansong-survey.json": "66ba7c838539d98857b1a2755f602426b26600ae0203c831bb01c77628e83aa0",
+    "evaluation\\fixtures\\eval-v10-lanpu-cup.json": "bdeafe259ac8c0a7c22e7f3f6499c46d0baadaa5435a24e27a85f4892a716ab1",
+    "evaluation\\fixtures\\eval-v10-varrow-plant-exhibition.json": "df50b0fcedf8f80478c01f59f0d5468b130a7265fcf5d7762a0c1e865def2990",
+    "evaluation\\fixtures\\eval-v10-yudeng-square.json": "5b8e6571f867ebf8ffc8e9f3f0a579b0c9ed8752036590b6904b3a4e5e774c2b",
+    "evaluation\\v2_fixture_loader.py": "cd8e4672cc6150e47d843df1dcac1b30ae1a6691d2fff624a4b5501de92001f6"
+  },
+  "safety_contract_sha256": "8054c14f5640fcc65dbbe70471abae505724325879c5ae0850f325550c396a79",
+  "provider_configuration": "environment_only_not_recorded",
+  "provider_execution": {
+    "provider_run_records": 42,
+    "actual_provider_http_attempts": 46,
+    "successful_provider_responses": 45,
+    "terminal_status_counts": {
+      "completed": 42
+    },
+    "input_tokens_returned": 186802,
+    "output_tokens_returned": 99805,
+    "cost": "unavailable",
+    "elapsed_ms": 490057
+  },
+  "completed_at": "2026-09-28T15:59:52.181434+00:00"
+}

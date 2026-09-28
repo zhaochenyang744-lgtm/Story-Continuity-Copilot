@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "bellor_ward_bake",
+  "title": "Anise in Bellor Ward",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v10-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "Anise in Bellor Ward",
+    "language": "en",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "The Bare Rim",
+      "source_label": "starter_bench",
+      "body": "The starter jar named Ember stood completely uncovered at 05:55 on 18 November. Its lid lay separately on the flour bench, and nothing covered or sealed the jar's bare rim while bubbles rose through the starter."
+    },
+    {
+      "chapter_number": 2,
+      "title": "The Final Round",
+      "source_label": "judging_announcement",
+      "body": "The judges canceled the final tasting round at 14:35 on 18 November and declared that it would not resume. That round was canceled, not ongoing or completed. The separate audience-choice vote was allowed to continue."
+    },
+    {
+      "chapter_number": 3,
+      "title": "The Marr Stall",
+      "source_label": "family_stall",
+      "body": "Ysolde Marr was Halden Marr's elder sister. They shared the corner stall at the bake: she prepared the fillings while he shaped the dough, continuing a division of work they had used since childhood."
+    },
+    {
+      "chapter_number": 4,
+      "title": "The Anise Braid",
+      "source_label": "preliminary_score",
+      "body": "Nima Dorr's anise braid received eight points for texture in the preliminary round at 08:15 on 18 November. The judge praised its soft center but deducted two points for the crust; flavor was assessed separately."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Twists from the Oven",
+      "source_label": "kitchen_timer",
+      "body": "On 18 November, the kitchen timer showed 06:20 when the saffron twists came out of the oven. It had been reset after a power cut, independently of the hall clock. No comparison between the two time displays was recorded."
+    },
+    {
+      "chapter_number": 6,
+      "title": "The Tasting Bell",
+      "source_label": "hall_clock",
+      "body": "The hall clock read 06:25 when the tasting bell rang on 18 November. Its reset time was uncertain. Neither the organizer's notes nor the kitchen notes establish how far either clock differed from actual time or from the other."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Residents and Guests",
+      "source_label": "guest_register",
+      "body": "The 18 November guest register lists 27 ward residents and 13 visiting guests. Only residents were eligible to cast an audience-choice ballot, with one ballot allowed per resident. The register does not mark who voted."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Twenty Folded Slips",
+      "source_label": "audience_ballots",
+      "body": "The audience-choice box contained twenty unsigned ballots at 15:00 on 18 November. Voters had not been checked against the guest register, and the slips carried no information linking them to residents or visiting guests."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Anise in Bellor Ward",
+      "predicate": "status",
+      "value": "The starter jar named Ember stood completely uncovered at 05:55 on 18 November. Its lid lay separately on the flour bench, and nothing covered or sealed the jar's bare rim while bubbles rose through the starter.",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "starter_bench"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Anise in Bellor Ward",
+      "predicate": "status",
+      "value": "The judges canceled the final tasting round at 14:35 on 18 November and declared that it would not resume. That round was canceled, not ongoing or completed. The separate audience-choice vote was allowed to continue.",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "judging_announcement"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Anise in Bellor Ward",
+      "predicate": "status",
+      "value": "Ysolde Marr was Halden Marr's elder sister. They shared the corner stall at the bake: she prepared the fillings while he shaped the dough, continuing a division of work they had used since childhood.",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "family_stall"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Anise in Bellor Ward",
+      "predicate": "status",
+      "value": "Nima Dorr's anise braid received eight points for texture in the preliminary round at 08:15 on 18 November. The judge praised its soft center but deducted two points for the crust; flavor was assessed separately.",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "preliminary_score"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Anise in Bellor Ward",
+      "predicate": "status",
+      "value": "On 18 November, the kitchen timer showed 06:20 when the saffron twists came out of the oven. It had been reset after a power cut, independently of the hall clock. No comparison between the two time displays was recorded.",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "kitchen_timer"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Anise in Bellor Ward",
+      "predicate": "status",
+      "value": "The hall clock read 06:25 when the tasting bell rang on 18 November. Its reset time was uncertain. Neither the organizer's notes nor the kitchen notes establish how far either clock differed from actual time or from the other.",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "hall_clock"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Anise in Bellor Ward",
+      "predicate": "status",
+      "value": "The 18 November guest register lists 27 ward residents and 13 visiting guests. Only residents were eligible to cast an audience-choice ballot, with one ballot allowed per resident. The register does not mark who voted.",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "guest_register"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Anise in Bellor Ward",
+      "predicate": "status",
+      "value": "The audience-choice box contained twenty unsigned ballots at 15:00 on 18 November. Voters had not been checked against the guest register, and the slips carried no information linking them to residents or visiting guests.",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "audience_ballots"
+      }
+    }
+  ]
+}

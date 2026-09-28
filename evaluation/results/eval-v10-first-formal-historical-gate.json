@@ -1,0 +1,19 @@
+{
+  "historical_thresholds": "V5-V8",
+  "status": "gate_passed",
+  "gate_checks": {
+    "macro_f1": true,
+    "conflict_recall": true,
+    "insufficient_evidence_recall": true,
+    "no_conflict_false_positive_rate": true,
+    "retrieval_expected_evidence_hit_at_5": true,
+    "cited_evidence_precision": true,
+    "schema_validity": true,
+    "evidence_resolvability_grounding": true,
+    "fail_closed_safety_paths": true,
+    "conflict_category_accuracy": true,
+    "designated_category_mismatch_regression": true,
+    "expected_evidence_recall": true,
+    "multi_direct_evidence_full_set_recall": true
+  }
+}

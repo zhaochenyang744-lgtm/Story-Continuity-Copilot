@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "varrow_plant_exhibition",
+  "title": "Shade for the Varrow Exhibition",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v10-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "Shade for the Varrow Exhibition",
+    "language": "en",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Two Courtyards",
+      "source_label": "grounds_plan",
+      "body": "The exhibition plan in force at 11:30 on 3 May places Stone Arcade wholly inside North Yard. North Yard and South Yard are disjoint areas separated by a continuous wall; neither includes any part of the other."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Under the Arcade",
+      "source_label": "visitor_account",
+      "body": "Tirza Gell stood beneath Stone Arcade at 11:30 on 3 May, studying a thorny stem through a hand lens. Sunlight reached the pots beside her, but the stone roof shaded her notebook."
+    },
+    {
+      "chapter_number": 3,
+      "title": "The Two Handles",
+      "source_label": "irrigation_plate",
+      "body": "The irrigation manifold's fixed plumbing makes its copper handle control only the fern-bed outlet: UP closes that outlet and DOWN opens it. Its brass handle controls a separate cactus line and cannot affect the fern-bed outlet."
+    },
+    {
+      "chapter_number": 4,
+      "title": "The Midday Round",
+      "source_label": "watering_round",
+      "body": "During the watering round at 12:10 on 3 May, the manifold's copper handle pointed UP and its brass handle pointed DOWN. Dust covered the little diagram, so the gardener recorded only the handle positions."
+    },
+    {
+      "chapter_number": 5,
+      "title": "A Strip of Linen",
+      "source_label": "seedling_awning",
+      "body": "Savin Holt moved the seedling trays beneath the linen awning at 13:00 on 3 May. He left the empty watering cans on the gravel and spread the trays apart so their leaves would not touch."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Damp Cloth",
+      "source_label": "demonstration_cart",
+      "body": "Every pot on the demonstration cart was wrapped in damp cloth at 14:00 on 3 May. Pots elsewhere in the exhibition remained bare; the cloth treatment was confined to the cart for that afternoon's demonstration."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Two Trays of Seeds",
+      "source_label": "seed_trial",
+      "body": "In the trial assessed on 3 May, each of two trays began with ten seeds. One received fresh water and the other brackish water. The trial sheet reports twelve germinated seeds in total, without separating the results by tray."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Leaves at Four",
+      "source_label": "maranta_recovery",
+      "body": "A wilted maranta was moved into shade and watered at 15:00 on 3 May. Its leaves were upright by 16:00. No plant was given shade alone or water alone, and no untreated plant was observed for comparison."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Shade for the Varrow Exhibition",
+      "predicate": "status",
+      "value": "The exhibition plan in force at 11:30 on 3 May places Stone Arcade wholly inside North Yard. North Yard and South Yard are disjoint areas separated by a continuous wall; neither includes any part of the other.",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "grounds_plan"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Shade for the Varrow Exhibition",
+      "predicate": "status",
+      "value": "Tirza Gell stood beneath Stone Arcade at 11:30 on 3 May, studying a thorny stem through a hand lens. Sunlight reached the pots beside her, but the stone roof shaded her notebook.",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "visitor_account"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Shade for the Varrow Exhibition",
+      "predicate": "rule",
+      "value": "The irrigation manifold's fixed plumbing makes its copper handle control only the fern-bed outlet: UP closes that outlet and DOWN opens it. Its brass handle controls a separate cactus line and cannot affect the fern-bed outlet.",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "irrigation_plate"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Shade for the Varrow Exhibition",
+      "predicate": "status",
+      "value": "During the watering round at 12:10 on 3 May, the manifold's copper handle pointed UP and its brass handle pointed DOWN. Dust covered the little diagram, so the gardener recorded only the handle positions.",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "watering_round"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Shade for the Varrow Exhibition",
+      "predicate": "status",
+      "value": "Savin Holt moved the seedling trays beneath the linen awning at 13:00 on 3 May. He left the empty watering cans on the gravel and spread the trays apart so their leaves would not touch.",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "seedling_awning"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Shade for the Varrow Exhibition",
+      "predicate": "status",
+      "value": "Every pot on the demonstration cart was wrapped in damp cloth at 14:00 on 3 May. Pots elsewhere in the exhibition remained bare; the cloth treatment was confined to the cart for that afternoon's demonstration.",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "demonstration_cart"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Shade for the Varrow Exhibition",
+      "predicate": "status",
+      "value": "In the trial assessed on 3 May, each of two trays began with ten seeds. One received fresh water and the other brackish water. The trial sheet reports twelve germinated seeds in total, without separating the results by tray.",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "seed_trial"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Shade for the Varrow Exhibition",
+      "predicate": "status",
+      "value": "A wilted maranta was moved into shade and watered at 15:00 on 3 May. Its leaves were upright by 16:00. No plant was given shade alone or water alone, and no untreated plant was observed for comparison.",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "maranta_recovery"
+      }
+    }
+  ]
+}

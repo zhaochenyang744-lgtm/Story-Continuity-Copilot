@@ -1,0 +1,28 @@
+{
+  "evaluation": "scc-web-demo-eval-v10-first-formal",
+  "bad_cases": [
+    {
+      "case_id": "v10-hv10-016",
+      "expected_class": "conflict",
+      "predicted_class": "insufficient_evidence",
+      "category": {
+        "expected": "event_status",
+        "predicted": "event_status"
+      },
+      "root_cause": "provider_generation",
+      "failure_dimensions": [
+        "classification_mismatch"
+      ],
+      "rationale": "One or more model-quality dimensions did not match the frozen rubric.",
+      "evidence": {
+        "terminal_error_code": null,
+        "retrieval_hit_at_5": true,
+        "cited_evidence_count": 2,
+        "resolvable_evidence_count": 2,
+        "expected_evidence_count": 2,
+        "cited_expected_evidence_unique_count": 2,
+        "expected_evidence_full_set_cited": true
+      }
+    }
+  ]
+}
