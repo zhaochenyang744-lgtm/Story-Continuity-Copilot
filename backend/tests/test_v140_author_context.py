@@ -208,7 +208,9 @@ class V140AuthorContextTests(unittest.TestCase):
         planned = self.provider.calls[-1]["layers"]["planned"]["story_plans"]
         self.assertEqual([(item["id"], item["summary"]) for item in planned], [(old["id"], "规范新值：推迟离港")])
         frozen = self.client.get(f"/api/projects/{self.project_id}/analyses/{run.json()['data']['run_id']}").json()["data"]["analysis"]
-        self.assertEqual((frozen["summary_sources"][0]["source_id"], frozen["summary_sources"][0]["excerpt"]), (old["id"], "规范新值：推迟离港"))
+        # The summary is source-rendered from the draft (context-brief v5); the plan survives as a related_plan citation.
+        plan_sources = [source for item in frozen["items"] if item["section"] == "related_plan" for source in item["sources"]]
+        self.assertEqual([(source["source_id"], source["excerpt"]) for source in plan_sources], [(old["id"], "规范新值：推迟离港")])
 
     def test_analysis_validates_bound_evidence_and_plan_semantics(self):
         material = self.create_material(nature="plan")["material"]

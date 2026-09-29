@@ -303,7 +303,9 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         async def periodic_cleanup():
             while True:
                 await asyncio.sleep(settings.cleanup_interval_seconds)
-                stage13.cleanup_expired_visitors()
+                # Off the event loop, and one failed sweep (e.g. a busy database) must not end the loop.
+                try: await asyncio.to_thread(stage13.cleanup_expired_visitors)
+                except Exception: pass
         task=asyncio.create_task(periodic_cleanup())
         try: yield
         finally:

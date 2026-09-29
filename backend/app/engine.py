@@ -6,7 +6,7 @@ from typing import Any
 from . import brief_citations
 from .memory_contract import CONTROLLED_PREDICATES
 from .provider import MAX_CLAIM_BASIS_CODEPOINTS, MAX_ISSUE_REASONING_CODEPOINTS
-from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget
+from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget, review_effort_scope
 
 ALLOWED_STATUS={"conflict","insufficient_evidence"}
 ALLOWED_CATEGORY={"attribute","location_action","timeline","character_knowledge","object_state","relationship","world_rule","event_status"}
@@ -22,6 +22,9 @@ RETRIEVAL_METHOD_VERSION="bounded-lexical-v4-longform"
 RELATED_MEMORY_LIMIT=15
 CONTINUITY_EVIDENCE_LIMIT=3
 CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS=500
+# A single claim whose full evidence and Memory do not fit the input budget (the v21 rules left the
+# long-form worst case at 6,324 of 6,000 units) is sent with these tighter bounds instead of failing.
+SINGLE_CLAIM_FALLBACK_BOUNDS=((CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS,RELATED_MEMORY_LIMIT),(400,12),(300,10),(200,8))
 MEMORY_DELTA_RELATED_MEMORY_LIMIT=20
 MEMORY_DELTA_SOURCE_LIMIT=12
 MEMORY_DELTA_SOURCE_EXCERPT_CODEPOINTS=1600
@@ -36,11 +39,11 @@ ANALYSIS_RETRIEVAL_METHOD_VERSION="writing-analysis-lexical-v2-draft-claims"
 CONTEXT_BRIEF_RETRIEVAL_METHOD_VERSION="writing-analysis-lexical-v3-brief-540"
 CONTEXT_BRIEF_PROMPT_VERSION="context-brief-v5-clause-citations"
 PLAN_ALIGNMENT_PROMPT_VERSION="plan-alignment-v4-clause-citations"
-CHANGE_IMPACT_PROMPT_VERSION="change-impact-v2-bounded-citations"
+CHANGE_IMPACT_PROMPT_VERSION="change-impact-v3-supplied-targets"
 STORY_QA_PROMPT_VERSION="story-qa-v2-clause-citations"
 FORESHADOW_SCAN_PROMPT_VERSION="foreshadow-scan-v7-clause-citations"
 REVISION_PLAN_PROMPT_VERSION="revision-plan-v2-clause-citations"
-AUTHOR_MATERIAL_COMPARISON_PROMPT_VERSION="author-material-comparison-v2-clause-citations"
+AUTHOR_MATERIAL_COMPARISON_PROMPT_VERSION="author-material-comparison-v3-nature-assessments"
 CHANGE_IMPACT_INSUFFICIENT_SUMMARY="当前证据不足以支持影响结论。"
 STORY_QA_INSUFFICIENT_ANSWER="当前证据不足以回答这个问题。"
 FORESHADOW_INSUFFICIENT_SUMMARY="当前未发现有可采信已写证据的伏笔候选。"
@@ -273,7 +276,7 @@ def _memory_schema() -> dict[str, Any]:
 
 
 def _memory_delta_schema() -> dict[str, Any]:
-    return {"candidates":[{"change_kind":"new_fact|changed_fact|invalidated_fact","affected_memory_id":"null for new_fact; supplied confirmed Memory id for changed_fact or invalidated_fact","memory_type":"allowed memory type","subject":"string","predicate":"controlled predicate","value":"new/changed fact value; exact current value for invalidated_fact","invalidation_reason":"null for new_fact/changed_fact; non-empty reason for invalidated_fact","chapter_id":"source chapter id","source_span_id":"supplied current-revision SourceSpan id"}]}
+    return {"candidates":[{"change_kind":"new_fact|changed_fact|invalidated_fact","affected_memory_id":"null for new_fact; supplied confirmed Memory id for changed_fact or invalidated_fact","memory_type":"allowed memory type","subject":"string, at most 80 characters","predicate":"controlled predicate","value":"new/changed fact value, at most 240 characters; exact current value for invalidated_fact","invalidation_reason":"null for new_fact/changed_fact; non-empty reason for invalidated_fact, at most 240 characters","chapter_id":"source chapter id","source_span_id":"supplied current-revision SourceSpan id"}]}
 
 
 def _aggregate(results: list[Any]) -> dict[str, Any]:
@@ -324,7 +327,7 @@ class ContinuityEngine:
     def provenance(self)->dict[str,str]:
         return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":PROMPT_VERSION,"schema_version":"continuity-issue-v7-repair-diagnostics","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
 
-    def _selected_evidence(self,claim:dict[str,Any],memory:list[dict[str,Any]])->list[dict[str,Any]]:
+    def _selected_evidence(self,claim:dict[str,Any],memory:list[dict[str,Any]],excerpt_limit:int=CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS)->list[dict[str,Any]]:
         unique={span["id"]:span for span in claim["allowed_evidence"]}
         by_source:dict[str,list[dict[str,Any]]]={}
         for item in memory:by_source.setdefault(str(item.get("source_span_id","")),[]).append(item)
@@ -337,21 +340,30 @@ class ContinuityEngine:
         selected=[]
         for _,_,_,span,related in sorted(ranked,key=lambda row:(-row[0],row[1],row[2]))[:CONTINUITY_EVIDENCE_LIMIT]:
             hints=[claim["text"]]+[str(item.get(key,"")) for item in sorted(related,key=_memory_sort_key) for key in ("subject","value")]
-            selected.append({**span,"prompt_excerpt":_bounded_excerpt(str(span.get("body","")),hints)})
+            selected.append({**span,"prompt_excerpt":_bounded_excerpt(str(span.get("body","")),hints,excerpt_limit)})
         return selected
 
-    def _related_memory(self, claim: dict[str, Any], memory: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def _related_memory(self, claim: dict[str, Any], memory: list[dict[str, Any]], limit: int = RELATED_MEMORY_LIMIT) -> list[dict[str, Any]]:
         terms=_claim_terms(claim["text"]); evidence_ids={span["id"] for span in claim["allowed_evidence"]}; ranked=[]
         for item in memory:
             text=" ".join(str(item.get(key,"")) for key in ("subject","predicate","value"))
             score=10*int(item.get("source_span_id") in evidence_ids)+_relevance_score(terms,text)
             if score:ranked.append((score,item))
-        return [item for _,item in sorted(ranked,key=lambda row:(-row[0],_memory_sort_key(row[1])))[:RELATED_MEMORY_LIMIT]]
+        return [item for _,item in sorted(ranked,key=lambda row:(-row[0],_memory_sort_key(row[1])))[:limit]]
 
-    def _request(self, claims: list[dict[str, Any]], memory: list[dict[str, Any]], draft: dict[str, Any]) -> dict[str, Any]:
-        selected_claims=[{**claim,"allowed_evidence":self._selected_evidence(claim,memory)} for claim in claims]
-        used={item["id"]:item for claim in selected_claims for item in self._related_memory(claim,memory)}
+    def _request(self, claims: list[dict[str, Any]], memory: list[dict[str, Any]], draft: dict[str, Any],
+                 bounds: tuple[int, int] = (CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS, RELATED_MEMORY_LIMIT)) -> dict[str, Any]:
+        excerpt_limit,memory_limit=bounds
+        selected_claims=[{**claim,"allowed_evidence":self._selected_evidence(claim,memory,excerpt_limit)} for claim in claims]
+        used={item["id"]:item for claim in selected_claims for item in self._related_memory(claim,memory,memory_limit)}
         return {"draft":{"id":draft["id"],"revision":draft["revision"],"body":"\n".join(claim["text"] for claim in selected_claims)},"claims":selected_claims,"memory":[used[key] for key in sorted(used)],"output_schema":_continuity_schema()}
+
+    def _single_claim_batch(self,claim:dict[str,Any],data:dict[str,Any])->dict[str,Any]:
+        """One claim alone, with tighter excerpts and fewer Memory rows only when the full bounds do not fit."""
+        for bounds in SINGLE_CLAIM_FALLBACK_BOUNDS:
+            request=self._request([claim],data["memory"],data["draft"],bounds)
+            if request_prompt_and_budget(request)[1] <= MAX_INPUT_BUDGET_UNITS:return request
+        raise InputBudgetExceeded()
 
     def _batches(self,data:dict[str,Any])->list[dict[str,Any]]:
         batches=[]; current=[]
@@ -359,9 +371,10 @@ class ContinuityEngine:
             candidate=current+[claim]; request=self._request(candidate,data["memory"],data["draft"])
             if request_prompt_and_budget(request)[1] <= MAX_INPUT_BUDGET_UNITS:
                 current=candidate; continue
-            if not current: raise InputBudgetExceeded()
-            batches.append(self._request(current,data["memory"],data["draft"])); current=[claim]
-            if request_prompt_and_budget(self._request(current,data["memory"],data["draft"]))[1] > MAX_INPUT_BUDGET_UNITS: raise InputBudgetExceeded()
+            if current:
+                batches.append(self._request(current,data["memory"],data["draft"])); current=[claim]
+                if request_prompt_and_budget(self._request(current,data["memory"],data["draft"]))[1] <= MAX_INPUT_BUDGET_UNITS:continue
+            batches.append(self._single_claim_batch(claim,data)); current=[]
         if current:batches.append(self._request(current,data["memory"],data["draft"]))
         return batches
 
@@ -404,6 +417,10 @@ class ContinuityEngine:
         return diagnostics
 
     def execute(self,data:dict[str,Any])->dict[str,Any]:
+        # Every dispatch of this review run, including repairs, shares one stepped-down thinking effort.
+        with review_effort_scope():return self._execute(data)
+
+    def _execute(self,data:dict[str,Any])->dict[str,Any]:
         if not self.provider.available:return {"status":"failed","error_code":"provider_unavailable","retryable":True}
         try:batches=self._batches(data)
         except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True}
@@ -602,7 +619,7 @@ class WritingAnalysisEngine:
     @staticmethod
     def _schema(task:str)->dict[str,Any]:
         if task=="author_material_comparison":
-            return {"assessment":"aligned|possible_tension|plan_deviation|insufficient_evidence","explanation":"1-600 chars","evidence":[{"source_type":"author_material|source_span","source_id":"supplied id"}]}
+            return {"assessment":"aligned|possible_tension|insufficient_evidence; plan_deviation only when comparison.material.nature is plan","explanation":"1-600 chars","evidence":[{"source_type":"author_material|source_span","source_id":"supplied id"}]}
         if task=="context_brief":
             return {"summary":"1-400 chars","summary_sources":[{"source_type":"author_context|memory_record|source_span|draft_claim","source_id":"supplied id"}],"items":[{"section":"related_plan|confirmed_fact|character_state|world_rule|open_thread|recent_source","text":"1-600 chars","sources":[{"source_type":"author_context|memory_record|source_span|draft_claim","source_id":"supplied id"}]}]}
         if task=="change_impact":
@@ -665,13 +682,15 @@ class WritingAnalysisEngine:
         if task=="author_material_comparison":
             if not isinstance(payload,dict) or set(payload)!={"assessment","explanation","evidence"} or payload.get("assessment") not in {"aligned","possible_tension","plan_deviation","insufficient_evidence"} or not isinstance(payload.get("evidence"),list):raise ValueError("schema_invalid")
             material=data["comparison"]["material"]
-            if payload["assessment"]=="plan_deviation" and material["nature"]!="plan":raise ValueError("schema_invalid")
-            if payload["assessment"]=="insufficient_evidence":
+            # The prompt states that a contradicted setting is possible_tension; Flash still labels it
+            # plan_deviation about one time in three, so apply the stated rule instead of failing.
+            assessment="possible_tension" if payload["assessment"]=="plan_deviation" and material["nature"]!="plan" else payload["assessment"]
+            if assessment=="insufficient_evidence":
                 if len(payload["evidence"])>2:raise ValueError("evidence_unresolvable")
             elif len(payload["evidence"])!=2:raise ValueError("evidence_unresolvable")
             evidence=[self._clean_source(item,maps,{"author_material","source_span"},project_id) for item in payload["evidence"]]
-            if payload["assessment"]!="insufficient_evidence" and {(item["source_type"],item["source_id"]) for item in evidence}!={("author_material",material["id"]),("source_span",data["comparison"]["passage"]["id"])}:raise ValueError("evidence_unresolvable")
-            return {"assessment":payload["assessment"],"explanation":self._text(payload["explanation"],600),"evidence":evidence,"comparison_id":data["bindings"]["comparison_id"],"decision_revision":data["bindings"]["decision_revision"]}
+            if assessment!="insufficient_evidence" and {(item["source_type"],item["source_id"]) for item in evidence}!={("author_material",material["id"]),("source_span",data["comparison"]["passage"]["id"])}:raise ValueError("evidence_unresolvable")
+            return {"assessment":assessment,"explanation":self._text(payload["explanation"],600),"evidence":evidence,"comparison_id":data["bindings"]["comparison_id"],"decision_revision":data["bindings"]["decision_revision"]}
         if task=="context_brief":
             if not isinstance(payload,dict) or set(payload)!={"summary","summary_sources","items"} or not isinstance(payload["summary_sources"],list) or not isinstance(payload["items"],list) or not 1<=len(payload["summary_sources"])<=3 or not 1<=len(payload["items"])<=12:raise ValueError("schema_invalid")
             summary_sources=[self._clean_source(item,maps,{"author_context","memory_record","source_span","draft_claim"},project_id) for item in payload["summary_sources"]]
@@ -766,7 +785,10 @@ class WritingAnalysisEngine:
             targets={"chapter":{item["id"]:f"第 {item['chapter_number']} 章 · {item['title']}" for item in layers["reference"]["chapters"]},"character":{item["id"]:item["name"] for item in layers["identity"]["characters"]},"world":{item["id"]:item["name"] for item in layers["reference"]["world_entries"]},"memory":{item["id"]:f"{item['subject']} · {item['predicate']}" for item in layers["confirmed"]["memory_records"]},"plan":{item["id"]:(item.get("title") or item.get("name") or "创作计划") for group in layers["planned"].values() for item in group}}
             allowed={"author_context","memory_record","source_span","draft_claim","character_record","character_alias","world_record"};items=[];seen=set()
             for raw in payload["items"]:
-                if not isinstance(raw,dict) or set(raw)!={"area","target_id","impact","evidence"} or raw.get("area") not in targets or raw.get("target_id") not in targets[raw["area"]] or (raw["area"],raw["target_id"]) in seen or not isinstance(raw.get("evidence"),list) or not 1<=len(raw["evidence"])<=5:raise ValueError("evidence_unresolvable")
+                if not isinstance(raw,dict) or set(raw)!={"area","target_id","impact","evidence"} or raw.get("area") not in targets or not isinstance(raw.get("target_id"),str) or (raw["area"],raw["target_id"]) in seen or not isinstance(raw.get("evidence"),list) or not 1<=len(raw["evidence"])<=5:raise ValueError("evidence_unresolvable")
+                # An item aimed at an unsupplied target (e.g. the current draft's id) is dropped, like a
+                # chapter item without evidence from that chapter; the remaining items stand on their own.
+                if raw.get("target_id") not in targets[raw["area"]]:continue
                 evidence=[self._clean_source(item,maps,allowed,project_id) for item in raw["evidence"]]
                 if raw["area"]=="chapter" and not any(item["source_type"]=="source_span" and maps["source_span"][item["source_id"]]["chapter_id"]==raw["target_id"] for item in evidence):continue
                 seen.add((raw["area"],raw["target_id"]));items.append({"area":raw["area"],"target_id":raw["target_id"],"label":targets[raw["area"]][raw["target_id"]],"impact":self._text(raw["impact"],600),"evidence":evidence})
@@ -1029,7 +1051,7 @@ class MemoryInitializationEngine:
 class MemoryDeltaEngine(MemoryInitializationEngine):
     """A separate provider contract for one append-only source revision."""
     def provenance(self)->dict[str,str]:
-        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":"memory-delta-v3-fact-lifecycle","schema_version":"memory-delta-candidate-v2","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
+        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":"memory-delta-v4-stated-length-limits","schema_version":"memory-delta-candidate-v2","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
 
     def _related_memory(self,data:dict[str,Any])->list[dict[str,Any]]:
         terms=_claim_terms("\n".join(str(source.get("body","")) for source in data["sources"])); ranked=[]

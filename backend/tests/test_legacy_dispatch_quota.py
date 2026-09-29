@@ -66,15 +66,19 @@ class DispatchQuotaTests(unittest.TestCase):
         app,provider,_user_id,_reservation,client,project_id=self._service(2)
         posted=[]
         class Response:
+            # The current (v6) contract needs a claim verdict for every supplied claim.
+            def __init__(self,body):self.claims=[claim["id"] for claim in json.loads(body["messages"][0]["content"])["current_claims"]]
             def raise_for_status(self):pass
-            def json(self):return {"choices":[{"message":{"content":'{"issues":[]}'}}],"usage":{"prompt_tokens":11,"completion_tokens":7,"cost_cny":0.2}}
+            def json(self):
+                content={"issues":[],"claim_verdicts":[{"claim_span_id":claim,"verdict":"no_issue","basis":"无冲突"} for claim in self.claims]}
+                return {"choices":[{"message":{"content":json.dumps(content,ensure_ascii=False)}}],"usage":{"prompt_tokens":11,"completion_tokens":7,"cost_cny":0.2}}
         class Client:
             def __enter__(self):return self
             def __exit__(self,*_):pass
-            def post(self,*_args,**_kwargs):
+            def post(self,*_args,**kwargs):
                 posted.append(1)
                 if len(posted)==1:raise httpx.ReadTimeout("response lost after dispatch")
-                return Response()
+                return Response(kwargs["json"])
         provider._factory=Client
         project=client.get(f"/api/projects/{project_id}").json()["data"]
         draft=project["current_draft"]

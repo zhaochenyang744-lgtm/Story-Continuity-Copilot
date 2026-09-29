@@ -16,6 +16,7 @@ import httpx
 import uvicorn
 
 from app.config import AppPaths
+from app.engine import PROMPT_VERSION
 from app.engine import ContinuityEngine
 from app.main import create_app
 from app.provider import CONTINUITY_REVIEW_RULES, DeepSeekProvider, ProviderFailure, ProviderInvalidJson, ProviderResult, ProviderTimeout
@@ -51,10 +52,10 @@ class DeepSeekProviderRegressionTests(unittest.TestCase):
         self.assertEqual(client.body["thinking"],{"type":"disabled"})
         prompt=client.body["messages"][0]["content"]
         self.assertIn("Decide every current claim before emitting output",prompt)
-        self.assertIn("exactly one top-level key, issues",prompt)
+        self.assertIn("exactly two top-level keys, issues and claim_verdicts",prompt)
         self.assertIn("never emit a no_conflict issue",prompt.casefold())
-        self.assertIn("required handoff, learning event, outcome, authority",prompt)
-        self.assertIn("Apply category by the core decision, not surface words or background context",prompt)
+        self.assertIn("missing handoff, learning event, outcome, authority",prompt)
+        self.assertIn("Assign category only after deciding the status and complete Evidence set",prompt)
         self.assertIn("evidence_chain",prompt)
         self.assertIn("same subject, scope, and time",prompt)
         self.assertIn("decision_examples",prompt)
@@ -69,7 +70,7 @@ class DeepSeekProviderRegressionTests(unittest.TestCase):
         })
         rules = json.loads(prompt)['rules']
         joined = '\n'.join(rules)
-        self.assertIn('required handoff, learning event, outcome, authority', joined)
+        self.assertIn('missing handoff, learning event, outcome, authority', joined)
         self.assertIn('as insufficient_evidence', joined.casefold())
         self.assertIn('same subject, scope, and time', joined)
         self.assertIn('prior state and a later explicit transition', joined)
@@ -79,7 +80,7 @@ class DeepSeekProviderRegressionTests(unittest.TestCase):
         self.assertIn('suggested_revision must have exact before text occurring once', joined)
         self.assertIn('Assign category only after deciding the status and complete Evidence set', joined)
         self.assertIn('set available_actions to []', joined)
-        for boundary in ('attribute = an intrinsic, durable, or measured property', 'object_state = a named object\'s state or location at a specific time', 'relationship = a named person or role holder\'s authorization, responsibility, duty, obligation, kinship', 'world_rule = an abstract or global behavior constraint, mechanism, or exception', 'character_knowledge = what a character knows', 'timeline = event ordering', 'event_status = whether an event completed', 'location_action = where a character acted'):
+        for boundary in ('attribute = an intrinsic property', "object_state = a named object's mutable condition, holder, or placement at a time", 'relationship = who performed, caused, delivered, authorized, or is responsible for an act', 'character_knowledge = what a character knows, believes, observed, or was told', 'timeline = order of events', 'event_status = whether an event started, completed, failed, or remains open', 'location_action = where a character was or acted', 'world_rule = a global constraint only when it alone contradicts the claim'):
             self.assertIn(boundary, joined)
         self.assertEqual(tuple(rules), CONTINUITY_REVIEW_RULES)
         examples = json.loads(prompt)['decision_examples']
@@ -260,7 +261,7 @@ class Stage4ContractTests(unittest.TestCase):
         reviewed=client.get(f"/api/projects/{grey}/checks/{queued['run_id']}?include=issues,evidence,metrics")
         self.assertEqual(reviewed.status_code,200)
         metrics=reviewed.json()['data']['metrics']; provenance=metrics['provenance']
-        self.assertEqual(provenance,{'provider_label':'contract-provider','model_label':'contract-model-v1','prompt_version':'continuity-review-v15-knowledge-time','schema_version':'continuity-issue-v5-temporal-basis','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4})
+        self.assertEqual(provenance,{'provider_label':'contract-provider','model_label':'contract-model-v1','prompt_version':PROMPT_VERSION,'schema_version':'continuity-issue-v7-repair-diagnostics','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4})
         self.assertTrue(metrics['retrieval'])
         self.assertEqual(client.get(f"/api/projects/{other}/checks/{queued['run_id']}?include=metrics").status_code,404)
         self.assertEqual(client.post(f'/api/projects/{grey}/reset',json={'confirm':True,'reason':'demo_recovery'},headers=key()).status_code,200)

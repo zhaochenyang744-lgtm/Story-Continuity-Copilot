@@ -1394,48 +1394,75 @@ export function Workbench() {
   useEffect(() => {
     if (!run || !projectId || (!activeRun(run) && !activeRun(pairedRun)))
       return;
-    const timer = window.setInterval(
-      () => {
-        const currentRuns = pairedRun ? [run, pairedRun] : [run];
-        Promise.all(
-          currentRuns.map((item) =>
-            request<Run>(
-              `/projects/${projectId}/checks/${item.run_id}?include=issues,evidence,metrics`,
-            ),
+    // One poll at a time, and none after this effect is replaced: a later
+    // run state must not be overwritten by an older response. A hidden tab's
+    // timers are throttled, so poll at once when the page is shown again.
+    let inFlight = false;
+    let stopped = false;
+    const poll = () => {
+      if (inFlight || stopped) return;
+      inFlight = true;
+      const currentRuns = pairedRun ? [run, pairedRun] : [run];
+      Promise.all(
+        currentRuns.map((item) =>
+          request<Run>(
+            `/projects/${projectId}/checks/${item.run_id}?include=issues,evidence,metrics`,
           ),
-        )
-          .then((nextRuns) => {
-            const next = nextRuns[0];
-            setRun(next);
-            setPairedRun(nextRuns[1] ?? null);
-            if (nextRuns.every((item) => !activeRun(item))) {
-              setNotice(
-                next.status === "completed"
-                  ? "检查完成，等待作者审阅。"
-                  : `${labelError({ code: next.error_code })} 未完成 Run 不会写入或展示部分结果。`,
-              );
-              if (next.incremental_batch_id)
-                request<MemoryDelta>(`/projects/${projectId}/memory/delta`).then((delta) => {
-                  setMemoryDelta(delta);
-                  setCoverage(delta.coverage ?? null);
-                }).catch(fail);
-            }
-          })
-          .catch(fail);
-      },
-      1000,
-    );
-    return () => window.clearInterval(timer);
+        ),
+      )
+        .then((nextRuns) => {
+          if (stopped) return;
+          const next = nextRuns[0];
+          setRun(next);
+          setPairedRun(nextRuns[1] ?? null);
+          if (nextRuns.every((item) => !activeRun(item))) {
+            setNotice(
+              next.status === "completed"
+                ? "检查完成，等待作者审阅。"
+                : `${labelError({ code: next.error_code })} 未完成 Run 不会写入或展示部分结果。`,
+            );
+            if (next.incremental_batch_id)
+              request<MemoryDelta>(`/projects/${projectId}/memory/delta`).then((delta) => {
+                setMemoryDelta(delta);
+                setCoverage(delta.coverage ?? null);
+              }).catch(fail);
+          }
+        })
+        .catch((error) => {
+          if (!stopped) fail(error);
+        })
+        .finally(() => {
+          inFlight = false;
+        });
+    };
+    const timer = window.setInterval(poll, 1000);
+    const pollWhenVisible = () => {
+      if (document.visibilityState === "visible") poll();
+    };
+    document.addEventListener("visibilitychange", pollWhenVisible);
+    return () => {
+      stopped = true;
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", pollWhenVisible);
+    };
   }, [run, pairedRun, projectId, fail]);
   useEffect(() => {
     if (!projectId || (!activeAnalysis(contextBrief) && !activeAnalysis(planAlignment))) return;
-    const timer=window.setInterval(() => {
+    let inFlight=false;
+    let stopped=false;
+    const poll=() => {
+      if (inFlight || stopped) return;
+      inFlight=true;
       const rows=[contextBrief,planAlignment].filter((item): item is WritingAnalysisRun => Boolean(item && activeAnalysis(item)));
       Promise.all(rows.map((item) => request<WritingAnalysisRun>(`/projects/${projectId}/analyses/${item.run_id}`)))
-        .then((next) => next.forEach((item) => item.analysis_type === "context_brief" ? setContextBrief(item) : setPlanAlignment(item)))
-        .catch(fail);
-    },1000);
-    return () => window.clearInterval(timer);
+        .then((next) => { if (!stopped) next.forEach((item) => item.analysis_type === "context_brief" ? setContextBrief(item) : setPlanAlignment(item)); })
+        .catch((error) => { if (!stopped) fail(error); })
+        .finally(() => { inFlight=false; });
+    };
+    const timer=window.setInterval(poll,1000);
+    const pollWhenVisible=() => { if (document.visibilityState === "visible") poll(); };
+    document.addEventListener("visibilitychange",pollWhenVisible);
+    return () => { stopped=true; window.clearInterval(timer); document.removeEventListener("visibilitychange",pollWhenVisible); };
   },[contextBrief,planAlignment,projectId,fail]);
   const submitAuth = async (
     e: FormEvent<HTMLFormElement>,

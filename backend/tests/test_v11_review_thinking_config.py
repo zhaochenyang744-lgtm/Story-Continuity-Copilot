@@ -157,7 +157,7 @@ class ReviewThinkingConfigTests(unittest.TestCase):
         self.assertEqual((refused["status"], refused["error_code"]), ("failed", "input_budget_exceeded"))
         self.assertEqual(admitted["status"], "completed", admitted)
 
-    def test_truncated_high_thinking_answer_is_retried_once_at_medium(self):
+    def test_truncated_thinking_steps_down_to_medium_then_to_a_non_thinking_answer(self):
         from app.provider import ProviderInvalidJson, REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT
 
         class Scripted:
@@ -175,9 +175,11 @@ class ReviewThinkingConfigTests(unittest.TestCase):
 
         truncated = Scripted('{"issues": [', "length", 4000, 16000)
         valid = Scripted(json.dumps({"issues": [], "claim_verdicts": []}), "stop", 4000, 3000)
-        cases = (("high", [truncated, valid], "ok"), ("high", [truncated, truncated], "raise"),
-                 ("high", [Scripted("not json", "stop", 10, 5)], "raise"), (None, [truncated], "raise"))
-        for thinking, script, outcome in cases:
+        cases = (("high", [truncated, valid], "ok", (8000, 19000)),
+                 ("high", [truncated, truncated, valid], "ok", (12000, 35000)),
+                 ("high", [truncated, truncated, truncated], "raise", (12000, 48000)),
+                 ("high", [Scripted("not json", "stop", 10, 5)], "raise", None), (None, [truncated], "raise", None))
+        for thinking, script, outcome, totals in cases:
             with self.subTest(thinking=thinking, responses=len(script), outcome=outcome):
                 sent, queue = [], list(script)
 
@@ -191,16 +193,80 @@ class ReviewThinkingConfigTests(unittest.TestCase):
                     instance = DeepSeekProvider(client_factory=lambda: SeqClient(sent))
                 if outcome == "ok":
                     result = instance.evaluate(CONTINUITY_REQUEST)
-                    self.assertEqual((result.input_tokens, result.output_tokens, result.finish_reason), (8000, 19000, "stop"))
+                    self.assertEqual((result.input_tokens, result.output_tokens, result.finish_reason), (*totals, "stop"))
                 else:
                     with self.assertRaises(ProviderInvalidJson) as caught:
                         instance.evaluate(CONTINUITY_REQUEST)
-                    if len(script) == 2:
-                        self.assertEqual((caught.exception.output_tokens, caught.exception.finish_reason), (32000, "length"))
+                    if totals:
+                        self.assertEqual((caught.exception.input_tokens, caught.exception.output_tokens, caught.exception.finish_reason),
+                                         (*totals, "length"))
                 self.assertEqual(len(sent), len(script))
-                if len(sent) == 2:
+                if len(sent) >= 2:
                     self.assertEqual((sent[0]["reasoning_effort"], sent[1]["reasoning_effort"]),
                                      ("high", REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT))
+                if len(sent) == 3:
+                    self.assertEqual((sent[2]["thinking"], sent[2]["temperature"], sent[2]["max_tokens"]),
+                                     ({"type": "disabled"}, 0, MAX_OUTPUT_BUDGET_UNITS))
+                    self.assertNotIn("reasoning_effort", sent[2])
+
+    def test_a_stepped_down_effort_sticks_for_the_rest_of_one_review_run_only(self):
+        from app.provider import review_effort_scope
+
+        class Scripted:
+            status_code = 200
+
+            def __init__(self, content, finish):
+                self.payload = {"choices": [{"finish_reason": finish, "message": {"content": content}}],
+                                "usage": {"prompt_tokens": 10, "completion_tokens": 10}}
+
+            def raise_for_status(self):
+                pass
+
+            def json(self):
+                return self.payload
+
+        valid = json.dumps({"issues": [], "claim_verdicts": []})
+        sent, queue = [], [Scripted('{"issues": [', "length"), Scripted(valid, "stop"), Scripted(valid, "stop"), Scripted(valid, "stop")]
+
+        class SeqClient(Client):
+            def post(self, url, headers, json):
+                self.sink.append(json)
+                return queue.pop(0)
+
+        with patch.dict(os.environ, dict(BASE_ENV, CONTINUITY_REVIEW_THINKING="high"), clear=True):
+            instance = DeepSeekProvider(client_factory=lambda: SeqClient(sent))
+        with review_effort_scope():
+            instance.evaluate(CONTINUITY_REQUEST)
+            instance.evaluate(CONTINUITY_REQUEST)
+        instance.evaluate(CONTINUITY_REQUEST)
+        self.assertEqual([body["reasoning_effort"] for body in sent], ["high", "medium", "medium", "high"])
+
+    def test_dispatch_timeout_follows_each_body_not_shared_instance_state(self):
+        from app import provider as provider_module
+        seen = []
+
+        class Scripted:
+            status_code = 200
+            payload = {"choices": [{"finish_reason": "stop", "message": {"content": json.dumps({"issues": [], "claim_verdicts": []})}}],
+                       "usage": {"prompt_tokens": 1, "completion_tokens": 1}}
+
+            def raise_for_status(self):
+                pass
+
+            def json(self):
+                return self.payload
+
+        class TimeoutClient(Client):
+            def post(self, url, headers, json):
+                return Scripted()
+
+        with patch.dict(os.environ, dict(BASE_ENV, CONTINUITY_REVIEW_THINKING="high"), clear=True):
+            instance = DeepSeekProvider(client_factory=lambda: seen.append(provider_module._dispatch_timeout.get()) or TimeoutClient([]))
+        instance.evaluate(CONTINUITY_REQUEST)
+        instance._request_timeout = instance.timeout_seconds  # what a concurrent memory request leaves behind
+        instance.evaluate(CONTINUITY_REQUEST)
+        instance.evaluate(MEMORY_REQUEST)
+        self.assertEqual(seen, [REVIEW_THINKING_TIMEOUT_SECONDS, REVIEW_THINKING_TIMEOUT_SECONDS, instance.timeout_seconds])
 
     def test_unknown_thinking_value_fails_closed(self):
         instance, _ = provider("medium")

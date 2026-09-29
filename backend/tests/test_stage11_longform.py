@@ -225,7 +225,7 @@ class Stage11BoundedContextTests(unittest.TestCase):
         request=delta._request({"source_revision":2,"sources":[source(99,100)],"memory":memory})
         self.assertEqual(len(request["memory"]),20)
         self.assertLessEqual(request_prompt_and_budget(request)[1],6000)
-        self.assertEqual(delta.provenance()["prompt_version"],"memory-delta-v3-fact-lifecycle")
+        self.assertEqual(delta.provenance()["prompt_version"],"memory-delta-v4-stated-length-limits")
 
     def test_provider_uses_2000_output_cap_and_invalid_json_keeps_only_metadata(self):
         posted = []
@@ -485,7 +485,7 @@ class Stage11BoundedContextTests(unittest.TestCase):
         self.assertTrue(all(len(request["draft"]["body"]) < len("甲" * 600 * 3) for request in provider.calls))
         timeout_provider = BatchProvider(fail_at=2)
         failed = ContinuityEngine(timeout_provider).execute(data)
-        self.assertEqual((len(timeout_provider.calls), failed["status"], failed["error_code"], failed["input_tokens"], failed["output_tokens"], failed["latency_ms"], failed["cost_cny"]), (2, "timed_out", "provider_timeout", 100, 10, 7, 0.1))
+        self.assertEqual((len(timeout_provider.calls), failed["status"], failed["error_code"], failed["input_tokens"], failed["output_tokens"], failed["latency_ms"], failed["cost_cny"]), (2, "timed_out", "provider_timeout", None, None, None, None))  # a timed-out dispatch may be billed: totals are unknown
 
     def test_invalid_second_continuity_batch_aggregates_billed_usage(self):
         claims = [{"id": f"claim-{index}", "text": "甲" * 600, "allowed_evidence": [{"id": f"span-{index}", "chapter_id": f"chapter-{index}", "body": "甲" * 2400, "prompt_excerpt": "甲" * 720}]} for index in range(1, 4)]

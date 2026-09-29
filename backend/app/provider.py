@@ -49,6 +49,22 @@ def provider_dispatch_guard(guard: Callable[[], None]) -> Iterator[None]:
         _dispatch_guard.reset(token)
 
 
+# One continuity review run shares this state across its dispatches. Once high-effort thinking has
+# run away (hit the output cap) the run's later dispatches, such as its contract repair, start at the
+# fallback effort instead of spending another full output cap before falling back again.
+_review_effort: ContextVar[dict[str, str] | None] = ContextVar("review_effort", default=None)
+_dispatch_timeout: ContextVar[int | None] = ContextVar("dispatch_timeout", default=None)
+
+
+@contextmanager
+def review_effort_scope() -> Iterator[None]:
+    token = _review_effort.set({})
+    try:
+        yield
+    finally:
+        _review_effort.reset(token)
+
+
 class ProviderInvalidJson(Exception):
     """A parsed HTTP response whose message content did not meet the JSON contract.
 
@@ -267,7 +283,7 @@ def plan_alignment_prompt(request: dict[str, Any]) -> str:
 
 
 def change_impact_prompt(request: dict[str, Any]) -> str:
-    return json.dumps({"task":"Analyze the likely impact of the author's explicit proposed change. Return exactly summary and items.","rules":[*ANALYSIS_LAYER_RULES,"Report only affected supplied chapters, characters, world records, Story Memory records, or plans.","Every impact item requires at least one directly relevant supplied evidence citation. If there is no evidence, emit no conclusion for that target.","A target Memory record may establish that the proposed rule changes, but does not establish that source chapters are unaffected or that the current draft is compatible. Make those additional claims only with their own directly relevant citations; otherwise limit the conclusion to the identified target and the bounded review scope.","Do not write replacement prose, auto-save the proposal, or mutate draft, source, Story Memory, Author Context, or aliases."],"proposal":request["proposal"],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
+    return json.dumps({"task":"Analyze the likely impact of the author's explicit proposed change. Return exactly summary and items.","rules":[*ANALYSIS_LAYER_RULES,"Report only affected supplied chapters, characters, world records, Story Memory records, or plans.","target_id must be the id of one supplied chapter, character, world record, Story Memory record, or plan for that area. The current draft is not a target: cite its draft_claim ids as evidence under an affected target instead.","Every impact item requires at least one directly relevant supplied evidence citation. If there is no evidence, emit no conclusion for that target.","A target Memory record may establish that the proposed rule changes, but does not establish that source chapters are unaffected or that the current draft is compatible. Make those additional claims only with their own directly relevant citations; otherwise limit the conclusion to the identified target and the bounded review scope.","Do not write replacement prose, auto-save the proposal, or mutate draft, source, Story Memory, Author Context, or aliases."],"proposal":request["proposal"],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
 
 
 def story_qa_prompt(request: dict[str, Any]) -> str:
@@ -282,7 +298,7 @@ def revision_plan_prompt(request: dict[str, Any]) -> str:
     return json.dumps({"task":"Create one bounded revision-task suggestion for every selected continuity issue. Return exactly summary and candidates.","rules":[*ANALYSIS_LAYER_RULES,"Each candidate must reference exactly one supplied issue_id and at least one evidence id supplied for that same issue.","Write a concise editing action, not replacement fiction prose. Suggestions never edit the manuscript, resolve an Issue, change canon, or create a task without author acceptance.","Return each selected issue exactly once. Do not merge issues, invent references, duplicate titles, or add unselected work."],"source_run_id":request["source_run_id"],"selected_issues":request["selected_issues"],"bindings":request["bindings"],"layers":request["layers"],"author_records":request["author_records"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
 
 def author_material_comparison_prompt(request: dict[str, Any]) -> str:
-    return json.dumps({"task":"Compare one author-authored material snapshot with one real manuscript SourceSpan. Return exactly assessment, explanation, and evidence.","rules":[*ANALYSIS_LAYER_RULES,"assessment must be aligned, possible_tension, plan_deviation, or insufficient_evidence.","A plan deviation is not a factual contradiction. idea materials are not authoritative and are never supplied. hidden means not disclosed to readers; character knowledge is governed only by the separate knowledge field.","For every supported conclusion cite exactly the supplied author_material and source_span. Do not invent prose, edit records, or treat the conclusion as an author decision."],"comparison":request["comparison"],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
+    return json.dumps({"task":"Compare one author-authored material snapshot with one real manuscript SourceSpan. Return exactly assessment, explanation, and evidence.","rules":[*ANALYSIS_LAYER_RULES,"assessment must be aligned, possible_tension, plan_deviation, or insufficient_evidence.","plan_deviation applies only when the material nature is plan; a setting that the passage contradicts is possible_tension.","A plan deviation is not a factual contradiction. idea materials are not authoritative and are never supplied. hidden means not disclosed to readers; character knowledge is governed only by the separate knowledge field.","For every supported conclusion cite exactly the supplied author_material and source_span. Do not invent prose, edit records, or treat the conclusion as an author decision."],"comparison":request["comparison"],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
 
 
 def request_prompt_and_budget(request: dict[str, Any]) -> tuple[str, int]:
@@ -319,17 +335,23 @@ CONTINUITY_REVIEW_THINKING_VALUES = ("disabled", "high")
 # input plus output with the run budget, so 40,000 (the V8-V11 experimental budget) covers the
 # truncated dispatch and its fallback. First requests keep the 6,000-unit input limit and long-form
 # batching is unchanged; every non-thinking path keeps the original limits.
+#
+# Live smoke (2026-09-29): on some short drafts both high and medium filled the 16,000 cap (about
+# 145 s) and the check failed as output_truncated. A last non-thinking dispatch, the pre-thinking
+# request shape, now answers instead; it only runs where the check would otherwise have failed.
+# The run budget grows to 50,000 so that three-dispatch evaluation still fits.
 REVIEW_THINKING_MAX_OUTPUT_TOKENS = 16000
 REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS = 9000
 REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT = "medium"
-REVIEW_THINKING_RUN_TOKEN_BUDGET = 40000
+REVIEW_THINKING_EFFORTS = ("high", REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT, "disabled")
+REVIEW_THINKING_RUN_TOKEN_BUDGET = 50000
 REVIEW_THINKING_TIMEOUT_SECONDS = 90
 
 
-def _combined_usage(first: Any, second: Any) -> tuple[int | None, int | None, float | None, int | None]:
-    """Totals across a truncated dispatch and its fallback; unknown stays unknown, never zero."""
+def _combined_usage(*dispatches: Any) -> tuple[int | None, int | None, float | None, int | None]:
+    """Totals across truncated dispatches and their fallback; unknown stays unknown, never zero."""
     def total(field: str):
-        values = (getattr(first, field), getattr(second, field))
+        values = [getattr(dispatch, field) for dispatch in dispatches]
         return sum(values) if all(value is not None for value in values) else None
     return total("input_tokens"), total("output_tokens"), total("cost_cny"), total("latency_ms")
 
@@ -353,7 +375,9 @@ class DeepSeekProvider:
         # Only continuity review was evaluated with thinking; every other task keeps thinking disabled.
         self.review_thinking = os.getenv("CONTINUITY_REVIEW_THINKING", "disabled").strip().lower()
         self._request_timeout = self.timeout_seconds
-        self._factory = client_factory or (lambda: httpx.Client(timeout=httpx.Timeout(self._request_timeout)))
+        # The timeout travels with the dispatch (a context variable), not the shared instance, so a
+        # concurrent non-thinking request cannot shorten a thinking dispatch's timeout.
+        self._factory = client_factory or (lambda: httpx.Client(timeout=httpx.Timeout(_dispatch_timeout.get() or self.timeout_seconds)))
         self.request_attempts = 0
         self.successful_responses = 0
         self.request_cap: int | None = None
@@ -403,23 +427,44 @@ class DeepSeekProvider:
         if input_budget_units > self.input_budget_for(request):
             raise InputBudgetExceeded()
         body = self.request_body(request, prompt)
-        self._request_timeout = REVIEW_THINKING_TIMEOUT_SECONDS if body["thinking"]["type"] == "enabled" else self.timeout_seconds
-        try:
+        self._request_timeout = self._timeout_for(body)
+        if body.get("reasoning_effort") != "high":
             return self._send(body)
-        except ProviderInvalidJson as truncated:
-            if truncated.finish_reason != "length" or body.get("reasoning_effort") != "high":
-                raise
-            # Runaway high-effort thinking can fill the whole output cap. Retry once at medium
-            # effort and report the combined usage of both dispatches.
+        # Runaway thinking can fill the whole output cap. Step down one effort per length stop, down to
+        # a non-thinking answer, and report the combined usage of every dispatch. Within one review run
+        # the stepped-down effort sticks (see review_effort_scope).
+        run_effort = _review_effort.get()
+        effort = (run_effort or {}).get("effort", "high")
+        truncated: list[ProviderInvalidJson] = []
+        while True:
             try:
-                result = self._send({**body, "reasoning_effort": REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT})
-            except ProviderInvalidJson as second:
-                raise ProviderInvalidJson(*_combined_usage(truncated, second), second.finish_reason,
-                                          second.observed_response_input_tokens, second.observed_response_output_tokens,
-                                          second.observed_response_cost_cny) from second
-            return ProviderResult(result.payload, *_combined_usage(truncated, result), result.finish_reason,
+                result = self._send(self._review_body(body, effort))
+            except ProviderInvalidJson as error:
+                if error.finish_reason == "length" and effort != REVIEW_THINKING_EFFORTS[-1]:
+                    truncated.append(error)
+                    effort = REVIEW_THINKING_EFFORTS[REVIEW_THINKING_EFFORTS.index(effort) + 1]
+                    if run_effort is not None:
+                        run_effort["effort"] = effort
+                    continue
+                if not truncated:
+                    raise
+                raise ProviderInvalidJson(*_combined_usage(*truncated, error), error.finish_reason,
+                                          error.observed_response_input_tokens, error.observed_response_output_tokens,
+                                          error.observed_response_cost_cny) from error
+            if not truncated:
+                return result
+            return ProviderResult(result.payload, *_combined_usage(*truncated, result), result.finish_reason,
                                   result.observed_response_input_tokens, result.observed_response_output_tokens,
                                   result.observed_response_cost_cny)
+
+    def _review_body(self, body: dict[str, Any], effort: str) -> dict[str, Any]:
+        if effort != "disabled":
+            return {**body, "reasoning_effort": effort}
+        plain = {key: value for key, value in body.items() if key not in ("thinking", "reasoning_effort", "max_tokens")}
+        return {**plain, "thinking": {"type": "disabled"}, "temperature": 0, "max_tokens": self.max_output_tokens}
+
+    def _timeout_for(self, body: dict[str, Any]) -> int:
+        return REVIEW_THINKING_TIMEOUT_SECONDS if body["thinking"]["type"] == "enabled" else self.timeout_seconds
 
     def _send(self, body: dict[str, Any]) -> ProviderResult:
         started = time.perf_counter()
@@ -430,7 +475,12 @@ class DeepSeekProvider:
                 request_cap=getattr(self,"request_cap",None)
                 if request_cap is not None and self.request_attempts >= request_cap:
                     raise ProviderFailure()
-                with self._factory() as client:
+                timeout = _dispatch_timeout.set(self._timeout_for(body))
+                try:
+                    client_context = self._factory()
+                finally:
+                    _dispatch_timeout.reset(timeout)
+                with client_context as client:
                     guard = _dispatch_guard.get()
                     if guard is not None:
                         guard()

@@ -31,6 +31,8 @@ FORESHADOW_STATUSES = {"planned", "planted", "developing", "resolved", "abandone
 FORESHADOW_MAX_RECORDS = 200
 REVISION_PLAN_MAX_ISSUES = 8
 REVISION_TASK_MAX_RECORDS = 200
+# Per-project provider tokens in any rolling 24 hours, about ten long thinking reviews.
+PROJECT_TOKEN_LIMIT_24H = 400_000
 REVISION_TASK_PRIORITIES = {"high", "medium", "low"}
 REVISION_TASK_STATUSES = {"todo", "in_progress", "completed"}
 MAX_RESOURCE_VERSION = 2_147_483_647
@@ -3235,9 +3237,12 @@ class V2Database:
             if changed:self._append_run_event(c,run_id,"running",stage,None,stamp)
             return bool(changed)
 
-    def session_budget_exhausted(self, project_id: str, limit: int = 40000) -> bool:
+    def session_budget_exhausted(self, project_id: str, limit: int = PROJECT_TOKEN_LIMIT_24H) -> bool:
+        # A rolling window: a lifetime total let one long thinking review (40k+ tokens) block
+        # every later AI run of the project for good. Per-account quotas bound the overall spend.
+        cutoff=(datetime.now(timezone.utc)-timedelta(hours=24)).isoformat()
         with self.connection() as c:
-            used=c.execute("SELECT COALESCE(SUM(COALESCE(input_tokens,0)+COALESCE(output_tokens,0)),0) FROM v2_runs WHERE project_id=?",(project_id,)).fetchone()[0]
+            used=c.execute("SELECT COALESCE(SUM(COALESCE(input_tokens,0)+COALESCE(output_tokens,0)),0) FROM v2_runs WHERE project_id=? AND created_at>?",(project_id,cutoff)).fetchone()[0]
             return used>=limit
 
     @staticmethod
