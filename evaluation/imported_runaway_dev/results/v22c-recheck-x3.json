@@ -1,0 +1,170 @@
+{
+  "summary": {
+    "label": "v22c-recheck-x3",
+    "prompt_version": "continuity-review-v22-settled-possible-conflict",
+    "model": "deepseek-v4-flash",
+    "checks": 6,
+    "completed": 4,
+    "checks_with_runaway": 0,
+    "non_thinking_fallbacks": 0,
+    "median_seconds": 36.2,
+    "max_seconds": 51.5,
+    "total_tokens": 71032
+  },
+  "records": [
+    {
+      "novel": "fog-harbor",
+      "case": "tide-bell-silence",
+      "expect": "no confirmed conflict (the rule only limits when it rings); v21 ran away 2/2",
+      "memory_candidates": 4,
+      "seconds": 27.8,
+      "status": "completed",
+      "error_code": null,
+      "natures": [],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 10269,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 4338,
+          "output": 5931,
+          "seconds": 27.7
+        }
+      ]
+    },
+    {
+      "novel": "white-tower",
+      "case": "key-handoff",
+      "expect": "insufficient or possible (no handoff shown)",
+      "memory_candidates": 4,
+      "seconds": 36.2,
+      "status": "failed",
+      "error_code": "evidence_unresolvable",
+      "natures": [],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 11585,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3574,
+          "output": 8011,
+          "seconds": 36.0
+        }
+      ]
+    },
+    {
+      "novel": "fog-harbor",
+      "case": "tide-bell-silence",
+      "expect": "no confirmed conflict (the rule only limits when it rings); v21 ran away 2/2",
+      "memory_candidates": 4,
+      "seconds": 51.5,
+      "status": "completed",
+      "error_code": null,
+      "natures": [],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 15282,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 4347,
+          "output": 10935,
+          "seconds": 51.4
+        }
+      ]
+    },
+    {
+      "novel": "white-tower",
+      "case": "key-handoff",
+      "expect": "insufficient or possible (no handoff shown)",
+      "memory_candidates": 4,
+      "seconds": 28.7,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "possible_conflict"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 9852,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3586,
+          "output": 6266,
+          "seconds": 28.5
+        }
+      ]
+    },
+    {
+      "novel": "fog-harbor",
+      "case": "tide-bell-silence",
+      "expect": "no confirmed conflict (the rule only limits when it rings); v21 ran away 2/2",
+      "memory_candidates": 4,
+      "seconds": 47.5,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "state_change"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 14843,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 4314,
+          "output": 10529,
+          "seconds": 47.3
+        }
+      ]
+    },
+    {
+      "novel": "white-tower",
+      "case": "key-handoff",
+      "expect": "insufficient or possible (no handoff shown)",
+      "memory_candidates": 4,
+      "seconds": 24.9,
+      "status": "failed",
+      "error_code": "evidence_unresolvable",
+      "natures": [],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 9201,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3614,
+          "output": 5587,
+          "seconds": 24.7
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "kind": "diagnostic_selected_cases_not_gate",
+  "run_id": "v22b-case030-x4",
+  "prompt_version": "continuity-review-v22-settled-possible-conflict",
+  "attempts": [
+    {
+      "case": "v10-hv10-030",
+      "attempt": 0,
+      "expected": "insufficient_evidence",
+      "predicted": "insufficient_evidence",
+      "status": "completed",
+      "error": null,
+      "latency_ms": 15855
+    },
+    {
+      "case": "v10-hv10-030",
+      "attempt": 1,
+      "expected": "insufficient_evidence",
+      "predicted": "insufficient_evidence",
+      "status": "completed",
+      "error": null,
+      "latency_ms": 15761
+    },
+    {
+      "case": "v10-hv10-030",
+      "attempt": 2,
+      "expected": "insufficient_evidence",
+      "predicted": "insufficient_evidence",
+      "status": "completed",
+      "error": null,
+      "latency_ms": 17599
+    },
+    {
+      "case": "v10-hv10-030",
+      "attempt": 3,
+      "expected": "insufficient_evidence",
+      "predicted": "insufficient_evidence",
+      "status": "completed",
+      "error": null,
+      "latency_ms": 15692
+    }
+  ]
+}

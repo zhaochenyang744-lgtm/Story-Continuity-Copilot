@@ -11,6 +11,7 @@ from app.config import AppPaths
 from app.engine import ContinuityContractValidationError, ContinuityEngine, MemoryInitializationEngine, WritingAnalysisEngine
 from app.main import create_app
 from app.provider import (
+    REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS,
     ProviderResult,
     continuity_prompt,
     context_brief_prompt,
@@ -410,6 +411,9 @@ class RealAiContractRepairTests(unittest.TestCase):
     def test_temporal_qualification_is_persisted_in_run_metrics(self):
         class RepeatingProvider:
             available = True;label = "qualification-test";model_label = "qualification-test"
+            # Review is deployed with thinking high, so a repair request gets that allowance. On the
+            # bare 6,000 default this prompt lands within a few units of the cap and flips at random.
+            continuity_repair_input_budget_units = REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS
             def evaluate(self, request):
                 claim = next(item for item in request["claims"] if item["allowed_evidence"]);evidence = claim["allowed_evidence"][0]
                 return ProviderResult({"issues": [{

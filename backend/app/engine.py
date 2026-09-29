@@ -552,7 +552,13 @@ class ContinuityEngine:
                     any(not isinstance(memory_id,str) or memory_id not in mem for memory_id in related_ids)):
                     raise ValueError("evidence_unresolvable")
                 if raw["status"]=="conflict" and not trustworthy and (ev.get("relation")!="contradicts" or ev.get("sufficiency")!="sufficient"):raise ValueError("conflict_evidence_not_direct")
-                if raw["status"]=="insufficient_evidence" and ev.get("sufficiency")!="insufficient":raise ValueError("insufficient_evidence_upgraded")
+                if raw["status"]=="insufficient_evidence" and ev.get("sufficiency")!="insufficient":
+                    # A reviewed insufficient_evidence issue that marks a citation sufficient is a
+                    # self-contradicting answer (V10 diagnostic rerun, 1 in 5): allow the bounded repair.
+                    code="insufficient_evidence_upgraded"
+                    if not trustworthy:raise ValueError(code)
+                    raise ContinuityContractValidationError(code,diagnostics=[_contract_diagnostic(data,code,raw["claim_span_id"],invalid_field="evidence.sufficiency",
+                        requirement="An insufficient_evidence issue cites only context marked sufficiency insufficient; otherwise reclassify the issue.")])
                 cleaned.append({"chapter_id":s["chapter_id"],"span_id":s["id"],"excerpt":s.get("prompt_excerpt",s["body"]),"relation":ev["relation"],"sufficiency":ev["sufficiency"],"related_memory_ids":ev.get("related_memory_ids",[])})
             change=raw.get("proposed_memory_change")
             if change is not None:
@@ -579,7 +585,13 @@ class ContinuityEngine:
                 temporal_failure=_confirmed_temporal_failure(raw,claim_text,cleaned,mem)
                 if temporal_failure and not allow_conservative_temporal_normalization:
                     raise ContinuityContractValidationError(temporal_failure)
-                if nature in {"possible_conflict","state_change"} and any(ev["sufficiency"]!="sufficient" for ev in cleaned):raise ValueError("evidence_unresolvable")
+                if nature in {"possible_conflict","state_change"} and any(ev["sufficiency"]!="sufficient" for ev in cleaned):
+                    # v22 tells the model to settle an undecidable tension as possible_conflict, and an unsure
+                    # model then marks its own citation insufficient. That self-contradiction is repairable
+                    # (imported-project diagnostic, 3 of 4 runs failed the whole check on it).
+                    code="conflict_evidence_insufficient"
+                    raise ContinuityContractValidationError(code,diagnostics=[_contract_diagnostic(data,code,raw["claim_span_id"],invalid_field="evidence.sufficiency",
+                        requirement="A possible_conflict or state_change issue cites only spans sufficient for their stated role; mark them sufficient, or reclassify the issue as insufficient_evidence.")])
                 if nature=="insufficient_evidence" and (not cleaned or any(ev["sufficiency"]!="insufficient" for ev in cleaned)):raise ValueError("evidence_unresolvable")
                 if not isinstance(chain,list) or len(chain)!=len(cleaned) or any(not isinstance(item,dict) or set(item)!={"span_id","role"} or item.get("role") not in EVIDENCE_CHAIN_ROLES for item in chain):raise ValueError("evidence_unresolvable")
                 chain_spans=[item["span_id"] for item in chain]

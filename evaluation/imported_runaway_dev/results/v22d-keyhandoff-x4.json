@@ -1,0 +1,144 @@
+{
+  "summary": {
+    "label": "v22d-keyhandoff-x4",
+    "prompt_version": "continuity-review-v22-settled-possible-conflict",
+    "model": "deepseek-v4-flash",
+    "checks": 4,
+    "completed": 4,
+    "checks_with_runaway": 0,
+    "non_thinking_fallbacks": 0,
+    "median_seconds": 72.4,
+    "max_seconds": 105.8,
+    "total_tokens": 75805
+  },
+  "records": [
+    {
+      "novel": "white-tower",
+      "case": "key-handoff",
+      "expect": "insufficient or possible (no handoff shown)",
+      "memory_candidates": 4,
+      "seconds": 25.6,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "possible_conflict"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 9252,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3598,
+          "output": 5654,
+          "seconds": 25.4
+        }
+      ]
+    },
+    {
+      "novel": "white-tower",
+      "case": "key-handoff",
+      "expect": "insufficient or possible (no handoff shown)",
+      "memory_candidates": 4,
+      "seconds": 72.4,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "possible_conflict"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 24399,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3588,
+          "output": 6403,
+          "seconds": 28.0
+        },
+        {
+          "review": true,
+          "repair": true,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 4543,
+          "output": 9865,
+          "seconds": 44.2
+        }
+      ]
+    },
+    {
+      "novel": "white-tower",
+      "case": "key-handoff",
+      "expect": "insufficient or possible (no handoff shown)",
+      "memory_candidates": 4,
+      "seconds": 27.7,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "possible_conflict"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 9858,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3595,
+          "output": 6263,
+          "seconds": 27.5
+        }
+      ]
+    },
+    {
+      "novel": "white-tower",
+      "case": "key-handoff",
+      "expect": "insufficient or possible (no handoff shown)",
+      "memory_candidates": 4,
+      "seconds": 105.8,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 32296,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3574,
+          "output": 8464,
+          "seconds": 37.8
+        },
+        {
+          "review": true,
+          "repair": true,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 4636,
+          "output": 15622,
+          "seconds": 67.8
+        }
+      ]
+    }
+  ]
+}

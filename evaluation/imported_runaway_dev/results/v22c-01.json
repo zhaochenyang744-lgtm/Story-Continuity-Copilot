@@ -1,0 +1,291 @@
+{
+  "summary": {
+    "label": "v22c-01",
+    "prompt_version": "continuity-review-v22-settled-possible-conflict",
+    "model": "deepseek-v4-flash",
+    "checks": 10,
+    "completed": 9,
+    "checks_with_runaway": 1,
+    "non_thinking_fallbacks": 0,
+    "median_seconds": 14.6,
+    "max_seconds": 124.5,
+    "total_tokens": 109020
+  },
+  "records": [
+    {
+      "novel": "fog-harbor",
+      "case": "undated-body-trait",
+      "expect": "reviewable conflict (finger count)",
+      "memory_candidates": 4,
+      "seconds": 13.4,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "possible_conflict"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 6705,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3692,
+          "output": 3013,
+          "seconds": 13.2
+        }
+      ]
+    },
+    {
+      "novel": "fog-harbor",
+      "case": "dated-event",
+      "expect": "conflict (three vs ten years)",
+      "memory_candidates": 4,
+      "seconds": 24.3,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "possible_conflict"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 8631,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3347,
+          "output": 5284,
+          "seconds": 24.2
+        }
+      ]
+    },
+    {
+      "novel": "fog-harbor",
+      "case": "consistent",
+      "expect": "no issue",
+      "memory_candidates": 4,
+      "seconds": 3.5,
+      "status": "completed",
+      "error_code": null,
+      "natures": [],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 4285,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3687,
+          "output": 598,
+          "seconds": 3.4
+        }
+      ]
+    },
+    {
+      "novel": "fog-harbor",
+      "case": "mixed",
+      "expect": "conflict on the trait; the coin line is compatible",
+      "memory_candidates": 4,
+      "seconds": 10.3,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "possible_conflict"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 6150,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3860,
+          "output": 2290,
+          "seconds": 10.2
+        }
+      ]
+    },
+    {
+      "novel": "fog-harbor",
+      "case": "trait-and-date",
+      "expect": "two reviewable conflicts; v21 ran away 2/2 on this draft",
+      "memory_candidates": 4,
+      "seconds": 45.1,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "possible_conflict",
+        "possible_conflict"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 14063,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3878,
+          "output": 10185,
+          "seconds": 45.0
+        }
+      ]
+    },
+    {
+      "novel": "fog-harbor",
+      "case": "tide-bell-silence",
+      "expect": "no confirmed conflict (the rule only limits when it rings); v21 ran away 2/2",
+      "memory_candidates": 4,
+      "seconds": 124.5,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "state_change"
+      ],
+      "runaway_dispatches": 1,
+      "non_thinking_fallback": false,
+      "tokens": 35271,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "ProviderInvalidJson",
+          "finish": "length",
+          "input": 4343,
+          "output": 16000,
+          "seconds": 75.9
+        },
+        {
+          "review": true,
+          "repair": false,
+          "effort": "medium",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 4343,
+          "output": 10585,
+          "seconds": 48.4
+        }
+      ]
+    },
+    {
+      "novel": "white-tower",
+      "case": "undated-eye-colour",
+      "expect": "reviewable conflict (eye colour)",
+      "memory_candidates": 4,
+      "seconds": 14.6,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "confirmed_conflict"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 6422,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3306,
+          "output": 3116,
+          "seconds": 14.5
+        }
+      ]
+    },
+    {
+      "novel": "white-tower",
+      "case": "structure",
+      "expect": "reviewable conflict (only an east door)",
+      "memory_candidates": 4,
+      "seconds": 13.9,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "confirmed_conflict"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 6275,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3315,
+          "output": 2960,
+          "seconds": 13.8
+        }
+      ]
+    },
+    {
+      "novel": "white-tower",
+      "case": "key-handoff",
+      "expect": "insufficient or possible (no handoff shown)",
+      "memory_candidates": 4,
+      "seconds": 61.8,
+      "status": "failed",
+      "error_code": "evidence_unresolvable",
+      "natures": [],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 17140,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3586,
+          "output": 13554,
+          "seconds": 61.7
+        }
+      ]
+    },
+    {
+      "novel": "white-tower",
+      "case": "consistent",
+      "expect": "no issue",
+      "memory_candidates": 4,
+      "seconds": 3.0,
+      "status": "completed",
+      "error_code": null,
+      "natures": [],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 4078,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 3584,
+          "output": 494,
+          "seconds": 2.8
+        }
+      ]
+    }
+  ]
+}
