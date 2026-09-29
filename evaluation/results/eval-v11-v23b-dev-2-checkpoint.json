@@ -1,0 +1,331 @@
+{
+  "run_id": "v23b-dev-2",
+  "memory_snapshot": {
+    "huangting_recording": [
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "《折叶曲》定稿混音",
+        "chapter": "第一章 定稿的混音"
+      },
+      {
+        "memory_type": "character_knowledge",
+        "predicate": "knowledge",
+        "subject": "简杼",
+        "chapter": "第二章 没拆开的说明"
+      },
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "祁沅",
+        "chapter": "第三章 防止门缝漏声"
+      },
+      {
+        "memory_type": "open_thread",
+        "predicate": "identity",
+        "subject": "《折叶曲》隐藏声部演唱者",
+        "chapter": "第五章 匿名的低声部"
+      }
+    ],
+    "luliao_last_collection": [
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "叶徊",
+        "chapter": "第一章 交来的修订页"
+      },
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "当天末班车的乌藤邮袋",
+        "chapter": "第二章 末班车的封袋"
+      },
+      {
+        "memory_type": "static_canon",
+        "predicate": "location",
+        "subject": "陆蓼邮局的三号分拣间",
+        "chapter": "第四章 两间分拣屋"
+      },
+      {
+        "memory_type": "open_thread",
+        "predicate": "knowledge",
+        "subject": "紫签邮袋和蓝签邮袋的袋号与目的地对应关系",
+        "chapter": "第五章 未写明去向的袋号"
+      }
+    ],
+    "mosswick_costume_rental": [
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "teal sash marked H6",
+        "chapter": "Chapter 1 The Fiber Inspection"
+      },
+      {
+        "memory_type": "dynamic_state",
+        "predicate": "location",
+        "subject": "silver cape",
+        "chapter": "Chapter 2 Brown Paper"
+      },
+      {
+        "memory_type": "dynamic_state",
+        "predicate": "location",
+        "subject": "brown-paper-wrapped returned pieces at Mosswick",
+        "chapter": "Chapter 3 The Sorting Containers"
+      },
+      {
+        "memory_type": "open_thread",
+        "predicate": "knowledge",
+        "subject": "Neris Tal's account breakdown",
+        "chapter": "Chapter 8 Before Closing"
+      }
+    ],
+    "sablefen_translation_residency": [
+      {
+        "memory_type": "static_canon",
+        "predicate": "identity",
+        "subject": "Reedglass collection",
+        "chapter": "Chapter 1 The Reedglass Collection"
+      },
+      {
+        "memory_type": "dynamic_state",
+        "predicate": "status",
+        "subject": "Dewline",
+        "chapter": "Chapter 2 The Release Ledger"
+      },
+      {
+        "memory_type": "static_canon",
+        "predicate": "identity",
+        "subject": "Pen name Rell",
+        "chapter": "Chapter 3 The Pen Name Register"
+      },
+      {
+        "memory_type": "open_thread",
+        "predicate": "event_occurred",
+        "subject": "Permission request to the author",
+        "chapter": "Chapter 7 A Delivery Receipt"
+      }
+    ]
+  },
+  "case_results": [
+    {
+      "case_id": "hv11-012",
+      "corpus": "huangting_recording",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "relationship",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 13.2,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "65bffd1eede0a35af6d952d9c4c933a3a155dd2a33ee0373160cfaa9ef61ae37"
+      ],
+      "metrics": {
+        "latency_ms": 12965,
+        "input_tokens": 3927,
+        "output_tokens": 2770
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第五章 匿名的低声部"
+        ],
+        "cited_expected_chapters": [
+          "第五章 匿名的低声部"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-016",
+      "corpus": "luliao_last_collection",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": "location_action",
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 6.6,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 6411,
+        "input_tokens": 3901,
+        "output_tokens": 1453
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第三章 北柜的值守",
+          "第四章 两间分拣屋"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": [
+          "陆蓼邮局的三号分拣间"
+        ]
+      }
+    },
+    {
+      "case_id": "hv11-021",
+      "corpus": "mosswick_costume_rental",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "attribute",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 28.9,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "3baeca299b5092240bf7be2dedbd7922b9018287b597165a8805a744522a67e5"
+      ],
+      "metrics": {
+        "latency_ms": 28712,
+        "input_tokens": 4001,
+        "output_tokens": 6118
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 5 A Combined Refund"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": false,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-024",
+      "corpus": "mosswick_costume_rental",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 3.0,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 2803,
+        "input_tokens": 3995,
+        "output_tokens": 510
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 6 Samples from a Crate"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-031",
+      "corpus": "sablefen_translation_residency",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": "relationship",
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 15.1,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 14950,
+        "input_tokens": 3926,
+        "output_tokens": 3108
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 3 The Pen Name Register",
+          "Chapter 4 The Small River Credit"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": [
+          "Pen name Rell"
+        ]
+      }
+    },
+    {
+      "case_id": "hv11-036",
+      "corpus": "sablefen_translation_residency",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "event_status",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 32.0,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "e68b0410a0b8056e1b1b64d3625ef21755ce8c0134f0e3ec369727b8e5e8ae60"
+      ],
+      "metrics": {
+        "latency_ms": 31807,
+        "input_tokens": 8614,
+        "output_tokens": 7487
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 7 A Delivery Receipt"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 7 A Delivery Receipt"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    }
+  ]
+}

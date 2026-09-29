@@ -1,0 +1,691 @@
+{
+  "kind": "v23_prompt_attempt_abandoned",
+  "date": "2026-09-30",
+  "question": "Can the V11 insufficient_evidence failure be fixed by prompt wording without costing conflict recall?",
+  "answer": "No, on three attempts. v22 is kept.",
+  "baseline_prompt": "continuity-review-v22-settled-possible-conflict",
+  "held_out_status": "V11 is spent and was used here as a development set, which is its remaining legitimate use. None of these runs is a gate.",
+  "model": "deepseek-flash",
+  "review_thinking": "high",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "withheld_by_design": "Two of the four shapes V11 exposed, a dispatch read as an arrival and a candidate read as the one chosen, were deliberately left out of every wording so that they had to generalise rather than be recited. hv11-036 is the dispatch case and it did generalise, reaching 3/3 under v23b and v23c.",
+  "stop_rule": {
+    "declared_before_the_third_attempt": true,
+    "pass": "hv11-016 at least 2 of 3, and the three insufficient_evidence cases at least 7 of 9",
+    "result": "hv11-016 scored 0 of 3; reverted"
+  },
+  "per_case": {
+    "hv11-021": {
+      "expected": "insufficient_evidence",
+      "v22_two_formal_runs": null,
+      "v23a-unwarranted-narrowing": {
+        "correct": 3,
+        "of": 3
+      },
+      "v23b-entailment": {
+        "correct": 2,
+        "of": 3
+      },
+      "v23c-joint-proof-protection": {
+        "correct": 1,
+        "of": 3
+      }
+    },
+    "hv11-036": {
+      "expected": "insufficient_evidence",
+      "v22_two_formal_runs": null,
+      "v23a-unwarranted-narrowing": {
+        "correct": 3,
+        "of": 3
+      },
+      "v23b-entailment": {
+        "correct": 2,
+        "of": 3
+      },
+      "v23c-joint-proof-protection": {
+        "correct": 3,
+        "of": 3
+      }
+    },
+    "hv11-012": {
+      "expected": "insufficient_evidence",
+      "v22_two_formal_runs": null,
+      "v23a-unwarranted-narrowing": {
+        "correct": 2,
+        "of": 3
+      },
+      "v23b-entailment": {
+        "correct": 3,
+        "of": 3
+      },
+      "v23c-joint-proof-protection": {
+        "correct": 3,
+        "of": 3
+      }
+    },
+    "hv11-024": {
+      "expected": "insufficient_evidence",
+      "v22_two_formal_runs": null,
+      "v23a-unwarranted-narrowing": {
+        "correct": 0,
+        "of": 3
+      },
+      "v23b-entailment": {
+        "correct": 0,
+        "of": 3
+      },
+      "v23c-joint-proof-protection": {
+        "correct": 0,
+        "of": 3
+      }
+    },
+    "hv11-016": {
+      "expected": "conflict",
+      "v22_two_formal_runs": null,
+      "v23a-unwarranted-narrowing": {
+        "correct": 0,
+        "of": 3
+      },
+      "v23b-entailment": {
+        "correct": 0,
+        "of": 3
+      },
+      "v23c-joint-proof-protection": {
+        "correct": 0,
+        "of": 3
+      }
+    },
+    "hv11-031": {
+      "expected": "conflict",
+      "v22_two_formal_runs": null,
+      "v23a-unwarranted-narrowing": {
+        "correct": 0,
+        "of": 3
+      },
+      "v23b-entailment": {
+        "correct": 1,
+        "of": 3
+      },
+      "v23c-joint-proof-protection": {
+        "correct": 0,
+        "of": 3
+      }
+    }
+  },
+  "attempts": {
+    "v23a-unwarranted-narrowing": {
+      "lever": "insufficient_evidence rule",
+      "wording": "A claim that narrows a supplied fact into a more specific one the source does not state, such as a total read as one of its parts or a measured sample read as the whole set, asserts the narrower fact without warrant: that is a missing link, not a compatible new event.",
+      "runs": {
+        "hv11-001": [
+          {
+            "predicted_class": "conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "confirmed_conflict"
+            ],
+            "seconds": 10.8
+          }
+        ],
+        "hv11-007": [
+          {
+            "predicted_class": "conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "confirmed_conflict"
+            ],
+            "seconds": 7.1
+          }
+        ],
+        "hv11-012": [
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "failed",
+            "error_code": "schema_invalid",
+            "natures": [],
+            "seconds": 10.8
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 9.7
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 8.0
+          }
+        ],
+        "hv11-016": [
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 8.0
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 23.7
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 8.9
+          }
+        ],
+        "hv11-021": [
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 11.3
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 8.5
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 19.2
+          }
+        ],
+        "hv11-022": [
+          {
+            "predicted_class": "conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "confirmed_conflict"
+            ],
+            "seconds": 6.0
+          }
+        ],
+        "hv11-024": [
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 4.0
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 2.7
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 2.9
+          }
+        ],
+        "hv11-031": [
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 26.6
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 14.1
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 28.2
+          }
+        ],
+        "hv11-036": [
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 8.2
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 8.6
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 13.2
+          }
+        ]
+      }
+    },
+    "v23b-entailment": {
+      "lever": "insufficient_evidence rule, reframed",
+      "wording": "Weigh what the supplied facts entail, not only what they say outright. Facts that jointly entail the opposite of the claim are a conflict even when no single passage states it. Facts merely consistent with the claim without entailing it leave it unknown.",
+      "runs": {
+        "hv11-012": [
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 11.0
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 13.2
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 9.3
+          }
+        ],
+        "hv11-016": [
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 4.5
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 6.6
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 4.6
+          }
+        ],
+        "hv11-021": [
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 10.4
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 28.9
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 4.6
+          }
+        ],
+        "hv11-024": [
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 4.2
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 3.0
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 3.9
+          }
+        ],
+        "hv11-031": [
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 9.5
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 15.1
+          },
+          {
+            "predicted_class": "conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "confirmed_conflict"
+            ],
+            "seconds": 10.5
+          }
+        ],
+        "hv11-036": [
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 10.0
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 32.0
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "failed",
+            "error_code": "claim_verdicts_invalid",
+            "natures": [],
+            "seconds": 7.8
+          }
+        ]
+      }
+    },
+    "v23c-joint-proof-protection": {
+      "lever": "confirmed_conflict rule, additive",
+      "wording": "The contradicted fact may be one the sources establish jointly rather than state outright: when one supplied premise fixes an identity, a containment or an exclusivity and a second supplied fact then rules the claim out under it, that is a confirmed_conflict, not a gap.",
+      "runs": {
+        "hv11-012": [
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 12.1
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 13.2
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 10.1
+          }
+        ],
+        "hv11-016": [
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 5.6
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 10.3
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 4.7
+          }
+        ],
+        "hv11-021": [
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 9.8
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 46.4
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 6.7
+          }
+        ],
+        "hv11-024": [
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 5.5
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 7.9
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 2.8
+          }
+        ],
+        "hv11-031": [
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 12.2
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 17.5
+          },
+          {
+            "predicted_class": "no_conflict",
+            "expected_class": "conflict",
+            "status": "completed",
+            "error_code": null,
+            "natures": [],
+            "seconds": 34.8
+          }
+        ],
+        "hv11-036": [
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 10.5
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 17.0
+          },
+          {
+            "predicted_class": "insufficient_evidence",
+            "expected_class": "insufficient_evidence",
+            "status": "completed",
+            "error_code": null,
+            "natures": [
+              "insufficient_evidence"
+            ],
+            "seconds": 9.9
+          }
+        ]
+      }
+    }
+  },
+  "finding": "Every wording traded the same way: the insufficient_evidence cases it recovered were paid for by conflict cases it lost. hv11-016 and hv11-031 were already marginal on v22, one of two formal runs each, and all three wordings pushed them to stable failure. v23c protected joint deduction explicitly and changed nothing, so the model is not merely missing permission to combine premises. hv11-024 never recovered under any wording although its shape, a measured sample read as the whole set, was stated outright in two of the three.",
+  "consequence": "The V11 gate result stands as recorded: failed on insufficient_evidence recall. The defect is carried into the next held-out set as a known limitation rather than papered over, and the next set measures whether it reproduces on cases nobody has seen."
+}

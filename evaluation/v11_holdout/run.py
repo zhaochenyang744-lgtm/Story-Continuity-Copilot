@@ -72,14 +72,20 @@ def load_case_set(set_dir: pathlib.Path) -> dict:
     return json.loads(raw.decode("utf-8"))
 
 
-def assert_runtime(provider: DeepSeekProvider) -> None:
+def assert_runtime(provider: DeepSeekProvider, allow_prompt_drift: bool = False) -> None:
+    """The prompt and model pins are what stop a gate running on something nobody meant to measure.
+
+    Iterating on a prompt, or comparing models, against a spent set is a legitimate use of this
+    runner, so both pins can be lifted — but only explicitly, and the report then carries dev_run
+    alongside the pinned and the actual values.
+    """
     checks = {"provider": os.environ.get("CONTINUITY_PROVIDER", "").lower() == "deepseek",
-              "model": provider.model == RUNTIME_CONTRACT["model"],
+              "model": allow_prompt_drift or provider.model == RUNTIME_CONTRACT["model"],
               "review_thinking": provider.review_thinking == RUNTIME_CONTRACT["review_thinking"],
-              "prompt_version": PROMPT_VERSION == RUNTIME_CONTRACT["prompt_version"],
+              "prompt_version": allow_prompt_drift or PROMPT_VERSION == RUNTIME_CONTRACT["prompt_version"],
               "available": provider.available}
     if not all(checks.values()):
-        raise RuntimeError("v11_runtime_contract_invalid:" + ",".join(k for k, ok in checks.items() if not ok))
+        raise RuntimeError("holdout_runtime_contract_invalid:" + ",".join(k for k, ok in checks.items() if not ok))
 
 
 class FingerprintRecorder:
@@ -271,6 +277,7 @@ def main() -> int:
     parser.add_argument("--set", default=DEFAULT_SET, help="authoring directory under evaluation/")
     parser.add_argument("--only", nargs="*", help="case ids; default is the whole set")
     parser.add_argument("--dry-run", action="store_true", help="verify the set, contract and output path, call nothing")
+    parser.add_argument("--dev", action="store_true", help="iterate on a prompt the contract does not pin; taints the report")
     args = parser.parse_args()
 
     set_dir = ROOT / "evaluation" / args.set
@@ -288,7 +295,7 @@ def main() -> int:
 
     recorder = FingerprintRecorder()
     provider = DeepSeekProvider(client_factory=recorder.factory)
-    assert_runtime(provider)
+    assert_runtime(provider, allow_prompt_drift=args.dev)
     if args.dry_run:
         print(f"dry run ok: {len(cases)} cases, prompt {PROMPT_VERSION}, model {provider.model}, out {out.name}")
         return 0
@@ -311,7 +318,10 @@ def main() -> int:
         client.close()
 
     report = {
-        "kind": f"{label}_holdout_formal" if selected is None else f"{label}_holdout_partial",
+        "kind": (f"{label}_holdout_dev" if args.dev else
+                 f"{label}_holdout_formal" if selected is None else f"{label}_holdout_partial"),
+        "dev_run": args.dev,
+        "pinned_prompt_version": RUNTIME_CONTRACT["prompt_version"],
         "case_set": args.set,
         "run_id": args.run_id,
         "case_set_sha256": hashlib.sha256((set_dir / "cases.json").read_bytes()).hexdigest(),
@@ -326,7 +336,7 @@ def main() -> int:
         "case_results": results,
     }
     # A partial selection is not a gate result, so the bar is applied only to a whole run.
-    report["threshold_result"] = evaluate_thresholds(report["metrics"]) if selected is None else None
+    report["threshold_result"] = evaluate_thresholds(report["metrics"]) if selected is None and not args.dev else None
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"out": out.name, "cases": len(results), "fingerprints": recorder.seen,
                       "macro_f1": report["metrics"]["macro_f1"], "terminal": report["metrics"]["terminal"]}, ensure_ascii=False))
