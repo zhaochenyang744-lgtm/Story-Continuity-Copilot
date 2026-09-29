@@ -388,13 +388,6 @@ def register_or_login_case(client: httpx.Client, intent: dict[str, Any], scanner
     raise RuntimeError(f"case_account_unavailable:{registration.status_code}:{safe_error(registration)}")
 
 
-def project_for_seed(client: httpx.Client, seed_key: str, scanner: ApiResponseScanner) -> str:
-    projects = request_json(client, "GET", "/api/projects", scanner)["projects"]
-    matches = [project["id"] for project in projects if project.get("seed_key") == seed_key]
-    if len(matches) != 1: raise RuntimeError("scoped_seed_project_not_unique")
-    return matches[0]
-
-
 def _fault(fault_hook, boundary: str) -> None:
     if fault_hook is not None: fault_hook(boundary)
 
@@ -440,7 +433,12 @@ def run_case(checkpoint: FormalCheckpoint, client: httpx.Client, case: dict, sca
     elif intent.get("project_id") not in {None, preloaded_project_id}:
         raise RuntimeError("fixture_checkpoint_project_mismatch")
     _fault(fault_hook, "after_account_created")
-    project_id = intent.get("project_id") or preloaded_project_id or project_for_seed(client, case["seed_key"], scanner)
+    project_id = intent.get("project_id") or preloaded_project_id
+    if project_id is None:
+        # Registration created three demo projects per account until v1.2.0 replaced them with one
+        # isolated tutorial project, which /api/projects does not list. Every runner supplies the
+        # project explicitly now; looking one up by seed_key no longer resolves.
+        raise RuntimeError("case_project_must_be_supplied")
     intent = checkpoint.advance(case["case_id"], "account_ready", project_id=project_id)
     project = request_json(client, "GET", f"/api/projects/{project_id}", scanner)
     draft = project["current_draft"]

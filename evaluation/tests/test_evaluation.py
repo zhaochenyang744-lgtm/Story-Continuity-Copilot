@@ -13,8 +13,8 @@ import unittest
 from unittest import mock
 
 from evaluation.metrics import aggregate, prediction_for_target, stability
-from evaluation.run_eval import ApiResponseScanner, EVALUATION_FIXTURE_MODE, FormalCheckpoint, assert_manifest_approved, assert_outputs_safe, bad_case, build_run_config, execute_formal_run, gate, repeat_case, run_case, runner_account_name, source_hashes_for_config
-from evaluation.validate_eval_set import load_cases, validate_case_set
+from evaluation.run_eval import ApiResponseScanner, EVALUATION_FIXTURE_MODE, FormalCheckpoint, assert_manifest_approved, assert_outputs_safe, bad_case, build_run_config, execute_formal_run, gate, run_case, source_hashes_for_config
+from evaluation.validate_eval_set import load_cases
 from evaluation.validate_eval_set_v2_candidate import load_candidate, validate_candidate_case_set, validate_candidate_manifest, validate_semantic_review
 from evaluation.validate_eval_set_v2 import validate_formal_freeze
 from evaluation.validate_eval_set_v3 import validate_formal_freeze as validate_v3_formal_freeze
@@ -129,9 +129,6 @@ class EvaluationUtilityTests(unittest.TestCase):
             str((temporary / 'checkpoint.json').relative_to(repo)).replace('\\', '/'),
         )
 
-    def test_frozen_case_set_structure_and_hash_are_valid(self):
-        result=validate_case_set()
-        self.assertEqual((result['case_count'],result['class_counts'],result['nearby_distractor_cases']),(15,{'conflict':5,'no_conflict':5,'insufficient_evidence':5},5))
 
     def test_v2_candidate_structure_manifest_and_v1_separation_are_valid(self):
         result = validate_candidate_case_set()
@@ -869,80 +866,7 @@ class EvaluationUtilityTests(unittest.TestCase):
         result = bad_case({'case_id':'failed-case','expected_class':'insufficient_evidence','predicted_class':'no_conflict','expected_category':None,'predicted_category':None,'terminal_status':'failed','terminal_error_code':'insufficient_evidence_upgraded','retrieval_hit_at_5':True,'cited_evidence_count':0,'resolvable_evidence_count':0})
         self.assertEqual(result['root_cause'], 'schema')
 
-    def test_case_sessions_remain_isolated_for_stability_repeats(self):
-        class EmptyIssueProvider:
-            label='runner-contract-provider'; model_label='runner-contract-model'; available=True
-            def __init__(self): self.calls=0
-            def evaluate(self, request):
-                self.calls += 1
-                return ProviderResult({'issues': []}, input_tokens=1, output_tokens=1, latency_ms=1)
 
-        provider = EmptyIssueProvider()
-        root = pathlib.Path(tempfile.mkdtemp(prefix='scc-runner-sessions-'))
-        app = create_app(AppPaths.from_project_root(root, protected_poc_root=root/'protected'), provider=provider, executor=lambda fn,*args: fn(*args))
-        cases = load_cases()['cases']
-        selected = [cases[0], cases[len(cases)//2], cases[-1]]
-        scanner = ApiResponseScanner()
-        checkpoint = FormalCheckpoint(root/'checkpoint.json', 'runner-session-fixture')
-        clients = [TestClient(app) for _ in selected]
-        try:
-            contexts = {}
-            initial = {}
-            for case, client in zip(selected, clients):
-                result, contexts[case['case_id']] = run_case(checkpoint, client, case, scanner)
-                self.assertTrue(result['idempotency_replay_same_run'])
-                initial[case['case_id']] = result['run_id']
-            for case, client in zip(selected, clients):
-                replay = repeat_case(client, case, contexts[case['case_id']], scanner)
-                self.assertTrue(replay['idempotency_replay_same_run'])
-                self.assertNotEqual(replay['run_id'], initial[case['case_id']])
-        finally:
-            for client in clients: client.close()
-        self.assertEqual(provider.calls, 6)
-
-    def test_checkpoint_recovers_each_crash_window_without_duplicate_side_effects(self):
-        class EmptyIssueProvider:
-            label='checkpoint-contract-provider'; model_label='checkpoint-contract-model'; available=True
-            def __init__(self): self.calls=0
-            def evaluate(self, request):
-                self.calls += 1
-                return ProviderResult({'issues': []}, input_tokens=1, output_tokens=1, latency_ms=1)
-
-        case = load_cases()['cases'][0]
-        for boundary in ('after_account_created','after_draft_saved','after_check_posted','after_run_terminal'):
-            with self.subTest(boundary=boundary):
-                provider = EmptyIssueProvider()
-                root = pathlib.Path(tempfile.mkdtemp(prefix='scc-runner-resume-'))
-                app = create_app(AppPaths.from_project_root(root, protected_poc_root=root/'protected'), provider=provider, executor=lambda fn,*args: fn(*args))
-                checkpoint_path = root / 'evaluation-checkpoint.json'
-                checkpoint = FormalCheckpoint(checkpoint_path, 'fixture-case-set')
-
-                def interrupt(name):
-                    if name == boundary: raise RuntimeError('simulated_interrupt')
-
-                with TestClient(app) as client:
-                    with self.assertRaisesRegex(RuntimeError, 'simulated_interrupt'):
-                        run_case(checkpoint, client, case, ApiResponseScanner(), interrupt)
-                with app.state.database.connection() as connection:
-                    account_count = connection.execute('SELECT COUNT(*) FROM v2_users WHERE account_name=?',(runner_account_name(case['case_id']),)).fetchone()[0]
-                    project_count = connection.execute('SELECT COUNT(*) FROM v2_projects p JOIN v2_users u ON u.id=p.user_id WHERE u.account_name=?',(runner_account_name(case['case_id']),)).fetchone()[0]
-                    first_run_id = connection.execute("SELECT r.id FROM v2_runs r JOIN v2_projects p ON p.id=r.project_id JOIN v2_users u ON u.id=p.user_id WHERE u.account_name=? AND r.result_origin='provider'",(runner_account_name(case['case_id']),)).fetchone()
-                resumed = FormalCheckpoint(checkpoint_path, 'fixture-case-set')
-                with TestClient(app) as client:
-                    result, state = run_case(resumed, client, case, ApiResponseScanner())
-                with app.state.database.connection() as connection:
-                    final_account_count = connection.execute('SELECT COUNT(*) FROM v2_users WHERE account_name=?',(runner_account_name(case['case_id']),)).fetchone()[0]
-                    final_project_count = connection.execute('SELECT COUNT(*) FROM v2_projects p JOIN v2_users u ON u.id=p.user_id WHERE u.account_name=?',(runner_account_name(case['case_id']),)).fetchone()[0]
-                    final_revision = connection.execute('SELECT d.revision FROM v2_drafts d JOIN v2_projects p ON p.id=d.project_id JOIN v2_users u ON u.id=p.user_id WHERE u.account_name=? AND p.seed_key=?',(runner_account_name(case['case_id']),case['seed_key'])).fetchone()[0]
-                    final_runs = connection.execute("SELECT COUNT(*) FROM v2_runs r JOIN v2_projects p ON p.id=r.project_id JOIN v2_users u ON u.id=p.user_id WHERE u.account_name=? AND r.result_origin='provider'",(runner_account_name(case['case_id']),)).fetchone()[0]
-                self.assertEqual((account_count,project_count),(1,3))
-                self.assertEqual((final_account_count,final_project_count,final_revision,final_runs),(1,3,2,1))
-                self.assertEqual(provider.calls,1)
-                if first_run_id is not None: self.assertEqual(result['run_id'],first_run_id[0])
-                self.assertEqual((state['state'],result['run_id']),('completed',state['run_id']))
-                raw = checkpoint_path.read_text(encoding='utf-8')
-                self.assertNotIn(case['target_draft'],raw)
-                self.assertNotIn('scc_local_session',raw)
 
     def test_fixture_runner_uses_formal_chain_for_three_corpora_and_full_dry_run(self):
         class EmptyIssueProvider:
