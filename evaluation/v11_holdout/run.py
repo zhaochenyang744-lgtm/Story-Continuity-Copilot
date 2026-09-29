@@ -48,8 +48,12 @@ from app.provider import DeepSeekProvider  # noqa: E402
 from app.stage13 import Stage13Settings  # noqa: E402
 from evaluation.v11_holdout.thresholds import evaluate as evaluate_thresholds  # noqa: E402
 
-SET_DIR = ROOT / "evaluation/eval_set_v11_authoring"
+DEFAULT_SET = "eval_set_v11_authoring"
 CLASSES = ("conflict", "no_conflict", "insufficient_evidence")
+# Infrastructure, not an answer: retried once and recorded. A contract or schema failure is the
+# model's answer and is never retried.
+RETRYABLE_ERRORS = {"provider_timeout", "provider_unavailable", "provider_error"}
+RETRYABLE_STATUSES = {"timed_out"}
 NATURE_CLASS = {"confirmed_conflict": "conflict", "possible_conflict": "conflict",
                 "state_change": "no_conflict", "insufficient_evidence": "insufficient_evidence"}
 CLASS_PRECEDENCE = ("conflict", "insufficient_evidence", "no_conflict")
@@ -58,13 +62,13 @@ RUNTIME_CONTRACT = {"model": "deepseek-flash", "review_thinking": "high",
                     "prompt_version": "continuity-review-v22-settled-possible-conflict"}
 
 
-def load_case_set() -> dict:
+def load_case_set(set_dir: pathlib.Path) -> dict:
     """Read the frozen set and fail closed if its bytes no longer match the recorded hash."""
-    raw = (SET_DIR / "cases.json").read_bytes()
-    recorded = (SET_DIR / "cases.sha256").read_text(encoding="utf-8").split()[0]
+    raw = (set_dir / "cases.json").read_bytes()
+    recorded = (set_dir / "cases.sha256").read_text(encoding="utf-8").split()[0]
     actual = hashlib.sha256(raw).hexdigest()
     if actual != recorded:
-        raise RuntimeError(f"v11_case_set_hash_mismatch:{actual}:{recorded}")
+        raise RuntimeError(f"holdout_case_set_hash_mismatch:{actual}:{recorded}")
     return json.loads(raw.decode("utf-8"))
 
 
@@ -158,7 +162,7 @@ def predicted_class(issues: list[dict]) -> tuple[str, str | None]:
     return "no_conflict", None
 
 
-def run_case(client: TestClient, project: str, case: dict, chapters: dict[str, str], memory: list[dict]) -> dict:
+def check_once(client: TestClient, project: str, case: dict) -> tuple[dict, float]:
     idem = lambda: {"Idempotency-Key": str(uuid.uuid4())}
     draft = data(client.get(f"/api/projects/{project}"))["current_draft"]
     patched = data(client.patch(f"/api/projects/{project}/drafts/{draft['id']}",
@@ -172,7 +176,18 @@ def run_case(client: TestClient, project: str, case: dict, chapters: dict[str, s
             break
         time.sleep(1)
         view = data(client.get(f"/api/projects/{project}/checks/{run['run_id']}?include=issues,evidence,metrics"))
-    seconds = round(time.perf_counter() - started, 1)
+    return view, round(time.perf_counter() - started, 1)
+
+
+def run_case(client: TestClient, project: str, case: dict, chapters: dict[str, str], memory: list[dict]) -> dict:
+    """One case, with a single retry reserved for infrastructure failures, never for an answer."""
+    view, seconds = check_once(client, project, case)
+    retried = False
+    if view["status"] in RETRYABLE_STATUSES or view.get("error_code") in RETRYABLE_ERRORS:
+        retried = True
+        first = {"status": view["status"], "error_code": view.get("error_code"), "seconds": seconds}
+        view, seconds = check_once(client, project, case)
+        seconds = round(seconds + first["seconds"], 1)
     issues = view.get("issues") or []
     expected_chapters = set(case["evidence"])
     cited = {chapters.get(item.get("chapter_id"), "?") for issue in issues for item in (issue.get("evidence") or [])}
@@ -186,6 +201,7 @@ def run_case(client: TestClient, project: str, case: dict, chapters: dict[str, s
         "expected_category": case["category"], "predicted_category": category,
         "designated_regression": case["designated_regression"],
         "status": view["status"], "error_code": view.get("error_code"), "seconds": seconds,
+        "infrastructure_retry": first if retried else None,
         "natures": sorted(issue.get("nature") for issue in issues),
         "issue_count": len(issues),
         "explanation_sha256": [hashlib.sha256((issue.get("explanation") or "").encode("utf-8")).hexdigest()
@@ -252,14 +268,19 @@ def score(results: list[dict]) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-id", required=True)
+    parser.add_argument("--set", default=DEFAULT_SET, help="authoring directory under evaluation/")
     parser.add_argument("--only", nargs="*", help="case ids; default is the whole set")
     parser.add_argument("--dry-run", action="store_true", help="verify the set, contract and output path, call nothing")
     args = parser.parse_args()
 
-    case_set = load_case_set()
-    out = ROOT / "evaluation/results" / f"eval-v11-{args.run_id}.json"
-    if out.exists():
-        raise FileExistsError(out)
+    set_dir = ROOT / "evaluation" / args.set
+    case_set = load_case_set(set_dir)
+    # eval_set_v11_authoring -> v11, so a later set writes its own files without a code change.
+    label = args.set.split("_")[2] if args.set.startswith("eval_set_") else args.set
+    out = ROOT / "evaluation/results" / f"eval-{label}-{args.run_id}.json"
+    checkpoint = out.with_name(out.stem + "-checkpoint.json")
+    if out.exists() or checkpoint.exists():
+        raise FileExistsError(out if out.exists() else checkpoint)
     selected = set(args.only) if args.only else None
     cases = [case for case in case_set["cases"] if not selected or case["id"] in selected]
     if not cases:
@@ -281,14 +302,19 @@ def main() -> int:
         memories[work["key"]] = memory
         for case in work_cases:
             results.append(run_case(client, project, case, chapters, memory))
+            # Written after every case: a held-out run costs real calls, and a later failure in
+            # scoring must never be able to destroy the record of what the model answered.
+            checkpoint.write_text(json.dumps({"run_id": args.run_id, "memory_snapshot": memories,
+                                              "case_results": results}, ensure_ascii=False, indent=2), encoding="utf-8")
             print(json.dumps({key: results[-1][key] for key in ("case_id", "expected_class", "predicted_class", "status", "seconds")},
                              ensure_ascii=False), flush=True)
         client.close()
 
     report = {
-        "kind": "v11_holdout_formal" if selected is None else "v11_holdout_partial",
+        "kind": f"{label}_holdout_formal" if selected is None else f"{label}_holdout_partial",
+        "case_set": args.set,
         "run_id": args.run_id,
-        "case_set_sha256": hashlib.sha256((SET_DIR / "cases.json").read_bytes()).hexdigest(),
+        "case_set_sha256": hashlib.sha256((set_dir / "cases.json").read_bytes()).hexdigest(),
         "prompt_version": PROMPT_VERSION,
         "model": provider.model,
         "review_thinking": provider.review_thinking,

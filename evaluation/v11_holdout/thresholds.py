@@ -26,6 +26,30 @@ REGISTERED_ON = "2026-09-30"
 CARRIED_OVER_FROM = "evaluation/build_v10_formal_assets.py REQUIRED_THRESHOLDS"
 PRE_REGISTERED_FOR_V11 = False
 
+# Registered on 2026-09-30, before the next set exists and before any run of it. The numbers
+# below are unchanged from the V11 reading, including insufficient_evidence_recall_min, which
+# V11 failed twice (0.7500 and 0.6667). Keeping it is the point: V11 failed because the bar
+# found a real defect, and lowering a bar a known defect sits under would retire the bar, not
+# the defect.
+PRE_REGISTRATION = {
+    "registered_on": "2026-09-30",
+    "applies_from": "the next held-out set authored after eval_set_v11_authoring",
+    "decided_before_the_set_was_authored": True,
+    "thresholds_unchanged_from_v11_reading": True,
+    "protocol": {
+        "runs_that_decide": 1,
+        "run_shape": "one invocation of evaluation.v11_holdout.run with no --only; the first run decides",
+        "infrastructure_retry": "a case whose terminal status is timed_out, or whose error_code is "
+                                "provider_timeout, provider_unavailable or provider_error, is retried once and the "
+                                "first attempt is recorded in infrastructure_retry; a contract, schema or budget "
+                                "failure is the model's answer and is never retried",
+        "denominator": "every authored case counts, including one that fails after its retry",
+        "checkpoint": "per-case records are written after every case, so a failure in scoring cannot cost a run",
+        "scoring": "nature-based; state_change scores as no_conflict. Untested: state_change appeared in zero of "
+                   "the 72 V11 judgements, so this rule has never actually changed a result",
+    },
+}
+
 THRESHOLDS = {
     "macro_f1_min": 0.8,
     "conflict_recall_min": 0.8,
@@ -62,5 +86,6 @@ def evaluate(metrics: dict[str, Any]) -> dict[str, Any]:
     unmeasured = sorted(name for name, ok in checks.items() if ok is None)
     status = "failed:" + ",".join(failed) if failed else "unmeasured:" + ",".join(unmeasured) if unmeasured else "passed"
     return {"registered_on": REGISTERED_ON, "carried_over_from": CARRIED_OVER_FROM,
-            "pre_registered_for_v11": PRE_REGISTERED_FOR_V11, "thresholds": THRESHOLDS,
+            "pre_registered_for_v11": PRE_REGISTERED_FOR_V11, "pre_registration": PRE_REGISTRATION,
+            "thresholds": THRESHOLDS,
             "checks": checks, "failed": failed, "unmeasured": unmeasured, "status": status}
