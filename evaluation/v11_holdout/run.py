@@ -240,7 +240,9 @@ def score(results: list[dict]) -> dict:
         "diagnostics": {
             "no_conflict_cases_with_any_card": noisy,
             "no_conflict_total": no_conflict_total,
-            "citation_reached_expected": sum(row["diagnostics"]["citation_reached_expected"] for row in results),
+            # citation_reached_expected is None when a case emitted no issue, so count truth only.
+            "citation_reached_expected": sum(1 for row in results if row["diagnostics"]["citation_reached_expected"]),
+            "retrieval_reached_expected": sum(1 for row in results if row["diagnostics"]["retrieval_reached_expected"]),
             "state_change_cases": [row["case_id"] for row in results if row["diagnostics"]["state_change_present"]],
         },
     }

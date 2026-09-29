@@ -1,0 +1,365 @@
+{
+  "kind": "v11_holdout_first_formal_class_level_only",
+  "run_id": "first-formal",
+  "case_set_sha256": "6b7f4f4dee490855321329a7dec3899b42820de67741b7d7c88f7566750bcc61",
+  "prompt_version": "continuity-review-v22-settled-possible-conflict",
+  "model": "deepseek-flash",
+  "review_thinking": "high",
+  "code_commit": "f312a7a",
+  "incomplete_record": {
+    "reason": "The runner completed all 36 provider checks, then score() raised TypeError summing citation_reached_expected, which returns None when a case emits no issue. The report file was never written.",
+    "recovered_from": "per-case stdout lines emitted during the run",
+    "fields_present": [
+      "case_id",
+      "expected_class",
+      "predicted_class",
+      "status",
+      "seconds"
+    ],
+    "fields_lost": [
+      "predicted_category",
+      "natures",
+      "diagnostics",
+      "system_fingerprints",
+      "memory_snapshot",
+      "per-case token and latency metrics"
+    ],
+    "consequence": "Class-level metrics are complete and authoritative. Category accuracy, the three designated regressions and every diagnostic are unmeasured for this run."
+  },
+  "scoring": {
+    "nature_to_class": {
+      "confirmed_conflict": "conflict",
+      "possible_conflict": "conflict",
+      "state_change": "no_conflict",
+      "insufficient_evidence": "insufficient_evidence"
+    },
+    "precedence": [
+      "conflict",
+      "insufficient_evidence",
+      "no_conflict"
+    ]
+  },
+  "thresholds": {
+    "source": "carried over unchanged from V10 REQUIRED_THRESHOLDS; not re-registered for V11's nature-based scoring",
+    "macro_f1_min": 0.8,
+    "conflict_recall_min": 0.8,
+    "insufficient_evidence_recall_min": 0.8,
+    "no_conflict_false_positive_rate_max": 0.2
+  },
+  "metrics": {
+    "confusion_matrix": {
+      "conflict": {
+        "conflict": 10,
+        "no_conflict": 2,
+        "insufficient_evidence": 0
+      },
+      "no_conflict": {
+        "conflict": 0,
+        "no_conflict": 12,
+        "insufficient_evidence": 0
+      },
+      "insufficient_evidence": {
+        "conflict": 0,
+        "no_conflict": 3,
+        "insufficient_evidence": 9
+      }
+    },
+    "per_class": {
+      "conflict": {
+        "precision": 1.0,
+        "recall": 0.8333333333333334,
+        "f1": 0.9090909090909091
+      },
+      "no_conflict": {
+        "precision": 0.7058823529411765,
+        "recall": 1.0,
+        "f1": 0.8275862068965517
+      },
+      "insufficient_evidence": {
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.8571428571428571
+      }
+    },
+    "macro_f1": 0.864606657710106,
+    "no_conflict_false_positive_rate": 0.0,
+    "correct": 31,
+    "total": 36,
+    "median_seconds": 8.7,
+    "max_seconds": 36.2,
+    "terminal": {
+      "completed": 36
+    }
+  },
+  "threshold_checks": {
+    "macro_f1": true,
+    "conflict_recall": true,
+    "insufficient_evidence_recall": false,
+    "no_conflict_false_positive_rate": true,
+    "conflict_category_accuracy": null,
+    "designated_regressions": null
+  },
+  "gate_status": "failed_insufficient_evidence_recall",
+  "misclassified": [
+    "hv11-016",
+    "hv11-021",
+    "hv11-024",
+    "hv11-031",
+    "hv11-033"
+  ],
+  "interpretation_caveat": "The five misses are all silent: something expected was read as no_conflict, and there is no false positive anywhere. Because natures were lost, it is unknown how many of them the model actually returned as state_change, which V11 scores as no_conflict but V10's status-based scoring would have scored as conflict. That ambiguity is what the second run is for.",
+  "case_results": [
+    {
+      "case_id": "hv11-001",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "status": "completed",
+      "seconds": 14.8
+    },
+    {
+      "case_id": "hv11-002",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 3.0
+    },
+    {
+      "case_id": "hv11-003",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "status": "completed",
+      "seconds": 12.1
+    },
+    {
+      "case_id": "hv11-004",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "status": "completed",
+      "seconds": 20.9
+    },
+    {
+      "case_id": "hv11-005",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 4.0
+    },
+    {
+      "case_id": "hv11-006",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "status": "completed",
+      "seconds": 16.2
+    },
+    {
+      "case_id": "hv11-007",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "status": "completed",
+      "seconds": 9.7
+    },
+    {
+      "case_id": "hv11-008",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 2.5
+    },
+    {
+      "case_id": "hv11-009",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "status": "completed",
+      "seconds": 20.9
+    },
+    {
+      "case_id": "hv11-010",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "status": "completed",
+      "seconds": 9.5
+    },
+    {
+      "case_id": "hv11-011",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 3.1
+    },
+    {
+      "case_id": "hv11-012",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "status": "completed",
+      "seconds": 20.1
+    },
+    {
+      "case_id": "hv11-013",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "status": "completed",
+      "seconds": 36.2
+    },
+    {
+      "case_id": "hv11-014",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 2.3
+    },
+    {
+      "case_id": "hv11-015",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "status": "completed",
+      "seconds": 14.7
+    },
+    {
+      "case_id": "hv11-016",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 13.3
+    },
+    {
+      "case_id": "hv11-017",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 3.0
+    },
+    {
+      "case_id": "hv11-018",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "status": "completed",
+      "seconds": 8.6
+    },
+    {
+      "case_id": "hv11-019",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "status": "completed",
+      "seconds": 22.8
+    },
+    {
+      "case_id": "hv11-020",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 5.9
+    },
+    {
+      "case_id": "hv11-021",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 4.5
+    },
+    {
+      "case_id": "hv11-022",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "status": "completed",
+      "seconds": 6.4
+    },
+    {
+      "case_id": "hv11-023",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 3.3
+    },
+    {
+      "case_id": "hv11-024",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 3.1
+    },
+    {
+      "case_id": "hv11-025",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "status": "completed",
+      "seconds": 13.4
+    },
+    {
+      "case_id": "hv11-026",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 2.4
+    },
+    {
+      "case_id": "hv11-027",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "status": "completed",
+      "seconds": 9.9
+    },
+    {
+      "case_id": "hv11-028",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "status": "completed",
+      "seconds": 15.5
+    },
+    {
+      "case_id": "hv11-029",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 6.2
+    },
+    {
+      "case_id": "hv11-030",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "status": "completed",
+      "seconds": 8.4
+    },
+    {
+      "case_id": "hv11-031",
+      "expected_class": "conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 15.5
+    },
+    {
+      "case_id": "hv11-032",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 5.5
+    },
+    {
+      "case_id": "hv11-033",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 2.9
+    },
+    {
+      "case_id": "hv11-034",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "status": "completed",
+      "seconds": 11.6
+    },
+    {
+      "case_id": "hv11-035",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "status": "completed",
+      "seconds": 2.6
+    },
+    {
+      "case_id": "hv11-036",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "status": "completed",
+      "seconds": 8.7
+    }
+  ]
+}
