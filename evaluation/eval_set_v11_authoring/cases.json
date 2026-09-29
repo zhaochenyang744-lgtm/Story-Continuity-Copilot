@@ -1,0 +1,481 @@
+{
+  "version": "eval-set-v11-authoring-1",
+  "author": "Codex",
+  "corpora": [
+    {
+      "key": "jinyu_credit_market",
+      "title": "烬榆集的赊账日",
+      "language": "zh",
+      "source": "# 第一章 月纹账本\n\n烬榆集的月纹账本遵守一条永久不变的魔法规则：任何时候，消除债纹都必须先足额交付债票写明的实物。口头免债、签字转让或撕毁纸页均不能消除债纹，摊主也无权批准例外；撕掉的债纹会在封底重新出现。\n\n# 第二章 铃扣验料\n\n2031年6月18日10点，验料员折洄确认，编号乙九的铃扣通体由锡制成，没有铜制部分，也没有镀铜层。货主原先只凭颜色猜测材质，这回特意把检验结果附在小盒内，免得接手的人继续沿用猜法。\n\n# 第三章 雨棚外沿\n\n2031年6月18日11点，应漪把摊位雨棚的外沿卷高，让背着竹篓的顾客能从下面走过。雨水顺着另一侧的导绳流进石槽，邻摊的人把晒干的绳圈搬了进去；她等通道空出来，才重新铺开价签。\n\n# 第四章 旧坠子的来处\n\n闻枞带来一枚镂空石坠，希望辨认它是否出自荇垣窑址。登记页只记录了坠子的纹样、尺寸和收购月份，没有出土地点；与它形状相近的坠子在两处相隔很远的遗址都曾出现，这里没有材料比对结果。\n\n# 第五章 铜秤旁的争执\n\n晌午有顾客指着挂在梁上的旧秤，怀疑摊主把秤砣换重了。折洄取下砣子放在布上，约双方等公秤空下来再称。他没有凭顾客的抱怨宣布结论，周围看热闹的人只好给通道让出半步。\n\n# 第六章 送去修补的围裙\n\n2031年6月18日15点，卓蓿把破口的围裙送到缝补摊，并选了一块深绿布作补片。缝补人先用粉笔圈出磨薄的边缘，再请她傍晚来取；她把摊位位置记在手背上，免得散场时走错巷口。\n\n# 第七章 柜台下的黑釉匣\n\n雨停后，柜台下多了一只黑釉匣，里头装着几根香木签，匣身却没有姓名或独有标记。应漪和闻枞都使用同款匣子，现场也没有人看见是谁落下的。值守人把两人的联系方式写在登记页旁，暂未联系到任何一方。\n\n# 第八章 封底的亮纹\n\n收市时，风把账本翻到了封底，一道尚未消失的债纹映在石墙上。值守人将本子合好，连同黑釉匣收进柜台抽屉，并另留一张待查纸条。巷里的灯逐盏熄灭，第二天的摊位线仍清楚地画在地上。"
+    },
+    {
+      "key": "huangting_recording",
+      "title": "簧汀录音室的空白段",
+      "language": "zh",
+      "source": "# 第一章 定稿的混音\n\n2031年8月4日16点，簧汀录音室的交接单确认：《折叶曲》本次定稿混音由沈玦独自完成，录音助理祁沅只整理过谱架，没有参与混音。交接人把两人的工作分开列出，避免把在场人员都算作制作人。\n\n# 第二章 没拆开的说明\n\n2031年8月4日16点，歌手简杼还不知道《折叶曲》的隐藏声部由谁演唱；她既未获得这个信息，也未形成任何人选判断。制作方交来的说明仍未拆开，她把信封压在水杯下，先去找遗落的围巾。\n\n# 第三章 防止门缝漏声\n\n2031年8月4日13点，祁沅沿录音室门缝贴了一圈泡棉条，随后把剪下的边角收进纸袋。等候的歌手看见门能关严，才把走廊的凳子搬回原处；室内的试听工作还没有开始。\n\n# 第四章 两份播放记录\n\n旧素材甲和新素材乙的现场播放耗时分别为四十秒与五十秒，但当时播放器可能使用正常速度或加倍速度。记录没有保存各自的速度设置，原始文件也未送来，因此无法从这两次播放耗时还原两份录音各自的实际时长。\n\n# 第五章 匿名的低声部\n\n试听带里有一句低声部，封套只写着“客席”，没有姓名。牧翎和江砚都曾来棚试唱相同旋律，现存照片只拍到等待区。制作方没有提供该句的分轨记录，听众对两人音色是否相似也意见不一。\n\n# 第六章 走廊的小地毯\n\n2031年8月4日17点，简杼在监听区入口铺了一块窄地毯，免得搬来的脚凳划伤地板。她蹲下把卷起的一角压平，又把自己的鞋移到门边，留下足够的宽度让搬设备的人通过。\n\n# 第七章 缺失的空白段\n\n剪辑员发现备份目录里有一段没有波形的空白，便把它的编号写进待查清单。他暂时没有把这段空白归因于录音设备、拷贝过程或表演停顿，因为三种情况都需要再看各自的记录才能区分。\n\n# 第八章 关灯之前\n\n最后离开的人把谱架折起，靠在储物柜旁，没有移动水杯下的信封。走廊的泡棉边角已经清走，门外只留着第二天的排班纸。远处车辆的声响渐弱，录音室恢复到可以听见挂钟的安静。"
+    },
+    {
+      "key": "luliao_last_collection",
+      "title": "陆蓼邮局的末班车",
+      "language": "zh",
+      "source": "# 第一章 交来的修订页\n\n2031年10月22日18点12分，叶徊向陆蓼邮局交来了当天末班车乌藤邮袋清单的唯一一份修订页。收件人当面记下时间，把旧清单折起放在旁边；当天没有其他同名修订件，也没有提前送达的副本。\n\n# 第二章 末班车的封袋\n\n2031年10月22日18点整，当天末班车的乌藤邮袋完成了唯一一次封口，此后没有重新开袋封口。装袋员将封线多出的部分剪齐，把袋子拖到车旁，让检查者能看清封条上的编号。\n\n# 第三章 北柜的值守\n\n2031年10月22日19点，翁栎在三号分拣间北柜前核对邮资戳，全程留在这间屋内。经过的人把一盏小台灯移近柜边，她顺手将待查的信封分成两摞，给已经看清的戳印留出单独位置。\n\n# 第四章 两间分拣屋\n\n2031年10月22日19点，陆蓼邮局的三号分拣间全部位于东楼，西楼与东楼是隔巷独立的两栋建筑，两者没有重叠空间。搬运人员沿屋外连廊往返，但连廊不属于任何一间分拣屋。\n\n# 第五章 未写明去向的袋号\n\n登记簿列出紫签邮袋和蓝签邮袋各一只，又列出蘧渡、苇岔两个目的地，却漏填了袋号与目的地的对应栏。记录员确认两只袋子分别送往这两个地方，现有页上没有说明哪只送去哪里。\n\n# 第六章 风里的明信片\n\n2031年10月22日17点，叶徊用一枚石镇压住摊开的明信片，免得门口穿堂风把它们吹散。她挑出边角潮湿的两张另放在干纸上，没有把任何一张塞入刚送来的包裹。\n\n# 第七章 没量过的坡道\n\n车夫冉荑接到运送大型邮箱的请求，先量出邮箱最宽处为九十厘米。屋后的坡道途中有一处收窄，但图纸只画了形状，未标出那里的净宽；他尚未到现场丈量，便把是否能整箱通过的问题留在派车单上。\n\n# 第八章 关闭侧窗\n\n2031年10月22日20点，翁栎合上靠巷口的侧窗，把窗下的邮资目录放回高架。屋内的人仍在处理各自的登记页，走廊里只剩来取自行车的值班员，她等脚步声远去才熄掉窗边台灯。"
+    },
+    {
+      "key": "mosswick_costume_rental",
+      "title": "Mosswick's Costume Return",
+      "language": "en",
+      "source": "# Chapter 1 The Fiber Inspection\n\nAt 12:40 on 9 February, the teal sash marked H6 was made entirely of cotton, with no linen fibers or linen trim. Inspector Sorrel Venn attached the finding to its rental record after an earlier customer had guessed its material from its sheen.\n\n# Chapter 2 Brown Paper\n\nAt 12:40 on 9 February, the silver cape was among the returned pieces wrapped in brown paper. Its rental tag remained attached outside the wrapping, where the intake clerk could read it without unfolding the long fabric.\n\n# Chapter 3 The Sorting Containers\n\nAt 12:40 on 9 February, every brown-paper-wrapped returned piece at Mosswick lay inside the blue hamper. The yellow trunk was a separate, nonoverlapping container across the aisle. Neither container sat inside the other.\n\n# Chapter 4 Under the Cutting Table\n\nAt 13:15 on 9 February, Belden Orr swept loose rivets from beneath the cutting table into a shallow pan. He left a missing-button notice on the counter, hoping the next delivery would include the correct replacements.\n\n# Chapter 5 A Combined Refund\n\nA receipt records a forty-crown refund to renter Neris Tal. The amount combines a deposit refund and a discount on rental fees, but gives neither component separately. Her original deposit was thirty crowns; the account breakdown is missing.\n\n# Chapter 6 Samples from a Crate\n\nEight unlabelled mantles arrived in delivery crate K8. The clerk measured two and found matching lengths, but left the other six folded. No packing list specified their sizes, and the supplier had previously shipped both uniform and mixed-size sets.\n\n# Chapter 7 The Window Display\n\nAt 16:10 on 9 February, Sorrel Venn replaced the faded window price card with a handwritten one. She placed a small ceramic bird against its lower edge to keep it upright, then stepped outside to check whether the lettering was readable.\n\n# Chapter 8 Before Closing\n\nThe final customer paused beneath the striped awning while Belden gathered the empty hangers. Neris had left a request for her account breakdown. The clerk clipped it beside the refund receipt so it would be visible when the ledger arrived."
+    },
+    {
+      "key": "ternhollow_model_railway",
+      "title": "Ternhollow's Model Freight Run",
+      "language": "en",
+      "source": "# Chapter 1 The Loaded Wagon\n\nAt 10:25 on 17 March, model wagon P12 held four wooden barrels in its cargo bay. None had been removed or unloaded. Its driver knelt beside the miniature track to straighten a wheel before the visitors entered the viewing area.\n\n# Chapter 2 Preparing the Demonstration\n\nAt 10:25 on 17 March, Ternhollow's public freight demonstration had not yet started. Technicians were still making preparations, and the opening signal had not been given. The earlier private equipment check was a separate activity.\n\n# Chapter 3 A Painted Milestone\n\nAt 09:40 on 17 March, Keston Briar painted a white ring around the miniature milestone beside the tunnel. He shielded the nearby grass mat with scrap paper, then carried the wet brush to the workshop sink.\n\n# Chapter 4 The Unsigned Reservation\n\nElva Rook booked twelve viewing seats for a group, leaving only her name and a telephone number. The booking form gives no ages or school affiliation. The number of seats includes anyone accompanying the group, not just its principal members.\n\n# Chapter 5 The Replacement Motor\n\nReplacement motor J9 ran unloaded for an hour on the bench without stopping. Its label gives no permitted load, and nobody tried it on the inclined track. The freight route includes a steep ramp that is absent from the bench setup.\n\n# Chapter 6 The Station Curtains\n\nAt 11:05 on 17 March, Maelin Quist drew the viewing-room curtains halfway across the windows to reduce glare on the model station. The lower part of each window remained exposed, leaving enough light for visitors to read their tickets.\n\n# Chapter 7 A Separate Rehearsal\n\nThe technicians discussed their private equipment check while waiting for the public opening. It had covered the lights and sound effects, without an audience. They kept its notes in a folder separate from the demonstration schedule.\n\n# Chapter 8 The Exit Table\n\nNear closing, Keston arranged blank postcards on the exit table, with a sketch of the railway available as a drawing reference. A visitor left an unfinished mountain scene behind, and Maelin set it aside rather than adding it to the unused cards."
+    },
+    {
+      "key": "sablefen_translation_residency",
+      "title": "The Sablefen Translation Residency",
+      "language": "en",
+      "source": "# Chapter 1 The Reedglass Collection\n\nAt 16:10 on 28 September, the complete Reedglass collection edited by Odrin Vale consisted of exactly three translations: Small River, Stone Sleep and Dewline. Dewline was part of that collection, rather than a supplement or a proposed title for a later edition.\n\n# Chapter 2 The Release Ledger\n\nAt 16:10 on 28 September, Dewline remained an unpublished draft; no edition of that translation had been released. Odrin Vale was marking its margins while the press waited for a corrected file. The ledger recorded its release as pending.\n\n# Chapter 3 The Pen Name Register\n\nAt 16:10 on 28 September, the register assigned the pen name Rell exclusively to translator Odrin Vale. No other resident used that name, and the registration had not been transferred. Feska Noll worked under her own name.\n\n# Chapter 4 The Small River Credit\n\nAt 16:10 on 28 September, the approved credit for the Small River translation named Rell as its sole translator, with no co-translator. The sheet separately named the printer and cover artist so that those roles would not be confused.\n\n# Chapter 5 A Stack of Margins\n\nAt 15:20 on 28 September, Feska Noll clipped the loose glossary pages together and placed them beside the reading lamp. She kept the paper covers separate, since the binder still needed to trim their uneven edges.\n\n# Chapter 6 Two Meanings of Senn\n\nThe invented language in the source manuscript uses senn for both a river bend and a gathering place. A detached slip contains only that word, with no surrounding sentence or illustration. The translator has no other copy of the missing passage.\n\n# Chapter 7 A Delivery Receipt\n\nOdrin Vale sent a permission request to the author by tracked post on 24 September. The receipt confirms dispatch but contains no delivery scan. The residency has neither a reply nor a record showing when the envelope reached its destination.\n\n# Chapter 8 A Seat by the Door\n\nAt 18:00 on 28 September, Tavia Pell moved a low chair beside the entrance for the visiting binder. She cleared the space in front of it so a paper trolley could pass, then returned to checking the order of the folded sheets."
+    }
+  ],
+  "cases": [
+    {
+      "id": "hv11-001",
+      "corpus": "jinyu_credit_market",
+      "draft": "按照烬榆集月纹账本的永久规则，摊主仅凭口头免债就能让尚未交付实物的债纹消失。",
+      "expected_class": "conflict",
+      "category": "world_rule",
+      "evidence": [
+        "第一章 月纹账本"
+      ],
+      "designated_regression": true,
+      "note": "永久规则明确排除口头免债；只需该规则即可反证，不依赖任何一笔债务的实例状态。"
+    },
+    {
+      "id": "hv11-002",
+      "corpus": "jinyu_credit_market",
+      "draft": "2031年6月18日11点，应漪卷高了雨棚外沿，给背竹篓的顾客让出通行空间。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "第三章 雨棚外沿"
+      ],
+      "designated_regression": false,
+      "note": "同一时间的动作、执行者与目的均有直接叙述。"
+    },
+    {
+      "id": "hv11-003",
+      "corpus": "jinyu_credit_market",
+      "draft": "闻枞带来的那枚镂空石坠出土于荇垣窑址。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "第四章 旧坠子的来处"
+      ],
+      "designated_regression": false,
+      "note": "形状相似不能唯一确定产地，缺出土记录或材料比对；也没有证据排除该窑址。"
+    },
+    {
+      "id": "hv11-004",
+      "corpus": "jinyu_credit_market",
+      "draft": "编号乙九的铃扣通体由铜制成。",
+      "expected_class": "conflict",
+      "category": "attribute",
+      "evidence": [
+        "第二章 铃扣验料"
+      ],
+      "designated_regression": false,
+      "note": "来源明确为锡且无铜，与草稿材质相反；草稿未限定同刻，按新口径接受可能矛盾，不将缺时间单独标成证据不足。"
+    },
+    {
+      "id": "hv11-005",
+      "corpus": "jinyu_credit_market",
+      "draft": "2031年6月18日15点，卓蓿为送修的围裙选了一块深绿补片。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "第六章 送去修补的围裙"
+      ],
+      "designated_regression": false,
+      "note": "原文明示补片颜色与选定者；草稿未断言修补已经完成。"
+    },
+    {
+      "id": "hv11-006",
+      "corpus": "jinyu_credit_market",
+      "draft": "雨停后柜台下发现的黑釉匣属于应漪。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "第七章 柜台下的黑釉匣"
+      ],
+      "designated_regression": false,
+      "note": "两人均有同款匣，无独有标记、目击或认领，缺失物主身份环节。"
+    },
+    {
+      "id": "hv11-007",
+      "corpus": "huangting_recording",
+      "draft": "2031年8月4日16点，《折叶曲》本次定稿混音由祁沅完成。",
+      "expected_class": "conflict",
+      "category": "relationship",
+      "evidence": [
+        "第一章 定稿的混音"
+      ],
+      "designated_regression": true,
+      "note": "同一时间明确混音执行者只有沈玦，祁沅未参与；考察谁完成该工作。"
+    },
+    {
+      "id": "hv11-008",
+      "corpus": "huangting_recording",
+      "draft": "2031年8月4日13点，祁沅在录音室门缝贴上了一圈泡棉条。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "第三章 防止门缝漏声"
+      ],
+      "designated_regression": false,
+      "note": "直接支持材料、动作和执行者。"
+    },
+    {
+      "id": "hv11-009",
+      "corpus": "huangting_recording",
+      "draft": "旧素材甲的实际录音时长比新素材乙更短。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "第四章 两份播放记录"
+      ],
+      "designated_regression": false,
+      "note": "各自可能以一倍或二倍速度播放，实际时长可为40或80秒与50或100秒，顺序无法确定。"
+    },
+    {
+      "id": "hv11-010",
+      "corpus": "huangting_recording",
+      "draft": "2031年8月4日16点，简杼已经知道《折叶曲》的隐藏声部由谁演唱。",
+      "expected_class": "conflict",
+      "category": "character_knowledge",
+      "evidence": [
+        "第二章 没拆开的说明"
+      ],
+      "designated_regression": false,
+      "note": "原文明示该时刻尚不知道且无判断，不能从她持有未拆信封推出获知。"
+    },
+    {
+      "id": "hv11-011",
+      "corpus": "huangting_recording",
+      "draft": "2031年8月4日17点，简杼给监听区入口铺上了窄地毯。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "第六章 走廊的小地毯"
+      ],
+      "designated_regression": false,
+      "note": "动作与时间直接记载。"
+    },
+    {
+      "id": "hv11-012",
+      "corpus": "huangting_recording",
+      "draft": "试听带里那句署名为“客席”的低声部由牧翎演唱。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "第五章 匿名的低声部"
+      ],
+      "designated_regression": false,
+      "note": "来棚试唱和等待区照片不能对应到最终采用的这一句，缺分轨身份信息。"
+    },
+    {
+      "id": "hv11-013",
+      "corpus": "luliao_last_collection",
+      "draft": "2031年10月22日末班车乌藤邮袋清单的修订页送达邮局，发生在乌藤邮袋封口之前。",
+      "expected_class": "conflict",
+      "category": "timeline",
+      "evidence": [
+        "第一章 交来的修订页",
+        "第二章 末班车的封袋"
+      ],
+      "designated_regression": false,
+      "note": "同日唯一修订页18点12分送达，唯一封口18点，故送达在封口之后；须联合两章。"
+    },
+    {
+      "id": "hv11-014",
+      "corpus": "luliao_last_collection",
+      "draft": "2031年10月22日17点，叶徊用石镇压住了摊开的明信片。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "第六章 风里的明信片"
+      ],
+      "designated_regression": false,
+      "note": "直接叙述，同一时间。"
+    },
+    {
+      "id": "hv11-015",
+      "corpus": "luliao_last_collection",
+      "draft": "登记簿上的紫签邮袋送往蘧渡。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "第五章 未写明去向的袋号"
+      ],
+      "designated_regression": false,
+      "note": "两个袋号与两个目的地之间缺对应关系，任一排列均未被排除。"
+    },
+    {
+      "id": "hv11-016",
+      "corpus": "luliao_last_collection",
+      "draft": "2031年10月22日19点，翁栎在陆蓼邮局的西楼里核对邮资戳。",
+      "expected_class": "conflict",
+      "category": "location_action",
+      "evidence": [
+        "第三章 北柜的值守",
+        "第四章 两间分拣屋"
+      ],
+      "designated_regression": false,
+      "note": "人物留在三号分拣间，该间位于与西楼互斥的东楼；人物位置与建筑映射共同反证。"
+    },
+    {
+      "id": "hv11-017",
+      "corpus": "luliao_last_collection",
+      "draft": "2031年10月22日20点，翁栎关上了靠巷口的侧窗。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "第八章 关闭侧窗"
+      ],
+      "designated_regression": false,
+      "note": "原文直接支持关窗动作。"
+    },
+    {
+      "id": "hv11-018",
+      "corpus": "luliao_last_collection",
+      "draft": "冉荑要运送的那个大型邮箱能够整箱通过屋后坡道的收窄处。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "第七章 没量过的坡道"
+      ],
+      "designated_regression": false,
+      "note": "只知箱宽九十厘米，缺收窄处净宽，无法确定能否通过。"
+    },
+    {
+      "id": "hv11-019",
+      "corpus": "mosswick_costume_rental",
+      "draft": "At Mosswick, the silver cape lay inside the yellow trunk at 12:40 on 9 February.",
+      "expected_class": "conflict",
+      "category": "object_state",
+      "evidence": [
+        "Chapter 2 Brown Paper",
+        "Chapter 3 The Sorting Containers"
+      ],
+      "designated_regression": false,
+      "note": "The cape belongs to the brown-wrapped group; every member is in the blue hamper at the same time, and the yellow trunk is spatially separate. Both passages are necessary."
+    },
+    {
+      "id": "hv11-020",
+      "corpus": "mosswick_costume_rental",
+      "draft": "Belden Orr swept the loose rivets beneath the cutting table into a shallow pan at 13:15 on 9 February.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 4 Under the Cutting Table"
+      ],
+      "designated_regression": false,
+      "note": "The source directly describes this action and its time."
+    },
+    {
+      "id": "hv11-021",
+      "corpus": "mosswick_costume_rental",
+      "draft": "Neris Tal received her entire thirty-crown deposit back as part of the forty-crown refund.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 5 A Combined Refund"
+      ],
+      "designated_regression": false,
+      "note": "A combined total does not identify the deposit component; both a full and a partial deposit refund remain compatible with the receipt."
+    },
+    {
+      "id": "hv11-022",
+      "corpus": "mosswick_costume_rental",
+      "draft": "At 12:40 on 9 February, the teal sash marked H6 was made entirely of linen.",
+      "expected_class": "conflict",
+      "category": "attribute",
+      "evidence": [
+        "Chapter 1 The Fiber Inspection"
+      ],
+      "designated_regression": true,
+      "note": "The same-time material inspection explicitly establishes cotton with no linen; only this physical attribute is disputed."
+    },
+    {
+      "id": "hv11-023",
+      "corpus": "mosswick_costume_rental",
+      "draft": "Sorrel Venn put a handwritten price card in the window at 16:10 on 9 February.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 7 The Window Display"
+      ],
+      "designated_regression": false,
+      "note": "The card replacement is directly narrated."
+    },
+    {
+      "id": "hv11-024",
+      "corpus": "mosswick_costume_rental",
+      "draft": "All eight mantles in delivery crate K8 had the same length.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 6 Samples from a Crate"
+      ],
+      "designated_regression": false,
+      "note": "Only two were measured. Neither the sizes of the other six nor a uniform-size packing specification is available."
+    },
+    {
+      "id": "hv11-025",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Model wagon P12 had an empty cargo bay.",
+      "expected_class": "conflict",
+      "category": "object_state",
+      "evidence": [
+        "Chapter 1 The Loaded Wagon"
+      ],
+      "designated_regression": false,
+      "note": "The source explicitly places four barrels in P12. The draft supplies no time scope, so possible_conflict is acceptable under the new non-designated policy; missing time alone is not a missing-evidence case."
+    },
+    {
+      "id": "hv11-026",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Keston Briar painted a white ring on the miniature milestone at 09:40 on 17 March.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 3 A Painted Milestone"
+      ],
+      "designated_regression": false,
+      "note": "The source directly states the painter, ring and time."
+    },
+    {
+      "id": "hv11-027",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Elva Rook's twelve-seat group reservation was made for a school class.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 4 The Unsigned Reservation"
+      ],
+      "designated_regression": false,
+      "note": "The booking establishes group size but provides no ages or school affiliation; a school class is possible but unconfirmed."
+    },
+    {
+      "id": "hv11-028",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Ternhollow's public freight demonstration was already underway.",
+      "expected_class": "conflict",
+      "category": "event_status",
+      "evidence": [
+        "Chapter 2 Preparing the Demonstration"
+      ],
+      "designated_regression": false,
+      "note": "The source explicitly says the public demonstration has not started. The undated draft asserts the opposite status; possible_conflict is acceptable, without treating the separate private equipment check as the public event."
+    },
+    {
+      "id": "hv11-029",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Maelin Quist partly closed the viewing-room curtains at 11:05 on 17 March.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 6 The Station Curtains"
+      ],
+      "designated_regression": false,
+      "note": "Halfway closure directly supports partial closure without claiming complete darkness."
+    },
+    {
+      "id": "hv11-030",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Replacement motor J9 could pull the freight load up the route's steep ramp.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 5 The Replacement Motor"
+      ],
+      "designated_regression": false,
+      "note": "Successful unloaded bench operation supplies neither an adequate load rating nor a loaded ramp trial, so the required capability remains unknown."
+    },
+    {
+      "id": "hv11-031",
+      "corpus": "sablefen_translation_residency",
+      "draft": "Feska Noll was the sole translator credited for Small River at 16:10 on 28 September.",
+      "expected_class": "conflict",
+      "category": "relationship",
+      "evidence": [
+        "Chapter 3 The Pen Name Register",
+        "Chapter 4 The Small River Credit"
+      ],
+      "designated_regression": false,
+      "note": "The exclusive Rell-to-Odrin identity and the sole-translator credit jointly exclude Feska; neither passage alone establishes the complete attribution."
+    },
+    {
+      "id": "hv11-032",
+      "corpus": "sablefen_translation_residency",
+      "draft": "Feska Noll placed the clipped glossary pages beside the reading lamp at 15:20 on 28 September.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 5 A Stack of Margins"
+      ],
+      "designated_regression": false,
+      "note": "The action is explicitly described with that time."
+    },
+    {
+      "id": "hv11-033",
+      "corpus": "sablefen_translation_residency",
+      "draft": "The word senn on the detached slip refers to a gathering place.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 6 Two Meanings of Senn"
+      ],
+      "designated_regression": false,
+      "note": "Both meanings are established, but the context needed to select one is missing; neither sense is ruled out."
+    },
+    {
+      "id": "hv11-034",
+      "corpus": "sablefen_translation_residency",
+      "draft": "Publication of the complete Reedglass collection edited by Odrin Vale had finished at 16:10 on 28 September.",
+      "expected_class": "conflict",
+      "category": "event_status",
+      "evidence": [
+        "Chapter 1 The Reedglass Collection",
+        "Chapter 2 The Release Ledger"
+      ],
+      "designated_regression": false,
+      "note": "One source establishes Dewline as a required member of the complete collection; the other establishes it remains unpublished at that time, preventing completion of publication of the whole collection."
+    },
+    {
+      "id": "hv11-035",
+      "corpus": "sablefen_translation_residency",
+      "draft": "Tavia Pell put a low chair beside the entrance at 18:00 on 28 September.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 8 A Seat by the Door"
+      ],
+      "designated_regression": false,
+      "note": "The placement action and time are directly supported."
+    },
+    {
+      "id": "hv11-036",
+      "corpus": "sablefen_translation_residency",
+      "draft": "Odrin Vale's permission request reached the author on 26 September.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 7 A Delivery Receipt"
+      ],
+      "designated_regression": false,
+      "note": "Dispatch on the 24th does not fix the arrival date; no delivery scan or reply supplies the missing date."
+    }
+  ]
+}
