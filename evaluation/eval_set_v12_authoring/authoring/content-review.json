@@ -1,0 +1,359 @@
+{
+  "reviewer": "Author self-review, not independent or blind",
+  "format": "Same schema and byte-identical static checker as the third set",
+  "shared_name_or_item_checks": [
+    {
+      "id": "hv12-001",
+      "chapter_title": "第一章 映砂的永久法则",
+      "shared_name_or_item": "映砂"
+    },
+    {
+      "id": "hv12-002",
+      "chapter_title": "第三章 镜架旁的木墩",
+      "shared_name_or_item": "斐萝"
+    },
+    {
+      "id": "hv12-003",
+      "chapter_title": "第四章 青穗灯影的复测",
+      "shared_name_or_item": "青穗灯影"
+    },
+    {
+      "id": "hv12-004",
+      "chapter_title": "第二章 弧贝盘的边角",
+      "shared_name_or_item": "弧贝折光盘"
+    },
+    {
+      "id": "hv12-005",
+      "chapter_title": "第六章 雨后的小旗",
+      "shared_name_or_item": "胥洵"
+    },
+    {
+      "id": "hv12-006",
+      "chapter_title": "第五章 发出的改期便条",
+      "shared_name_or_item": "闻茉"
+    },
+    {
+      "id": "hv12-007",
+      "chapter_title": "第一章 捐赠人与搬运者",
+      "shared_name_or_item": "牧昀"
+    },
+    {
+      "id": "hv12-008",
+      "chapter_title": "第三章 展开的摹本",
+      "shared_name_or_item": "牧昀"
+    },
+    {
+      "id": "hv12-009",
+      "chapter_title": "第四章 阅览证与修订页",
+      "shared_name_or_item": "唐蒻"
+    },
+    {
+      "id": "hv12-010",
+      "chapter_title": "第二章 桂绎的判断",
+      "shared_name_or_item": "桂绎"
+    },
+    {
+      "id": "hv12-011",
+      "chapter_title": "第六章 通风窗下",
+      "shared_name_or_item": "澄逖"
+    },
+    {
+      "id": "hv12-012",
+      "chapter_title": "第五章 两卷相同的藏印",
+      "shared_name_or_item": "迟潮引"
+    },
+    {
+      "id": "hv12-013",
+      "chapter_title": "第一章 北渠的测线",
+      "shared_name_or_item": "迢槿坡北渠"
+    },
+    {
+      "id": "hv12-013",
+      "chapter_title": "第二章 北渠的浇筑",
+      "shared_name_or_item": "迢槿坡北渠"
+    },
+    {
+      "id": "hv12-014",
+      "chapter_title": "第四章 画在石阶上的箭头",
+      "shared_name_or_item": "岑汀"
+    },
+    {
+      "id": "hv12-015",
+      "chapter_title": "第五章 收到的绕行申请",
+      "shared_name_or_item": "何蘩"
+    },
+    {
+      "id": "hv12-016",
+      "chapter_title": "第三章 暂停的栅板安装",
+      "shared_name_or_item": "栅板安装"
+    },
+    {
+      "id": "hv12-017",
+      "chapter_title": "第七章 石缝里的细绳",
+      "shared_name_or_item": "池洇"
+    },
+    {
+      "id": "hv12-018",
+      "chapter_title": "第六章 留下的起始水位",
+      "shared_name_or_item": "赤湾池"
+    },
+    {
+      "id": "hv12-019",
+      "chapter_title": "Chapter 1 The Observation Desk",
+      "shared_name_or_item": "Adera Flint"
+    },
+    {
+      "id": "hv12-019",
+      "chapter_title": "Chapter 2 The Gallery Plan",
+      "shared_name_or_item": "Brambletide Aquarium"
+    },
+    {
+      "id": "hv12-020",
+      "chapter_title": "Chapter 6 Towels Along the Rail",
+      "shared_name_or_item": "Liora Fenn"
+    },
+    {
+      "id": "hv12-021",
+      "chapter_title": "Chapter 4 Labels on the Buckets",
+      "shared_name_or_item": "Marlo"
+    },
+    {
+      "id": "hv12-022",
+      "chapter_title": "Chapter 3 The Net Handover",
+      "shared_name_or_item": "Cress"
+    },
+    {
+      "id": "hv12-023",
+      "chapter_title": "Chapter 7 The Visitor Bench",
+      "shared_name_or_item": "Pellin Ward"
+    },
+    {
+      "id": "hv12-024",
+      "chapter_title": "Chapter 5 A Shipment Without Follow-up",
+      "shared_name_or_item": "Kelver Reach"
+    },
+    {
+      "id": "hv12-025",
+      "chapter_title": "Chapter 1 The Face Inspection",
+      "shared_name_or_item": "R5"
+    },
+    {
+      "id": "hv12-026",
+      "chapter_title": "Chapter 4 The Rag Sorting Table",
+      "shared_name_or_item": "Idris Foyle"
+    },
+    {
+      "id": "hv12-027",
+      "chapter_title": "Chapter 5 Wet Pulp on the Scale",
+      "shared_name_or_item": "Umbel"
+    },
+    {
+      "id": "hv12-028",
+      "chapter_title": "Chapter 3 The Drying Batch",
+      "shared_name_or_item": "T7"
+    },
+    {
+      "id": "hv12-029",
+      "chapter_title": "Chapter 7 Paper Beside the Window",
+      "shared_name_or_item": "Brenna Keel"
+    },
+    {
+      "id": "hv12-030",
+      "chapter_title": "Chapter 6 The Earlier Layout",
+      "shared_name_or_item": "Cobalt"
+    },
+    {
+      "id": "hv12-031",
+      "chapter_title": "Chapter 1 The Hosts",
+      "shared_name_or_item": "Valra Holt"
+    },
+    {
+      "id": "hv12-032",
+      "chapter_title": "Chapter 6 Clearing the Landing",
+      "shared_name_or_item": "Aven Holt"
+    },
+    {
+      "id": "hv12-033",
+      "chapter_title": "Chapter 4 A Guest Reservation",
+      "shared_name_or_item": "Meriel Knox"
+    },
+    {
+      "id": "hv12-034",
+      "chapter_title": "Chapter 2 The Lift Indicator",
+      "shared_name_or_item": "L3"
+    },
+    {
+      "id": "hv12-034",
+      "chapter_title": "Chapter 3 The Display Legend",
+      "shared_name_or_item": "L3"
+    },
+    {
+      "id": "hv12-035",
+      "chapter_title": "Chapter 7 The Numbered Hooks",
+      "shared_name_or_item": "Valra Holt"
+    },
+    {
+      "id": "hv12-036",
+      "chapter_title": "Chapter 5 The Unopened Crate",
+      "shared_name_or_item": "Thistrel"
+    }
+  ],
+  "designated_regression": [
+    {
+      "id": "hv12-001",
+      "category": "world_rule",
+      "required_nature": "confirmed_conflict",
+      "basis": "The permanent rule explicitly forbids heat from the material's own light, regardless of quantity; the prohibition alone contradicts the draft."
+    },
+    {
+      "id": "hv12-007",
+      "category": "relationship",
+      "required_nature": "confirmed_conflict",
+      "full_time_anchor": "2032年5月8日14点",
+      "product_temporal_guard_passed": true
+    },
+    {
+      "id": "hv12-025",
+      "category": "attribute",
+      "required_nature": "confirmed_conflict",
+      "full_time_anchor": "12:05 on 21 June",
+      "product_temporal_guard_passed": true
+    }
+  ],
+  "ordinary_conflict_policy": "Ordinary conflicts allow confirmed_conflict or possible_conflict. Only the three designated cases require confirmed_conflict plus correct category.",
+  "undated_ordinary_conflicts": [
+    "hv12-010",
+    "hv12-022",
+    "hv12-034"
+  ],
+  "non_designated_conflicts_require_shared_time": false,
+  "needed_facts_explicit_in_source": true,
+  "drafts_independent": true,
+  "one_primary_judgment_per_draft": true,
+  "whole_source_checked_for_unintended_resolution_of_missing_links": true,
+  "insufficient_cases_have_real_missing_links_not_only_missing_time": true,
+  "notes_by_case": {
+    "hv12-001": "原文明示映砂自身发光任何时候都不能使物体升温，数量增加也无例外；规则本身足以反证，无需实例状态。",
+    "hv12-002": "原文直接记载执行者、方位和物品。",
+    "hv12-003": "擦镜面与移动油灯同时发生，缺分离两者影响的观察，既不能确定唯一原因，也不能断言擦镜面没有作用。",
+    "hv12-004": "同一时间的六边形与八边形相斥；考察盘的形状属性。",
+    "hv12-005": "直接支持该时刻的放置动作。",
+    "hv12-006": "有改期提议而无收件人的同意或拒绝，缺答复环节；发出便条不等于双方达成新安排。",
+    "hv12-007": "同一时刻明确捐赠人为澄逖，牧昀仅代为搬运且明确不是捐赠人；争议是行为角色。",
+    "hv12-008": "原文直接支持操作和数量。",
+    "hv12-009": "持证获准进入不等于实际进入并阅读，缺使用权限后的真实见闻。",
+    "hv12-010": "原文明示她持有相反信念；封面的真实鉴定结果不能替代她当时的认知。草稿无时间，普通冲突可判 possible_conflict。",
+    "hv12-011": "原文直接记载此动作。",
+    "hv12-012": "同图案藏印可能被多人使用，缺印主登记和捐赠来源，不能唯一确定两卷来自同一人。",
+    "hv12-013": "同日唯一测线完成于9点05分，唯一浇筑开工于9点20分；两章共同确定草稿把先后关系颠倒。",
+    "hv12-014": "原文直接支持执行者、数量、颜色和时间。",
+    "hv12-015": "只知签收申请，不知审批结果；签收不是批准，但也不构成已经拒绝的证据。",
+    "hv12-016": "同一时间明确仍在进行、尚未完成，短暂停避运料车不改变作业状态。",
+    "hv12-017": "直接叙述了动作及所处理的物品。",
+    "hv12-018": "只有起始水位和注水开始，缺结束读数与可补算的数据；未出现可反证二十厘米的最终结果。",
+    "hv12-019": "One source places Adera in Quill Gallery; the other locates that entire room apart from the roof deck at the same time. Both statements are needed for the location contradiction.",
+    "hv12-020": "The source directly describes the action, count, color and time.",
+    "hv12-021": "The name-to-fish connection was lost before the two tank assignments; the source leaves both individual identifications possible.",
+    "hv12-022": "The source assigns physical custody to Pellin and explicitly excludes Liora. The undated draft may receive possible_conflict; the disputed property is the object's current holder, not authority to use it.",
+    "hv12-023": "This placement action is directly narrated.",
+    "hv12-024": "Being alive at dispatch does not establish survival through arrival; the outcome and follow-up observations are missing, with no reported deaths to contradict the draft.",
+    "hv12-025": "The source directly states the entire working face has an area of 300 square millimeters at the identical time, contradicting 400. No calculation or inference from the other dimension chapter is required.",
+    "hv12-026": "The source directly records the sorting action and destination container.",
+    "hv12-027": "Total wet mass includes an unknown amount of water; no dry measurement or moisture fraction fixes the dry-fiber mass at forty kilograms or rules that value out.",
+    "hv12-028": "The drying cycle is explicitly still running and unfinished at that time; completion of the separate mixing stage does not complete drying.",
+    "hv12-029": "The source directly supports the person, count and action.",
+    "hv12-030": "The source establishes only the earlier position and that some rearrangement occurred; the missing relocation list leaves Cobalt's individual move-or-stay outcome unknown.",
+    "hv12-031": "The source explicitly identifies them as siblings and not spouses at the same time; no assumption about surnames or prohibited family arrangements is needed.",
+    "hv12-032": "The movement and destination are directly narrated.",
+    "hv12-033": "A confirmed booking grants an intended stay, but no arrival, key collection or occupancy record establishes that the stay happened.",
+    "hv12-034": "One source confirms a truthful actual-position display C; the other maps C exclusively to the cellar, not the roof. Both are needed. The draft is undated, so possible_conflict is acceptable for this ordinary case.",
+    "hv12-035": "Numbered cards above the hooks directly support numbering the hooks; the draft makes no claim about coat pegs.",
+    "hv12-036": "An undamaged outer crate and a delivery receipt do not establish each pane's internal condition; the missing inspection could reveal either intact or damaged glass."
+  },
+  "statistics": {
+    "zh": {
+      "works": 3,
+      "chapters": 24,
+      "body_characters": 2064,
+      "mean_body_characters": 86,
+      "max_body_characters": 95,
+      "cases": 18
+    },
+    "en": {
+      "works": 3,
+      "chapters": 24,
+      "body_characters": 5749,
+      "mean_body_characters": 239.54,
+      "max_body_characters": 262,
+      "cases": 18
+    }
+  },
+  "conflict_evidence_sizes": {
+    "1": 9,
+    "2": 3
+  },
+  "novelty": {
+    "comparison_sets": [
+      9,
+      10,
+      11
+    ],
+    "exact_reused_chapter_bodies": 0,
+    "exact_reused_drafts": 0,
+    "exact_reused_source_sentences": 0,
+    "shared_corpus_keys_or_titles": 0,
+    "checked_new_names": [
+      "蒲瓴城",
+      "映砂",
+      "弧贝折光盘",
+      "胥洵",
+      "斐萝",
+      "青穗灯影",
+      "闻茉",
+      "笙岫谱馆",
+      "回苇谱",
+      "澄逖",
+      "牧昀",
+      "桂绎",
+      "浅涧调",
+      "唐蒻",
+      "栎声录",
+      "迟潮引",
+      "覆苹曲",
+      "迢槿坡",
+      "岑汀",
+      "何蘩",
+      "赤湾池",
+      "池洇",
+      "Brambletide",
+      "Adera Flint",
+      "Quill Gallery",
+      "Pellin Ward",
+      "Liora Fenn",
+      "Cress",
+      "Marlo",
+      "Tivin",
+      "Kelver Reach",
+      "Calverin",
+      "Brenna Keel",
+      "Idris Foyle",
+      "Umbel",
+      "Cobalt",
+      "Elmrake",
+      "Valra Holt",
+      "Aven Holt",
+      "Osric Dune",
+      "Meriel Knox",
+      "Alder",
+      "Thistrel"
+    ],
+    "name_collisions": [],
+    "previous_model_results_consulted": false,
+    "limitation": "Exact comparisons and author review are not an independent semantic novelty assessment."
+  },
+  "product_temporal_guard_source_sha256": "dc589618d87e4336b6b10aede2fe730c80f9b8f918e17d98db3e4a275b05f178",
+  "protected_files_unchanged": true,
+  "provider_calls": 0,
+  "model_evaluation_runs": 0,
+  "formal_gate_runs": 0
+}

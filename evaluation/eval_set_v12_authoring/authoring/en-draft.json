@@ -1,0 +1,242 @@
+{
+  "corpora": [
+    {
+      "key": "brambletide_aquarium_census",
+      "title": "Brambletide's Aquarium Census",
+      "language": "en",
+      "source": "# Chapter 1 The Observation Desk\n\nAt 16:45 on 6 April, Adera Flint remained inside Quill Gallery at Brambletide Aquarium, entering observations beside its large viewing pane. She had not left that room during the count, and the desk stood well inside its doorway.\n\n# Chapter 2 The Gallery Plan\n\nAt 16:45 on 6 April, Quill Gallery lay entirely on the lower floor of Brambletide Aquarium. The roof deck was a separate, nonoverlapping area two floors above it. No part of Quill Gallery extended onto the roof deck.\n\n# Chapter 3 The Net Handover\n\nAt 15:50 on 6 April, the net named Cress was in Pellin Ward's sole physical custody. Liora Fenn was not holding or carrying it. Pellin secured its handle to his belt while Liora sorted the dry towels beside the preparation sink.\n\n# Chapter 4 Labels on the Buckets\n\nThe gobies Marlo and Tivin arrived in separate buckets, but both name labels came loose before transfer. One fish entered tank S8 and the other tank S9. Neither the transfer notes nor their visible markings established which fish was Marlo.\n\n# Chapter 5 A Shipment Without Follow-up\n\nFour young eels left Brambletide alive in a transport box bound for Kelver Reach. The departure check recorded their condition, but the aquarium received neither an arrival report nor later observations of the animals at the destination.\n\n# Chapter 6 Towels Along the Rail\n\nAt 17:10 on 6 April, Liora Fenn hung six blue towels along the preparation-room rail. She spaced them apart so their wet edges did not touch, then moved the empty laundry basket away from the doorway before the next trolley arrived.\n\n# Chapter 7 The Visitor Bench\n\nAt 14:20 on 6 April, Pellin Ward moved the visitor bench away from a patch of dripping ceiling. He placed a plain bucket beneath the drip and pointed arriving visitors toward the dry seats, leaving the emergency walkway unobstructed.\n\n# Chapter 8 After the Count\n\nAdera closed the observation notebook after the last visitor left. The loose fish labels remained in an envelope marked for investigation, and the unanswered transport enquiry lay beside it. She kept both items apart from the completed census sheets."
+    },
+    {
+      "key": "calverin_rag_paper_mill",
+      "title": "Calverin's Rag-Paper Mill",
+      "language": "en",
+      "source": "# Chapter 1 The Face Inspection\n\nAt 12:05 on 21 June, the rectangular working face of stamping die R5 had a total area of three hundred square millimeters. Its width was twenty millimeters. Brenna Keel copied the inspection result beside a sketch of the whole face, not merely its border.\n\n# Chapter 2 The Die Height\n\nAt 12:05 on 21 June, the same flat working face of stamping die R5 was exactly fifteen millimeters high, measured perpendicular to its width. An assistant checked the height independently and left the die on the inspection cloth.\n\n# Chapter 3 The Drying Batch\n\nAt 13:30 on 21 June, drying batch T7 was still being processed and its drying cycle had not finished. The sheets were damp, and the operator kept the cycle running. The earlier pulp-mixing stage had already ended, but it was a separate stage.\n\n# Chapter 4 The Rag Sorting Table\n\nAt 09:15 on 21 June, Idris Foyle separated the red cotton scraps from the plain ones on the sorting table. He put the red pieces in a wicker tray and brushed loose threads off the scale before weighing the next delivery.\n\n# Chapter 5 Wet Pulp on the Scale\n\nPulp lot Umbel weighed eighty kilograms while wet. That measurement included its retained water, and no dry-weight measurement or water fraction was recorded. The delivery note names the fibers but supplies no conversion from wet mass to dry mass.\n\n# Chapter 6 The Earlier Layout\n\nAn earlier floor plan places press Cobalt beside the west loading door. The building was rearranged after that plan was drawn, but the relocation list is missing. The remaining notes do not identify which machines moved or stayed in place.\n\n# Chapter 7 Paper Beside the Window\n\nAt 16:20 on 21 June, Brenna Keel clipped three unprinted sheets to a drying line beside the narrow window. She placed a clean tray beneath them to catch drips, then rolled the unused line back onto its wooden holder.\n\n# Chapter 8 The Evening Bundle\n\nIdris tied the unused scraps into a loose bundle and left the inspection cloth on the workbench. He kept the old floor plan with the unresolved relocation notes, rather than treating it as a current map. The loading door rattled gently in the evening wind."
+    },
+    {
+      "key": "elmrake_hotel_repairs",
+      "title": "A Lift at Elmrake Hotel",
+      "language": "en",
+      "source": "# Chapter 1 The Hosts\n\nAt 18:10 on 2 December, Valra Holt and Aven Holt were siblings, not spouses. They shared responsibility for Elmrake Hotel, with Valra managing bookings and Aven organizing repairs. Their matching surname did not indicate a marriage between them.\n\n# Chapter 2 The Lift Indicator\n\nAt 17:35 on 2 December, lift L3 was stationary and its position display read C. The display was operating correctly and showed the lift's actual stopping level, not a requested destination. Technician Osric Dune checked the reading beside the service panel.\n\n# Chapter 3 The Display Legend\n\nAt 17:35 on 2 December, the position-display code C for lift L3 meant the cellar landing only. The roof landing was a different level represented by R, with no shared stopping position. This legend applied to the installed display in Elmrake Hotel.\n\n# Chapter 4 A Guest Reservation\n\nGuest Meriel Knox held a confirmed reservation for room Alder on the night of 2 December. The surviving file contains no arrival entry, key collection or occupancy record. Staff could not determine from it whether Meriel actually stayed that night.\n\n# Chapter 5 The Unopened Crate\n\nThe crate of replacement panes for window Thistrel reached Elmrake with its outer packing undamaged. Nobody had opened it or inspected the glass inside. The courier's receipt confirms delivery of the crate, without certifying the condition of each pane.\n\n# Chapter 6 Clearing the Landing\n\nAt 16:00 on 2 December, Aven Holt moved a stack of folded rugs away from the cellar landing. He carried them to the linen alcove, leaving a clear route for the repair trolley and checking that no rug fringe remained across the threshold.\n\n# Chapter 7 The Numbered Hooks\n\nAt 19:20 on 2 December, Valra Holt attached numbered cards above the umbrella hooks in the entrance hall. She kept the coat pegs unnumbered, then placed a pencil near the guest book so visitors could note which hook they had used.\n\n# Chapter 8 The Repair Folder\n\nOsric closed the repair folder after copying the lift reading into his notes. The unopened glass crate stayed beside the workbench, and Meriel's incomplete stay record went into a separate enquiry tray. Outside, the last delivery van turned out of the courtyard."
+    }
+  ],
+  "cases": [
+    {
+      "id": "hv12-019",
+      "corpus": "brambletide_aquarium_census",
+      "draft": "Adera Flint was on the roof deck at Brambletide Aquarium at 16:45 on 6 April.",
+      "expected_class": "conflict",
+      "category": "location_action",
+      "evidence": [
+        "Chapter 1 The Observation Desk",
+        "Chapter 2 The Gallery Plan"
+      ],
+      "designated_regression": false,
+      "note": "One source places Adera in Quill Gallery; the other locates that entire room apart from the roof deck at the same time. Both statements are needed for the location contradiction."
+    },
+    {
+      "id": "hv12-020",
+      "corpus": "brambletide_aquarium_census",
+      "draft": "Liora Fenn hung six blue towels along the preparation-room rail at 17:10 on 6 April.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 6 Towels Along the Rail"
+      ],
+      "designated_regression": false,
+      "note": "The source directly describes the action, count, color and time."
+    },
+    {
+      "id": "hv12-021",
+      "corpus": "brambletide_aquarium_census",
+      "draft": "The goby in tank S8 is Marlo.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 4 Labels on the Buckets"
+      ],
+      "designated_regression": false,
+      "note": "The name-to-fish connection was lost before the two tank assignments; the source leaves both individual identifications possible."
+    },
+    {
+      "id": "hv12-022",
+      "corpus": "brambletide_aquarium_census",
+      "draft": "Liora Fenn had sole physical custody of the net named Cress.",
+      "expected_class": "conflict",
+      "category": "object_state",
+      "evidence": [
+        "Chapter 3 The Net Handover"
+      ],
+      "designated_regression": false,
+      "note": "The source assigns physical custody to Pellin and explicitly excludes Liora. The undated draft may receive possible_conflict; the disputed property is the object's current holder, not authority to use it."
+    },
+    {
+      "id": "hv12-023",
+      "corpus": "brambletide_aquarium_census",
+      "draft": "Pellin Ward moved the visitor bench away from the ceiling drip at 14:20 on 6 April.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 7 The Visitor Bench"
+      ],
+      "designated_regression": false,
+      "note": "This placement action is directly narrated."
+    },
+    {
+      "id": "hv12-024",
+      "corpus": "brambletide_aquarium_census",
+      "draft": "All four eels sent from Brambletide survived the journey to Kelver Reach.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 5 A Shipment Without Follow-up"
+      ],
+      "designated_regression": false,
+      "note": "Being alive at dispatch does not establish survival through arrival; the outcome and follow-up observations are missing, with no reported deaths to contradict the draft."
+    },
+    {
+      "id": "hv12-025",
+      "corpus": "calverin_rag_paper_mill",
+      "draft": "At 12:05 on 21 June, the rectangular working face of stamping die R5 had an area of four hundred square millimeters.",
+      "expected_class": "conflict",
+      "category": "attribute",
+      "evidence": [
+        "Chapter 1 The Face Inspection"
+      ],
+      "designated_regression": true,
+      "note": "The source directly states the entire working face has an area of 300 square millimeters at the identical time, contradicting 400. No calculation or inference from the other dimension chapter is required."
+    },
+    {
+      "id": "hv12-026",
+      "corpus": "calverin_rag_paper_mill",
+      "draft": "Idris Foyle put the red cotton scraps into a wicker tray at 09:15 on 21 June.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 4 The Rag Sorting Table"
+      ],
+      "designated_regression": false,
+      "note": "The source directly records the sorting action and destination container."
+    },
+    {
+      "id": "hv12-027",
+      "corpus": "calverin_rag_paper_mill",
+      "draft": "Pulp lot Umbel contained exactly forty kilograms of dry fiber.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 5 Wet Pulp on the Scale"
+      ],
+      "designated_regression": false,
+      "note": "Total wet mass includes an unknown amount of water; no dry measurement or moisture fraction fixes the dry-fiber mass at forty kilograms or rules that value out."
+    },
+    {
+      "id": "hv12-028",
+      "corpus": "calverin_rag_paper_mill",
+      "draft": "The drying cycle for batch T7 had finished at 13:30 on 21 June.",
+      "expected_class": "conflict",
+      "category": "event_status",
+      "evidence": [
+        "Chapter 3 The Drying Batch"
+      ],
+      "designated_regression": false,
+      "note": "The drying cycle is explicitly still running and unfinished at that time; completion of the separate mixing stage does not complete drying."
+    },
+    {
+      "id": "hv12-029",
+      "corpus": "calverin_rag_paper_mill",
+      "draft": "Brenna Keel clipped three unprinted sheets to the line beside the window at 16:20 on 21 June.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 7 Paper Beside the Window"
+      ],
+      "designated_regression": false,
+      "note": "The source directly supports the person, count and action."
+    },
+    {
+      "id": "hv12-030",
+      "corpus": "calverin_rag_paper_mill",
+      "draft": "Press Cobalt stood beside the west loading door after the building was rearranged.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 6 The Earlier Layout"
+      ],
+      "designated_regression": false,
+      "note": "The source establishes only the earlier position and that some rearrangement occurred; the missing relocation list leaves Cobalt's individual move-or-stay outcome unknown."
+    },
+    {
+      "id": "hv12-031",
+      "corpus": "elmrake_hotel_repairs",
+      "draft": "Valra Holt and Aven Holt were spouses at 18:10 on 2 December.",
+      "expected_class": "conflict",
+      "category": "relationship",
+      "evidence": [
+        "Chapter 1 The Hosts"
+      ],
+      "designated_regression": false,
+      "note": "The source explicitly identifies them as siblings and not spouses at the same time; no assumption about surnames or prohibited family arrangements is needed."
+    },
+    {
+      "id": "hv12-032",
+      "corpus": "elmrake_hotel_repairs",
+      "draft": "Aven Holt took the folded rugs from the cellar landing to the linen alcove at 16:00 on 2 December.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 6 Clearing the Landing"
+      ],
+      "designated_regression": false,
+      "note": "The movement and destination are directly narrated."
+    },
+    {
+      "id": "hv12-033",
+      "corpus": "elmrake_hotel_repairs",
+      "draft": "Meriel Knox stayed in room Alder on the night of 2 December.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 4 A Guest Reservation"
+      ],
+      "designated_regression": false,
+      "note": "A confirmed booking grants an intended stay, but no arrival, key collection or occupancy record establishes that the stay happened."
+    },
+    {
+      "id": "hv12-034",
+      "corpus": "elmrake_hotel_repairs",
+      "draft": "Lift L3 was stopped at the roof landing.",
+      "expected_class": "conflict",
+      "category": "object_state",
+      "evidence": [
+        "Chapter 2 The Lift Indicator",
+        "Chapter 3 The Display Legend"
+      ],
+      "designated_regression": false,
+      "note": "One source confirms a truthful actual-position display C; the other maps C exclusively to the cellar, not the roof. Both are needed. The draft is undated, so possible_conflict is acceptable for this ordinary case."
+    },
+    {
+      "id": "hv12-035",
+      "corpus": "elmrake_hotel_repairs",
+      "draft": "Valra Holt numbered the umbrella hooks in the entrance hall at 19:20 on 2 December.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 7 The Numbered Hooks"
+      ],
+      "designated_regression": false,
+      "note": "Numbered cards above the hooks directly support numbering the hooks; the draft makes no claim about coat pegs."
+    },
+    {
+      "id": "hv12-036",
+      "corpus": "elmrake_hotel_repairs",
+      "draft": "Every replacement glass pane for window Thistrel arrived intact.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 5 The Unopened Crate"
+      ],
+      "designated_regression": false,
+      "note": "An undamaged outer crate and a delivery receipt do not establish each pane's internal condition; the missing inspection could reveal either intact or damaged glass."
+    }
+  ]
+}
