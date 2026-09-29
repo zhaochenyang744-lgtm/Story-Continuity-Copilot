@@ -46,6 +46,7 @@ from app.engine import PROMPT_VERSION  # noqa: E402
 from app.main import create_app  # noqa: E402
 from app.provider import DeepSeekProvider  # noqa: E402
 from app.stage13 import Stage13Settings  # noqa: E402
+from evaluation.v11_holdout.thresholds import evaluate as evaluate_thresholds  # noqa: E402
 
 SET_DIR = ROOT / "evaluation/eval_set_v11_authoring"
 CLASSES = ("conflict", "no_conflict", "insufficient_evidence")
@@ -298,6 +299,8 @@ def main() -> int:
         "metrics": score(results),
         "case_results": results,
     }
+    # A partial selection is not a gate result, so the bar is applied only to a whole run.
+    report["threshold_result"] = evaluate_thresholds(report["metrics"]) if selected is None else None
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"out": out.name, "cases": len(results), "fingerprints": recorder.seen,
                       "macro_f1": report["metrics"]["macro_f1"], "terminal": report["metrics"]["terminal"]}, ensure_ascii=False))
