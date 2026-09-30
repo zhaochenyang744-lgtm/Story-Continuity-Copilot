@@ -284,6 +284,10 @@
       "target": "frontend-source/app/maintenance.css"
     },
     {
+      "source": "frontend/app/polish.css",
+      "target": "frontend-source/app/polish.css"
+    },
+    {
       "source": "frontend/app/model.ts",
       "target": "frontend-source/app/model.ts"
     },

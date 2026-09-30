@@ -1,0 +1,327 @@
+/* Modern polish layer, loaded last. It keeps the violet-on-ink identity but moves the interface to
+   flat tonal surfaces: hairline edges instead of violet outlines, no resting glow, one radius scale,
+   one control height scale and quieter secondary text. Layout and business state are untouched. */
+:root,
+:root[data-theme] {
+  --bg: #0e0d14;
+  --ink-950: #0e0d14;
+  --ink-900: #13121a;
+  --ink-850: #17161f;
+  --ink-800: #1d1c27;
+  --ink-700: #282633;
+  --surface: #15141d;
+  --raised: #1b1a24;
+  --surface-soft: #18171f;
+  --project-surface: #0e0d14;
+  --editor-surface: #121118;
+  --issue-surface: #15141d;
+  --line: rgba(255, 255, 255, .07);
+  --line-strong: rgba(255, 255, 255, .12);
+  --text: #eeedf3;
+  --muted: #a9a6b8;
+  --faint: #8a8699;
+  --violet-300: #c4b5fd;
+  --violet-400: #a78bfa;
+  --violet-500: #8b5cf6;
+  --violet-hover: #9b72f7;
+  --accent: #a78bfa;
+  --focus: #a78bfa;
+  --card-sheen: none;
+  --elev-1: none;
+  --elev-2: 0 16px 40px rgba(0, 0, 0, .45);
+  --shadow: 0 16px 40px rgba(0, 0, 0, .45);
+  --primary-shadow: none;
+  --r-control: 8px;
+  --r-card: 14px;
+  --hairline: 1px solid var(--line);
+  /* Older planning cards read these two; point them at the shared surface. */
+  --planning-surface: var(--surface);
+  --planning-line: var(--line);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ---------- Navigation: one quiet rail, active item is a soft tile ---------- */
+.global-nav,
+.project-nav {
+  border-color: var(--line);
+  background: #0b0a10;
+  box-shadow: none;
+}
+.project-nav { background: var(--bg); }
+.nav-kicker { color: var(--faint); font-size: 11px; font-weight: 500; letter-spacing: .08em; }
+.nav {
+  height: 38px;
+  min-height: 38px;
+  padding: 0 12px;
+  gap: 11px;
+  border-radius: var(--r-control);
+  color: var(--muted);
+  font-size: 13px;
+}
+.nav svg { opacity: .8; }
+.nav:hover:not(:disabled) { background: rgba(255, 255, 255, .04); color: var(--text); }
+.nav.current,
+.global-nav .nav.current,
+.global-nav-collapsed .global-nav .nav.current {
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, .07);
+  color: #fff;
+  box-shadow: inset 2px 0 0 var(--violet-400);
+}
+.nav.current svg { opacity: 1; color: var(--violet-300); }
+.global-nav .global-nav-toggle-edge {
+  border-color: var(--line-strong);
+  background: #17161f;
+  color: var(--muted);
+}
+.global-nav .global-nav-toggle-edge:hover { border-color: var(--violet-400); background: #1f1d2a; color: #fff; }
+.project-switch {
+  border: var(--hairline);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.project-switch:hover:not(:disabled) { border-color: var(--line-strong); background: var(--raised); }
+.project-context { border-color: var(--line); }
+.project-context .status-pill { background: rgba(167, 139, 250, .12); }
+.user-menu { border-color: var(--line-strong); border-radius: 12px; background: #1a1923; }
+
+/* ---------- Page header ---------- */
+.breadcrumb { color: var(--faint); font-size: 12px; letter-spacing: .01em; }
+.page-header h1,
+main h1 { font-size: 28px; font-weight: 650; letter-spacing: -.01em; }
+.page-header { border-color: var(--line); }
+.page-header p:not(.breadcrumb),
+.library-subtitle { color: var(--muted); }
+
+/* ---------- Surfaces: flat tone + hairline, one radius ---------- */
+.home-continue,
+.home-section,
+.project-table,
+.library-statistics > div,
+.overview-panel,
+.manuscript-card,
+.writing-tips-card,
+.writing-assist,
+.bounded-story-tools,
+.run-lifecycle,
+.analysis-empty-card,
+.panel,
+.review,
+
+.memory-init-candidate,
+.author-plan-row,
+.foreshadow-candidate,
+.impact-result,
+.qa-answer,
+.project-page section[class$="-card"] {
+  border: var(--hairline) !important;
+  border-radius: var(--r-card) !important;
+  background: var(--surface) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+.home-continue {
+  background:
+    radial-gradient(90% 120% at 0% 0%, rgba(139, 92, 246, .14), transparent 60%),
+    var(--surface) !important;
+}
+.run-lifecycle.status-failed { box-shadow: inset 3px 0 0 var(--high); }
+.analysis-empty-card { background: rgba(255, 255, 255, .02); border-style: solid; }
+.issues-top { border: 0; background: transparent; }
+.eyebrow,
+.kicker { color: var(--violet-300); font-size: 12px; font-weight: 550; letter-spacing: .02em; }
+
+/* Section heads lose the left accent bar in favour of plain weight. */
+.home-section-head,
+.home-section li { border-color: var(--line); }
+
+/* ---------- Project list: rows, not boxes ---------- */
+.project-toolbar { border: 0; padding: 0; background: transparent; }
+.project-rows li {
+  position: relative;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  transition: background-color var(--motion-fast) var(--ease-standard);
+}
+.project-rows li + li::before {
+  position: absolute;
+  top: 0;
+  right: 18px;
+  left: 18px;
+  height: 1px;
+  background: var(--line);
+  content: "";
+}
+.project-rows li:hover { background: rgba(255, 255, 255, .03); }
+.project-rows li:hover::before,
+.project-rows li:hover + li::before { opacity: 0; }
+.project-rows-head {
+  border: 0 !important;
+  border-bottom: var(--hairline) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--faint) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+.project-rows .project-mark {
+  border: 0 !important;
+  background: rgba(167, 139, 250, .12) !important;
+  color: var(--violet-300) !important;
+}
+.library-stat-mark {
+  border: 0 !important;
+  background: rgba(167, 139, 250, .1) !important;
+  box-shadow: none !important;
+  color: var(--violet-300) !important;
+}
+.library-statistics dd { font-size: 26px; font-weight: 650; letter-spacing: -.01em; }
+.library-statistics dt { color: var(--faint); }
+
+/* ---------- Controls ---------- */
+button,
+.button { border-radius: var(--r-control); }
+button.primary,
+.button.primary {
+  border-color: transparent;
+  background: var(--violet-500);
+  background-image: none;
+  box-shadow: none;
+  color: #fff;
+  font-weight: 600;
+}
+button.primary:hover:not(:disabled) {
+  background: var(--violet-hover);
+  box-shadow: 0 6px 18px rgba(139, 92, 246, .3);
+  transform: none;
+}
+button.secondary,
+.button.secondary,
+.more-menu > summary {
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, .03);
+  background-image: none;
+  box-shadow: none;
+  color: var(--text);
+}
+button.secondary:hover:not(:disabled),
+.more-menu > summary:hover { border-color: rgba(255, 255, 255, .2); background: rgba(255, 255, 255, .06); }
+.page-header .actions :is(button, summary) { height: 36px; min-height: 36px; font-size: 13px; }
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+select,
+textarea {
+  border-color: rgba(255, 255, 255, .1);
+  border-radius: var(--r-control);
+  background-color: #111018;
+}
+input:not([type="checkbox"]):not([type="radio"]):hover,
+select:hover,
+textarea:hover { border-color: rgba(255, 255, 255, .16); }
+input:not([type="checkbox"]):not([type="radio"]):focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--violet-400);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, .22);
+}
+input[type="checkbox"],
+input[type="radio"] { accent-color: var(--violet-500); }
+
+/* Text actions: colour and an arrow instead of underlines. */
+.overview-card-action,
+.link-button,
+.clear-filters,
+.evidence-source-link {
+  color: var(--violet-300);
+  font-weight: 550;
+  text-decoration: none;
+}
+.overview-card-action::after { margin-left: 6px; content: "→"; transition: transform var(--motion-fast) var(--ease-standard); display: inline-block; }
+.overview-card-action:hover::after { transform: translateX(2px); }
+.overview-card-action:hover,
+.link-button:hover,
+.clear-filters:hover,
+.evidence-source-link:hover { color: #e4dcff; text-decoration: none; }
+
+/* ---------- Writing surface ---------- */
+.rich-draft-body { border-color: transparent; background: var(--editor-surface); }
+.manuscript-card :is(.editor-toolbar, .rich-editor-toolbar) { border-color: var(--line); background: var(--editor-surface); }
+.writing-tips-card li::marker { color: var(--violet-400); }
+
+/* ---------- Notices ---------- */
+.notice { border-color: var(--line-strong); background: var(--raised); }
+
+/* ---------- Auth ---------- */
+.auth-card,
+.auth-panel {
+  border: var(--hairline);
+  border-radius: 18px;
+  background: #15141d;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .5);
+}
+
+/* ---------- Page-specific surfaces that older, more specific rules still paint ---------- */
+.home-page .home-section-grid .home-section,
+.home-page .home-entry-composition {
+  border: var(--hairline);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: none;
+}
+.home-page .home-entry-composition {
+  background:
+    radial-gradient(80% 130% at 0% 0%, rgba(139, 92, 246, .16), transparent 60%),
+    var(--surface);
+}
+.home-page .home-section h2::before { display: none; }
+.workspace-grid .issues-top { border: var(--hairline); border-bottom: 0; background: var(--surface); }
+.workspace-grid .rich-draft-body { border-color: var(--line); background: var(--editor-surface); }
+.editor-title-input input:not([type="checkbox"]):not([type="radio"]),
+.editor-title-input input:not([type="checkbox"]):not([type="radio"]):hover {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+.editor-title-input input:not([type="checkbox"]):not([type="radio"]):focus-visible { border-color: var(--line-strong); box-shadow: none; }
+.writing-assist .writing-analysis-result { border: var(--hairline); background: var(--raised); }
+.writing-assist .analysis-empty-card { background: rgba(255, 255, 255, .02); }
+.run-lifecycle { border-left-width: 1px; }
+.run-lifecycle.status-failed { border-left: 3px solid var(--high); box-shadow: none; }
+.library-statistics > div,
+.projects-page .library-statistics > div { border: var(--hairline); background: var(--surface); }
+.projects-page .project-toolbar { padding: 0; background: transparent; }
+.projects-page .project-table { border: var(--hairline); background: var(--surface); }
+.memory-records { border: 0; background: transparent; }
+.memory-table { border: var(--hairline); border-radius: var(--r-card); background: var(--surface); }
+.memory-head { background: transparent; color: var(--faint); font-weight: 500; }
+.memory-row { border-color: var(--line); }
+.memory-row:not(.memory-head):hover { background: rgba(255, 255, 255, .025); }
+.project-section,
+.overview-export { border: var(--hairline); border-radius: var(--r-card); background: var(--surface); background-image: none; box-shadow: none; }
+.project-section > h2::before,
+.overview-export h2::before { display: none; }
+.project-section > h2,
+.overview-export h2 { padding-left: 0; }
+.author-planning-toolbar { border: var(--hairline); background: var(--surface); }
+
+/* Auth: one calm card on a flat field with a single soft glow. */
+.auth-shell { background: radial-gradient(60% 50% at 50% 0%, rgba(139, 92, 246, .12), transparent 70%), var(--bg); }
+.auth-layout { border: var(--hairline); border-radius: 18px; background: var(--surface); box-shadow: 0 30px 80px rgba(0, 0, 0, .5); }
+.auth button.primary { background: var(--violet-500); background-image: none; }
+.auth-actions .auth-switch-link { color: var(--violet-300); text-decoration: none; }
+
+/* Phones: the horizontal project tabs fade at the edges instead of cutting a word in half. */
+@media (max-width: 760px) {
+  .project-nav nav {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 36px, #000 calc(100% - 36px), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 36px, #000 calc(100% - 36px), transparent 100%);
+  }
+  .project-nav .nav.current { background: transparent; box-shadow: inset 0 -2px 0 var(--violet-400); }
+}
