@@ -146,7 +146,7 @@ test("overview hierarchy expands and centers at wide sizes while remaining reada
   await expect(page.locator(".current-draft-panel")).toContainText("0 个章节");
   await expect(page.locator(".current-draft-panel .draft-progress")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "打开当前草稿", exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "查看 Story Memory", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "查看事实库", exact: true })).toBeVisible();
   await screenshot(page, "global-03-overview-1440.png");
 
   await page.setViewportSize({ width: 1920, height: 1080 });

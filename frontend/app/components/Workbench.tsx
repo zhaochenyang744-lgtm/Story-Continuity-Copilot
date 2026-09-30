@@ -205,7 +205,7 @@ const tabs = [
   ["outline", "大纲"],
   ["characters", "角色库"],
   ["world", "世界观"],
-  ["memory", "Story Memory"],
+  ["memory", "事实库"],
   ["workspace", "写作与检查"],
 ] as const;
 const stage = (s: string): string =>
@@ -322,7 +322,7 @@ const worldTypeLabel = (value: string) =>
 const decisionStatusLabel = (value: string) =>
   ({ pending: "待决定", accepted: "已接受", rejected: "已拒绝", edited: "编辑后接受" })[value] ?? "决定状态未知";
 const nextActionLabel = (value: string) =>
-  ({ continue_draft: "继续写作", review_issues: "审阅问题", initialize_memory: "建立 Story Memory" })[value] ?? "继续处理作品";
+  ({ continue_draft: "继续写作", review_issues: "审阅问题", initialize_memory: "建立事实库" })[value] ?? "继续处理作品";
 const lineageStatusLabel = (value?: string | null) =>
   ({ current: "当前版本", stale: "已过期", pending_decision_validation: "等待决策校验" })[value ?? ""] ?? "谱系状态未知";
 const tutorialEvents: Record<TutorialStep, TutorialEvent | null> = {
@@ -438,7 +438,7 @@ function resolveTutorialGuidanceTarget({
   if (step === 1) {
     if (tab !== "memory")
       return primary
-        ? { element: primary, key: "memory-navigation", message: "下一步：打开 Story Memory" }
+        ? { element: primary, key: "memory-navigation", message: "下一步：打开事实库" }
         : null;
     const source = document.querySelector<HTMLElement>(
       ".memory-source:not(:disabled)",
@@ -1629,7 +1629,7 @@ export function Workbench() {
       });
       applyOnboarding(next);
       setTutorialRestored(true);
-      setNotice("教学进度已回到第一步；正文、Story Memory 与审阅记录均保持原样。");
+      setNotice("教学进度已回到第一步；正文、事实库与审阅记录均保持原样。");
       go(`/projects/${tutorial.project_id}/overview`);
     } catch (cause) {
       fail(cause);
@@ -2026,7 +2026,7 @@ export function Workbench() {
       setNotice(
         decision === "keep_intentional"
           ? "决定已记录：保留作者意图；可继续审阅后续 Memory 变更。"
-          : "决定已记录：此问题已标记为误报，不会写入 Story Memory。",
+          : "决定已记录：此问题已标记为误报，不会写入事实库。",
       );
     } catch (e) {
       fail(e);
@@ -2057,7 +2057,7 @@ export function Workbench() {
   const commit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!projectId || !changeSet || readOnly) return;
-    setBusy("正在提交 Story Memory 更新");
+    setBusy("正在提交事实库更新");
     try {
       const form = new FormData(event.currentTarget);
       const accepted_item_ids = changeSet.items
@@ -2101,7 +2101,7 @@ export function Workbench() {
       setNotice(
         result.status === "committed"
           ? `MemoryVersion ${result.memory_version.current} 已创建。`
-          : "全部项目已拒绝，Story Memory 版本未变。",
+          : "全部项目已拒绝，事实库版本未变。",
       );
     } catch (e) {
       fail(e);
@@ -2111,7 +2111,7 @@ export function Workbench() {
   };
   const startMemoryInitialization = async () => {
     if (!projectId || readOnly) return;
-    setBusy("正在生成 Story Memory 候选");
+    setBusy("正在生成事实库候选");
     try {
       await json<{ initialization: Pick<MemoryInitialization, "id" | "project_id" | "status" | "source_revision"> }>(
         `/projects/${projectId}/memory/initializations?view=compact`,
@@ -2996,10 +2996,10 @@ export function Workbench() {
           <p>
             将把《{project.title}》重置到
             {project.data_origin === "user_import"
-              ? "刚导入完成时的状态：保留已确认导入的章节和原文来源，恢复空的第一版 Story Memory 与下一章初始草稿。"
+              ? "刚导入完成时的状态：保留已确认导入的章节和原文来源，恢复空的第一版事实库与下一章初始草稿。"
               : project.data_origin === "demo_seed"
                 ? "预置演示状态：恢复章节、已确认事实、初始草稿，以及可直接审阅的演示检查结果。"
-                : "刚创建时的空白状态，包括空资料、第一版 Story Memory 与初始草稿。"}
+                : "刚创建时的空白状态，包括空资料、第一版事实库与初始草稿。"}
           </p>
           <p>当前内容会被覆盖；本作品的连续性检查、问题、作者决定和尚未提交的候选变更都会被清除。其他作品和其他账户不受影响。</p>
           <p><strong>重置后无法撤销。</strong></p>
@@ -3543,7 +3543,7 @@ function NotFoundPage({ kind, go }: { kind: "page" | "project"; go: (href: strin
 
 function TutorialCompletePage({ go }: { go: (href: string) => void }) {
   const steps = [
-    "认识作品资料与 Story Memory",
+    "认识作品资料与事实库",
     "查看一条事实来源",
     "分清问题性质与影响程度",
     "作出作者决定",
@@ -4026,7 +4026,7 @@ function Import({
       <div className="design-import-layout design-creation-panel">
       {step === "file" && (
         <form className="form-panel import-panel" onSubmit={(event) => void beginPreview(event)}>
-          <header className="design-section-head"><span className="design-icon-tile"><DesignAsset name="paper" /></span><div><h2>选择要导入的文件</h2><p>文件会发送到应用后端生成章节预览；确认后才创建作品，不会自动生成 Story Memory。</p></div></header>
+          <header className="design-section-head"><span className="design-icon-tile"><DesignAsset name="paper" /></span><div><h2>选择要导入的文件</h2><p>文件会发送到应用后端生成章节预览；确认后才创建作品，不会自动生成事实库。</p></div></header>
           <input
             ref={fileInput}
             className="sr-only"
@@ -4059,7 +4059,7 @@ function Import({
           <ul className="import-guidance">
             <li><div><strong>TXT / Markdown</strong><span>UTF-8 编码，文件不超过 5 MiB。</span></div></li>
             <li><div><strong>点击预览才发送</strong><span>文件会发送到当前应用服务进行预览。</span></div></li>
-            <li><div><strong>确认前可随时取消</strong><span>预览只展示章节片段，不会创建作品或 Story Memory。</span></div></li>
+            <li><div><strong>确认前可随时取消</strong><span>预览只展示章节片段，不会创建作品或事实库。</span></div></li>
           </ul>
           {Boolean(localError || error) && <p className="inline-error">{localError || (error ? labelError(error) : "")}</p>}
           <div className="actions">
@@ -4375,7 +4375,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
   const runAction=async(target:WritingAnalysisRun,action:"cancel"|"retry")=>{setLocalBusy(target.run_id);setNotice("");try{await json(`/projects/${project.id}/analyses/${target.run_id}/${action}`,"POST",{client_request_id:crypto.randomUUID()});await refresh(true);}catch(error){setNotice(labelError(error));}finally{setLocalBusy("");}};
   const changeCandidate=(candidate:RevisionPlanCandidate,patch:Partial<RevisionCandidateEditor>)=>setCandidateEdits((current)=>({...current,[candidate.id]:{...(current[candidate.id]??revisionCandidateEditor(candidate)),...patch}}));
   const decide=async(target:WritingAnalysisRun,candidate:RevisionPlanCandidate,decision:"accepted"|"edited"|"rejected")=>{if(!snapshot)return;setLocalBusy(candidate.id);setNotice("");setConflict(false);try{const edited=candidateEdits[candidate.id]??revisionCandidateEditor(candidate);const result=await json<{revision_tasks:RevisionTaskSnapshot}>(`/projects/${project.id}/analyses/${target.run_id}/revision-candidates/${candidate.id}/decision`,"POST",{base_task_version:snapshot.task_version,decision,...(decision==="edited"?{edited}:{})});setSnapshot(result.revision_tasks);setNotice(decision==="rejected"?"修订候选已拒绝，没有创建任务。":"修订候选已确认并创建持久任务；正文仍需作者手动修改并保存。");await refresh(true);}catch(error){setConflict((error as ApiFailure).code==="revision_task_version_conflict");setNotice(labelError(error));}finally{setLocalBusy("");}};
-  const updateTask=async(task:RevisionTask,status:RevisionTask["status"])=>{setLocalBusy(task.id);setNotice("");setConflict(false);try{const next=await json<RevisionTaskSnapshot>(`/projects/${project.id}/revision-tasks/${task.id}`,"PATCH",{base_version:task.version,status});setSnapshot(next);setNotice(status==="completed"?"任务已标记完成。连续性问题仍保持原状态，也不会自动复检或修改 Story Memory。":"任务进度已更新；它与建议所绑定的旧分析状态相互独立。");}catch(error){setConflict((error as ApiFailure).code==="revision_task_version_conflict");setNotice(labelError(error));}finally{setLocalBusy("");}};
+  const updateTask=async(task:RevisionTask,status:RevisionTask["status"])=>{setLocalBusy(task.id);setNotice("");setConflict(false);try{const next=await json<RevisionTaskSnapshot>(`/projects/${project.id}/revision-tasks/${task.id}`,"PATCH",{base_version:task.version,status});setSnapshot(next);setNotice(status==="completed"?"任务已标记完成。连续性问题仍保持原状态，也不会自动复检或修改事实库。":"任务进度已更新；它与建议所绑定的旧分析状态相互独立。");}catch(error){setConflict((error as ApiFailure).code==="revision_task_version_conflict");setNotice(labelError(error));}finally{setLocalBusy("");}};
   const loadLatest=async()=>{setLocalBusy("reload");setNotice("正在载入最新任务版本；候选编辑内容会继续保留。");try{if(await refresh(true)){setConflict(false);setNotice("已载入最新任务与候选状态；候选编辑内容仍保留，请核对后主动重试。");}else setNotice("载入最新任务失败；当前候选编辑内容仍保留，请稍后重试。");}finally{setLocalBusy("");}};
   const returnToDraft=()=>{const editor=document.getElementById("draft-body");editor?.scrollIntoView({behavior:"smooth",block:"center"});window.setTimeout(()=>editor?.focus(),250);};
   const activeRun=runs.find(activeAnalysis);
@@ -4429,9 +4429,9 @@ function ProjectContextNotices({
   const [tutorialExpanded, setTutorialExpanded] = useState(false);
   const tutorialCopy = {
     1: {
-      title: "认识作品资料与 Story Memory",
-      task: "打开 Story Memory，找到一条已经确认的事实，并查看它的章节来源。",
-      action: tab === "memory" ? "定位事实来源" : "去 Story Memory",
+      title: "认识作品资料与事实库",
+      task: "打开事实库，找到一条已经确认的事实，并查看它的章节来源。",
+      action: tab === "memory" ? "定位事实来源" : "去事实库",
     },
     2: {
       title: "进入连续性检查",
@@ -4969,17 +4969,17 @@ function ProjectPage(p: {
             </div>
             <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>打开当前草稿</Button>
           </section>
-          <section className="overview-panel overview-primary-card memory-panel" aria-label="Story Memory">
+          <section className="overview-panel overview-primary-card memory-panel" aria-label="事实库">
             <p className="eyebrow">事实库</p>
             <h2>第 {p.project.current_memory_version} 版</h2>
-            <p className="term-help">Story Memory 是作者确认、供后续连续性检查使用的事实集合；版本号代表一次明确提交后的完整快照。</p>
+            <p className="term-help">事实库是作者确认、供后续连续性检查使用的事实集合；版本号代表一次明确提交后的完整快照。</p>
             <dl className="overview-kv">
               <div><dt>原文版本</dt><dd>{p.project.source_revision == null ? "尚未提供" : `第 ${p.project.source_revision} 版`}</dd></div>
               <div><dt>事实覆盖</dt><dd>{coverageStatusLabel(p.coverage?.status)}</dd></div>
               <div><dt>检查状态</dt><dd>{p.project.continuity_status === "unchecked" ? "尚未检查" : p.project.continuity_status === "checked_clear" ? "已检查 · 0 项待处理" : `${p.project.open_issue_count ?? 0} 项待处理`}</dd></div>
               <div><dt>最近检查</dt><dd>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚无"}</dd></div>
             </dl>
-            <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/memory`)}>查看 Story Memory</Button>
+            <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/memory`)}>查看事实库</Button>
           </section>
         </div>
         <ContextOverview />
@@ -5027,10 +5027,10 @@ function ProjectPage(p: {
               ? "导入的原文已由作者确认，并建立了第 1 版事实库。"
               : p.initialization?.status === "draft"
                 ? "事实库候选正在等待逐项作者审核；候选不会自动写入事实库。"
-                : "导入作品尚待作者确认 Story Memory；完成初始化前不会启动连续性检查。"}
+                : "导入作品尚待作者确认事实库；完成初始化前不会启动连续性检查。"}
             {p.initialization?.status === "required" && (
               <Button className="primary" disabled={blocked} onClick={() => void p.startMemoryInitialization()}>
-                初始化 Story Memory
+                初始化事实库
               </Button>
             )}
             {p.initialization?.status === "draft" && (
@@ -5098,8 +5098,8 @@ function ProjectPage(p: {
       <section className="project-page">
         <header className="page-header">
           <div>
-            <p className="breadcrumb">项目 / {p.project.title} / Story Memory</p>
-            <h1>Story Memory</h1>
+            <p className="breadcrumb">项目 / {p.project.title} / 事实库</p>
+            <h1>事实库</h1>
             <p>当前为第 {p.project.current_memory_version} 版 · 每个版本都是作者明确提交后的完整事实快照。</p>
           </div>
         </header>
@@ -5134,7 +5134,7 @@ function ProjectPage(p: {
             <strong>第 1 版事实库为空</strong>
             <p>
               {p.project.memory_initialization_status === "required"
-                ? "导入作品尚待作者确认的 Story Memory；完成初始化前不会启动连续性检查。"
+                ? "导入作品尚待作者确认的事实库；完成初始化前不会启动连续性检查。"
                 : "新作品没有已确认事实。"}
             </p>
           </div>
@@ -5205,7 +5205,7 @@ function ProjectPage(p: {
       )}
       {p.project.data_origin === "user_import" && p.project.memory_initialization_status !== "completed" && (
         <p className="warning">
-          <I>!</I>先在 Story Memory 中完成初始化审核；事实库为空时不会启动连续性检查。
+          <I>!</I>先在事实库中完成初始化审核；事实库为空时不会启动连续性检查。
           <Button className="quiet" onClick={() => p.go(`/projects/${p.project.id}/memory`)}>前往审核</Button>
         </p>
       )}
@@ -5334,7 +5334,7 @@ function ProjectPage(p: {
       </div>
       <section className="workspace-resources" aria-label="写作资料与分析">
         <section className="writing-assist" aria-label="AI 写作辅助">
-          <header><div><p className="eyebrow">写作辅助</p><h2>写作分析</h2><p>写作准备和计划对照只读取已保存正文，不会修改正文或 Story Memory。</p></div>{!p.readOnly&&<div className="writing-assist-actions"><Button className="primary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty} onClick={()=>void p.startAnalysis("context_brief")}>{p.analysisBusy==="context_brief"?"正在生成":"生成章节简报"}</Button><Button className="secondary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty||!p.draft.body.trim()} onClick={()=>void p.startAnalysis("plan_alignment")}>{p.analysisBusy==="plan_alignment"?"正在检查":"检查计划偏离"}</Button></div>}</header>
+          <header><div><p className="eyebrow">写作辅助</p><h2>写作分析</h2><p>写作准备和计划对照只读取已保存正文，不会修改正文或事实库。</p></div>{!p.readOnly&&<div className="writing-assist-actions"><Button className="primary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty} onClick={()=>void p.startAnalysis("context_brief")}>{p.analysisBusy==="context_brief"?"正在生成":"生成章节简报"}</Button><Button className="secondary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty||!p.draft.body.trim()} onClick={()=>void p.startAnalysis("plan_alignment")}>{p.analysisBusy==="plan_alignment"?"正在检查":"检查计划偏离"}</Button></div>}</header>
           {p.readOnly&&!p.contextBrief&&!p.planAlignment&&<p className="muted">这里可以浏览已有分析；编辑和重新分析请使用桌面宽度。</p>}
           <div className="writing-analysis-grid">{p.contextBrief ? <WritingAnalysisPanel run={p.contextBrief} readOnly={p.readOnly} busy={Boolean(p.analysisBusy)} cancel={p.cancelAnalysis} retry={p.retryAnalysis}/> : <section className="analysis-empty-card"><DesignAsset name="paper" /><h3>落笔前，先理清这一章</h3><p>生成章节简报，回顾相关情节、角色状态和需要留意的设定。</p></section>} {p.planAlignment ? <WritingAnalysisPanel run={p.planAlignment} readOnly={p.readOnly} busy={Boolean(p.analysisBusy)} cancel={p.cancelAnalysis} retry={p.retryAnalysis}/> : <section className="analysis-empty-card"><DesignAsset name="bulb" /><h3>写好后，再对照你的安排</h3><p>保存正文后，可以检查它与创作规划的差异，再决定是否调整。</p></section>}</div>
         </section>
@@ -5421,7 +5421,7 @@ function ProjectPage(p: {
 }
 function MemoryDeltaReview({ delta, blocked, submit, openSource }: { delta: MemoryDelta; blocked: boolean; submit: (event: FormEvent<HTMLFormElement>) => Promise<void>; openSource: (memory: Memory, element: HTMLButtonElement) => Promise<void> | void }) {
   const [choices, setChoices] = useState<Record<string, string>>({});
-  if (["processing", "cancelling"].includes(delta.status)) return <div className="empty" role="status">正在运行连续性检查与 Story Memory 更新分析；两项都完成后才会显示审核结果。</div>;
+  if (["processing", "cancelling"].includes(delta.status)) return <div className="empty" role="status">正在运行连续性检查与事实库更新分析；两项都完成后才会显示审核结果。</div>;
   if (["failed", "timed_out", "cancelled"].includes(delta.status)) return <div className="notice error" role="alert">更新分析未完成：{labelError({ code: delta.error_code })} 没有写入 Issue、候选或 Memory 版本，请从当前来源安全重试。</div>;
   const kindLabel = { new_fact: "新增事实", changed_fact: "变更事实", invalidated_fact: "失效事实" } as const;
   const sourceMemory = (candidate: MemoryDelta["candidates"][number]): Memory => ({
@@ -5456,7 +5456,7 @@ function MemoryDeltaReview({ delta, blocked, submit, openSource }: { delta: Memo
             <div className="delta-fact-flow">
               <section className="delta-fact before-fact">
                 <strong>当前已确认事实</strong>
-                {candidate.before ? <><p>{memoryTypeLabel(candidate.before.memory_type)} · {candidate.before.subject} · {predicateLabel(candidate.before.predicate)}：{candidate.before.value}</p><small>事实库第 {delta.base_memory_version} 版</small>{candidate.before.source && <Button type="button" className="link-button" onClick={(event) => void openSource(candidate.before as Memory, event.currentTarget)}>查看原事实来源</Button>}</> : <p className="muted">当前 Story Memory 中没有对应事实。</p>}
+                {candidate.before ? <><p>{memoryTypeLabel(candidate.before.memory_type)} · {candidate.before.subject} · {predicateLabel(candidate.before.predicate)}：{candidate.before.value}</p><small>事实库第 {delta.base_memory_version} 版</small>{candidate.before.source && <Button type="button" className="link-button" onClick={(event) => void openSource(candidate.before as Memory, event.currentTarget)}>查看原事实来源</Button>}</> : <p className="muted">当前事实库中没有对应事实。</p>}
               </section>
               <span className="delta-arrow" aria-hidden="true">→</span>
               <section className="delta-fact proposed-fact">
@@ -5482,11 +5482,11 @@ function MemoryDeltaReview({ delta, blocked, submit, openSource }: { delta: Memo
                 <label>关系<input name={`memory-delta:${candidate.id}:predicate`} defaultValue={candidate.predicate} maxLength={80} disabled={blocked} /><small className="field-hint">{predicateLabel(candidate.predicate)}</small></label>
                 <label>事实内容<textarea name={`memory-delta:${candidate.id}:value`} defaultValue={candidate.value} maxLength={240} disabled={blocked} /></label>
               </div>}
-            </> : <p className="candidate-decision">作者已{candidate.decision_status === "rejected" ? "拒绝" : candidate.decision_status === "edited" ? "编辑后接受" : "接受"}此变化；{candidate.decision_status === "rejected" ? "不会改变 Story Memory。" : "等待原子提交。"}</p>}
+            </> : <p className="candidate-decision">作者已{candidate.decision_status === "rejected" ? "拒绝" : candidate.decision_status === "edited" ? "编辑后接受" : "接受"}此变化；{candidate.decision_status === "rejected" ? "不会改变事实库。" : "等待原子提交。"}</p>}
           </article>
         );
       })}
-      <footer className="actions"><Button className="primary" type="submit" disabled={blocked}>{delta.candidates.length ? "确认提交并更新 Story Memory" : "确认无候选并完成覆盖"}</Button></footer>
+      <footer className="actions"><Button className="primary" type="submit" disabled={blocked}>{delta.candidates.length ? "确认提交并更新事实库" : "确认无候选并完成覆盖"}</Button></footer>
     </form>
   );
 }
@@ -5515,7 +5515,7 @@ function MemoryInitializationReview({
         <p>系统会从导入的章节原文生成候选；候选不会自动写入事实库。</p>
         {experienceSimulation && <div className="notice simulation-notice" role="note"><strong>隔离模拟环境</strong><p>这里使用固定测试桩，不会调用真实 Provider，也不能代表对任意正文的分析。请先导入体验包中的 v140-simulation-sample.md，再开始初始化。</p></div>}
         <Button className="primary" disabled={blocked} onClick={() => void start()}>
-          初始化 Story Memory
+          初始化事实库
         </Button>
       </div>
     );
@@ -5527,7 +5527,7 @@ function MemoryInitializationReview({
       </div>
     );
   return (
-    <form className="review memory-init-review" aria-label="Story Memory 初始化审核" onSubmit={(event) => void submit(event)}>
+    <form className="review memory-init-review" aria-label="事实库初始化审核" onSubmit={(event) => void submit(event)}>
       <header>
         <div>
           <p className="eyebrow">导入原文 · 第 {initialization.source_revision} 版</p>
@@ -6100,7 +6100,7 @@ function AuthorPlanDialog({
     <div className="modal-layer author-plan-layer" role="presentation">
       <section ref={modalRef} className="dialog author-plan-dialog planning-edit-dialog" role="dialog" aria-modal="true" aria-label={`${editing ? "编辑" : "新建"}${copy.noun}`} onKeyDown={containFocus}>
         <button type="button" className="close" disabled={Boolean(busy)} onClick={close}><span aria-hidden="true">×</span><span className="sr-only">关闭</span></button>
-        <header><div className="planning-dialog-brand"><DesignAsset name="paper" /><span>作者规划<small>只用于安排后续创作</small></span></div><h2>{editing ? `编辑${copy.noun}` : `新建${copy.noun}`}</h2><p>这些内容用于安排未来创作，不会写入正文档案或 Story Memory。</p></header>
+        <header><div className="planning-dialog-brand"><DesignAsset name="paper" /><span>作者规划<small>只用于安排后续创作</small></span></div><h2>{editing ? `编辑${copy.noun}` : `新建${copy.noun}`}</h2><p>这些内容用于安排未来创作，不会写入正文档案或事实库。</p></header>
         <form onSubmit={(event) => void submit(event)}>
           {state.kind === "story" ? (
             <>
@@ -6385,7 +6385,7 @@ function MemoryRecords({ records, openSource }: { records: Memory[]; openSource:
       ?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
   }, [filter]);
   return (
-    <section className="memory-records" aria-label="Story Memory 事实档案">
+    <section className="memory-records" aria-label="事实档案">
       <div className="memory-controls">
         <div className="memory-filter-rail">
           <nav ref={filterNav} aria-label="事实分类">{filters.map(([value, label]) => <button type="button" key={value} className={filter === value ? "current" : ""} aria-current={filter === value ? "page" : undefined} onClick={() => setFilter(value)}>{label}</button>)}</nav>
@@ -6692,7 +6692,7 @@ function Evidence({
               <div className="suggestion-preview" role="region" aria-label="修改差异预览">
                 <div><strong>修改前</strong><p>{issue.suggested_revision.before}</p></div>
                 <div><strong>修改后</strong><p>{issue.suggested_revision.after}</p></div>
-                <p>应用后只会进入未保存草稿，不会自动保存或写入 Story Memory。</p>
+                <p>应用后只会进入未保存草稿，不会自动保存或写入事实库。</p>
                 {suggestionError && <p className="inline-error" role="alert">{suggestionError}</p>}
                 <div className="actions"><Button onClick={() => { setSuggestionPreview(false); setSuggestionError(""); }}>取消预览</Button><Button className="primary" disabled={Boolean(busy) || outdated || !decisionReady} onClick={() => { if (!applySuggestion()) setSuggestionError("这份建议无法安全定位或保留正文格式（也可能已过期）。正文未改变；请返回正文手动修改并检查格式。"); }}>应用到未保存草稿</Button></div>
               </div>
@@ -6722,7 +6722,7 @@ function Evidence({
             <div><dt>证据状态</dt><dd>{evidenceStatusLabel(issue.evidence_status)}</dd></div>
           </dl>
         </details>}
-        {!tutorialEvidenceGate && <footer className="drawer-assurance"><Icon name="security" />问题决定不会直接写入 Story Memory；事实候选仍需单独审阅和明确提交。</footer>}
+        {!tutorialEvidenceGate && <footer className="drawer-assurance"><Icon name="security" />问题决定不会直接写入事实库；事实候选仍需单独审阅和明确提交。</footer>}
       </aside>
     </div>
   );
@@ -6756,7 +6756,7 @@ function DraftRecoveryDialog({
         <Button onClick={useServer}>{conflict ? "使用服务器新版并舍弃副本" : "使用已保存版本"}</Button>
         <Button className="primary" onClick={useRecovery}>{conflict ? "查看恢复副本（禁止直接覆盖）" : "恢复副本（尚未保存）"}</Button>
       </div>
-      <p className="dialog-note">恢复副本只保存在当前浏览器，不包含 Story Memory 或检查结果。</p>
+      <p className="dialog-note">恢复副本只保存在当前浏览器，不包含事实库或检查结果。</p>
     </Dialog>
   );
 }

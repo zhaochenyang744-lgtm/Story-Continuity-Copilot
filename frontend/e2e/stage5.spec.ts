@@ -320,7 +320,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     for (const seed of seeds) {
       await page.locator(".project-rows li").filter({ hasText: seed.title }).getByRole("button", { name: "打开" }).click();
       await expect(page.getByRole("heading", { name: seed.title })).toBeVisible();
-      for (const [tab, text] of [["大纲", seed.outline], ["角色库", seed.character], ["世界观", seed.world], ["Story Memory", seed.memory]] as const) {
+      for (const [tab, text] of [["大纲", seed.outline], ["角色库", seed.character], ["世界观", seed.world], ["事实库", seed.memory]] as const) {
         await projectNavButton(page, tab).click();
         await expect(page.getByRole("heading", { name: tab })).toBeVisible();
         await expect(page.locator(".read-list")).toContainText(text);
@@ -509,7 +509,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.getByRole("button", { name: "创建并进入作品" }).click();
     await projectNavButton(page, "写作与检查").click();
     await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(page.getByText("Story Memory 尚待初始化", { exact: false })).toBeVisible();
+    await expect(page.getByText("事实库尚待初始化", { exact: false })).toBeVisible();
   });
 
   test("imported project check also fails closed before Memory initialization", async ({ page }) => {
@@ -523,7 +523,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.getByRole("button", { name: "确认导入" }).click();
     await projectNavButton(page, "写作与检查").click();
     await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(page.getByText("Story Memory 尚待初始化", { exact: false })).toBeVisible();
+    await expect(page.getByText("事实库尚待初始化", { exact: false })).toBeVisible();
   });
 
   test("cancelling an import preview creates no project and a later preview can commit", async ({ page }) => {
@@ -620,7 +620,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     const captured = commitPayload as { accepted_item_ids: string[]; rejected_item_ids: string[] } | null;
     expect(captured?.accepted_item_ids).toEqual([]);
     expect(captured?.rejected_item_ids).toHaveLength(2);
-    await expect(page.getByText("全部项目已拒绝，Story Memory 版本未变")).toBeVisible();
+    await expect(page.getByText("全部项目已拒绝，事实库版本未变")).toBeVisible();
   });
 
   test("real session, projects, new and import context are API-backed", async ({ page }) => {
@@ -663,7 +663,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     const grey = page.locator(".project-rows li").filter({ hasText: "灰港回声" });
     await grey.getByRole("button", { name: "打开" }).click();
     await expect(page.getByRole("heading", { name: "灰港回声" })).toBeVisible();
-    for (const name of ["大纲", "角色库", "世界观", "Story Memory"]) {
+    for (const name of ["大纲", "角色库", "世界观", "事实库"]) {
       await projectNavButton(page, name).click();
       await expect(page.getByRole("heading", { name })).toBeVisible();
     }

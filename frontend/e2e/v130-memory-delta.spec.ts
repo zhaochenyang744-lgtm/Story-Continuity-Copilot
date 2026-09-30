@@ -103,13 +103,13 @@ test("desktop reviews new changed and invalidated facts and preserves choices ac
       await route.fulfill({ status: 409, contentType: "application/json", body: JSON.stringify({ error: { code: "memory_delta_stale", message: "injected browser retry" } }) });
     } else await route.continue();
   });
-  await review.getByRole("button", { name: "确认提交并更新 Story Memory" }).click();
+  await review.getByRole("button", { name: "确认提交并更新事实库" }).click();
   await expect(page.locator(".feedback.error")).toContainText("基线已变化");
   await expect(changed.getByRole("radio", { name: "编辑后接受" })).toBeChecked();
   await expect(changed.getByLabel("事实内容")).toHaveValue("编辑后抵达北堤");
   await expect(invalidated.getByRole("radio", { name: "接受", exact: true })).toBeChecked();
   await page.unroute(/\/api\/projects\/[^/]+\/memory\/deltas\/[^/]+\/commit$/);
-  await review.getByRole("button", { name: "确认提交并更新 Story Memory" }).click();
+  await review.getByRole("button", { name: "确认提交并更新事实库" }).click();
   const audit = page.getByLabel("增量来源覆盖审计");
   await expect(audit).toContainText("已保存变更记录");
   await expect(audit).toContainText("事实库第 1 版 → 第 2 版");
@@ -124,7 +124,7 @@ test("390px remains browse-only without horizontal overflow", async ({ page }) =
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(review).toBeVisible();
   for (const input of await review.locator("input, select, textarea").all()) await expect(input).toBeDisabled();
-  await expect(review.getByRole("button", { name: "确认提交并更新 Story Memory" })).toBeDisabled();
+  await expect(review.getByRole("button", { name: "确认提交并更新事实库" })).toBeDisabled();
   await expect(review.getByRole("button", { name: "查看新修订来源" }).first()).toBeEnabled();
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);

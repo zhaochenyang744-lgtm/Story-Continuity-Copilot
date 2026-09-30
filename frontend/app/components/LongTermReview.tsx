@@ -12,7 +12,7 @@ type EditRecovery = { user_id: string; project_id: string; chapter: Chapter; tit
 
 const errors: Record<string, string> = {
   chapter_full_text_unavailable: "此章节只保存了来源片段，缺少完整正文，暂不能修订。可以查看现有来源，或导入完整作品后继续。",
-  source_revision_context_review_required: "请先到 Story Memory 完成初始化或上一轮资料更新的候选确认，再返回修订历史章节。",
+  source_revision_context_review_required: "请先到事实库完成初始化或上一轮资料更新的候选确认，再返回修订历史章节。",
   source_revision_review_required: "历史章节已修订，请先逐项复核受影响的事实，再继续 AI 检查。",
   decision_reuse_unavailable: "这条历史判断缺少完整依据，请先重新检查并作出决定后启用复用。",
   decision_reuse_stale: "判断依据已经变化，请重新检查后再决定是否复用。",

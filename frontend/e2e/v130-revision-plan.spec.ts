@@ -134,7 +134,7 @@ test("v1.3.0 revision suggestions create bounded persistent tasks while edits, s
   const firstTask=taskCards.first();
   await firstTask.getByLabel(/任务进度$/).selectOption("completed");
   await expect(firstTask).toContainText("已完成");
-  await expect(tools.getByText(/不会自动复检或修改 Story Memory/)).toBeVisible();
+  await expect(tools.getByText(/不会自动复检或修改事实库/)).toBeVisible();
   const beforeExplicitRecheck=await data<{current_memory_version:number;latest_run:{run_id:string}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));
   expect(beforeExplicitRecheck.latest_run.run_id).toBe(originalProject.latest_run.run_id);
   expect(beforeExplicitRecheck.current_memory_version).toBe(originalProject.current_memory_version);

@@ -144,7 +144,7 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   await expect(page.getByRole("heading", { name: "教学模式 · 灰港回声", exact: true })).toBeVisible();
   await expect(page.getByLabel("教学模式")).toContainText("不计入真实作品");
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 1 / 5");
-  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("认识作品资料与 Story Memory");
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("认识作品资料与事实库");
   await expect(page.getByRole("button", { name: "跳过教学", exact: true })).toBeVisible();
   await expect(page.getByText("示例检查结果", { exact: false }).first()).toBeVisible();
   const projectWidth = await page.locator(".project-page").evaluate((node) => node.getBoundingClientRect().width);
@@ -194,7 +194,7 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.screenshot({ path: path.join(outputDir, "1440-tutorial-step1.png"), fullPage: true });
-  await page.getByRole("button", { name: "Story Memory", exact: true }).click();
+  await page.getByRole("button", { name: "事实库", exact: true }).click();
   await page.locator(".memory-source:not(:disabled)").first().click();
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 2 / 5");
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("进入连续性检查");

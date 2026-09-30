@@ -81,7 +81,7 @@ async function beginTutorial(page: Page) {
 }
 
 async function reachFullEvidence(page: Page, issueLabel?: string) {
-  await page.getByRole("button", { name: "Story Memory", exact: true }).click();
+  await page.getByRole("button", { name: "事实库", exact: true }).click();
   const progressResponse = page.waitForResponse((response) =>
     response.url().includes("/api/onboarding/progress") && response.request().method() === "POST",
   );
@@ -107,7 +107,7 @@ test("v1.4 trustworthy review separates semantics and guards suggestion applicat
   await page.setViewportSize({ width: 1440, height: 900 });
   await register(page, "review");
   await beginTutorial(page);
-  await page.getByRole("button", { name: "Story Memory", exact: true }).click();
+  await page.getByRole("button", { name: "事实库", exact: true }).click();
   await page.getByRole("button", { name: "写作与检查", exact: true }).click();
   for (const label of ["明确矛盾", "状态变化", "可能矛盾", "证据不足", "性质待确认"]) {
     await expect(page.locator(".issue-list")).toContainText(label);
@@ -120,7 +120,7 @@ test("v1.4 trustworthy review separates semantics and guards suggestion applicat
     ]);
     expect(boxes.every((box) => box && box.y < size.height && box.y + box.height > 0)).toBe(true);
   }
-  await page.getByRole("button", { name: "Story Memory", exact: true }).click();
+  await page.getByRole("button", { name: "事实库", exact: true }).click();
   const drawer = await reachFullEvidence(page, "状态变化");
 
   await expect(drawer.getByRole("heading", { name: "状态变化", exact: true })).toBeVisible();

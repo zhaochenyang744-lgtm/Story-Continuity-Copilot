@@ -989,7 +989,7 @@ function ContextDialog({
                   <span className="ac-number">02</span>
                   <h3>先看看已经写出的内容</h3>
                   <p>
-                    从已写章节和 Story Memory 开始核对。后续的剧情和设定，可以等你想好后再补充。
+                    从已写章节和事实库开始核对。后续的剧情和设定，可以等你想好后再补充。
                   </p>
                   <button
                     type="button"
@@ -1292,17 +1292,17 @@ function ContextDialog({
                 <>
                   <div className="ac-coverage">
                     <strong>
-                      现有 Story Memory · {memories.length} 条记录
+                      现有事实库 · {memories.length} 条记录
                     </strong>
                     <p>
-                      这里展示作品已有的 Story Memory。想确认或修改其中的内容，可以前往 Story Memory 处理。
+                      这里展示作品已有的事实库。想确认或修改其中的内容，可以前往事实库处理。
                     </p>
                     <button
                       type="button"
                       className="quiet"
                       onClick={() => go("memory")}
                     >
-                      前往 Story Memory
+                      前往事实库
                     </button>
                     <button
                       type="button"
@@ -1359,7 +1359,7 @@ function ContextDialog({
                           : "目前没有可展示的 Memory 记录"}
                       </strong>
                       <p>
-                        可以先阅读已导入的章节，或前往 Story Memory，按提示整理正文记录。
+                        可以先阅读已导入的章节，或前往事实库，按提示整理正文记录。
                       </p>
                     </div>
                   )}

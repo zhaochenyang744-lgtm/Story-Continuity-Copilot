@@ -48,7 +48,7 @@ async function initializedProject(page: Page) {
       new URL(response.url()).pathname.endsWith("/memory/initializations") &&
       response.request().method() === "POST",
   );
-  await page.getByRole("button", { name: "初始化 Story Memory" }).click();
+  await page.getByRole("button", { name: "初始化事实库" }).click();
   expect((await startInitialization).status()).toBe(201);
   await page.getByRole("button", { name: "审核候选与原文依据" }).click();
   const initialReview = await page.evaluate(async (projectId) => {
@@ -202,7 +202,7 @@ async function submitCore(page: Page, edit = false) {
         new URL(response.url()).pathname,
       ) && response.request().method() === "POST",
   );
-  await review.getByRole("button", { name: "确认提交并更新 Story Memory" }).click();
+  await review.getByRole("button", { name: "确认提交并更新事实库" }).click();
   expect((await commit).status()).toBe(200);
 }
 
@@ -258,7 +258,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
     .click();
   const firstReview = page.getByRole("form", { name: "事实变化审阅" });
   await firstReview
-    .getByRole("button", { name: "确认提交并更新 Story Memory" })
+    .getByRole("button", { name: "确认提交并更新事实库" })
     .click();
   await expect(page.locator(".feedback.error")).toContainText("请求未完成");
   const firstCores = firstReview
@@ -276,7 +276,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
     /\/memory\/deltas\/[^/]+\/commit$/.test(new URL(response.url()).pathname),
   );
   await firstReview
-    .getByRole("button", { name: "确认提交并更新 Story Memory" })
+    .getByRole("button", { name: "确认提交并更新事实库" })
     .click();
   expect((await firstCommit).status()).toBe(200);
   const afterFirst = await api(page, `/api/projects/${author.id}/memory`);
@@ -399,7 +399,7 @@ test("390 is browse-only for the prepared incremental review", async ({
   for (const control of await review.locator("input,select,textarea").all())
     await expect(control).toBeDisabled();
   await expect(
-    review.getByRole("button", { name: "确认提交并更新 Story Memory" }),
+    review.getByRole("button", { name: "确认提交并更新事实库" }),
   ).toBeDisabled();
   expect(
     await page.evaluate(

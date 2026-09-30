@@ -23,9 +23,9 @@ async function importAndOpenReview(page: import("@playwright/test").Page, title:
   await page.getByLabel("作品名").fill(title);
   await page.getByLabel("说明").fill("阶段 11I 确定性假 Provider 浏览器用例");
   await page.getByRole("button", { name: "确认导入" }).click();
-  await page.getByRole("button", { name: "初始化 Story Memory" }).click();
+  await page.getByRole("button", { name: "初始化事实库" }).click();
   await page.getByRole("button", { name: "审核候选与原文依据" }).click();
-  return page.getByRole("form", { name: "Story Memory 初始化审核" });
+  return page.getByRole("form", { name: "事实库初始化审核" });
 }
 
 test("all core final plus a confirmed core keeps supporting pending outside canon and starts Check", async ({ page }) => {
@@ -98,7 +98,7 @@ test("all core rejected remains in_review and Check fails closed", async ({ page
   expect(coverage.data).toMatchObject({ status: "in_review", counts: { confirmed_core: 0, pending_canon_count: 0 } });
   await page.getByRole("button", { name: "写作与检查", exact: true }).click();
   await page.getByRole("button", { name: "运行连续性检查" }).click();
-  await expect(page.getByText("Story Memory 尚待初始化", { exact: false })).toBeVisible();
+  await expect(page.getByText("事实库尚待初始化", { exact: false })).toBeVisible();
   expect(failedChecks).toEqual([422]);
 });
 

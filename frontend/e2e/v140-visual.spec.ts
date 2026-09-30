@@ -72,7 +72,7 @@ test("v1.4 visual candidate covers the complete product language", async ({ page
     ["outline", "大纲", "09-project-outline-1707"],
     ["characters", "角色库", "10-project-characters-1707"],
     ["world", "世界观", "11-project-world-1707"],
-    ["memory", "Story Memory", "12-project-memory-1707"],
+    ["memory", "事实库", "12-project-memory-1707"],
     ["workspace", "检查结果会显示在这里", "13-workspace-empty-1707"],
   ];
   for (const [route, heading, file] of productPages) {

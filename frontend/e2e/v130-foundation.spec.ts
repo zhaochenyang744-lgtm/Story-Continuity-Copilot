@@ -124,7 +124,7 @@ test("v1.3.0 foundation interactions and layout remain scoped and responsive", a
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   await page.getByRole("button", { name: "开始教学", exact: true }).click();
-  const tabs = ["项目概览", "大纲", "角色库", "世界观", "Story Memory", "写作与检查"];
+  const tabs = ["项目概览", "大纲", "角色库", "世界观", "事实库", "写作与检查"];
   for (const tab of tabs) {
     await page.getByRole("button", { name: tab, exact: true }).click();
     await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 1 / 5");

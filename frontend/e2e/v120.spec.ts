@@ -166,7 +166,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await page.waitForTimeout(12_300);
   const idleHint = page.locator(".tutorial-guidance-hint");
   const idleTarget = page.locator('[data-tutorial-guidance-target="true"]');
-  await expect(idleHint).toHaveText("下一步：打开 Story Memory");
+  await expect(idleHint).toHaveText("下一步：打开事实库");
   await expect(idleTarget).toHaveCount(1);
   await expect(idleTarget).toHaveAttribute("data-tutorial-guidance-key", "memory-navigation");
   await expect(idleTarget).toHaveAttribute("aria-describedby", /tutorial-guidance-hint/);
@@ -229,7 +229,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await screenshot(page, "06-mobile-world-tutorial.png");
 
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.getByRole("button", { name: "去 Story Memory", exact: true }).click();
+  await page.getByRole("button", { name: "去事实库", exact: true }).click();
   await expect(page.locator(".memory-row:not(.memory-head)")).toHaveCount(8);
   await expect(page.locator(".tutorial-guidance-hint")).toHaveText(
     "下一步：查看这条事实的章节来源",
@@ -266,7 +266,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
 
   await page.waitForTimeout(12_300);
   await expect(page.locator(".tutorial-guidance-hint")).toHaveText(
-    "下一步：打开 Story Memory",
+    "下一步：打开事实库",
   );
   await expect(
     page.locator('[data-tutorial-guidance-key="memory-navigation"]'),
@@ -282,7 +282,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
     ),
   ).toBe(true);
 
-  await page.getByRole("button", { name: "Story Memory", exact: true }).click();
+  await page.getByRole("button", { name: "事实库", exact: true }).click();
   await expect(page.locator(".memory-row:not(.memory-head)")).toHaveCount(8);
   await expect(page.locator(".tutorial-guidance-hint")).toHaveCount(0);
   await expect(page.getByText("尚未知晓", { exact: true })).toBeVisible();
@@ -374,7 +374,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await expect(page.getByLabel("首次教学")).toBeVisible();
   await page.getByRole("button", { name: "开始教学", exact: true }).click();
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 2 / 5");
-  await page.getByRole("button", { name: "Story Memory", exact: true }).click();
+  await page.getByRole("button", { name: "事实库", exact: true }).click();
   await expect(page.locator(".memory-row:not(.memory-head)")).toHaveCount(8);
 
   await page.getByRole("button", { name: "去写作与检查", exact: true }).click();

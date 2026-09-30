@@ -77,9 +77,9 @@ async function prepareIncrementalProject(page: Page, marker = "") {
   await page.getByRole("button", { name: "继续确认" }).click();
   await page.getByLabel("作品名").fill("阶段十二增量双 Run");
   await page.getByRole("button", { name: "确认导入" }).click();
-  await page.getByRole("button", { name: "初始化 Story Memory" }).click();
+  await page.getByRole("button", { name: "初始化事实库" }).click();
   await page.getByRole("button", { name: "审核候选与原文依据" }).click();
-  const initialization = page.getByRole("form", { name: "Story Memory 初始化审核" });
+  const initialization = page.getByRole("form", { name: "事实库初始化审核" });
   await initialization
     .locator("article.memory-init-candidate")
     .filter({ hasText: "核心候选（必须决定）" })

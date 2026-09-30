@@ -67,7 +67,7 @@ export function contextError(cause: unknown) {
   if (/out_of_range/.test(error.code ?? ""))
     return "正文不在这条资料的适用章节范围内，请重新选择。";
   if (/insufficient/.test(error.code ?? ""))
-    return "目前的正文记录还不够，暂时无法分析。请先到 Story Memory，按提示补充并确认记录。";
+    return "目前的正文记录还不够，暂时无法分析。请先到事实库，按提示补充并确认记录。";
   if (error.code === "request_timeout")
     return "暂时没收到保存结果。可以重试，不会重复保存同一条内容。";
   return error.message || "服务暂时无法完成请求，请重试。";

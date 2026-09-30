@@ -101,7 +101,7 @@ test("fresh account completes the preset Grey Harbor author review without a Pro
   await page.screenshot({ path: path.join(screenshots, "memory-review-three-actions.png"), fullPage: true });
   await review.getByRole("button", { name: "确认并提交审核结果" }).click();
   await expect(page.getByText("MemoryVersion 5 已创建", { exact: false })).toBeVisible();
-  await projectNavButton(page, "Story Memory").click();
+  await projectNavButton(page, "事实库").click();
   await expect(page.getByText("先核对异常雾钟，再追查白色渡船", { exact: false })).toBeVisible();
   await expect(page.getByText("作者已确认", { exact: false }).first()).toBeVisible();
 

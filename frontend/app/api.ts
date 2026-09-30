@@ -114,12 +114,12 @@ export const labelError = (cause: unknown) => {
     schema_invalid: "模型返回的结果未通过结构校验，这次没有保存任何结果。",
     candidate_fields_invalid: "模型返回的事实候选不完整，这次没有保存任何结果。",
     change_kind_invalid: "模型返回了不支持的事实变化类型，这次没有保存任何结果。",
-    affected_memory_invalid: "事实变化未正确绑定原 Story Memory；本轮未写入部分结果。",
-    affected_memory_unresolvable: "绑定的原 Story Memory 已无法解析；请基于当前版本重新运行。",
+    affected_memory_invalid: "事实变化没有对应到事实库里的原有事实；这部分结果没有写入。",
+    affected_memory_unresolvable: "对应的原有事实已经找不到了；请基于当前版本重新检查。",
     invalidation_reason_invalid: "失效候选缺少可审计的失效理由；本轮未写入部分结果。",
-    duplicate_candidate: "同一条原 Story Memory 被重复提出变化；本轮未写入部分结果。",
+    duplicate_candidate: "同一条原有事实被重复提出了变化；这部分结果没有写入。",
     candidate_conflict: "候选与当前事实相同或会产生重复事实；请修改决定后重试。",
-    memory_delta_stale: "来源或 Story Memory 基线已变化；当前选择仍保留，请基于最新版本重新运行。",
+    memory_delta_stale: "来源或事实库基线已变化；当前选择仍保留，请基于最新版本重新运行。",
     invalid_json: "结果未通过结构校验，系统没有写入任何问题。",
     output_truncated: "模型回答超出长度上限被截断，系统没有写入任何问题；可以重试。",
     evidence_unresolvable:
@@ -135,7 +135,7 @@ export const labelError = (cause: unknown) => {
     lineage_invalid_requires_recheck:
       "草稿已经更新，请基于最新保存的版本重新检查。",
     insufficient_project_context:
-      "Story Memory 尚待初始化；此作品暂不能运行连续性检查。",
+      "事实库尚待初始化；此作品暂不能运行连续性检查。",
     invalid_candidate_decision: "请为每个候选选择接受、拒绝或编辑后接受。",
     memory_candidate_not_decided: "此候选当前已是待审核状态，无需再次重新评估。",
     memory_candidate_review_conflict: "此候选的审核状态已在其他窗口变化；请刷新后再操作。",

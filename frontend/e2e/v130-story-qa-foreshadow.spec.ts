@@ -98,7 +98,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   const qa=page.getByRole("region",{name:"有界问答"});
   await qa.getByLabel("你的问题").fill("林默目前知道什么？");
   await qa.getByRole("button",{name:"提交问题",exact:true}).click();
-  await expect(qa.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true})).toBeVisible();
+  await expect(qa.getByText("根据当前事实库，这个问题已有可核对的答案。",{exact:true})).toBeVisible();
   const qaRun=qa.locator(".bounded-run").first();
   const savedProject=await data<{current_draft:{revision:number}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));
   await expect(qaRun).toContainText(`草稿第 ${savedProject.current_draft.revision} 次保存`);
@@ -152,7 +152,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   const failedQa=qa.locator(".bounded-run").filter({hasText:"E2E_QA_FAIL_ONCE"}).first();
   await expect(failedQa.getByText(/结果未通过结构校验/)).toBeVisible();
   await failedQa.getByRole("button",{name:"重试",exact:true}).click();
-  await expect(qa.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true})).toHaveCount(2);
+  await expect(qa.getByText("根据当前事实库，这个问题已有可核对的答案。",{exact:true})).toHaveCount(2);
 
   await draftBody.fill(`${await draftBody.inputValue()} E2E_FORESHADOW_BLOCK`);
   await page.getByRole("button",{name:"保存草稿",exact:true}).click();
@@ -184,7 +184,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   await expect(secondTools.locator(":scope > summary small")).toHaveCount(0);
   await secondTools.locator(":scope > summary").click();
   await expect(secondTools.getByText("潮汐表的本地修订",{exact:true})).toHaveCount(0);
-  await expect(secondTools.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true})).toHaveCount(0);
+  await expect(secondTools.getByText("根据当前事实库，这个问题已有可核对的答案。",{exact:true})).toHaveCount(0);
   await page.unroute(`**/api/projects/${projectId}/foreshadows?**`);
   await page.goto(`/projects/${projectId}/workspace`);await expect(tools).toBeVisible();await tools.locator(":scope > summary").click();
   await expect(recordTool.getByText("潮汐表的本地修订",{exact:true})).toBeVisible();
@@ -199,7 +199,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   await snap(page,"story-qa-foreshadow-02-desktop-1920.png");
   await page.setViewportSize({width:390,height:844});await page.reload();await expect(tools).toBeVisible();await tools.locator(":scope > summary").click();
   await expect(recordTool.getByText("作者确认的潮汐表线索",{exact:true})).toBeVisible();
-  await expect(qa.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true}).first()).toBeVisible();
+  await expect(qa.getByText("根据当前事实库，这个问题已有可核对的答案。",{exact:true}).first()).toBeVisible();
   await expect(tools.locator("form")).toHaveCount(0);
   await expect(tools.getByRole("button",{name:/提交问题|扫描已写正文|新建作者记录|保存修改|编辑|归档|接受|拒绝|保存为作者记录|重试|取消/})).toHaveCount(0);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);

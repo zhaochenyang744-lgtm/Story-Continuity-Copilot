@@ -56,12 +56,12 @@ test("imported markdown follows author-reviewed Memory V1 initialization before 
   await page.getByLabel("说明").fill("阶段 9 原创确定性 Markdown 作品");
   await page.getByRole("button", { name: "确认导入" }).click();
   await expect(page.getByRole("heading", { name: "雾港原创测试" })).toBeVisible();
-  await expect(page.getByText("不会自动生成 Story Memory", { exact: false })).toHaveCount(0);
+  await expect(page.getByText("不会自动生成事实库", { exact: false })).toHaveCount(0);
 
-  await page.getByRole("button", { name: "初始化 Story Memory" }).click();
+  await page.getByRole("button", { name: "初始化事实库" }).click();
   await expect(page.getByText("候选已生成，尚未写入事实库", { exact: false })).toBeVisible();
   await page.getByRole("button", { name: "审核候选与原文依据" }).click();
-  const review = page.getByRole("form", { name: "Story Memory 初始化审核" });
+  const review = page.getByRole("form", { name: "事实库初始化审核" });
   await expect(review.getByText("尚未写入事实库", { exact: false }).first()).toBeVisible();
   await expect(review.locator("article.memory-init-candidate")).toHaveCount(3);
   await expect(review.getByText("已写原文", { exact: true }).first()).toBeVisible();
