@@ -1,0 +1,106 @@
+{
+ "kind": "production_observation_not_a_gate",
+ "date": "2026-09-30",
+ "question": "After parallel dispatch, repair halving and shared evidence with a four-claim cap, does a realistic chapter complete on production, and how long does it take?",
+ "answer": "It completes: 37 claims in 72.5 s with no undecided claim, against 239.8 s and nothing returned on the previous release. Output volume is unchanged; the gain is wall-clock from parallel batches.",
+ "environment": {
+  "release": "longform-bd090fe-20260930",
+  "previous_release": "v22-0696e52-20260930",
+  "commit": "bd090fe8b5df277488700dd8cc45717af736e892",
+  "host": "https://43-160-207-57.sslip.io",
+  "session": "the same 24-hour guest used for the 2026-09-30 failure record",
+  "project": "灰港回声 seed work, Memory V4",
+  "concurrency": 4,
+  "max_claims_per_batch": 4,
+  "readiness": "HTTP 200 from outside, provider_configured true"
+ },
+ "longform_run": {
+  "run_id": "run-641a5a8c-0713-4ba5-a402-bba58bfd1bc6",
+  "status": "completed",
+  "duration_ms": 72470,
+  "model_service_latency_ms_summed": 231581,
+  "input_tokens": 42648,
+  "output_tokens": 46685,
+  "undecided_claim_count": 0,
+  "contract_normalization_count": 0,
+  "claims": 37,
+  "draft_characters": 488,
+  "provenance": {
+   "model_label": "deepseek-flash",
+   "prompt_version": "continuity-review-v22-shared-evidence",
+   "retrieval_method_version": "bounded-lexical-v4-longform",
+   "result_origin": "provider"
+  },
+  "issues": [
+   {
+    "claim": "她摸了摸外套内袋，黄铜罗盘还在那里。",
+    "nature": "possible_conflict",
+    "category": "object_state",
+    "assessment": "debatable: at 19:50, before the passage, the source has 苏岑 holding it in that pocket; the model weighed the later handoff to 温岚"
+   },
+   {
+    "claim": "就在这时，雾钟响了一次。",
+    "nature": "confirmed_conflict",
+    "category": "event_status",
+    "assessment": "false positive by the earlier record's own definition: chapter 10 already records 北潮闸未关而雾钟响 as an open thread, and the draft itself names the anomaly"
+   },
+   {
+    "claim": "温岚把纸条夹进值守簿。",
+    "nature": "possible_conflict",
+    "category": "object_state",
+    "assessment": "reasonable tension: the source has the 值守簿 handed to 苏岑"
+   },
+   {
+    "claim": "航图的缺角被人补上了一块新纸。",
+    "nature": "state_change",
+    "category": "object_state",
+    "assessment": "correct"
+   }
+  ],
+  "note": "This draft was written for the offline measurement and has no deliberately planted contradictions, so it measures completion and time, not recall."
+ },
+ "short_run": {
+  "run_id": "run-674c43c5-94a4-4919-923c-6f8f15677f29",
+  "status": "completed",
+  "duration_ms": 147806,
+  "model_service_latency_ms_summed": 181243,
+  "input_tokens": 20279,
+  "output_tokens": 35583,
+  "claims": 2,
+  "undecided_claim_count": 0,
+  "draft": "十九点二十，西航道开始涨潮，海水漫上了风栈码头的台阶。苏岑把黄铜罗盘放在外套内袋里。",
+  "issues": [
+   {
+    "nature": "possible_conflict",
+    "category": "object_state",
+    "assessment": "the planted contradiction (source: 十九点二十西航道先退潮) was found, as possible_conflict: v22 does not treat an undated shared clock time as the same moment"
+   },
+   {
+    "nature": "state_change",
+    "category": "object_state",
+    "assessment": "acceptable, low value"
+   }
+  ],
+  "note": "35.6k output tokens for two claims is the known thinking-runaway shape on short drafts (dev runs ranged 3-125 s under v22); nothing in this release targets it."
+ },
+ "comparison": {
+  "previous_release_same_session": {
+   "run_id": "run-ada1911a-65f6-4e15-8fb7-8b181916a1f8",
+   "claims": 36,
+   "status": "failed",
+   "error_code": "conflict_evidence_insufficient",
+   "duration_ms": 239758,
+   "input_tokens": 27490,
+   "output_tokens": 51388,
+   "issues_returned": 0
+  }
+ },
+ "findings": [
+  "Completion: the long chapter completed with zero undecided claims; the all-or-nothing failure is gone.",
+  "Wall-clock: 72.5 s against 239.8 s. Summed model-service time was 231.6 s, so batches ran about 3.2x in parallel.",
+  "Tokens: output 46.7k against 51.4k; input rose from 27.5k to 42.6k because the four-claim cap repeats the fixed rules per batch. Input is the cheap side (2 vs 8 CNY per million).",
+  "Quality was not measured here. One confirmed_conflict is a known false positive shape (an open thread reported as a rule conflict); that is a judgment question for the held-out set, not this release.",
+  "Guest quota: a 37-claim chapter now needs at least 10 dispatches of the 30 a guest gets per 24 hours."
+ ],
+ "acceptance_draft_text": "十九点五十，苏岑沿着风栈码头往北堤走。潮水已经退到西航道外侧。她摸了摸外套内袋，黄铜罗盘还在那里。镜面的月牙裂纹在路灯下很清楚。温岚在北堤值守簿上记下时间。两人约定今晚不再各自行动。雾线水门外的锚柱上还固定着那张航图。航图右下角缺的那块至今没找到。电台忽然响了，二十一点零五分，三次短促的求救码。温岚把坐标抄在潮表背面。她看得懂坐标，却说不出廊桥钥匙指的是什么。苏岑说那只是一个旧代号。北潮闸那边传来铁链声。闸门还开着一半。就在这时，雾钟响了一次。温岚抬头看向钟楼。按灰港的规矩，闸门没关，雾钟不该响。苏岑没有说话，只把罗盘交到温岚手里。温岚把罗盘放进自己的口袋。她们沿着仓道往水门走去。仓道里堆着去年的渔网。港外传来一声汽笛。那是白色渡船的汽笛。可是最后一班渡船十九点四十就离开了风栈码头。温岚想起那张纸条。纸条上写着白色渡船没有靠岸。署名和日期都被盐雾抹掉了。苏岑说，也许有人故意留下它。温岚把纸条夹进值守簿。她们在水门前停下。水门外的海面一片漆黑。雾越来越浓。苏岑打开手电。光照到锚柱上的航图。航图的缺角被人补上了一块新纸。新纸上画着一条从未见过的航线。温岚握紧了罗盘。"
+}
