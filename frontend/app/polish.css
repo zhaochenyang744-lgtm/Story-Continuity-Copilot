@@ -3,23 +3,23 @@
    one control height scale and quieter secondary text. Layout and business state are untouched. */
 :root,
 :root[data-theme] {
-  --bg: #0e0d14;
-  --ink-950: #0e0d14;
+  --bg: #0c0b11;
+  --ink-950: #0c0b11;
   --ink-900: #13121a;
   --ink-850: #17161f;
   --ink-800: #1d1c27;
   --ink-700: #282633;
-  --surface: #15141d;
-  --raised: #1b1a24;
+  --surface: #181721;
+  --raised: #211f2c;
   --surface-soft: #18171f;
-  --project-surface: #0e0d14;
+  --project-surface: #0c0b11;
   --editor-surface: #121118;
   --issue-surface: #15141d;
-  --line: rgba(255, 255, 255, .07);
+  --line: rgba(255, 255, 255, .085);
   --line-strong: rgba(255, 255, 255, .12);
-  --text: #eeedf3;
-  --muted: #a9a6b8;
-  --faint: #8a8699;
+  --text: #f4f3f8;
+  --muted: #b4b0c3;
+  --faint: #858199;
   --violet-300: #c4b5fd;
   --violet-400: #a78bfa;
   --violet-500: #8b5cf6;
@@ -48,10 +48,10 @@ body {
 .global-nav,
 .project-nav {
   border-color: var(--line);
-  background: #0b0a10;
+  background: #08070c;
   box-shadow: none;
 }
-.project-nav { background: var(--bg); }
+.project-nav { background: #0f0e15; }
 .nav-kicker { color: var(--faint); font-size: 11px; font-weight: 500; letter-spacing: .08em; }
 .nav {
   height: 38px;
@@ -325,3 +325,100 @@ input[type="radio"] { accent-color: var(--violet-500); }
   }
   .project-nav .nav.current { background: transparent; box-shadow: inset 0 -2px 0 var(--violet-400); }
 }
+
+/* ---------- Hierarchy ----------
+   Four readable tiers: page title → section title → content → labels. Labels are small and grey,
+   so violet is left for actions and the current location; key values are the largest thing in a card. */
+.page-header h1,
+main h1 { font-size: 30px; }
+main :is(h2) { color: var(--text); }
+.writing-assist h2,
+.run-lifecycle h2,
+.project-section .section-heading h2,
+.project-section > h2,
+.overview-export h2,
+.bounded-story-tools h2,
+.home-section h2 { font-size: 20px; font-weight: 650; letter-spacing: -.005em; }
+.eyebrow,
+.kicker,
+.overview-panel > .eyebrow,
+.nav-kicker {
+  color: var(--faint);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .04em;
+}
+main p { color: var(--muted); }
+main :is(strong, h3) { color: var(--text); }
+.breadcrumb { color: var(--faint); }
+
+/* Key figures read first. */
+.overview-panel h2 { margin-top: 8px; font-size: 30px; font-weight: 700; letter-spacing: -.01em; }
+.overview-panel dl dt,
+.overview-panel dt { color: var(--faint); font-size: 12px; }
+.overview-panel dd { color: var(--text); font-size: 15px; font-weight: 600; }
+.library-statistics dd { font-size: 28px; }
+
+/* The primary card of a page carries a faint violet wash so the eye lands there first. */
+.overview-primary-card.current-draft-panel,
+.workspace-grid .manuscript-card {
+  background:
+    linear-gradient(180deg, rgba(139, 92, 246, .07), transparent 140px),
+    var(--surface) !important;
+  border-color: rgba(167, 139, 250, .22) !important;
+}
+
+/* Secondary panels sit one step back. */
+.writing-tips-card,
+.overview-reference-card,
+.analysis-empty-card { background: #14131c !important; }
+.writing-tips-card h3 { font-size: 16px; }
+.writing-tips-card ul { color: var(--muted); }
+
+/* Rhythm: more space between sections than inside them. */
+.workspace-resources > * + *,
+.overview-page > section + section,
+.project-page > section + section { margin-top: 28px; }
+.page-header { margin-bottom: 28px; }
+
+/* Workspace side column: one card the height of the editor. The issue header sits on top, the
+   writing tips sit at the bottom, and the issue list takes whatever space is left between them,
+   so the column never ends in a loose stack with empty space underneath. */
+.workspace-grid > .issues {
+  overflow: hidden;
+  border: var(--hairline);
+  border-radius: var(--r-card);
+  background: var(--surface);
+}
+.workspace-grid > .issues > .issues-top { border: 0; border-radius: 0; background: transparent; }
+.workspace-grid > .issues > .run-meta { margin: 0; padding: 0 20px 14px; border-bottom: var(--hairline); color: var(--faint); }
+.workspace-grid > .issues > .inline-error { margin: 14px 16px 0; border-radius: 10px; }
+.workspace-grid > .issues > .issue-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+}
+.workspace-grid > .issues > .writing-tips-card {
+  flex-shrink: 0;
+  margin-top: auto;
+  border: 0 !important;
+  border-top: var(--hairline) !important;
+  border-radius: 0 !important;
+  background: rgba(255, 255, 255, .02) !important;
+}
+
+/* Row actions stay quiet until the row is in focus, so the project name leads the row. */
+.project-rows .actions button {
+  border-color: rgba(255, 255, 255, .08);
+  background: transparent;
+  color: var(--muted);
+}
+.project-rows li:hover .actions button,
+.project-rows .actions button:focus-visible { border-color: var(--line-strong); color: var(--text); }
+.project-rows li strong { font-size: 15px; }
+
+/* Collapsed tool sections are a step lighter than the open work above them. */
+.bounded-story-tools:not([open]) { background: #121119 !important; }
+.bounded-story-tools:not([open]) h2 { color: var(--muted); }
