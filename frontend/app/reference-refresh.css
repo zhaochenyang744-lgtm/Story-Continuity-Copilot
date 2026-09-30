@@ -231,6 +231,12 @@
 .manuscript-heading .draft-writing-hint { margin: 4px 0 0; font-size: 14px; }
 .workspace-grid .manuscript-card .draft-field textarea { min-height: 430px; }
 .workspace-grid .manuscript-card .run-bar { padding-bottom: 0; }
+/* The card stretches to the issues column; let the writing area take that height so the
+   toolbar stays at the card's foot instead of floating above an empty band. */
+.workspace-grid .manuscript-card { display: flex; flex-direction: column; }
+.workspace-grid .manuscript-card > .draft-field { display: flex; flex-direction: column; flex: 1 1 auto; }
+.workspace-grid .manuscript-card > .draft-field > :is(.rich-draft-host, textarea) { flex: 1 1 auto; display: flex; flex-direction: column; }
+.workspace-grid .manuscript-card .rich-draft-host > .rich-draft-body { flex: 1 1 auto; }
 .workspace-grid .workspace-technical { padding: 0; border: 1px solid var(--planning-line); border-radius: 13px; background: var(--planning-surface); }
 .workspace-technical > summary { padding: 18px 22px; font-size: 15px; }
 .workspace-technical > .metadata { padding: 0 22px 18px; }

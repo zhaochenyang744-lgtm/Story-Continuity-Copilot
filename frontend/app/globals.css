@@ -1259,8 +1259,10 @@ fieldset input {
 .overview-kv dt { color: var(--faint); font-size: 12px; }
 .overview-kv dd { margin: 5px 0 0; color: var(--text); font-size: 14px; font-weight: 650; }
 .project-section { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); }
-.project-section > h2 { position: relative; margin: 0 0 16px; padding-left: 12px; font-size: 16px; }
-.project-section > h2::before { position: absolute; inset: 1px auto 1px 0; width: 4px; border-radius: 3px; background: linear-gradient(var(--violet-300), var(--violet-500)); box-shadow: 0 0 9px rgba(180, 155, 255, .62); content: ""; }
+.project-section > h2, .overview-export h2 { position: relative; margin: 0 0 16px; padding-left: 12px; font-size: 16px; }
+.project-section > h2::before, .overview-export h2::before { position: absolute; inset: 1px auto 1px 0; width: 4px; border-radius: 3px; background: linear-gradient(var(--violet-300), var(--violet-500)); box-shadow: 0 0 9px rgba(180, 155, 255, .62); content: ""; }
+.overview-export-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 18px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
+.overview-export-footer span { color: var(--muted); font-size: 13px; }
 .overview-reference-grid .overview-panel { min-height: 154px; }
 .overview-reference-grid .quiet { margin-top: 18px; color: var(--violet-300); }
 .latest-run-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--ink-850); }
@@ -2309,8 +2311,9 @@ time {
 .memory-controls nav button:hover { background: rgba(118, 86, 189, .1); color: var(--text); }
 .memory-controls nav button.current { background: var(--ink-700); color: var(--violet-300); }
 .memory-controls label { gap: 0; }
+/* Every .memory-row is its own grid, so tracks must not be auto or the head drifts from the rows. */
 .memory-table { border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); }
-.memory-row { position: relative; display: grid; grid-template-columns: .9fr 1.45fr 1.25fr auto 1fr; align-items: center; gap: 16px; min-height: 78px; padding: 14px 16px; border-bottom: 1px solid var(--line); transition: background var(--motion-fast) var(--ease-standard); }
+.memory-row { position: relative; display: grid; grid-template-columns: .9fr 1.45fr 1.25fr 112px 1fr; align-items: center; gap: 16px; min-height: 78px; padding: 14px 16px; border-bottom: 1px solid var(--line); transition: background var(--motion-fast) var(--ease-standard); }
 .memory-row:last-child { border-bottom: 0; }
 .memory-head { min-height: 48px; background: rgba(32,29,45,.7); color: var(--muted); font-size: 12px; }
 .memory-row:not(.memory-head):hover { background: rgba(118, 86, 189, .07); }
@@ -2384,7 +2387,7 @@ time {
 
 @media (max-width: 1279px) {
   .tutorial-progress { grid-template-columns: 190px minmax(0, 1fr); }
-  .memory-row { grid-template-columns: .8fr 1.35fr 1.15fr auto .9fr; gap: 10px; padding-inline: 12px; }
+  .memory-row { grid-template-columns: .8fr 1.35fr 1.15fr 112px .9fr; gap: 10px; padding-inline: 12px; }
 }
 
 @media (max-width: 1023px) {
@@ -2400,7 +2403,7 @@ time {
   .tutorial-complete-visual { max-width: 280px; }
   .archive-split { grid-template-columns: 220px minmax(0, 1fr); }
   .memory-controls { grid-template-columns: 1fr; }
-  .memory-row { grid-template-columns: .8fr 1.3fr 1.15fr auto; }
+  .memory-row { grid-template-columns: .8fr 1.3fr 1.15fr 112px; }
   .memory-row > :nth-child(5) { grid-column: 1 / -1; grid-row: 2; }
   .memory-head > :nth-child(5) { display: none; }
 }
@@ -2650,7 +2653,7 @@ time {
   color: var(--muted);
   text-align: center;
 }
-.author-plan-empty strong { max-width: 52ch; font-weight: 500; line-height: 1.75; }
+.author-plan-empty strong { max-width: 52ch; font-weight: 500; line-height: 1.75; text-wrap: balance; }
 .author-mobile-note { margin: 0 0 14px; padding: 10px 12px; border-left: 2px solid var(--readonly-border); color: var(--muted); line-height: 1.6; }
 .author-plan-notice { margin: 0 0 14px; }
 .author-plan-dialog { max-height: min(760px, calc(100svh - 40px)); overflow-y: auto; }

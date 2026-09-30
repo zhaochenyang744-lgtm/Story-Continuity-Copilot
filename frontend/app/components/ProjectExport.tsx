@@ -76,7 +76,7 @@ function ProjectExportPanel({ projectId, disabled }: { projectId: string; disabl
 
   return (
     <section aria-label="作品导出" className={styles.panel}>
-      <h3>导出作品</h3>
+      <h2>导出作品</h2>
       <p>正文按章节顺序导出。完整资料包还包括故事规划、人物、世界设定和已确认事实。</p>
       <label htmlFor={selectId}>导出格式</label>
       <select id={selectId} value={format} onChange={event => setFormat(event.target.value as ExportFormat)} disabled={busy || disabled}>

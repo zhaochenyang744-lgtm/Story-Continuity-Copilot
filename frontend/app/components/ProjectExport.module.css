@@ -1,21 +1,12 @@
+/* Sits flat inside its overview .project-section card; the section supplies border and padding. */
 .panel {
   display: grid;
   gap: 12px;
-  margin-top: 24px;
-  padding: 24px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface);
 }
 
-.panel h3,
+.panel h2,
 .panel p {
   margin: 0;
-}
-
-.panel h3 {
-  color: var(--text);
-  font-size: 18px;
 }
 
 .panel p {
@@ -65,8 +56,3 @@
   color: var(--text);
 }
 
-@media (max-width: 520px) {
-  .panel {
-    padding: 18px 16px;
-  }
-}

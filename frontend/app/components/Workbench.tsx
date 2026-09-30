@@ -3712,7 +3712,9 @@ function Rows({
                   ? "▲"
                   : issueTone === "medium"
                     ? "●"
-                    : "✓"}
+                    : p.continuity_status === "unchecked"
+                      ? "○"
+                      : "✓"}
               </I>
               {p.continuity_status === "unchecked"
                 ? "尚未检查"
@@ -4921,9 +4923,12 @@ function ProjectPage(p: {
           </section>
         </div>
         <ContextOverview />
-        <section className="project-section" aria-label="作品导出与历史修订">
+        <section className="project-section overview-export" aria-label="作品导出与历史修订">
           <ProjectExport projectId={p.project.id} />
-          <Button onClick={() => p.go(`/projects/${p.project.id}/sources#long-term-review`)}>修订历史章节与复核事实</Button>
+          <div className="overview-export-footer">
+            <span>需要回头修改已写好的章节，或复核已确认的事实？</span>
+            <Button onClick={() => p.go(`/projects/${p.project.id}/sources#long-term-review`)}>修订历史章节与复核事实</Button>
+          </div>
         </section>
         <section className="project-section">
           <h2>资料摘要</h2>
