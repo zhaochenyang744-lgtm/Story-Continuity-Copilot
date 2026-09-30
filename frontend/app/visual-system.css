@@ -232,6 +232,25 @@ fieldset {
 @media (max-width: 760px) {
   input:not([type="checkbox"]):not([type="radio"]), textarea, select { font-size: 16px; }
 }
+/* Inline notices had no box of their own: give every .notice the same padded, bordered treatment. */
+.notice { margin: 14px 0; padding: 12px 16px; border: 1px solid #5b4a78; border-radius: 11px; background: #1e1929; color: var(--text); font-size: 13px; line-height: 1.65; }
+.notice.success { border-color: #3f7a5f; background: #16261f; }
+.notice.error { border-color: #8a3f4c; background: #2a171c; color: #f2c4cc; }
+.notice.compact { padding: 8px 12px; }
+/* The page feedback bar: the dismiss button never shrinks into a vertical stack of characters. */
+.feedback > button { flex: none; white-space: nowrap; }
+/* AI run and candidate headers: title and meta line stacked with a gap, not run together. */
+.foreshadow-scan > header > div, .foreshadow-candidate > header > div, .bounded-run > header > div { display: grid; gap: 4px; }
+.foreshadow-scan > header > div > small, .foreshadow-candidate > header > div > small { color: var(--muted); font-size: 12px; }
+/* Memory review forms: the evidence confirmation is a normal checkbox row spanning the edit grid,
+   and the submit button sits clear of the last candidate. */
+.candidate-edit .evidence-confirmation { grid-column: 1 / -1; display: flex; flex-direction: row; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: transparent; color: var(--text); font-size: 13px; }
+.candidate-edit .evidence-confirmation input { flex: none; width: 16px; height: 16px; min-height: 16px; margin: 0; padding: 0; accent-color: var(--violet-400); }
+.candidate-edit .field-hint { color: var(--faint); font-size: 11px; }
+.candidate-edit > label { align-content: start; grid-template-rows: auto auto; }
+.candidate-edit > label > input, .candidate-edit > label > select { height: 44px; min-height: 44px; }
+.review fieldset > label > input[type="radio"] { flex: none; }
+.memory-init-review > button[type="submit"], .review > button[type="submit"] { margin-top: 18px; }
 /* Icons inside a line of text (arrows, external links, chevrons) follow the text size. */
 .ui-icon.ui-icon-inline {
   display: inline-block;

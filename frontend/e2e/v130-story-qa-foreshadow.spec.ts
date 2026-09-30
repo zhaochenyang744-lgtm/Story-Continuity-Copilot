@@ -101,12 +101,12 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   await expect(qa.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true})).toBeVisible();
   const qaRun=qa.locator(".bounded-run").first();
   const savedProject=await data<{current_draft:{revision:number}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));
-  await expect(qaRun).toContainText(`草稿 r${savedProject.current_draft.revision}`);
-  await expect(qaRun).toContainText(`来源 r${project.source_revision}`);
-  await expect(qaRun).toContainText(`Story Memory V${project.current_memory_version}`);
-  await expect(qaRun).toContainText(`Author Context V${project.author_context_version}`);
-  await expect(qaRun).toContainText("作者伏笔 V4");
-  await expect(qaRun).toContainText("检索 writing-analysis-lexical-v2-draft-claims");
+  await expect(qaRun).toContainText(`草稿第 ${savedProject.current_draft.revision} 次保存`);
+  await expect(qaRun).toContainText(`原文第 ${project.source_revision} 版`);
+  await expect(qaRun).toContainText(`事实库第 ${project.current_memory_version} 版`);
+  await expect(qaRun).toContainText(`规划第 ${project.author_context_version} 版`);
+  await expect(qaRun).toContainText("伏笔记录第 4 版");
+  await expect(qaRun.locator("footer small")).toHaveAttribute("title","检索方式：writing-analysis-lexical-v2-draft-claims");
   await draftBody.fill(`${await draftBody.inputValue()} 保存后旧问答必须立即过期。`);
   await expect(qa.getByRole("button",{name:"提交问题",exact:true})).toBeDisabled();
   await page.getByRole("button",{name:"保存草稿",exact:true}).click();

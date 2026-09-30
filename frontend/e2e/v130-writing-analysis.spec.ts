@@ -56,13 +56,13 @@ test("v1.3.0 writing analysis closes brief, alignment, retry, stale, and mobile 
   await expect(brief.getByText(/当前草稿句1原文：.*林默带着潮汐表返回雾港/).first()).toBeVisible();
   await expect(brief.getByRole("status").getByText(/当前已保存草稿：全部选入主张已引用/)).toBeVisible();
   await brief.getByText(/查看来源/).first().click();
-  await expect(brief.getByText(/author_context/).first()).toBeVisible();
+  await expect(brief.locator(".source-kind",{hasText:"作者规划"}).first()).toBeVisible();
 
   await page.getByRole("button",{name:"检查计划偏离",exact:true}).click();
   const alignment=page.locator('.writing-analysis-result[aria-label="计划偏离结果"]');
   await expect(alignment.getByText("已覆盖",{exact:true})).toBeVisible();
   await alignment.getByText(/查看来源/).click();
-  await expect(alignment.getByText(/draft_claim/)).toBeVisible();
+  await expect(alignment.locator(".source-kind",{hasText:"当前草稿"}).first()).toBeVisible();
   await snap(page,"writing-analysis-01-desktop.png");
 
   await saveDraft(page,"E2E_ANALYSIS_FAIL_ONCE 林默再次返回雾港。" );

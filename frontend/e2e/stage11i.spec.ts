@@ -24,7 +24,7 @@ async function importAndOpenReview(page: import("@playwright/test").Page, title:
   await page.getByLabel("说明").fill("阶段 11I 确定性假 Provider 浏览器用例");
   await page.getByRole("button", { name: "确认导入" }).click();
   await page.getByRole("button", { name: "初始化 Story Memory" }).click();
-  await page.getByRole("button", { name: "审核候选与 Evidence" }).click();
+  await page.getByRole("button", { name: "审核候选与原文依据" }).click();
   return page.getByRole("form", { name: "Story Memory 初始化审核" });
 }
 
@@ -34,10 +34,10 @@ test("all core final plus a confirmed core keeps supporting pending outside cano
   const supporting = review.locator("article.memory-init-candidate").filter({ hasText: "辅助候选（可继续待审）" });
   await expect(core).toHaveCount(1);
   await expect(supporting).toHaveCount(2);
-  await core.getByLabel("接受（写入 V1）").check();
-  await review.getByRole("button", { name: "确认核心审核并建立 Memory V1" }).click();
-  await expect(review.getByText("已安全建立部分 Memory", { exact: true })).toBeVisible();
-  await expect(review.getByText("不在 canon 或 Provider 输入中", { exact: false })).toBeVisible();
+  await core.getByLabel("接受（写入第 1 版事实库）").check();
+  await review.getByRole("button", { name: "确认核心审核并建立第 1 版事实库" }).click();
+  await expect(review.getByText("已建立部分事实库", { exact: true })).toBeVisible();
+  await expect(review.getByText("不在事实库里", { exact: false })).toBeVisible();
   const projectId = new URL(page.url()).pathname.split("/")[2];
   const coverage = await page.evaluate(async (id) => (await fetch(`/api/projects/${id}/memory/coverage`)).json(), projectId);
   const memory = await page.evaluate(async (id) => (await fetch(`/api/projects/${id}/memory`)).json(), projectId);
@@ -70,12 +70,12 @@ test("all final decisions reaches ready_current", async ({ page }) => {
     await reject.check();
     await expect(reject).toBeChecked();
   }
-  await core.getByLabel("接受（写入 V1）").check();
+  await core.getByLabel("接受（写入第 1 版事实库）").check();
   await expect(review.locator('input[name^="memory-init:"]:checked')).toHaveCount(3);
   const selectedIds = await review.locator('input[data-memory-candidate-id]:checked').evaluateAll((inputs) => inputs.map((input) => input.getAttribute("data-memory-candidate-id")));
   expect(new Set(selectedIds).size).toBe(3);
-  await review.getByRole("button", { name: "确认核心审核并建立 Memory V1" }).click();
-  await expect(page.getByText("Memory V1 已由作者审核后建立", { exact: false })).toBeVisible();
+  await review.getByRole("button", { name: "确认核心审核并建立第 1 版事实库" }).click();
+  await expect(page.getByText("第 1 版事实库已由作者审核建立", { exact: false })).toBeVisible();
   expect(decisions).toEqual(expect.arrayContaining(["accepted", "rejected", "rejected"]));
   const projectId = new URL(page.url()).pathname.split("/")[2];
   const coverage = await page.evaluate(async (id) => (await fetch(`/api/projects/${id}/memory/coverage`)).json(), projectId);
@@ -91,7 +91,7 @@ test("all core rejected remains in_review and Check fails closed", async ({ page
   const core = review.locator("article.memory-init-candidate").filter({ hasText: "核心候选（必须决定）" });
   await expect(core).toHaveCount(1);
   await core.getByLabel("拒绝（不写入）").check();
-  await review.getByRole("button", { name: "确认核心审核并建立 Memory V1" }).click();
+  await review.getByRole("button", { name: "确认核心审核并建立第 1 版事实库" }).click();
   await expect(review.getByText("核心候选均未被确认；尚不能开始连续性检查。", { exact: true })).toBeVisible();
   const projectId = new URL(page.url()).pathname.split("/")[2];
   const coverage = await page.evaluate(async (id) => (await fetch(`/api/projects/${id}/memory/coverage`)).json(), projectId);
@@ -108,7 +108,7 @@ test("390px is browse-only: initialization decisions and commit are disabled", a
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(review.getByText("初始化候选审核", { exact: true })).toBeVisible();
   for (const input of await review.locator("input, select, textarea").all()) await expect(input).toBeDisabled();
-  await expect(review.getByRole("button", { name: "确认核心审核并建立 Memory V1" })).toBeDisabled();
+  await expect(review.getByRole("button", { name: "确认核心审核并建立第 1 版事实库" })).toBeDisabled();
   await page.getByRole("button", { name: "写作与检查", exact: true }).click();
   const save = page.getByRole("button", { name: "保存草稿" });
   const check = page.getByRole("button", { name: "运行连续性检查" });

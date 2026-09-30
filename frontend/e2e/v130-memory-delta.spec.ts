@@ -76,7 +76,7 @@ async function prepare(page: Page) {
     return (await response.json()).data.status;
   }, { timeout: 15_000 }).toBe("in_review");
   await page.goto(`/projects/${projectId}/memory`);
-  return { projectId, review: page.getByRole("form", { name: "Memory Delta 审核" }) };
+  return { projectId, review: page.getByRole("form", { name: "事实变化审阅" }) };
 }
 
 test("desktop reviews new changed and invalidated facts and preserves choices across commit failure", async ({ page }) => {
@@ -111,8 +111,8 @@ test("desktop reviews new changed and invalidated facts and preserves choices ac
   await page.unroute(/\/api\/projects\/[^/]+\/memory\/deltas\/[^/]+\/commit$/);
   await review.getByRole("button", { name: "确认提交并更新 Story Memory" }).click();
   const audit = page.getByLabel("增量来源覆盖审计");
-  await expect(audit).toContainText("ChangeSet");
-  await expect(audit).toContainText("Memory V1 → V2");
+  await expect(audit).toContainText("已保存变更记录");
+  await expect(audit).toContainText("事实库第 1 版 → 第 2 版");
   await expect(page.getByRole("cell", { name: /编辑后抵达北堤/ })).toBeVisible();
   await expect(page.getByRole("cell", { name: "已失效", exact: true })).toBeVisible();
   const stats = await (await page.request.get("/api/test/stage12/stats")).json();

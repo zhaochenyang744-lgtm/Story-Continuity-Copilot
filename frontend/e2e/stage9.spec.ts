@@ -59,29 +59,29 @@ test("imported markdown follows author-reviewed Memory V1 initialization before 
   await expect(page.getByText("不会自动生成 Story Memory", { exact: false })).toHaveCount(0);
 
   await page.getByRole("button", { name: "初始化 Story Memory" }).click();
-  await expect(page.getByText("候选已生成，尚未写入 Story Memory", { exact: false })).toBeVisible();
-  await page.getByRole("button", { name: "审核候选与 Evidence" }).click();
+  await expect(page.getByText("候选已生成，尚未写入事实库", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "审核候选与原文依据" }).click();
   const review = page.getByRole("form", { name: "Story Memory 初始化审核" });
-  await expect(review.getByText("尚未成为 canon", { exact: false }).first()).toBeVisible();
+  await expect(review.getByText("尚未写入事实库", { exact: false }).first()).toBeVisible();
   await expect(review.locator("article.memory-init-candidate")).toHaveCount(3);
-  await expect(review.getByText("SourceSpan", { exact: false }).first()).toBeVisible();
+  await expect(review.getByText("已写原文", { exact: true }).first()).toBeVisible();
   const harbor = review.locator("article.memory-init-candidate").filter({ hasText: "雾港钟声" });
   const key = review.locator("article.memory-init-candidate").filter({ hasText: "银钥匙" });
   const dawn = review.locator("article.memory-init-candidate").filter({ hasText: "清晨门扉" });
   await expect(harbor.locator("blockquote")).toContainText("钟声响起后");
-  await harbor.getByLabel("接受（写入 V1）").check();
+  await harbor.getByLabel("接受（写入第 1 版事实库）").check();
   await key.getByLabel("拒绝（不写入）").check();
   await dawn.getByLabel("编辑后接受").check();
   await dawn.getByLabel("事实内容").fill("确认北堤门只在清晨开启");
-  await review.getByRole("button", { name: "确认核心审核并建立 Memory V1" }).click();
+  await review.getByRole("button", { name: "确认核心审核并建立第 1 版事实库" }).click();
   await expect(review).toBeVisible();
   expect(initializationDecisionBodies).toEqual([]);
-  await dawn.getByLabel("我确认编辑后的事实仍由上方 Evidence 支持").check();
+  await dawn.getByLabel("我确认编辑后的事实仍有上方原文依据").check();
   const editedDecisionRequest = page.waitForRequest((request) => {
     if (request.method() !== "POST" || !/\/memory\/initializations\/[^/]+\/candidates\/[^/]+\/decision$/.test(new URL(request.url()).pathname)) return false;
     return (request.postDataJSON() as Record<string, unknown>).decision === "edited";
   });
-  await review.getByRole("button", { name: "确认核心审核并建立 Memory V1" }).click();
+  await review.getByRole("button", { name: "确认核心审核并建立第 1 版事实库" }).click();
   expect((await editedDecisionRequest).postDataJSON()).toMatchObject({ evidence_span_id: expect.any(String) });
   await expect(page.getByText("雾港钟声", { exact: false })).toBeVisible();
   await expect(page.getByText("银钥匙", { exact: true })).toHaveCount(0);

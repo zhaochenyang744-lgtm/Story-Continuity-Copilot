@@ -48,7 +48,7 @@ test("G02 source-rendered brief keeps tail and coordinate citations after refres
   await expect(brief).toBeVisible();
   await expect(brief).toContainText(tail);
   await brief.getByText(/查看来源/).first().click();
-  await expect(brief.getByText(/draft_claim/).first()).toBeVisible();
+  await expect(brief.locator(".source-kind",{hasText:"当前草稿"}).first()).toBeVisible();
   await page.screenshot({ path: info.outputPath("g02-before-refresh.png"), fullPage: true, animations: "disabled" });
   await page.reload();
   await expect(brief).toBeVisible();

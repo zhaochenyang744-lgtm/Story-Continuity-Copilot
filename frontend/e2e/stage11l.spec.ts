@@ -50,7 +50,7 @@ async function initializedProject(page: Page) {
   );
   await page.getByRole("button", { name: "初始化 Story Memory" }).click();
   expect((await startInitialization).status()).toBe(201);
-  await page.getByRole("button", { name: "审核候选与 Evidence" }).click();
+  await page.getByRole("button", { name: "审核候选与原文依据" }).click();
   const initialReview = await page.evaluate(async (projectId) => {
     const view = await (
       await fetch(`/api/projects/${projectId}/memory/initialization`)
@@ -182,7 +182,7 @@ async function submitCore(page: Page, edit = false) {
   await page
     .getByRole("button", { name: "打开更新审核与证据" })
     .click();
-  const review = page.getByRole("form", { name: "Memory Delta 审核" });
+  const review = page.getByRole("form", { name: "事实变化审阅" });
   const cores = review
     .locator("article.memory-delta-candidate")
     .filter({ hasText: "核心变化 · 必须决定" });
@@ -232,7 +232,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
   const first = await start(page, author.id, 2);
   await expect(page.getByRole("heading", { name: /连续性问题/ })).toBeVisible();
   await expect(
-    page.getByRole("region", { name: "Memory 更新建议" }),
+    page.getByRole("region", { name: "事实更新建议" }),
   ).toBeVisible();
   for (const runId of [first.continuity_run_id, first.memory_delta_run_id]) {
     const run = await api(
@@ -256,7 +256,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
   await page
     .getByRole("button", { name: "打开更新审核与证据" })
     .click();
-  const firstReview = page.getByRole("form", { name: "Memory Delta 审核" });
+  const firstReview = page.getByRole("form", { name: "事实变化审阅" });
   await firstReview
     .getByRole("button", { name: "确认提交并更新 Story Memory" })
     .click();
@@ -394,7 +394,7 @@ test("390 is browse-only for the prepared incremental review", async ({
     .getByRole("button", { name: "打开更新审核与证据" })
     .click();
   await page.setViewportSize({ width: 390, height: 844 });
-  const review = page.getByRole("form", { name: "Memory Delta 审核" });
+  const review = page.getByRole("form", { name: "事实变化审阅" });
   await expect(review).toBeVisible();
   for (const control of await review.locator("input,select,textarea").all())
     await expect(control).toBeDisabled();

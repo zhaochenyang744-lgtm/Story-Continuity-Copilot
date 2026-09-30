@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-const lifecycle = (page: Page) => page.getByLabel("Agent Run 生命周期");
+const lifecycle = (page: Page) => page.getByLabel("检查进度");
 const fixture = path.resolve(process.cwd(), "frontend/e2e/fixtures/stage9-mist-harbor.md");
 const accountPrefix = process.env.E2E_ACCOUNT_PREFIX;
 if (!accountPrefix?.startsWith("stage12v2")) {
@@ -78,12 +78,12 @@ async function prepareIncrementalProject(page: Page, marker = "") {
   await page.getByLabel("作品名").fill("阶段十二增量双 Run");
   await page.getByRole("button", { name: "确认导入" }).click();
   await page.getByRole("button", { name: "初始化 Story Memory" }).click();
-  await page.getByRole("button", { name: "审核候选与 Evidence" }).click();
+  await page.getByRole("button", { name: "审核候选与原文依据" }).click();
   const initialization = page.getByRole("form", { name: "Story Memory 初始化审核" });
   await initialization
     .locator("article.memory-init-candidate")
     .filter({ hasText: "核心候选（必须决定）" })
-    .getByLabel("接受（写入 V1）")
+    .getByLabel("接受（写入第 1 版事实库）")
     .check();
   const initializationCommitted = page.waitForResponse(
     (response) =>
@@ -92,11 +92,11 @@ async function prepareIncrementalProject(page: Page, marker = "") {
       ) && response.request().method() === "POST",
   );
   await initialization
-    .getByRole("button", { name: "确认核心审核并建立 Memory V1" })
+    .getByRole("button", { name: "确认核心审核并建立第 1 版事实库" })
     .click();
   expect((await initializationCommitted).status()).toBe(200);
   await expect(
-    initialization.getByText("已安全建立部分 Memory", { exact: true }),
+    initialization.getByText("已建立部分事实库", { exact: true }),
   ).toBeVisible();
   const projectId = new URL(page.url()).pathname.split("/")[2];
   await page.goto(`/projects/${projectId}/sources`);
@@ -165,7 +165,7 @@ test.describe("Stage 12 Agent Run lifecycle", () => {
     await saveMarker(page, "STAGE12_TIMEOUT");
     await run(page);
     await expect(lifecycle(page)).toContainText("检查超时", { timeout: 15_000 });
-    await expect(lifecycle(page)).toContainText("Provider 响应超时");
+    await expect(lifecycle(page)).toContainText("模型响应超时");
     await expect(lifecycle(page).getByRole("button", { name: "重试为新 Run" })).toBeVisible();
     await expect(lifecycle(page).getByRole("button", { name: "取消 Run" })).toHaveCount(0);
     await expect(page.locator(".issue-list li")).toHaveCount(0);
@@ -209,7 +209,7 @@ test.describe("Stage 12 Agent Run lifecycle", () => {
     expect((await forced.json()).changed).toBe(true);
     await page.request.get("/api/test/stage12/release");
     await expect(lifecycle(page)).toContainText("检查失败", { timeout: 15_000 });
-    await expect(lifecycle(page)).toContainText("Provider 结果未通过结构校验");
+    await expect(lifecycle(page)).toContainText("模型返回的结果未通过结构校验");
     await expect(lifecycle(page).getByRole("button", { name: "重试为新 Run" })).toHaveCount(0);
     await expect(page.locator(".issue-list li")).toHaveCount(0);
     await expectProviderIsolation(page);
@@ -292,8 +292,8 @@ test.describe("Stage 12 Agent Run lifecycle", () => {
       memory_delta_run_id: string;
     };
     expect(pair.continuity_run_id).not.toBe(pair.memory_delta_run_id);
-    const continuity = page.getByLabel("Continuity Agent Run 生命周期", { exact: true });
-    const memoryDelta = page.getByLabel("Memory Delta Agent Run 生命周期", { exact: true });
+    const continuity = page.getByLabel("连续性检查进度", { exact: true });
+    const memoryDelta = page.getByLabel("事实变化检查进度", { exact: true });
     await expect(continuity).toContainText("检查完成", { timeout: 15_000 });
     await expect(memoryDelta).toContainText("检查完成", { timeout: 15_000 });
     await expect(continuity).toContainText(pair.continuity_run_id);
@@ -323,8 +323,8 @@ test.describe("Stage 12 Agent Run lifecycle", () => {
       .getByRole("button", { name: "运行增量检查" })
       .click();
     expect((await started).status()).toBe(202);
-    const continuity = page.getByLabel("Continuity Agent Run 生命周期", { exact: true });
-    const memoryDelta = page.getByLabel("Memory Delta Agent Run 生命周期", { exact: true });
+    const continuity = page.getByLabel("连续性检查进度", { exact: true });
+    const memoryDelta = page.getByLabel("事实变化检查进度", { exact: true });
     await expect(continuity).toContainText("检查超时", { timeout: 15_000 });
     await expect(memoryDelta).toContainText("检查超时", { timeout: 15_000 });
     await expect(continuity).toContainText("未写入部分 Issue、Evidence、Decision 或 Memory 结果");
