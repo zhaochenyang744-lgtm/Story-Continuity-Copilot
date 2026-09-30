@@ -5,6 +5,7 @@
 .projects-page .library-header .library-statistics { position: static; width: 100%; flex-basis: 100%; margin-top: 8px; gap: 16px; }
 .projects-page .library-statistics > div { display: grid; grid-template-columns: 52px minmax(0,1fr); grid-template-rows: auto auto; align-content: center; align-items: center; column-gap: 18px; row-gap: 5px; min-height: 104px; padding: 20px; background: var(--planning-surface); border-color: var(--planning-line); }
 .library-stat-mark { grid-row: 1 / 3; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 12px; color: #c39cff; background: #9561ef1c; font: 500 31px/1 var(--font-sans); }
+.library-stat-mark .ui-icon { width: 24px; height: 24px; stroke-width: 1.7; }
 .projects-page .library-statistics dd { grid-column: 2; grid-row: 1; margin: 0; white-space: nowrap; font-size: clamp(20px,1.65vw,27px); }
 .projects-page .library-statistics dt { grid-column: 2; grid-row: 2; font-size: 13px; }
 .projects-page .project-toolbar { margin-top: 0; padding: 18px; gap: 12px; background: var(--planning-surface); }
@@ -161,6 +162,7 @@
   .project-table .project-rows .actions { width: 124px; }
   .projects-page .library-statistics > div { padding: 16px 12px; column-gap: 12px; grid-template-columns: 38px minmax(0,1fr); }
   .library-stat-mark { width: 38px; height: 42px; font-size: 25px; }
+  .library-stat-mark .ui-icon { width: 20px; height: 20px; }
   .author-plan-list > li.planning-card { grid-template-columns: 34px minmax(0,1fr) 158px; gap: 16px; padding: 20px; }
   .author-plan-actions { padding-left: 14px; gap: 8px; }
 }
@@ -305,8 +307,8 @@
 .writing-tools .writing-tool { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; min-height: 34px; padding: 0; border: 0; border-radius: 6px; background: transparent; box-shadow: none; color: #bba8db; font: 600 18px/1 var(--font-sans); }
 .writing-tools .writing-tool:hover:not(:disabled) { background: #9d75de24; color: #eee4ff; }
 .writing-tools .writing-tool:focus-visible { outline: 2px solid #b58be9; outline-offset: 1px; }
-.writing-tools .tool-italic { font-family: Georgia, serif; font-style: italic; }
-.writing-tools .tool-code { font: 600 14px/1 monospace; }
+.writing-tools .tool-italic { font-family: var(--font-serif); font-style: italic; }
+.writing-tools .tool-code { font: 600 14px/1 var(--font-mono); }
 .draft-editing-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding: 7px 12px; border: 1px solid #76628a88; border-top: 0; border-radius: 0 0 12px 12px; background: #0f0d1933; }
 .draft-editing-bar .draft-word-count { margin-left: auto; border: 0; padding: 0 4px; background: none; white-space: nowrap; }
 .immersive-writing-column > .writing-tools { position: sticky; bottom: 0; align-self: flex-start; padding: 5px 8px; border-radius: 8px; background: #191522ed; backdrop-filter: blur(10px); }

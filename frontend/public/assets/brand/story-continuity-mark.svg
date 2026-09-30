@@ -1,9 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" role="img" aria-labelledby="title desc">
   <title id="title">Story Continuity</title>
-  <desc id="desc">A folded page and a continuous ribbon.</desc>
-  <path d="M4 5h29l9 9v28H13l-9-9V5Z" fill="#252035"/>
-  <path d="M4 5h29v8H12v12H4V5Z" fill="#e9dcff"/>
-  <path d="M33 5l9 9h-9V5Z" fill="#ac82e6"/>
-  <path d="M42 14v28H13v-8h21V22h8v-8Z" fill="#b99ae8"/>
-  <path d="M4 25h8l22-12v9L13 34v8l-9-9v-8Z" fill="#d2bbf3"/>
+  <desc id="desc">Lines of text drawn as one unbroken thread.</desc>
+  <defs>
+    <linearGradient id="scMarkG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#efe6ff"/><stop offset="1" stop-color="#a97ee6"/>
+    </linearGradient>
+  </defs>
+  <path d="M9 11h26a6 6 0 0 1 0 12H13a6 6 0 0 0 0 12h26" stroke="url(#scMarkG)" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="9" cy="11" r="4.2" fill="#efe6ff"/>
+  <path d="M36 30l6 5-6 5" stroke="#a97ee6" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
 </svg>

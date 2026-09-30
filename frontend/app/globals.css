@@ -247,7 +247,7 @@ label {
   align-items: center;
   justify-content: center;
   min-width: 16px;
-  font-family: system-ui;
+  font-family: var(--font-sans);
 }
 .brand .icon {
   width: 24px;
@@ -309,7 +309,7 @@ label {
 .account-caret { margin-left: auto; color: var(--faint); font-size: 16px; }
 .user-menu { position: absolute; z-index: 9; bottom: calc(100% + 8px); left: 0; width: 208px; padding: 6px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--ink-800); box-shadow: var(--elev-2); }
 .user-menu p { margin: 0; padding: 9px 10px; color: var(--text); font-size: 13px; }
-.user-menu p small { display: block; margin-top: 3px; color: var(--faint); font: 11px/1.4 ui-monospace, Consolas, monospace; }
+.user-menu p small { display: block; margin-top: 3px; color: var(--faint); font: 11px/1.4 var(--font-sans); }
 .user-menu button { display: flex; width: 100%; min-height: 40px; justify-content: flex-start; border-color: transparent; color: var(--muted); }
 .user-menu button:hover { background: var(--ink-700); color: var(--text); }
 .user-menu button.danger { margin-top: 5px; border-top: 1px solid var(--line); border-radius: 0 0 8px 8px; color: var(--high); }
@@ -782,7 +782,7 @@ main {
   margin: 0;
 }
 .mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 12px;
 }
 .break {
@@ -853,7 +853,7 @@ main {
 }
 .draft-read {
   white-space: pre-wrap;
-  font-family: "Noto Serif SC", "Songti SC", serif;
+  font-family: var(--font-serif);
   line-height: 1.75;
   color: var(--editor-text);
   min-height: 220px;
@@ -1276,7 +1276,7 @@ fieldset input {
 .editor { grid-template-rows: auto auto minmax(320px, 1fr) auto auto; gap: 0; padding: 0; background: var(--editor-surface); }
 .editor-top, .issues-top { display: flex; align-items: center; justify-content: space-between; min-height: 84px; padding: 18px 20px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,.045), transparent); }
 .editor-title span { display: block; }
-.editor-title span { margin-top: 7px; color: var(--faint); font: 12px/1.4 ui-monospace, Consolas, monospace; }
+.editor-title span { margin-top: 7px; color: var(--faint); font: 12px/1.4 var(--font-sans); }
 .save-state { color: var(--low); font-size: 13px; font-weight: 650; }
 .save-state.unsaved { color: var(--medium); }
 .editor-title-input { padding: 14px 24px 0; }
@@ -1291,7 +1291,7 @@ fieldset input {
 .run-lifecycle.status-failed, .run-lifecycle.status-timed_out, .run-lifecycle.status-cancelled { border-left-color: var(--medium); }
 .run-lifecycle > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
 .run-lifecycle h2 { margin: 2px 0 4px; font-size: 19px; }
-.run-lifecycle header p:last-child { margin: 0; color: var(--faint); font-family: ui-monospace, Consolas, monospace; font-size: 11px; overflow-wrap: anywhere; }
+.run-lifecycle header p:last-child { margin: 0; color: var(--faint); font-family: var(--font-mono); font-size: 11px; overflow-wrap: anywhere; }
 .run-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
 .run-state { display: inline-flex; min-height: 34px; align-items: center; padding: 0 11px; border-radius: 999px; background: var(--ink-700); color: var(--text); font-size: 12px; font-weight: 700; }
 .run-state::before { width: 7px; height: 7px; margin-right: 7px; border-radius: 50%; background: currentColor; content: ""; }
@@ -1317,7 +1317,7 @@ fieldset input {
 .workspace-technical .metadata { margin: 0; padding: 0 20px 16px; }
 .issues { padding: 0; background: var(--issue-surface); }
 .issues-top h2 { margin: 0; font-size: 16px; }
-.issues-top h2 span { color: var(--faint); font-family: ui-monospace, Consolas, monospace; font-size: 13px; }
+.issues-top h2 span { color: var(--faint); font-family: var(--font-sans); font-variant-numeric: tabular-nums; font-size: 13px; }
 .issues-filter { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid var(--line-strong); border-radius: 10px; color: var(--faint); }
 .issues .run-meta { margin: 0; padding: 13px 20px; border-bottom: 1px solid var(--line); }
 .issue-list button { grid-template-columns: auto minmax(0, 1fr); gap: 8px; min-height: 0; padding: 18px 38px 18px 20px; }
@@ -1358,7 +1358,7 @@ fieldset input {
 .project-row-main small, .project-summary, .project-memory { color: var(--muted); font-size: 12px; }
 .project-summary { line-height: 1.5; }
 .project-memory { white-space: nowrap; }
-.project-rows .project-mark { width: 30px; height: 30px; border-radius: 9px; font: 11px/1 ui-monospace, Consolas, monospace; }
+.project-rows .project-mark { width: 30px; height: 30px; border-radius: 9px; font: 600 11px/1 var(--font-sans); font-variant-numeric: tabular-nums; }
 .project-title { display: block; }
 .project-open { min-width: 44px; padding: 0; color: var(--violet-300); }
 @media (max-width: 1279px) {
@@ -2004,12 +2004,15 @@ body { font-size: 14px; }
   font-family: var(--font-serif);
   font-weight: 650;
 }
+/* Metadata is mostly Chinese, so it stays in the UI face; tabular figures keep numbers aligned.
+   The mono face is reserved for identifiers (.mono, run ids). */
 .project-mark,
 .run-meta,
 .run-facts dd,
 .chapter-preview small,
 time {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
 }
 
 .brand-mark {

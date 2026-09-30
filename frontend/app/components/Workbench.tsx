@@ -750,7 +750,7 @@ function I({ children }: { children: string }) {
     </span>
   );
 }
-function Icon({ name }: { name: "home" | "library" | "overview" | "outline" | "users" | "world" | "memory" | "pen" | "save" | "play" | "profile" | "security" | "tutorial" | "logout" }) {
+function Icon({ name, inline = false }: { name: "home" | "library" | "overview" | "outline" | "users" | "world" | "memory" | "pen" | "save" | "play" | "profile" | "security" | "tutorial" | "logout" | "arrow-right" | "external" | "chevron-left" | "chevron-right" | "check-circle" | "text"; inline?: boolean }) {
   const paths: Record<string, ReactNode> = {
     home: <><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z" /></>,
     library: <><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 7h8M8 11h8M8 15h6" /></>,
@@ -766,8 +766,14 @@ function Icon({ name }: { name: "home" | "library" | "overview" | "outline" | "u
     security: <><path d="M12 3 5 6v5c0 4.7 2.8 8.1 7 10 4.2-1.9 7-5.3 7-10V6Z" /><path d="m9 12 2 2 4-4" /></>,
     tutorial: <><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5ZM20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5Z" /></>,
     logout: <><path d="M10 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5M14 8l4 4-4 4M8 12h10" /></>,
+    "arrow-right": <><path d="M5 12h14M13 6l6 6-6 6" /></>,
+    external: <><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></>,
+    "chevron-left": <><path d="m15 6-6 6 6 6" /></>,
+    "chevron-right": <><path d="m9 6 6 6-6 6" /></>,
+    "check-circle": <><circle cx="12" cy="12" r="8.5" /><path d="m8.5 12.2 2.4 2.4 4.6-5" /></>,
+    text: <><path d="M5 6h14M5 10h14M5 14h14M5 18h9" /></>,
   };
-  return <svg className="ui-icon" viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>;
+  return <svg className={inline ? "ui-icon ui-icon-inline" : "ui-icon"} viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>;
 }
 
 export function Workbench() {
@@ -2593,7 +2599,7 @@ export function Workbench() {
             </div>
 
           </div>
-          <p className="nav-kicker">AUTHOR WORKBENCH</p>
+          <p className="nav-kicker">作者工作台</p>
           <nav aria-label="全局导航">
             <Button
               className={pathname === "/" ? "nav current" : "nav"}
@@ -3418,7 +3424,7 @@ function AccountProfile({ user, projects, updateUser, go }: { user: User; projec
                     <button type="button" onClick={() => go(`/projects/${item.id}/${item.current_draft && item.status !== "archived" ? "workspace" : "overview"}`)}>
                       <span className="author-work-copy"><strong>{item.title}</strong><small>{item.genre || "未填写类型"} · {item.chapter_count ?? 0} 章 · {formatWritingCount(item.word_count ?? 0)} 字</small></span>
                       <span className={`status-pill ${item.status}`}>{statusLabel(item.status)}</span>
-                      <span className="author-work-action">{item.status === "archived" ? "查看" : "继续"} →</span>
+                      <span className="author-work-action">{item.status === "archived" ? "查看" : "继续"}<Icon name="arrow-right" inline /></span>
                     </button>
                   </li>
                 ))}
@@ -3549,7 +3555,7 @@ function HomePage({
             <p>教学作品不计入真实作品、搜索或待处理问题；完成后再导入自己的故事。</p>
           </div>
           <div className="actions home-entry-actions">
-            <Button className="primary" onClick={() => open(onboarding.tutorial!.project_id)}><span className="home-play-mark" aria-hidden="true" />开始教学<span aria-hidden="true">→</span></Button>
+            <Button className="primary" onClick={() => open(onboarding.tutorial!.project_id)}><span className="home-play-mark" aria-hidden="true" />开始教学<Icon name="arrow-right" inline /></Button>
             <Button onClick={() => go("/projects/import")}>导入已有作品</Button>
           </div>
         </section>
@@ -3567,7 +3573,7 @@ function HomePage({
               {nextActionLabel(home.continue_work.next_action)}
             </p>
           </div>
-          <div className="actions home-entry-actions"><Button className="primary" onClick={() => open(home.continue_work!.project_id)}>继续工作<span aria-hidden="true">→</span></Button><Button onClick={() => go("/projects")}>查看全部作品</Button></div>
+          <div className="actions home-entry-actions"><Button className="primary" onClick={() => open(home.continue_work!.project_id)}>继续工作<Icon name="arrow-right" inline /></Button><Button onClick={() => go("/projects")}>查看全部作品</Button></div>
         </section>
       ) : !onboarding?.show_first_run ? (
         <section className="empty-workspace home-entry-composition">
@@ -3587,7 +3593,7 @@ function HomePage({
         <section className="home-section">
           <header className="home-section-head">
             <h2><span className="home-section-icon"><DesignAsset name="paper" /></span>最近作品</h2>
-            <Button className="quiet" onClick={() => go("/projects")}>查看全部 <span aria-hidden="true">→</span></Button>
+            <Button className="quiet" onClick={() => go("/projects")}>查看全部 <Icon name="arrow-right" inline /></Button>
           </header>
           {recentProjects.length ? (
             <ul className="home-work-list">
@@ -3596,7 +3602,7 @@ function HomePage({
                   <button onClick={() => open(item.project_id)}>
                     <strong>《{item.title}》</strong>
                     {item.status !== "active" && <span>{statusLabel(item.status)}</span>}
-                    <i aria-hidden="true">→</i>
+                    <i aria-hidden="true"><Icon name="arrow-right" inline /></i>
                   </button>
                 </li>
               ))}
@@ -3730,7 +3736,7 @@ function Rows({
         );
       })}
       </ul>
-      <footer className="project-table-footer"><span>共 {rows.length} 个作品</span>{pageCount > 1 && <nav aria-label="作品分页"><Button ariaLabel="上一页作品" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>‹</Button><span aria-current="page">{currentPage} / {pageCount}</span><Button ariaLabel="下一页作品" disabled={currentPage === pageCount} onClick={() => setPage(currentPage + 1)}>›</Button></nav>}</footer>
+      <footer className="project-table-footer"><span>共 {rows.length} 个作品</span>{pageCount > 1 && <nav aria-label="作品分页"><Button ariaLabel="上一页作品" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}><Icon name="chevron-left" inline /></Button><span aria-current="page">{currentPage} / {pageCount}</span><Button ariaLabel="下一页作品" disabled={currentPage === pageCount} onClick={() => setPage(currentPage + 1)}><Icon name="chevron-right" inline /></Button></nav>}</footer>
     </div>
   ) : (
     <div className={filtered ? "empty search-empty" : "empty project-list-empty"}>
@@ -3787,7 +3793,7 @@ function Projects({
           </Button>
         </div>
         <dl className="library-statistics" aria-label="真实作品统计">
-          {statistics.map((item, index) => <div key={item.label} title={item.note}><span className="library-stat-mark" aria-hidden="true">{["▣", "◷", "✓", "▤"][index]}</span><dt>{item.label}</dt><dd>{item.value === undefined ? "—" : formatWritingCount(item.value)}</dd></div>)}
+          {statistics.map((item, index) => <div key={item.label} title={item.note}><span className="library-stat-mark" aria-hidden="true"><Icon name={(["library", "pen", "check-circle", "text"] as const)[index]} /></span><dt>{item.label}</dt><dd>{item.value === undefined ? "—" : formatWritingCount(item.value)}</dd></div>)}
         </dl>
       </header>
       {(rows.length > 0 || filtered) && <div className="filters project-toolbar">
@@ -3842,7 +3848,7 @@ function Projects({
             <EmptyLibraryVisual />
           </div>
           <div className="library-hero-copy">
-            <p className="eyebrow">EMPTY LIBRARY</p>
+            <p className="eyebrow">作品库</p>
             <h2 id="project-empty-title">还没有真实作品</h2>
             <p>集中管理你的真实作品与连续性检查。</p>
             <hr />
@@ -4139,7 +4145,7 @@ function RunLifecycle({ run, blocked, cancelRun, retryRun, actions = true }: { r
     <section className={`run-lifecycle status-${run.status}`} aria-label={`${run.run_type === "memory_delta" ? "Memory Delta" : "Continuity"} Agent Run 生命周期`} aria-live="polite">
       <header>
         <div>
-          <p className="eyebrow">{run.run_type === "memory_delta" ? "STORY MEMORY 检查" : "连续性检查"}</p>
+          <p className="eyebrow">{run.run_type === "memory_delta" ? "事实库检查" : "连续性检查"}</p>
           <h2>{stage(run.stage)}</h2>
           <p>{(run.attempt_number ?? 1) > 1 ? `第 ${run.attempt_number} 次尝试 · ` : ""}{run.status === "completed" ? "结果已准备好，可继续审阅。" : "保留当前页面即可查看状态变化。"}</p>
         </div>
@@ -4254,7 +4260,7 @@ function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go}:{project:P
   const toggleScope=(value:"confirmed"|"written"|"planned")=>setScope((current)=>current.includes(value)?(current.length===1?current:current.filter((item)=>item!==value)):[...current,value]);
   const renderRunActions=(run:WritingAnalysisRun)=>!readOnly&&<div className="analysis-result-actions">{activeAnalysis(run)&&<Button disabled={Boolean(busy)} onClick={()=>void runAction(run,"cancel")}>取消</Button>}{retryableAnalysis(run)&&<Button disabled={Boolean(busy)||run.is_stale} onClick={()=>void runAction(run,"retry")}>重试</Button>}</div>;
   return <details className="bounded-story-tools" role="region" aria-label="作品问答与伏笔">
-    <summary className="bounded-tools-header"><div><p className="eyebrow">按需辅助</p><h2>作品问答与伏笔</h2><p>需要时再展开；已有回答与伏笔记录也在这里。</p></div>{(snapshot?.foreshadow_version??project.foreshadow_version??0)>0||qaRuns.length>0||scanRuns.length>0?<small>伏笔记录第 {snapshot?.foreshadow_version??project.foreshadow_version??0} 版 · 回答 {qaRuns.length} 条 · 扫描 {scanRuns.length} 次</small>:null}</summary>
+    <summary className="bounded-tools-header"><div><p className="eyebrow">写作辅助</p><h2>作品问答与伏笔</h2><p>需要时再展开；已有回答与伏笔记录也在这里。</p></div>{(snapshot?.foreshadow_version??project.foreshadow_version??0)>0||qaRuns.length>0||scanRuns.length>0?<small>伏笔记录第 {snapshot?.foreshadow_version??project.foreshadow_version??0} 版 · 回答 {qaRuns.length} 条 · 扫描 {scanRuns.length} 次</small>:null}</summary>
     <div className="bounded-tools-intro"><DesignAsset name="bulb" /><p>回答会说明依据来自哪里。扫描发现的伏笔先供你参考，是否记入作品由你决定。</p></div>
     {notice&&<p className="notice" role="status">{notice}</p>}
     {conflict&&<div className="bounded-conflict" role="alert"><p>服务器上的伏笔版本已变化；你的标题、说明与引用选择仍保留。载入最新版本后检查差异，再主动重试保存。</p><Button className="secondary" disabled={Boolean(busy)} onClick={()=>void loadLatest()}>载入最新版本</Button></div>}
@@ -4320,7 +4326,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
   const returnToDraft=()=>{const editor=document.getElementById("draft-body");editor?.scrollIntoView({behavior:"smooth",block:"center"});window.setTimeout(()=>editor?.focus(),250);};
   const activeRun=runs.find(activeAnalysis);
   return <details className="bounded-story-tools revision-plan-tools" role="region" aria-label="修订计划与任务">
-    <summary className="bounded-tools-header"><div><p className="eyebrow">作者掌控的修订闭环</p><h2>修订计划与任务</h2><p>从当前连续性问题生成有界行动建议；确认后仅创建任务，不会改写正文或事实。</p></div>{(snapshot?.tasks.some((task)=>task.status!=="completed")||runs.length>0)?<small>进行中任务 {snapshot?.tasks.filter((task)=>task.status!=="completed").length??0} 项 · 历史计划 {runs.length} 个</small>:null}</summary>
+    <summary className="bounded-tools-header"><div><p className="eyebrow">修订</p><h2>修订计划与任务</h2><p>从当前连续性问题生成有界行动建议；确认后仅创建任务，不会改写正文或事实。</p></div>{(snapshot?.tasks.some((task)=>task.status!=="completed")||runs.length>0)?<small>进行中任务 {snapshot?.tasks.filter((task)=>task.status!=="completed").length??0} 项 · 历史计划 {runs.length} 个</small>:null}</summary>
     <div className="bounded-tools-intro">先选择当前检查中的问题，再逐条决定候选。接受任务后回到同一草稿手动修改、显式保存，并在需要时主动重新检查。</div>
     {notice&&<p className="notice" role="status">{notice}</p>}
     {conflict&&<div className="bounded-conflict" role="alert"><p>服务器上的修订任务版本已变化；候选编辑内容仍保留。请载入最新版本、核对状态后再主动重试。</p><Button className="secondary" disabled={Boolean(localBusy)} onClick={()=>void loadLatest()}>载入最新任务</Button></div>}
@@ -4334,7 +4340,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
           <footer><small>草稿 r{target.draft_revision} · 来源 r{target.source_revision} · Story Memory V{target.source_memory_version} · Author Context V{target.author_context_version} · 作者伏笔 V{target.foreshadow_version??0}</small>{!readOnly&&<div className="analysis-result-actions">{activeAnalysis(target)&&<Button disabled={Boolean(localBusy)} onClick={()=>void runAction(target,"cancel")}>取消</Button>}{retryableAnalysis(target)&&<Button disabled={Boolean(localBusy)||target.is_stale||dirty} onClick={()=>void runAction(target,"retry")}>重试</Button>}</div>}</footer></article>)}</div>
       </section>
       <section className="revision-plan-column" aria-label="持久修订任务">
-        <header><div><p className="eyebrow">独立任务层</p><h3>修订任务</h3></div></header>
+        <header><div><p className="eyebrow">任务</p><h3>修订任务</h3></div></header>
         <p className="revision-boundary">任务进度是你的工作记录。标记完成不会关闭问题、不会运行检查，也不会修改正文或资料。</p>
         <div className="revision-task-list">{snapshot?.tasks.map((task)=><article key={task.id} id={`revision-task-${task.id}`} className={`revision-task priority-${task.priority} status-${task.status}`}><header><div><strong>{task.title}</strong><small>优先级 {revisionPriorityLabel[task.priority]} · 任务 V{task.version}</small></div><span>{revisionTaskStatusLabel[task.status]}</span></header><p>{task.instruction}</p><EvidenceLinks sources={task.evidence} navigate={go}/>{!readOnly&&<footer><Button className="quiet" disabled={Boolean(localBusy)||busy} onClick={returnToDraft}>回到同一草稿</Button><label>任务进度<select aria-label={`${task.title}任务进度`} value={task.status} disabled={Boolean(localBusy)||busy} onChange={(event)=>void updateTask(task,event.target.value as RevisionTask["status"])}>{(["todo","in_progress","completed"] as const).map((status)=><option key={status} value={status}>{revisionTaskStatusLabel[status]}</option>)}</select></label></footer>}</article>)}{snapshot&&!snapshot.tasks.length&&<p className="muted">尚无修订任务。AI 候选只有在作者接受后才会进入这里。</p>}</div>
         {!readOnly&&<div className="revision-loop-actions"><Button className="secondary" disabled={Boolean(localBusy)||busy||dirty||!draft} onClick={()=>void recheck()}>显式重新检查</Button><small>请先手动修改并保存草稿；任务完成状态不会触发此操作。</small></div>}
@@ -4910,7 +4916,7 @@ function ProjectPage(p: {
             <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>打开当前草稿</Button>
           </section>
           <section className="overview-panel overview-primary-card memory-panel" aria-label="Story Memory">
-            <p className="eyebrow">STORY MEMORY</p>
+            <p className="eyebrow">事实库</p>
             <h2>第 {p.project.current_memory_version} 版</h2>
             <p className="term-help">Story Memory 是作者确认、供后续连续性检查使用的事实集合；版本号代表一次明确提交后的完整快照。</p>
             <dl className="overview-kv">
@@ -5229,7 +5235,7 @@ function ProjectPage(p: {
                       </span>
                       <span className="issue-claim">{x.claim_text || x.explanation}</span>
                       <small className="issue-action-label">{x.reused_decision ? "沿用作者此前判断" : x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "决定已记录" : `涉及：${categoryLabel(x.category)} · 查看证据`}</small>
-                      <span className="issue-arrow" aria-hidden="true">›</span>
+                      <span className="issue-arrow" aria-hidden="true"><Icon name="chevron-right" inline /></span>
                     </Button>
                     </li>)}
                     </ul>
@@ -5271,7 +5277,7 @@ function ProjectPage(p: {
       </div>
       <section className="workspace-resources" aria-label="写作资料与分析">
         <section className="writing-assist" aria-label="AI 写作辅助">
-          <header><div><p className="eyebrow">按需展开</p><h2>写作分析</h2><p>写作准备和计划对照只读取已保存正文，不会修改正文或 Story Memory。</p></div>{!p.readOnly&&<div className="writing-assist-actions"><Button className="primary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty} onClick={()=>void p.startAnalysis("context_brief")}>{p.analysisBusy==="context_brief"?"正在生成":"生成章节简报"}</Button><Button className="secondary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty||!p.draft.body.trim()} onClick={()=>void p.startAnalysis("plan_alignment")}>{p.analysisBusy==="plan_alignment"?"正在检查":"检查计划偏离"}</Button></div>}</header>
+          <header><div><p className="eyebrow">写作辅助</p><h2>写作分析</h2><p>写作准备和计划对照只读取已保存正文，不会修改正文或 Story Memory。</p></div>{!p.readOnly&&<div className="writing-assist-actions"><Button className="primary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty} onClick={()=>void p.startAnalysis("context_brief")}>{p.analysisBusy==="context_brief"?"正在生成":"生成章节简报"}</Button><Button className="secondary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty||!p.draft.body.trim()} onClick={()=>void p.startAnalysis("plan_alignment")}>{p.analysisBusy==="plan_alignment"?"正在检查":"检查计划偏离"}</Button></div>}</header>
           {p.readOnly&&!p.contextBrief&&!p.planAlignment&&<p className="muted">这里可以浏览已有分析；编辑和重新分析请使用桌面宽度。</p>}
           <div className="writing-analysis-grid">{p.contextBrief ? <WritingAnalysisPanel run={p.contextBrief} readOnly={p.readOnly} busy={Boolean(p.analysisBusy)} cancel={p.cancelAnalysis} retry={p.retryAnalysis}/> : <section className="analysis-empty-card"><DesignAsset name="paper" /><h3>落笔前，先理清这一章</h3><p>生成章节简报，回顾相关情节、角色状态和需要留意的设定。</p></section>} {p.planAlignment ? <WritingAnalysisPanel run={p.planAlignment} readOnly={p.readOnly} busy={Boolean(p.analysisBusy)} cancel={p.cancelAnalysis} retry={p.retryAnalysis}/> : <section className="analysis-empty-card"><DesignAsset name="bulb" /><h3>写好后，再对照你的安排</h3><p>保存正文后，可以检查它与创作规划的差异，再决定是否调整。</p></section>}</div>
         </section>
@@ -5377,7 +5383,7 @@ function MemoryDeltaReview({ delta, blocked, submit, openSource }: { delta: Memo
     <form className="review memory-init-review memory-delta-review" aria-label="Memory Delta 审核" onSubmit={(event) => void submit(event)}>
       <header>
         <div>
-          <p className="eyebrow">STORY MEMORY · SOURCE R{delta.source_revision}</p>
+          <p className="eyebrow">事实库 · 原文第 {delta.source_revision} 版</p>
           <h2>核对事实变化</h2>
           <p>每条变化都绑定当前来源与 Memory V{delta.base_memory_version}。核心变化必须全部决定；辅助建议只有明确决定后才会提交。当前覆盖：{coverageStatusLabel(delta.coverage?.status)}。</p>
         </div>
@@ -5468,7 +5474,7 @@ function MemoryInitializationReview({
     <form className="review memory-init-review" aria-label="Story Memory 初始化审核" onSubmit={(event) => void submit(event)}>
       <header>
         <div>
-          <p className="eyebrow">IMPORTED SOURCE · REVISION {initialization.source_revision}</p>
+          <p className="eyebrow">导入原文 · 第 {initialization.source_revision} 版</p>
           <h2>初始化候选审核</h2>
           <p>核心候选必须全部决定；辅助候选可继续 pending，且不会进入 canon 或 Provider 输入。{coverage ? ` 当前覆盖：${coverage.status}；核心待审 ${coverage.counts.core_pending}，辅助待审 ${coverage.counts.supporting_pending}。` : ""}</p>
         </div>
@@ -6326,7 +6332,7 @@ function MemoryRecords({ records, openSource }: { records: Memory[]; openSource:
             <div id={`memory-${record.id}`} className="memory-row" role="row" key={record.id}>
               <strong role="cell" className="memory-subject">{record.subject}</strong>
               <span role="cell" className="memory-field memory-value" data-label="事实内容"><small>{predicateLabel(record.predicate)}</small>{record.value}</span>
-              <Button className="quiet memory-source" ariaLabel={record.source ? `查看 ${record.subject} 的来源` : `${record.subject} 暂无来源`} disabled={!record.source} onClick={(event) => openSource(record, event.currentTarget)}>{record.source ? `第 ${record.source.chapter_number} 章《${record.source.chapter_title || "未命名"}》 ↗` : "来源不可用"}</Button>
+              <Button className="quiet memory-source" ariaLabel={record.source ? `查看 ${record.subject} 的来源` : `${record.subject} 暂无来源`} disabled={!record.source} onClick={(event) => openSource(record, event.currentTarget)}>{record.source ? <>第 {record.source.chapter_number} 章《{record.source.chapter_title || "未命名"}》<Icon name="external" inline /></> : "来源不可用"}</Button>
               <span role="cell" data-label="当前状态" className={`memory-status ${record.valid_to != null ? "retired" : record.requires_source_review ? "pending" : record.review_status === "author_confirmed" ? "confirmed" : "pending"}`}><I>{record.valid_to != null ? "—" : record.requires_source_review ? "○" : "✓"}</I>{record.valid_to != null ? "已失效" : record.requires_source_review ? "来源待复核" : "当前有效"}</span>
               <details role="cell" className="memory-version-details"><summary>版本详情</summary><p>有效版本：{record.valid_from == null ? "未提供" : `第 ${record.valid_from} 版`}起{record.valid_to == null ? "，至今" : `，至第 ${record.valid_to} 版`}</p><p>故事时间：未提供</p><p>{reviewStatusLabel(record.review_status)} · {memoryTypeLabel(record.memory_type)}</p></details>
               <small className="memory-kind">{memoryTypeLabel(record.memory_type)}</small>
@@ -6588,7 +6594,7 @@ function Evidence({
               <article className="evidence" key={x.id}>
                 <blockquote>{x.excerpt}</blockquote>
                 {x.excerpt_context !== x.excerpt && <p>上下文：{x.excerpt_context}</p>}
-                <footer><strong>第 {x.chapter_number} 章《{x.chapter_title || "标题未提供"}》</strong><Button className="quiet evidence-source-link" onClick={(event) => openSource(x, event.currentTarget)}>查看来源 ↗</Button></footer>
+                <footer><strong>第 {x.chapter_number} 章《{x.chapter_title || "标题未提供"}》</strong><Button className="quiet evidence-source-link" onClick={(event) => openSource(x, event.currentTarget)}>查看来源<Icon name="external" inline /></Button></footer>
               </article>
             ))}
           </section>
