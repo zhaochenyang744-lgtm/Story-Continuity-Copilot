@@ -191,7 +191,7 @@ fieldset {
 [data-scroll-fade="start"] { -webkit-mask-image: linear-gradient(to right, transparent, #000 36px); mask-image: linear-gradient(to right, transparent, #000 36px); }
 [data-scroll-fade="both"] { -webkit-mask-image: linear-gradient(to right, transparent, #000 36px, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(to right, transparent, #000 36px, #000 calc(100% - 36px), transparent); }
 /* Missing project or unknown address: a calm page with a way back, not a generic error. */
-.not-found-page { display: grid; justify-items: center; gap: 14px; max-width: 520px; margin: clamp(48px, 12vh, 120px) auto 0; padding: 0 16px; text-align: center; }
+.not-found-page { display: grid; justify-items: center; align-content: center; gap: 14px; max-width: 520px; min-height: calc(100svh - 160px); margin: 0 auto; padding: 0 16px 8vh; text-align: center; }
 .not-found-page > .design-raster { width: 72px; height: 72px; object-fit: contain; }
 .not-found-page h1 { margin: 6px 0 0; font-size: clamp(24px, 2.4vw, 30px); }
 .not-found-page p { margin: 0; color: var(--muted); line-height: 1.7; text-wrap: balance; }
