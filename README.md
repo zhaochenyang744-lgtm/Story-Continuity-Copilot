@@ -2,11 +2,30 @@
 
 The active product is **Story Continuity Copilot v1.4.0**. It adds canonical author materials and comparisons, unified planning and authoring pages, rich-text and immersive writing, and stricter AI evidence contracts to the author workflow. The author owns the prose and every canon decision.
 
-The active online release is `maint-e2d141c23d0c-20260913`, deployed on 2026-09-13 (Australia/Sydney) from a frozen source inventory identified by `e2d141c23d0c` (not a Git commit). See the [maintenance deployment record](docs/maintenance-deployment.md). The [2026-09-08 deployment record](docs/v1.4.0-deployment.md) remains historical evidence. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
+The active online release is `ui-cbfa536-20260930`, deployed on 2026-09-30 from Git commit `cbfa536` (see [2026-09-30 update](#2026-09-30-update) below). The previous releases `longform-aac1517-20260930`, `longform-bd090fe-20260930` and `maint-e2d141c23d0c-20260913` remain on the server as rollback targets; the [maintenance deployment record](docs/maintenance-deployment.md) and the [2026-09-08 deployment record](docs/v1.4.0-deployment.md) remain historical evidence. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
 
 The canonical product description is [current product and verification scope](docs/current-product.md). The [maintenance acceptance record](docs/maintenance-acceptance.md) separates local verification from the bounded production checks. The September maintenance update adds saved-work exports, reversible author-decision reuse, full-chapter revision with fact review, and independent operations tools. The [v1.3.0 product contract](docs/v1.3.0-product.md), writing-analysis, [character-alias and change-impact](docs/v1.3.0-character-alias-impact.md), [bounded revision plan](docs/v1.3.0-revision-plan.md), and Memory-delta documents remain historical or focused technical appendices. Current source packaging uses the [maintenance release manifest](docs/maintenance-release-manifest.json); the [v1.3 allowlist](docs/v1.3.0-release-allowlist.json) records its historical release scope. Current documentation was updated after the deployed source package was frozen; it does not change that archive or image identity.
 
 The signed Stage 14 public-production baseline remains **Story Continuity Copilot v1.0 Public Release** as a historical evidence baseline. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility.
+
+## 2026-09-30 update
+
+The late-September releases are each built from a Git commit with the maintenance source packager and deployed with `deployment/release.sh`. None changes the database schema.
+
+**Long chapters (`longform-bd090fe`, then `longform-aac1517`)**
+- Continuity review uses `deepseek-flash` with high thinking. A check's review batches are dispatched in parallel (4 at a time in production, 1 locally for reproducibility), with at most four claims per batch.
+- Each evidence span is sent once per request and referenced by ID; a request over the input budget is split in half instead of failing.
+- One undecidable claim no longer discards the rest of the chapter. On production, a 37-claim chapter that previously failed after 240 s completed in 72.5 s ([record](evaluation/results/prod-longform-after-bd090fe-20260930.json)).
+- Quota: a check the remaining provider quota cannot cover is refused before any call (HTTP 429, `provider_attempt_quota_insufficient`, with the claim count and roughly how many claims still fit). If the quota runs out mid-chapter, claims already judged are kept and the rest are reported as undecided.
+
+**Interface (`ui-cbfa536`)**
+- Quota messages speak in credits ("点数不足") instead of model calls or provider attempts.
+- New outlined logo (a single continuous line of text) and favicon; three type faces only (UI, manuscript serif, identifiers); one line-icon set, including arrows and external links.
+- Internal wording and debug counters are gone from author screens: Story Memory versions read "事实库第 N 版", run ids, byte counts and empty `V0` counters are not shown, and "Reset" reads "重置当前作品".
+- Layout fixes: the writing page has one title and one save status, and the editor fills its card beside the issue pane; the overview export panel, Story Memory table columns, immersive issue list, planning empty states and evidence-drawer actions were corrected; the sources page groups spans under their chapter; the edit-project dialog matches the other dialogs.
+- A missing project or unknown address shows a "找不到" page with a way back. Phone form fields stay at 16 px so iOS does not zoom on focus; scrolling tab rails fade the edge that hides more items.
+
+Verification for `ui-cbfa536`: backend 456/456, evaluation 51/51, lint, typecheck and build passed locally on Windows; results that need a model (briefs, plan alignment, checks in progress or failed, imports, Memory review) were opened with the real provider and screenshotted at 1440 px and 390 px. The public site was checked by hand after deployment. Browser E2E suites were not green; see [Known limitations](#known-limitations).
 
 ## v1.3.0 workflow foundation (included in v1.4.0)
 
@@ -33,9 +52,10 @@ The repository is designed for local reproduction. It contains the application s
 
 - Active origin: [https://43-160-207-57.sslip.io](https://43-160-207-57.sslip.io)
 - Active version: **Story Continuity Copilot v1.4.0**
-- Frozen source inventory SHA256: `e2d141c23d0ccab25ccf1fd24b7f0ea0821493a6f892c7b784680f7f492b0402`
-- Production release ID: `maint-e2d141c23d0c-20260913`
-- Deployment date: 2026-09-13 (Australia/Sydney)
+- Production release ID: `ui-cbfa536-20260930` (Git commit `cbfa5368dc0eb06d2241b423001ba2ddf6838108`)
+- Source inventory SHA256: `d3551e4a4ec75e174f358011c4ae37769b0b66b49f4df45ff35bc6f9b269bc14` (94 files)
+- Deployment date: 2026-09-30; rollback target `longform-aac1517-20260930`
+- The notes below describe the 2026-09-13 maintenance release (`maint-e2d141c23d0c-20260913`, inventory `e2d141c23d0ccab25ccf1fd24b7f0ea0821493a6f892c7b784680f7f492b0402`), whose schema and operations setup the later releases keep.
 - Isolated migration rehearsal and live comparison before browser acceptance preserved all 67 preexisting business tables and 661 rows. Schema is 146; integrity and foreign-key checks passed. Pre-deployment and post-deployment backups were manually downloaded to the operator workstation and independently hashed.
 - Public browser acceptance passed seven checks, including actual TXT/Markdown/ZIP downloads, maintenance-page chapter content, a revision guard rejecting changes, mobile read-only layout, and fresh JS/CSS loads. It did not rerun successful revision commits, decision reuse, or external AI calls online; those retain their separate local evidence.
 - Three operations timers are enabled; first-run checks and a subsequent monitor cycle were observed. The user has deferred automated off-instance replication and external alert delivery as optional follow-up work; the missing-copy warning remains visible. Old images are retained, but targets without the schema146 workflow contract are rejected; no actual rollback was performed. See the [deployment scope and limitations](docs/maintenance-deployment.md).
@@ -49,7 +69,7 @@ The author workflow is:
 3. Submit the current draft for a continuity check.
 4. Inspect each finding together with resolvable Evidence from the current project.
 5. Accept, reject, or edit proposed Memory changes. A ChangeSet records the decision; only accepted changes update canon.
-6. Use project Reset to restore the seeded review path when a fresh demonstration is needed.
+6. Use "重置当前作品" (project Reset) to restore the seeded review path when a fresh demonstration is needed.
 
 Visitor demo spaces retain three independently seeded projects: **Grey Harbor Echoes**, **Paper Moon Archive**, and **Midnight Garden**. New registered accounts instead receive the isolated **Grey Harbor Echoes** tutorial sample described above. Project data, Memory, drafts, and review state remain isolated per account and per project.
 
@@ -207,6 +227,10 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 - Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.
 - The provider returns no cost in the retained V4 results.
 - The system supports continuity review and author-controlled canon updates; it does not directly continue the novel.
+- Browser E2E suites lag the current interface. `test:v130` fails the same 12 tests on `aac1517` and on `ui-cbfa536`, and several `stage*` and `v110` specs still expect the pre-v1.4 create form, textarea drafts and seeded flows. These failures predate the 2026-09-30 interface work; updating the suites is open work.
+- `test:build-origin` has one known failure ("canonical HTTPS proxy exposes public health…").
+- With the real model, some Story Memory change-set reviews for long appended chapters fail backend validation (`candidate_count_invalid`, `memory_type_invalid`), and a long check can occasionally fail with unresolvable evidence. Both are model-output issues, not interface faults.
+- Writing and checking are desktop-only; below 1024 px the workspace is browse-only.
 
 ## Further reading
 
