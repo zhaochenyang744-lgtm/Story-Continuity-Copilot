@@ -79,7 +79,7 @@
 .planning-field :is(input,select,textarea) { width: 100%; background: #100e194d; border: 1px solid #78658a88; border-radius: 10px; padding: 12px 14px; font: 14px/1.8 var(--font-sans); }
 .planning-field :is(input,select) { min-height: 46px; }
 .planning-field textarea { min-height: 100px; resize: vertical; }
-.planning-field :is(input,select,textarea):focus-visible { outline: 2px solid #b382f4; outline-offset: 3px; box-shadow: 0 0 0 5px #ae7fea12; }
+.planning-field :is(input,select,textarea):focus-visible { border-color: #b68aff; outline: 0; box-shadow: 0 0 0 3px #9c70ee40; }
 .planning-field .planning-field-count { align-self: flex-end; font: 11px/1.5 var(--font-sans); color: #9989af; margin: 0; }
 .planning-edit-dialog form > .actions { position: sticky; bottom: 0; z-index: 2; margin: 0 -36px; padding: 18px 36px; border-top: 1px solid #68527777; background: #211c2eee; backdrop-filter: blur(16px); display: flex; justify-content: flex-end; gap: 12px; }
 .planning-edit-dialog form > .actions button { min-width: 100px; min-height: 44px; }

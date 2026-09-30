@@ -1154,6 +1154,8 @@ fieldset input {
 .auth-password-toggle { align-self: start; min-height: 32px; padding: 4px 0; border-color: transparent; color: var(--muted); }
 .auth-rules, .auth-recovery-note { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
 .auth-error-slot { min-height: 44px; }
+/* No error, no reserved gap: the empty slot would add a second form gap above the submit button. */
+.auth-error-slot:empty { display: none; }
 .auth-error-slot .inline-error { margin: 0; }
 .inline-success { margin: 0; padding: 10px; border: 1px solid var(--low); border-radius: 8px; background: var(--low-bg); color: var(--low); line-height: 1.5; }
 .recovery-panel { max-height: calc(100dvh - 32px); overflow-y: auto; }
@@ -1167,7 +1169,7 @@ fieldset input {
 .auth-button-spinner { width: 14px; height: 14px; margin-left: 8px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; opacity: 0; }
 .auth-button-spinner[data-active="true"] { opacity: 1; animation: auth-spin 700ms linear infinite; }
 @keyframes auth-spin { to { transform: rotate(360deg); } }
-.auth input:focus-visible { outline: 2px solid var(--violet-300); outline-offset: 2px; }
+.auth input:focus-visible { outline: 0; }
 .auth-shell {
   display: block;
   min-height: 100dvh;

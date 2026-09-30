@@ -750,6 +750,26 @@ function I({ children }: { children: string }) {
     </span>
   );
 }
+/** Marks a horizontally scrolling rail with which edges still hide items, so CSS can fade that edge. */
+function useScrollFade(ref: { current: HTMLElement | null }, key?: unknown) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => {
+      const start = el.scrollLeft > 2;
+      const end = el.scrollLeft + el.clientWidth < el.scrollWidth - 2;
+      const fade = start && end ? "both" : start ? "start" : end ? "end" : "";
+      if (fade) el.dataset.scrollFade = fade;
+      else delete el.dataset.scrollFade;
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    const resize = new ResizeObserver(update);
+    resize.observe(el);
+    return () => { el.removeEventListener("scroll", update); resize.disconnect(); };
+  }, [ref, key]);
+}
+
 function Icon({ name, inline = false }: { name: "home" | "library" | "overview" | "outline" | "users" | "world" | "memory" | "pen" | "save" | "play" | "profile" | "security" | "tutorial" | "logout" | "arrow-right" | "external" | "chevron-left" | "chevron-right" | "check-circle" | "text"; inline?: boolean }) {
   const paths: Record<string, ReactNode> = {
     home: <><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z" /></>,
@@ -968,6 +988,8 @@ export function Workbench() {
     window.addEventListener("keydown", close);
     return () => window.removeEventListener("keydown", close);
   }, [userMenuOpen]);
+  // Keyed on the loaded project: the rail only renders once the project has arrived.
+  useScrollFade(projectModuleNav, project?.id);
   useEffect(() => {
     if (!projectId || !projectModuleNav.current) return;
     const nav = projectModuleNav.current;
@@ -6300,6 +6322,7 @@ function MemoryRecords({ records, openSource }: { records: Memory[]; openSource:
   const [filter, setFilter] = useState("all");
   const [query, setQuery] = useState("");
   const filterNav = useRef<HTMLElement>(null);
+  useScrollFade(filterNav);
   const filters = [
     ["all", "全部事实"],
     ["character_knowledge", "角色知识"],
