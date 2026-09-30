@@ -280,11 +280,12 @@
   .writing-assist .analysis-empty-card { padding: 22px; }
 }
 
-/* Align the issue pane with the manuscript, below the draft status row. */
+/* The editor column holds only the manuscript card (save status lives in the page header), so the
+   issue pane shares its single row and the card stretches to the pane's height. */
 @media (min-width: 761px) {
-  .workspace-page .workspace-grid { grid-template-rows: auto minmax(0, 1fr) auto; row-gap: 16px; }
-  .workspace-grid > .editor { display: grid; grid-column: 1; grid-row: 1 / span 3; grid-template-rows: subgrid; }
-  .workspace-grid > .issues { grid-column: 2; grid-row: 2 / span 2; }
+  .workspace-page .workspace-grid { grid-template-rows: auto; }
+  .workspace-grid > .editor { grid-column: 1; grid-row: 1; }
+  .workspace-grid > .issues { grid-column: 2; grid-row: 1; }
 }
 
 /* Immersive writing is a fluid manuscript, with no input surface on focus. */

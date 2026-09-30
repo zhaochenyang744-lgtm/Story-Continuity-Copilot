@@ -3595,7 +3595,7 @@ function HomePage({
                 <li key={item.project_id}>
                   <button onClick={() => open(item.project_id)}>
                     <strong>《{item.title}》</strong>
-                    <span>{statusLabel(item.status)}</span>
+                    {item.status !== "active" && <span>{statusLabel(item.status)}</span>}
                     <i aria-hidden="true">→</i>
                   </button>
                 </li>
@@ -3622,7 +3622,7 @@ function HomePage({
                     <button onClick={() => open(x.project_id)}>
                       <span>
                         <strong>《{x.title}》</strong>
-                        <small>高 {x.high} · 中 {x.medium} · 低 {x.low}</small>
+                        {total > 0 && <small>高 {x.high} · 中 {x.medium} · 低 {x.low}</small>}
                       </span>
                       <b className={`risk ${tone}`}>
                         <I>{tone === "high" ? "▲" : tone === "medium" ? "●" : tone === "unchecked" ? "○" : "✓"}</I>
@@ -3730,7 +3730,7 @@ function Rows({
         );
       })}
       </ul>
-      <footer className="project-table-footer"><span>共 {rows.length} 个作品</span><nav aria-label="作品分页"><Button ariaLabel="上一页作品" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>‹</Button><span aria-current="page">{currentPage} / {pageCount}</span><Button ariaLabel="下一页作品" disabled={currentPage === pageCount} onClick={() => setPage(currentPage + 1)}>›</Button></nav></footer>
+      <footer className="project-table-footer"><span>共 {rows.length} 个作品</span>{pageCount > 1 && <nav aria-label="作品分页"><Button ariaLabel="上一页作品" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>‹</Button><span aria-current="page">{currentPage} / {pageCount}</span><Button ariaLabel="下一页作品" disabled={currentPage === pageCount} onClick={() => setPage(currentPage + 1)}>›</Button></nav>}</footer>
     </div>
   ) : (
     <div className={filtered ? "empty search-empty" : "empty project-list-empty"}>
@@ -5091,8 +5091,8 @@ function ProjectPage(p: {
       <header className="page-header project-page-header workspace-page-header">
         <div>
           <p className="breadcrumb">项目 / {p.project.title} / 写作与检查</p>
-          <h1>{p.draft?.title || "正在读取草稿"}</h1>
-          <p className={`workspace-save-summary ${saveState}`}><strong>{saveLabel}</strong><span>{saveDetail}</span></p>
+          <h1>写作与检查</h1>
+          <p className={`workspace-save-summary ${saveState}`}><strong>{saveLabel}</strong><span>{saveDetail}</span>{p.draft && <span className="workspace-draft-meta">第 {p.draft.chapter_number ?? "—"} 章 · 第 {p.draft.revision ?? "—"} 次保存</span>}</p>
         </div>
         {!p.readOnly && (
           <div className="actions">
@@ -5159,13 +5159,6 @@ function ProjectPage(p: {
       </nav>
       <div className="workspace-grid">
         <section className="editor">
-          <header className="editor-top">
-            <div className="editor-title">
-              <strong>{dirty ? "正在编辑" : "当前草稿"}</strong>
-              <span>第 {p.draft?.chapter_number ?? "—"} 章 · 第 {p.draft?.revision ?? "—"} 次保存</span>
-            </div>
-            <span className={`save-state ${saveState}`}>{saveState === "failed" ? "! 保存失败" : saveState === "saving" ? "● 保存中" : dirty ? "● 未保存" : "✓ 已保存"}</span>
-          </header>
           <section className="manuscript-card" aria-label="章节编辑">
           <div className="manuscript-heading"><DesignAsset name="paper" /><div>
           <label className="editor-title-input">

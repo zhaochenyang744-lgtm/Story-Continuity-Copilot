@@ -2318,7 +2318,9 @@ time {
 .memory-row > span { color: var(--muted); line-height: 1.5; }
 .memory-row > strong { color: var(--text); }
 .memory-status { display: inline-flex; align-items: center; gap: 5px; width: max-content; padding: 5px 9px; border-radius: 999px; font-size: 12px; }
-.memory-status.confirmed { background: var(--low-bg); color: var(--low); }
+/* Current facts are the norm, so they stay quiet; only exceptions (pending, retired) get a coloured pill. */
+.memory-status.confirmed { padding-inline: 0; background: transparent; color: var(--muted); }
+.memory-status.confirmed > [aria-hidden="true"] { display: none; }
 .memory-status.pending { background: var(--medium-bg); color: var(--medium); }
 .memory-value { display: grid; gap: 4px; color: var(--text) !important; }
 .memory-value small { color: var(--faint); font-size: 11px; }
@@ -3145,6 +3147,7 @@ main,
 .workspace-save-summary.unsaved strong { color: var(--medium); }
 .workspace-save-summary.saving strong { color: var(--info); }
 .workspace-save-summary.failed strong { color: var(--high); }
+.workspace-draft-meta::before { margin-right: 12px; content: "·"; }
 .workspace-grid { min-height: min(620px, calc(100svh - 235px)); }
 .draft-field textarea,
 .draft-read,

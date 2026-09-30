@@ -2691,6 +2691,9 @@ main {
 .home-page .home-section-grid .home-section { display: grid; grid-template-rows: 56px minmax(0,1fr); min-height: 280px; padding: 17px 24px 19px; margin: 0; border: 1px solid #574279; border-radius: 18px; background: linear-gradient(135deg,#211c32e8,#171623df); box-shadow: inset 0 1px #b4a0dc0d,0 10px 40px #08051020; }
 .home-page .home-section-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 56px; padding: 0 0 15px; border-bottom: 1px solid #49405e; }
 .home-page .home-section-head h2 { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 20px; }
+/* The 3D icon already marks these headings; the accent bar would be a third decoration. */
+.home-page .home-section-head h2:has(.home-section-icon) { padding-left: 0; }
+.home-page .home-section-head h2:has(.home-section-icon)::before { content: none; }
 .home-section-icon { display: block; flex-shrink: 0; width: 32px; height: 32px; }
 .home-page .home-section-head button { font-size: 12px; color: #b9acd2; padding-inline: 0; border-color: transparent; background: none; gap: 10px; }
 .home-page .home-empty-state.compact-empty { border: 0; padding: 22px 0 10px; gap: 10px; min-height: 205px; }
