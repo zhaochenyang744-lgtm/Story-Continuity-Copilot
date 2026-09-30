@@ -15,7 +15,8 @@ from contextvars import ContextVar
 from unittest.mock import patch
 
 from app.engine import ContinuityEngine
-from app.provider import DeepSeekProvider, ProviderFailure, ProviderResult
+from app.provider import (REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS, DeepSeekProvider, ProviderFailure,
+                          ProviderResult, request_prompt_and_budget)
 
 from tests.test_v17_partial_review_results import Poisoned, data
 
@@ -102,6 +103,37 @@ class ParallelBatchTests(unittest.TestCase):
 
         result = ContinuityEngine(Expensive(delay=0.01)).execute(self.payload)
         self.assertEqual(result["status"], "budget_paused")
+
+
+class OversizedRepairTests(unittest.TestCase):
+    """A repair carries every rejected issue. On a packed 21-claim batch that answered with an issue
+    per claim it measured 11,174 units, over even the 9,000 thinking allowance, and the whole run
+    failed input_budget_exceeded with nothing returned."""
+
+    def test_a_repair_too_large_to_send_halves_the_batch_instead_of_failing_the_run(self):
+        payload = data(CLAIMS)
+        provider = Poisoned("claim-v17-7")  # sits in the first, fully packed batch
+        provider.continuity_repair_input_budget_units = REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS
+        first = ContinuityEngine(provider)._batches(payload)[0]["claims"]
+        self.assertGreater(len(first), 16)
+        result = ContinuityEngine(provider).execute(payload)
+        self.assertEqual(result["status"], "completed", result.get("error_code"))
+        self.assertEqual([row["claim_span_id"] for row in result["undecided_claims"]], ["claim-v17-7"])
+        self.assertEqual(len(result["issues"]), CLAIMS - 1)
+        # The first batch's oversized repair was never sent; its halves were asked instead.
+        sizes = [len(request["claims"]) for request in provider.requests if "contract_repair" not in request]
+        self.assertIn(len(first) // 2, sizes)
+
+    def test_a_single_claim_whose_repair_cannot_fit_is_undecided_not_fatal(self):
+        payload = data(3)
+        provider = Poisoned("claim-v17-2")
+        real = request_prompt_and_budget
+        sized = lambda request: (real(request)[0], 99_999) if "contract_repair" in request and len(request["claims"]) == 1 else real(request)
+        with patch("app.engine.request_prompt_and_budget", side_effect=sized):
+            result = ContinuityEngine(provider).execute(payload)
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(result["undecided_claims"], [{"claim_span_id": "claim-v17-2", "error_code": "input_budget_exceeded"}])
+        self.assertEqual([item["claim_span_id"] for item in result["issues"]], ["claim-v17-1", "claim-v17-3"])
 
 
 class ConcurrencySettingTests(unittest.TestCase):

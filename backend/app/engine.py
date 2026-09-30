@@ -455,8 +455,8 @@ class ContinuityEngine:
                         # either way and belong in the run's totals.
                         stop=stop or outcome
                     elif outcome.get("split"):
-                        # Split, so one claim's self-contradicting answer cannot cost the others.
-                        pending[:0]=[self._request([claim],data["memory"],data["draft"]) for claim in outcome["split"]]
+                        # Split, so one claim's self-contradicting answer or oversized repair cannot cost the others.
+                        pending[:0]=[self._request(group,data["memory"],data["draft"]) for group in outcome["split"]]
         finally:
             if pool is not None:pool.shutdown(wait=True)
         results=[result for outcome in outcomes for result in outcome["results"]]
@@ -487,9 +487,10 @@ class ContinuityEngine:
 
         A batch that fails its contract twice used to raise, discarding every other batch's finished
         work. On a real chapter that is 36 claims lost to one of them, so a multi-claim batch comes
-        back as a split, to be retried one claim at a time, and a single claim that still fails is set
-        aside as undecided. A provider failure is returned, not raised, so the usage already spent on
-        this batch still reaches the run's totals.
+        back as a split, to be retried one claim at a time (or in halves when only its repair request
+        is too large), and a single claim that still fails is set aside as undecided. A provider
+        failure is returned, not raised, so the usage already spent on this batch still reaches the
+        run's totals.
         """
         results=[]; normalizations=[]
         outcome={"first_claim_id":batch["claims"][0]["id"],"results":results,"normalizations":normalizations}
@@ -498,7 +499,15 @@ class ContinuityEngine:
                 request=batch if contract_attempt==0 else {**batch,"contract_repair":{"attempt":contract_attempt+1,"reason_code":repair_code,"diagnostics":repair_diagnostics,"rejected_issues":rejected_issues,"rejected_claim_verdicts":rejected_claim_verdicts}}
                 # Check the complete feedback as sent; never truncate rejected output to fit.
                 input_limit=(getattr(self.provider,"continuity_repair_input_budget_units",None) or MAX_INPUT_BUDGET_UNITS) if contract_attempt else MAX_INPUT_BUDGET_UNITS
-                if request_prompt_and_budget(request)[1]>input_limit:raise InputBudgetExceeded()
+                if request_prompt_and_budget(request)[1]>input_limit:
+                    if not contract_attempt:raise InputBudgetExceeded()
+                    # A repair carries every rejected issue: a packed 21-claim batch is about 7,200 units
+                    # before any and roughly 190 more per issue, so past about ten it cannot fit even the
+                    # 9,000 thinking allowance. That used to fail the whole run. Halve the batch instead,
+                    # so each half's own repair is smaller; a lone claim that still cannot fit is undecided.
+                    claims=batch["claims"]
+                    if len(claims)>1:return {**outcome,"split":[claims[:len(claims)//2],claims[len(claims)//2:]]}
+                    return {**outcome,"undecided":[{"claim_span_id":claims[0]["id"],"error_code":"input_budget_exceeded"}]}
                 result=self.provider.evaluate(request)
                 results.append(result)
                 if (result.input_tokens or 0)+(result.output_tokens or 0)>run_budget:return {**outcome,"budget_paused":True}
@@ -516,7 +525,7 @@ class ContinuityEngine:
                         claim_id=batch["claims"][0]["id"] if len(batch["claims"])==1 else None
                         repair_diagnostics=error.diagnostics or [_contract_diagnostic(batch,repair_code,claim_id)]
                         continue
-                    if len(batch["claims"])>1:return {**outcome,"split":batch["claims"]}
+                    if len(batch["claims"])>1:return {**outcome,"split":[[claim] for claim in batch["claims"]]}
                     return {**outcome,"undecided":[{"claim_span_id":batch["claims"][0]["id"],"error_code":str(error)}]}
                 return {**outcome,"issues":validated}
         except (InputBudgetExceeded,ProviderUnavailable,ProviderTimeout,ProviderInvalidJson,ProviderFailure,ValueError) as error:
