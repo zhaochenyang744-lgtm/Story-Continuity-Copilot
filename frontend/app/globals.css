@@ -2005,8 +2005,6 @@ body { font-size: 14px; }
   font-weight: 650;
 }
 .project-mark,
-.project-memory,
-.project-context > span:last-child,
 .run-meta,
 .run-facts dd,
 .chapter-preview small,

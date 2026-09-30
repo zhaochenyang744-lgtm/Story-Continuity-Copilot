@@ -146,14 +146,14 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 1 / 5");
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("认识作品资料与 Story Memory");
   await expect(page.getByRole("button", { name: "跳过教学", exact: true })).toBeVisible();
-  await expect(page.getByText("预置演示审阅数据", { exact: false }).first()).toBeVisible();
+  await expect(page.getByText("示例检查结果", { exact: false }).first()).toBeVisible();
   const projectWidth = await page.locator(".project-page").evaluate((node) => node.getBoundingClientRect().width);
   expect(projectWidth).toBeLessThanOrEqual(1160);
   await expect(page.locator(".project-page-header .more-menu")).toBeVisible();
 
   await expectMobileGeometry(page, "教学模式 · 灰港回声");
   await expect(page.locator(".readonly").filter({ hasText: "当前窗口较窄，暂为只读浏览；放大窗口即可继续写作与检查。" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Reset 当前作品", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "重置当前作品", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "完成当前章节", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "运行连续性检查", exact: true })).toHaveCount(0);
   const primaryPanelStyles = await page.locator(".overview-page .overview-primary-card").evaluateAll((nodes) => nodes.map((node) => {

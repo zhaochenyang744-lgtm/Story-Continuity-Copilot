@@ -99,14 +99,14 @@ test("v1.3.0 author planning keeps future plans editable and written records rea
   await page.getByRole("button", { name: "大纲", exact: true }).click();
   await expect(page.getByRole("button", { name: "创作规划", exact: true })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByText("还没有创作规划。这里记录作者对后续故事的安排，不会自动成为正文事实。", { exact: true })).toBeVisible();
-  await expect(page.getByText("作者规划 v0", { exact: true })).toBeVisible();
+  await expect(page.getByText("尚无规划版本", { exact: true })).toBeVisible();
 
   await page.getByRole("button", { name: "新建规划", exact: true }).click();
   await saveStory(page, { title: "第一幕回港", summary: "船员重返灰港。", goal: "找出雾钟来源。", target: "12" });
-  await expect(page.getByText("作者规划 v1", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 1 版", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "新建规划", exact: true }).click();
   await saveStory(page, { title: "第二幕潮门", summary: "潮门在午夜打开。", goal: "让两条线索交汇。", target: "14" });
-  await expect(page.getByText("作者规划 v2", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 2 版", { exact: true })).toBeVisible();
 
   await page.getByRole("button", { name: "编辑 第一幕回港", exact: true }).click();
   const storyEdit = page.locator('.author-plan-dialog[aria-label="编辑故事规划"]');
@@ -114,9 +114,9 @@ test("v1.3.0 author planning keeps future plans editable and written records rea
   await storyEdit.locator("textarea").nth(0).fill("船员带着破损罗盘重返灰港。");
   await storyEdit.getByRole("button", { name: "保存", exact: true }).click();
   await expect(storyEdit).toHaveCount(0);
-  await expect(page.getByText("作者规划 v3", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 3 版", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "上移 第二幕潮门", exact: true }).click();
-  await expect(page.getByText("作者规划 v4", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 4 版", { exact: true })).toBeVisible();
   await expect(page.locator(".author-plan-list h2").first()).toHaveText("第二幕潮门");
   await screenshot(page, "author-planning-story-desktop.png");
 
@@ -124,7 +124,7 @@ test("v1.3.0 author planning keeps future plans editable and written records rea
   const archiveStory = page.getByRole("dialog", { name: "归档 第一幕回港" });
   await archiveStory.getByRole("button", { name: "确认归档", exact: true }).click();
   await expect(archiveStory).toHaveCount(0);
-  await expect(page.getByText("作者规划 v5", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 5 版", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "第一幕回港", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "查看已归档", exact: true }).click();
   await expect(page.getByRole("heading", { name: "第一幕回港", exact: true })).toBeVisible();
@@ -146,7 +146,7 @@ test("v1.3.0 author planning keeps future plans editable and written records rea
   await conflictDialog.getByRole("button", { name: "保存", exact: true }).click();
   await expect(conflictDialog.getByRole("alert")).toHaveText("内容已在其他窗口更新，已载入最新版本，请确认后重试。");
   await expect(conflictDialog.getByLabel("标题", { exact: true })).toHaveValue("未提交输入保留");
-  await expect(page.getByText("作者规划 v6", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 6 版", { exact: true })).toBeVisible();
   const afterConflict = await data<AuthorSnapshot>(await page.request.get(`${backendOrigin}/api/projects/${projectId}/author-intent?include_archived=true`));
   expect(afterConflict.story_plans.find((item) => item.id === secondStory.id)?.title).toBe("另一窗口版本");
   expect(afterConflict.author_context_version).toBe(6);
@@ -163,17 +163,17 @@ test("v1.3.0 author planning keeps future plans editable and written records rea
   await expect(page.getByText("还没有角色规划。可以先记录角色接下来要追求的目标与计划状态。", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "新建角色规划", exact: true }).click();
   await saveCharacter(page, "温岚");
-  await expect(page.getByText("作者规划 v7", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 7 版", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "编辑 温岚", exact: true }).click();
   const characterEdit = page.locator('.author-plan-dialog[aria-label="编辑角色规划"]');
   await expect(characterEdit).toBeVisible();
   await characterEdit.locator("textarea").nth(2).fill("已交出罗盘，但仍保留密码");
   await characterEdit.getByRole("button", { name: "保存", exact: true }).click();
-  await expect(page.getByText("作者规划 v8", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 8 版", { exact: true })).toBeVisible();
   await screenshot(page, "author-planning-character-desktop.png");
   await page.getByRole("button", { name: "归档 温岚", exact: true }).click();
   await page.getByRole("dialog", { name: "归档 温岚" }).getByRole("button", { name: "确认归档", exact: true }).click();
-  await expect(page.getByText("作者规划 v9", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 9 版", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "正文档案", exact: true }).click();
   await expect(page.locator(".character-page")).toBeVisible();
   await expect(page.getByText("温岚", { exact: true })).toHaveCount(0);
@@ -182,17 +182,17 @@ test("v1.3.0 author planning keeps future plans editable and written records rea
   await expect(page.getByText("还没有设定规划。可以先记录后续创作准备使用的世界设定。", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "新建设定规划", exact: true }).click();
   await saveWorld(page, "北潮门");
-  await expect(page.getByText("作者规划 v10", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 10 版", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "编辑 北潮门", exact: true }).click();
   const worldEdit = page.locator('.author-plan-dialog[aria-label="编辑设定规划"]');
   await expect(worldEdit).toBeVisible();
   await worldEdit.locator("textarea").nth(1).fill("第十四章后才可写入正文");
   await worldEdit.getByRole("button", { name: "保存", exact: true }).click();
-  await expect(page.getByText("作者规划 v11", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 11 版", { exact: true })).toBeVisible();
   await screenshot(page, "author-planning-world-desktop.png");
   await page.getByRole("button", { name: "归档 北潮门", exact: true }).click();
   await page.getByRole("dialog", { name: "归档 北潮门" }).getByRole("button", { name: "确认归档", exact: true }).click();
-  await expect(page.getByText("作者规划 v12", { exact: true })).toBeVisible();
+  await expect(page.getByText("规划第 12 版", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "正文资料", exact: true }).click();
   await expect(page.locator(".world-page")).toBeVisible();
   await expect(page.getByText("北潮门", { exact: true })).toHaveCount(0);

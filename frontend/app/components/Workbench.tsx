@@ -2238,7 +2238,7 @@ export function Workbench() {
   };
   const reset = async () => {
     if (!projectId) return;
-    setBusy("正在恢复当前作品");
+    setBusy("正在重置当前作品");
     try {
       await json(`/projects/${projectId}/reset`, "POST", {
         confirm: true,
@@ -2246,7 +2246,7 @@ export function Workbench() {
       });
       setResetOpen(false);
       await loadProject(projectId);
-      setNotice("当前作品已按其数据来源恢复；其他作品没有改变。");
+      setNotice("当前作品已按其数据来源重置；其他作品没有改变。");
     } catch (e) {
       fail(e);
     } finally {
@@ -2376,7 +2376,7 @@ export function Workbench() {
   if (!ready)
     body = (
       <div className="boot" role="status">
-        正在恢复本地会话…
+        正在载入…
       </div>
     );
   else if (pathname === "/password-reset")
@@ -2682,7 +2682,7 @@ export function Workbench() {
               <span aria-hidden="true">●</span>
               {statusLabel(project.status)}
             </span>
-            <span>Memory V{project.current_memory_version}</span>
+            <span>事实库第 {project.current_memory_version} 版</span>
           </div>
           <nav ref={projectModuleNav} aria-label="项目导航">
             {tabs.map(([id, label]) => (
@@ -2953,9 +2953,9 @@ export function Workbench() {
         </Dialog>
       )}
       {resetOpen && project && (
-        <Dialog title="恢复当前作品" close={() => setResetOpen(false)}>
+        <Dialog title="重置当前作品" close={() => setResetOpen(false)}>
           <p>
-            将把《{project.title}》恢复到
+            将把《{project.title}》重置到
             {project.data_origin === "user_import"
               ? "刚导入完成时的状态：保留已确认导入的章节和原文来源，恢复空的第一版 Story Memory 与下一章初始草稿。"
               : project.data_origin === "demo_seed"
@@ -2963,14 +2963,14 @@ export function Workbench() {
                 : "刚创建时的空白状态，包括空资料、第一版 Story Memory 与初始草稿。"}
           </p>
           <p>当前内容会被覆盖；本作品的连续性检查、问题、作者决定和尚未提交的候选变更都会被清除。其他作品和其他账户不受影响。</p>
-          <p><strong>恢复后无法撤销。</strong></p>
+          <p><strong>重置后无法撤销。</strong></p>
           <div className="actions">
             <Button
               className="primary"
               disabled={readOnly || Boolean(busy)}
               onClick={() => void reset()}
             >
-              确认恢复
+              确认重置
             </Button>
             <Button onClick={() => setResetOpen(false)}>取消</Button>
           </div>
@@ -3678,7 +3678,7 @@ function Rows({
         <span>作品</span>
         <span>简介</span>
         <span>状态</span>
-        <span>Memory</span>
+        <span>事实库版本</span>
         <span>待处理</span>
         <span>操作</span>
       </div>
@@ -3705,7 +3705,7 @@ function Rows({
             </div>
             <small className="project-summary">{p.summary || "—"}</small>
             <span className={`status-pill ${p.status}`}><I>●</I>{statusLabel(p.status)}</span>
-            <span className="project-memory">Memory V{p.current_memory_version ?? "—"}</span>
+            <span className="project-memory">第 {p.current_memory_version ?? "—"} 版</span>
             <span className={`issue-count ${issueTone}`}>
               <I>
                 {issueTone === "high"
@@ -4141,7 +4141,7 @@ function RunLifecycle({ run, blocked, cancelRun, retryRun, actions = true }: { r
         <div>
           <p className="eyebrow">{run.run_type === "memory_delta" ? "STORY MEMORY 检查" : "连续性检查"}</p>
           <h2>{stage(run.stage)}</h2>
-          <p>第 {run.attempt_number ?? 1} 次尝试 · {run.status === "completed" ? "结果已准备好，可继续审阅。" : "保留当前页面即可查看状态变化。"}</p>
+          <p>{(run.attempt_number ?? 1) > 1 ? `第 ${run.attempt_number} 次尝试 · ` : ""}{run.status === "completed" ? "结果已准备好，可继续审阅。" : "保留当前页面即可查看状态变化。"}</p>
         </div>
         <div className="run-actions">
           <span className={`run-state state-${run.status}`}>{stage(run.status)}</span>
@@ -4254,7 +4254,7 @@ function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go}:{project:P
   const toggleScope=(value:"confirmed"|"written"|"planned")=>setScope((current)=>current.includes(value)?(current.length===1?current:current.filter((item)=>item!==value)):[...current,value]);
   const renderRunActions=(run:WritingAnalysisRun)=>!readOnly&&<div className="analysis-result-actions">{activeAnalysis(run)&&<Button disabled={Boolean(busy)} onClick={()=>void runAction(run,"cancel")}>取消</Button>}{retryableAnalysis(run)&&<Button disabled={Boolean(busy)||run.is_stale} onClick={()=>void runAction(run,"retry")}>重试</Button>}</div>;
   return <details className="bounded-story-tools" role="region" aria-label="作品问答与伏笔">
-    <summary className="bounded-tools-header"><div><p className="eyebrow">按需辅助</p><h2>作品问答与伏笔</h2><p>需要时再展开；已有回答与伏笔记录也在这里。</p></div><small>作者伏笔 V{snapshot?.foreshadow_version??project.foreshadow_version??0} · 回答 {qaRuns.length} · 扫描 {scanRuns.length}</small></summary>
+    <summary className="bounded-tools-header"><div><p className="eyebrow">按需辅助</p><h2>作品问答与伏笔</h2><p>需要时再展开；已有回答与伏笔记录也在这里。</p></div>{(snapshot?.foreshadow_version??project.foreshadow_version??0)>0||qaRuns.length>0||scanRuns.length>0?<small>伏笔记录第 {snapshot?.foreshadow_version??project.foreshadow_version??0} 版 · 回答 {qaRuns.length} 条 · 扫描 {scanRuns.length} 次</small>:null}</summary>
     <div className="bounded-tools-intro"><DesignAsset name="bulb" /><p>回答会说明依据来自哪里。扫描发现的伏笔先供你参考，是否记入作品由你决定。</p></div>
     {notice&&<p className="notice" role="status">{notice}</p>}
     {conflict&&<div className="bounded-conflict" role="alert"><p>服务器上的伏笔版本已变化；你的标题、说明与引用选择仍保留。载入最新版本后检查差异，再主动重试保存。</p><Button className="secondary" disabled={Boolean(busy)} onClick={()=>void loadLatest()}>载入最新版本</Button></div>}
@@ -4320,7 +4320,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
   const returnToDraft=()=>{const editor=document.getElementById("draft-body");editor?.scrollIntoView({behavior:"smooth",block:"center"});window.setTimeout(()=>editor?.focus(),250);};
   const activeRun=runs.find(activeAnalysis);
   return <details className="bounded-story-tools revision-plan-tools" role="region" aria-label="修订计划与任务">
-    <summary className="bounded-tools-header"><div><p className="eyebrow">作者掌控的修订闭环</p><h2>修订计划与任务</h2><p>从当前连续性问题生成有界行动建议；确认后仅创建任务，不会改写正文或事实。</p></div><small>任务 V{snapshot?.task_version??0} · 活动 {snapshot?.tasks.filter((task)=>task.status!=="completed").length??0} · 历史计划 {runs.length}</small></summary>
+    <summary className="bounded-tools-header"><div><p className="eyebrow">作者掌控的修订闭环</p><h2>修订计划与任务</h2><p>从当前连续性问题生成有界行动建议；确认后仅创建任务，不会改写正文或事实。</p></div>{(snapshot?.tasks.some((task)=>task.status!=="completed")||runs.length>0)?<small>进行中任务 {snapshot?.tasks.filter((task)=>task.status!=="completed").length??0} 项 · 历史计划 {runs.length} 个</small>:null}</summary>
     <div className="bounded-tools-intro">先选择当前检查中的问题，再逐条决定候选。接受任务后回到同一草稿手动修改、显式保存，并在需要时主动重新检查。</div>
     {notice&&<p className="notice" role="status">{notice}</p>}
     {conflict&&<div className="bounded-conflict" role="alert"><p>服务器上的修订任务版本已变化；候选编辑内容仍保留。请载入最新版本、核对状态后再主动重试。</p><Button className="secondary" disabled={Boolean(localBusy)} onClick={()=>void loadLatest()}>载入最新任务</Button></div>}
@@ -4334,8 +4334,8 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
           <footer><small>草稿 r{target.draft_revision} · 来源 r{target.source_revision} · Story Memory V{target.source_memory_version} · Author Context V{target.author_context_version} · 作者伏笔 V{target.foreshadow_version??0}</small>{!readOnly&&<div className="analysis-result-actions">{activeAnalysis(target)&&<Button disabled={Boolean(localBusy)} onClick={()=>void runAction(target,"cancel")}>取消</Button>}{retryableAnalysis(target)&&<Button disabled={Boolean(localBusy)||target.is_stale||dirty} onClick={()=>void runAction(target,"retry")}>重试</Button>}</div>}</footer></article>)}</div>
       </section>
       <section className="revision-plan-column" aria-label="持久修订任务">
-        <header><div><p className="eyebrow">独立任务层</p><h3>修订任务</h3></div><span className="version-chip">V{snapshot?.task_version??0}</span></header>
-        <p className="revision-boundary">任务进度是作者的工作记录。标记完成不会解决 Issue、运行检查或修改正文、Story Memory 与 Author Context。</p>
+        <header><div><p className="eyebrow">独立任务层</p><h3>修订任务</h3></div></header>
+        <p className="revision-boundary">任务进度是你的工作记录。标记完成不会关闭问题、不会运行检查，也不会修改正文或资料。</p>
         <div className="revision-task-list">{snapshot?.tasks.map((task)=><article key={task.id} id={`revision-task-${task.id}`} className={`revision-task priority-${task.priority} status-${task.status}`}><header><div><strong>{task.title}</strong><small>优先级 {revisionPriorityLabel[task.priority]} · 任务 V{task.version}</small></div><span>{revisionTaskStatusLabel[task.status]}</span></header><p>{task.instruction}</p><EvidenceLinks sources={task.evidence} navigate={go}/>{!readOnly&&<footer><Button className="quiet" disabled={Boolean(localBusy)||busy} onClick={returnToDraft}>回到同一草稿</Button><label>任务进度<select aria-label={`${task.title}任务进度`} value={task.status} disabled={Boolean(localBusy)||busy} onChange={(event)=>void updateTask(task,event.target.value as RevisionTask["status"])}>{(["todo","in_progress","completed"] as const).map((status)=><option key={status} value={status}>{revisionTaskStatusLabel[status]}</option>)}</select></label></footer>}</article>)}{snapshot&&!snapshot.tasks.length&&<p className="muted">尚无修订任务。AI 候选只有在作者接受后才会进入这里。</p>}</div>
         {!readOnly&&<div className="revision-loop-actions"><Button className="secondary" disabled={Boolean(localBusy)||busy||dirty||!draft} onClick={()=>void recheck()}>显式重新检查</Button><small>请先手动修改并保存草稿；任务完成状态不会触发此操作。</small></div>}
       </section>
@@ -4890,7 +4890,7 @@ function ProjectPage(p: {
             {p.canRestore && <Button onClick={p.archive} disabled={Boolean(p.busy)}>恢复作品</Button>}
             {!p.readOnly && (
               <MoreMenu>
-                <Button onClick={p.reset}>Reset 当前作品</Button>
+                <Button onClick={p.reset}>重置当前作品</Button>
                 {!p.project.is_tutorial && <Button onClick={p.archive}>{p.project.status === "archived" ? "恢复作品" : "归档作品"}</Button>}
                 {!p.project.is_tutorial && <Button onClick={p.meta}>编辑作品信息</Button>}
               </MoreMenu>
@@ -4911,11 +4911,11 @@ function ProjectPage(p: {
           </section>
           <section className="overview-panel overview-primary-card memory-panel" aria-label="Story Memory">
             <p className="eyebrow">STORY MEMORY</p>
-            <h2>Memory V{p.project.current_memory_version}</h2>
+            <h2>第 {p.project.current_memory_version} 版</h2>
             <p className="term-help">Story Memory 是作者确认、供后续连续性检查使用的事实集合；版本号代表一次明确提交后的完整快照。</p>
             <dl className="overview-kv">
-              <div><dt>当前资料版本</dt><dd>{p.project.source_revision == null ? "尚未提供" : `第 ${p.project.source_revision} 版`}</dd></div>
-              <div><dt>Memory 覆盖</dt><dd>{coverageStatusLabel(p.coverage?.status)}</dd></div>
+              <div><dt>原文版本</dt><dd>{p.project.source_revision == null ? "尚未提供" : `第 ${p.project.source_revision} 版`}</dd></div>
+              <div><dt>事实覆盖</dt><dd>{coverageStatusLabel(p.coverage?.status)}</dd></div>
               <div><dt>检查状态</dt><dd>{p.project.continuity_status === "unchecked" ? "尚未检查" : p.project.continuity_status === "checked_clear" ? "已检查 · 0 项待处理" : `${p.project.open_issue_count ?? 0} 项待处理`}</dd></div>
               <div><dt>最近检查</dt><dd>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚无"}</dd></div>
             </dl>
@@ -4955,7 +4955,7 @@ function ProjectPage(p: {
           <div className={`latest-run-row latest-run-card ${p.project.continuity_status ?? "unchecked"}`}>
             <div>
               <strong>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚未检查"}</strong>
-              <span>{p.project.latest_run ? (p.project.latest_run.result_origin === "demo_preset" ? "预置演示审阅数据 · 未调用 Provider" : `检查记录 ${p.project.latest_run.run_id}`) : "保存草稿后可运行连续性检查。"}</span>
+              <span>{p.project.latest_run ? (p.project.latest_run.result_origin === "demo_preset" ? "示例作品的预置检查结果" : "打开审阅可查看问题与证据。") : "保存草稿后可运行连续性检查。"}</span>
             </div>
             <Button className="secondary" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>打开审阅</Button>
           </div>
@@ -5040,7 +5040,7 @@ function ProjectPage(p: {
           <div>
             <p className="breadcrumb">项目 / {p.project.title} / Story Memory</p>
             <h1>Story Memory</h1>
-            <p>Memory V{p.project.current_memory_version} · 每个版本都是作者明确提交后的完整事实快照。</p>
+            <p>当前为第 {p.project.current_memory_version} 版 · 每个版本都是作者明确提交后的完整事实快照。</p>
           </div>
         </header>
         {contextNotices}
@@ -5116,7 +5116,7 @@ function ProjectPage(p: {
               </Button>
             ) : null}
             <MoreMenu>
-              <Button disabled={blocked} onClick={p.reset}>Reset 当前作品</Button>
+              <Button disabled={blocked} onClick={p.reset}>重置当前作品</Button>
               <Button disabled={blocked || !p.draft || dirty} onClick={() => p.go(`/projects/${p.project.id}/sources`)}>完成当前章节</Button>
             </MoreMenu>
           </div>
@@ -5194,14 +5194,6 @@ function ProjectPage(p: {
             <span>{p.run ? `${stage(p.run.stage)} · ${dirty || p.run.is_stale ? "此检查针对先前正文" : p.run.status === "completed" ? "证据可用" : activeRun(p.run) ? "证据处理中" : "证据不可用"}` : "尚未运行连续性检查"}</span>
           </footer>
           </section>
-          <details className="workspace-technical">
-            <summary>技术详情</summary>
-            <dl className="metadata">
-              <div><dt>草稿修订</dt><dd>{p.draft?.revision ?? "未提供"}</dd></div>
-              <div><dt>草稿大小</dt><dd>{p.draft ? `${new Blob([p.draft.body]).size.toLocaleString()} bytes` : "读取中"}</dd></div>
-              <div><dt>草稿记录</dt><dd>{p.draft?.id ?? "未提供"}</dd></div>
-            </dl>
-          </details>
         </section>
         <aside className="issues">
           <header className="issues-top">
@@ -5212,7 +5204,7 @@ function ProjectPage(p: {
               <p className="run-meta" aria-label="连续性检查运行状态">
                 {stage(p.run.stage)} · {dirty || p.run.is_stale ? "此检查针对先前正文" : "基于当前保存版本"}
               </p>
-              {p.run.result_origin === "demo_preset" && <p className="preset-note" role="note"><strong>预置演示审阅数据</strong> · 用于本地体验完整审阅链路，本次未调用外部模型服务，也不代表模型实时判断。</p>}
+              {p.run.result_origin === "demo_preset" && <p className="preset-note" role="note"><strong>示例检查结果</strong> · 这是示例作品预置的检查结果，用来展示审阅流程；本次没有调用模型，也不代表模型的实时判断。</p>}
               {["failed", "timed_out", "cancelled"].includes(p.run.status) && (
                 <p className="inline-error">
                   {labelError({ code: p.run.error_code })} 未写入、也不展示部分结果。
@@ -5575,7 +5567,7 @@ function SourceAppend({ project, draft, chapters, readOnly, context }: { project
     <Button className="primary" disabled={Boolean(busy) || (method !== "draft_complete" && !content.trim())} onClick={() => void makePreview()}>{busy || "预览追加"}</Button></section>}
     {error && <div className="notice error" role="alert">{error} 请保留当前内容，重新获取当前 source revision 后重试。</div>}
     {preview && <section className="notice success" role="status"><strong>SourceChangeSet 预览 · {preview.status}</strong><p>SHA-256 {preview.content_sha256} · {preview.chapter_count} 个章节 / {preview.source_span_count} 个 SourceSpan · r{preview.base_source_revision} → r{preview.target_source_revision}</p><small>预览于 {preview.previewed_at}；创建审计已记录。文件仅记录 basename。</small><ul>{preview.chapters.map((chapter) => <li key={chapter.preview_id}>第 {chapter.order} 个追加章节《{chapter.title}》· {chapter.character_count} 字</li>)}</ul>{!readOnly && (preview.status === "previewed" ? <Button className="primary" disabled={Boolean(busy)} onClick={() => void commit()}>确认追加并创建下一章草稿</Button> : <><p>已提交 source r{preview.target_source_revision}。</p>{nextDraft && <p>下一章草稿：第 {nextDraft.chapter_number} 章《{nextDraft.title}》 · {nextDraft.id}</p>}<Button className="primary" onClick={() => router.push(`/projects/${project.id}/workspace`)}>进入下一章草稿</Button></>)}</section>}
-    <Read title="现有章节来源" breadcrumb="Evidence 可回源" note="历史 Evidence 保持指向原 SourceSpan。" items={chapters.flatMap((chapter) => [<li key={`chapter-${chapter.id}`} id={`chapter-${chapter.id}`} className="source-chapter-anchor"><strong>第 {chapter.number} 章《{chapter.title}》</strong><span>{chapter.summary||"本章来源"}</span></li>,...(chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`}><strong>第 {chapter.number} 章《{chapter.title}》 · {span.label === "chapter_revision" ? "修订正文" : span.label}{span.is_current === false ? " · 历史来源（已修订）" : ""}</strong><span>{span.text_excerpt}</span></li>)])} empty="此作品还没有可回源的章节片段。" />
+    <Read title="现有章节来源" breadcrumb="证据可回溯到原文" note="历史证据仍指向当时引用的原文段落。" items={chapters.flatMap((chapter) => [<li key={`chapter-${chapter.id}`} id={`chapter-${chapter.id}`} className="source-chapter-anchor"><strong>第 {chapter.number} 章《{chapter.title}》</strong><span>{chapter.summary||"本章来源"}</span></li>,...(chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`}><strong>第 {chapter.number} 章《{chapter.title}》 · {span.label === "chapter_revision" ? "修订正文" : span.label}{span.is_current === false ? " · 历史来源（已修订）" : ""}</strong><span>{span.text_excerpt}</span></li>)])} empty="此作品还没有可回源的章节片段。" />
   </section>;
 }
 
@@ -5802,7 +5794,7 @@ function AuthorPlanningPage({
           <p>{copy.description}</p>
         </div>
         <div className="author-planning-status">
-          <span>作者规划 v{authorContext?.author_context_version ?? "—"}</span>
+          <span>{authorContext?.author_context_version ? `规划第 ${authorContext.author_context_version} 版` : "尚无规划版本"}</span>
           <ContextButton kind={kind} />
           {mode === "planning" && !readOnly && (
             <Button className="primary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>
@@ -6343,7 +6335,7 @@ function MemoryRecords({ records, openSource }: { records: Memory[]; openSource:
               <span role="cell" className="memory-field memory-value" data-label="事实内容"><small>{predicateLabel(record.predicate)}</small>{record.value}</span>
               <Button className="quiet memory-source" ariaLabel={record.source ? `查看 ${record.subject} 的来源` : `${record.subject} 暂无来源`} disabled={!record.source} onClick={(event) => openSource(record, event.currentTarget)}>{record.source ? `第 ${record.source.chapter_number} 章《${record.source.chapter_title || "未命名"}》 ↗` : "来源不可用"}</Button>
               <span role="cell" data-label="当前状态" className={`memory-status ${record.valid_to != null ? "retired" : record.requires_source_review ? "pending" : record.review_status === "author_confirmed" ? "confirmed" : "pending"}`}><I>{record.valid_to != null ? "—" : record.requires_source_review ? "○" : "✓"}</I>{record.valid_to != null ? "已失效" : record.requires_source_review ? "来源待复核" : "当前有效"}</span>
-              <details role="cell" className="memory-version-details"><summary>版本详情</summary><p>事实库版本 {record.valid_from == null ? "未提供" : `V${record.valid_from}`}—{record.valid_to == null ? "当前" : `V${record.valid_to}`}</p><p>故事时间：未提供</p><p>{reviewStatusLabel(record.review_status)} · {memoryTypeLabel(record.memory_type)}</p></details>
+              <details role="cell" className="memory-version-details"><summary>版本详情</summary><p>有效版本：{record.valid_from == null ? "未提供" : `第 ${record.valid_from} 版`}起{record.valid_to == null ? "，至今" : `，至第 ${record.valid_to} 版`}</p><p>故事时间：未提供</p><p>{reviewStatusLabel(record.review_status)} · {memoryTypeLabel(record.memory_type)}</p></details>
               <small className="memory-kind">{memoryTypeLabel(record.memory_type)}</small>
             </div>
           ))}
@@ -6468,7 +6460,7 @@ function SourceDrawer({
             <div><dt>来源记录</dt><dd>{record.recordId || "未提供"}</dd></div>
             <div><dt>SourceSpan</dt><dd>{record.spanId || "未提供"}</dd></div>
             <div><dt>章节记录</dt><dd>{record.chapterId || "未提供"}</dd></div>
-            {record.memoryType && <div><dt>事实库版本范围</dt><dd>{record.memoryValidFrom == null ? "未提供" : `V${record.memoryValidFrom}`}—{record.memoryValidTo == null ? "当前" : `V${record.memoryValidTo}`}</dd></div>}
+            {record.memoryType && <div><dt>有效版本</dt><dd>{record.memoryValidFrom == null ? "未提供" : `第 ${record.memoryValidFrom} 版`}起{record.memoryValidTo == null ? "，至今" : `，至第 ${record.memoryValidTo} 版`}</dd></div>}
             {record.memoryType && <div><dt>故事时间</dt><dd>未提供；不会从事实库版本推算</dd></div>}
             <div><dt>作品当前来源修订</dt><dd>{currentSourceRevision == null ? "未提供" : `r${currentSourceRevision}`}</dd></div>
             <div><dt>来源路径（只读记录）</dt><dd>{record.sourcePath || "未提供"}</dd></div>

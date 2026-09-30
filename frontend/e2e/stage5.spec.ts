@@ -494,10 +494,10 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await globalNavButton(page, "作品管理").click();
     await openProject(page, "灰港回声").click();
     await projectNavButton(page, "写作与检查").click();
-    await page.getByRole("button", { name: "Reset 当前作品" }).click();
+    await page.getByRole("button", { name: "重置当前作品" }).click();
     await page.screenshot({ path: path.join(shots, "1440-reset-confirmation.png"), fullPage: true });
-    await page.getByRole("button", { name: "确认恢复" }).click();
-    await expect(page.getByText("当前作品已按其数据来源恢复", { exact: false })).toBeVisible();
+    await page.getByRole("button", { name: "确认重置" }).click();
+    await expect(page.getByText("当前作品已按其数据来源重置", { exact: false })).toBeVisible();
     await expect(page.getByLabel("草稿修订", { exact: true })).toContainText("revision 1");
   });
 
@@ -637,7 +637,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.locator('.form-panel input[name="title"]').fill("空白试作");
     await page.locator('.form-panel input[name="genre"]').fill("测试");
     await page.getByRole("button", { name: "创建并进入作品" }).click();
-    await expect(page.locator(".memory-panel").getByRole("heading", { name: "Memory V1", exact: true })).toBeVisible();
+    await expect(page.locator(".memory-panel").getByRole("heading", { name: "第 1 版", exact: true })).toBeVisible();
     await globalNavButton(page, "作品管理").click();
     await page.getByRole("button", { name: "导入作品" }).click();
     await page.setInputFiles('input[name="file"]', { name: "chapter.md", mimeType: "text/markdown", buffer: Buffer.from("# 第一章\n海雾遮住钟楼。\n# 第二章\n她记录了潮声。", "utf8") });
@@ -668,8 +668,8 @@ test.describe.serial("Stage 5 real local workflow", () => {
       await expect(page.getByRole("heading", { name })).toBeVisible();
     }
     await projectNavButton(page, "写作与检查").click();
-    await page.getByRole("button", { name: "Reset 当前作品" }).click();
-    await page.getByRole("button", { name: "确认恢复" }).click();
+    await page.getByRole("button", { name: "重置当前作品" }).click();
+    await page.getByRole("button", { name: "确认重置" }).click();
     await expect(page.getByLabel("草稿修订", { exact: true })).toContainText("revision 1");
     const editor = page.getByLabel("草稿正文");
     await expect(editor).toBeEditable();
@@ -723,9 +723,9 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await projectNavButton(page, "写作与检查").click();
     for (let index = 1; index <= 5; index++) {
       const started = Date.now();
-      await page.getByRole("button", { name: "Reset 当前作品" }).click();
-      await page.getByRole("button", { name: "确认恢复" }).click();
-      await expect(page.getByText("Memory V4", { exact: false })).toBeVisible();
+      await page.getByRole("button", { name: "重置当前作品" }).click();
+      await page.getByRole("button", { name: "确认重置" }).click();
+      await expect(page.getByText("事实库第 4 版", { exact: false })).toBeVisible();
       await expect(page.getByLabel("草稿修订", { exact: true })).toContainText("revision 1");
       const editor = page.getByLabel("草稿正文");
       await editor.fill(`${await editor.inputValue()}\n第${index}轮作者确认草稿。`);

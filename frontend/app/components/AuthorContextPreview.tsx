@@ -1323,10 +1323,10 @@ function ContextDialog({
                             原记录状态：{m.review_status} ·{" "}
                             {m.valid_from === null
                               ? "起始 Memory 版本未标明"
-                              : `Memory V${m.valid_from} 起`}
+                              : `事实库第 ${m.valid_from} 版起`}
                             {m.valid_to === null
                               ? ""
-                              : `，至 Memory V${m.valid_to}`}
+                              : `，至第 ${m.valid_to} 版`}
                           </small>
                           {m.source ? (
                             <>

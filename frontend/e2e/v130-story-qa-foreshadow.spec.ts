@@ -32,7 +32,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   await expect(tools).toBeVisible();
   const editorBox=await page.locator(".workspace-grid").boundingBox(),toolBox=await tools.boundingBox();
   expect(editorBox&&toolBox&&editorBox.y<toolBox.y).toBe(true);
-  await expect(tools.getByText(/作者伏笔 V0/)).toBeVisible();
+  await expect(tools.locator(":scope > summary small")).toHaveCount(0);
   await tools.locator(":scope > summary").click();
 
   const recordTool=page.getByRole("region",{name:"伏笔管理"});
@@ -78,7 +78,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   await expect(draftBody).toHaveValue(dirtyDraftValue);
   await page.getByRole("button",{name:"保存草稿",exact:true}).click();
   await expect(page.getByText("✓ 已保存",{exact:true})).toBeVisible();
-  await expect(tools.getByText(/作者伏笔 V3/)).toBeVisible();
+  await expect(tools.getByText(/伏笔记录第 3 版/)).toBeVisible();
   await expect(recordForm.getByLabel("标题")).toHaveValue("潮汐表的本地修订");
   const expectedConflict=page.waitForResponse(response=>response.request().method()==="PATCH"&&new URL(response.url()).pathname===`/api/projects/${projectId}/foreshadows/${serverRecord!.id}`&&response.status()===409);
   await recordForm.getByRole("button",{name:"保存修改",exact:true}).click();
@@ -181,7 +181,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   releaseOldRequest();
   await switchNavigation;
   const secondTools=page.getByRole("region",{name:"有界问答与伏笔管理"});
-  await expect(secondTools.getByText(/作者伏笔 V0/)).toBeVisible();
+  await expect(secondTools.locator(":scope > summary small")).toHaveCount(0);
   await secondTools.locator(":scope > summary").click();
   await expect(secondTools.getByText("潮汐表的本地修订",{exact:true})).toHaveCount(0);
   await expect(secondTools.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true})).toHaveCount(0);

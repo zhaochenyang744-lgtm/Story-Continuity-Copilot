@@ -63,8 +63,8 @@ test("fresh account completes the preset Grey Harbor author review without a Pro
   await openProject(page, "灰港回声").click();
   await expect(page.getByRole("button", { name: /更换当前作品.*灰港回声/ })).toBeVisible();
   await projectNavButton(page, "写作与检查").click();
-  await expect(page.getByText("预置演示审阅数据", { exact: true })).toBeVisible();
-  await expect(page.getByText("本次未调用 Provider", { exact: false })).toBeVisible();
+  await expect(page.getByText("示例检查结果", { exact: true })).toBeVisible();
+  await expect(page.getByText("本次没有调用模型", { exact: false })).toBeVisible();
   await expect(page.locator(".issue-list li")).toHaveCount(4);
 
   const firstIssue = page.locator(".issue-list li").first();
@@ -111,17 +111,17 @@ test("fresh account completes the preset Grey Harbor author review without a Pro
   await expect(page.locator(".memory-panel").getByText("尚未检查", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: /更换当前作品.*纸月档案/ }).click();
   await openProject(page, "灰港回声").click();
-  await page.getByRole("button", { name: "Reset 当前作品" }).click();
-  const reset = page.getByRole("dialog", { name: "恢复当前作品" });
+  await page.getByRole("button", { name: "重置当前作品" }).click();
+  const reset = page.getByRole("dialog", { name: "重置当前作品" });
   await expect(reset).toContainText("当前内容会被覆盖");
   await expect(reset).toContainText("其他作品和其他账户不受影响");
-  await expect(reset).toContainText("恢复后无法撤销");
-  await reset.getByRole("button", { name: "确认恢复" }).click();
-  await expect(page.getByText("Memory V4", { exact: false }).first()).toBeVisible();
+  await expect(reset).toContainText("重置后无法撤销");
+  await reset.getByRole("button", { name: "确认重置" }).click();
+  await expect(page.getByText("事实库第 4 版", { exact: false }).first()).toBeVisible();
   await projectNavButton(page, "写作与检查").click();
   await expect(page.locator(".issue-list li")).toHaveCount(4);
   await expect(page.locator(".issue-list li").filter({ hasText: "已决策" })).toHaveCount(0);
-  await expect(page.getByText("预置演示审阅数据", { exact: true })).toBeVisible();
+  await expect(page.getByText("示例检查结果", { exact: true })).toBeVisible();
 
   await page.getByRole("button", { name: "用户菜单", exact: true }).click();
   await page.getByRole("menuitem", { name: "退出登录", exact: true }).click();
