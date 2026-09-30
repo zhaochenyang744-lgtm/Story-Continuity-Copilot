@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import threading
 import time
 from contextlib import contextmanager
 from contextvars import ContextVar
@@ -348,6 +349,10 @@ REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT = "medium"
 REVIEW_THINKING_EFFORTS = ("high", REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT, "disabled")
 REVIEW_THINKING_RUN_TOKEN_BUDGET = 50000
 REVIEW_THINKING_TIMEOUT_SECONDS = 90
+# Review batches of one check may be dispatched in parallel. Off (1) unless the deployment sets it, so
+# dev and eval harnesses keep their sequential, reproducible dispatch order.
+REVIEW_CONCURRENCY_ENV = "CONTINUITY_REVIEW_CONCURRENCY"
+REVIEW_CONCURRENCY_MAX = 8
 
 
 def _combined_usage(*dispatches: Any) -> tuple[int | None, int | None, float | None, int | None]:
@@ -368,6 +373,8 @@ class DeepSeekProvider:
     # Class defaults keep instances built without __init__ on the original behavior.
     review_thinking = "disabled"
     _request_timeout = timeout_seconds
+    # Parallel review batches share one instance; the attempt counters must not lose increments.
+    _counter_lock = threading.Lock()
 
     def __init__(self, client_factory=None):
         self.model = os.getenv("CONTINUITY_MODEL", "")
@@ -397,6 +404,15 @@ class DeepSeekProvider:
     def continuity_run_token_budget(self) -> int | None:
         """Per-check token budget override for thinking review; None keeps the engine default."""
         return REVIEW_THINKING_RUN_TOKEN_BUDGET if self.review_thinking == "high" else None
+
+    @property
+    def continuity_batch_concurrency(self) -> int:
+        """How many review batches of one check may be in flight; anything unparseable means one."""
+        try:
+            value = int(os.getenv(REVIEW_CONCURRENCY_ENV, "1"))
+        except ValueError:
+            return 1
+        return min(max(value, 1), REVIEW_CONCURRENCY_MAX)
 
     @property
     def continuity_repair_input_budget_units(self) -> int | None:
@@ -486,7 +502,8 @@ class DeepSeekProvider:
                     guard = _dispatch_guard.get()
                     if guard is not None:
                         guard()
-                    self.request_attempts += 1
+                    with self._counter_lock:
+                        self.request_attempts += 1
                     post_started = True
                     response = client.post(
                         self.base_url.rstrip("/") + "/chat/completions",
@@ -509,7 +526,8 @@ class DeepSeekProvider:
                             latency_ms, finish_reason,
                             usage.get("prompt_tokens"),usage.get("completion_tokens"),usage.get("cost_cny"),
                         ) from error
-                    self.successful_responses += 1
+                    with self._counter_lock:
+                        self.successful_responses += 1
                     return ProviderResult(
                         parsed,
                         None if prior_dispatch_usage_unknown else usage.get("prompt_tokens"),

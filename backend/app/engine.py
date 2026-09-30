@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import contextvars
 import re
+from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from typing import Any
 
 from . import brief_citations
@@ -424,61 +426,102 @@ class ContinuityEngine:
         if not self.provider.available:return {"status":"failed","error_code":"provider_unavailable","retryable":True}
         try:batches=self._batches(data)
         except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True}
-        results=[]; issues=[];contract_normalizations=[]
         retrieval_traces=[{"claim_id":claim["id"],"returned_span_ids":[span["id"] for span in claim["allowed_evidence"]]} for batch in batches for claim in batch["claims"]]
         # A thinking-review provider declares its own larger budget; everything else keeps MAX_RUN_TOKENS.
         run_budget=getattr(self.provider,"continuity_run_token_budget",None) or MAX_RUN_TOKENS
-        # A batch that fails its contract twice used to raise, discarding every other batch's finished
-        # work. On a real chapter that is 36 claims lost to one of them, so a multi-claim batch is
-        # retried one claim at a time and only the claims that still fail are set aside as undecided.
-        pending=list(batches); undecided=[]
-        try:
-            while pending:
-                batch=pending.pop(0)
-                for contract_attempt in range(2):
-                    request=batch if contract_attempt==0 else {**batch,"contract_repair":{"attempt":contract_attempt+1,"reason_code":repair_code,"diagnostics":repair_diagnostics,"rejected_issues":rejected_issues,"rejected_claim_verdicts":rejected_claim_verdicts}}
-                    # Check the complete feedback as sent; never truncate rejected output to fit.
-                    input_limit=(getattr(self.provider,"continuity_repair_input_budget_units",None) or MAX_INPUT_BUDGET_UNITS) if contract_attempt else MAX_INPUT_BUDGET_UNITS
-                    if request_prompt_and_budget(request)[1]>input_limit:raise InputBudgetExceeded()
-                    result=self.provider.evaluate(request)
-                    if (result.input_tokens or 0)+(result.output_tokens or 0)>run_budget:return {"status":"budget_paused","error_code":"budget_paused","retryable":True,**_aggregate(results+[result])}
-                    results.append(result)
-                    rejected_issues=result.payload.get("issues",[]) if isinstance(result.payload,dict) else []
-                    rejected_claim_verdicts=result.payload.get("claim_verdicts",[]) if isinstance(result.payload,dict) else []
-                    repair_diagnostics=self._repair_diagnostics(result.payload,batch)
-                    if contract_attempt==0 and repair_diagnostics:
-                        repair_code=repair_diagnostics[0]["problem_codes"][0]
-                        continue
-                    try:
-                        validated=self.validate(result.payload,batch,allow_conservative_temporal_normalization=contract_attempt==1,normalization_sink=contract_normalizations)
-                    except ContinuityContractValidationError as error:
-                        if contract_attempt==0:
-                            repair_code=str(error)
-                            claim_id=batch["claims"][0]["id"] if len(batch["claims"])==1 else None
-                            repair_diagnostics=error.diagnostics or [_contract_diagnostic(batch,repair_code,claim_id)]
-                            continue
-                        if len(batch["claims"])>1:
-                            # Split, so one claim's self-contradicting answer cannot cost the others.
-                            pending[:0]=[self._request([claim],data["memory"],data["draft"]) for claim in batch["claims"]]
-                            break
-                        undecided.append({"claim_span_id":batch["claims"][0]["id"],"error_code":str(error)})
-                        break
-                    issues.extend(validated)
-                    break
-        except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True,**_aggregate(results)}
-        except ProviderUnavailable:return {"status":"failed","error_code":"provider_unavailable","retryable":True,**_aggregate(results)}
-        except ProviderTimeout as error:return {"status":"timed_out","error_code":"provider_timeout","retryable":True,**_aggregate_attempt_failure(results,error)}
-        except ProviderInvalidJson as error:
-            # A length stop cut the answer off; name it instead of calling it a JSON contract failure.
-            code="output_truncated" if error.finish_reason=="length" else "invalid_json"
-            return {"status":"failed","error_code":code,"retryable":True,**_invalid_json_aggregate(results,error)}
-        except ProviderFailure as error:return {"status":"failed","error_code":"provider_error","retryable":True,**_aggregate_attempt_failure(results,error)}
-        except ValueError as error:return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate_attempt_failure(results,error)}
+        # Batches are independent, so a provider that declares a concurrency above one gets that many
+        # in flight; the rest keep the old sequential order. An 816-character chapter is 36 claims
+        # and ran its batches one after another for four minutes.
+        concurrency=getattr(self.provider,"continuity_batch_concurrency",None)
+        concurrency=concurrency if isinstance(concurrency,int) and not isinstance(concurrency,bool) and concurrency>1 else 1
         order={claim["id"]:index for index,claim in enumerate(data["claims"])}
+        pending=list(batches); outcomes=[]; stop=None
+        pool=ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-batch") if concurrency>1 else None
+        def submit(batch:dict[str,Any])->Future:
+            if pool is None:
+                future=Future(); future.set_result(self._review_batch(batch,data,run_budget)); return future
+            # Each dispatch carries the caller's context: the usage reservation, the dispatch guard
+            # and the run's shared thinking-effort state all live in context variables.
+            return pool.submit(contextvars.copy_context().run,self._review_batch,batch,data,run_budget)
+        try:
+            running=set()
+            while running or (pending and stop is None):
+                while pending and stop is None and len(running)<concurrency:running.add(submit(pending.pop(0)))
+                done,running=wait(running,return_when=FIRST_COMPLETED)
+                for future in done:
+                    outcome=future.result(); outcomes.append(outcome)
+                    if outcome.get("error") is not None or outcome.get("budget_paused"):
+                        # Stop dispatching, but let what is already in flight finish: its tokens are spent
+                        # either way and belong in the run's totals.
+                        stop=stop or outcome
+                    elif outcome.get("split"):
+                        # Split, so one claim's self-contradicting answer cannot cost the others.
+                        pending[:0]=[self._request([claim],data["memory"],data["draft"]) for claim in outcome["split"]]
+        finally:
+            if pool is not None:pool.shutdown(wait=True)
+        results=[result for outcome in outcomes for result in outcome["results"]]
+        if stop is not None:
+            if stop.get("budget_paused"):return {"status":"budget_paused","error_code":"budget_paused","retryable":True,**_aggregate(results)}
+            error=stop["error"]
+            if isinstance(error,InputBudgetExceeded):return {"status":"failed","error_code":"input_budget_exceeded","retryable":True,**_aggregate(results)}
+            if isinstance(error,ProviderUnavailable):return {"status":"failed","error_code":"provider_unavailable","retryable":True,**_aggregate(results)}
+            if isinstance(error,ProviderTimeout):return {"status":"timed_out","error_code":"provider_timeout","retryable":True,**_aggregate_attempt_failure(results,error)}
+            if isinstance(error,ProviderInvalidJson):
+                # A length stop cut the answer off; name it instead of calling it a JSON contract failure.
+                code="output_truncated" if error.finish_reason=="length" else "invalid_json"
+                return {"status":"failed","error_code":code,"retryable":True,**_invalid_json_aggregate(results,error)}
+            if isinstance(error,ProviderFailure):return {"status":"failed","error_code":"provider_error","retryable":True,**_aggregate_attempt_failure(results,error)}
+            return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate_attempt_failure(results,error)}
+        # Completion order varies with concurrency; everything reported follows claim order instead.
+        outcomes.sort(key=lambda outcome:order[outcome["first_claim_id"]])
+        issues=[issue for outcome in outcomes for issue in outcome.get("issues",[])]
+        contract_normalizations=[item for outcome in outcomes for item in outcome.get("normalizations",[])]
+        undecided=sorted((row for outcome in outcomes for row in outcome.get("undecided",[])),key=lambda row:order[row["claim_span_id"]])
         if len({issue["claim_span_id"] for issue in issues}) != len(issues): return {"status":"failed","error_code":"schema_invalid","retryable":True,**_aggregate(results)}
         # Nothing survived, so there is no partial result worth showing: keep the old failure.
         if undecided and len(undecided)==len(data["claims"]): return {"status":"failed","error_code":undecided[0]["error_code"],"retryable":True,**_aggregate(results)}
         return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,"undecided_claim_count":len(undecided),"undecided_claims":undecided,**_aggregate(results)}
+
+    def _review_batch(self,batch:dict[str,Any],data:dict[str,Any],run_budget:int)->dict[str,Any]:
+        """One batch through its first answer and at most one contract repair.
+
+        A batch that fails its contract twice used to raise, discarding every other batch's finished
+        work. On a real chapter that is 36 claims lost to one of them, so a multi-claim batch comes
+        back as a split, to be retried one claim at a time, and a single claim that still fails is set
+        aside as undecided. A provider failure is returned, not raised, so the usage already spent on
+        this batch still reaches the run's totals.
+        """
+        results=[]; normalizations=[]
+        outcome={"first_claim_id":batch["claims"][0]["id"],"results":results,"normalizations":normalizations}
+        try:
+            for contract_attempt in range(2):
+                request=batch if contract_attempt==0 else {**batch,"contract_repair":{"attempt":contract_attempt+1,"reason_code":repair_code,"diagnostics":repair_diagnostics,"rejected_issues":rejected_issues,"rejected_claim_verdicts":rejected_claim_verdicts}}
+                # Check the complete feedback as sent; never truncate rejected output to fit.
+                input_limit=(getattr(self.provider,"continuity_repair_input_budget_units",None) or MAX_INPUT_BUDGET_UNITS) if contract_attempt else MAX_INPUT_BUDGET_UNITS
+                if request_prompt_and_budget(request)[1]>input_limit:raise InputBudgetExceeded()
+                result=self.provider.evaluate(request)
+                results.append(result)
+                if (result.input_tokens or 0)+(result.output_tokens or 0)>run_budget:return {**outcome,"budget_paused":True}
+                rejected_issues=result.payload.get("issues",[]) if isinstance(result.payload,dict) else []
+                rejected_claim_verdicts=result.payload.get("claim_verdicts",[]) if isinstance(result.payload,dict) else []
+                repair_diagnostics=self._repair_diagnostics(result.payload,batch)
+                if contract_attempt==0 and repair_diagnostics:
+                    repair_code=repair_diagnostics[0]["problem_codes"][0]
+                    continue
+                try:
+                    validated=self.validate(result.payload,batch,allow_conservative_temporal_normalization=contract_attempt==1,normalization_sink=normalizations)
+                except ContinuityContractValidationError as error:
+                    if contract_attempt==0:
+                        repair_code=str(error)
+                        claim_id=batch["claims"][0]["id"] if len(batch["claims"])==1 else None
+                        repair_diagnostics=error.diagnostics or [_contract_diagnostic(batch,repair_code,claim_id)]
+                        continue
+                    if len(batch["claims"])>1:return {**outcome,"split":batch["claims"]}
+                    return {**outcome,"undecided":[{"claim_span_id":batch["claims"][0]["id"],"error_code":str(error)}]}
+                return {**outcome,"issues":validated}
+        except (InputBudgetExceeded,ProviderUnavailable,ProviderTimeout,ProviderInvalidJson,ProviderFailure,ValueError) as error:
+            return {**outcome,"error":error}
+        raise AssertionError("unreachable: the second contract attempt always returns")
 
     def _v6_issues(self,payload:Any,data:dict[str,Any])->dict[str,Any]:
         """Validate the compatible V6 ledger shape, retaining every detectable fault."""
