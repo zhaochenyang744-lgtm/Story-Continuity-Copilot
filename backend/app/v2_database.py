@@ -49,7 +49,7 @@ TUTORIAL_EVENT_STEPS = {
 }
 
 
-def split_draft_claims(draft_text: str) -> list[str]:
+def split_continuity_claims(draft_text: str) -> list[str]:
     """One claim per sentence. The quota preflight counts claims with this same split."""
     return [part.strip() for part in re.split(r"(?<=[。！？])", draft_text) if part.strip()]
 
@@ -3279,7 +3279,7 @@ class V2Database:
             body_format=self._draft_body_format(c,revision["draft_id"],revision["revision"])
             draft_text=visible_draft_text(revision["body"],body_format)
             claims=[]
-            for ordinal,text in enumerate(split_draft_claims(draft_text)):
+            for ordinal,text in enumerate(split_continuity_claims(draft_text)):
                 claim_id=f"claim-{run_id}-{ordinal+1}"; claims.append({"id":claim_id,"text":text})
                 c.execute("INSERT OR IGNORE INTO v2_run_claims VALUES(?,?,?,?)",(claim_id,run_id,ordinal+1,text))
             source_memory_version=run["source_memory_version"]
@@ -3351,7 +3351,7 @@ class V2Database:
             self._project(c,user_id,project_id)
             row=c.execute("SELECT r.body,r.revision FROM v2_draft_revisions r JOIN v2_drafts d ON d.id=r.draft_id WHERE r.draft_id=? AND r.revision=? AND d.project_id=?",(draft_id,revision,project_id)).fetchone()
             if not row:return 0
-            return len(split_draft_claims(visible_draft_text(row["body"],self._draft_body_format(c,draft_id,revision))))
+            return len(split_continuity_claims(visible_draft_text(row["body"],self._draft_body_format(c,draft_id,revision))))
 
     def run_claim_count(self,user_id:str,project_id:str,run_id:str)->int:
         """Claims a retry of this continuity run will review: the same draft revision it was bound to."""
