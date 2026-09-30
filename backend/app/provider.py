@@ -347,7 +347,12 @@ CONTINUITY_REVIEW_THINKING_VALUES = ("disabled", "high")
 # 145 s) and the check failed as output_truncated. A last non-thinking dispatch, the pre-thinking
 # request shape, now answers instead; it only runs where the check would otherwise have failed.
 # The run budget grows to 50,000 so that three-dispatch evaluation still fits.
-REVIEW_THINKING_MAX_OUTPUT_TOKENS = 16000
+#
+# Cap 12,000 (2026-09-30): across the imported-runaway diagnostics, 54 of 57 thinking answers that
+# finished on their own used at most 12,000 tokens (median 5,284, p90 10,529); every runaway filled
+# the cap at about 210 tokens/s. A 12,000 cap stops a runaway about 20 s sooner per dispatch, so the
+# worst high -> medium -> non-thinking chain drops from about 157 s to about 115 s.
+REVIEW_THINKING_MAX_OUTPUT_TOKENS = 12000
 REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS = 9000
 REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT = "medium"
 REVIEW_THINKING_EFFORTS = ("high", REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT, "disabled")
