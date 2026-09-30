@@ -151,7 +151,8 @@ class DispatchQuotaTests(unittest.TestCase):
                         if len(posted)>1:raise httpx.ReadTimeout("contract repair response lost")
                         prompt=json.loads(kwargs["json"]["messages"][0]["content"])
                         claim=prompt["current_claims"][0]
-                        source=claim["allowed_evidence"][0]
+                        # A claim lists span ids; each span appears once under evidence_spans.
+                        source=next(span for span in prompt["evidence_spans"] if span["id"]==claim["allowed_evidence"][0])
                         legacy={"issues":[{"claim_span_id":claim["id"],"status":"conflict","category":"attribute","severity":"low","explanation":"旧格式需要契约修复。","evidence":[{"chapter_id":source["chapter_id"],"span_id":source["id"],"relation":"contradicts","sufficiency":"sufficient","related_memory_ids":[]}]}]}
                         return Response(json.dumps(legacy,ensure_ascii=False))
                 provider._factory=Client

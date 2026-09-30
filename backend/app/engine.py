@@ -24,6 +24,11 @@ RETRIEVAL_METHOD_VERSION="bounded-lexical-v4-longform"
 RELATED_MEMORY_LIMIT=15
 CONTINUITY_EVIDENCE_LIMIT=3
 CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS=500
+# Input budget alone let a batch grow to 12-13 claims once evidence is shared, but thinking output is
+# what fills: one to three claims already produced 0.5k-13.5k output tokens against a 16k cap, and a
+# length stop steps the whole run down to medium effort. Small batches also parallelize and keep a
+# contract repair small. Held-out drafts are one to three sentences, so eval runs are unaffected.
+CONTINUITY_MAX_CLAIMS_PER_BATCH=4
 # A single claim whose full evidence and Memory do not fit the input budget (the v21 rules left the
 # long-form worst case at 6,324 of 6,000 units) is sent with these tighter bounds instead of failing.
 SINGLE_CLAIM_FALLBACK_BOUNDS=((CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS,RELATED_MEMORY_LIMIT),(400,12),(300,10),(200,8))
@@ -324,6 +329,32 @@ def _bounded_excerpt(body:str,hints:list[str],limit:int=CONTINUITY_EVIDENCE_EXCE
     return body[start:end]
 
 
+def _share_batch_excerpts(claims:list[dict[str,Any]])->list[dict[str,Any]]:
+    """Give every claim in one batch the same excerpt of a span it shares with other claims.
+
+    The prompt shows each span once per batch. A long span's excerpt is a window anchored on the
+    claim's own wording, so claims can need different parts of it; the shared excerpt is the union
+    of those windows, never longer than the copies it replaces. Every claim's prompt_excerpt is set
+    to that text, so validation and stored evidence see exactly what the model saw.
+    """
+    seen:dict[str,tuple[dict[str,Any],list[str]]]={}
+    for claim in claims:
+        for span in claim["allowed_evidence"]:
+            seen.setdefault(span["id"],(span,[]))[1].append(str(span.get("prompt_excerpt",span.get("body",""))))
+    shared={}
+    for span_id,(span,excerpts) in seen.items():
+        distinct=list(dict.fromkeys(excerpts)); body=str(span.get("body",""))
+        windows=[(body.find(text),body.find(text)+len(text)) for text in distinct]
+        if len(distinct)==1 or any(start<0 for start,_ in windows):
+            shared[span_id]=distinct[0] if len(distinct)==1 else "…".join(distinct); continue
+        merged:list[list[int]]=[]
+        for start,end in sorted(windows):
+            if merged and start<=merged[-1][1]:merged[-1][1]=max(merged[-1][1],end)
+            else:merged.append([start,end])
+        shared[span_id]="…".join(body[start:end] for start,end in merged)
+    return [{**claim,"allowed_evidence":[{**span,"prompt_excerpt":shared[span["id"]]} for span in claim["allowed_evidence"]]} for claim in claims]
+
+
 class ContinuityEngine:
     def __init__(self,provider:ProviderPort): self.provider=provider
     def provenance(self)->dict[str,str]:
@@ -356,7 +387,7 @@ class ContinuityEngine:
     def _request(self, claims: list[dict[str, Any]], memory: list[dict[str, Any]], draft: dict[str, Any],
                  bounds: tuple[int, int] = (CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS, RELATED_MEMORY_LIMIT)) -> dict[str, Any]:
         excerpt_limit,memory_limit=bounds
-        selected_claims=[{**claim,"allowed_evidence":self._selected_evidence(claim,memory,excerpt_limit)} for claim in claims]
+        selected_claims=_share_batch_excerpts([{**claim,"allowed_evidence":self._selected_evidence(claim,memory,excerpt_limit)} for claim in claims])
         used={item["id"]:item for claim in selected_claims for item in self._related_memory(claim,memory,memory_limit)}
         return {"draft":{"id":draft["id"],"revision":draft["revision"],"body":"\n".join(claim["text"] for claim in selected_claims)},"claims":selected_claims,"memory":[used[key] for key in sorted(used)],"output_schema":_continuity_schema()}
 
@@ -371,7 +402,7 @@ class ContinuityEngine:
         batches=[]; current=[]
         for claim in data["claims"]:
             candidate=current+[claim]; request=self._request(candidate,data["memory"],data["draft"])
-            if request_prompt_and_budget(request)[1] <= MAX_INPUT_BUDGET_UNITS:
+            if len(candidate)<=CONTINUITY_MAX_CLAIMS_PER_BATCH and request_prompt_and_budget(request)[1] <= MAX_INPUT_BUDGET_UNITS:
                 current=candidate; continue
             if current:
                 batches.append(self._request(current,data["memory"],data["draft"])); current=[claim]

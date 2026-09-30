@@ -68,7 +68,8 @@ class Scripted:
 class ReviewPromptV22Tests(unittest.TestCase):
     def test_prompt_settles_undated_self_contradicting_and_only_when_cases(self):
         rules = "\n".join(json.loads(continuity_prompt({**data(), "output_schema": {}}))["rules"])
-        self.assertEqual(CONTINUITY_PROMPT_VERSION, "continuity-review-v22-settled-possible-conflict")
+        # v22 rules; the shared-evidence layout only changed how spans are laid out.
+        self.assertEqual(CONTINUITY_PROMPT_VERSION, "continuity-review-v22-shared-evidence")
         self.assertIn("an undated contradiction that no shared time or static_canon rule proves", rules)
         self.assertIn("a character contradicting their own earlier unmarked statement", rules)
         self.assertIn("it does not require X whenever C holds", rules)

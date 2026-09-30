@@ -110,6 +110,7 @@ class OversizedRepairTests(unittest.TestCase):
     per claim it measured 11,174 units, over even the 9,000 thinking allowance, and the whole run
     failed input_budget_exceeded with nothing returned."""
 
+    @patch("app.engine.CONTINUITY_MAX_CLAIMS_PER_BATCH", 50)  # reproduce the packed batch of that measurement
     def test_a_repair_too_large_to_send_halves_the_batch_instead_of_failing_the_run(self):
         payload = data(CLAIMS)
         provider = Poisoned("claim-v17-7")  # sits in the first, fully packed batch

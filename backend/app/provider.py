@@ -111,7 +111,7 @@ class ProviderResult:
 
 MAX_CLAIM_BASIS_CODEPOINTS = 400
 MAX_ISSUE_REASONING_CODEPOINTS = 800
-CONTINUITY_PROMPT_VERSION = "continuity-review-v22-settled-possible-conflict"
+CONTINUITY_PROMPT_VERSION = "continuity-review-v22-shared-evidence"
 
 CONTINUITY_REVIEW_RULES = (
     "Write every author-facing explanation, reasoning, and suggested revision in the dominant language of the bound draft. Preserve proper nouns from the source.",
@@ -238,11 +238,15 @@ def continuity_prompt(request: dict[str, Any]) -> str:
             "task": "Review continuity only. Return exactly one JSON object with exactly two top-level keys, issues and claim_verdicts. Do not use Markdown or include any other top-level key.",
             "prompt_version": CONTINUITY_PROMPT_VERSION,
             "rules": list(CONTINUITY_REVIEW_RULES), "decision_examples": list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
+            # Each span appears once per request; a claim lists the ids it may cite. Repeating the
+            # excerpt under every claim put 10 distinct spans into 113 slots on one real chapter.
+            "evidence_spans": list({
+                span["id"]: {"id": span["id"], "chapter_id": span["chapter_id"], "excerpt": span.get("prompt_excerpt", span["body"])}
+                for claim in request["claims"] for span in claim["allowed_evidence"]
+            }.values()),
             "current_claims": [
-                {"id": claim["id"], "text": claim["text"], "allowed_evidence": [
-                    {"id": span["id"], "chapter_id": span["chapter_id"], "excerpt": span.get("prompt_excerpt", span["body"])}
-                    for span in claim["allowed_evidence"]
-                ]} for claim in request["claims"]
+                {"id": claim["id"], "text": claim["text"], "allowed_evidence": [span["id"] for span in claim["allowed_evidence"]]}
+                for claim in request["claims"]
             ],
             "memory": request["memory"], "output_schema": request["output_schema"],
         }

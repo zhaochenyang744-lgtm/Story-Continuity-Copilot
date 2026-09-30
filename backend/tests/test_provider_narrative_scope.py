@@ -36,7 +36,8 @@ class NarrativeScopeContractTests(unittest.TestCase):
                 prompt = continuity_prompt(data)
                 parsed = json.loads(prompt)
                 self.assertEqual(parsed["current_claims"][0]["text"], claim)
-                self.assertEqual(parsed["current_claims"][0]["allowed_evidence"][0]["excerpt"], evidence)
+                span_id = parsed["current_claims"][0]["allowed_evidence"][0]
+                self.assertEqual([span["excerpt"] for span in parsed["evidence_spans"] if span["id"] == span_id], [evidence])
                 self.assertLessEqual(estimate_prompt_budget_units(prompt), MAX_INPUT_BUDGET_UNITS)
                 # An author-labelled compatible case needs no forced Issue object.
                 self.assertEqual(engine.validate({"issues": []}, data), [])
