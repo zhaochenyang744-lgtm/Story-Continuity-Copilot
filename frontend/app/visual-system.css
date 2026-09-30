@@ -227,6 +227,11 @@ fieldset {
 .author-planning-status > span:first-child { display: inline-flex; align-items: center; min-height: 30px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 12px; font-weight: 500; }
 .author-plan-empty { gap: 16px; }
 .revision-loop-actions > button { flex: none; white-space: nowrap; }
+/* Phones: fields stay at 16px so iOS does not zoom on focus. This file loads after globals.css, whose
+   equivalent rule the field shorthand above would otherwise override. */
+@media (max-width: 760px) {
+  input:not([type="checkbox"]):not([type="radio"]), textarea, select { font-size: 16px; }
+}
 /* Icons inside a line of text (arrows, external links, chevrons) follow the text size. */
 .ui-icon.ui-icon-inline {
   display: inline-block;
