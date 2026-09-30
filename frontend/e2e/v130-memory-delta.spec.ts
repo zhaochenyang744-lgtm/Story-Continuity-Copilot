@@ -113,7 +113,7 @@ test("desktop reviews new changed and invalidated facts and preserves choices ac
   const audit = page.getByLabel("增量来源覆盖审计");
   await expect(audit).toContainText("ChangeSet");
   await expect(audit).toContainText("Memory V1 → V2");
-  await expect(page.getByText("编辑后抵达北堤", { exact: true })).toBeVisible();
+  await expect(page.getByRole("cell", { name: /编辑后抵达北堤/ })).toBeVisible();
   await expect(page.getByRole("cell", { name: "已失效", exact: true })).toBeVisible();
   const stats = await (await page.request.get("/api/test/stage12/stats")).json();
   expect(stats).toMatchObject({ provider_mode: "injected_stub", external_provider_http_enabled: false, provider_http_calls: 0 });
