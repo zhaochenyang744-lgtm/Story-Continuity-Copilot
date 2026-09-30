@@ -27,8 +27,8 @@ async function register(page: Page) {
 
 async function createProject(page: Page) {
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
-  await page.getByRole("button", { name: "新建作品", exact: true }).click();
-  await page.getByLabel("作品名称", { exact: true }).fill("潮汐手稿");
+  await page.getByRole("button", { name: "新建作品", exact: true }).first().click();
+  await page.getByRole("textbox", { name: /作品名称/ }).fill("潮汐手稿");
   await page.getByRole("button", { name: "创建并进入作品", exact: true }).click();
   await expect(page).toHaveURL(/\/projects\/[^/]+\/overview$/);
   const projectId = page.url().match(/\/projects\/([^/]+)\//)?.[1];

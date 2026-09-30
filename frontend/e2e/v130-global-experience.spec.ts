@@ -34,10 +34,9 @@ async function noOverflow(page: Page) {
 
 async function createProject(page: Page, title: string) {
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
-  await page.getByRole("button", { name: "新建作品", exact: true }).click();
-  await page.getByLabel("作品名称", { exact: true }).fill(title);
-  await page.getByLabel("类型", { exact: true }).fill("长篇悬疑");
-  await page.getByLabel("简介", { exact: true }).fill("用于验证全局体验层级。");
+  await page.getByRole("button", { name: "新建作品", exact: true }).first().click();
+  await page.getByRole("textbox", { name: /作品名称/ }).fill(title);
+  await page.getByRole("textbox", { name: /简介/ }).fill("用于验证全局体验层级。");
   await page.getByRole("button", { name: "创建并进入作品", exact: true }).click();
   await expect(page).toHaveURL(/\/projects\/[^/]+\/overview$/);
 }

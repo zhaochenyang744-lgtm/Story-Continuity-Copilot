@@ -33,10 +33,9 @@ async function register(page: Page, displayName = "v1.3.0 作者") {
 
 async function createProject(page: Page, title: string) {
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
-  await page.getByRole("button", { name: "新建作品", exact: true }).click();
-  await page.getByLabel("作品名称", { exact: true }).fill(title);
-  await page.getByLabel("类型", { exact: true }).fill("长篇悬疑");
-  await page.getByLabel("简介", { exact: true }).fill("验证作者规划与正文档案严格分离。");
+  await page.getByRole("button", { name: "新建作品", exact: true }).first().click();
+  await page.getByRole("textbox", { name: /作品名称/ }).fill(title);
+  await page.getByRole("textbox", { name: /简介/ }).fill("验证作者规划与正文档案严格分离。");
   await page.getByRole("button", { name: "创建并进入作品", exact: true }).click();
   await expect(page).toHaveURL(/\/projects\/[^/]+\/overview$/);
   return page.url().match(/\/projects\/([^/]+)\//)?.[1] ?? "";
@@ -254,7 +253,7 @@ test("v1.3.0 wide operational pages expand and center while bounded forms stay c
 
   await page.setViewportSize({ width: 1920, height: 900 });
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
-  await page.getByRole("button", { name: "新建作品", exact: true }).click();
+  await page.getByRole("button", { name: "新建作品", exact: true }).first().click();
   const centeredForm = await page.locator(".create-project-page").evaluate((node) => {
     const box = node.getBoundingClientRect();
     const main = node.closest("main")?.getBoundingClientRect();
@@ -264,7 +263,7 @@ test("v1.3.0 wide operational pages expand and center while bounded forms stay c
   expect(centeredForm.centerDelta).toBeLessThanOrEqual(1);
   expect(centeredForm.width).toBeLessThanOrEqual(821);
   await expectNoOverflow(page);
-  await page.getByLabel("作品名称", { exact: true }).fill("宽屏锚点验证");
+  await page.getByRole("textbox", { name: /作品名称/ }).fill("宽屏锚点验证");
   await page.getByRole("button", { name: "创建并进入作品", exact: true }).click();
   await expect(page).toHaveURL(/\/overview$/);
   await expect(page.locator(".project-page")).toBeVisible();
