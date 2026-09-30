@@ -1416,10 +1416,13 @@ export function Workbench() {
           setRun(next);
           setPairedRun(nextRuns[1] ?? null);
           if (nextRuns.every((item) => !activeRun(item))) {
+            const undecided = next.metrics?.undecided_claim_count ?? 0;
             setNotice(
-              next.status === "completed"
-                ? "检查完成，等待作者审阅。"
-                : `${labelError({ code: next.error_code })} 未完成 Run 不会写入或展示部分结果。`,
+              next.status !== "completed"
+                ? `${labelError({ code: next.error_code })} 未完成 Run 不会写入或展示部分结果。`
+                : undecided > 0
+                  ? `检查完成，但有 ${undecided} 句未能判定，本次结果不覆盖它们。其余部分等待作者审阅。`
+                  : "检查完成，等待作者审阅。",
             );
             if (next.incremental_batch_id)
               request<MemoryDelta>(`/projects/${projectId}/memory/delta`).then((delta) => {

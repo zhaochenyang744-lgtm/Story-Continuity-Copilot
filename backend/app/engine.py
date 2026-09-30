@@ -428,8 +428,13 @@ class ContinuityEngine:
         retrieval_traces=[{"claim_id":claim["id"],"returned_span_ids":[span["id"] for span in claim["allowed_evidence"]]} for batch in batches for claim in batch["claims"]]
         # A thinking-review provider declares its own larger budget; everything else keeps MAX_RUN_TOKENS.
         run_budget=getattr(self.provider,"continuity_run_token_budget",None) or MAX_RUN_TOKENS
+        # A batch that fails its contract twice used to raise, discarding every other batch's finished
+        # work. On a real chapter that is 36 claims lost to one of them, so a multi-claim batch is
+        # retried one claim at a time and only the claims that still fail are set aside as undecided.
+        pending=list(batches); undecided=[]
         try:
-            for batch in batches:
+            while pending:
+                batch=pending.pop(0)
                 for contract_attempt in range(2):
                     request=batch if contract_attempt==0 else {**batch,"contract_repair":{"attempt":contract_attempt+1,"reason_code":repair_code,"diagnostics":repair_diagnostics,"rejected_issues":rejected_issues,"rejected_claim_verdicts":rejected_claim_verdicts}}
                     # Check the complete feedback as sent; never truncate rejected output to fit.
@@ -452,7 +457,12 @@ class ContinuityEngine:
                             claim_id=batch["claims"][0]["id"] if len(batch["claims"])==1 else None
                             repair_diagnostics=error.diagnostics or [_contract_diagnostic(batch,repair_code,claim_id)]
                             continue
-                        raise
+                        if len(batch["claims"])>1:
+                            # Split, so one claim's self-contradicting answer cannot cost the others.
+                            pending[:0]=[self._request([claim],data["memory"],data["draft"]) for claim in batch["claims"]]
+                            break
+                        undecided.append({"claim_span_id":batch["claims"][0]["id"],"error_code":str(error)})
+                        break
                     issues.extend(validated)
                     break
         except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True,**_aggregate(results)}
@@ -466,7 +476,9 @@ class ContinuityEngine:
         except ValueError as error:return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate_attempt_failure(results,error)}
         order={claim["id"]:index for index,claim in enumerate(data["claims"])}
         if len({issue["claim_span_id"] for issue in issues}) != len(issues): return {"status":"failed","error_code":"schema_invalid","retryable":True,**_aggregate(results)}
-        return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,**_aggregate(results)}
+        # Nothing survived, so there is no partial result worth showing: keep the old failure.
+        if undecided and len(undecided)==len(data["claims"]): return {"status":"failed","error_code":undecided[0]["error_code"],"retryable":True,**_aggregate(results)}
+        return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,"undecided_claim_count":len(undecided),"undecided_claims":undecided,**_aggregate(results)}
 
     def _v6_issues(self,payload:Any,data:dict[str,Any])->dict[str,Any]:
         """Validate the compatible V6 ledger shape, retaining every detectable fault."""

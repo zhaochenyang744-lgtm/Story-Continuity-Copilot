@@ -1,0 +1,81 @@
+{
+  "kind": "production_observation_not_a_gate",
+  "date": "2026-09-30",
+  "question": "Every eval set caps a chapter at 300 characters and a draft at one to three sentences. What happens on a chapter the length real writing produces?",
+  "answer": "It does not merely run long. It fails, returns nothing, and spends 78,878 tokens doing so.",
+  "environment": {
+    "release": "v22-0696e52-20260930",
+    "host": "https://43-160-207-57.sslip.io",
+    "session": "24-hour guest",
+    "project": "灰港回声 seed work, Memory V4, 10 chapters",
+    "note": "A seed work was used because its Memory already exists; the draft is an 816-character chapter written for this test in that work's world, reusing its names so bounded retrieval would actually hit."
+  },
+  "run": {
+    "run_id": "run-ada1911a-65f6-4e15-8fb7-8b181916a1f8",
+    "status": "failed",
+    "error_code": "conflict_evidence_insufficient",
+    "retryable": true,
+    "issues_returned": 0,
+    "duration_ms": 239758,
+    "input_tokens": 27490,
+    "output_tokens": 51388,
+    "contract_normalization_count": 0,
+    "result_origin": "provider",
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v22-settled-possible-conflict",
+      "schema_version": "continuity-issue-v7-repair-diagnostics",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 4
+    },
+    "transitions": ["queued", "preparing_draft", "retrieving_confirmed_facts", "comparing_evidence", "failed:conflict_evidence_insufficient"]
+  },
+  "draft": {
+    "characters": 816,
+    "claims": 36,
+    "characters_per_claim": 22.7,
+    "splitter": "re.split(r\"(?<=[。！？])\", draft_text) — one claim per sentence, v2_database.py",
+    "planted_issues": 4,
+    "planted_non_issue": "北潮闸未关而雾钟响 — chapter 10 already records this as an open thread, so reporting it would be a false positive"
+  },
+  "retrieval": {
+    "spans_per_claim": [3, 5, 2, 4, 4, 5, 1, 4, 2, 4, 1, 3, 3, 1, 3, 5, 4, 3, 1, 0, 3, 4, 5, 2, 5, 4, 1, 3, 3, 5, 1, 5, 4, 3, 4, 3],
+    "claims_with_no_evidence": 1,
+    "total_span_slots": 113,
+    "distinct_spans_in_run": 10,
+    "duplication_factor": 11.3,
+    "note": "Ten distinct spans occupied 113 evidence slots. This work's spans are about 35 characters each so the cost is small here; on a real chapter of a thousand characters the same duplication multiplies the input instead."
+  },
+  "comparison": {
+    "same_release_short_draft": {
+      "run_id": "run-67147381-d187-44e4-816c-ac158710f41f",
+      "characters": 97,
+      "claims": 4,
+      "duration_ms": 139644,
+      "output_tokens": 33397,
+      "status": "completed",
+      "issues": 2,
+      "note": "Both issues correct, including one proved by combining a world-rule span with a fact span. No contract repair was needed."
+    },
+    "dev_set_single_claim_drafts": "median 14.6 s on the same release, one to three sentences each"
+  },
+  "findings": [
+    {
+      "id": "all-or-nothing",
+      "statement": "A contract failure in one batch discards every other batch's finished work. 51,388 output tokens exceed the 16,000-token thinking cap of a single dispatch several times over, so the draft was split across batches and at least one of them completed; the run still returned zero issues.",
+      "consequence": "The chance that some claim trips a contract grows with claim count, so this failure mode arrives exactly when a chapter reaches realistic length."
+    },
+    {
+      "id": "contract-collision",
+      "statement": "The failure code is conflict_evidence_insufficient, raised when a possible_conflict or state_change issue cites a span whose sufficiency is insufficient (engine.py). The model answered that way, took its one bounded repair, answered the same way again, and the run failed closed.",
+      "consequence": "v22 deliberately steers undecidable tensions to possible_conflict, so this collision became common. Whether the guard itself is right for possible_conflict — an issue that by definition does not establish a contradiction — is worth re-examining, not only whether the review can be talked out of it."
+    },
+    {
+      "id": "claim-granularity",
+      "statement": "One claim per sentence turns an ordinary 816-character chapter into 36 separately reasoned claims.",
+      "consequence": "Cost and failure probability both scale with sentence count rather than with how much of the chapter is actually checkable."
+    }
+  ],
+  "limits": "One run. It is enough to act on because the outcome is a total failure on ordinary input, not a slow success."
+}

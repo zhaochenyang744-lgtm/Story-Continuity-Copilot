@@ -256,7 +256,9 @@ export type Run = {
   transitions?: { sequence: number; status: string; stage: string; error_code: string | null; created_at: string }[];
   provenance?: { provider_label: string; model_label: string; prompt_version: string; schema_version: string; retrieval_method_version: string; source_memory_version: number; source_change_set_id?: string; source_span_ids?: string[]; incremental_batch_id?: string };
   provider_metrics?: { latency_ms: number | null; input_tokens: number | null; output_tokens: number | null; cost_cny: number | null; cost_available: boolean };
-  metrics?: { latency_ms: number | null; input_tokens: number | null; output_tokens: number | null; cost_cny: number | null; cost_available: boolean; provenance: Run["provenance"]; retrieval: { claim_ordinal: number | null; returned_span_ids: string[]; method_version: string }[] };
+  metrics?: { latency_ms: number | null; input_tokens: number | null; output_tokens: number | null; cost_cny: number | null; cost_available: boolean; provenance: Run["provenance"]; retrieval: { claim_ordinal: number | null; returned_span_ids: string[]; method_version: string }[];
+    // Absent on older backends: treat a missing count as "nothing to report", never as "complete".
+    undecided_claim_count?: number; undecided_claims?: { claim_span_id: string; error_code: string }[] };
   issues?: Issue[];
 };
 export type AnalysisSource = {
