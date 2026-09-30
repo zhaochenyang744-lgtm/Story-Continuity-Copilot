@@ -208,5 +208,12 @@ export const labelError = (cause: unknown) => {
     profile_revision_conflict: "个人信息已在其他窗口更新，已载入最新版本；请确认后重试。",
     profile_update_not_allowed: "当前身份不支持修改个人信息。",
   };
+  if (code === "provider_attempt_quota_insufficient") {
+    const details = (cause as ApiFailure)?.details ?? {};
+    const { claims, required_min: required, remaining } = details as Record<string, unknown>;
+    if ([claims, required, remaining].every((value) => typeof value === "number"))
+      return `这一章有 ${claims} 句，检查至少需要 ${required} 次模型调用，过去 24 小时只剩 ${remaining} 次。本次没有开始检查，也没有消耗额度；可以稍后再试，或分段检查。`;
+    return "剩余的模型调用额度不足以检查这一章。本次没有开始检查，也没有消耗额度。";
+  }
   return labels[code] ?? "请求未完成。请保留当前内容并重试。";
 };

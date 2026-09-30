@@ -393,13 +393,15 @@ class Stage13PublicAppTests(unittest.TestCase):
         project_id = visitor_data["seeded_projects"][0]["id"]
         project = attempt_client.get(f"/api/projects/{project_id}").json()["data"]
         draft = attempt_client.get(f"/api/projects/{project_id}/drafts/{project['current_draft']['id']}").json()["data"]
-        run_ids = []
-        for _ in range(3):
+        for _ in range(2):
             response = attempt_client.post(f"/api/projects/{project_id}/checks", headers=idem(), json={"draft_id": draft["id"], "draft_revision": draft["revision"]})
             self.assertEqual(response.status_code, 202)
-            run_ids.append(response.json()["data"]["run_id"])
-        third = attempt_client.get(f"/api/projects/{project_id}/checks/{run_ids[-1]}").json()["data"]
-        self.assertEqual((third["status"], third["error_code"], attempt_provider.calls), ("failed", "provider_attempt_quota_exceeded", 2))
+        # The spent quota cannot cover a third check, so it is refused before any provider attempt
+        # instead of being started and failing at its first dispatch.
+        response = attempt_client.post(f"/api/projects/{project_id}/checks", headers=idem(), json={"draft_id": draft["id"], "draft_revision": draft["revision"]})
+        self.assertEqual(response.status_code, 429)
+        refused = response.json()["error"]
+        self.assertEqual((refused["code"], refused["details"]["remaining"], attempt_provider.calls), ("provider_attempt_quota_insufficient", 0, 2))
 
         budget_root = pathlib.Path(tempfile.mkdtemp(prefix="story-stage13-impl-budget-"))
         budget_provider = CountingProvider()

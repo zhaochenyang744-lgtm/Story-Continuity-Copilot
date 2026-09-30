@@ -49,6 +49,11 @@ TUTORIAL_EVENT_STEPS = {
 }
 
 
+def split_draft_claims(draft_text: str) -> list[str]:
+    """One claim per sentence. The quota preflight counts claims with this same split."""
+    return [part.strip() for part in re.split(r"(?<=[。！？])", draft_text) if part.strip()]
+
+
 def public_run_status(status: str) -> str:
     """Expose only the frozen Stage 12 state vocabulary."""
     return "failed" if status == "budget_paused" else status
@@ -3274,7 +3279,7 @@ class V2Database:
             body_format=self._draft_body_format(c,revision["draft_id"],revision["revision"])
             draft_text=visible_draft_text(revision["body"],body_format)
             claims=[]
-            for ordinal,text in enumerate(x.strip() for x in re.split(r"(?<=[。！？])",draft_text) if x.strip()):
+            for ordinal,text in enumerate(split_draft_claims(draft_text)):
                 claim_id=f"claim-{run_id}-{ordinal+1}"; claims.append({"id":claim_id,"text":text})
                 c.execute("INSERT OR IGNORE INTO v2_run_claims VALUES(?,?,?,?)",(claim_id,run_id,ordinal+1,text))
             source_memory_version=run["source_memory_version"]
@@ -3339,6 +3344,21 @@ class V2Database:
                 current=next((item for item in outputs if item["run_id"]==run_id),{"run_id":run_id,"status":"running","stage":"cancelling"})
                 return {**current,"cancel_requested_at":target["cancel_requested_at"] or stamp,"sibling_run_ids":[item["run_id"] for item in outputs if item["run_id"]!=run_id]}
             return self._idem(c,user_id,"cancel_run:"+project_id+":"+run_id,key,payload,cancel)
+
+    def draft_claim_count(self,user_id:str,project_id:str,draft_id:str,revision:int)->int:
+        """How many claims a check of this saved draft revision will review, split as run_input splits."""
+        with self.connection() as c:
+            self._project(c,user_id,project_id)
+            row=c.execute("SELECT r.body,r.revision FROM v2_draft_revisions r JOIN v2_drafts d ON d.id=r.draft_id WHERE r.draft_id=? AND r.revision=? AND d.project_id=?",(draft_id,revision,project_id)).fetchone()
+            if not row:return 0
+            return len(split_draft_claims(visible_draft_text(row["body"],self._draft_body_format(c,draft_id,revision))))
+
+    def run_claim_count(self,user_id:str,project_id:str,run_id:str)->int:
+        """Claims a retry of this continuity run will review: the same draft revision it was bound to."""
+        with self.connection() as c:
+            self._project(c,user_id,project_id)
+            run=c.execute("SELECT draft_id,source_revision FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
+        return self.draft_claim_count(user_id,project_id,run["draft_id"],run["source_revision"]) if run else 0
 
     def require_run_type(self,user_id:str,project_id:str,run_id:str,allowed:set[str])->str:
         with self.connection() as c:

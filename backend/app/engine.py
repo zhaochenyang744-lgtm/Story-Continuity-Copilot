@@ -8,6 +8,7 @@ from typing import Any
 from . import brief_citations
 from .memory_contract import CONTROLLED_PREDICATES
 from .provider import MAX_CLAIM_BASIS_CODEPOINTS, MAX_ISSUE_REASONING_CODEPOINTS
+from .provider import ProviderDispatchDenied
 from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget, review_effort_scope
 
 ALLOWED_STATUS={"conflict","insufficient_evidence"}
@@ -29,6 +30,9 @@ CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS=500
 # length stop steps the whole run down to medium effort. Small batches also parallelize and keep a
 # contract repair small. Held-out drafts are one to three sentences, so eval runs are unaffected.
 CONTINUITY_MAX_CLAIMS_PER_BATCH=4
+# The per-account dispatch quota refusal (stage13.reserve_provider_attempt). Mid-chapter it leaves the
+# rest of the chapter undecided instead of failing the run.
+PROVIDER_ATTEMPT_QUOTA_EXCEEDED="provider_attempt_quota_exceeded"
 # A single claim whose full evidence and Memory do not fit the input budget (the v21 rules left the
 # long-form worst case at 6,324 of 6,000 units) is sent with these tighter bounds instead of failing.
 SINGLE_CLAIM_FALLBACK_BOUNDS=((CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS,RELATED_MEMORY_LIMIT),(400,12),(300,10),(200,8))
@@ -466,7 +470,7 @@ class ContinuityEngine:
         concurrency=getattr(self.provider,"continuity_batch_concurrency",None)
         concurrency=concurrency if isinstance(concurrency,int) and not isinstance(concurrency,bool) and concurrency>1 else 1
         order={claim["id"]:index for index,claim in enumerate(data["claims"])}
-        pending=list(batches); outcomes=[]; stop=None
+        pending=list(batches); outcomes=[]; stop=None; exhausted=False
         pool=ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-batch") if concurrency>1 else None
         def submit(batch:dict[str,Any])->Future:
             if pool is None:
@@ -476,12 +480,16 @@ class ContinuityEngine:
             return pool.submit(contextvars.copy_context().run,self._review_batch,batch,data,run_budget)
         try:
             running=set()
-            while running or (pending and stop is None):
-                while pending and stop is None and len(running)<concurrency:running.add(submit(pending.pop(0)))
+            while running or (pending and stop is None and not exhausted):
+                while pending and stop is None and not exhausted and len(running)<concurrency:running.add(submit(pending.pop(0)))
                 done,running=wait(running,return_when=FIRST_COMPLETED)
                 for future in done:
                     outcome=future.result(); outcomes.append(outcome)
-                    if outcome.get("error") is not None or outcome.get("budget_paused"):
+                    if outcome.get("quota_exhausted"):
+                        # The author's provider quota ran out mid-chapter. Keep every finished batch and
+                        # stop dispatching; what was never judged is reported as undecided, not discarded.
+                        exhausted=True
+                    elif outcome.get("error") is not None or outcome.get("budget_paused"):
                         # Stop dispatching, but let what is already in flight finish: its tokens are spent
                         # either way and belong in the run's totals.
                         stop=stop or outcome
@@ -490,6 +498,8 @@ class ContinuityEngine:
                         pending[:0]=[self._request(group,data["memory"],data["draft"]) for group in outcome["split"]]
         finally:
             if pool is not None:pool.shutdown(wait=True)
+        if exhausted and stop is None:
+            outcomes.extend({"first_claim_id":batch["claims"][0]["id"],"results":[],"undecided":[{"claim_span_id":claim["id"],"error_code":PROVIDER_ATTEMPT_QUOTA_EXCEEDED} for claim in batch["claims"]]} for batch in pending)
         results=[result for outcome in outcomes for result in outcome["results"]]
         if stop is not None:
             if stop.get("budget_paused"):return {"status":"budget_paused","error_code":"budget_paused","retryable":True,**_aggregate(results)}
@@ -508,10 +518,12 @@ class ContinuityEngine:
         issues=[issue for outcome in outcomes for issue in outcome.get("issues",[])]
         contract_normalizations=[item for outcome in outcomes for item in outcome.get("normalizations",[])]
         undecided=sorted((row for outcome in outcomes for row in outcome.get("undecided",[])),key=lambda row:order[row["claim_span_id"]])
-        if len({issue["claim_span_id"] for issue in issues}) != len(issues): return {"status":"failed","error_code":"schema_invalid","retryable":True,**_aggregate(results)}
+        totals=_aggregate(results)
+        if any(outcome.get("usage_unknown") for outcome in outcomes):totals={field:None for field in totals}
+        if len({issue["claim_span_id"] for issue in issues}) != len(issues): return {"status":"failed","error_code":"schema_invalid","retryable":True,**totals}
         # Nothing survived, so there is no partial result worth showing: keep the old failure.
-        if undecided and len(undecided)==len(data["claims"]): return {"status":"failed","error_code":undecided[0]["error_code"],"retryable":True,**_aggregate(results)}
-        return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,"undecided_claim_count":len(undecided),"undecided_claims":undecided,**_aggregate(results)}
+        if undecided and len(undecided)==len(data["claims"]): return {"status":"failed","error_code":undecided[0]["error_code"],"retryable":True,**totals}
+        return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,"undecided_claim_count":len(undecided),"undecided_claims":undecided,**totals}
 
     def _review_batch(self,batch:dict[str,Any],data:dict[str,Any],run_budget:int)->dict[str,Any]:
         """One batch through its first answer and at most one contract repair.
@@ -559,6 +571,10 @@ class ContinuityEngine:
                     if len(batch["claims"])>1:return {**outcome,"split":[[claim] for claim in batch["claims"]]}
                     return {**outcome,"undecided":[{"claim_span_id":batch["claims"][0]["id"],"error_code":str(error)}]}
                 return {**outcome,"issues":validated}
+        except ProviderDispatchDenied as error:
+            if str(error)!=PROVIDER_ATTEMPT_QUOTA_EXCEEDED:return {**outcome,"error":error}
+            # A refusal after a timed-out dispatch leaves that dispatch's billing unknown.
+            return {**outcome,"quota_exhausted":True,"usage_unknown":bool(getattr(error,"usage_unknown",False)),"undecided":[{"claim_span_id":claim["id"],"error_code":PROVIDER_ATTEMPT_QUOTA_EXCEEDED} for claim in batch["claims"]]}
         except (InputBudgetExceeded,ProviderUnavailable,ProviderTimeout,ProviderInvalidJson,ProviderFailure,ValueError) as error:
             return {**outcome,"error":error}
         raise AssertionError("unreachable: the second contract attempt always returns")

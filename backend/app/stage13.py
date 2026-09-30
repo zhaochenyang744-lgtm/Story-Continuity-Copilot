@@ -730,6 +730,17 @@ class Stage13Service:
             )
             return reservation_id
 
+    def remaining_provider_attempts(self, user_id: str) -> int:
+        """Provider dispatches this user may still make in the rolling 24 hours reserve_provider_attempt enforces."""
+        with self.database.connection() as c:
+            actor = c.execute("SELECT account_type FROM v2_users WHERE id=?", (user_id,)).fetchone()
+            if not actor:
+                raise DomainError("authentication_required", 401)
+            limit = self.settings.visitor_provider_attempts if actor["account_type"] == "visitor" else self.settings.registered_provider_attempts
+            cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+            used = c.execute("SELECT COUNT(*) FROM v2_provider_attempts WHERE user_id=? AND created_at>?", (user_id, cutoff)).fetchone()[0]
+            return max(0, limit - used)
+
     def reserve_provider_attempt(self, user_id: str, reservation_id: str) -> None:
         with self.database.connection() as c:
             c.execute("BEGIN IMMEDIATE")

@@ -1417,12 +1417,15 @@ export function Workbench() {
           setPairedRun(nextRuns[1] ?? null);
           if (nextRuns.every((item) => !activeRun(item))) {
             const undecided = next.metrics?.undecided_claim_count ?? 0;
+            const quotaStopped = (next.metrics?.undecided_claims ?? []).filter((row) => row.error_code === "provider_attempt_quota_exceeded").length;
             setNotice(
               next.status !== "completed"
                 ? `${labelError({ code: next.error_code })} 未完成 Run 不会写入或展示部分结果。`
-                : undecided > 0
-                  ? `检查完成，但有 ${undecided} 句未能判定，本次结果不覆盖它们。其余部分等待作者审阅。`
-                  : "检查完成，等待作者审阅。",
+                : quotaStopped > 0
+                  ? `检查完成，但模型调用额度中途用完，有 ${undecided} 句未能判定，本次结果不覆盖它们。已判定部分等待作者审阅；额度恢复后可重新检查。`
+                  : undecided > 0
+                    ? `检查完成，但有 ${undecided} 句未能判定，本次结果不覆盖它们。其余部分等待作者审阅。`
+                    : "检查完成，等待作者审阅。",
             );
             if (next.incremental_batch_id)
               request<MemoryDelta>(`/projects/${projectId}/memory/delta`).then((delta) => {

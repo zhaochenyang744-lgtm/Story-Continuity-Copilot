@@ -17,7 +17,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictInt, model_validator
 
 from .config import AppPaths, PATHS, ProtectedPathError
 from .database import DomainError
-from .engine import ContinuityEngine, MemoryDeltaEngine, MemoryInitializationEngine, WritingAnalysisEngine
+from .engine import CONTINUITY_MAX_CLAIMS_PER_BATCH, ContinuityEngine, MemoryDeltaEngine, MemoryInitializationEngine, WritingAnalysisEngine
 from .provider import DeepSeekProvider, ProviderPort
 from .stage13 import (
     MailerPort,
@@ -297,6 +297,13 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     registration_lock=threading.Lock()
     guarded_provider=UsageGuardProvider(provider or DeepSeekProvider(),stage13)
     engine=ContinuityEngine(guarded_provider); memory_engine=MemoryInitializationEngine(engine.provider); delta_engine=MemoryDeltaEngine(engine.provider); analysis_engine=WritingAnalysisEngine(engine.provider)
+    def provider_attempt_shortfall(user_id:str,claims:int)->DomainError|None:
+        # A check dispatches at least one request per batch of CONTINUITY_MAX_CLAIMS_PER_BATCH claims. When
+        # fewer attempts remain than that floor, refuse before any is spent instead of failing halfway.
+        required=-(-claims//CONTINUITY_MAX_CLAIMS_PER_BATCH); remaining=stage13.remaining_provider_attempts(user_id)
+        if required and remaining<required:
+            return DomainError('provider_attempt_quota_insufficient',429,True,{'claims':claims,'required_min':required,'remaining':remaining})
+        return None
     @asynccontextmanager
     async def lifespan(_:FastAPI):
         db.initialize(); stage13.initialize(); stage13.cleanup_expired_visitors()
@@ -743,6 +750,9 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         if not engine.provider.available:raise HTTPException(503,'provider_unavailable')
         data,status,created=db.create_run(actor['id'],project_id,payload.model_dump(exclude_none=True),key(idempotency_key),engine.provenance())
         if created:
+            shortfall=provider_attempt_shortfall(actor['id'],db.draft_claim_count(actor['id'],project_id,payload.draft_id,payload.draft_revision))
+            if shortfall:
+                db.finish_run(project_id,data['run_id'],{'status':'failed','error_code':shortfall.code,'retryable':True}); raise shortfall
             try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'continuity',data['run_id'])
             except DomainError as error:
                 db.finish_run(project_id,data['run_id'],{'status':'failed','error_code':error.code,'retryable':True}); raise
@@ -802,6 +812,9 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         csrf(request);operation(request,'run_retry_failed'); actor=user(request);db.require_run_type(actor['id'],project_id,run_id,{'continuity','memory_delta'});data,status,created=db.retry_run(actor['id'],project_id,run_id,payload.model_dump(),key(idempotency_key))
         if created:
             target_run_id=data['continuity_run_id'] if data['paired'] else data['run']['run_id']
+            shortfall=None if data['paired'] else provider_attempt_shortfall(actor['id'],db.run_claim_count(actor['id'],project_id,target_run_id))
+            if shortfall:
+                db.finish_run(project_id,target_run_id,{'status':'failed','error_code':shortfall.code,'retryable':True}); raise shortfall
             try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'retry',target_run_id)
             except DomainError as error:
                 failed={'status':'failed','error_code':error.code,'retryable':True}
