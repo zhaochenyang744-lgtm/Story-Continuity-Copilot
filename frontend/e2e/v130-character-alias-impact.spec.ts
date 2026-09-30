@@ -65,7 +65,7 @@ test("v1.3.0 character aliases and change impact stay explicit, traceable, and m
   await expect(bindings).toContainText(`Story Memory V${project.current_memory_version}`);
   await expect(bindings).toContainText(`Author Context V${project.author_context_version}`);
   await expect(bindings).toContainText("别名 V2");
-  await expect(bindings).toContainText("检索 writing-analysis-lexical-v1");
+  await expect(bindings).toContainText("检索 writing-analysis-lexical-v2-draft-claims");
   const characterEvidence=page.getByRole("link",{name:new RegExp("character_record")});
   const aliasEvidence=page.getByRole("link",{name:new RegExp("character_alias")});
   await expect(characterEvidence).toBeVisible();await expect(aliasEvidence).toBeVisible();
