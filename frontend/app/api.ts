@@ -210,10 +210,10 @@ export const labelError = (cause: unknown) => {
   };
   if (code === "provider_attempt_quota_insufficient") {
     const details = (cause as ApiFailure)?.details ?? {};
-    const { claims, required_min: required, remaining } = details as Record<string, unknown>;
-    if ([claims, required, remaining].every((value) => typeof value === "number"))
-      return `这一章有 ${claims} 句，检查至少需要 ${required} 次模型调用，过去 24 小时只剩 ${remaining} 次。本次没有开始检查，也没有消耗额度；可以稍后再试，或分段检查。`;
-    return "剩余的模型调用额度不足以检查这一章。本次没有开始检查，也没有消耗额度。";
+    const { claims } = details as Record<string, unknown>;
+    if (typeof claims === "number")
+      return `这一章有 ${claims} 句，超出了当前剩余额度能检查的范围。本次没有开始检查，也没有消耗额度；可以稍后再试，或把这一章分成几段分别检查。`;
+    return "当前剩余额度不足以检查这一章。本次没有开始检查，也没有消耗额度；可以稍后再试，或把这一章分成几段分别检查。";
   }
   return labels[code] ?? "请求未完成。请保留当前内容并重试。";
 };
