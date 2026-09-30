@@ -2,7 +2,7 @@
 
 本工具只在本地读取显式清单中的源文件，生成可逐文件核验的 Linux 构建输入。生成源包、源码测试通过、容器构建通过和部署上线是不同的状态。
 
-2026-09-13（Australia/Sydney）发布 `maint-e2d141c23d0c-20260913` 已完成生产构建与切换，详见 [维护部署记录](maintenance-deployment.md)。冻结 inventory SHA256 为 `e2d141c23d0ccab25ccf1fd24b7f0ea0821493a6f892c7b784680f7f492b0402`，归档 SHA256 为 `acd9e4073fd217c423c69c80a932abd25bf0ce243f0d404e227e129d7656431b`。这些是源包身份，不是 Git commit。本页及当前说明在发布后更新，不能将当前工作区重新打包所得字节视为原部署归档；原归档、`SOURCE-PACKAGE.json` 和运行镜像继续保留冻结身份。
+当前生产版本为 2026-09-30 由 Git 提交打包部署的 `ui-cbfa536-20260930`，步骤与各版 inventory 见 [2026-09-30 部署记录](deployment-2026-09-30.md)。以下为 2026-09-13 首次使用本工具的历史记录：发布 `maint-e2d141c23d0c-20260913` 已完成生产构建与切换，详见 [维护部署记录](maintenance-deployment.md)。冻结 inventory SHA256 为 `e2d141c23d0ccab25ccf1fd24b7f0ea0821493a6f892c7b784680f7f492b0402`，归档 SHA256 为 `acd9e4073fd217c423c69c80a932abd25bf0ce243f0d404e227e129d7656431b`。这些是源包身份，不是 Git commit。本页及当前说明在发布后更新，不能将当前工作区重新打包所得字节视为原部署归档；原归档、`SOURCE-PACKAGE.json` 和运行镜像继续保留冻结身份。
 
 ## 清单与命令
 

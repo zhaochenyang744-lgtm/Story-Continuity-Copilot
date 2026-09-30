@@ -180,6 +180,10 @@
       "target": "docs/maintenance-deployment.md"
     },
     {
+      "source": "docs/deployment-2026-09-30.md",
+      "target": "docs/deployment-2026-09-30.md"
+    },
+    {
       "source": "docs/maintenance-release-manifest.json",
       "target": "docs/maintenance-release-manifest.json"
     },

@@ -35,8 +35,8 @@ Each account/project scope owns its own data. The demo uses three independent pr
 ## 5. Restore the seeded path
 
 1. Return to Grey Harbor.
-2. Choose Reset and read the confirmation state.
-3. Confirm the reset and return to the workspace.
+2. Open **更多** and choose **重置当前作品** (Reset); read the confirmation dialog.
+3. Choose **确认重置** and return to the workspace.
 
 Reset is explicit and idempotent. It restores the seeded project review path while keeping the operation constrained to the current project runtime.
 
