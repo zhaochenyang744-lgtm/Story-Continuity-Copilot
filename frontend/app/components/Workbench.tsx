@@ -806,7 +806,8 @@ export function Workbench() {
     [projects, setProjects] = useState<ProjectSummary[]>([]),
     [authorProjects, setAuthorProjects] = useState<ProjectSummary[] | null>(null);
   const [globalNavCollapsed, setGlobalNavCollapsed] = useState(() => rememberedGlobalNavCollapsed ?? false);
-  const [project, setProject] = useState<Project | null>(null),
+  const [missingProjectId, setMissingProjectId] = useState(""),
+    [project, setProject] = useState<Project | null>(null),
     [chapters, setChapters] = useState<Chapter[]>([]),
     [memories, setMemories] = useState<Memory[]>([]),
     [draft, setDraft] = useState<Draft | null>(null),
@@ -1139,6 +1140,7 @@ export function Workbench() {
       const n = ++epoch.current,
         controller = new AbortController();
       activeProjectRequest.current = controller;
+      setMissingProjectId("");
       setBusy("正在读取作品");
       try {
         const p = await request<Project>(`/projects/${id}`, {
@@ -1304,7 +1306,9 @@ export function Workbench() {
         setRun(primaryRun);
         setPairedRun(siblingRun);
       } catch (e) {
-        if ((e as Error).name !== "AbortError") fail(e);
+        // A missing (or not-owned) project gets its own page instead of a generic error over an endless loader.
+        if ((e as ApiFailure).code === "resource_not_found" && n === epoch.current) setMissingProjectId(id);
+        else if ((e as Error).name !== "AbortError") fail(e);
       } finally {
         if (n === epoch.current) setBusy("");
       }
@@ -2484,13 +2488,15 @@ export function Workbench() {
           open={(id) => go(`/projects/${id}/overview`)}
           go={go}
         />
-      ) : (
+      ) : pathname === "/" ? (
         <HomePage
           home={home}
           onboarding={onboarding}
           open={(id) => go(`/projects/${id}/overview`)}
           go={go}
         />
+      ) : (
+        <NotFoundPage kind="page" go={go} />
       );
   else
     body = project ? (
@@ -2606,7 +2612,7 @@ export function Workbench() {
       />
       </AuthorContextPreviewProvider>
     ) : (
-      <div className="boot">{busy || "正在读取当前作品…"}</div>
+      missingProjectId === projectId ? <NotFoundPage kind="project" go={go} /> : <div className="boot">{busy || "正在读取当前作品…"}</div>
     );
   return (
     <div className={`workbench${user ? "" : " auth-shell"}${user && globalNavCollapsed ? " global-nav-collapsed" : ""}`}>
@@ -3007,6 +3013,7 @@ export function Workbench() {
       {metaOpen && project && (
         <Dialog title="编辑作品信息" close={() => setMetaOpen(false)}>
           <form
+            className="meta-form"
             onSubmit={(e) => {
               e.preventDefault();
               const f = new FormData(e.currentTarget);
@@ -3017,27 +3024,28 @@ export function Workbench() {
               });
             }}
           >
-            <label>
-              作品名
-              <input name="title" defaultValue={project.title} />
+            <p className="meta-form-lede">只修改作品的名称和介绍，不会改动正文、事实库或检查记录。</p>
+            <label className="meta-field">
+              <span>作品名</span>
+              <input name="title" defaultValue={project.title} required maxLength={120} />
             </label>
-            <label>
-              类型
-              <input name="genre" defaultValue={project.genre} />
+            <label className="meta-field">
+              <span>类型</span>
+              <input name="genre" defaultValue={project.genre} placeholder="例如：悬疑、科幻、奇幻" maxLength={60} />
             </label>
-            <label>
-              说明
-              <textarea name="summary" defaultValue={project.summary} />
+            <label className="meta-field">
+              <span>简介</span>
+              <textarea name="summary" defaultValue={project.summary} placeholder="用一两句话说明这部作品。" maxLength={500} />
             </label>
-            <div className="actions">
+            <div className="actions meta-form-actions">
+              <Button onClick={() => setMetaOpen(false)}>取消</Button>
               <Button
                 className="primary"
                 type="submit"
                 disabled={readOnly || Boolean(busy)}
               >
-                保存元数据
+                保存修改
               </Button>
-              <Button onClick={() => setMetaOpen(false)}>取消</Button>
             </div>
           </form>
         </Dialog>
@@ -3138,7 +3146,7 @@ function Auth({
           {register && (
             <label>
               恢复邮箱
-              <input name="recovery_email" type="email" autoComplete="email" required maxLength={254} />
+              <input name="recovery_email" type="email" autoComplete="email" required maxLength={254} placeholder="name@example.com" />
             </label>
           )}
           <div className="auth-password-label">
@@ -3165,7 +3173,7 @@ function Auth({
               </Button>
             </span>
           </div>
-          {register && <p className="auth-rules">账号至少 3 个字符，密码至少 10 个字符。恢复邮箱验证后可用于密码找回。</p>}
+          {register && <p className="auth-rules">每一项都需要填写。账号至少 3 个字符，密码至少 10 个字符；恢复邮箱用于找回密码，注册后会收到验证邮件。</p>}
           {!register && (
             <Button className="quiet auth-forgot" disabled={Boolean(busy)} onClick={() => go("/password-reset")}>忘记密码？</Button>
           )}
@@ -3417,7 +3425,7 @@ function AccountProfile({ user, projects, updateUser, go }: { user: User; projec
           <div>
             <p className="eyebrow">作者中心</p>
             <h1>{user.display_name}</h1>
-            <p><span>@{user.account_name}</span><span>个人账号</span></p>
+            <p>{user.account_type === "visitor" ? <span>访客空间</span> : <><span>@{user.account_name}</span><span>个人账号</span></>}</p>
             <p className="design-author-tagline">用文字，延续想象的边界。</p>
           </div>
         </div>
@@ -3460,8 +3468,9 @@ function AccountProfile({ user, projects, updateUser, go }: { user: User; projec
           <header><p className="eyebrow">作者资料</p><h2 id="profile-settings-title">个人信息</h2><p>{editing ? "修改完成后由你明确保存。" : "先查看资料，需要时再进入编辑。"}</p></header>
           {editing ? <div className="profile-name-field"><label htmlFor="profile-display-name">显示名称</label><input id="profile-display-name" value={displayName} onChange={(event) => setDisplayName(event.target.value)} required maxLength={60} autoComplete="name" aria-describedby="profile-display-name-help" disabled={busy} /><small id="profile-display-name-help">仅用于工作台展示。</small></div> : <dl className="profile-account-fact profile-view-facts"><div><dt>显示名称</dt><dd>{user.display_name}</dd></div></dl>}
           <dl className="profile-account-fact">
-            <div><dt>登录账号</dt><dd>{user.account_name}</dd></div>
-            <div><dt>账户类型</dt><dd>个人账号</dd></div>
+            {/* A visitor has no sign-in account; its internal id is meaningless to the author. */}
+            {user.account_type !== "visitor" && <div><dt>登录账号</dt><dd>{user.account_name}</dd></div>}
+            <div><dt>账户类型</dt><dd>{user.account_type === "visitor" ? "访客空间（注册后可长期保存）" : "个人账号"}</dd></div>
           </dl>
           <div className="profile-feedback" aria-live="polite">
             {message && <p className="inline-success" role="status">{message}</p>}
@@ -3500,7 +3509,7 @@ function AccountSecurity({ user, updateUser, go }: { user: User; updateUser: (us
       <section className="security-status" aria-live="polite">
         <h2>当前状态</h2>
         <p>{recovery.configured ? recovery.masked : "尚未绑定"} · {recovery.verified ? "已验证" : "未验证"}</p>
-        {user.account_type === "visitor" && <p className="inline-error">访客空间不支持绑定恢复邮箱。</p>}
+        {user.account_type === "visitor" && <p className="notice" role="note">访客空间不能绑定恢复邮箱。注册个人账号后，就可以绑定邮箱用于找回密码。</p>}
       </section>
       {user.account_type !== "visitor" && (
         <form className="security-form" onSubmit={(event) => { event.preventDefault(); void send(false); }}>
@@ -3513,6 +3522,20 @@ function AccountSecurity({ user, updateUser, go }: { user: User; updateUser: (us
     </section>
   );
 }
+function NotFoundPage({ kind, go }: { kind: "page" | "project"; go: (href: string) => void }) {
+  return (
+    <section className="page not-found-page" aria-labelledby="not-found-title">
+      <DesignAsset name="paper" />
+      <h1 id="not-found-title">{kind === "project" ? "找不到这个作品" : "找不到这个页面"}</h1>
+      <p>{kind === "project" ? "它可能已被删除，或者不属于当前账号。你的其他作品不受影响。" : "网址可能输错了，或者这个页面已经不存在。"}</p>
+      <div className="actions">
+        <Button className="primary" onClick={() => go("/projects")}>查看全部作品</Button>
+        <Button onClick={() => go("/")}>回到首页</Button>
+      </div>
+    </section>
+  );
+}
+
 function TutorialCompletePage({ go }: { go: (href: string) => void }) {
   const steps = [
     "认识作品资料与 Story Memory",
@@ -3573,7 +3596,7 @@ function HomePage({
           <HomeEntryArt />
           <div className="home-entry-copy">
             <p className="eyebrow">首次使用 · 教学模式</p>
-            <h2>从隔离样例开始建立连续性档案</h2>
+            <h2>先用示例作品熟悉连续性检查</h2>
             <p>教学作品不计入真实作品、搜索或待处理问题；完成后再导入自己的故事。</p>
           </div>
           <div className="actions home-entry-actions">
@@ -4339,7 +4362,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
   const eligible=(run?.status==="completed"&&!run.is_stale?run.issues??[]:[]).filter((issue)=>issue.status==="open"&&!issue.decision&&!issue.reused_decision&&(issue.evidence??[]).some((source)=>source.sufficiency==="sufficient"));
   const eligibleIds=new Set(eligible.map((issue)=>issue.id)),effectiveSelected=selected.filter((issueId)=>eligibleIds.has(issueId));
   const toggleIssue=(issueId:string)=>setSelected((current)=>{const visible=current.filter((id)=>eligibleIds.has(id));return visible.includes(issueId)?visible.filter((id)=>id!==issueId):visible.length<8?[...visible,issueId]:visible;});
-  const start=async()=>{if(!draft||!effectiveSelected.length)return;if(dirty){setNotice("请先显式保存当前草稿；修订建议只绑定已保存版本。");return;}setLocalBusy("start");setNotice("");try{await json(`/projects/${project.id}/analyses`,"POST",{analysis_type:"revision_plan",draft_id:draft.id,draft_revision:draft.revision,issue_ids:effectiveSelected});setSelected([]);setNotice("修订建议已提交；每条候选仍需作者接受、编辑后接受或拒绝。");await refresh(true);}catch(error){setNotice(labelError(error));}finally{setLocalBusy("");}};
+  const start=async()=>{if(!draft||!effectiveSelected.length)return;if(dirty){setNotice("请先保存当前草稿；修订建议只针对已保存的版本。");return;}setLocalBusy("start");setNotice("");try{await json(`/projects/${project.id}/analyses`,"POST",{analysis_type:"revision_plan",draft_id:draft.id,draft_revision:draft.revision,issue_ids:effectiveSelected});setSelected([]);setNotice("修订建议已提交；每条候选仍需作者接受、编辑后接受或拒绝。");await refresh(true);}catch(error){setNotice(labelError(error));}finally{setLocalBusy("");}};
   const runAction=async(target:WritingAnalysisRun,action:"cancel"|"retry")=>{setLocalBusy(target.run_id);setNotice("");try{await json(`/projects/${project.id}/analyses/${target.run_id}/${action}`,"POST",{client_request_id:crypto.randomUUID()});await refresh(true);}catch(error){setNotice(labelError(error));}finally{setLocalBusy("");}};
   const changeCandidate=(candidate:RevisionPlanCandidate,patch:Partial<RevisionCandidateEditor>)=>setCandidateEdits((current)=>({...current,[candidate.id]:{...(current[candidate.id]??revisionCandidateEditor(candidate)),...patch}}));
   const decide=async(target:WritingAnalysisRun,candidate:RevisionPlanCandidate,decision:"accepted"|"edited"|"rejected")=>{if(!snapshot)return;setLocalBusy(candidate.id);setNotice("");setConflict(false);try{const edited=candidateEdits[candidate.id]??revisionCandidateEditor(candidate);const result=await json<{revision_tasks:RevisionTaskSnapshot}>(`/projects/${project.id}/analyses/${target.run_id}/revision-candidates/${candidate.id}/decision`,"POST",{base_task_version:snapshot.task_version,decision,...(decision==="edited"?{edited}:{})});setSnapshot(result.revision_tasks);setNotice(decision==="rejected"?"修订候选已拒绝，没有创建任务。":"修订候选已确认并创建持久任务；正文仍需作者手动修改并保存。");await refresh(true);}catch(error){setConflict((error as ApiFailure).code==="revision_task_version_conflict");setNotice(labelError(error));}finally{setLocalBusy("");}};
@@ -4349,7 +4372,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
   const activeRun=runs.find(activeAnalysis);
   return <details className="bounded-story-tools revision-plan-tools" role="region" aria-label="修订计划与任务">
     <summary className="bounded-tools-header"><div><p className="eyebrow">修订</p><h2>修订计划与任务</h2><p>从当前连续性问题生成有界行动建议；确认后仅创建任务，不会改写正文或事实。</p></div>{(snapshot?.tasks.some((task)=>task.status!=="completed")||runs.length>0)?<small>进行中任务 {snapshot?.tasks.filter((task)=>task.status!=="completed").length??0} 项 · 历史计划 {runs.length} 个</small>:null}</summary>
-    <div className="bounded-tools-intro">先选择当前检查中的问题，再逐条决定候选。接受任务后回到同一草稿手动修改、显式保存，并在需要时主动重新检查。</div>
+    <div className="bounded-tools-intro">先选择当前检查中的问题，再逐条决定候选。接受任务后回到同一草稿手动修改并保存，需要时再重新检查。</div>
     {notice&&<p className="notice" role="status">{notice}</p>}
     {conflict&&<div className="bounded-conflict" role="alert"><p>服务器上的修订任务版本已变化；候选编辑内容仍保留。请载入最新版本、核对状态后再主动重试。</p><Button className="secondary" disabled={Boolean(localBusy)} onClick={()=>void loadLatest()}>载入最新任务</Button></div>}
     {dirty&&!readOnly&&<p className="bounded-dirty-note" role="note">当前草稿有未保存修改：不能生成、重试建议或重新检查；已接受任务仍可更新进度。</p>}
@@ -4365,7 +4388,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
         <header><div><p className="eyebrow">任务</p><h3>修订任务</h3></div></header>
         <p className="revision-boundary">任务进度是你的工作记录。标记完成不会关闭问题、不会运行检查，也不会修改正文或资料。</p>
         <div className="revision-task-list">{snapshot?.tasks.map((task)=><article key={task.id} id={`revision-task-${task.id}`} className={`revision-task priority-${task.priority} status-${task.status}`}><header><div><strong>{task.title}</strong><small>优先级 {revisionPriorityLabel[task.priority]} · 任务 V{task.version}</small></div><span>{revisionTaskStatusLabel[task.status]}</span></header><p>{task.instruction}</p><EvidenceLinks sources={task.evidence} navigate={go}/>{!readOnly&&<footer><Button className="quiet" disabled={Boolean(localBusy)||busy} onClick={returnToDraft}>回到同一草稿</Button><label>任务进度<select aria-label={`${task.title}任务进度`} value={task.status} disabled={Boolean(localBusy)||busy} onChange={(event)=>void updateTask(task,event.target.value as RevisionTask["status"])}>{(["todo","in_progress","completed"] as const).map((status)=><option key={status} value={status}>{revisionTaskStatusLabel[status]}</option>)}</select></label></footer>}</article>)}{snapshot&&!snapshot.tasks.length&&<p className="muted">尚无修订任务。AI 候选只有在作者接受后才会进入这里。</p>}</div>
-        {!readOnly&&<div className="revision-loop-actions"><Button className="secondary" disabled={Boolean(localBusy)||busy||dirty||!draft} onClick={()=>void recheck()}>显式重新检查</Button><small>请先手动修改并保存草稿；任务完成状态不会触发此操作。</small></div>}
+        {!readOnly&&<div className="revision-loop-actions"><Button className="secondary" disabled={Boolean(localBusy)||busy||dirty||!draft} onClick={()=>void recheck()}>修改后重新检查</Button><small>请先手动修改并保存草稿；任务完成状态不会触发此操作。</small></div>}
       </section>
     </div>
   </details>;
@@ -4523,7 +4546,7 @@ function ProjectContextNotices({
             <div className="tutorial-copy">
               <strong>{tutorialCopy.title}</strong>
               {tutorialRestored && <span className="tutorial-restored">已恢复到第 {tutorialStep} 步，可以从这里继续。</span>}
-              {tutorialExpanded && <><span>{tutorialCopy.task}</span><small>隔离样例不计入真实作品、搜索或待处理问题。</small></>}
+              {tutorialExpanded && <><span>{tutorialCopy.task}</span><small>示例作品不计入你的作品、搜索和待处理问题。</small></>}
             </div>
           </div>
           <div className="actions">
@@ -4734,7 +4757,7 @@ function ImmersiveEditor({
         </p>
         <Button
           className="primary"
-          ariaLabel="显式保存草稿"
+          ariaLabel="在沉浸模式中保存草稿"
           disabled={!draft || (!dirty && !pendingControlledDecision) || Boolean(busy)}
           ariaBusy={saving}
           onClick={() => void save()}
@@ -5583,12 +5606,12 @@ function SourceAppend({ project, draft, chapters, readOnly, context }: { project
     catch (cause) { setError(labelError(cause)); } finally { setBusy(""); }
   };
   return <section className="project-page read-page"><header className="page-header"><div><p className="breadcrumb">项目 / {project.title} / 章节来源</p><h1>追加章节</h1><p>目标作品：{project.title}。在此追加新章节，或在下方修订已有完整正文。提交后保留历史来源与审阅记录。</p></div></header>{context}
-    {!readOnly && <section className="project-section"><h2>新增来源</h2><fieldset disabled={Boolean(busy)}><legend>入口</legend>{(["draft_complete", "paste", "file"] as const).map((value) => <label key={value}><input type="radio" checked={method === value} onChange={() => setMethod(value)} />{value === "draft_complete" ? "完成当前章节" : value === "paste" ? "粘贴追加" : "追加文件"}</label>)}</fieldset>
+    {!readOnly && <section className="project-section"><h2>新增来源</h2><fieldset className="source-method" disabled={Boolean(busy)}><legend>追加方式</legend>{(["draft_complete", "paste", "file"] as const).map((value) => <label key={value} className="source-method-option"><input className="sr-only" type="radio" name="source-method" checked={method === value} onChange={() => setMethod(value)} />{value === "draft_complete" ? "完成当前章节" : value === "paste" ? "粘贴追加" : "追加文件"}</label>)}</fieldset>
     {method === "draft_complete" ? <p>将完成当前草稿《{draft?.title ?? "—"}》并追加为新章节。</p> : <><label>章节正文<textarea value={content} onChange={(event) => setContent(event.target.value)} disabled={readOnly || Boolean(busy)} /></label>{method === "file" && <label>追加文件<input type="file" accept=".md,.txt,text/markdown,text/plain" disabled={readOnly || Boolean(busy)} onChange={async (event) => { const file = event.currentTarget.files?.[0]; if (!file) return; setFilename(file.name); setContent(await file.text()); }} /><small>{filename || "仅支持 UTF-8 .md / .txt"}</small></label>}</>}
     <Button className="primary" disabled={Boolean(busy) || (method !== "draft_complete" && !content.trim())} onClick={() => void makePreview()}>{busy || "预览追加"}</Button></section>}
-    {error && <div className="notice error" role="alert">{error} 请保留当前内容，重新获取当前 source revision 后重试。</div>}
-    {preview && <section className="notice success" role="status"><strong>SourceChangeSet 预览 · {preview.status}</strong><p>SHA-256 {preview.content_sha256} · {preview.chapter_count} 个章节 / {preview.source_span_count} 个 SourceSpan · r{preview.base_source_revision} → r{preview.target_source_revision}</p><small>预览于 {preview.previewed_at}；创建审计已记录。文件仅记录 basename。</small><ul>{preview.chapters.map((chapter) => <li key={chapter.preview_id}>第 {chapter.order} 个追加章节《{chapter.title}》· {chapter.character_count} 字</li>)}</ul>{!readOnly && (preview.status === "previewed" ? <Button className="primary" disabled={Boolean(busy)} onClick={() => void commit()}>确认追加并创建下一章草稿</Button> : <><p>已提交 source r{preview.target_source_revision}。</p>{nextDraft && <p>下一章草稿：第 {nextDraft.chapter_number} 章《{nextDraft.title}》 · {nextDraft.id}</p>}<Button className="primary" onClick={() => router.push(`/projects/${project.id}/workspace`)}>进入下一章草稿</Button></>)}</section>}
-    <Read title="现有章节来源" breadcrumb="证据可回溯到原文" note="历史证据仍指向当时引用的原文段落。" items={chapters.flatMap((chapter) => [<li key={`chapter-${chapter.id}`} id={`chapter-${chapter.id}`} className="source-chapter-anchor"><strong>第 {chapter.number} 章《{chapter.title}》</strong><span>{chapter.summary||"本章来源"}</span></li>,...(chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`}><strong>第 {chapter.number} 章《{chapter.title}》 · {span.label === "chapter_revision" ? "修订正文" : span.label}{span.is_current === false ? " · 历史来源（已修订）" : ""}</strong><span>{span.text_excerpt}</span></li>)])} empty="此作品还没有可回源的章节片段。" />
+    {error && <div className="notice error" role="alert">{error} 请保留当前内容，刷新页面读取最新章节后重试。</div>}
+    {preview && <section className="notice success" role="status"><strong>{preview.status === "previewed" ? "追加预览" : "已追加"}</strong><p>{preview.chapter_count} 个章节 · 原文第 {preview.base_source_revision} 版 → 第 {preview.target_source_revision} 版</p><small>预览于 {timestampLabel(preview.previewed_at)}；确认后才会写入作品。</small><ul>{preview.chapters.map((chapter) => <li key={chapter.preview_id}>第 {chapter.order} 个追加章节《{chapter.title}》· {chapter.character_count} 字</li>)}</ul>{!readOnly && (preview.status === "previewed" ? <Button className="primary" disabled={Boolean(busy)} onClick={() => void commit()}>确认追加并创建下一章草稿</Button> : <><p>已追加，原文更新为第 {preview.target_source_revision} 版。</p>{nextDraft && <p>下一章草稿：第 {nextDraft.chapter_number} 章《{nextDraft.title}》</p>}<Button className="primary" onClick={() => router.push(`/projects/${project.id}/workspace`)}>进入下一章草稿</Button></>)}</section>}
+    <Read nested title="现有章节来源" breadcrumb="证据可回溯到原文" note="每章下面是检查时可以引用的原文片段；修订过的旧片段会保留，历史证据仍指向当时的原文。" items={chapters.flatMap((chapter) => [<li key={`chapter-${chapter.id}`} id={`chapter-${chapter.id}`} className="source-chapter-anchor"><strong>第 {chapter.number} 章《{chapter.title}》</strong><span>{chapter.summary||"本章来源"}</span></li>,...(chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`} className="source-span-item"><strong><span className="sr-only">第 {chapter.number} 章《{chapter.title}》 · </span>{span.label === "chapter_revision" ? "修订正文" : span.label}{span.is_current === false ? " · 历史来源（已修订）" : ""}</strong><span>{span.text_excerpt}</span></li>)])} empty="此作品还没有可回源的章节片段。" />
   </section>;
 }
 
@@ -5599,6 +5622,7 @@ function Read({
   context,
   items,
   empty,
+  nested = false,
 }: {
   title: string;
   breadcrumb: string;
@@ -5606,16 +5630,22 @@ function Read({
   context?: ReactNode;
   items: ReactNode[];
   empty: string;
+  /** Inside another page: a section with an h2 instead of a second page header and h1. */
+  nested?: boolean;
 }) {
   return (
-    <section className="project-page read-page">
-      <header className="page-header">
-        <div>
-          <p className="breadcrumb">{breadcrumb}</p>
-          <h1>{title}</h1>
-          <p>{note}</p>
-        </div>
-      </header>
+    <section className={nested ? "project-section read-section" : "project-page read-page"}>
+      {nested ? (
+        <header className="read-section-head"><h2>{title}</h2><p>{note}</p></header>
+      ) : (
+        <header className="page-header">
+          <div>
+            <p className="breadcrumb">{breadcrumb}</p>
+            <h1>{title}</h1>
+            <p>{note}</p>
+          </div>
+        </header>
+      )}
       {context}
       {items.length ? (
         <ul className="read-list">{items}</ul>
@@ -5880,6 +5910,9 @@ function AuthorPlanningPage({
           ) : (
             <div className="empty author-plan-empty">
               <strong>{showArchived ? "没有已归档规划" : copy.empty}</strong>
+              {!showArchived && mode === "planning" && !readOnly && (
+                <Button className="primary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>添加第一条{copy.noun}</Button>
+              )}
             </div>
           )}
         </section>
@@ -6056,7 +6089,7 @@ function AuthorPlanDialog({
     <div className="modal-layer author-plan-layer" role="presentation">
       <section ref={modalRef} className="dialog author-plan-dialog planning-edit-dialog" role="dialog" aria-modal="true" aria-label={`${editing ? "编辑" : "新建"}${copy.noun}`} onKeyDown={containFocus}>
         <button type="button" className="close" disabled={Boolean(busy)} onClick={close}><span aria-hidden="true">×</span><span className="sr-only">关闭</span></button>
-        <header><div className="planning-dialog-brand"><DesignAsset name="paper" /><span>作者规划<small>STORY CONTINUITY</small></span></div><h2>{editing ? `编辑${copy.noun}` : `新建${copy.noun}`}</h2><p>这些内容用于安排未来创作，不会写入正文档案或 Story Memory。</p></header>
+        <header><div className="planning-dialog-brand"><DesignAsset name="paper" /><span>作者规划<small>只用于安排后续创作</small></span></div><h2>{editing ? `编辑${copy.noun}` : `新建${copy.noun}`}</h2><p>这些内容用于安排未来创作，不会写入正文档案或 Story Memory。</p></header>
         <form onSubmit={(event) => void submit(event)}>
           {state.kind === "story" ? (
             <>
@@ -6256,7 +6289,7 @@ function CharacterArchive({
               <div><dt><Icon name="memory" />知识边界</dt><dd>{selected.knowledge_boundary || "尚未记录"}</dd></div>
             </dl>
             <section className="character-alias-panel" aria-label="角色别名资料">
-              <header><div><p className="eyebrow">明确资料层</p><h3>角色别名</h3></div><span className="version-chip">v{currentAliasSnapshot?.version??0}</span></header>
+              <header><div><p className="eyebrow">作者确认</p><h3>角色别名</h3></div>{(currentAliasSnapshot?.version??0)>0&&<span className="version-chip">第 {currentAliasSnapshot?.version} 版</span>}</header>
               <p className="muted">主名：{selected.name}。这里只记录作者确认的称呼，AI 不会把猜测写成别名。</p>
               <div className="alias-list">
                 {currentAliasSnapshot?.aliases.map((item)=><AliasRow key={item.id} item={item} readOnly={readOnly} busy={aliasBusy} save={editAlias} archive={archiveAlias}/>)}
@@ -6265,7 +6298,7 @@ function CharacterArchive({
               {!readOnly&&<div className="alias-create"><input value={aliasInput} maxLength={80} onChange={(event)=>setAliasInput(event.target.value)} placeholder="添加作者确认的别名"/><Button className="secondary" disabled={aliasBusy||!aliasInput.trim()||(currentAliasSnapshot?.aliases.filter((item)=>item.status==="active").length??0)>=20} onClick={()=>void addAlias()}>添加别名</Button></div>}
             </section>
             <section className="change-impact-panel" aria-label="修改影响分析">
-              <header><div><p className="eyebrow">AI 写作辅助 · 只读分析</p><h3>修改影响分析</h3></div>{impactRun&&<span className={`run-state state-${impactRun.status}`}>{impactRun.is_stale?"依据已变化":stage(impactRun.status)}</span>}</header>
+              <header><div><p className="eyebrow">写作辅助 · 只分析不修改</p><h3>修改影响分析</h3></div>{impactRun&&<span className={`run-state state-${impactRun.status}`}>{impactRun.is_stale?"依据已变化":stage(impactRun.status)}</span>}</header>
               <p className="muted">明确写下拟修改内容；结果只指出受影响资料并给出证据，不生成替换正文，也不自动保存。</p>
               {!readOnly&&<div className="impact-create"><textarea value={impactInput} maxLength={4000} onChange={(event)=>setImpactInput(event.target.value)} placeholder={`例如：把“${selected.name}”的公开身份改为港务调查员`} /><Button className="secondary" disabled={impactBusy||Boolean(activeImpactRun)||!draft||!impactInput.trim()} onClick={()=>void startImpact()}>分析影响</Button></div>}
               {activeImpactRun&&activeImpactRun.run_id!==impactRun?.run_id&&<p className="analysis-pending">“{targetName(activeImpactRun)}”的影响分析正在{stage(activeImpactRun.status)}；完成或取消前不能创建另一项分析。</p>}

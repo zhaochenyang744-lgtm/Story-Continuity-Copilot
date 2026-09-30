@@ -20,7 +20,7 @@ test("login and register keep distinct validation contracts and responsive entry
   const registerPassword = page.getByLabel("密码", { exact: true });
   expect(await registerAccount.evaluate((input) => (input as HTMLInputElement).minLength)).toBe(3);
   expect(await registerPassword.evaluate((input) => (input as HTMLInputElement).minLength)).toBe(10);
-  await expect(page.getByText("账号至少 3 个字符，密码至少 10 个字符。恢复邮箱验证后可用于密码找回。", { exact: true })).toBeVisible();
+  await expect(page.getByText("每一项都需要填写。账号至少 3 个字符，密码至少 10 个字符；恢复邮箱用于找回密码，注册后会收到验证邮件。", { exact: true })).toBeVisible();
 
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(registerAccount).toHaveCSS("font-size", "16px");

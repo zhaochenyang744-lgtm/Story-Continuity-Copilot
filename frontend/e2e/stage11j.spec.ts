@@ -21,9 +21,9 @@ test("paste preview and commit send real API rN to rN+1 and create next draft", 
   const id=await imported(page); await page.goto(`/projects/${id}/sources`);
   await page.getByLabel("章节正文").fill("# 新章\n新增正文。");
   const preview=page.waitForResponse((r)=>r.url().includes("source-change-sets/preview") && r.request().method()==="POST"); await page.getByRole("button", {name:"预览追加"}).click();
-  expect((await preview).status()).toBe(201); await expect(page.getByRole("status").getByText("r1 → r2")).toBeVisible();
+  expect((await preview).status()).toBe(201); await expect(page.getByRole("status").getByText("第 1 版 → 第 2 版")).toBeVisible();
   const commit=page.waitForResponse((r)=>/source-change-sets\/.+\/commit/.test(r.url()) && r.request().method()==="POST"); await page.getByRole("button", {name:"确认追加并创建下一章草稿"}).click(); expect((await commit).status()).toBe(200);
-  await expect(page.getByRole("status")).toContainText("已提交 source r2"); await expect(page.getByRole("status")).toContainText("下一章草稿：第 3 章"); await page.getByRole("button",{name:"进入下一章草稿"}).click(); await expect(page).toHaveURL(new RegExp(`/projects/${id}/workspace`));
+  await expect(page.getByRole("status")).toContainText("原文更新为第 2 版"); await expect(page.getByRole("status")).toContainText("下一章草稿：第 3 章"); await page.getByRole("button",{name:"进入下一章草稿"}).click(); await expect(page).toHaveURL(new RegExp(`/projects/${id}/workspace`));
   const project=await page.evaluate(async (projectId)=>await (await fetch(`/api/projects/${projectId}`)).json(),id); expect(project.data).toMatchObject({source_revision:2,current_draft:{chapter_number:3}});
   await page.goto(`/projects/${id}/overview`); await expect(page.getByText("Source r2",{exact:true})).toBeVisible();
 });

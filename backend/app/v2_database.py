@@ -1032,7 +1032,7 @@ class V2Database:
                     user_id,
                     "教学模式 · 灰港回声",
                     "悬疑 · 教学样例",
-                    "隔离的确定性教学作品；不计入真实作品、搜索或待处理事项。",
+                    "教学用的示例作品；不计入你的作品、搜索和待处理问题。",
                     "tutorial_seed",
                     "grey_harbor",
                 )
@@ -1325,13 +1325,13 @@ class V2Database:
                         user_id,
                         "教学模式 · 灰港回声",
                         "悬疑 · 教学样例",
-                        "隔离的确定性教学作品；不计入真实作品、搜索或待处理事项。",
+                        "教学用的示例作品；不计入你的作品、搜索和待处理问题。",
                         "tutorial_seed",
                         "grey_harbor",
                     )
                 else:
                     c.execute(
-                        "UPDATE v2_projects SET title='教学模式 · 灰港回声',genre='悬疑 · 教学样例',summary='隔离的确定性教学作品；不计入真实作品、搜索或待处理事项。',status='active',metadata_revision=metadata_revision+1,updated_at=? WHERE id=?",
+                        "UPDATE v2_projects SET title='教学模式 · 灰港回声',genre='悬疑 · 教学样例',summary='教学用的示例作品；不计入你的作品、搜索和待处理问题。',status='active',metadata_revision=metadata_revision+1,updated_at=? WHERE id=?",
                         (utcnow(), current_id),
                     )
                 c.execute(

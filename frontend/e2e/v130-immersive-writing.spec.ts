@@ -103,7 +103,7 @@ test("v1.3.0 immersive writing shares draft state, saves explicitly, and stays d
   const successfulSave = page.waitForResponse(
     (response) => response.request().method() === "PATCH" && response.url().includes(`/api/projects/${projectId}/drafts/`),
   );
-  await page.getByRole("button", { name: "显式保存草稿", exact: true }).click();
+  await page.getByRole("button", { name: "在沉浸模式中保存草稿", exact: true }).click();
   expect((await successfulSave).status()).toBe(200);
   await expect(immersive.getByRole("status")).toContainText("已保存");
   await screenshot(page, "immersive-writing-01-desktop.png");
@@ -127,7 +127,7 @@ test("v1.3.0 immersive writing shares draft state, saves explicitly, and stays d
   const failedSave = page.waitForResponse(
     (response) => response.request().method() === "PATCH" && response.url().includes(`/api/projects/${projectId}/drafts/`) && response.status() === 409,
   );
-  await page.getByRole("button", { name: "显式保存草稿", exact: true }).click();
+  await page.getByRole("button", { name: "在沉浸模式中保存草稿", exact: true }).click();
   expect((await failedSave).status()).toBe(409);
   await expect(immersiveBody).toHaveValue(localConflictBody);
   await expect(immersive.getByRole("status")).toContainText("保存失败");

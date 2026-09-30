@@ -433,8 +433,8 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await globalNavButton(page, "作品管理").click();
     await page.locator(".project-rows li").first().getByRole("button", { name: "打开" }).click();
     await page.getByRole("button", { name: "编辑作品信息" }).click();
-    await page.getByLabel("说明").fill("CAS 成功后的作品说明");
-    await page.getByRole("button", { name: "保存元数据" }).click();
+    await page.getByLabel("简介").fill("CAS 成功后的作品说明");
+    await page.getByRole("button", { name: "保存修改" }).click();
     await expect(page.getByText("作品信息已更新")).toBeVisible();
     const staleStatus = await page.evaluate(async () => {
       const id = location.pathname.split("/")[2];

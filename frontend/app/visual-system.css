@@ -190,6 +190,43 @@ fieldset {
 [data-scroll-fade="end"] { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent); }
 [data-scroll-fade="start"] { -webkit-mask-image: linear-gradient(to right, transparent, #000 36px); mask-image: linear-gradient(to right, transparent, #000 36px); }
 [data-scroll-fade="both"] { -webkit-mask-image: linear-gradient(to right, transparent, #000 36px, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(to right, transparent, #000 36px, #000 calc(100% - 36px), transparent); }
+/* Missing project or unknown address: a calm page with a way back, not a generic error. */
+.not-found-page { display: grid; justify-items: center; gap: 14px; max-width: 520px; margin: clamp(48px, 12vh, 120px) auto 0; padding: 0 16px; text-align: center; }
+.not-found-page > .design-raster { width: 72px; height: 72px; object-fit: contain; }
+.not-found-page h1 { margin: 6px 0 0; font-size: clamp(24px, 2.4vw, 30px); }
+.not-found-page p { margin: 0; color: var(--muted); line-height: 1.7; text-wrap: balance; }
+.not-found-page .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 10px; }
+/* Sources page: the entry method is a segmented control (the radios stay in the DOM for forms and assistive tech). */
+.source-method { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 16px; padding: 0; border: 0; }
+.source-method > legend { float: left; margin: 0 12px 0 0; padding: 0; color: var(--muted); font-size: 13px; }
+.source-method-option { display: inline-flex; align-items: center; min-height: 38px; padding: 0 16px; border: 1px solid #4c465f; border-radius: 999px; color: var(--muted); font-size: 13px; cursor: pointer; }
+.source-method-option:has(input:checked) { border-color: #9a74e6; background: #8b5cf626; color: var(--text); }
+.source-method-option:has(input:focus-visible) { box-shadow: 0 0 0 3px #9c70ee40; }
+.source-method:disabled .source-method-option { opacity: .55; cursor: not-allowed; }
+.read-section-head { margin-bottom: 16px; }
+.read-section-head h2 { margin: 0 0 6px; }
+.read-section-head p { margin: 0; color: var(--muted); font-size: 13px; }
+/* Sources page: the append preview (and errors) sit as their own card between the form and the list. */
+.read-page > section.notice, .read-page > .notice.error { margin: 20px 0 0; padding: 20px 24px; border: 1px solid #5b4a78; border-radius: 16px; background: #1e1929; }
+.read-page > section.notice ul { margin: 10px 0 14px; padding-left: 1.2em; }
+.read-page > section.notice p { margin: 6px 0; }
+.read-page > .project-section > button.primary { margin-top: 14px; }
+/* Sources list: each chapter heads its group; its source spans sit indented beneath it. */
+.read-list li.source-chapter-anchor { margin-top: 14px; }
+.read-list li.source-chapter-anchor:first-child { margin-top: 0; }
+.read-list li.source-span-item { margin-left: 22px; border-left: 2px solid #5b4a78; border-radius: 0 12px 12px 0; }
+.read-list li.source-span-item strong { color: #cdb8f0; font-size: 13px; }
+/* Edit project details: same rhythm as the planning dialogs (spaced fields, actions on the right). */
+.meta-form { display: grid; gap: 18px; min-width: min(520px, 100%); }
+.meta-form-lede { margin: -6px 0 2px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.meta-field { display: grid; gap: 8px; }
+.meta-field > span { color: var(--text); font-size: 14px; font-weight: 600; }
+.meta-field textarea { min-height: 120px; resize: vertical; }
+.meta-form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 4px; }
+/* The planning version is a status, not a link: a quiet outlined chip. */
+.author-planning-status > span:first-child { display: inline-flex; align-items: center; min-height: 30px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 12px; font-weight: 500; }
+.author-plan-empty { gap: 16px; }
+.revision-loop-actions > button { flex: none; white-space: nowrap; }
 /* Icons inside a line of text (arrows, external links, chevrons) follow the text size. */
 .ui-icon.ui-icon-inline {
   display: inline-block;
@@ -201,14 +238,14 @@ fieldset {
 }
 button > .ui-icon.ui-icon-inline:only-child { margin-left: 0; }
 /* Native disclosure triangles become the same chevron as the rest of the UI. */
-.memory-version-details > summary { list-style: none; }
-.memory-version-details > summary::-webkit-details-marker { display: none; }
-.memory-version-details > summary::before {
+.memory-version-details > summary, .maintenance-details > summary, .run-technical > summary, .evidence-technical > summary { list-style: none; }
+.memory-version-details > summary::-webkit-details-marker, .maintenance-details > summary::-webkit-details-marker, .run-technical > summary::-webkit-details-marker, .evidence-technical > summary::-webkit-details-marker { display: none; }
+.memory-version-details > summary::before, .maintenance-details > summary::before, .run-technical > summary::before, .evidence-technical > summary::before {
   display: inline-block; width: .42em; height: .42em; margin: 0 .5em .12em 0;
   border: solid currentColor; border-width: 0 1.6px 1.6px 0; transform: rotate(-45deg);
   transition: transform .15s ease; content: "";
 }
-.memory-version-details[open] > summary::before { transform: rotate(45deg); }
+.memory-version-details[open] > summary::before, .maintenance-details[open] > summary::before, .run-technical[open] > summary::before, .evidence-technical[open] > summary::before { transform: rotate(45deg); }
 .workbench {
   background: transparent;
 }

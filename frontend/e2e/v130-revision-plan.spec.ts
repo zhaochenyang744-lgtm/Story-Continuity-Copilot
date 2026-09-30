@@ -118,7 +118,7 @@ test("v1.3.0 revision suggestions create bounded persistent tasks while edits, s
   const draftBody=page.locator("#draft-body");
   await draftBody.fill(`${await draftBody.inputValue()}\n作者依据修订任务手动完成这一处叙述。`);
   await expect(tools.getByText(/当前草稿有未保存修改/)).toBeVisible();
-  await expect(taskPanel.getByRole("button",{name:"显式重新检查",exact:true})).toBeDisabled();
+  await expect(taskPanel.getByRole("button",{name:"修改后重新检查",exact:true})).toBeDisabled();
   const dirtyValue=await draftBody.inputValue();
   await taskCards.first().locator(".bounded-source-links a").first().click();
   const unsavedDialog=page.getByRole("dialog",{name:"未保存草稿"});
@@ -144,7 +144,7 @@ test("v1.3.0 revision suggestions create bounded persistent tasks while edits, s
   const recheckResponse=page.waitForResponse(response=>response.request().method()==="POST"&&new URL(response.url()).pathname===`/api/projects/${projectId}/checks`);
   const revisionPlanRefresh=page.waitForResponse(response=>response.request().method()==="GET"&&new URL(response.url()).pathname===`/api/projects/${projectId}/analyses`&&new URL(response.url()).searchParams.get("analysis_type")==="revision_plan"&&response.status()===200);
   requestPhase="recheck-binding-change";
-  await taskPanel.getByRole("button",{name:"显式重新检查",exact:true}).click();
+  await taskPanel.getByRole("button",{name:"修改后重新检查",exact:true}).click();
   expect((await recheckResponse).status()).toBe(202);
   await expect.poll(async()=>{const project=await data<{latest_run:{run_id:string}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));return project.latest_run.run_id;}).not.toBe(originalProject.latest_run.run_id);
   expect((await revisionPlanRefresh).status()).toBe(200);

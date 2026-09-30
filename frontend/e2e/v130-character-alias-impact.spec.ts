@@ -39,10 +39,10 @@ test("v1.3.0 character aliases and change impact stay explicit, traceable, and m
   await page.getByPlaceholder("添加作者确认的别名").fill("小岚");
   await page.getByRole("button",{name:"添加别名",exact:true}).click();
   await expect(page.getByText("别名已保存为独立角色资料。",{exact:true})).toBeVisible();
-  await expect(page.locator(".version-chip")).toHaveText("v1");
+  await expect(page.locator(".version-chip")).toHaveText("第 1 版");
   const aliasInput=page.getByLabel("小岚 别名");
   await aliasInput.fill("档案员岚");await page.getByRole("button",{name:"保存",exact:true}).click();
-  await expect(page.locator(".version-chip")).toHaveText("v2");
+  await expect(page.locator(".version-chip")).toHaveText("第 2 版");
   await page.request.get(`${backendOrigin}/api/test/stage12/reset`);
   const proposal=`把“${character.name}”的公开身份改为港务调查员 E2E_CHANGE_IMPACT_BLOCK`;
   await page.getByPlaceholder(/例如：把/).fill(proposal);
