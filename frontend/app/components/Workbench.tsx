@@ -1422,7 +1422,7 @@ export function Workbench() {
               next.status !== "completed"
                 ? `${labelError({ code: next.error_code })} 未完成 Run 不会写入或展示部分结果。`
                 : quotaStopped > 0
-                  ? `检查完成，但模型调用额度中途用完，有 ${undecided} 句未能判定，本次结果不覆盖它们。已判定部分等待作者审阅；额度恢复后可重新检查。`
+                  ? `检查到一半点数用完了，有 ${undecided} 句还没检查，下面的结果不包括它们。已检查的部分可以先看；过几个小时点数恢复后，可以重新检查。`
                   : undecided > 0
                     ? `检查完成，但有 ${undecided} 句未能判定，本次结果不覆盖它们。其余部分等待作者审阅。`
                     : "检查完成，等待作者审阅。",

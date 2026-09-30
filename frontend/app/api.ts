@@ -102,8 +102,8 @@ export const labelError = (cause: unknown) => {
     recovery_token_invalid: "安全链接无效、已过期或已使用，请重新发起。",
     password_policy_failed: "密码至少 10 个字符，且不能全部相同。",
     visitor_expired: "访客空间已过期，请创建新的访客空间或注册账号。",
-    workflow_quota_exceeded: "过去 24 小时的 AI workflow 次数已用完；本轮未调用 Provider。",
-    provider_attempt_quota_exceeded: "过去 24 小时的 Provider attempt 次数已用完；本轮未继续调用 Provider。",
+    workflow_quota_exceeded: "点数不足：今天的点数已经用完了。这次没有开始，也没有扣点数，请过几个小时再来。",
+    provider_attempt_quota_exceeded: "点数不足：今天的点数已经用完了，这次没有做完。请过几个小时再来。",
     server_budget_exceeded: "服务器预算上限已到；本轮未调用 Provider。",
     budget_rates_unavailable: "服务器预算费率未配置，AI 功能已安全关闭。",
     import_too_large: "文件超过当前身份的服务器导入上限，未写入任何内容。",
@@ -210,10 +210,11 @@ export const labelError = (cause: unknown) => {
   };
   if (code === "provider_attempt_quota_insufficient") {
     const details = (cause as ApiFailure)?.details ?? {};
-    const { claims } = details as Record<string, unknown>;
-    if (typeof claims === "number")
-      return `这一章有 ${claims} 句，超出了当前剩余额度能检查的范围。本次没有开始检查，也没有消耗额度；可以稍后再试，或把这一章分成几段分别检查。`;
-    return "当前剩余额度不足以检查这一章。本次没有开始检查，也没有消耗额度；可以稍后再试，或把这一章分成几段分别检查。";
+    const { claims, max_claims: maxClaims } = details as Record<string, unknown>;
+    if (maxClaims === 0) return "点数不足：今天的点数已经用完了。这次没有开始检查，也没有扣点数，请过几个小时再来。";
+    if (typeof claims === "number" && typeof maxClaims === "number")
+      return `点数不足：这一章有 ${claims} 句，剩下的点数只够检查大约 ${maxClaims} 句。这次没有开始检查，也没有扣点数。你可以把这一章拆成几段分开检查，或者过几个小时再来。`;
+    return "点数不足：剩下的点数不够检查完这一章。这次没有开始检查，也没有扣点数。你可以把这一章拆成几段分开检查，或者过几个小时再来。";
   }
   return labels[code] ?? "请求未完成。请保留当前内容并重试。";
 };

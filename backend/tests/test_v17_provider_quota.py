@@ -106,7 +106,7 @@ class QuotaPreflightApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 429, response.text)
         error = response.json()["error"]
         self.assertEqual(error["code"], "provider_attempt_quota_insufficient")
-        self.assertEqual(error["details"], {"claims": 12, "required_min": 3, "remaining": 2})
+        self.assertEqual(error["details"], {"claims": 12, "required_min": 3, "remaining": 2, "max_claims": 8})
         self.assertEqual(provider.requests, [])
         with app.state.database.connection() as c:
             attempts = c.execute("SELECT COUNT(*) FROM v2_provider_attempts").fetchone()[0]

@@ -302,7 +302,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         # fewer attempts remain than that floor, refuse before any is spent instead of failing halfway.
         required=-(-claims//CONTINUITY_MAX_CLAIMS_PER_BATCH); remaining=stage13.remaining_provider_attempts(user_id)
         if required and remaining<required:
-            return DomainError('provider_attempt_quota_insufficient',429,True,{'claims':claims,'required_min':required,'remaining':remaining})
+            return DomainError('provider_attempt_quota_insufficient',429,True,{'claims':claims,'required_min':required,'remaining':remaining,'max_claims':remaining*CONTINUITY_MAX_CLAIMS_PER_BATCH})
         return None
     @asynccontextmanager
     async def lifespan(_:FastAPI):
