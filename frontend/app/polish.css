@@ -243,7 +243,8 @@ input[type="radio"] { accent-color: var(--violet-500); }
   font-weight: 550;
   text-decoration: none;
 }
-.overview-card-action::after { margin-left: 6px; content: "→"; transition: transform var(--motion-fast) var(--ease-standard); display: inline-block; }
+/* Empty alt text keeps the arrow out of the button's accessible name; the first declaration is the fallback. */
+.overview-card-action::after { margin-left: 6px; content: "→"; content: "→" / ""; transition: transform var(--motion-fast) var(--ease-standard); display: inline-block; }
 .overview-card-action:hover::after { transform: translateX(2px); }
 .overview-card-action:hover,
 .link-button:hover,
