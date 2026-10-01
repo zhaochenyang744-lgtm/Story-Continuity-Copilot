@@ -5277,6 +5277,16 @@ function ProjectPage(p: {
               {["failed", "timed_out", "cancelled"].includes(p.run.status) && (
                 <p className="inline-error">这次检查没有完成，没有保存任何结果。原因和重新检查在下方的检查卡片里。</p>
               )}
+              {p.run.status === "completed" && (p.run.metrics?.undecided_claim_count ?? 0) > 0 && (
+                <p className="inline-warning" role="note">
+                  {(p.run.metrics?.undecided_claims ?? []).some((row) => row.error_code === "provider_attempt_quota_exceeded")
+                    ? `点数用完，有 ${p.run.metrics?.undecided_claim_count} 句没有检查，下面的问题不包括它们。`
+                    : `有 ${p.run.metrics?.undecided_claim_count} 句未能判定，下面的问题不包括它们。`}
+                </p>
+              )}
+              {activeRun(p.run) && (
+                <div className="empty run-pending" role="status">正在检查这一章，完成后问题会显示在这里。</div>
+              )}
               <ul className="issue-list">
                 {issueGroups.map(([spanId, group]) => (
                   <li className="issue-group" key={spanId}>

@@ -480,3 +480,14 @@ main :is(p, li, dd, .project-summary) { text-wrap: pretty; }
   .workspace-grid > .issues { contain: size; }
   .workspace-grid > .issues > .issue-list { overflow-y: auto; overscroll-behavior: contain; }
 }
+/* Side-card notes: unjudged sentences after a partial check. */
+.workspace-grid > .issues > .inline-warning {
+  margin: 14px 16px 0;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--medium) 45%, transparent);
+  border-radius: 10px;
+  background: var(--medium-bg);
+  color: var(--medium);
+  font-size: 13px;
+  line-height: 1.6;
+}
