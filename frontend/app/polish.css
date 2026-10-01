@@ -379,8 +379,10 @@ main :is(strong, h3) { color: var(--text); }
 .writing-tips-card h3 { font-size: 16px; }
 .writing-tips-card ul { color: var(--muted); }
 
-/* Rhythm: more space between sections than inside them. */
-.workspace-resources > * + *,
+/* Rhythm: more space between sections than inside them. The workspace column is a grid, so it
+   spaces its cards with the gap alone; child margins would stack on top of it unevenly. */
+.workspace-resources { row-gap: 28px; }
+.workspace-resources > * { margin-block: 0; }
 .overview-page > section + section,
 .project-page > section + section { margin-top: 28px; }
 /* The immersive editor is a fixed full-screen layer, not a page section. */
