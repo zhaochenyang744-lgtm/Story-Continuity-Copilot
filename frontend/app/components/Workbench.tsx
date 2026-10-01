@@ -317,6 +317,14 @@ const predicateLabel = (value: unknown) =>
   })[
     String(value)
   ] ?? "其他属性";
+// The backend accepts only these fact keys (memory_contract.CONTROLLED_PREDICATES).
+const controlledPredicates = ["identity", "relationship", "affiliation", "location", "status", "rule", "possession", "event_occurred", "knowledge"];
+// A choice, not free text: authors pick the wording, the form still submits the key. A legacy key
+// already on the candidate stays selectable so an untouched edit round-trips unchanged.
+function PredicateSelect({ name, value, disabled }: { name: string; value: string; disabled: boolean }) {
+  const options = controlledPredicates.includes(value) ? controlledPredicates : [value, ...controlledPredicates];
+  return <select name={name} defaultValue={value} disabled={disabled}>{options.map((key) => <option key={key} value={key}>{predicateLabel(key)}</option>)}</select>;
+}
 // Server-built labels such as "温岚 · does_not_know" end in a raw fact key; show the author wording.
 const readableKeys = (text: string) => text.replace(/ · ([a-z][a-z_]*)(?=）|\)|$)/g, (_, key: string) => ` · ${predicateLabel(key)}`);
 const roleTypeLabel = (value: string) =>
@@ -5423,7 +5431,7 @@ function ProjectPage(p: {
               <div className="candidate-edit" aria-label="编辑候选事实">
                 <label>事实类型<select name={`edit:${x.id}:memory_type`} defaultValue={String(x.after.memory_type)} disabled={blocked}>{["static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"].map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label>
                 <label>对象<input name={`edit:${x.id}:subject`} defaultValue={String(x.after.subject)} disabled={blocked} /></label>
-                <label>关系<input name={`edit:${x.id}:predicate`} defaultValue={String(x.after.predicate)} disabled={blocked} /></label>
+                <label>关系<PredicateSelect name={`edit:${x.id}:predicate`} value={String(x.after.predicate)} disabled={blocked} /></label>
                 <label>事实内容<textarea name={`edit:${x.id}:value`} defaultValue={String(x.after.value)} disabled={blocked} /></label>
               </div>
             </article>
@@ -5500,7 +5508,7 @@ function MemoryDeltaReview({ delta, blocked, submit, openSource }: { delta: Memo
               {selected === "edited" && candidate.change_kind !== "invalidated_fact" && <div className="candidate-edit" aria-label="编辑事实变化">
                 <label>事实类型<select name={`memory-delta:${candidate.id}:memory_type`} defaultValue={candidate.memory_type} disabled={blocked}>{["static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"].map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label>
                 <label>对象<input name={`memory-delta:${candidate.id}:subject`} defaultValue={candidate.subject} maxLength={80} disabled={blocked} /></label>
-                <label>关系<input name={`memory-delta:${candidate.id}:predicate`} defaultValue={candidate.predicate} maxLength={80} disabled={blocked} /><small className="field-hint">{predicateLabel(candidate.predicate)}</small></label>
+                <label>关系<PredicateSelect name={`memory-delta:${candidate.id}:predicate`} value={candidate.predicate} disabled={blocked} /></label>
                 <label>事实内容<textarea name={`memory-delta:${candidate.id}:value`} defaultValue={candidate.value} maxLength={240} disabled={blocked} /></label>
               </div>}
             </> : <p className="candidate-decision">作者已{candidate.decision_status === "rejected" ? "拒绝" : candidate.decision_status === "edited" ? "编辑后接受" : "接受"}此变化；{candidate.decision_status === "rejected" ? "不会改变事实库。" : "等待原子提交。"}</p>}
@@ -5582,7 +5590,7 @@ function MemoryInitializationReview({
               <div className="candidate-edit" aria-label="编辑候选事实">
                 <label>事实类型<select name={`memory-init:${candidate.id}:memory_type`} defaultValue={candidate.memory_type} disabled={blocked}>{["static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"].map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label>
                 <label>对象<input name={`memory-init:${candidate.id}:subject`} defaultValue={candidate.subject} disabled={blocked} /></label>
-                <label>关系<input name={`memory-init:${candidate.id}:predicate`} defaultValue={candidate.predicate} disabled={blocked} /><small className="field-hint">{predicateLabel(candidate.predicate)}</small></label>
+                <label>关系<PredicateSelect name={`memory-init:${candidate.id}:predicate`} value={candidate.predicate} disabled={blocked} /></label>
                 <label>事实内容<textarea name={`memory-init:${candidate.id}:value`} defaultValue={candidate.value} disabled={blocked} /></label>
                 <label className="evidence-confirmation"><input type="checkbox" name={`memory-init:${candidate.id}:evidence-confirmed`} value="confirmed" disabled={blocked} />我确认编辑后的事实仍有上方原文依据</label>
               </div>
