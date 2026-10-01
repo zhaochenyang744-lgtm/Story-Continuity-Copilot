@@ -3710,6 +3710,7 @@ function Rows({
   open,
   append,
   filtered = false,
+  emptyNote,
 }: {
   rows: Array<
     Pick<ProjectSummary, "title" | "status"> &
@@ -3724,6 +3725,7 @@ function Rows({
   open: (id: string) => void;
   append?: (id: string) => void;
   filtered?: boolean;
+  emptyNote?: string;
 }) {
   const rowKey = rows.map((row) => row.id ?? row.project_id).join(",");
   const [pagination, setPagination] = useState({ rowKey, page: 1 });
@@ -3795,7 +3797,7 @@ function Rows({
     </div>
   ) : (
     <div className={filtered ? "empty search-empty" : "empty project-list-empty"}>
-      {filtered ? "没有匹配当前条件的作品。调整或清除条件后再试。" : "还没有真实作品。"}
+      {filtered ? "没有匹配当前条件的作品。调整或清除条件后再试。" : emptyNote ?? "还没有真实作品。"}
     </div>
   );
 }
@@ -3827,6 +3829,9 @@ function Projects({
   go: (h: string) => void;
 }) {
   const filtered = Boolean(q || filter || onlyIssues || sort !== "updated_desc");
+  // The default view hides archived works; an account whose works are all archived still needs the
+  // toolbar to reach them instead of the first-run empty state.
+  const hasWorks = rows.length > 0 || filtered || Boolean(allProjects?.length);
   const statistics = [
     { label: "作品总数", value: allProjects?.length, note: "全部真实作品，包含已归档作品" },
     { label: "进行中", value: allProjects?.filter((item) => item.status === "active").length, note: "当前状态为进行中的真实作品" },
@@ -3842,7 +3847,7 @@ function Projects({
           <p className="library-subtitle">在这里统一管理你的作品，让故事的每一章都连贯、完整。</p>
         </div>
         <div className="actions library-header-actions">
-          {(rows.length > 0 || filtered) && <Button onClick={() => go("/projects/import")}>导入作品</Button>}
+          {hasWorks && <Button onClick={() => go("/projects/import")}>导入作品</Button>}
           <Button className="primary" onClick={() => go("/projects/new")}>
             <span className="library-plus" aria-hidden="true">+</span>新建作品
           </Button>
@@ -3851,7 +3856,7 @@ function Projects({
           {statistics.map((item, index) => <div key={item.label} title={item.note}><span className="library-stat-mark" aria-hidden="true"><Icon name={(["library", "pen", "check-circle", "text"] as const)[index]} /></span><dt>{item.label}</dt><dd>{item.value === undefined ? "—" : formatWritingCount(item.value)}</dd></div>)}
         </dl>
       </header>
-      {(rows.length > 0 || filtered) && <div className="filters project-toolbar">
+      {hasWorks && <div className="filters project-toolbar">
         <label className="project-search">
           <span className="sr-only">搜索</span>
           <input placeholder="搜索标题或简介" value={q} onChange={(e) => set("q", e.target.value)} />
@@ -3895,7 +3900,7 @@ function Projects({
           清除条件
         </Button>
       </div>}
-      {!rows.length && !filtered ? (
+      {!hasWorks ? (
         <section className="project-empty-state" aria-labelledby="project-empty-title">
           <div className="library-hero-art" aria-hidden="true">
             <span className="library-art-caption">IDEAS<br />BECOME<br />GREAT STORIES</span>
@@ -3918,6 +3923,7 @@ function Projects({
           open={open}
           append={(id) => go(`/projects/${id}/sources`)}
           filtered={filtered}
+          emptyNote="没有未归档的作品。在“状态”里选择“已归档”可以查看已归档的作品。"
         />
       )}
       {!rows.length && !filtered && <>
