@@ -273,6 +273,8 @@ const evidenceStatusLabel = (value: string) =>
   ({ sufficient: "证据充分", insufficient: "证据不足", unavailable: "证据不可用" })[value] ?? "证据状态未知";
 const coverageStatusLabel = (value?: string) =>
   ({ required: "待初始化", in_review: "审核中", ready_partial: "部分就绪", ready_current: "当前版本就绪", update_pending: "待审核更新" })[value ?? ""] ?? "尚未提供";
+const memoryDeltaStatusLabel = (value?: string) =>
+  ({ queued: "排队中", running: "检查中", in_review: "待审阅", covered: "已完成", cancelled: "已取消", failed: "检查失败", timed_out: "已超时" } as Record<string, string>)[value ?? ""] ?? "处理中";
 const categoryLabel = (value: string) =>
   ({
     attribute: "属性事实",
@@ -5370,7 +5372,7 @@ function ProjectPage(p: {
         />
       )}
       {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
-        <section className="project-section" aria-label="事实更新建议"><h2>事实更新建议</h2><p>连续性问题与事实更新建议会分别保存；未确认的候选不会进入正式事实，也不会用于后续模型检查。</p><p>资料版本第 {p.memoryDelta.source_revision ?? "?"} 版 · 状态 {p.memoryDelta.status} · 核心待审 {p.memoryDelta.coverage?.counts.core_pending ?? 0}</p><Button onClick={() => p.go(`/projects/${p.project.id}/memory`)}>打开更新审核与证据</Button></section>
+        <section className="project-section" aria-label="事实更新建议"><h2>事实更新建议</h2><p>连续性问题与事实更新建议会分别保存；未确认的候选不会进入正式事实，也不会用于后续模型检查。</p><p>资料版本第 {p.memoryDelta.source_revision ?? "?"} 版 · {memoryDeltaStatusLabel(p.memoryDelta.status)} · 核心待审 {p.memoryDelta.coverage?.counts.core_pending ?? 0}</p><Button onClick={() => p.go(`/projects/${p.project.id}/memory`)}>打开更新审核与证据</Button></section>
       )}
       {p.changeSet && (
         <form className="review" aria-label="事实库更新审阅" onSubmit={(event) => void p.commit(event)}>
