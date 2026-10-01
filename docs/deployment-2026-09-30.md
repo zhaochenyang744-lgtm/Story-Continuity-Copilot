@@ -8,9 +8,9 @@
 |---|---|---|---|
 | `longform-bd090fe-20260930` | `bd090fe` | 见当时 plan 输出 | 长章节并行检查、证据去重、超预算对半拆分 |
 | `longform-aac1517-20260930` | `aac1517` | `a129f2ccfe1d4d0926b009eaaba171f58251cedacdad0b281051d2a3bc0ccc24` | 额度预检与中途用完保留结果；修复 `split_draft_claims` 重名导致简报多拆对话句 |
-| `ui-cbfa536-20260930`（当前） | `cbfa5368dc0eb06d2241b423001ba2ddf6838108` | `d3551e4a4ec75e174f358011c4ae37769b0b66b49f4df45ff35bc6f9b269bc14`（94 个文件） | "点数不足"文案与 `max_claims`；界面打磨第 1–6 批；手机输入框 16px |
+| `ui-cbfa536-20260930` | `cbfa5368dc0eb06d2241b423001ba2ddf6838108` | `d3551e4a4ec75e174f358011c4ae37769b0b66b49f4df45ff35bc6f9b269bc14`（94 个文件） | "点数不足"文案与 `max_claims`；界面打磨第 1–6 批；手机输入框 16px |
 
-当前回滚目标：`longform-aac1517-20260930`（`bash deployment/rollback.sh deploy.env longform-aac1517-20260930`，在新版本目录执行）。
+2026-10-02 起线上为 `ui-26ae621-20261002`（见 [2026-10-02 部署记录](deployment-2026-10-02.md)），本版本成为其回滚目标。当时的回滚目标：`longform-aac1517-20260930`（`bash deployment/rollback.sh deploy.env longform-aac1517-20260930`，在新版本目录执行）。
 
 ## 模型配置
 

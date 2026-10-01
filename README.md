@@ -2,11 +2,19 @@
 
 The active product is **Story Continuity Copilot v1.4.0**. It adds canonical author materials and comparisons, unified planning and authoring pages, rich-text and immersive writing, and stricter AI evidence contracts to the author workflow. The author owns the prose and every canon decision.
 
-The active online release is `ui-cbfa536-20260930`, deployed on 2026-09-30 from Git commit `cbfa536` (see [2026-09-30 update](#2026-09-30-update) below and the [2026-09-30 deployment record](docs/deployment-2026-09-30.md)). The previous releases `longform-aac1517-20260930`, `longform-bd090fe-20260930` and `maint-e2d141c23d0c-20260913` remain on the server as rollback targets; the [maintenance deployment record](docs/maintenance-deployment.md) and the [2026-09-08 deployment record](docs/v1.4.0-deployment.md) remain historical evidence. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
+The active online release is `ui-26ae621-20261002`, deployed on 2026-10-02 from Git commit `26ae621` (see [2026-10-02 update](#2026-10-02-update) below and the [2026-10-02 deployment record](docs/deployment-2026-10-02.md)). The previous releases `ui-cbfa536-20260930`, `longform-aac1517-20260930`, `longform-bd090fe-20260930` and `maint-e2d141c23d0c-20260913` remain on the server as rollback targets; the [maintenance deployment record](docs/maintenance-deployment.md) and the [2026-09-08 deployment record](docs/v1.4.0-deployment.md) remain historical evidence. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
 
 The canonical product description is [current product and verification scope](docs/current-product.md). The [maintenance acceptance record](docs/maintenance-acceptance.md) separates local verification from the bounded production checks. The September maintenance update adds saved-work exports, reversible author-decision reuse, full-chapter revision with fact review, and independent operations tools. The [v1.3.0 product contract](docs/v1.3.0-product.md), writing-analysis, [character-alias and change-impact](docs/v1.3.0-character-alias-impact.md), [bounded revision plan](docs/v1.3.0-revision-plan.md), and Memory-delta documents remain historical or focused technical appendices. Current source packaging uses the [maintenance release manifest](docs/maintenance-release-manifest.json); the [v1.3 allowlist](docs/v1.3.0-release-allowlist.json) records its historical release scope. Current documentation was updated after the deployed source package was frozen; it does not change that archive or image identity.
 
 The signed Stage 14 public-production baseline remains **Story Continuity Copilot v1.0 Public Release** as a historical evidence baseline. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility.
+
+## 2026-10-02 update
+
+`ui-26ae621-20261002` finishes the interface pass started on 2026-09-30 and carries two backend changes. No database schema change.
+
+- Interface: the remaining technical wording, raw keys and English decoration are gone from author screens; dialogs share one button order with a danger style for reset; the 更多 menu closes after a choice; the relation in fact reviews is picked from a list; the import preview explains the chapter split in one sentence and folds the hash away; the writing page side card stays as tall as the editor and scrolls long issue lists; archived-only accounts can still reach their works.
+- Backend: model prose in every writing analysis is cleaned of internal record ids before it is stored, and the story Q&A prompt (`story-qa-v3-no-prose-ids`) asks for names instead of ids; brief and analysis source labels are generated in Chinese.
+- Verification: backend 462/462, evaluation 51/51, lint/typecheck/build; `test:v130` fails the same 10 tests as `cbfa536`; `test:v140` 14/14; real-model screenshots at 1440 px and 390 px; 20 real story Q&A runs had 1 `evidence_unresolvable` failure and no ids in prose. See the [deployment record](docs/deployment-2026-10-02.md).
 
 ## 2026-09-30 update
 
@@ -52,9 +60,9 @@ The repository is designed for local reproduction. It contains the application s
 
 - Active origin: [https://43-160-207-57.sslip.io](https://43-160-207-57.sslip.io)
 - Active version: **Story Continuity Copilot v1.4.0**
-- Production release ID: `ui-cbfa536-20260930` (Git commit `cbfa5368dc0eb06d2241b423001ba2ddf6838108`)
-- Source inventory SHA256: `d3551e4a4ec75e174f358011c4ae37769b0b66b49f4df45ff35bc6f9b269bc14` (94 files)
-- Deployment date: 2026-09-30; rollback target `longform-aac1517-20260930`
+- Production release ID: `ui-26ae621-20261002` (Git commit `26ae621630dc3b67661cf2c85ca557906846e7a9`)
+- Source inventory SHA256: `d533ad7800b88b82378a1b8c7fee1c8ebcab5d3966aacb756c5f5f66c9a1d0f1` (97 files)
+- Deployment date: 2026-10-02; rollback target `ui-cbfa536-20260930`
 - The notes below describe the 2026-09-13 maintenance release (`maint-e2d141c23d0c-20260913`, inventory `e2d141c23d0ccab25ccf1fd24b7f0ea0821493a6f892c7b784680f7f492b0402`), whose schema and operations setup the later releases keep.
 - Isolated migration rehearsal and live comparison before browser acceptance preserved all 67 preexisting business tables and 661 rows. Schema is 146; integrity and foreign-key checks passed. Pre-deployment and post-deployment backups were manually downloaded to the operator workstation and independently hashed.
 - Public browser acceptance passed seven checks, including actual TXT/Markdown/ZIP downloads, maintenance-page chapter content, a revision guard rejecting changes, mobile read-only layout, and fresh JS/CSS loads. It did not rerun successful revision commits, decision reuse, or external AI calls online; those retain their separate local evidence.
@@ -227,7 +235,7 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 - Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.
 - The provider returns no cost in the retained V4 results.
 - The system supports continuity review and author-controlled canon updates; it does not directly continue the novel.
-- Browser E2E suites lag the current interface. `test:v130` fails the same 12 tests on `aac1517` and on `ui-cbfa536`, and several `stage*` and `v110` specs still expect the pre-v1.4 create form, textarea drafts and seeded flows. These failures predate the 2026-09-30 interface work; updating the suites is open work.
+- Browser E2E suites lag the current interface. `test:v130` fails the same 10 tests on `ui-cbfa536` and on `ui-26ae621` (12 before four specs were fixed on 2026-09-30), and several `stage*` and `v110` specs still expect the pre-v1.4 create form, textarea drafts and seeded flows. These failures predate the 2026-09-30 interface work; updating the suites is open work.
 - `test:build-origin` has one known failure ("canonical HTTPS proxy exposes public health…").
 - With the real model, some Story Memory change-set reviews for long appended chapters fail backend validation (`candidate_count_invalid`, `memory_type_invalid`), and a long check can occasionally fail with unresolvable evidence. Both are model-output issues, not interface faults.
 - Writing and checking are desktop-only; below 1024 px the workspace is browse-only.
