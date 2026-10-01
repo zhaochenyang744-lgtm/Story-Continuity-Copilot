@@ -443,3 +443,6 @@ main :is(strong, h3) { color: var(--text); }
 .projects-page .project-table { --project-columns: 30px minmax(135px, .9fr) minmax(160px, 1.3fr) 76px 85px 108px 134px; }
 /* Avoid a lone character on the last line of short Chinese paragraphs. */
 main :is(p, li, dd, .project-summary) { text-wrap: pretty; }
+/* The tutorial completion header has no wrapper around its breadcrumb and title, so the shared
+   space-between page head pushed the title to the far right. Stack them like other page heads. */
+.global-nav + main > .tutorial-complete-page > .home-heading { flex-direction: column; justify-content: flex-start; gap: 0; }
