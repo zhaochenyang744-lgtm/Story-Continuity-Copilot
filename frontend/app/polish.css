@@ -468,3 +468,6 @@ main :is(p, li, dd, .project-summary) { text-wrap: pretty; }
 :is(.readonly, .impact-context) { border-left-color: var(--line-strong) !important; }
 /* Change-impact summary is a paragraph, not a heading: body size with light emphasis. */
 .impact-result > strong { font-size: 14px; font-weight: 550; line-height: 1.75; }
+/* Citation chips under impact items are standalone links: colour instead of an underline. */
+.source-links:not(.bounded-source-links) a { color: var(--violet-300); text-decoration: none; }
+.source-links:not(.bounded-source-links) a:hover { color: #e4dcff; text-decoration: underline; }
