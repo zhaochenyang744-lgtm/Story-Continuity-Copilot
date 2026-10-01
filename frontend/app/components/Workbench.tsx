@@ -3007,14 +3007,14 @@ export function Workbench() {
           <p>当前内容会被覆盖；本作品的连续性检查、问题、作者决定和尚未提交的候选变更都会被清除。其他作品和其他账户不受影响。</p>
           <p><strong>重置后无法撤销。</strong></p>
           <div className="actions">
+            <Button onClick={() => setResetOpen(false)}>取消</Button>
             <Button
-              className="primary"
+              className="danger"
               disabled={readOnly || Boolean(busy)}
               onClick={() => void reset()}
             >
               确认重置
             </Button>
-            <Button onClick={() => setResetOpen(false)}>取消</Button>
           </div>
         </Dialog>
       )}
@@ -3069,6 +3069,7 @@ export function Workbench() {
               : `归档《${project.title}》后将保持可浏览但不可写入；不会永久删除。`}
           </p>
           <div className="actions">
+            <Button onClick={() => setArchiveOpen(false)}>取消</Button>
             <Button
               className="primary"
               disabled={Boolean(busy)}
@@ -3083,7 +3084,6 @@ export function Workbench() {
             >
               {project.status === "archived" ? "恢复作品" : "确认归档"}
             </Button>
-            <Button onClick={() => setArchiveOpen(false)}>取消</Button>
           </div>
         </Dialog>
       )}

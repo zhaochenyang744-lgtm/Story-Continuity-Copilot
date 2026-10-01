@@ -449,3 +449,8 @@ main :is(p, li, dd, .project-summary) { text-wrap: pretty; }
 /* Status notices inside the collapsible tool panels sit directly in the padding-less <details>;
    inset them like the panel intro so the boxed notice does not run into the panel edges. */
 .bounded-story-tools > .notice { margin: 0 24px 22px; }
+/* Dialogs: cancel on the left, the deciding action last and right-aligned; irreversible actions
+   use the same red outline as the plan-archive dialog instead of the violet primary. */
+.dialog .actions { justify-content: flex-end; }
+.dialog button.danger { border-color: var(--high); background: transparent; color: var(--high); }
+.dialog button.danger:hover:not(:disabled) { background: var(--high-bg); }
