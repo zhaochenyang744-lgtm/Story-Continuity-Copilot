@@ -454,3 +454,15 @@ main :is(p, li, dd, .project-summary) { text-wrap: pretty; }
 .dialog .actions { justify-content: flex-end; }
 .dialog button.danger { border-color: var(--high); background: transparent; color: var(--high); }
 .dialog button.danger:hover:not(:disabled) { background: var(--high-bg); }
+/* Leftover violet frames from the older sheets. Large cards take the same neutral hairline and
+   surface as every other card; violet stays on actions, the current location and progress marks.
+   Illustrated hero cards keep their artwork, only the frame changes. */
+:is(.design-creation-panel, .tutorial-complete-panel, .author-center-header, .author-works-state.empty, .profile-settings) {
+  border-color: var(--line) !important;
+  box-shadow: none !important;
+}
+:is(.design-creation-panel, .tutorial-complete-panel, .author-works-state.empty, .profile-settings) { background: var(--surface) !important; }
+.projects-page .project-empty-state { border-color: var(--line) !important; box-shadow: none !important; }
+.bounded-tools-intro { border-color: var(--line) !important; background: var(--raised) !important; }
+.tutorial-guidance-hint { border-color: var(--line-strong) !important; background: var(--raised) !important; }
+:is(.readonly, .impact-context) { border-left-color: var(--line-strong) !important; }
