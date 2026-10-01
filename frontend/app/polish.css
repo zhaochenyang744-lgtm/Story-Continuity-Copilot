@@ -471,3 +471,6 @@ main :is(p, li, dd, .project-summary) { text-wrap: pretty; }
 /* Citation chips under impact items are standalone links: colour instead of an underline. */
 .source-links:not(.bounded-source-links) a { color: var(--violet-300); text-decoration: none; }
 .source-links:not(.bounded-source-links) a:hover { color: #e4dcff; text-decoration: underline; }
+/* Evidence chips stack their label above the excerpt; the generic inline-flex link row squeezed the
+   label into a one-character column on phones. */
+.source-links.bounded-source-links a { display: block; }
