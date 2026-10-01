@@ -792,7 +792,7 @@ function ContextDialog({
     const epoch = ++fileEpoch.current;
     setError("");
     if (!/\.(txt|md|markdown)$/i.test(file.name) || file.size > 1024 * 1024) {
-      setError("请选择不超过 1 MiB 的 TXT 或 Markdown 文件。");
+      setError("请选择不超过 1 MB 的 TXT 或 Markdown 文件。");
       return;
     }
     try {
@@ -1393,7 +1393,7 @@ function ContextDialog({
                 </label>
               </div>
               <p className="ac-note">
-                文件仅在本机读取，不上传、不自动拆解；UTF-8，最多 1 MiB / 30,000
+                文件仅在本机读取，不上传、不自动拆解；UTF-8，最多 1 MB / 30,000
                 字。读取会替换下方内容，保存前可核对。
               </p>
               <div className="author-plan-form-row">

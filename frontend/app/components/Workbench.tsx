@@ -4053,13 +4053,13 @@ function Import({
           >
             <span className="import-file-mark" aria-hidden="true"><DesignAsset name="paper" /></span>
             <strong>把文件拖到这里，或者选择本地文件</strong>
-            <span>{selectedFile ? `${selectedFile.name} · ${selectedFile.size.toLocaleString()} bytes` : "尚未选择文件"}</span>
+            <span>{selectedFile ? `${selectedFile.name} · ${selectedFile.size.toLocaleString()} 字节` : "尚未选择文件"}</span>
             <Button type="button" onClick={() => fileInput.current?.click()} disabled={disabled || Boolean(busy)}>
               选择本地文件
             </Button>
           </div>
           <ul className="import-guidance">
-            <li><div><strong>TXT / Markdown</strong><span>UTF-8 编码，文件不超过 5 MiB。</span></div></li>
+            <li><div><strong>TXT / Markdown</strong><span>UTF-8 编码，文件不超过 5 MB。</span></div></li>
             <li><div><strong>点击预览才发送</strong><span>文件会发送到当前应用服务进行预览。</span></div></li>
             <li><div><strong>确认前可随时取消</strong><span>预览只展示章节片段，不会创建作品或事实库。</span></div></li>
           </ul>
@@ -4085,7 +4085,7 @@ function Import({
             <div>
               <dt>文件</dt>
               <dd>
-                {preview.file.name} · {preview.file.size.toLocaleString()} bytes
+                {preview.file.name} · {preview.file.size.toLocaleString()} 字节
                 · {preview.file.format}
               </dd>
             </div>
@@ -4156,7 +4156,7 @@ function Import({
           <dl className="metadata import-confirmation">
             <div>
               <dt>已选文件</dt>
-              <dd>{preview.file.name} · {preview.file.size.toLocaleString()} bytes</dd>
+              <dd>{preview.file.name} · {preview.file.size.toLocaleString()} 字节</dd>
             </div>
             <div>
               <dt>章节</dt>
@@ -4398,7 +4398,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
       <section className="revision-plan-column" aria-label="持久修订任务">
         <header><div><p className="eyebrow">任务</p><h3>修订任务</h3></div></header>
         <p className="revision-boundary">任务进度是你的工作记录。标记完成不会关闭问题、不会运行检查，也不会修改正文或资料。</p>
-        <div className="revision-task-list">{snapshot?.tasks.map((task)=><article key={task.id} id={`revision-task-${task.id}`} className={`revision-task priority-${task.priority} status-${task.status}`}><header><div><strong>{task.title}</strong><small>优先级 {revisionPriorityLabel[task.priority]} · 任务 V{task.version}</small></div><span>{revisionTaskStatusLabel[task.status]}</span></header><p>{task.instruction}</p><EvidenceLinks sources={task.evidence} navigate={go}/>{!readOnly&&<footer><Button className="quiet" disabled={Boolean(localBusy)||busy} onClick={returnToDraft}>回到同一草稿</Button><label>任务进度<select aria-label={`${task.title}任务进度`} value={task.status} disabled={Boolean(localBusy)||busy} onChange={(event)=>void updateTask(task,event.target.value as RevisionTask["status"])}>{(["todo","in_progress","completed"] as const).map((status)=><option key={status} value={status}>{revisionTaskStatusLabel[status]}</option>)}</select></label></footer>}</article>)}{snapshot&&!snapshot.tasks.length&&<p className="muted">尚无修订任务。AI 候选只有在作者接受后才会进入这里。</p>}</div>
+        <div className="revision-task-list">{snapshot?.tasks.map((task)=><article key={task.id} id={`revision-task-${task.id}`} className={`revision-task priority-${task.priority} status-${task.status}`}><header><div><strong>{task.title}</strong><small>优先级 {revisionPriorityLabel[task.priority]} · 第 {task.version} 版</small></div><span>{revisionTaskStatusLabel[task.status]}</span></header><p>{task.instruction}</p><EvidenceLinks sources={task.evidence} navigate={go}/>{!readOnly&&<footer><Button className="quiet" disabled={Boolean(localBusy)||busy} onClick={returnToDraft}>回到同一草稿</Button><label>任务进度<select aria-label={`${task.title}任务进度`} value={task.status} disabled={Boolean(localBusy)||busy} onChange={(event)=>void updateTask(task,event.target.value as RevisionTask["status"])}>{(["todo","in_progress","completed"] as const).map((status)=><option key={status} value={status}>{revisionTaskStatusLabel[status]}</option>)}</select></label></footer>}</article>)}{snapshot&&!snapshot.tasks.length&&<p className="muted">尚无修订任务。AI 候选只有在作者接受后才会进入这里。</p>}</div>
         {!readOnly&&<div className="revision-loop-actions"><Button className="secondary" disabled={Boolean(localBusy)||busy||dirty||!draft} onClick={()=>void recheck()}>修改后重新检查</Button><small>请先手动修改并保存草稿；任务完成状态不会触发此操作。</small></div>}
       </section>
     </div>
@@ -5303,7 +5303,7 @@ function ProjectPage(p: {
               </ul>
               {p.run.status === "completed" && !(p.run.issues ?? []).length && (
                 <div className="empty">
-                  没有可审阅的问题。系统不会伪造结果。
+                  这次检查没有发现需要审阅的问题。
                 </div>
               )}
               {p.run.status === "completed" &&
@@ -6510,7 +6510,7 @@ function SourceDrawer({
               <strong>{span.label === "chapter_revision" ? "修订正文" : span.label}</strong>
               <p>{span.text_excerpt}</p>
             </article>
-          )) : <p className="source-unavailable">当前接口未提供更多同章片段。</p>}
+          )) : <p className="source-unavailable">暂时没有更多同章片段。</p>}
         </section>
         <section className="evidence-section source-tags">
           <h3>{record.memoryType ? "事实状态" : "证据关系"}</h3>
