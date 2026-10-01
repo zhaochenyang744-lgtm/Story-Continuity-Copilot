@@ -383,6 +383,8 @@ main :is(strong, h3) { color: var(--text); }
 .workspace-resources > * + *,
 .overview-page > section + section,
 .project-page > section + section { margin-top: 28px; }
+/* The immersive editor is a fixed full-screen layer, not a page section. */
+.project-page > section.immersive-editor { margin-top: 0; }
 .page-header { margin-bottom: 28px; }
 
 /* Workspace side column: one card the height of the editor. The issue header sits on top, the
