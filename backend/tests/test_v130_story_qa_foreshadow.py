@@ -46,6 +46,9 @@ class BoundedToolsProvider:
             source = request["layers"]["written"]["source_spans"][0] if request["layers"]["written"]["source_spans"] else None
             if self.mode == "invalid_evidence":
                 return ProviderResult({"answer_status": "answered", "answer": "错误引用。", "findings": [{"layer": "confirmed", "stance": "supports", "text": "错误引用。", "evidence": [{"source_type": "memory_record", "source_id": "missing"}]}]}, 4, 2, latency_ms=1)
+            if self.mode == "ids_in_prose":
+                cited = f"（{memory['id']}）"
+                return ProviderResult({"answer_status": "answered", "answer": f"已确认事实记录{cited}说明了答案。", "findings": [{"layer": "confirmed", "stance": "supports", "text": f"该结论来自已确认事实{cited}。", "evidence": [{"source_type": "memory_record", "source_id": memory["id"]}]}]}, 6, 3, latency_ms=1)
             if self.mode == "conflicting":
                 return ProviderResult({"answer_status": "conflicting", "answer": "已确认事实与已写正文存在冲突。", "findings": [
                     {"layer": "confirmed", "stance": "supports", "text": "Story Memory 保留原事实。", "evidence": [{"source_type": "memory_record", "source_id": memory["id"]}]},
@@ -172,6 +175,17 @@ class V130StoryQaForeshadowTests(unittest.TestCase):
         with self.app.state.database.connection() as connection:
             for table, count in before.items():
                 self.assertEqual(connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0], count)
+
+    def test_story_qa_prose_drops_copied_record_ids_but_keeps_citations(self):
+        self.provider.mode = "ids_in_prose"
+        created = self.analysis("story_qa", question="林默知道什么？", scope=["confirmed"])
+        self.assertEqual(created.status_code, 202, created.text)
+        view = self.client.get(f"/api/projects/{self.project_id}/analyses/{created.json()['data']['run_id']}").json()["data"]
+        memory_id = self.provider.requests[-1]["layers"]["confirmed"]["memory_records"][0]["id"]
+        self.assertEqual(view["analysis"]["answer"], "已确认事实记录说明了答案。")
+        self.assertEqual(view["analysis"]["findings"][0]["text"], "该结论来自已确认事实。")
+        self.assertEqual(view["analysis"]["findings"][0]["evidence"][0]["source_id"], memory_id)
+        self.assertEqual(view["provenance"]["prompt_version"], "story-qa-v3-no-prose-ids")
 
     def test_story_qa_invalid_evidence_and_invalid_json_fail_closed(self):
         for mode, code in (("invalid_evidence", "evidence_unresolvable"), ("invalid_json", "invalid_json")):

@@ -6,6 +6,7 @@ from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from typing import Any
 
 from . import brief_citations
+from .internal_ids import strip_internal_ids
 from .memory_contract import CONTROLLED_PREDICATES
 from .provider import MAX_CLAIM_BASIS_CODEPOINTS, MAX_ISSUE_REASONING_CODEPOINTS
 from .provider import ProviderDispatchDenied
@@ -51,7 +52,7 @@ CONTEXT_BRIEF_RETRIEVAL_METHOD_VERSION="writing-analysis-lexical-v3-brief-540"
 CONTEXT_BRIEF_PROMPT_VERSION="context-brief-v5-clause-citations"
 PLAN_ALIGNMENT_PROMPT_VERSION="plan-alignment-v4-clause-citations"
 CHANGE_IMPACT_PROMPT_VERSION="change-impact-v3-supplied-targets"
-STORY_QA_PROMPT_VERSION="story-qa-v2-clause-citations"
+STORY_QA_PROMPT_VERSION="story-qa-v3-no-prose-ids"
 FORESHADOW_SCAN_PROMPT_VERSION="foreshadow-scan-v7-clause-citations"
 REVISION_PLAN_PROMPT_VERSION="revision-plan-v2-clause-citations"
 AUTHOR_MATERIAL_COMPARISON_PROMPT_VERSION="author-material-comparison-v3-nature-assessments"
@@ -761,7 +762,10 @@ class WritingAnalysisEngine:
     @staticmethod
     def _text(value:Any,limit:int)->str:
         if not isinstance(value,str) or not value.strip() or len(value.strip())>limit:raise ValueError("schema_invalid")
-        return value.strip()
+        # Model prose is author-facing: drop record ids it copied from the evidence keys.
+        cleaned=strip_internal_ids(value.strip())
+        if not cleaned:raise ValueError("schema_invalid")
+        return cleaned
 
     @staticmethod
     def _source_maps(data:dict[str,Any])->dict[str,dict[str,dict[str,Any]]]:

@@ -32,6 +32,10 @@
       "target": "backend/app/engine.py"
     },
     {
+      "source": "backend/app/internal_ids.py",
+      "target": "backend/app/internal_ids.py"
+    },
+    {
       "source": "backend/app/long_term_workflow.py",
       "target": "backend/app/long_term_workflow.py"
     },
@@ -425,6 +429,7 @@
     "backend/tests/e2e_app.py",
     "backend/tests/stage13_app.py",
     "backend/tests/stage13_harness.py",
+    "backend/tests/test_internal_ids.py",
     "backend/tests/test_long_term_independent.py",
     "backend/tests/test_long_term_workflow.py",
     "backend/tests/test_maintenance_package.py",
