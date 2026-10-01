@@ -7,7 +7,7 @@ from typing import Any
 
 from . import brief_citations
 from .internal_ids import strip_internal_ids
-from .memory_contract import CONTROLLED_PREDICATES
+from .memory_contract import CONTROLLED_PREDICATES, predicate_label
 from .provider import MAX_CLAIM_BASIS_CODEPOINTS, MAX_ISSUE_REASONING_CODEPOINTS
 from .provider import ProviderDispatchDenied
 from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget, review_effort_scope
@@ -786,8 +786,8 @@ class WritingAnalysisEngine:
         source_type=raw["source_type"];source_id=raw.get("source_id")
         if not isinstance(source_id,str) or source_id not in maps[source_type]:raise ValueError("evidence_unresolvable")
         item=maps[source_type][source_id]
-        if source_type in {"author_context","author_material"}:label=item.get("title") or item.get("name") or "Author Context";excerpt=item.get("content") or item.get("summary") or item.get("goal") or item.get("planned_state") or item.get("description") or ""
-        elif source_type=="memory_record":label=f"{item['subject']} · {item['predicate']}";excerpt=item["value"]
+        if source_type in {"author_context","author_material"}:label=item.get("title") or item.get("name") or "作者规划";excerpt=item.get("content") or item.get("summary") or item.get("goal") or item.get("planned_state") or item.get("description") or ""
+        elif source_type=="memory_record":label=f"{item['subject']} · {predicate_label(item['predicate'])}";excerpt=item["value"]
         elif source_type=="draft_claim":label=f"当前草稿 · 句 {item['ordinal']}";excerpt=item["text"]
         elif source_type=="character_record":label=item["name"];excerpt=" · ".join(filter(None,(item.get("identity"),item.get("current_state"),item.get("knowledge_boundary"))))
         elif source_type=="character_alias":label=f"{item['primary_name']} · 别名";excerpt=item["alias"]

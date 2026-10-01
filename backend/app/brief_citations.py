@@ -9,6 +9,8 @@ import difflib
 import re
 from typing import Any, Callable
 
+from .memory_contract import predicate_label
+
 _NONCONTENT = re.compile(r"[\W_]+", re.UNICODE)
 _CLAUSES = re.compile(r"[，,；;。!?！？\n]+|但|却|然而")
 _PAIRS = (("未", "已"), ("没有", "已经"), ("不知道", "知道"),
@@ -152,7 +154,7 @@ def render_sources(sources: list[dict[str, Any]], maps: dict[str, dict[str, dict
             elif predicate == "location":
                 prefix, content = f"已确认记录：{subject}位于", value
             else:
-                prefix, content = f"已确认记忆记录（{subject} · {predicate}）：", value
+                prefix, content = f"已确认记忆记录（{subject} · {predicate_label(predicate)}）：", value
         else:
             prefix, content = "作者计划记录：", _source_text(kind, item)
         chunks.append((prefix, content))

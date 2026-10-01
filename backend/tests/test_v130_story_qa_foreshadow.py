@@ -186,6 +186,7 @@ class V130StoryQaForeshadowTests(unittest.TestCase):
         self.assertEqual(view["analysis"]["findings"][0]["text"], "该结论来自已确认事实。")
         self.assertEqual(view["analysis"]["findings"][0]["evidence"][0]["source_id"], memory_id)
         self.assertEqual(view["provenance"]["prompt_version"], "story-qa-v3-no-prose-ids")
+        self.assertNotRegex(view["analysis"]["findings"][0]["evidence"][0]["label"], r" · [a-z_]+$")
 
     def test_story_qa_invalid_evidence_and_invalid_json_fail_closed(self):
         for mode, code in (("invalid_evidence", "evidence_unresolvable"), ("invalid_json", "invalid_json")):
