@@ -91,8 +91,8 @@ test("fresh account completes the preset Grey Harbor author review without a Pro
   await expect(drawer).toBeHidden();
   await expect(page.locator(".issue-list li").filter({ hasText: "已决策" })).toHaveCount(4);
 
-  await page.getByRole("button", { name: "审阅 Memory 变更" }).click();
-  const review = page.getByRole("form", { name: "Memory Update Review" });
+  await page.getByRole("button", { name: "审阅事实变化" }).click();
+  const review = page.getByRole("form", { name: "事实库更新审阅" });
   await expect(review.locator("article.diff")).toHaveCount(3);
   await review.getByLabel("接受（写入候选）").nth(0).check();
   await review.getByLabel("拒绝（不写入）").nth(1).check();

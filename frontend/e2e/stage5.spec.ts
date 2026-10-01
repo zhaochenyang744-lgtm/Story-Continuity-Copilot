@@ -608,7 +608,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await expect(runStatus(page)).toContainText("检查完成", { timeout: 15000 });
     const reviewDrawer = page.getByRole("dialog", { name: "问题证据" });
     for (let i = 0; i < 2; i++) { await page.locator(".issue-list li").filter({ hasNotText: "已决策" }).getByRole("button").first().click(); await reviewDrawer.getByRole("button", { name: "Keep intentional" }).click(); await expect(reviewDrawer).toBeHidden(); }
-    await page.getByRole("button", { name: "审阅 Memory 变更" }).click();
+    await page.getByRole("button", { name: "审阅事实变化" }).click();
     const rejects = page.getByLabel("拒绝（不写入）");
     await expect(rejects).toHaveCount(2);
     for (const item of await rejects.all()) {
@@ -696,8 +696,8 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await expect(
       page.locator(".issue-list li").filter({ hasNotText: "已决策" }),
     ).toHaveCount(0);
-    await page.getByRole("button", { name: "审阅 Memory 变更" }).click();
-    await expect(page.getByRole("heading", { name: "Memory Update Review" })).toBeVisible();
+    await page.getByRole("button", { name: "审阅事实变化" }).click();
+    await expect(page.getByRole("heading", { name: "事实库更新审阅" })).toBeVisible();
     await page.screenshot({ path: path.join(shots, "1440-memory-update-review.png"), fullPage: true });
     await page.getByLabel("拒绝").first().check();
     await page.getByRole("button", { name: "确认并提交审核结果" }).click();
@@ -743,8 +743,8 @@ test.describe.serial("Stage 5 real local workflow", () => {
         await drawer.getByRole("button", { name: "Keep intentional" }).click();
         await expect(drawer).toBeHidden();
       }
-      await page.getByRole("button", { name: "审阅 Memory 变更" }).click();
-      await expect(page.getByRole("heading", { name: "Memory Update Review" })).toBeVisible();
+      await page.getByRole("button", { name: "审阅事实变化" }).click();
+      await expect(page.getByRole("heading", { name: "事实库更新审阅" })).toBeVisible();
       await page.getByLabel("拒绝（不写入）").first().check();
       await page.getByRole("button", { name: "确认并提交审核结果" }).click();
       await expect(page.getByText("MemoryVersion", { exact: false })).toBeVisible();

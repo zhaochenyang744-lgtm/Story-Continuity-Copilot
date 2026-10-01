@@ -2025,7 +2025,7 @@ export function Workbench() {
       );
       setNotice(
         decision === "keep_intentional"
-          ? "决定已记录：保留作者意图；可继续审阅后续 Memory 变更。"
+          ? "决定已记录：保留作者意图；可继续审阅后续的事实变化。"
           : "决定已记录：此问题已标记为误报，不会写入事实库。",
       );
     } catch (e) {
@@ -2036,7 +2036,7 @@ export function Workbench() {
   };
   const review = async () => {
     if (!projectId || !run || readOnly) return;
-    setBusy("正在创建 Memory Update Review");
+    setBusy("正在生成事实变化审阅");
     try {
       const data = await json<{ change_set: ChangeSet }>(
         `/projects/${projectId}/memory/change-sets`,
@@ -2087,7 +2087,7 @@ export function Workbench() {
           accepted_item_ids,
           rejected_item_ids,
           edited_items,
-          note: "作者在 Workspace 审核",
+          note: "作者在写作页审核",
         },
       );
       setChangeSet(null);
@@ -2261,7 +2261,7 @@ export function Workbench() {
     event.preventDefault(); if (!projectId || !memoryDelta?.id || readOnly) return;
     const form = new FormData(event.currentTarget); const pending = memoryDelta.candidates.filter((x) => x.decision_status === "pending");
     if (pending.filter((x) => x.review_priority === "core").some((x) => !form.get(`memory-delta:${x.id}`))) { fail(Object.assign(new Error("请先决定所有核心候选"), { code: "unresolved_required_decisions" })); return; }
-    setBusy("正在提交增量 Memory 审核");
+    setBusy("正在提交事实变化审阅");
     try {
       for (const candidate of pending.filter((x) => form.get(`memory-delta:${x.id}`))) {
         const decision = String(form.get(`memory-delta:${candidate.id}`));
@@ -2270,7 +2270,7 @@ export function Workbench() {
       }
       const committed = await json<{ delta: MemoryDelta; memory_version:number }>(`/projects/${projectId}/memory/deltas/${memoryDelta.id}/commit`, "POST", { confirm:true });
       setMemoryDelta(committed.delta); setCoverage(committed.delta.coverage ?? null); setMemories((await request<{records:Memory[]}>(`/projects/${projectId}/memory`)).records); setProject((current) => current ? {...current,current_memory_version:committed.memory_version} : current);
-      setNotice(committed.memory_version > (memoryDelta.base_memory_version ?? 0) ? `事实库第 ${committed.memory_version} 版已建立，变更记录已保存。` : memoryDelta.candidates.length ? "事实变化均未被接受；来源覆盖已审计，Memory 版本未变。" : "本次没有事实变化候选；来源覆盖已审计，Memory 版本未变。");
+      setNotice(committed.memory_version > (memoryDelta.base_memory_version ?? 0) ? `事实库第 ${committed.memory_version} 版已建立，变更记录已保存。` : memoryDelta.candidates.length ? "事实变化均未被接受；已核对全部来源，事实库版本未变。" : "本次没有事实变化候选；已核对全部来源，事实库版本未变。");
     } catch (cause) { fail(cause); } finally { setBusy(""); }
   };
   const reset = async () => {
@@ -4390,7 +4390,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
         <header><div><p className="eyebrow">当前有效检查</p><h3>选择问题</h3></div>{activeRun&&<span className="run-state state-running">{stage(activeRun.status)}</span>}</header>
         {!readOnly&&<>{eligible.length?<fieldset className="revision-issue-picker"><legend>最多选择 8 条</legend>{eligible.map((issue)=><label key={issue.id}><input type="checkbox" checked={effectiveSelected.includes(issue.id)} disabled={Boolean(localBusy)||(!effectiveSelected.includes(issue.id)&&effectiveSelected.length>=8)} onChange={()=>toggleIssue(issue.id)} /><span><strong>{categoryLabel(issue.category)} · {statusLabel(issue.severity)}</strong><small>{issue.claim_text||issue.explanation}</small></span></label>)}</fieldset>:<p className="muted">当前没有来自同一次有效检查、证据充分且未作决定的问题。请先保存草稿并运行连续性检查。</p>}<Button className="secondary" disabled={Boolean(localBusy)||busy||Boolean(activeRun)||dirty||!draft||!effectiveSelected.length} onClick={()=>void start()}>{activeRun?"生成中":`生成修订建议${effectiveSelected.length?`（${effectiveSelected.length}）`:""}`}</Button></>}
         {readOnly&&!runs.length&&<p className="muted">窄窗口仅浏览已有修订建议与任务；请在宽屏窗口生成或作出决定。</p>}
-        <div className="revision-run-list">{runs.map((target)=><article key={target.run_id} className={`revision-run status-${target.status}${target.is_stale?" stale":""}`}><header><div><strong>AI 修订建议</strong><small>{timestampLabel(target.created_at)} · {target.issue_ids?.length??0} 个问题</small></div><span>{target.is_stale?"依据已变化":stage(target.status)}</span></header>{activeAnalysis(target)&&<p className="analysis-pending">{stage(target.stage)}；不会展示中间推理或部分结果。</p>}{["failed","timed_out","cancelled"].includes(target.status)&&<p className="inline-error">{labelError({code:target.error_code})} 未创建任何候选。</p>}{target.analysis&&<><p>{target.analysis.summary}</p>{(target.analysis.candidates as RevisionPlanCandidate[]|undefined)?.map((candidate)=><section className="revision-candidate" key={candidate.id} id={`revision-candidate-${candidate.id}`}><header><div><strong>{candidate.title}</strong><small>优先级 {revisionPriorityLabel[candidate.priority]} · 对应 Issue {candidate.issue_id}</small></div><span>{candidate.decision_status==="pending"?"待作者决定":candidate.decision_status==="rejected"?"作者已拒绝":candidate.decision_status==="edited"?"编辑后接受":"作者已接受"}</span></header><p>{candidate.instruction}</p><EvidenceLinks sources={candidate.evidence} navigate={go}/>{!readOnly&&candidate.decision_status==="pending"&&!target.is_stale&&<div className="candidate-review"><details><summary>编辑后接受</summary>{(()=>{const value=candidateEdits[candidate.id]??revisionCandidateEditor(candidate);return <div className="candidate-edit-fields"><label>任务标题<input value={value.title} maxLength={120} onChange={(event)=>changeCandidate(candidate,{title:event.target.value})} /></label><label>行动说明<textarea value={value.instruction} maxLength={1200} onChange={(event)=>changeCandidate(candidate,{instruction:event.target.value})} /></label><label>优先级<select value={value.priority} onChange={(event)=>changeCandidate(candidate,{priority:event.target.value as RevisionTaskPriority})}>{(["high","medium","low"] as const).map((priority)=><option key={priority} value={priority}>{revisionPriorityLabel[priority]}</option>)}</select></label><Button className="primary" disabled={Boolean(localBusy)||!value.title.trim()||!value.instruction.trim()} onClick={()=>void decide(target,candidate,"edited")}>编辑后创建任务</Button></div>;})()}</details><div className="form-actions"><Button className="secondary" disabled={Boolean(localBusy)} onClick={()=>void decide(target,candidate,"accepted")}>接受并创建任务</Button><Button className="quiet" disabled={Boolean(localBusy)} onClick={()=>void decide(target,candidate,"rejected")}>拒绝</Button></div></div>}{candidate.decision?.after&&<p className="revision-created-link">已创建任务：<a href={`#revision-task-${candidate.decision.after.id}`}>{candidate.decision.after.title}</a></p>}</section>)}</>}
+        <div className="revision-run-list">{runs.map((target)=><article key={target.run_id} className={`revision-run status-${target.status}${target.is_stale?" stale":""}`}><header><div><strong>AI 修订建议</strong><small>{timestampLabel(target.created_at)} · {target.issue_ids?.length??0} 个问题</small></div><span>{target.is_stale?"依据已变化":stage(target.status)}</span></header>{activeAnalysis(target)&&<p className="analysis-pending">{stage(target.stage)}；不会展示中间推理或部分结果。</p>}{["failed","timed_out","cancelled"].includes(target.status)&&<p className="inline-error">{labelError({code:target.error_code})} 未创建任何候选。</p>}{target.analysis&&<><p>{target.analysis.summary}</p>{(target.analysis.candidates as RevisionPlanCandidate[]|undefined)?.map((candidate)=><section className="revision-candidate" key={candidate.id} id={`revision-candidate-${candidate.id}`}><header><div><strong>{candidate.title}</strong><small>优先级 {revisionPriorityLabel[candidate.priority]}</small></div><span>{candidate.decision_status==="pending"?"待作者决定":candidate.decision_status==="rejected"?"作者已拒绝":candidate.decision_status==="edited"?"编辑后接受":"作者已接受"}</span></header><p>{candidate.instruction}</p><EvidenceLinks sources={candidate.evidence} navigate={go}/>{!readOnly&&candidate.decision_status==="pending"&&!target.is_stale&&<div className="candidate-review"><details><summary>编辑后接受</summary>{(()=>{const value=candidateEdits[candidate.id]??revisionCandidateEditor(candidate);return <div className="candidate-edit-fields"><label>任务标题<input value={value.title} maxLength={120} onChange={(event)=>changeCandidate(candidate,{title:event.target.value})} /></label><label>行动说明<textarea value={value.instruction} maxLength={1200} onChange={(event)=>changeCandidate(candidate,{instruction:event.target.value})} /></label><label>优先级<select value={value.priority} onChange={(event)=>changeCandidate(candidate,{priority:event.target.value as RevisionTaskPriority})}>{(["high","medium","low"] as const).map((priority)=><option key={priority} value={priority}>{revisionPriorityLabel[priority]}</option>)}</select></label><Button className="primary" disabled={Boolean(localBusy)||!value.title.trim()||!value.instruction.trim()} onClick={()=>void decide(target,candidate,"edited")}>编辑后创建任务</Button></div>;})()}</details><div className="form-actions"><Button className="secondary" disabled={Boolean(localBusy)} onClick={()=>void decide(target,candidate,"accepted")}>接受并创建任务</Button><Button className="quiet" disabled={Boolean(localBusy)} onClick={()=>void decide(target,candidate,"rejected")}>拒绝</Button></div></div>}{candidate.decision?.after&&<p className="revision-created-link">已创建任务：<a href={`#revision-task-${candidate.decision.after.id}`}>{candidate.decision.after.title}</a></p>}</section>)}</>}
           <footer><small>{runBinding(target,{foreshadow:true})}</small>{!readOnly&&<div className="analysis-result-actions">{activeAnalysis(target)&&<Button disabled={Boolean(localBusy)} onClick={()=>void runAction(target,"cancel")}>取消</Button>}{retryableAnalysis(target)&&<Button disabled={Boolean(localBusy)||target.is_stale||dirty} onClick={()=>void runAction(target,"retry")}>重试</Button>}</div>}</footer></article>)}</div>
       </section>
       <section className="revision-plan-column" aria-label="持久修订任务">
@@ -4577,7 +4577,7 @@ function ProjectContextNotices({
         <p className="readonly" role="note">
           <I>◉</I>
           {project.status === "archived"
-            ? "作品已归档：仅可浏览，恢复后才可保存、检查、决策、提交或 Reset。"
+            ? "作品已归档：仅可浏览，恢复后才可保存、检查、决策、提交或重置。"
             : project.is_tutorial && tutorialStep === 4
               ? "移动端可以浏览完整证据。请在桌面端继续完成作者决定。"
             : "当前窗口较窄，暂为只读浏览；放大窗口即可继续写作与检查。"}
@@ -5039,7 +5039,7 @@ function ProjectPage(p: {
               </Button>
             )}
             {experienceSimulation && p.project.memory_initialization_status !== "completed" && (
-              <p className="simulation-disclosure"><strong>隔离模拟环境：</strong>候选由固定测试桩生成，不代表对任意正文的真实分析。请在初始化前导入体验包中的 v140-simulation-sample.md；本环境不会调用真实 Provider。</p>
+              <p className="simulation-disclosure"><strong>隔离模拟环境：</strong>候选由固定示例数据生成，不代表对任意正文的真实分析。请在初始化前导入体验包中的 v140-simulation-sample.md；本环境不会调用真实模型。</p>
             )}
           </section>
         )}
@@ -5210,7 +5210,7 @@ function ProjectPage(p: {
         </p>
       )}
       {p.coverage?.status === "update_pending" && (
-        <p className="warning"><I>!</I>资料版本第 {p.project.source_revision} 版已追加；只有新增来源片段与已确认 Memory 会进入增量审阅。{p.memoryDelta?.status === "failed" ? "本次检查失败，未写入任何问题或候选，可安全重试。" : <Button className="primary" disabled={blocked} onClick={() => void p.startIncrementalReview()}>运行增量检查</Button>}</p>
+        <p className="warning"><I>!</I>资料版本第 {p.project.source_revision} 版已追加；只有新增来源片段与已确认的事实库会进入增量审阅。{p.memoryDelta?.status === "failed" ? "本次检查失败，未写入任何问题或候选，可安全重试。" : <Button className="primary" disabled={blocked} onClick={() => void p.startIncrementalReview()}>运行增量检查</Button>}</p>
       )}
       {p.draftRecoveryConflict && (
         <p className="warning recovery-conflict-notice"><I>!</I>当前显示的是只读恢复副本，不能输入或覆盖服务器新版。你可以复制文字，或返回比较并选择服务器版本。<Button className="quiet" onClick={p.openDraftRecoveryConflict}>比较两份正文</Button></p>
@@ -5301,7 +5301,7 @@ function ProjectPage(p: {
               </ul>
               {p.run.status === "completed" && !(p.run.issues ?? []).length && (
                 <div className="empty">
-                  没有可审阅 Issue。系统不会伪造结果。
+                  没有可审阅的问题。系统不会伪造结果。
                 </div>
               )}
               {p.run.status === "completed" &&
@@ -5317,7 +5317,7 @@ function ProjectPage(p: {
                     }
                     onClick={() => void p.review()}
                   >
-                    审阅 Memory 变更
+                    审阅事实变化
                   </Button>
                 )}
             </>
@@ -5373,7 +5373,7 @@ function ProjectPage(p: {
         <section className="project-section" aria-label="事实更新建议"><h2>事实更新建议</h2><p>连续性问题与事实更新建议会分别保存；未确认的候选不会进入正式事实，也不会用于后续模型检查。</p><p>资料版本第 {p.memoryDelta.source_revision ?? "?"} 版 · 状态 {p.memoryDelta.status} · 核心待审 {p.memoryDelta.coverage?.counts.core_pending ?? 0}</p><Button onClick={() => p.go(`/projects/${p.project.id}/memory`)}>打开更新审核与证据</Button></section>
       )}
       {p.changeSet && (
-        <form className="review" aria-label="Memory Update Review" onSubmit={(event) => void p.commit(event)}>
+        <form className="review" aria-label="事实库更新审阅" onSubmit={(event) => void p.commit(event)}>
           <header>
             <div>
               <p className="eyebrow">事实库</p>
@@ -5422,7 +5422,7 @@ function ProjectPage(p: {
 function MemoryDeltaReview({ delta, blocked, submit, openSource }: { delta: MemoryDelta; blocked: boolean; submit: (event: FormEvent<HTMLFormElement>) => Promise<void>; openSource: (memory: Memory, element: HTMLButtonElement) => Promise<void> | void }) {
   const [choices, setChoices] = useState<Record<string, string>>({});
   if (["processing", "cancelling"].includes(delta.status)) return <div className="empty" role="status">正在运行连续性检查与事实库更新分析；两项都完成后才会显示审核结果。</div>;
-  if (["failed", "timed_out", "cancelled"].includes(delta.status)) return <div className="notice error" role="alert">更新分析未完成：{labelError({ code: delta.error_code })} 没有写入 Issue、候选或 Memory 版本，请从当前来源安全重试。</div>;
+  if (["failed", "timed_out", "cancelled"].includes(delta.status)) return <div className="notice error" role="alert">更新分析未完成：{labelError({ code: delta.error_code })} 没有写入问题、候选或新的事实库版本，请从当前来源安全重试。</div>;
   const kindLabel = { new_fact: "新增事实", changed_fact: "变更事实", invalidated_fact: "失效事实" } as const;
   const sourceMemory = (candidate: MemoryDelta["candidates"][number]): Memory => ({
     id: candidate.id,
@@ -5513,7 +5513,7 @@ function MemoryInitializationReview({
       <div className="empty memory-init-empty">
         <strong>等待初始化</strong>
         <p>系统会从导入的章节原文生成候选；候选不会自动写入事实库。</p>
-        {experienceSimulation && <div className="notice simulation-notice" role="note"><strong>隔离模拟环境</strong><p>这里使用固定测试桩，不会调用真实 Provider，也不能代表对任意正文的分析。请先导入体验包中的 v140-simulation-sample.md，再开始初始化。</p></div>}
+        {experienceSimulation && <div className="notice simulation-notice" role="note"><strong>隔离模拟环境</strong><p>这里使用固定示例数据，不会调用真实模型，也不能代表对任意正文的分析。请先导入体验包中的 v140-simulation-sample.md，再开始初始化。</p></div>}
         <Button className="primary" disabled={blocked} onClick={() => void start()}>
           初始化事实库
         </Button>
@@ -5523,7 +5523,7 @@ function MemoryInitializationReview({
     return (
       <div className="empty memory-init-empty">
         <strong>第 1 版事实库保持为空</strong>
-        <p>所有候选均被作者拒绝。连续性检查仍会安全返回上下文不足；可 Reset 导入作品后重新开始。</p>
+        <p>所有候选均被作者拒绝。连续性检查仍会安全返回上下文不足；可重置导入的作品后重新开始。</p>
       </div>
     );
   return (
@@ -5535,7 +5535,7 @@ function MemoryInitializationReview({
           <p>核心候选必须全部决定；辅助候选可以暂不决定，它们不会写入事实库，也不会用于之后的检查。{coverage ? ` 当前覆盖：${coverageStatusLabel(coverage.status)}；核心待审 ${coverage.counts.core_pending}，辅助待审 ${coverage.counts.supporting_pending}。` : ""}</p>
         </div>
       </header>
-      {experienceSimulation && <div className="notice simulation-notice" role="note"><strong>隔离模拟环境</strong><p>以下候选来自固定测试桩；本环境不会调用真实 Provider。仅使用 v140-simulation-sample.md 验证交互与审计流程。</p></div>}
+      {experienceSimulation && <div className="notice simulation-notice" role="note"><strong>隔离模拟环境</strong><p>以下候选来自固定示例数据；本环境不会调用真实模型。仅使用 v140-simulation-sample.md 验证交互与审计流程。</p></div>}
       {initialization.candidates.map((candidate) => (
         <article key={candidate.id} className="diff memory-init-candidate">
           <div className="candidate-source">

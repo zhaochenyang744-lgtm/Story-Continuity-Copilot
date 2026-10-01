@@ -324,7 +324,7 @@ export function ContextOverview() {
           {live("条作者资料（含预览）", "条作者资料")}
         </span>
         <span>
-          <b>{context.memories.length}</b> 条现有 Memory 记录
+          <b>{context.memories.length}</b> 条现有事实库记录
         </span>
       </div>
       <p className="ac-note">
@@ -1008,7 +1008,7 @@ function ContextDialog({
                 <strong>当前可用内容</strong>
                 <p>
                   {project.chapter_count} 个已导入章节 · {passages.length}{" "}
-                  个可见原文片段 · {memories.length} 条现有 Memory 记录
+                  个可见原文片段 · {memories.length} 条现有事实库记录
                 </p>
                 <small>
                   每次对照都会列出用到的资料和原文，方便你核对范围。
@@ -1322,7 +1322,7 @@ function ContextDialog({
                           <small>
                             原记录状态：{m.review_status} ·{" "}
                             {m.valid_from === null
-                              ? "起始 Memory 版本未标明"
+                              ? "起始事实库版本未标明"
                               : `事实库第 ${m.valid_from} 版起`}
                             {m.valid_to === null
                               ? ""
@@ -1356,7 +1356,7 @@ function ContextDialog({
                       <strong>
                         {query
                           ? "没有匹配的正文参考"
-                          : "目前没有可展示的 Memory 记录"}
+                          : "目前没有可展示的事实库记录"}
                       </strong>
                       <p>
                         可以先阅读已导入的章节，或前往事实库，按提示整理正文记录。
