@@ -72,6 +72,9 @@ body {
   color: #fff;
   box-shadow: inset 2px 0 0 var(--violet-400);
 }
+/* Global rail items all carry a 2px left border; keep it on the current one so icons do not shift. */
+.global-nav .nav.current,
+.global-nav-collapsed .global-nav .nav.current { border-left-width: 2px; }
 .nav.current svg { opacity: 1; color: var(--violet-300); }
 .global-nav .global-nav-toggle-edge {
   border-color: var(--line-strong);
