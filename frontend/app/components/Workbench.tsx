@@ -3911,7 +3911,7 @@ function Projects({
       {!hasWorks ? (
         <section className="project-empty-state" aria-labelledby="project-empty-title">
           <div className="library-hero-art" aria-hidden="true">
-            <span className="library-art-caption">IDEAS<br />BECOME<br />GREAT STORIES</span>
+            <span className="library-art-caption">从灵感<br />到篇章</span>
             <span className="library-orbit" />
             <EmptyLibraryVisual />
           </div>
@@ -3923,7 +3923,7 @@ function Projects({
             <p>导入已有 TXT / Markdown，或从空白作品开始。</p>
             <div className="actions"><Button onClick={() => go("/projects/import")}>导入作品</Button><Button className="primary" onClick={() => go("/projects/new")}>新建作品</Button></div>
           </div>
-          <span className="library-art-signature" aria-hidden="true">Write a better tomorrow.</span>
+          <span className="library-art-signature" aria-hidden="true">写下明天的故事。</span>
         </section>
       ) : (
         <Rows

@@ -499,3 +499,10 @@ main :is(p, li, dd, .project-summary) { text-wrap: pretty; }
 .import-technical { margin-top: 12px; }
 .import-technical > summary { color: var(--faint); font-size: 13px; cursor: pointer; }
 .import-technical > .metadata { margin-top: 8px; }
+/* Works empty state: the decorative captions are Chinese now, so they need a readable size and an
+   upright face (the Latin styling was 6-9px italic caps). */
+.library-art-caption { font-size: 12px; line-height: 2; letter-spacing: 4px; }
+.library-art-signature { font-style: normal; letter-spacing: 2px; }
+@media (max-width: 760px) {
+  .library-art-caption { font-size: 11px; letter-spacing: 3px; }
+}
