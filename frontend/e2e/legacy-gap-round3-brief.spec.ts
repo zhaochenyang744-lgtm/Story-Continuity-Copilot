@@ -1,3 +1,4 @@
+// 历史独立验收记录（见 docs/legacy-gap-…），绑定当时的端口与账号；不随界面更新，不参加日常运行。
 import { expect, test, type Page, type TestInfo } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import { writeFile } from "node:fs/promises";

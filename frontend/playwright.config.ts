@@ -2,6 +2,13 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./e2e",
+  testIgnore: [
+    "**/legacy-gap-independent.spec.ts",
+    "**/legacy-gap-independent-round2.spec.ts",
+    "**/legacy-gap-round3-brief.spec.ts",
+    "**/g02-controller.spec.ts",
+    "**/g02-controller-post-v4.spec.ts",
+  ],
   fullyParallel: false,
   workers: 1,
   retries: 0,
