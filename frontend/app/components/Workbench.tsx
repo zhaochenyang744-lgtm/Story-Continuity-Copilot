@@ -746,7 +746,8 @@ function MoreMenu({ children }: { children: ReactNode }) {
   return (
     <details className="more-menu">
       <summary>更多<Chevron className="more-chevron" /></summary>
-      <div role="menu" aria-label="更多操作">{children}</div>
+      {/* Choosing an item closes the menu so it does not stay open behind the dialog it opens. */}
+      <div role="menu" aria-label="更多操作" onClick={(event) => { if ((event.target as HTMLElement).closest("button")) event.currentTarget.closest("details")?.removeAttribute("open"); }}>{children}</div>
     </details>
   );
 }
