@@ -52,7 +52,7 @@ body {
   box-shadow: none;
 }
 .project-nav { background: #0f0e15; }
-.nav-kicker { color: var(--faint); font-size: 11px; font-weight: 500; letter-spacing: .08em; }
+.nav-kicker { color: var(--faint); font-size: 12px; font-weight: 500; letter-spacing: .08em; }
 .nav {
   height: 38px;
   min-height: 38px;
@@ -356,7 +356,7 @@ main :is(strong, h3) { color: var(--text); }
 .overview-panel h2 { margin-top: 8px; font-size: 30px; font-weight: 700; letter-spacing: -.01em; }
 .overview-panel dl dt,
 .overview-panel dt { color: var(--faint); font-size: 12px; }
-.overview-panel dd { color: var(--text); font-size: 15px; font-weight: 600; }
+.overview-panel dd { color: var(--text); font-size: 16px; font-weight: 600; }
 .library-statistics dd { font-size: 28px; }
 
 /* The primary card of a page carries a faint violet wash so the eye lands there first. */
@@ -422,3 +422,16 @@ main :is(strong, h3) { color: var(--text); }
 /* Collapsed tool sections are a step lighter than the open work above them. */
 .bounded-story-tools:not([open]) { background: #121119 !important; }
 .bounded-story-tools:not([open]) h2 { color: var(--muted); }
+
+/* Type scale: 30 page / 20 section / 16 card title / 14 body / 13 helper / 12 label.
+   The legacy sheets were remapped onto these tiers; the rules below only pin page titles that
+   older, more specific selectors set with their own sizes. */
+:is(.page-header, .project-page-header, .workspace-page-header, .library-heading, .home-heading, .design-page-heading) h1 { font-size: 30px; }
+@media (max-width: 760px) {
+  :is(.page-header, .project-page-header, .workspace-page-header, .library-heading, .home-heading, .design-page-heading) h1 { font-size: 26px; }
+}
+.project-rows .project-summary { font-size: 14px; line-height: 1.6; }
+.memory-version-details > summary { font-size: 13px; }
+.projects-page .project-table { --project-columns: 30px minmax(135px, .9fr) minmax(160px, 1.3fr) 76px 85px 108px 134px; }
+/* Avoid a lone character on the last line of short Chinese paragraphs. */
+main :is(p, li, dd, .project-summary) { text-wrap: pretty; }

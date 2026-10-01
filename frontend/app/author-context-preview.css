@@ -38,7 +38,7 @@
 .ac-heading p {
   margin: 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.7;
 }
 .ac-heading > button {
@@ -59,7 +59,7 @@
   margin-right: 4px;
 }
 .ac-note {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   line-height: 1.8;
   margin: 12px 0;
@@ -76,7 +76,7 @@
   margin: 0 0 20px;
 }
 .ac-inline p {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   margin: 5px 0 0;
   line-height: 1.7;
@@ -134,7 +134,7 @@
   padding-right: 40px;
 }
 .ac-dialog .eyebrow {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   letter-spacing: 0.08em;
   line-height: 1.8;
@@ -147,7 +147,7 @@
   overflow-wrap: anywhere;
 }
 .ac-dialog h3 {
-  font-size: 17px;
+  font-size: 18px;
   margin: 8px 0 12px;
   line-height: 1.55;
   overflow-wrap: anywhere;
@@ -160,7 +160,7 @@
   line-height: 1.7;
 }
 .ac-preview-note {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   border-left: 2px solid var(--violet-400);
   background: #ac82ff08;
@@ -180,7 +180,7 @@
   margin: 24px 0;
 }
 .ac-guide-intro h3 {
-  font-size: 22px;
+  font-size: 24px;
 }
 .ac-guide-intro p {
   color: var(--muted);
@@ -202,7 +202,7 @@
 }
 .ac-guide-options p {
   flex: 1;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
   margin: 0 0 22px;
 }
@@ -228,7 +228,7 @@
 .ac-coverage p {
   margin: 8px 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 .ac-coverage > button {
   margin: 10px 8px 0 0;
@@ -260,7 +260,7 @@
 .ac-section-heading p {
   margin: 6px 0 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
 }
 .ac-section-heading > button,
 .ac-section-heading > small {
@@ -326,7 +326,7 @@
 }
 .ac-version {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   flex: none;
 }
 .ac-tags {
@@ -339,7 +339,7 @@
   background: #ae86ee12;
   padding: 4px 8px;
   border-radius: 5px;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.5;
 }
 .ac-excerpt {
@@ -350,7 +350,7 @@
   overflow-wrap: anywhere;
   white-space: pre-wrap;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 .ac-origin {
   display: block;
@@ -372,7 +372,7 @@
   background: #0d0b164d;
   border-left: 2px solid #9172ba;
   color: #d1c6e0;
-  font-size: 13px;
+  font-size: 14px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   line-height: 1.9;
@@ -435,7 +435,7 @@
   margin: 24px 0;
 }
 .ac-natures legend {
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 12px;
 }
 .ac-natures label {
@@ -457,11 +457,11 @@
   margin-top: 3px !important;
 }
 .ac-natures strong {
-  font-size: 13px;
+  font-size: 14px;
   display: block;
 }
 .ac-natures small {
-  font-size: 11px;
+  font-size: 12px;
   display: block;
   margin-top: 6px;
 }
@@ -472,7 +472,7 @@
 }
 .ac-details summary {
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
 }
 .ac-details > label,
@@ -495,7 +495,7 @@
 .ac-fulltext {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  font-size: 13px;
+  font-size: 14px;
 }
 .ac-comparison .ac-fulltext,
 .ac-comparison blockquote {
@@ -520,7 +520,7 @@
 }
 .ac-decision > p {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 .ac-resolutions {
   display: grid;
@@ -534,7 +534,7 @@
   display: flex;
   gap: 10px;
   align-items: center;
-  font-size: 13px;
+  font-size: 14px;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 12px;
@@ -606,7 +606,7 @@
     margin-top: 3px;
   }
   .ac-dialog .ac-heading h2 {
-    font-size: 22px;
+    font-size: 24px;
   }
   .ac-form .author-plan-form-row,
   .ac-selectors {
@@ -635,7 +635,7 @@
     padding: 15px;
   }
   .ac-dialog .ac-section-heading > small {
-    font-size: 10px;
+    font-size: 12px;
   }
   .ac-draft-shelf .ac-section-heading {
     flex-direction: column;
