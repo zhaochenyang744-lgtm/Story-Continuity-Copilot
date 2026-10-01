@@ -466,3 +466,5 @@ main :is(p, li, dd, .project-summary) { text-wrap: pretty; }
 .bounded-tools-intro { border-color: var(--line) !important; background: var(--raised) !important; }
 .tutorial-guidance-hint { border-color: var(--line-strong) !important; background: var(--raised) !important; }
 :is(.readonly, .impact-context) { border-left-color: var(--line-strong) !important; }
+/* Change-impact summary is a paragraph, not a heading: body size with light emphasis. */
+.impact-result > strong { font-size: 14px; font-weight: 550; line-height: 1.75; }
