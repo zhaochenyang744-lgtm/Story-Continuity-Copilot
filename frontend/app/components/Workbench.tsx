@@ -4102,16 +4102,11 @@ function Import({
             <div>
               <dt>文件</dt>
               <dd>
-                {preview.file.name} · {preview.file.size.toLocaleString()} 字节
-                · {preview.file.format}
+                {preview.file.name} · {preview.file.size.toLocaleString()} 字节 · {({ md: "Markdown", markdown: "Markdown", txt: "纯文本" } as Record<string, string>)[preview.file.format] ?? preview.file.format}
               </dd>
             </div>
             <div>
-              <dt>SHA-256</dt>
-              <dd className="mono break">{preview.file.sha256}</dd>
-            </div>
-            <div>
-              <dt>策略</dt>
+              <dt>章节</dt>
               <dd>
                 {importStrategyLabel(preview.detected.strategy)} · {preview.detected.chapter_count}{" "}
                 章
@@ -4119,14 +4114,27 @@ function Import({
             </div>
           </dl>
           {preview.detected.audit && (
-            <div className="import-structure-audit" aria-label="章节结构审计">
-              <strong>{preview.detected.audit.coverage_complete && preview.detected.audit.order_preserved && preview.detected.audit.no_duplicate_source_assignment ? "正文覆盖、顺序与无重复已验证" : "章节结构需要人工复核"}</strong>
-              <span>
-                原文 {preview.detected.audit.source_line_count.toLocaleString()} 行；保留 {preview.detected.audit.retained_body_characters.toLocaleString()} 个正文字符
-                {preview.detected.audit.directory_index_blocks.length > 0 ? `；排除 ${preview.detected.audit.directory_index_blocks.reduce((total, block) => total + block.excluded_line_count, 0)} 条目录索引` : ""}。
-              </span>
+            <div className="import-structure-audit" aria-label="章节拆分核对">
+              <strong>{preview.detected.audit.coverage_complete && preview.detected.audit.order_preserved && preview.detected.audit.no_duplicate_source_assignment ? `已按章节标题拆成 ${preview.detected.chapter_count} 章，原文全部保留，顺序不变，没有重复或遗漏。` : "章节拆分需要你核对：请逐章检查下面的预览。"}</strong>
+              {preview.detected.audit.directory_index_blocks.length > 0 && <span>已跳过 {preview.detected.audit.directory_index_blocks.reduce((total, block) => total + block.excluded_line_count, 0)} 行目录。</span>}
             </div>
           )}
+          {/* Integrity data the app checks itself; kept for anyone who wants to verify the file. */}
+          <details className="import-technical">
+            <summary>技术详情</summary>
+            <dl className="metadata">
+              <div>
+                <dt>SHA-256</dt>
+                <dd className="mono break">{preview.file.sha256}</dd>
+              </div>
+              {preview.detected.audit && (
+                <div>
+                  <dt>原文</dt>
+                  <dd>{preview.detected.audit.source_line_count.toLocaleString()} 行 · 保留 {preview.detected.audit.retained_body_characters.toLocaleString()} 个正文字符</dd>
+                </div>
+              )}
+            </dl>
+          </details>
           {preview.warnings.length > 0 && (
             <p className="warning">
               <I>!</I>

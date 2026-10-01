@@ -643,7 +643,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.setInputFiles('input[name="file"]', { name: "chapter.md", mimeType: "text/markdown", buffer: Buffer.from("# 第一章\n海雾遮住钟楼。\n# 第二章\n她记录了潮声。", "utf8") });
     await page.getByRole("button", { name: "解析并预览章节" }).click();
     await expect(page.getByRole("heading", { name: "章节预览" })).toBeVisible();
-    await expect(page.getByText("SHA-256")).toBeVisible();
+    await expect(page.getByText("技术详情", { exact: true })).toBeVisible();
     await page.getByRole("button", { name: "继续确认" }).click();
     await page.locator('.form-panel input[name="title"]').fill("潮汐档案");
     await page.getByRole("button", { name: "确认导入" }).click();

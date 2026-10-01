@@ -492,3 +492,7 @@ main :is(p, li, dd, .project-summary) { text-wrap: pretty; }
   font-size: 13px;
   line-height: 1.6;
 }
+/* Import preview: hash and line counts sit in a quiet fold under the plain-language summary. */
+.import-technical { margin-top: 12px; }
+.import-technical > summary { color: var(--faint); font-size: 13px; cursor: pointer; }
+.import-technical > .metadata { margin-top: 8px; }
