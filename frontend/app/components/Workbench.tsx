@@ -4973,7 +4973,7 @@ function ProjectPage(p: {
           <section className="overview-panel overview-primary-card current-draft-panel">
             <p className="eyebrow">当前草稿</p>
             <h2>第 {p.project.current_draft.chapter_number} 章</h2>
-            <p>第 {p.project.current_draft.revision} 次保存 · 当前可继续写作与审阅。</p>
+            <p>第 {p.project.current_draft.revision} 次保存 · {p.project.status === "archived" ? "作品已归档，恢复后可继续写作。" : "当前可继续写作与审阅。"}</p>
             <div className="overview-meta">
               <span>{p.project.chapter_count} 个章节</span>
               <span>已保存</span>
