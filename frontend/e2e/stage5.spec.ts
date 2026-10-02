@@ -837,14 +837,18 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await globalNavButton(page, "作品管理").click();
     await openProject(page, "灰港回声").click();
     await projectNavButton(page, "写作与检查").click();
-    await setDraftBody(page, `EXTREME_ISSUES\n${Array.from({ length: 20 }, (_, i) => `第${i + 1}项审阅草稿与既有事实发生差异。`).join("\n")}`);
+    // Each sentence reaches a separate claim/batch. Keep the stub's extreme
+    // marker in every claim and use the seeded compass conflict for evidence.
+    await setDraftBody(page, Array.from({ length: 20 }, (_, i) =>
+      `EXTREME_ISSUES 第${i + 1}项：温岚仍握着黄铜罗盘；与此同时，黄铜罗盘也在苏岑的外套内袋。`,
+    ).join("\n"));
     await page.getByRole("button", { name: "保存草稿" }).click();
     await page.getByRole("button", { name: "运行连续性检查" }).click();
     await expect(runStatus(page)).toContainText("检查完成", { timeout: 15_000 });
     const items = page.locator(".issue-list .issue-row");
     await expect(items).toHaveCount(20);
-    await expect(page.getByText("高风险", { exact: false }).first()).toBeVisible();
-    await expect(page.getByText("中风险", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("高影响", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("中等影响", { exact: false }).first()).toBeVisible();
     await page.setViewportSize({ width: 1440, height: 960 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await items.last().scrollIntoViewIfNeeded();
@@ -863,8 +867,8 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await expect(page.getByText("当前窗口较窄，暂为只读浏览", { exact: false })).toBeVisible();
     await page.getByRole("navigation", { name: "手机浏览内容" }).getByRole("button", { name: "问题 20", exact: true }).click();
     await expect(items).toHaveCount(20);
-    await expect(page.getByText("高风险", { exact: false }).first()).toBeVisible();
-    await expect(page.getByText("中风险", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("高影响", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("中等影响", { exact: false }).first()).toBeVisible();
     await items.last().scrollIntoViewIfNeeded();
     await expect(items.last()).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
