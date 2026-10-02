@@ -160,15 +160,16 @@ test("v1.3.0 immersive writing shares draft state, saves explicitly, and stays d
       if (!writing || !footer || !manuscript) throw new Error("immersive writing geometry is not measurable");
       return {
         overlayWidth: overlay.width,
-        clientWidth: document.documentElement.clientWidth,
+        rootWidth: document.documentElement.getBoundingClientRect().width,
         overlayHeight: overlay.height,
         writingWidth: writing.width,
         manuscriptWidth: manuscript.clientWidth,
         footerBottomDelta: footer.bottom - overlay.bottom,
       };
     });
-    // visual-system.css: html scrollbar-gutter: stable reserves the scrollbar.
-    expect(Math.abs(geometry.overlayWidth - geometry.clientWidth)).toBeLessThanOrEqual(1);
+    // scrollbar-gutter: stable retains 10px when useDocumentScrollLock hides overflow;
+    // clientWidth then includes that gutter, while the root's layout rect matches the overlay.
+    expect(Math.abs(geometry.overlayWidth - geometry.rootWidth)).toBeLessThanOrEqual(1);
     expect(Math.abs(geometry.overlayHeight - viewport.height)).toBeLessThanOrEqual(1);
     expect(geometry.writingWidth).toBeGreaterThan(430);
     // reference-refresh.css: the narrow column is 66% of the manuscript scrollport.
@@ -180,8 +181,10 @@ test("v1.3.0 immersive writing shares draft state, saves explicitly, and stays d
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(immersive).toHaveCount(0);
   await expect(page.getByRole("button", { name: "进入沉浸写作", exact: true })).toHaveCount(0);
-  await expect(page.locator("#draft-body")).toHaveCount(0);
-  await expect(page.locator(".draft-read")).toContainText("这段本地修改必须在冲突后继续保留");
+  const readOnlyBody = page.getByRole("textbox", { name: "只读草稿正文", exact: true });
+  await expect(readOnlyBody).toHaveAttribute("contenteditable", "false");
+  await expect(readOnlyBody).toHaveAttribute("aria-readonly", "true");
+  await expect.poll(() => readDraftBody(page)).toBe(localConflictBody);
   await expect(page.getByLabel("章节标题", { exact: true })).toBeDisabled();
   await expect(page.getByRole("button", { name: "保存草稿", exact: true })).toHaveCount(0);
   await expectNoHorizontalOverflow(page);
