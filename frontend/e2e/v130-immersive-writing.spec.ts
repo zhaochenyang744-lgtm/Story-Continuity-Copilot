@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
+import { readDraftBody, setDraftBody } from "./support/app";
 
 const backendOrigin = process.env.E2E_BACKEND_ORIGIN;
 if (!backendOrigin) throw new Error("E2E_BACKEND_ORIGIN is required");
@@ -56,16 +57,17 @@ test("v1.3.0 immersive writing shares draft state, saves explicitly, and stays d
   };
   await register(page);
   const projectId = await createProject(page);
+  const initialDraftBody = await readDraftBody(page);
 
   const openingBody = "潮声落下。\n林默把未寄出的信压在航海图下。";
-  await page.locator("#draft-body").fill(openingBody);
+  await setDraftBody(page, openingBody);
   const enter = page.getByRole("button", { name: "进入沉浸写作", exact: true });
   await enter.click();
 
   const immersive = page.getByRole("dialog", { name: "沉浸写作" });
   const immersiveBody = page.locator("#immersive-draft-body");
   await expect(immersive).toBeVisible();
-  await expect(immersiveBody).toHaveValue(openingBody);
+  await expect.poll(() => readDraftBody(page, { immersive: true })).toBe(openingBody);
   await expect(page.getByRole("button", { name: "退出沉浸写作并返回写作与检查", exact: true })).toBeFocused();
 
   const displaySettings = immersive.getByRole("combobox");
@@ -87,18 +89,25 @@ test("v1.3.0 immersive writing shares draft state, saves explicitly, and stays d
   await expect(immersive.getByLabel("连续性问题辅助栏", { exact: true })).toBeVisible();
 
   const editedBody = `${openingBody}\n她决定在第三次雾钟前离港。`;
-  await immersiveBody.fill(editedBody);
+  await setDraftBody(page, editedBody, { immersive: true });
   await expect(immersive.getByLabel("实时写作统计", { exact: true })).toContainText("字符");
   await page.keyboard.press("Escape");
   await expect(immersive).toHaveCount(0);
-  await expect(page.locator("#draft-body")).toHaveValue(editedBody);
+  await expect.poll(() => readDraftBody(page)).toBe(editedBody);
   await expect(enter).toBeFocused();
 
   await enter.click();
   await expect(immersive).toHaveAttribute("data-font-size", "large");
   await expect(immersive).toHaveAttribute("data-line-height", "airy");
   await expect(immersive).toHaveAttribute("data-column-width", "narrow");
-  await expect(immersiveBody).toHaveValue(editedBody);
+  await expect.poll(() => readDraftBody(page, { immersive: true })).toBe(editedBody);
+
+  const beforeExplicitSave = await page.request.get(`${backendOrigin}/api/projects/${projectId}`);
+  expect(beforeExplicitSave.ok()).toBe(true);
+  const beforeSaveDraftId = (await beforeExplicitSave.json()).data.current_draft.id;
+  const persistedDraft = await page.request.get(`${backendOrigin}/api/projects/${projectId}/drafts/${beforeSaveDraftId}`);
+  expect(persistedDraft.ok()).toBe(true);
+  expect((await persistedDraft.json()).data.body).toBe(initialDraftBody);
 
   const successfulSave = page.waitForResponse(
     (response) => response.request().method() === "PATCH" && response.url().includes(`/api/projects/${projectId}/drafts/`),
@@ -123,13 +132,13 @@ test("v1.3.0 immersive writing shares draft state, saves explicitly, and stays d
   expect(externalWrite.status(), await externalWrite.text()).toBe(200);
 
   const localConflictBody = `${editedBody}\n这段本地修改必须在冲突后继续保留。`;
-  await immersiveBody.fill(localConflictBody);
+  await setDraftBody(page, localConflictBody, { immersive: true });
   const failedSave = page.waitForResponse(
     (response) => response.request().method() === "PATCH" && response.url().includes(`/api/projects/${projectId}/drafts/`) && response.status() === 409,
   );
   await page.getByRole("button", { name: "在沉浸模式中保存草稿", exact: true }).click();
   expect((await failedSave).status()).toBe(409);
-  await expect(immersiveBody).toHaveValue(localConflictBody);
+  await expect.poll(() => readDraftBody(page, { immersive: true })).toBe(localConflictBody);
   await expect(immersive.getByRole("status")).toContainText("保存失败");
   await expect(immersive.getByRole("status")).toContainText("草稿已被其他编辑更新");
   await screenshot(page, "immersive-writing-02-conflict-preserved.png");
@@ -175,12 +184,12 @@ test("v1.3.0 immersive writing shares draft state, saves explicitly, and stays d
   await page.setViewportSize({ width: 1366, height: 768 });
   await expect(immersive).toHaveCount(0);
   await expect(enter).toBeVisible();
-  await expect(page.locator("#draft-body")).toHaveValue(localConflictBody);
+  await expect.poll(() => readDraftBody(page)).toBe(localConflictBody);
   await enter.click();
   await expect(immersive).toBeVisible();
-  await expect(immersiveBody).toHaveValue(localConflictBody);
+  await expect.poll(() => readDraftBody(page, { immersive: true })).toBe(localConflictBody);
   await page.getByRole("button", { name: "退出沉浸写作并返回写作与检查", exact: true }).click();
-  await expect(page.locator("#draft-body")).toHaveValue(localConflictBody);
+  await expect.poll(() => readDraftBody(page)).toBe(localConflictBody);
 
   const statsAfter = (await (await page.request.get(`${backendOrigin}/api/test/stage12/stats`)).json()) as {
     provider_calls: number;
@@ -197,12 +206,11 @@ test("save-and-switch navigates only after a successful draft save", async ({ pa
   const projectId = await createProject(page);
   const workspaceUrl = page.url();
   const title = page.getByLabel("章节标题", { exact: true });
-  const body = page.locator("#draft-body");
 
   const transientTitle = "潮汐手稿 · 本地待保存";
   const transientBody = "这段本地正文在临时保存失败后必须保留。";
   await title.fill(transientTitle);
-  await body.fill(transientBody);
+  await setDraftBody(page, transientBody);
   await page.route(
     `**/api/projects/${projectId}/drafts/**`,
     async (route) => {
@@ -225,7 +233,7 @@ test("save-and-switch navigates only after a successful draft save", async ({ pa
   await expect(page).toHaveURL(workspaceUrl);
   await expect(switchDialog).toBeVisible();
   await expect(title).toHaveValue(transientTitle);
-  await expect(body).toHaveValue(transientBody);
+  await expect.poll(() => readDraftBody(page)).toBe(transientBody);
   await expect(switchDialog.getByRole("alert")).toContainText("保存失败，尚未切换");
   await expect(switchDialog.getByRole("alert")).toContainText("请求未完成");
   await expect(switchDialog.getByRole("button", { name: "保存并切换", exact: true })).toBeEnabled();
@@ -263,11 +271,11 @@ test("save-and-switch navigates only after a successful draft save", async ({ pa
   await expect(switchDialog).toHaveCount(0);
 
   await page.goto(workspaceUrl);
-  await expect(body).toHaveValue(transientBody);
+  await expect.poll(() => readDraftBody(page)).toBe(transientBody);
   const conflictTitle = "潮汐手稿 · 冲突仍保留";
   const conflictBody = `${transientBody}\n另一窗口写入后，这段本地修改仍不能丢失。`;
   await title.fill(conflictTitle);
-  await body.fill(conflictBody);
+  await setDraftBody(page, conflictBody);
 
   const projectResponse = await page.request.get(`${backendOrigin}/api/projects/${projectId}`);
   expect(projectResponse.ok(), await projectResponse.text()).toBe(true);
@@ -293,7 +301,7 @@ test("save-and-switch navigates only after a successful draft save", async ({ pa
   await expect(page).toHaveURL(workspaceUrl);
   await expect(switchDialog).toBeVisible();
   await expect(title).toHaveValue(conflictTitle);
-  await expect(body).toHaveValue(conflictBody);
+  await expect.poll(() => readDraftBody(page)).toBe(conflictBody);
   await expect(switchDialog.getByRole("alert")).toContainText("保存失败，尚未切换");
   await expect(switchDialog.getByRole("alert")).toContainText("草稿已被其他编辑更新");
   await expect(switchDialog.getByRole("button", { name: "保存并切换", exact: true })).toBeEnabled();
@@ -302,5 +310,5 @@ test("save-and-switch navigates only after a successful draft save", async ({ pa
   await expect(switchDialog).toHaveCount(0);
   await expect(page).toHaveURL(workspaceUrl);
   await expect(title).toHaveValue(conflictTitle);
-  await expect(body).toHaveValue(conflictBody);
+  await expect.poll(() => readDraftBody(page)).toBe(conflictBody);
 });
