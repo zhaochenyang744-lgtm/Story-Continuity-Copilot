@@ -694,21 +694,33 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.getByRole("button", { name: "运行连续性检查" }).click();
     await expect(runStatus(page)).toContainText("检查完成", { timeout: 15_000 });
     await page.screenshot({ path: path.join(shots, "1440-grey-harbor-run-complete.png"), fullPage: true });
-    const firstIssue = page.locator(".issue-list button").first();
-    await firstIssue.click();
+    const projectId = new URL(page.url()).pathname.split("/")[2];
+    const projectResponse = await page.request.get(`/api/projects/${projectId}`);
+    expect(projectResponse.status()).toBe(200);
+    const runId = (await projectResponse.json()).data.latest_run.run_id;
+    const runResponse = await page.request.get(`/api/projects/${projectId}/checks/${runId}?include=issues,evidence`);
+    expect(runResponse.status()).toBe(200);
+    const issues = (await runResponse.json()).data.issues as Array<{
+      claim_text: string; evidence_status: string; available_actions?: string[];
+    }>;
+    // Match Workbench.issueRequiresDecision / create_changeset; the appended
+    // save marker can also produce a read-only insufficient-evidence hint.
+    const required = issues.filter((issue) => issue.evidence_status === "sufficient"
+      && (issue.available_actions === undefined || issue.available_actions.length > 0));
+    expect(required).toHaveLength(2);
     const drawer = page.getByRole("dialog", { name: "问题证据" });
-    await expect(drawer.getByRole("heading", { name: "历史证据", exact: true })).toBeVisible();
-    await page.screenshot({ path: path.join(shots, "1440-evidence-drawer.png"), fullPage: true });
-    await recordIssueDecision(page, "保留原意");
-    await page
-      .locator(".issue-list .issue-row")
-      .filter({ hasNotText: "决定已记录" })
-      .click();
-    await expect(drawer).toBeVisible();
-    await recordIssueDecision(page, "保留原意");
+    for (const [index, issue] of required.entries()) {
+      await page.locator(".issue-list .issue-row").filter({ hasText: issue.claim_text }).click();
+      await expect(drawer).toBeVisible();
+      await expect(drawer.getByRole("heading", { name: "历史证据", exact: true })).toBeVisible();
+      if (index === 0) await page.screenshot({ path: path.join(shots, "1440-evidence-drawer.png"), fullPage: true });
+      await recordIssueDecision(page, "保留原意");
+    }
+    await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(required.length);
     await expect(
       page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" }),
-    ).toHaveCount(0);
+    ).toHaveCount(issues.length - required.length);
+    await expect(page.getByRole("heading", { name: "待处理提示 0", exact: true })).toBeVisible();
     await page.getByRole("button", { name: "审阅事实变化" }).click();
     await expect(page.getByRole("heading", { name: "事实变化审阅", exact: true })).toBeVisible();
     await page.screenshot({ path: path.join(shots, "1440-memory-update-review.png"), fullPage: true });
