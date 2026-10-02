@@ -20,7 +20,6 @@ async function register(page: Page) {
 
 async function shot(page: Page, name: string) {
   if (!process.env.E2E_OUTPUT_DIR) return;
-  await page.waitForTimeout(180);
   await page.screenshot({ path: path.join(process.env.E2E_OUTPUT_DIR, name), fullPage: true });
 }
 
@@ -47,24 +46,27 @@ test("v1.3.0 foundation interactions and layout remain scoped and responsive", a
   await page.setViewportSize({ width: 1440, height: 900 });
   await register(page);
 
-  const iconGeometry = await page.locator(".home-empty-mark .ui-icon").evaluateAll((icons) =>
+  const iconGeometry = await page.locator(".home-empty-mark img.design-raster").evaluateAll((icons) =>
     icons.map((icon) => {
-      const svg = icon as SVGGraphicsElement;
-      const box = svg.getBoundingClientRect();
-      const parent = svg.parentElement?.getBoundingClientRect();
-      const drawing = svg.getBBox();
+      const box = icon.getBoundingClientRect();
+      const parent = icon.parentElement?.getBoundingClientRect();
       if (!parent) throw new Error("empty-state icon parent is not measurable");
       return {
         containerCenterDelta: Math.abs((box.left + box.right) / 2 - (parent.left + parent.right) / 2),
-        drawingCenterX: drawing.x + drawing.width / 2,
-        drawingWidth: drawing.width,
+        containerVerticalDelta: Math.abs((box.top + box.bottom) / 2 - (parent.top + parent.bottom) / 2),
+        width: box.width,
+        height: box.height,
       };
     }),
   );
   expect(iconGeometry).toHaveLength(2);
-  expect(iconGeometry[0].containerCenterDelta).toBeLessThanOrEqual(0.5);
-  expect(iconGeometry[0].drawingCenterX).toBe(iconGeometry[1].drawingCenterX);
-  expect(iconGeometry[0].drawingWidth).toBe(iconGeometry[1].drawingWidth);
+  // Current empty-state raster assets are centered at 70px square (visual-system.css).
+  for (const geometry of iconGeometry) {
+    expect(geometry.containerCenterDelta).toBeLessThanOrEqual(0.5);
+    expect(geometry.containerVerticalDelta).toBeLessThanOrEqual(0.5);
+    expect(geometry.width).toBeCloseTo(70, 3);
+    expect(geometry.height).toBeCloseTo(70, 3);
+  }
   await shot(page, "01-home-empty-icons-desktop.png");
 
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
@@ -84,7 +86,7 @@ test("v1.3.0 foundation interactions and layout remain scoped and responsive", a
     buffer: Buffer.from("# 第一章\n这是尚未确认的临时导入内容。", "utf8"),
   });
   const previewResponse = page.waitForResponse((response) => response.url().includes("/api/imports/preview") && response.status() === 201);
-  await page.getByRole("button", { name: "解析并预览章节", exact: true }).click();
+  await page.getByRole("button", { name: "发送并预览章节", exact: true }).click();
   const preview = (await (await previewResponse).json()) as { data: { import_id: string; detected: { chapters: { preview_id: string }[] } } };
   await expect(page.getByRole("heading", { name: "章节预览", exact: true })).toBeVisible();
   const cancelResponse = page.waitForResponse((response) => response.url().includes(`/api/imports/${preview.data.import_id}/cancel`));
@@ -100,11 +102,11 @@ test("v1.3.0 foundation interactions and layout remain scoped and responsive", a
   expect(cancelledCommit.status()).toBe(404);
 
   await page.goto("/projects/new");
-  const createGeometry = await page.locator(".create-project-page").evaluate((createPage) => {
+  const createGeometry = await page.getByRole("region", { name: "新建作品表单", exact: true }).evaluate((createPage) => {
     const pageBox = createPage.getBoundingClientRect();
     const mainBox = createPage.closest("main")?.getBoundingClientRect();
-    const headerBox = createPage.querySelector(".page-header")?.getBoundingClientRect();
-    const formBox = createPage.querySelector(".form-panel")?.getBoundingClientRect();
+    const headerBox = createPage.closest(".approved-create")?.querySelector(".design-page-head")?.getBoundingClientRect();
+    const formBox = pageBox;
     if (!mainBox || !headerBox || !formBox) throw new Error("create layout is not measurable");
     return {
       centerDelta: Math.abs((pageBox.left + pageBox.right) / 2 - (mainBox.left + mainBox.right) / 2),

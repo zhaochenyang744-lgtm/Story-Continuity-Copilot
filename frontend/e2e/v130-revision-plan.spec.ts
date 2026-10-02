@@ -1,6 +1,7 @@
 import { expect, test, type APIResponse, type Page, type Request } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
+import { readDraftBody, setDraftBody } from "./support/app";
 
 const backendOrigin=process.env.E2E_BACKEND_ORIGIN;
 if(!backendOrigin)throw new Error("E2E_BACKEND_ORIGIN is required");
@@ -44,7 +45,10 @@ test("v1.3.0 revision suggestions create bounded persistent tasks while edits, s
   const onboarding=await data<{tutorial:{project_id:string}}>(await page.request.get(`${backendOrigin}/api/onboarding`));
   projectId=onboarding.tutorial.project_id;
   const originalProject=await data<{current_memory_version:number;current_draft:{id:string;revision:number};latest_run:{run_id:string}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));
-  const originalRun=await data<{issues:{id:string;status:string;decision:unknown}[]}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}/checks/${originalProject.latest_run.run_id}?include=issues,evidence`));
+  const originalRun=await data<{status:string;is_stale:boolean;issues:{id:string;status:string;decision:unknown;reused_decision:unknown;claim_text:string;explanation:string;evidence:{sufficiency:string}[]}[]}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}/checks/${originalProject.latest_run.run_id}?include=issues,evidence`));
+  // Match Workbench's eligibility rule, including the exclusion of insufficient evidence.
+  const eligibleIssues=(originalRun.status==="completed"&&!originalRun.is_stale?originalRun.issues:[]).filter(issue=>issue.status==="open"&&!issue.decision&&!issue.reused_decision&&issue.evidence.some(source=>source.sufficiency==="sufficient"));
+  expect(eligibleIssues.length).toBeGreaterThanOrEqual(3);
 
   await page.goto(`/projects/${projectId}/workspace`);
   const tools=page.getByRole("region",{name:"修订计划与任务"});
@@ -53,12 +57,16 @@ test("v1.3.0 revision suggestions create bounded persistent tasks while edits, s
   expect(editorBox&&toolBox&&editorBox.y<toolBox.y).toBe(true);
   await tools.locator(":scope > summary").click();
   const picker=page.getByRole("region",{name:"从连续性问题生成修订建议"});
-  await expect(picker.locator('.revision-issue-picker input[type="checkbox"]')).toHaveCount(4);
+  await expect(picker.getByRole("checkbox")).toHaveCount(eligibleIssues.length);
+  for(const issue of originalRun.issues){
+    const option=picker.getByRole("checkbox",{name:new RegExp((issue.claim_text||issue.explanation).replace(/[.*+?^${}()|[\]\\]/g,"\\$&"))});
+    await expect(option).toHaveCount(eligibleIssues.includes(issue)?1:0);
+  }
   for(const checkbox of await picker.locator('.revision-issue-picker input[type="checkbox"]').all())await checkbox.check();
-  await picker.getByRole("button",{name:"生成修订建议（4）",exact:true}).click();
+  await picker.getByRole("button",{name:`生成修订建议（${eligibleIssues.length}）`,exact:true}).click();
   await expect(picker.getByText("已把作者选择的问题整理为可审阅修订建议。",{exact:true})).toBeVisible();
   const candidates=picker.locator(".revision-candidate");
-  await expect(candidates).toHaveCount(4);
+  await expect(candidates).toHaveCount(eligibleIssues.length);
   const candidateEvidence=candidates.first().locator(".bounded-source-links a").first();
   const candidateHref=await candidateEvidence.getAttribute("href");
   expect(candidateHref).toMatch(new RegExp(`/projects/${projectId}/sources#span-`));
@@ -69,7 +77,7 @@ test("v1.3.0 revision suggestions create bounded persistent tasks while edits, s
   expect(await candidateAnchor.evaluate(node=>{const box=node.getBoundingClientRect();return box.top<window.innerHeight&&box.bottom>0;})).toBe(true);
   await page.goto(`/projects/${projectId}/workspace`);await expect(tools).toBeVisible();await tools.locator(":scope > summary").click();
 
-  const first=candidates.nth(0),second=candidates.nth(1),third=candidates.nth(2),fourth=candidates.nth(3);
+  const first=candidates.nth(0),second=candidates.nth(1),pending=candidates.nth(2);
   await first.getByRole("button",{name:"接受并创建任务",exact:true}).click();
   await expect(first).toContainText("作者已接受");
   await second.getByText("编辑后接受",{exact:true}).click();
@@ -78,9 +86,7 @@ test("v1.3.0 revision suggestions create bounded persistent tasks while edits, s
   await second.getByLabel("优先级").selectOption("low");
   await second.getByRole("button",{name:"编辑后创建任务",exact:true}).click();
   await expect(second).toContainText("编辑后接受");
-  await third.getByRole("button",{name:"拒绝",exact:true}).click();
-  await expect(third).toContainText("作者已拒绝");
-  await expect(fourth).toContainText("待作者决定");
+  await expect(pending).toContainText("待作者决定");
 
   const taskPanel=page.getByRole("region",{name:"持久修订任务"});
   const taskCards=taskPanel.locator(".revision-task");
@@ -95,39 +101,42 @@ test("v1.3.0 revision suggestions create bounded persistent tasks while edits, s
   expect(projectAfterDecisions.current_memory_version).toBe(originalProject.current_memory_version);
   expect(projectAfterDecisions.latest_run.run_id).toBe(originalProject.latest_run.run_id);
 
-  await fourth.getByText("编辑后接受",{exact:true}).click();
-  await fourth.getByLabel("任务标题").fill("冲突后仍保留的候选编辑");
-  await fourth.getByLabel("行动说明").fill("这个未提交输入不能被任务刷新静默覆盖。");
+  await pending.getByText("编辑后接受",{exact:true}).click();
+  await pending.getByLabel("任务标题").fill("冲突后仍保留的候选编辑");
+  await pending.getByLabel("行动说明").fill("这个未提交输入不能被任务刷新静默覆盖。");
   const externalTaskUpdate=await page.request.patch(`${backendOrigin}/api/projects/${projectId}/revision-tasks/${tasksAfterDecision.tasks[0].id}`,{headers:{"Idempotency-Key":randomUUID()},data:{base_version:tasksAfterDecision.tasks[0].version,status:"in_progress"}});
   expect(externalTaskUpdate.status()).toBe(200);
   const conflictResponse=page.waitForResponse(response=>response.request().method()==="PATCH"&&new URL(response.url()).pathname.endsWith(`/revision-tasks/${tasksAfterDecision.tasks[0].id}`)&&response.status()===409);
   await taskCards.first().getByLabel(/任务进度$/).selectOption("completed");
   expect((await conflictResponse).status()).toBe(409);
   await expect(tools.getByRole("alert")).toContainText("候选编辑内容仍保留");
-  await expect(fourth.getByLabel("任务标题")).toHaveValue("冲突后仍保留的候选编辑");
+  await expect(pending.getByLabel("任务标题")).toHaveValue("冲突后仍保留的候选编辑");
   await tools.getByRole("button",{name:"载入最新任务",exact:true}).click();
   await expect(tools.getByText(/已载入最新任务与候选状态/)).toBeVisible();
-  await expect(fourth.getByLabel("任务标题")).toHaveValue("冲突后仍保留的候选编辑");
+  await expect(pending.getByLabel("任务标题")).toHaveValue("冲突后仍保留的候选编辑");
   await expect(taskCards.first()).toContainText("进行中");
   await expect.poll(()=>consoleErrors.filter(message=>message.includes("409 (Conflict)")).length).toBe(1);
   expect(consoleErrors.every(message=>message.includes("409 (Conflict)"))).toBe(true);
   consoleErrors.length=0;
+  // Reuse the pending candidate after verifying conflict preservation, then reject it.
+  await pending.getByRole("button",{name:"拒绝",exact:true}).click();
+  await expect(pending).toContainText("作者已拒绝");
+  await expect(taskCards).toHaveCount(2);
 
   await taskCards.first().getByRole("button",{name:"回到同一草稿",exact:true}).click();
   await expect(page.locator("#draft-body")).toBeFocused();
-  const draftBody=page.locator("#draft-body");
-  await draftBody.fill(`${await draftBody.inputValue()}\n作者依据修订任务手动完成这一处叙述。`);
+  await setDraftBody(page, `${await readDraftBody(page)}\n作者依据修订任务手动完成这一处叙述。`);
   await expect(tools.getByText(/当前草稿有未保存修改/)).toBeVisible();
   await expect(taskPanel.getByRole("button",{name:"修改后重新检查",exact:true})).toBeDisabled();
-  const dirtyValue=await draftBody.inputValue();
+  const dirtyValue=await readDraftBody(page);
   await taskCards.first().locator(".bounded-source-links a").first().click();
   const unsavedDialog=page.getByRole("dialog",{name:"未保存草稿"});
   await expect(unsavedDialog).toBeVisible();
   await unsavedDialog.getByRole("button",{name:"取消",exact:true}).click();
   await expect(page).toHaveURL(new RegExp(`/projects/${projectId}/workspace$`));
-  await expect(draftBody).toHaveValue(dirtyValue);
+  await expect.poll(()=>readDraftBody(page)).toBe(dirtyValue);
   await page.getByRole("button",{name:"保存草稿",exact:true}).click();
-  await expect(page.getByText("✓ 已保存",{exact:true})).toBeVisible();
+  await expect(page.locator(".workspace-save-summary strong")).toHaveText("已保存");
   await expect(picker.locator(".revision-run").first().getByText("依据已变化",{exact:true})).toBeVisible();
   await expect(taskCards).toHaveCount(2);
 
@@ -165,6 +174,7 @@ test("v1.3.0 revision suggestions create bounded persistent tasks while edits, s
 
   await page.setViewportSize({width:390,height:844});
   await page.reload();
+  await page.getByRole("navigation",{name:"手机浏览内容"}).getByRole("button",{name:"资料",exact:true}).click();
   await expect(tools).toBeVisible();
   await tools.locator(":scope > summary").click();
   await expect(taskPanel.getByText("作者编辑后的时间线修订",{exact:true})).toBeVisible();

@@ -41,7 +41,6 @@ async function createProject(page: Page) {
 
 async function screenshot(page: Page, name: string) {
   if (!process.env.E2E_OUTPUT_DIR) return;
-  await page.waitForTimeout(180);
   await page.screenshot({ path: path.join(process.env.E2E_OUTPUT_DIR, name), fullPage: false });
 }
 
@@ -119,8 +118,10 @@ test("v1.3.0 immersive writing shares draft state, saves explicitly, and stays d
 
   const projectResponse = await page.request.get(`${backendOrigin}/api/projects/${projectId}`);
   expect(projectResponse.ok(), await projectResponse.text()).toBe(true);
-  const project = (await projectResponse.json()) as { data: { current_draft: DraftSnapshot } };
-  const current = project.data.current_draft;
+  const project = (await projectResponse.json()) as { data: { current_draft: { id: string } } };
+  const savedDraftResponse = await page.request.get(`${backendOrigin}/api/projects/${projectId}/drafts/${project.data.current_draft.id}`);
+  expect(savedDraftResponse.ok(), await savedDraftResponse.text()).toBe(true);
+  const current = ((await savedDraftResponse.json()) as { data: DraftSnapshot }).data;
   const externalWrite = await page.request.patch(`${backendOrigin}/api/projects/${projectId}/drafts/${current.id}`, {
     headers: { "Idempotency-Key": randomUUID() },
     data: {
@@ -155,18 +156,23 @@ test("v1.3.0 immersive writing shares draft state, saves explicitly, and stays d
       const overlay = element.getBoundingClientRect();
       const writing = element.querySelector(".immersive-writing-column")?.getBoundingClientRect();
       const footer = element.querySelector(".immersive-footer")?.getBoundingClientRect();
-      if (!writing || !footer) throw new Error("immersive writing geometry is not measurable");
+      const manuscript = element.querySelector<HTMLElement>(".immersive-manuscript");
+      if (!writing || !footer || !manuscript) throw new Error("immersive writing geometry is not measurable");
       return {
         overlayWidth: overlay.width,
+        clientWidth: document.documentElement.clientWidth,
         overlayHeight: overlay.height,
         writingWidth: writing.width,
+        manuscriptWidth: manuscript.clientWidth,
         footerBottomDelta: footer.bottom - overlay.bottom,
       };
     });
-    expect(Math.abs(geometry.overlayWidth - viewport.width)).toBeLessThanOrEqual(1);
+    // visual-system.css: html scrollbar-gutter: stable reserves the scrollbar.
+    expect(Math.abs(geometry.overlayWidth - geometry.clientWidth)).toBeLessThanOrEqual(1);
     expect(Math.abs(geometry.overlayHeight - viewport.height)).toBeLessThanOrEqual(1);
     expect(geometry.writingWidth).toBeGreaterThan(430);
-    expect(geometry.writingWidth).toBeLessThanOrEqual(681);
+    // reference-refresh.css: the narrow column is 66% of the manuscript scrollport.
+    expect(Math.abs(geometry.writingWidth - geometry.manuscriptWidth * 0.66)).toBeLessThanOrEqual(1);
     expect(geometry.footerBottomDelta).toBeLessThanOrEqual(1);
     await expectNoHorizontalOverflow(page);
   }

@@ -43,38 +43,37 @@ async function createProject(page: Page, title: string) {
 
 async function saveStory(page: Page, values: { title: string; summary: string; goal: string; target: string }) {
   const dialog = page.getByRole("dialog", { name: "新建故事规划" });
-  await dialog.getByLabel("标题", { exact: true }).fill(values.title);
-  await dialog.getByLabel("摘要", { exact: true }).fill(values.summary);
-  await dialog.getByLabel("创作目标", { exact: true }).fill(values.goal);
-  await dialog.getByLabel("目标章节", { exact: true }).fill(values.target);
+  await dialog.getByRole("textbox", { name: "标题", exact: true }).fill(values.title);
+  await dialog.getByRole("textbox", { name: "摘要", exact: true }).fill(values.summary);
+  await dialog.getByRole("textbox", { name: "创作目标", exact: true }).fill(values.goal);
+  await dialog.getByRole("spinbutton", { name: "目标章节", exact: true }).fill(values.target);
   await dialog.getByRole("button", { name: "保存", exact: true }).click();
   await expect(dialog).toHaveCount(0);
 }
 
 async function saveCharacter(page: Page, name: string) {
   const dialog = page.getByRole("dialog", { name: "新建角色规划" });
-  await dialog.locator("input").first().fill(name);
-  await dialog.locator("select").first().selectOption("ally");
-  await dialog.locator("textarea").nth(0).fill("找回失踪的航海日志");
-  await dialog.locator("textarea").nth(1).fill("暂时隐瞒潮汐密码");
-  await dialog.locator("textarea").nth(2).fill("不要提前揭示身份");
+  await dialog.getByRole("textbox", { name: "姓名", exact: true }).fill(name);
+  await dialog.getByRole("combobox", { name: "角色类型", exact: true }).selectOption("ally");
+  await dialog.getByRole("textbox", { name: "角色目标", exact: true }).fill("找回失踪的航海日志");
+  await dialog.getByRole("textbox", { name: "计划状态", exact: true }).fill("暂时隐瞒潮汐密码");
+  await dialog.getByRole("textbox", { name: "备注", exact: true }).fill("不要提前揭示身份");
   await dialog.getByRole("button", { name: "保存", exact: true }).click();
   await expect(dialog).toHaveCount(0);
 }
 
 async function saveWorld(page: Page, name: string) {
   const dialog = page.getByRole("dialog", { name: "新建设定规划" });
-  await dialog.locator("input").first().fill(name);
-  await dialog.locator("select").first().selectOption("rule");
-  await dialog.locator("textarea").nth(0).fill("只有第三次雾钟响起后才会开启。");
-  await dialog.locator("textarea").nth(1).fill("后续章节使用，尚未成为正文事实");
+  await dialog.getByRole("textbox", { name: "名称", exact: true }).fill(name);
+  await dialog.getByRole("combobox", { name: "分类", exact: true }).selectOption("rule");
+  await dialog.getByRole("textbox", { name: "描述", exact: true }).fill("只有第三次雾钟响起后才会开启。");
+  await dialog.getByRole("textbox", { name: "备注", exact: true }).fill("后续章节使用，尚未成为正文事实");
   await dialog.getByRole("button", { name: "保存", exact: true }).click();
   await expect(dialog).toHaveCount(0);
 }
 
 async function screenshot(page: Page, name: string) {
   if (!process.env.E2E_OUTPUT_DIR) return;
-  await page.waitForTimeout(180);
   await page.screenshot({ path: path.join(process.env.E2E_OUTPUT_DIR, name), fullPage: true });
 }
 
@@ -110,7 +109,7 @@ test("v1.3.0 author planning keeps future plans editable and written records rea
   await page.getByRole("button", { name: "编辑 第一幕回港", exact: true }).click();
   const storyEdit = page.locator('.author-plan-dialog[aria-label="编辑故事规划"]');
   await expect(storyEdit).toBeVisible();
-  await storyEdit.locator("textarea").nth(0).fill("船员带着破损罗盘重返灰港。");
+  await storyEdit.getByRole("textbox", { name: "摘要", exact: true }).fill("船员带着破损罗盘重返灰港。");
   await storyEdit.getByRole("button", { name: "保存", exact: true }).click();
   await expect(storyEdit).toHaveCount(0);
   await expect(page.getByText("规划第 3 版", { exact: true })).toBeVisible();
@@ -136,7 +135,7 @@ test("v1.3.0 author planning keeps future plans editable and written records rea
   await page.getByRole("button", { name: "编辑 第二幕潮门", exact: true }).click();
   const conflictDialog = page.locator('.author-plan-dialog[aria-label="编辑故事规划"]');
   await expect(conflictDialog).toBeVisible();
-  await conflictDialog.locator("input").first().fill("未提交输入保留");
+  await conflictDialog.getByRole("textbox", { name: "标题", exact: true }).fill("未提交输入保留");
   const externalWrite = await page.request.patch(`${backendOrigin}/api/projects/${projectId}/author-intent/story-plans/${secondStory.id}`, {
     headers: { "Idempotency-Key": randomUUID() },
     data: { base_author_context_version: 5, title: "另一窗口版本" },
@@ -144,7 +143,7 @@ test("v1.3.0 author planning keeps future plans editable and written records rea
   expect(externalWrite.status()).toBe(200);
   await conflictDialog.getByRole("button", { name: "保存", exact: true }).click();
   await expect(conflictDialog.getByRole("alert")).toHaveText("内容已在其他窗口更新，已载入最新版本，请确认后重试。");
-  await expect(conflictDialog.getByLabel("标题", { exact: true })).toHaveValue("未提交输入保留");
+  await expect(conflictDialog.getByRole("textbox", { name: "标题", exact: true })).toHaveValue("未提交输入保留");
   await expect(page.getByText("规划第 6 版", { exact: true })).toBeVisible();
   const afterConflict = await data<AuthorSnapshot>(await page.request.get(`${backendOrigin}/api/projects/${projectId}/author-intent?include_archived=true`));
   expect(afterConflict.story_plans.find((item) => item.id === secondStory.id)?.title).toBe("另一窗口版本");
@@ -166,7 +165,7 @@ test("v1.3.0 author planning keeps future plans editable and written records rea
   await page.getByRole("button", { name: "编辑 温岚", exact: true }).click();
   const characterEdit = page.locator('.author-plan-dialog[aria-label="编辑角色规划"]');
   await expect(characterEdit).toBeVisible();
-  await characterEdit.locator("textarea").nth(2).fill("已交出罗盘，但仍保留密码");
+  await characterEdit.getByRole("textbox", { name: "备注", exact: true }).fill("已交出罗盘，但仍保留密码");
   await characterEdit.getByRole("button", { name: "保存", exact: true }).click();
   await expect(page.getByText("规划第 8 版", { exact: true })).toBeVisible();
   await screenshot(page, "author-planning-character-desktop.png");
@@ -185,7 +184,7 @@ test("v1.3.0 author planning keeps future plans editable and written records rea
   await page.getByRole("button", { name: "编辑 北潮门", exact: true }).click();
   const worldEdit = page.locator('.author-plan-dialog[aria-label="编辑设定规划"]');
   await expect(worldEdit).toBeVisible();
-  await worldEdit.locator("textarea").nth(1).fill("第十四章后才可写入正文");
+  await worldEdit.getByRole("textbox", { name: "备注", exact: true }).fill("第十四章后才可写入正文");
   await worldEdit.getByRole("button", { name: "保存", exact: true }).click();
   await expect(page.getByText("规划第 11 版", { exact: true })).toBeVisible();
   await screenshot(page, "author-planning-world-desktop.png");
@@ -240,8 +239,9 @@ test("v1.3.0 wide operational pages expand and center while bounded forms stay c
     if (!main || !content) throw new Error("home geometry missing");
     return { left: content.left, width: content.width, centerDelta: Math.abs((content.left + content.right) / 2 - (main.left + main.right) / 2) };
   });
-  expect(homeGeometry.width).toBeGreaterThan(1300);
-  expect(homeGeometry.width).toBeLessThanOrEqual(1481);
+  // visual-system.css: --global-page-max is 1210px, with a 1px geometry tolerance.
+  expect(homeGeometry.width).toBeGreaterThanOrEqual(1209);
+  expect(homeGeometry.width).toBeLessThanOrEqual(1211);
   expect(homeGeometry.centerDelta).toBeLessThanOrEqual(1);
   await expectNoOverflow(page);
   await screenshot(page, "wide-01-home-1920.png");
@@ -254,14 +254,15 @@ test("v1.3.0 wide operational pages expand and center while bounded forms stay c
   await page.setViewportSize({ width: 1920, height: 900 });
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
   await page.getByRole("button", { name: "新建作品", exact: true }).first().click();
-  const centeredForm = await page.locator(".create-project-page").evaluate((node) => {
+  const centeredForm = await page.getByRole("region", { name: "新建作品表单", exact: true }).evaluate((node) => {
     const box = node.getBoundingClientRect();
     const main = node.closest("main")?.getBoundingClientRect();
     if (!main) throw new Error("main geometry missing");
     return { centerDelta: Math.abs((box.left + box.right) / 2 - (main.left + main.right) / 2), width: box.width };
   });
   expect(centeredForm.centerDelta).toBeLessThanOrEqual(1);
-  expect(centeredForm.width).toBeLessThanOrEqual(821);
+  expect(centeredForm.width).toBeLessThanOrEqual(1211);
+  expect(centeredForm.width).toBeGreaterThanOrEqual(1209);
   await expectNoOverflow(page);
   await page.getByRole("textbox", { name: /作品名称/ }).fill("宽屏锚点验证");
   await page.getByRole("button", { name: "创建并进入作品", exact: true }).click();

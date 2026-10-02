@@ -24,7 +24,6 @@ async function register(page: Page, prefix: string) {
 
 async function screenshot(page: Page, name: string) {
   if (!process.env.E2E_OUTPUT_DIR) return;
-  await page.waitForTimeout(180);
   await page.screenshot({ path: path.join(process.env.E2E_OUTPUT_DIR, name), fullPage: true });
 }
 
@@ -88,11 +87,12 @@ test("personal profile persists display identity without changing the login acco
   await expect(page.getByRole("heading", { name: "创作概况", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "我的作品", exact: true })).toBeVisible();
   await expect(page.getByText("灰港手稿", { exact: true })).toBeVisible();
-  await expect(page.locator(".author-stat-list")).toContainText("真实作品1");
+  await expect(page.locator(".author-stat-list")).toContainText("我的作品1");
   await expect(page.locator(".author-stat-list")).toContainText("已写章节0");
   await expect(page.locator(".author-stat-list")).toContainText("正文与草稿字数0");
   await expect(page.locator(".compact-avatar-picker")).toHaveCount(0);
   await expect(page.getByText(credentials.account, { exact: true }).first()).toBeVisible();
+  await page.getByRole("button", { name: "编辑资料", exact: true }).click();
   await page.getByLabel("显示名称", { exact: true }).fill("灰港编辑");
   await page.getByRole("button", { name: "更换头像", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "更换头像", exact: true })).toBeVisible();
@@ -107,6 +107,7 @@ test("personal profile persists display identity without changing the login acco
   await screenshot(page, "global-01-profile-desktop.png");
 
   await page.reload();
+  await page.getByRole("button", { name: "编辑资料", exact: true }).click();
   await expect(page.getByLabel("显示名称", { exact: true })).toHaveValue("灰港编辑");
   await page.getByRole("button", { name: "更换头像", exact: true }).click();
   await expect(page.getByRole("radio", { name: /档案蓝/ })).toBeChecked();
@@ -176,7 +177,7 @@ test("overview hierarchy expands and centers at wide sizes while remaining reada
   await screenshot(page, "global-05-overview-2560.png");
 
   await page.goto("/projects/new");
-  const createCenter = await page.locator(".create-project-page").evaluate((node) => {
+  const createCenter = await page.getByRole("region", { name: "新建作品表单", exact: true }).evaluate((node) => {
     const box = node.getBoundingClientRect();
     const main = node.closest("main")?.getBoundingClientRect();
     if (!main) throw new Error("create page main missing");
@@ -208,8 +209,12 @@ test("writing issues preserve real Evidence, SourceSpan, keyboard focus, and pro
   await issueTrigger.click();
   const evidence = page.getByRole("dialog", { name: "问题证据", exact: true });
   await expect(evidence).toBeVisible();
-  await expect(evidence.getByText("对照当前草稿与已写章节来源，再作出作者决定。", { exact: true })).toBeVisible();
+  await expect(evidence.getByText(/先核对原文、既有依据和判断理由，再决定如何处理。$/)).toBeVisible();
   await expect(evidence.getByRole("button", { name: "关闭", exact: true })).toBeFocused();
+  await evidence.getByRole("button", { name: "查看完整证据", exact: true }).click();
+  for (const name of ["当前草稿", "历史证据", "判断理由", "作者决定"]) {
+    await expect(evidence.getByRole("heading", { name, exact: true })).toBeVisible();
+  }
   const sourceTrigger = evidence.getByRole("button", { name: /查看来源/ }).first();
   const evidenceUrl = page.url();
   await sourceTrigger.click();
