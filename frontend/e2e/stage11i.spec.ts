@@ -1,28 +1,9 @@
 import { expect, test } from "@playwright/test";
-import { randomUUID } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-
-const originalWork = path.resolve(process.cwd(), "e2e/fixtures/stage9-mist-harbor.md");
+import { importMarkdown, registerAccount, setDraftBody } from "./support/app";
 
 async function importAndOpenReview(page: import("@playwright/test").Page, title: string) {
-  await page.goto("/register");
-  await page.getByLabel("账号").fill(`stage11i${Date.now()}${Math.floor(Math.random() * 1000)}`);
-  await page.getByLabel("显示名称").fill("阶段十一作者");
-  await page.getByLabel("密码").fill(`test-${randomUUID()}`);
-  await page.getByRole("button", { name: "创建本地账号" }).click();
-  await page.getByRole("button", { name: "作品管理", exact: true }).click();
-  await page.getByRole("button", { name: "导入作品", exact: true }).click();
-  await page.locator('input[name="file"]').setInputFiles({
-    name: "mist-harbor.md",
-    mimeType: "text/markdown",
-    buffer: await readFile(originalWork),
-  });
-  await page.getByRole("button", { name: "解析并预览章节" }).click();
-  await page.getByRole("button", { name: "继续确认" }).click();
-  await page.getByLabel("作品名").fill(title);
-  await page.getByLabel("说明").fill("阶段 11I 确定性假 Provider 浏览器用例");
-  await page.getByRole("button", { name: "确认导入" }).click();
+  await registerAccount(page, { prefix: "stage11i" });
+  await importMarkdown(page, "stage9-mist-harbor.md", title);
   await page.getByRole("button", { name: "初始化事实库" }).click();
   await page.getByRole("button", { name: "审核候选与原文依据" }).click();
   return page.getByRole("form", { name: "事实库初始化审核" });
@@ -48,7 +29,7 @@ test("all core final plus a confirmed core keeps supporting pending outside cano
   expect(memory.data.records).toHaveLength(1);
   await review.getByRole("button", { name: "开始连续性检查" }).click();
   await expect(page.locator("#draft-body")).toBeVisible();
-  await page.locator("#draft-body").fill("钟声响起后，所有船只继续离开雾港。");
+  await setDraftBody(page, "钟声响起后，所有船只继续离开雾港。");
   await page.getByRole("button", { name: "保存草稿" }).click();
   await page.getByRole("button", { name: "运行连续性检查" }).click();
   await expect(page.locator(".issue-list li").first()).toBeVisible();

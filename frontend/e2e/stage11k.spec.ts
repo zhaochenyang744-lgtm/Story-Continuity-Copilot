@@ -1,19 +1,13 @@
 import { expect, test } from "@playwright/test";
-import { randomUUID } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-
-const fixture = path.resolve(process.cwd(), "frontend/e2e/fixtures/stage9-mist-harbor.md");
+import { importMarkdown, registerAccount } from "./support/app";
 
 async function api(page: import("@playwright/test").Page, path: string) {
   return page.evaluate(async (url) => (await fetch(url)).json(), path);
 }
 
 async function readyForDelta(page: import("@playwright/test").Page) {
-  await page.goto("/register");
-  const account=`stage11k${Date.now()}`; await page.getByLabel("账号").fill(account); await page.getByLabel("显示名称").fill("11K 作者"); await page.getByLabel("恢复邮箱").fill(`${account}@example.test`); await page.locator("#auth-password").fill(`safe-${randomUUID()}`); await page.getByRole("button",{name:"创建账号",exact:true}).click();
-  await page.getByRole("button",{name:"作品管理",exact:true}).click(); await page.getByRole("button",{name:"导入作品",exact:true}).click();
-  await page.locator('input[name="file"]').setInputFiles({name:"base.md",mimeType:"text/markdown",buffer:await readFile(fixture)}); await page.getByRole("button",{name:"解析并预览章节"}).click(); await page.getByRole("button",{name:"继续确认"}).click(); await page.getByLabel("作品名").fill("11K 增量作品"); await page.getByRole("button",{name:"确认导入"}).click();
+  await registerAccount(page, { prefix: "stage11k" });
+  await importMarkdown(page, "stage9-mist-harbor.md", "11K 增量作品");
   await page.getByRole("button",{name:"初始化事实库"}).click(); await page.getByRole("button",{name:"审核候选与原文依据"}).click(); const init=page.getByRole("form",{name:"事实库初始化审核"}); const core=init.locator("article.memory-init-candidate").filter({hasText:"核心候选（必须决定）"}); await core.getByLabel("接受（写入第 1 版事实库）").check(); await init.getByRole("button",{name:"确认核心审核并建立第 1 版事实库"}).click(); await expect(init.getByText("已建立部分事实库",{exact:true})).toBeVisible();
   const id=new URL(page.url()).pathname.split("/")[2]; await page.goto(`/projects/${id}/sources`); await page.getByLabel("章节正文").fill("# 增量章节\n林默将银钥匙交给守塔人。"); const preview=page.waitForResponse((r)=>r.url().includes("source-change-sets/preview")&&r.request().method()==="POST"); await page.getByRole("button",{name:"预览追加"}).click(); expect((await preview).status()).toBe(201); const commit=page.waitForResponse((r)=>/source-change-sets\/.+\/commit/.test(r.url())&&r.request().method()==="POST"); await page.getByRole("button",{name:"确认追加并创建下一章草稿"}).click(); expect((await commit).status()).toBe(200); return id;
 }
