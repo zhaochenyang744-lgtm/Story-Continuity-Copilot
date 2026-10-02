@@ -73,7 +73,7 @@ test("all core rejected remains in_review and Check fails closed", async ({ page
   await expect(core).toHaveCount(1);
   await core.getByLabel("拒绝（不写入）").check();
   await review.getByRole("button", { name: "确认核心审核并建立第 1 版事实库" }).click();
-  await expect(review.getByText("核心候选均未被确认；尚不能开始连续性检查。", { exact: true })).toBeVisible();
+  await expect(review.getByText("核心候选均未被确认；尚不能开始连续性检查。请在某个核心候选上选择“重新评估此候选”后重新决定；系统不会自动接受事实。", { exact: true })).toBeVisible();
   const projectId = new URL(page.url()).pathname.split("/")[2];
   const coverage = await page.evaluate(async (id) => (await fetch(`/api/projects/${id}/memory/coverage`)).json(), projectId);
   expect(coverage.data).toMatchObject({ status: "in_review", counts: { confirmed_core: 0, pending_canon_count: 0 } });

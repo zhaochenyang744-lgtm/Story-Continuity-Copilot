@@ -88,8 +88,8 @@ test("imported markdown follows author-reviewed Memory V1 initialization before 
   await expect(page.locator(".issue-list li").first()).toBeVisible();
   await page.locator(".issue-list li").first().getByRole("button").click();
   const drawer = page.getByRole("dialog", { name: "问题证据" });
-  await expect(drawer.getByRole("heading", { name: "Evidence", exact: true })).toBeVisible();
-  await expect(drawer.locator("blockquote")).not.toBeEmpty();
+  await expect(drawer.getByRole("heading", { name: "历史证据", exact: true })).toBeVisible();
+  await expect(drawer.locator(".evidence blockquote").first()).not.toBeEmpty();
 
   expect(failedRequests).toEqual([]);
   expect(consoleErrors).toEqual([]);

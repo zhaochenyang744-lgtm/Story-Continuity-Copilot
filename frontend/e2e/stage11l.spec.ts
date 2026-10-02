@@ -204,7 +204,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
     "# 追加章节\n第一轮：林默将银钥匙交给守塔人。",
   );
   const first = await start(page, author.id, 2);
-  await expect(page.getByRole("heading", { name: /连续性问题/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /^待处理提示/ })).toBeVisible();
   await expect(
     page.getByRole("region", { name: "事实更新建议" }),
   ).toBeVisible();
@@ -224,7 +224,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
   await page.locator(".issue-list button").first().click();
   const drawer = page.getByRole("dialog", { name: "问题证据" });
   await expect(drawer).toBeVisible();
-  await expect(drawer.getByText("证据", { exact: true })).toBeVisible();
+  await expect(drawer.getByRole("heading", { name: "历史证据", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(drawer).toBeHidden();
   await page
