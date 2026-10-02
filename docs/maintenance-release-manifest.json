@@ -496,6 +496,7 @@
     "frontend/e2e/legacy-gap-independent.spec.ts",
     "frontend/e2e/legacy-gap-round3-brief.spec.ts",
     "frontend/e2e/maintenance.spec.ts",
+    "frontend/e2e/review-entry.spec.ts",
     "frontend/e2e/stage11i.spec.ts",
     "frontend/e2e/stage11j.spec.ts",
     "frontend/e2e/stage11k.spec.ts",
