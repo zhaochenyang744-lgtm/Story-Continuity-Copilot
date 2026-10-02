@@ -289,13 +289,22 @@ test.describe.serial("Stage 5 real local workflow", () => {
       if (url.pathname === "/api/projects") projectRequests.push(url.search);
     });
     await startVisitor(page);
-    await expect(page.locator(".home-continue")).toContainText("灰港回声");
+    const inventory = await page.request.get("/api/projects?sort=title_asc");
+    expect(inventory.status()).toBe(200);
+    const projects = (await inventory.json()).data.projects as Array<{
+      title: string; updated_at: string; current_draft: { id: string } | null;
+    }>;
+    // home() and list_projects(): non-archived, non-tutorial projects, newest first.
+    const newest = [...projects].sort((a, b) => b.updated_at.localeCompare(a.updated_at));
+    const continuation = newest.find((project) => project.current_draft);
+    expect(continuation).toBeDefined();
+    await expect(page.locator(".home-continue")).toContainText(continuation!.title);
     await globalNavButton(page, "作品管理").click();
     await expect(page.locator(".project-rows li")).toHaveCount(3);
-    await expect(page.locator(".project-rows li").first()).toContainText("灰港回声");
+    await expect(page.locator(".project-rows li").first()).toContainText(newest[0].title);
     await page.getByLabel("搜索").fill("纸月档案");
-    await page.getByLabel("状态").selectOption("active");
-    await page.getByLabel("排序").selectOption("title_asc");
+    await page.getByRole("combobox", { name: "状态", exact: true }).selectOption("active");
+    await page.getByRole("combobox", { name: "排序", exact: true }).selectOption("title_asc");
     await page.getByRole("button", { name: "应用条件" }).click();
     await expect(page.locator(".project-rows li")).toHaveCount(1);
     await expect(page.locator(".project-rows li")).toContainText("纸月档案");
