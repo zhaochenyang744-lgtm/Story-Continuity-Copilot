@@ -490,6 +490,7 @@
     "docs/v1.4.0-backend-sync.md",
     "docs/v1.4.0-phase0-contract.md",
     "frontend/e2e/auth-entry.spec.ts",
+    "frontend/e2e/controlled-edit-run.spec.ts",
     "frontend/e2e/g02-controller-post-v4.spec.ts",
     "frontend/e2e/g02-controller.spec.ts",
     "frontend/e2e/legacy-gap-independent-round2.spec.ts",
