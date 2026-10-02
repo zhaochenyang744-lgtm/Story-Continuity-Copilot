@@ -650,7 +650,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await globalNavButton(page, "作品管理").click();
     await expect(page.getByRole("heading", { name: "作品管理" })).toBeVisible();
     await expect(page.locator(".project-rows li")).toHaveCount(0);
-    await page.getByRole("button", { name: "新建作品", exact: true }).click();
+    await page.locator(".library-header").getByRole("button", { name: "新建作品", exact: true }).click();
     await expect(page.getByRole("heading", { name: "新建作品" })).toBeVisible();
     await createProject(page, "空白试作", { kind: "其他", customKind: "测试" });
     await expect(page.locator(".memory-panel").getByRole("heading", { name: "第 1 版", exact: true })).toBeVisible();
