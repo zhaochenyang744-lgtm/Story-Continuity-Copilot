@@ -510,6 +510,7 @@
     "frontend/e2e/support/app.smoke.spec.ts",
     "frontend/e2e/support/app.ts",
     "frontend/e2e/support/batch2.ts",
+    "frontend/e2e/support/batch3.ts",
     "frontend/e2e/v110.spec.ts",
     "frontend/e2e/v120.spec.ts",
     "frontend/e2e/v130-author-planning.spec.ts",
