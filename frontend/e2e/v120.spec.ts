@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
+import { createProject } from "./support/app";
 
 const backendOrigin = process.env.E2E_BACKEND_ORIGIN;
 if (!backendOrigin) throw new Error("E2E_BACKEND_ORIGIN is required");
@@ -20,13 +21,11 @@ async function register(page: Page) {
 
 async function screenshot(page: Page, name: string) {
   if (!process.env.E2E_OUTPUT_DIR) return;
-  await page.waitForTimeout(450);
   await page.screenshot({ path: path.join(process.env.E2E_OUTPUT_DIR, name), fullPage: true });
 }
 
 async function screenshotViewport(page: Page, name: string) {
   if (!process.env.E2E_OUTPUT_DIR) return;
-  await page.waitForTimeout(120);
   await page.screenshot({ path: path.join(process.env.E2E_OUTPUT_DIR, name), fullPage: false });
 }
 
@@ -35,6 +34,7 @@ async function expectLoadedBitmap(
   selector: string,
   expectedPath: string,
   expectedParentClass: string,
+  maximumCornerAlpha = 0,
 ) {
   const image = page.locator(selector).first();
   await expect(image).toBeVisible();
@@ -72,7 +72,9 @@ async function expectLoadedBitmap(
   expect(material.borderRadius).toBe("0px");
   expect(material.borderWidths).toEqual(["0px", "0px", "0px", "0px"]);
   expect(material.boxShadow).toBe("none");
-  expect(material.corners).toEqual([0, 0, 0, 0]);
+  // The v1.4 manuscript PNG has corner alpha [0,0,1,0] in the source asset;
+  // its resized Next image may round that one alpha unit down to zero.
+  expect(material.corners.every((alpha) => alpha <= maximumCornerAlpha)).toBe(true);
   expect(material.parentClasses).toContain(expectedParentClass);
 }
 
@@ -82,15 +84,15 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await page.setViewportSize({ width: 1440, height: 900 });
   const credentials = await register(page);
   await expect(page.getByLabel("首次教学")).toBeVisible();
-  await expectLoadedBitmap(page, ".empty-manuscript-visual", "/assets/v120/empty-manuscript-alpha.webp", "home-entry-composition");
+  await expectLoadedBitmap(page, ".empty-manuscript-visual", "/assets/v140/manuscript-glass.png", "home-entry-art", 1);
   await expect(page.locator("svg.empty-manuscript-visual, svg.empty-library-visual, svg.tutorial-complete-visual")).toHaveCount(0);
   expect(
     await page
       .locator(".home-entry-composition")
       .evaluate((node) => getComputedStyle(node).gridTemplateColumns.split(" ").length),
-  ).toBe(3);
+  ).toBe(2);
   await expect(page.locator(".home-empty-state")).toHaveCount(2);
-  await expect(page.getByRole("button", { name: "查看全部", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "查看全部", exact: true })).toHaveCount(1);
   const homeSectionHeaders = page.locator(".home-section-grid .home-section-head");
   await expect(homeSectionHeaders).toHaveCount(2);
   const homeHeaderStyles = await homeSectionHeaders.evaluateAll((nodes) =>
@@ -125,28 +127,31 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
       }),
     };
   });
-  expect(desktopSecondaryRegions.gridBorderTop).toBe("1px");
+  expect(desktopSecondaryRegions.gridBorderTop).toBe("0px");
   expect(desktopSecondaryRegions.sections).toEqual([
-    { background: "rgba(0, 0, 0, 0)", borderTop: "0px", borderRight: "0px", borderBottom: "0px", borderLeft: "0px", borderRadius: "0px", boxShadow: "none" },
-    { background: "rgba(0, 0, 0, 0)", borderTop: "0px", borderRight: "0px", borderBottom: "0px", borderLeft: "1px", borderRadius: "0px", boxShadow: "none" },
+    { background: "rgb(24, 23, 33)", borderTop: "1px", borderRight: "1px", borderBottom: "1px", borderLeft: "1px", borderRadius: "14px", boxShadow: "none" },
+    { background: "rgb(24, 23, 33)", borderTop: "1px", borderRight: "1px", borderBottom: "1px", borderLeft: "1px", borderRadius: "14px", boxShadow: "none" },
   ]);
   await screenshot(page, "01-home-first-run.png");
 
   await page.setViewportSize({ width: 1366, height: 720 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await screenshot(page, "01c-home-first-run-1366x720.png");
 
   await page.setViewportSize({ width: 390, height: 844 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await expect(page.locator(".home-entry-composition")).toBeVisible();
   const mobileSecondRegion = await page.locator(".home-section-grid .home-section").nth(1).evaluate((section) => {
     const style = getComputedStyle(section);
     return { borderTop: style.borderTopWidth, borderLeft: style.borderLeftWidth, borderRadius: style.borderRadius };
   });
-  expect(mobileSecondRegion).toEqual({ borderTop: "1px", borderLeft: "0px", borderRadius: "0px" });
+  expect(mobileSecondRegion).toEqual({ borderTop: "1px", borderLeft: "1px", borderRadius: "14px" });
   await screenshot(page, "01b-home-first-run-mobile.png");
   await page.setViewportSize({ width: 1440, height: 900 });
 
+  // Drive the product's 12-second idle timer (Workbench.tsx:652-657) without
+  // fixed wall-clock waits or extending assertion timeouts.
+  await page.clock.install();
   await page.getByRole("button", { name: "开始教学", exact: true }).click();
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 1 / 5");
   await expect(page.getByLabel("五步教学进度").locator("li")).toHaveCount(5);
@@ -163,7 +168,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   const idleRoute = page.url();
   const idleScrollY = await page.evaluate(() => window.scrollY);
   const focusBeforeIdle = await page.evaluateHandle(() => document.activeElement);
-  await page.waitForTimeout(12_300);
+  await page.clock.runFor(12_000);
   const idleHint = page.locator(".tutorial-guidance-hint");
   const idleTarget = page.locator('[data-tutorial-guidance-target="true"]');
   await expect(idleHint).toHaveText("下一步：打开事实库");
@@ -176,6 +181,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await screenshotViewport(page, "16-tutorial-guidance-desktop.png");
 
   await page.getByRole("button", { name: "大纲", exact: true }).click();
+  await page.getByRole("button", { name: "已写章节", exact: true }).click();
   await expect(idleHint).toHaveCount(0);
   await expect(idleTarget).toHaveCount(0);
   await expect(page.locator(".outline-timeline li")).toHaveCount(10);
@@ -202,10 +208,12 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await screenshot(page, "03-outline-timeline.png");
 
   await page.getByRole("button", { name: "角色库", exact: true }).click();
+  await page.getByRole("button", { name: "正文档案", exact: true }).click();
   await expect(page.locator(".character-detail")).toBeVisible();
   await screenshot(page, "04-character-archive.png");
 
   await page.getByRole("button", { name: "世界观", exact: true }).click();
+  await page.getByRole("button", { name: "正文资料", exact: true }).click();
   await expect(page.locator(".world-detail")).toBeVisible();
   await expect(page.getByText("暂未建立关联", { exact: true })).toBeVisible();
   await expect(page.getByText("当前接口尚未提供关联字段", { exact: true })).toHaveCount(0);
@@ -222,10 +230,12 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   });
   expect(readonlyStyle.fontSize).toBeGreaterThanOrEqual(13);
   expect(readonlyStyle.lineHeight).toBeGreaterThanOrEqual(readonlyStyle.fontSize * 1.5);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  const titleBox = await page.getByRole("heading", { name: "世界观", exact: true }).boundingBox();
-  if (!titleBox) throw new Error("world title is not measurable");
-  expect(titleBox.y).toBeLessThanOrEqual(150);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
+  await expect.poll(async () => Math.abs(await page.getByRole("heading", { name: "世界观", exact: true }).evaluate((node) => {
+    const main = node.closest("main");
+    if (!main) throw new Error("world heading has no main container");
+    return node.getBoundingClientRect().top - main.getBoundingClientRect().top - Number.parseFloat(getComputedStyle(main).paddingTop);
+  }))).toBeLessThanOrEqual(1);
   await screenshot(page, "06-mobile-world-tutorial.png");
 
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -239,6 +249,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   ).toHaveCount(1);
 
   await page.getByRole("button", { name: "大纲", exact: true }).click();
+  await page.getByRole("button", { name: "已写章节", exact: true }).click();
   await expect(page).toHaveURL(/\/projects\/[^/]+\/outline$/);
   await expect(page.locator(".outline-timeline li")).toHaveCount(10);
   const outlineRouteAfterManualNavigation = page.url();
@@ -248,7 +259,6 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   const outlineFocusAfterManualNavigation = await page.evaluateHandle(
     () => document.activeElement,
   );
-  await page.waitForTimeout(900);
   await expect(page.locator(".tutorial-guidance-hint")).toHaveCount(0);
   await expect(
     page.locator('[data-tutorial-guidance-target="true"]'),
@@ -264,7 +274,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
     ),
   ).toBe(true);
 
-  await page.waitForTimeout(12_300);
+  await page.clock.runFor(12_000);
   await expect(page.locator(".tutorial-guidance-hint")).toHaveText(
     "下一步：打开事实库",
   );
@@ -310,12 +320,17 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   expect(activeFilterGeometry.buttonLeft).toBeGreaterThanOrEqual(activeFilterGeometry.navLeft);
   expect(activeFilterGeometry.buttonRight).toBeLessThanOrEqual(activeFilterGeometry.navRight);
   await memoryNav.getByRole("button", { name: "全部事实", exact: true }).click();
-  expect(await page.locator(".memory-row:not(.memory-head) .memory-field").first().evaluate((node) => getComputedStyle(node, "::before").content)).toBe('"属性"');
+  expect(await page.locator(".memory-row:not(.memory-head) .memory-field").first().evaluate((node) => getComputedStyle(node, "::before").content)).toBe('"事实内容"');
   expect(await page.locator(".memory-source:not(:disabled)").first().evaluate((node) => node.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await screenshot(page, "07b-mobile-story-memory.png");
 
   await page.emulateMedia({ reducedMotion: "reduce" });
+  // globals.css:3243 hides compact tutorial actions on mobile. Expand the
+  // tutorial before invoking its current guidance action (Workbench:4625).
+  const mobileTutorial = page.getByRole("region", { name: "教学模式", exact: true });
+  await mobileTutorial.getByRole("button", { name: "展开说明", exact: true }).click();
+  await expect(mobileTutorial.getByRole("button", { name: "收起说明", exact: true })).toHaveAttribute("aria-expanded", "true");
   await locateMemorySource.click();
   await expect(page.locator(".tutorial-guidance-hint")).toBeVisible();
   const reducedGuidanceDuration = await page.locator('[data-tutorial-guidance-key="memory-source"]').evaluate((node) => {
@@ -323,7 +338,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
     return duration.endsWith("ms") ? Number.parseFloat(duration) / 1000 : Number.parseFloat(duration);
   });
   expect(reducedGuidanceDuration).toBeLessThanOrEqual(0.001);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await screenshotViewport(page, "16b-tutorial-guidance-mobile.png");
   await page.emulateMedia({ reducedMotion: "no-preference" });
 
@@ -340,7 +355,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   expect(await sourceDrawer.locator(".source-technical").evaluate((node) => (node as HTMLDetailsElement).open)).toBe(false);
   const sourceClose = sourceDrawer.getByRole("button", { name: "关闭章节来源", exact: true });
   await expect(sourceClose).toBeFocused();
-  await page.waitForTimeout(12_300);
+  await page.clock.runFor(12_000);
   await expect(page.locator(".tutorial-guidance-hint")).toHaveText("看完来源后，关闭并继续");
   await expect(page.locator('[data-tutorial-guidance-key="source-close"]')).toHaveCount(1);
   await expect(page.locator('[data-tutorial-guidance-target="true"]')).toHaveCount(1);
@@ -378,15 +393,27 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await expect(page.locator(".memory-row:not(.memory-head)")).toHaveCount(8);
 
   await page.getByRole("button", { name: "去写作与检查", exact: true }).click();
+  await expect(page).toHaveURL(/\/projects\/[^/]+\/workspace$/);
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 2 / 5");
+  // Workbench:2615-2623 records continuity_issue_located on selecting an
+  // issue; backend/v2_database.py:43-47 advances that event to step 3.
+  const tutorialIssue = page.locator(".issue-row").first();
+  await tutorialIssue.click();
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 3 / 5");
-  await expect(page.locator(".tutorial-guidance-hint")).toHaveText("下一步：打开这条高风险问题");
-  await expect(page.locator('[data-tutorial-guidance-key="high-risk-issue"]')).toHaveCount(1);
+  const preparation = page.getByRole("dialog", { name: "问题证据", exact: true });
+  await expect(preparation.getByRole("heading", { name: "准备核对依据", exact: true })).toBeVisible();
+  await preparation.getByRole("button", { name: "关闭", exact: true }).click();
+  await expect(preparation).toHaveCount(0);
+  await expect(tutorialIssue).toBeFocused();
+  await page.clock.runFor(12_000);
+  await expect(page.locator(".tutorial-guidance-hint")).toHaveText("下一步：打开第一条待审问题");
+  await expect(page.locator('[data-tutorial-guidance-key="reviewable-issue"]')).toHaveCount(1);
   await expect(page.locator(".evidence-layer")).toHaveCount(0);
   const titleInput = page.locator(".editor-title-input input");
-  const draftInput = page.locator(".draft-field textarea");
+  const draftInput = page.getByRole("textbox", { name: "草稿正文", exact: true });
   const writingTypography = await page.locator(".workspace-grid").evaluate((node) => {
     const title = node.querySelector(".editor-title-input input");
-    const draft = node.querySelector(".draft-field textarea");
+    const draft = node.querySelector("#draft-body");
     if (!title || !draft) throw new Error("writing typography is not measurable");
     const titleStyle = getComputedStyle(title);
     const draftStyle = getComputedStyle(draft);
@@ -399,35 +426,83 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
       draftPaddingLeft: Number.parseFloat(draftStyle.paddingLeft),
       draftPaddingRight: Number.parseFloat(draftStyle.paddingRight),
       focusToken: getComputedStyle(document.documentElement).getPropertyValue("--focus").trim(),
-      violetFocusToken: getComputedStyle(document.documentElement).getPropertyValue("--violet-300").trim(),
+      violetFocusToken: getComputedStyle(document.documentElement).getPropertyValue("--violet-400").trim(),
     };
   });
   expect(writingTypography.titleSize).toBeGreaterThanOrEqual(20);
   expect(writingTypography.titleSize).toBeLessThanOrEqual(24);
-  expect(writingTypography.titleFamily).toMatch(/serif/i);
-  expect(writingTypography.draftLineHeight / writingTypography.draftSize).toBeGreaterThanOrEqual(1.85);
-  expect(writingTypography.draftLineHeight / writingTypography.draftSize).toBeLessThanOrEqual(1.95);
-  expect(writingTypography.draftWidth).toBeLessThanOrEqual(680);
-  expect(writingTypography.draftPaddingLeft).toBeGreaterThanOrEqual(22);
-  expect(writingTypography.draftPaddingRight).toBeGreaterThanOrEqual(22);
+  expect(writingTypography.titleFamily).toContain('"Segoe UI"');
+  expect(writingTypography.draftLineHeight / writingTypography.draftSize).toBe(2);
+  expect(writingTypography.draftPaddingLeft).toBe(20);
+  expect(writingTypography.draftPaddingRight).toBe(20);
+  const manuscriptInnerWidth = await page.getByRole("region", { name: "章节编辑", exact: true }).evaluate((node) => {
+    const style = getComputedStyle(node);
+    return node.getBoundingClientRect().width - Number.parseFloat(style.paddingLeft) - Number.parseFloat(style.paddingRight) - Number.parseFloat(style.borderLeftWidth) - Number.parseFloat(style.borderRightWidth);
+  });
+  expect(Math.abs(writingTypography.draftWidth - manuscriptInnerWidth)).toBeLessThanOrEqual(1);
   expect(writingTypography.focusToken).toBe(writingTypography.violetFocusToken);
   await titleInput.focus();
   expect(await titleInput.evaluate((node) => getComputedStyle(node).borderTopColor)).not.toBe("rgba(0, 0, 0, 0)");
-  await draftInput.focus();
-  expect(await draftInput.evaluate((node) => getComputedStyle(node).outlineStyle)).toBe("solid");
+  // The rich editor follows the chapter title in keyboard order (Workbench:5297-5313).
+  await page.keyboard.press("Tab");
+  await expect(draftInput).toBeFocused();
+  const draftFocusEvidence = await draftInput.evaluate((node) => {
+    const style = getComputedStyle(node);
+    const editorBox = node.getBoundingClientRect();
+    const selection = window.getSelection();
+    const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
+    const rangeBox = range?.getBoundingClientRect();
+    return {
+      focused: document.activeElement === node,
+      activeElementTag: document.activeElement?.tagName,
+      tag: node.tagName,
+      role: node.getAttribute("role"),
+      contenteditable: node.getAttribute("contenteditable"),
+      caretColor: style.caretColor,
+      color: style.color,
+      backgroundColor: style.backgroundColor,
+      outlineStyle: style.outlineStyle,
+      outlineWidth: style.outlineWidth,
+      outlineColor: style.outlineColor,
+      boxShadow: style.boxShadow,
+      border: { width: style.borderTopWidth, color: style.borderTopColor },
+      editor: { x: editorBox.x, y: editorBox.y, right: editorBox.right, bottom: editorBox.bottom },
+      viewportHeight: window.innerHeight,
+      selection: {
+        anchorInside: selection?.anchorNode ? node.contains(selection.anchorNode) : false,
+        focusInside: selection?.focusNode ? node.contains(selection.focusNode) : false,
+        collapsed: selection?.isCollapsed,
+        anchorOffset: selection?.anchorOffset,
+        range: rangeBox ? { x: rangeBox.x, y: rangeBox.y, width: rangeBox.width, height: rangeBox.height } : null,
+      },
+    };
+  });
+  await test.info().attach("draft-focus-evidence", { body: Buffer.from(JSON.stringify(draftFocusEvidence, null, 2)), contentType: "application/json" });
+  await test.info().attach("draft-focused-caret", { body: await page.screenshot({ caret: "initial" }), contentType: "image/png" });
+  // reference-refresh.css:317 removes the old textarea outline. Verify the
+  // rich editor's visible insertion caret after keyboard entry instead.
+  expect(draftFocusEvidence.caretColor).toBe(draftFocusEvidence.color);
+  expect(draftFocusEvidence.caretColor).not.toMatch(/^(transparent|rgba\([^,]+,[^,]+,[^,]+,\s*0\))$/);
+  expect(draftFocusEvidence.selection).toMatchObject({ anchorInside: true, focusInside: true, collapsed: true });
+  const caretRange = draftFocusEvidence.selection.range;
+  expect(caretRange).not.toBeNull();
+  if (!caretRange) throw new Error("Focused rich editor has no insertion range");
+  expect(caretRange.height).toBeGreaterThan(0);
+  expect(caretRange.x).toBeGreaterThanOrEqual(draftFocusEvidence.editor.x);
+  expect(caretRange.x + caretRange.width).toBeLessThanOrEqual(draftFocusEvidence.editor.right);
+  expect(caretRange.y).toBeGreaterThanOrEqual(draftFocusEvidence.editor.y);
+  expect(caretRange.y + caretRange.height).toBeLessThanOrEqual(Math.min(draftFocusEvidence.editor.bottom, draftFocusEvidence.viewportHeight));
   await expect(page.locator(".run-technical")).not.toHaveAttribute("open", "");
-  await expect(page.locator(".workspace-technical")).not.toHaveAttribute("open", "");
   await expect(page.locator(".run-technical").getByText("模型服务用量", { exact: true })).toBeHidden();
   await page.locator(".run-technical > summary").click();
   await expect(page.locator(".run-technical").getByText("模型服务用量", { exact: true })).toBeVisible();
   await expect(page.locator(".run-technical").getByText("证据谱系", { exact: true })).toBeVisible();
   await page.locator(".run-technical > summary").click();
-  const issueTrigger = page.locator(".issue-list button").first();
+  const issueTrigger = page.locator(".issue-row").first();
   await page.setViewportSize({ width: 1100, height: 820 });
   const issuesWidth = await page.locator(".issues").evaluate((node) => node.getBoundingClientRect().width);
-  expect(issuesWidth).toBeGreaterThanOrEqual(310);
-  expect(issuesWidth).toBeLessThanOrEqual(330);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(issuesWidth).toBe(280);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await screenshot(page, "08a-workspace-1100.png");
   await page.setViewportSize({ width: 1440, height: 900 });
   await issueTrigger.click();
@@ -448,9 +523,19 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await expect(drawer).toBeVisible();
   await expect(drawerClose).toBeFocused();
   await expect(drawer.getByRole("heading", { name: "当前草稿" })).toBeVisible();
+  await expect(drawer.getByRole("heading", { name: "准备核对依据", exact: true })).toBeVisible();
+  await drawer.getByRole("button", { name: "查看完整证据", exact: true }).click();
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 4 / 5");
   await expect(drawer.getByRole("heading", { name: "历史证据" })).toBeVisible();
-  await expect(drawer.getByRole("heading", { name: "冲突说明" })).toBeVisible();
+  await expect(drawer.getByRole("heading", { name: "判断理由" })).toBeVisible();
   await expect(drawer.getByRole("heading", { name: "作者决定" })).toBeVisible();
+  await test.info().attach("evidence-gate-focus", {
+    body: Buffer.from(JSON.stringify(await drawer.evaluate((node) => ({
+      focusInside: node.contains(document.activeElement),
+      activeElement: { tag: document.activeElement?.tagName, id: document.activeElement?.id, text: document.activeElement?.textContent?.slice(0, 80) },
+    })), null, 2)),
+    contentType: "application/json",
+  });
   await expect(drawer.getByText("Accept & edit", { exact: true })).toHaveCount(0);
   expect(
     await drawer
@@ -473,7 +558,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   expect(claimSurfaces.currentBackground).not.toBe(claimSurfaces.historyBackground);
   expect(claimSurfaces.currentBorder).not.toBe(claimSurfaces.historyBorder);
   await expect(issueTrigger).toHaveClass(/selected/);
-  await page.waitForTimeout(12_300);
+  await page.clock.runFor(12_000);
   await expect(page.locator(".tutorial-guidance-hint")).toHaveText("请选择一种处理方式，教学不会替你决定");
   await expect(page.locator('[data-tutorial-guidance-key="author-decision"]')).toHaveCount(1);
   await expect(page.locator(".author-decision [data-tutorial-guidance-target]")).toHaveCount(0);
@@ -483,11 +568,11 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(drawer.getByText("移动端可以浏览完整证据。请在桌面端继续完成作者决定。", { exact: true })).toBeVisible();
   await expect(drawer.locator(".author-decision")).toHaveCount(0);
-  await page.waitForTimeout(12_300);
+  await page.clock.runFor(12_000);
   await expect(page.locator(".tutorial-guidance-hint")).toHaveText("请在桌面端继续完成作者决定");
   await expect(page.locator('[data-tutorial-guidance-key="mobile-decision-note"]')).toHaveCount(1);
   await expect(page.locator('[data-tutorial-guidance-target="true"]')).toHaveCount(1);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   const mobileGuidanceWidth = await page.locator(".tutorial-guidance-hint").evaluate((node) => node.getBoundingClientRect().width);
   expect(mobileGuidanceWidth).toBeLessThanOrEqual(358);
   await screenshotViewport(page, "16b-tutorial-guidance-mobile.png");
@@ -506,7 +591,8 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await expect.poll(async () => {
     const sourceDrawerBox = await evidenceSourceDrawer.boundingBox();
     if (!sourceDrawerBox) return Number.POSITIVE_INFINITY;
-    return Math.abs(sourceDrawerBox.x + sourceDrawerBox.width - 1440);
+    const layoutWidth = await page.evaluate(() => document.documentElement.getBoundingClientRect().width);
+    return Math.abs(sourceDrawerBox.x + sourceDrawerBox.width - layoutWidth);
   }).toBeLessThanOrEqual(1);
   const evidenceSourceClose = evidenceSourceDrawer.getByRole("button", { name: "关闭章节来源", exact: true });
   await expect(evidenceSourceClose).toBeFocused();
@@ -517,7 +603,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await expect(drawer).toBeVisible();
   await screenshot(page, "08-evidence-decision-drawer.png");
 
-  await drawer.getByRole("button", { name: "保留当前写法", exact: true }).click();
+  await drawer.getByRole("button", { name: "保留原意", exact: true }).click();
   await expect(drawer.getByRole("status")).toContainText("决定已记录");
   await expect(issueTrigger).toHaveClass(/resolved/);
   await expect(issueTrigger).toHaveClass(/selected/);
@@ -542,7 +628,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   expect(desktopCompletionHeight).toBeLessThanOrEqual(190);
   await screenshot(page, "08b-compact-tutorial-completion.png");
   await page.setViewportSize({ width: 390, height: 844 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await expect(page.locator(".tutorial-completion-bar")).toBeVisible();
   await screenshot(page, "08c-compact-tutorial-completion-mobile.png");
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -561,12 +647,15 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
 
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
   await expect(page.getByRole("heading", { name: "还没有真实作品", exact: true })).toBeVisible();
-  await expectLoadedBitmap(page, ".empty-library-visual", "/assets/v120/empty-library-alpha.webp", "project-empty-state");
+  await expectLoadedBitmap(page, ".empty-library-visual", "/assets/v140/manuscript-glass.png", "library-hero-art", 1);
   await expect(page.locator(".project-toolbar")).toHaveCount(0);
-  await expect(page.locator(".page-header > .actions")).toHaveCount(0);
+  const libraryHeaderActions = page.locator(".library-header > .actions");
+  await expect(libraryHeaderActions).toHaveCount(1);
+  await expect(libraryHeaderActions.getByRole("button", { name: "新建作品", exact: true })).toHaveCount(1);
+  await expect(libraryHeaderActions.getByRole("button", { name: "导入作品", exact: true })).toHaveCount(0);
   await expect(page.locator(".project-empty-state .actions")).toHaveCount(1);
-  await expect(page.getByRole("button", { name: "导入作品", exact: true })).toHaveCount(1);
-  await expect(page.getByRole("button", { name: "新建作品", exact: true })).toHaveCount(1);
+  await expect(page.locator(".project-empty-state").getByRole("button", { name: "导入作品", exact: true })).toHaveCount(1);
+  await expect(page.locator(".project-empty-state").getByRole("button", { name: "新建作品", exact: true })).toHaveCount(1);
   await screenshot(page, "11-projects-empty.png");
 
   const accountTrigger = page.getByRole("button", { name: "用户菜单", exact: true });
@@ -585,42 +674,50 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   await expect(accountMenu).toBeVisible();
   const mobileMenuBox = await accountMenu.boundingBox();
   if (!mobileMenuBox) throw new Error("mobile account menu is not measurable");
-  expect(390 - mobileMenuBox.x - mobileMenuBox.width).toBeGreaterThanOrEqual(15);
+  const mobileLayoutWidth = await page.evaluate(() => document.documentElement.getBoundingClientRect().width);
+  expect(Math.abs(mobileLayoutWidth - 1 - mobileMenuBox.x - mobileMenuBox.width - 16)).toBeLessThanOrEqual(1);
   expect(mobileMenuBox.width).toBeLessThanOrEqual(358);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await screenshot(page, "12b-account-menu-mobile.png");
   await page.keyboard.press("Escape");
   await expect(accountTrigger).toBeFocused();
 
   await page.setViewportSize({ width: 1433, height: 898 });
-  await page.getByRole("button", { name: "导入作品", exact: true }).click();
+  await page.locator(".project-empty-state").getByRole("button", { name: "导入作品", exact: true }).click();
   await expect(page).toHaveURL(/\/projects\/import$/);
   const importGeometry = await page.locator(".import-page").evaluate((node) => {
     const pageBox = node.getBoundingClientRect();
     const mainBox = node.closest("main")?.getBoundingClientRect();
     const stepsBox = node.querySelector(".import-steps")?.getBoundingClientRect();
+    const layout = node.querySelector(".design-import-layout");
+    const layoutBox = layout?.getBoundingClientRect();
     const panelBox = node.querySelector(".import-panel")?.getBoundingClientRect();
-    if (!mainBox || !stepsBox || !panelBox) throw new Error("import layout is not measurable");
+    if (!mainBox || !stepsBox || !layout || !layoutBox || !panelBox) throw new Error("import layout is not measurable");
+    const layoutStyle = getComputedStyle(layout);
+    const columns = layoutStyle.gridTemplateColumns.split(" ").map(Number.parseFloat);
     return {
       centerDelta: Math.abs((pageBox.left + pageBox.right) / 2 - (mainBox.left + mainBox.right) / 2),
-      panelStepWidthDelta: Math.abs(panelBox.width - stepsBox.width),
+      layoutStepWidthDelta: Math.abs(layoutBox.width - stepsBox.width),
+      columns: columns.length,
+      formFirstColumnDelta: Math.abs(panelBox.width - columns[0]),
+      formLeftDelta: Math.abs(panelBox.left - layoutBox.left - Number.parseFloat(layoutStyle.paddingLeft) - Number.parseFloat(layoutStyle.borderLeftWidth)),
     };
   });
   expect(importGeometry.centerDelta).toBeLessThanOrEqual(1);
-  expect(importGeometry.panelStepWidthDelta).toBeLessThanOrEqual(1);
+  // visual-system.css:2689-2690: the full layout spans the steps; the upload
+  // form occupies its first column beside the tips, rather than the whole row.
+  expect(importGeometry.layoutStepWidthDelta).toBeLessThanOrEqual(1);
+  expect(importGeometry.columns).toBe(2);
+  expect(importGeometry.formFirstColumnDelta).toBeLessThanOrEqual(1);
+  expect(importGeometry.formLeftDelta).toBeLessThanOrEqual(1);
   await screenshot(page, "13-import-balanced.png");
 
   await page.setViewportSize({ width: 390, height: 844 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await screenshot(page, "13b-import-balanced-mobile.png");
 
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/projects/new");
-  await page.getByLabel("作品名称", { exact: true }).fill("真实模型尺寸验收作品");
-  await page.getByLabel("类型", { exact: true }).fill("长篇小说");
-  await page.getByLabel("简介", { exact: true }).fill("用于验证真实项目行、空检查状态与写作界面的响应式尺寸。");
-  await page.getByRole("button", { name: "创建并进入作品", exact: true }).click();
-  await expect(page).toHaveURL(/\/projects\/[^/]+\/overview$/);
+  await createProject(page, "真实模型尺寸验收作品", { kind: "其他", customKind: "长篇小说", summary: "用于验证真实项目行、空检查状态与写作界面的响应式尺寸。" });
   await page.getByRole("button", { name: "写作与检查", exact: true }).click();
   await expect(page).toHaveURL(/\/projects\/[^/]+\/workspace$/);
   await expect(page.locator(".issues-empty")).toContainText("检查结果会显示在这里");
@@ -630,7 +727,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
 
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator(".readonly").filter({ hasText: readonlyCopy })).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await screenshot(page, "14b-no-run-readonly-mobile.png");
 
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -648,7 +745,7 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
       return headerCells.map((cell, index) => Math.abs(cell.getBoundingClientRect().left - rowCells[index].getBoundingClientRect().left));
     });
     expect(Math.max(...columnOffsets)).toBeLessThanOrEqual(2);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
     await screenshot(page, viewport.screenshotName);
   }
 

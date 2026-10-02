@@ -28,8 +28,9 @@ async function register(context: BrowserContext, suffix: string) {
     headers: idempotency(),
     data: { account_name: account, display_name: suffix, password: "valid-password-13", recovery_email: recovery },
   });
-  const payload = await data<{ user: { id: string }; seeded_projects: { id: string }[] }>(response);
-  return { ...payload, account, recovery };
+  const payload = await data<{ user: { id: string }; seeded_projects: { id: string }[]; onboarding: { tutorial: { project_id: string } } }>(response);
+  expect(payload.onboarding.tutorial.project_id).toEqual(expect.any(String));
+  return { ...payload, projectId: payload.onboarding.tutorial.project_id, account, recovery };
 }
 
 async function projectDraft(context: BrowserContext, projectId: string) {
@@ -38,23 +39,27 @@ async function projectDraft(context: BrowserContext, projectId: string) {
 }
 
 async function waitRun(context: BrowserContext, projectId: string, runId: string) {
-  for (let attempt = 0; attempt < 100; attempt += 1) {
-    const run = await data<{ run_id: string; status: string; error_code: string | null; retryable: boolean }>(
+  type Run = { run_id: string; status: string; error_code: string | null; retryable: boolean };
+  let run: Run | undefined;
+  await expect.poll(async () => {
+    run = await data<Run>(
       await context.request.get(`/api/projects/${projectId}/checks/${runId}`),
     );
-    if (["completed", "failed", "timed_out", "cancelled"].includes(run.status)) return run;
-    await new Promise((resolve) => setTimeout(resolve, 100));
-  }
-  throw new Error(`run did not finish: ${runId}`);
+    expect(run.run_id).toBe(runId);
+    return run.status;
+  }, { timeout: 10_000, intervals: [100], message: `current run ${runId} reaches a terminal state` }).toMatch(/^(completed|failed|timed_out|cancelled)$/);
+  return run!;
 }
 
 async function capturedMail(request: APIRequestContext, purpose: "verify_email" | "password_reset") {
-  for (let attempt = 0; attempt < 100; attempt += 1) {
-    const payload = await (await request.get(`/api/test/stage13/mail/${purpose}`)).json();
-    if (payload.available) return payload as { available: true; path: string; token: string };
-    await new Promise((resolve) => setTimeout(resolve, 20));
-  }
-  throw new Error(`captured ${purpose} mail did not become active`);
+  let payload: { available: boolean; path: string; token: string } | undefined;
+  await expect.poll(async () => {
+    const response = await request.get(`/api/test/stage13/mail/${purpose}`);
+    expect(response.ok()).toBe(true);
+    payload = await response.json();
+    return payload?.available;
+  }, { timeout: 2_000, intervals: [20], message: `captured ${purpose} mail becomes active` }).toBe(true);
+  return payload!;
 }
 
 test("visitor creates three demos, imports Markdown, and remains usable at 390px", async ({ page }) => {
@@ -66,15 +71,15 @@ test("visitor creates three demos, imports Markdown, and remains usable at 390px
   await mkdir(harness.outputDir, { recursive: true });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/login");
-  const loginDesktopOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  const loginDesktopOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.getBoundingClientRect().width);
   expect(loginDesktopOverflow).toBeLessThanOrEqual(1);
   await page.screenshot({ path: path.join(harness.outputDir, "stage13-v4-login-1440.png"), fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
-  const loginMobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  const loginMobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.getBoundingClientRect().width);
   expect(loginMobileOverflow).toBeLessThanOrEqual(1);
   await page.screenshot({ path: path.join(harness.outputDir, "stage13-v4-login-390.png"), fullPage: true });
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.getByRole("button", { name: "以访客身份体验 24 小时" }).click();
+  await page.getByRole("button", { name: "访客体验 24 小时", exact: true }).click();
   await expect(page).toHaveURL("/");
   const projectsResponse = await page.request.get("/api/projects");
   const projects = await data<{ projects: { id: string }[] }>(projectsResponse);
@@ -85,17 +90,17 @@ test("visitor creates three demos, imports Markdown, and remains usable at 390px
     mimeType: "text/markdown",
     buffer: Buffer.from("# 第一章 潮声\n林默在清晨打开潮汐门。\n# 第二章 银钥匙\n银钥匙由守塔人保管。", "utf8"),
   });
-  await page.getByRole("button", { name: "解析并预览章节" }).click();
+  await page.getByRole("button", { name: "发送并预览章节", exact: true }).click();
   await expect(page.getByRole("heading", { name: "章节预览" })).toBeVisible();
   await page.getByRole("button", { name: "继续确认" }).click();
-  await page.getByLabel("作品名").fill("Stage 13 导入作品");
+  await page.getByRole("textbox", { name: /^作品名/ }).fill("Stage 13 导入作品");
   await page.getByRole("button", { name: "确认导入" }).click();
   await expect(page).toHaveURL(/\/projects\/[^/]+\/overview/);
-  const desktopOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  const desktopOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.getBoundingClientRect().width);
   expect(desktopOverflow).toBeLessThanOrEqual(1);
   await page.setViewportSize({ width: 390, height: 844 });
-  await expect(page.getByText(/浏览只读/)).toBeVisible();
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  await expect(page.getByText("当前窗口较窄，暂为只读浏览", { exact: false })).toBeVisible();
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.getBoundingClientRect().width);
   expect(overflow).toBeLessThanOrEqual(1);
   await page.keyboard.press("Tab");
   await expect(page.locator(":focus")).toBeVisible();
@@ -119,9 +124,9 @@ test("visitor and registered contexts are mutually isolated; quota and cleanup s
   const ra = await register(registeredA, "isolationa");
   const rb = await register(registeredB, "isolationb");
   const resources = [
-    [visitorA, vb.seeded_projects[0].id], [visitorA, ra.seeded_projects[0].id],
+    [visitorA, vb.seeded_projects[0].id], [visitorA, ra.projectId],
     [visitorB, va.seeded_projects[0].id], [registeredA, va.seeded_projects[0].id],
-    [registeredA, rb.seeded_projects[0].id], [registeredB, ra.seeded_projects[0].id],
+    [registeredA, rb.projectId], [registeredB, ra.projectId],
   ] as const;
   for (const [context, projectId] of resources) {
     expect((await context.request.get(`/api/projects/${projectId}`)).status()).toBe(404);
@@ -204,7 +209,7 @@ test("verified recovery email resets once, revokes old sessions, and keeps enume
 test("Stage 12 lifecycle and incremental pair remain atomic through the Stage 13 app", async ({ browser }) => {
   const context = await browser.newContext({ baseURL: origin });
   const author = await register(context, "lifecycle");
-  const projectId = author.seeded_projects[0].id;
+  const projectId = author.projectId;
   let draft = await projectDraft(context, projectId);
   const runFor = async (body: string) => {
     const saved = await data<{ revision: number }>(await context.request.patch(`/api/projects/${projectId}/drafts/${draft.id}`, {
@@ -224,12 +229,8 @@ test("Stage 12 lifecycle and incremental pair remain atomic through the Stage 13
   const blockedRun = await data<{ run_id: string }>(await context.request.post(`/api/projects/${projectId}/checks`, {
     headers: idempotency(), data: { draft_id: draft.id, draft_revision: draft.revision },
   }));
-  let observedBlocked = false;
-  for (let attempt = 0; attempt < 100; attempt += 1) {
-    if ((await (await context.request.get("/api/test/stage13/stats")).json()).blocked) { observedBlocked = true; break; }
-    await new Promise((resolve) => setTimeout(resolve, 50));
-  }
-  expect(observedBlocked).toBeTruthy();
+  await expect.poll(async () => (await (await context.request.get("/api/test/stage13/stats")).json()).blocked,
+    { timeout: 5_000, intervals: [50], message: "the submitted lifecycle run enters the blocking provider" }).toBe(true);
   await data(await context.request.post(`/api/projects/${projectId}/checks/${blockedRun.run_id}/cancel`, { headers: idempotency(), data: {} }));
   await context.request.post("/api/test/stage13/release");
   expect((await waitRun(context, projectId, blockedRun.run_id)).status).toBe("cancelled");

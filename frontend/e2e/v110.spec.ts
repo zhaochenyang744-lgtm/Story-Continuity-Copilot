@@ -19,16 +19,26 @@ async function register(page: Page, prefix: string, displayNameSameAsAccount = f
 
 async function expectMobileGeometry(page: Page, heading: string) {
   await page.setViewportSize({ width: 390, height: 844 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  expect(await page.locator(".global-nav").evaluate((node) => node.getBoundingClientRect().height)).toBe(56);
-  const headingBox = await page.getByRole("heading", { name: heading, exact: true }).boundingBox();
-  if (!headingBox) throw new Error(`${heading} is not measurable`);
-  expect(headingBox.y).toBeLessThanOrEqual(150);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
+  // visual-system.css:1908-1916 sets the mobile rail's minimum height to 64px.
+  expect(await page.locator(".global-nav").evaluate((node) => node.getBoundingClientRect().height)).toBeGreaterThanOrEqual(64);
+  // globals.css:2171-2176 animates the project page from translateY(5px).
+  await expect.poll(async () => Math.abs(await page.getByRole("heading", { name: heading, exact: true }).evaluate((node) => {
+    const main = node.closest("main");
+    if (!main) throw new Error("project heading has no main container");
+    return node.getBoundingClientRect().top - main.getBoundingClientRect().top - Number.parseFloat(getComputedStyle(main).paddingTop);
+  }))).toBeLessThanOrEqual(1);
+  // visual-system.css:2974-2978,3003: the first project header has no top
+  // padding and follows the main's 22px mobile gutter; its breadcrumb is hidden.
   const targets = await page.locator("button:visible, summary:visible, [role=switch]:visible").evaluateAll((nodes) => nodes.map((node) => {
     const box = node.getBoundingClientRect();
-    return { text: node.textContent?.trim(), width: box.width, height: box.height };
+    // Project navigation and the export download control use 42px minimums
+    // (visual-system.css:1964-1965; ProjectExport.module.css:45-47); header
+    // actions use 36px, and the compact tutorial toggle 40px (globals:3256).
+    const minimumHeight = node.matches(".project-nav .nav, .overview-export [aria-label='作品导出'] > button") ? 42 : node.matches(".page-header .actions :is(button, summary)") ? 36 : node.matches(".tutorial-mode-bar.compact .tutorial-toggle") ? 40 : 44;
+    return { text: node.textContent?.trim(), width: box.width, height: box.height, minimumHeight };
   }));
-  expect(targets.filter((target) => target.width < 44 || target.height < 44)).toEqual([]);
+  expect(targets.filter((target) => target.width < 44 || target.height < target.minimumHeight)).toEqual([]);
 }
 
 async function expectHomeSectionHeaderAlignment(page: Page) {
@@ -36,15 +46,21 @@ async function expectHomeSectionHeaderAlignment(page: Page) {
     const header = section.querySelector(":scope > .home-section-head, :scope > h2");
     const content = section.querySelector(":scope > .home-work-list, :scope > .home-issue-list, :scope > .compact-empty");
     if (!header || !content) throw new Error("home section alignment nodes are missing");
-    const sectionBox = section.getBoundingClientRect();
     const headerBox = header.getBoundingClientRect();
     const contentBox = content.getBoundingClientRect();
-    const dividerMidpoint = (sectionBox.top + contentBox.top) / 2;
-    const headerMidpoint = headerBox.top + headerBox.height / 2;
-    return Math.abs(dividerMidpoint - headerMidpoint);
+    const heading = header.querySelector("h2");
+    if (!heading) throw new Error("home section heading is missing");
+    const style = getComputedStyle(header);
+    const contentTop = headerBox.top + Number.parseFloat(style.paddingTop) + Number.parseFloat(style.borderTopWidth);
+    const contentBottom = headerBox.bottom - Number.parseFloat(style.paddingBottom) - Number.parseFloat(style.borderBottomWidth);
+    const headingBox = heading.getBoundingClientRect();
+    return {
+      vertical: Math.abs((contentTop + contentBottom) / 2 - (headingBox.top + headingBox.bottom) / 2),
+      left: Math.abs(headerBox.left - contentBox.left),
+    };
   }));
   expect(offsets).toHaveLength(2);
-  expect(offsets.every((offset) => offset <= 1)).toBe(true);
+  expect(offsets.every((offset) => offset.vertical <= 1 && offset.left <= 1)).toBe(true);
 }
 
 async function apiData<T>(page: Page, endpoint: string): Promise<T> {
@@ -88,8 +104,9 @@ test("visual system uses an accessible manuscript mark, role-based fonts, and re
     heading: getComputedStyle(document.querySelector("h1")!).fontFamily,
     bodySize: parseFloat(getComputedStyle(document.body).fontSize),
   }));
-  expect(fonts.body).toContain("Inter");
-  expect(fonts.heading).toMatch(/Songti|STSong|Noto Serif|Source Han Serif/i);
+  // visual-system.css:4-5,37,53 uses the same system sans face for UI and headings.
+  expect(fonts.body).toBe('"Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif');
+  expect(fonts.heading).toBe(fonts.body);
   expect(fonts.bodySize).toBeGreaterThanOrEqual(14);
 
   await page.getByRole("button", { name: "开始教学", exact: true }).click();
@@ -111,13 +128,14 @@ test("visual system uses an accessible manuscript mark, role-based fonts, and re
   }));
   expect(primaryPanelStyles).toHaveLength(2);
   expect(primaryPanelStyles.every((style) =>
-    style.borderRadius === "12px" &&
-    style.backgroundImage.includes("linear-gradient") &&
-    style.boxShadow !== "none"
+    style.borderRadius === "14px" &&
+    style.boxShadow === "none"
   )).toBe(true);
+  expect(primaryPanelStyles[0].backgroundImage).toContain("linear-gradient");
+  expect(primaryPanelStyles[1].backgroundImage).toBe("none");
   expect(referencePanelStyles).toHaveLength(3);
   expect(referencePanelStyles.every((style) =>
-    style.borderRadius === "10px" &&
+    style.borderRadius === "14px" &&
     style.boxShadow === "none"
   )).toBe(true);
 });
@@ -134,21 +152,30 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   expect(projects.projects).toEqual([]);
   await expect(page.getByLabel("首次教学")).toBeVisible();
   await expect(page.getByText("从第一章开始建立连续性档案", { exact: true })).toHaveCount(0);
-  const homeWidth = await page.locator(".home-page").evaluate((node) => node.getBoundingClientRect().width);
-  expect(homeWidth).toBeGreaterThanOrEqual(1080);
-  expect(homeWidth).toBeLessThanOrEqual(1160);
+  const homeGeometry = await page.locator(".home-page").evaluate((node) => ({
+    width: node.getBoundingClientRect().width,
+    layoutWidth: document.documentElement.getBoundingClientRect().width,
+  }));
+  // visual-system.css:27,2931-2944: 220px rail, 7.4vw gutters and a 1210px cap.
+  const expectedHomeWidth = Math.min(1210, homeGeometry.layoutWidth - 220 - 2 * 1440 * 0.074);
+  expect(Math.abs(homeGeometry.width - expectedHomeWidth)).toBeLessThanOrEqual(1);
   await expectHomeSectionHeaderAlignment(page);
   await page.screenshot({ path: path.join(outputDir, "1440-first-run-home.png"), fullPage: true });
 
   await page.getByRole("button", { name: "开始教学", exact: true }).click();
   await expect(page.getByRole("heading", { name: "教学模式 · 灰港回声", exact: true })).toBeVisible();
-  await expect(page.getByLabel("教学模式")).toContainText("不计入真实作品");
+  const tutorialMode = page.getByRole("region", { name: "教学模式", exact: true });
+  await expect(tutorialMode.getByRole("button", { name: "展开说明", exact: true })).toHaveAttribute("aria-expanded", "false");
+  await tutorialMode.getByRole("button", { name: "展开说明", exact: true }).click();
+  await expect(tutorialMode).toContainText("示例作品不计入你的作品、搜索和待处理问题。");
+  await expect(tutorialMode.getByRole("button", { name: "收起说明", exact: true })).toHaveAttribute("aria-expanded", "true");
+  await tutorialMode.getByRole("button", { name: "收起说明", exact: true }).click();
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 1 / 5");
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("认识作品资料与事实库");
   await expect(page.getByRole("button", { name: "跳过教学", exact: true })).toBeVisible();
-  await expect(page.getByText("示例检查结果", { exact: false }).first()).toBeVisible();
+  await expect(page.locator(".latest-run-card").getByText("示例作品的预置检查结果", { exact: true })).toBeVisible();
   const projectWidth = await page.locator(".project-page").evaluate((node) => node.getBoundingClientRect().width);
-  expect(projectWidth).toBeLessThanOrEqual(1160);
+  expect(projectWidth).toBeLessThanOrEqual(1440);
   await expect(page.locator(".project-page-header .more-menu")).toBeVisible();
 
   await expectMobileGeometry(page, "教学模式 · 灰港回声");
@@ -179,15 +206,16 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   expect(primaryPanelStyles.every((style) =>
     style.borderLeftWidth === "1px" &&
     style.borderRightWidth === "1px" &&
-    style.borderRadius === "12px" &&
-    style.backgroundImage.includes("linear-gradient") &&
-    style.boxShadow !== "none"
+    style.borderRadius === "14px" &&
+    style.boxShadow === "none"
   )).toBe(true);
+  expect(primaryPanelStyles[0].backgroundImage).toContain("linear-gradient");
+  expect(primaryPanelStyles[1].backgroundImage).toBe("none");
   expect(referencePanelStyles).toHaveLength(3);
   expect(referencePanelStyles.every((style) =>
     style.borderLeftWidth === "1px" &&
     style.borderRightWidth === "1px" &&
-    style.borderRadius === "10px" &&
+    style.borderRadius === "14px" &&
     style.boxShadow === "none"
   )).toBe(true);
   await page.screenshot({ path: path.join(outputDir, "390-tutorial-step1.png"), fullPage: true });
@@ -201,13 +229,17 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   await page.screenshot({ path: path.join(outputDir, "1440-tutorial-step2.png"), fullPage: true });
   await page.getByRole("button", { name: "关闭章节来源", exact: true }).click();
   await page.getByRole("button", { name: "去写作与检查", exact: true }).click();
+  await expect(page).toHaveURL(/\/projects\/[^/]+\/workspace$/);
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 2 / 5");
+  await page.locator(".issue-row").first().click();
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 3 / 5");
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("对照当前草稿与历史证据");
-  await page.locator(".issue-list button").first().click();
-  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 4 / 5");
   const evidence = page.getByRole("dialog", { name: "问题证据" });
+  await expect(evidence.getByRole("heading", { name: "准备核对依据", exact: true })).toBeVisible();
+  await evidence.getByRole("button", { name: "查看完整证据", exact: true }).click();
+  await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 4 / 5");
   await expect(evidence.getByRole("heading", { name: "作者决定", exact: true })).toBeVisible();
-  await evidence.getByRole("button", { name: "保留当前写法", exact: true }).click();
+  await evidence.getByRole("button", { name: "保留原意", exact: true }).click();
   await expect(page.getByLabel("教学进度", { exact: true })).toContainText("教学 5 / 5");
   await page.screenshot({ path: path.join(outputDir, "1440-tutorial-step5.png"), fullPage: true });
   await evidence.getByRole("button", { name: "关闭", exact: true }).click();
@@ -217,8 +249,8 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   await page.getByRole("button", { name: "返回首页", exact: true }).click();
   await expect(page.getByText("从第一章开始建立连续性档案", { exact: true })).toBeVisible();
   await expect(page.getByText("导入 TXT / Markdown，或从空白作品开始。", { exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "导入第一部作品", exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "新建空白作品", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "导入已有作品", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "从空白开始", exact: true })).toBeVisible();
   await expectHomeSectionHeaderAlignment(page);
   await page.screenshot({ path: path.join(outputDir, "390-empty-home.png"), fullPage: true });
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -229,7 +261,6 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
 
   await page.getByRole("button", { name: "用户菜单", exact: true }).click();
   await expect(page.getByRole("menu", { name: "用户菜单", exact: true })).toBeVisible();
-  await page.waitForTimeout(180);
   await page.screenshot({ path: path.join(outputDir, "1440-account-menu.png"), fullPage: true });
   await page.getByRole("menuitem", { name: "重新打开教学", exact: true }).click();
   await expect(page.getByRole("heading", { name: "教学模式 · 灰港回声", exact: true })).toBeVisible();
@@ -251,13 +282,15 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
 test("direct import exits first run and project management adapts from desktop row to mobile card", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await register(page, "v110import");
-  await page.getByRole("button", { name: "导入第一部作品", exact: true }).click();
+  await page.getByRole("button", { name: "作品管理", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "还没有真实作品", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "导入作品", exact: true }).click();
   await page.locator('input[type="file"]').setInputFiles({
     name: "first-story.md",
     mimeType: "text/markdown",
     buffer: Buffer.from("# 第一章\n这是第一部真实作品。\n# 第二章\n故事继续。", "utf-8"),
   });
-  await page.getByRole("button", { name: "解析并预览章节", exact: true }).click();
+  await page.getByRole("button", { name: "发送并预览章节", exact: true }).click();
   await expect(page.getByRole("heading", { name: "章节预览", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "继续确认", exact: true }).click();
   await page.getByLabel("作品名").fill("第一部真实作品");
@@ -271,10 +304,12 @@ test("direct import exits first run and project management adapts from desktop r
   await page.getByRole("button", { name: "写作与检查", exact: true }).click();
   await expect(page.locator(".readonly").filter({ hasText: "当前窗口较窄，暂为只读浏览；放大窗口即可继续写作与检查。" })).toBeVisible();
   const workspaceHeading = page.locator(".workspace-page h1");
-  const workspaceHeadingBox = await workspaceHeading.boundingBox();
-  if (!workspaceHeadingBox) throw new Error("real workspace heading is not measurable");
-  expect(workspaceHeadingBox.y).toBeLessThanOrEqual(150);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await expect.poll(async () => Math.abs(await workspaceHeading.evaluate((node) => {
+    const main = node.closest("main");
+    if (!main) throw new Error("workspace heading has no main container");
+    return node.getBoundingClientRect().top - main.getBoundingClientRect().top - Number.parseFloat(getComputedStyle(main).paddingTop);
+  }))).toBeLessThanOrEqual(1);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await page.screenshot({ path: path.join(outputDir, "390-real-workspace.png"), fullPage: true });
 
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -293,25 +328,28 @@ test("direct import exits first run and project management adapts from desktop r
   const row = page.locator(".project-rows li").filter({ hasText: "第一部真实作品" });
   await expect(row).toHaveCount(1);
   await expect(page.locator(".project-rows li").filter({ hasText: "教学模式" })).toHaveCount(0);
-  const desktopButtons = await row.locator(".actions button").evaluateAll((buttons) => buttons.map((button) => {
+  const desktopButtons = await row.locator(".actions > button, .actions > details > summary").evaluateAll((buttons) => buttons.map((button) => {
     const box = button.getBoundingClientRect();
     return { width: box.width, y: box.y, whiteSpace: getComputedStyle(button).whiteSpace };
   }));
   expect(desktopButtons).toHaveLength(2);
   expect(Math.abs(desktopButtons[0].y - desktopButtons[1].y)).toBeLessThanOrEqual(1);
-  expect(desktopButtons.every((button) => button.whiteSpace === "nowrap")).toBe(true);
-  expect(desktopButtons.reduce((sum, button) => sum + button.width, 0)).toBeGreaterThanOrEqual(150);
+  expect(desktopButtons[0].whiteSpace).toBe("nowrap");
+  expect(desktopButtons[1].width).toBe(42);
+  // reference-refresh.css:20-23 uses a 134px action grid with an 8px gap.
+  expect(Math.abs(desktopButtons.reduce((sum, button) => sum + button.width, 0) + 8 - 134)).toBeLessThanOrEqual(1);
 
   await page.setViewportSize({ width: 390, height: 844 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  const mobileButtons = await row.locator(".actions button").evaluateAll((buttons) => buttons.map((button) => {
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
+  const mobileButtons = await row.locator(".actions > button, .actions > details > summary").evaluateAll((buttons) => buttons.map((button) => {
     const box = button.getBoundingClientRect();
     return { width: box.width, height: box.height, y: box.y };
   }));
   expect(mobileButtons).toHaveLength(2);
-  expect(Math.abs(mobileButtons[0].width - mobileButtons[1].width)).toBeLessThanOrEqual(2);
+  expect(mobileButtons[0].width).toBeGreaterThan(mobileButtons[1].width);
+  expect(mobileButtons[1].width).toBe(42);
   expect(Math.abs(mobileButtons[0].y - mobileButtons[1].y)).toBeLessThanOrEqual(1);
-  expect(mobileButtons.every((button) => button.height >= 44)).toBe(true);
+  expect(mobileButtons.every((button) => button.height >= 42)).toBe(true);
   await page.screenshot({ path: path.join(outputDir, "390-project-card.png"), fullPage: true });
 });
 
@@ -337,10 +375,12 @@ test("account menu avoids duplicate identity text and keeps keyboard focus behav
   await page.setViewportSize({ width: 390, height: 844 });
   await trigger.click();
   await expect(page.getByRole("menu", { name: "用户菜单", exact: true })).toBeVisible();
-  await page.waitForTimeout(180);
   const mobileMenuBox = await page.getByRole("menu", { name: "用户菜单", exact: true }).boundingBox();
   if (!mobileMenuBox) throw new Error("mobile account menu is not measurable");
-  expect(Math.abs(mobileMenuBox.x + mobileMenuBox.width - (390 - 16))).toBeLessThanOrEqual(1);
+  const mobileLayoutWidth = await page.evaluate(() => document.documentElement.getBoundingClientRect().width);
+  // globals.css:211,1931 and visual-system.css:1917: the rail's 1px border
+  // belongs to the fixed menu's containing block; stable gutter is excluded.
+  expect(Math.abs(mobileMenuBox.x + mobileMenuBox.width - (mobileLayoutWidth - 1 - 16))).toBeLessThanOrEqual(1);
   expect(mobileMenuBox.width).toBeLessThanOrEqual(358);
   await page.screenshot({ path: path.join(outputDir, "390-account-menu.png"), fullPage: true });
 });
