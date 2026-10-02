@@ -12,7 +12,7 @@ export default defineConfig({
   outputDir: harness.outputDir,
   timeout: 120_000,
   expect: { timeout: 10_000 },
-  reporter: [["list"]],
+  reporter: [["list"], ["json", { outputFile: process.env.E2E_JSON_REPORT }]],
   use: {
     baseURL: harness.frontendOrigin,
     headless: true,

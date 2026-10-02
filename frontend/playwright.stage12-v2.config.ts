@@ -16,7 +16,8 @@ export default defineConfig({
   retries: 0,
   timeout: 90_000,
   expect: { timeout: 8_000 },
-  reporter: [["list"]],
+  outputDir: process.env.E2E_OUTPUT_DIR,
+  reporter: [["list"], ["json", { outputFile: process.env.E2E_JSON_REPORT }]],
   use: {
     baseURL,
     headless: true,
