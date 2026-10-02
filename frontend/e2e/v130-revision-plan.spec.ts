@@ -180,7 +180,7 @@ test("v1.3.0 revision suggestions create bounded persistent tasks while edits, s
   await expect(taskPanel.getByText("作者编辑后的时间线修订",{exact:true})).toBeVisible();
   await expect(tools.locator("form, fieldset, select, input, textarea")).toHaveCount(0);
   await expect(tools.getByRole("button",{name:/生成修订建议|接受并创建任务|编辑后创建任务|拒绝|回到同一草稿|显式重新检查|取消|重试/})).toHaveCount(0);
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.getBoundingClientRect().width)).toBe(true);
   await snap(page,"revision-plan-02-mobile-390.png");
   const statsAfter=await (await page.request.get(`${backendOrigin}/api/test/stage12/stats`)).json() as {provider_http_calls:number};
   expect(statsAfter.provider_http_calls).toBe(statsBefore.provider_http_calls);

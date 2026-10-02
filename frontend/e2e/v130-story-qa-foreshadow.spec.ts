@@ -207,7 +207,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   await expect(qa.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true}).first()).toBeVisible();
   await expect(tools.locator("form")).toHaveCount(0);
   await expect(tools.getByRole("button",{name:/提交问题|扫描已写正文|新建作者记录|保存修改|编辑|归档|接受|拒绝|保存为作者记录|重试|取消/})).toHaveCount(0);
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.getBoundingClientRect().width)).toBe(true);
   await snap(page,"story-qa-foreshadow-03-mobile-390.png");
   const statsAfter=await (await page.request.get(`${backendOrigin}/api/test/stage12/stats`)).json() as {provider_http_calls:number};
   expect(statsAfter.provider_http_calls).toBe(statsBefore.provider_http_calls);expect(statsAfter.provider_http_calls).toBe(0);

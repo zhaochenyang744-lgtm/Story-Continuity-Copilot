@@ -322,7 +322,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
   expect(second.continuity_run_id).not.toBe(second.memory_delta_run_id);
   expect(
     await page.evaluate(
-      () => document.documentElement.scrollWidth <= window.innerWidth,
+      () => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width,
     ),
   ).toBeTruthy();
   expect(consoleErrors).toEqual([]);
@@ -347,7 +347,7 @@ test("1024 remains writable for a Delta decision and commit", async ({
   ).toBe(2);
   expect(
     await page.evaluate(
-      () => document.documentElement.scrollWidth <= window.innerWidth,
+      () => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width,
     ),
   ).toBeTruthy();
 });
@@ -377,7 +377,7 @@ test("390 is browse-only for the prepared incremental review", async ({
   ).toBeDisabled();
   expect(
     await page.evaluate(
-      () => document.documentElement.scrollWidth <= window.innerWidth,
+      () => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width,
     ),
   ).toBeTruthy();
 });

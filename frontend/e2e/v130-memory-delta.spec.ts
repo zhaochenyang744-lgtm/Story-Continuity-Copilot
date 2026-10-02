@@ -126,7 +126,7 @@ test("390px remains browse-only without horizontal overflow", async ({ page }) =
   for (const input of await review.locator("input, select, textarea").all()) await expect(input).toBeDisabled();
   await expect(review.getByRole("button", { name: "确认提交并更新事实库" })).toBeDisabled();
   await expect(review.getByRole("button", { name: "查看新修订来源" }).first()).toBeEnabled();
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.getBoundingClientRect().width);
   expect(overflow).toBeLessThanOrEqual(1);
   const stats = await (await page.request.get("/api/test/stage12/stats")).json();
   expect(stats.provider_http_calls).toBe(0);

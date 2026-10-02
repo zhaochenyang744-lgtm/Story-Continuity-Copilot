@@ -24,7 +24,7 @@ async function shot(page: Page, name: string) {
 }
 
 async function expectNoHorizontalOverflow(page: Page) {
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
 }
 
 async function expectTutorialAligned(page: Page) {

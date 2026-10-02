@@ -107,7 +107,7 @@ test("v1.3.0 character aliases and change impact stay explicit, traceable, and m
   await expect(page.getByPlaceholder("添加作者确认的别名")).toHaveCount(0);
   await expect(page.getByPlaceholder(/例如：把/)).toHaveCount(0);
   await expect(page.getByRole("button",{name:/添加别名|分析影响|保存|归档|重试|取消/})).toHaveCount(0);
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.getBoundingClientRect().width)).toBe(true);
   await snap(page,"character-alias-impact-02-mobile-390.png");
   const statsAfter=await (await page.request.get(`${backendOrigin}/api/test/stage12/stats`)).json() as {provider_http_calls:number};
   expect(statsAfter.provider_http_calls).toBe(statsBefore.provider_http_calls);expect(statsAfter.provider_http_calls).toBe(0);

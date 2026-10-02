@@ -82,7 +82,7 @@ test("v1.3.0 writing analysis closes brief, alignment, retry, stale, and mobile 
   await expect(page.getByRole("button",{name:"生成章节简报",exact:true})).toHaveCount(0);
   await expect(page.getByRole("button",{name:"检查计划偏离",exact:true})).toHaveCount(0);
   await expect(brief.getByRole("button",{name:/重试|取消/})).toHaveCount(0);
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.getBoundingClientRect().width)).toBe(true);
   await snap(page,"writing-analysis-02-mobile-390.png");
   const statsAfter=await (await page.request.get(`${backendOrigin}/api/test/stage12/stats`)).json() as {provider_http_calls:number};
   expect(statsAfter.provider_http_calls).toBe(statsBefore.provider_http_calls);

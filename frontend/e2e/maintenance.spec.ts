@@ -141,7 +141,7 @@ test("作者下载完整资料、修订历史章节、逐项复核并保留历�
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
   await expect(maintenance.getByText("当前为阅读模式", { exact: false })).toBeVisible();
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.getBoundingClientRect().width);
   expect(overflow).toBe(false);
   await page.screenshot({ path: testInfo.outputPath("mobile-readonly.png"), fullPage: true, animations: "disabled" });
   expect(failures).toEqual([]);
