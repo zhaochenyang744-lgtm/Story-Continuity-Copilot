@@ -272,7 +272,7 @@ const reviewStatusLabel = (value: string) =>
 const evidenceStatusLabel = (value: string) =>
   ({ sufficient: "证据充分", insufficient: "证据不足", unavailable: "证据不可用" })[value] ?? "证据状态未知";
 const coverageStatusLabel = (value?: string) =>
-  ({ required: "待初始化", in_review: "审核中", ready_partial: "部分就绪", ready_current: "当前版本就绪", update_pending: "待审核更新" })[value ?? ""] ?? "尚未提供";
+  ({ required: "待初始化", in_review: "审核中", ready_partial: "部分就绪", ready_current: "当前版本就绪", update_pending: "待审核更新", covered_with_memory_change: "已全部覆盖，事实库已更新", covered_without_memory_change: "已全部覆盖，事实库未变" } as Record<string, string>)[value ?? ""] ?? "尚未提供";
 const memoryDeltaStatusLabel = (value?: string) =>
   ({ queued: "排队中", running: "检查中", in_review: "待审阅", covered: "已完成", cancelled: "已取消", failed: "检查失败", timed_out: "已超时" } as Record<string, string>)[value ?? ""] ?? "处理中";
 const categoryLabel = (value: string) =>
