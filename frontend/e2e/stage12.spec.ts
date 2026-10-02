@@ -1,25 +1,17 @@
 import { expect, test, type Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
+import { importMarkdown, readDraftBody, registerAccount, setDraftBody } from "./support/app";
+import { startVisitor } from "./support/batch2";
+import { bindRun, continuityLifecycle, openRunDetails, readLifecycleRun, startLifecycleRun } from "./support/batch3";
 
-const lifecycle = (page: Page) => page.getByLabel("检查进度");
-const fixture = path.resolve(process.cwd(), "frontend/e2e/fixtures/stage9-mist-harbor.md");
+const lifecycle = continuityLifecycle;
 const accountPrefix = process.env.E2E_ACCOUNT_PREFIX;
 if (!accountPrefix?.startsWith("stage12v2")) {
   throw new Error("E2E_ACCOUNT_PREFIX must start with stage12v2");
 }
 
-async function registerAndOpen(page: Page, prefix: string) {
-  await page.goto("/register");
-  await page.getByLabel("账号").fill(`${accountPrefix}-${prefix}-${Date.now()}`);
-  await page.getByLabel("显示名称").fill("阶段十二作者");
-  await page.getByLabel("恢复邮箱").fill(`${accountPrefix}-${prefix}-${Date.now()}@example.test`);
-  await page.locator("#auth-password").fill(`safe-${randomUUID()}`);
-  const registration = page.waitForResponse((response) => response.request().method() === "POST" && new URL(response.url()).pathname === "/api/auth/register");
-  await page.getByRole("button", { name: "创建账号", exact: true }).click();
-  expect((await registration).status()).toBe(201);
-  await expect(page.getByRole("heading", { name: "继续你的故事" })).toBeVisible();
+async function visitorAndOpen(page: Page) {
+  await startVisitor(page);
   await page.goto("/projects");
   await expect(page.getByRole("heading", { name: "作品管理" })).toBeVisible();
   const row = page.locator(".project-rows li").filter({ hasText: "灰港回声" });
@@ -29,15 +21,18 @@ async function registerAndOpen(page: Page, prefix: string) {
 }
 
 async function saveMarker(page: Page, marker: string) {
-  const editor = page.getByLabel("草稿正文");
-  await editor.fill(`${await editor.inputValue()}\n${marker}`);
+  // The engine splits by Chinese sentence punctuation and sends only each
+  // batch's claims to the stub. Put the marker in one sourced claim so the
+  // entire run exercises the intended terminal state and one 144/52 call.
+  const body = `${marker} 温岚仍握着黄铜罗盘；与此同时，黄铜罗盘也在苏岑的外套内袋。`;
+  await setDraftBody(page, body);
   await page.getByRole("button", { name: "保存草稿" }).click();
-  await expect(page.getByLabel("草稿修订", { exact: true })).toContainText("已保存");
+  await expect(page.locator(".workspace-save-summary strong")).toHaveText("已保存");
+  await expect.poll(() => readDraftBody(page)).toBe(body);
 }
 
 async function run(page: Page) {
-  await page.getByRole("button", { name: "运行连续性检查" }).click();
-  await expect(lifecycle(page)).toBeVisible();
+  return startLifecycleRun(page);
 }
 
 async function providerStats(page: Page) {
@@ -60,23 +55,8 @@ async function expectProviderIsolation(page: Page) {
 }
 
 async function prepareIncrementalProject(page: Page, marker = "") {
-  await page.goto("/register");
-  await page.getByLabel("账号").fill(`${accountPrefix}-pair-${Date.now()}`);
-  await page.getByLabel("显示名称").fill("阶段十二增量作者");
-  await page.getByLabel("恢复邮箱").fill(`${accountPrefix}-pair-${Date.now()}@example.test`);
-  await page.locator("#auth-password").fill(`safe-${randomUUID()}`);
-  await page.getByRole("button", { name: "创建账号", exact: true }).click();
-  await page.getByRole("button", { name: "作品管理", exact: true }).click();
-  await page.getByRole("button", { name: "导入作品", exact: true }).click();
-  await page.locator('input[name="file"]').setInputFiles({
-    name: "base.md",
-    mimeType: "text/markdown",
-    buffer: await readFile(fixture),
-  });
-  await page.getByRole("button", { name: "解析并预览章节" }).click();
-  await page.getByRole("button", { name: "继续确认" }).click();
-  await page.getByLabel("作品名").fill("阶段十二增量双 Run");
-  await page.getByRole("button", { name: "确认导入" }).click();
+  await registerAccount(page, { prefix: `${accountPrefix}pair` });
+  await importMarkdown(page, "stage9-mist-harbor.md", "阶段十二增量双 Run");
   await page.getByRole("button", { name: "初始化事实库" }).click();
   await page.getByRole("button", { name: "审核候选与原文依据" }).click();
   const initialization = page.getByRole("form", { name: "事实库初始化审核" });
@@ -102,7 +82,7 @@ async function prepareIncrementalProject(page: Page, marker = "") {
   await page.goto(`/projects/${projectId}/sources`);
   await page
     .getByLabel("章节正文")
-    .fill(`# 增量章节\n林默将银钥匙交给守塔人。\n${marker}`);
+    .fill(`# 增量章节\n${marker} 林默将银钥匙交给守塔人。`);
   const previewed = page.waitForResponse(
     (response) =>
       response.url().includes("source-change-sets/preview") &&
@@ -124,82 +104,95 @@ test.describe("Stage 12 Agent Run lifecycle", () => {
   test("success exposes actual metrics and provenance, survives refresh, and fits 390px", async ({ page }) => {
     await expectProviderIsolation(page);
     await page.setViewportSize({ width: 1440, height: 960 });
-    await registerAndOpen(page, "stage12success");
+    await visitorAndOpen(page);
     await saveMarker(page, "STAGE12_SUCCESS");
-    await run(page);
+    const runId = await run(page);
     await expect(lifecycle(page)).toContainText("检查完成", { timeout: 15_000 });
-    await expect(lifecycle(page)).toContainText("144 in / 52 out");
-    await expect(lifecycle(page)).toContainText("实际 cost ¥0.0042");
-    await expect(lifecycle(page).getByRole("button", { name: "取消 Run" })).toHaveCount(0);
+    await expect(lifecycle(page)).toContainText("输入 144 / 输出 52");
+    await expect(lifecycle(page)).toContainText("实际费用 ¥0.0042");
+    await expect(lifecycle(page).getByRole("button", { name: "取消检查" })).toHaveCount(0);
     await page.reload();
+    await bindRun(lifecycle(page), runId);
     await expect(lifecycle(page)).toContainText("检查完成");
-    await lifecycle(page).getByText("查看 provenance 与状态事件").click();
     await expect(lifecycle(page)).toContainText("browser-e2e-test-provider");
     await page.setViewportSize({ width: 390, height: 844 });
+    await page.getByRole("navigation", { name: "手机浏览内容" }).getByRole("button", { name: "资料", exact: true }).click();
     await expect(lifecycle(page)).toBeVisible();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
     await expectProviderIsolation(page);
   });
 
   test("running cancel restores after refresh and discards the late success", async ({ page }) => {
     await page.request.get("/api/test/stage12/reset");
-    await registerAndOpen(page, "stage12cancel");
+    await visitorAndOpen(page);
     await saveMarker(page, "STAGE12_BLOCK");
-    await run(page);
+    const runId = await run(page);
     await expect.poll(async () => (await providerStats(page)).blocked).toBe(true);
-    await expect(lifecycle(page).getByRole("button", { name: "取消 Run" })).toBeVisible();
-    await expect(lifecycle(page).getByRole("button", { name: "重试为新 Run" })).toHaveCount(0);
+    await expect(lifecycle(page).getByRole("button", { name: "取消检查" })).toBeVisible();
+    await expect(lifecycle(page).getByRole("button", { name: "重新检查" })).toHaveCount(0);
     await page.reload();
-    await expect(lifecycle(page).getByRole("button", { name: "取消 Run" })).toBeVisible();
-    await lifecycle(page).getByRole("button", { name: "取消 Run" }).click();
+    await bindRun(lifecycle(page), runId);
+    await expect(lifecycle(page).getByRole("button", { name: "取消检查" })).toBeVisible();
+    await lifecycle(page).getByRole("button", { name: "取消检查" }).click();
     await expect(lifecycle(page)).toContainText("正在安全取消");
     await page.request.get("/api/test/stage12/release");
     await expect(lifecycle(page)).toContainText("已取消", { timeout: 15_000 });
-    await expect(lifecycle(page)).toContainText("未写入部分 Issue、Evidence、Decision 或 Memory 结果");
-    await expect(page.locator(".issue-list li")).toHaveCount(0);
+    await expect(lifecycle(page)).toContainText("未写入部分结果");
+    await expect(page.locator(".issue-row")).toHaveCount(0);
+    const cancelled = await readLifecycleRun(page, runId);
+    expect(cancelled.status).toBe("cancelled");
+    expect(cancelled).not.toHaveProperty("issues");
     await expectProviderIsolation(page);
   });
 
   test("timeout is terminal, honest, retryable, and shows no partial Issues", async ({ page }) => {
-    await registerAndOpen(page, "stage12timeout");
+    await visitorAndOpen(page);
     await saveMarker(page, "STAGE12_TIMEOUT");
-    await run(page);
+    const runId = await run(page);
     await expect(lifecycle(page)).toContainText("检查超时", { timeout: 15_000 });
     await expect(lifecycle(page)).toContainText("模型响应超时");
-    await expect(lifecycle(page).getByRole("button", { name: "重试为新 Run" })).toBeVisible();
-    await expect(lifecycle(page).getByRole("button", { name: "取消 Run" })).toHaveCount(0);
-    await expect(page.locator(".issue-list li")).toHaveCount(0);
+    await expect(lifecycle(page).getByRole("button", { name: "重新检查" })).toBeVisible();
+    await expect(lifecycle(page).getByRole("button", { name: "取消检查" })).toHaveCount(0);
+    await expect(page.locator(".issue-row")).toHaveCount(0);
+    const timedOut = await readLifecycleRun(page, runId);
+    expect(timedOut.status).toBe("timed_out");
+    expect(timedOut).not.toHaveProperty("issues");
     await expectProviderIsolation(page);
   });
 
   test("failed Run retries as attempt 2 while the original lineage remains immutable", async ({ page }) => {
-    await registerAndOpen(page, "stage12retry");
+    await visitorAndOpen(page);
     await saveMarker(page, "STAGE12_FAIL_ONCE");
-    await run(page);
+    const originalRun = await run(page);
     await expect(lifecycle(page)).toContainText("检查失败", { timeout: 15_000 });
-    await expect(lifecycle(page)).toContainText("attempt 1");
-    const original = await lifecycle(page).textContent();
-    const originalRun = original?.match(/run-[0-9a-f-]+/)?.[0];
-    expect(originalRun).toBeTruthy();
-    await lifecycle(page).getByRole("button", { name: "重试为新 Run" }).click();
-    await expect(lifecycle(page)).toContainText("attempt 2", { timeout: 15_000 });
+    const original = await readLifecycleRun(page, originalRun);
+    expect(original).toMatchObject({ status: "failed", attempt_number: 1, root_run_id: originalRun });
+    const retried = page.waitForResponse((response) => response.request().method() === "POST" &&
+      new URL(response.url()).pathname.endsWith(`/checks/${originalRun}/retry`));
+    await lifecycle(page).getByRole("button", { name: "重新检查" }).click();
+    const retryResponse = await retried;
+    expect(retryResponse.status()).toBe(202);
+    const retryId = (await retryResponse.json()).data.run.run_id as string;
+    expect(retryId).not.toBe(originalRun);
+    await bindRun(lifecycle(page), retryId);
+    await expect(lifecycle(page)).toContainText("第 2 次尝试", { timeout: 15_000 });
     await expect(lifecycle(page)).toContainText("检查完成", { timeout: 15_000 });
-    await lifecycle(page).getByText("查看 provenance 与状态事件").click();
-    await expect(lifecycle(page)).toContainText(`root ${originalRun}`);
+    await openRunDetails(lifecycle(page));
+    await expect(lifecycle(page)).toContainText(`根运行 ${originalRun}`);
     await page.reload();
-    await expect(lifecycle(page)).toContainText("attempt 2");
+    await bindRun(lifecycle(page), retryId);
+    await expect(lifecycle(page)).toContainText("第 2 次尝试");
     await expect(lifecycle(page)).toContainText("检查完成");
+    expect(await readLifecycleRun(page, originalRun)).toEqual(original);
     await expectProviderIsolation(page);
   });
 
   test("non-retryable failed Run stays terminal and never offers Retry", async ({ page }) => {
     await page.request.get("/api/test/stage12/reset");
-    await registerAndOpen(page, "nonretryable");
+    await visitorAndOpen(page);
     await saveMarker(page, "STAGE12_BLOCK");
-    await run(page);
+    const runId = await run(page);
     await expect.poll(async () => (await providerStats(page)).blocked).toBe(true);
-    const runText = await lifecycle(page).textContent();
-    const runId = runText?.match(/run-[0-9a-f-]+/)?.[0];
     const projectId = new URL(page.url()).pathname.split("/")[2];
     expect(runId).toBeTruthy();
     const forced = await page.request.post(
@@ -210,18 +203,19 @@ test.describe("Stage 12 Agent Run lifecycle", () => {
     await page.request.get("/api/test/stage12/release");
     await expect(lifecycle(page)).toContainText("检查失败", { timeout: 15_000 });
     await expect(lifecycle(page)).toContainText("模型返回的结果未通过结构校验");
-    await expect(lifecycle(page).getByRole("button", { name: "重试为新 Run" })).toHaveCount(0);
-    await expect(page.locator(".issue-list li")).toHaveCount(0);
+    await expect(lifecycle(page).getByRole("button", { name: "重新检查" })).toHaveCount(0);
+    await expect(page.locator(".issue-row")).toHaveCount(0);
+    const failed = await readLifecycleRun(page, runId);
+    expect(failed).toMatchObject({ status: "failed", retryable: false });
+    expect(failed).not.toHaveProperty("issues");
     await expectProviderIsolation(page);
   });
 
   test("Retry idempotency conflicts and project/account isolation fail closed", async ({ page, browser }) => {
-    await registerAndOpen(page, "isolation-owner");
+    await visitorAndOpen(page);
     await saveMarker(page, "STAGE12_TIMEOUT");
-    await run(page);
+    const runId = await run(page);
     await expect(lifecycle(page)).toContainText("检查超时", { timeout: 15_000 });
-    const originalText = await lifecycle(page).textContent();
-    const runId = originalText?.match(/run-[0-9a-f-]+/)?.[0];
     const projectId = new URL(page.url()).pathname.split("/")[2];
     expect(runId).toBeTruthy();
     const projects = await page.evaluate(async () =>
@@ -282,7 +276,7 @@ test.describe("Stage 12 Agent Run lifecycle", () => {
     );
     await page
       .locator(".warning")
-      .filter({ hasText: "Source r2" })
+      .filter({ hasText: "资料版本第 2 版" })
       .getByRole("button", { name: "运行增量检查" })
       .click();
     const startedResponse = await started;
@@ -294,17 +288,22 @@ test.describe("Stage 12 Agent Run lifecycle", () => {
     expect(pair.continuity_run_id).not.toBe(pair.memory_delta_run_id);
     const continuity = page.getByLabel("连续性检查进度", { exact: true });
     const memoryDelta = page.getByLabel("事实变化检查进度", { exact: true });
+    await bindRun(continuity, pair.continuity_run_id);
+    await bindRun(memoryDelta, pair.memory_delta_run_id);
     await expect(continuity).toContainText("检查完成", { timeout: 15_000 });
     await expect(memoryDelta).toContainText("检查完成", { timeout: 15_000 });
     await expect(continuity).toContainText(pair.continuity_run_id);
     await expect(memoryDelta).toContainText(pair.memory_delta_run_id);
     await page.reload();
+    await bindRun(continuity, pair.continuity_run_id);
+    await bindRun(memoryDelta, pair.memory_delta_run_id);
     await expect(continuity).toContainText(pair.continuity_run_id);
     await expect(memoryDelta).toContainText(pair.memory_delta_run_id);
     await page.setViewportSize({ width: 390, height: 844 });
+    await page.getByRole("navigation", { name: "手机浏览内容" }).getByRole("button", { name: "资料", exact: true }).click();
     await expect(continuity).toBeVisible();
     await expect(memoryDelta).toBeVisible();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
     await expectProviderIsolation(page);
   });
 
@@ -319,17 +318,27 @@ test.describe("Stage 12 Agent Run lifecycle", () => {
     );
     await page
       .locator(".warning")
-      .filter({ hasText: "Source r2" })
+      .filter({ hasText: "资料版本第 2 版" })
       .getByRole("button", { name: "运行增量检查" })
       .click();
-    expect((await started).status()).toBe(202);
+    const startedResponse = await started;
+    expect(startedResponse.status()).toBe(202);
+    const pair = (await startedResponse.json()).data as { continuity_run_id: string; memory_delta_run_id: string };
     const continuity = page.getByLabel("连续性检查进度", { exact: true });
     const memoryDelta = page.getByLabel("事实变化检查进度", { exact: true });
+    await bindRun(continuity, pair.continuity_run_id);
+    await bindRun(memoryDelta, pair.memory_delta_run_id);
     await expect(continuity).toContainText("检查超时", { timeout: 15_000 });
     await expect(memoryDelta).toContainText("检查超时", { timeout: 15_000 });
-    await expect(continuity).toContainText("未写入部分 Issue、Evidence、Decision 或 Memory 结果");
-    await expect(memoryDelta).toContainText("未写入部分 Issue、Evidence、Decision 或 Memory 结果");
-    await expect(page.locator(".issue-list li")).toHaveCount(0);
+    await expect(continuity).toContainText("这次没有保存任何结果");
+    await expect(memoryDelta).toContainText("这次没有保存任何结果");
+    await expect(page.locator(".issue-row")).toHaveCount(0);
+    const continuityRun = await readLifecycleRun(page, pair.continuity_run_id);
+    expect(continuityRun.status).toBe("timed_out");
+    expect(continuityRun).not.toHaveProperty("issues");
+    const memoryDeltaRun = await readLifecycleRun(page, pair.memory_delta_run_id);
+    expect(memoryDeltaRun.status).toBe("timed_out");
+    expect(memoryDeltaRun).not.toHaveProperty("issues");
     const delta = await page.evaluate(async (id) =>
       (await (await fetch(`/api/projects/${id}/memory/delta`)).json()).data,
       projectId,
