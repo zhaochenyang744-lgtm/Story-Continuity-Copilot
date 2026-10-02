@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { registerAccount } from "./support/app";
-import { projectMoreAction, startVisitor } from "./support/batch2";
+import { projectMoreAction, recordIssueDecision, startVisitor } from "./support/batch2";
 
 const screenshots = path.resolve(process.env.E2E_SCREENSHOTS_DIR ?? "../artifacts/stage8-screenshots");
 const globalNavButton = (page: import("@playwright/test").Page, name: "首页" | "作品管理") =>
@@ -84,15 +84,53 @@ test("fresh account restores login and visitor completes the preset Grey Harbor 
   await page.keyboard.press("Escape");
   await expect(drawer).toBeHidden();
 
-  for (const claim of ["温岚把罗盘", "罗盘暂时离开", "苏岑决定先核对"]) {
-    await page.locator(".issue-list .issue-row").filter({ hasText: claim }).click();
-    await drawer.getByRole("button", { name: "保留原意" }).click();
+  const projectId = new URL(page.url()).pathname.split("/")[2];
+  const projectResponse = await page.request.get(`/api/projects/${projectId}`);
+  expect(projectResponse.status()).toBe(200);
+  const presetRunId = (await projectResponse.json()).data.latest_run.run_id;
+  const runResponse = await page.request.get(`/api/projects/${projectId}/checks/${presetRunId}?include=issues,evidence`);
+  expect(runResponse.status()).toBe(200);
+  const issues = (await runResponse.json()).data.issues as Array<{
+    claim_text: string; evidence_status: string; available_actions: string[];
+    evidence: Array<{ sufficiency: string }>;
+  }>;
+  // Workbench issueHasSufficientEvidence/issueAllows and seed_data.DEMO_REVIEW_ISSUES.
+  const supported = issues.filter((issue) => issue.evidence_status === "sufficient"
+    && issue.evidence.some((evidence) => evidence.sufficiency === "sufficient")
+    && issue.available_actions.includes("keep_intentional"));
+  const unsupported = issues.filter((issue) => !supported.includes(issue));
+  expect(supported).toHaveLength(3);
+  expect(unsupported).toHaveLength(1);
+
+  // Preserve the false-positive action on a supported issue, then reset the preset
+  // so all three fact candidates remain available for accept/reject/edit review.
+  const falsePositive = supported.find((issue) => issue.available_actions.includes("false_positive"));
+  expect(falsePositive).toBeDefined();
+  await page.locator(".issue-list .issue-row").filter({ hasText: falsePositive!.claim_text }).click();
+  await recordIssueDecision(page, "标记误报");
+  await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(1);
+  await projectMoreAction(page, "重置当前作品");
+  await page.getByRole("dialog", { name: "重置当前作品", exact: true }).getByRole("button", { name: "确认重置", exact: true }).click();
+  await expect(page.getByText("当前作品已按其数据来源重置", { exact: false })).toBeVisible();
+  await expect(page.locator(".issue-list .issue-row")).toHaveCount(4);
+  await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(0);
+
+  for (const issue of supported) {
+    await page.locator(".issue-list .issue-row").filter({ hasText: issue.claim_text }).click();
+    await recordIssueDecision(page, "保留原意");
+  }
+  for (const issue of unsupported) {
+    await page.locator(".issue-list .issue-row").filter({ hasText: issue.claim_text }).click();
+    await expect(drawer.getByText("证据尚不充分", { exact: false })).toBeVisible();
+    await expect(drawer.getByText("服务端未开放可提交操作", { exact: false })).toBeVisible();
+    for (const name of ["前往修改", "保留原意", "标记误报"]) {
+      await expect(drawer.getByRole("button", { name, exact: true })).toHaveCount(0);
+    }
+    await drawer.getByRole("button", { name: "关闭", exact: true }).click();
     await expect(drawer).toBeHidden();
   }
-  await page.locator(".issue-list .issue-row").filter({ hasText: "表面冲突" }).click();
-  await drawer.getByRole("button", { name: "标记误报" }).click();
-  await expect(drawer).toBeHidden();
-  await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(4);
+  await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(supported.length);
+  await expect(page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" })).toHaveCount(unsupported.length);
 
   await page.getByRole("button", { name: "审阅事实变化" }).click();
   const review = page.getByRole("form", { name: "事实库更新审阅" });
