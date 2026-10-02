@@ -6690,6 +6690,14 @@ function Evidence({
   };
   const evidence = issue.evidence ?? [];
   const tutorialEvidenceGate = tutorial && tutorialStep < 4;
+  const hadTutorialEvidenceGate = useRef(tutorialEvidenceGate);
+  useEffect(() => {
+    // Opening the gate unmounts its focused button; keep focus inside the modal.
+    if (hadTutorialEvidenceGate.current && !tutorialEvidenceGate && !drawerRef.current?.contains(document.activeElement)) {
+      closeRef.current?.focus();
+    }
+    hadTutorialEvidenceGate.current = tutorialEvidenceGate;
+  }, [tutorialEvidenceGate]);
   const hasSuggestion = Boolean(issue.suggested_revision?.before && issue.suggested_revision.after);
   const explicitActions = issue.available_actions !== undefined;
   const decisionReady = issueHasSufficientEvidence(issue);
