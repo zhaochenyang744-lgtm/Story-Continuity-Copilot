@@ -29,7 +29,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   const projectId=onboarding.tutorial.project_id;
   const project=await data<{source_revision:number;current_memory_version:number;author_context_version:number;foreshadow_version:number;current_draft:{id:string;revision:number}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));
   await page.goto(`/projects/${projectId}/workspace`);
-  const tools=page.getByRole("region",{name:"作品问答与伏笔"});
+  const tools=page.getByRole("group",{name:"作品问答与伏笔"});
   await expect(tools).toBeVisible();
   const editorBox=await page.locator(".workspace-grid").boundingBox(),toolBox=await tools.boundingBox();
   expect(editorBox&&toolBox&&editorBox.y<toolBox.y).toBe(true);
@@ -183,7 +183,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   await page.waitForURL(new RegExp(`/projects/${secondProject.project.id}/workspace`));
   releaseOldRequest();
   await switchNavigation;
-  const secondTools=page.getByRole("region",{name:"作品问答与伏笔"});
+  const secondTools=page.getByRole("group",{name:"作品问答与伏笔"});
   await expect(secondTools.locator(":scope > summary small")).toHaveCount(0);
   await secondTools.locator(":scope > summary").click();
   await expect(secondTools.getByText("潮汐表的本地修订",{exact:true})).toHaveCount(0);

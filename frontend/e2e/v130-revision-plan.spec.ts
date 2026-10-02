@@ -51,7 +51,7 @@ test("v1.3.0 revision suggestions create bounded persistent tasks while edits, s
   expect(eligibleIssues.length).toBeGreaterThanOrEqual(3);
 
   await page.goto(`/projects/${projectId}/workspace`);
-  const tools=page.getByRole("region",{name:"修订计划与任务"});
+  const tools=page.getByRole("group",{name:"修订计划与任务"});
   await expect(tools).toBeVisible();
   const editorBox=await page.locator(".workspace-grid").boundingBox(),toolBox=await tools.boundingBox();
   expect(editorBox&&toolBox&&editorBox.y<toolBox.y).toBe(true);
