@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, Page, test } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { createProject, readDraftBody, registerAccount, setDraftBody } from "./support/app";
+import { createProject, readDraftBody, registerAccount, setDraftBody, tutorialProjectId } from "./support/app";
 import { projectMoreAction, recordIssueDecision, startVisitor } from "./support/batch2";
 
 const shots = process.env.E2E_SCREENSHOTS_DIR
@@ -739,7 +739,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     expect(errors).toEqual([]);
   });
 
-  test("five reset-to-review runs are deterministic", async ({ page }) => {
+  test("five reset-to-review runs are deterministic", async ({ page }, testInfo) => {
     const records: Array<Record<string, unknown>> = [];
     const consoleErrors: string[] = [], pageErrors: string[] = [], failedRequests: string[] = [];
     page.on("console", (m) => m.type() === "error" && consoleErrors.push(m.text()));
@@ -748,15 +748,23 @@ test.describe.serial("Stage 5 real local workflow", () => {
       const url = new URL(r.url());
       if (url.pathname.startsWith("/api/") && r.status() >= 400 && !(url.pathname === "/api/auth/session" && r.status() === 401)) failedRequests.push(`${r.request().method()} ${url.pathname} ${r.status()}`);
     });
-    await startVisitor(page);
-    await globalNavButton(page, "作品管理").click();
-    await openProject(page, "灰港回声").click();
-    await projectNavButton(page, "写作与检查").click();
+    // Five checks exceed the visitor's three-workflow daily quota. A new
+    // registered author's isolated tutorial uses the same grey_harbor reset
+    // seed (memory v4 / draft revision 1), with the normal registered quota.
+    await registerAccount(page, { prefix: "stage5five" });
+    const tutorialId = await tutorialProjectId(page);
+    await page.goto(`/projects/${tutorialId}/workspace`);
+    await page.locator(".issue-list .issue-row").first().click();
+    const tutorialEvidence = page.getByRole("dialog", { name: "问题证据", exact: true });
+    await tutorialEvidence.getByRole("button", { name: "查看完整证据", exact: true }).click();
+    await expect(tutorialEvidence.getByRole("heading", { name: "历史证据", exact: true })).toBeVisible();
+    await tutorialEvidence.getByRole("button", { name: "关闭", exact: true }).click();
+    await expect(tutorialEvidence).toBeHidden();
     for (let index = 1; index <= 5; index++) {
       const started = Date.now();
       await projectMoreAction(page, "重置当前作品");
       await page.getByRole("button", { name: "确认重置" }).click();
-      await expect(page.getByText("事实库第 4 版", { exact: false })).toBeVisible();
+      await expect(page.getByText("事实库第 4 版", { exact: true })).toBeVisible();
       await expect(page.locator(".workspace-draft-meta")).toContainText("第 1 次保存");
       await setDraftBody(page, `${await readDraftBody(page)}\n第${index}轮作者确认草稿。`);
       await page.getByRole("button", { name: "保存草稿" }).click();
@@ -767,20 +775,36 @@ test.describe.serial("Stage 5 real local workflow", () => {
       expect(response.status()).toBe(202);
       expect(queuedPayload.data.status).toBe("queued");
       await expect(runStatus(page)).toContainText("检查完成", { timeout: 15_000 });
-      for (let issue = 0; issue < 2; issue++) {
-        await page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" }).first().click();
+      const projectId = new URL(page.url()).pathname.split("/")[2];
+      const checked = await page.request.get(`/api/projects/${projectId}/checks/${queuedPayload.data.run_id}?include=issues,evidence`);
+      expect(checked.status()).toBe(200);
+      const completed = (await checked.json()).data as { status: string; issues: Array<{
+        claim_text: string; evidence_status: string; available_actions?: string[];
+      }> };
+      expect(completed.status).toBe("completed");
+      // The stub emits up to two issues per batch, not per run. Apply the same
+      // required-decision rule as Workbench / create_changeset for every round.
+      const required = completed.issues.filter((issue) => issue.evidence_status === "sufficient"
+        && (issue.available_actions === undefined || issue.available_actions.length > 0));
+      expect(required.length).toBeGreaterThanOrEqual(2);
+      for (const issue of required) {
+        await page.locator(".issue-list .issue-row").filter({ hasText: issue.claim_text }).click();
         await recordIssueDecision(page, "保留原意");
       }
+      await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(required.length);
+      await expect(page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" })).toHaveCount(completed.issues.length - required.length);
+      await expect(page.getByRole("heading", { name: "待处理提示 0", exact: true })).toBeVisible();
       await page.getByRole("button", { name: "审阅事实变化" }).click();
       await expect(page.getByRole("heading", { name: "事实变化审阅", exact: true })).toBeVisible();
       await page.getByLabel("拒绝（不写入）").first().check();
       await page.getByRole("button", { name: "确认并提交审核结果" }).click();
       await expect(page.getByText("MemoryVersion", { exact: false })).toBeVisible();
-      records.push({ round: index, run_id: queuedPayload.data.run_id, queued_before_completion: true, result: "completed_and_reviewed", duration_ms: Date.now() - started, recovery: "project_reset_to_memory_v4_draft_revision_1", manual_intervention: 0 });
+      records.push({ round: index, run_id: queuedPayload.data.run_id, required_decisions: required.length, read_only_hints: completed.issues.length - required.length, queued_before_completion: true, result: "completed_and_reviewed", duration_ms: Date.now() - started, recovery: "project_reset_to_memory_v4_draft_revision_1", manual_intervention: 0 });
     }
     expect(consoleErrors).toEqual([]);
     expect(pageErrors).toEqual([]);
     expect(failedRequests).toEqual([]);
+    await testInfo.attach("five-round-records", { body: JSON.stringify(records, null, 2), contentType: "application/json" });
     if (process.env.STAGE6_DEMO_RECORD_PATH) await writeFile(process.env.STAGE6_DEMO_RECORD_PATH, JSON.stringify({ runs: records, console_errors: consoleErrors, page_errors: pageErrors, unexpected_failed_requests: failedRequests }, null, 2));
   });
 
