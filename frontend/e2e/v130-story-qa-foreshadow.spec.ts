@@ -1,6 +1,7 @@
 import { expect, test, type APIResponse, type Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
+import { readDraftBody, setDraftBody } from "./support/app";
 
 const backendOrigin=process.env.E2E_BACKEND_ORIGIN;
 if(!backendOrigin)throw new Error("E2E_BACKEND_ORIGIN is required");
@@ -61,23 +62,22 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   const externalPatch=await page.request.patch(`${backendOrigin}/api/projects/${projectId}/foreshadows/${serverRecord!.id}`,{headers:{"Idempotency-Key":randomUUID()},data:{base_version:serverRecord!.version,description:"另一个窗口已先更新服务器记录。"}});
   expect(externalPatch.status()).toBe(200);
 
-  const draftBody=page.locator("#draft-body");
-  await draftBody.fill(`${await draftBody.inputValue()} 未保存内容不得进入分析。`);
+  await setDraftBody(page, `${await readDraftBody(page)} 未保存内容不得进入分析。`);
   await expect(tools.getByText(/当前草稿有未保存修改/)).toBeVisible();
-  await page.getByRole("region",{name:"有界问答"}).getByLabel("你的问题").fill("未保存稿是否被分析？");
-  await expect(page.getByRole("region",{name:"有界问答"}).getByRole("button",{name:"提交问题",exact:true})).toBeDisabled();
+  await page.getByRole("region",{name:"作品问答"}).getByLabel("你的问题").fill("未保存稿是否被分析？");
+  await expect(page.getByRole("region",{name:"作品问答"}).getByRole("button",{name:"提交问题",exact:true})).toBeDisabled();
   await expect(recordTool.getByRole("button",{name:"扫描已写正文",exact:true})).toBeDisabled();
   const noDirtyRuns=await data<{runs:unknown[]}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}/analyses?analysis_type=story_qa&limit=20`));
   expect(noDirtyRuns.runs).toHaveLength(0);
-  const dirtyDraftValue=await draftBody.inputValue();
+  const dirtyDraftValue=await readDraftBody(page);
   await editingRecord.locator(".foreshadow-links a").first().click();
   const unsavedDialog=page.getByRole("dialog",{name:"未保存草稿"});
   await expect(unsavedDialog).toBeVisible();
   await unsavedDialog.getByRole("button",{name:"取消",exact:true}).click();
   await expect(page).toHaveURL(new RegExp(`/projects/${projectId}/workspace$`));
-  await expect(draftBody).toHaveValue(dirtyDraftValue);
+  await expect.poll(()=>readDraftBody(page)).toBe(dirtyDraftValue);
   await page.getByRole("button",{name:"保存草稿",exact:true}).click();
-  await expect(page.getByText("✓ 已保存",{exact:true})).toBeVisible();
+  await expect(page.locator(".workspace-save-summary strong")).toHaveText("已保存");
   await expect(tools.getByText(/伏笔记录第 3 版/)).toBeVisible();
   await expect(recordForm.getByLabel("标题")).toHaveValue("潮汐表的本地修订");
   const expectedConflict=page.waitForResponse(response=>response.request().method()==="PATCH"&&new URL(response.url()).pathname===`/api/projects/${projectId}/foreshadows/${serverRecord!.id}`&&response.status()===409);
@@ -95,10 +95,10 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   await recordForm.getByRole("button",{name:"保存修改",exact:true}).click();
   await expect(recordTool.locator(".foreshadow-records article").filter({hasText:"潮汐表的本地修订"})).toContainText("作者记录 · V4");
 
-  const qa=page.getByRole("region",{name:"有界问答"});
+  const qa=page.getByRole("region",{name:"作品问答"});
   await qa.getByLabel("你的问题").fill("林默目前知道什么？");
   await qa.getByRole("button",{name:"提交问题",exact:true}).click();
-  await expect(qa.getByText("根据当前事实库，这个问题已有可核对的答案。",{exact:true})).toBeVisible();
+  await expect(qa.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true})).toBeVisible();
   const qaRun=qa.locator(".bounded-run").first();
   const savedProject=await data<{current_draft:{revision:number}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));
   await expect(qaRun).toContainText(`草稿第 ${savedProject.current_draft.revision} 次保存`);
@@ -107,7 +107,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   await expect(qaRun).toContainText(`规划第 ${project.author_context_version} 版`);
   await expect(qaRun).toContainText("伏笔记录第 4 版");
   await expect(qaRun.locator("footer small")).toHaveAttribute("title","检索方式：writing-analysis-lexical-v2-draft-claims");
-  await draftBody.fill(`${await draftBody.inputValue()} 保存后旧问答必须立即过期。`);
+  await setDraftBody(page, `${await readDraftBody(page)} 保存后旧问答必须立即过期。`);
   await expect(qa.getByRole("button",{name:"提交问题",exact:true})).toBeDisabled();
   await page.getByRole("button",{name:"保存草稿",exact:true}).click();
   await expect(qaRun.getByText("依据已变化",{exact:true})).toBeVisible();
@@ -152,11 +152,14 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   const failedQa=qa.locator(".bounded-run").filter({hasText:"E2E_QA_FAIL_ONCE"}).first();
   await expect(failedQa.getByText(/结果未通过结构校验/)).toBeVisible();
   await failedQa.getByRole("button",{name:"重试",exact:true}).click();
-  await expect(qa.getByText("根据当前事实库，这个问题已有可核对的答案。",{exact:true})).toHaveCount(2);
+  await expect(qa.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true})).toHaveCount(2);
 
-  await draftBody.fill(`${await draftBody.inputValue()} E2E_FORESHADOW_BLOCK`);
+  await setDraftBody(page, `${await readDraftBody(page)} E2E_FORESHADOW_BLOCK`);
+  const savedQaRefresh=page.waitForResponse(response=>response.request().method()==="GET"&&new URL(response.url()).pathname===`/api/projects/${projectId}/analyses`&&new URL(response.url()).searchParams.get("analysis_type")==="story_qa"&&response.status()===200);
   await page.getByRole("button",{name:"保存草稿",exact:true}).click();
-  await expect(page.getByText("✓ 已保存",{exact:true})).toBeVisible();
+  await expect(page.locator(".workspace-save-summary strong")).toHaveText("已保存");
+  // Saving changes the bindings and refreshes the lists; finish that read before scanning.
+  expect(await (await savedQaRefresh).finished()).toBeNull();
   await page.request.get(`${backendOrigin}/api/test/stage12/reset`);
   await scanButton.click();
   await expect.poll(async()=>((await (await page.request.get(`${backendOrigin}/api/test/stage12/stats`)).json()) as {blocked:boolean}).blocked).toBe(true);
@@ -172,8 +175,8 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   let markOldRequest:()=>void=()=>{};
   const oldRequestSeen=new Promise<void>(resolve=>{markOldRequest=resolve;});
   const oldRequestGate=new Promise<void>(resolve=>{releaseOldRequest=resolve;});
-  await page.route(`**/api/projects/${projectId}/foreshadows?**`,async route=>{markOldRequest();await oldRequestGate;try{await route.continue();}catch{}});
-  await draftBody.fill(`${await draftBody.inputValue()} E2E_PROJECT_SWITCH_DELAY`);
+  await page.route(`**/api/projects/${projectId}/foreshadows?**`,async route=>{markOldRequest();await oldRequestGate;await route.continue();});
+  await setDraftBody(page, `${await readDraftBody(page)} E2E_PROJECT_SWITCH_DELAY`);
   await page.getByRole("button",{name:"保存草稿",exact:true}).click();
   await oldRequestSeen;
   const switchNavigation=page.goto(`/projects/${secondProject.project.id}/workspace`);
@@ -184,7 +187,7 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   await expect(secondTools.locator(":scope > summary small")).toHaveCount(0);
   await secondTools.locator(":scope > summary").click();
   await expect(secondTools.getByText("潮汐表的本地修订",{exact:true})).toHaveCount(0);
-  await expect(secondTools.getByText("根据当前事实库，这个问题已有可核对的答案。",{exact:true})).toHaveCount(0);
+  await expect(secondTools.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true})).toHaveCount(0);
   await page.unroute(`**/api/projects/${projectId}/foreshadows?**`);
   await page.goto(`/projects/${projectId}/workspace`);await expect(tools).toBeVisible();await tools.locator(":scope > summary").click();
   await expect(recordTool.getByText("潮汐表的本地修订",{exact:true})).toBeVisible();
@@ -197,9 +200,11 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   const summary1920=await tools.locator(":scope > summary").evaluate(summary=>{const title=summary.querySelector("div")!.getBoundingClientRect(),counter=summary.querySelector("small")!.getBoundingClientRect();return {titleLeft:title.left,counterLeft:counter.left};});
   expect(summary1920.titleLeft).toBeLessThan(summary1920.counterLeft);
   await snap(page,"story-qa-foreshadow-02-desktop-1920.png");
-  await page.setViewportSize({width:390,height:844});await page.reload();await expect(tools).toBeVisible();await tools.locator(":scope > summary").click();
+  await page.setViewportSize({width:390,height:844});await page.reload();
+  await page.getByRole("navigation",{name:"手机浏览内容"}).getByRole("button",{name:"资料",exact:true}).click();
+  await expect(tools).toBeVisible();await tools.locator(":scope > summary").click();
   await expect(recordTool.getByText("作者确认的潮汐表线索",{exact:true})).toBeVisible();
-  await expect(qa.getByText("根据当前事实库，这个问题已有可核对的答案。",{exact:true}).first()).toBeVisible();
+  await expect(qa.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true}).first()).toBeVisible();
   await expect(tools.locator("form")).toHaveCount(0);
   await expect(tools.getByRole("button",{name:/提交问题|扫描已写正文|新建作者记录|保存修改|编辑|归档|接受|拒绝|保存为作者记录|重试|取消/})).toHaveCount(0);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
