@@ -194,7 +194,7 @@ try {
 
   const python = path.join(repositoryRoot, ".venv", "Scripts", "python.exe");
   await stat(python);
-  backend = await startProcess(python, ["-m", "uvicorn", "tests.e2e_app:app", "--host", "127.0.0.1", "--port", String(harness.backendPort)], {
+  backend = await startProcess(python, ["-m", "uvicorn", "tests.e2e_app:app", "--host", "127.0.0.1", "--port", String(harness.backendPort), "--timeout-keep-alive", "75"], {
     cwd: path.join(repositoryRoot, "backend"),
     env: sanitizedEnvironment({
       TRUSTED_HOSTS: `127.0.0.1:${harness.backendPort}`,

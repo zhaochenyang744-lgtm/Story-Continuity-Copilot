@@ -253,7 +253,7 @@ async function generic(group, root, env, grep) {
       await cp(path.join(dist, "static"), path.join(artifact, group.dist, "static"), { recursive: true, errorOnExist: true });
     }
 
-    backend = start(python, ["-m", "uvicorn", group === groups.stage13 ? "tests.stage13_app:app" : "tests.e2e_app:app", "--host", "127.0.0.1", "--port", String(group.ports[1]), "--log-level", "warning"], path.join(repositoryRoot, "backend"), env, path.join(logs, "backend.log"));
+    backend = start(python, ["-m", "uvicorn", group === groups.stage13 ? "tests.stage13_app:app" : "tests.e2e_app:app", "--host", "127.0.0.1", "--port", String(group.ports[1]), "--timeout-keep-alive", "75", "--log-level", "warning"], path.join(repositoryRoot, "backend"), env, path.join(logs, "backend.log"));
     await waitFor(`${env.E2E_BACKEND_ORIGIN}/health`, backend);
     // Stage serving scripts validate their exact production environment. Regular
     // and the staged rich page use Next's production server in their copy.

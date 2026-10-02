@@ -21,4 +21,7 @@ RUN mkdir -p /app/runtime/data /backups \
 WORKDIR /app/backend
 EXPOSE 8000
 ENTRYPOINT ["/app/deployment/backend-entrypoint.sh"]
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--no-access-log"]
+# Next.js proxies /api with Node keep-alive sockets that idle for 5 s; uvicorn
+# also closes idle sockets after 5 s by default, so a reused socket can be
+# reset mid-request. Keep the server side open longer than the client side.
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--timeout-keep-alive", "75", "--no-access-log"]

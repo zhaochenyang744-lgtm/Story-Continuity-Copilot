@@ -171,7 +171,7 @@ try {
 
   const python = path.join(repositoryRoot, ".venv", "Scripts", "python.exe");
   await stat(python);
-  backend = start(python, ["-m", "uvicorn", "tests.e2e_app:app", "--host", "127.0.0.1", "--port", "8260", "--log-level", "warning"], path.join(repositoryRoot, "backend"), cleanEnvironment({
+  backend = start(python, ["-m", "uvicorn", "tests.e2e_app:app", "--host", "127.0.0.1", "--port", "8260", "--timeout-keep-alive", "75", "--log-level", "warning"], path.join(repositoryRoot, "backend"), cleanEnvironment({
     TRUSTED_HOSTS: "127.0.0.1:8260",
     TRUSTED_ORIGINS: frontendOrigin,
     SCC_DISABLE_DEFAULT_APP: "1",

@@ -157,7 +157,7 @@ try {
 
   const python = path.join(repositoryRoot, ".venv", "Scripts", "python.exe");
   await stat(python);
-  backend = start(python, ["-m", "uvicorn", "tests.e2e_app:app", "--host", "127.0.0.1", "--port", "8211"], path.join(repositoryRoot, "backend"), cleanEnvironment({ TRUSTED_HOSTS: "127.0.0.1:8211", TRUSTED_ORIGINS: frontendOrigin, SCC_DISABLE_DEFAULT_APP: "1" }), "backend.log");
+  backend = start(python, ["-m", "uvicorn", "tests.e2e_app:app", "--host", "127.0.0.1", "--port", "8211", "--timeout-keep-alive", "75"], path.join(repositoryRoot, "backend"), cleanEnvironment({ TRUSTED_HOSTS: "127.0.0.1:8211", TRUSTED_ORIGINS: frontendOrigin, SCC_DISABLE_DEFAULT_APP: "1" }), "backend.log");
   await waitFor(`${backendOrigin}/health`, (response) => response.status === 200);
   frontend = start(process.execPath, [path.join(artifact, "server.js")], artifact, cleanEnvironment({ HOSTNAME: "127.0.0.1", PORT: "3211", NODE_ENV: "production" }), "frontend.log");
   bootstrap = await bootstrapProbe();
