@@ -124,7 +124,9 @@ html {
 *::-webkit-scrollbar-thumb { border: 2px solid var(--ink-900); border-radius: 999px; background: var(--line-strong); }
 body {
   margin: 0;
-  min-width: 320px;
+  /* 320px is the narrowest supported width; html reserves a stable 10px scrollbar gutter on
+     desktop, so body must fit 310px there or the page scrolls sideways and centring drifts. */
+  min-width: 310px;
   background: var(--ink-950);
 }
 button,
