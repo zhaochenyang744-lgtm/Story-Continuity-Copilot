@@ -23,3 +23,18 @@ export async function recordIssueDecision(page: Page, decision: "保留原意" |
   await drawer.getByRole("button", { name: "关闭", exact: true }).click();
   await expect(drawer).toBeHidden();
 }
+
+// The seeded demo result is already complete and stays on screen until the
+// POST returns, so "检查完成" alone can match it. Bind the wait to the new run.
+export async function runCheckAndWait(page: Page) {
+  const queued = page.waitForResponse((response) =>
+    response.request().method() === "POST" && /\/api\/projects\/[^/]+\/checks$/.test(new URL(response.url()).pathname));
+  await page.getByRole("button", { name: "运行连续性检查", exact: true }).click();
+  const response = await queued;
+  expect(response.status()).toBe(202);
+  const payload = await response.json() as { data: { run_id: string; status: string } };
+  expect(payload.data.status).toBe("queued");
+  await expect(page.locator(".run-lifecycle .run-facts")).toContainText(payload.data.run_id, { timeout: 15_000 });
+  await expect(page.getByLabel("连续性检查运行状态", { exact: true })).toContainText("检查完成", { timeout: 15_000 });
+  return payload.data.run_id;
+}

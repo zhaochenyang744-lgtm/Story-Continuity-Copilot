@@ -3,7 +3,7 @@ import { expect, Page, test } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createProject, readDraftBody, registerAccount, setDraftBody, tutorialProjectId } from "./support/app";
-import { projectMoreAction, recordIssueDecision, startVisitor } from "./support/batch2";
+import { projectMoreAction, recordIssueDecision, runCheckAndWait, startVisitor } from "./support/batch2";
 
 const shots = process.env.E2E_SCREENSHOTS_DIR
   ? path.resolve(process.env.E2E_SCREENSHOTS_DIR)
@@ -480,8 +480,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await globalNavButton(page, "作品管理").click();
     await openProject(page, "灰港回声").click();
     await projectNavButton(page, "写作与检查").click();
-    await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(runStatus(page)).toContainText("检查完成", { timeout: 15000 });
+    await runCheckAndWait(page);
     await page.locator(".issue-list button").first().click();
     await page.getByRole("button", { name: "前往修改" }).click();
     const editor = page.getByRole("textbox", { name: "草稿正文", exact: true });
@@ -501,8 +500,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await globalNavButton(page, "作品管理").click();
     await openProject(page, "灰港回声").click();
     await projectNavButton(page, "写作与检查").click();
-    await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(runStatus(page)).toContainText("检查完成", { timeout: 15000 });
+    await runCheckAndWait(page);
     await page.locator(".issue-list button").first().click();
     await page.getByRole("button", { name: "标记误报" }).click();
     await expect(page.getByText("已标记为误报", { exact: false })).toBeVisible();
@@ -630,8 +628,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await globalNavButton(page, "作品管理").click();
     await openProject(page, "灰港回声").click();
     await projectNavButton(page, "写作与检查").click();
-    await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(runStatus(page)).toContainText("检查完成", { timeout: 15000 });
+    await runCheckAndWait(page);
     for (let i = 0; i < 2; i++) { await page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" }).first().click(); await recordIssueDecision(page, "保留原意"); }
     await page.getByRole("button", { name: "审阅事实变化" }).click();
     const rejects = page.getByLabel("拒绝（不写入）");
@@ -697,13 +694,13 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await expect(editor).toBeEditable();
     await setDraftBody(page, `${await readDraftBody(page)}\n阶段五真实保存。`);
     await page.getByRole("button", { name: "保存草稿" }).click();
-    await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(runStatus(page)).toContainText("检查完成", { timeout: 15_000 });
+    const checkedRunId = await runCheckAndWait(page);
     await page.screenshot({ path: path.join(shots, "1440-grey-harbor-run-complete.png"), fullPage: true });
     const projectId = new URL(page.url()).pathname.split("/")[2];
     const projectResponse = await page.request.get(`/api/projects/${projectId}`);
     expect(projectResponse.status()).toBe(200);
     const runId = (await projectResponse.json()).data.latest_run.run_id;
+    expect(runId).toBe(checkedRunId);
     const runResponse = await page.request.get(`/api/projects/${projectId}/checks/${runId}?include=issues,evidence`);
     expect(runResponse.status()).toBe(200);
     const issues = (await runResponse.json()).data.issues as Array<{
@@ -774,6 +771,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
       const queuedPayload = await response.json() as { data: { run_id: string; status: string } };
       expect(response.status()).toBe(202);
       expect(queuedPayload.data.status).toBe("queued");
+      await expect(page.locator(".run-lifecycle .run-facts")).toContainText(queuedPayload.data.run_id, { timeout: 15_000 });
       await expect(runStatus(page)).toContainText("检查完成", { timeout: 15_000 });
       const projectId = new URL(page.url()).pathname.split("/")[2];
       const checked = await page.request.get(`/api/projects/${projectId}/checks/${queuedPayload.data.run_id}?include=issues,evidence`);
@@ -843,8 +841,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
       `EXTREME_ISSUES 第${i + 1}项：温岚仍握着黄铜罗盘；与此同时，黄铜罗盘也在苏岑的外套内袋。`,
     ).join("\n"));
     await page.getByRole("button", { name: "保存草稿" }).click();
-    await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(runStatus(page)).toContainText("检查完成", { timeout: 15_000 });
+    await runCheckAndWait(page);
     const items = page.locator(".issue-list .issue-row");
     await expect(items).toHaveCount(20);
     await expect(page.getByText("高影响", { exact: false }).first()).toBeVisible();
