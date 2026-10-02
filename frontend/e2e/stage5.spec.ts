@@ -484,6 +484,12 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await expect(runStatus(page)).toContainText("检查完成", { timeout: 15000 });
     await page.locator(".issue-list button").first().click();
     await page.getByRole("button", { name: "前往修改" }).click();
+    const editor = page.getByRole("textbox", { name: "草稿正文", exact: true });
+    await expect(editor).toBeFocused();
+    // Let ProseMirror handle select-all before deleting after the focus handoff.
+    await editor.press("ControlOrMeta+A");
+    await editor.press("Backspace");
+    await expect.poll(() => readDraftBody(page)).toBe("");
     await setDraftBody(page, "受控 N+1 编辑");
     await page.getByRole("button", { name: "保存受控修订" }).click();
     await expect(page.locator(".workspace-draft-meta")).toContainText("第 2 次保存");
