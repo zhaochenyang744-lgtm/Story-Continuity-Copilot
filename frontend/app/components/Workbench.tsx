@@ -4355,7 +4355,7 @@ function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go}:{project:P
   const changeCandidate=(candidate:ForeshadowCandidate,patch:Partial<ForeshadowEditor>)=>setCandidateEdits((current)=>({...current,[candidate.id]:{...(current[candidate.id]??candidateEditor(candidate)),...patch}}));
   const toggleScope=(value:"confirmed"|"written"|"planned")=>setScope((current)=>current.includes(value)?(current.length===1?current:current.filter((item)=>item!==value)):[...current,value]);
   const renderRunActions=(run:WritingAnalysisRun)=>!readOnly&&<div className="analysis-result-actions">{activeAnalysis(run)&&<Button disabled={Boolean(busy)} onClick={()=>void runAction(run,"cancel")}>取消</Button>}{retryableAnalysis(run)&&<Button disabled={Boolean(busy)||run.is_stale} onClick={()=>void runAction(run,"retry")}>重试</Button>}</div>;
-  return <details className="bounded-story-tools" role="region" aria-label="作品问答与伏笔">
+  return <details className="bounded-story-tools" aria-label="作品问答与伏笔">
     <summary className="bounded-tools-header"><div><p className="eyebrow">写作辅助</p><h2>作品问答与伏笔</h2><p>需要时再展开；已有回答与伏笔记录也在这里。</p></div>{(snapshot?.foreshadow_version??project.foreshadow_version??0)>0||qaRuns.length>0||scanRuns.length>0?<small>伏笔记录第 {snapshot?.foreshadow_version??project.foreshadow_version??0} 版 · 回答 {qaRuns.length} 条 · 扫描 {scanRuns.length} 次</small>:null}</summary>
     <div className="bounded-tools-intro"><DesignAsset name="bulb" /><p>回答会说明依据来自哪里。扫描发现的伏笔先供你参考，是否记入作品由你决定。</p></div>
     {notice&&<p className="notice" role="status">{notice}</p>}
@@ -4421,7 +4421,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
   const loadLatest=async()=>{setLocalBusy("reload");setNotice("正在载入最新任务版本；候选编辑内容会继续保留。");try{if(await refresh(true)){setConflict(false);setNotice("已载入最新任务与候选状态；候选编辑内容仍保留，请核对后主动重试。");}else setNotice("载入最新任务失败；当前候选编辑内容仍保留，请稍后重试。");}finally{setLocalBusy("");}};
   const returnToDraft=()=>{const editor=document.getElementById("draft-body");editor?.scrollIntoView({behavior:"smooth",block:"center"});window.setTimeout(()=>editor?.focus(),250);};
   const activeRun=runs.find(activeAnalysis);
-  return <details className="bounded-story-tools revision-plan-tools" role="region" aria-label="修订计划与任务">
+  return <details className="bounded-story-tools revision-plan-tools" aria-label="修订计划与任务">
     <summary className="bounded-tools-header"><div><p className="eyebrow">修订</p><h2>修订计划与任务</h2><p>从当前连续性问题生成有界行动建议；确认后仅创建任务，不会改写正文或事实。</p></div>{(snapshot?.tasks.some((task)=>task.status!=="completed")||runs.length>0)?<small>进行中任务 {snapshot?.tasks.filter((task)=>task.status!=="completed").length??0} 项 · 历史计划 {runs.length} 个</small>:null}</summary>
     <div className="bounded-tools-intro">先选择当前检查中的问题，再逐条决定候选。接受任务后回到同一草稿手动修改并保存，需要时再重新检查。</div>
     {notice&&<p className="notice" role="status">{notice}</p>}

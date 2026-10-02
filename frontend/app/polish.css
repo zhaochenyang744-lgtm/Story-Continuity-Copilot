@@ -24,6 +24,9 @@
   --violet-400: #a78bfa;
   --violet-500: #8b5cf6;
   --violet-hover: #9b72f7;
+  /* White text needs a darker fill than the decorative violet accents. */
+  --primary-bg: #8150e8;
+  --primary-hover: #7845df;
   --accent: #a78bfa;
   --focus: #a78bfa;
   --card-sheen: none;
@@ -193,14 +196,15 @@ button,
 button.primary,
 .button.primary {
   border-color: transparent;
-  background: var(--violet-500);
+  background: var(--primary-bg);
   background-image: none;
   box-shadow: none;
   color: #fff;
   font-weight: 600;
 }
-button.primary:hover:not(:disabled) {
-  background: var(--violet-hover);
+button.primary:hover:not(:disabled),
+.button.primary:hover:not(:disabled) {
+  background: var(--primary-hover);
   box-shadow: 0 6px 18px rgba(139, 92, 246, .3);
   transform: none;
 }
@@ -318,7 +322,8 @@ input[type="radio"] { accent-color: var(--violet-500); }
 /* Auth: one calm card on a flat field with a single soft glow. */
 .auth-shell { background: radial-gradient(60% 50% at 50% 0%, rgba(139, 92, 246, .12), transparent 70%), var(--bg); }
 .auth-layout { border: var(--hairline); border-radius: 18px; background: var(--surface); box-shadow: 0 30px 80px rgba(0, 0, 0, .5); }
-.auth button.primary { background: var(--violet-500); background-image: none; }
+.auth button.primary { background: var(--primary-bg); background-image: none; }
+.import-steps li.active span { background: var(--primary-bg); }
 .auth-actions .auth-switch-link { color: var(--violet-300); text-decoration: none; }
 
 /* Phones: the horizontal project tabs fade at the edges instead of cutting a word in half. */

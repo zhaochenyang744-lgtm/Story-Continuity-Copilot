@@ -1,6 +1,8 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-test("review entry opens after actionable decisions while insufficient evidence stays read-only", async ({ page }) => {
+test("review entry opens after actionable decisions while insufficient evidence stays read-only", async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   const pageErrors: string[] = [];
   const consoleErrors: string[] = [];
   const failedApiResponses: string[] = [];
@@ -74,6 +76,26 @@ test("review entry opens after actionable decisions while insufficient evidence 
   await expect(issues.filter({ hasText: "决定已记录" })).toHaveCount(3);
   await expect(reviewEntry).toBeVisible();
   await expect(reviewEntry).toBeEnabled();
+  // Check the entire writing page with resolved impact labels and both
+  // named details groups present, including the primary button's hover state.
+  const colors = () => page.locator("button.primary:not(:disabled), .issue-row.resolved .risk, .issue-row.resolved .issue-claim").evaluateAll((elements) =>
+    elements.map((element) => {
+      const style = getComputedStyle(element);
+      return { text: element.textContent, color: style.color, background: style.backgroundColor,
+        opacity: style.opacity, rowOpacity: element.closest(".issue-row") ? getComputedStyle(element.closest(".issue-row")!).opacity : null };
+    }),
+  );
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  const defaultColors = await colors();
+  await page.screenshot({ path: testInfo.outputPath("writing-1440.png"), fullPage: true });
+  await reviewEntry.hover();
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await testInfo.attach("contrast-samples", { body: JSON.stringify({ default: defaultColors, hover: await colors() }, null, 2), contentType: "application/json" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("navigation", { name: "手机浏览内容" }).getByRole("button", { name: "问题 4", exact: true }).click();
+  await expect(issues.filter({ hasText: "决定已记录" })).toHaveCount(3);
+  await page.screenshot({ path: testInfo.outputPath("writing-390.png"), fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 900 });
   // Refresh verifies persisted decisions, independently of the local resolved-ID fallback.
   await page.reload();
   await expect(reviewEntry).toBeEnabled();
