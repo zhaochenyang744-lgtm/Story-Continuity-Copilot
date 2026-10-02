@@ -103,12 +103,37 @@ npm run build
 
 ## Isolated browser E2E
 
-The frozen Agent Reliability and Web App Readiness browser suites use test-only providers, capture mail, dedicated loopback ports, approved system-temp roots, and separate Playwright configurations. They do not use the local demo database or a real Provider/SMTP service.
+From `frontend`, run all current browser tests with one command. No manually started frontend or backend is needed:
 
-- Agent Reliability (Stage 12 V2): `frontend/playwright.stage12-v2.config.ts`, `backend/tests/e2e_app.py`, ports 3072/8072, and a `%TEMP%/story-stage12-v2-*` root.
-- Web App Readiness (Stage 13 V4): `frontend/playwright.stage13.config.ts`, `backend/tests/stage13_app.py`, `frontend/scripts/stage13-v4-build.ps1`, `frontend/scripts/start-stage13-v4-artifact.mjs`, ports 3084/8084, and a `%TEMP%/story-stage13-v4-impl-*` root.
+```powershell
+Get-ChildItem Env:CONTINUITY_* | Remove-Item
+npm run test:e2e
 
-Both configurations validate the complete environment profile before either test app starts. Use the exact variables documented in `frontend/stage13-harness.mjs` and `backend/tests/stage13_harness.py`; mixed ports, prefixes, dist directories, or temp roots fail closed. The Web App Readiness build script creates and scans the official standalone artifact before relocation startup.
+# One group, selected groups, or matching titles within regular
+npm run test:e2e -- --group v130
+npm run test:e2e -- --group stage12,regular,stage13
+npm run test:e2e -- --group regular --grep "controlled edit run"
+npm run test:e2e -- --help
+```
+
+The runner executes the eight groups sequentially against temporary production builds, test-only providers, capture mail and temporary databases. It clears inherited model/SMTP configuration and supplies each group's complete environment profile; mixed origins, prefixes, dist directories or temp roots fail closed. Keep these loopback ports free and run only one E2E command at a time:
+
+| Group | Frontend / backend ports | Executions / coverage |
+|---|---|---|
+| `v130` | 3197 / 8197 | 15 author-workflow tests |
+| `v140-frontend` | 3205 / 8205 | 13 current-interface tests |
+| `v140-visual` | 3211 / 8211 | 13 interface + 1 visual test |
+| `regular` | 3270 / 8270 | 54 authentication, writing, imports, fact review, v1.1/v1.2 and helper tests |
+| `stage12` | 3072 / 8072 | 8 Agent Run lifecycle tests; Stage 12 V2 impl profile |
+| `stage13` | 3080 / 8080 | 4 visitor, recovery and isolation tests; Stage 13 impl profile |
+| `maintenance` | 3260 / 8260 | 13 interface + 2 maintenance tests |
+| `legacy-rich-suggestion` | 3271 / 8271 | 1 staged rich-text suggestion test |
+
+The total is 124 executions, including the same 13 v140 frontend cases in three groups. `--group` accepts comma-separated group names; `--grep` is supported only with `--group regular`. Windows builds temporarily use Q:, R:, T: and V:; leave these drive letters available. Each group owns its temporary source, build, database and services. The unified runner cleans those resources and checks ports after each group; it retains results and diagnostic attachments under the printed `E2E_REPORT_ROOT`, with machine-readable and Markdown summaries at `E2E_SUMMARY` and `summary.md`. It leaves tracked `next-env.d.ts` and `tsconfig.json` unchanged.
+
+Five historical acceptance files (`legacy-gap-independent.spec.ts`, `legacy-gap-independent-round2.spec.ts`, `legacy-gap-round3-brief.spec.ts`, `g02-controller.spec.ts`, and `g02-controller-post-v4.spec.ts`) are retained and excluded from daily runs. `npm run test:e2e:raw` is the direct Playwright entry and requires a manually supplied matching isolated environment. `npm run test:v130`, `npm run test:v140:frontend`, and `npm run test:v140:visual` remain available as standalone runners. Stage 13 daily tests use `tests.stage13_app` and CaptureMailer on 3080/8080; the historical V4 artifact-build/scan profile on 3084/8084 remains a separate release workflow.
+
+These browser checks use no local demo database, real model or external SMTP service. They verify browser behavior and test-provider contracts; real provider evaluations and production delivery require their own verification.
 
 ## What remains local
 
