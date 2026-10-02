@@ -12,7 +12,7 @@ export default defineConfig({
   projects: [
     {
       name: "regular",
-      testMatch: ["auth-entry.spec.ts", "review-entry.spec.ts", "stage5.spec.ts", "stage8.spec.ts", "stage9.spec.ts", "stage11[i-l].spec.ts", "support/app.smoke.spec.ts"],
+      testMatch: ["auth-entry.spec.ts", "controlled-edit-run.spec.ts", "review-entry.spec.ts", "stage5.spec.ts", "stage8.spec.ts", "stage9.spec.ts", "stage11[i-l].spec.ts", "support/app.smoke.spec.ts"],
     },
     {
       name: "v120",
