@@ -1,44 +1,18 @@
 import { expect, test, type Page } from "@playwright/test";
-import { randomUUID } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-
-const fixture = path.resolve(
-  process.cwd(),
-  "frontend/e2e/fixtures/stage9-mist-harbor.md",
-);
+import { importMarkdown, registerAccount } from "./support/app";
 
 async function api(page: Page, url: string) {
   return page.evaluate(async (path) => (await fetch(path)).json(), url);
 }
 
 async function initializedProject(page: Page) {
-  const account = `stage11l${Date.now()}${Math.floor(Math.random() * 1000)}`;
-  const password = `safe-${randomUUID()}`;
-  await page.goto("/register");
-  await page.getByLabel("账号").fill(account);
-  await page.getByLabel("显示名称").fill("11L 作者");
-  await page.getByLabel("恢复邮箱").fill(`${account}@example.test`);
-  await page.locator("#auth-password").fill(password);
-  await page.getByRole("button", { name: "创建账号", exact: true }).click();
-  await page.getByRole("button", { name: "作品管理", exact: true }).click();
-  await page.getByRole("button", { name: "导入作品", exact: true }).click();
-  await page
-    .locator('input[name="file"]')
-    .setInputFiles({
-      name: "base.md",
-      mimeType: "text/markdown",
-      buffer: await readFile(fixture),
-    });
-  await page.getByRole("button", { name: "解析并预览章节" }).click();
-  await page.getByRole("button", { name: "继续确认" }).click();
-  await page.getByLabel("作品名").fill("11L 两轮作品");
+  const { account, password } = await registerAccount(page, { prefix: "stage11l" });
   const importCommitted = page.waitForResponse(
     (response) =>
       /\/imports\/[^/]+\/commit$/.test(new URL(response.url()).pathname) &&
       response.request().method() === "POST",
   );
-  await page.getByRole("button", { name: "确认导入" }).click();
+  await importMarkdown(page, "stage9-mist-harbor.md", "11L 两轮作品");
   const importResult = await importCommitted;
   expect(importResult.status()).toBe(201);
   const id = (await importResult.json()).data.project.id as string;
@@ -230,7 +204,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
     "# 追加章节\n第一轮：林默将银钥匙交给守塔人。",
   );
   const first = await start(page, author.id, 2);
-  await expect(page.getByRole("heading", { name: /连续性问题/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /^待处理提示/ })).toBeVisible();
   await expect(
     page.getByRole("region", { name: "事实更新建议" }),
   ).toBeVisible();
@@ -250,7 +224,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
   await page.locator(".issue-list button").first().click();
   const drawer = page.getByRole("dialog", { name: "问题证据" });
   await expect(drawer).toBeVisible();
-  await expect(drawer.getByText("证据", { exact: true })).toBeVisible();
+  await expect(drawer.getByRole("heading", { name: "历史证据", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(drawer).toBeHidden();
   await page
@@ -316,7 +290,7 @@ test("1440 two real product rounds preserve lineage through refresh, re-login, a
   expect((await loggedOut).status()).toBe(204);
   await page.waitForURL(/\/login$/);
   await page.getByLabel("账号").fill(author.account);
-  await page.locator("#auth-password").fill(author.password);
+  await page.getByLabel("密码", { exact: true }).fill(author.password);
   await page.getByRole("button", { name: "登录" }).click();
   await expect
     .poll(

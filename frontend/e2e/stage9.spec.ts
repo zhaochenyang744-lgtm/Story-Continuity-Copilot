@@ -1,9 +1,8 @@
 import { expect, test } from "@playwright/test";
-import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
-import path from "node:path";
+import { fixturePath, registerAccount, setDraftBody } from "./support/app";
 
-const originalWork = path.resolve(process.cwd(), "e2e/fixtures/stage9-mist-harbor.md");
+const originalWork = fixturePath("stage9-mist-harbor.md");
 
 const projectNav = (page: import("@playwright/test").Page, name: string) =>
   page.locator(".project-nav").getByRole("button", { name, exact: true });
@@ -36,11 +35,7 @@ test("imported markdown follows author-reviewed Memory V1 initialization before 
       initializationDecisionBodies.push(request.postDataJSON() as Record<string, unknown>);
   });
 
-  await page.goto("/register");
-  await page.getByLabel("账号").fill(`stage9${Date.now()}`);
-  await page.getByLabel("显示名称").fill("阶段九作者");
-  await page.getByLabel("密码").fill(`test-${randomUUID()}`);
-  await page.getByRole("button", { name: "创建本地账号" }).click();
+  await registerAccount(page, { prefix: "stage9" });
   await page.getByRole("button", { name: "作品管理", exact: true }).click();
   await page.getByRole("button", { name: "导入作品", exact: true }).click();
 
@@ -49,7 +44,7 @@ test("imported markdown follows author-reviewed Memory V1 initialization before 
     mimeType: "text/markdown",
     buffer: await readFile(originalWork),
   });
-  await page.getByRole("button", { name: "解析并预览章节" }).click();
+  await page.getByRole("button", { name: "发送并预览章节" }).click();
   await expect(page.getByRole("heading", { name: "章节预览" })).toBeVisible();
   await page.getByRole("button", { name: "继续确认" }).click();
   await page.getByLabel("作品名").fill("雾港原创测试");
@@ -87,14 +82,14 @@ test("imported markdown follows author-reviewed Memory V1 initialization before 
   await expect(page.getByText("银钥匙", { exact: true })).toHaveCount(0);
 
   await projectNav(page, "写作与检查").click();
-  await page.locator("#draft-body").fill("林默把银钥匙交给了陌生人。钟声仍在雾港回荡。");
+  await setDraftBody(page, "林默把银钥匙交给了陌生人。钟声仍在雾港回荡。");
   await page.getByRole("button", { name: "保存草稿" }).click();
   await page.getByRole("button", { name: "运行连续性检查" }).click();
   await expect(page.locator(".issue-list li").first()).toBeVisible();
   await page.locator(".issue-list li").first().getByRole("button").click();
   const drawer = page.getByRole("dialog", { name: "问题证据" });
-  await expect(drawer.getByRole("heading", { name: "Evidence", exact: true })).toBeVisible();
-  await expect(drawer.locator("blockquote")).not.toBeEmpty();
+  await expect(drawer.getByRole("heading", { name: "历史证据", exact: true })).toBeVisible();
+  await expect(drawer.locator(".evidence blockquote").first()).not.toBeEmpty();
 
   expect(failedRequests).toEqual([]);
   expect(consoleErrors).toEqual([]);

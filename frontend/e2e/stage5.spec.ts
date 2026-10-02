@@ -2,7 +2,8 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, Page, test } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { randomUUID } from "node:crypto";
+import { createProject, readDraftBody, registerAccount, setDraftBody, tutorialProjectId } from "./support/app";
+import { projectMoreAction, recordIssueDecision, runCheckAndWait, startVisitor } from "./support/batch2";
 
 const shots = process.env.E2E_SCREENSHOTS_DIR
   ? path.resolve(process.env.E2E_SCREENSHOTS_DIR)
@@ -95,13 +96,8 @@ test.afterAll(async () => {
   if (!apiCorpus.response_count || apiCorpus.unresolved) throw new Error("API corpus scanner did not complete");
 });
 
-async function register(page: Page, name: string) {
-  await page.goto("/register");
-  await page.getByLabel("账号").fill(name);
-  await page.getByLabel("显示名称").fill("本地作者");
-  await page.getByLabel("密码").fill(`test-${randomUUID()}`);
-  await page.getByRole("button", { name: "创建本地账号" }).click();
-  await expect(page.getByRole("heading", { name: "继续你的故事" })).toBeVisible();
+async function register(page: Page, prefix: string) {
+  return registerAccount(page, { prefix });
 }
 const globalNavButton = (page: Page, name: "首页" | "作品管理") =>
   page.locator(".global-nav").getByRole("button", { name, exact: true });
@@ -116,9 +112,9 @@ const openUserMenu = async (page: Page) => {
 };
 const expectCenteredAuthCard = async (page: Page) => {
   const box = await page.locator(".auth").boundingBox();
-  const viewport = page.viewportSize();
-  if (!box || !viewport) throw new Error("认证卡片或视口不可用");
-  expect(Math.abs(box.x + box.width / 2 - viewport.width / 2)).toBeLessThanOrEqual(2);
+  const layoutWidth = await page.evaluate(() => document.documentElement.getBoundingClientRect().width);
+  if (!box) throw new Error("认证卡片不可用");
+  expect(Math.abs(box.x + box.width / 2 - layoutWidth / 2)).toBeLessThanOrEqual(2);
 };
 const expectActiveProjectNavVisible = async (page: Page, name: string) => {
   const nav = page.locator(".project-nav nav");
@@ -129,14 +125,17 @@ const expectActiveProjectNavVisible = async (page: Page, name: string) => {
   expect(activeBox.x).toBeGreaterThanOrEqual(navBox.x - 1);
   expect(activeBox.x + activeBox.width).toBeLessThanOrEqual(navBox.x + navBox.width + 1);
 };
-const expectButtonTextHorizontallyCentered = async (page: Page, name: string) => {
+const expectOverviewActionContentCentered = async (page: Page, name: string) => {
   const offset = await page.getByRole("button", { name, exact: true }).evaluate((button) => {
     const buttonBox = button.getBoundingClientRect();
     const range = document.createRange();
     range.selectNodeContents(button);
     const textBox = range.getBoundingClientRect();
+    // polish.css adds an arrow after the label; center the complete link content.
+    const arrow = getComputedStyle(button, "::after");
+    const trailingWidth = parseFloat(arrow.marginLeft) + parseFloat(arrow.width) + parseFloat(arrow.marginRight);
     return Math.abs(
-      buttonBox.left + buttonBox.width / 2 - (textBox.left + textBox.width / 2),
+      buttonBox.left + buttonBox.width / 2 - (textBox.left + (textBox.width + trailingWidth) / 2),
     );
   });
   expect(offset).toBeLessThanOrEqual(1);
@@ -148,17 +147,11 @@ test("logout then login with the same local credentials restores work", async ({
     if (message.type() === "error") errors.push(message.text());
   });
   page.on("pageerror", (error) => errors.push(error.message));
-  const name = account("stagefivelogin");
-  const secret = `test-${randomUUID()}`;
-  await page.goto("/register");
-  await page.getByLabel("账号").fill(name);
-  await page.getByLabel("显示名称").fill("本地作者");
-  await page.getByLabel("密码").fill(secret);
-  await page.getByRole("button", { name: "创建本地账号" }).click();
+  const { account: name, password: secret } = await registerAccount(page, { prefix: "stagefivelogin" });
   const logoutMenu = await openUserMenu(page);
   await logoutMenu.getByRole("menuitem", { name: "退出登录", exact: true }).click();
   await page.getByLabel("账号").fill(name);
-  await page.getByLabel("密码").fill(secret);
+  await page.getByLabel("密码", { exact: true }).fill(secret);
   await page.getByRole("button", { name: "登录" }).click();
   await expect(page.getByRole("heading", { name: "继续你的故事" })).toBeVisible();
   expect(errors).toEqual([]);
@@ -200,18 +193,19 @@ test("capture production visual states from the real local workflow", async ({ p
   await expectCenteredAuthCard(page);
   await page.screenshot({ path: path.join(shots, "320-register.png"), fullPage: true });
   await page.setViewportSize({ width: 1440, height: 960 });
-  await register(page, account("stagefivevisual"));
+  await startVisitor(page);
   await page.screenshot({ path: path.join(shots, "1440-home.png"), fullPage: true });
   await globalNavButton(page, "作品管理").click();
   await expect(page.getByRole("heading", { name: "作品管理" })).toBeVisible();
+  await expect(page.locator(".global-nav").getByRole("img", { name: "Story Continuity", exact: true })).toBeVisible();
   const globalRail = await page.locator(".global-nav").boundingBox();
   expect(globalRail?.x).toBe(0);
-  expect(globalRail?.width).toBe(200);
+  expect(globalRail?.width).toBe(220); // visual-system.css --global-nav-expanded
   await page.screenshot({ path: path.join(shots, "1440-projects.png"), fullPage: true });
   await openProject(page, "灰港回声").click();
   await expect(page.getByRole("heading", { name: "灰港回声" })).toBeVisible();
-  await expectButtonTextHorizontallyCentered(page, "查看大纲");
-  await expectButtonTextHorizontallyCentered(page, "查看角色库");
+  await expectOverviewActionContentCentered(page, "查看大纲");
+  await expectOverviewActionContentCentered(page, "查看角色库");
   await page.screenshot({ path: path.join(shots, "1440-project-overview.png"), fullPage: true });
   await projectNavButton(page, "写作与检查").click();
   await expect(page.getByLabel("草稿正文")).toBeVisible();
@@ -221,16 +215,16 @@ test("capture production visual states from the real local workflow", async ({ p
   await page.screenshot({ path: path.join(shots, "1024-workspace.png"), fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
-  await expect(page.getByText("浏览只读", { exact: false })).toBeVisible();
+  await expect(page.getByText("当前窗口较窄，暂为只读浏览", { exact: false })).toBeVisible();
   await expectActiveProjectNavVisible(page, "写作与检查");
-  await expect(page.locator(".global-nav .brand > span").last()).toHaveAttribute("aria-label", "Story Continuity");
+  await expect(page.locator(".global-nav .brand-asset")).toBeHidden(); // globals.css <=480px hides the brand span.
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: path.join(shots, "390-workspace-browse-only.png"), fullPage: true });
   await page.setViewportSize({ width: 320, height: 700 });
   await projectNavButton(page, "大纲").click();
   await projectNavButton(page, "写作与检查").click();
   await expectActiveProjectNavVisible(page, "写作与检查");
-  await expect(page.locator(".global-nav .brand > span").last()).toHaveAttribute("aria-label", "Story Continuity");
+  await expect(page.locator(".global-nav .brand-asset")).toBeHidden(); // globals.css <=480px hides the brand span.
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: path.join(shots, "320-workspace-browse-only.png"), fullPage: true });
   expect(errors).toEqual([]);
@@ -270,15 +264,13 @@ test.describe.serial("Stage 5 real local workflow", () => {
       const b = await second.newPage();
       const privateTitle = `账户隔离作品-${Date.now()}`;
       await register(a, account("stagefiveisoa"));
-      await globalNavButton(a, "作品管理").click();
-      await a.getByRole("button", { name: "新建作品" }).click();
-      await a.locator('input[name="title"]').fill(privateTitle);
-      await a.getByRole("button", { name: "创建并进入作品" }).click();
+      await createProject(a, privateTitle);
       await expect(a.getByRole("heading", { name: privateTitle })).toBeVisible();
       await register(b, account("stagefiveisob"));
       await globalNavButton(b, "作品管理").click();
       await expect(b.getByText(privateTitle)).toHaveCount(0);
-      await expect(b.locator(".project-rows li")).toHaveCount(3);
+      await expect(b.locator(".project-rows li")).toHaveCount(0);
+      await expect(b.getByRole("heading", { name: "还没有真实作品" })).toBeVisible();
     } finally {
       await first.close();
       await second.close();
@@ -296,14 +288,23 @@ test.describe.serial("Stage 5 real local workflow", () => {
       const url = new URL(request.url());
       if (url.pathname === "/api/projects") projectRequests.push(url.search);
     });
-    await register(page, account("stagefivecatalog"));
-    await expect(page.locator(".home-continue")).toContainText("灰港回声");
+    await startVisitor(page);
+    const inventory = await page.request.get("/api/projects?sort=title_asc");
+    expect(inventory.status()).toBe(200);
+    const projects = (await inventory.json()).data.projects as Array<{
+      title: string; updated_at: string; current_draft: { id: string } | null;
+    }>;
+    // home() and list_projects(): non-archived, non-tutorial projects, newest first.
+    const newest = [...projects].sort((a, b) => b.updated_at.localeCompare(a.updated_at));
+    const continuation = newest.find((project) => project.current_draft);
+    expect(continuation).toBeDefined();
+    await expect(page.locator(".home-continue")).toContainText(continuation!.title);
     await globalNavButton(page, "作品管理").click();
     await expect(page.locator(".project-rows li")).toHaveCount(3);
-    await expect(page.locator(".project-rows li").first()).toContainText("灰港回声");
+    await expect(page.locator(".project-rows li").first()).toContainText(newest[0].title);
     await page.getByLabel("搜索").fill("纸月档案");
-    await page.getByLabel("状态").selectOption("active");
-    await page.getByLabel("排序").selectOption("title_asc");
+    await page.getByRole("combobox", { name: "状态", exact: true }).selectOption("active");
+    await page.getByRole("combobox", { name: "排序", exact: true }).selectOption("title_asc");
     await page.getByRole("button", { name: "应用条件" }).click();
     await expect(page.locator(".project-rows li")).toHaveCount(1);
     await expect(page.locator(".project-rows li")).toContainText("纸月档案");
@@ -323,8 +324,12 @@ test.describe.serial("Stage 5 real local workflow", () => {
       for (const [tab, text] of [["大纲", seed.outline], ["角色库", seed.character], ["世界观", seed.world], ["事实库", seed.memory]] as const) {
         await projectNavButton(page, tab).click();
         await expect(page.getByRole("heading", { name: tab })).toBeVisible();
-        await expect(page.locator(".read-list")).toContainText(text);
-        snapshots.push(`${seed.title}/${tab}:${await page.locator(".read-list").innerText()}`);
+        const archive = tab === "事实库"
+          ? page.getByRole("region", { name: "事实档案", exact: true })
+          : page.locator(".author-reference-pane");
+        if (tab !== "事实库") await page.getByRole("button", { name: { 大纲: "已写章节", 角色库: "正文档案", 世界观: "正文资料" }[tab], exact: true }).click();
+        await expect(archive).toContainText(text);
+        snapshots.push(`${seed.title}/${tab}:${await archive.innerText()}`);
       }
       await globalNavButton(page, "作品管理").click();
     }
@@ -342,8 +347,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     try {
       const page = await context.newPage();
       await register(page, account("stagefiveresponsive"));
-      await globalNavButton(page, "作品管理").click();
-      await page.locator(".project-rows li").first().getByRole("button", { name: "打开" }).click();
+      await createProject(page, "响应式操作作品");
       await projectNavButton(page, "写作与检查").click();
       await expect(page.getByRole("button", { name: "运行连续性检查" })).toBeEnabled();
       await expect(page.locator("body")).toHaveCSS("scroll-behavior", "auto");
@@ -368,8 +372,9 @@ test.describe.serial("Stage 5 real local workflow", () => {
       }
       await page.setViewportSize({ width: 390, height: 844 });
       await page.reload();
-      await expect(page.getByText("浏览只读", { exact: false })).toBeVisible();
-      await expect(page.getByRole("button", { name: "运行连续性检查" })).toBeDisabled();
+      await expect(page.getByText("当前窗口较窄，暂为只读浏览", { exact: false })).toBeVisible();
+      await expect(page.getByRole("button", { name: "运行连续性检查" })).toHaveCount(0);
+      await expect(page.locator("#draft-body")).toHaveAttribute("aria-readonly", "true");
       await expect(page.getByText("请求超时", { exact: false })).toHaveCount(0);
       const mobileNav = page.locator(".global-nav");
       expect((await mobileNav.boundingBox())?.height).toBeLessThanOrEqual(68);
@@ -379,7 +384,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
         await expect(button).toHaveCSS("white-space", "nowrap");
       }
       const userMenu = await openUserMenu(page);
-      await expect(userMenu.locator("p")).toContainText("本地作者");
+      await expect(page.getByRole("button", { name: "用户菜单", exact: true })).toContainText("E2E 作者");
       await page.keyboard.press("Escape");
       await expect(userMenu).toBeHidden();
       await expect(page.getByRole("button", { name: "用户菜单", exact: true })).toBeFocused();
@@ -392,10 +397,9 @@ test.describe.serial("Stage 5 real local workflow", () => {
 
   test("dirty project navigation asks whether to save, discard, or cancel", async ({ page }) => {
     await register(page, account("stagefivedirty"));
-    await globalNavButton(page, "作品管理").click();
-    await page.locator(".project-rows li").first().getByRole("button", { name: "打开" }).click();
+    await createProject(page, "未保存导航作品");
     await projectNavButton(page, "写作与检查").click();
-    await page.getByLabel("草稿正文").fill("未保存的切换测试");
+    await setDraftBody(page, "未保存的切换测试");
     await globalNavButton(page, "作品管理").click();
     const dialog = page.getByRole("dialog", { name: "未保存草稿" });
     await expect(dialog).toBeVisible();
@@ -408,31 +412,39 @@ test.describe.serial("Stage 5 real local workflow", () => {
 
   test("a delayed project A response cannot overwrite project B", async ({ page }) => {
     await register(page, account("stagefivelate"));
+    const projectA = await createProject(page, "延迟响应作品 A");
+    const projectB = await createProject(page, "延迟响应作品 B");
     await globalNavButton(page, "作品管理").click();
-    let releaseA: (() => void) | undefined;
-    let heldOnce = false;
+    let releaseA!: () => void;
+    let intercepted!: () => void;
+    let delivered!: () => void;
     const held = new Promise<void>((resolve) => { releaseA = resolve; });
-    await page.route(/\/api\/projects\/[^/]+\/memory$/, async (route) => {
-      if (!heldOnce) { heldOnce = true; await held; }
-      await route.continue();
+    const arrived = new Promise<void>((resolve) => { intercepted = resolve; });
+    const complete = new Promise<void>((resolve) => { delivered = resolve; });
+    await page.route(`**/api/projects/${projectA}/memory`, async (route) => {
+      const response = await route.fetch();
+      intercepted();
+      await held;
+      await route.fulfill({ response });
+      delivered();
     });
-    await page.locator(".project-rows li").filter({ hasText: "灰港回声" }).getByRole("button", { name: "打开" }).click();
+    await openProject(page, "延迟响应作品 A").click();
+    await arrived;
     await globalNavButton(page, "作品管理").click();
-    await page.locator(".project-rows li").filter({ hasText: "纸月档案" }).getByRole("button", { name: "打开" }).click();
-    await expect(page.getByRole("heading", { name: "纸月档案" })).toBeVisible();
-    releaseA?.();
-    await page.waitForTimeout(250);
-    await expect(page.getByRole("heading", { name: "纸月档案" })).toBeVisible();
-    expect(page.url()).toContain("/overview");
-    await expect(page.locator(".project-nav")).toContainText("纸月档案");
+    await openProject(page, "延迟响应作品 B").click();
+    await expect(page.getByRole("heading", { name: "延迟响应作品 B", exact: true })).toBeVisible();
+    releaseA();
+    await complete;
+    await expect(page.getByRole("heading", { name: "延迟响应作品 B", exact: true })).toBeVisible();
+    await expect(page).toHaveURL(new RegExp(`/projects/${projectB}/overview$`));
+    await expect(page.locator(".project-nav")).toContainText("延迟响应作品 B");
     await expect(page.getByText("请求超时", { exact: false })).toHaveCount(0);
   });
 
   test("metadata CAS succeeds, stale revision conflicts, and archive restores writable access", async ({ page }) => {
     await register(page, account("stagefivemetadata"));
-    await globalNavButton(page, "作品管理").click();
-    await page.locator(".project-rows li").first().getByRole("button", { name: "打开" }).click();
-    await page.getByRole("button", { name: "编辑作品信息" }).click();
+    await createProject(page, "元数据并发作品");
+    await projectMoreAction(page, "编辑作品信息");
     await page.getByLabel("简介").fill("CAS 成功后的作品说明");
     await page.getByRole("button", { name: "保存修改" }).click();
     await expect(page.getByText("作品信息已更新")).toBeVisible();
@@ -447,15 +459,16 @@ test.describe.serial("Stage 5 real local workflow", () => {
       return response.status;
     });
     expect(staleStatus).toBe(409);
-    await page.getByRole("button", { name: "归档作品" }).click();
+    await projectMoreAction(page, "归档作品");
     await page.getByRole("button", { name: "确认归档" }).click();
     await expect(page.getByText("作品已归档：仅可浏览", { exact: false })).toBeVisible();
     await projectNavButton(page, "写作与检查").click();
-    await expect(page.getByRole("button", { name: "运行连续性检查" })).toBeDisabled();
+    await expect(page.getByRole("button", { name: "运行连续性检查" })).toHaveCount(0);
+      await expect(page.locator("#draft-body")).toHaveAttribute("aria-readonly", "true");
     await page.screenshot({ path: path.join(shots, "1440-archived-read-only.png"), fullPage: true });
     await projectNavButton(page, "项目概览").click();
     await page.getByRole("button", { name: "恢复作品" }).click();
-    await page.getByRole("button", { name: "恢复作品" }).last().click();
+    await page.getByRole("dialog", { name: "恢复作品", exact: true }).getByRole("button", { name: "恢复作品", exact: true }).click();
     await expect(page.getByText("作品信息已更新")).toBeVisible();
     await projectNavButton(page, "写作与检查").click();
     await expect(page.getByRole("button", { name: "运行连续性检查" })).toBeEnabled();
@@ -463,50 +476,51 @@ test.describe.serial("Stage 5 real local workflow", () => {
   });
 
   test("Accept and edit creates the controlled N plus 1 revision", async ({ page }) => {
-    await register(page, account("stagefiveaccept"));
+    await startVisitor(page);
     await globalNavButton(page, "作品管理").click();
     await openProject(page, "灰港回声").click();
     await projectNavButton(page, "写作与检查").click();
-    await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(runStatus(page)).toContainText("检查完成", { timeout: 15000 });
+    await runCheckAndWait(page);
     await page.locator(".issue-list button").first().click();
-    await page.getByRole("button", { name: "Accept & edit" }).click();
-    await page.getByLabel("草稿正文").fill("受控 N+1 编辑");
+    await page.getByRole("button", { name: "前往修改" }).click();
+    const editor = page.getByRole("textbox", { name: "草稿正文", exact: true });
+    await expect(editor).toBeFocused();
+    // Let ProseMirror handle select-all before deleting after the focus handoff.
+    await editor.press("ControlOrMeta+A");
+    await editor.press("Backspace");
+    await expect.poll(() => readDraftBody(page)).toBe("");
+    await setDraftBody(page, "受控 N+1 编辑");
     await page.getByRole("button", { name: "保存受控修订" }).click();
-    await expect(page.getByLabel("草稿修订", { exact: true })).toContainText("revision 2");
-    await expect(page.getByText("已按受控谱系保存", { exact: false })).toBeVisible();
+    await expect(page.locator(".workspace-draft-meta")).toContainText("第 2 次保存");
+    await expect(page.getByText("受控修订已保存为第 2 次保存，作者决定也已记录。", { exact: false })).toBeVisible();
   });
 
   test("False positive records a real author decision", async ({ page }) => {
-    await register(page, account("stagefivefalse"));
+    await startVisitor(page);
     await globalNavButton(page, "作品管理").click();
     await openProject(page, "灰港回声").click();
     await projectNavButton(page, "写作与检查").click();
-    await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(runStatus(page)).toContainText("检查完成", { timeout: 15000 });
+    await runCheckAndWait(page);
     await page.locator(".issue-list button").first().click();
-    await page.getByRole("button", { name: "Mark false positive" }).click();
+    await page.getByRole("button", { name: "标记误报" }).click();
     await expect(page.getByText("已标记为误报", { exact: false })).toBeVisible();
   });
 
   test("Reset restores the current project after confirmation", async ({ page }) => {
-    await register(page, account("stagefivereset"));
+    await startVisitor(page);
     await globalNavButton(page, "作品管理").click();
     await openProject(page, "灰港回声").click();
     await projectNavButton(page, "写作与检查").click();
-    await page.getByRole("button", { name: "重置当前作品" }).click();
+    await projectMoreAction(page, "重置当前作品");
     await page.screenshot({ path: path.join(shots, "1440-reset-confirmation.png"), fullPage: true });
     await page.getByRole("button", { name: "确认重置" }).click();
     await expect(page.getByText("当前作品已按其数据来源重置", { exact: false })).toBeVisible();
-    await expect(page.getByLabel("草稿修订", { exact: true })).toContainText("revision 1");
+    await expect(page.locator(".workspace-draft-meta")).toContainText("第 1 次保存");
   });
 
   test("empty project check fails closed with insufficient context", async ({ page }) => {
     await register(page, account("stagefiveempty"));
-    await globalNavButton(page, "作品管理").click();
-    await page.getByRole("button", { name: "新建作品" }).click();
-    await page.locator('input[name="title"]').fill("空上下文作品");
-    await page.getByRole("button", { name: "创建并进入作品" }).click();
+    await createProject(page, "空上下文作品");
     await projectNavButton(page, "写作与检查").click();
     await page.getByRole("button", { name: "运行连续性检查" }).click();
     await expect(page.getByText("事实库尚待初始化", { exact: false })).toBeVisible();
@@ -517,7 +531,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await globalNavButton(page, "作品管理").click();
     await page.getByRole("button", { name: "导入作品" }).click();
     await page.setInputFiles('input[name="file"]', { name: "context.txt", mimeType: "text/plain", buffer: Buffer.from("第一章\n海雾遮住钟楼。", "utf8") });
-    await page.getByRole("button", { name: "解析并预览章节" }).click();
+    await page.getByRole("button", { name: "发送并预览章节" }).click();
     await page.getByRole("button", { name: "继续确认" }).click();
     await page.locator('input[name="title"]').fill("导入空上下文");
     await page.getByRole("button", { name: "确认导入" }).click();
@@ -540,7 +554,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.setViewportSize({ width: 1440, height: 960 });
     await register(page, account("stagefivecancelimport"));
     await globalNavButton(page, "作品管理").click();
-    await expect(page.locator(".project-rows li")).toHaveCount(3);
+    await expect(page.locator(".project-rows li")).toHaveCount(0);
     await page.getByRole("button", { name: "导入作品" }).click();
     await expect(page.getByRole("heading", { name: "导入已有作品" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "选择要导入的文件" })).toBeVisible();
@@ -555,13 +569,13 @@ test.describe.serial("Stage 5 real local workflow", () => {
       zone.dispatchEvent(new DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer: transfer }));
     });
     await expect(page.getByText("tide.md", { exact: false })).toBeVisible();
-    await page.getByRole("button", { name: "解析并预览章节" }).click();
+    await page.getByRole("button", { name: "发送并预览章节" }).click();
     await expect(page.getByRole("heading", { name: "章节预览" })).toBeVisible();
     await page.screenshot({ path: path.join(shots, "1440-import-step-2-preview.png"), fullPage: true });
     await page.getByRole("button", { name: "返回重新选择" }).click();
     await expect(page.getByRole("heading", { name: "选择要导入的文件" })).toBeVisible();
     await page.setInputFiles('input[name="file"]', importFile);
-    await page.getByRole("button", { name: "解析并预览章节" }).click();
+    await page.getByRole("button", { name: "发送并预览章节" }).click();
     await page.getByRole("button", { name: "继续确认" }).click();
     await expect(page.getByRole("heading", { name: "确认导入" })).toBeVisible();
     await page.getByRole("button", { name: "返回章节预览" }).click();
@@ -570,13 +584,14 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.locator('input[name="title"]').fill("未提交的潮汐档案");
     await page.screenshot({ path: path.join(shots, "1440-import-step-3-confirmation.png"), fullPage: true });
     await page.getByRole("button", { name: "取消导入" }).click();
-    await expect(page.getByRole("heading", { name: "选择要导入的文件" })).toBeVisible();
+    await expect(page).toHaveURL(/\/projects$/);
+    await expect(page.getByRole("heading", { name: "作品管理", exact: true })).toBeVisible();
     await globalNavButton(page, "作品管理").click();
-    await expect(page.locator(".project-rows li")).toHaveCount(3);
+    await expect(page.locator(".project-rows li")).toHaveCount(0);
     await page.getByRole("button", { name: "导入作品" }).click();
     await expect(page.getByRole("heading", { name: "导入已有作品" })).toBeVisible();
     await page.setInputFiles('input[name="file"]', importFile);
-    await page.getByRole("button", { name: "解析并预览章节" }).click();
+    await page.getByRole("button", { name: "发送并预览章节" }).click();
     await page.getByRole("button", { name: "继续确认" }).click();
     await expect(page.getByRole("heading", { name: "确认导入" })).toBeVisible();
     await page.locator('input[name="title"]').fill("潮汐档案");
@@ -588,8 +603,17 @@ test.describe.serial("Stage 5 real local workflow", () => {
 
   test("keyboard focus is visible and primary controls meet the 44 pixel target", async ({ page }) => {
     await page.goto("/login");
+    await expect(page.getByLabel("账号", { exact: true })).toBeFocused();
     await page.keyboard.press("Tab");
-    await expect(page.locator(":focus")).toHaveCSS("outline-style", "solid");
+    const password = page.getByLabel("密码", { exact: true });
+    await expect(password).toBeFocused();
+    // polish.css gives text fields a 3px focus ring instead of an outline.
+    await expect(password).toHaveCSS("box-shadow", "rgba(139, 92, 246, 0.22) 0px 0px 0px 3px");
+    await expect(password).toHaveCSS("border-color", "rgb(167, 139, 250)");
+    await page.keyboard.press("Tab");
+    const toggle = page.getByRole("button", { name: "显示密码", exact: true });
+    await expect(toggle).toBeFocused();
+    await expect(toggle).toHaveCSS("outline-style", "solid");
     const height = await page.getByRole("button", { name: "登录" }).evaluate((el) => el.getBoundingClientRect().height);
     expect(height).toBeGreaterThanOrEqual(44);
   });
@@ -600,14 +624,12 @@ test.describe.serial("Stage 5 real local workflow", () => {
       if (request.method() === "POST" && /\/memory\/change-sets\/[^/]+\/commit$/.test(new URL(request.url()).pathname))
         commitPayload = request.postDataJSON() as { accepted_item_ids: string[]; rejected_item_ids: string[] };
     });
-    await register(page, account("stagefiveallreject"));
+    await startVisitor(page);
     await globalNavButton(page, "作品管理").click();
     await openProject(page, "灰港回声").click();
     await projectNavButton(page, "写作与检查").click();
-    await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(runStatus(page)).toContainText("检查完成", { timeout: 15000 });
-    const reviewDrawer = page.getByRole("dialog", { name: "问题证据" });
-    for (let i = 0; i < 2; i++) { await page.locator(".issue-list li").filter({ hasNotText: "已决策" }).getByRole("button").first().click(); await reviewDrawer.getByRole("button", { name: "Keep intentional" }).click(); await expect(reviewDrawer).toBeHidden(); }
+    await runCheckAndWait(page);
+    for (let i = 0; i < 2; i++) { await page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" }).first().click(); await recordIssueDecision(page, "保留原意"); }
     await page.getByRole("button", { name: "审阅事实变化" }).click();
     const rejects = page.getByLabel("拒绝（不写入）");
     await expect(rejects).toHaveCount(2);
@@ -615,7 +637,6 @@ test.describe.serial("Stage 5 real local workflow", () => {
       await item.check();
       await expect(item).toBeChecked();
     }
-    await page.waitForTimeout(100);
     await page.getByRole("button", { name: "确认并提交审核结果" }).click();
     const captured = commitPayload as { accepted_item_ids: string[]; rejected_item_ids: string[] } | null;
     expect(captured?.accepted_item_ids).toEqual([]);
@@ -631,17 +652,15 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await register(page, account("stagefivea"));
     await globalNavButton(page, "作品管理").click();
     await expect(page.getByRole("heading", { name: "作品管理" })).toBeVisible();
-    await expect(page.locator(".project-rows li")).toHaveCount(3);
-    await page.getByRole("button", { name: "新建作品" }).click();
+    await expect(page.locator(".project-rows li")).toHaveCount(0);
+    await page.locator(".library-header").getByRole("button", { name: "新建作品", exact: true }).click();
     await expect(page.getByRole("heading", { name: "新建作品" })).toBeVisible();
-    await page.locator('.form-panel input[name="title"]').fill("空白试作");
-    await page.locator('.form-panel input[name="genre"]').fill("测试");
-    await page.getByRole("button", { name: "创建并进入作品" }).click();
+    await createProject(page, "空白试作", { kind: "其他", customKind: "测试" });
     await expect(page.locator(".memory-panel").getByRole("heading", { name: "第 1 版", exact: true })).toBeVisible();
     await globalNavButton(page, "作品管理").click();
     await page.getByRole("button", { name: "导入作品" }).click();
     await page.setInputFiles('input[name="file"]', { name: "chapter.md", mimeType: "text/markdown", buffer: Buffer.from("# 第一章\n海雾遮住钟楼。\n# 第二章\n她记录了潮声。", "utf8") });
-    await page.getByRole("button", { name: "解析并预览章节" }).click();
+    await page.getByRole("button", { name: "发送并预览章节" }).click();
     await expect(page.getByRole("heading", { name: "章节预览" })).toBeVisible();
     await expect(page.getByText("技术详情", { exact: true })).toBeVisible();
     await page.getByRole("button", { name: "继续确认" }).click();
@@ -658,7 +677,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     const errors: string[] = [];
     page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
     page.on("pageerror", (e) => errors.push(e.message));
-    await register(page, account("stagefiveb"));
+    await startVisitor(page);
     await globalNavButton(page, "作品管理").click();
     const grey = page.locator(".project-rows li").filter({ hasText: "灰港回声" });
     await grey.getByRole("button", { name: "打开" }).click();
@@ -668,36 +687,45 @@ test.describe.serial("Stage 5 real local workflow", () => {
       await expect(page.getByRole("heading", { name })).toBeVisible();
     }
     await projectNavButton(page, "写作与检查").click();
-    await page.getByRole("button", { name: "重置当前作品" }).click();
+    await projectMoreAction(page, "重置当前作品");
     await page.getByRole("button", { name: "确认重置" }).click();
-    await expect(page.getByLabel("草稿修订", { exact: true })).toContainText("revision 1");
+    await expect(page.locator(".workspace-draft-meta")).toContainText("第 1 次保存");
     const editor = page.getByLabel("草稿正文");
     await expect(editor).toBeEditable();
-    await editor.fill(`${await editor.inputValue()}\n阶段五真实保存。`);
+    await setDraftBody(page, `${await readDraftBody(page)}\n阶段五真实保存。`);
     await page.getByRole("button", { name: "保存草稿" }).click();
-    await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(runStatus(page)).toContainText("检查完成", { timeout: 15_000 });
+    const checkedRunId = await runCheckAndWait(page);
     await page.screenshot({ path: path.join(shots, "1440-grey-harbor-run-complete.png"), fullPage: true });
-    const firstIssue = page.locator(".issue-list button").first();
-    await firstIssue.click();
+    const projectId = new URL(page.url()).pathname.split("/")[2];
+    const projectResponse = await page.request.get(`/api/projects/${projectId}`);
+    expect(projectResponse.status()).toBe(200);
+    const runId = (await projectResponse.json()).data.latest_run.run_id;
+    expect(runId).toBe(checkedRunId);
+    const runResponse = await page.request.get(`/api/projects/${projectId}/checks/${runId}?include=issues,evidence`);
+    expect(runResponse.status()).toBe(200);
+    const issues = (await runResponse.json()).data.issues as Array<{
+      claim_text: string; evidence_status: string; available_actions?: string[];
+    }>;
+    // Match Workbench.issueRequiresDecision / create_changeset; the appended
+    // save marker can also produce a read-only insufficient-evidence hint.
+    const required = issues.filter((issue) => issue.evidence_status === "sufficient"
+      && (issue.available_actions === undefined || issue.available_actions.length > 0));
+    expect(required).toHaveLength(2);
     const drawer = page.getByRole("dialog", { name: "问题证据" });
-    await expect(drawer.getByRole("heading", { name: "Evidence" })).toBeVisible();
-    await page.screenshot({ path: path.join(shots, "1440-evidence-drawer.png"), fullPage: true });
-    await drawer.getByRole("button", { name: "Keep intentional" }).click();
-    await expect(drawer).toBeHidden();
-    await page
-      .locator(".issue-list li")
-      .filter({ hasNotText: "已决策" })
-      .getByRole("button")
-      .click();
-    await expect(drawer).toBeVisible();
-    await drawer.getByRole("button", { name: "Keep intentional" }).click();
-    await expect(drawer).toBeHidden();
+    for (const [index, issue] of required.entries()) {
+      await page.locator(".issue-list .issue-row").filter({ hasText: issue.claim_text }).click();
+      await expect(drawer).toBeVisible();
+      await expect(drawer.getByRole("heading", { name: "历史证据", exact: true })).toBeVisible();
+      if (index === 0) await page.screenshot({ path: path.join(shots, "1440-evidence-drawer.png"), fullPage: true });
+      await recordIssueDecision(page, "保留原意");
+    }
+    await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(required.length);
     await expect(
-      page.locator(".issue-list li").filter({ hasNotText: "已决策" }),
-    ).toHaveCount(0);
+      page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" }),
+    ).toHaveCount(issues.length - required.length);
+    await expect(page.getByRole("heading", { name: "待处理提示 0", exact: true })).toBeVisible();
     await page.getByRole("button", { name: "审阅事实变化" }).click();
-    await expect(page.getByRole("heading", { name: "事实库更新审阅" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "事实变化审阅", exact: true })).toBeVisible();
     await page.screenshot({ path: path.join(shots, "1440-memory-update-review.png"), fullPage: true });
     await page.getByLabel("拒绝").first().check();
     await page.getByRole("button", { name: "确认并提交审核结果" }).click();
@@ -708,7 +736,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     expect(errors).toEqual([]);
   });
 
-  test("five reset-to-review runs are deterministic", async ({ page }) => {
+  test("five reset-to-review runs are deterministic", async ({ page }, testInfo) => {
     const records: Array<Record<string, unknown>> = [];
     const consoleErrors: string[] = [], pageErrors: string[] = [], failedRequests: string[] = [];
     page.on("console", (m) => m.type() === "error" && consoleErrors.push(m.text()));
@@ -717,18 +745,25 @@ test.describe.serial("Stage 5 real local workflow", () => {
       const url = new URL(r.url());
       if (url.pathname.startsWith("/api/") && r.status() >= 400 && !(url.pathname === "/api/auth/session" && r.status() === 401)) failedRequests.push(`${r.request().method()} ${url.pathname} ${r.status()}`);
     });
-    await register(page, account("stage6demo"));
-    await globalNavButton(page, "作品管理").click();
-    await openProject(page, "灰港回声").click();
-    await projectNavButton(page, "写作与检查").click();
+    // Five checks exceed the visitor's three-workflow daily quota. A new
+    // registered author's isolated tutorial uses the same grey_harbor reset
+    // seed (memory v4 / draft revision 1), with the normal registered quota.
+    await registerAccount(page, { prefix: "stage5five" });
+    const tutorialId = await tutorialProjectId(page);
+    await page.goto(`/projects/${tutorialId}/workspace`);
+    await page.locator(".issue-list .issue-row").first().click();
+    const tutorialEvidence = page.getByRole("dialog", { name: "问题证据", exact: true });
+    await tutorialEvidence.getByRole("button", { name: "查看完整证据", exact: true }).click();
+    await expect(tutorialEvidence.getByRole("heading", { name: "历史证据", exact: true })).toBeVisible();
+    await tutorialEvidence.getByRole("button", { name: "关闭", exact: true }).click();
+    await expect(tutorialEvidence).toBeHidden();
     for (let index = 1; index <= 5; index++) {
       const started = Date.now();
-      await page.getByRole("button", { name: "重置当前作品" }).click();
+      await projectMoreAction(page, "重置当前作品");
       await page.getByRole("button", { name: "确认重置" }).click();
-      await expect(page.getByText("事实库第 4 版", { exact: false })).toBeVisible();
-      await expect(page.getByLabel("草稿修订", { exact: true })).toContainText("revision 1");
-      const editor = page.getByLabel("草稿正文");
-      await editor.fill(`${await editor.inputValue()}\n第${index}轮作者确认草稿。`);
+      await expect(page.getByText("事实库第 4 版", { exact: true })).toBeVisible();
+      await expect(page.locator(".workspace-draft-meta")).toContainText("第 1 次保存");
+      await setDraftBody(page, `${await readDraftBody(page)}\n第${index}轮作者确认草稿。`);
       await page.getByRole("button", { name: "保存草稿" }).click();
       const queued = page.waitForResponse((r) => r.request().method() === "POST" && /\/api\/projects\/[^/]+\/checks$/.test(new URL(r.url()).pathname));
       await page.getByRole("button", { name: "运行连续性检查" }).click();
@@ -736,33 +771,45 @@ test.describe.serial("Stage 5 real local workflow", () => {
       const queuedPayload = await response.json() as { data: { run_id: string; status: string } };
       expect(response.status()).toBe(202);
       expect(queuedPayload.data.status).toBe("queued");
+      await expect(page.locator(".run-lifecycle .run-facts")).toContainText(queuedPayload.data.run_id, { timeout: 15_000 });
       await expect(runStatus(page)).toContainText("检查完成", { timeout: 15_000 });
-      const drawer = page.getByRole("dialog", { name: "问题证据" });
-      for (let issue = 0; issue < 2; issue++) {
-        await page.locator(".issue-list li").filter({ hasNotText: "已决策" }).getByRole("button").first().click();
-        await drawer.getByRole("button", { name: "Keep intentional" }).click();
-        await expect(drawer).toBeHidden();
+      const projectId = new URL(page.url()).pathname.split("/")[2];
+      const checked = await page.request.get(`/api/projects/${projectId}/checks/${queuedPayload.data.run_id}?include=issues,evidence`);
+      expect(checked.status()).toBe(200);
+      const completed = (await checked.json()).data as { status: string; issues: Array<{
+        claim_text: string; evidence_status: string; available_actions?: string[];
+      }> };
+      expect(completed.status).toBe("completed");
+      // The stub emits up to two issues per batch, not per run. Apply the same
+      // required-decision rule as Workbench / create_changeset for every round.
+      const required = completed.issues.filter((issue) => issue.evidence_status === "sufficient"
+        && (issue.available_actions === undefined || issue.available_actions.length > 0));
+      expect(required.length).toBeGreaterThanOrEqual(2);
+      for (const issue of required) {
+        await page.locator(".issue-list .issue-row").filter({ hasText: issue.claim_text }).click();
+        await recordIssueDecision(page, "保留原意");
       }
+      await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(required.length);
+      await expect(page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" })).toHaveCount(completed.issues.length - required.length);
+      await expect(page.getByRole("heading", { name: "待处理提示 0", exact: true })).toBeVisible();
       await page.getByRole("button", { name: "审阅事实变化" }).click();
-      await expect(page.getByRole("heading", { name: "事实库更新审阅" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "事实变化审阅", exact: true })).toBeVisible();
       await page.getByLabel("拒绝（不写入）").first().check();
       await page.getByRole("button", { name: "确认并提交审核结果" }).click();
       await expect(page.getByText("MemoryVersion", { exact: false })).toBeVisible();
-      records.push({ round: index, run_id: queuedPayload.data.run_id, queued_before_completion: true, result: "completed_and_reviewed", duration_ms: Date.now() - started, recovery: "project_reset_to_memory_v4_draft_revision_1", manual_intervention: 0 });
+      records.push({ round: index, run_id: queuedPayload.data.run_id, required_decisions: required.length, read_only_hints: completed.issues.length - required.length, queued_before_completion: true, result: "completed_and_reviewed", duration_ms: Date.now() - started, recovery: "project_reset_to_memory_v4_draft_revision_1", manual_intervention: 0 });
     }
     expect(consoleErrors).toEqual([]);
     expect(pageErrors).toEqual([]);
     expect(failedRequests).toEqual([]);
+    await testInfo.attach("five-round-records", { body: JSON.stringify(records, null, 2), contentType: "application/json" });
     if (process.env.STAGE6_DEMO_RECORD_PATH) await writeFile(process.env.STAGE6_DEMO_RECORD_PATH, JSON.stringify({ runs: records, console_errors: consoleErrors, page_errors: pageErrors, unexpected_failed_requests: failedRequests }, null, 2));
   });
 
   test("long project title and long draft stay usable without horizontal overflow", async ({ page }) => {
     await register(page, account("stage6long"));
-    await globalNavButton(page, "作品管理").click();
-    await page.getByRole("button", { name: "新建作品" }).click();
     const title = "潮汐记录".repeat(19).slice(0, 80);
-    await page.locator('input[name="title"]').fill(title);
-    await page.getByRole("button", { name: "创建并进入作品" }).click();
+    await createProject(page, title);
     await expect(page.getByRole("heading", { name: title })).toBeVisible();
     for (const width of [1440, 1280, 1024, 390, 320]) {
       await page.setViewportSize({ width, height: 900 });
@@ -771,38 +818,40 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.setViewportSize({ width: 1024, height: 900 });
     await projectNavButton(page, "写作与检查").click();
     const editor = page.getByLabel("草稿正文");
-    await editor.fill("可保存的长正文。".repeat(1200));
+    await setDraftBody(page, "可保存的长正文。".repeat(1200));
     expect(await editor.evaluate((el) => el.scrollHeight > el.clientHeight)).toBe(true);
     await page.getByRole("button", { name: "保存草稿" }).click();
-    await expect(editor).toHaveValue(/可保存的长正文/);
+    await expect.poll(() => readDraftBody(page)).toBe("可保存的长正文。".repeat(1200));
     await page.screenshot({ path: path.join(shots, "1024-long-title-long-draft.png"), fullPage: true });
     await page.setViewportSize({ width: 390, height: 844 });
     await page.reload();
-    await expect(page.getByText("浏览只读", { exact: false })).toBeVisible();
+    await expect(page.getByText("当前窗口较窄，暂为只读浏览", { exact: false })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await page.screenshot({ path: path.join(shots, "390-long-title-browse-only.png"), fullPage: true });
   });
 
   test("extreme legal issues retain evidence, scrolling and focus restore", async ({ page }) => {
-    await register(page, account("stage6issues"));
+    await startVisitor(page);
     await globalNavButton(page, "作品管理").click();
     await openProject(page, "灰港回声").click();
     await projectNavButton(page, "写作与检查").click();
-    const editor = page.getByLabel("草稿正文");
-    await editor.fill(`EXTREME_ISSUES\n${Array.from({ length: 20 }, (_, i) => `第${i + 1}项审阅草稿与既有事实发生差异。`).join("\n")}`);
+    // Each sentence reaches a separate claim/batch. Keep the stub's extreme
+    // marker in every claim and use the seeded compass conflict for evidence.
+    await setDraftBody(page, Array.from({ length: 20 }, (_, i) =>
+      `EXTREME_ISSUES 第${i + 1}项：温岚仍握着黄铜罗盘；与此同时，黄铜罗盘也在苏岑的外套内袋。`,
+    ).join("\n"));
     await page.getByRole("button", { name: "保存草稿" }).click();
-    await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(runStatus(page)).toContainText("检查完成", { timeout: 15_000 });
-    const items = page.locator(".issue-list li");
+    await runCheckAndWait(page);
+    const items = page.locator(".issue-list .issue-row");
     await expect(items).toHaveCount(20);
-    await expect(page.getByText("高风险", { exact: false }).first()).toBeVisible();
-    await expect(page.getByText("中风险", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("高影响", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("中等影响", { exact: false }).first()).toBeVisible();
     await page.setViewportSize({ width: 1440, height: 960 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await items.last().scrollIntoViewIfNeeded();
     await expect(items.last()).toBeVisible();
     await page.screenshot({ path: path.join(shots, "1440-extreme-issues.png"), fullPage: true });
-    const first = items.first().getByRole("button");
+    const first = items.first();
     await first.click();
     const drawer = page.getByRole("dialog", { name: "问题证据" });
     await expect(drawer).toBeVisible();
@@ -812,10 +861,11 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await expect(first).toBeFocused();
     await page.setViewportSize({ width: 390, height: 844 });
     await page.reload();
-    await expect(page.getByText("浏览只读", { exact: false })).toBeVisible();
+    await expect(page.getByText("当前窗口较窄，暂为只读浏览", { exact: false })).toBeVisible();
+    await page.getByRole("navigation", { name: "手机浏览内容" }).getByRole("button", { name: "问题 20", exact: true }).click();
     await expect(items).toHaveCount(20);
-    await expect(page.getByText("高风险", { exact: false }).first()).toBeVisible();
-    await expect(page.getByText("中风险", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("高影响", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("中等影响", { exact: false }).first()).toBeVisible();
     await items.last().scrollIntoViewIfNeeded();
     await expect(items.last()).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
