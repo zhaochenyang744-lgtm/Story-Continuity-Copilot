@@ -3086,8 +3086,8 @@ main,
   caret-color: var(--violet-300);
 }
 .immersive-body-field textarea:focus-visible { outline: 0; }
-.immersive-editor[data-font-size="small"] .immersive-body-field textarea { font-size: 18px; }
-.immersive-editor[data-font-size="large"] .immersive-body-field textarea { font-size: 20px; }
+.immersive-editor[data-font-size="small"] .immersive-body-field textarea { font-size: 17px; }
+.immersive-editor[data-font-size="large"] .immersive-body-field textarea { font-size: 21px; }
 .immersive-editor[data-line-height="compact"] .immersive-body-field textarea { line-height: 1.65; }
 .immersive-editor[data-line-height="airy"] .immersive-body-field textarea { line-height: 2.05; }
 .immersive-issues { min-width: 0; min-height: 0; overflow: auto; padding: 24px 18px; border-left: 1px solid var(--line); background: var(--issue-surface); }
