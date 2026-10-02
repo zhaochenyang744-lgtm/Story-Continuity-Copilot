@@ -64,6 +64,7 @@ test("fresh account restores login and visitor completes the preset Grey Harbor 
   await expect(page.getByText("示例检查结果", { exact: true })).toBeVisible();
   await expect(page.getByText("本次没有调用模型", { exact: false })).toBeVisible();
   await expect(page.locator(".issue-list .issue-row")).toHaveCount(4);
+  await expect(page.getByRole("heading", { name: "待处理提示 3", exact: true })).toBeVisible();
 
   const firstIssue = page.locator(".issue-list .issue-row").first();
   await firstIssue.click();
@@ -115,9 +116,19 @@ test("fresh account restores login and visitor completes the preset Grey Harbor 
   await expect(page.locator(".issue-list .issue-row")).toHaveCount(4);
   await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(0);
 
-  for (const issue of supported) {
+  // Workbench.issueNeedsDecision excludes the read-only hint from the count and
+  // review-entry gate; the keep-intentional notice uses that same rule.
+  for (const [index, issue] of supported.entries()) {
+    await expect(page.getByRole("button", { name: "审阅事实变化", exact: true })).toHaveCount(0);
     await page.locator(".issue-list .issue-row").filter({ hasText: issue.claim_text }).click();
     await recordIssueDecision(page, "保留原意");
+    const remaining = supported.length - index - 1;
+    await expect(page.getByRole("heading", { name: `待处理提示 ${remaining}`, exact: true })).toBeVisible();
+    await expect(page.getByRole("status").filter({ hasText: "决定已记录：保留作者意图" })).toContainText(
+      remaining > 0
+        ? "决定已记录：保留作者意图；请继续处理其余需要决定的问题。"
+        : "决定已记录：保留作者意图；可继续审阅后续的事实变化。",
+    );
   }
   for (const issue of unsupported) {
     await page.locator(".issue-list .issue-row").filter({ hasText: issue.claim_text }).click();
@@ -132,7 +143,8 @@ test("fresh account restores login and visitor completes the preset Grey Harbor 
   await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(supported.length);
   await expect(page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" })).toHaveCount(unsupported.length);
 
-  await page.getByRole("button", { name: "审阅事实变化" }).click();
+  await expect(page.getByRole("button", { name: "审阅事实变化", exact: true })).toBeEnabled();
+  await page.getByRole("button", { name: "审阅事实变化", exact: true }).click();
   const review = page.getByRole("form", { name: "事实库更新审阅" });
   await expect(review.locator("article.diff")).toHaveCount(3);
   await review.getByLabel("接受（写入候选）").nth(0).check();
@@ -143,8 +155,10 @@ test("fresh account restores login and visitor completes the preset Grey Harbor 
   await review.getByRole("button", { name: "确认并提交审核结果" }).click();
   await expect(page.getByText("MemoryVersion 5 已创建", { exact: false })).toBeVisible();
   await projectNavButton(page, "事实库").click();
-  await expect(page.getByText("先核对异常雾钟，再追查白色渡船", { exact: false })).toBeVisible();
-  await expect(page.getByText("作者已确认", { exact: false }).first()).toBeVisible();
+  const editedFact = page.getByRole("table", { name: "事实档案", exact: true }).getByRole("row").filter({ hasText: "先核对异常雾钟，再追查白色渡船" });
+  await expect(editedFact).toBeVisible();
+  await editedFact.locator("summary").filter({ hasText: "版本详情" }).click();
+  await expect(editedFact.getByText("作者已确认", { exact: false })).toBeVisible();
 
   await page.getByRole("button", { name: /更换当前作品.*灰港回声/ }).click();
   await openProject(page, "纸月档案").click();
@@ -163,6 +177,7 @@ test("fresh account restores login and visitor completes the preset Grey Harbor 
   await expect(page.locator(".issue-list .issue-row")).toHaveCount(4);
   await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(0);
   await expect(page.getByText("示例检查结果", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "待处理提示 3", exact: true })).toBeVisible();
 
   await page.getByRole("button", { name: "用户菜单", exact: true }).click();
   await page.getByRole("menuitem", { name: "退出登录", exact: true }).click();
