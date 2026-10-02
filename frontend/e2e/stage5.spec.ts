@@ -125,14 +125,17 @@ const expectActiveProjectNavVisible = async (page: Page, name: string) => {
   expect(activeBox.x).toBeGreaterThanOrEqual(navBox.x - 1);
   expect(activeBox.x + activeBox.width).toBeLessThanOrEqual(navBox.x + navBox.width + 1);
 };
-const expectButtonTextHorizontallyCentered = async (page: Page, name: string) => {
+const expectOverviewActionContentCentered = async (page: Page, name: string) => {
   const offset = await page.getByRole("button", { name, exact: true }).evaluate((button) => {
     const buttonBox = button.getBoundingClientRect();
     const range = document.createRange();
     range.selectNodeContents(button);
     const textBox = range.getBoundingClientRect();
+    // polish.css adds an arrow after the label; center the complete link content.
+    const arrow = getComputedStyle(button, "::after");
+    const trailingWidth = parseFloat(arrow.marginLeft) + parseFloat(arrow.width) + parseFloat(arrow.marginRight);
     return Math.abs(
-      buttonBox.left + buttonBox.width / 2 - (textBox.left + textBox.width / 2),
+      buttonBox.left + buttonBox.width / 2 - (textBox.left + (textBox.width + trailingWidth) / 2),
     );
   });
   expect(offset).toBeLessThanOrEqual(1);
@@ -194,14 +197,15 @@ test("capture production visual states from the real local workflow", async ({ p
   await page.screenshot({ path: path.join(shots, "1440-home.png"), fullPage: true });
   await globalNavButton(page, "作品管理").click();
   await expect(page.getByRole("heading", { name: "作品管理" })).toBeVisible();
+  await expect(page.locator(".global-nav").getByRole("img", { name: "Story Continuity", exact: true })).toBeVisible();
   const globalRail = await page.locator(".global-nav").boundingBox();
   expect(globalRail?.x).toBe(0);
   expect(globalRail?.width).toBe(220); // visual-system.css --global-nav-expanded
   await page.screenshot({ path: path.join(shots, "1440-projects.png"), fullPage: true });
   await openProject(page, "灰港回声").click();
   await expect(page.getByRole("heading", { name: "灰港回声" })).toBeVisible();
-  await expectButtonTextHorizontallyCentered(page, "查看大纲");
-  await expectButtonTextHorizontallyCentered(page, "查看角色库");
+  await expectOverviewActionContentCentered(page, "查看大纲");
+  await expectOverviewActionContentCentered(page, "查看角色库");
   await page.screenshot({ path: path.join(shots, "1440-project-overview.png"), fullPage: true });
   await projectNavButton(page, "写作与检查").click();
   await expect(page.getByLabel("草稿正文")).toBeVisible();
@@ -213,14 +217,14 @@ test("capture production visual states from the real local workflow", async ({ p
   await page.reload();
   await expect(page.getByText("当前窗口较窄，暂为只读浏览", { exact: false })).toBeVisible();
   await expectActiveProjectNavVisible(page, "写作与检查");
-  await expect(page.locator(".global-nav").getByRole("img", { name: "Story Continuity", exact: true })).toBeVisible();
+  await expect(page.locator(".global-nav .brand-asset")).toBeHidden(); // globals.css <=480px hides the brand span.
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: path.join(shots, "390-workspace-browse-only.png"), fullPage: true });
   await page.setViewportSize({ width: 320, height: 700 });
   await projectNavButton(page, "大纲").click();
   await projectNavButton(page, "写作与检查").click();
   await expectActiveProjectNavVisible(page, "写作与检查");
-  await expect(page.locator(".global-nav").getByRole("img", { name: "Story Continuity", exact: true })).toBeVisible();
+  await expect(page.locator(".global-nav .brand-asset")).toBeHidden(); // globals.css <=480px hides the brand span.
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: path.join(shots, "320-workspace-browse-only.png"), fullPage: true });
   expect(errors).toEqual([]);
@@ -585,8 +589,17 @@ test.describe.serial("Stage 5 real local workflow", () => {
 
   test("keyboard focus is visible and primary controls meet the 44 pixel target", async ({ page }) => {
     await page.goto("/login");
+    await expect(page.getByLabel("账号", { exact: true })).toBeFocused();
     await page.keyboard.press("Tab");
-    await expect(page.locator(":focus")).toHaveCSS("outline-style", "solid");
+    const password = page.getByLabel("密码", { exact: true });
+    await expect(password).toBeFocused();
+    // polish.css gives text fields a 3px focus ring instead of an outline.
+    await expect(password).toHaveCSS("box-shadow", "rgba(139, 92, 246, 0.22) 0px 0px 0px 3px");
+    await expect(password).toHaveCSS("border-color", "rgb(167, 139, 250)");
+    await page.keyboard.press("Tab");
+    const toggle = page.getByRole("button", { name: "显示密码", exact: true });
+    await expect(toggle).toBeFocused();
+    await expect(toggle).toHaveCSS("outline-style", "solid");
     const height = await page.getByRole("button", { name: "登录" }).evaluate((el) => el.getBoundingClientRect().height);
     expect(height).toBeGreaterThanOrEqual(44);
   });
