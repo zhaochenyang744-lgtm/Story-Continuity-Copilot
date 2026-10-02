@@ -110,6 +110,17 @@ const issueAllows = (issue: Issue, action: NonNullable<Issue["available_actions"
 const issueHasSufficientEvidence = (issue: Issue) =>
   issue.evidence_status === "sufficient" &&
   Boolean(issue.evidence?.some((item) => item.sufficiency === "sufficient"));
+
+// Match v2_database.create_changeset's required decisions, including legacy_v3
+// issues whose available_actions field is absent. Read-only hints do not block review.
+const issueRequiresDecision = (issue: Issue) =>
+  issue.evidence_status === "sufficient" &&
+  (issue.available_actions === undefined || issue.available_actions.length > 0);
+
+const issueNeedsDecision = (issue: Issue, locallyResolvedIssueIds: string[]) =>
+  issueRequiresDecision(issue) &&
+  !issue.decision && !issue.reused_decision && !locallyResolvedIssueIds.includes(issue.id);
+
 type ImportPreview = {
   import_id: string;
   file: { name: string; size: number; sha256: string; format: string };
@@ -2038,7 +2049,11 @@ export function Workbench() {
       );
       setNotice(
         decision === "keep_intentional"
-          ? "决定已记录：保留作者意图；可继续审阅后续的事实变化。"
+          ? (refreshed.issues ?? []).some((candidate) =>
+              issueNeedsDecision(candidate, [...locallyResolvedIssueIds, issue.id]),
+            )
+            ? "决定已记录：保留作者意图；请继续处理其余需要决定的问题。"
+            : "决定已记录：保留作者意图；可继续审阅后续的事实变化。"
           : "决定已记录：此问题已标记为误报，不会写入事实库。",
       );
     } catch (e) {
@@ -4930,6 +4945,9 @@ function ProjectPage(p: {
       return groups;
     }, new Map<string, Issue[]>()),
   );
+  const pendingDecisionCount = (p.run?.issues ?? []).filter((issue) =>
+    issueNeedsDecision(issue, p.locallyResolvedIssueIds),
+  ).length;
   const dirty = Boolean(
       p.draft &&
       p.saved &&
@@ -5282,7 +5300,7 @@ function ProjectPage(p: {
         </section>
         <aside className="issues">
           <header className="issues-top">
-            <DesignAsset name="bulb" /><div><h2>待处理提示 <span>{(p.run?.issues ?? []).filter((issue) => !issue.decision && !issue.reused_decision && !p.locallyResolvedIssueIds.includes(issue.id)).length}</span></h2><p>问题性质与影响程度分开显示</p></div>
+            <DesignAsset name="bulb" /><div><h2>待处理提示 <span>{pendingDecisionCount}</span></h2><p>问题性质与影响程度分开显示</p></div>
           </header>
           {p.run ? (
             <>
@@ -5343,10 +5361,7 @@ function ProjectPage(p: {
               )}
               {p.run.status === "completed" &&
                 (p.run.issues ?? []).length > 0 &&
-                !(p.run.issues ?? []).some(
-                  (x) =>
-                    !x.decision && !x.reused_decision && !p.locallyResolvedIssueIds.includes(x.id),
-                ) && (
+                pendingDecisionCount === 0 && (
                   <Button
                     className="primary"
                     disabled={
