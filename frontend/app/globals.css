@@ -306,7 +306,7 @@ label {
 }
 .account-trigger:hover,
 .account-trigger[aria-expanded="true"] { background: var(--ink-700); border-color: var(--line); color: var(--text); }
-.account-avatar { display: grid; width: 28px; height: 28px; flex: none; place-items: center; border-radius: 9px; background: var(--violet-500); color: white; font-size: 12px; font-weight: 700; }
+.account-avatar { display: grid; width: 28px; height: 28px; flex: none; place-items: center; border-radius: 9px; background: var(--primary-bg); color: white; font-size: 12px; font-weight: 700; }
 .account-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
 .account-caret { margin-left: auto; color: var(--faint); font-size: 16px; }
 .user-menu { position: absolute; z-index: 9; bottom: calc(100% + 8px); left: 0; width: 208px; padding: 6px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--ink-800); box-shadow: var(--elev-2); }
@@ -330,7 +330,7 @@ main {
   position: absolute;
   top: -60px;
   left: 12px;
-  background: var(--violet-500);
+  background: var(--primary-bg);
   padding: 10px;
   color: white;
   z-index: 5;
@@ -561,7 +561,7 @@ main {
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  background: var(--violet-500);
+  background: var(--primary-bg);
   color: white;
   font-size: 12px;
   font-weight: 700;
@@ -1336,7 +1336,8 @@ fieldset input {
 .issue-row:hover::before,
 .issue-row.selected::before { opacity: 1; transform: scaleY(1); }
 .issue-row.selected { background: rgba(118, 86, 189, .18); box-shadow: inset 0 0 0 1px rgba(167, 139, 250, .16); }
-.issue-row.resolved { opacity: .76; }
+.issue-row.resolved { border-color: transparent; box-shadow: none; }
+.issue-row.resolved:not(:hover):not(.selected)::before { opacity: .16; }
 .issue-arrow { position: absolute; top: 17px; right: 20px; color: var(--faint) !important; font-size: 24px; line-height: 1; transition: color var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard); }
 .issue-row:hover .issue-arrow,
 .issue-row.selected .issue-arrow { color: var(--violet-300) !important; transform: translateX(3px); }
@@ -2205,9 +2206,9 @@ time {
 .tutorial-step-count ol { display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; margin: 0; padding: 0; list-style: none; }
 .tutorial-step-count li { position: relative; display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--ink-900); color: var(--faint); font: 650 12px/1 var(--font-mono); }
 .tutorial-step-count li:not(:last-child)::after { position: absolute; top: 13px; left: 27px; width: calc(100% - 7px); height: 1px; background: var(--line-strong); content: ""; }
-.tutorial-step-count li.current { border-color: var(--violet-300); background: var(--text); color: var(--violet-500); box-shadow: 0 0 0 4px rgba(167, 139, 250, .12); }
-.tutorial-step-count li.complete { border-color: var(--violet-500); background: var(--violet-500); color: white; }
-.tutorial-step-count li.complete::after { background: var(--violet-500); }
+.tutorial-step-count li.current { border-color: var(--violet-300); background: var(--text); color: var(--primary-hover); box-shadow: 0 0 0 4px rgba(167, 139, 250, .12); }
+.tutorial-step-count li.complete { border-color: var(--primary-bg); background: var(--primary-bg); color: white; }
+.tutorial-step-count li.complete::after { background: var(--primary-bg); }
 .tutorial-copy { align-self: center; }
 .tutorial-copy > strong { color: var(--text); font-size: 16px; }
 .tutorial-copy > span { max-width: 62ch; font-size: 14px; }
@@ -2251,7 +2252,7 @@ time {
 .tutorial-complete-copy > p:not(.eyebrow) { margin: 0; color: var(--muted); }
 .tutorial-complete-copy ol { display: grid; gap: 13px; margin: 28px 0; padding: 0 0 26px; border-bottom: 1px solid var(--line); list-style: none; }
 .tutorial-complete-copy li { display: flex; align-items: center; gap: 12px; color: var(--text); }
-.tutorial-complete-copy li span { display: grid; width: 26px; height: 26px; flex: none; place-items: center; border-radius: 50%; background: var(--violet-500); color: white; font: 700 12px/1 var(--font-mono); }
+.tutorial-complete-copy li span { display: grid; width: 26px; height: 26px; flex: none; place-items: center; border-radius: 50%; background: var(--primary-bg); color: white; font: 700 12px/1 var(--font-mono); }
 .tutorial-complete-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .tutorial-complete-actions .quiet { width: 100%; justify-content: flex-start; padding-inline: 0; border: 0; color: var(--violet-300); }
 .tutorial-complete-copy > small { display: block; margin-top: 26px; color: var(--faint); }
@@ -2762,6 +2763,7 @@ time {
 .issue-row-head { display: flex; grid-column: 1 / -1 !important; align-items: center; gap: 10px; color: var(--text) !important; }
 .issue-row-head strong { min-width: 0; font-size: 14px; }
 .issue-claim { grid-column: 1 / -1 !important; color: var(--text) !important; font-size: 14px; line-height: 1.65 !important; }
+.issue-row.resolved .issue-claim { color: var(--muted) !important; }
 .issue-action-label { grid-column: 1 / -1 !important; color: var(--violet-300) !important; font-size: 12px; font-weight: 650; }
 .issue-row.resolved .issue-action-label { color: var(--low) !important; }
 
