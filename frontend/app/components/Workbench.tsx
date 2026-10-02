@@ -925,6 +925,20 @@ export function Workbench() {
       ? parts[1]
       : null;
   const tab = parts[2] ?? "overview";
+  const [issueRunId, setIssueRunId] = useState(run?.run_id);
+  if (issueRunId !== run?.run_id) {
+    setIssueRunId(run?.run_id);
+    // All run replacement paths share this boundary. Same-run polling and
+    // decision refreshes keep selection; adjust before rendering old controls
+    // with a new run, rather than leaving that combination until an effect.
+    if (selected && !run?.issues?.some((issue) => issue.id === selected.id)) {
+      setSelected(null);
+    }
+    if (controlled && !run?.issues?.some((issue) => issue.id === controlled.id)) {
+      setControlled(null);
+      setNotice("检查结果已更新，请在新结果中重新选择要修改的问题；未保存的正文仍保留在编辑器中。");
+    }
+  }
   useEffect(() => {
     if (rememberedGlobalNavCollapsed !== undefined) return;
     const timer = window.setTimeout(() => {
@@ -1775,6 +1789,13 @@ export function Workbench() {
     const requestDraft = { ...draft };
     const requestControlled = controlled;
     const requestRun = run;
+    if (requestControlled && (
+      requestRun?.status !== "completed"
+      || !requestRun.issues?.some((issue) => issue.id === requestControlled.id)
+    )) {
+      setNotice("检查结果已更新，请在新结果中重新选择要修改的问题；未保存的正文仍保留在编辑器中。");
+      return false;
+    }
     setError(null);
     setNotice("");
     setSaveFailed(false);
