@@ -3,7 +3,7 @@ import { expect, Page, test } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createProject, readDraftBody, registerAccount, setDraftBody } from "./support/app";
-import { projectMoreAction, startVisitor } from "./support/batch2";
+import { projectMoreAction, recordIssueDecision, startVisitor } from "./support/batch2";
 
 const shots = process.env.E2E_SCREENSHOTS_DIR
   ? path.resolve(process.env.E2E_SCREENSHOTS_DIR)
@@ -580,7 +580,8 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.locator('input[name="title"]').fill("未提交的潮汐档案");
     await page.screenshot({ path: path.join(shots, "1440-import-step-3-confirmation.png"), fullPage: true });
     await page.getByRole("button", { name: "取消导入" }).click();
-    await expect(page.getByRole("heading", { name: "选择要导入的文件" })).toBeVisible();
+    await expect(page).toHaveURL(/\/projects$/);
+    await expect(page.getByRole("heading", { name: "作品管理", exact: true })).toBeVisible();
     await globalNavButton(page, "作品管理").click();
     await expect(page.locator(".project-rows li")).toHaveCount(0);
     await page.getByRole("button", { name: "导入作品" }).click();
@@ -625,8 +626,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await projectNavButton(page, "写作与检查").click();
     await page.getByRole("button", { name: "运行连续性检查" }).click();
     await expect(runStatus(page)).toContainText("检查完成", { timeout: 15000 });
-    const reviewDrawer = page.getByRole("dialog", { name: "问题证据" });
-    for (let i = 0; i < 2; i++) { await page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" }).first().click(); await reviewDrawer.getByRole("button", { name: "保留原意" }).click(); await expect(reviewDrawer).toBeHidden(); }
+    for (let i = 0; i < 2; i++) { await page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" }).first().click(); await recordIssueDecision(page, "保留原意"); }
     await page.getByRole("button", { name: "审阅事实变化" }).click();
     const rejects = page.getByLabel("拒绝（不写入）");
     await expect(rejects).toHaveCount(2);
@@ -650,7 +650,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await globalNavButton(page, "作品管理").click();
     await expect(page.getByRole("heading", { name: "作品管理" })).toBeVisible();
     await expect(page.locator(".project-rows li")).toHaveCount(0);
-    await page.getByRole("button", { name: "新建作品" }).click();
+    await page.getByRole("button", { name: "新建作品", exact: true }).click();
     await expect(page.getByRole("heading", { name: "新建作品" })).toBeVisible();
     await createProject(page, "空白试作", { kind: "其他", customKind: "测试" });
     await expect(page.locator(".memory-panel").getByRole("heading", { name: "第 1 版", exact: true })).toBeVisible();
@@ -699,15 +699,13 @@ test.describe.serial("Stage 5 real local workflow", () => {
     const drawer = page.getByRole("dialog", { name: "问题证据" });
     await expect(drawer.getByRole("heading", { name: "历史证据", exact: true })).toBeVisible();
     await page.screenshot({ path: path.join(shots, "1440-evidence-drawer.png"), fullPage: true });
-    await drawer.getByRole("button", { name: "保留原意" }).click();
-    await expect(drawer).toBeHidden();
+    await recordIssueDecision(page, "保留原意");
     await page
       .locator(".issue-list .issue-row")
       .filter({ hasNotText: "决定已记录" })
       .click();
     await expect(drawer).toBeVisible();
-    await drawer.getByRole("button", { name: "保留原意" }).click();
-    await expect(drawer).toBeHidden();
+    await recordIssueDecision(page, "保留原意");
     await expect(
       page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" }),
     ).toHaveCount(0);
@@ -751,11 +749,9 @@ test.describe.serial("Stage 5 real local workflow", () => {
       expect(response.status()).toBe(202);
       expect(queuedPayload.data.status).toBe("queued");
       await expect(runStatus(page)).toContainText("检查完成", { timeout: 15_000 });
-      const drawer = page.getByRole("dialog", { name: "问题证据" });
       for (let issue = 0; issue < 2; issue++) {
         await page.locator(".issue-list .issue-row").filter({ hasNotText: "决定已记录" }).first().click();
-        await drawer.getByRole("button", { name: "保留原意" }).click();
-        await expect(drawer).toBeHidden();
+        await recordIssueDecision(page, "保留原意");
       }
       await page.getByRole("button", { name: "审阅事实变化" }).click();
       await expect(page.getByRole("heading", { name: "事实变化审阅", exact: true })).toBeVisible();
