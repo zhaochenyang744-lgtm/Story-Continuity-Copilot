@@ -1,12 +1,28 @@
-# Story Continuity Copilot v1.4.0
+# Story Continuity Copilot v1.5.0
 
-The active product is **Story Continuity Copilot v1.4.0**. It adds canonical author materials and comparisons, unified planning and authoring pages, rich-text and immersive writing, and stricter AI evidence contracts to the author workflow. The author owns the prose and every canon decision.
+The current product is **Story Continuity Copilot v1.5.0**. It brings together everything shipped since v1.4.0 (2026-09-08): saved-work exports, reversible author-decision reuse, full-chapter revision with fact review, operations tools, faster long-chapter checks, the new interface, and the fixes listed under [v1.5.0](#v150). v1.4.0 added canonical author materials and comparisons, unified planning and authoring pages, rich-text and immersive writing, and stricter AI evidence contracts. The author owns the prose and every canon decision.
 
-The active online release is `ui-26ae621-20261002`, deployed on 2026-10-02 from Git commit `26ae621` (see [2026-10-02 update](#2026-10-02-update) below and the [2026-10-02 deployment record](docs/deployment-2026-10-02.md)). The previous releases `ui-cbfa536-20260930`, `longform-aac1517-20260930`, `longform-bd090fe-20260930` and `maint-e2d141c23d0c-20260913` remain on the server as rollback targets; the [maintenance deployment record](docs/maintenance-deployment.md) and the [2026-09-08 deployment record](docs/v1.4.0-deployment.md) remain historical evidence. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
+v1.5.0 is pending deployment. The active online release is `ui-26ae621-20261002`, deployed on 2026-10-02 from Git commit `26ae621` (see [2026-10-02 update](#2026-10-02-update) below and the [2026-10-02 deployment record](docs/deployment-2026-10-02.md)); it contains v1.5.0 except the fixes marked "not yet online". The previous releases `ui-cbfa536-20260930`, `longform-aac1517-20260930`, `longform-bd090fe-20260930` and `maint-e2d141c23d0c-20260913` remain on the server as rollback targets; the [maintenance deployment record](docs/maintenance-deployment.md) and the [2026-09-08 deployment record](docs/v1.4.0-deployment.md) remain historical evidence. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
 
 The canonical product description is [current product and verification scope](docs/current-product.md). The [maintenance acceptance record](docs/maintenance-acceptance.md) separates local verification from the bounded production checks. The September maintenance update adds saved-work exports, reversible author-decision reuse, full-chapter revision with fact review, and independent operations tools. The [v1.3.0 product contract](docs/v1.3.0-product.md), writing-analysis, [character-alias and change-impact](docs/v1.3.0-character-alias-impact.md), [bounded revision plan](docs/v1.3.0-revision-plan.md), and Memory-delta documents remain historical or focused technical appendices. Current source packaging uses the [maintenance release manifest](docs/maintenance-release-manifest.json); the [v1.3 allowlist](docs/v1.3.0-release-allowlist.json) records its historical release scope. Current documentation was updated after the deployed source package was frozen; it does not change that archive or image identity.
 
 The signed Stage 14 public-production baseline remains **Story Continuity Copilot v1.0 Public Release** as a historical evidence baseline. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility.
+
+## v1.5.0
+
+v1.5.0 is the product version for the work released after v1.4.0. Its parts shipped as separate releases, recorded below: the 2026-09-13 maintenance update, the 2026-09-30 long-chapter and interface releases, and the 2026-10-02 interface completion. No database schema change since the 2026-09-13 maintenance release (schema 146).
+
+Fixes not yet online (found while bringing the browser E2E suites up to date):
+- Immersive writing font sizes match the menu again (17 / 19 / 21 px).
+- The source coverage audit shows "已全部覆盖，事实库已更新 / 未变" instead of "尚未提供".
+- Desktop windows down to 320 px no longer scroll sideways (stable 10 px scrollbar gutter).
+- An insufficient-evidence issue no longer hides "审阅事实变化": the button and the pending count follow the same rule as the backend, counting only issues that allow a decision.
+- Contrast meets WCAG AA: white text on violet uses `#8150e8` (hover `#7845df`), and decided issue rows no longer fade their impact labels. The Q&A and revision-plan panels keep the native `details` role.
+- Starting a new check clears the issue drawer and controlled edit that belonged to the previous check; a controlled save no longer pairs a new run with an old issue (which failed with a non-retryable 422).
+- In the tutorial, "查看完整证据" keeps keyboard focus inside the evidence drawer.
+- The backend keeps idle connections for 75 s, longer than the Next.js proxy's 5 s, so parallel page loads no longer fail with a reset connection.
+
+Verification: all current browser E2E groups run through one command, `npm run test:e2e`; two consecutive full runs passed 124/124 (see [Test](#test)).
 
 ## 2026-10-02 update
 
