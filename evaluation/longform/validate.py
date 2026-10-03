@@ -14,6 +14,7 @@ import argparse
 import collections
 import json
 import pathlib
+import re
 import sys
 
 if __package__ in (None, ""):
@@ -21,7 +22,7 @@ if __package__ in (None, ""):
 
 from evaluation.longform.schema import (CATEGORIES, FORMAT, KINDS, SET_HASH_FILE, SELECTION_FIELDS, LongformSet,
                                         compute_set_hash, load)
-from evaluation.longform.textutil import char_count, cjk_ratio, sentences
+from evaluation.longform.textutil import char_count, cjk_ratio, sentence_cover, sentences
 
 # Names already used by the product seed work and earlier sets; a new work must not reuse them.
 BANNED_NAMES = ("灰港", "纸月", "零号花园", "雾港", "白塔", "灰港回声")
@@ -33,6 +34,12 @@ MIN_REPEAT_SENTENCE_CHARS = 8
 MAX_REPEATED_SENTENCE_SHARE = 0.03
 MAX_REUSED_TEXT_SHARE = 0.05
 MAX_ISOLATED_POINT_SHARE = 0.25
+# Echo check (added 2026-10-04 after the second dev delivery): an issue sentence that repeats its
+# evidence's wording makes keyword retrieval look better than it will be on real manuscripts. A
+# pair "echoes" when the two sentences share a run of ECHO_RUN characters (punctuation dropped,
+# a designated shared_time anchor removed first). Gated for the formal set; reported for all.
+ECHO_RUN = 8
+MAX_ECHO_PAIR_SHARE = 0.15
 ISOLATED_POINT_MARGIN = 0.15
 
 CHAPTER_RULES = {
@@ -208,6 +215,7 @@ def validate(lf: LongformSet, structure_only: bool = False) -> tuple[list[str], 
         check_profile(lf, summary, errors)
         check_self_review(lf, errors)
         summary["prose"] = check_prose(lf, errors)
+        summary["echo"] = check_echo(lf, errors)
     return errors, summary
 
 
@@ -224,6 +232,42 @@ def _reused_share(body: str, elsewhere: set[str]) -> tuple[int, int]:
         if text[i:i + SHINGLE] in elsewhere:
             covered[i:i + SHINGLE] = b"\x01" * SHINGLE
     return sum(covered), len(text)
+
+
+def _plain(text: str) -> str:
+    return re.sub(r"[\W_]", "", text)
+
+
+def _shares_run(a: str, b: str, run: int) -> bool:
+    return any(a[i:i + run] in b for i in range(max(len(a) - run + 1, 0)))
+
+
+def check_echo(lf: LongformSet, errors: list[str]) -> dict:
+    """How often an issue sentence repeats the wording of its evidence sentence."""
+    anchors = {item.get("id"): (item.get("designated_basis") or {}).get("anchor") or ""
+               for target in lf.data.get("targets") or [] if isinstance(target, dict)
+               for item in target.get("items") or [] if isinstance(item, dict)}
+    pairs = echoed = 0
+    for target in lf.targets:
+        chapters = {c.index: c for c in lf.works[target.work]}
+        for point in target.items:
+            anchor = _plain(anchors.get(point.id) or "")
+            issue = _plain("".join(target.chapter.body[s:e] for s, e in point.ranges))
+            for index, span in point.evidence:
+                body = chapters[index].body
+                start, end = sentence_cover(body, span)
+                evidence = _plain(body[start:end])
+                if anchor:
+                    issue_cut, evidence = issue.replace(anchor, "|"), evidence.replace(anchor, "|")
+                else:
+                    issue_cut = issue
+                pairs += 1
+                echoed += _shares_run(issue_cut, evidence, ECHO_RUN)
+    share = echoed / pairs if pairs else 0.0
+    if lf.kind == "formal" and share > MAX_ECHO_PAIR_SHARE:
+        errors.append(f"{echoed} of {pairs} issue/evidence sentence pairs share an {ECHO_RUN}-character run of wording "
+                      f"(max {MAX_ECHO_PAIR_SHARE:.0%}); restate the fact in the issue sentence in different words")
+    return {"pairs": pairs, "echoed_pairs": echoed, "echo_pair_share": round(share, 4)}
 
 
 def check_prose(lf: LongformSet, errors: list[str]) -> dict:

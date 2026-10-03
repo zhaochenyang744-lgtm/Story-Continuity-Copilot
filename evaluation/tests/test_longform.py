@@ -223,6 +223,28 @@ class ValidatorTests(unittest.TestCase):
         work.write_text(work.read_text(encoding="utf-8").replace("青檐镇", "灰港镇"), encoding="utf-8")
         self.assertTrue(any("reuses a name" in e for e in self.errors(set_dir)))
 
+    def test_echoed_wording_is_gated_for_the_formal_set_only(self):
+        from evaluation.longform.validate import check_echo
+        set_dir = synthetic_dev_set(self.tmp)
+        labels = json.loads((set_dir / "labels.json").read_text(encoding="utf-8"))
+        echoes = {}
+        for target in labels["targets"]:
+            for item in target["items"]:
+                echoes[item["issue_quotes"][0]] = item["evidence"][0]["quote"]
+        for work in (set_dir / "works").glob("*.md"):
+            text = work.read_text(encoding="utf-8")
+            for issue, evidence in echoes.items():
+                # The issue sentence now repeats its evidence's wording after the quoted part.
+                text = text.replace(issue + "，", issue + "，正如" + evidence + "，", 1)
+            work.write_text(text, encoding="utf-8")
+        lf = load(set_dir)
+        errors = []
+        self.assertGreater(check_echo(lf, errors)["echo_pair_share"], 0.5)
+        self.assertEqual(errors, [])  # a dev set only reports it
+        lf.data["kind"] = "formal"
+        check_echo(lf, errors)
+        self.assertTrue(any("character run of wording" in e for e in errors))
+
     def test_private_test_work_must_stay_outside_the_repository(self):
         inside = pathlib.Path(__file__).resolve().parents[1] / "longform" / f"_tmp_private_{os.getpid()}"
         try:
