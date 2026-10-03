@@ -494,11 +494,16 @@ class Stage11BoundedContextTests(unittest.TestCase):
         self.assertEqual(len(provider.calls), 2)
         self.assertEqual((result["status"], result["error_code"], result["input_tokens"], result["output_tokens"], result["latency_ms"], result["cost_cny"]), ("failed", "schema_invalid", 200, 20, 14, 0.2))
 
-    def test_invalid_json_second_continuity_batch_aggregates_usage_and_finish_reason(self):
+    def test_truncated_lone_claim_is_undecided_and_its_usage_is_kept(self):
+        # A claim whose answer still runs out of output after every effort step is undecided, not the
+        # whole check's failure; the other batches complete and the truncated dispatch stays billed.
         claims = [{"id": f"claim-{index}", "text": "甲" * 600, "allowed_evidence": [{"id": f"span-{index}", "chapter_id": f"chapter-{index}", "body": "甲" * 2400, "prompt_excerpt": "甲" * 720}]} for index in range(1, 4)]
         provider = InvalidJsonSecondContinuityProvider()
         result = ContinuityEngine(provider).execute({"draft": {"id": "draft-invalid-json", "revision": 1, "body": ""}, "claims": claims, "memory": []})
-        self.assertEqual((len(provider.calls), result["status"], result["error_code"], result["input_tokens"], result["output_tokens"], result["latency_ms"], result["cost_cny"], result["finish_reason"], result["cost_available"]), (2, "failed", "output_truncated", 200, 20, 14, 0.2, "length", True))
+        self.assertEqual((len(provider.calls), result["status"], result["input_tokens"], result["output_tokens"], result["latency_ms"]), (3, "completed", 300, 30, 21))
+        self.assertAlmostEqual(result["cost_cny"], 0.3)
+        self.assertEqual([issue["claim_span_id"] for issue in result["issues"]], ["claim-1", "claim-3"])
+        self.assertEqual(result["undecided_claims"], [{"claim_span_id": "claim-2", "error_code": "output_truncated"}])
 
     def test_second_continuity_batch_timeout_finishes_run_without_partial_persistence(self):
         root = pathlib.Path(tempfile.mkdtemp(prefix="scc-stage11-run-atomic-"))
