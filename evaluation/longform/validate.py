@@ -33,6 +33,7 @@ MIN_REPEAT_SENTENCE_CHARS = 8
 MAX_REPEATED_SENTENCE_SHARE = 0.03
 MAX_REUSED_TEXT_SHARE = 0.05
 MAX_ISOLATED_POINT_SHARE = 0.25
+ISOLATED_POINT_MARGIN = 0.15
 
 CHAPTER_RULES = {
     # (min chars, max chars) for any chapter, and for target chapters, plus minimum sentences per target.
@@ -273,9 +274,23 @@ def check_prose(lf: LongformSet, errors: list[str]) -> dict:
                 total_points += 1
                 isolated += _alone_in_paragraph(body, span)
     share = isolated / total_points if total_points else 0.0
+    # Some prose (web fiction especially) puts most sentences on their own line, so the bar is
+    # relative to the set's own habit: labelled sentences may not stand alone much more often
+    # than its ordinary sentences do.
+    alone = counted = 0
+    for chapters in lf.works.values():
+        for chapter in chapters:
+            for start, end in sentences(chapter.body):
+                if char_count(chapter.body[start:end]) >= MIN_REPEAT_SENTENCE_CHARS:
+                    counted += 1
+                    alone += _alone_in_paragraph(chapter.body, (start, end))
+    base = alone / counted if counted else 0.0
+    bar = max(MAX_ISOLATED_POINT_SHARE, base + ISOLATED_POINT_MARGIN)
     report["isolated_point_share"] = round(share, 4)
-    if share > MAX_ISOLATED_POINT_SHARE:
-        errors.append(f"{share:.0%} of labelled sentences stand alone as one-sentence paragraphs (max {MAX_ISOLATED_POINT_SHARE:.0%}); weave them into the surrounding narration")
+    report["base_single_sentence_paragraph_share"] = round(base, 4)
+    if share > bar:
+        errors.append(f"{share:.0%} of labelled sentences stand alone as one-sentence paragraphs, against {base:.0%} of all sentences "
+                      f"(max {bar:.0%}); weave them into the surrounding narration")
     return report
 
 

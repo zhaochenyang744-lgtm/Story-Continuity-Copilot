@@ -1,12 +1,14 @@
 """Offline tests for the long-form evaluation tooling. No real provider is ever called."""
 from __future__ import annotations
 
+import collections
 import contextlib
 import io
 import json
 import os
 import pathlib
 import random
+import re
 import shutil
 import tempfile
 import unittest
@@ -171,13 +173,25 @@ class ValidatorTests(unittest.TestCase):
 
     def test_labelled_sentences_must_not_all_stand_alone(self):
         set_dir = synthetic_dev_set(self.tmp)
-        lf = load(set_dir)
-        for key in lf.works:
+        labels = json.loads((set_dir / "labels.json").read_text(encoding="utf-8"))
+        quotes = collections.defaultdict(set)
+        for target in labels["targets"]:
+            for item in target["items"]:
+                quotes[target["work"]].update(item["issue_quotes"])
+                quotes[target["work"]].update(e["quote"] for e in item["evidence"])
+        for key, wanted in quotes.items():
             path = set_dir / "works" / f"{key}.md"
             text = path.read_text(encoding="utf-8")
-            # Put every sentence on its own line: each labelled sentence becomes its own paragraph.
-            path.write_text(text.replace("。", "。\n"), encoding="utf-8")
+            for quote in wanted:
+                # Give only the labelled sentence a paragraph of its own.
+                text = re.sub(re.escape(quote) + r"[^。]*。", lambda m: "\n\n" + m.group(0) + "\n\n", text)
+            path.write_text(text, encoding="utf-8")
         self.assertTrue(any("stand alone" in e for e in self.errors(set_dir, structure_only=False)))
+        # When every sentence of the work stands alone, as in much web fiction, labelled ones may too.
+        for key in quotes:
+            path = set_dir / "works" / f"{key}.md"
+            path.write_text(path.read_text(encoding="utf-8").replace("。", "。\n\n"), encoding="utf-8")
+        self.assertFalse(any("stand alone" in e for e in self.errors(set_dir, structure_only=False)))
 
     def test_evidence_must_come_from_an_earlier_chapter(self):
         set_dir = copy_template(self.tmp)

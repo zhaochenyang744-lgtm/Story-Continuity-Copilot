@@ -39,7 +39,8 @@ EXPLANATION_MAX = 300
 SET_HASH_FILE = "set.sha256"
 # private_test: a copyrighted work the user tests with locally. Its set must live outside the
 # repository so it can never be committed or published.
-ORIGINS = ("original", "public_domain", "private_test")
+# open_license: a work whose licence allows adaptation and redistribution (e.g. CC BY), credited in source_note.
+ORIGINS = ("original", "public_domain", "open_license", "private_test")
 REPOSITORY_ROOT = pathlib.Path(__file__).resolve().parents[2]
 
 
