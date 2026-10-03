@@ -45,7 +45,7 @@ async function screenshot(page: Page, name: string) {
 }
 
 async function expectNoHorizontalOverflow(page: Page) {
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
 }
 
 test("v1.3.0 immersive writing shares draft state, saves explicitly, and stays desktop-only", async ({ page }) => {

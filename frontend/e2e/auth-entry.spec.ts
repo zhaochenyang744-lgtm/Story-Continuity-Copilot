@@ -135,7 +135,7 @@ test("client-side navigation after login keeps the bootstrapped session and neve
   expect(sessionRequests).toEqual([]);
   await expect(page.getByText("正在恢复本地会话…", { exact: true })).toHaveCount(0);
   await page.setViewportSize({ width: 390, height: 844 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
 });
 
 test("an existing session entering /login waits for the session check and replaces the route without an auth-card flash", async ({ page }) => {

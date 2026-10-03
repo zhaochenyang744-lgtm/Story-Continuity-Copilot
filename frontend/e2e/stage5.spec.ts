@@ -218,14 +218,14 @@ test("capture production visual states from the real local workflow", async ({ p
   await expect(page.getByText("当前窗口较窄，暂为只读浏览", { exact: false })).toBeVisible();
   await expectActiveProjectNavVisible(page, "写作与检查");
   await expect(page.locator(".global-nav .brand-asset")).toBeHidden(); // globals.css <=480px hides the brand span.
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await page.screenshot({ path: path.join(shots, "390-workspace-browse-only.png"), fullPage: true });
   await page.setViewportSize({ width: 320, height: 700 });
   await projectNavButton(page, "大纲").click();
   await projectNavButton(page, "写作与检查").click();
   await expectActiveProjectNavVisible(page, "写作与检查");
   await expect(page.locator(".global-nav .brand-asset")).toBeHidden(); // globals.css <=480px hides the brand span.
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
   await page.screenshot({ path: path.join(shots, "320-workspace-browse-only.png"), fullPage: true });
   expect(errors).toEqual([]);
 });
@@ -351,7 +351,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
       await projectNavButton(page, "写作与检查").click();
       await expect(page.getByRole("button", { name: "运行连续性检查" })).toBeEnabled();
       await expect(page.locator("body")).toHaveCSS("scroll-behavior", "auto");
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
       await page.screenshot({ path: path.join(shots, "1024-reduced-motion.png"), fullPage: true });
       for (const width of [1440, 1280]) {
         await page.setViewportSize({ width, height: 900 });
@@ -363,7 +363,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
       try {
         const runButton = page.getByRole("button", { name: "运行连续性检查" });
         await expect(runButton).toBeVisible();
-        expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
         const bounds = await runButton.boundingBox();
         expect(bounds && bounds.x >= 0 && bounds.y >= 0 && bounds.x + bounds.width <= 1440 && bounds.y + bounds.height <= 900).toBe(true);
         await page.screenshot({ path: path.join(shots, "1440-zoom-200.png"), fullPage: true });
@@ -389,7 +389,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
       await expect(userMenu).toBeHidden();
       await expect(page.getByRole("button", { name: "用户菜单", exact: true })).toBeFocused();
       await page.setViewportSize({ width: 320, height: 700 });
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
     } finally {
       await context.close();
     }
@@ -813,7 +813,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await expect(page.getByRole("heading", { name: title })).toBeVisible();
     for (const width of [1440, 1280, 1024, 390, 320]) {
       await page.setViewportSize({ width, height: 900 });
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
     }
     await page.setViewportSize({ width: 1024, height: 900 });
     await projectNavButton(page, "写作与检查").click();
@@ -826,7 +826,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.reload();
     await expect(page.getByText("当前窗口较窄，暂为只读浏览", { exact: false })).toBeVisible();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
     await page.screenshot({ path: path.join(shots, "390-long-title-browse-only.png"), fullPage: true });
   });
 
@@ -847,7 +847,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await expect(page.getByText("高影响", { exact: false }).first()).toBeVisible();
     await expect(page.getByText("中等影响", { exact: false }).first()).toBeVisible();
     await page.setViewportSize({ width: 1440, height: 960 });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
     await items.last().scrollIntoViewIfNeeded();
     await expect(items.last()).toBeVisible();
     await page.screenshot({ path: path.join(shots, "1440-extreme-issues.png"), fullPage: true });
@@ -868,7 +868,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await expect(page.getByText("中等影响", { exact: false }).first()).toBeVisible();
     await items.last().scrollIntoViewIfNeeded();
     await expect(items.last()).toBeVisible();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
     await page.screenshot({ path: path.join(shots, "390-extreme-issues-browse-only.png"), fullPage: true });
   });
 });

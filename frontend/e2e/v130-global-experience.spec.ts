@@ -28,7 +28,7 @@ async function screenshot(page: Page, name: string) {
 }
 
 async function noOverflow(page: Page) {
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
 }
 
 async function createProject(page: Page, title: string) {

@@ -214,14 +214,23 @@ npm run lint
 npm run typecheck
 npm run build
 
-# Isolated v1.3.0 production-standalone acceptance on 3197/8197
-# Each run prints its unique last-run.json, HTML report, and Provider statistics paths.
-npm run test:v130
+# All current browser E2E groups; no manually started servers are needed
+Get-ChildItem Env:CONTINUITY_* | Remove-Item
+npm run test:e2e
+
+# Run selected groups, or filter test titles within regular
+npm run test:e2e -- --group v130
+npm run test:e2e -- --group stage12,regular,stage13
+npm run test:e2e -- --group regular --grep "review entry"
 ```
 
-`test:v130` builds from an explicit temporary source copy that excludes environment files, copies `public` and compiled static assets into the standalone artifact, waits for HTML, key JavaScript chunks, and same-origin session bootstrap, then runs all `v130-*.spec.ts` tests. The profile fails closed on wrong ports, temporary roots, dist directories, account prefixes, or mixed origins. It does not use the v1.2 evidence directory or the independent 3196/8196 acceptance services.
+`npm run test:e2e` runs eight isolated production browser groups in sequence: `v130` (15 author-workflow tests), `v140-frontend` (13 interface tests), `v140-visual` (those 13 plus one visual test), `regular` (54 authentication, writing, import, fact-review, v1.1/v1.2 and helper tests), `stage12` (8 Agent Run lifecycle tests), `stage13` (4 visitor, recovery and isolation tests using the impl profile), `maintenance` (13 interface plus 2 maintenance tests), and `legacy-rich-suggestion` (1 staged rich-text suggestion test). The total is 124 executions; the 13 v140 frontend cases run in three groups. `--group` accepts a comma-separated list; `--grep` is supported only for `regular`. Use `npm run test:e2e -- --help` for the available groups and ports.
 
-The backend suite includes the Agent Reliability lifecycle and Web App Readiness security contracts, recorded under Stages 12 and 13. The release-bundle validator checks that the published V4 results, frozen assets, recorded workspace metadata, documentation, and screenshots are self-consistent; it does not claim to reopen unpublished SQLite workspaces. Browser E2E requires the isolated FastAPI/Next.js processes described in [the local setup guide](docs/local-setup.md); it uses a test-only provider and a temporary database rather than the local demo database.
+The runner clears model and SMTP configuration, builds temporary source copies without environment files, starts test-only FastAPI/Next.js services on dedicated ports, and cleans its sources, builds, databases and service processes. It prints `E2E_REPORT_ROOT` and `E2E_SUMMARY` for per-group results, logs and browser attachments retained in system temp. No local demo database, real model or external SMTP service is used. Keep the fixed ports and temporary build drives free, and run only one E2E command at a time; see [the port table and reproduction guide](docs/local-setup.md#isolated-browser-e2e).
+
+Five historical acceptance records (`legacy-gap-independent`, `legacy-gap-independent-round2`, `legacy-gap-round3-brief`, `g02-controller`, and `g02-controller-post-v4`) remain as evidence and are excluded from daily runs. `test:e2e:raw` retains the direct Playwright entry and requires a matching manually supplied isolated environment. The standalone `test:v130`, `test:v140:frontend`, and `test:v140:visual` commands remain available; the unified entry is the daily all-group command.
+
+The backend suite includes the Agent Reliability lifecycle and Web App Readiness security contracts, recorded under Stages 12 and 13. The release-bundle validator checks that the published V4 results, frozen assets, recorded workspace metadata, documentation, and screenshots are self-consistent; it does not claim to reopen unpublished SQLite workspaces. The browser E2E runner manages the isolated services described in [the local setup guide](docs/local-setup.md).
 
 ## Core author workflow
 
@@ -235,7 +244,7 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 - Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.
 - The provider returns no cost in the retained V4 results.
 - The system supports continuity review and author-controlled canon updates; it does not directly continue the novel.
-- Browser E2E suites lag the current interface. `test:v130` fails the same 10 tests on `ui-cbfa536` and on `ui-26ae621` (12 before four specs were fixed on 2026-09-30), and several `stage*` and `v110` specs still expect the pre-v1.4 create form, textarea drafts and seeded flows. These failures predate the 2026-09-30 interface work; updating the suites is open work.
+- Current browser E2E suites run through `npm run test:e2e` with isolated production services and test-only providers. Historical acceptance records are excluded from daily runs; browser checks do not evaluate real model quality or external SMTP delivery. See the [isolated E2E instructions](docs/local-setup.md#isolated-browser-e2e).
 - `test:build-origin` has one known failure ("canonical HTTPS proxy exposes public health…").
 - With the real model, some Story Memory change-set reviews for long appended chapters fail backend validation (`candidate_count_invalid`, `memory_type_invalid`), and a long check can occasionally fail with unresolvable evidence. Both are model-output issues, not interface faults.
 - Writing and checking are desktop-only; below 1024 px the workspace is browse-only.
