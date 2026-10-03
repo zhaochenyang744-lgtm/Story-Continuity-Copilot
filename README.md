@@ -21,6 +21,7 @@ Fixes not yet online (found while bringing the browser E2E suites up to date):
 - Starting a new check clears the issue drawer and controlled edit that belonged to the previous check; a controlled save no longer pairs a new run with an old issue (which failed with a non-retryable 422).
 - In the tutorial, "查看完整证据" keeps keyboard focus inside the evidence drawer.
 - The backend keeps idle connections for 75 s, longer than the Next.js proxy's 5 s, so parallel page loads no longer fail with a reset connection.
+- Quiet micro-interactions using the existing motion timing: buttons settle 1 px when pressed, centred dialogs and messages fade in, save and check status labels fade between states, and a new issue list rises in a few rows at a time. All of it is off when the system asks for reduced motion.
 
 Verification: all current browser E2E groups run through one command, `npm run test:e2e`; two consecutive full runs passed 124/124 (see [Test](#test)).
 
