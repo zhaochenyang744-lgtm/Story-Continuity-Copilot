@@ -64,7 +64,7 @@ The late-September releases are each built from a Git commit with the maintenanc
 - Layout fixes: the writing page has one title and one save status, and the editor fills its card beside the issue pane; the overview export panel, Story Memory table columns, immersive issue list, planning empty states and evidence-drawer actions were corrected; the sources page groups spans under their chapter; the edit-project dialog matches the other dialogs.
 - A missing project or unknown address shows a "找不到" page with a way back. Phone form fields stay at 16 px so iOS does not zoom on focus; scrolling tab rails fade the edge that hides more items.
 
-Verification for `ui-cbfa536`: backend 456/456, evaluation 51/51, lint, typecheck and build passed locally on Windows; results that need a model (briefs, plan alignment, checks in progress or failed, imports, Memory review) were opened with the real provider and screenshotted at 1440 px and 390 px. The public site was checked by hand after deployment. Browser E2E suites were not green; see [Known limitations](#known-limitations).
+Verification for `ui-cbfa536`: backend 456/456, evaluation 51/51, lint, typecheck and build passed locally on Windows; results that need a model (briefs, plan alignment, checks in progress or failed, imports, Memory review) were opened with the real provider and screenshotted at 1440 px and 390 px. The public site was checked by hand after deployment. Browser E2E suites were not green at that point; they were brought up to date for v1.5.0 (124/124).
 
 ## v1.3.0 workflow foundation (included in v1.4.0)
 
@@ -124,7 +124,7 @@ Visitor demo spaces retain three independently seeded projects: **Grey Harbor Ec
 
 ## Evaluation and verification
 
-The public product story is organised around six milestones. Historical Stage identifiers remain available as technical evidence references rather than the primary product narrative.
+The public product story is organised around the milestones below. Historical Stage identifiers remain available as technical evidence references rather than the primary product narrative.
 
 | Product milestone | Verified outcome | Technical evidence |
 | --- | --- | --- |
@@ -135,6 +135,7 @@ The public product story is organised around six milestones. Historical Stage id
 | Web App Readiness | Visitor isolation, quotas, cleanup, recovery contracts, reproducible packaging, and browser/security verification | Stage 13 |
 | Public Release v1.0 | Historical signed baseline after the frozen Required Gates A–G passed at the public origin | Stage 14 |
 | Product Iteration v1.2.0 | Isolated first-run tutorial, durable progress, responsive authoring UI, bitmap narrative assets, local regression acceptance, and historical public deployment | v1.2.0 tests and production smoke acceptance |
+| Product Iteration v1.4–v1.5 | Author materials, exports, decision reuse, chapter revision with fact review, parallel long-chapter checks, the new interface, explicit insufficient-evidence reporting; V10 and V12 held-out gates passed | Held-out results below; backend 471/471; browser E2E 124/124 |
 
 The published repository baseline is the frozen **V4** set: 15 original, balanced three-class cases across three isolated corpora, plus 6 stability reruns. All 21 runs completed.
 
@@ -155,6 +156,16 @@ The frozen CLI PoC has a separate historical held-out result (F1 0.9412) under a
 
 V5–V8 each retain one immutable first-valid formal result bundle with `gate_failed`; later work does not overwrite or rerun them. In V8, all 30 calls completed and all core classification and Evidence measures were 1.0000, but the designated category regression was 2/3 because one `location_action` case was classified as `event_status`. This single category deviation is retained as a portfolio-level known limitation, while the Model Evaluation Gate recorded under Stage 10 remains failed.
 
+Since V9, model changes are judged on held-out sets: 36 cases per set (12 conflict, 12 no-conflict, 12 insufficient evidence; Chinese and English works), thresholds registered before the set is authored, and one formal run that decides. Each set is spent once it has been run.
+
+| Held-out set | Configuration | Result |
+| --- | --- | --- |
+| V10 (2026-09-29) | `deepseek-flash`, high thinking, prompt v21 | Passed 13/13 checks: macro F1 0.972, conflict recall 0.917, insufficient-evidence recall 1.0, no false positives ([record](docs/eval-v10-first-formal-result.md)) |
+| V11 (2026-09-30) | prompt v22 | Failed twice on insufficient-evidence recall (0.75, 0.67; bar 0.8): drafts that settled a point the source left open got no issue at all |
+| V12 (2026-10-03) | prompt v24c, shipped in v1.5.1/v1.5.2 | Passed every registered threshold: macro F1 0.972, insufficient-evidence recall 1.0, conflict recall 0.917, no false positives, designated regressions 3/3 ([procedure](evaluation/ie_fix_v24/PLAN.md), [result](evaluation/results/eval-v12-v24c-first-formal.json)) |
+
+These sets use chapters of at most 300 characters and drafts of one to three sentences. Real chapters are about ten times longer; a long-text evaluation set and pipeline are in progress (see [Known limitations](#known-limitations)).
+
 Long-form Workflow Validation, recorded under Stage 11, verified the author-controlled workflow on a real 100k-character prefix and a 300k-character prefix. The accepted 300k V2 result completed initialization plus two append/review/decision/commit rounds with bounded RAG, valid Evidence lineage, no automatic canon writes, and a 4,820,992-byte final SQLite database. The first 300k V1 capacity failure remains immutable alongside the V2 pass. The optional 1M-character Stage 11N pressure test has not been run.
 
 Agent Reliability, recorded under Stage 12, independently passed the six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero-partial-write Gates in V2; its V1 Provider-boundary incident remains `gate_failed`. Web App Readiness, recorded under Stage 13, independently passed its local product Gate in V4 after preserving the V2/V3 deployment-artifact failures: server-only integration boundaries, visitor isolation, limits and cleanup, real recovery contracts, two reproducible standalone builds, relocation, and the full browser matrix were verified without external Provider HTTP or SMTP. The historical v1.0 Public Release passed HTTPS/security, real SMTP/password recovery, restart persistence, backup/same-release redeploy, a real-provider two-round author workflow, visitor and registered-account isolation, quota separation, visitor cleanup, and public Cancel/Timeout/Retry atomicity checks. The previous v1.2.0 deployment acceptance covered health/readiness, rollback state, desktop/mobile rendering, new-account tutorial isolation and persistence, and the empty real-workspace result without rerunning the external Provider workflow.
@@ -173,7 +184,7 @@ Read [the verification record](docs/verification-and-limitations.md) for evidenc
 ```text
 backend/       API, SQLite schema/migration, seed data, and contract tests
 frontend/      Next.js workspace and browser E2E tests
-evaluation/    frozen V4 case set, manifests, validators, tests, and sanitised results
+evaluation/    frozen V4–V12 case sets, held-out runner and thresholds, validators, tests, and sanitised results
 docs/          local setup, demo guide, product decisions, and verification record
 artifacts/     a small, curated set of production-workflow screenshots
 ```
@@ -269,7 +280,7 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 
 ## Known limitations
 
-- The signed Stage 14 production baseline remains `Story Continuity Copilot v1.0 Public Release` as historical evidence. The active public deployment is the v1.4.0 maintenance update; its deployment and acceptance scope are recorded in [maintenance deployment](docs/maintenance-deployment.md). Local acceptance does not re-sign Stage 14, constitute a commercial SLA, or claim that the retained Stage 10 `gate_failed` evaluation was later passed.
+- The signed Stage 14 production baseline remains `Story Continuity Copilot v1.0 Public Release` as historical evidence. The active public deployment is v1.5.2 (`v152-1cfee10-20261004`); its deployment and acceptance scope are recorded in the [2026-10-04 deployment record](docs/deployment-2026-10-04.md). Local acceptance does not re-sign Stage 14, constitute a commercial SLA, or claim that the retained Stage 10 `gate_failed` evaluation was later passed.
 - Real SMTP delivery, email verification, password reset, old-session revocation, new-password login, and used-link replay rejection have been accepted at the public origin. Email credentials and addresses remain server-only.
 - V4 is a small, frozen product evaluation; it supports the stated evaluation claims only and is not a general benchmark.
 - Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.
@@ -277,6 +288,8 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 - The system supports continuity review and author-controlled canon updates; it does not directly continue the novel.
 - Current browser E2E suites run through `npm run test:e2e` with isolated production services and test-only providers. Historical acceptance records are excluded from daily runs; browser checks do not evaluate real model quality or external SMTP delivery. See the [isolated E2E instructions](docs/local-setup.md#isolated-browser-e2e).
 - `test:build-origin` has one known failure ("canonical HTTPS proxy exposes public health…").
+- Checks are judged sentence by sentence, which is slow and costly on real chapters: a ~2,500-character chapter is estimated at about 3.5 minutes and ¥1.4, and even a short draft can take about 2.5 minutes when thinking fills its output cap before stepping down. A passage-level pipeline (screen first, verify only suspicious passages, recheck only changes) with a long-text evaluation set is in progress; targets are one chapter in about a minute for ¥0.3.
+- Insufficient evidence is now reported instead of left silent (V12 recall 1.0), but it is not perfect: on the demo draft one check in four still missed the gap.
 - With the real model, some Story Memory change-set reviews for long appended chapters fail backend validation (`candidate_count_invalid`, `memory_type_invalid`), and a long check can occasionally fail with unresolvable evidence. Both are model-output issues, not interface faults.
 - Writing and checking are desktop-only; below 1024 px the workspace is browse-only.
 
