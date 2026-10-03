@@ -6,6 +6,7 @@ import io
 import json
 import os
 import pathlib
+import random
 import shutil
 import tempfile
 import unittest
@@ -29,6 +30,15 @@ DIGITS = "零一二三四五六七八九"
 
 def cn(number: int) -> str:
     return "".join(DIGITS[int(d)] for d in str(number))
+
+
+_POOL = "山水风雨云河桥灯门窗纸墨船帆市街井楼钟鼓茶盐铁铜石木竹花叶鸟鱼马车田园雪霜春夏秋冬晨夜光影"
+_rng = random.Random(20261004)
+
+
+def prose(length: int) -> str:
+    """Non-repeating filler: random characters, so no 20-character passage recurs by accident."""
+    return "".join(_rng.choice(_POOL) for _ in range(length))
 
 
 def copy_template(root: pathlib.Path) -> pathlib.Path:
@@ -64,7 +74,7 @@ def synthetic_dev_set(root: pathlib.Path) -> pathlib.Path:
         chapters = []
         for c in range(1, 11):
             # About 2,300 characters in 70 sentences, every sentence unique across all works.
-            body = "".join(f"甲乙{cn(w)}号城第{cn(c)}章第{cn(s)}句里，巡查员沿着河堤记下了今日的风向与水位。" for s in range(70))
+            body = "".join(f"甲乙{cn(w)}号城第{cn(c)}章第{cn(s)}句里，{prose(18)}。" for s in range(70))
             chapters.append(f"# 第{cn(c)}章 标题{cn(w)}{cn(c)}\n\n{body}")
         (set_dir / "works" / f"{key}.md").write_text("\n\n".join(chapters) + "\n", encoding="utf-8")
         works.append({"key": key, "title": f"作品{cn(w)}", "file": f"works/{key}.md", "origin": "original", "source_note": None})
@@ -147,6 +157,27 @@ class ValidatorTests(unittest.TestCase):
         self.assertEqual(self.errors(set_dir, structure_only=False), [])
         (set_dir / "authoring" / "self-review.json").write_text('{"targets": []}', encoding="utf-8")
         self.assertTrue(any("self-review" in e for e in self.errors(set_dir, structure_only=False)))
+
+    def test_templated_prose_is_rejected(self):
+        set_dir = synthetic_dev_set(self.tmp)
+        template = "他先绕到后窗，看见窗棂的一格被风吹得晃动，就拿碎布塞住缝隙。屋里原本有些拥挤，两个人把闲置的凳子挪开。"
+        for work in (set_dir / "works").glob("*.md"):
+            text = work.read_text(encoding="utf-8")
+            work.write_text(text.replace("句里，", "句里，" + template), encoding="utf-8")
+        errors = self.errors(set_dir, structure_only=False)
+        self.assertTrue(any("repeat elsewhere in the work" in e for e in errors))
+        self.assertTrue(any("reappears in another chapter" in e for e in errors))
+        self.assertTrue(any("share" in e and "passages" in e for e in errors))
+
+    def test_labelled_sentences_must_not_all_stand_alone(self):
+        set_dir = synthetic_dev_set(self.tmp)
+        lf = load(set_dir)
+        for key in lf.works:
+            path = set_dir / "works" / f"{key}.md"
+            text = path.read_text(encoding="utf-8")
+            # Put every sentence on its own line: each labelled sentence becomes its own paragraph.
+            path.write_text(text.replace("。", "。\n"), encoding="utf-8")
+        self.assertTrue(any("stand alone" in e for e in self.errors(set_dir, structure_only=False)))
 
     def test_evidence_must_come_from_an_earlier_chapter(self):
         set_dir = copy_template(self.tmp)

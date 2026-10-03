@@ -27,6 +27,12 @@ from evaluation.longform.textutil import char_count, cjk_ratio, sentences
 BANNED_NAMES = ("灰港", "纸月", "零号花园", "雾港", "白塔", "灰港回声")
 SHINGLE = 20
 SELF_REVIEW = "authoring/self-review.json"
+# Prose checks (added 2026-10-04 after a template-generated delivery passed every other rule:
+# about 68% of its sentences repeated across chapters and works). Real prose sits near zero.
+MIN_REPEAT_SENTENCE_CHARS = 8
+MAX_REPEATED_SENTENCE_SHARE = 0.03
+MAX_REUSED_TEXT_SHARE = 0.05
+MAX_ISOLATED_POINT_SHARE = 0.25
 
 CHAPTER_RULES = {
     # (min chars, max chars) for any chapter, and for target chapters, plus minimum sentences per target.
@@ -200,7 +206,84 @@ def validate(lf: LongformSet, structure_only: bool = False) -> tuple[list[str], 
     if not structure_only:
         check_profile(lf, summary, errors)
         check_self_review(lf, errors)
+        summary["prose"] = check_prose(lf, errors)
     return errors, summary
+
+
+def _stripped_shingles(body: str) -> set[str]:
+    text = "".join(body.split())
+    return {text[i:i + SHINGLE] for i in range(max(len(text) - SHINGLE + 1, 0))}
+
+
+def _reused_share(body: str, elsewhere: set[str]) -> tuple[int, int]:
+    """Characters of a body covered by a 20-character passage that also occurs elsewhere."""
+    text = "".join(body.split())
+    covered = bytearray(len(text))
+    for i in range(max(len(text) - SHINGLE + 1, 0)):
+        if text[i:i + SHINGLE] in elsewhere:
+            covered[i:i + SHINGLE] = b"\x01" * SHINGLE
+    return sum(covered), len(text)
+
+
+def check_prose(lf: LongformSet, errors: list[str]) -> dict:
+    """Catch generated or templated text, which makes retrieval and screening look easier than real prose.
+
+    Per work: few repeated sentences, little text reused between its chapters. Across the works of
+    one set: no shared 20-character passage. Labelled points: most must sit inside ordinary
+    paragraphs rather than stand alone as one-sentence paragraphs.
+    """
+    report: dict = {"works": {}}
+    owners: dict[str, set[str]] = collections.defaultdict(set)
+    for key, chapters in lf.works.items():
+        counts = collections.Counter(
+            "".join(c.body[s:e].split()) for c in chapters for s, e in sentences(c.body)
+            if char_count(c.body[s:e]) >= MIN_REPEAT_SENTENCE_CHARS)
+        total = sum(counts.values())
+        repeated = sum(n for n in counts.values() if n > 1)
+        by_chapter = {c.index: _stripped_shingles(c.body) for c in chapters}
+        seen_in: dict[str, int] = collections.Counter()
+        for grams in by_chapter.values():
+            seen_in.update(grams)
+        shared = {gram for gram, n in seen_in.items() if n > 1}
+        covered = length = 0
+        for c in chapters:
+            hit, size = _reused_share(c.body, shared)
+            covered, length = covered + hit, length + size
+        dup_share = repeated / total if total else 0.0
+        reuse_share = covered / length if length else 0.0
+        report["works"][key] = {"repeated_sentence_share": round(dup_share, 4), "reused_text_share": round(reuse_share, 4)}
+        if dup_share > MAX_REPEATED_SENTENCE_SHARE:
+            errors.append(f"{key}: {dup_share:.0%} of sentences repeat elsewhere in the work (max {MAX_REPEATED_SENTENCE_SHARE:.0%}); write each chapter as its own prose, not from templates")
+        if reuse_share > MAX_REUSED_TEXT_SHARE:
+            errors.append(f"{key}: {reuse_share:.0%} of the text reappears in another chapter (max {MAX_REUSED_TEXT_SHARE:.0%}); write each chapter as its own prose, not from templates")
+        for grams in by_chapter.values():
+            for gram in grams:
+                owners[gram].add(key)
+    cross = sum(1 for keys in owners.values() if len(keys) > 1)
+    report["cross_work_shared_passages"] = cross
+    if cross:
+        errors.append(f"works in this set share {cross} {SHINGLE}-character passages; every work must be written separately")
+    isolated = total_points = 0
+    for target in lf.targets:
+        chapter_by_index = {c.index: c for c in lf.works[target.work]}
+        for point in target.items:
+            spans = [(target.chapter.body, span) for span in point.ranges]
+            spans += [(chapter_by_index[index].body, span) for index, span in point.evidence]
+            for body, span in spans:
+                total_points += 1
+                isolated += _alone_in_paragraph(body, span)
+    share = isolated / total_points if total_points else 0.0
+    report["isolated_point_share"] = round(share, 4)
+    if share > MAX_ISOLATED_POINT_SHARE:
+        errors.append(f"{share:.0%} of labelled sentences stand alone as one-sentence paragraphs (max {MAX_ISOLATED_POINT_SHARE:.0%}); weave them into the surrounding narration")
+    return report
+
+
+def _alone_in_paragraph(body: str, span: tuple[int, int]) -> bool:
+    start = body.rfind("\n", 0, span[0]) + 1
+    end = body.find("\n", span[1])
+    paragraph = body[start:end if end >= 0 else len(body)]
+    return len(sentences(paragraph)) <= 1
 
 
 def check_self_review(lf: LongformSet, errors: list[str]) -> None:

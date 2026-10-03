@@ -80,8 +80,8 @@ class LongformSet:
 
 def set_files(root: pathlib.Path, data: dict) -> list[pathlib.Path]:
     files = [root / "labels.json"] + [root / work["file"] for work in data.get("works", []) if isinstance(work, dict) and "file" in work]
-    readme = root / "README.md"
-    return files + ([readme] if readme.exists() else [])
+    optional = [root / "README.md", root / "authoring" / "self-review.json"]
+    return files + [path for path in optional if path.exists()]
 
 
 def compute_set_hash(root: pathlib.Path, data: dict) -> str:
