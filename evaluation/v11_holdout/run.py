@@ -59,7 +59,7 @@ NATURE_CLASS = {"confirmed_conflict": "conflict", "possible_conflict": "conflict
 CLASS_PRECEDENCE = ("conflict", "insufficient_evidence", "no_conflict")
 # The formal run is pinned to the deployed configuration, not to whatever the shell exports.
 RUNTIME_CONTRACT = {"model": "deepseek-flash", "review_thinking": "high",
-                    "prompt_version": "continuity-review-v22-settled-possible-conflict"}
+                    "prompt_version": "continuity-review-v24c-explicit-missing-link"}
 
 
 def load_case_set(set_dir: pathlib.Path) -> dict:
