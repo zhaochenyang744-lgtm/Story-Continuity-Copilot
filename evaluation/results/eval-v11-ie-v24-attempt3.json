@@ -1,0 +1,1595 @@
+{
+  "kind": "v11_holdout_dev",
+  "dev_run": true,
+  "pinned_prompt_version": "continuity-review-v22-settled-possible-conflict",
+  "case_set": "eval_set_v11_authoring",
+  "run_id": "ie-v24-attempt3",
+  "case_set_sha256": "6b7f4f4dee490855321329a7dec3899b42820de67741b7d7c88f7566750bcc61",
+  "prompt_version": "continuity-review-v24c-explicit-missing-link",
+  "model": "deepseek-flash",
+  "review_thinking": "high",
+  "system_fingerprints": [
+    "aeb56401ca74e127821c4f9126dcb669"
+  ],
+  "scoring": {
+    "nature_to_class": {
+      "confirmed_conflict": "conflict",
+      "possible_conflict": "conflict",
+      "state_change": "no_conflict",
+      "insufficient_evidence": "insufficient_evidence"
+    },
+    "precedence": [
+      "conflict",
+      "insufficient_evidence",
+      "no_conflict"
+    ],
+    "note": "state_change scores as no_conflict; diagnostics never decide a case"
+  },
+  "memory_snapshot": {
+    "jinyu_credit_market": [
+      {
+        "memory_type": "static_canon",
+        "predicate": "rule",
+        "subject": "烬榆集的月纹账本",
+        "chapter": "第一章 月纹账本"
+      },
+      {
+        "memory_type": "character_knowledge",
+        "predicate": "knowledge",
+        "subject": "验料员折洄",
+        "chapter": "第二章 铃扣验料"
+      },
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "应漪",
+        "chapter": "第三章 雨棚外沿"
+      },
+      {
+        "memory_type": "open_thread",
+        "predicate": "knowledge",
+        "subject": "闻枞带来的镂空石坠",
+        "chapter": "第四章 旧坠子的来处"
+      }
+    ],
+    "huangting_recording": [
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "《折叶曲》定稿混音",
+        "chapter": "第一章 定稿的混音"
+      },
+      {
+        "memory_type": "character_knowledge",
+        "predicate": "knowledge",
+        "subject": "简杼",
+        "chapter": "第二章 没拆开的说明"
+      },
+      {
+        "memory_type": "open_thread",
+        "predicate": "identity",
+        "subject": "《折叶曲》隐藏声部演唱者",
+        "chapter": "第五章 匿名的低声部"
+      },
+      {
+        "memory_type": "open_thread",
+        "predicate": "status",
+        "subject": "备份目录中的无波形空白段",
+        "chapter": "第七章 缺失的空白段"
+      }
+    ],
+    "luliao_last_collection": [
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "叶徊",
+        "chapter": "第一章 交来的修订页"
+      },
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "当天末班车的乌藤邮袋",
+        "chapter": "第二章 末班车的封袋"
+      },
+      {
+        "memory_type": "static_canon",
+        "predicate": "location",
+        "subject": "陆蓼邮局的三号分拣间",
+        "chapter": "第四章 两间分拣屋"
+      },
+      {
+        "memory_type": "open_thread",
+        "predicate": "knowledge",
+        "subject": "紫签邮袋和蓝签邮袋与蘧渡、苇岔的对应关系",
+        "chapter": "第五章 未写明去向的袋号"
+      }
+    ],
+    "mosswick_costume_rental": [
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "teal sash marked H6",
+        "chapter": "Chapter 1 The Fiber Inspection"
+      },
+      {
+        "memory_type": "dynamic_state",
+        "predicate": "location",
+        "subject": "silver cape",
+        "chapter": "Chapter 2 Brown Paper"
+      },
+      {
+        "memory_type": "static_canon",
+        "predicate": "location",
+        "subject": "brown-paper-wrapped returned pieces at Mosswick",
+        "chapter": "Chapter 3 The Sorting Containers"
+      },
+      {
+        "memory_type": "open_thread",
+        "predicate": "knowledge",
+        "subject": "Neris Tal's account breakdown",
+        "chapter": "Chapter 8 Before Closing"
+      }
+    ],
+    "ternhollow_model_railway": [
+      {
+        "memory_type": "dynamic_state",
+        "predicate": "possession",
+        "subject": "model wagon P12",
+        "chapter": "Chapter 1 The Loaded Wagon"
+      },
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "Keston Briar",
+        "chapter": "Chapter 3 A Painted Milestone"
+      },
+      {
+        "memory_type": "dynamic_state",
+        "predicate": "possession",
+        "subject": "Elva Rook",
+        "chapter": "Chapter 4 The Unsigned Reservation"
+      },
+      {
+        "memory_type": "event_timeline",
+        "predicate": "event_occurred",
+        "subject": "Maelin Quist",
+        "chapter": "Chapter 6 The Station Curtains"
+      }
+    ],
+    "sablefen_translation_residency": [
+      {
+        "memory_type": "static_canon",
+        "predicate": "identity",
+        "subject": "Reedglass collection",
+        "chapter": "Chapter 1 The Reedglass Collection"
+      },
+      {
+        "memory_type": "dynamic_state",
+        "predicate": "status",
+        "subject": "Dewline",
+        "chapter": "Chapter 2 The Release Ledger"
+      },
+      {
+        "memory_type": "static_canon",
+        "predicate": "identity",
+        "subject": "Pen name Rell",
+        "chapter": "Chapter 3 The Pen Name Register"
+      },
+      {
+        "memory_type": "open_thread",
+        "predicate": "event_occurred",
+        "subject": "Permission request to the author",
+        "chapter": "Chapter 7 A Delivery Receipt"
+      }
+    ]
+  },
+  "metrics": {
+    "confusion_matrix": {
+      "conflict": {
+        "conflict": 11,
+        "no_conflict": 0,
+        "insufficient_evidence": 1
+      },
+      "no_conflict": {
+        "conflict": 0,
+        "no_conflict": 12,
+        "insufficient_evidence": 0
+      },
+      "insufficient_evidence": {
+        "conflict": 0,
+        "no_conflict": 1,
+        "insufficient_evidence": 11
+      }
+    },
+    "per_class": {
+      "conflict": {
+        "precision": 1.0,
+        "recall": 0.9166666666666666,
+        "f1": 0.9565217391304348
+      },
+      "no_conflict": {
+        "precision": 0.9230769230769231,
+        "recall": 1.0,
+        "f1": 0.9600000000000001
+      },
+      "insufficient_evidence": {
+        "precision": 0.9166666666666666,
+        "recall": 0.9166666666666666,
+        "f1": 0.9166666666666666
+      }
+    },
+    "macro_f1": 0.9443961352657005,
+    "no_conflict_false_positive_rate": 0.0,
+    "conflict_category_accuracy": 1.0,
+    "designated": {
+      "total": 3,
+      "class_and_category_correct": 3,
+      "confirmed_conflict": 3,
+      "case_ids": [
+        "hv11-001",
+        "hv11-007",
+        "hv11-022"
+      ]
+    },
+    "terminal": {
+      "completed:None": 35,
+      "failed:invalid_json": 1
+    },
+    "diagnostics": {
+      "no_conflict_cases_with_any_card": 0,
+      "no_conflict_total": 12,
+      "citation_reached_expected": 23,
+      "retrieval_reached_expected": 36,
+      "state_change_cases": []
+    }
+  },
+  "case_results": [
+    {
+      "case_id": "hv11-001",
+      "corpus": "jinyu_credit_market",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "world_rule",
+      "predicted_category": "world_rule",
+      "designated_regression": true,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 7.7,
+      "infrastructure_retry": null,
+      "natures": [
+        "confirmed_conflict"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "5f9c9d07b863e33cb8112b662367c1f37b392cdead5c6aed9a44de8c39fe3e5b"
+      ],
+      "metrics": {
+        "latency_ms": 7480,
+        "input_tokens": 3778,
+        "output_tokens": 1638
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第一章 月纹账本"
+        ],
+        "cited_expected_chapters": [
+          "第一章 月纹账本"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": [
+          "烬榆集的月纹账本"
+        ]
+      }
+    },
+    {
+      "case_id": "hv11-002",
+      "corpus": "jinyu_credit_market",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 2.9,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 2740,
+        "input_tokens": 3894,
+        "output_tokens": 410
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第三章 雨棚外沿"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-003",
+      "corpus": "jinyu_credit_market",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "object_state",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 9.4,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "1a606189daee3360f4c1d14e635dfacbd37fdf1e2e06a5feb7c0bdc21d99ecf6"
+      ],
+      "metrics": {
+        "latency_ms": 9208,
+        "input_tokens": 3588,
+        "output_tokens": 1944
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第四章 旧坠子的来处"
+        ],
+        "cited_expected_chapters": [
+          "第四章 旧坠子的来处"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-004",
+      "corpus": "jinyu_credit_market",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "attribute",
+      "predicted_category": "attribute",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 29.9,
+      "infrastructure_retry": null,
+      "natures": [
+        "possible_conflict"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "1efec51a5ee95f3d9200e3d2e829e30bbf0d5500afd1472e4e28eadcdf853979"
+      ],
+      "metrics": {
+        "latency_ms": 29744,
+        "input_tokens": 3422,
+        "output_tokens": 6979
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第二章 铃扣验料"
+        ],
+        "cited_expected_chapters": [
+          "第二章 铃扣验料"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-005",
+      "corpus": "jinyu_credit_market",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 2.5,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 2283,
+        "input_tokens": 3878,
+        "output_tokens": 298
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第六章 送去修补的围裙"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-006",
+      "corpus": "jinyu_credit_market",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "object_state",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 11.2,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "d389acd8e0c0de1e4eac4825bd219fb902af028a92695e39709fb5095018740a"
+      ],
+      "metrics": {
+        "latency_ms": 10984,
+        "input_tokens": 3732,
+        "output_tokens": 2495
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第七章 柜台下的黑釉匣"
+        ],
+        "cited_expected_chapters": [
+          "第七章 柜台下的黑釉匣"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-007",
+      "corpus": "huangting_recording",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "relationship",
+      "predicted_category": "relationship",
+      "designated_regression": true,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 6.1,
+      "infrastructure_retry": null,
+      "natures": [
+        "confirmed_conflict"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "354937fc96134794d8c62914097f40e6013b49d22215d71b7c1849a5e6efc0c6"
+      ],
+      "metrics": {
+        "latency_ms": 5934,
+        "input_tokens": 4045,
+        "output_tokens": 1354
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第一章 定稿的混音"
+        ],
+        "cited_expected_chapters": [
+          "第一章 定稿的混音"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-008",
+      "corpus": "huangting_recording",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 2.2,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 1963,
+        "input_tokens": 4033,
+        "output_tokens": 274
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第三章 防止门缝漏声"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-009",
+      "corpus": "huangting_recording",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "attribute",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 8.2,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "44bec49a9ef6c6e84f5c93eb1ebb3ec7056f96a21ffa5b25558f4c79f0dbd8eb"
+      ],
+      "metrics": {
+        "latency_ms": 7959,
+        "input_tokens": 3886,
+        "output_tokens": 1540
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第四章 两份播放记录"
+        ],
+        "cited_expected_chapters": [
+          "第四章 两份播放记录"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-010",
+      "corpus": "huangting_recording",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "character_knowledge",
+      "predicted_category": "character_knowledge",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 7.8,
+      "infrastructure_retry": null,
+      "natures": [
+        "confirmed_conflict"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "fd75328251ded0e7f409410853b01cdc2719e2240022a822a6dc1d1a6e8d3e74"
+      ],
+      "metrics": {
+        "latency_ms": 7566,
+        "input_tokens": 4050,
+        "output_tokens": 1557
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第二章 没拆开的说明"
+        ],
+        "cited_expected_chapters": [
+          "第二章 没拆开的说明"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-011",
+      "corpus": "huangting_recording",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 2.8,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 2555,
+        "input_tokens": 3900,
+        "output_tokens": 376
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第六章 走廊的小地毯"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-012",
+      "corpus": "huangting_recording",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "relationship",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 10.7,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "6d1594b3466c9e7ff95754d92de399b6577bf04957f9dc6aed83b7ab068bc412"
+      ],
+      "metrics": {
+        "latency_ms": 10539,
+        "input_tokens": 3867,
+        "output_tokens": 2159
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第五章 匿名的低声部"
+        ],
+        "cited_expected_chapters": [
+          "第五章 匿名的低声部"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-013",
+      "corpus": "luliao_last_collection",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "timeline",
+      "predicted_category": "timeline",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 9.1,
+      "infrastructure_retry": null,
+      "natures": [
+        "confirmed_conflict"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "fb723f65ba4b8384c63784216919626f205ada4e4587be654a314a94515502ef"
+      ],
+      "metrics": {
+        "latency_ms": 8879,
+        "input_tokens": 4154,
+        "output_tokens": 1959
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第一章 交来的修订页",
+          "第二章 末班车的封袋"
+        ],
+        "cited_expected_chapters": [
+          "第一章 交来的修订页",
+          "第二章 末班车的封袋"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-014",
+      "corpus": "luliao_last_collection",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 3.4,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 3244,
+        "input_tokens": 3879,
+        "output_tokens": 537
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第六章 风里的明信片"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-015",
+      "corpus": "luliao_last_collection",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "object_state",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 7.2,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "61a6f08accf8c9d815e53c3a6513897be1a5bb9939e413b12e51c9be86a664d4"
+      ],
+      "metrics": {
+        "latency_ms": 6983,
+        "input_tokens": 4006,
+        "output_tokens": 1474
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第五章 未写明去向的袋号"
+        ],
+        "cited_expected_chapters": [
+          "第五章 未写明去向的袋号"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-016",
+      "corpus": "luliao_last_collection",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "location_action",
+      "predicted_category": "location_action",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 7.8,
+      "infrastructure_retry": null,
+      "natures": [
+        "confirmed_conflict"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "bd25a3e5907ed99594b0c9f024608bc65f74915a1eb34c6269c105aaa2060b1d"
+      ],
+      "metrics": {
+        "latency_ms": 7650,
+        "input_tokens": 3998,
+        "output_tokens": 1829
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第三章 北柜的值守",
+          "第四章 两间分拣屋"
+        ],
+        "cited_expected_chapters": [
+          "第三章 北柜的值守",
+          "第四章 两间分拣屋"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": [
+          "陆蓼邮局的三号分拣间"
+        ]
+      }
+    },
+    {
+      "case_id": "hv11-017",
+      "corpus": "luliao_last_collection",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 2.9,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 2667,
+        "input_tokens": 3880,
+        "output_tokens": 386
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第八章 关闭侧窗"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-018",
+      "corpus": "luliao_last_collection",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "failed",
+      "error_code": "invalid_json",
+      "seconds": 7.0,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 6792,
+        "input_tokens": 3309,
+        "output_tokens": 1418
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "第七章 没量过的坡道"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-019",
+      "corpus": "mosswick_costume_rental",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "object_state",
+      "predicted_category": "object_state",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 20.2,
+      "infrastructure_retry": null,
+      "natures": [
+        "confirmed_conflict"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "b28a23cde2a785e7f910c5dd1b6121c3c2cac28edbcebe1deea18ac4590a96f1"
+      ],
+      "metrics": {
+        "latency_ms": 19966,
+        "input_tokens": 4069,
+        "output_tokens": 4781
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 2 Brown Paper",
+          "Chapter 3 The Sorting Containers"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 2 Brown Paper",
+          "Chapter 3 The Sorting Containers"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": [
+          "brown-paper-wrapped returned pieces at Mosswick"
+        ]
+      }
+    },
+    {
+      "case_id": "hv11-020",
+      "corpus": "mosswick_costume_rental",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 3.5,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 3353,
+        "input_tokens": 4070,
+        "output_tokens": 565
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 4 Under the Cutting Table"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-021",
+      "corpus": "mosswick_costume_rental",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "attribute",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 10.1,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "17c233729afe6c6764574623ff37eba63eb45f4491263b5becac1f2c12f0e180"
+      ],
+      "metrics": {
+        "latency_ms": 9867,
+        "input_tokens": 4058,
+        "output_tokens": 2297
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 5 A Combined Refund"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 5 A Combined Refund"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-022",
+      "corpus": "mosswick_costume_rental",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "attribute",
+      "predicted_category": "attribute",
+      "designated_regression": true,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 17.8,
+      "infrastructure_retry": null,
+      "natures": [
+        "confirmed_conflict"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "b99973e33b29c6731cd500c98e3a9ad55eef88aefd29c9402acc09f51ecf2ea2"
+      ],
+      "metrics": {
+        "latency_ms": 17569,
+        "input_tokens": 4069,
+        "output_tokens": 4214
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 1 The Fiber Inspection"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 1 The Fiber Inspection"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-023",
+      "corpus": "mosswick_costume_rental",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 2.5,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 2352,
+        "input_tokens": 4076,
+        "output_tokens": 330
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 7 The Window Display"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-024",
+      "corpus": "mosswick_costume_rental",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "attribute",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 4.6,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "694e1cafde3e9705660fe0b684af17b31ffdf2a6d2e5fe80ac4faac0f80fc19b"
+      ],
+      "metrics": {
+        "latency_ms": 4353,
+        "input_tokens": 4050,
+        "output_tokens": 922
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 6 Samples from a Crate"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 6 Samples from a Crate"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-025",
+      "corpus": "ternhollow_model_railway",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "object_state",
+      "predicted_category": "object_state",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 9.4,
+      "infrastructure_retry": null,
+      "natures": [
+        "possible_conflict"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "36ae5f9ab8f3130542f0c216d32038177f1697113de1b8a8b2beee5c634e1a89"
+      ],
+      "metrics": {
+        "latency_ms": 9173,
+        "input_tokens": 4005,
+        "output_tokens": 1990
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 1 The Loaded Wagon"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 1 The Loaded Wagon"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-026",
+      "corpus": "ternhollow_model_railway",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 2.2,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 2034,
+        "input_tokens": 4027,
+        "output_tokens": 230
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 3 A Painted Milestone"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-027",
+      "corpus": "ternhollow_model_railway",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "relationship",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 7.2,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "e6e2e9818f6366f10a9f9abfbfb0059ede093c6a38bebc7543564a07eb51ab09"
+      ],
+      "metrics": {
+        "latency_ms": 6984,
+        "input_tokens": 4000,
+        "output_tokens": 1444
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 4 The Unsigned Reservation"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 4 The Unsigned Reservation"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-028",
+      "corpus": "ternhollow_model_railway",
+      "expected_class": "conflict",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": "event_status",
+      "predicted_category": "event_status",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 47.2,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "e9f06c7f8dbdc603d0694cf80ae3eee6a51831c88bacad5c8be19a9d8976085e"
+      ],
+      "metrics": {
+        "latency_ms": 47009,
+        "input_tokens": null,
+        "output_tokens": null
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 2 Preparing the Demonstration"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 2 Preparing the Demonstration"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-029",
+      "corpus": "ternhollow_model_railway",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 2.5,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 2319,
+        "input_tokens": 4021,
+        "output_tokens": 366
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 6 The Station Curtains"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-030",
+      "corpus": "ternhollow_model_railway",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "attribute",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 6.8,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "3bec7993427576df3afe6592ca6eae96cee5c687d352f714247ee0b56fe7788e"
+      ],
+      "metrics": {
+        "latency_ms": 6623,
+        "input_tokens": 4006,
+        "output_tokens": 1454
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 5 The Replacement Motor"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 5 The Replacement Motor"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-031",
+      "corpus": "sablefen_translation_residency",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "relationship",
+      "predicted_category": "relationship",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 11.7,
+      "infrastructure_retry": null,
+      "natures": [
+        "confirmed_conflict"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "d7f55021bf569d3c287e0d454c00491986132015e71939d90d08e9df7be7f595"
+      ],
+      "metrics": {
+        "latency_ms": 11565,
+        "input_tokens": 4032,
+        "output_tokens": 2611
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 3 The Pen Name Register",
+          "Chapter 4 The Small River Credit"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 3 The Pen Name Register",
+          "Chapter 4 The Small River Credit"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": [
+          "Pen name Rell"
+        ]
+      }
+    },
+    {
+      "case_id": "hv11-032",
+      "corpus": "sablefen_translation_residency",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 2.1,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 1992,
+        "input_tokens": 4013,
+        "output_tokens": 293
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 5 A Stack of Margins"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-033",
+      "corpus": "sablefen_translation_residency",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "attribute",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 9.8,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "7d80dc53dd1c1043311b919d70180577556bf8ef8a67f49f6222c86169cdbb55"
+      ],
+      "metrics": {
+        "latency_ms": 9621,
+        "input_tokens": 3999,
+        "output_tokens": 1925
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 6 Two Meanings of Senn"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 6 Two Meanings of Senn"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-034",
+      "corpus": "sablefen_translation_residency",
+      "expected_class": "conflict",
+      "predicted_class": "conflict",
+      "expected_category": "event_status",
+      "predicted_category": "event_status",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 12.0,
+      "infrastructure_retry": null,
+      "natures": [
+        "confirmed_conflict"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "ee752d0842a5313d83c63e6debeb1d6e24458dd36053467b44898d0db9ad593d"
+      ],
+      "metrics": {
+        "latency_ms": 11874,
+        "input_tokens": 4019,
+        "output_tokens": 2738
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 1 The Reedglass Collection",
+          "Chapter 2 The Release Ledger"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 1 The Reedglass Collection",
+          "Chapter 2 The Release Ledger"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": [
+          "Reedglass collection"
+        ]
+      }
+    },
+    {
+      "case_id": "hv11-035",
+      "corpus": "sablefen_translation_residency",
+      "expected_class": "no_conflict",
+      "predicted_class": "no_conflict",
+      "expected_category": null,
+      "predicted_category": null,
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 2.4,
+      "infrastructure_retry": null,
+      "natures": [],
+      "issue_count": 0,
+      "explanation_sha256": [],
+      "metrics": {
+        "latency_ms": 2293,
+        "input_tokens": 4009,
+        "output_tokens": 446
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 8 A Seat by the Door"
+        ],
+        "cited_expected_chapters": [],
+        "citation_reached_expected": null,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": 0,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    },
+    {
+      "case_id": "hv11-036",
+      "corpus": "sablefen_translation_residency",
+      "expected_class": "insufficient_evidence",
+      "predicted_class": "insufficient_evidence",
+      "expected_category": null,
+      "predicted_category": "event_status",
+      "designated_regression": false,
+      "status": "completed",
+      "error_code": null,
+      "seconds": 6.4,
+      "infrastructure_retry": null,
+      "natures": [
+        "insufficient_evidence"
+      ],
+      "issue_count": 1,
+      "explanation_sha256": [
+        "6c2c23b762496f2c8b0fe6ca8e59986a965a946d58bdbe9b746729c92a248c48"
+      ],
+      "metrics": {
+        "latency_ms": 6257,
+        "input_tokens": 4007,
+        "output_tokens": 1314
+      },
+      "contract_normalization_count": 0,
+      "diagnostics": {
+        "expected_chapters": [
+          "Chapter 7 A Delivery Receipt"
+        ],
+        "cited_expected_chapters": [
+          "Chapter 7 A Delivery Receipt"
+        ],
+        "citation_reached_expected": true,
+        "retrieval_reached_expected": true,
+        "cards_on_no_conflict_case": null,
+        "state_change_present": false,
+        "static_canon_from_expected_chapter": []
+      }
+    }
+  ],
+  "threshold_result": null
+}
