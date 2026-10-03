@@ -585,7 +585,18 @@ class ContinuityEngine:
             if str(error)!=PROVIDER_ATTEMPT_QUOTA_EXCEEDED:return {**outcome,"error":error}
             # A refusal after a timed-out dispatch leaves that dispatch's billing unknown.
             return {**outcome,"quota_exhausted":True,"usage_unknown":bool(getattr(error,"usage_unknown",False)),"undecided":[{"claim_span_id":claim["id"],"error_code":PROVIDER_ATTEMPT_QUOTA_EXCEEDED} for claim in batch["claims"]]}
-        except (InputBudgetExceeded,ProviderUnavailable,ProviderTimeout,ProviderInvalidJson,ProviderFailure,ValueError) as error:
+        except ProviderInvalidJson as error:
+            if error.finish_reason!="length":return {**outcome,"error":error}
+            # Every effort ran out of output, down to the non-thinking answer and its 2,000 tokens. On a
+            # multi-claim batch that last answer is what overflows: four verdicts plus one reported gap
+            # (explanation, reasoning, evidence chain) do not fit. Retry the claims one at a time; the run
+            # has already stepped down, so those answers are short. A lone claim that still overflows is
+            # undecided rather than the whole check's failure. Its spent usage stays in the totals.
+            results.append(error)
+            claims=batch["claims"]
+            if len(claims)>1:return {**outcome,"split":[[claim] for claim in claims]}
+            return {**outcome,"undecided":[{"claim_span_id":claims[0]["id"],"error_code":"output_truncated"}]}
+        except (InputBudgetExceeded,ProviderUnavailable,ProviderTimeout,ProviderFailure,ValueError) as error:
             return {**outcome,"error":error}
         raise AssertionError("unreachable: the second contract attempt always returns")
 
