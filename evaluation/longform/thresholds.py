@@ -1,8 +1,7 @@
-"""Pre-registered bar for the long-form formal set. DRAFT until the user approves it.
+"""Pre-registered bar for the long-form formal set, approved by the user on 2026-10-04.
 
-Drafted on 2026-10-04, before any long-form set exists. The numbers become binding only when
-APPROVED is set True with the approval date, in a commit made before the formal set is authored.
-After that, a number changes only before a run, dated and explained, as with
+Drafted and approved on 2026-10-04, before any long-form set exists (no set authored, no
+long-form run made). The numbers were approved unchanged from the draft. From here on, a number changes only before a run, dated and explained, as with
 evaluation/v11_holdout/thresholds.py (which stays the bar for the short-text held-out set V13).
 
 Protocol (same spirit as V11/V12): one formal run decides; a target is retried once only for an
@@ -19,8 +18,8 @@ from __future__ import annotations
 from typing import Any
 
 DRAFTED_ON = "2026-10-04"
-APPROVED = False
-APPROVED_ON: str | None = None
+APPROVED = True
+APPROVED_ON: str | None = "2026-10-04"
 FORMAL_BUDGET_CNY = 25.0
 
 QUALITY = {

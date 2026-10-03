@@ -413,14 +413,16 @@ class RunnerTests(unittest.TestCase):
             set_dir = synthetic_dev_set(self.tmp)
             with self.assertRaises(RuntimeError) as raised:
                 runner.main(["--set", str(set_dir), "--run-id", "f", "--mode", "formal", "--results-dir", str(self.tmp)])
-            for reason in ("set_kind_is_not_formal", "set_not_frozen", "thresholds_not_approved", "prompt_version_not_pinned",
+            self.assertNotIn("thresholds_not_approved", str(raised.exception))
+            for reason in ("set_kind_is_not_formal", "set_not_frozen", "prompt_version_not_pinned",
                            "concurrency_not_production"):
                 self.assertIn(reason, str(raised.exception))
 
 
 class ThresholdTests(unittest.TestCase):
-    def test_draft_bar_never_passes_and_missing_values_are_not_a_pass(self):
-        self.assertFalse(thresholds.APPROVED)
+    def test_bar_is_approved_and_missing_values_are_not_a_pass(self):
+        self.assertTrue(thresholds.APPROVED)
+        self.assertEqual(thresholds.APPROVED_ON, "2026-10-04")
         result = thresholds.evaluate({})
         self.assertFalse(result["passed"])
         self.assertIsNone(result["checks"]["conflict_recall"])
