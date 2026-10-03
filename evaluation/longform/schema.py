@@ -37,6 +37,15 @@ ISSUE_QUOTE_LEN = (6, 150)
 EVIDENCE_QUOTE_LEN = (6, 200)
 EXPLANATION_MAX = 300
 SET_HASH_FILE = "set.sha256"
+# private_test: a copyrighted work the user tests with locally. Its set must live outside the
+# repository so it can never be committed or published.
+ORIGINS = ("original", "public_domain", "private_test")
+REPOSITORY_ROOT = pathlib.Path(__file__).resolve().parents[2]
+
+
+def _inside_repository(path: pathlib.Path) -> bool:
+    resolved = pathlib.Path(path).resolve()
+    return resolved == REPOSITORY_ROOT or REPOSITORY_ROOT in resolved.parents
 
 
 @dataclass
@@ -114,10 +123,12 @@ def load(root: pathlib.Path) -> LongformSet:
         if key in works:
             errors.append(f"{where}: duplicate work key {key}")
             continue
-        if work["origin"] not in ("original", "public_domain"):
-            errors.append(f"{key}: origin must be original or public_domain")
-        if work["origin"] == "public_domain" and not (isinstance(work["source_note"], str) and work["source_note"].strip()):
-            errors.append(f"{key}: public_domain needs source_note (title, edition, what was changed)")
+        if work["origin"] not in ORIGINS:
+            errors.append(f"{key}: origin must be one of {ORIGINS}")
+        if work["origin"] != "original" and not (isinstance(work["source_note"], str) and work["source_note"].strip()):
+            errors.append(f"{key}: {work['origin']} needs source_note (title, edition, what was changed)")
+        if work["origin"] == "private_test" and _inside_repository(root):
+            errors.append(f"{key}: a private_test work is someone else's copyrighted text; keep its set outside the repository")
         if not isinstance(work["title"], str) or not work["title"].strip():
             errors.append(f"{key}: empty title")
         if work["file"] != f"works/{key}.md":

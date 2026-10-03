@@ -62,7 +62,8 @@ eval_set_lf1_dev/
 **works**：每部作品一项，字段正好是 `key`、`title`、`file`、`origin`、`source_note`。
 - `key`：小写英文、数字、下划线，3–41 个字符，例如 `qingyan_lamps`。
 - `file`：必须是 `works/<key>.md`。
-- `origin`：`original` 或 `public_domain`；`source_note`：原创填 `null`，公版必填。
+- `origin`：`original`（原创）、`public_domain`（公版）或 `private_test`（用户本地测试用的有版权作品）；`source_note`：原创填 `null`，其余两种必填（书名、版本、改动范围）。
+- `private_test` 的整套集合**必须放在仓库外**（例如桌面），校验器发现它在仓库目录里会直接报错；这类集合永远不提交、不公开。
 
 ## 5. 被检查的章节 `targets`
 

@@ -209,6 +209,20 @@ class ValidatorTests(unittest.TestCase):
         work.write_text(work.read_text(encoding="utf-8").replace("青檐镇", "灰港镇"), encoding="utf-8")
         self.assertTrue(any("reuses a name" in e for e in self.errors(set_dir)))
 
+    def test_private_test_work_must_stay_outside_the_repository(self):
+        inside = pathlib.Path(__file__).resolve().parents[1] / "longform" / f"_tmp_private_{os.getpid()}"
+        try:
+            shutil.copytree(TEMPLATE, inside)
+            edit_labels(inside, lambda d: d["works"][0].update(origin="private_test", source_note="私人测试用"))
+            self.assertTrue(any("outside the repository" in e for e in self.errors(inside)))
+        finally:
+            shutil.rmtree(inside, ignore_errors=True)
+        outside = copy_template(self.tmp)
+        edit_labels(outside, lambda d: d["works"][0].update(origin="private_test", source_note="私人测试用"))
+        self.assertEqual(self.errors(outside), [])
+        edit_labels(outside, lambda d: d["works"][0].update(source_note=None))
+        self.assertTrue(any("needs source_note" in e for e in self.errors(outside)))
+
     def test_freeze_survives_crlf_and_detects_edits(self):
         set_dir = copy_template(self.tmp)
         code, _ = quiet(validate_main, [str(set_dir), "--structure-only", "--freeze"])
