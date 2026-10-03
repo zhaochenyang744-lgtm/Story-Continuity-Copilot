@@ -300,6 +300,10 @@
       "target": "frontend-source/app/model.ts"
     },
     {
+      "source": "frontend/app/motion.css",
+      "target": "frontend-source/app/motion.css"
+    },
+    {
       "source": "frontend/app/pending-decision.ts",
       "target": "frontend-source/app/pending-decision.ts"
     },

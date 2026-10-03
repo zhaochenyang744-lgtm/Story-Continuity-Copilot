@@ -5,6 +5,7 @@ import "./author-context-preview.css";
 import "./reference-refresh.css";
 import "./maintenance.css";
 import "./polish.css";
+import "./motion.css";
 
 export const metadata: Metadata = {
   title: "Story Continuity Copilot",
