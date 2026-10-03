@@ -192,6 +192,10 @@
       "target": "docs/deployment-2026-10-02.md"
     },
     {
+      "source": "docs/deployment-2026-10-03.md",
+      "target": "docs/deployment-2026-10-03.md"
+    },
+    {
       "source": "docs/maintenance-release-manifest.json",
       "target": "docs/maintenance-release-manifest.json"
     },
