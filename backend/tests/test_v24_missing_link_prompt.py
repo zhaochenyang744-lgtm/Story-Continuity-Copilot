@@ -28,28 +28,24 @@ def prompt() -> dict:
 
 class MissingLinkPromptV24Tests(unittest.TestCase):
     def test_version_names_the_change(self):
-        self.assertEqual(CONTINUITY_PROMPT_VERSION, "continuity-review-v24b-explicit-missing-link")
+        self.assertEqual(CONTINUITY_PROMPT_VERSION, "continuity-review-v24c-explicit-missing-link")
 
     def test_rules_separate_narrated_events_from_settled_open_points(self):
         rules = "\n".join(prompt()["rules"])
-        self.assertIn("new events that the current draft itself narrates", rules)
-        self.assertIn("A claim that settles a point the supplied material leaves open is not merely compatible information", rules)
-        self.assertIn("Being compatible with the sources is not the same as being established by them; never answer such a claim with silence.", rules)
-        self.assertIn("name the missing link in the explanation", rules)
+        self.assertIn("new events the draft itself narrates; settling a point the material leaves open is insufficient_evidence, not compatible information", rules)
+        self.assertIn("report insufficient_evidence and name the missing link: compatible is not established, and silence is not allowed", rules)
+        self.assertIn("A direct contradiction, or one proved by combining supplied facts, is a conflict-status issue, not a gap.", rules)
         # The v22 permission that let a settled open point pass as a compatible event is gone.
         self.assertNotIn("Ordinary compatible new events do not require an old source warrant", rules)
 
     def test_a_no_issue_basis_that_names_a_gap_is_self_contradictory(self):
         rules = "\n".join(prompt()["rules"])
-        self.assertIn("if your basis would say that the sources do not record, specify, or confirm the point, emit insufficient_evidence instead", rules)
+        self.assertIn("A no_issue basis saying the sources do not record or confirm the point means insufficient_evidence.", rules)
 
-    def test_examples_teach_the_gap_and_keep_direct_contradictions_as_conflicts(self):
+    def test_examples_teach_the_gap_and_keep_combined_contradictions_as_conflicts(self):
         decisions = [example["decision"] for example in CONTINUITY_DECISION_EXAMPLES]
         self.assertEqual(sum(decision.startswith("insufficient_evidence") for decision in decisions), 4)
-        self.assertTrue(any("missing side details do not turn a direct contradiction into a gap" in decision for decision in decisions))
-        self.assertTrue(any(decision.startswith("Combine the premises") for decision in decisions))
-        rules = "\n".join(prompt()["rules"])
-        self.assertIn("A contradiction proved by combining two or more supplied facts is not a missing link", rules)
+        self.assertIn("A conflict-status issue citing every premise, not insufficient_evidence.", decisions)
 
 
 if __name__ == "__main__":

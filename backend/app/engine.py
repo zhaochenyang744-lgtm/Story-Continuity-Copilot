@@ -25,6 +25,10 @@ MEMORY_PROMPT_VERSION="memory-initialization-v9-field-contract"
 RETRIEVAL_METHOD_VERSION="bounded-lexical-v4-longform"
 RELATED_MEMORY_LIMIT=15
 CONTINUITY_EVIDENCE_LIMIT=3
+# Spans with a Memory record are weighted 10x, and Memory holds only a few facts per work, so the
+# span that matches the claim's own words best could be crowded out by spans that merely have a
+# record. These slots always go to the best direct text matches.
+CONTINUITY_DIRECT_TEXT_SLOTS=2
 CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS=500
 # Input budget alone let a batch grow to 12-13 claims once evidence is shared, but thinking output is
 # what fills: one to three claims already produced 0.5k-13.5k output tokens against a 16k cap, and a
@@ -373,10 +377,15 @@ class ContinuityEngine:
         for span in unique.values():
             related=by_source.get(span["id"],[])
             memory_text=" ".join(str(item.get(key,"")) for item in related for key in ("subject","predicate","value"))
-            score=10*_relevance_score(terms,memory_text)+min(20,_relevance_score(terms,str(span.get("body",""))))
-            ranked.append((score,str(span.get("chapter_id","")),span["id"],span,related))
+            text_score=_relevance_score(terms,str(span.get("body","")))
+            score=10*_relevance_score(terms,memory_text)+min(20,text_score)
+            ranked.append((score,str(span.get("chapter_id","")),span["id"],span,related,text_score))
+        order=lambda row:(-row[0],row[1],row[2])
+        direct=sorted((row for row in ranked if row[5]>0),key=lambda row:(-row[5],row[1],row[2]))[:CONTINUITY_DIRECT_TEXT_SLOTS]
+        kept={row[2] for row in direct}
+        picks=(direct+[row for row in sorted(ranked,key=order) if row[2] not in kept])[:CONTINUITY_EVIDENCE_LIMIT]
         selected=[]
-        for _,_,_,span,related in sorted(ranked,key=lambda row:(-row[0],row[1],row[2]))[:CONTINUITY_EVIDENCE_LIMIT]:
+        for _,_,_,span,related,_ in sorted(picks,key=order):
             hints=[claim["text"]]+[str(item.get(key,"")) for item in sorted(related,key=_memory_sort_key) for key in ("subject","value")]
             selected.append({**span,"prompt_excerpt":_bounded_excerpt(str(span.get("body","")),hints,excerpt_limit)})
         return selected
