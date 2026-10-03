@@ -2804,7 +2804,7 @@ export function Workbench() {
             className={error ? "feedback error" : "feedback"}
             role={error ? "alert" : "status"}
           >
-            {error ? labelError(error) : notice}
+            <span className="feedback-text" key={error ? "error" : notice}>{error ? labelError(error) : notice}</span>
             <Button
               onClick={() => {
                 setError(null);
@@ -4824,7 +4824,7 @@ function ImmersiveEditor({
           <span><strong>{counts.characters.toLocaleString("zh-CN")}</strong> 字符</span>
         </div>
         <p className={`immersive-save-state ${saveState}`} role="status" aria-live="polite">
-          <strong>{saveLabel}</strong>
+          <strong key={saveLabel}>{saveLabel}</strong>
           <span>{error ? labelError(error) : "仅在点击保存时写入；退出沉浸模式不会丢失当前输入。"}</span>
         </p>
         <Button
@@ -5218,7 +5218,7 @@ function ProjectPage(p: {
         <div>
           <p className="breadcrumb">项目 / {p.project.title} / 写作与检查</p>
           <h1>写作与检查</h1>
-          <p className={`workspace-save-summary ${saveState}`}><strong>{saveLabel}</strong><span>{saveDetail}</span>{p.draft && <span className="workspace-draft-meta">第 {p.draft.chapter_number ?? "—"} 章 · 第 {p.draft.revision ?? "—"} 次保存</span>}</p>
+          <p className={`workspace-save-summary ${saveState}`}><strong key={saveLabel}>{saveLabel}</strong><span>{saveDetail}</span>{p.draft && <span className="workspace-draft-meta">第 {p.draft.chapter_number ?? "—"} 章 · 第 {p.draft.revision ?? "—"} 次保存</span>}</p>
         </div>
         {!p.readOnly && (
           <div className="actions">
@@ -5321,7 +5321,7 @@ function ProjectPage(p: {
         </section>
         <aside className="issues">
           <header className="issues-top">
-            <DesignAsset name="bulb" /><div><h2>待处理提示 <span>{pendingDecisionCount}</span></h2><p>问题性质与影响程度分开显示</p></div>
+            <DesignAsset name="bulb" /><div><h2>待处理提示 <span key={pendingDecisionCount}>{pendingDecisionCount}</span></h2><p>问题性质与影响程度分开显示</p></div>
           </header>
           {p.run ? (
             <>
@@ -5367,7 +5367,7 @@ function ProjectPage(p: {
                         <strong>{issueNatureLabel(x.nature)}</strong>
                       </span>
                       <span className="issue-claim">{x.claim_text || x.explanation}</span>
-                      <small className="issue-action-label">{x.reused_decision ? "沿用作者此前判断" : x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "决定已记录" : `涉及：${categoryLabel(x.category)} · 查看证据`}</small>
+                      <small className="issue-action-label" key={x.reused_decision ? "reused" : x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "decided" : "open"}>{x.reused_decision ? "沿用作者此前判断" : x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "决定已记录" : `涉及：${categoryLabel(x.category)} · 查看证据`}</small>
                       <span className="issue-arrow" aria-hidden="true"><Icon name="chevron-right" inline /></span>
                     </Button>
                     </li>)}
