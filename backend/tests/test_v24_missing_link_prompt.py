@@ -28,7 +28,7 @@ def prompt() -> dict:
 
 class MissingLinkPromptV24Tests(unittest.TestCase):
     def test_version_names_the_change(self):
-        self.assertEqual(CONTINUITY_PROMPT_VERSION, "continuity-review-v24-explicit-missing-link")
+        self.assertEqual(CONTINUITY_PROMPT_VERSION, "continuity-review-v24b-explicit-missing-link")
 
     def test_rules_separate_narrated_events_from_settled_open_points(self):
         rules = "\n".join(prompt()["rules"])
@@ -47,6 +47,9 @@ class MissingLinkPromptV24Tests(unittest.TestCase):
         decisions = [example["decision"] for example in CONTINUITY_DECISION_EXAMPLES]
         self.assertEqual(sum(decision.startswith("insufficient_evidence") for decision in decisions), 4)
         self.assertTrue(any("missing side details do not turn a direct contradiction into a gap" in decision for decision in decisions))
+        self.assertTrue(any(decision.startswith("Combine the premises") for decision in decisions))
+        rules = "\n".join(prompt()["rules"])
+        self.assertIn("A contradiction proved by combining two or more supplied facts is not a missing link", rules)
 
 
 if __name__ == "__main__":

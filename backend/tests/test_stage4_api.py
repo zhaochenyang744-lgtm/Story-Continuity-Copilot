@@ -84,7 +84,7 @@ class DeepSeekProviderRegressionTests(unittest.TestCase):
             self.assertIn(boundary, joined)
         self.assertEqual(tuple(rules), CONTINUITY_REVIEW_RULES)
         examples = json.loads(prompt)['decision_examples']
-        self.assertEqual(len(examples), 13)
+        self.assertEqual(len(examples), 14)
         self.assertIn('confirmed_conflict', examples[0]['decision'])
         self.assertIn('insufficient_evidence', examples[2]['decision'])
         self.assertNotIn('eval-v', prompt.casefold())
