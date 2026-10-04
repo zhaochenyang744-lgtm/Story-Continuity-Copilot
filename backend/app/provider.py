@@ -161,9 +161,11 @@ MEMORY_INITIALIZATION_RULES = (
     "Use exactly one supplied SourceSpan for each candidate. Do not invent chapter IDs or SourceSpan IDs. Keep subject concise and value directly grounded in its SourceSpan.",
     "predicate is a separate field from memory_type. Copy predicate exactly from controlled_predicates: identity, relationship, affiliation, location, status, rule, possession, event_occurred, or knowledge. For open_thread, still select the closest controlled predicate; open_thread remains an author-review supporting suggestion, not a core candidate.",
     "Use this general mapping: durable canon or world rule -> memory_type static_canon; current possession/location/status -> dynamic_state; an event that occurred -> event_timeline; what a character knows -> character_knowledge; unresolved setup -> open_thread. The corresponding predicate still goes in predicate, never in memory_type.",
-    "Emit at most 4 candidates in this batch. Keep subject, predicate, and value within target lengths of 80, 80, and 240 Unicode characters respectively.",
+    "Emit at most 8 candidates in this batch. Keep subject, predicate, and value within target lengths of 80, 80, and 240 Unicode characters respectively.",
     "Chunk metadata is prompt-only provenance. Never emit chunk_id; source_span_id must always be the supplied original SourceSpan ID.",
-    "Prefer a small, non-duplicative set of durable facts. Omit uncertain inferences.",
+    "Prefer a small, non-duplicative set of durable facts that a later chapter could contradict: identities, relationships, physical attributes, who holds or keeps an object, where someone was at a stated time, events and their dates or outcomes, and what a character does or does not know. Skip mood, scenery, and one-off actions. Omit uncertain inferences.",
+    "Every explicitly stated world rule, law, prohibition, or standing policy (\"anyone\", \"never\", \"must\", \"under no circumstances\") is a static_canon candidate with predicate rule; extract it before lower-priority facts, quoting its condition and any stated exception in value.",
+    "Read the whole of every supplied span, including its last paragraphs; a fact near the end counts as much as one near the start.",
 )
 
 MEMORY_DELTA_RULES = (
@@ -174,6 +176,7 @@ MEMORY_DELTA_RULES = (
     "For invalidated_fact, affected_memory_id must be exactly one supplied confirmed_memory id; memory_type, subject, predicate, and value must repeat that affected fact exactly; invalidation_reason must explain what current manuscript evidence makes it no longer valid. Do not invent an opposite fact.",
     "predicate must be exactly one value from controlled_predicates. Choose the closest semantic value; open_thread is still supporting and never a core candidate.",
     "Do not emit unsupported inferences, previous-source IDs, Author Context, author plans, alignment analysis, or a priority. Do not emit duplicate candidates or multiple candidates for one affected Memory record. The service decides core versus supporting.",
+    "Emit at most 8 candidates. Prefer facts a later chapter could contradict (identities, relationships, attributes, possession, location at a stated time, events and outcomes, knowledge) and every explicitly stated world rule or prohibition as static_canon with predicate rule. Read every supplied span to its end; a span may be one part of a longer chapter.",
 )
 
 ANALYSIS_LAYER_RULES = (
@@ -190,7 +193,7 @@ MAX_TOTAL_BUDGET_UNITS = 8000
 MAX_INPUT_BUDGET_UNITS = 6000
 MAX_OUTPUT_BUDGET_UNITS = 2000
 MEMORY_BATCH_TARGET_BUDGET_UNITS = 5800
-MAX_MEMORY_CANDIDATES_PER_BATCH = 4
+MAX_MEMORY_CANDIDATES_PER_BATCH = 8
 INPUT_BUDGET_ALGORITHM = "mixed-char-estimator-v1"
 
 

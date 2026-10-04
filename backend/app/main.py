@@ -161,6 +161,8 @@ class MemoryInitialization(Strict): source_revision:int=Field(ge=1)
 class EditedMemoryCandidate(Strict): memory_type:Literal['static_canon','dynamic_state','event_timeline','character_knowledge','open_thread']; subject:str; predicate:str; value:str
 class MemoryCandidateDecision(Strict): decision:Literal['accepted','rejected','edited']; after:EditedMemoryCandidate|None=None; evidence_span_id:str|None=None
 class MemoryCandidateReopen(Strict): confirm:Literal[True]; base_decision_status:Literal['accepted','rejected','edited']
+class MemoryCandidateBulkItem(Strict): candidate_id:str=Field(min_length=1,max_length=200); decision:Literal['accepted','rejected']
+class MemoryCandidateBulkDecision(Strict): decisions:list[MemoryCandidateBulkItem]=Field(min_length=1,max_length=500)
 class MemoryInitializationCommit(Strict): confirm:bool|None=None
 class SourceChangePreview(Strict):
     mode:Literal['append']
@@ -656,9 +658,10 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             data['chapters']=rows
         return ok(request,data)
     @app.get('/api/projects/{project_id}/memory')
-    def memory(project_id:str,request:Request,version:int|None=None,entity:str|None=None,memory_type:str|None=None,chapter:str|None=None):
+    def memory(project_id:str,request:Request,version:int|None=None,entity:str|None=None,memory_type:str|None=None,chapter:str|None=None,as_of_chapter:int|None=None):
         if memory_type not in {None,'static_canon','dynamic_state','event_timeline','character_knowledge','open_thread'}:raise HTTPException(400,'invalid_filter')
-        data=db.memory(user(request)['id'],project_id,version); data['records']=[r for r in data['records'] if(not entity or entity in r['subject'] or entity in r['value'])and(not memory_type or r['memory_type']==memory_type)and(not chapter or(r['source']and r['source']['chapter_id']==chapter))];return ok(request,data)
+        if as_of_chapter is not None and version is not None:raise HTTPException(400,'invalid_filter')
+        data=db.memory_as_of_chapter(user(request)['id'],project_id,as_of_chapter) if as_of_chapter is not None else db.memory(user(request)['id'],project_id,version); data['records']=[r for r in data['records'] if(not entity or entity in r['subject'] or entity in r['value'])and(not memory_type or r['memory_type']==memory_type)and(not chapter or(r['source']and r['source']['chapter_id']==chapter))];return ok(request,data)
     @app.get('/api/projects/{project_id}/memory/initialization')
     def memory_initialization(project_id:str,request:Request):return ok(request,db.memory_initialization(user(request)['id'],project_id))
     @app.get('/api/projects/{project_id}/memory/coverage')
@@ -692,6 +695,11 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.post('/api/projects/{project_id}/memory/initializations/{initialization_id}/candidates/{candidate_id}/decision')
     def memory_candidate_decision(project_id:str,initialization_id:str,candidate_id:str,payload:MemoryCandidateDecision,request:Request,view:Literal['full','compact']='full',idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request); operation(request,'memory_candidate_decision_failed');actor=user(request);data,status=db.decide_memory_candidate(actor['id'],project_id,initialization_id,candidate_id,payload.model_dump(exclude_none=True),key(idempotency_key))
+        if view=='full':data['initialization']=db.memory_initialization(actor['id'],project_id)
+        return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/memory/initializations/{initialization_id}/decisions')
+    def memory_candidate_bulk_decision(project_id:str,initialization_id:str,payload:MemoryCandidateBulkDecision,request:Request,view:Literal['full','compact']='full',idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'memory_candidate_decision_failed');actor=user(request);data,status=db.decide_memory_candidates(actor['id'],project_id,initialization_id,payload.model_dump(),key(idempotency_key))
         if view=='full':data['initialization']=db.memory_initialization(actor['id'],project_id)
         return ok(request,data,status)
     @app.post('/api/projects/{project_id}/memory/initializations/{initialization_id}/candidates/{candidate_id}/reopen')

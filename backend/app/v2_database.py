@@ -2207,8 +2207,46 @@ class V2Database:
             rows=c.execute("SELECT m.*,s.chapter_id,s.id span_id,s.body excerpt,ch.chapter_number,ch.title chapter_title FROM v2_memory_records m LEFT JOIN v2_source_spans s ON s.id=m.source_span_id AND s.project_id=m.project_id LEFT JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=m.project_id WHERE m.project_id=? AND m.version=?",(project_id,version)).fetchall()
             for row in rows:
                 if row["source_span_id"] and not row["span_id"]: raise DomainError("source_unavailable",422)
-                records.append({**workflow.memory_review_flags(c,row,project["current_memory_version"]),"id":row["id"],"memory_type":row["memory_type"],"subject":row["subject"],"predicate":row["predicate"],"value":row["value"],"valid_from":row["valid_from"],"valid_to":row["valid_to"],"review_status":row["review_status"],"source":({"chapter_id":row["chapter_id"],"chapter_number":row["chapter_number"],"chapter_title":row["chapter_title"],"span_id":row["span_id"],"excerpt":row["excerpt"][:500],"source_path":f"/projects/{project_id}/sources#span-{row['span_id']}"} if row["span_id"] else None)})
+                records.append({**workflow.memory_review_flags(c,row,project["current_memory_version"]),"id":row["id"],"memory_type":row["memory_type"],"subject":row["subject"],"predicate":row["predicate"],"value":row["value"],"from_chapter":row["chapter_number"],"valid_from":row["valid_from"],"valid_to":row["valid_to"],"review_status":row["review_status"],"source":({"chapter_id":row["chapter_id"],"chapter_number":row["chapter_number"],"chapter_title":row["chapter_title"],"span_id":row["span_id"],"excerpt":row["excerpt"][:500],"source_path":f"/projects/{project_id}/sources#span-{row['span_id']}"} if row["span_id"] else None)})
             return {"project_id":project_id,"memory_version":version,"records":records}
+
+    def memory_as_of_chapter(self, user_id: str, project_id: str, chapter_number: int) -> dict[str, Any]:
+        """The confirmed facts an author could rely on when chapter N was written (chapters 1..N-1)."""
+        if not isinstance(chapter_number,int) or isinstance(chapter_number,bool) or chapter_number<1:raise DomainError("invalid_filter",400)
+        with self.connection() as c:
+            project=self._project(c,user_id,project_id)
+            rows=self._memory_as_of_chapter(c,project_id,chapter_number)
+            records=[{"id":row["id"],"memory_type":row["memory_type"],"subject":row["subject"],"predicate":row["predicate"],"value":row["value"],"from_chapter":row["from_chapter"],"valid_from":row["valid_from"],"valid_to":row["valid_to"],"review_status":row["review_status"],"source":({"chapter_id":row["chapter_id"],"chapter_number":row["from_chapter"],"chapter_title":row["chapter_title"],"span_id":row["source_span_id"],"excerpt":row["excerpt"][:500],"source_path":f"/projects/{project_id}/sources#span-{row['source_span_id']}"} if row["chapter_id"] else None)} for row in rows]
+            return {"project_id":project_id,"memory_version":project["current_memory_version"],"as_of_chapter":chapter_number,"records":records}
+
+    @staticmethod
+    def _memory_as_of_chapter(c: sqlite3.Connection, project_id: str, chapter_number: int) -> list[sqlite3.Row]:
+        """Facts in force before chapter N, each in the state chapters 1..N-1 left it.
+
+        Every Memory version copies each record forward as id+'-v<version>', so one fact's history is a
+        lineage of rows. A row whose source is chapter N or later gives way to the same fact's newest
+        earlier row (a changed state falls back to the state it replaced); a fact created from chapter
+        N or later is left out; a fact retired by evidence from chapter N or later is still in force.
+        A retirement whose evidence cannot be traced to a chapter is treated as already in effect.
+        """
+        current=c.execute("SELECT current_memory_version FROM v2_projects WHERE id=?",(project_id,)).fetchone()["current_memory_version"]
+        rows=c.execute("SELECT m.*,s.chapter_id,s.body excerpt,ch.chapter_number from_chapter,ch.title chapter_title FROM v2_memory_records m LEFT JOIN v2_source_spans s ON s.id=m.source_span_id AND s.project_id=m.project_id LEFT JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=m.project_id WHERE m.project_id=? AND m.version<=? AND m.review_status='author_confirmed'",(project_id,current)).fetchall()
+        retired={row["affected_memory_id"]:row["chapter_number"] for row in c.execute("SELECT d.affected_memory_id,ch.chapter_number FROM v2_memory_delta_candidates d JOIN v2_source_spans s ON s.id=d.source_span_id AND s.project_id=d.project_id JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=d.project_id WHERE d.project_id=? AND d.change_kind='invalidated_fact' AND d.decision_status IN ('accepted','edited')",(project_id,)).fetchall()}
+        lineage: dict[str,dict[int,sqlite3.Row]]={}
+        for row in rows:lineage.setdefault(re.sub(r"(?:-v\d+)+$","",row["id"]),{})[row["version"]]=row
+        effective=[]
+        for history in lineage.values():
+            if current not in history:continue
+            for version in sorted(history,reverse=True):
+                row=history[version]
+                if row["valid_to"] is not None and row["valid_to"]<version:
+                    base=history.get(row["valid_to"])
+                    retired_in=retired.get(base["id"]) if base else None
+                    if retired_in is None or retired_in<chapter_number:break
+                    continue
+                if row["from_chapter"] is None or row["from_chapter"]<chapter_number:
+                    effective.append(row);break
+        return sorted(effective,key=lambda row:(row["from_chapter"] or 0,row["id"]))
 
     # --- imported-source Story Memory initialization ---
     def _import_sources(self, c: sqlite3.Connection, project_id: str) -> list[dict[str, Any]]:
@@ -2349,40 +2387,72 @@ class V2Database:
     def decide_memory_candidate(self, user_id: str, project_id: str, initialization_id: str, candidate_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
             def decide():
-                project=self._project(c,user_id,project_id,True)
+                self._project(c,user_id,project_id,True)
                 initialization=c.execute("SELECT * FROM v2_memory_initializations WHERE id=? AND project_id=?",(initialization_id,project_id)).fetchone()
                 candidate=c.execute("SELECT * FROM v2_memory_candidates WHERE id=? AND initialization_id=? AND project_id=?",(candidate_id,initialization_id,project_id)).fetchone()
                 if not initialization or not candidate: raise DomainError("resource_not_found",404)
                 if initialization["status"]!="draft": raise DomainError("memory_initialization_closed",409)
                 self._assert_initialization_sources_current(c,project_id,initialization)
-                if candidate["decision_status"]!="pending":
-                    saved=json.loads(candidate["decision_json"])
-                    same_decision=saved.get("decision")==payload.get("decision")
-                    same_edit=(saved.get("decision")!="edited" and payload.get("after") is None and payload.get("evidence_span_id") is None) or (saved.get("decision")=="edited" and digest(saved.get("after"))==digest(payload.get("after")) and saved.get("evidence_span_id")==payload.get("evidence_span_id"))
-                    if same_decision and same_edit:return {"candidate_id":candidate_id,"decision_status":candidate["decision_status"]}
-                    raise DomainError("candidate_already_decided",409)
-                decision=payload.get("decision")
-                if decision not in {"accepted","rejected","edited"}: raise DomainError("invalid_candidate_decision",422)
-                base={field:candidate[field] for field in ("memory_type","subject","predicate","value")}
-                after=base
-                evidence_span_id=None
-                if decision=="edited":
-                    edited=payload.get("after")
-                    if not isinstance(edited,dict): raise DomainError("invalid_item_edit",422)
-                    after={field:str(edited.get(field," ")).strip() for field in base}
-                    if after["memory_type"] not in {"static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"} or not all(after.values()) or len(after["subject"])>200 or len(after["predicate"])>200 or len(after["value"])>1000: raise DomainError("invalid_item_edit",422)
-                    evidence_span_id=payload.get("evidence_span_id")
-                    if not isinstance(evidence_span_id,str) or evidence_span_id!=candidate["source_span_id"]: raise DomainError("evidence_unresolvable",422)
-                    evidence=c.execute("SELECT 1 FROM v2_source_spans WHERE id=? AND project_id=? AND chapter_id=?",(evidence_span_id,project_id,candidate["chapter_id"])).fetchone()
-                    if not evidence or candidate["source_revision"]!=initialization["source_revision"]: raise DomainError("evidence_unresolvable",422)
-                elif payload.get("after") is not None or payload.get("evidence_span_id") is not None: raise DomainError("invalid_candidate_decision",422)
-                saved={"decision":decision,"after":after if decision!="rejected" else None,"evidence_span_id":evidence_span_id}
-                stamp=utcnow()
-                c.execute("UPDATE v2_memory_candidates SET decision_status=?,decision_json=?,decided_at=? WHERE id=? AND project_id=?",(decision,json.dumps(saved,ensure_ascii=False),stamp,candidate_id,project_id))
-                c.execute("INSERT INTO v2_memory_candidate_decisions(id,project_id,initialization_id,candidate_id,decision,after_json,evidence_span_id,source_revision,created_at) VALUES(?,?,?,?,?,?,?,?,?)",(new_id("memorydecision"),project_id,initialization_id,candidate_id,decision,json.dumps(saved["after"],ensure_ascii=False) if saved["after"] else None,evidence_span_id,initialization["source_revision"],stamp))
-                c.execute("INSERT INTO v2_memory_candidate_review_events(id,project_id,initialization_id,candidate_id,event,decision,decision_json,actor_user_id,source_revision,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)",(new_id("memoryreviewevent"),project_id,initialization_id,candidate_id,"decided",decision,json.dumps(saved,ensure_ascii=False),user_id,initialization["source_revision"],stamp))
-                return {"candidate_id":candidate_id,"decision_status":decision}
+                return self._decide_memory_candidate(c,user_id,project_id,initialization,candidate,payload)
             return self._idem(c,user_id,"memory_candidate_decision:"+project_id+":"+candidate_id,key,payload,decide)
+
+    MAX_BULK_MEMORY_DECISIONS=500
+
+    def decide_memory_candidates(self, user_id: str, project_id: str, initialization_id: str, payload: dict[str, Any], key: str):
+        """Accept or reject many initialization candidates in one transaction (long imports).
+
+        Each decision goes through the same rules as a single decision; edits stay one at a time
+        because they need the author to confirm the evidence. Any invalid item rejects the whole call.
+        """
+        with self.connection() as c:
+            def decide():
+                self._project(c,user_id,project_id,True)
+                initialization=c.execute("SELECT * FROM v2_memory_initializations WHERE id=? AND project_id=?",(initialization_id,project_id)).fetchone()
+                if not initialization: raise DomainError("resource_not_found",404)
+                if initialization["status"]!="draft": raise DomainError("memory_initialization_closed",409)
+                decisions=payload.get("decisions")
+                if not isinstance(decisions,list) or not 1<=len(decisions)<=self.MAX_BULK_MEMORY_DECISIONS: raise DomainError("invalid_candidate_decision",422)
+                ids=[item.get("candidate_id") for item in decisions if isinstance(item,dict)]
+                if len(ids)!=len(decisions) or len(set(ids))!=len(ids): raise DomainError("invalid_candidate_decision",422)
+                self._assert_initialization_sources_current(c,project_id,initialization)
+                results=[]
+                for item in decisions:
+                    if item.get("decision") not in {"accepted","rejected"} or set(item)!={"candidate_id","decision"}: raise DomainError("invalid_candidate_decision",422)
+                    candidate=c.execute("SELECT * FROM v2_memory_candidates WHERE id=? AND initialization_id=? AND project_id=?",(item["candidate_id"],initialization_id,project_id)).fetchone()
+                    if not candidate: raise DomainError("resource_not_found",404)
+                    results.append(self._decide_memory_candidate(c,user_id,project_id,initialization,candidate,{"decision":item["decision"]}))
+                return {"initialization_id":initialization_id,"decided":results}
+            return self._idem(c,user_id,"memory_candidate_bulk_decision:"+project_id+":"+initialization_id,key,payload,decide)
+
+    def _decide_memory_candidate(self, c: sqlite3.Connection, user_id: str, project_id: str, initialization: sqlite3.Row, candidate: sqlite3.Row, payload: dict[str, Any]) -> dict[str, Any]:
+        initialization_id,candidate_id=initialization["id"],candidate["id"]
+        if candidate["decision_status"]!="pending":
+            saved=json.loads(candidate["decision_json"])
+            same_decision=saved.get("decision")==payload.get("decision")
+            same_edit=(saved.get("decision")!="edited" and payload.get("after") is None and payload.get("evidence_span_id") is None) or (saved.get("decision")=="edited" and digest(saved.get("after"))==digest(payload.get("after")) and saved.get("evidence_span_id")==payload.get("evidence_span_id"))
+            if same_decision and same_edit:return {"candidate_id":candidate_id,"decision_status":candidate["decision_status"]}
+            raise DomainError("candidate_already_decided",409)
+        decision=payload.get("decision")
+        if decision not in {"accepted","rejected","edited"}: raise DomainError("invalid_candidate_decision",422)
+        base={field:candidate[field] for field in ("memory_type","subject","predicate","value")}
+        after=base
+        evidence_span_id=None
+        if decision=="edited":
+            edited=payload.get("after")
+            if not isinstance(edited,dict): raise DomainError("invalid_item_edit",422)
+            after={field:str(edited.get(field," ")).strip() for field in base}
+            if after["memory_type"] not in {"static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"} or not all(after.values()) or len(after["subject"])>200 or len(after["predicate"])>200 or len(after["value"])>1000: raise DomainError("invalid_item_edit",422)
+            evidence_span_id=payload.get("evidence_span_id")
+            if not isinstance(evidence_span_id,str) or evidence_span_id!=candidate["source_span_id"]: raise DomainError("evidence_unresolvable",422)
+            evidence=c.execute("SELECT 1 FROM v2_source_spans WHERE id=? AND project_id=? AND chapter_id=?",(evidence_span_id,project_id,candidate["chapter_id"])).fetchone()
+            if not evidence or candidate["source_revision"]!=initialization["source_revision"]: raise DomainError("evidence_unresolvable",422)
+        elif payload.get("after") is not None or payload.get("evidence_span_id") is not None: raise DomainError("invalid_candidate_decision",422)
+        saved={"decision":decision,"after":after if decision!="rejected" else None,"evidence_span_id":evidence_span_id}
+        stamp=utcnow()
+        c.execute("UPDATE v2_memory_candidates SET decision_status=?,decision_json=?,decided_at=? WHERE id=? AND project_id=?",(decision,json.dumps(saved,ensure_ascii=False),stamp,candidate_id,project_id))
+        c.execute("INSERT INTO v2_memory_candidate_decisions(id,project_id,initialization_id,candidate_id,decision,after_json,evidence_span_id,source_revision,created_at) VALUES(?,?,?,?,?,?,?,?,?)",(new_id("memorydecision"),project_id,initialization_id,candidate_id,decision,json.dumps(saved["after"],ensure_ascii=False) if saved["after"] else None,evidence_span_id,initialization["source_revision"],stamp))
+        c.execute("INSERT INTO v2_memory_candidate_review_events(id,project_id,initialization_id,candidate_id,event,decision,decision_json,actor_user_id,source_revision,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)",(new_id("memoryreviewevent"),project_id,initialization_id,candidate_id,"decided",decision,json.dumps(saved,ensure_ascii=False),user_id,initialization["source_revision"],stamp))
+        return {"candidate_id":candidate_id,"decision_status":decision}
 
     def reopen_memory_candidate(self, user_id: str, project_id: str, initialization_id: str, candidate_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:

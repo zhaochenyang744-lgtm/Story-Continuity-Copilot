@@ -21,7 +21,7 @@ REVIEW_ACTIONS={"edit","apply_suggestion","keep_intentional","false_positive"}
 EVIDENCE_CHAIN_ROLES={"prior_state","current_context","missing_link"}
 MAX_RUN_TOKENS=8000
 PROMPT_VERSION=CONTINUITY_PROMPT_VERSION
-MEMORY_PROMPT_VERSION="memory-initialization-v9-field-contract"
+MEMORY_PROMPT_VERSION="memory-initialization-v10-whole-chapter-rules"
 RETRIEVAL_METHOD_VERSION="bounded-lexical-v4-longform"
 RELATED_MEMORY_LIMIT=15
 CONTINUITY_EVIDENCE_LIMIT=3
@@ -42,8 +42,6 @@ PROVIDER_ATTEMPT_QUOTA_EXCEEDED="provider_attempt_quota_exceeded"
 # long-form worst case at 6,324 of 6,000 units) is sent with these tighter bounds instead of failing.
 SINGLE_CLAIM_FALLBACK_BOUNDS=((CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS,RELATED_MEMORY_LIMIT),(400,12),(300,10),(200,8))
 MEMORY_DELTA_RELATED_MEMORY_LIMIT=20
-MEMORY_DELTA_SOURCE_LIMIT=12
-MEMORY_DELTA_SOURCE_EXCERPT_CODEPOINTS=1600
 SOURCE_CHUNK_METHOD_VERSION="source-chunk-v4-5800"
 MAX_CHUNK_OVERLAP_CODEPOINTS=200
 MEMORY_SCHEMA_REPAIR_MAX_ATTEMPTS=5
@@ -1198,7 +1196,7 @@ class MemoryInitializationEngine:
 class MemoryDeltaEngine(MemoryInitializationEngine):
     """A separate provider contract for one append-only source revision."""
     def provenance(self)->dict[str,str]:
-        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":"memory-delta-v4-stated-length-limits","schema_version":"memory-delta-candidate-v2","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
+        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":"memory-delta-v5-whole-chapter","schema_version":"memory-delta-candidate-v2","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
 
     def _related_memory(self,data:dict[str,Any])->list[dict[str,Any]]:
         terms=_claim_terms("\n".join(str(source.get("body","")) for source in data["sources"])); ranked=[]
@@ -1207,13 +1205,48 @@ class MemoryDeltaEngine(MemoryInitializationEngine):
             ranked.append((_relevance_score(terms,text),item))
         return [item for _,item in sorted(ranked,key=lambda row:(-row[0],_memory_sort_key(row[1])))[:MEMORY_DELTA_RELATED_MEMORY_LIMIT]]
 
-    def _bounded_sources(self,data:dict[str,Any])->list[dict[str,Any]]:
-        ordered=sorted(data["sources"],key=lambda source:(int(source.get("chapter_number",0)),str(source.get("id",""))))
-        return [{**source,"body":str(source.get("body",""))[:MEMORY_DELTA_SOURCE_EXCERPT_CODEPOINTS]} for source in ordered[:MEMORY_DELTA_SOURCE_LIMIT]]
-
     def _request(self, data:dict[str,Any])->dict[str,Any]:
-        sources=self._bounded_sources(data)
+        """One request for exactly the given sources; _batches decides which sources go together."""
+        sources=list(data["sources"])
         return {"task":"memory_delta","source_revision":data["source_revision"],"sources":sources,"memory":self._related_memory({**data,"sources":sources}),"controlled_predicates":list(CONTROLLED_PREDICATES),"output_schema":_memory_delta_schema()}
+
+    def _fits(self,data:dict[str,Any],sources:list[dict[str,Any]])->bool:
+        return request_prompt_and_budget(self._request({**data,"sources":sources}))[1]<=MAX_INPUT_BUDGET_UNITS
+
+    def _source_pieces(self,data:dict[str,Any],source:dict[str,Any])->list[dict[str,Any]]:
+        """The whole chapter, split at sentence ends into overlapping pieces only when it does not fit.
+
+        Each piece keeps the original SourceSpan id, so a candidate from any piece cites the chapter.
+        """
+        body=str(source.get("body",""))
+        if self._fits(data,[source]):return [source]
+        pieces=[]; start=0; previous_end=None
+        while start<len(body):
+            low,high,best=start+1,len(body),None
+            while low<=high:
+                middle=(low+high)//2
+                if self._fits(data,[{**source,"body":body[start:middle]}]):best=middle; low=middle+1
+                else:high=middle-1
+            if best is None:raise InputBudgetExceeded()
+            end=self._preferred_end(body,start,best,previous_end)
+            if end<=start or (previous_end is not None and end<=previous_end):raise InputBudgetExceeded()
+            pieces.append({**source,"body":body[start:end]})
+            if end==len(body):break
+            overlap=min(MAX_CHUNK_OVERLAP_CODEPOINTS,end-start-1)
+            previous_end=end; start=end-overlap
+        return pieces
+
+    def _batches(self,data:dict[str,Any])->list[dict[str,Any]]:
+        """Every source in chapter order, whole, packed into as few requests as the input budget allows."""
+        ordered=sorted(data["sources"],key=lambda source:(int(source.get("chapter_number",0)),str(source.get("id",""))))
+        batches=[]; current=[]
+        for source in ordered:
+            for piece in self._source_pieces(data,source):
+                if current and self._fits(data,current+[piece]):current.append(piece); continue
+                if current:batches.append(self._request({**data,"sources":current}))
+                current=[piece]
+        if current:batches.append(self._request({**data,"sources":current}))
+        return batches
 
     def validate(self,payload:Any,data:dict[str,Any])->list[dict[str,Any]]:
         if not isinstance(payload,dict) or set(payload)!={"candidates"} or not isinstance(payload["candidates"],list):raise ValueError("schema_invalid")
@@ -1266,17 +1299,40 @@ class MemoryDeltaEngine(MemoryInitializationEngine):
         return candidates
 
     def execute(self,data:dict[str,Any])->dict[str,Any]:
+        """Read every new source in full, one request per batch, and merge the candidates.
+
+        Before 2026-10 this sent at most 12 spans cut to their first 1,600 characters and kept at most
+        4 candidates, so the second half of a long chapter never reached the fact library.
+        """
         if not self.provider.available:return {"status":"failed","error_code":"provider_unavailable","retryable":True}
-        request=self._request(data)
-        if request_prompt_and_budget(request)[1] > MAX_INPUT_BUDGET_UNITS:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True}
+        try:batches=self._batches(data) or [self._request(data)]
+        except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True}
+        if any(request_prompt_and_budget(batch)[1]>MAX_INPUT_BUDGET_UNITS for batch in batches):return {"status":"failed","error_code":"input_budget_exceeded","retryable":True}
+        results=[]; candidates=[]; affected_seen=set(); new_keys=set(); identities=set()
+        usage=lambda:(_aggregate(results) if results else {})
         try:
-            result=self.provider.evaluate(request)
-            if (result.input_tokens or 0)+(result.output_tokens or 0)>MAX_RUN_TOKENS:return {"status":"failed","error_code":"budget_paused","retryable":True,**_aggregate([result])}
-            candidates=self.validate(result.payload,{"sources":request["sources"],"memory":request["memory"]})
-            retrieval={"method_version":RETRIEVAL_METHOD_VERSION,"selected_source_span_ids":[item["id"] for item in request["sources"]],"selected_memory_ids":[item["id"] for item in request["memory"]],"counts":{"source_spans":{"available":len(data["sources"]),"selected":len(request["sources"])},"confirmed_memory":{"available":len(data["memory"]),"selected":len(request["memory"])}},"truncated":{"source_spans":len(request["sources"])<len(data["sources"]),"confirmed_memory":len(request["memory"])<len(data["memory"])}}
-            return {"status":"completed","candidates":candidates,"retrieved_memory_count":len(request["memory"]),"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"retrieval":retrieval,**_aggregate([result])}
-        except ProviderUnavailable:return {"status":"failed","error_code":"provider_unavailable","retryable":True}
-        except ProviderTimeout:return {"status":"timed_out","error_code":"provider_timeout","retryable":True}
-        except ProviderInvalidJson as error:return {"status":"failed","error_code":"invalid_json","retryable":True,**_invalid_json_aggregate([],error)}
-        except ProviderFailure:return {"status":"failed","error_code":"provider_error","retryable":True}
-        except ValueError as error:return {"status":"failed","error_code":str(error),"retryable":True}
+            for batch in batches:
+                result=self.provider.evaluate(batch)
+                results.append(result)
+                if (result.input_tokens or 0)+(result.output_tokens or 0)>MAX_RUN_TOKENS:return {"status":"failed","error_code":"budget_paused","retryable":True,**usage()}
+                for item in self.validate(result.payload,{"sources":batch["sources"],"memory":batch["memory"]}):
+                    # Overlapping pieces of one chapter can surface the same fact twice; keep the first.
+                    if item["affected_memory_id"] is not None:
+                        if item["affected_memory_id"] in affected_seen:continue
+                        affected_seen.add(item["affected_memory_id"])
+                    else:
+                        key=(item["memory_type"],item["subject"],item["predicate"])
+                        if key in new_keys:continue
+                        new_keys.add(key)
+                    identity=(item["change_kind"],item["affected_memory_id"],item["memory_type"],item["subject"],item["predicate"],item["value"],item["source_span_id"])
+                    if identity in identities:continue
+                    identities.add(identity); candidates.append(item)
+        except ProviderUnavailable:return {"status":"failed","error_code":"provider_unavailable","retryable":True,**usage()}
+        except ProviderTimeout:return {"status":"timed_out","error_code":"provider_timeout","retryable":True,**usage()}
+        except ProviderInvalidJson as error:return {"status":"failed","error_code":"invalid_json","retryable":True,**_invalid_json_aggregate(results,error)}
+        except ProviderFailure:return {"status":"failed","error_code":"provider_error","retryable":True,**usage()}
+        except ValueError as error:return {"status":"failed","error_code":str(error),"retryable":True,**usage()}
+        source_ids=list(dict.fromkeys(item["id"] for batch in batches for item in batch["sources"]))
+        memory_ids=list(dict.fromkeys(item["id"] for batch in batches for item in batch["memory"]))
+        retrieval={"method_version":RETRIEVAL_METHOD_VERSION,"selected_source_span_ids":source_ids,"selected_memory_ids":memory_ids,"batches":len(batches),"counts":{"source_spans":{"available":len(data["sources"]),"selected":len(source_ids)},"confirmed_memory":{"available":len(data["memory"]),"selected":len(memory_ids)}},"truncated":{"source_spans":len(source_ids)<len(data["sources"]),"confirmed_memory":len(memory_ids)<len(data["memory"])}}
+        return {"status":"completed","candidates":candidates,"retrieved_memory_count":len(memory_ids),"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"retrieval":retrieval,**_aggregate(results)}

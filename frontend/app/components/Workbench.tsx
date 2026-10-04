@@ -76,6 +76,11 @@ let sessionBootstrap: Promise<User | null> | null = null;
 let rememberedGlobalNavCollapsed: boolean | undefined;
 const globalNavStorageKey = "story-continuity:global-nav-collapsed";
 const experienceSimulation = process.env.NEXT_PUBLIC_EXPERIENCE_SIMULATION === "1";
+// A long import yields hundreds of initialization candidates. Above this many, the review groups
+// them by chapter range, lets the author decide a whole group at once, and submits in batches.
+const BULK_REVIEW_THRESHOLD = 12;
+const BULK_DECISION_BATCH = 200;
+const REVIEW_GROUP_CHAPTERS = 10;
 const publicAuthPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm", "/verify-email"];
 const isPublicAuthPath = (value: string) => publicAuthPaths.includes(value);
 
@@ -2229,7 +2234,7 @@ export function Workbench() {
     }
     setBusy("正在记录审核结果并建立第 1 版事实库");
     try {
-      for (const candidate of undecided.filter((candidate) => selectedDecisions.has(candidate.id))) {
+      const decideOne = async (candidate: MemoryInitialization["candidates"][number]) => {
         const decision = selectedDecisions.get(candidate.id)!;
         const after =
           decision === "edited"
@@ -2245,6 +2250,21 @@ export function Workbench() {
           "POST",
           { decision, ...(after ? { after, evidence_span_id: candidate.source.span_id } : {}) },
         );
+      };
+      const decided = undecided.filter((candidate) => selectedDecisions.has(candidate.id));
+      if (initialization.candidates.length > BULK_REVIEW_THRESHOLD) {
+        // A long import: plain accept/reject go in batches; edits still need one request each.
+        const plain = decided.filter((candidate) => selectedDecisions.get(candidate.id) !== "edited");
+        for (let start = 0; start < plain.length; start += BULK_DECISION_BATCH) {
+          await json<{ decided: { candidate_id: string; decision_status: string }[] }>(
+            `/projects/${projectId}/memory/initializations/${initialization.id}/decisions?view=compact`,
+            "POST",
+            { decisions: plain.slice(start, start + BULK_DECISION_BATCH).map((candidate) => ({ candidate_id: candidate.id, decision: selectedDecisions.get(candidate.id)! })) },
+          );
+        }
+        for (const candidate of decided.filter((candidate) => selectedDecisions.get(candidate.id) === "edited")) await decideOne(candidate);
+      } else {
+        for (const candidate of decided) await decideOne(candidate);
       }
       const reviewedInitialization = await request<MemoryInitialization>(`/projects/${projectId}/memory/initialization`);
       setInitialization(reviewedInitialization);
@@ -5599,17 +5619,27 @@ function MemoryInitializationReview({
         <p>所有候选均被作者拒绝。连续性检查仍会安全返回上下文不足；可重置导入的作品后重新开始。</p>
       </div>
     );
-  return (
-    <form className="review memory-init-review" aria-label="事实库初始化审核" onSubmit={(event) => void submit(event)}>
-      <header>
-        <div>
-          <p className="eyebrow">导入原文 · 第 {initialization.source_revision} 版</p>
-          <h2>初始化候选审核</h2>
-          <p>核心候选必须全部决定；辅助候选可以暂不决定，它们不会写入事实库，也不会用于之后的检查。{coverage ? ` 当前覆盖：${coverageStatusLabel(coverage.status)}；核心待审 ${coverage.counts.core_pending}，辅助待审 ${coverage.counts.supporting_pending}。` : ""}</p>
-        </div>
-      </header>
-      {experienceSimulation && <div className="notice simulation-notice" role="note"><strong>隔离模拟环境</strong><p>以下候选来自固定示例数据；本环境不会调用真实模型。仅使用 v140-simulation-sample.md 验证交互与审计流程。</p></div>}
-      {initialization.candidates.map((candidate) => (
+  const grouped = initialization.candidates.length > BULK_REVIEW_THRESHOLD;
+  const groups: { from: number; to: number; items: MemoryInitialization["candidates"] }[] = [];
+  if (grouped) {
+    for (const candidate of [...initialization.candidates].sort((a, b) => a.source.chapter_number - b.source.chapter_number)) {
+      const from = Math.floor((candidate.source.chapter_number - 1) / REVIEW_GROUP_CHAPTERS) * REVIEW_GROUP_CHAPTERS + 1;
+      let group = groups.at(-1);
+      if (group?.from !== from) {
+        group = { from, to: from + REVIEW_GROUP_CHAPTERS - 1, items: [] };
+        groups.push(group);
+      }
+      group.items.push(candidate);
+    }
+  }
+  // Only pending candidates have radios, so a group action never touches a decided one.
+  const selectGroup = (event: ReactMouseEvent<HTMLButtonElement>, value: "accepted" | "rejected" | "clear") => {
+    event.currentTarget.closest("details")?.querySelectorAll<HTMLInputElement>('input[type="radio"][data-memory-candidate-id]').forEach((input) => {
+      if (value === "clear") input.checked = false;
+      else if (input.value === value) input.checked = true;
+    });
+  };
+  const candidateCard = (candidate: MemoryInitialization["candidates"][number]) => (
         <article key={candidate.id} className="diff memory-init-candidate">
           <div className="candidate-source">
             <strong>原文依据</strong>
@@ -5656,7 +5686,37 @@ function MemoryInitializationReview({
           )}
           {candidate.review_history.length > 0 && <small className="candidate-history">审核记录 {candidate.review_history.length} 条 · 最近：{candidate.review_history.at(-1)?.event === "reopened" ? "重新打开" : candidate.review_history.at(-1)?.decision === "rejected" ? "拒绝" : candidate.review_history.at(-1)?.decision === "edited" ? "编辑后接受" : "接受"}</small>}
         </article>
-      ))}
+  );
+  return (
+    <form className="review memory-init-review" aria-label="事实库初始化审核" onSubmit={(event) => void submit(event)}>
+      <header>
+        <div>
+          <p className="eyebrow">导入原文 · 第 {initialization.source_revision} 版</p>
+          <h2>初始化候选审核</h2>
+          <p>核心候选必须全部决定；辅助候选可以暂不决定，它们不会写入事实库，也不会用于之后的检查。{coverage ? ` 当前覆盖：${coverageStatusLabel(coverage.status)}；核心待审 ${coverage.counts.core_pending}，辅助待审 ${coverage.counts.supporting_pending}。` : ""}</p>
+          {grouped && <p className="memory-init-group-hint">候选较多，已按每 {REVIEW_GROUP_CHAPTERS} 章分组。可以先把一组待定候选全部选为接受或拒绝，再逐条改动个别候选，最后统一确认。</p>}
+        </div>
+      </header>
+      {experienceSimulation && <div className="notice simulation-notice" role="note"><strong>隔离模拟环境</strong><p>以下候选来自固定示例数据；本环境不会调用真实模型。仅使用 v140-simulation-sample.md 验证交互与审计流程。</p></div>}
+      {grouped
+        ? groups.map((group, index) => {
+            const pending = group.items.filter((candidate) => candidate.decision_status === "pending");
+            const corePending = pending.filter((candidate) => candidate.review_priority === "core").length;
+            return (
+              <details key={group.from} className="memory-init-group" open={index === 0}>
+                <summary>第 {group.from}–{group.to} 章 · {group.items.length} 条候选{pending.length ? `，待定 ${pending.length} 条（核心 ${corePending} 条）` : "，已全部决定"}</summary>
+                {pending.length > 0 && initialization.status === "draft" && (
+                  <div className="memory-init-group-actions">
+                    <Button type="button" className="quiet" disabled={blocked} onClick={(event) => selectGroup(event, "accepted")}>本组待定全部选为接受</Button>
+                    <Button type="button" className="quiet" disabled={blocked} onClick={(event) => selectGroup(event, "rejected")}>本组待定全部选为拒绝</Button>
+                    <Button type="button" className="quiet" disabled={blocked} onClick={(event) => selectGroup(event, "clear")}>清除本组选择</Button>
+                  </div>
+                )}
+                {group.items.map(candidateCard)}
+              </details>
+            );
+          })
+        : initialization.candidates.map(candidateCard)}
       {initialization.status === "draft" && (
         <Button className="primary" disabled={blocked} type="submit">确认核心审核并建立第 1 版事实库</Button>
       )}

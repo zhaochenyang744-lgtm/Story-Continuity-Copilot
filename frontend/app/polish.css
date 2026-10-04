@@ -511,3 +511,11 @@ main :is(p, li, dd, .project-summary) { text-wrap: pretty; }
 @media (max-width: 760px) {
   .library-art-caption { font-size: 11px; letter-spacing: 3px; }
 }
+
+/* Long imports: initialization candidates grouped by chapter range with group-level selection. */
+.memory-init-group-hint { margin: 6px 0 0; color: var(--muted); }
+.memory-init-group { margin: 12px 0; border: 1px solid var(--line); border-radius: var(--r-card); background: color-mix(in srgb, var(--surface) 92%, transparent); }
+.memory-init-group > summary { padding: 12px 16px; cursor: pointer; font-weight: 600; font-variant-numeric: tabular-nums; }
+.memory-init-group[open] > summary { border-bottom: 1px solid var(--line); }
+.memory-init-group-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px 0; }
+.memory-init-group > .memory-init-candidate { margin: 12px 16px; }

@@ -77,7 +77,7 @@ class Stage11MRunnerTests(unittest.TestCase):
     def test_frozen_validator_accepts_historical_v8_fixture_and_rejects_current_v9_provenance(self):
         result = self._result()
         self.assertEqual(result["status"], "completed_pending_independent_gate")
-        self.assertEqual(result["initialization_provenance"]["prompt_version"], "memory-initialization-v9-field-contract")
+        self.assertEqual(result["initialization_provenance"]["prompt_version"], "memory-initialization-v10-whole-chapter-rules")
         self.assertFalse(validator.validate_result(result))
         self.assertTrue(validator.validate_result(self._historical_v8_result()))
 
