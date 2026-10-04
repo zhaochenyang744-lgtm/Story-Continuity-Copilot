@@ -42,6 +42,10 @@ PROVIDER_ATTEMPT_QUOTA_EXCEEDED="provider_attempt_quota_exceeded"
 # long-form worst case at 6,324 of 6,000 units) is sent with these tighter bounds instead of failing.
 SINGLE_CLAIM_FALLBACK_BOUNDS=((CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS,RELATED_MEMORY_LIMIT),(400,12),(300,10),(200,8))
 MEMORY_DELTA_RELATED_MEMORY_LIMIT=20
+# A batch may return MAX_MEMORY_CANDIDATES_PER_BATCH facts, so batches are also capped by source text
+# (about one ordinary chapter): packing several chapters into one request let the first crowd out the
+# rest (lf1 dev set, 2026-10-04: chapter 2 kept 3 facts after chapter 1 took 5 of the 8).
+MEMORY_BATCH_TARGET_SOURCE_CHARS=2600
 SOURCE_CHUNK_METHOD_VERSION="source-chunk-v4-5800"
 MAX_CHUNK_OVERLAP_CODEPOINTS=200
 MEMORY_SCHEMA_REPAIR_MAX_ATTEMPTS=5
@@ -291,6 +295,10 @@ def _memory_schema() -> dict[str, Any]:
 
 def _memory_delta_schema() -> dict[str, Any]:
     return {"candidates":[{"change_kind":"new_fact|changed_fact|invalidated_fact","affected_memory_id":"null for new_fact; supplied confirmed Memory id for changed_fact or invalidated_fact","memory_type":"allowed memory type","subject":"string, at most 80 characters","predicate":"controlled predicate","value":"new/changed fact value, at most 240 characters; exact current value for invalidated_fact","invalidation_reason":"null for new_fact/changed_fact; non-empty reason for invalidated_fact, at most 240 characters","chapter_id":"source chapter id","source_span_id":"supplied current-revision SourceSpan id"}]}
+
+
+def _source_chars(sources: list[dict[str, Any]]) -> int:
+    return sum(len(str(source.get("body",""))) for source in sources)
 
 
 def _aggregate(results: list[Any]) -> dict[str, Any]:
@@ -1082,7 +1090,7 @@ class MemoryInitializationEngine:
         batches=[]; current=[]
         for source in self.chunk_plan(data):
             candidate=current+[source]; request=self._request(candidate,data["source_revision"])
-            if request_prompt_and_budget(request)[1] <= MEMORY_BATCH_TARGET_BUDGET_UNITS:
+            if request_prompt_and_budget(request)[1] <= MEMORY_BATCH_TARGET_BUDGET_UNITS and (not current or _source_chars(candidate)<=MEMORY_BATCH_TARGET_SOURCE_CHARS):
                 current=candidate; continue
             if not current: raise InputBudgetExceeded()
             batches.append(self._request(current,data["source_revision"])); current=[source]
@@ -1242,7 +1250,7 @@ class MemoryDeltaEngine(MemoryInitializationEngine):
         batches=[]; current=[]
         for source in ordered:
             for piece in self._source_pieces(data,source):
-                if current and self._fits(data,current+[piece]):current.append(piece); continue
+                if current and _source_chars(current+[piece])<=MEMORY_BATCH_TARGET_SOURCE_CHARS and self._fits(data,current+[piece]):current.append(piece); continue
                 if current:batches.append(self._request({**data,"sources":current}))
                 current=[piece]
         if current:batches.append(self._request({**data,"sources":current}))

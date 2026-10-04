@@ -126,3 +126,17 @@ class CandidateCapTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class BatchSizeTests(unittest.TestCase):
+    def test_each_ordinary_chapter_gets_its_own_candidate_allowance(self):
+        # Two 1,500-character chapters fit one request's budget, but packed together the first
+        # chapter's facts crowded out the second's within the per-batch cap.
+        sources = [chapter(1, 70), chapter(2, 70)]
+        self.assertTrue(all(1400 < len(source["body"]) < 2000 for source in sources))
+        init_batches = MemoryInitializationEngine(EchoProvider())._batches({"source_revision": 1, "sources": sources})
+        self.assertEqual([len(batch["sources"]) for batch in init_batches], [1, 1])
+        delta_batches = MemoryDeltaEngine(EchoProvider())._batches({"source_revision": 2, "sources": sources, "memory": []})
+        self.assertEqual([len(batch["sources"]) for batch in delta_batches], [1, 1])
+        short = [chapter(1, 20), chapter(2, 20)]  # two short chapters still share one request
+        self.assertEqual(len(MemoryInitializationEngine(EchoProvider())._batches({"source_revision": 1, "sources": short})), 1)
