@@ -164,13 +164,16 @@ def usage_split(usage: dict | None) -> dict | None:
 class Meter:
     def __init__(self, prices: Prices = PRODUCTION_PRICES, budget_cny: float | None = None,
                  replay: str = "off", cache_dir: pathlib.Path | None = None,
-                 discount_prices: Prices | None = None):
+                 discount_prices: Prices | None = None, live_phases: tuple[str, ...] = ()):
         if replay not in REPLAY_MODES:
             raise ValueError(f"replay must be one of {REPLAY_MODES}")
         self.prices = prices
         self.discount_prices = discount_prices
         self.budget_cny = budget_cny
         self.replay = replay
+        # Phases that never read the replay cache (they still record to it): a dev run can reuse the
+        # setup's recorded responses while timing a live check.
+        self.live_phases = tuple(live_phases)
         self.cache_dir = pathlib.Path(cache_dir or DEFAULT_CACHE_DIR)
         self.records: list[dict] = []
         self.stop_reason: str | None = None
@@ -275,7 +278,7 @@ class Meter:
                 body = json or {}
                 key, order = request_key(body)
                 reserve = meter._reserve(body)
-                if meter.replay in ("replay", "replay_or_record"):
+                if meter.replay in ("replay", "replay_or_record") and meter._phase not in meter.live_phases:
                     cached = meter._load(key, order)
                     if cached is not None:
                         meter._record(body=body, raw=cached, status=200, latency_ms=0, replayed=True, reserve=reserve)
@@ -341,5 +344,5 @@ class Meter:
     def describe(self) -> dict:
         return {"prices_cny_per_million": asdict(self.prices),
                 "discount_prices_cny_per_million": asdict(self.discount_prices) if self.discount_prices else None,
-                "budget_cny": self.budget_cny, "replay": self.replay, "stop_reason": self.stop_reason,
+                "budget_cny": self.budget_cny, "replay": self.replay, "live_phases": list(self.live_phases), "stop_reason": self.stop_reason,
                 "spent_cny": self.spent_cny, "system_fingerprints": self.fingerprints}

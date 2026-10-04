@@ -41,7 +41,7 @@ from evaluation.longform.validate import validate  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
 from app.config import AppPaths  # noqa: E402
-from app.engine import PROMPT_VERSION  # noqa: E402
+from app.engine import PROMPT_VERSION, SCREENED_PROMPT_VERSION, ContinuityEngine  # noqa: E402
 from app.main import create_app  # noqa: E402
 from app.stage13 import Stage13Settings  # noqa: E402
 from app.v2_database import split_continuity_claims  # noqa: E402
@@ -54,6 +54,11 @@ POLL_SECONDS = 600
 # deliberately; until then a formal run refuses to start.
 FORMAL_RUNTIME = {"model": "deepseek-flash", "review_thinking": "high", "concurrency": "4", "prompt_version": None}
 DEFAULT_BUDGET_CNY = 10.0
+
+
+def prompt_version() -> str:
+    """The prompt version a check created now records: screened by default, legacy under the rollback switch."""
+    return SCREENED_PROMPT_VERSION if ContinuityEngine.pipeline() == "screened" else PROMPT_VERSION
 
 
 def data(response):
@@ -137,12 +142,23 @@ def run_target(lf: LongformSet, target: Target, provider, meter: metering.Meter)
                                if chapter_index.get(e.get("chapter_id")) is not None])
               for issue in view.get("issues") or []]
     metrics = view.get("metrics") or {}
+    claims = split_continuity_claims(body)
     return {
         "target_id": target.id, "work": target.work, "chapter_index": target.chapter.index,
         "chars": target.chapter.length, "status": view["status"], "error_code": view.get("error_code"),
         "seconds": seconds, "infrastructure_retry": first,
         "sentence_count": len(split_continuity_claims(body)),
         "undecided_count": len(metrics.get("undecided_claims") or []),
+        # The screened pipeline's per-sentence screen outcome (absent for legacy runs).
+        "screen": {state: sum(1 for row in metrics.get("retrieval") or [] if row.get("screen") == state)
+                   for state in ("flagged", "passed", "unscreened")},
+        "reviewed_count": sum(1 for row in metrics.get("retrieval") or [] if row.get("returned_span_ids")),
+        # Sentence ranges the screen flagged, so a missed point can be told apart from a missed screen.
+        "flagged_ranges": [anchor_of(body, claims[row["claim_ordinal"] - 1]) for row in metrics.get("retrieval") or []
+                           if row.get("screen") == "flagged" and row.get("claim_ordinal") and row["claim_ordinal"] <= len(claims)],
+        "review_ranges": {path: [anchor_of(body, claims[row["claim_ordinal"] - 1]) for row in metrics.get("retrieval") or []
+                                 if row.get("review") == path and row.get("claim_ordinal") and row["claim_ordinal"] <= len(claims)]
+                          for path in ("quick", "escalated", "deep")},
         "issues": issues,
         "app_metrics": {key: metrics.get(key) for key in ("latency_ms", "input_tokens", "output_tokens", "cost_cny")},
         "check_cost": meter.summary("check", target.id),
@@ -196,7 +212,7 @@ def assert_formal(args, lf: LongformSet, provider) -> None:
         problems.append("set_not_frozen")
     if not thresholds.APPROVED:
         problems.append("thresholds_not_approved")
-    if FORMAL_RUNTIME["prompt_version"] is None or PROMPT_VERSION != FORMAL_RUNTIME["prompt_version"]:
+    if FORMAL_RUNTIME["prompt_version"] is None or prompt_version() != FORMAL_RUNTIME["prompt_version"]:
         problems.append("prompt_version_not_pinned")
     if provider.model != FORMAL_RUNTIME["model"] or provider.review_thinking != FORMAL_RUNTIME["review_thinking"]:
         problems.append("model_or_thinking")
@@ -232,6 +248,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--mode", choices=("dev", "formal"), default="dev")
     parser.add_argument("--replay", choices=metering.REPLAY_MODES, default="off")
     parser.add_argument("--budget-cny", type=float, default=DEFAULT_BUDGET_CNY)
+    parser.add_argument("--live-check", action="store_true", help="dev only: replay the setup but call the model live for every check, so timings stay valid")
     parser.add_argument("--only", nargs="*")
     parser.add_argument("--smoke", action="store_true")
     parser.add_argument("--subset")
@@ -262,7 +279,7 @@ def main(argv: list[str] | None = None) -> int:
         p = metering.PRODUCTION_PRICES
         discount = metering.Prices(p.input_miss, args.cache_hit_price, p.output)
     budget = thresholds.FORMAL_BUDGET_CNY if args.mode == "formal" else args.budget_cny
-    meter = metering.Meter(budget_cny=budget, replay=args.replay, discount_prices=discount)
+    meter = metering.Meter(budget_cny=budget, replay=args.replay, discount_prices=discount, live_phases=("check",) if args.live_check else ())
     provider = metering.MeteredProvider(client_factory=meter.client_factory)
     if not provider.available:
         # Replay-only runs send nothing, but the provider still has to be configured; any
@@ -272,7 +289,7 @@ def main(argv: list[str] | None = None) -> int:
         assert_formal(args, lf, provider)
     if args.dry_run:
         print(json.dumps({"dry_run": True, "targets": len(targets), "mode": args.mode, "replay": args.replay,
-                          "budget_cny": budget, "prompt_version": PROMPT_VERSION, "model": provider.model,
+                          "budget_cny": budget, "prompt_version": prompt_version(), "model": provider.model,
                           "out": out.name}, ensure_ascii=False))
         return 0
 
@@ -302,7 +319,7 @@ def main(argv: list[str] | None = None) -> int:
     report = {
         "kind": f"longform_{lf.kind}_{args.mode}" + ("" if len(targets) == len(lf.targets) else "_partial"),
         "set_id": lf.data["set_id"], "set_sha256": compute_set_hash(lf.root, lf.data), "run_id": args.run_id,
-        "adapter": ADAPTER, "mode": args.mode, "prompt_version": PROMPT_VERSION, "model": provider.model,
+        "adapter": ADAPTER, "mode": args.mode, "prompt_version": prompt_version(), "model": provider.model,
         "review_thinking": provider.review_thinking, "concurrency": os.environ.get("CONTINUITY_REVIEW_CONCURRENCY", "1"),
         "meter": meter.describe(), "stopped_early": meter.stop_reason,
         "targets_selected": [t.id for t in targets], "targets_run": list(records),
