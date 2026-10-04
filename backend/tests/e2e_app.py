@@ -37,6 +37,9 @@ class BrowserTestProvider:
             # The screened pipeline's screen: every sentence goes on to review, as before it.
             return ProviderResult({"flags": [{"id": sentence["id"], "kind": "check", "facts": []} for sentence in request["sentences"]]},
                                   input_tokens=40, output_tokens=8, cost_cny=0.0004, latency_ms=10)
+        if request.get("task") == "continuity_triage":
+            return ProviderResult({"scores": [{"id": sentence["id"], "score": 3} for sentence in request["sentences"]]},
+                                  input_tokens=30, output_tokens=6, cost_cny=0.0003, latency_ms=10)
         if request.get("task") == "author_material_comparison":
             material=request["comparison"]["material"]
             passage=request["comparison"]["passage"]

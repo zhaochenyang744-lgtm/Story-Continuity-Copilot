@@ -12,7 +12,7 @@ from .memory_contract import CONTROLLED_PREDICATES, predicate_label
 from .provider import MAX_CLAIM_BASIS_CODEPOINTS, MAX_ISSUE_REASONING_CODEPOINTS
 from .provider import ProviderDispatchDenied
 from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget, review_effort_scope
-from .provider import CONTINUITY_SCREENED_PROMPT_VERSION, CONTINUITY_SCREEN_PROMPT_VERSION, input_budget_units_for
+from .provider import CONTINUITY_SCREENED_PROMPT_VERSION, CONTINUITY_SCREEN_PROMPT_VERSION, CONTINUITY_TRIAGE_PROMPT_VERSION, input_budget_units_for
 from . import review_screening as screening
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION
 
@@ -28,7 +28,7 @@ PROMPT_VERSION=CONTINUITY_PROMPT_VERSION
 # The screened pipeline (review_screening.py) is the default. CONTINUITY_REVIEW_PIPELINE=legacy is the
 # temporary rollback to per-sentence review; a run keeps the pipeline recorded when it was created.
 REVIEW_PIPELINE_ENV="CONTINUITY_REVIEW_PIPELINE"
-SCREENED_PROMPT_VERSION=f"{CONTINUITY_SCREENED_PROMPT_VERSION}+{CONTINUITY_SCREEN_PROMPT_VERSION}"
+SCREENED_PROMPT_VERSION=f"{CONTINUITY_SCREENED_PROMPT_VERSION}+{CONTINUITY_SCREEN_PROMPT_VERSION}+{CONTINUITY_TRIAGE_PROMPT_VERSION}"
 MEMORY_PROMPT_VERSION="memory-initialization-v10-whole-chapter-rules"
 RETRIEVAL_METHOD_VERSION="bounded-lexical-v4-longform"
 RELATED_MEMORY_LIMIT=15
@@ -450,7 +450,7 @@ class ContinuityEngine:
         used={item["id"]:item for claim in selected for item in self._related_memory(claim,memory,memory_limit)}
         full=data["contexts"][claims[0]["context"]]
         body=screening.context_window(full,[claim["text"] for claim in claims])
-        return {"pipeline":"screened",**({"review_mode":"quick"} if data.get("review_mode")=="quick" else {}),"draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":selected,
+        return {"pipeline":"screened","draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":selected,
                 "memory":[{**used[key],"chapter_number":chapters.get(key)} for key in sorted(used,key=lambda key:_memory_sort_key(used[key]))],"output_schema":_continuity_schema(),"full_draft_body":full}
 
     def _fits(self,request:dict[str,Any])->bool:
@@ -545,15 +545,13 @@ class ContinuityEngine:
         reviewed=[{**claim,"allowed_evidence":evidence[claim["id"]],"screen_facts":flags[claim["id"]]["facts"]} for claim in claims if evidence.get(claim["id"])]
         summary["reviewed"]=len(reviewed)
         base={**data,"memory_chapters":chapters}
-        quick=[claim for claim in reviewed if flags[claim["id"]]["kind"]=="check"]
+        triaged=[claim for claim in reviewed if flags[claim["id"]]["kind"]=="check"]
         results=list(screen_results); escalated:set[str]=set()
-        summary.update(quick_reviewed=len(quick),escalated=0,deep_reviewed=0)
-        if quick:
-            # What the quick review reports, or cannot decide, gets a thinking review; the rest is settled.
-            outcome=self._execute({**base,"claims":quick,"review_mode":"quick","max_claims_per_batch":screening.QUICK_MAX_CLAIMS,"settled_by_screen":True},prior_results=results,keep_results=True)
-            if outcome["status"]!="completed":return {key:value for key,value in outcome.items() if key!="_results"}
-            results=outcome["_results"]
-            escalated={issue["claim_span_id"] for issue in outcome["issues"]}|{row["claim_span_id"] for row in outcome["undecided_claims"]}
+        summary.update(triaged=len(triaged),triage_fallback_batches=0,escalated=0,deep_reviewed=0)
+        if triaged:
+            # What the triage flags gets a thinking review; what it passes is settled.
+            escalated=self._triage(triaged,data["contexts"],results,summary)
+            if isinstance(escalated,dict):return self._failure(escalated["error"],results)
             summary["escalated"]=len(escalated)
         deep=[claim for claim in reviewed if flags[claim["id"]]["kind"]!="check" or claim["id"] in escalated]
         summary["deep_reviewed"]=len(deep)
@@ -561,10 +559,53 @@ class ContinuityEngine:
         limit=screening.DEEP_MAX_CLAIMS if summary["screened"] else CONTINUITY_MAX_CLAIMS_PER_BATCH
         result=self._execute({**base,"claims":deep,"max_claims_per_batch":limit,"settled_by_screen":summary["screened"]},prior_results=results)
         paths={claim["id"]:("escalated" if claim["id"] in escalated else "deep") for claim in deep}
-        paths.update({claim["id"]:"quick" for claim in quick if claim["id"] not in escalated})
+        paths.update({claim["id"]:"triage" for claim in triaged if claim["id"] not in escalated})
         result={**result,"retrieval_traces":screening.retrieval_traces(claims,{claim["id"]:claim["allowed_evidence"] for claim in reviewed},flags,summary["screened"],paths),
                 "retrieval_method_version":SCREENED_RETRIEVAL_METHOD_VERSION,"screening":summary}
         return result
+
+    def _triage(self,claims:list[dict[str,Any]],contexts:dict[str,str],results:list[Any],summary:dict[str,Any])->set[str]|dict[str,Any]:
+        """Claim ids to escalate by triage score; {"error": exception} when a dispatch fails.
+
+        Batches run in parallel like review batches. An answer the validator rejects is retried once as
+        a repair; a batch that still fails scores all its claims 2, so they compete for escalation.
+        """
+        batches=screening.triage_batches(claims,contexts)
+        def one(batch:tuple[dict[str,Any],dict[str,str]])->tuple[dict[str,int]|None,list[Any],Exception|None]:
+            request,sentence_ids=batch; spent=[]; code="triage_invalid"
+            try:
+                for attempt in range(2):
+                    sent=request if attempt==0 else {**request,"triage_repair":{"reason_code":code}}
+                    try:result=self.provider.evaluate(sent)
+                    except ProviderInvalidJson as error:
+                        spent.append(error); code="triage_invalid_json"; continue
+                    spent.append(result)
+                    try:return screening.parse_triage(result.payload,sentence_ids),spent,None
+                    except screening.ScreenContractError as error:code=str(error)
+            except (ProviderDispatchDenied,InputBudgetExceeded,ProviderUnavailable,ProviderTimeout,ProviderFailure) as error:
+                return None,spent,error
+            return None,spent,None
+        concurrency=getattr(self.provider,"continuity_batch_concurrency",None)
+        concurrency=concurrency if isinstance(concurrency,int) and not isinstance(concurrency,bool) and concurrency>1 else 1
+        if concurrency>1 and len(batches)>1:
+            # Each dispatch carries the caller's context (usage reservation, dispatch guard), copied here
+            # in the calling thread, as review batches do.
+            contexts=[contextvars.copy_context() for _ in batches]
+            with ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-triage") as pool:
+                outcomes=list(pool.map(lambda pair:pair[0].run(one,pair[1]),zip(contexts,batches)))
+        else:
+            outcomes=[one(batch) for batch in batches]
+        scores:dict[str,int]={}; failure=None
+        for (request,sentence_ids),(found,spent,error) in zip(batches,outcomes):
+            results.extend(spent)
+            if error is not None:
+                failure=failure or error; continue
+            if found is None:
+                summary["triage_fallback_batches"]+=1; found={claim_id:screening.TRIAGE_ESCALATION_MIN_SCORE for claim_id in sentence_ids.values()}
+            scores.update(found)
+        if failure is not None:return {"error":failure}
+        summary["triage_scores"]={str(score):sum(1 for value in scores.values() if value==score) for score in range(4)}
+        return screening.triage_escalations(claims,scores)
 
     def _screen(self,claims:list[dict[str,Any]],index:Any,memory:list[dict[str,Any]],chapters:dict[str,int],
                 results:list[Any],summary:dict[str,Any])->dict[str,Any]:
@@ -611,7 +652,7 @@ class ContinuityEngine:
         if isinstance(error,ProviderFailure):return {"status":"failed","error_code":"provider_error","retryable":True,**_aggregate_attempt_failure(results,error)}
         return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate_attempt_failure(results,error)}
 
-    def _execute(self,data:dict[str,Any],prior_results:list[Any]|None=None,keep_results:bool=False)->dict[str,Any]:
+    def _execute(self,data:dict[str,Any],prior_results:list[Any]|None=None)->dict[str,Any]:
         if not self.provider.available:return {"status":"failed","error_code":"provider_unavailable","retryable":True}
         prior_results=list(prior_results or [])
         try:batches=self._batches(data)
@@ -671,7 +712,7 @@ class ContinuityEngine:
         # Nothing survived, so there is no partial result worth showing: keep the old failure.
         # After a screen most sentences are already settled, so undecided ones are reported, never the run's failure.
         if undecided and len(undecided)==len(data["claims"]) and not data.get("settled_by_screen"): return {"status":"failed","error_code":undecided[0]["error_code"],"retryable":True,**totals}
-        return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,"undecided_claim_count":len(undecided),"undecided_claims":undecided,**totals,**({"_results":results} if keep_results else {})}
+        return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,"undecided_claim_count":len(undecided),"undecided_claims":undecided,**totals}
 
     def _review_batch(self,batch:dict[str,Any],data:dict[str,Any],run_budget:int)->dict[str,Any]:
         """One batch through its first answer and at most one contract repair.
@@ -728,6 +769,13 @@ class ContinuityEngine:
             # A refusal after a timed-out dispatch leaves that dispatch's billing unknown.
             return {**outcome,"quota_exhausted":True,"usage_unknown":bool(getattr(error,"usage_unknown",False)),"undecided":[{"claim_span_id":claim["id"],"error_code":PROVIDER_ATTEMPT_QUOTA_EXCEEDED} for claim in batch["claims"]]}
         except ProviderInvalidJson as error:
+            if error.finish_reason!="length" and batch.get("pipeline")=="screened":
+                # One malformed answer costs only its own claims: they are sent again one at a time, and a
+                # lone claim that comes back malformed is undecided (lf1 dev set: one bad JSON failed a chapter).
+                results.append(error)
+                claims=batch["claims"]
+                if len(claims)>1:return {**outcome,"split":[[claim] for claim in claims]}
+                return {**outcome,"undecided":[{"claim_span_id":claims[0]["id"],"error_code":"invalid_json"}]}
             if error.finish_reason!="length":return {**outcome,"error":error}
             # Every effort ran out of output, down to the non-thinking answer and its 2,000 tokens. On a
             # multi-claim batch that last answer is what overflows: four verdicts plus one reported gap

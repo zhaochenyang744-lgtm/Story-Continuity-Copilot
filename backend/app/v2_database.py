@@ -58,7 +58,7 @@ def split_continuity_claims(draft_text: str) -> list[str]:
 def screened_trace_terms(trace: dict[str, Any]) -> str:
     """A screened trace's screen outcome and review path, kept in the trace's terms column."""
     terms = "screen:" + str(trace.get("screen") or "unscreened")
-    return terms + (";review:" + str(trace["review"]) if trace.get("review") in {"quick", "escalated", "deep"} else "")
+    return terms + (";review:" + str(trace["review"]) if trace.get("review") in {"triage", "escalated", "deep"} else "")
 
 
 def parse_screened_trace_terms(terms: str) -> dict[str, str]:

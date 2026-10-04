@@ -9,8 +9,10 @@ minutes (2026-09-30 production measurement). The screened pipeline instead:
 2. reviews only the flagged sentences with the existing trustworthy-review contract, each against the
    passages of earlier chapters that best match it (backend/app/passages.py) plus the passages the
    cited facts were taken from, with the current chapter as context. Sentences the screen saw a
-   conflict or gap in get a thinking review at once; sentences it only marked worth a check get a
-   quick review without thinking first, and only what that reports goes on to a thinking review.
+   conflict or gap in get a thinking review at once; sentences it only marked worth a check go
+   through a triage first, a second non-thinking screen that sees their passages and scores how
+   likely a careful review would find a problem; the highest scores, at most TRIAGE_ESCALATION_CAP
+   per chapter, get a thinking review.
    Thinking reviews carry at most two sentences: on the lf1 dev set (2026-10-04) batches of three or
    four sentences with 10-15 passages filled the 16,000-token output cap with thinking again and again.
 
@@ -24,7 +26,7 @@ from __future__ import annotations
 from typing import Any
 
 from .passages import ATTRIBUTE_CLASSES, PASSAGE_METHOD_VERSION, FactKey, Passage, PassageIndex, split_passages, terms
-from .provider import SCREEN_KINDS, SCREEN_MAX_FACTS_PER_FLAG
+from .provider import SCREEN_KINDS, SCREEN_MAX_FACTS_PER_FLAG, input_budget_units_for, request_prompt_and_budget
 
 SCREENED_RETRIEVAL_METHOD_VERSION = PASSAGE_METHOD_VERSION
 SCREEN_MIN_CLAIMS = 6
@@ -38,7 +40,9 @@ VERIFY_PASSAGE_CHARS = 2500
 VERIFY_MAX_PASSAGES = 8
 DEEP_KINDS = ("conflict", "gap")
 DEEP_MAX_CLAIMS = 2
-QUICK_MAX_CLAIMS = 6
+TRIAGE_MAX_CLAIMS = 8
+TRIAGE_ESCALATION_MIN_SCORE = 2
+TRIAGE_ESCALATION_CAP = 4
 # One evaluation of a screened review may send its larger input up to three times (high, medium and
 # a non-thinking fallback), so it gets a larger token guard than the per-sentence review's 50,000.
 SCREENED_RUN_TOKEN_BUDGET = 90000
@@ -149,7 +153,7 @@ def attribute_contacts(claims: list[dict[str, Any]], memory: list[dict[str, Any]
 
     A safety net under the model screen, whose flags shift with the facts it is shown (lf1 dev set,
     2026-10-04: the same chapter got 4 flags in one run and 6 in another, missing two conflicts once).
-    These claims go to the cheap quick review, never straight to a thinking review.
+    These claims go to the cheap triage, never straight to a thinking review.
     """
     found = set()
     for claim in claims:
@@ -182,6 +186,65 @@ def claim_evidence(claim: dict[str, Any], index: PassageIndex, cited_facts: list
     return [{"id": passage.id, "chapter_id": passage.chapter_id, "body": passage.text, "prompt_excerpt": passage.text,
              "source_span_id": passage.span_id, "chapter_number": passage.chapter_number, "passage_start": passage.start}
             for passage in picked]
+
+
+def triage_request(claims: list[dict[str, Any]], context: str) -> tuple[dict[str, Any], dict[str, str]]:
+    """One triage request for claims of one context: each passage once, claims list the ones they may use."""
+    passage_ids: dict[str, str] = {}
+    passages = []
+    for claim in claims:
+        for span in claim["allowed_evidence"]:
+            if span["id"] not in passage_ids:
+                passage_ids[span["id"]] = f"p{len(passage_ids) + 1}"
+                passages.append({"id": passage_ids[span["id"]], "chapter": span.get("chapter_number"), "text": span["prompt_excerpt"]})
+    sentence_ids = {f"s{position + 1}": claim["id"] for position, claim in enumerate(claims)}
+    request = {"task": "continuity_triage", "chapter": context_window(context, [claim["text"] for claim in claims]), "passages": passages,
+               "sentences": [{"id": short, "text": claim["text"], "passages": [passage_ids[span["id"]] for span in claim["allowed_evidence"]]}
+                             for short, claim in zip(sentence_ids, claims)]}
+    return request, sentence_ids
+
+
+def triage_batches(claims: list[dict[str, Any]], contexts: dict[str, str]) -> list[tuple[dict[str, Any], dict[str, str]]]:
+    """Consecutive claims of one context, at most TRIAGE_MAX_CLAIMS per request and within its budget."""
+    batches, current = [], []
+    def fits(group):
+        request, _ = triage_request(group, contexts[group[0]["context"]])
+        return request_prompt_and_budget(request)[1] <= input_budget_units_for(request)
+    for claim in claims:
+        candidate = current + [claim]
+        if current and (current[-1].get("context") != claim.get("context") or len(candidate) > TRIAGE_MAX_CLAIMS or not fits(candidate)):
+            batches.append(current)
+            candidate = [claim]
+        current = candidate
+    if current:
+        batches.append(current)
+    return [triage_request(group, contexts[group[0]["context"]]) for group in batches]
+
+
+def parse_triage(payload: Any, sentence_ids: dict[str, str]) -> dict[str, int]:
+    """Claim id -> score 0-3. Every sentence must be scored once; a missing one is rejected."""
+    if not isinstance(payload, dict) or set(payload) != {"scores"} or not isinstance(payload["scores"], list):
+        raise ScreenContractError("triage_shape_invalid")
+    scores: dict[str, int] = {}
+    for row in payload["scores"]:
+        if not isinstance(row, dict) or not isinstance(row.get("id"), str) or row.get("score") not in (0, 1, 2, 3) or isinstance(row.get("score"), bool):
+            raise ScreenContractError("triage_row_invalid")
+        if row["id"] not in sentence_ids:
+            raise ScreenContractError("triage_unknown_sentence")
+        scores[sentence_ids[row["id"]]] = max(scores.get(sentence_ids[row["id"]], 0), row["score"])
+    if len(scores) != len(sentence_ids):
+        raise ScreenContractError("triage_sentence_missing")
+    return scores
+
+
+def triage_escalations(claims: list[dict[str, Any]], scores: dict[str, int]) -> set[str]:
+    """Claims scored TRIAGE_ESCALATION_MIN_SCORE or more, highest first, at most TRIAGE_ESCALATION_CAP per context."""
+    by_context: dict[Any, list[tuple[int, int, str]]] = {}
+    for position, claim in enumerate(claims):
+        score = scores.get(claim["id"], 0)
+        if score >= TRIAGE_ESCALATION_MIN_SCORE:
+            by_context.setdefault(claim.get("context"), []).append((-score, position, claim["id"]))
+    return {claim_id for rows in by_context.values() for _, _, claim_id in sorted(rows)[:TRIAGE_ESCALATION_CAP]}
 
 
 def context_window(text: str, claim_texts: list[str], limit: int = VERIFY_CONTEXT_CHARS, margin: int = VERIFY_CONTEXT_MARGIN) -> str:
@@ -243,8 +306,8 @@ def retrieval_traces(claims: list[dict[str, Any]], evidence: dict[str, list[dict
     """Every claim's screen outcome, review path and returned SourceSpan ids in rank order.
 
     screen is "flagged" or "passed" when the screen ran, "unscreened" for a short draft reviewed
-    whole. review is "quick" (settled by the quick review), "escalated" (quick review, then thinking)
-    or "deep" (thinking review only), absent when the claim was not reviewed. A claim that was not
+    whole. review is "triage" (passed by the triage), "escalated" (flagged by the triage, then a
+    thinking review) or "deep" (thinking review only), absent when the claim was not reviewed. A claim that was not
     reviewed (passed, or with no earlier passage) returns no spans.
     """
     def state(claim_id: str) -> str:

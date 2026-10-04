@@ -115,8 +115,9 @@ CONTINUITY_PROMPT_VERSION = "continuity-review-v24c-explicit-missing-link"
 # The screened pipeline (long-text phase 4): a cheap non-thinking screen picks the sentences worth a
 # careful look, and only those are reviewed, against passages of earlier chapters instead of whole
 # spans. The review keeps every v24c rule and adds SCREENED_REVIEW_RULES.
-CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25-screened-passages-quick-first-pass"
+CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25b-screened-passages-missing-link"
 CONTINUITY_SCREEN_PROMPT_VERSION = "continuity-screen-v1"
+CONTINUITY_TRIAGE_PROMPT_VERSION = "continuity-triage-v2-scores"
 SCREEN_KINDS = ("conflict", "gap", "check")
 SCREEN_MAX_FACTS_PER_FLAG = 3
 
@@ -164,13 +165,21 @@ CONTINUITY_DECISION_EXAMPLES = (
 
 SCREENED_REVIEW_RULES = (
     "draft.body is the current chapter, or the part of it around the current claims. Judge only current_claims. The other draft sentences are context: they may narrate a transition, or tell who a pronoun or role refers to, and are never reported themselves.",
-    "Each evidence span is one passage of an earlier chapter, not the whole chapter. A passage that does not mention a point says nothing about it either way.",
+    "Each evidence span is one passage of an earlier chapter, not the whole chapter. A passage that does not mention a point neither supports nor contradicts it. When a claim treats such a point as already established earlier (an outcome, a handoff, what someone learned, what a record says), and the supplied passages leave it open, that missing link is insufficient_evidence, not no_issue.",
 )
 
-# A quick review is the first pass for sentences the screen only marked worth a check; whatever it
-# reports gets a thinking review, so a doubt costs little and a silence is final.
-QUICK_REVIEW_RULES = (
-    "This is a first-pass review without deliberation. Whatever you report goes on to a careful review that decides it; what you pass is final. When the evidence might contradict a claim, or a claim settles a point the evidence leaves open, report it as possible_conflict or insufficient_evidence. Use no_issue only when the evidence supports the claim or does not bear on it.",
+# The triage is a second, evidence-backed screen for sentences the first screen only marked worth a
+# check. It scores each sentence instead of applying the full review contract. On the lf1 dev set
+# (2026-10-04) a non-thinking model given the whole contract escalated 1 sentence in 12 chapters and
+# passed 3 of 12 conflicts, while a yes/no "flag when unsure" triage flagged nine in ten. The engine
+# sends the highest scores, a bounded number per chapter, on to a thinking review.
+CONTINUITY_TRIAGE_RULES = (
+    "You compare draft sentences with passages of earlier chapters, before a careful continuity review that can only look at a few of them. Score every listed sentence once.",
+    "3: a supplied passage states something that cannot be true together with the sentence (a different attribute, name, age, origin, holder, condition, place at the same time, count, date, relationship, knowledge or outcome, or an action a stated rule forbids), or the sentence asserts as settled something a passage states is unknown, unfinished or only planned.",
+    "2: a passage seems to disagree with the sentence but the match is not certain, or the sentence states a specific fact about something the passages describe without supporting that fact, or relies on a handoff, learning, record or authority they do not provide.",
+    "1: passages describe the same people or things and agree with the sentence. 0: the passages do not bear on the sentence, or the sentence only narrates new action, speech or feeling in the current scene.",
+    "A change the current chapter itself narrates before the sentence is not a disagreement; the chapter text is context for that. Judge only the listed sentences.",
+    "Return exactly one JSON object with exactly one key, scores: one entry per listed sentence id with an integer score 0-3. Do not use Markdown.",
 )
 
 CONTINUITY_SCREEN_RULES = (
@@ -229,9 +238,7 @@ SCREEN_INPUT_BUDGET_UNITS = 16000
 SCREEN_MAX_OUTPUT_TOKENS = 4000
 SCREENED_REVIEW_INPUT_BUDGET_UNITS = 20000
 SCREENED_REVIEW_REPAIR_INPUT_BUDGET_UNITS = 24000
-# A quick review is a screened review without thinking, for sentences the screen only marked worth a
-# check; whatever it reports goes on to a thinking review. Six verdicts and an issue fit 4,000 tokens.
-QUICK_REVIEW_MAX_OUTPUT_TOKENS = 4000
+TRIAGE_INPUT_BUDGET_UNITS = 20000
 
 
 def estimate_prompt_budget_units(prompt: str) -> int:
@@ -291,13 +298,27 @@ def continuity_screen_prompt(request: dict[str, Any]) -> str:
     }, ensure_ascii=False, separators=(",", ":"))
 
 
+def continuity_triage_prompt(request: dict[str, Any]) -> str:
+    return json.dumps({
+        "task": "Score the draft sentences against the passages. Return exactly one JSON object with exactly one top-level key, scores.",
+        "prompt_version": CONTINUITY_TRIAGE_PROMPT_VERSION,
+        "rules": list(CONTINUITY_TRIAGE_RULES),
+        "chapter": request["chapter"],
+        "passages": request["passages"],
+        "sentences": request["sentences"],
+        "output_schema": {"scores": [{"id": "supplied sentence id", "score": "integer 0-3"}]},
+        **({"triage_repair": {"reason_code": request["triage_repair"].get("reason_code"),
+                              "instruction": "The previous response was rejected by the local validator. Score the same sentences again, one integer 0-3 for every supplied sentence id, exactly in output_schema."}}
+           if isinstance(request.get("triage_repair"), dict) else {}),
+    }, ensure_ascii=False, separators=(",", ":"))
+
+
 def continuity_prompt(request: dict[str, Any]) -> str:
     screened = request.get("pipeline") == "screened"
     payload = {
             "task": "Review continuity only. Return exactly one JSON object with exactly two top-level keys, issues and claim_verdicts. Do not use Markdown or include any other top-level key.",
             "prompt_version": CONTINUITY_SCREENED_PROMPT_VERSION if screened else CONTINUITY_PROMPT_VERSION,
-            "rules": list(CONTINUITY_REVIEW_RULES) + (list(SCREENED_REVIEW_RULES) if screened else []) + (list(QUICK_REVIEW_RULES) if request.get("review_mode") == "quick" else []),
-            "decision_examples": list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
+            "rules": list(CONTINUITY_REVIEW_RULES) + (list(SCREENED_REVIEW_RULES) if screened else []), "decision_examples": list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
             # Each span appears once per request; a claim lists the ids it may cite. Repeating the
             # excerpt under every claim put 10 distinct spans into 113 slots on one real chapter.
             "evidence_spans": list({
@@ -370,7 +391,7 @@ def author_material_comparison_prompt(request: dict[str, Any]) -> str:
 
 def request_prompt_and_budget(request: dict[str, Any]) -> tuple[str, int]:
     task=request.get("task")
-    prompt = continuity_screen_prompt(request) if task == "continuity_screen" else memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else context_brief_prompt(request) if task == "context_brief" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else story_qa_prompt(request) if task == "story_qa" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else revision_plan_prompt(request) if task == "revision_plan" else author_material_comparison_prompt(request) if task == "author_material_comparison" else continuity_prompt(request)
+    prompt = continuity_screen_prompt(request) if task == "continuity_screen" else continuity_triage_prompt(request) if task == "continuity_triage" else memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else context_brief_prompt(request) if task == "context_brief" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else story_qa_prompt(request) if task == "story_qa" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else revision_plan_prompt(request) if task == "revision_plan" else author_material_comparison_prompt(request) if task == "author_material_comparison" else continuity_prompt(request)
     return prompt, estimate_prompt_budget_units(prompt)
 
 
@@ -378,6 +399,8 @@ def input_budget_units_for(request: dict[str, Any], repair_budget_units: int | N
     """The estimate allowance of one request: screens and screened reviews get larger ones."""
     if request.get("task") == "continuity_screen":
         return SCREEN_INPUT_BUDGET_UNITS
+    if request.get("task") == "continuity_triage":
+        return TRIAGE_INPUT_BUDGET_UNITS
     if request.get("task") is None and request.get("pipeline") == "screened":
         return SCREENED_REVIEW_REPAIR_INPUT_BUDGET_UNITS if "contract_repair" in request else SCREENED_REVIEW_INPUT_BUDGET_UNITS
     if request.get("task") is None and "contract_repair" in request and repair_budget_units:
@@ -506,12 +529,10 @@ class DeepSeekProvider:
     def request_body(self, request: dict[str, Any], prompt: str) -> dict[str, Any]:
         body = {"model": self.model, "messages": [{"role": "user", "content": prompt}],
                 "response_format": {"type": "json_object"}}
-        quick = request.get("review_mode") == "quick"
-        if request.get("task") is None and self.review_thinking == "high" and not quick:
+        if request.get("task") is None and self.review_thinking == "high":
             cap = SCREENED_REVIEW_MAX_OUTPUT_TOKENS if request.get("pipeline") == "screened" else REVIEW_THINKING_MAX_OUTPUT_TOKENS
             return {**body, "thinking": {"type": "enabled"}, "reasoning_effort": "high", "max_tokens": cap}
-        max_tokens = (SCREEN_MAX_OUTPUT_TOKENS if request.get("task") == "continuity_screen" else
-                      QUICK_REVIEW_MAX_OUTPUT_TOKENS if quick else self.max_output_tokens)
+        max_tokens = SCREEN_MAX_OUTPUT_TOKENS if request.get("task") in ("continuity_screen", "continuity_triage") else self.max_output_tokens
         return {**body, "thinking": {"type": "disabled"}, "temperature": 0, "max_tokens": max_tokens}
 
     def _memory_initialization_prompt(self, request: dict[str, Any]) -> str:

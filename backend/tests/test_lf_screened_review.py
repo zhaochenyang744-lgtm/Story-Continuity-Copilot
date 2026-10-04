@@ -62,8 +62,9 @@ class Fake:
     continuity_contract_version = "v6"
     label = model_label = "lf-screened-fake"
 
-    def __init__(self, flag=lambda request: [], screen_answers=None, review=None):
+    def __init__(self, flag=lambda request: [], screen_answers=None, review=None, triage_answers=None):
         self.flag, self.screen_answers, self.review = flag, list(screen_answers or []), review
+        self.triage_answers = list(triage_answers or [])
         self.requests = []
 
     def evaluate(self, request):
@@ -75,6 +76,11 @@ class Fake:
                     raise answer
                 return ProviderResult(answer, input_tokens=10, output_tokens=2)
             return ProviderResult({"flags": self.flag(request)}, input_tokens=10, output_tokens=2)
+        if request.get("task") == "continuity_triage":
+            if self.triage_answers:
+                return ProviderResult(self.triage_answers.pop(0), input_tokens=5, output_tokens=1)
+            return ProviderResult({"scores": [{"id": s["id"], "score": 3 if "手指" in s["text"] else 1} for s in request["sentences"]]},
+                                  input_tokens=5, output_tokens=1)
         if self.review:
             return self.review(request)
         issues = []
@@ -105,7 +111,7 @@ class ScreenedReviewTests(unittest.TestCase):
         reviewed = [claim["id"] for request in provider.reviews() for claim in request["claims"]]
         self.assertEqual(reviewed, ["claim-5"])
         self.assertEqual(result["screening"], {"claims": 9, "screened": True, "parts": 1, "fallback_parts": 0, "flagged": 1, "reviewed": 1,
-                                               "quick_reviewed": 0, "escalated": 0, "deep_reviewed": 1, "safety_net": 0})
+                                               "triaged": 0, "triage_fallback_batches": 0, "escalated": 0, "deep_reviewed": 1, "safety_net": 0})
         self.assertEqual(result["retrieval_method_version"], screening.SCREENED_RETRIEVAL_METHOD_VERSION)
         states = {row["claim_id"]: row["screen"] for row in result["retrieval_traces"]}
         self.assertEqual(states["claim-5"], "flagged")
@@ -114,26 +120,61 @@ class ScreenedReviewTests(unittest.TestCase):
         # Screen and review usage are both counted.
         self.assertEqual((result["input_tokens"], result["output_tokens"]), (110, 22))
 
-    def test_check_flags_get_a_quick_review_and_only_its_findings_a_thinking_review(self):
+    def test_check_flags_are_triaged_and_only_what_the_triage_flags_gets_a_thinking_review(self):
         provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "check", "facts": []} for s in request["sentences"]])
         result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
-        quick = [r for r in provider.reviews() if r.get("review_mode") == "quick"]
-        deep = [r for r in provider.reviews() if r.get("review_mode") != "quick"]
-        self.assertEqual([len(r["claims"]) for r in quick], [6, 3])
-        self.assertEqual([claim["id"] for r in deep for claim in r["claims"]], ["claim-5"])
-        self.assertEqual((result["screening"]["quick_reviewed"], result["screening"]["escalated"], result["screening"]["deep_reviewed"]), (9, 1, 1))
+        triage = [r for r in provider.requests if r.get("task") == "continuity_triage"]
+        self.assertEqual([len(r["sentences"]) for r in triage], [screening.TRIAGE_MAX_CLAIMS, 9 - screening.TRIAGE_MAX_CLAIMS])
+        # Each passage appears once per triage request; sentences list the ones they may use.
+        self.assertTrue(all(len({p["id"] for p in r["passages"]}) == len(r["passages"]) for r in triage))
+        self.assertTrue(all(set(s["passages"]) <= {p["id"] for p in r["passages"]} for r in triage for s in r["sentences"]))
+        self.assertEqual([claim["id"] for r in provider.reviews() for claim in r["claims"]], ["claim-5"])
+        self.assertEqual((result["screening"]["triaged"], result["screening"]["escalated"], result["screening"]["deep_reviewed"]), (9, 1, 1))
         self.assertEqual([item["claim_span_id"] for item in result["issues"]], ["claim-5"])
-        # Usage of the screen, both quick reviews and the thinking review.
-        self.assertEqual(result["input_tokens"], 10 + 3 * 100)
+        paths = {row["claim_id"]: row.get("review") for row in result["retrieval_traces"]}
+        self.assertEqual((paths["claim-5"], paths["claim-1"]), ("escalated", "triage"))
+        # Usage of the screen, both triage requests and the thinking review.
+        self.assertEqual(result["input_tokens"], 10 + 2 * 5 + 100)
 
-    def test_a_quick_review_runs_without_thinking(self):
+    def test_parallel_triage_dispatches_keep_the_callers_context(self):
+        import contextvars
+        marker = contextvars.ContextVar("lf_triage_marker", default=None)
+
+        class Guarded(Fake):
+            continuity_batch_concurrency = 4
+
+            def evaluate(self, request):
+                if marker.get() != "set":
+                    raise AssertionError("dispatch lost the caller's context")
+                return super().evaluate(request)
+        provider = Guarded(flag=lambda request: [{"id": s["id"], "kind": "check", "facts": []} for s in request["sentences"]])
+        token = marker.set("set")
+        try:
+            result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:] + NEUTRAL[:4]))
+        finally:
+            marker.reset(token)
+        self.assertEqual(result["status"], "completed")
+        self.assertGreater(len([r for r in provider.requests if r.get("task") == "continuity_triage"]), 1)
+
+    def test_a_triage_answer_failing_twice_sends_its_claims_to_thinking_review(self):
+        provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "check", "facts": []} for s in request["sentences"][:3]],
+                        triage_answers=[{"wrong": 1}, {"scores": [{"id": "s1", "score": 1}]}])
+        result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
+        repair = [r for r in provider.requests if r.get("task") == "continuity_triage"][1]
+        self.assertEqual(repair["triage_repair"], {"reason_code": "triage_shape_invalid"})
+        # The second answer left two of the three sentences unscored, so the batch falls back.
+        self.assertEqual(result["screening"]["triage_fallback_batches"], 1)
+        self.assertEqual(sorted(claim["id"] for r in provider.reviews() for claim in r["claims"]), ["claim-1", "claim-2", "claim-3"])
+
+    def test_screen_and_triage_run_without_thinking(self):
         from app.provider import DeepSeekProvider
         with mock.patch.dict(os.environ, {"CONTINUITY_REVIEW_THINKING": "high"}):
             provider = DeepSeekProvider()
-        quick = provider.request_body({"pipeline": "screened", "review_mode": "quick"}, "{}")
+        for task in ("continuity_screen", "continuity_triage"):
+            body = provider.request_body({"task": task}, "{}")
+            self.assertEqual((body["thinking"], body["max_tokens"]), ({"type": "disabled"}, 4000))
         deep = provider.request_body({"pipeline": "screened"}, "{}")
-        self.assertEqual((quick["thinking"], quick["max_tokens"]), ({"type": "disabled"}, 4000))
-        self.assertEqual((deep["thinking"], deep["reasoning_effort"]), ({"type": "enabled"}, "high"))
+        self.assertEqual((deep["thinking"], deep["reasoning_effort"], deep["max_tokens"]), ({"type": "enabled"}, "high", 12000))
 
     def test_deep_reviews_carry_at_most_two_claims(self):
         provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "conflict", "facts": []} for s in request["sentences"]])
@@ -193,6 +234,19 @@ class ScreenedReviewTests(unittest.TestCase):
         result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
         self.assertEqual(result["screening"]["fallback_parts"], 0)
         self.assertEqual([claim["id"] for request in provider.reviews() for claim in request["claims"]], ["claim-5"])
+
+    def test_a_malformed_review_answer_costs_only_its_claims(self):
+        from app.provider import ProviderInvalidJson
+        calls = []
+        def review(request):
+            calls.append([claim["id"] for claim in request["claims"]])
+            if any(claim["id"] == "claim-5" for claim in request["claims"]):
+                raise ProviderInvalidJson(1, 1, None, 1, "stop")
+            return ProviderResult({"issues": [], "claim_verdicts": [{"claim_span_id": c["id"], "verdict": "no_issue", "basis": "见引用。"} for c in request["claims"]]}, input_tokens=1, output_tokens=1)
+        provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "conflict", "facts": []} for s in request["sentences"][3:6]], review=review)
+        result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(result["undecided_claims"], [{"claim_span_id": "claim-5", "error_code": "invalid_json"}])
 
     def test_a_screen_timeout_fails_the_run_as_timed_out(self):
         provider = Fake(screen_answers=[ProviderTimeout()])
@@ -292,6 +346,23 @@ class PipelineSwitchTests(unittest.TestCase):
 
 
 class PureHelperTests(unittest.TestCase):
+    def test_triage_escalates_the_highest_scores_up_to_the_cap(self):
+        claims = [{"id": f"c{i}", "context": "draft"} for i in range(10)]
+        scores = {f"c{i}": score for i, score in enumerate([3, 2, 2, 2, 2, 2, 2, 1, 0, 3])}
+        escalated = screening.triage_escalations(claims, scores)
+        self.assertEqual(len(escalated), screening.TRIAGE_ESCALATION_CAP)
+        self.assertTrue({"c0", "c9"} <= escalated)
+        self.assertFalse({"c7", "c8"} & escalated)
+        self.assertEqual(escalated - {"c0", "c9"}, {f"c{i}" for i in range(1, screening.TRIAGE_ESCALATION_CAP - 1)})
+
+    def test_parse_triage_requires_a_score_for_every_sentence(self):
+        ids = {"s1": "claim-1", "s2": "claim-2"}
+        self.assertEqual(screening.parse_triage({"scores": [{"id": "s1", "score": 2}, {"id": "s2", "score": 0}]}, ids), {"claim-1": 2, "claim-2": 0})
+        for bad in ({"scores": [{"id": "s1", "score": 2}]}, {"scores": [{"id": "s1", "score": 5}, {"id": "s2", "score": 0}]},
+                    {"scores": [{"id": "s9", "score": 1}, {"id": "s2", "score": 0}]}, {"suspicious": []}):
+            with self.assertRaises(screening.ScreenContractError):
+                screening.parse_triage(bad, ids)
+
     def test_context_window_keeps_short_text_and_windows_long_text(self):
         self.assertEqual(screening.context_window("短文。", ["短文。"]), "短文。")
         text = "甲" * 5000 + "目标句。" + "乙" * 5000
