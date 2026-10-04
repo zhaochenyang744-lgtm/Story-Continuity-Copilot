@@ -16,7 +16,7 @@ import httpx
 import uvicorn
 
 from app.config import AppPaths
-from app.engine import PROMPT_VERSION
+from app.engine import PROMPT_VERSION, SCREENED_PROMPT_VERSION, SCREENED_RETRIEVAL_METHOD_VERSION
 from app.engine import ContinuityEngine
 from app.main import create_app
 from app.provider import CONTINUITY_REVIEW_RULES, DeepSeekProvider, ProviderFailure, ProviderInvalidJson, ProviderResult, ProviderTimeout
@@ -261,7 +261,7 @@ class Stage4ContractTests(unittest.TestCase):
         reviewed=client.get(f"/api/projects/{grey}/checks/{queued['run_id']}?include=issues,evidence,metrics")
         self.assertEqual(reviewed.status_code,200)
         metrics=reviewed.json()['data']['metrics']; provenance=metrics['provenance']
-        self.assertEqual(provenance,{'provider_label':'contract-provider','model_label':'contract-model-v1','prompt_version':PROMPT_VERSION,'schema_version':'continuity-issue-v7-repair-diagnostics','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4})
+        self.assertEqual(provenance,{'provider_label':'contract-provider','model_label':'contract-model-v1','prompt_version':SCREENED_PROMPT_VERSION,'schema_version':'continuity-issue-v7-repair-diagnostics','retrieval_method_version':SCREENED_RETRIEVAL_METHOD_VERSION,'source_memory_version':4})
         self.assertTrue(metrics['retrieval'])
         self.assertEqual(client.get(f"/api/projects/{other}/checks/{queued['run_id']}?include=metrics").status_code,404)
         self.assertEqual(client.post(f'/api/projects/{grey}/reset',json={'confirm':True,'reason':'demo_recovery'},headers=key()).status_code,200)

@@ -21,7 +21,7 @@ from __future__ import annotations
 import math
 import re
 from collections import Counter
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Iterable
 
 PASSAGE_METHOD_VERSION = "passage-v1-bm25-entity-facts"
@@ -36,8 +36,10 @@ ENTITY_WEIGHT = 2.0
 RULE_WEIGHT = 1.5
 MIN_ENTITY_CHARS = 2
 _TOKEN = re.compile(r"[㐀-䶿一-鿿]")
-# A sentence ends at 。！？ (or ASCII !?) plus closing quotes, or at a line break.
-_SENTENCE_END = re.compile(r"[。！？!?]+[”’」』）)\]]*|\n+")
+_WORD = re.compile(r"[A-Za-z][A-Za-z'’-]*[A-Za-z]|\d+")
+# A sentence ends at 。！？ (or ASCII !?, or a full stop before a space or quote) plus closing quotes,
+# or at a line break.
+_SENTENCE_END = re.compile(r"(?:[。！？!?]+|\.(?=[\s”’\"')\]]|$))[”’」』）)\]\"']*|\n+")
 _RULE = re.compile(r"任何|不得|禁止|必须|永远|一律|不准|严禁|不许|只能|绝不|不可|规定|规矩|法令|戒律")
 
 
@@ -105,6 +107,9 @@ def split_passages(body: str, *, span_id: str, chapter_id: str, chapter_number: 
             passages.append(Passage(f"{span_id}:p{len(passages) + 1}", span_id, chapter_id, chapter_number,
                                     len(passages) + 1, left, right, body[left:right]))
         begin = end
+    if len(passages) == 1:
+        # A span that is a single passage keeps its own id: the passage is the span.
+        passages = [replace(passages[0], id=span_id)]
     return passages
 
 
@@ -127,10 +132,12 @@ _ATTRIBUTES = [(token, re.compile(pattern)) for token, pattern in ATTRIBUTE_CLAS
 
 
 def terms(text: str) -> Counter:
-    """Character 2- and 3-grams over the Chinese characters of a text, plus attribute-class terms."""
+    """Character 2- and 3-grams over the Chinese characters of a text, its Latin words and numbers
+    (lower-cased, so English drafts are retrieved too), plus attribute-class terms."""
     chars = "".join(_TOKEN.findall(text))
     grams = Counter(chars[i:i + 2] for i in range(len(chars) - 1))
     grams.update(chars[i:i + 3] for i in range(len(chars) - 2))
+    grams.update("w:" + word.casefold() for word in _WORD.findall(text))
     for token, pattern in _ATTRIBUTES:
         count = len(pattern.findall(text))
         if count:
@@ -152,6 +159,7 @@ class FactKey:
     """A confirmed fact as a retrieval key: its words and the chapter that established it."""
     text: str
     chapter_number: int
+    id: str | None = None
 
 
 def _idf(n: int, df: int) -> float:
@@ -179,7 +187,8 @@ class PassageIndex:
     _df: Counter = field(init=False, repr=False)
     _avg: float = field(init=False, repr=False)
     _entity_list: list[str] = field(init=False, repr=False)
-    _facts: list[tuple[Counter, int, Passage]] = field(init=False, repr=False)
+    _facts: list[tuple[Counter, int, Passage, FactKey]] = field(init=False, repr=False)
+    _fact_home: dict[str, Passage] = field(init=False, repr=False)
     _fact_df: Counter = field(init=False, repr=False)
     _fact_avg: float = field(init=False, repr=False)
 
@@ -197,16 +206,18 @@ class PassageIndex:
         by_chapter: dict[int, list[_Entry]] = {}
         for entry in self._entries:
             by_chapter.setdefault(entry.passage.chapter_number, []).append(entry)
-        self._facts, self._fact_df = [], Counter()
+        self._facts, self._fact_df, self._fact_home = [], Counter(), {}
         for fact in self.facts:
             tf = terms(fact.text)
             candidates = by_chapter.get(fact.chapter_number)
             if not tf or not candidates:
                 continue
             home = max(candidates, key=lambda entry: (sum(self._idf(t) for t in tf.keys() & entry.tf.keys()), -entry.passage.ordinal))
-            self._facts.append((tf, sum(tf.values()), home.passage))
+            self._facts.append((tf, sum(tf.values()), home.passage, fact))
             self._fact_df.update(tf.keys())
-        self._fact_avg = sum(length for _, length, _ in self._facts) / len(self._facts) if self._facts else 1.0
+            if fact.id is not None:
+                self._fact_home[fact.id] = home.passage
+        self._fact_avg = sum(row[1] for row in self._facts) / len(self._facts) if self._facts else 1.0
 
     def _idf(self, term: str) -> float:
         return _idf(len(self._entries), self._df.get(term, 0))
@@ -225,12 +236,23 @@ class PassageIndex:
         scored.sort(key=lambda row: (-row[0], row[1], row[2]))
         return [(score, passage) for score, _, _, passage in scored]
 
-    def _fact_ranking(self, wanted: set[str], before_chapter: int) -> list[tuple[float, Passage]]:
+    def _scored_facts(self, wanted: set[str], before_chapter: int) -> list[tuple[float, Passage, FactKey]]:
         idf = lambda term: _idf(len(self._facts), self._fact_df.get(term, 0))
-        scored = [(_bm25(wanted, tf, length, self._fact_avg, idf), passage) for tf, length, passage in self._facts
+        scored = [(_bm25(wanted, tf, length, self._fact_avg, idf), passage, fact) for tf, length, passage, fact in self._facts
                   if passage.chapter_number < before_chapter and wanted & tf.keys()]
-        scored.sort(key=lambda row: (-row[0], -row[1].chapter_number, row[1].ordinal))
+        scored.sort(key=lambda row: (-row[0], -row[1].chapter_number, row[1].ordinal, row[2].text))
         return scored
+
+    def _fact_ranking(self, wanted: set[str], before_chapter: int) -> list[tuple[float, Passage]]:
+        return [(score, passage) for score, passage, _ in self._scored_facts(wanted, before_chapter)]
+
+    def search_facts(self, query: str, *, before_chapter: int, k: int = 3) -> list[tuple[float, FactKey]]:
+        """The facts whose wording best matches the query, from chapters before `before_chapter`."""
+        return [(round(score, 4), fact) for score, _, fact in self._scored_facts(set(terms(query)), before_chapter)[:k]]
+
+    def fact_passage(self, fact_id: str) -> Passage | None:
+        """The passage a fact was mapped to: the one of its chapter that shares the most with it."""
+        return self._fact_home.get(fact_id)
 
     def search(self, query: str, *, before_chapter: int, k: int = 10, per_chapter: int = PER_CHAPTER) -> list[tuple[float, Passage]]:
         """Best passages from chapters before `before_chapter`, at most `per_chapter` per chapter.

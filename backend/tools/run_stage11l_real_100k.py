@@ -13,6 +13,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from fastapi.testclient import TestClient
 
+# Continuity runs record the per-sentence lexical retrieval (rollback switch) or the screened
+# pipeline's passage retrieval (long-text phase 4); Memory delta keeps the lexical one.
+CONTINUITY_RETRIEVAL_VERSIONS = {"bounded-lexical-v4-longform", "passage-v1-bm25-entity-facts"}
+
 from app.config import AppPaths
 from app.main import create_app
 from app.provider import DeepSeekProvider
@@ -214,7 +218,7 @@ def formal_run(sample: str, runtime_root: Path, provider: DeepSeekProvider) -> d
                 run_type=run.get("run_type", "unknown"); run_types.append(run_type)
                 provenance=run.get("metrics",{}).get("provenance",{}); retrieval_versions[run_type]=provenance.get("retrieval_method_version")
                 if run_type=="continuity":retrieval_trace_count=len(run.get("metrics",{}).get("retrieval",[]))
-            if sorted(run_types) != ["continuity", "memory_delta"] or set(retrieval_versions.values())!={"bounded-lexical-v4-longform"} or retrieval_trace_count<1:
+            if sorted(run_types) != ["continuity", "memory_delta"] or retrieval_versions.get("memory_delta")!="bounded-lexical-v4-longform" or retrieval_versions.get("continuity") not in CONTINUITY_RETRIEVAL_VERSIONS or retrieval_trace_count<1:
                 raise RunFailure("incremental_retrieval_invalid")
             summaries.append({"source_revision": revision, "memory_version":memory_version,"coverage_status":coverage_status,"core_decisions": core_count, "run_types": sorted(run_types),"retrieval_method_versions":retrieval_versions,"retrieval_trace_count":retrieval_trace_count})
     except RunFailure as error:

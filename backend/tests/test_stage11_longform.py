@@ -1,7 +1,8 @@
 import json
-import pathlib, tempfile, unittest, uuid
+import os, pathlib, tempfile, unittest, uuid
+from unittest import mock
 
-from app.engine import ContinuityEngine, MemoryDeltaEngine, MemoryInitializationEngine
+from app.engine import REVIEW_PIPELINE_ENV, ContinuityEngine, MemoryDeltaEngine, MemoryInitializationEngine
 from app.memory_contract import CONTROLLED_PREDICATES, is_controlled_candidate
 from app.provider import DeepSeekProvider, InputBudgetExceeded, ProviderFailure, ProviderInvalidJson, ProviderResult, ProviderTimeout, memory_initialization_prompt, request_prompt_and_budget
 from app.v2_database import V2Database
@@ -513,7 +514,10 @@ class Stage11BoundedContextTests(unittest.TestCase):
         draft = db.project(user, project)["current_draft"]
         body = "甲" * 600 + "。" + "乙" * 600 + "。" + "丙" * 600 + "。"
         patched, _ = db.patch_draft(user, project, draft["id"], {"title": "Stage 11 bounded", "body": body, "base_revision": draft["revision"]}, str(uuid.uuid4()))
-        run, _, _ = db.create_run(user, project, {"draft_id": draft["id"], "draft_revision": patched["revision"]}, str(uuid.uuid4()), ContinuityEngine(BatchProvider()).provenance())
+        # Per-sentence batching is the legacy pipeline; the run records it, so run_input serves it.
+        with mock.patch.dict(os.environ, {REVIEW_PIPELINE_ENV: "legacy"}):
+            provenance = ContinuityEngine(BatchProvider()).provenance()
+        run, _, _ = db.create_run(user, project, {"draft_id": draft["id"], "draft_revision": patched["revision"]}, str(uuid.uuid4()), provenance)
         input_data = db.run_input(project, run["run_id"])
         with db.connection() as connection:
             span = dict(connection.execute("SELECT id,chapter_id,body FROM v2_source_spans WHERE project_id=? ORDER BY id LIMIT 1", (project,)).fetchone())

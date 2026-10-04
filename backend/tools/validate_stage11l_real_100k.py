@@ -87,7 +87,7 @@ def validate_result(data:dict,raw_sha256:str)->bool:
             and data.get("initialization_core_decisions", 0) >= 1
             and len(data.get("incremental_rounds", [])) == 2
             and [row.get("memory_version") for row in data["incremental_rounds"]] == [2,3]
-            and all(row.get("run_types") == ["continuity", "memory_delta"] and row.get("core_decisions", 0) >= 1 and row.get("coverage_status")=="covered_with_memory_change" and row.get("retrieval_trace_count",0)>=1 and row.get("retrieval_method_versions")=={"continuity":"bounded-lexical-v4-longform","memory_delta":"bounded-lexical-v4-longform"} for row in data["incremental_rounds"])
+            and all(row.get("run_types") == ["continuity", "memory_delta"] and row.get("core_decisions", 0) >= 1 and row.get("coverage_status")=="covered_with_memory_change" and row.get("retrieval_trace_count",0)>=1 and row.get("retrieval_method_versions") in ({"continuity":version,"memory_delta":"bounded-lexical-v4-longform"} for version in ("bounded-lexical-v4-longform","passage-v1-bm25-entity-facts")) for row in data["incremental_rounds"])
             and isinstance(metrics,dict)
             and isinstance(metrics.get("total_batches"),int) and 1 <= metrics["total_batches"] <= 35
             and isinstance(metrics.get("schema_repair_attempts"),int) and not isinstance(metrics.get("schema_repair_attempts"),bool) and 0 <= metrics["schema_repair_attempts"] <= 5

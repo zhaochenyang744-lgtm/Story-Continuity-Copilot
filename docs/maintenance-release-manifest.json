@@ -68,6 +68,10 @@
       "target": "backend/app/provider.py"
     },
     {
+      "source": "backend/app/review_screening.py",
+      "target": "backend/app/review_screening.py"
+    },
+    {
       "source": "backend/app/seed_data.py",
       "target": "backend/app/seed_data.py"
     },
@@ -453,6 +457,7 @@
     "backend/tests/test_lf_bulk_memory_review.py",
     "backend/tests/test_lf_memory_as_of_chapter.py",
     "backend/tests/test_lf_passages.py",
+    "backend/tests/test_lf_screened_review.py",
     "backend/tests/test_lf_whole_chapter_memory.py",
     "backend/tests/test_long_term_independent.py",
     "backend/tests/test_long_term_workflow.py",

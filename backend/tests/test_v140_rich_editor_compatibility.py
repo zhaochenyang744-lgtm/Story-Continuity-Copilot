@@ -93,7 +93,8 @@ class RichEditorCompatibilityTests(unittest.TestCase):
         self.assertEqual(checked.status_code, 202)
         request = self.provider.requests[-1]
         visible = "引用段落。\n\n列表一\n列表二\n\n粗体词与斜体词，*字面星号*，C:\\雾港\\钥匙。"
-        self.assertEqual(request["draft"]["body"], "引用段落。\n列表一\n列表二\n\n粗体词与斜体词，*字面星号*，C:\\雾港\\钥匙。")
+        # The screened review shows the whole visible chapter as context.
+        self.assertEqual(request["draft"]["body"], visible)
         claim_text = "".join(item["text"] for item in request["claims"])
         self.assertNotIn("**", claim_text)
         self.assertNotIn("> ", claim_text)

@@ -204,7 +204,7 @@ class V7ContinuityContractTests(unittest.TestCase):
     def test_basis_limit_is_visible_and_exactly_400_characters_are_allowed(self):
         request, _ = captured("17")
         engine = ContinuityEngine(OfflineProvider())
-        current_request = engine._request(request["claims"], request["memory"], request["draft"])
+        current_request = engine._request(request["claims"], request)
         self.assertIn("400", json.dumps(current_request["output_schema"]["claim_verdicts"]))
         prompt = json.loads(continuity_prompt(current_request))
         self.assertIn("400", json.dumps(prompt["rules"]))
@@ -270,7 +270,7 @@ class V7ContinuityContractTests(unittest.TestCase):
             text = "Mira received the badge. " + "x" * count
             candidate["claims"][0]["text"] = text
             candidate["draft"]["body"] = text
-            request = engine._request(candidate["claims"], candidate["memory"], candidate["draft"])
+            request = engine._request(candidate["claims"], candidate)
             return candidate, request_prompt_and_budget(request)[1]
 
         low, high = 0, MAX_INPUT_BUDGET_UNITS * 4

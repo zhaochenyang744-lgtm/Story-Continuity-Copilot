@@ -4,7 +4,7 @@ from __future__ import annotations
 import json, pathlib, sqlite3, tempfile, unittest, uuid
 from fastapi.testclient import TestClient
 from app.config import AppPaths
-from app.engine import PROMPT_VERSION
+from app.engine import PROMPT_VERSION, SCREENED_PROMPT_VERSION, SCREENED_RETRIEVAL_METHOD_VERSION
 from app.database import DemoDatabase
 from app.main import create_app
 from app.provider import ProviderResult
@@ -84,7 +84,7 @@ class ScopedRegressionTests(unittest.TestCase):
         registration=client.post('/api/auth/register',json={'account_name':'metricuser','display_name':'Metric','password':'valid-password-99'},headers=h()).json()['data']; project=registration['onboarding']['tutorial']['project_id']; draft=client.get(f'/api/projects/{project}').json()['data']['current_draft']
         run=client.post(f'/api/projects/{project}/checks',json={'draft_id':draft['id'],'draft_revision':1},headers=h()).json()['data']['run_id']
         minimal=client.get(f'/api/projects/{project}/checks/{run}').json()['data']; detailed=client.get(f'/api/projects/{project}/checks/{run}?include=metrics').json()['data']
-        self.assertNotIn('metrics',minimal); self.assertEqual({key:detailed['metrics'][key] for key in ('latency_ms','input_tokens','output_tokens','cost_cny')},{'latency_ms':7,'input_tokens':33,'output_tokens':12,'cost_cny':None}); self.assertEqual(detailed['metrics']['provenance'],{'provider_label':'metrics-test','model_label':'metrics-test','prompt_version':PROMPT_VERSION,'schema_version':'continuity-issue-v7-repair-diagnostics','retrieval_method_version':'bounded-lexical-v4-longform','source_memory_version':4}); self.assertTrue(detailed['metrics']['retrieval'])
+        self.assertNotIn('metrics',minimal); self.assertEqual({key:detailed['metrics'][key] for key in ('latency_ms','input_tokens','output_tokens','cost_cny')},{'latency_ms':7,'input_tokens':33,'output_tokens':12,'cost_cny':None}); self.assertEqual(detailed['metrics']['provenance'],{'provider_label':'metrics-test','model_label':'metrics-test','prompt_version':SCREENED_PROMPT_VERSION,'schema_version':'continuity-issue-v7-repair-diagnostics','retrieval_method_version':SCREENED_RETRIEVAL_METHOD_VERSION,'source_memory_version':4}); self.assertTrue(detailed['metrics']['retrieval'])
 
     def test_login_rate_limit_only_counts_failed_attempts(self):
         account={'account_name':'regression','password':'valid-password-99'}

@@ -33,6 +33,10 @@ class BrowserTestProvider:
 
     def evaluate(self, request):
         self.calls += 1
+        if request.get("task") == "continuity_screen":
+            # The screened pipeline's screen: every sentence goes on to review, as before it.
+            return ProviderResult({"flags": [{"id": sentence["id"], "kind": "check", "facts": []} for sentence in request["sentences"]]},
+                                  input_tokens=40, output_tokens=8, cost_cny=0.0004, latency_ms=10)
         if request.get("task") == "author_material_comparison":
             material=request["comparison"]["material"]
             passage=request["comparison"]["passage"]
@@ -159,8 +163,9 @@ class BrowserTestProvider:
         memory_by_span = {item["source_span_id"]: item for item in request["memory"]}
         for index, claim in enumerate(request["claims"][:limit]):
             category = categories[index % len(categories)]
-            evidence = next((item for item in claim["allowed_evidence"] if item["id"] in memory_by_span), None)
-            memory = memory_by_span.get(evidence["id"]) if evidence else None
+            # A screened review cites passages; each keeps the SourceSpan it was cut from.
+            evidence = next((item for item in claim["allowed_evidence"] if item.get("source_span_id", item["id"]) in memory_by_span), None)
+            memory = memory_by_span.get(evidence.get("source_span_id", evidence["id"])) if evidence else None
             if limit == 20 and index % 3 == 2:
                 evidence, memory = None, None
             if not evidence or not memory:

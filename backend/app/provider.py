@@ -112,6 +112,13 @@ class ProviderResult:
 MAX_CLAIM_BASIS_CODEPOINTS = 400
 MAX_ISSUE_REASONING_CODEPOINTS = 800
 CONTINUITY_PROMPT_VERSION = "continuity-review-v24c-explicit-missing-link"
+# The screened pipeline (long-text phase 4): a cheap non-thinking screen picks the sentences worth a
+# careful look, and only those are reviewed, against passages of earlier chapters instead of whole
+# spans. The review keeps every v24c rule and adds SCREENED_REVIEW_RULES.
+CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25-screened-passages-quick-first-pass"
+CONTINUITY_SCREEN_PROMPT_VERSION = "continuity-screen-v1"
+SCREEN_KINDS = ("conflict", "gap", "check")
+SCREEN_MAX_FACTS_PER_FLAG = 3
 
 CONTINUITY_REVIEW_RULES = (
     "Write every author-facing explanation, reasoning, and suggested revision in the dominant language of the bound draft. Preserve proper nouns from the source.",
@@ -155,6 +162,26 @@ CONTINUITY_DECISION_EXAMPLES = (
     {"situation": "A source says a legal name and a pen name are the same writer; source and draft give that writer the same manuscript under different names.", "decision": "Same identity and compatible possession: emit no issue."},
 )
 
+SCREENED_REVIEW_RULES = (
+    "draft.body is the current chapter, or the part of it around the current claims. Judge only current_claims. The other draft sentences are context: they may narrate a transition, or tell who a pronoun or role refers to, and are never reported themselves.",
+    "Each evidence span is one passage of an earlier chapter, not the whole chapter. A passage that does not mention a point says nothing about it either way.",
+)
+
+# A quick review is the first pass for sentences the screen only marked worth a check; whatever it
+# reports gets a thinking review, so a doubt costs little and a silence is final.
+QUICK_REVIEW_RULES = (
+    "This is a first-pass review without deliberation. Whatever you report goes on to a careful review that decides it; what you pass is final. When the evidence might contradict a claim, or a claim settles a point the evidence leaves open, report it as possible_conflict or insufficient_evidence. Use no_issue only when the evidence supports the claim or does not bear on it.",
+)
+
+CONTINUITY_SCREEN_RULES = (
+    "You screen a draft chapter before a careful continuity review. The reviewer checks only the sentences you flag, against the full text of earlier chapters; an unflagged sentence is never checked. Missing a problem is far worse than flagging a sentence that turns out fine.",
+    "Flag a sentence when it states or presupposes something about the story world that earlier chapters could already have settled: a character's identity, name, age, appearance, origin or other attribute; kinship, role, rank or relationship; who holds, owns or keeps an object and its condition; where someone is or was at a stated time; what a character knows, learned, saw or was told, and from whom; whether, when, by whom and with what outcome an earlier event happened; counts, dates, durations, distances, prices or ranks; what a record, letter or report says; an action that a world rule permits, forbids or conditions.",
+    "kind conflict: a supplied fact contradicts the sentence, or seems to. kind gap: the sentence settles a point that the facts leave open, unknown, partial or only planned, requested or attempted, or it asserts a handoff, learning or authority that no fact provides. kind check: a specific assertion about an earlier-established person, object, place, event, number or rule that no supplied fact covers. The facts are a partial summary of earlier chapters, not their full text, so such a sentence may still contradict earlier text: flag it.",
+    "Do not flag a sentence that only narrates new action, dialogue, feeling, thought or scenery in the current scene without asserting an earlier-settled fact, a change this chapter itself narrates in an earlier sentence, or a generic remark.",
+    f"In facts list the ids of the supplied facts the sentence relates to, at most {SCREEN_MAX_FACTS_PER_FLAG}, most relevant first; use [] when none applies.",
+    "Return exactly one JSON object with exactly one key, flags. Flag each sentence at most once and use only supplied sentence ids. Return an empty flags array when nothing needs a careful look. Do not use Markdown.",
+)
+
 MEMORY_INITIALIZATION_RULES = (
     "Candidates are suggestions for an author, never canon. Do not claim facts that are not directly stated in the supplied source spans.",
     "Every candidate must contain memory_type, subject, predicate, value, chapter_id, and source_span_id. Copy memory_type exactly from this closed enum: static_canon, dynamic_state, event_timeline, character_knowledge, open_thread. Never put a predicate such as possession, rule, status, relationship, location, identity, affiliation, event_occurred, or knowledge into memory_type.",
@@ -195,6 +222,16 @@ MAX_OUTPUT_BUDGET_UNITS = 2000
 MEMORY_BATCH_TARGET_BUDGET_UNITS = 5800
 MAX_MEMORY_CANDIDATES_PER_BATCH = 8
 INPUT_BUDGET_ALGORITHM = "mixed-char-estimator-v1"
+# A screen carries a whole chapter part plus its related facts, and a screened review carries the
+# chapter as context plus passages for each claim. Input is cheap next to thinking output, so these
+# requests get a larger estimate allowance than the original 6,000 units.
+SCREEN_INPUT_BUDGET_UNITS = 16000
+SCREEN_MAX_OUTPUT_TOKENS = 4000
+SCREENED_REVIEW_INPUT_BUDGET_UNITS = 20000
+SCREENED_REVIEW_REPAIR_INPUT_BUDGET_UNITS = 24000
+# A quick review is a screened review without thinking, for sentences the screen only marked worth a
+# check; whatever it reports goes on to a thinking review. Six verdicts and an issue fit 4,000 tokens.
+QUICK_REVIEW_MAX_OUTPUT_TOKENS = 4000
 
 
 def estimate_prompt_budget_units(prompt: str) -> int:
@@ -240,11 +277,27 @@ def memory_initialization_prompt(request: dict[str, Any]) -> str:
     return json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
 
 
+def continuity_screen_prompt(request: dict[str, Any]) -> str:
+    return json.dumps({
+        "task": "Screen the draft sentences for a careful continuity review. Return exactly one JSON object with exactly one top-level key, flags.",
+        "prompt_version": CONTINUITY_SCREEN_PROMPT_VERSION,
+        "rules": list(CONTINUITY_SCREEN_RULES),
+        "facts": request["facts"],
+        "sentences": request["sentences"],
+        "output_schema": {"flags": [{"id": "supplied sentence id", "kind": "|".join(SCREEN_KINDS), "facts": ["supplied fact id"]}]},
+        **({"screen_repair": {"reason_code": request["screen_repair"].get("reason_code"),
+                              "instruction": "The previous response was rejected by the local validator. Screen the same sentences again and return flags exactly in output_schema, using only supplied sentence and fact ids."}}
+           if isinstance(request.get("screen_repair"), dict) else {}),
+    }, ensure_ascii=False, separators=(",", ":"))
+
+
 def continuity_prompt(request: dict[str, Any]) -> str:
+    screened = request.get("pipeline") == "screened"
     payload = {
             "task": "Review continuity only. Return exactly one JSON object with exactly two top-level keys, issues and claim_verdicts. Do not use Markdown or include any other top-level key.",
-            "prompt_version": CONTINUITY_PROMPT_VERSION,
-            "rules": list(CONTINUITY_REVIEW_RULES), "decision_examples": list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
+            "prompt_version": CONTINUITY_SCREENED_PROMPT_VERSION if screened else CONTINUITY_PROMPT_VERSION,
+            "rules": list(CONTINUITY_REVIEW_RULES) + (list(SCREENED_REVIEW_RULES) if screened else []) + (list(QUICK_REVIEW_RULES) if request.get("review_mode") == "quick" else []),
+            "decision_examples": list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
             # Each span appears once per request; a claim lists the ids it may cite. Repeating the
             # excerpt under every claim put 10 distinct spans into 113 slots on one real chapter.
             "evidence_spans": list({
@@ -317,8 +370,19 @@ def author_material_comparison_prompt(request: dict[str, Any]) -> str:
 
 def request_prompt_and_budget(request: dict[str, Any]) -> tuple[str, int]:
     task=request.get("task")
-    prompt = memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else context_brief_prompt(request) if task == "context_brief" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else story_qa_prompt(request) if task == "story_qa" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else revision_plan_prompt(request) if task == "revision_plan" else author_material_comparison_prompt(request) if task == "author_material_comparison" else continuity_prompt(request)
+    prompt = continuity_screen_prompt(request) if task == "continuity_screen" else memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else context_brief_prompt(request) if task == "context_brief" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else story_qa_prompt(request) if task == "story_qa" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else revision_plan_prompt(request) if task == "revision_plan" else author_material_comparison_prompt(request) if task == "author_material_comparison" else continuity_prompt(request)
     return prompt, estimate_prompt_budget_units(prompt)
+
+
+def input_budget_units_for(request: dict[str, Any], repair_budget_units: int | None = None) -> int:
+    """The estimate allowance of one request: screens and screened reviews get larger ones."""
+    if request.get("task") == "continuity_screen":
+        return SCREEN_INPUT_BUDGET_UNITS
+    if request.get("task") is None and request.get("pipeline") == "screened":
+        return SCREENED_REVIEW_REPAIR_INPUT_BUDGET_UNITS if "contract_repair" in request else SCREENED_REVIEW_INPUT_BUDGET_UNITS
+    if request.get("task") is None and "contract_repair" in request and repair_budget_units:
+        return repair_budget_units
+    return MAX_INPUT_BUDGET_UNITS
 
 
 def parse_json_content(content: Any) -> Any:
@@ -359,6 +423,12 @@ REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS = 9000
 REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT = "medium"
 REVIEW_THINKING_EFFORTS = ("high", REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT, "disabled")
 REVIEW_THINKING_RUN_TOKEN_BUDGET = 50000
+# A screened (long-text) thinking review carries one or two sentences. On the lf1 dev set (2026-10-04)
+# 13 of 15 such answers that finished thought for under 12,000 tokens, and a runaway at high effort
+# usually ran away again at medium. So it is capped lower, falls back straight to a non-thinking
+# answer, and does not lower the effort of the run's other reviews.
+SCREENED_REVIEW_MAX_OUTPUT_TOKENS = 12000
+SCREENED_REVIEW_EFFORTS = ("high", "disabled")
 REVIEW_THINKING_TIMEOUT_SECONDS = 90
 # Review batches of one check may be dispatched in parallel. Off (1) unless the deployment sets it, so
 # dev and eval harnesses keep their sequential, reproducible dispatch order.
@@ -431,17 +501,18 @@ class DeepSeekProvider:
         return REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS if self.review_thinking == "high" else None
 
     def input_budget_for(self, request: dict[str, Any]) -> int:
-        if request.get("task") is None and "contract_repair" in request and self.continuity_repair_input_budget_units:
-            return self.continuity_repair_input_budget_units
-        return MAX_INPUT_BUDGET_UNITS
+        return input_budget_units_for(request, self.continuity_repair_input_budget_units)
 
     def request_body(self, request: dict[str, Any], prompt: str) -> dict[str, Any]:
         body = {"model": self.model, "messages": [{"role": "user", "content": prompt}],
                 "response_format": {"type": "json_object"}}
-        if request.get("task") is None and self.review_thinking == "high":
-            return {**body, "thinking": {"type": "enabled"}, "reasoning_effort": "high",
-                    "max_tokens": REVIEW_THINKING_MAX_OUTPUT_TOKENS}
-        return {**body, "thinking": {"type": "disabled"}, "temperature": 0, "max_tokens": self.max_output_tokens}
+        quick = request.get("review_mode") == "quick"
+        if request.get("task") is None and self.review_thinking == "high" and not quick:
+            cap = SCREENED_REVIEW_MAX_OUTPUT_TOKENS if request.get("pipeline") == "screened" else REVIEW_THINKING_MAX_OUTPUT_TOKENS
+            return {**body, "thinking": {"type": "enabled"}, "reasoning_effort": "high", "max_tokens": cap}
+        max_tokens = (SCREEN_MAX_OUTPUT_TOKENS if request.get("task") == "continuity_screen" else
+                      QUICK_REVIEW_MAX_OUTPUT_TOKENS if quick else self.max_output_tokens)
+        return {**body, "thinking": {"type": "disabled"}, "temperature": 0, "max_tokens": max_tokens}
 
     def _memory_initialization_prompt(self, request: dict[str, Any]) -> str:
         return memory_initialization_prompt(request)
@@ -462,16 +533,18 @@ class DeepSeekProvider:
         # Runaway thinking can fill the whole output cap. Step down one effort per length stop, down to
         # a non-thinking answer, and report the combined usage of every dispatch. Within one review run
         # the stepped-down effort sticks (see review_effort_scope).
-        run_effort = _review_effort.get()
+        screened = request.get("pipeline") == "screened"
+        efforts = SCREENED_REVIEW_EFFORTS if screened else REVIEW_THINKING_EFFORTS
+        run_effort = None if screened else _review_effort.get()
         effort = (run_effort or {}).get("effort", "high")
         truncated: list[ProviderInvalidJson] = []
         while True:
             try:
                 result = self._send(self._review_body(body, effort))
             except ProviderInvalidJson as error:
-                if error.finish_reason == "length" and effort != REVIEW_THINKING_EFFORTS[-1]:
+                if error.finish_reason == "length" and effort != efforts[-1]:
                     truncated.append(error)
-                    effort = REVIEW_THINKING_EFFORTS[REVIEW_THINKING_EFFORTS.index(effort) + 1]
+                    effort = efforts[efforts.index(effort) + 1]
                     if run_effort is not None:
                         run_effort["effort"] = effort
                     continue

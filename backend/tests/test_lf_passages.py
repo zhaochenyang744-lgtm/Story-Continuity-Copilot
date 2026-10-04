@@ -107,6 +107,20 @@ class SearchTests(unittest.TestCase):
         hits = index.search("北堤门夜里开启", before_chapter=3, k=20)
         self.assertTrue(all(p.chapter_number < 3 for _, p in hits))
 
+    def test_english_text_is_retrieved_by_its_words(self):
+        chapters = {
+            1: "A named person may open the Clove Bridge archive only when that person wears the roster pin. " * 3,
+            2: "The dusk ledger lists Iven Sorr, and no other person, as the current wearer of the roster pin. " * 3,
+            3: "Palo Neris polishes the bridge rail with chalk paste. " * 3,
+        }
+        index = PassageIndex(passages_of(chapters), ["Palo Neris", "Iven Sorr"])
+        hits = index.search("Palo Neris alone may open the Clove Bridge archive.", before_chapter=4, k=3)
+        self.assertIn(1, [p.chapter_number for _, p in hits])
+        self.assertIn("w:archive", terms("The ARCHIVE opens."))
+        # Full stops end English sentences, so passages still break at sentence ends.
+        passages = split_passages("One more step. " * 100, span_id="s", chapter_id="c", chapter_number=1)
+        self.assertTrue(all(p.text.endswith(".") and len(p.text) <= PASSAGE_MAX + TAIL_SLACK for p in passages))
+
     def test_results_have_no_duplicates(self):
         index = PassageIndex(self.passages, ["北堤门"], [FactKey("北堤门 规则 只在清晨开启", 1)])
         hits = index.search("北堤门只在清晨开启", before_chapter=3, k=20)

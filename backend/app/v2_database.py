@@ -23,6 +23,7 @@ from .memory_contract import is_controlled_candidate, normalize_memory_value, no
 from .seed_data import CHAPTERS, DEMO_REVIEW_ISSUES, DRAFT, MEMORY_RECORDS
 from .text_content import DRAFT_BODY_FORMATS, visible_draft_text
 from . import long_term_workflow as workflow
+from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION, VERIFY_MAX_PASSAGES as SCREENED_MAX_TRACE_SPANS
 
 
 RUN_ACTIVE_STATUSES = {"queued", "running"}
@@ -52,6 +53,17 @@ TUTORIAL_EVENT_STEPS = {
 def split_continuity_claims(draft_text: str) -> list[str]:
     """One claim per sentence. The quota preflight counts claims with this same split."""
     return [part.strip() for part in re.split(r"(?<=[。！？])", draft_text) if part.strip()]
+
+
+def screened_trace_terms(trace: dict[str, Any]) -> str:
+    """A screened trace's screen outcome and review path, kept in the trace's terms column."""
+    terms = "screen:" + str(trace.get("screen") or "unscreened")
+    return terms + (";review:" + str(trace["review"]) if trace.get("review") in {"quick", "escalated", "deep"} else "")
+
+
+def parse_screened_trace_terms(terms: str) -> dict[str, str]:
+    parts = dict(part.split(":", 1) for part in terms.split(";") if ":" in part)
+    return {key: parts[key] for key in ("screen", "review") if key in parts}
 
 
 def public_run_status(status: str) -> str:
@@ -2644,12 +2656,20 @@ class V2Database:
             sources=self._delta_sources(c,project_id,batch["source_revision"]); memory=self._confirmed_memory(c,project_id,batch["base_memory_version"])
             historical={row["id"]:dict(row) for row in c.execute("SELECT s.id,s.chapter_id,s.label,s.body,ch.chapter_number,ch.title chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.project_id=? AND s.id IN (SELECT source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND source_span_id IS NOT NULL AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?))",(project_id,project_id,batch["base_memory_version"],batch["base_memory_version"],batch["base_memory_version"])).fetchall()}
             claims=[]; allowed=sorted(historical.values(),key=lambda row:(row["chapter_number"],row["id"]))
+            run=c.execute("SELECT retrieval_method_version FROM v2_runs WHERE id=?",(batch["continuity_run_id"],)).fetchone()
+            screened=bool(run) and run["retrieval_method_version"]==SCREENED_RETRIEVAL_METHOD_VERSION
             for source in sources:
                 for text in (part.strip() for part in re.split(r"(?<=[。！？])",source["body"])):
-                    if text: claims.append({"id":f"claim-{batch['continuity_run_id']}-{len(claims)+1}","text":text,"allowed_evidence":allowed})
+                    if not text:continue
+                    claim={"id":f"claim-{batch['continuity_run_id']}-{len(claims)+1}","text":text}
+                    # Screened: each new chapter is checked against the chapters before it, its own
+                    # text as context; legacy: against every span that holds confirmed Memory.
+                    claims.append({**claim,"chapter_number":source["chapter_number"],"context":source["id"]} if screened else {**claim,"allowed_evidence":allowed})
             revision_change=c.execute("SELECT mode FROM v2_source_change_sets WHERE project_id=? AND target_source_revision=? AND status='committed'",(project_id,batch["source_revision"])).fetchone()
             if not claims or (not memory and (not revision_change or revision_change["mode"]!="revise")): raise DomainError("insufficient_project_context",422)
-            return {"claims":claims,"memory":memory,"draft":{"id":batch["continuity_run_id"],"revision":batch["source_revision"],"body":"\n".join(x["text"] for x in claims)}},{"source_revision":batch["source_revision"],"sources":sources,"memory":memory}
+            continuity={"claims":claims,"memory":memory,"draft":{"id":batch["continuity_run_id"],"revision":batch["source_revision"],"body":"\n".join(x["text"] for x in claims)}}
+            if screened:continuity.update(pipeline="screened",sources=self._current_spans(c,project_id),contexts={source["id"]:source["body"] for source in sources})
+            return continuity,{"source_revision":batch["source_revision"],"sources":sources,"memory":memory}
 
     def advance_incremental_runs(self,project_id,batch_id,stage):
         with self.connection() as c:
@@ -2747,11 +2767,15 @@ class V2Database:
             inputs,sources,priorities=prepared
             trace_rows=continuity.get("retrieval_traces",[]); trace_by_claim={row.get("claim_id"):row.get("returned_span_ids") for row in trace_rows if isinstance(row,dict)}
             method=continuity.get("retrieval_method_version")
-            if method!="bounded-lexical-v4-longform":raise DomainError("retrieval_trace_invalid",422)
+            screened=inputs.get("pipeline")=="screened"
+            if method!=(SCREENED_RETRIEVAL_METHOD_VERSION if screened else "bounded-lexical-v4-longform"):raise DomainError("retrieval_trace_invalid",422)
             for ordinal,claim in enumerate(inputs["claims"],1):
-                returned=trace_by_claim.get(claim["id"]); allowed_ids={item["id"] for item in claim["allowed_evidence"]}
-                if not isinstance(returned,list) or len(returned)!=len(set(returned)) or len(returned)>3 or not set(returned)<=allowed_ids:raise DomainError("retrieval_trace_invalid",422)
-                c.execute("INSERT INTO v2_run_claims VALUES(?,?,?,?)",(claim["id"],batch["continuity_run_id"],ordinal,claim["text"])); c.execute("INSERT INTO v2_retrieval_traces VALUES(?,?,?,?,?)",(batch["continuity_run_id"],claim["id"],"bounded_lexical",json.dumps(returned),method))
+                returned=trace_by_claim.get(claim["id"])
+                allowed_ids={item["id"] for item in inputs["sources"]} if screened else {item["id"] for item in claim["allowed_evidence"]}
+                limit=SCREENED_MAX_TRACE_SPANS if screened else 3
+                if not isinstance(returned,list) or len(returned)!=len(set(returned)) or len(returned)>limit or not set(returned)<=allowed_ids:raise DomainError("retrieval_trace_invalid",422)
+                terms=screened_trace_terms(next((row for row in trace_rows if isinstance(row,dict) and row.get("claim_id")==claim["id"]),{})) if screened else "bounded_lexical"
+                c.execute("INSERT INTO v2_run_claims VALUES(?,?,?,?)",(claim["id"],batch["continuity_run_id"],ordinal,claim["text"])); c.execute("INSERT INTO v2_retrieval_traces VALUES(?,?,?,?,?)",(batch["continuity_run_id"],claim["id"],terms,json.dumps(returned),method))
             for issue in continuity.get("issues",[]):
                 self._persist_review_issue(c,project_id,batch["continuity_run_id"],batch["source_revision"],issue)
             for ordinal,(item,source,priority) in enumerate(zip(delta["candidates"],sources,priorities),1):
@@ -3143,7 +3167,7 @@ class V2Database:
                 status,terminal,error=self._normalized_terminal(result);retryable=bool(result.get("retryable")) or status in {"timed_out","cancelled"}
             duration=elapsed_ms(run["started_at"] or run["created_at"],stamp)
             normalizations=result.get("contract_normalizations") if isinstance(result.get("contract_normalizations"),list) else []
-            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome")=="insufficient_evidence" and item.get("provider_attempt")==2]
+            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome") in {"insufficient_evidence","possible_conflict"} and item.get("provider_attempt") in {1,2}]
             # A claim the review could not decide after its own bounded repair. Ids and codes only.
             undecided=result.get("undecided_claims") if isinstance(result.get("undecided_claims"),list) else []
             safe_undecided=[item for item in undecided if isinstance(item,dict) and set(item)=={"claim_span_id","error_code"} and isinstance(item.get("claim_span_id"),str) and isinstance(item.get("error_code"),str)]
@@ -3336,6 +3360,18 @@ class V2Database:
         excerpt = body[start:start + limit]
         return ("…" if start else "") + excerpt + ("…" if start + limit < len(body) else "")
 
+    def _current_spans(self, c: sqlite3.Connection, project_id: str) -> list[dict[str, Any]]:
+        """Every SourceSpan of the current manuscript, with its chapter number, in reading order."""
+        return [dict(x) for x in c.execute("SELECT s.id,s.chapter_id,s.body,s.label,ch.chapter_number FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id AND ch.source_revision=s.source_revision WHERE s.project_id=? ORDER BY ch.chapter_number,s.id",(project_id,)).fetchall()]
+
+    def _write_screened_traces(self, c: sqlite3.Connection, run_id: str, result: dict[str, Any], claim_ids: set[str]) -> None:
+        """The screened pipeline's per-claim traces: whether the screen flagged it and the spans reviewed."""
+        for trace in result.get("retrieval_traces") or []:
+            if not isinstance(trace,dict) or trace.get("claim_id") not in claim_ids:raise DomainError("retrieval_trace_invalid",422)
+            returned=trace.get("returned_span_ids")
+            if not isinstance(returned,list) or len(returned)!=len(set(returned)) or len(returned)>SCREENED_MAX_TRACE_SPANS or not all(isinstance(item,str) for item in returned):raise DomainError("retrieval_trace_invalid",422)
+            c.execute("INSERT OR REPLACE INTO v2_retrieval_traces VALUES(?,?,?,?,?)",(run_id,trace["claim_id"],screened_trace_terms(trace),json.dumps(returned),SCREENED_RETRIEVAL_METHOD_VERSION))
+
     def run_input(self, project_id: str, run_id: str) -> dict[str, Any]:
         with self.connection() as c:
             run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
@@ -3355,6 +3391,12 @@ class V2Database:
             source_memory_version=run["source_memory_version"]
             memory=[dict(x) for x in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id",(project_id,source_memory_version,source_memory_version,source_memory_version)).fetchall()]
             if not memory: raise DomainError("insufficient_project_context",422)
+            if run["retrieval_method_version"]==SCREENED_RETRIEVAL_METHOD_VERSION:
+                # The screened pipeline retrieves passages itself, after the screen; traces are written
+                # with the result. The draft comes after every chapter, so all of them are earlier text.
+                for claim in claims: claim["context"]="draft"
+                return {"run":dict(run),"pipeline":"screened","draft":{"id":revision["draft_id"],"revision":revision["revision"],"body":draft_text,"body_format":body_format},
+                        "claims":claims,"memory":memory,"sources":self._current_spans(c,project_id),"contexts":{"draft":draft_text}}
             spans=[dict(x) for x in c.execute("SELECT s.id,s.chapter_id,s.body,s.label FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id AND ch.source_revision=s.source_revision WHERE s.project_id=?",(project_id,)).fetchall()]
             for claim in claims:
                 characters="".join(re.findall(r"[\u4e00-\u9fffA-Za-z0-9]",claim["text"])); terms={characters[index:index+2] for index in range(max(0,len(characters)-1))}; scored=[]
@@ -3382,7 +3424,7 @@ class V2Database:
                 retryable=bool(result.get("retryable")) or status in {"timed_out","cancelled"}
             duration=elapsed_ms(run["started_at"] or (run["created_at"] if run["status"]=="queued" else None),stamp)
             normalizations=result.get("contract_normalizations") if isinstance(result.get("contract_normalizations"),list) else []
-            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome")=="insufficient_evidence" and item.get("provider_attempt")==2]
+            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome") in {"insufficient_evidence","possible_conflict"} and item.get("provider_attempt") in {1,2}]
             # A claim the review could not decide after its own bounded repair. Ids and codes only.
             undecided=result.get("undecided_claims") if isinstance(result.get("undecided_claims"),list) else []
             safe_undecided=[item for item in undecided if isinstance(item,dict) and set(item)=={"claim_span_id","error_code"} and isinstance(item.get("claim_span_id"),str) and isinstance(item.get("error_code"),str)]
@@ -3390,6 +3432,8 @@ class V2Database:
             if not changed:return False
             self._append_run_event(c,run_id,status,terminal,error,stamp)
             if status!="completed": return True
+            if run["retrieval_method_version"]==SCREENED_RETRIEVAL_METHOD_VERSION:
+                self._write_screened_traces(c,run_id,result,{row["id"] for row in c.execute("SELECT id FROM v2_run_claims WHERE run_id=?",(run_id,)).fetchall()})
             for issue in result.get("issues",[]):
                 self._persist_review_issue(c,project_id,run_id,run["source_revision"],issue)
             return True
@@ -3604,9 +3648,11 @@ class V2Database:
                 result["issues"]=issues
             if "metrics" in include:
                 traces=[]
-                for trace in c.execute("SELECT claim_id,returned_span_ids_json,method_version FROM v2_retrieval_traces WHERE run_id=? ORDER BY claim_id",(run_id,)).fetchall():
+                for trace in c.execute("SELECT claim_id,terms,returned_span_ids_json,method_version FROM v2_retrieval_traces WHERE run_id=? ORDER BY claim_id",(run_id,)).fetchall():
                     claim=c.execute("SELECT ordinal FROM v2_run_claims WHERE id=? AND run_id=?",(trace["claim_id"],run_id)).fetchone()
-                    traces.append({"claim_ordinal":claim["ordinal"] if claim else None,"returned_span_ids":json.loads(trace["returned_span_ids_json"]),"method_version":trace["method_version"]})
+                    row={"claim_ordinal":claim["ordinal"] if claim else None,"returned_span_ids":json.loads(trace["returned_span_ids_json"]),"method_version":trace["method_version"]}
+                    if trace["method_version"]==SCREENED_RETRIEVAL_METHOD_VERSION:row.update(parse_screened_trace_terms(str(trace["terms"])))
+                    traces.append(row)
                 result["metrics"]={**metrics,"retrieval":traces}
             return result
 
