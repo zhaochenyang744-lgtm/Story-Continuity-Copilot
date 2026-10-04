@@ -192,6 +192,9 @@ def cost_time(lf: LongformSet, records: dict[str, dict], meter: metering.Meter) 
             "seconds": _stats([r["seconds"] for r in done]),
             "cost_cny": _stats([r["check_cost"]["cost_cny"]["total"] for r in done]),
             "cost_cny_per_1000_chars": _stats([1000 * r["check_cost"]["cost_cny"]["total"] / r["chars"] for r in done if r["chars"]]),
+            # The same checks priced as the product meter prices them (a cache hit like any input token).
+            "product_meter_cost_cny": _stats([metering.PRODUCTION_PRICES.cost(r["check_cost"]["tokens"]["input_miss"], r["check_cost"]["tokens"]["input_hit"],
+                                                                              r["check_cost"]["tokens"]["reasoning"] + r["check_cost"]["tokens"]["visible_output"]) for r in done]),
         },
         "selections": selections,
         "check_totals": meter.summary("check"),
@@ -276,7 +279,7 @@ def main(argv: list[str] | None = None) -> int:
 
     discount = None
     if args.cache_hit_price is not None:
-        p = metering.PRODUCTION_PRICES
+        p = metering.GATE_PRICES
         discount = metering.Prices(p.input_miss, args.cache_hit_price, p.output)
     budget = thresholds.FORMAL_BUDGET_CNY if args.mode == "formal" else args.budget_cny
     meter = metering.Meter(budget_cny=budget, replay=args.replay, discount_prices=discount, live_phases=("check",) if args.live_check else ())

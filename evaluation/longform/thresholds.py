@@ -21,6 +21,13 @@ DRAFTED_ON = "2026-10-04"
 APPROVED = True
 APPROVED_ON: str | None = "2026-10-04"
 FORMAL_BUDGET_CNY = 25.0
+# Amended 2026-10-05 by the user, before any formal long-form run but after the phase-4 dev runs:
+# the cost bar is measured at what DeepSeek actually bills for deepseek-flash at peak hours (cache hit
+# 0.04 CNY per million input tokens, see meter.GATE_PRICES) instead of pricing a cache hit like any
+# other input token (2.0). Reason: the bar is about the money spent, and the dev runs showed about
+# 40% of input tokens are cache hits (0.30-0.34 CNY per chapter at the old basis, 0.24-0.28 at the
+# billed one). No number in QUALITY or COST_TIME changed; the product-meter figure is still reported.
+PRICE_BASIS = {"input_miss": 2.0, "input_hit": 0.04, "output": 8.0, "amended_on": "2026-10-05"}
 
 QUALITY = {
     # Same bars as the short-text sets, now per labelled point inside ~2,500-character chapters.

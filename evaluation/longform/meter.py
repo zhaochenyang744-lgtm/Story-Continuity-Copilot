@@ -65,9 +65,13 @@ class Prices:
 
 
 # The deployment's rates (deploy.env: CONTINUITY_INPUT/OUTPUT_CNY_PER_MILLION = 2.0 / 8.0). The
-# product meter has no cache-hit rate, so the gate prices a cache hit like any other input token;
-# a discounted estimate is reported beside it, never instead of it.
+# product meter has no cache-hit rate, so it prices a cache hit like any other input token. Reported
+# beside the gate's cost as the product-meter estimate.
 PRODUCTION_PRICES = Prices(input_miss=2.0, input_hit=2.0, output=8.0)
+# What DeepSeek actually bills for deepseek-flash at peak hours (api-docs.deepseek.com pricing,
+# checked 2026-10-05): cache miss 2.0, cache hit 0.04, output 8.0; off-peak is half. The cost bar is
+# measured at these rates since the user's amendment of 2026-10-05 (thresholds.PRICE_BASIS).
+GATE_PRICES = Prices(input_miss=2.0, input_hit=0.04, output=8.0)
 
 
 class BudgetExceeded(ProviderDispatchDenied):
@@ -162,7 +166,7 @@ def usage_split(usage: dict | None) -> dict | None:
 
 
 class Meter:
-    def __init__(self, prices: Prices = PRODUCTION_PRICES, budget_cny: float | None = None,
+    def __init__(self, prices: Prices = GATE_PRICES, budget_cny: float | None = None,
                  replay: str = "off", cache_dir: pathlib.Path | None = None,
                  discount_prices: Prices | None = None, live_phases: tuple[str, ...] = ()):
         if replay not in REPLAY_MODES:

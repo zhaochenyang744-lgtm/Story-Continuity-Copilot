@@ -391,7 +391,9 @@ class MeterTests(unittest.TestCase):
         summary = meter.summary()
         self.assertEqual(summary["tokens"], {"input_miss": 2400, "input_hit": 600, "reasoning": 750, "visible_output": 150})
         self.assertEqual(set(summary["by_purpose"]), {"review", "length_retry", "contract_repair"})
-        self.assertAlmostEqual(summary["cost_cny"]["total"], 3 * (1000 * 2.0 + 300 * 8.0) / 1e6)
+        # Gate prices: a cache hit at DeepSeek's billed 0.04 CNY per million (amended 2026-10-05).
+        self.assertAlmostEqual(summary["cost_cny"]["total"], 3 * (800 * 2.0 + 200 * 0.04 + 300 * 8.0) / 1e6)
+        self.assertAlmostEqual(metering.PRODUCTION_PRICES.cost(2400, 600, 900), 3 * (1000 * 2.0 + 300 * 8.0) / 1e6)
         self.assertEqual(meter.fingerprints, ["fp-test"])
 
     def test_budget_cap_refuses_before_sending(self):
