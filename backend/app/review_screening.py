@@ -13,8 +13,10 @@ minutes (2026-09-30 production measurement). The screened pipeline instead:
    through a triage first, a second non-thinking screen that sees their passages and scores how
    likely a careful review would find a problem; the highest scores, at most TRIAGE_ESCALATION_CAP
    per chapter, get a thinking review.
-   Thinking reviews carry at most two sentences: on the lf1 dev set (2026-10-04) batches of three or
-   four sentences with 10-15 passages filled the 16,000-token output cap with thinking again and again.
+   Thinking reviews carry one sentence each: on the lf1 dev set (2026-10-04) batches of three or
+   four sentences filled the 16,000-token output cap with thinking again and again, and even in pairs
+   a sentence's verdict depended on its batch-mate (one conflict judged correctly alone was missed in
+   every paired run).
 
 Drafts of at most SCREEN_MIN_CLAIMS sentences skip the screen and are reviewed whole: a screen saves
 nothing there and could only miss. Evidence for a sentence of chapter N comes only from chapters
@@ -39,7 +41,7 @@ SCREEN_MAX_FACTS = 90
 VERIFY_PASSAGE_CHARS = 2500
 VERIFY_MAX_PASSAGES = 8
 DEEP_KINDS = ("conflict", "gap")
-DEEP_MAX_CLAIMS = 2
+DEEP_MAX_CLAIMS = 1
 TRIAGE_MAX_CLAIMS = 8
 TRIAGE_ESCALATION_MIN_SCORE = 2
 TRIAGE_ESCALATION_CAP = 4

@@ -446,11 +446,11 @@ REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS = 9000
 REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT = "medium"
 REVIEW_THINKING_EFFORTS = ("high", REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT, "disabled")
 REVIEW_THINKING_RUN_TOKEN_BUDGET = 50000
-# A screened (long-text) thinking review carries one or two sentences. On the lf1 dev set (2026-10-04)
-# 13 of 15 such answers that finished thought for under 12,000 tokens, and a runaway at high effort
-# usually ran away again at medium. So it is capped lower, falls back straight to a non-thinking
-# answer, and does not lower the effort of the run's other reviews.
-SCREENED_REVIEW_MAX_OUTPUT_TOKENS = 12000
+# A screened (long-text) thinking review carries one sentence. On the lf1 dev set (2026-10-04) most
+# single-sentence answers that finished thought for under 8,000 tokens, a runaway at high effort usually
+# ran away again at medium, and runaways were about a third of the check's cost. So it is capped lower,
+# falls back straight to a non-thinking answer, and does not lower the effort of the run's other reviews.
+SCREENED_REVIEW_MAX_OUTPUT_TOKENS = 8000
 SCREENED_REVIEW_EFFORTS = ("high", "disabled")
 REVIEW_THINKING_TIMEOUT_SECONDS = 90
 # Review batches of one check may be dispatched in parallel. Off (1) unless the deployment sets it, so

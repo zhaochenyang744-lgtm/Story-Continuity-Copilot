@@ -174,13 +174,13 @@ class ScreenedReviewTests(unittest.TestCase):
             body = provider.request_body({"task": task}, "{}")
             self.assertEqual((body["thinking"], body["max_tokens"]), ({"type": "disabled"}, 4000))
         deep = provider.request_body({"pipeline": "screened"}, "{}")
-        self.assertEqual((deep["thinking"], deep["reasoning_effort"], deep["max_tokens"]), ({"type": "enabled"}, "high", 12000))
+        self.assertEqual((deep["thinking"], deep["reasoning_effort"], deep["max_tokens"]), ({"type": "enabled"}, "high", 8000))
 
-    def test_deep_reviews_carry_at_most_two_claims(self):
+    def test_deep_reviews_carry_one_claim_each(self):
         provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "conflict", "facts": []} for s in request["sentences"]])
         ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
         self.assertTrue(provider.reviews())
-        self.assertTrue(all(len(r["claims"]) <= 2 for r in provider.reviews()))
+        self.assertTrue(all(len(r["claims"]) == 1 for r in provider.reviews()))
 
     def test_evidence_is_bound_back_to_the_source_span_with_the_passage_text(self):
         provider = Fake(flag=flag_hand)
