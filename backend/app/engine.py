@@ -50,7 +50,9 @@ PROVIDER_ATTEMPT_QUOTA_EXCEEDED="provider_attempt_quota_exceeded"
 # long-form worst case at 6,324 of 6,000 units) is sent with these tighter bounds instead of failing.
 SINGLE_CLAIM_FALLBACK_BOUNDS=((CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS,RELATED_MEMORY_LIMIT),(400,12),(300,10),(200,8))
 # The screened equivalent: fewer passages, then fewer Memory rows.
-SCREENED_SINGLE_CLAIM_FALLBACK_BOUNDS=((screening.VERIFY_MAX_PASSAGES,RELATED_MEMORY_LIMIT),(4,12),(2,10),(1,8))
+# A screened review sees passages of the source text itself, so it carries fewer Memory rows.
+SCREENED_RELATED_MEMORY_LIMIT=10
+SCREENED_SINGLE_CLAIM_FALLBACK_BOUNDS=((screening.VERIFY_MAX_PASSAGES,SCREENED_RELATED_MEMORY_LIMIT),(4,8),(2,6),(1,5))
 MEMORY_DELTA_RELATED_MEMORY_LIMIT=20
 # A batch may return MAX_MEMORY_CANDIDATES_PER_BATCH facts, so batches are also capped by source text
 # (about one ordinary chapter): packing several chapters into one request let the first crowd out the
@@ -450,7 +452,7 @@ class ContinuityEngine:
         used={item["id"]:item for claim in selected for item in self._related_memory(claim,memory,memory_limit)}
         full=data["contexts"][claims[0]["context"]]
         body=screening.context_window(full,[claim["text"] for claim in claims])
-        return {"pipeline":"screened","draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":selected,
+        return {"pipeline":"screened",**({"second_look":True} if data.get("second_look") else {}),"draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":selected,
                 "memory":[{**used[key],"chapter_number":chapters.get(key)} for key in sorted(used,key=lambda key:_memory_sort_key(used[key]))],"output_schema":_continuity_schema(),"full_draft_body":full}
 
     def _fits(self,request:dict[str,Any])->bool:
@@ -557,12 +559,35 @@ class ContinuityEngine:
         summary["deep_reviewed"]=len(deep)
         # A short draft keeps the per-sentence batching (and the quota preflight's arithmetic) of before.
         limit=screening.DEEP_MAX_CLAIMS if summary["screened"] else CONTINUITY_MAX_CLAIMS_PER_BATCH
-        result=self._execute({**base,"claims":deep,"max_claims_per_batch":limit,"settled_by_screen":summary["screened"]},prior_results=results)
+        result=self._execute({**base,"claims":deep,"max_claims_per_batch":limit,"settled_by_screen":summary["screened"]},prior_results=results,keep_results=True)
+        if summary["screened"] and result["status"]=="completed":
+            result=self._second_look(result,deep,flags,base,summary)
+        result={key:value for key,value in result.items() if key!="_results"}
         paths={claim["id"]:("escalated" if claim["id"] in escalated else "deep") for claim in deep}
         paths.update({claim["id"]:"triage" for claim in triaged if claim["id"] not in escalated})
         result={**result,"retrieval_traces":screening.retrieval_traces(claims,{claim["id"]:claim["allowed_evidence"] for claim in reviewed},flags,summary["screened"],paths),
                 "retrieval_method_version":SCREENED_RETRIEVAL_METHOD_VERSION,"screening":summary}
         return result
+
+    def _second_look(self,result:dict[str,Any],deep:list[dict[str,Any]],flags:dict[str,Any],base:dict[str,Any],summary:dict[str,Any])->dict[str,Any]:
+        """A missing-link second look at sentences the screen saw a conflict or gap in but the first review passed.
+
+        Only insufficient_evidence findings are taken from it; a failed or undecided second look leaves
+        the first review's outcome as it was, with the usage of both counted.
+        """
+        decided={issue["claim_span_id"] for issue in result["issues"]}|{row["claim_span_id"] for row in result["undecided_claims"]}
+        again=[claim for claim in deep if flags[claim["id"]]["kind"] in screening.DEEP_KINDS and claim["id"] not in decided]
+        summary.update(second_look=len(again),second_look_found=0)
+        if not again:return result
+        second=self._execute({**base,"claims":again,"max_claims_per_batch":1,"settled_by_screen":True,"second_look":True},prior_results=result["_results"],keep_results=True)
+        totals={key:second.get(key) for key in ("input_tokens","output_tokens","latency_ms","cost_cny")}
+        if second["status"]!="completed":return {**result,**totals,"_results":second.get("_results",result["_results"])}
+        order={claim["id"]:index for index,claim in enumerate(base["claims"])}
+        found=[issue for issue in second["issues"] if issue.get("nature")=="insufficient_evidence"]
+        summary["second_look_found"]=len(found)
+        return {**result,**totals,"_results":second["_results"],"issues":sorted(result["issues"]+found,key=lambda item:order[item["claim_span_id"]]),
+                "contract_normalizations":result["contract_normalizations"]+[row for row in second["contract_normalizations"] if row["claim_span_id"] in {issue["claim_span_id"] for issue in found}],
+                "contract_normalization_count":result["contract_normalization_count"]+sum(1 for row in second["contract_normalizations"] if row["claim_span_id"] in {issue["claim_span_id"] for issue in found})}
 
     def _triage(self,claims:list[dict[str,Any]],contexts:dict[str,str],results:list[Any],summary:dict[str,Any])->set[str]|dict[str,Any]:
         """Claim ids to escalate by triage score; {"error": exception} when a dispatch fails.
@@ -652,7 +677,7 @@ class ContinuityEngine:
         if isinstance(error,ProviderFailure):return {"status":"failed","error_code":"provider_error","retryable":True,**_aggregate_attempt_failure(results,error)}
         return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate_attempt_failure(results,error)}
 
-    def _execute(self,data:dict[str,Any],prior_results:list[Any]|None=None)->dict[str,Any]:
+    def _execute(self,data:dict[str,Any],prior_results:list[Any]|None=None,keep_results:bool=False)->dict[str,Any]:
         if not self.provider.available:return {"status":"failed","error_code":"provider_unavailable","retryable":True}
         prior_results=list(prior_results or [])
         try:batches=self._batches(data)
@@ -712,7 +737,7 @@ class ContinuityEngine:
         # Nothing survived, so there is no partial result worth showing: keep the old failure.
         # After a screen most sentences are already settled, so undecided ones are reported, never the run's failure.
         if undecided and len(undecided)==len(data["claims"]) and not data.get("settled_by_screen"): return {"status":"failed","error_code":undecided[0]["error_code"],"retryable":True,**totals}
-        return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,"undecided_claim_count":len(undecided),"undecided_claims":undecided,**totals}
+        return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,"undecided_claim_count":len(undecided),"undecided_claims":undecided,**totals,**({"_results":results} if keep_results else {})}
 
     def _review_batch(self,batch:dict[str,Any],data:dict[str,Any],run_budget:int)->dict[str,Any]:
         """One batch through its first answer and at most one contract repair.

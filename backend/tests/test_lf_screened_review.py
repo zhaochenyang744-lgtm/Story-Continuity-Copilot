@@ -111,7 +111,8 @@ class ScreenedReviewTests(unittest.TestCase):
         reviewed = [claim["id"] for request in provider.reviews() for claim in request["claims"]]
         self.assertEqual(reviewed, ["claim-5"])
         self.assertEqual(result["screening"], {"claims": 9, "screened": True, "parts": 1, "fallback_parts": 0, "flagged": 1, "reviewed": 1,
-                                               "triaged": 0, "triage_fallback_batches": 0, "escalated": 0, "deep_reviewed": 1, "safety_net": 0})
+                                               "triaged": 0, "triage_fallback_batches": 0, "escalated": 0, "deep_reviewed": 1, "safety_net": 0,
+                                               "second_look": 0, "second_look_found": 0})
         self.assertEqual(result["retrieval_method_version"], screening.SCREENED_RETRIEVAL_METHOD_VERSION)
         states = {row["claim_id"]: row["screen"] for row in result["retrieval_traces"]}
         self.assertEqual(states["claim-5"], "flagged")
@@ -175,6 +176,29 @@ class ScreenedReviewTests(unittest.TestCase):
             self.assertEqual((body["thinking"], body["max_tokens"]), ({"type": "disabled"}, 4000))
         deep = provider.request_body({"pipeline": "screened"}, "{}")
         self.assertEqual((deep["thinking"], deep["reasoning_effort"], deep["max_tokens"]), ({"type": "enabled"}, "high", 8000))
+
+    def test_a_passed_conflict_or_gap_flag_gets_a_missing_link_second_look(self):
+        def review(request):
+            claim = request["claims"][0]
+            span = claim["allowed_evidence"][0]
+            verdict = lambda kind: [{"claim_span_id": claim["id"], "verdict": kind, "basis": "见引用。"}]
+            if not request.get("second_look"):
+                return ProviderResult({"issues": [], "claim_verdicts": verdict("no_issue")}, input_tokens=100, output_tokens=10)
+            if "手指" in claim["text"]:
+                gap = issue(claim, span)
+                gap.update(status="insufficient_evidence", nature="insufficient_evidence", available_actions=[])
+                gap["evidence"][0].update(relation="context", sufficiency="insufficient")
+                gap["evidence_chain"][0]["role"] = "missing_link"
+                return ProviderResult({"issues": [gap], "claim_verdicts": verdict("insufficient_evidence")}, input_tokens=100, output_tokens=10)
+            # A conflict from the second look is not taken.
+            return ProviderResult({"issues": [issue(claim, span)], "claim_verdicts": verdict("reviewed_issue")}, input_tokens=100, output_tokens=10)
+        provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "gap", "facts": []} for s in request["sentences"][3:5]], review=review)
+        result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
+        second = [r for r in provider.reviews() if r.get("second_look")]
+        self.assertEqual(sorted(r["claims"][0]["id"] for r in second), ["claim-4", "claim-5"])
+        self.assertEqual([(i["claim_span_id"], i["nature"]) for i in result["issues"]], [("claim-5", "insufficient_evidence")])
+        self.assertEqual((result["screening"]["second_look"], result["screening"]["second_look_found"]), (2, 1))
+        self.assertEqual(result["input_tokens"], 10 + 4 * 100)
 
     def test_deep_reviews_carry_one_claim_each(self):
         provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "conflict", "facts": []} for s in request["sentences"]])

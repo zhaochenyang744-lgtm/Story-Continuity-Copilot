@@ -44,7 +44,9 @@ DEEP_KINDS = ("conflict", "gap")
 DEEP_MAX_CLAIMS = 1
 TRIAGE_MAX_CLAIMS = 8
 TRIAGE_ESCALATION_MIN_SCORE = 2
-TRIAGE_ESCALATION_CAP = 4
+TRIAGE_ESCALATION_CAP = 3
+# The triage only scores, so each sentence brings its three best passages.
+TRIAGE_PASSAGES_PER_CLAIM = 3
 # One evaluation of a screened review may send its larger input up to three times (high, medium and
 # a non-thinking fallback), so it gets a larger token guard than the per-sentence review's 50,000.
 SCREENED_RUN_TOKEN_BUDGET = 90000
@@ -195,13 +197,13 @@ def triage_request(claims: list[dict[str, Any]], context: str) -> tuple[dict[str
     passage_ids: dict[str, str] = {}
     passages = []
     for claim in claims:
-        for span in claim["allowed_evidence"]:
+        for span in claim["allowed_evidence"][:TRIAGE_PASSAGES_PER_CLAIM]:
             if span["id"] not in passage_ids:
                 passage_ids[span["id"]] = f"p{len(passage_ids) + 1}"
                 passages.append({"id": passage_ids[span["id"]], "chapter": span.get("chapter_number"), "text": span["prompt_excerpt"]})
     sentence_ids = {f"s{position + 1}": claim["id"] for position, claim in enumerate(claims)}
     request = {"task": "continuity_triage", "chapter": context_window(context, [claim["text"] for claim in claims]), "passages": passages,
-               "sentences": [{"id": short, "text": claim["text"], "passages": [passage_ids[span["id"]] for span in claim["allowed_evidence"]]}
+               "sentences": [{"id": short, "text": claim["text"], "passages": [passage_ids[span["id"]] for span in claim["allowed_evidence"][:TRIAGE_PASSAGES_PER_CLAIM]]}
                              for short, claim in zip(sentence_ids, claims)]}
     return request, sentence_ids
 
