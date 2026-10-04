@@ -44,7 +44,7 @@ DEEP_KINDS = ("conflict", "gap")
 DEEP_MAX_CLAIMS = 1
 TRIAGE_MAX_CLAIMS = 8
 TRIAGE_ESCALATION_MIN_SCORE = 2
-TRIAGE_ESCALATION_CAP = 3
+TRIAGE_ESCALATION_CAP = 4
 # The triage only scores, so each sentence brings its three best passages.
 TRIAGE_PASSAGES_PER_CLAIM = 3
 # One evaluation of a screened review may send its larger input up to three times (high, medium and
