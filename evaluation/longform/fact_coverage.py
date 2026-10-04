@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import dataclasses
 import json
 import pathlib
 import re
@@ -40,6 +41,9 @@ from app.main import create_app  # noqa: E402
 from app.stage13 import Stage13Settings  # noqa: E402
 
 MIN_SHARED_BIGRAMS = 2
+# A whole-book import needs more provider dispatches than one account's rolling 24-hour quota
+# (120 for registered users); the measurement lifts that quota, the product keeps it.
+MEASUREMENT_SETTINGS = dataclasses.replace(Stage13Settings.for_test(), registered_provider_attempts=5000)
 STOP_BIGRAMS = {"一个", "没有", "自己", "他们", "我们", "什么", "这个", "那个", "已经", "时候", "因为", "所以", "可以", "不是"}
 
 
@@ -62,11 +66,12 @@ def extract_facts(lf: LongformSet, work: str, provider, meter: metering.Meter, c
     chapters = [c for c in lf.works[work] if not chapter_limit or c.index <= chapter_limit]
     root = pathlib.Path(tempfile.mkdtemp(prefix="longform-facts-"))
     app = create_app(AppPaths.from_project_root(root, protected_poc_root=root / "protected"),
-                     provider=provider, executor=lambda fn, *args: fn(*args), settings=Stage13Settings.for_test())
+                     provider=provider, executor=lambda fn, *args: fn(*args), settings=MEASUREMENT_SETTINGS)
     client = TestClient(app)
     data(client.post("/api/auth/register", json={"account_name": f"lf{uuid.uuid4().hex[:8]}", "display_name": "Facts",
                                                   "password": "longform-local-pass-123", "recovery_email": "facts@example.test"}, headers=idem()))
-    source = "\n\n".join(f"# {c.title}\n\n{c.body}" for c in chapters) + "\n"
+    # Single line breaks: the product's import limit counts every character, blank lines included.
+    source = "\n".join(f"# {c.title}\n" + "\n".join(line for line in c.body.split("\n") if line.strip()) for c in chapters) + "\n"
     preview = data(client.post("/api/imports/preview", files={"file": ("work.md", source.encode("utf-8"), "text/markdown")}, headers=idem()))
     project = data(client.post(f"/api/imports/{preview['import_id']}/commit", json={
         "confirm": True, "title": work, "chapter_preview_ids": [row["preview_id"] for row in preview["detected"]["chapters"]]},
