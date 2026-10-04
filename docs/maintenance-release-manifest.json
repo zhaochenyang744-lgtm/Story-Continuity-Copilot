@@ -56,6 +56,10 @@
       "target": "backend/app/operations.py"
     },
     {
+      "source": "backend/app/passages.py",
+      "target": "backend/app/passages.py"
+    },
+    {
       "source": "backend/app/project_export.py",
       "target": "backend/app/project_export.py"
     },
@@ -448,6 +452,7 @@
     "backend/tests/test_internal_ids.py",
     "backend/tests/test_lf_bulk_memory_review.py",
     "backend/tests/test_lf_memory_as_of_chapter.py",
+    "backend/tests/test_lf_passages.py",
     "backend/tests/test_lf_whole_chapter_memory.py",
     "backend/tests/test_long_term_independent.py",
     "backend/tests/test_long_term_workflow.py",
