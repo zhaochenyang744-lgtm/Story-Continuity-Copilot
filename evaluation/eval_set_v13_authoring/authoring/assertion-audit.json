@@ -1,0 +1,19 @@
+{
+  "source_byte_equality": 6,
+  "checker_byte_identical": true,
+  "exact_source_sentence_copies": [],
+  "source_answer_announcing_gap_flags": [],
+  "conflict_draft_denial_flags": [],
+  "current_lf1_directories": [
+    "eval_set_lf1_dev",
+    "eval_set_lf1_formal",
+    "eval_set_lf1_import"
+  ],
+  "baseline_protected_file_count": 47,
+  "baseline_files_changed_by_concurrent_activity": [],
+  "current_head": "9818b2fac95ca83aee0e9e2b5b64d81c814c5db1",
+  "baseline_head": "04d02ef351c0bd50ba68f3774258556255c2ebe1",
+  "current_branch": "feat/longform-phase2",
+  "branch_unchanged": false,
+  "scope_note": "本任务只写V13及报告；旧集在执行期间由其他会话并行新增/改动，未回滚或写入它们。"
+}

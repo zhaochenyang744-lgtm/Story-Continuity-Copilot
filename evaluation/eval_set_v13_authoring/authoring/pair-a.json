@@ -1,0 +1,42 @@
+{
+  "corpora": [
+    {"key": "jixie_spiral_chess", "title": "霁缬原的回旋棋", "language": "zh", "source_file": "sources/jixie_spiral_chess.md"},
+    {"key": "dunwex_balloon_day", "title": "Balloon Day over Dunwex Basin", "language": "en", "source_file": "sources/dunwex_balloon_day.md"}
+  ],
+  "cases": [
+    {"id": "hv13-001", "corpus": "jixie_spiral_chess", "draft": "茅翕拨动宙筹，使它从盘心断隙的一岸越到了另一岸。", "expected_class": "conflict", "category": "world_rule", "evidence": ["第一章 来赴棋约"], "designated_regression": true, "note": "永久禁止规则的指定回归；只判断宙筹越过盘心断隙这一行为。"},
+    {"id": "hv13-002", "corpus": "jixie_spiral_chess", "draft": "桑缈抬起脸来，两只瞳孔都是褐色。", "expected_class": "conflict", "category": "attribute", "evidence": ["第二章 银眼的对手"], "designated_regression": false, "note": "瞳孔颜色冲突；普通冲突不要求共同时间。"},
+    {"id": "hv13-003", "corpus": "jixie_spiral_chess", "draft": "茅翕落第一子前先收拢了宽袖，用布带将它们扎到腕上。", "expected_class": "no_conflict", "category": null, "evidence": ["第三章 先收衣袖"], "designated_regression": false, "note": "束袖动作与原文直接陈述一致。"},
+    {"id": "hv13-004", "corpus": "jixie_spiral_chess", "draft": "桑缈向外圈挪了一枚宙筹，于是茅翕有了绕向边角的通路。", "expected_class": "no_conflict", "category": null, "evidence": ["第六章 让出的弯路"], "designated_regression": false, "note": "棋子移动与留下通路是同一行动的改述。"},
+    {"id": "hv13-005", "corpus": "jixie_spiral_chess", "draft": "茅翕已经认出了桑缈藏在青碗里的宙筹所带的双月纹。", "expected_class": "insufficient_evidence", "category": null, "evidence": ["第四章 碗里的双月"], "designated_regression": false, "note": "原文交代隐藏的纹样与人物反应，未建立人物获得该纹样信息的环节。"},
+    {"id": "hv13-006", "corpus": "jixie_spiral_chess", "draft": "石桌上方的风铃是受到宙筹落盘的震动才鸣响的。", "expected_class": "insufficient_evidence", "category": null, "evidence": ["第五章 檐下的声音"], "designated_regression": false, "note": "近接的两声响不直接建立落筹到风铃的因果。"},
+    {"id": "hv13-007", "corpus": "dunwex_balloon_day", "draft": "At the instant Oselda Prinn severed the final launch rope, Fenric Soot stood beside the tethering peg on the ground.", "expected_class": "conflict", "category": "location_action", "evidence": ["Chapter 2 The Last Rope"], "designated_regression": false, "note": "同一放飞动作发生时，人物的在篮内与在地面位置相冲突。"},
+    {"id": "hv13-008", "corpus": "dunwex_balloon_day", "draft": "Four brass buckles adorned the boot on Fenric Soot's left foot.", "expected_class": "conflict", "category": "attribute", "evidence": ["Chapter 1 A Sandwich Takes Flight"], "designated_regression": false, "note": "左靴扣数属性冲突；普通冲突不要求共同时间。"},
+    {"id": "hv13-009", "corpus": "dunwex_balloon_day", "draft": "Oselda Prinn sent some sand from the ballast pouch spilling past the rim of the basket.", "expected_class": "no_conflict", "category": null, "evidence": ["Chapter 3 A Lighter Breakfast"], "designated_regression": false, "note": "倒出部分沙质压舱物的动作有直接支持。"},
+    {"id": "hv13-010", "corpus": "dunwex_balloon_day", "draft": "Oselda Prinn brought the balloon down among the rye growing in Dunwex Basin.", "expected_class": "no_conflict", "category": null, "evidence": ["Chapter 6 Landing in Rye"], "designated_regression": false, "note": "着陆地点为麦田，与原文直接支持一致。"},
+    {"id": "hv13-011", "corpus": "dunwex_balloon_day", "draft": "The figure on Dunwex Basin's north track was using that circling arm to signal an injured ankle.", "expected_class": "insufficient_evidence", "category": null, "evidence": ["Chapter 4 An Arm on the Track"], "designated_regression": false, "note": "可见手势不能直接确定其表达含义。"},
+    {"id": "hv13-012", "corpus": "dunwex_balloon_day", "draft": "During the flight, Fenric Soot saw the spiral cut into the Dunwex boundary stone with his own eyes.", "expected_class": "insufficient_evidence", "category": null, "evidence": ["Chapter 5 The Stone Below"], "designated_regression": false, "note": "地图上的图案及飞越石碑不直接建立人物亲见真实刻纹。"}
+  ],
+  "reviews": [
+    {"id": "hv13-001", "rationale": "第一章直白陈述回旋棋的永久法则，在任何情况下禁止宙筹跨越盘心断隙，且宙筹受法则约束、碰到断隙即停住，是奇幻世界的硬限制而非可违规的比赛条例；draft直接叙述宙筹跨越断隙，单点违反世界规则。", "shared_entities": [{"evidence": "第一章 来赴棋约", "nouns": ["茅翕", "宙筹", "盘心", "断隙"]}], "conflict_basis": "永久法则阻止越隙，与实际跨越相反。", "designated_constraint": "永久规则：任何情况下都禁止宙筹跨越盘心的断隙，触隙即停止。无充分/必要条件倒置，无人物批准例外。", "style_rewrite": "原文陈述永久规则；draft以动作描写越岸，没有照抄规则或自带否定原文。"},
+    {"id": "hv13-002", "rationale": "原文将桑缈瞳孔颜色直接定为银色；draft断言其两只瞳孔都是褐色，判断点只有颜色。", "shared_entities": [{"evidence": "第二章 银眼的对手", "nouns": ["桑缈", "瞳孔"]}], "conflict_basis": "银色与褐色不一致。", "designated_constraint": "非指定。", "style_rewrite": "改成抬脸时的外貌描写，只保留人物与属性名，不使用反驳原文的句式。"},
+    {"id": "hv13-003", "rationale": "第三章直接写茅翕把宽袖用布带束在手腕后拈起首枚宙筹；draft改述相同行动与先后关系。", "shared_entities": [{"evidence": "第三章 先收衣袖", "nouns": ["茅翕", "宽袖", "布带"]}], "support_basis": "束袖于手腕发生在落第一子之前。", "designated_constraint": "非指定。", "style_rewrite": "将用布带束袖换成先收拢宽袖再扎到腕上，重组语序与动词。"},
+    {"id": "hv13-004", "rationale": "第六章直接写桑缈挪筹至外圈，为茅翕留下通往边角的弯路；draft重述同一棋局动作的结果。", "shared_entities": [{"evidence": "第六章 让出的弯路", "nouns": ["桑缈", "茅翕", "宙筹", "外圈", "边角"]}], "support_basis": "移筹与通路均由原文直接陈述，不额外声称胜负。", "designated_constraint": "非指定。", "style_rewrite": "由原文目的句改成先动作后结果，换用挪、绕向、通路。"},
+    {"id": "hv13-005", "rationale": "叙述者知道藏筹刻着双月纹，茅翕听到声音并有停顿、笑容；这些动作没有确定他已认出纹样，也没有断言他不知道。", "shared_entities": [{"evidence": "第四章 碗里的双月", "nouns": ["茅翕", "桑缈", "青碗", "宙筹", "双月纹"]}], "missing_link": "藏筹纹样的信息如何传入茅翕及他是否成功认出。", "designated_constraint": "非指定。", "style_rewrite": "draft单独写人物认知结果，避开原文扣碗、细响、停指动作句；source自然叙述，不宣布知识缺口。"},
+    {"id": "hv13-006", "rationale": "原文只叙述宙筹轻响、风铃同时附近响起与衣裙掠草；未确定棋盘的震动是否传到风铃。", "shared_entities": [{"evidence": "第五章 檐下的声音", "nouns": ["宙筹", "石桌", "风铃"]}], "missing_link": "落筹震动与风铃鸣响之间的因果机制。", "designated_constraint": "非指定。", "style_rewrite": "draft把连续观察改写为单一原因断言，未照搬声响句；source不提示没有因果记录。"},
+    {"id": "hv13-007", "rationale": "第二章在Oselda切断最后放飞绳的动作时，将Fenric放在气球篮内；draft将同一瞬间的他放在地面系绳桩旁。", "shared_entities": [{"evidence": "Chapter 2 The Last Rope", "nouns": ["Oselda Prinn", "Fenric Soot", "launch rope"]}], "conflict_basis": "同一放飞动作瞬间的篮内与地面位置互斥。", "designated_constraint": "非指定；使用同一动作锚定但不纳入指定回归数。", "style_rewrite": "切绳换成severed，篮内蜷身换成地面站立，draft不写never或not来反驳原文。"},
+    {"id": "hv13-008", "rationale": "第一章直接陈述Fenric左靴有三枚黄铜扣；draft写四枚，仅判断扣数。", "shared_entities": [{"evidence": "Chapter 1 A Sandwich Takes Flight", "nouns": ["Fenric Soot", "boot", "brass buckles"]}], "conflict_basis": "同一左靴扣数三与四不一致。", "designated_constraint": "非指定。", "style_rewrite": "改用扣子作主语，物主改作位置定语，重写谓语及全句结构；不附加否定原文。"},
+    {"id": "hv13-009", "rationale": "第三章Oselda将压舱袋中的沙倒到篮外；draft以沙从袋中溢过篮缘改述相同行动，只说部分沙，不声称整袋倒空。", "shared_entities": [{"evidence": "Chapter 3 A Lighter Breakfast", "nouns": ["Oselda Prinn", "pouch", "ballast", "sand", "basket"]}], "support_basis": "倒沙到篮外有直接行动支持，不加强为全部倒空。", "designated_constraint": "非指定。", "style_rewrite": "换谓语、调名词组合和地点表达，没有增加上升高度、沙重或倒空等原文外事实。"},
+    {"id": "hv13-010", "rationale": "第六章明确写Oselda在Dunwex Basin的黑麦田着陆；draft用brought down among growing rye改述。", "shared_entities": [{"evidence": "Chapter 6 Landing in Rye", "nouns": ["Oselda Prinn", "balloon", "rye", "Dunwex Basin"]}], "support_basis": "着陆行为与麦田地点直接支持。", "designated_constraint": "非指定。", "style_rewrite": "landed换成brought down，field换成生长作物的场景表达，不搬运原句。"},
+    {"id": "hv13-011", "rationale": "第四章只写远处人物转臂、Fenric回挥、道路转入丘后；无法从该观察确定手势表示脚踝受伤。也未确定其为问候或其他信号。", "shared_entities": [{"evidence": "Chapter 4 An Arm on the Track", "nouns": ["Dunwex Basin", "north track", "figure", "arm"]}], "missing_link": "可见手势的约定含义或发信者确认。", "designated_constraint": "非指定。", "style_rewrite": "将动作观察改写为交流含义断言；source不写信号未核实或未记录。"},
+    {"id": "hv13-012", "rationale": "第五章提供地图上刻纹的图示和飞越石碑的机会，写Fenric看地图；没有给出他在飞行中看清真实碑面刻纹的观察。看地图不等于亲见实体。", "shared_entities": [{"evidence": "Chapter 5 The Stone Below", "nouns": ["Fenric Soot", "spiral", "Dunwex boundary stone"]}], "missing_link": "飞越机会到人物亲眼观察真实刻纹的实际见闻。", "designated_constraint": "非指定。", "style_rewrite": "draft直接断言亲见雕纹，不重复俯看地图与靴压纸角的原文动作；source只自然叙述飞行。"}
+  ],
+  "self_review": {
+    "new_named_entities": ["霁缬原", "茅翕", "桑缈", "宙筹", "Dunwex Basin", "Fenric Soot", "Oselda Prinn"],
+    "old_entity_search": "对V11、V12、eval_set_lf1_dev、eval_set_lf1_import的所有文件运行rg固定字符串检索上述专名，无命中。",
+    "old_plot_review": "阅读V11/V12完整原文及lf1作品简介、逐章语义审查记录。新作分别是赴约回旋棋赛与热气球飞行，不使用旧集的赊账、录音、邮袋、衣物退租、模型铁路、翻译驻留、折光节、谱馆、雨水工地、鱼缸普查、造纸厂、酒店电梯、退信橱窗展、风暴撤离观测设备、夜班厨房或末日收尾人的情节。",
+    "authorship": "两份source均逐章直接创作，不使用代码、模板、句型替换生成正文；程序只做结构与长度校验。",
+    "semantic_checks": "每题仅一个主判断点；证据章节均与draft共享名词；draft换用表达而不照抄；冲突draft无否定原文句；原文除永久世界规则外不添加为出题而设的重复强调；IE原文自然留下空白，未直接宣告缺口；四道IE分别缺知识获得、因果、手势含义、亲见环节，不以缺共同时间制造不足。",
+    "narrative_difference": "中文以赴棋约和父亲遗物写克制的幻想抒情，英文以午餐、靴扣、山羊贯穿轻快冒险；人物、地点、物件、行动与章节节奏各自独立。"
+  }
+}

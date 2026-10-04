@@ -1,0 +1,762 @@
+{
+  "version": "v13-novelty-name-audit-1",
+  "created_at_utc": "2026-10-04T04:20:29.536277+00:00",
+  "method": "case-insensitive exact substring matching; full names, titles, places, named objects and distinctive fragments",
+  "comparison_scope": "V11/V12 all sources and cases.json; all eval_set_lf1_* works and labels.json; no model-run results",
+  "old_file_count": 24,
+  "old_files": [
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/huangting_recording.md",
+      "bytes": 2252,
+      "sha256": "fa8003d39a8624f881e7ba9ad70ebfaf7c153c2709bffa890a3563767abba654"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/jinyu_credit_market.md",
+      "bytes": 2310,
+      "sha256": "217d02a45ffae9b9e4adb9247fb4ec375500ac50f3a02fcccc762dd9682ccbbe"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/luliao_last_collection.md",
+      "bytes": 2162,
+      "sha256": "8d599daf38916bb6f1a264efb4bb24c16efd86e35ac894bb58c3252d636b482c"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/mosswick_costume_rental.md",
+      "bytes": 2138,
+      "sha256": "ef1e37a224cba7c3f63151fda4792dd987b39d5ab8756d372c565f5e6e764d0e"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/sablefen_translation_residency.md",
+      "bytes": 2166,
+      "sha256": "8d1b4ea2db89f77b0abbc0845b364958f4ed5a3ba3a0e5766d8eaac00e04ba2e"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/ternhollow_model_railway.md",
+      "bytes": 2138,
+      "sha256": "033368c73a0b1e24ba60fe2016475cbc10c712958e61e620de939e76f0af47ae"
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/cases.json",
+      "bytes": 31758,
+      "sha256": "6b7f4f4dee490855321329a7dec3899b42820de67741b7d7c88f7566750bcc61"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/brambletide_aquarium_census.md",
+      "bytes": 2145,
+      "sha256": "6ec74dd67f833d732e890edca0bcf0e7c8ac42f6bc3939168815d5530d9e020d"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/calverin_rag_paper_mill.md",
+      "bytes": 2180,
+      "sha256": "09c1a7f76bbef78e83db63a93ee6d33ba506e9e163fbce051729297834376601"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/elmrake_hotel_repairs.md",
+      "bytes": 2243,
+      "sha256": "4be8e8ea80a2a7320ae91bd25d3e224d5b2491ba950319e93d3610d385a55ab9"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/puling_refraction_festival.md",
+      "bytes": 2271,
+      "sha256": "17cd5275b55533c5dbe68fcbaba8976bea51fa9d19113950f4a78d152160c447"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/shengxiu_score_library.md",
+      "bytes": 2273,
+      "sha256": "f4dfe4b1bfef1597ce9568631574d1584e397d40980d9542f2dce8d9852abff0"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/tiaojin_rainworks.md",
+      "bytes": 2243,
+      "sha256": "d4632f8255a835322cebf4d77eb944e500f57817e38be617c386179e3c1700a2"
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/cases.json",
+      "bytes": 32155,
+      "sha256": "d3bfeb632df7e7405f3cceb95d8b55c7b6a0aef50fb66637b7258dc650431ad4"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/chaochi_letters.md",
+      "bytes": 58866,
+      "sha256": "45a35d8197bebb913575f69f3ecc5ab73bc2433bb31b5b25451456a9d4621f78",
+      "chapter_count": 10
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/shahai_error.md",
+      "bytes": 33588,
+      "sha256": "fd39de1fbf4e189a397bc99646b5749e6a76dadab2f8649bbb9faa7c742486b5",
+      "chapter_count": 8
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/yechu_orders.md",
+      "bytes": 34720,
+      "sha256": "59b74735ebe403736c1965408157c1a9dd2ff9272b1159105a7a732b93464653",
+      "chapter_count": 8
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/labels.json",
+      "bytes": 26151,
+      "sha256": "d26cf881cfd4b0f70ef9474f9300e7602a2afeb5b47a5eeabcfbf8b4d876db0a"
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/canal_records.md",
+      "bytes": 22872,
+      "sha256": "742c9976b10b7d093a82fe68d7d09681a9bf418535d951aa0e78efc51bee28c1",
+      "chapter_count": 4
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/clay_theatre.md",
+      "bytes": 29316,
+      "sha256": "dbcda17b806ce14e5c68941ca95d4778b077ecc04d60748944dcb9260acb3c49",
+      "chapter_count": 5
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/moss_cape.md",
+      "bytes": 39852,
+      "sha256": "6feae54f2898118eab5fed730a9c62c644a801b3b45c6a65eff35c386a00b78c",
+      "chapter_count": 8
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/orbital_orchard.md",
+      "bytes": 30233,
+      "sha256": "7251696142a3ffb967db35e07c6b5580411ba15ddbf5af17e4368587560fd9a6",
+      "chapter_count": 5
+    },
+    {
+      "path": "evaluation/eval_set_lf1_import/works/moriri_cleaner.md",
+      "bytes": 1049503,
+      "sha256": "bb7d2a6db050ebf5bbf8edd10491d002cf6ff02e8cb520351df561bf65ef4115",
+      "chapter_count": 121
+    },
+    {
+      "path": "evaluation/eval_set_lf1_import/labels.json",
+      "bytes": 25782,
+      "sha256": "7be199cdf0bea19205963a984737ba9a393ed7ee65396ff5d9865bb9917a96cb"
+    }
+  ],
+  "new_source_and_pair_files": [
+    {
+      "path": "evaluation/eval_set_v13_authoring/sources/dunwex_balloon_day.md",
+      "sha256": "14fc8bfa32f099c7d5a10bab9338a18c883a258e198248a8f17d9cb0bacbd551"
+    },
+    {
+      "path": "evaluation/eval_set_v13_authoring/sources/jixie_spiral_chess.md",
+      "sha256": "f8acc21b15f06894fa0ff9d2c8a203c05b9fb971466fa5ccac281fe9d1d24823"
+    },
+    {
+      "path": "evaluation/eval_set_v13_authoring/sources/orvessa_observatory.md",
+      "sha256": "269b58633da14974c40a1019378c9380e7f4b269b32311f905c754e5f8191985"
+    },
+    {
+      "path": "evaluation/eval_set_v13_authoring/sources/qisui_fourth_bowl.md",
+      "sha256": "52ec7c8944072b4a869c1e9e3543296bbf84794a5ff4b11526960450607e5f08"
+    },
+    {
+      "path": "evaluation/eval_set_v13_authoring/sources/varnock_fossil_picnic.md",
+      "sha256": "1b728b7b9c9a7b9b7fc5d91b8b52b7878c2ff0c736d6163056bc7e5c45c3051d"
+    },
+    {
+      "path": "evaluation/eval_set_v13_authoring/sources/yanjia_apiary.md",
+      "sha256": "d1e9acb8213c242cb736bc22450d3de7963fe546ac5ee1c137a95c824c96c0f3"
+    },
+    {
+      "path": "evaluation/eval_set_v13_authoring/authoring/pair-a.json",
+      "sha256": "e3f215336ae1237213f036f9f35c8e348fc1ecd0587b89e652bf627e0cc09d31"
+    },
+    {
+      "path": "evaluation/eval_set_v13_authoring/authoring/pair-b.json",
+      "sha256": "2a92a031d483e3fb88397e7a8450c9fc130a1961bf628d151e57dc0c6615f8f2"
+    },
+    {
+      "path": "evaluation/eval_set_v13_authoring/authoring/pair-c.json",
+      "sha256": "5a4309877d197d32f3a4b625e07ad8b2b7f0acbcee1c312581fc2ccee7188552"
+    },
+    {
+      "path": "evaluation/eval_set_v13_authoring/cases.json",
+      "sha256": "56751379d8781b61118b46d02f97e7ab4567b0197ac094ecf6eee16ff2553484"
+    }
+  ],
+  "new_source_count": 6,
+  "draft_count": 36,
+  "term_check_count": 65,
+  "matched_file_records": 0,
+  "corpora": [
+    {
+      "corpus": "jixie_spiral_chess",
+      "title": "霁缬原的回旋棋",
+      "people": [
+        "茅翕",
+        "桑缈"
+      ],
+      "places": [
+        "霁缬原"
+      ],
+      "named_objects": [
+        "回旋棋",
+        "宙筹",
+        "双月纹"
+      ],
+      "search_fragments": [
+        "霁缬",
+        "茅翕",
+        "桑缈",
+        "回旋棋",
+        "宙筹",
+        "双月纹"
+      ],
+      "source_path": "evaluation/eval_set_v13_authoring/sources/jixie_spiral_chess.md",
+      "draft_ids": [
+        "hv13-001",
+        "hv13-002",
+        "hv13-003",
+        "hv13-004",
+        "hv13-005",
+        "hv13-006"
+      ],
+      "checks": [
+        {
+          "term": "霁缬原的回旋棋",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "茅翕",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "桑缈",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "霁缬原",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "回旋棋",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "宙筹",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "双月纹",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "霁缬",
+          "hits": [],
+          "status": "clear"
+        }
+      ],
+      "status": "clear"
+    },
+    {
+      "corpus": "dunwex_balloon_day",
+      "title": "Balloon Day over Dunwex Basin",
+      "people": [
+        "Fenric Soot",
+        "Oselda Prinn"
+      ],
+      "places": [
+        "Dunwex Basin",
+        "Dunwex boundary stone"
+      ],
+      "named_objects": [],
+      "search_fragments": [
+        "Dunwex",
+        "Fenric",
+        "Soot",
+        "Oselda",
+        "Prinn"
+      ],
+      "source_path": "evaluation/eval_set_v13_authoring/sources/dunwex_balloon_day.md",
+      "draft_ids": [
+        "hv13-007",
+        "hv13-008",
+        "hv13-009",
+        "hv13-010",
+        "hv13-011",
+        "hv13-012"
+      ],
+      "checks": [
+        {
+          "term": "Balloon Day over Dunwex Basin",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Fenric Soot",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Oselda Prinn",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Dunwex Basin",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Dunwex boundary stone",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Dunwex",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Fenric",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Soot",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Oselda",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Prinn",
+          "hits": [],
+          "status": "clear"
+        }
+      ],
+      "status": "clear"
+    },
+    {
+      "corpus": "yanjia_apiary",
+      "title": "砚荚岭的蜂箱继承人",
+      "people": [
+        "佟槐雨",
+        "乔檀笛"
+      ],
+      "places": [
+        "砚荚岭"
+      ],
+      "named_objects": [
+        "栗扣箱"
+      ],
+      "search_fragments": [
+        "砚荚",
+        "佟槐雨",
+        "槐雨",
+        "乔檀笛",
+        "檀笛",
+        "栗扣"
+      ],
+      "source_path": "evaluation/eval_set_v13_authoring/sources/yanjia_apiary.md",
+      "draft_ids": [
+        "hv13-013",
+        "hv13-014",
+        "hv13-015",
+        "hv13-016",
+        "hv13-017",
+        "hv13-018"
+      ],
+      "checks": [
+        {
+          "term": "砚荚岭的蜂箱继承人",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "佟槐雨",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "乔檀笛",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "砚荚岭",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "栗扣箱",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "砚荚",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "槐雨",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "檀笛",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "栗扣",
+          "hits": [],
+          "status": "clear"
+        }
+      ],
+      "status": "clear"
+    },
+    {
+      "corpus": "varnock_fossil_picnic",
+      "title": "A Fossil Picnic at Varnock Scar",
+      "people": [
+        "Hettie Drusk",
+        "Cavor Uldren"
+      ],
+      "places": [
+        "Varnock Scar"
+      ],
+      "named_objects": [
+        "Varnock Scar novelty prize"
+      ],
+      "search_fragments": [
+        "Varnock",
+        "Scar",
+        "Hettie",
+        "Drusk",
+        "Cavor",
+        "Uldren"
+      ],
+      "source_path": "evaluation/eval_set_v13_authoring/sources/varnock_fossil_picnic.md",
+      "draft_ids": [
+        "hv13-019",
+        "hv13-020",
+        "hv13-021",
+        "hv13-022",
+        "hv13-023",
+        "hv13-024"
+      ],
+      "checks": [
+        {
+          "term": "A Fossil Picnic at Varnock Scar",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Hettie Drusk",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Cavor Uldren",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Varnock Scar",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Varnock Scar novelty prize",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Varnock",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Scar",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Hettie",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Drusk",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Cavor",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Uldren",
+          "hits": [],
+          "status": "clear"
+        }
+      ],
+      "status": "clear"
+    },
+    {
+      "corpus": "qisui_fourth_bowl",
+      "title": "栖燧巷的第四碗面",
+      "people": [
+        "易苜",
+        "鲁笠"
+      ],
+      "places": [
+        "栖燧巷",
+        "秋杓面馆"
+      ],
+      "named_objects": [
+        "梅纹汤盅",
+        "石燕瓷砖"
+      ],
+      "search_fragments": [
+        "栖燧",
+        "秋杓",
+        "易苜",
+        "鲁笠",
+        "梅纹",
+        "石燕"
+      ],
+      "source_path": "evaluation/eval_set_v13_authoring/sources/qisui_fourth_bowl.md",
+      "draft_ids": [
+        "hv13-025",
+        "hv13-026",
+        "hv13-027",
+        "hv13-028",
+        "hv13-029",
+        "hv13-030"
+      ],
+      "checks": [
+        {
+          "term": "栖燧巷的第四碗面",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "易苜",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "鲁笠",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "栖燧巷",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "秋杓面馆",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "梅纹汤盅",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "石燕瓷砖",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "栖燧",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "秋杓",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "梅纹",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "石燕",
+          "hits": [],
+          "status": "clear"
+        }
+      ],
+      "status": "clear"
+    },
+    {
+      "corpus": "orvessa_observatory",
+      "title": "Tea at the Orvessa Observatory",
+      "people": [
+        "Delsin Rusk",
+        "Yavren Nezric"
+      ],
+      "places": [
+        "Orvessa Observatory",
+        "Glezzet"
+      ],
+      "named_objects": [
+        "Tessel Camera",
+        "Palvek Telescope",
+        "Saffrex Nebula"
+      ],
+      "search_fragments": [
+        "Orvessa",
+        "Glezzet",
+        "Delsin",
+        "Rusk",
+        "Yavren",
+        "Nezric",
+        "Tessel",
+        "Palvek",
+        "Saffrex"
+      ],
+      "source_path": "evaluation/eval_set_v13_authoring/sources/orvessa_observatory.md",
+      "draft_ids": [
+        "hv13-031",
+        "hv13-032",
+        "hv13-033",
+        "hv13-034",
+        "hv13-035",
+        "hv13-036"
+      ],
+      "checks": [
+        {
+          "term": "Tea at the Orvessa Observatory",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Delsin Rusk",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Yavren Nezric",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Orvessa Observatory",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Glezzet",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Tessel Camera",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Palvek Telescope",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Saffrex Nebula",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Orvessa",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Delsin",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Rusk",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Yavren",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Nezric",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Tessel",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Palvek",
+          "hits": [],
+          "status": "clear"
+        },
+        {
+          "term": "Saffrex",
+          "hits": [],
+          "status": "clear"
+        }
+      ],
+      "status": "clear"
+    }
+  ],
+  "result": "PASS",
+  "limitations": [
+    "Exact full names and distinctive-fragment reuse checked across all visible comparison files; literary plot equivalence is separately described in novelty-review.md.",
+    "The 1.05 MB LF1 import was searched in full and reviewed through 121 chapter titles/openings/endings, labels, term extraction and targeted theme searches; it was not manually read character by character.",
+    "Old LF1 files were observed changing concurrently; old_files records the exact bytes used in this name audit.",
+    "LF1 formal files were still being appended. Manual chapter bounds are recorded; any later appended chapters participate in this snapshot name scan but may be outside the manual plot review."
+  ],
+  "drafts_checked_from": "evaluation/eval_set_v13_authoring/cases.json",
+  "formal_manual_read_chapters": {
+    "canal_records": 4,
+    "clay_theatre": 4,
+    "moss_cape": 6,
+    "orbital_orchard": 5
+  },
+  "formal_visible_at_final_name_scan": [
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/canal_records.md",
+      "bytes": 22872,
+      "sha256": "742c9976b10b7d093a82fe68d7d09681a9bf418535d951aa0e78efc51bee28c1",
+      "chapter_count": 4
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/clay_theatre.md",
+      "bytes": 29316,
+      "sha256": "dbcda17b806ce14e5c68941ca95d4778b077ecc04d60748944dcb9260acb3c49",
+      "chapter_count": 5
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/moss_cape.md",
+      "bytes": 39852,
+      "sha256": "6feae54f2898118eab5fed730a9c62c644a801b3b45c6a65eff35c386a00b78c",
+      "chapter_count": 8
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/orbital_orchard.md",
+      "bytes": 30233,
+      "sha256": "7251696142a3ffb967db35e07c6b5580411ba15ddbf5af17e4368587560fd9a6",
+      "chapter_count": 5
+    }
+  ]
+}
