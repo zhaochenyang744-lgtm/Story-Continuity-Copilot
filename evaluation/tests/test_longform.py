@@ -518,3 +518,41 @@ class ThresholdTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FactCoverageTests(unittest.TestCase):
+    def test_coverage_matches_evidence_chapter_and_wording(self):
+        from evaluation.longform.fact_coverage import coverage
+        lf = load(TEMPLATE)
+        facts = {"qingyan_lamps": [
+            {"memory_type": "static_canon", "subject": "铜灯添油", "predicate": "rule", "value": "任何人都不得私自给铜灯添油，灯油只能由守灯人分发",
+             "review_priority": "core", "chapter_index": 1},
+            {"memory_type": "dynamic_state", "subject": "锡油壶", "predicate": "possession", "value": "借给苗禾",
+             "review_priority": "core", "chapter_index": 3},  # right words, wrong chapter
+        ]}
+        result = coverage(lf, facts, None)
+        by_point = {(row["point"], row["evidence_chapter"]): row for row in result["rows"]}
+        self.assertTrue(by_point[("tpl-001", 1)]["covered"])
+        self.assertTrue(by_point[("tpl-001", 1)]["rule_covered"])
+        self.assertFalse(by_point[("tpl-002", 2)]["covered"])
+        self.assertEqual(result["item_evidence_covered"], 0.5)
+        self.assertEqual(result["rule_evidence_covered_by_static_canon"], 1.0)
+
+    def test_the_import_path_runs_end_to_end_with_a_fake_model_and_refuses_the_formal_set(self):
+        from evaluation.longform import fact_coverage
+        tmp = pathlib.Path(tempfile.mkdtemp(prefix="lf-facts-"))
+        try:
+            with mock.patch.dict(os.environ, PROVIDER_ENV), \
+                    mock.patch.object(metering, "TRANSPORT", httpx.MockTransport(fake_model)):
+                code, out = quiet(fact_coverage.main, ["--set", str(TEMPLATE), "--run-id", "t", "--results-dir", str(tmp)])
+                self.assertEqual(code, 0, out)
+                report = json.loads((tmp / "longform-facts-lf-template-t.json").read_text(encoding="utf-8"))
+                self.assertEqual(report["works"]["qingyan_lamps"]["status"], "completed")
+                self.assertGreater(report["works"]["qingyan_lamps"]["fact_count"], 0)
+                self.assertIn("memory_initialization", report["cost"]["by_purpose"])
+                formal = copy_template(tmp)
+                edit_labels(formal, lambda d: d.update(kind="formal"))
+                with self.assertRaises(RuntimeError):
+                    fact_coverage.main(["--set", str(formal), "--run-id", "f", "--results-dir", str(tmp)])
+        finally:
+            shutil.rmtree(tmp, ignore_errors=True)
