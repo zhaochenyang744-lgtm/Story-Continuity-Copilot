@@ -158,7 +158,7 @@ def run_target(lf: LongformSet, target: Target, provider, meter: metering.Meter)
                            if row.get("screen") == "flagged" and row.get("claim_ordinal") and row["claim_ordinal"] <= len(claims)],
         "review_ranges": {path: [anchor_of(body, claims[row["claim_ordinal"] - 1]) for row in metrics.get("retrieval") or []
                                  if row.get("review") == path and row.get("claim_ordinal") and row["claim_ordinal"] <= len(claims)]
-                          for path in ("quick", "escalated", "deep")},
+                          for path in ("triage", "escalated", "deep")},
         "issues": issues,
         "app_metrics": {key: metrics.get(key) for key in ("latency_ms", "input_tokens", "output_tokens", "cost_cny")},
         "check_cost": meter.summary("check", target.id),
