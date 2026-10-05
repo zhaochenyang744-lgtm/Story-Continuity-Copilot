@@ -223,7 +223,7 @@ test("Stage 12 lifecycle and incremental pair remain atomic through the Stage 13
   };
   expect((await runFor("普通完成路径。" )).status).toBe("completed");
   const blockedDraft = await data<{ revision: number }>(await context.request.patch(`/api/projects/${projectId}/drafts/${draft.id}`, {
-    headers: idempotency(), data: { base_revision: draft.revision, title: "Stage 13 cancel", body: "STAGE13_BLOCK" },
+    headers: idempotency(), data: { base_revision: draft.revision, title: "Stage 13 cancel", body: "STAGE13_BLOCK 黄铜罗盘在苏岑手里。" },
   }));
   draft = { ...draft, revision: blockedDraft.revision };
   const blockedRun = await data<{ run_id: string }>(await context.request.post(`/api/projects/${projectId}/checks`, {
@@ -234,9 +234,10 @@ test("Stage 12 lifecycle and incremental pair remain atomic through the Stage 13
   await data(await context.request.post(`/api/projects/${projectId}/checks/${blockedRun.run_id}/cancel`, { headers: idempotency(), data: {} }));
   await context.request.post("/api/test/stage13/release");
   expect((await waitRun(context, projectId, blockedRun.run_id)).status).toBe("cancelled");
-  const timedOut = await runFor("STAGE13_TIMEOUT");
+  // Each marker draft names the tutorial's brass compass, so the sentence has earlier passages to be reviewed against.
+  const timedOut = await runFor("STAGE13_TIMEOUT 黄铜罗盘在苏岑手里。");
   expect([timedOut.status, timedOut.error_code]).toEqual(["timed_out", "provider_timeout"]);
-  const failed = await runFor("STAGE13_FAIL_ONCE");
+  const failed = await runFor("STAGE13_FAIL_ONCE 黄铜罗盘在苏岑手里。");
   expect(failed.status).toBe("failed");
   const retried = await data<{ run: { run_id: string } }>(await context.request.post(`/api/projects/${projectId}/checks/${failed.run_id}/retry`, { headers: idempotency(), data: {} }));
   expect((await waitRun(context, projectId, retried.run.run_id)).status).toBe("completed");

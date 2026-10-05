@@ -34,8 +34,8 @@ class BrowserTestProvider:
     def evaluate(self, request):
         self.calls += 1
         if request.get("task") == "continuity_screen":
-            # The screened pipeline's screen: every sentence goes on to review, as before it.
-            return ProviderResult({"flags": [{"id": sentence["id"], "kind": "check", "facts": []} for sentence in request["sentences"]]},
+            # The screened pipeline's screen: every sentence is a key sentence and goes straight to review, as before it.
+            return ProviderResult({"flags": [{"id": sentence["id"], "kind": "conflict", "facts": []} for sentence in request["sentences"]]},
                                   input_tokens=40, output_tokens=8, cost_cny=0.0004, latency_ms=10)
         if request.get("task") == "continuity_triage":
             return ProviderResult({"scores": [{"id": sentence["id"], "score": 3} for sentence in request["sentences"]]},
@@ -164,7 +164,11 @@ class BrowserTestProvider:
         categories = ("object_state", "character_knowledge")
         limit = 20 if "EXTREME_ISSUES" in request["draft"]["body"] else 2
         memory_by_span = {item["source_span_id"]: item for item in request["memory"]}
-        for index, claim in enumerate(request["claims"][:limit]):
+        for position, claim in enumerate(request["claims"][:limit]):
+            # A screened review sends one claim per request; its ordinal (the id's last number) keeps the
+            # categories and severities of a chapter varied, as the claim's position in one batch did.
+            ordinal = claim["id"].split("#", 1)[0].rsplit("-", 1)[-1]
+            index = int(ordinal) - 1 if ordinal.isdigit() and len(request["claims"]) == 1 else position
             category = categories[index % len(categories)]
             # A screened review cites passages; each keeps the SourceSpan it was cut from.
             evidence = next((item for item in claim["allowed_evidence"] if item.get("source_span_id", item["id"]) in memory_by_span), None)
