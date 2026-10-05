@@ -3754,7 +3754,7 @@ function HomePage({
           <div className="empty-workspace-copy home-entry-copy">
             <p className="eyebrow">真实作品空间 · 尚未建立</p>
             <h2>从第一章开始建立连续性档案</h2>
-            <p>导入 TXT / Markdown，或从空白作品开始。</p>
+            <p>导入 Word、TXT 或 Markdown，或从空白作品开始。</p>
           </div>
           <div className="actions home-entry-actions">
             <Button className="primary" onClick={() => go("/projects/import")}>导入已有作品</Button>
@@ -4115,7 +4115,7 @@ function Import({
   const beginPreview = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!selectedFile) {
-      setLocalError("请先选择一个 UTF-8 TXT 或 Markdown 文件。");
+      setLocalError("请先选择一个 Word（.docx）、TXT 或 Markdown 文件。");
       return;
     }
     if (await previewFile(selectedFile)) {
@@ -4161,7 +4161,7 @@ function Import({
             className="sr-only"
             name="file"
             type="file"
-            accept=".txt,.md,.markdown,text/plain,text/markdown"
+            accept=".docx,.txt,.md,.markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown"
             tabIndex={-1}
             onChange={(event) => selectFile(event.currentTarget.files?.[0])}
             disabled={disabled || Boolean(busy)}
@@ -4186,7 +4186,7 @@ function Import({
             </Button>
           </div>
           <ul className="import-guidance">
-            <li><div><strong>TXT / Markdown</strong><span>UTF-8 编码，文件不超过 5 MB。</span></div></li>
+            <li><div><strong>Word / TXT / Markdown</strong><span>Word 按「标题 1 / 标题 2」分章；TXT 和 Markdown 用 UTF-8 编码。文件不超过 5 MB。</span></div></li>
             <li><div><strong>点击预览才发送</strong><span>文件会发送到当前应用服务进行预览。</span></div></li>
             <li><div><strong>确认前可随时取消</strong><span>预览只展示章节片段，不会创建作品或事实库。</span></div></li>
           </ul>
@@ -4212,7 +4212,7 @@ function Import({
             <div>
               <dt>文件</dt>
               <dd>
-                {preview.file.name} · {preview.file.size.toLocaleString()} 字节 · {({ md: "Markdown", markdown: "Markdown", txt: "纯文本" } as Record<string, string>)[preview.file.format] ?? preview.file.format}
+                {preview.file.name} · {preview.file.size.toLocaleString()} 字节 · {({ md: "Markdown", markdown: "Markdown", txt: "纯文本", docx: "Word 文档" } as Record<string, string>)[preview.file.format] ?? preview.file.format}
               </dd>
             </div>
             <div>

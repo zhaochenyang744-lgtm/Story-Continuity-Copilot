@@ -22,6 +22,7 @@ from .database import DomainError, digest
 from .memory_contract import is_controlled_candidate, normalize_memory_value, normalized_predicate
 from .seed_data import CHAPTER_BODIES, CHAPTERS, DEMO_CHAPTER_CHECK, DEMO_REVIEW_ISSUES, DEMO_SEED_VERSION, DRAFT, MEMORY_RECORDS
 from .text_content import DRAFT_BODY_FORMATS, visible_draft_text, written_chars
+from .docx_import import docx_to_markdown
 from . import long_term_workflow as workflow
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION, VERIFY_MAX_PASSAGES as SCREENED_MAX_TRACE_SPANS
 
@@ -4119,11 +4120,13 @@ class V2Database:
         return chapters,strategy,warnings,audit
 
     def preview_import(self, user_id: str, filename: str, content: bytes, key: str):
-        if not filename.lower().endswith((".txt",".md")): raise DomainError("unsupported_format",415)
+        if not filename.lower().endswith((".txt",".md",".docx")): raise DomainError("unsupported_format",415)
         if not content: raise DomainError("empty_file",400)
         if len(content)>5*1024*1024: raise DomainError("import_too_large",413)
-        try: text=content.decode("utf-8")
-        except UnicodeDecodeError: raise DomainError("unsupported_encoding",415)
+        if filename.lower().endswith(".docx"): text=docx_to_markdown(content)
+        else:
+            try: text=content.decode("utf-8")
+            except UnicodeDecodeError: raise DomainError("unsupported_encoding",415)
         with self.connection() as c:
             payload={"filename":filename,"sha256":hashlib.sha256(content).hexdigest()}
             def preview() -> dict[str, Any]:

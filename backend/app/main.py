@@ -33,6 +33,7 @@ from .stage13 import (
 from .v2_database import V2Database
 from .text_content import written_chars
 from . import chapter_checks
+from .docx_import import docx_to_markdown
 from .project_export import register_project_export_routes
 from .long_term_workflow import register_long_term_routes
 
@@ -890,8 +891,10 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         csrf(request);operation(request,'preview_failed'); actor=user(request); limits=stage13.text_limits(actor['id'])
         content=await file.read(limits['import_bytes']+1)
         if len(content)>limits['import_bytes']: raise HTTPException(413,'import_too_large')
-        try: decoded=content.decode('utf-8')
-        except UnicodeDecodeError: raise HTTPException(415,'unsupported_encoding') from None
+        if (file.filename or '').lower().endswith('.docx'): decoded=docx_to_markdown(content)
+        else:
+            try: decoded=content.decode('utf-8')
+            except UnicodeDecodeError: raise HTTPException(415,'unsupported_encoding') from None
         if len(decoded)>limits['import_chars']: raise HTTPException(413,'import_too_large')
         data,status=db.preview_import(actor['id'],file.filename or '',content,key(idempotency_key));return ok(request,data,status)
     @app.post('/api/imports/{import_id}/commit',status_code=201)
