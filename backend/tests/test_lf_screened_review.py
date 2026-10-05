@@ -158,6 +158,36 @@ class ScreenedReviewTests(unittest.TestCase):
         self.assertEqual(result["status"], "completed")
         self.assertGreater(len([r for r in provider.requests if r.get("task") == "continuity_triage"]), 1)
 
+    def test_overlapped_stages_share_one_pool_and_keep_the_callers_context(self):
+        import contextvars, threading
+        marker = contextvars.ContextVar("lf_overlap_marker", default=None)
+        lock = threading.Lock(); state = {"now": 0, "peak": 0}
+
+        class Counting(Fake):
+            continuity_batch_concurrency = 2
+
+            def evaluate(self, request):
+                if marker.get() != "set":
+                    raise AssertionError("dispatch lost the caller's context")
+                with lock:
+                    state["now"] += 1; state["peak"] = max(state["peak"], state["now"])
+                try:
+                    import time; time.sleep(0.01)
+                    return super().evaluate(request)
+                finally:
+                    with lock:
+                        state["now"] -= 1
+        flag = lambda request: [{"id": s["id"], "kind": "conflict" if i < 3 else "check", "facts": []} for i, s in enumerate(request["sentences"])]
+        provider = Counting(flag=flag)
+        token = marker.set("set")
+        try:
+            result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:] + NEUTRAL[:4]))
+        finally:
+            marker.reset(token)
+        self.assertEqual(result["status"], "completed")
+        self.assertLessEqual(state["peak"], 2)
+        self.assertEqual([i["claim_span_id"] for i in result["issues"]], ["claim-5"])
+
     def test_a_triage_answer_failing_twice_sends_its_claims_to_thinking_review(self):
         provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "check", "facts": []} for s in request["sentences"][:3]],
                         triage_answers=[{"wrong": 1}, {"scores": [{"id": "s1", "score": 1}]}])
@@ -196,6 +226,9 @@ class ScreenedReviewTests(unittest.TestCase):
         result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
         second = sorted(r["claims"][0]["id"] for r in provider.reviews() if r["claims"][0]["id"].endswith("#pass2"))
         self.assertEqual(second, ["claim-4#pass2", "claim-5#pass2", "claim-6#pass2"])
+        # Second reviews are marked, so the prompt asks them to watch for missing links.
+        self.assertTrue(all(r.get("second_review") for r in provider.reviews() if r["claims"][0]["id"].endswith("#pass2")))
+        self.assertFalse(any(r.get("second_review") for r in provider.reviews() if not r["claims"][0]["id"].endswith("#pass2")))
         # Conflicts and missing links found by the second review both count, on the original sentence.
         self.assertEqual([(i["claim_span_id"], i["nature"]) for i in result["issues"]],
                          [("claim-4", "insufficient_evidence"), ("claim-5", "possible_conflict"), ("claim-6", "insufficient_evidence")])

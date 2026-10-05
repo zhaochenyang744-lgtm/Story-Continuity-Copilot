@@ -3,6 +3,7 @@ from __future__ import annotations
 import contextvars
 import os
 import re
+import threading
 from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from typing import Any
 
@@ -337,6 +338,14 @@ def _aggregate_attempt_failure(results: list[Any], error: Exception) -> dict[str
     return metrics
 
 
+def _aggregate_or_unknown(spent: list[Any], failed: dict[str, Any]) -> dict[str, Any]:
+    """Usage of a check whose stage failed: everything spent, unknown if the failed stage's usage was."""
+    totals = _aggregate(spent)
+    if failed.get("_results") and any(failed.get(field) is None for field in ("input_tokens", "output_tokens")):
+        return {field: None for field in totals}
+    return totals
+
+
 def _invalid_json_aggregate(results: list[Any], error: ProviderInvalidJson) -> dict[str, Any]:
     return {**_aggregate(results+[error]), "finish_reason": error.finish_reason, "cost_available": error.cost_available}
 
@@ -452,7 +461,7 @@ class ContinuityEngine:
         used={item["id"]:item for claim in selected for item in self._related_memory(claim,memory,memory_limit)}
         full=data["contexts"][claims[0]["context"]]
         body=screening.context_window(full,[claim["text"] for claim in claims])
-        return {"pipeline":"screened","draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":selected,
+        return {"pipeline":"screened",**({"second_review":True} if data.get("second_review") else {}),"draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":selected,
                 "memory":[{**used[key],"chapter_number":chapters.get(key)} for key in sorted(used,key=lambda key:_memory_sort_key(used[key]))],"output_schema":_continuity_schema(),"full_draft_body":full}
 
     def _fits(self,request:dict[str,Any])->bool:
@@ -550,6 +559,13 @@ class ContinuityEngine:
         triaged=[claim for claim in reviewed if flags[claim["id"]]["kind"]=="check"]
         results=list(screen_results); escalated:set[str]=set()
         summary.update(triaged=len(triaged),triage_fallback_batches=0,escalated=0,deep_reviewed=0)
+        if summary["screened"] and not screening.DOUBLE_REVIEW:
+            result,escalated=self._review_overlapped(reviewed,triaged,flags,base,results,summary)
+            deep=[claim for claim in reviewed if flags[claim["id"]]["kind"]!="check" or claim["id"] in escalated]
+            paths={claim["id"]:("escalated" if claim["id"] in escalated else "deep") for claim in deep}
+            paths.update({claim["id"]:"triage" for claim in triaged if claim["id"] not in escalated})
+            return {**result,"retrieval_traces":screening.retrieval_traces(claims,{claim["id"]:claim["allowed_evidence"] for claim in reviewed},flags,True,paths),
+                    "retrieval_method_version":SCREENED_RETRIEVAL_METHOD_VERSION,"screening":summary}
         if triaged:
             # What the triage flags gets a thinking review; what it passes is settled.
             escalated=self._triage(triaged,data["contexts"],results,summary)
@@ -574,6 +590,60 @@ class ContinuityEngine:
         result={**result,"retrieval_traces":screening.retrieval_traces(claims,{claim["id"]:claim["allowed_evidence"] for claim in reviewed},flags,summary["screened"],paths),
                 "retrieval_method_version":SCREENED_RETRIEVAL_METHOD_VERSION,"screening":summary}
         return result
+
+    def _review_overlapped(self,reviewed:list[dict[str,Any]],triaged:list[dict[str,Any]],flags:dict[str,Any],base:dict[str,Any],
+                           results:list[Any],summary:dict[str,Any])->tuple[dict[str,Any],set[str]]:
+        """Key sentences' reviews (and second reviews) run while the triage runs, in one shared pool.
+
+        Waiting for the triage before any thinking review, and for every first review before any second
+        review, put two or three slow stages end to end on the slowest chapters (lf1 dev set, 2026-10-05:
+        p90 up to 115 s). The key-sentence stage runs in its own thread; the triage and then the
+        escalated sentences' reviews run here; every dispatch goes through the same pool, so a check
+        never has more requests in flight than its concurrency.
+        """
+        key=[claim for claim in reviewed if flags[claim["id"]]["kind"]!="check"]
+        concurrency=getattr(self.provider,"continuity_batch_concurrency",None)
+        concurrency=concurrency if isinstance(concurrency,int) and not isinstance(concurrency,bool) and concurrency>1 else 1
+        pool=ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-review") if concurrency>1 else None
+        stage:dict[str,Any]={}
+        def key_stage()->None:
+            outcome=self._execute({**base,"claims":key,"max_claims_per_batch":screening.DEEP_MAX_CLAIMS,"settled_by_screen":True},keep_results=True,pool=pool)
+            if screening.SECOND_LOOK and outcome["status"]=="completed":
+                outcome=self._second_look(outcome,key,flags,base,summary,pool=pool)
+            stage["key"]=outcome
+        escalated:set[str]=set(); triage_error=None
+        try:
+            worker=threading.Thread(target=contextvars.copy_context().run,args=(key_stage,),name="continuity-key-stage")
+            worker.start()
+            try:
+                if triaged:
+                    found=self._triage(triaged,base["contexts"],results,summary,pool=pool)
+                    if isinstance(found,dict):triage_error=found["error"]
+                    else:escalated=found; summary["escalated"]=len(escalated)
+                if triage_error is None and escalated:
+                    stage["escalated"]=self._execute({**base,"claims":[claim for claim in triaged if claim["id"] in escalated],"max_claims_per_batch":screening.DEEP_MAX_CLAIMS,"settled_by_screen":True},keep_results=True,pool=pool)
+            finally:
+                worker.join()
+        finally:
+            if pool is not None:pool.shutdown(wait=True)
+        summary.update(deep_reviewed=len(key)+len(escalated),double_reviewed=0)
+        outcomes=[stage[name] for name in ("key","escalated") if name in stage]
+        spent=results+[item for outcome in outcomes for item in outcome.get("_results",[])]
+        if triage_error is not None:return self._failure(triage_error,spent),escalated
+        failed=next((outcome for outcome in outcomes if outcome["status"]!="completed"),None)
+        if failed is not None:
+            # Usage of the other stages is added to the failed stage's own (which never includes the screen).
+            return {**{key:value for key,value in failed.items() if key!="_results"},**_aggregate_or_unknown(spent,failed)},escalated
+        order={claim["id"]:index for index,claim in enumerate(base["claims"])}
+        merged=lambda field:sorted((row for outcome in outcomes for row in outcome[field]),key=lambda row:order[row["claim_span_id"]])
+        normalizations=[row for outcome in outcomes for row in outcome["contract_normalizations"]]
+        totals=_aggregate(spent)
+        # A stage that dispatched but reports no usage had a timed-out dispatch: the check's usage is unknown.
+        if any(outcome.get("_results") and outcome.get(field) is None for outcome in outcomes for field in ("input_tokens","output_tokens")):
+            totals={field:None for field in totals}
+        undecided=merged("undecided_claims")
+        return {"status":"completed","issues":merged("issues"),"contract_normalization_count":len(normalizations),"contract_normalizations":normalizations,
+                "undecided_claim_count":len(undecided),"undecided_claims":undecided,**totals},escalated
 
     def _merge_passes(self,result:dict[str,Any],doubled:set[str],order:dict[str,int],summary:dict[str,Any])->dict[str,Any]:
         """Fold the second reviews back onto their sentences: a finding from either review counts.
@@ -600,7 +670,7 @@ class ContinuityEngine:
         return {**result,"issues":issues,"undecided_claims":sorted(kept,key=lambda row:order[row["claim_span_id"]]),"undecided_claim_count":len(kept),
                 "contract_normalizations":normalizations,"contract_normalization_count":len(normalizations)}
 
-    def _second_look(self,result:dict[str,Any],deep:list[dict[str,Any]],flags:dict[str,Any],base:dict[str,Any],summary:dict[str,Any])->dict[str,Any]:
+    def _second_look(self,result:dict[str,Any],deep:list[dict[str,Any]],flags:dict[str,Any],base:dict[str,Any],summary:dict[str,Any],pool:ThreadPoolExecutor|None=None)->dict[str,Any]:
         """A second, independent thinking review of key sentences the first review passed.
 
         Key sentences are those the screen saw a conflict or gap in. The verdict on a borderline one
@@ -614,7 +684,7 @@ class ContinuityEngine:
         again=[{**claim,"id":claim["id"]+suffix} for claim in deep if flags[claim["id"]]["kind"] in screening.DEEP_KINDS and claim["id"] not in decided]
         summary.update(second_look=len(again),second_look_found=0)
         if not again:return result
-        second=self._execute({**base,"claims":again,"max_claims_per_batch":1,"settled_by_screen":True},prior_results=result["_results"],keep_results=True)
+        second=self._execute({**base,"claims":again,"max_claims_per_batch":1,"settled_by_screen":True,"second_review":True},prior_results=result["_results"],keep_results=True,pool=pool)
         totals={key:second.get(key) for key in ("input_tokens","output_tokens","latency_ms","cost_cny")}
         if second["status"]!="completed":return {**result,**totals,"_results":second.get("_results",result["_results"])}
         strip=lambda row:{**row,"claim_span_id":row["claim_span_id"][:-len(suffix)]}
@@ -626,7 +696,7 @@ class ContinuityEngine:
         return {**result,**totals,"_results":second["_results"],"issues":sorted(result["issues"]+found,key=lambda item:order[item["claim_span_id"]]),
                 "contract_normalizations":result["contract_normalizations"]+normalizations,"contract_normalization_count":result["contract_normalization_count"]+len(normalizations)}
 
-    def _triage(self,claims:list[dict[str,Any]],contexts:dict[str,str],results:list[Any],summary:dict[str,Any])->set[str]|dict[str,Any]:
+    def _triage(self,claims:list[dict[str,Any]],contexts:dict[str,str],results:list[Any],summary:dict[str,Any],pool:ThreadPoolExecutor|None=None)->set[str]|dict[str,Any]:
         """Claim ids to escalate by triage score; {"error": exception} when a dispatch fails.
 
         Batches run in parallel like review batches. An answer the validator rejects is retried once as
@@ -649,12 +719,15 @@ class ContinuityEngine:
             return None,spent,None
         concurrency=getattr(self.provider,"continuity_batch_concurrency",None)
         concurrency=concurrency if isinstance(concurrency,int) and not isinstance(concurrency,bool) and concurrency>1 else 1
-        if concurrency>1 and len(batches)>1:
+        if (pool is not None or concurrency>1) and len(batches)>1:
             # Each dispatch carries the caller's context (usage reservation, dispatch guard), copied here
             # in the calling thread, as review batches do.
-            contexts=[contextvars.copy_context() for _ in batches]
-            with ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-triage") as pool:
-                outcomes=list(pool.map(lambda pair:pair[0].run(one,pair[1]),zip(contexts,batches)))
+            copies=[contextvars.copy_context() for _ in batches]
+            if pool is not None:
+                outcomes=list(pool.map(lambda pair:pair[0].run(one,pair[1]),zip(copies,batches)))
+            else:
+                with ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-triage") as own:
+                    outcomes=list(own.map(lambda pair:pair[0].run(one,pair[1]),zip(copies,batches)))
         else:
             outcomes=[one(batch) for batch in batches]
         scores:dict[str,int]={}; failure=None
@@ -714,7 +787,7 @@ class ContinuityEngine:
         if isinstance(error,ProviderFailure):return {"status":"failed","error_code":"provider_error","retryable":True,**_aggregate_attempt_failure(results,error)}
         return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate_attempt_failure(results,error)}
 
-    def _execute(self,data:dict[str,Any],prior_results:list[Any]|None=None,keep_results:bool=False)->dict[str,Any]:
+    def _execute(self,data:dict[str,Any],prior_results:list[Any]|None=None,keep_results:bool=False,pool:ThreadPoolExecutor|None=None)->dict[str,Any]:
         if not self.provider.available:return {"status":"failed","error_code":"provider_unavailable","retryable":True}
         prior_results=list(prior_results or [])
         try:batches=self._batches(data)
@@ -730,7 +803,10 @@ class ContinuityEngine:
         concurrency=concurrency if isinstance(concurrency,int) and not isinstance(concurrency,bool) and concurrency>1 else 1
         order={claim["id"]:index for index,claim in enumerate(data["claims"])}
         pending=list(batches); outcomes=[]; stop=None; exhausted=False
-        pool=ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-batch") if concurrency>1 else None
+        # A shared pool (screened chapters) bounds the whole check's requests in flight; it is not ours to shut down.
+        shared=pool is not None
+        if shared:concurrency=max(concurrency,pool._max_workers)
+        pool=pool if shared else ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-batch") if concurrency>1 else None
         def submit(batch:dict[str,Any])->Future:
             if pool is None:
                 future=Future(); future.set_result(self._review_batch(batch,data,run_budget)); return future
@@ -756,7 +832,7 @@ class ContinuityEngine:
                         # Split, so one claim's self-contradicting answer or oversized repair cannot cost the others.
                         pending[:0]=[self._request(group,data) for group in outcome["split"]]
         finally:
-            if pool is not None:pool.shutdown(wait=True)
+            if pool is not None and not shared:pool.shutdown(wait=True)
         if exhausted and stop is None:
             outcomes.extend({"first_claim_id":batch["claims"][0]["id"],"results":[],"undecided":[{"claim_span_id":claim["id"],"error_code":PROVIDER_ATTEMPT_QUOTA_EXCEEDED} for claim in batch["claims"]]} for batch in pending)
         results=prior_results+[result for outcome in outcomes for result in outcome["results"]]
