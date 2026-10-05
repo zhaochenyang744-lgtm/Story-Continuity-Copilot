@@ -1826,9 +1826,15 @@ body { font-size: 14px; }
 }
 .more-menu > div button { width: 100%; justify-content: flex-start; border-color: transparent; white-space: nowrap; }
 .chapter-check-panel { max-width: var(--workspace-max, 1200px); }
-.chapter-check-picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; margin: 14px 0 0; padding: 0; border: 0; }
-.chapter-check-picker label { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); cursor: pointer; }
-.chapter-check-picker label.checked { border-color: var(--violet-400); background: var(--raised); }
+.chapter-check-picker { display: grid; gap: 6px; margin: 14px 0 0; padding: 0; border: 0; }
+.chapter-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 12px; min-height: 48px; padding: 6px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+label.chapter-row { cursor: pointer; }
+.chapter-row.checked { border-color: var(--violet-400); background: var(--raised); }
+.chapter-row.draft { grid-template-columns: minmax(0, 1fr) auto auto; border-style: dashed; }
+.chapter-row small { margin-left: 8px; color: var(--faint); }
+.chapter-status { padding: 3px 10px; border-radius: 999px; font-size: 12px; white-space: nowrap; background: var(--ink-700); color: var(--muted); }
+.chapter-status.status-checked { background: var(--low-bg); color: var(--low); }
+.chapter-status.status-basis_changed, .chapter-status.status-edited_unchecked { background: var(--medium-bg); color: var(--medium); }
 .chapter-check-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
 .chapter-check-result { display: grid; gap: 12px; margin-top: 20px; }
 .chapter-check-status { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; color: var(--muted); }

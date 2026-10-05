@@ -158,3 +158,59 @@ def recent(db: Any, user_id: str, project_id: str, limit: int = 5) -> list[dict[
     return [{"run_id": row["id"], "status": row["status"], "stage": row["stage"], "error_code": row["error_code"],
              "created_at": row["created_at"], "completed_at": row["completed_at"],
              "report": json.loads(row["result_json"]) if row["result_json"] else None} for row in rows]
+
+
+def timeline(db: Any, user_id: str, project_id: str) -> dict[str, Any]:
+    """Every chapter in order, the current draft last, each with where its check stands.
+
+    checked: a finished check covered the chapter's current text (a chapter check, an incremental
+    review, or the draft check of the exact revision that was completed into it) and no earlier
+    chapter has been revised since. basis_changed: checked, but an earlier chapter was revised after
+    that check. edited_unchecked: an earlier version was checked, then the chapter was revised.
+    unchecked: no check ever covered it.
+    """
+    with db.connection() as c:
+        db._project(c, user_id, project_id)
+        chapters = [dict(row) for row in c.execute("SELECT id,chapter_number,title,source_revision FROM v2_chapters WHERE project_id=? ORDER BY chapter_number", (project_id,))]
+        spans = c.execute("SELECT id,chapter_id,source_revision FROM v2_source_spans WHERE project_id=?", (project_id,)).fetchall()
+        runs = c.execute("SELECT run_type,draft_id,draft_revision,source_span_ids_json,completed_at FROM v2_runs WHERE project_id=? AND status='completed' "
+                         "AND run_type IN ('continuity','chapter_check') AND result_origin='provider'", (project_id,)).fetchall()
+        completions = {row["target_source_revision"]: (row["draft_id"], row["draft_revision"]) for row in c.execute(
+            "SELECT target_source_revision,draft_id,draft_revision FROM v2_source_change_sets WHERE project_id=? AND status='committed' AND input_method='draft_complete'", (project_id,))}
+        revised_at = {row["chapter_id"]: row["at"] for row in c.execute(
+            "SELECT chapter_id,MAX(created_at) at FROM v2_chapter_revision_history WHERE project_id=? AND change_set_id IS NOT NULL GROUP BY chapter_id", (project_id,))}
+        draft = c.execute("SELECT id,chapter_number,title,revision,body FROM v2_drafts WHERE project_id=? AND status IN ('draft','saved') ORDER BY saved_at DESC LIMIT 1", (project_id,)).fetchone()
+    span_checked: dict[str, str] = {}
+    draft_checked: dict[tuple[str, int], str] = {}
+    for run in runs:
+        at = run["completed_at"] or ""
+        for span_id in json.loads(run["source_span_ids_json"] or "[]"):
+            span_checked[span_id] = max(at, span_checked.get(span_id, ""))
+        if run["run_type"] == "continuity" and run["draft_revision"] is not None:
+            key = (run["draft_id"], run["draft_revision"])
+            draft_checked[key] = max(at, draft_checked.get(key, ""))
+    by_chapter: dict[str, list[Any]] = {}
+    for span in spans:
+        by_chapter.setdefault(span["chapter_id"], []).append(span)
+    rows = []
+    for chapter in chapters:
+        own = by_chapter.get(chapter["id"], [])
+        current = [span["id"] for span in own if span["source_revision"] == chapter["source_revision"]]
+        older = [span["id"] for span in own if span["source_revision"] < chapter["source_revision"]]
+        checked_at = max([span_checked[span_id] for span_id in current if span_id in span_checked] or [""])
+        if not checked_at and chapter["source_revision"] in completions and not older:
+            checked_at = draft_checked.get(completions[chapter["source_revision"]], "")
+        earlier_revision = max([revised_at.get(row["id"], "") for row in chapters if row["chapter_number"] < chapter["chapter_number"]] or [""])
+        if checked_at:
+            status = "basis_changed" if earlier_revision > checked_at else "checked"
+        else:
+            status = "edited_unchecked" if any(span_id in span_checked for span_id in older) else "unchecked"
+        rows.append({"chapter_id": chapter["id"], "chapter_number": chapter["chapter_number"], "title": chapter["title"],
+                     "draft": False, "status": status, "checked_at": checked_at or None})
+    if draft:
+        current_check = draft_checked.get((draft["id"], draft["revision"]))
+        earlier_check = any(key[0] == draft["id"] for key in draft_checked)
+        status = "checked" if current_check else "edited_unchecked" if earlier_check else "unchecked"
+        rows.append({"chapter_id": None, "chapter_number": draft["chapter_number"], "title": draft["title"], "draft": True,
+                     "status": status if (draft["body"] or "").strip() else "empty", "checked_at": current_check})
+    return {"chapters": rows}

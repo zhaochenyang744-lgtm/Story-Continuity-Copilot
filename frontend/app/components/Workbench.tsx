@@ -5799,6 +5799,15 @@ type ChapterCheckIssue = { sentence: string; nature?: string; category?: string;
 type ChapterCheckReport = { chapters: { chapter_id: string; chapter_number: number; chapter_title: string; sentences: number; issues: ChapterCheckIssue[]; undecided: number }[]; issue_count: number; undecided_count: number };
 type ChapterCheckRun = { run_id: string; status: string; stage: string; error_code?: string | null; created_at: string; completed_at?: string | null; report: ChapterCheckReport | null };
 const CHAPTER_CHECK_MAX = 8;
+type TimelineRow = { chapter_id: string | null; chapter_number: number; title: string; draft: boolean; status: "checked" | "basis_changed" | "edited_unchecked" | "unchecked" | "empty"; checked_at: string | null };
+const timelineStatusLabel: Record<TimelineRow["status"], string> = { checked: "已检查", basis_changed: "依据已变化", edited_unchecked: "改动后未检查", unchecked: "未检查", empty: "还没写" };
+const timelineStatusHint: Record<TimelineRow["status"], string> = {
+  checked: "检查覆盖了这一章现在的正文。",
+  basis_changed: "检查之后，前面的章节被修订过，建议重新检查。",
+  edited_unchecked: "这一章检查之后又改过，新的正文还没检查。",
+  unchecked: "这一章还没有检查过。",
+  empty: "草稿还是空的。",
+};
 
 /** Tick up to eight written chapters and check them, each against earlier chapters only; results per chapter. */
 function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: string; chapters: Chapter[]; readOnly: boolean }) {
@@ -5806,15 +5815,18 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
   const [estimate, setEstimate] = useState<{ characters: number; estimated_cny: number } | null>(null);
   const [usage, setUsage] = useState<CheckUsage | null>(null);
   const [runs, setRuns] = useState<ChapterCheckRun[]>([]);
+  const [timeline, setTimeline] = useState<TimelineRow[] | null>(null);
+  const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const load = useCallback(async () => {
     try {
-      const [list, nextUsage] = await Promise.all([
+      const [list, nextUsage, nextTimeline] = await Promise.all([
         request<{ runs: ChapterCheckRun[] }>(`/projects/${projectId}/chapter-checks?limit=3`),
         request<CheckUsage>("/account/usage"),
+        request<{ chapters: TimelineRow[] }>(`/projects/${projectId}/chapter-timeline`),
       ]);
-      setRuns(list.runs); setUsage(nextUsage);
+      setRuns(list.runs); setUsage(nextUsage); setTimeline(nextTimeline.chapters);
     } catch { /* the panel stays usable; a later action shows the error */ }
   }, [projectId]);
   useEffect(() => { void load(); }, [load]);
@@ -5832,7 +5844,7 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
     return () => { live = false; };
   }, [projectId, selected]);
   if (usage?.account_type === "visitor") {
-    return <section className="project-section chapter-check-panel"><h2>检查已写章节</h2><p className="muted">访客只能检查当前草稿；注册账号后可以一次勾选最多 {CHAPTER_CHECK_MAX} 章一起检查。</p></section>;
+    return <section className="project-section chapter-check-panel" aria-label="全部章节"><h2>全部章节</h2><p className="muted">访客只能检查当前草稿；注册账号后可以一次勾选最多 {CHAPTER_CHECK_MAX} 章一起检查。</p></section>;
   }
   const toggle = (id: string) => setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length >= CHAPTER_CHECK_MAX ? current : [...current, id]);
   const over = Boolean(estimate && usage?.account_type === "registered" && estimate.characters > usage.check_chars_remaining);
@@ -5845,21 +5857,33 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
     } catch (cause) { setError(labelError(cause)); } finally { setBusy(false); }
   };
   const latest = runs[0];
-  const sorted = [...chapters].sort((a, b) => a.number - b.number);
+  // The timeline lists written chapters with their check status and the draft last; until it loads, the chapter list stands in.
+  const rows: TimelineRow[] = timeline ?? [...chapters].sort((a, b) => a.number - b.number).map((chapter) => ({ chapter_id: chapter.id, chapter_number: chapter.number, title: chapter.title, draft: false, status: "unchecked", checked_at: null }));
   return (
-    <section className="project-section chapter-check-panel" aria-label="检查已写章节">
-      <h2>检查已写章节</h2>
-      <p className="muted">勾选最多 {CHAPTER_CHECK_MAX} 章一起检查。每一章只拿它前面的章节作依据；结果按章列出，要改哪一章，在下方「修订历史章节」里改。</p>
-      {!readOnly && sorted.length > 0 && (
+    <section className="project-section chapter-check-panel" aria-label="全部章节">
+      <h2>全部章节</h2>
+      <p className="muted">已写章节和正在写的草稿按顺序排在一起。勾选最多 {CHAPTER_CHECK_MAX} 章一起检查，每一章只拿它前面的章节作依据；要改哪一章，在下方「修订历史章节」里改。</p>
+      {rows.length > 0 && (
         <>
-          <fieldset className="chapter-check-picker" disabled={busy || active}>
+          <fieldset className="chapter-check-picker" disabled={readOnly || busy || active}>
             <legend className="sr-only">选择要检查的章节</legend>
-            {sorted.map((chapter) => {
-              const checked = selected.includes(chapter.id);
+            {rows.map((row) => {
+              if (row.draft || !row.chapter_id) {
+                return (
+                  <div key="draft" className="chapter-row draft">
+                    <span>第 {row.chapter_number} 章《{row.title || "未命名"}》<small>草稿</small></span>
+                    <span className={`chapter-status status-${row.status}`} title={timelineStatusHint[row.status]}>{timelineStatusLabel[row.status]}</span>
+                    <Button className="quiet" onClick={() => router.push(`/projects/${projectId}/workspace`)}>去写作</Button>
+                  </div>
+                );
+              }
+              const id = row.chapter_id;
+              const checked = selected.includes(id);
               return (
-                <label key={chapter.id} className={checked ? "checked" : ""}>
-                  <input type="checkbox" checked={checked} disabled={!checked && selected.length >= CHAPTER_CHECK_MAX} onChange={() => toggle(chapter.id)} />
-                  <span>第 {chapter.number} 章《{chapter.title || "未命名"}》</span>
+                <label key={id} className={`chapter-row${checked ? " checked" : ""}`}>
+                  <input type="checkbox" checked={checked} disabled={!checked && selected.length >= CHAPTER_CHECK_MAX} onChange={() => toggle(id)} />
+                  <span>第 {row.chapter_number} 章《{row.title || "未命名"}》</span>
+                  <span className={`chapter-status status-${row.status}`} title={timelineStatusHint[row.status]}>{timelineStatusLabel[row.status]}</span>
                 </label>
               );
             })}
@@ -5870,7 +5894,7 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
               {estimate && <> · 约 {estimate.characters.toLocaleString()} 字 · 预计{estimate.estimated_cny >= 0.01 ? `约 ¥${estimate.estimated_cny.toFixed(2)}` : "不到 ¥0.01"}</>}
               {usage?.account_type === "registered" && <> · 今天还可检查 {usage.check_chars_remaining.toLocaleString()} 字</>}
             </p>
-            <Button className="primary" disabled={busy || active || !selected.length || over} onClick={() => void start()}>{active ? "正在检查" : "检查选中的章节"}</Button>
+            {!readOnly && <Button className="primary" disabled={busy || active || !selected.length || over} onClick={() => void start()}>{active ? "正在检查" : "检查选中的章节"}</Button>}
           </div>
         </>
       )}

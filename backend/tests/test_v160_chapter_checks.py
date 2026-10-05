@@ -88,6 +88,30 @@ class ChapterCheckTests(unittest.TestCase):
         usage = self.client.get("/api/account/usage").json()["data"]
         self.assertEqual(usage["check_chars_used"], written_chars(self.span_text[2]) + written_chars(self.span_text[9]))
 
+    def timeline(self):
+        response = self.client.get(f"/api/projects/{self.project_id}/chapter-timeline")
+        self.assertEqual(response.status_code, 200, response.text)
+        return {(row["chapter_number"], row["draft"]): row["status"] for row in response.json()["data"]["chapters"]}
+
+    def test_the_timeline_lists_every_chapter_then_the_draft_with_check_status(self):
+        before = self.timeline()
+        self.assertEqual([key for key in before], [(n, False) for n in range(1, 11)] + [(11, True)])
+        # The sample's preset review is not a check of the written chapters.
+        self.assertEqual(set(before[(n, False)] for n in range(1, 11)), {"unchecked"})
+        self.assertEqual(self.start([2, 9]).status_code, 202)
+        after = self.timeline()
+        self.assertEqual((after[(2, False)], after[(9, False)], after[(3, False)]), ("checked", "checked", "unchecked"))
+        with self.app.state.database.connection() as c:
+            # Revising chapter 1 later changes the basis of both checks.
+            c.execute("INSERT INTO v2_chapter_revision_history VALUES(?,?,?,?,?,?,?,?,?,?)",
+                      (self.project_id, self.chapters[1], 2, "雾钟", "", "改过的正文。", "plain_text", "[]", "sourcechangeset-test", "9999-01-01T00:00:00+00:00"))
+            # Revising chapter 9 itself leaves its new text unchecked.
+            chapter9 = c.execute("SELECT * FROM v2_chapters WHERE id=?", (self.chapters[9],)).fetchone()
+            c.execute("INSERT INTO v2_source_spans VALUES(?,?,?,?,?,?)", ("span-test-ch9-r2", self.project_id, self.chapters[9], "chapter_revision", "改过的第九章。", chapter9["source_revision"] + 1))
+            c.execute("UPDATE v2_chapters SET source_revision=? WHERE id=?", (chapter9["source_revision"] + 1, self.chapters[9]))
+        revised = self.timeline()
+        self.assertEqual((revised[(2, False)], revised[(9, False)]), ("basis_changed", "edited_unchecked"))
+
     def test_an_estimate_spends_nothing(self):
         response = self.client.post(f"/api/projects/{self.project_id}/chapter-checks/estimate", headers=self.idem(),
                                     json={"chapter_ids": [self.chapters[2], self.chapters[9]]})

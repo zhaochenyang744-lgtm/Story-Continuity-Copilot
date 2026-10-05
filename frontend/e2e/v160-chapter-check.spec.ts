@@ -9,8 +9,12 @@ test("an author ticks written chapters, sees the estimate, and gets results per 
   await registerAccount(page, { prefix: "v160cc" });
   const projectId = await tutorialProjectId(page);
   await page.goto(`/projects/${projectId}/sources`);
-  const panel = page.getByRole("region", { name: "检查已写章节", exact: true });
+  const panel = page.getByRole("region", { name: "全部章节", exact: true });
   await expect(panel).toBeVisible();
+  // Written chapters in order, the draft last, each with its check status.
+  await expect(panel.locator(".chapter-row")).toHaveCount(11);
+  await expect(panel.locator(".chapter-row.draft")).toContainText("第 11 章");
+  await expect(panel.locator(".chapter-row").first()).toContainText("未检查");
   const start = panel.getByRole("button", { name: "检查选中的章节", exact: true });
   await expect(start).toBeDisabled();
   await panel.getByRole("checkbox", { name: /第 2 章/ }).check();
@@ -22,6 +26,7 @@ test("an author ticks written chapters, sees the estimate, and gets results per 
   await expect(panel.locator(".chapter-check-chapter")).toHaveCount(2, { timeout: 20_000 });
   await expect(panel.locator(".chapter-check-chapter").first()).toContainText("第 2 章");
   await expect(panel.locator(".chapter-check-chapter").last()).toContainText("第 9 章");
+  await expect(panel.locator("label.chapter-row").filter({ hasText: "第 9 章" })).toContainText("已检查");
 });
 
 test("at most eight chapters can be ticked", async ({ page }) => {
@@ -29,7 +34,7 @@ test("at most eight chapters can be ticked", async ({ page }) => {
   await registerAccount(page, { prefix: "v160cc8" });
   const projectId = await tutorialProjectId(page);
   await page.goto(`/projects/${projectId}/sources`);
-  const panel = page.getByRole("region", { name: "检查已写章节", exact: true });
+  const panel = page.getByRole("region", { name: "全部章节", exact: true });
   const boxes = panel.getByRole("checkbox");
   await expect(boxes).toHaveCount(10);
   for (let index = 0; index < 8; index++) await boxes.nth(index).check();

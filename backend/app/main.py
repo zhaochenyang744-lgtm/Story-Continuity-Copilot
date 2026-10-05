@@ -800,6 +800,8 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         return ok(request,data,status)
     @app.post('/api/projects/{project_id}/chapter-checks/estimate')
     def chapter_check_estimate(project_id:str,payload:ChapterCheck,request:Request):csrf(request);return ok(request,chapter_checks.estimate(db,user(request)['id'],project_id,payload.chapter_ids))
+    @app.get('/api/projects/{project_id}/chapter-timeline')
+    def chapter_timeline(project_id:str,request:Request):return ok(request,chapter_checks.timeline(db,user(request)['id'],project_id))
     @app.get('/api/projects/{project_id}/chapter-checks')
     def chapter_check_list(project_id:str,request:Request,limit:int=5):return ok(request,{'runs':chapter_checks.recent(db,user(request)['id'],project_id,limit)})
     @app.post('/api/projects/{project_id}/analyses',status_code=202)
