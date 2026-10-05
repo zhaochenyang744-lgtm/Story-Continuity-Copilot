@@ -42,7 +42,7 @@ import httpx  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
 from app.config import AppPaths  # noqa: E402
-from app.engine import PROMPT_VERSION  # noqa: E402
+from app.engine import PROMPT_VERSION as LEGACY_PROMPT_VERSION, SCREENED_PROMPT_VERSION, ContinuityEngine  # noqa: E402
 from app.main import create_app  # noqa: E402
 from app.provider import DeepSeekProvider  # noqa: E402
 from app.stage13 import Stage13Settings  # noqa: E402
@@ -57,9 +57,13 @@ RETRYABLE_STATUSES = {"timed_out"}
 NATURE_CLASS = {"confirmed_conflict": "conflict", "possible_conflict": "conflict",
                 "state_change": "no_conflict", "insufficient_evidence": "insufficient_evidence"}
 CLASS_PRECEDENCE = ("conflict", "insufficient_evidence", "no_conflict")
-# The formal run is pinned to the deployed configuration, not to whatever the shell exports.
+# The prompt version a check records: the screened pipeline's, or the legacy one under the rollback switch.
+PROMPT_VERSION = SCREENED_PROMPT_VERSION if ContinuityEngine.pipeline() == "screened" else LEGACY_PROMPT_VERSION
+# The formal run is pinned to the configuration being released, not to whatever the shell exports.
+# Repinned 2026-10-05 from continuity-review-v24c-explicit-missing-link (V12, spent) to the long-text
+# phase-4 screened pipeline, which V13 gates as the short-text regression check.
 RUNTIME_CONTRACT = {"model": "deepseek-flash", "review_thinking": "high",
-                    "prompt_version": "continuity-review-v24c-explicit-missing-link"}
+                    "prompt_version": "continuity-review-v25e-screened-passages-second-review-missing-link+continuity-screen-v1+continuity-triage-v2-scores"}
 
 
 def load_case_set(set_dir: pathlib.Path) -> dict:

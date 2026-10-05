@@ -50,9 +50,10 @@ ADAPTER = "draft_replace_v1"
 RETRYABLE_ERRORS = {"provider_timeout", "provider_unavailable", "provider_error"}
 RETRYABLE_STATUSES = {"timed_out"}
 POLL_SECONDS = 600
-# What a formal run must match. prompt_version stays None until the phase-4 pipeline is pinned
-# deliberately; until then a formal run refuses to start.
-FORMAL_RUNTIME = {"model": "deepseek-flash", "review_thinking": "high", "concurrency": "4", "prompt_version": None}
+# What a formal run must match. Pinned 2026-10-05 to the phase-4 screened pipeline (commit 465f429)
+# after the lf1 dev set and the spent V12 set; any later prompt change makes a formal run refuse.
+FORMAL_RUNTIME = {"model": "deepseek-flash", "review_thinking": "high", "concurrency": "4",
+                  "prompt_version": "continuity-review-v25e-screened-passages-second-review-missing-link+continuity-screen-v1+continuity-triage-v2-scores"}
 DEFAULT_BUDGET_CNY = 10.0
 
 

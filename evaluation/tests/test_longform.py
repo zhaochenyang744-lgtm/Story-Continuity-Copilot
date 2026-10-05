@@ -497,9 +497,11 @@ class RunnerTests(unittest.TestCase):
             with self.assertRaises(RuntimeError) as raised:
                 runner.main(["--set", str(set_dir), "--run-id", "f", "--mode", "formal", "--results-dir", str(self.tmp)])
             self.assertNotIn("thresholds_not_approved", str(raised.exception))
-            for reason in ("set_kind_is_not_formal", "set_not_frozen", "prompt_version_not_pinned",
-                           "concurrency_not_production"):
+            for reason in ("set_kind_is_not_formal", "set_not_frozen", "concurrency_not_production"):
                 self.assertIn(reason, str(raised.exception))
+            # Pinned on 2026-10-05 to the phase-4 pipeline, which is the one checks record now.
+            self.assertNotIn("prompt_version_not_pinned", str(raised.exception))
+            self.assertEqual(runner.FORMAL_RUNTIME["prompt_version"], runner.prompt_version())
 
 
 class ThresholdTests(unittest.TestCase):
