@@ -88,6 +88,16 @@ class ChapterCheckTests(unittest.TestCase):
         usage = self.client.get("/api/account/usage").json()["data"]
         self.assertEqual(usage["check_chars_used"], written_chars(self.span_text[2]) + written_chars(self.span_text[9]))
 
+    def test_an_estimate_spends_nothing(self):
+        response = self.client.post(f"/api/projects/{self.project_id}/chapter-checks/estimate", headers=self.idem(),
+                                    json={"chapter_ids": [self.chapters[2], self.chapters[9]]})
+        self.assertEqual(response.status_code, 200, response.text)
+        data = response.json()["data"]
+        self.assertEqual(data["characters"], written_chars(self.span_text[2]) + written_chars(self.span_text[9]))
+        self.assertEqual(data["estimated_cny"], round(data["characters"] / 1000 * 0.085, 2))
+        self.assertEqual(self.client.get("/api/account/usage").json()["data"]["check_chars_used"], 0)
+        self.assertEqual(self.provider.requests, [])
+
     def test_at_most_eight_chapters(self):
         response = self.start(list(range(1, 10)))
         self.assertEqual(response.status_code, 400, response.text)  # request validation answers 400 invalid_request

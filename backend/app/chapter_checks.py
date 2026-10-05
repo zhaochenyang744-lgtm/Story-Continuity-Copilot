@@ -16,6 +16,9 @@ from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION
 from .text_content import written_chars
 
 CHAPTER_CHECK_MAX = 8
+# Measured on the second long-text formal run (lf2-formal, 2026-10-05): 0.21 CNY per chapter of about
+# 2,500 characters at DeepSeek billed rates. Shown to the author as an estimate before a check.
+ESTIMATED_CNY_PER_1000_CHARS = 0.085
 RUN_TYPE = "chapter_check"
 EVIDENCE_EXCERPT_CHARS = 160
 
@@ -40,6 +43,11 @@ def selection_characters(db: Any, user_id: str, project_id: str, chapter_ids: li
     with db.connection() as c:
         db._project(c, user_id, project_id)
         return sum(written_chars(span["body"]) for span in _selected_spans(db, c, project_id, chapter_ids))
+
+
+def estimate(db: Any, user_id: str, project_id: str, chapter_ids: list[str]) -> dict[str, Any]:
+    characters = selection_characters(db, user_id, project_id, chapter_ids)
+    return {"characters": characters, "estimated_cny": round(characters / 1000 * ESTIMATED_CNY_PER_1000_CHARS, 2)}
 
 
 def create(db: Any, user_id: str, project_id: str, chapter_ids: list[str], key: str, provenance: dict[str, str]):

@@ -798,6 +798,8 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             if executor:executor(execute_chapter_check,project_id,data['run_id'],actor['id'],reservation_id)
             else:background_tasks.add_task(execute_chapter_check,project_id,data['run_id'],actor['id'],reservation_id)
         return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/chapter-checks/estimate')
+    def chapter_check_estimate(project_id:str,payload:ChapterCheck,request:Request):csrf(request);return ok(request,chapter_checks.estimate(db,user(request)['id'],project_id,payload.chapter_ids))
     @app.get('/api/projects/{project_id}/chapter-checks')
     def chapter_check_list(project_id:str,request:Request,limit:int=5):return ok(request,{'runs':chapter_checks.recent(db,user(request)['id'],project_id,limit)})
     @app.post('/api/projects/{project_id}/analyses',status_code=202)

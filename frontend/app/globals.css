@@ -1825,6 +1825,19 @@ body { font-size: 14px; }
   box-shadow: var(--elev-2);
 }
 .more-menu > div button { width: 100%; justify-content: flex-start; border-color: transparent; white-space: nowrap; }
+.chapter-check-panel { max-width: var(--workspace-max, 1200px); }
+.chapter-check-picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; margin: 14px 0 0; padding: 0; border: 0; }
+.chapter-check-picker label { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); cursor: pointer; }
+.chapter-check-picker label.checked { border-color: var(--violet-400); background: var(--raised); }
+.chapter-check-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
+.chapter-check-result { display: grid; gap: 12px; margin-top: 20px; }
+.chapter-check-status { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; color: var(--muted); }
+.chapter-check-chapter { padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.chapter-check-chapter > header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+.chapter-check-chapter > header span { color: var(--muted); font-size: 13px; }
+.chapter-check-issue { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.chapter-check-issue blockquote { margin: 6px 0; padding-left: 12px; border-left: 2px solid var(--line-strong); color: var(--text); }
+.chapter-check-issue-kind { margin: 0; color: var(--violet-300); font-size: 13px; }
 .check-allowance { margin: 6px 0 0; color: var(--faint); font-size: 13px; }
 .check-allowance.over { color: var(--medium); }
 .more-menu-danger { display: grid; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line); }

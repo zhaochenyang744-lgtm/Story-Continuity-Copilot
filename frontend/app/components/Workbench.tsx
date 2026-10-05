@@ -5291,6 +5291,7 @@ function ProjectPage(p: {
   if (p.tab === "sources")
     return (
       <><SourceAppend project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} context={contextNotices} />
+      <ChapterCheckPanel projectId={p.project.id} chapters={p.chapters} readOnly={p.readOnly} />
       <LongTermReview key={`${p.actorId}:${p.project.id}`} userId={p.actorId} projectId={p.project.id} readOnly={p.readOnly} onChanged={p.refreshReferences} /></>
     );
   return (
@@ -5794,6 +5795,113 @@ function MemoryInitializationReview({
     </form>
   );
 }
+type ChapterCheckIssue = { sentence: string; nature?: string; category?: string; severity?: Issue["severity"]; explanation: string; evidence: { chapter_number: number; chapter_title: string; excerpt: string }[] };
+type ChapterCheckReport = { chapters: { chapter_id: string; chapter_number: number; chapter_title: string; sentences: number; issues: ChapterCheckIssue[]; undecided: number }[]; issue_count: number; undecided_count: number };
+type ChapterCheckRun = { run_id: string; status: string; stage: string; error_code?: string | null; created_at: string; completed_at?: string | null; report: ChapterCheckReport | null };
+const CHAPTER_CHECK_MAX = 8;
+
+/** Tick up to eight written chapters and check them, each against earlier chapters only; results per chapter. */
+function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: string; chapters: Chapter[]; readOnly: boolean }) {
+  const [selected, setSelected] = useState<string[]>([]);
+  const [estimate, setEstimate] = useState<{ characters: number; estimated_cny: number } | null>(null);
+  const [usage, setUsage] = useState<CheckUsage | null>(null);
+  const [runs, setRuns] = useState<ChapterCheckRun[]>([]);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const load = useCallback(async () => {
+    try {
+      const [list, nextUsage] = await Promise.all([
+        request<{ runs: ChapterCheckRun[] }>(`/projects/${projectId}/chapter-checks?limit=3`),
+        request<CheckUsage>("/account/usage"),
+      ]);
+      setRuns(list.runs); setUsage(nextUsage);
+    } catch { /* the panel stays usable; a later action shows the error */ }
+  }, [projectId]);
+  useEffect(() => { void load(); }, [load]);
+  const active = runs.some((run) => ["queued", "running"].includes(run.status));
+  useEffect(() => {
+    if (!active) return;
+    const timer = window.setTimeout(() => void load(), 3000);
+    return () => window.clearTimeout(timer);
+  }, [active, runs, load]);
+  useEffect(() => {
+    if (!selected.length) { setEstimate(null); return; }
+    let live = true;
+    json<{ characters: number; estimated_cny: number }>(`/projects/${projectId}/chapter-checks/estimate`, "POST", { chapter_ids: selected })
+      .then((next) => { if (live) setEstimate(next); }).catch(() => { if (live) setEstimate(null); });
+    return () => { live = false; };
+  }, [projectId, selected]);
+  if (usage?.account_type === "visitor") {
+    return <section className="project-section chapter-check-panel"><h2>检查已写章节</h2><p className="muted">访客只能检查当前草稿；注册账号后可以一次勾选最多 {CHAPTER_CHECK_MAX} 章一起检查。</p></section>;
+  }
+  const toggle = (id: string) => setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length >= CHAPTER_CHECK_MAX ? current : [...current, id]);
+  const over = Boolean(estimate && usage?.account_type === "registered" && estimate.characters > usage.check_chars_remaining);
+  const start = async () => {
+    setBusy(true); setError("");
+    try {
+      await json(`/projects/${projectId}/chapter-checks`, "POST", { chapter_ids: selected });
+      setSelected([]);
+      await load();
+    } catch (cause) { setError(labelError(cause)); } finally { setBusy(false); }
+  };
+  const latest = runs[0];
+  const sorted = [...chapters].sort((a, b) => a.number - b.number);
+  return (
+    <section className="project-section chapter-check-panel" aria-label="检查已写章节">
+      <h2>检查已写章节</h2>
+      <p className="muted">勾选最多 {CHAPTER_CHECK_MAX} 章一起检查。每一章只拿它前面的章节作依据；结果按章列出，要改哪一章，在下方「修订历史章节」里改。</p>
+      {!readOnly && sorted.length > 0 && (
+        <>
+          <fieldset className="chapter-check-picker" disabled={busy || active}>
+            <legend className="sr-only">选择要检查的章节</legend>
+            {sorted.map((chapter) => {
+              const checked = selected.includes(chapter.id);
+              return (
+                <label key={chapter.id} className={checked ? "checked" : ""}>
+                  <input type="checkbox" checked={checked} disabled={!checked && selected.length >= CHAPTER_CHECK_MAX} onChange={() => toggle(chapter.id)} />
+                  <span>第 {chapter.number} 章《{chapter.title || "未命名"}》</span>
+                </label>
+              );
+            })}
+          </fieldset>
+          <div className="chapter-check-actions">
+            <p className={over ? "check-allowance over" : "check-allowance"} role="status">
+              已选 {selected.length}/{CHAPTER_CHECK_MAX} 章
+              {estimate && <> · 约 {estimate.characters.toLocaleString()} 字 · 预计{estimate.estimated_cny >= 0.01 ? `约 ¥${estimate.estimated_cny.toFixed(2)}` : "不到 ¥0.01"}</>}
+              {usage?.account_type === "registered" && <> · 今天还可检查 {usage.check_chars_remaining.toLocaleString()} 字</>}
+            </p>
+            <Button className="primary" disabled={busy || active || !selected.length || over} onClick={() => void start()}>{active ? "正在检查" : "检查选中的章节"}</Button>
+          </div>
+        </>
+      )}
+      {error && <div className="notice error" role="alert">{error}</div>}
+      {latest && (
+        <div className="chapter-check-result" aria-live="polite">
+          <p className="chapter-check-status">
+            <strong>{latest.status === "completed" ? "最近一次检查" : stage(latest.status)}</strong>
+            <span>{timestampLabel(latest.completed_at ?? latest.created_at)}</span>
+            {latest.status === "completed" && latest.report && <span>共 {latest.report.chapters.length} 章 · {latest.report.issue_count ? `${latest.report.issue_count} 条问题` : "没有发现问题"}</span>}
+          </p>
+          {["failed", "timed_out", "cancelled"].includes(latest.status) && <p className="inline-error">{labelError({ code: latest.error_code })}</p>}
+          {latest.report?.chapters.map((chapter) => (
+            <article key={chapter.chapter_id} className="chapter-check-chapter">
+              <header><strong>第 {chapter.chapter_number} 章《{chapter.chapter_title || "未命名"}》</strong><span>{chapter.issues.length ? `${chapter.issues.length} 条问题` : "没有发现问题"}{chapter.undecided ? ` · ${chapter.undecided} 句未能判断` : ""}</span></header>
+              {chapter.issues.map((issue, index) => (
+                <div key={index} className="chapter-check-issue">
+                  <p className="chapter-check-issue-kind">{issueNatureLabel(issue.nature)}{issue.severity ? ` · ${impactLabel(issue.severity)}` : ""}{issue.category ? ` · ${categoryLabel(issue.category)}` : ""}</p>
+                  <blockquote>{issue.sentence}</blockquote>
+                  {issue.explanation && <p>{issue.explanation}</p>}
+                  {issue.evidence.map((item, at) => <p key={at} className="muted">出处：第 {item.chapter_number} 章《{item.chapter_title || "未命名"}》：{item.excerpt}</p>)}
+                </div>
+              ))}
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 function SourceAppend({ project, draft, chapters, readOnly, context }: { project: Project; draft: Draft | null; chapters: Chapter[]; readOnly: boolean; context?: ReactNode }) {
   const router=useRouter();
   const [method, setMethod] = useState<"draft_complete" | "paste" | "file">("paste"), [content, setContent] = useState(""), [filename, setFilename] = useState(""), [preview, setPreview] = useState<SourceChangeSet | null>(null), [nextDraft, setNextDraft] = useState<Draft | null>(null), [busy, setBusy] = useState(""), [error, setError] = useState("");
