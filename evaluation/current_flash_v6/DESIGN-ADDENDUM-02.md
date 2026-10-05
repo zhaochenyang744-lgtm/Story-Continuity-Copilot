@@ -1,0 +1,5 @@
+# V6 rule Memory binding clarification
+
+Recorded before V6 offline tests. A `related_memory_ids` entry can legitimately associate a Memory from a different SourceSpan with one cited evidence item. The general evidence validator therefore keeps the existing known-ID rule and does not require each Memory to share that item's span. For a `timeless_rule` proof specifically, a known `static_canon`/`rule` Memory qualifies only when its own `source_span_id` is actually cited by the same issue. A selected-but-uncited rule Memory cannot qualify an unrelated contradiction. This is a set-level binding requirement, not a claim that the validator understands the rule's natural-language applicability.
+
+Offline controls must distinguish: a borrowed uncited rule ID fails; a separately cited rule source passes the structural rule check; an ordinary valid cross-source Memory association remains accepted. V6 scoring and the final handoff must describe this policy. The earlier frozen design and first attempted stricter code remain visible in the work history; this addendum is the current plan.

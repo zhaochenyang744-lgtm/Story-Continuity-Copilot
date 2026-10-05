@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "f1e4eb2cd13b7852aaf927e8b285ce349fda41537e6cbc1f001d58084cb0a22c",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-9da63740-96e6-408a-989d-40b2d396b294-1",
+        "verdict": "no_issue",
+        "basis": "Cited evidence shows at 10点 the gauge read four bars and the valve cap was loose and not locked; the rule requires both four bars and a locked valve cap for readiness, so the claim that the carrier was not ready despite its four-bar gauge is fully supported."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3551,
+      "completion_tokens": 806,
+      "total_tokens": 4357,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 678
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1119
+    },
+    "status": "complete",
+    "prompt_tokens": 3551,
+    "completion_tokens": 806,
+    "total_tokens": 4357,
+    "reasoning_tokens": 678,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "277dccb21cbd86e88a41326068676a409f1db11b5887938892f4e71343977712",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "The supplied watch record leaves the companion unnamed, so the claim that Evi accompanied Orin is unsupported.",
+        "reasoning": "The cited record states only that Orin walked from the west quay to the east quay at 19:00 and explicitly leaves the companion unnamed. The current claim attributes that unnamed companion role to Evi and asserts the record establishes her presence. No supplied evidence identifies the companion or links Evi to the walk, so the attribution lacks the required source warrant. This is not a contradiction with the record; the draft goes beyond what the record states, leaving P unknown.",
+        "temporal_basis": {
+          "claim_anchor": "19:00",
+          "evidence_anchor": "At 19:00",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_companion_blank-1",
+            "span_id": "fixture-span-v6_companion_blank-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_companion_blank-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_companion_blank-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The watch record names only Orin and explicitly leaves the companion unnamed, so the claim that Evi accompanied him is unsupported by supplied evidence."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3168,
+      "completion_tokens": 3382,
+      "total_tokens": 6550,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2881
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 736
+    },
+    "status": "complete",
+    "prompt_tokens": 3168,
+    "completion_tokens": 3382,
+    "total_tokens": 6550,
+    "reasoning_tokens": 2881,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

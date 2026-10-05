@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "quartz_aviary",
+  "title": "The Quartz Aviary Ledger",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v6-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "The Quartz Aviary Ledger",
+    "characters": [
+      "Elian Moss",
+      "Pera Dune"
+    ],
+    "locations": [
+      "Starling Vault",
+      "Indigo Roost"
+    ],
+    "core_design": "aviary procedure chronology and age-bound entry exceptions"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Dawn procedure card",
+      "source_label": "dawn_procedure_card",
+      "body": "The printed dawn procedure schedules seed mist before the first wing count in Starling Vault."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Alarm-day execution log",
+      "source_label": "alarm_day_execution_log",
+      "body": "On alarm day Elian Moss completed the first wing count, then released seed mist afterward because the reservoir seal was checked late."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Copper tag rule",
+      "source_label": "copper_tag_rule",
+      "body": "The aviary rule requires every glasswing bird to wear a copper ankle tag before ordinary roost entry."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Hatchling exception",
+      "source_label": "hatchling_exception",
+      "body": "A quarantine exception permits glasswing fledglings younger than three days to enter Indigo Roost untagged through the nursery hatch."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Vault temperature",
+      "source_label": "vault_temperature",
+      "body": "Pera Dune logged Starling Vault at eighteen degrees Celsius throughout the quiet watch."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Keeper notebook",
+      "source_label": "keeper_notebook",
+      "body": "Pera Dune records feeding totals in a black linen notebook kept beneath the eastern perch."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Blue feather intake bundle",
+      "source_label": "blue_feather_intake_bundle",
+      "body": "One unsigned intake label calls the blue feather an Indigo Gull feather and another calls it Sky Tern; neither label has a custody signature, and the ledger declares no source-priority rule."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Incubator readiness sheet",
+      "source_label": "incubator_readiness_sheet",
+      "body": "Incubator bay four logged heat, humidity, and the required turning cycle, but the final dawn-count result cell is blank and no hatch observation was recorded."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "event_timeline",
+      "subject": "alarm-day seed mist",
+      "predicate": "actual_order",
+      "value": "after the first wing count",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "alarm_day_execution_log"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "untagged hatchling entry",
+      "predicate": "exception",
+      "value": "glasswing fledglings younger than three days",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "hatchling_exception"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Starling Vault",
+      "predicate": "quiet_watch_temperature",
+      "value": "eighteen degrees Celsius",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "vault_temperature"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Pera Dune",
+      "predicate": "feeding_notebook",
+      "value": "black linen notebook",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "keeper_notebook"
+      }
+    }
+  ]
+}

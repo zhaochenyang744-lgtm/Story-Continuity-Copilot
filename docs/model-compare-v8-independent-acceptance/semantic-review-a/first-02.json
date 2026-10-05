@@ -1,0 +1,205 @@
+{
+  "schema_version": "v8-blinded-case-first-review-v1",
+  "case_alias": "case-02",
+  "stage": "first",
+  "reviewer": "semantic-review-a",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-02",
+      "response_alias": "answer-caa6c0",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        170
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "see ratings",
+          "reason": "规则与同刻徽章记录支持无法开门；明确名单沉默不构成冲突，也排除了载体背景。",
+          "visible_quote": "名单对结果的沉默并不矛盾",
+          "evidence_pointer": "responses[answer-caa6c0].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].allowed_evidence"
+        },
+        {
+          "dimension": "S",
+          "verdict": "see ratings",
+          "reason": "JSON/parsed一致，唯一当前claim ledger，basis170字，no_issue与空issues一致。",
+          "visible_quote": "no_issue",
+          "evidence_pointer": "responses[answer-caa6c0].first.parsed_business_json"
+        },
+        {
+          "dimension": "D",
+          "verdict": "see ratings",
+          "reason": "正确空Issue实际交付，充分解释相容性；不强求没有争议的草稿产生Issue。",
+          "visible_quote": "\"issues\":[]",
+          "evidence_pointer": "responses[answer-caa6c0].first.parsed_business_json.issues"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "规则与同刻徽章记录支持无法开门；明确名单沉默不构成冲突，也排除了载体背景。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-02",
+      "response_alias": "answer-35dcfa",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        249
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "see ratings",
+          "reason": "无法开门受规则支持；同刻roster只补背景，其未记开门结果不推翻规则，合法no_issue。",
+          "visible_quote": "the roster's silence about whether it opened does not contradict",
+          "evidence_pointer": "responses[answer-35dcfa].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].allowed_evidence"
+        },
+        {
+          "dimension": "S",
+          "verdict": "see ratings",
+          "reason": "JSON/parsed一致，唯一当前claim ledger，basis249字，no_issue与空issues一致。",
+          "visible_quote": "no_issue",
+          "evidence_pointer": "responses[answer-35dcfa].first.parsed_business_json"
+        },
+        {
+          "dimension": "D",
+          "verdict": "see ratings",
+          "reason": "正确空Issue实际交付，充分解释相容性；不强求没有争议的草稿产生Issue。",
+          "visible_quote": "\"issues\":[]",
+          "evidence_pointer": "responses[answer-35dcfa].first.parsed_business_json.issues"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "无法开门受规则支持；同刻roster只补背景，其未记开门结果不推翻规则，合法no_issue。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-02",
+      "response_alias": "answer-b82249",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        214
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "see ratings",
+          "reason": "永久规则直接支持仅红徽章无法开门，同刻尝试为一致背景；合法no_issue。",
+          "visible_quote": "directly supported by the timeless rule",
+          "evidence_pointer": "responses[answer-b82249].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].allowed_evidence"
+        },
+        {
+          "dimension": "S",
+          "verdict": "see ratings",
+          "reason": "JSON/parsed一致，唯一当前claim ledger，basis214字，no_issue与空issues一致。",
+          "visible_quote": "no_issue",
+          "evidence_pointer": "responses[answer-b82249].first.parsed_business_json"
+        },
+        {
+          "dimension": "D",
+          "verdict": "see ratings",
+          "reason": "正确空Issue实际交付，充分解释相容性；不强求没有争议的草稿产生Issue。",
+          "visible_quote": "\"issues\":[]",
+          "evidence_pointer": "responses[answer-b82249].first.parsed_business_json.issues"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "永久规则直接支持仅红徽章无法开门，同刻尝试为一致背景；合法no_issue。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "within_case_comparison_after_individual_review": {
+    "strict_pass": 3,
+    "total": 3,
+    "strict_pass_aliases": [
+      "answer-caa6c0",
+      "answer-35dcfa",
+      "answer-b82249"
+    ],
+    "F_pass_aliases": [
+      "answer-caa6c0",
+      "answer-35dcfa",
+      "answer-b82249"
+    ],
+    "distinction": "三条均正确无冲突，冻结分层口径下并列完整通过；未以语言、长度或风格猜身份/排名。"
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/02.json",
+    "sha256_before": "39e10aa136bdc2cd1518e109507ff5e971e6d6d55a15e68d3565fc82d70a78e0",
+    "sha256_after_review": "39e10aa136bdc2cd1518e109507ff5e971e6d6d55a15e68d3565fc82d70a78e0",
+    "unchanged": true,
+    "all_response_business_requests_equal_packet": true,
+    "all_visible_json_equal_saved_parsed": true
+  },
+  "lock": {
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "repair_or_final_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0,
+    "writes": "this new review file only"
+  }
+}

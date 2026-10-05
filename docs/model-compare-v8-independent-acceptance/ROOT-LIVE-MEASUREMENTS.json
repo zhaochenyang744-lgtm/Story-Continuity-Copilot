@@ -1,0 +1,2274 @@
+{
+  "run_id": "model-compare-v8-20260927-01",
+  "finished": true,
+  "conditions": {
+    "flash-off": {
+      "condition_cases": 34,
+      "cases": [
+        {
+          "case": 1,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch",
+            "product_validator:temporal_overlap_unproven",
+            "temporal_policy_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch",
+            "outcome_not_allowed"
+          ],
+          "evaluations": 2,
+          "posts": 2,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true,
+            "2": true
+          },
+          "case_seconds": 5.358356,
+          "normalizations": 1
+        },
+        {
+          "case": 2,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.450369,
+          "normalizations": 0
+        },
+        {
+          "case": 3,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.635343,
+          "normalizations": 0
+        },
+        {
+          "case": 4,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.929244,
+          "normalizations": 0
+        },
+        {
+          "case": 5,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.390003,
+          "normalizations": 0
+        },
+        {
+          "case": 6,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "required_issue_missing"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "required_issue_missing"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.326278,
+          "normalizations": 0
+        },
+        {
+          "case": 7,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.755136,
+          "normalizations": 0
+        },
+        {
+          "case": 8,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.378972,
+          "normalizations": 0
+        },
+        {
+          "case": 9,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "product_validator:claim_verdicts_issue_mismatch",
+            "required_issue_missing"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch",
+            "undeclared_extra_evidence"
+          ],
+          "evaluations": 2,
+          "posts": 2,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true,
+            "2": true
+          },
+          "case_seconds": 3.827977,
+          "normalizations": 0
+        },
+        {
+          "case": 10,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "undeclared_extra_evidence"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "undeclared_extra_evidence"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 3.180075,
+          "normalizations": 0
+        },
+        {
+          "case": 11,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.373227,
+          "normalizations": 0
+        },
+        {
+          "case": 12,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "product_validator:claim_verdicts_issue_mismatch",
+            "required_issue_missing"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 2,
+          "posts": 2,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true,
+            "2": true
+          },
+          "case_seconds": 4.243593,
+          "normalizations": 0
+        },
+        {
+          "case": 13,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "direct_fact_mislabeled_context",
+            "premise_mislabeled_direct_contradiction"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "direct_fact_mislabeled_context",
+            "premise_mislabeled_direct_contradiction"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.708786,
+          "normalizations": 0
+        },
+        {
+          "case": 14,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.316724,
+          "normalizations": 0
+        },
+        {
+          "case": 15,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch",
+            "undeclared_extra_evidence"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch",
+            "undeclared_extra_evidence"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.816531,
+          "normalizations": 0
+        },
+        {
+          "case": 16,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "confirmed_evidence_role_invalid",
+            "product_validator:conflict_evidence_not_direct"
+          ],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 2,
+          "posts": 2,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true,
+            "2": true
+          },
+          "case_seconds": 5.836867,
+          "normalizations": 0
+        },
+        {
+          "case": 17,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.302038,
+          "normalizations": 0
+        },
+        {
+          "case": 18,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "product_validator:claim_verdicts_issue_mismatch",
+            "required_issue_missing"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 2,
+          "posts": 2,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true,
+            "2": true
+          },
+          "case_seconds": 3.747462,
+          "normalizations": 0
+        },
+        {
+          "case": 19,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.666842,
+          "normalizations": 0
+        },
+        {
+          "case": 20,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.300259,
+          "normalizations": 0
+        },
+        {
+          "case": 21,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "required_issue_missing"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "required_issue_missing"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.393628,
+          "normalizations": 0
+        },
+        {
+          "case": 22,
+          "status": "failed",
+          "error_code": "evidence_unresolvable",
+          "first_machine": "fail",
+          "first_errors": [
+            "product_validator:evidence_unresolvable",
+            "source_not_selected_or_wrong_chapter",
+            "undeclared_extra_evidence"
+          ],
+          "final_machine": "terminal_failure",
+          "final_errors": [
+            "evidence_unresolvable"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.855531,
+          "normalizations": 0
+        },
+        {
+          "case": 23,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.299476,
+          "normalizations": 0
+        },
+        {
+          "case": 24,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.310364,
+          "normalizations": 0
+        },
+        {
+          "case": 25,
+          "status": "failed",
+          "error_code": "claim_verdicts_invalid",
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch",
+            "confirmed_evidence_role_invalid",
+            "product_validator:conflict_evidence_not_direct"
+          ],
+          "final_machine": "terminal_failure",
+          "final_errors": [
+            "claim_verdicts_invalid"
+          ],
+          "evaluations": 2,
+          "posts": 2,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true,
+            "2": true
+          },
+          "case_seconds": 4.54737,
+          "normalizations": 0
+        },
+        {
+          "case": 26,
+          "status": "failed",
+          "error_code": "conflict_evidence_not_direct",
+          "first_machine": "fail",
+          "first_errors": [
+            "confirmed_evidence_role_invalid",
+            "product_validator:conflict_evidence_not_direct"
+          ],
+          "final_machine": "terminal_failure",
+          "final_errors": [
+            "conflict_evidence_not_direct"
+          ],
+          "evaluations": 2,
+          "posts": 2,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true,
+            "2": true
+          },
+          "case_seconds": 5.070663,
+          "normalizations": 0
+        },
+        {
+          "case": 27,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.191901,
+          "normalizations": 0
+        },
+        {
+          "case": 28,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "product_validator:claim_verdicts_issue_mismatch",
+            "required_issue_missing"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 2,
+          "posts": 2,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true,
+            "2": true
+          },
+          "case_seconds": 4.053567,
+          "normalizations": 0
+        },
+        {
+          "case": 29,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.483117,
+          "normalizations": 0
+        },
+        {
+          "case": 30,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.376832,
+          "normalizations": 0
+        },
+        {
+          "case": 31,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.340197,
+          "normalizations": 0
+        },
+        {
+          "case": 32,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "product_validator:claim_verdicts_issue_mismatch",
+            "required_issue_missing"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 2,
+          "posts": 2,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true,
+            "2": true
+          },
+          "case_seconds": 3.642949,
+          "normalizations": 0
+        },
+        {
+          "case": 33,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.510278,
+          "normalizations": 0
+        },
+        {
+          "case": 34,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 1.495597,
+          "normalizations": 0
+        }
+      ],
+      "posts": 43,
+      "first_machine_pass": [
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        11,
+        14,
+        17,
+        20,
+        23,
+        27,
+        29,
+        30,
+        33,
+        34
+      ],
+      "final_machine_pass": [
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        11,
+        14,
+        16,
+        17,
+        20,
+        23,
+        27,
+        29,
+        30,
+        33,
+        34
+      ],
+      "repairs": 9,
+      "engine_statuses": {
+        "completed": 31,
+        "failed": 3
+      },
+      "finish_reasons": {
+        "stop": 43
+      },
+      "http_statuses": {
+        "200": 43
+      },
+      "known_tokens": {
+        "prompt_tokens": 148721,
+        "completion_tokens": 13606,
+        "total_tokens": 162327
+      },
+      "unknown_usage_receipts": 0,
+      "response_models": [
+        "deepseek-flash"
+      ],
+      "reasoning_detail_statuses": {
+        "not_reported": 43
+      },
+      "known_reasoning_tokens_subtotal": 0,
+      "reasoning_subtotal_complete": false,
+      "reasoning_body_present_count": 0,
+      "first_request_latency_ms": {
+        "n": 34,
+        "sum": 65104,
+        "median": 1472.5,
+        "p95_nearest_rank": 2969,
+        "max": 3140
+      },
+      "all_request_latency_ms": {
+        "n": 43,
+        "sum": 86598,
+        "median": 2219,
+        "p95_nearest_rank": 2906,
+        "max": 3140
+      },
+      "condition_case_seconds": {
+        "n": 34,
+        "sum": 88.115552,
+        "median": 2.4877700000000003,
+        "p95_nearest_rank": 5.358356,
+        "max": 5.836867
+      }
+    },
+    "flash-high": {
+      "condition_cases": 34,
+      "cases": [
+        {
+          "case": 1,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": false
+          },
+          "case_seconds": 26.793579,
+          "normalizations": 0
+        },
+        {
+          "case": 2,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 4.992472,
+          "normalizations": 0
+        },
+        {
+          "case": 3,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 12.619651,
+          "normalizations": 0
+        },
+        {
+          "case": 4,
+          "status": "failed",
+          "error_code": "schema_invalid",
+          "first_machine": "fail",
+          "first_errors": [
+            "product_validator:schema_invalid"
+          ],
+          "final_machine": "terminal_failure",
+          "final_errors": [
+            "schema_invalid"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 7.278394,
+          "normalizations": 0
+        },
+        {
+          "case": 5,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.356113,
+          "normalizations": 0
+        },
+        {
+          "case": 6,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 12.262433,
+          "normalizations": 0
+        },
+        {
+          "case": 7,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 7.194763,
+          "normalizations": 0
+        },
+        {
+          "case": 8,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 4.057289,
+          "normalizations": 0
+        },
+        {
+          "case": 9,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 7.836784,
+          "normalizations": 0
+        },
+        {
+          "case": 10,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 16.858254,
+          "normalizations": 0
+        },
+        {
+          "case": 11,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.344277,
+          "normalizations": 0
+        },
+        {
+          "case": 12,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 11.219509,
+          "normalizations": 0
+        },
+        {
+          "case": 13,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 19.49418,
+          "normalizations": 0
+        },
+        {
+          "case": 14,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.51284,
+          "normalizations": 0
+        },
+        {
+          "case": 15,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 8.870038,
+          "normalizations": 0
+        },
+        {
+          "case": 16,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 8.371483,
+          "normalizations": 0
+        },
+        {
+          "case": 17,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.484567,
+          "normalizations": 0
+        },
+        {
+          "case": 18,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 9.691569,
+          "normalizations": 0
+        },
+        {
+          "case": 19,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 8.569131,
+          "normalizations": 0
+        },
+        {
+          "case": 20,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "product_validator:claim_verdicts_invalid"
+          ],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 2,
+          "posts": 2,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true,
+            "2": true
+          },
+          "case_seconds": 5.424972,
+          "normalizations": 0
+        },
+        {
+          "case": 21,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 11.850294,
+          "normalizations": 0
+        },
+        {
+          "case": 22,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 11.316575,
+          "normalizations": 0
+        },
+        {
+          "case": 23,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 3.343351,
+          "normalizations": 0
+        },
+        {
+          "case": 24,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 16.571401,
+          "normalizations": 0
+        },
+        {
+          "case": 25,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 19.092952,
+          "normalizations": 0
+        },
+        {
+          "case": 26,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 6.791624,
+          "normalizations": 0
+        },
+        {
+          "case": 27,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.858444,
+          "normalizations": 0
+        },
+        {
+          "case": 28,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 6.748111,
+          "normalizations": 0
+        },
+        {
+          "case": 29,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.15076,
+          "normalizations": 0
+        },
+        {
+          "case": 30,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 3.28894,
+          "normalizations": 0
+        },
+        {
+          "case": 31,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 6.144392,
+          "normalizations": 0
+        },
+        {
+          "case": 32,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 10.309612,
+          "normalizations": 0
+        },
+        {
+          "case": 33,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 2.839268,
+          "normalizations": 0
+        },
+        {
+          "case": 34,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 3.781249,
+          "normalizations": 0
+        }
+      ],
+      "posts": 35,
+      "first_machine_pass": [
+        2,
+        3,
+        5,
+        8,
+        9,
+        10,
+        11,
+        13,
+        14,
+        15,
+        16,
+        17,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "final_machine_pass": [
+        2,
+        3,
+        5,
+        8,
+        9,
+        10,
+        11,
+        13,
+        14,
+        15,
+        16,
+        17,
+        20,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "repairs": 1,
+      "engine_statuses": {
+        "completed": 33,
+        "failed": 1
+      },
+      "finish_reasons": {
+        "stop": 35
+      },
+      "http_statuses": {
+        "200": 35
+      },
+      "known_tokens": {
+        "prompt_tokens": 117649,
+        "completion_tokens": 63184,
+        "total_tokens": 180833
+      },
+      "unknown_usage_receipts": 0,
+      "response_models": [
+        "deepseek-flash"
+      ],
+      "reasoning_detail_statuses": {
+        "reported": 35
+      },
+      "known_reasoning_tokens_subtotal": 50427,
+      "reasoning_subtotal_complete": true,
+      "reasoning_body_present_count": 35,
+      "first_request_latency_ms": {
+        "n": 34,
+        "sum": 284834,
+        "median": 7201.0,
+        "p95_nearest_rank": 19455,
+        "max": 26755
+      },
+      "all_request_latency_ms": {
+        "n": 35,
+        "sum": 287061,
+        "median": 7162,
+        "p95_nearest_rank": 19455,
+        "max": 26755
+      },
+      "condition_case_seconds": {
+        "n": 34,
+        "sum": 288.319271,
+        "median": 7.2365785,
+        "p95_nearest_rank": 19.49418,
+        "max": 26.793579
+      }
+    },
+    "pro-high": {
+      "condition_cases": 34,
+      "cases": [
+        {
+          "case": 1,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 31.791697,
+          "normalizations": 0
+        },
+        {
+          "case": 2,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 12.490564,
+          "normalizations": 0
+        },
+        {
+          "case": 3,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 38.727055,
+          "normalizations": 0
+        },
+        {
+          "case": 4,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": false
+          },
+          "case_seconds": 44.893386,
+          "normalizations": 0
+        },
+        {
+          "case": 5,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 8.216267,
+          "normalizations": 0
+        },
+        {
+          "case": 6,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 22.83402,
+          "normalizations": 0
+        },
+        {
+          "case": 7,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 37.72278,
+          "normalizations": 0
+        },
+        {
+          "case": 8,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 8.503471,
+          "normalizations": 0
+        },
+        {
+          "case": 9,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": false
+          },
+          "case_seconds": 53.884203,
+          "normalizations": 0
+        },
+        {
+          "case": 10,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 31.396172,
+          "normalizations": 0
+        },
+        {
+          "case": 11,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 10.787928,
+          "normalizations": 0
+        },
+        {
+          "case": 12,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 43.750143,
+          "normalizations": 0
+        },
+        {
+          "case": 13,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "direct_fact_mislabeled_context",
+            "premise_mislabeled_direct_contradiction"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "direct_fact_mislabeled_context",
+            "premise_mislabeled_direct_contradiction"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 37.028108,
+          "normalizations": 0
+        },
+        {
+          "case": 14,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 11.445378,
+          "normalizations": 0
+        },
+        {
+          "case": 15,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 40.901547,
+          "normalizations": 0
+        },
+        {
+          "case": 16,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": false
+          },
+          "case_seconds": 46.08677,
+          "normalizations": 0
+        },
+        {
+          "case": 17,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 10.208631,
+          "normalizations": 0
+        },
+        {
+          "case": 18,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "product_validator:claim_verdicts_issue_mismatch"
+          ],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 2,
+          "posts": 2,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true,
+            "2": false
+          },
+          "case_seconds": 82.833761,
+          "normalizations": 0
+        },
+        {
+          "case": 19,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 37.521943,
+          "normalizations": 0
+        },
+        {
+          "case": 20,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 12.918349,
+          "normalizations": 0
+        },
+        {
+          "case": 21,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 33.780399,
+          "normalizations": 0
+        },
+        {
+          "case": 22,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 21.785946,
+          "normalizations": 0
+        },
+        {
+          "case": 23,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 8.169245,
+          "normalizations": 0
+        },
+        {
+          "case": 24,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": false
+          },
+          "case_seconds": 45.308509,
+          "normalizations": 0
+        },
+        {
+          "case": 25,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": false
+          },
+          "case_seconds": 44.174125,
+          "normalizations": 0
+        },
+        {
+          "case": 26,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 35.567083,
+          "normalizations": 0
+        },
+        {
+          "case": 27,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 5.894211,
+          "normalizations": 0
+        },
+        {
+          "case": 28,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 35.089064,
+          "normalizations": 0
+        },
+        {
+          "case": 29,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 6.326718,
+          "normalizations": 0
+        },
+        {
+          "case": 30,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 5.043194,
+          "normalizations": 0
+        },
+        {
+          "case": 31,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 25.641383,
+          "normalizations": 0
+        },
+        {
+          "case": 32,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "fail",
+          "first_errors": [
+            "category_mismatch"
+          ],
+          "final_machine": "fail",
+          "final_errors": [
+            "category_mismatch"
+          ],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 31.089406,
+          "normalizations": 0
+        },
+        {
+          "case": 33,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 8.386311,
+          "normalizations": 0
+        },
+        {
+          "case": 34,
+          "status": "completed",
+          "error_code": null,
+          "first_machine": "pass",
+          "first_errors": [],
+          "final_machine": "pass",
+          "final_errors": [],
+          "evaluations": 1,
+          "posts": 1,
+          "original_8000_compatibility_by_evaluation": {
+            "1": true
+          },
+          "case_seconds": 9.302934,
+          "normalizations": 0
+        }
+      ],
+      "posts": 35,
+      "first_machine_pass": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        10,
+        11,
+        14,
+        15,
+        16,
+        17,
+        19,
+        20,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        29,
+        30,
+        31,
+        33,
+        34
+      ],
+      "final_machine_pass": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        10,
+        11,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        29,
+        30,
+        31,
+        33,
+        34
+      ],
+      "repairs": 1,
+      "engine_statuses": {
+        "completed": 34
+      },
+      "finish_reasons": {
+        "stop": 35
+      },
+      "http_statuses": {
+        "200": 35
+      },
+      "known_tokens": {
+        "prompt_tokens": 119712,
+        "completion_tokens": 98983,
+        "total_tokens": 218695
+      },
+      "unknown_usage_receipts": 0,
+      "response_models": [
+        "deepseek-v4-pro"
+      ],
+      "reasoning_detail_statuses": {
+        "reported": 35
+      },
+      "known_reasoning_tokens_subtotal": 85537,
+      "reasoning_subtotal_complete": true,
+      "reasoning_body_present_count": 35,
+      "first_request_latency_ms": {
+        "n": 34,
+        "sum": 897946,
+        "median": 31204.0,
+        "p95_nearest_rank": 46056,
+        "max": 53853
+      },
+      "all_request_latency_ms": {
+        "n": 35,
+        "sum": 938252,
+        "median": 31356,
+        "p95_nearest_rank": 46056,
+        "max": 53853
+      },
+      "condition_case_seconds": {
+        "n": 34,
+        "sum": 939.500701,
+        "median": 31.242789000000002,
+        "p95_nearest_rank": 53.884203,
+        "max": 82.833761
+      }
+    }
+  },
+  "run_summary": {
+    "run_id": "model-compare-v8-20260927-01",
+    "finished_at": "2026-09-27T11:56:24.529156+00:00",
+    "post_attempts": 113,
+    "known_total_tokens": 561855,
+    "unknown_dispatches": 0,
+    "stop_reason": null,
+    "tokens_total": 561855,
+    "cost": null,
+    "cost_status": "unknown",
+    "unknown_is_not_zero": true,
+    "condition_cases_finished": 102,
+    "condition_cases_not_run": 0,
+    "coverage": {
+      "flash-off": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "flash-high": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "pro-high": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
+      ]
+    },
+    "common_finished_cases": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34
+    ],
+    "models_get_count": 1,
+    "semantic_review": "pending",
+    "engine_budget_restored_to": 8000
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "scc-eval-v3-semantic-review-v1",
+  "review_scope": "controller_accepted_for_freeze",
+  "structural_validation_note": "结构校验验证清单、引用与重合防护；不能替代总控对语义独立性和评测适用性的人工审阅。",
+  "entries": [
+    {"case_id":"eval-v3-brine-conflict-echo-order","corpus_key":"brine_station","core_fact_key":"brine:signature-before-buoy-echo","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-brine-conflict-solo-seal","corpus_key":"brine_station","core_fact_key":"brine:joint-handover-confirmation","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-brine-no-conflict-depth-scale","corpus_key":"brine_station","core_fact_key":"brine:depth-scale-sealed-storage","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-brine-insufficient-buoy-code","corpus_key":"brine_station","core_fact_key":"brine:unknown-seventh-buoy-code","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-brine-insufficient-north-dike","corpus_key":"brine_station","core_fact_key":"brine:unknown-north-dike-arrival","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-theatre-conflict-wind-turntable","corpus_key":"basalt_theatre","core_fact_key":"theatre:turntable-silver-bell-rule","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-theatre-conflict-lin-knows-courier","corpus_key":"basalt_theatre","core_fact_key":"theatre:lin-unknown-note-courier","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-theatre-no-conflict-amber-mask","corpus_key":"basalt_theatre","core_fact_key":"theatre:amber-mask-cabinet-state","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-theatre-no-conflict-rehearsal","corpus_key":"basalt_theatre","core_fact_key":"theatre:third-rehearsal-cancelled","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-theatre-insufficient-key-engraving","corpus_key":"basalt_theatre","core_fact_key":"theatre:unknown-director-key-engraving","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-stair-conflict-vial-early-transfer","corpus_key":"stair_post","core_fact_key":"stair:vial-location-at-18-15","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-stair-no-conflict-dry-slate","corpus_key":"stair_post","core_fact_key":"stair:lamp-requires-dry-slate","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-stair-no-conflict-joint-label","corpus_key":"stair_post","core_fact_key":"stair:joint-label-after-independent-weighing","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-stair-insufficient-vial-serial","corpus_key":"stair_post","core_fact_key":"stair:unknown-vial-serial","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"},
+    {"case_id":"eval-v3-stair-insufficient-return-path","corpus_key":"stair_post","core_fact_key":"stair:unknown-courier-return-path","prior_overlap_checked":true,"same_decision_point":false,"review_status":"controller_accepted_for_freeze"}
+  ]
+}

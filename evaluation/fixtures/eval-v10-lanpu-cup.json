@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "lanpu_cup",
+  "title": "岚蒲杯的赛场边",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v10-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "岚蒲杯的赛场边",
+    "language": "zh",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "赛会章程",
+      "source_label": "cup_charter",
+      "body": "岚蒲杯拼图赛自创立起始终实行单一冠军制：每届只允许一支队伍获得冠军，总积分相同的争冠队伍必须继续加赛，直到产生唯一胜者。并列冠军从未被列为可选赛果，主办方也没有临时豁免这项永久赛则的权限。"
+    },
+    {
+      "chapter_number": 2,
+      "title": "领取计分卡",
+      "source_label": "raised_cards",
+      "body": "2028年4月9日9点，满枝队向服务台领取了带凸点的计分卡，准备让视力不佳的队员也能独立核对分数。队员庄扉用指尖逐行摸过数字，确认没有漏印，才把这套卡片交给负责记分的同伴。"
+    },
+    {
+      "chapter_number": 3,
+      "title": "申诉窗口",
+      "source_label": "appeal_counter",
+      "body": "2028年4月9日14点07分，游鹭队将一份纸质申诉交到裁判席，要求复核边角拼片的计分。这是该队在当天下午决赛中递交的唯一一份申诉；收件员当面盖了时间戳，把副联递还给了领队。"
+    },
+    {
+      "chapter_number": 4,
+      "title": "两周练习记录",
+      "source_label": "practice_diary",
+      "body": "满枝队的两周练习记录写着：新教练唐葭从第二周开始带队，该周平均得分比前一周高了九分。两周使用了不同难度的拼图，练习时长也不相同。记录将日期、教练和分数并排列出，没有分析得分变化由什么造成。"
+    },
+    {
+      "chapter_number": 5,
+      "title": "下午的开局铃",
+      "source_label": "final_start",
+      "body": "2028年4月9日14点整，裁判敲响开局铃，下午决赛正式开始。当天这场决赛只有这一次开局，没有中止后重新开局的情况。观众安静下来，选手才揭开拼片盘上的布，开始寻找各自图案的边缘。"
+    },
+    {
+      "chapter_number": 6,
+      "title": "西窗旁的赛程表",
+      "source_label": "window_sheet",
+      "body": "2028年4月9日14点30分，西窗吹进来的风掀起了赛程表的一角。裁判闻瑾拿来夹板，把那张表固定在窗边架上，又把窗扇合小了一半。排队查赛程的孩子因此终于能看清最后两行安排。"
+    },
+    {
+      "chapter_number": 7,
+      "title": "东看台问卷",
+      "source_label": "season_poll",
+      "body": "散场后，工作人员只向留在东看台的十二名观众发了改期问卷，十二人都赞成以后把赛会挪到雨季。其余观众早已从不同出口离场，没有参加这次问卷；工作人员把收回的十二张纸订在同一封面下。"
+    },
+    {
+      "chapter_number": 8,
+      "title": "清晨的广场",
+      "source_label": "morning_square",
+      "body": "清晨，广场石板还带着露水，卖豆花的摊主替赛会志愿者留了靠墙的一排座位。孩子们围着尚未揭开的巨幅拼图猜画面内容，有人猜是花园，有人猜是地图；远处搭起的遮阳棚把影子铺到了台阶上。"
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "岚蒲杯的赛场边",
+      "predicate": "rule",
+      "value": "岚蒲杯拼图赛自创立起始终实行单一冠军制：每届只允许一支队伍获得冠军，总积分相同的争冠队伍必须继续加赛，直到产生唯一胜者。并列冠军从未被列为可选赛果，主办方也没有临时豁免这项永久赛则的权限。",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "cup_charter"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "岚蒲杯的赛场边",
+      "predicate": "status",
+      "value": "2028年4月9日9点，满枝队向服务台领取了带凸点的计分卡，准备让视力不佳的队员也能独立核对分数。队员庄扉用指尖逐行摸过数字，确认没有漏印，才把这套卡片交给负责记分的同伴。",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "raised_cards"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "岚蒲杯的赛场边",
+      "predicate": "status",
+      "value": "2028年4月9日14点07分，游鹭队将一份纸质申诉交到裁判席，要求复核边角拼片的计分。这是该队在当天下午决赛中递交的唯一一份申诉；收件员当面盖了时间戳，把副联递还给了领队。",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "appeal_counter"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "岚蒲杯的赛场边",
+      "predicate": "status",
+      "value": "满枝队的两周练习记录写着：新教练唐葭从第二周开始带队，该周平均得分比前一周高了九分。两周使用了不同难度的拼图，练习时长也不相同。记录将日期、教练和分数并排列出，没有分析得分变化由什么造成。",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "practice_diary"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "岚蒲杯的赛场边",
+      "predicate": "status",
+      "value": "2028年4月9日14点整，裁判敲响开局铃，下午决赛正式开始。当天这场决赛只有这一次开局，没有中止后重新开局的情况。观众安静下来，选手才揭开拼片盘上的布，开始寻找各自图案的边缘。",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "final_start"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "岚蒲杯的赛场边",
+      "predicate": "status",
+      "value": "2028年4月9日14点30分，西窗吹进来的风掀起了赛程表的一角。裁判闻瑾拿来夹板，把那张表固定在窗边架上，又把窗扇合小了一半。排队查赛程的孩子因此终于能看清最后两行安排。",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "window_sheet"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "岚蒲杯的赛场边",
+      "predicate": "status",
+      "value": "散场后，工作人员只向留在东看台的十二名观众发了改期问卷，十二人都赞成以后把赛会挪到雨季。其余观众早已从不同出口离场，没有参加这次问卷；工作人员把收回的十二张纸订在同一封面下。",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "season_poll"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "岚蒲杯的赛场边",
+      "predicate": "status",
+      "value": "清晨，广场石板还带着露水，卖豆花的摊主替赛会志愿者留了靠墙的一排座位。孩子们围着尚未揭开的巨幅拼图猜画面内容，有人猜是花园，有人猜是地图；远处搭起的遮阳棚把影子铺到了台阶上。",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "morning_square"
+      }
+    }
+  ]
+}

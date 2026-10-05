@@ -1,0 +1,56 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1",
+      "status": "insufficient_evidence",
+      "category": "object_state",
+      "severity": "low",
+      "evidence_status": "insufficient",
+      "explanation": "The register's specific record of Aster and Nilo as twins is unsupported by the supplied evidence.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_lie-2",
+          "span_id": "fixture-span-v6_lie-2",
+          "excerpt": "The register states that recorded twins cannot be one another's parent.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": []
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The cited register statement only provides a general rule that recorded twins cannot be one another's parent. It does not state that the register actually records Aster and Nilo as twins. Without that explicit record, the draft's claim that the register correctly records them remains unsupported. The lie itself is not a continuity conflict because the draft marks it as false.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_lie-2",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1",
+      "returned_span_ids": [
+        "fixture-span-v6_lie-1",
+        "fixture-span-v6_lie-2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3168,
+  "output_tokens": 10652,
+  "latency_ms": 132206,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

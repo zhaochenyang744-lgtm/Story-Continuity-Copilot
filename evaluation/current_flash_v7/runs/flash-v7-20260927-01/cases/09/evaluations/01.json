@@ -1,0 +1,58 @@
+{
+  "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "437129cccb620b60a699fe59a9c916eb7997d6632396537a9ba76e800fd6fcca",
+  "finished_at": "2026-09-27T10:47:44.108548+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-e211b078-e64a-496e-887e-26208b48b736-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "The draft asserts that the gate logs establish Sera authorized a reopening at 11点, but the cited log span says the 11点 log leaves any reopening and its operator unrecorded.",
+        "reasoning": "The 11点 log span is the only cited record for the 11点 reopening and explicitly states that any reopening and its operator are unrecorded. It therefore cannot establish Sera's authorization; the draft's attribution is unsupported and the authorization remains unknown. No direct contradicting fact is supplied, so this is a missing-link gap rather than a confirmed conflict.",
+        "temporal_basis": {
+          "claim_anchor": "at 11点",
+          "evidence_anchor": "leaves any reopening and its operator unrecorded",
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-2",
+            "span_id": "fixture-span-harbor_signal-2",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-harbor_signal-2",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-e211b078-e64a-496e-887e-26208b48b736-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The cited 11点 log span says any reopening and its operator are unrecorded, so it cannot establish Sera's authorization; the draft's attribution is unsupported and the authorization remains unknown."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3331,
+    "output_tokens": 404,
+    "observed_response_input_tokens": 3331,
+    "observed_response_output_tokens": 404
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "9f12fe0170ba56ac4656be09f7b83e41c0307a3563a98c1a23c0e2af7f2f498a",
+  "finished_at": "2026-09-27T08:08:00.511150+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

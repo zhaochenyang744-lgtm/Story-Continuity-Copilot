@@ -1,0 +1,139 @@
+{
+  "project_id": "fixture-project-north-glass",
+  "draft_id": "fixture-draft-north-glass",
+  "draft_revision": 2,
+  "draft_body": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+  "draft_body_sha256": "72003aceec901cce100af1e733c3586650e2bbadeca73801f4344aacaf00a701",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-north_glass-1",
+      "chapter_number": 1,
+      "chapter_title": "Badge Rule",
+      "chapter_body": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-north_glass-1",
+      "span_body": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+      "span_revision": 1,
+      "chapter_body_sha256": "7fe32913a0d817f57f2a1927e8289cdfc3f4536b3cbcf44529a04e4c24178c96",
+      "span_body_sha256": "7fe32913a0d817f57f2a1927e8289cdfc3f4536b3cbcf44529a04e4c24178c96"
+    },
+    {
+      "chapter_id": "fixture-chapter-north_glass-2",
+      "chapter_number": 2,
+      "chapter_title": "Badge Roster",
+      "chapter_body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-north_glass-2",
+      "span_body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+      "span_revision": 1,
+      "chapter_body_sha256": "0a776d6f7499a678aceead6f3525ba9346a6150da919a80780af23cf65380688",
+      "span_body_sha256": "0a776d6f7499a678aceead6f3525ba9346a6150da919a80780af23cf65380688"
+    },
+    {
+      "chapter_id": "fixture-chapter-north_glass-3",
+      "chapter_number": 3,
+      "chapter_title": "Spare Register",
+      "chapter_body": "The spare blue badge register leaves its 11点 holder field blank.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-north_glass-3",
+      "span_body": "The spare blue badge register leaves its 11点 holder field blank.",
+      "span_revision": 1,
+      "chapter_body_sha256": "da1bab5ad5141644712f8d031d3d0e70d470ede526827a70575f4f62f41471d6",
+      "span_body_sha256": "da1bab5ad5141644712f8d031d3d0e70d470ede526827a70575f4f62f41471d6"
+    },
+    {
+      "chapter_id": "fixture-chapter-north_glass-4",
+      "chapter_number": 4,
+      "chapter_title": "Carrier Ready Rule",
+      "chapter_body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-north_glass-4",
+      "span_body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+      "span_revision": 1,
+      "chapter_body_sha256": "40d64e7f17ef1ad124e08aec132c2a0a7c8828bf44afd46922afcc657fdb16e2",
+      "span_body_sha256": "40d64e7f17ef1ad124e08aec132c2a0a7c8828bf44afd46922afcc657fdb16e2"
+    },
+    {
+      "chapter_id": "fixture-chapter-north_glass-5",
+      "chapter_number": 5,
+      "chapter_title": "Carrier Inspection",
+      "chapter_body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-north_glass-5",
+      "span_body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+      "span_revision": 1,
+      "chapter_body_sha256": "b41b18852fc07123ca3aea7034717f7e71a13c10e1914d1f5d1fc899569c669f",
+      "span_body_sha256": "b41b18852fc07123ca3aea7034717f7e71a13c10e1914d1f5d1fc899569c669f"
+    },
+    {
+      "chapter_id": "fixture-chapter-north_glass-6",
+      "chapter_number": 6,
+      "chapter_title": "Cap Actor",
+      "chapter_body": "The carrier inspection does not record who loosened its valve cap.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-north_glass-6",
+      "span_body": "The carrier inspection does not record who loosened its valve cap.",
+      "span_revision": 1,
+      "chapter_body_sha256": "868d2f904ee252c507b11050bc409d1f95e597225a359cdac3043ce2967f1947",
+      "span_body_sha256": "868d2f904ee252c507b11050bc409d1f95e597225a359cdac3043ce2967f1947"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-north_glass-1",
+      "memory_type": "static_canon",
+      "subject": "Mira",
+      "predicate": "rule",
+      "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+      "source_span_id": "fixture-span-north_glass-1",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-north_glass-2",
+      "memory_type": "dynamic_state",
+      "subject": "Mira",
+      "predicate": "status",
+      "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+      "source_span_id": "fixture-span-north_glass-2",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-north_glass-3",
+      "memory_type": "open_thread",
+      "subject": "Mira",
+      "predicate": "status",
+      "value": "The spare blue badge register leaves its 11点 holder field blank.",
+      "source_span_id": "fixture-span-north_glass-3",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-north_glass-4",
+      "memory_type": "static_canon",
+      "subject": "pneumatic carrier",
+      "predicate": "rule",
+      "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+      "source_span_id": "fixture-span-north_glass-4",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-north_glass-5",
+      "memory_type": "dynamic_state",
+      "subject": "pneumatic carrier",
+      "predicate": "status",
+      "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+      "source_span_id": "fixture-span-north_glass-5",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-north_glass-6",
+      "memory_type": "open_thread",
+      "subject": "pneumatic carrier",
+      "predicate": "status",
+      "value": "The carrier inspection does not record who loosened its valve cap.",
+      "source_span_id": "fixture-span-north_glass-6",
+      "version": 1
+    }
+  ]
+}

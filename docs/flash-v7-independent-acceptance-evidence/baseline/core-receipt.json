@@ -1,0 +1,23 @@
+{
+  "core_pre_edit_snapshot": true,
+  "files": [
+    {
+      "source": "backend/app/engine.py",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/engine.py",
+      "sha256": "527f986d6441aa226f239a0e67d928200f26d77b6b90e65cbc6d14e512d7fd39",
+      "source_after_sha256": "527f986d6441aa226f239a0e67d928200f26d77b6b90e65cbc6d14e512d7fd39"
+    },
+    {
+      "source": "backend/app/provider.py",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/provider.py",
+      "sha256": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643",
+      "source_after_sha256": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643"
+    },
+    {
+      "source": "backend/tests/test_v6_continuity_contract.py",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/tests/test_v6_continuity_contract.py",
+      "sha256": "7f1a9325e01e0ce2f31177566313acf0905b7a72cb3a02cec034780bc4fbc57f",
+      "source_after_sha256": "7f1a9325e01e0ce2f31177566313acf0905b7a72cb3a02cec034780bc4fbc57f"
+    }
+  ]
+}

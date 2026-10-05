@@ -1,0 +1,162 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-16",
+  "stage": "first",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:49:15.112654+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-16",
+      "response_alias": "answer-fedc06",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合下水完成的签单+离港条件与同分钟两条件均未完成事实，明确同体同刻不可共存。",
+          "visible_quote": "Together these prove the boat could not have completed its launch at that 10点",
+          "evidence_pointer": "responses[response_alias=answer-fedc06].first.parsed_business_json.issues[0].reasoning; fixture-span-orchard_restoration-4 / -5"
+        }
+      ],
+      "other_dimensions_checked": "event_status类别、最小span-4+5、claim/chapter/Memory及正文绑定正确；同分钟锚点精确，建议未下水受支持。basis 157≤400，reasoning 405≤800；本回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "联合事实判定正确；前提context与直接反证contradicts分工正确，完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-16",
+      "response_alias": "answer-52388b",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "fail",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "fail",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合下水完成的签单+离港条件与同分钟两条件均未完成事实，明确同体同刻不可共存。",
+          "visible_quote": "the required conditions for completion were explicitly unmet",
+          "evidence_pointer": "responses[response_alias=answer-52388b].first.parsed_business_json.issues[0].reasoning; fixture-span-orchard_restoration-4 / -5"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "fail",
+          "reason": "span-4规定必要条件，是相对草稿完成命题的一般前提context，不能标supports。可见联合推理正确，角色枚举错误另记；纯validator返回conflict_evidence_not_direct，S也失败。",
+          "visible_quote": "supports",
+          "evidence_pointer": "responses[response_alias=answer-52388b].first.parsed_business_json.issues[0].evidence[0].relation"
+        }
+      ],
+      "other_dimensions_checked": "event_status类别、最小span-4+5、claim/chapter/Memory及正文绑定正确；同分钟锚点精确，建议未下水受支持。basis 248≤400，reasoning 458≤800；另两回答纯validator通过。",
+      "attribution_tags": [
+        "role_error",
+        "schema_error"
+      ],
+      "overall_reason": "联合事实判定正确；规则前提误标supports导致角色/结构失败，非核心推理错误。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-16",
+      "response_alias": "answer-86045d",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合下水完成的签单+离港条件与同分钟两条件均未完成事实，明确同体同刻不可共存。",
+          "visible_quote": "这两项前提条件在同一时刻都不成立",
+          "evidence_pointer": "responses[response_alias=answer-86045d].first.parsed_business_json.issues[0].reasoning; fixture-span-orchard_restoration-4 / -5"
+        }
+      ],
+      "other_dimensions_checked": "event_status类别、最小span-4+5、claim/chapter/Memory及正文绑定正确；同分钟锚点精确，建议未下水受支持。basis 59≤400，reasoning 209≤800；本回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "联合事实判定正确；前提context与直接反证contradicts分工正确，完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "summary": {
+    "responses": 3,
+    "F_pass": 3,
+    "strict_pass": 2,
+    "role_and_contract_failures": 1
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/16.json",
+      "sha256_observed": "7895306bfa266de517a0dde88fce7a06de24a1920d5aabdd7a78f2fb5f30060e",
+      "sha256_after_review": "7895306bfa266de517a0dde88fce7a06de24a1920d5aabdd7a78f2fb5f30060e"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    },
+    {
+      "path": "backend/app/engine.py",
+      "sha256_observed": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd",
+      "sha256_after_review": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd"
+    }
+  ],
+  "read_hashes_stable": true
+}

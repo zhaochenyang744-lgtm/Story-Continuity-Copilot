@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "jiansong_survey",
+  "title": "见松岭的测线",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v10-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "见松岭的测线",
+    "language": "zh",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "帐内收听",
+      "source_label": "radio_listener",
+      "body": "2028年7月23日11点，段萤刚完整听完测绘队该时刻的返营路线广播。她听清并理解了广播的全部内容，已把其中的路线要求准确记住，随后才摘下耳机，继续整理被风卷乱的等高线草图。"
+    },
+    {
+      "chapter_number": 2,
+      "title": "裂隙西缘",
+      "source_label": "west_reading",
+      "body": "2028年7月23日12点，绛沟裂隙西缘恰好对准横跨裂隙的水平标尺上1.2米刻线。标尺已经绷直，读数人沿着刻线落下一枚小石片作临时标记；他与东缘记录员约定使用这同一把标尺的同一零点。"
+    },
+    {
+      "chapter_number": 3,
+      "title": "地衣旁的通行线",
+      "source_label": "lichen_path",
+      "body": "2028年7月23日14点，测绘员罗缇用四面小三角旗标出一条绕开地衣群的通行线，并请搬设备的人沿旗外侧走。设备队照着指引通过后，她俯身检查那片灰绿色地衣，发现其表面仍没有新的脚印。"
+    },
+    {
+      "chapter_number": 4,
+      "title": "午前路线广播",
+      "source_label": "route_broadcast",
+      "body": "2028年7月23日11点的测绘队返营路线广播全文为：“当天回营改走北脊，不走沟底；所有外出组都按北脊路线返回。”播报员把这段话重复了两遍，再切回联络频道，等待各组报告当前的天气和能见度。"
+    },
+    {
+      "chapter_number": 5,
+      "title": "古木木芯记录",
+      "source_label": "wood_core",
+      "body": "孔纪把取得的一段古木木芯摊在黑布上，记录了连续四十二圈年轮的宽窄排列。这段木芯既没有髓心，也不连着树皮。他在记录末尾写下“需与本地已知年份的年轮序列匹配”，但营地里没有那份标准序列。"
+    },
+    {
+      "chapter_number": 6,
+      "title": "裂隙东缘",
+      "source_label": "east_reading",
+      "body": "2028年7月23日12点，绛沟裂隙东缘恰好对准7.7米刻线。东缘记录员使用的正是西缘记录中那把绷直的水平标尺，读数沿同一方向、从同一零点起算；他确认刻线后，让同伴扶稳标尺，等两端读数都抄好再收起。"
+    },
+    {
+      "chapter_number": 7,
+      "title": "晚饭时的旧事",
+      "source_label": "evening_memory",
+      "body": "晚饭时，裴霁回忆起祖母教自己看云的往事。她小时候总把山顶停住的薄云想成被树枝挂住的布，祖母则带她观察云的移动和形状。说到这里，她笑着用手比出童年小屋屋顶的轮廓，旁边的人停下筷子听她讲。"
+    },
+    {
+      "chapter_number": 8,
+      "title": "涧口地形草图",
+      "source_label": "stream_sketch",
+      "body": "地形草图画出一条向北流的溪水，水流到涧口便钻入石壁裂口，从地表无法继续追踪。记录员在裂口后画了问号；图上另标着营地水井的位置，却没有画出井与裂口之间的地下水道，也没有示踪观测记录。"
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "见松岭的测线",
+      "predicate": "status",
+      "value": "2028年7月23日11点，段萤刚完整听完测绘队该时刻的返营路线广播。她听清并理解了广播的全部内容，已把其中的路线要求准确记住，随后才摘下耳机，继续整理被风卷乱的等高线草图。",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "radio_listener"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "见松岭的测线",
+      "predicate": "status",
+      "value": "2028年7月23日12点，绛沟裂隙西缘恰好对准横跨裂隙的水平标尺上1.2米刻线。标尺已经绷直，读数人沿着刻线落下一枚小石片作临时标记；他与东缘记录员约定使用这同一把标尺的同一零点。",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "west_reading"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "见松岭的测线",
+      "predicate": "status",
+      "value": "2028年7月23日14点，测绘员罗缇用四面小三角旗标出一条绕开地衣群的通行线，并请搬设备的人沿旗外侧走。设备队照着指引通过后，她俯身检查那片灰绿色地衣，发现其表面仍没有新的脚印。",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "lichen_path"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "见松岭的测线",
+      "predicate": "status",
+      "value": "2028年7月23日11点的测绘队返营路线广播全文为：“当天回营改走北脊，不走沟底；所有外出组都按北脊路线返回。”播报员把这段话重复了两遍，再切回联络频道，等待各组报告当前的天气和能见度。",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "route_broadcast"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "见松岭的测线",
+      "predicate": "status",
+      "value": "孔纪把取得的一段古木木芯摊在黑布上，记录了连续四十二圈年轮的宽窄排列。这段木芯既没有髓心，也不连着树皮。他在记录末尾写下“需与本地已知年份的年轮序列匹配”，但营地里没有那份标准序列。",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "wood_core"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "见松岭的测线",
+      "predicate": "status",
+      "value": "2028年7月23日12点，绛沟裂隙东缘恰好对准7.7米刻线。东缘记录员使用的正是西缘记录中那把绷直的水平标尺，读数沿同一方向、从同一零点起算；他确认刻线后，让同伴扶稳标尺，等两端读数都抄好再收起。",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "east_reading"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "见松岭的测线",
+      "predicate": "status",
+      "value": "晚饭时，裴霁回忆起祖母教自己看云的往事。她小时候总把山顶停住的薄云想成被树枝挂住的布，祖母则带她观察云的移动和形状。说到这里，她笑着用手比出童年小屋屋顶的轮廓，旁边的人停下筷子听她讲。",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "evening_memory"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "见松岭的测线",
+      "predicate": "status",
+      "value": "地形草图画出一条向北流的溪水，水流到涧口便钻入石壁裂口，从地表无法继续追踪。记录员在裂口后画了问号；图上另标着营地水井的位置，却没有画出井与裂口之间的地下水道，也没有示踪观测记录。",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "stream_sketch"
+      }
+    }
+  ]
+}

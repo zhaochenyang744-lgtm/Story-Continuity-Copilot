@@ -1,0 +1,20 @@
+{
+  "case_id": "g02-body-limit",
+  "family": "g02",
+  "status": "same_run_api_input_bound",
+  "same_run_request_sha256": "d29f003fa6f734f746ddc2212747d150c3aa7ccbba3dc68f03dff9632cf34e8d",
+  "saved_draft_sha256": "2005fb472e4d473c2fd327b19ab6d3b5df281af7fb806ce2216b2498f2a23269",
+  "draft_chars": 1980,
+  "claim_available": 180,
+  "claim_selected": 8,
+  "claim_unselected": 172,
+  "selected_source_span_count": 4,
+  "selected_memory_count": 8,
+  "memory_source_selected_count": 4,
+  "memory_source_unselected_count": 4,
+  "dialogue_two_complete_quotes": false,
+  "database_binding": "matched_persisted_isolated_database",
+  "database_selected_source_count": 4,
+  "database_selected_memory_count": 8,
+  "database_unselected_memory_sources_allowed": 4
+}

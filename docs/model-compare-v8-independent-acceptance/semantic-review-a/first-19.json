@@ -1,0 +1,189 @@
+{
+  "schema_version": "v8-blinded-case-first-review-v1",
+  "case_alias": "case-19",
+  "stage": "first",
+  "reviewer": "semantic-review-a",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-19",
+      "response_alias": "answer-ca0df8",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        49
+      ],
+      "reasoning_codepoints": [
+        110
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "身份span1将R4绑定为西孔径镜，属性span2在同一18点明确clear/not amber，两条缺一不可且均被正确使用；不是后续变化。",
+          "visible_quote": "两条证据共同证明",
+          "evidence_pointer": "responses[answer-ca0df8].first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "同刻材质属性应attribute，输出object_state；不据类别失配否定其正确身份/材质推理。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[answer-ca0df8].first.parsed_business_json.issues[0].category; policy.category"
+        }
+      ],
+      "passed_dimensions_note": "唯一最低span1+2完整，身份context/属性contradicts及chapter/Memory正确；18点锚点在直接反证中。suggestion无论替换全句或唯一amber glass都受支持。JSON/唯一claim/ledger/chain/basis≤400/reasoning≤800及实际Issue合规。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "事实推理正确，仅类别错误，strict失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-19",
+      "response_alias": "answer-dce86a",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        86
+      ],
+      "reasoning_codepoints": [
+        391
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "身份span1将R4绑定为西孔径镜，属性span2在同一18点明确clear/not amber，两条缺一不可且均被正确使用；不是后续变化。",
+          "visible_quote": "Both spans share the same subject, scope, and time",
+          "evidence_pointer": "responses[answer-dce86a].first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "passed_dimensions_note": "唯一最低span1+2完整，身份context/属性contradicts及chapter/Memory正确；18点锚点在直接反证中。suggestion无论替换全句或唯一amber glass都受支持。JSON/唯一claim/ledger/chain/basis≤400/reasoning≤800及实际Issue合规。",
+      "attribution_tags": [],
+      "overall_reason": "核心推理及适用合同完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-19",
+      "response_alias": "answer-b4fda5",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        248
+      ],
+      "reasoning_codepoints": [
+        732
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "身份span1将R4绑定为西孔径镜，属性span2在同一18点明确clear/not amber，两条缺一不可且均被正确使用；不是后续变化。",
+          "visible_quote": "Span-1 establishes the identity premise",
+          "evidence_pointer": "responses[answer-b4fda5].first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "同刻材质属性应attribute，输出object_state；不据类别失配否定其正确身份/材质推理。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[answer-b4fda5].first.parsed_business_json.issues[0].category; policy.category"
+        }
+      ],
+      "passed_dimensions_note": "唯一最低span1+2完整，身份context/属性contradicts及chapter/Memory正确；18点锚点在直接反证中。suggestion无论替换全句或唯一amber glass都受支持。JSON/唯一claim/ledger/chain/basis≤400/reasoning≤800及实际Issue合规。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "事实推理正确，仅类别错误，strict失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "comparison": {
+    "strict_pass": 1,
+    "total": 3,
+    "strict_pass_aliases": [
+      "answer-dce86a"
+    ],
+    "F_pass_aliases": [
+      "answer-ca0df8",
+      "answer-dce86a",
+      "answer-b4fda5"
+    ]
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/19.json",
+    "sha256_before": "63c22a633b5f4dfdc2b0f06b348f185a44ed02206fd714fce9882bc9a15683ad",
+    "sha256_after_review": "63c22a633b5f4dfdc2b0f06b348f185a44ed02206fd714fce9882bc9a15683ad",
+    "unchanged": true,
+    "all_response_business_requests_equal_packet": true,
+    "all_visible_json_equal_saved_parsed": true
+  },
+  "lock": {
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "identity_inferred": false,
+    "repair_or_final_read": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

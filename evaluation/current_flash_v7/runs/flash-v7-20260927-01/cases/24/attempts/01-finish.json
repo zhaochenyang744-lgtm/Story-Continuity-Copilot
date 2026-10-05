@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:48:38.589127+00:00",
+  "latency_ms": 1256,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3472,
+      "completion_tokens": 95,
+      "total_tokens": 3567
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-e01c8e32-6186-4e0d-957c-8666ee2fccdb-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The cited watch record explicitly leaves Vela's companion unnamed, so the draft's attribution that Sora accompanied her is unsupported; the record does not establish Sora's presence.\"}]}",
+  "message_content_sha256": "79b85ae7ab9d7fe9d8728599e4066605f755093a4dfcb38c019afced89098a16",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

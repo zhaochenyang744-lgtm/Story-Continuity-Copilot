@@ -1,0 +1,58 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "687e97e52bc04c3e27ddf2d9ee0c67d64ec641d6fb7dab5a8e536c1553cab455",
+  "finished_at": "2026-09-27T10:47:55.799975+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-39de51eb-b748-4ebf-b329-1c5f212dfc3a-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "记录显示 Sera 在 13点 打开了电报并得知其密码，但明确未指明递送者；草稿把递送归给 Vela 缺少来源依据。",
+        "reasoning": "13点 的记录只确认 Sera 打开电报并得知密码，并明确说明记录未指明递送者，因此无法支持“Vela 递送”这一归属；11点 的知识与门日志片段与递送者身份无关。判断在此停止：递送者身份仍未知。",
+        "temporal_basis": {
+          "claim_anchor": "at 13点",
+          "evidence_anchor": "the record does not identify who delivered it",
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-4",
+            "span_id": "fixture-span-harbor_signal-4",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-4"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-harbor_signal-4",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-39de51eb-b748-4ebf-b329-1c5f212dfc3a-1",
+        "verdict": "insufficient_evidence",
+        "basis": "13点 的记录确认 Sera 打开电报并得知密码，但明确未指明递送者，因此草稿将递送归给 Vela 缺少来源依据；11点 的知识与门日志片段与递送者身份无关。"
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3866,
+    "output_tokens": 410,
+    "observed_response_input_tokens": 3866,
+    "observed_response_output_tokens": 410
+  }
+}

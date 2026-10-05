@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 8466,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "d8e35cff-238b-47fb-be61-487c52af458c",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-556fd1e5-211e-493c-9e96-6c3bb147e7f3-1\",\"verdict\":\"no_issue\",\"basis\":\"The cited 09点/10点 gate log directly supports the claim; the 11点 log and Sera spans are unrelated and do not contradict it.\"}]}",
+  "visible_content_sha256": "8849a947f1e9c1365fc5bd4c61075d780748e4bfcde5f7b136c9b5669c927d1e",
+  "reasoning": {
+    "present": true,
+    "codepoints": 2933,
+    "utf8_bytes": 2973,
+    "sha256": "7f10ecae7f9d93571f0f9ec163e451ed81bb233102f8e710aea14b75a5bce62e"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3426,
+      "completion_tokens": 798,
+      "total_tokens": 4224,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 706
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 994
+    },
+    "status": "complete",
+    "prompt_tokens": 3426,
+    "completion_tokens": 798,
+    "total_tokens": 4224,
+    "reasoning_tokens": 706,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:39:28.797086+00:00"
+}

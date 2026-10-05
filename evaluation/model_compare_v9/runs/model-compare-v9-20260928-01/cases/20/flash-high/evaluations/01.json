@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "34033c0a2dbca3433acf321ea499db84781bffdd2fd46b8daaba5e245326c0cc",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1",
+        "verdict": "no_issue",
+        "basis": "Span 1 ties lens R4 to the western aperture lens and span 2 states that lens is clear glass at 18点, matching the claim's present state. The amber detail is dated yesterday, a different time, so the two states coexist; the recollection is that of a character, and span 5 (Vela's pier location) is unrelated context."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3571,
+      "completion_tokens": 914,
+      "total_tokens": 4485,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 780
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1267
+    },
+    "status": "complete",
+    "prompt_tokens": 3571,
+    "completion_tokens": 914,
+    "total_tokens": 4485,
+    "reasoning_tokens": 780,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

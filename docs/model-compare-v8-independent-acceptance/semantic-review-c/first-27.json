@@ -1,0 +1,133 @@
+{
+  "schema_version": "v8-blinded-case-review-v1",
+  "case_alias": "case-27",
+  "stage": "first",
+  "reviewer": "reviewer-c",
+  "packet_sha256": "6aecb29ee528494b95666a3a38068a8c335fda571e2d9807338cee784d3eb6cc",
+  "condition_visibility": "hidden",
+  "exposure_note": "仅其他案例01/02曾有工程身份曝光；本例匿名，不声称严格双盲。",
+  "contract_checks": [
+    {
+      "alias": "answer-15a477",
+      "validate": "pass",
+      "basis_length": 205
+    },
+    {
+      "alias": "answer-22d97c",
+      "validate": "pass",
+      "basis_length": 312
+    },
+    {
+      "alias": "answer-b79398",
+      "validate": "pass",
+      "basis_length": 271
+    }
+  ],
+  "records": [
+    {
+      "case_alias": "case-27",
+      "response_alias": "answer-15a477",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-04",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "将准备条件与同日10:00盖未锁合并，正确判断未就绪与草稿相容。",
+          "visible_quote": "pressure is four bars, but the valve cap remains loose and unlocked",
+          "evidence_pointer": "answer-15a477.first.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "合法空结果，针对性basis与原合同通过；不强求no_issue显式Issue引用。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "case_alias": "case-27",
+      "response_alias": "answer-22d97c",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-04",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "将准备条件与同日10:00盖未锁合并，正确判断未就绪与草稿相容。",
+          "visible_quote": "A loose cap therefore makes the capsule not ready",
+          "evidence_pointer": "answer-22d97c.first.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "合法空结果，针对性basis与原合同通过；不强求no_issue显式Issue引用。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "case_alias": "case-27",
+      "response_alias": "answer-b79398",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-04",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "将准备条件与同日10:00盖未锁合并，正确判断未就绪与草稿相容。",
+          "visible_quote": "the readiness rule requires a locked cap",
+          "evidence_pointer": "answer-b79398.first.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "合法空结果，针对性basis与原合同通过；不强求no_issue显式Issue引用。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "locked_before_followup": true,
+  "provider_calls": 0,
+  "database_connections": 0
+}

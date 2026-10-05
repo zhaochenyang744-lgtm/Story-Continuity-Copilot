@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-01",
+  "http_ordinal_in_case": 2,
+  "finished_at": "2026-09-27T10:03:10.839975+00:00",
+  "latency_ms": 1913,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 4146,
+      "completion_tokens": 246,
+      "total_tokens": 4392
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-4dd23e5a-74cc-4612-acfd-d0f97880adbb-1\",\"verdict\":\"no_issue\",\"basis\":\"The draft claim states that at 14:00 today lens Q8 is amber glass. The cited evidence does not establish a same-time contradiction: span v6_lens-1 only identifies lens Q8 as the installed east aperture lens at 14:00 today, and span v6_lens-2 states that the east aperture lens is clear glass at 14:00 today. Although the identity premise links lens Q8 to the east aperture lens, the draft's amber-glass claim and the evidence's clear-glass claim are both dated at 14:00 today, but the supplied material does not prove that the draft's amber-glass state and the evidence's clear-glass state describe the same object at the same time in a way that cannot coexist; the identity span is context, not a direct contradiction, and the status span alone does not contradict the draft claim without a proven same-object, same-time link. No reviewable continuity issue is established.\"}]}",
+  "message_content_sha256": "cfa4399e28e72361af2f8bae4a9236eb20650d10119fffddd77b7d4f2d82544a",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

@@ -1,0 +1,14 @@
+{
+  "created_at_utc": "2026-09-27T09:32:27.364108+00:00",
+  "engine_sha256": "0f0d34335636bf05b551dbfe8ec88ffff07fabb0d7a6a577dd987ebd1ffcee59",
+  "input": "new claim_verdicts.verdict is JSON array instead of enum string",
+  "expected": "controlled contract failure with bounded repair or explicit failed result",
+  "observed": {
+    "outcome": "uncaught_exception",
+    "type": "KeyError",
+    "message": "'allowed_evidence'"
+  },
+  "external_attempts": [],
+  "real_provider_calls": 0,
+  "database_connections": 0
+}

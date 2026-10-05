@@ -1,0 +1,444 @@
+{
+  "schema_version": "v8-predeclared-independent-semantic-criteria-v1",
+  "status": "pre_execution_criteria",
+  "scope": {
+    "matrix": "V7 same 34 seen-development cases",
+    "case_count": 34,
+    "groups": {
+      "no_conflict": 13,
+      "confirmed_conflict": 10,
+      "insufficient_evidence": 11
+    },
+    "new_samples_added": 0,
+    "gold_changes": 0,
+    "provider_calls_by_author": 0,
+    "database_access_by_author": 0,
+    "allowed_write_scope": "docs/model-compare-v8-independent-acceptance/ semantic criteria only",
+    "purpose": "诊断模型配置差异，非盲测基准、非产品发布 Gate。"
+  },
+  "conditions": [
+    {
+      "name": "Flash-off",
+      "thinking": "disabled"
+    },
+    {
+      "name": "Flash-on",
+      "thinking": "high"
+    },
+    {
+      "name": "Pro-on",
+      "thinking": "high"
+    }
+  ],
+  "comparison_design": {
+    "logical_responses": 102,
+    "replicates_per_case_condition": 1,
+    "order": "case-major; rotate A/B/C, B/C/A, C/A/B by case; freeze actual order/mapping before live",
+    "equality": "三组 draft/claims/source/Memory/claim IDs/schema/prompt 完全固定；模型提示词不变。除模型及thinking外，共同预算/超时及任何差异按PLAN预先披露，不能暗改评分或repair口径。",
+    "labels_never_sent_to_model": true,
+    "raw_primary": true,
+    "repair_and_final_secondary": true,
+    "old_v7": "历史上下文，不当作与新条件同期随机对照；不重评分或更改旧证据。",
+    "thinking_only_comparison": "Flash-off vs Flash-on 同模型时可有限观察 thinking 配置差异；Flash-on vs Pro-on 同 high 标签不代表内部推理计算完全相等。",
+    "one_run_limit": "三组每例仅一次，配对差异是这组输入的观察，不能据此断言模型家族适配上限或统计稳定。",
+    "final_scope": "直接固定业务请求的实验引擎 final completed 及适用输出合同；本轮不新增API持久化验收或业务数据库访问。"
+  },
+  "frozen_authority": {
+    "case_source": "evaluation/current_flash_v7/cases.json",
+    "policy_source": "evaluation/current_flash_v7/score.py::policy / issue_errors",
+    "gold_refs": "case accepted_gold_ref and source_hashes; score.py V3 and CONTROL references. Read-only inheritance, no relabeling.",
+    "interpretation": "故事事实 P 优先：来源不能担保 P 不等于证实 not-P；旧15/24及镜像31/32不改判来源归属冲突。",
+    "category_counterexample": "attribute 与 object_state 错分单列 C；具名行为责任的 relationship 不得靠旧案例名中的 object_state/event_status 等替代。"
+  },
+  "dimensions": [
+    {
+      "id": "F",
+      "name": "事实命题、未知性与联合推理",
+      "values": [
+        "pass",
+        "fail",
+        "partial",
+        "unassessable"
+      ],
+      "pass": "可见回答明确处理目标故事命题 P，结论与输入相容；未知不等于否定；主语、动作、角色、对话归属和时间正确；必要联合前提推理完整，no_issue 有针对性的相容理由。",
+      "separation": "忽略类别标签正确与否；类别错不自动令 F 失败。正确 basis 可支持 F，但不是实际 Issue 交付；若 basis 与 Issue 实质矛盾，F 不能 pass。只读可见理由，不推测隐藏思维。"
+    },
+    {
+      "id": "C",
+      "name": "类别",
+      "values": [
+        "pass",
+        "fail",
+        "not_delivered",
+        "not_applicable",
+        "unassessable"
+      ],
+      "pass": "实际 Issue 类别符合既有 gold，manual_variant 还须理由贴合主命题。",
+      "separation": "预期有 Issue 但漏交付时为 not_delivered；正确 no_issue 为 N/A；若错误产生 Issue 仍单查类别，不抵扣误报。单列21个预期 Issue 的交付覆盖，不用已交付的小分母掩盖遗漏。"
+    },
+    {
+      "id": "E_roles",
+      "name": "证据角色",
+      "values": [
+        "pass",
+        "fail",
+        "not_delivered",
+        "not_applicable",
+        "unassessable"
+      ],
+      "pass": "相对于当前命题分清一般前提 context 与直接 contradicts；不足为 context/insufficient + missing_link；允许状态变化为 supports/sufficient。",
+      "separation": "联合结论正确但角色倒置可记 F 正确、E_roles 失败。"
+    },
+    {
+      "id": "E_set",
+      "name": "证据集合",
+      "values": [
+        "pass",
+        "fail",
+        "not_delivered",
+        "not_applicable",
+        "unassessable"
+      ],
+      "pass": "同一 Issue 覆盖至少一个原 gold 的 minimum sufficient set，额外证据限原 optional 集；不能跨 Issue 拼凑联合证明。",
+      "separation": "保留既定 extra-evidence 口径；真实且选中的额外来源仍可能导致 E_set 失败，不统称幻觉。未重新定义 minimum/optional。"
+    },
+    {
+      "id": "E_binding",
+      "name": "引用绑定及内容支持",
+      "values": [
+        "pass",
+        "fail",
+        "not_delivered",
+        "not_applicable",
+        "unassessable"
+      ],
+      "pass": "claim、selected SourceSpan、父 chapter、Memory ID 和正文支持正确；Memory 中知道的来源 ID 不等于允许引用该 SourceSpan；final 若包含相应来源字段，核对其与固定业务输入的绑定，不新增API持久化验收。",
+      "separation": "区分来源真实但越界、错主体、正文不支持与缺引用；技术机器 pass 不能替代语义支持。"
+    },
+    {
+      "id": "S",
+      "name": "结构及合同",
+      "values": [
+        "pass",
+        "fail",
+        "unassessable"
+      ],
+      "pass": "可解析 JSON 与 schema/ledger/claim ID 一致，basis 非空且 ≤400 Unicode code points；Issue/chain/temporal/actions 等原合同合规，保留真实原文与首个解析结果。",
+      "separation": "400 是原合同限制，不为了高 thinking 放宽或截断。raw 可读但 JSON 不合格时，可单评 F，S 仍失败。"
+    },
+    {
+      "id": "D",
+      "name": "实际交付",
+      "values": [
+        "pass",
+        "fail",
+        "unassessable"
+      ],
+      "pass": "需要冲突或不足 Issue 时真实交付且绑定正确；不能以正确 ledger basis 抵扣 issues=[]。预期 no_issue 时应交付合法空结果和正确 basis。",
+      "separation": "不足 Issue 禁止升级操作/替换建议；终态失败不得计 no_issue。"
+    },
+    {
+      "id": "T",
+      "name": "时间及操作安全",
+      "values": [
+        "pass",
+        "fail",
+        "not_applicable",
+        "unassessable"
+      ],
+      "pass": "动态冲突按冻结 temporal policy 核对同体同刻和直接反证锚点；不能以仅 context 的时钟担保动态反证，不倒推后来事实，不把回忆当当前事实。建议若存在须受证据支持；不足不得强操作。",
+      "separation": "允许的 timeless/explicit_overlap 变体仅沿用原 policy；不让 normalization/fallback 提升模型首答。"
+    },
+    {
+      "id": "strict_composite",
+      "name": "严格完整通过",
+      "values": [
+        "pass",
+        "fail"
+      ],
+      "pass": "F=pass，所有适用 C/E/T 通过，S/D 通过，无其他实际 Issue 误报/漏报；final 另须实验引擎 completed 及适用输出合同正确，本轮不新增API持久化验收。",
+      "separation": "任何部分失败/未交付/无法观察都不能计严格通过；未完成先标 pending，run 结束才封分母，不能提前计失败。"
+    }
+  ],
+  "metrics": {
+    "primary": [
+      "每条件首答 strict_composite /34；分组 /13、/10、/11",
+      "每条件首答 F pass/fail/partial/unassessable /34；类别与 E_roles/E_set/E_binding、S、D、T 分列 counts 和适用分母",
+      "逐 case 配对 win/loss/tie；标明分歧发生的层，不只报单一总分"
+    ],
+    "denominators": "所有34保留；无法解析/预算终止/服务失败计严格未通过但归因单列，语义无法观察时不伪造 F 错误。N/A、未交付、partial、unassessable 均单列；若另报可评子集比例，必须同时给全34分母。",
+    "secondary": [
+      "repair 尝试数、结构恢复数、语义恢复数、strict 恢复数及变差数",
+      "最终 strict /34、completed/terminal、normalization/fallback次数及其贡献，不能回填首答分",
+      "同例首答→repair→final的转换；首答通过但 final 失败也保留"
+    ]
+  },
+  "review_procedure": [
+    "Root 技术人员冻结三组配置/顺序、gold与本标准；金标、预期类别、case-family/outcome标签、历史分数和审阅意见都不进入模型输入。",
+    "语义审阅包每例使用随机的中性 response alias，跨例重新置换；保留全部模型可见业务内容与输出文本，隐藏 model/condition/thinking、调用路径标签、成本/时延、机器评分及历史成绩。技术证据原件不改，由独立映射追溯。",
+    "先独立读每个首答并按 F/C/E/S/D/T 留短理由和原文证据，再做同例并排对照；锁定首答评分后才读 repair 请求/输出，再锁定后读 final。若 raw first 与 first parsed 不同同时保留，不用后续 parsed/repair 冒充首答。",
+    "可读可见 basis、explanation、reasoning；不请求或依赖隐藏 chain-of-thought。最初可见无 JSON 时仍保留解析失败，不能悄悄跳到更好的后续文本。",
+    "有歧义先在隐藏条件下按既有 policy 复核；保留原判和裁定理由，不为模型结果改 gold。实在歧义记 unassessable/裁定边界，不作临时放宽。",
+    "全部语义评分固定后才揭示条件、机器评分和成本延迟；记录提前泄露或从风格推知身份的可能，称尽量隐藏标签而非严格双盲。"
+  ],
+  "cost_latency_budget": {
+    "budget": "本轮当前 8000 预算兼容性由技术验收另报：核实输入/输出/推理 token 的实际限制与有效 API 参数，不由本语义标准假设其含义。",
+    "fairness": "相同数字预算不保证相同可见输出容量；thinking 消耗导致截断/limit/无答案单列配置预算事件。严格交付分仍如实失败，F 不可观察不能当作模型已推理错误。",
+    "tokens": "首答及含repair总账分别报告 prompt/completion/total、可见和 reasoning/cache 分项（仅 provider 真有字段时）；禁止把已包含的 reasoning 重复加总。完整/部分/未知 usage 分开，缺字段不是0。",
+    "cost": "报告实际可验证费用或注明不可得；估价须标价源/日期、计费规则及估算身份。",
+    "latency": "分报首答请求耗时、repair耗时、整例端到端耗时，以及队列/重试/错误；同定义比较 median/p95 与逐例配对差值，不能声称纯模型推理耗时。"
+  },
+  "fresh_samples_recommendation": "本轮34开发集诊断足够，不增分母。后续若据结果选择方案或声称泛化，另立冻结 fresh holdout 版本，在修改提示/查看结果前定标并沿用分层口径；不能把未来新样本混进本轮。",
+  "source_hashes": [
+    {
+      "path": "evaluation/current_flash_v7/cases.json",
+      "sha256_before": "84b2888288fce933c26f57a7c1a8e5ef58a2bfab37ad66550da8e2925cb0f4df",
+      "sha256_after_read": "84b2888288fce933c26f57a7c1a8e5ef58a2bfab37ad66550da8e2925cb0f4df"
+    },
+    {
+      "path": "evaluation/current_flash_v7/score.py",
+      "sha256_before": "4131ed037e6cf78370b0d99af380899b0046c53c29598226f61f586585507e1d",
+      "sha256_after_read": "4131ed037e6cf78370b0d99af380899b0046c53c29598226f61f586585507e1d"
+    },
+    {
+      "path": "evaluation/current_flash_v7/README.md",
+      "sha256_before": "9e0b8385fb4627c67495f33d92a293dc446d46c25704e919f93bafe575cd82d9",
+      "sha256_after_read": "9e0b8385fb4627c67495f33d92a293dc446d46c25704e919f93bafe575cd82d9"
+    },
+    {
+      "path": "evaluation/current_flash_v7/frozen-inputs.json",
+      "sha256_before": "361f4d7d778d6818b258e51caec65a8fd6e4a762b52c78181de35c5f7f8abe47",
+      "sha256_after_read": "361f4d7d778d6818b258e51caec65a8fd6e4a762b52c78181de35c5f7f8abe47"
+    },
+    {
+      "path": "docs/flash-v7-independent-acceptance-evidence/semantics/live-01-review.json",
+      "sha256_before": "0779d4015452ef66ccad85fa4815127172c03f10b05c70ba4267a33c92d2f69b",
+      "sha256_after_read": "0779d4015452ef66ccad85fa4815127172c03f10b05c70ba4267a33c92d2f69b"
+    },
+    {
+      "path": "docs/flash-v7-independent-acceptance-evidence/new-controls/live-01-review.json",
+      "sha256_before": "084d73024b85549037be9d5f544e66aacd65f94a21a4a87ba796c9ecf45cf2da",
+      "sha256_after_read": "084d73024b85549037be9d5f544e66aacd65f94a21a4a87ba796c9ecf45cf2da"
+    },
+    {
+      "path": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/26/requests/01.json",
+      "sha256_before": "a3ae17b04ebdad2d3bc3c4da6a47d66cd11d9dfeea8937e265afccb95b7eab33",
+      "sha256_after_read": "a3ae17b04ebdad2d3bc3c4da6a47d66cd11d9dfeea8937e265afccb95b7eab33"
+    }
+  ],
+  "limitations": [
+    "本标准从已验收 V7 材料及其冻结 policy 继承，不新增或重写 gold。",
+    "单次三条件观察不能分离所有服务随机性与顺序影响；case-major轮转仅减少时间顺序混杂。",
+    "最终产品可用性不等于模型首答能力；类别失配也不自动是事实语义错误。"
+  ],
+  "case_index": [
+    {
+      "ordinal": 1,
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/01/requests/01.json"
+    },
+    {
+      "ordinal": 2,
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/02/requests/01.json"
+    },
+    {
+      "ordinal": 3,
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/03/requests/01.json"
+    },
+    {
+      "ordinal": 4,
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/04/requests/01.json"
+    },
+    {
+      "ordinal": 5,
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/05/requests/01.json"
+    },
+    {
+      "ordinal": 6,
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/06/requests/01.json"
+    },
+    {
+      "ordinal": 7,
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/07/requests/01.json"
+    },
+    {
+      "ordinal": 8,
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/08/requests/01.json"
+    },
+    {
+      "ordinal": 9,
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/09/requests/01.json"
+    },
+    {
+      "ordinal": 10,
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/10/requests/01.json"
+    },
+    {
+      "ordinal": 11,
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/11/requests/01.json"
+    },
+    {
+      "ordinal": 12,
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/12/requests/01.json"
+    },
+    {
+      "ordinal": 13,
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/13/requests/01.json"
+    },
+    {
+      "ordinal": 14,
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/14/requests/01.json"
+    },
+    {
+      "ordinal": 15,
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/15/requests/01.json"
+    },
+    {
+      "ordinal": 16,
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/16/requests/01.json"
+    },
+    {
+      "ordinal": 17,
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/17/requests/01.json"
+    },
+    {
+      "ordinal": 18,
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/18/requests/01.json"
+    },
+    {
+      "ordinal": 19,
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/19/requests/01.json"
+    },
+    {
+      "ordinal": 20,
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/20/requests/01.json"
+    },
+    {
+      "ordinal": 21,
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/21/requests/01.json"
+    },
+    {
+      "ordinal": 22,
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/22/requests/01.json"
+    },
+    {
+      "ordinal": 23,
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/23/requests/01.json"
+    },
+    {
+      "ordinal": 24,
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/24/requests/01.json"
+    },
+    {
+      "ordinal": 25,
+      "case_id": "v6-v6s-01",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/25/requests/01.json"
+    },
+    {
+      "ordinal": 26,
+      "case_id": "v6-v6s-03",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/26/requests/01.json"
+    },
+    {
+      "ordinal": 27,
+      "case_id": "v6-v6s-04",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/27/requests/01.json"
+    },
+    {
+      "ordinal": 28,
+      "case_id": "v6-v6s-06",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/28/requests/01.json"
+    },
+    {
+      "ordinal": 29,
+      "case_id": "v6-v6s-07",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/29/requests/01.json"
+    },
+    {
+      "ordinal": 30,
+      "case_id": "v6-v6s-08",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/30/requests/01.json"
+    },
+    {
+      "ordinal": 31,
+      "case_id": "v6-v6s-09",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/31/requests/01.json"
+    },
+    {
+      "ordinal": 32,
+      "case_id": "v6-v6s-10",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/32/requests/01.json"
+    },
+    {
+      "ordinal": 33,
+      "case_id": "v6-v6s-11",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/33/requests/01.json"
+    },
+    {
+      "ordinal": 34,
+      "case_id": "v6-v6s-12",
+      "request_reference": "evaluation/current_flash_v7/runs/flash-v7-20260927-01/cases/34/requests/01.json"
+    }
+  ],
+  "review_record_schema": {
+    "schema_version": "v8-blinded-semantic-review-record-v1",
+    "case_alias": "case identifier available to reviewer; do not include model condition",
+    "response_alias": "independent neutral response alias",
+    "stage": "first|repair|final",
+    "reviewer": "stable reviewer alias",
+    "condition_visibility": "hidden|accidentally_revealed|unblinded_after_lock",
+    "output_availability": "visible_and_parsed|visible_unparsed|no_visible_output|pending",
+    "expected_policy_reference": "frozen V7 gold/policy case key",
+    "ratings": {
+      "F": "pass|fail|partial|unassessable",
+      "C": "pass|fail|not_delivered|not_applicable|unassessable",
+      "E_roles": "pass|fail|not_delivered|not_applicable|unassessable",
+      "E_set": "pass|fail|not_delivered|not_applicable|unassessable",
+      "E_binding": "pass|fail|not_delivered|not_applicable|unassessable",
+      "S": "pass|fail|unassessable",
+      "D": "pass|fail|unassessable",
+      "T": "pass|fail|not_applicable|unassessable",
+      "strict_composite": "pass|fail|pending"
+    },
+    "observed_decision": "no_issue|confirmed_conflict|insufficient_evidence|state_change|mixed|unavailable",
+    "actual_issue_count": "integer or null",
+    "findings": [
+      {
+        "dimension": "F|C|E_roles|E_set|E_binding|S|D|T",
+        "verdict": "short result",
+        "reason": "short reason tied to P and frozen policy",
+        "visible_quote": "short exact visible-output excerpt",
+        "evidence_pointer": "anonymous packet field/source ID; root retains original path+hash mapping"
+      }
+    ],
+    "attribution_tags": [
+      "observed_semantic_error|category_mismatch|role_error|set_error|binding_error|delivery_missing|schema_error|budget_or_transport_unavailable|product_change_pending_technical_trace"
+    ],
+    "overall_reason": "one or two sentences; do not infer hidden thinking or model identity",
+    "locked_before_condition_reveal": "boolean",
+    "adjudication": "null or original rating, revised rating, reason and preserved timestamp; do not silently overwrite"
+  }
+}

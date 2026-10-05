@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 114806,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "ba030be7-6f94-4ac7-9dc2-bba0d8457f25",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"world_rule\",\n      \"severity\": \"high\",\n      \"explanation\": \"The draft asserts Mira opened the North Glass door at 10点 wearing only a red badge, but the supplied rule says a red badge cannot open that door and the same-time roster records only a try with no blue badge.\",\n      \"reasoning\": \"The static rule (fixture-span-north_glass-1) states that the North Glass door opens only for a blue-badge wearer and that a red badge cannot open it. The same-time roster (fixture-span-north_glass-2) places Mira at 10点 wearing only a red badge and carrying no blue badge, recording a try rather than a confirmed opening. These two supplied spans jointly prove the draft's asserted opening is impossible, so the claim and evidence cannot coexist.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"At 10点 on the same day\",\n        \"evidence_anchor\": null,\n        \"relation\": \"timeless_rule\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-1\",\n          \"span_id\": \"fixture-span-north_glass-1\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-north_glass-1\"]\n        },\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-2\",\n          \"span_id\": \"fixture-span-north_glass-2\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-north_glass-2\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-north_glass-1\",\n          \"role\": \"current_context\"\n        },\n        {\n          \"span_id\": \"fixture-span-north_glass-2\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.\",\n        \"after\": \"At 10点 on the same day, Mira tried the North Glass door while wearing only her red badge, but the roster does not record whether it opened.\"\n      },\n      \"available_actions\": [\"apply_suggestion\"]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"The static rule says a red badge cannot open the North Glass door, and the same-time roster shows Mira wore only a red badge and carried no blue badge, so the draft's opened-door claim is directly contradicted.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "11b2524686d914c1fe7161d36560b4a847f2f61028960ee7c8ba9ab8b07f30cc",
+  "reasoning": {
+    "present": true,
+    "codepoints": 31691,
+    "utf8_bytes": 31761,
+    "sha256": "08602cd3572233ccd5d1eec998c55750051cdbbdd8d0f74252dc52b11b3f432f"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3619,
+      "completion_tokens": 7762,
+      "total_tokens": 11381,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 7050
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 3619
+    },
+    "status": "complete",
+    "prompt_tokens": 3619,
+    "completion_tokens": 7762,
+    "total_tokens": 11381,
+    "reasoning_tokens": 7050,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:30:04.564051+00:00"
+}

@@ -1,0 +1,169 @@
+{
+  "run_id": "run-db468eb9-4f82-429e-b9e2-51a578673bf2",
+  "project_id": "fixture-project-north-glass",
+  "run_type": "continuity",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 2,
+  "draft_revision": null,
+  "source_memory_version": 1,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T10:47:20.888559+00:00",
+  "started_at": "2026-09-27T10:47:20.916244+00:00",
+  "completed_at": "2026-09-27T10:47:25.450169+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 4533,
+  "retry_of_run_id": null,
+  "root_run_id": "run-db468eb9-4f82-429e-b9e2-51a578673bf2",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:20.888559+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "preparing_draft",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:20.916244+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "retrieving_confirmed_facts",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:20.928933+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "comparing_evidence",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:20.956237+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "running",
+      "stage": "assembling_reviewable_results",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:25.437018+00:00"
+    },
+    {
+      "sequence": 6,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:25.450169+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "deepseek",
+    "model_label": "deepseek-flash",
+    "prompt_version": "continuity-review-v17-repair-diagnostics",
+    "schema_version": "continuity-issue-v7-repair-diagnostics",
+    "retrieval_method_version": "bounded-lexical-v4-longform",
+    "source_memory_version": 1
+  },
+  "provider_metrics": {
+    "latency_ms": 4438,
+    "input_tokens": 7450,
+    "output_tokens": 549,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "issues": [
+    {
+      "id": "issue-18b5edff-f595-42d6-aceb-a87dc166b51f",
+      "claim_span_id": "claim-run-db468eb9-4f82-429e-b9e2-51a578673bf2-1",
+      "claim_text": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+      "status": "open",
+      "classification": "insufficient_evidence",
+      "category": "object_state",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "草稿声称Mira在11点持有备用蓝色徽章，并称依据两本徽章登记册，但登记册的11点持有人栏为空白，该归属缺乏依据，持有状态仍属未知。",
+      "decision": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "草稿把“两本徽章登记册”当作确立Mira在11点持有备用蓝色徽章的依据，但所引登记册证据只显示11点持有人栏空白，并未记录Mira为持有人，也缺少任何交接或登记事件把该持有状态与Mira联系起来。因此判断止于缺失环节：该归属无依据，Mira是否在11点持有备用蓝色徽章仍未知，不能据此推断相反结论。",
+      "evidence_chain": [
+        {
+          "evidence_id": "evidence-8da14f64-d4cf-4f87-a23d-f8b13a998d37",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": [],
+      "reuse_policy": null,
+      "reused_decision": null,
+      "evidence": [
+        {
+          "id": "evidence-8da14f64-d4cf-4f87-a23d-f8b13a998d37",
+          "chapter_id": "fixture-chapter-north_glass-3",
+          "chapter_number": 3,
+          "chapter_title": "Spare Register",
+          "span_id": "fixture-span-north_glass-3",
+          "source_revision": 2,
+          "excerpt": "The spare blue badge register leaves its 11点 holder field blank.",
+          "excerpt_context": "The spare blue badge register leaves its 11点 holder field blank.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-3"
+          ],
+          "source_path": "/projects/fixture-project-north-glass/sources#span-fixture-span-north_glass-3"
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "latency_ms": 4438,
+    "input_tokens": 7450,
+    "output_tokens": 549,
+    "cost_cny": null,
+    "cost_available": false,
+    "contract_normalization_count": 0,
+    "contract_normalizations": [],
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v17-repair-diagnostics",
+      "schema_version": "continuity-issue-v7-repair-diagnostics",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "retrieval": [
+      {
+        "claim_ordinal": 1,
+        "returned_span_ids": [
+          "fixture-span-north_glass-2",
+          "fixture-span-north_glass-3",
+          "fixture-span-north_glass-4",
+          "fixture-span-north_glass-1",
+          "fixture-span-north_glass-5"
+        ],
+        "method_version": "bounded-lexical-v4-longform"
+      }
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 61712,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "9ebe8d87-1c5f-436e-88e0-d693e731858e",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"object_state\",\n      \"severity\": \"medium\",\n      \"explanation\": \"Current claim states carrier ready at 10点, but evidence at the same time shows valve cap not locked, violating readiness rule.\",\n      \"reasoning\": \"Span 5 shows at 10点 the carrier gauge read four bars but its valve cap remained loose and not locked throughout that minute. Span 4 defines ready as requiring four bars and a locked valve cap. Both are anchored to the same 10点, so the carrier could not be ready; the draft claim directly conflicts.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"At 10点 on the same day\",\n        \"evidence_anchor\": \"At 10点 on the same day\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-5\",\n          \"span_id\": \"fixture-span-north_glass-5\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-north_glass-5\"]\n        },\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-4\",\n          \"span_id\": \"fixture-span-north_glass-4\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-north_glass-4\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-north_glass-5\",\n          \"role\": \"current_context\"\n        },\n        {\n          \"span_id\": \"fixture-span-north_glass-4\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.\",\n        \"after\": \"At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch because its valve cap remained loose and not locked.\"\n      },\n      \"available_actions\": [\"apply_suggestion\"]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"Evidence at the same 10点 shows the valve cap was loose and not locked, while the readiness rule requires a locked valve cap; the claim of ready is directly contradicted.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "a0d95bb6c91c9ce1ec41c6a01badf48c15c6792e5fb60d6d95dab96dc5e400cb",
+  "reasoning": {
+    "present": true,
+    "codepoints": 17398,
+    "utf8_bytes": 17500,
+    "sha256": "35bda28a480339a7877bd93f3533e13d6523f01575623bd0438af535b77901c5"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3633,
+      "completion_tokens": 4625,
+      "total_tokens": 8258,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3982
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1201
+    },
+    "status": "complete",
+    "prompt_tokens": 3633,
+    "completion_tokens": 4625,
+    "total_tokens": 8258,
+    "reasoning_tokens": 3982,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T08:57:11.484616+00:00"
+}

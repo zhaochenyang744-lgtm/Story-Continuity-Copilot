@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-10",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:03:36.120875+00:00",
+  "latency_ms": 1193,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 2978,
+      "completion_tokens": 115,
+      "total_tokens": 3093
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-c4a195ca-f630-45ab-99e5-ed2ab5652ebd-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The draft asserts that the 19:00 watch record establishes Evi accompanied Orin to the east quay, but the only cited evidence says the record leaves the companion unnamed. The record therefore does not establish Evi's presence; the attribution is unsupported and the companion's identity remains unknown.\"}]}",
+  "message_content_sha256": "45e905c79ccfd43c2c194a0cfc4953b62735a3f3d9cb566bdd647624a8aabec6",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

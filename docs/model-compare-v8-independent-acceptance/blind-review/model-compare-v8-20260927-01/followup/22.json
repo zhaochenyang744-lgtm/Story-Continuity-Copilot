@@ -1,0 +1,281 @@
+{
+  "case_alias": "case-22",
+  "stage": "followup",
+  "expected_policy_reference": "ccv3-basalt_observatory-location_action-conflict",
+  "policy": {
+    "allowed_outcomes": [
+      "confirmed_conflict"
+    ],
+    "minimum": [
+      [
+        "fixture-span-basalt_observatory-5"
+      ]
+    ],
+    "optional": [],
+    "premises": [
+      "fixture-span-basalt_observatory-1"
+    ],
+    "category": "location_action",
+    "category_candidates": [
+      "location_action"
+    ],
+    "manual_variant": false,
+    "temporal_relations": [
+      "explicit_overlap"
+    ]
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-basalt-observatory",
+      "revision": 2,
+      "body": "At 18点 on the same day, Vela stood on the east pier."
+    },
+    "claims": [
+      {
+        "id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+        "text": "At 18点 on the same day, Vela stood on the east pier.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-basalt_observatory-5",
+            "chapter_id": "fixture-chapter-basalt_observatory-5",
+            "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "label": "watch_log",
+            "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-1",
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+            "label": "lens_index",
+            "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-2",
+            "chapter_id": "fixture-chapter-basalt_observatory-2",
+            "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+            "label": "west_lens",
+            "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-basalt_observatory-1",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "identity",
+        "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+        "source_span_id": "fixture-span-basalt_observatory-1"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-2",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+        "source_span_id": "fixture-span-basalt_observatory-2"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-3",
+        "memory_type": "open_thread",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+        "source_span_id": "fixture-span-basalt_observatory-3"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-4",
+        "memory_type": "static_canon",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-4"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-5",
+        "memory_type": "dynamic_state",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-5"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-6",
+        "memory_type": "event_timeline",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+        "source_span_id": "fixture-span-basalt_observatory-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-5c27a4",
+      "repair": null,
+      "final": {
+        "status": "failed",
+        "error_code": "evidence_unresolvable"
+      }
+    },
+    {
+      "response_alias": "answer-60ce04",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+            "status": "conflict",
+            "category": "location_action",
+            "severity": "medium",
+            "evidence_status": "sufficient",
+            "explanation": "Draft places Vela on the east pier at 18点 on the same day, but the cited record places her at Observatory Gate Four on the west pier at that same time; both cannot hold.",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-5",
+                "span_id": "fixture-span-basalt_observatory-5",
+                "excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-5"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "The claim states Vela's location as the east pier at the explicit time 'At 18点 on the same day'. The cited span carries the identical time anchor 'At 18点 on the same day' and states that Vela stood at Observatory Gate Four on the west pier, 'not the east pier'. Same subject (Vela), same scope (her pier location), same time (18点 on the same day), with opposed values (east pier versus west pier); the span is sufficient on its own because it already asserts both the Gate Four placement and the west-pier exclusion.",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-basalt_observatory-5",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": {
+              "before": "Vela stood on the east pier",
+              "after": "Vela stood at Observatory Gate Four on the west pier"
+            },
+            "available_actions": [
+              "edit",
+              "apply_suggestion",
+              "keep_intentional",
+              "false_positive"
+            ]
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    },
+    {
+      "response_alias": "answer-9a96f9",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+            "status": "conflict",
+            "category": "location_action",
+            "severity": "medium",
+            "evidence_status": "sufficient",
+            "explanation": "Vela's location at 18点 conflicts: the draft places her on the east pier while cited evidence places her at Gate Four on the west pier.",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-basalt_observatory-5",
+                "span_id": "fixture-span-basalt_observatory-5",
+                "excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": [
+                  "fixture-memory-basalt_observatory-5"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "Span 5 explicitly states at 18点 on the same day Vela stood at Observatory Gate Four on the west pier, not the east pier. Same person, same time, mutually exclusive locations; therefore confirmed_conflict.",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-basalt_observatory-5",
+                "role": "current_context"
+              }
+            ],
+            "suggested_revision": {
+              "before": "At 18点 on the same day, Vela stood on the east pier.",
+              "after": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+            },
+            "available_actions": [
+              "edit",
+              "apply_suggestion"
+            ]
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    }
+  ]
+}

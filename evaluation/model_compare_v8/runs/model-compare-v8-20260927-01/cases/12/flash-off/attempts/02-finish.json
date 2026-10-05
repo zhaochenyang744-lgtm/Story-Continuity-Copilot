@@ -1,0 +1,45 @@
+{
+  "evaluation": 2,
+  "trial_post_ordinal": 2,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 2630,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "9573181f-9f33-4658-89dd-f52debf98d4b",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"event_status\",\"severity\":\"medium\",\"explanation\":\"记录只说明 Sera 在 13点 打开并得知电报密码，并未指明递送者；草稿把递送归给 Vela，缺少来源依据。\",\"reasoning\":\"引用的记录明确说“the record does not identify who delivered it”，因此 Vela 递送电报这一归属没有可支撑的交接或来源依据；判断只能停在递送者未知。\",\"temporal_basis\":{\"claim_anchor\":\"at 13点\",\"evidence_anchor\":\"the record does not identify who delivered it\",\"relation\":\"unknown\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-harbor_signal-4\",\"span_id\":\"fixture-span-harbor_signal-4\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-harbor_signal-4\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-harbor_signal-4\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"记录只确认 Sera 在 13点 打开电报并得知密码，且明确未指明递送者；Vela 递送这一归属缺少来源依据，因此需要以 insufficient_evidence 问题呈现。\"}]}",
+  "visible_content_sha256": "fd4f263166a1471a34ee1dd8965a38940b1f1e5546b3bd9da1855bba58e7de2a",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3863,
+      "completion_tokens": 383,
+      "total_tokens": 4246,
+      "prompt_tokens_details": {
+        "cached_tokens": 3072
+      },
+      "prompt_cache_hit_tokens": 3072,
+      "prompt_cache_miss_tokens": 791
+    },
+    "status": "complete",
+    "prompt_tokens": 3863,
+    "completion_tokens": 383,
+    "total_tokens": 4246,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:42:29.708793+00:00"
+}

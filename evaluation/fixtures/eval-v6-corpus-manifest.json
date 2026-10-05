@@ -1,0 +1,29 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-manifest-v1",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "files": [
+    {
+      "corpus_key": "lumen_tidehouse",
+      "path": "evaluation/fixtures/eval-v6-lumen-tidehouse.json",
+      "sha256": "4d4fdaa57262bf6e1eac5bed230d0cd5bcfcee942735eccc74d19cd16c0ccb91"
+    },
+    {
+      "corpus_key": "velvet_signal_yard",
+      "path": "evaluation/fixtures/eval-v6-velvet-signal-yard.json",
+      "sha256": "f8fbad31eac556a33083e778fedbb4e6b9c0a3b61a038b74b0df514c0024f5ad"
+    },
+    {
+      "corpus_key": "quartz_aviary",
+      "path": "evaluation/fixtures/eval-v6-quartz-aviary.json",
+      "sha256": "2dfab135faddc4de6ec3ed622445387a0edc4825299fa452bcfd48587afec65b"
+    },
+    {
+      "corpus_key": "cinder_lantern_ferry",
+      "path": "evaluation/fixtures/eval-v6-cinder-lantern-ferry.json",
+      "sha256": "8a535d066bc9880f2aa7704271fd484d853233913b13b63692c6154722b5e1d6"
+    }
+  ],
+  "canonical_sha256": "24cc03de333f2dc397748c1e419df03b782c45e07364f8e11b8497c046f0c753"
+}

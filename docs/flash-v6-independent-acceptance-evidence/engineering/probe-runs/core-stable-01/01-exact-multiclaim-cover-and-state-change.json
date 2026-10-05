@@ -1,0 +1,9 @@
+{
+  "detail": {
+    "exact_claims": 3,
+    "issues": 2,
+    "preserved_state_change": true
+  },
+  "name": "exact-multiclaim-cover-and-state-change",
+  "status": "pass"
+}

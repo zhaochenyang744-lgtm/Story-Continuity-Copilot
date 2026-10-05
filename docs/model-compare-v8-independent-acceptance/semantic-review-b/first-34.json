@@ -1,0 +1,151 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-34",
+  "stage": "first",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T12:00:15.218525+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-34",
+      "response_alias": "answer-70b6f6",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-12",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确09:00不知密码、12:00开信获知是有界前态与显式后续变化，不把顺序差异误报为同刻矛盾。",
+          "visible_quote": "an explicit later transition at 12:00",
+          "evidence_pointer": "responses[response_alias=answer-70b6f6].first.parsed_business_json.claim_verdicts[0].basis; fixture-span-v6_knowledge_transition-1 / -2"
+        }
+      ],
+      "other_dimensions_checked": "冻结允许no_issue或合格state_change，本次合法空Issue；类别/显式引用N/A。raw/parsed一致，claim精确，basis 251≤400，纯validator通过；时间顺序正确，无操作升级。",
+      "attribution_tags": [],
+      "overall_reason": "显式知识变化正确理解，空结果获冻结policy允许，完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-34",
+      "response_alias": "answer-fffd6a",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-12",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确09:00不知密码、12:00开信获知是有界前态与显式后续变化，不把顺序差异误报为同刻矛盾。",
+          "visible_quote": "span 2 records Siva opening the letter and learning it at 12:00",
+          "evidence_pointer": "responses[response_alias=answer-fffd6a].first.parsed_business_json.claim_verdicts[0].basis; fixture-span-v6_knowledge_transition-1 / -2"
+        }
+      ],
+      "other_dimensions_checked": "冻结允许no_issue或合格state_change，本次合法空Issue；类别/显式引用N/A。raw/parsed一致，claim精确，basis 221≤400，纯validator通过；时间顺序正确，无操作升级。",
+      "attribution_tags": [],
+      "overall_reason": "显式知识变化正确理解，空结果获冻结policy允许，完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-34",
+      "response_alias": "answer-d7e9e8",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-12",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确09:00不知密码、12:00开信获知是有界前态与显式后续变化，不把顺序差异误报为同刻矛盾。",
+          "visible_quote": "a compatible sequential state change",
+          "evidence_pointer": "responses[response_alias=answer-d7e9e8].first.parsed_business_json.claim_verdicts[0].basis; fixture-span-v6_knowledge_transition-1 / -2"
+        }
+      ],
+      "other_dimensions_checked": "冻结允许no_issue或合格state_change，本次合法空Issue；类别/显式引用N/A。raw/parsed一致，claim精确，basis 186≤400，纯validator通过；时间顺序正确，无操作升级。",
+      "attribution_tags": [],
+      "overall_reason": "显式知识变化正确理解，空结果获冻结policy允许，完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "summary": {
+    "responses": 3,
+    "F_pass": 3,
+    "strict_pass": 3
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/34.json",
+      "sha256_observed": "b11022af14dac8d95786823b92e3ba60dcf70fe74ecef6b937ff67a52180e68c",
+      "sha256_after_review": "b11022af14dac8d95786823b92e3ba60dcf70fe74ecef6b937ff67a52180e68c"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    },
+    {
+      "path": "backend/app/engine.py",
+      "sha256_observed": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd",
+      "sha256_after_review": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd"
+    }
+  ],
+  "read_hashes_stable": true
+}

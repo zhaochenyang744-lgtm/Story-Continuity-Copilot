@@ -1,0 +1,98 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "95afcbe2cd8655e67f146b24ad190f0e8bec37e0df08016066eb1cc07050b9bd",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "event_status",
+        "severity": "high",
+        "explanation": "The draft claims completed launch at 10点, but evidence at that exact time shows launch conditions were unmet.",
+        "reasoning": "The rule in span4 states the boat's launch is complete only after the manifest is signed and the boat departs the orchard quay. Span5 records that at the same 10点 minute, the manifest remained unsigned and the boat remained at the quay without departing. These facts cannot coexist with a claim that the launch had completed at that time.",
+        "temporal_basis": {
+          "claim_anchor": "At 10点 on the same day",
+          "evidence_anchor": "At 10点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-4",
+            "span_id": "fixture-span-orchard_restoration-4",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-4"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-5",
+            "span_id": "fixture-span-orchard_restoration-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-5"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-4",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-orchard_restoration-5",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10点 on the same day, the restoration boat had completed its launch.",
+          "after": "At 10点 on the same day, the restoration boat had not completed its launch."
+        },
+        "available_actions": [
+          "apply_suggestion"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+        "verdict": "reviewed_issue",
+        "basis": "The current claim is contradicted by same-minute evidence that launch conditions were unmet."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3620,
+      "completion_tokens": 2718,
+      "total_tokens": 6338,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2107
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1188
+    },
+    "status": "complete",
+    "prompt_tokens": 3620,
+    "completion_tokens": 2718,
+    "total_tokens": 6338,
+    "reasoning_tokens": 2107,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

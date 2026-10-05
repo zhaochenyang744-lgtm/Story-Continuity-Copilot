@@ -1,0 +1,993 @@
+{
+  "case": "cycle",
+  "body": "CTRL_G02_CYCLE 温岚走进东门。黄铜罗盘已经交给许青。灯塔今晚停止点灯。",
+  "run": {
+    "run_id": "run-6bdc3886-7cd8-4cbc-aa92-6915ff208bb0",
+    "project_id": "prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a",
+    "run_type": "context_brief",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 1,
+    "draft_revision": 2,
+    "source_memory_version": 4,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T11:49:22.711562+00:00",
+    "started_at": "2026-09-26T11:49:22.744811+00:00",
+    "completed_at": "2026-09-26T11:49:22.815500+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 70,
+    "retry_of_run_id": null,
+    "root_run_id": "run-6bdc3886-7cd8-4cbc-aa92-6915ff208bb0",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:22.711562+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "binding_context",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:22.744811+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "analyzing_layers",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:22.763692+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "assembling_results",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:22.803045+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:22.815500+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "browser-e2e-test-provider",
+      "model_label": "browser-e2e-test-provider",
+      "prompt_version": "context-brief-v5-clause-citations",
+      "schema_version": "writing-analysis-v1",
+      "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+      "source_memory_version": 4
+    },
+    "provider_metrics": {
+      "latency_ms": 1,
+      "input_tokens": 4,
+      "output_tokens": 3,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "analysis_type": "context_brief",
+    "current_draft_revision": 2,
+    "foreshadow_version": null,
+    "foreshadow_snapshot_digest": null,
+    "proposal": null,
+    "question": null,
+    "scope": null,
+    "issue_ids": [],
+    "source_run_id": null,
+    "retrieval": {
+      "counts": {
+        "author_context": {
+          "available": 0,
+          "selected": 0
+        },
+        "character_alias": {
+          "available": 0,
+          "selected": 0
+        },
+        "draft_claim": {
+          "available": 3,
+          "selected": 3
+        },
+        "foreshadow_record": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue_evidence": {
+          "available": 0,
+          "selected": 0
+        },
+        "memory_record": {
+          "available": 8,
+          "selected": 8
+        },
+        "source_span": {
+          "available": 10,
+          "selected": 4
+        }
+      },
+      "draft_claim_scope": {
+        "available": 3,
+        "body_chars": 42,
+        "excerpt_chars": 42,
+        "selected": [
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+            "source_chars": 22,
+            "source_end": 22,
+            "source_start": 0,
+            "supplied_chars": 22,
+            "supplied_end": 22,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+            "source_chars": 11,
+            "source_end": 33,
+            "source_start": 22,
+            "supplied_chars": 11,
+            "supplied_end": 33,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3",
+            "source_chars": 9,
+            "source_end": 42,
+            "source_start": 33,
+            "supplied_chars": 9,
+            "supplied_end": 42,
+            "truncated": false
+          }
+        ]
+      },
+      "method_version": "writing-analysis-lexical-v3-brief-540",
+      "selected_ids": {
+        "author_context": [],
+        "character_alias": [],
+        "draft_claim": [
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3"
+        ],
+        "foreshadow_record": [],
+        "issue": [],
+        "issue_evidence": [],
+        "memory_record": [
+          "mem-201ad2f2-dcdf-42a5-a32a-3b48ac5e164f",
+          "mem-d909c557-cc00-4255-9a1e-f56ae0c96bdc",
+          "mem-262ed5c1-7fa8-475f-999f-028219224bdc",
+          "mem-3d2bb1de-5d63-48b3-bdbe-b69ec7adcf68",
+          "mem-4c4598b9-ec1f-45ed-969e-33173ce304ea",
+          "mem-779e5834-6eb7-4e0e-98ec-756026081a3b",
+          "mem-e1ba33fa-7c58-47b2-bd92-fb834a760e90",
+          "mem-eb26333c-1938-4e27-85f0-467bb0559b8a"
+        ],
+        "source_span": [
+          "span-153df138-97a0-47dd-bbc5-d05e3f8f8d36",
+          "span-5d51ddcf-f2f5-418f-8192-412904eb46d0",
+          "span-65a1152e-cf77-4f2b-97df-4ed60daf9745",
+          "span-9cbb75bc-35f0-4541-afd9-2111dc84b665"
+        ]
+      },
+      "truncated": {
+        "author_context": false,
+        "character_alias": false,
+        "draft_body": false,
+        "draft_claim": false,
+        "foreshadow_record": false,
+        "issue": false,
+        "issue_evidence": false,
+        "memory_record": false,
+        "source_span": true,
+        "source_span_text": false
+      }
+    },
+    "input_digest": "9c5f596e0d4d29eb909ae270d2b52db584cdcacc4b23a5aa86f17d00c290b573",
+    "analysis": {
+      "citation_transform": {
+        "added_source_count": 3,
+        "discarded_model_item_indices": [],
+        "duplicate_omitted_item_count": 0,
+        "fallback_draft_claim_ids": [],
+        "model_item_count": 3,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 0,
+        "overflow_omitted_item_count": 0,
+        "source_rendered_item_count": 3,
+        "version": "source-rendered-v2"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+            "source_chars": 22,
+            "source_end": 22,
+            "source_start": 0,
+            "supplied_chars": 22,
+            "supplied_end": 22,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+            "source_chars": 11,
+            "source_end": 33,
+            "source_start": 22,
+            "supplied_chars": 11,
+            "supplied_end": 33,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3",
+            "source_chars": 9,
+            "source_end": 42,
+            "source_start": 33,
+            "supplied_chars": 9,
+            "supplied_end": 42,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "evidence_status": "supported",
+      "items": [
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "CTRL_G02_CYCLE 温岚走进东门。",
+              "label": "当前草稿 · 句 1",
+              "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+              "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句1原文：「CTRL_G02_CYCLE 温岚走进东门。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "黄铜罗盘已经交给许青。",
+              "label": "当前草稿 · 句 2",
+              "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+              "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句2原文：「黄铜罗盘已经交给许青。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "灯塔今晚停止点灯。",
+              "label": "当前草稿 · 句 3",
+              "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3",
+              "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句3原文：「灯塔今晚停止点灯。」"
+        }
+      ],
+      "summary": "当前草稿句1原文：「CTRL_G02_CYCLE 温岚走进东门。」 当前草稿句2原文：「黄铜罗盘已经交给许青。」 当前草稿句3原文：「灯塔今晚停止点灯。」",
+      "summary_sources": [
+        {
+          "excerpt": "CTRL_G02_CYCLE 温岚走进东门。",
+          "label": "当前草稿 · 句 1",
+          "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+          "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "黄铜罗盘已经交给许青。",
+          "label": "当前草稿 · 句 2",
+          "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+          "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "灯塔今晚停止点灯。",
+          "label": "当前草稿 · 句 3",
+          "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3",
+          "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+          "source_type": "draft_claim"
+        }
+      ]
+    }
+  },
+  "refreshed": {
+    "run_id": "run-6bdc3886-7cd8-4cbc-aa92-6915ff208bb0",
+    "project_id": "prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a",
+    "run_type": "context_brief",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 1,
+    "draft_revision": 2,
+    "source_memory_version": 4,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T11:49:22.711562+00:00",
+    "started_at": "2026-09-26T11:49:22.744811+00:00",
+    "completed_at": "2026-09-26T11:49:22.815500+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 70,
+    "retry_of_run_id": null,
+    "root_run_id": "run-6bdc3886-7cd8-4cbc-aa92-6915ff208bb0",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:22.711562+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "binding_context",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:22.744811+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "analyzing_layers",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:22.763692+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "assembling_results",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:22.803045+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:22.815500+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "browser-e2e-test-provider",
+      "model_label": "browser-e2e-test-provider",
+      "prompt_version": "context-brief-v5-clause-citations",
+      "schema_version": "writing-analysis-v1",
+      "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+      "source_memory_version": 4
+    },
+    "provider_metrics": {
+      "latency_ms": 1,
+      "input_tokens": 4,
+      "output_tokens": 3,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "analysis_type": "context_brief",
+    "current_draft_revision": 2,
+    "foreshadow_version": null,
+    "foreshadow_snapshot_digest": null,
+    "proposal": null,
+    "question": null,
+    "scope": null,
+    "issue_ids": [],
+    "source_run_id": null,
+    "retrieval": {
+      "counts": {
+        "author_context": {
+          "available": 0,
+          "selected": 0
+        },
+        "character_alias": {
+          "available": 0,
+          "selected": 0
+        },
+        "draft_claim": {
+          "available": 3,
+          "selected": 3
+        },
+        "foreshadow_record": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue_evidence": {
+          "available": 0,
+          "selected": 0
+        },
+        "memory_record": {
+          "available": 8,
+          "selected": 8
+        },
+        "source_span": {
+          "available": 10,
+          "selected": 4
+        }
+      },
+      "draft_claim_scope": {
+        "available": 3,
+        "body_chars": 42,
+        "excerpt_chars": 42,
+        "selected": [
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+            "source_chars": 22,
+            "source_end": 22,
+            "source_start": 0,
+            "supplied_chars": 22,
+            "supplied_end": 22,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+            "source_chars": 11,
+            "source_end": 33,
+            "source_start": 22,
+            "supplied_chars": 11,
+            "supplied_end": 33,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3",
+            "source_chars": 9,
+            "source_end": 42,
+            "source_start": 33,
+            "supplied_chars": 9,
+            "supplied_end": 42,
+            "truncated": false
+          }
+        ]
+      },
+      "method_version": "writing-analysis-lexical-v3-brief-540",
+      "selected_ids": {
+        "author_context": [],
+        "character_alias": [],
+        "draft_claim": [
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3"
+        ],
+        "foreshadow_record": [],
+        "issue": [],
+        "issue_evidence": [],
+        "memory_record": [
+          "mem-201ad2f2-dcdf-42a5-a32a-3b48ac5e164f",
+          "mem-d909c557-cc00-4255-9a1e-f56ae0c96bdc",
+          "mem-262ed5c1-7fa8-475f-999f-028219224bdc",
+          "mem-3d2bb1de-5d63-48b3-bdbe-b69ec7adcf68",
+          "mem-4c4598b9-ec1f-45ed-969e-33173ce304ea",
+          "mem-779e5834-6eb7-4e0e-98ec-756026081a3b",
+          "mem-e1ba33fa-7c58-47b2-bd92-fb834a760e90",
+          "mem-eb26333c-1938-4e27-85f0-467bb0559b8a"
+        ],
+        "source_span": [
+          "span-153df138-97a0-47dd-bbc5-d05e3f8f8d36",
+          "span-5d51ddcf-f2f5-418f-8192-412904eb46d0",
+          "span-65a1152e-cf77-4f2b-97df-4ed60daf9745",
+          "span-9cbb75bc-35f0-4541-afd9-2111dc84b665"
+        ]
+      },
+      "truncated": {
+        "author_context": false,
+        "character_alias": false,
+        "draft_body": false,
+        "draft_claim": false,
+        "foreshadow_record": false,
+        "issue": false,
+        "issue_evidence": false,
+        "memory_record": false,
+        "source_span": true,
+        "source_span_text": false
+      }
+    },
+    "input_digest": "9c5f596e0d4d29eb909ae270d2b52db584cdcacc4b23a5aa86f17d00c290b573",
+    "analysis": {
+      "citation_transform": {
+        "added_source_count": 3,
+        "discarded_model_item_indices": [],
+        "duplicate_omitted_item_count": 0,
+        "fallback_draft_claim_ids": [],
+        "model_item_count": 3,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 0,
+        "overflow_omitted_item_count": 0,
+        "source_rendered_item_count": 3,
+        "version": "source-rendered-v2"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+            "source_chars": 22,
+            "source_end": 22,
+            "source_start": 0,
+            "supplied_chars": 22,
+            "supplied_end": 22,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+            "source_chars": 11,
+            "source_end": 33,
+            "source_start": 22,
+            "supplied_chars": 11,
+            "supplied_end": 33,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3",
+            "source_chars": 9,
+            "source_end": 42,
+            "source_start": 33,
+            "supplied_chars": 9,
+            "supplied_end": 42,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+          "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "evidence_status": "supported",
+      "items": [
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "CTRL_G02_CYCLE 温岚走进东门。",
+              "label": "当前草稿 · 句 1",
+              "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+              "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句1原文：「CTRL_G02_CYCLE 温岚走进东门。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "黄铜罗盘已经交给许青。",
+              "label": "当前草稿 · 句 2",
+              "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+              "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句2原文：「黄铜罗盘已经交给许青。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "灯塔今晚停止点灯。",
+              "label": "当前草稿 · 句 3",
+              "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3",
+              "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句3原文：「灯塔今晚停止点灯。」"
+        }
+      ],
+      "summary": "当前草稿句1原文：「CTRL_G02_CYCLE 温岚走进东门。」 当前草稿句2原文：「黄铜罗盘已经交给许青。」 当前草稿句3原文：「灯塔今晚停止点灯。」",
+      "summary_sources": [
+        {
+          "excerpt": "CTRL_G02_CYCLE 温岚走进东门。",
+          "label": "当前草稿 · 句 1",
+          "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+          "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "黄铜罗盘已经交给许青。",
+          "label": "当前草稿 · 句 2",
+          "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+          "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "灯塔今晚停止点灯。",
+          "label": "当前草稿 · 句 3",
+          "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3",
+          "source_path": "/projects/prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a/workspace#draft-source",
+          "source_type": "draft_claim"
+        }
+      ]
+    }
+  },
+  "fixture": [
+    {
+      "project_id": "prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a",
+      "request": {
+        "bindings": {
+          "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+          "author_context_version": 0,
+          "draft_id": "draft-50ab621c-9081-472a-956f-5cd7e069b350",
+          "draft_revision": 2,
+          "memory_version": 4,
+          "project_id": "prj-5fd1c3aa-44d2-447c-b06b-43b98c2ce16a",
+          "source_revision": 1
+        },
+        "layers": {
+          "confirmed": {
+            "memory_records": [
+              {
+                "id": "mem-201ad2f2-dcdf-42a5-a32a-3b48ac5e164f",
+                "memory_type": "dynamic_state",
+                "predicate": "holder",
+                "source_span_id": "span-153df138-97a0-47dd-bbc5-d05e3f8f8d36",
+                "subject": "黄铜罗盘",
+                "value": "温岚"
+              },
+              {
+                "id": "mem-d909c557-cc00-4255-9a1e-f56ae0c96bdc",
+                "memory_type": "character_knowledge",
+                "predicate": "does_not_know",
+                "source_span_id": "span-4ea1a568-0e65-489a-a2c8-e70c0a3167b6",
+                "subject": "温岚",
+                "value": "廊桥钥匙的含义"
+              },
+              {
+                "id": "mem-262ed5c1-7fa8-475f-999f-028219224bdc",
+                "memory_type": "event_timeline",
+                "predicate": "time",
+                "source_span_id": "span-e7aaaf6e-eb2f-42d5-9ccb-37a172cad86d",
+                "subject": "西航道退潮",
+                "value": "第3章 19:20"
+              },
+              {
+                "id": "mem-3d2bb1de-5d63-48b3-bdbe-b69ec7adcf68",
+                "memory_type": "dynamic_state",
+                "predicate": "location",
+                "source_span_id": "span-57295c04-c94b-4d68-b6c9-626657acad49",
+                "subject": "航图",
+                "value": "雾线水门外锚柱"
+              },
+              {
+                "id": "mem-4c4598b9-ec1f-45ed-969e-33173ce304ea",
+                "memory_type": "static_canon",
+                "predicate": "ring_condition",
+                "source_span_id": "span-b3225cee-4dde-46fd-bf0b-ded0561c9369",
+                "subject": "灰港雾钟",
+                "value": "只在北潮闸完全关闭后敲响一次"
+              },
+              {
+                "id": "mem-779e5834-6eb7-4e0e-98ec-756026081a3b",
+                "memory_type": "open_thread",
+                "predicate": "status",
+                "source_span_id": "span-65a1152e-cf77-4f2b-97df-4ed60daf9745",
+                "subject": "异常雾钟",
+                "value": "北潮闸未关闭时响起，原因未解"
+              },
+              {
+                "id": "mem-e1ba33fa-7c58-47b2-bd92-fb834a760e90",
+                "memory_type": "event_timeline",
+                "predicate": "received",
+                "source_span_id": "span-ca7a4e32-0930-4b6b-974e-64e8924da5ea",
+                "subject": "低室电台",
+                "value": "第6章 21:05 收到三次求救码"
+              },
+              {
+                "id": "mem-eb26333c-1938-4e27-85f0-467bb0559b8a",
+                "memory_type": "open_thread",
+                "predicate": "status",
+                "source_span_id": "span-9caff9c9-c69c-4d0b-9003-beb4d2d0bfd7",
+                "subject": "白色渡船",
+                "value": "没有靠岸，来源未明"
+              }
+            ]
+          },
+          "planned": {
+            "character_plans": [],
+            "story_plans": [],
+            "world_plans": []
+          },
+          "written": {
+            "draft": {
+              "chapter_number": 11,
+              "excerpt": "CTRL_G02_CYCLE 温岚走进东门。黄铜罗盘已经交给许青。灯塔今晚停止点灯。",
+              "id": "draft-50ab621c-9081-472a-956f-5cd7e069b350",
+              "revision": 2,
+              "title": "第十一章：未归的航标"
+            },
+            "draft_claims": [
+              {
+                "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+                "ordinal": 1,
+                "text": "CTRL_G02_CYCLE 温岚走进东门。"
+              },
+              {
+                "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+                "ordinal": 2,
+                "text": "黄铜罗盘已经交给许青。"
+              },
+              {
+                "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3",
+                "ordinal": 3,
+                "text": "灯塔今晚停止点灯。"
+              }
+            ],
+            "source_spans": [
+              {
+                "body": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+                "chapter_id": "ch-281278ef-19e1-4dc9-8a99-e2cc831c83c7",
+                "chapter_number": 9,
+                "chapter_title": "换手",
+                "id": "span-153df138-97a0-47dd-bbc5-d05e3f8f8d36",
+                "label": "动态状态",
+                "source_revision": 1
+              },
+              {
+                "body": "黄铜罗盘的镜面有一道月牙裂纹，此刻由苏岑放在外套内袋。",
+                "chapter_id": "ch-c4759683-8489-463b-a6bb-93192e2efca7",
+                "chapter_number": 2,
+                "chapter_title": "裂纹罗盘",
+                "id": "span-5d51ddcf-f2f5-418f-8192-412904eb46d0",
+                "label": "罗盘状态",
+                "source_revision": 1
+              },
+              {
+                "body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+                "chapter_id": "ch-90cc8e82-89d1-4fa0-9728-935d855d9efc",
+                "chapter_number": 10,
+                "chapter_title": "回声坐标",
+                "id": "span-65a1152e-cf77-4f2b-97df-4ed60daf9745",
+                "label": "未解问题",
+                "source_revision": 1
+              },
+              {
+                "body": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+                "chapter_id": "ch-bfc84530-36b3-4d04-a379-736234fd833b",
+                "chapter_number": 8,
+                "chapter_title": "北堤灯火",
+                "id": "span-9cbb75bc-35f0-4541-afd9-2111dc84b665",
+                "label": "关系变化",
+                "source_revision": 1
+              }
+            ]
+          }
+        },
+        "retrieval": {
+          "counts": {
+            "author_context": {
+              "available": 0,
+              "selected": 0
+            },
+            "character_alias": {
+              "available": 0,
+              "selected": 0
+            },
+            "draft_claim": {
+              "available": 3,
+              "selected": 3
+            },
+            "foreshadow_record": {
+              "available": 0,
+              "selected": 0
+            },
+            "issue": {
+              "available": 0,
+              "selected": 0
+            },
+            "issue_evidence": {
+              "available": 0,
+              "selected": 0
+            },
+            "memory_record": {
+              "available": 8,
+              "selected": 8
+            },
+            "source_span": {
+              "available": 10,
+              "selected": 4
+            }
+          },
+          "draft_claim_scope": {
+            "available": 3,
+            "body_chars": 42,
+            "excerpt_chars": 42,
+            "selected": [
+              {
+                "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+                "source_chars": 22,
+                "source_end": 22,
+                "source_start": 0,
+                "supplied_chars": 22,
+                "supplied_end": 22,
+                "truncated": false
+              },
+              {
+                "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+                "source_chars": 11,
+                "source_end": 33,
+                "source_start": 22,
+                "supplied_chars": 11,
+                "supplied_end": 33,
+                "truncated": false
+              },
+              {
+                "id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3",
+                "source_chars": 9,
+                "source_end": 42,
+                "source_start": 33,
+                "supplied_chars": 9,
+                "supplied_end": 42,
+                "truncated": false
+              }
+            ]
+          },
+          "method_version": "writing-analysis-lexical-v3-brief-540",
+          "selected_ids": {
+            "author_context": [],
+            "character_alias": [],
+            "draft_claim": [
+              "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1",
+              "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2",
+              "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3"
+            ],
+            "foreshadow_record": [],
+            "issue": [],
+            "issue_evidence": [],
+            "memory_record": [
+              "mem-201ad2f2-dcdf-42a5-a32a-3b48ac5e164f",
+              "mem-d909c557-cc00-4255-9a1e-f56ae0c96bdc",
+              "mem-262ed5c1-7fa8-475f-999f-028219224bdc",
+              "mem-3d2bb1de-5d63-48b3-bdbe-b69ec7adcf68",
+              "mem-4c4598b9-ec1f-45ed-969e-33173ce304ea",
+              "mem-779e5834-6eb7-4e0e-98ec-756026081a3b",
+              "mem-e1ba33fa-7c58-47b2-bd92-fb834a760e90",
+              "mem-eb26333c-1938-4e27-85f0-467bb0559b8a"
+            ],
+            "source_span": [
+              "span-153df138-97a0-47dd-bbc5-d05e3f8f8d36",
+              "span-5d51ddcf-f2f5-418f-8192-412904eb46d0",
+              "span-65a1152e-cf77-4f2b-97df-4ed60daf9745",
+              "span-9cbb75bc-35f0-4541-afd9-2111dc84b665"
+            ]
+          },
+          "truncated": {
+            "author_context": false,
+            "character_alias": false,
+            "draft_body": false,
+            "draft_claim": false,
+            "foreshadow_record": false,
+            "issue": false,
+            "issue_evidence": false,
+            "memory_record": false,
+            "source_span": true,
+            "source_span_text": false
+          }
+        },
+        "task": "context_brief",
+        "output_schema": {
+          "summary": "1-400 chars",
+          "summary_sources": [
+            {
+              "source_type": "author_context|memory_record|source_span|draft_claim",
+              "source_id": "supplied id"
+            }
+          ],
+          "items": [
+            {
+              "section": "related_plan|confirmed_fact|character_state|world_rule|open_thread|recent_source",
+              "text": "1-600 chars",
+              "sources": [
+                {
+                  "source_type": "author_context|memory_record|source_span|draft_claim",
+                  "source_id": "supplied id"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "response": {
+        "summary": "模型编造：所有秘密已经公开。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "CTRL_G02_CYCLE 温岚走进东门。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-2"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "黄铜罗盘已经交给许青。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-3"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "灯塔今晚停止点灯。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-draft-50ab621c-9081-472a-956f-5cd7e069b350-r2-1"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "external": []
+}

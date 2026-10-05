@@ -1,0 +1,242 @@
+{
+  "case_alias": "case-31",
+  "stage": "followup",
+  "expected_policy_reference": "v6-v6s-09",
+  "policy": {
+    "allowed_outcomes": [
+      "insufficient_evidence"
+    ],
+    "minimum": [
+      [
+        "fixture-span-v6_birth_order_blank-1"
+      ]
+    ],
+    "optional": [],
+    "premises": [],
+    "category": "timeline",
+    "category_candidates": [],
+    "manual_variant": false,
+    "temporal_relations": []
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-v6-birth-order-blank",
+      "revision": 2,
+      "body": "The birth register establishes that Aster was born before Nilo."
+    },
+    "claims": [
+      {
+        "id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+        "text": "The birth register establishes that Aster was born before Nilo.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-v6_birth_order_blank-1",
+            "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+            "body": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+            "label": "B1",
+            "prompt_excerpt": "The birth register records Aster and Nilo as twins, but does not record which twin was born first."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-v6_birth_order_blank-1",
+        "memory_type": "dynamic_state",
+        "subject": "birth_order_blank",
+        "predicate": "status",
+        "value": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+        "source_span_id": "fixture-span-v6_birth_order_blank-1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-9741ab",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+            "status": "insufficient_evidence",
+            "category": "timeline",
+            "severity": "medium",
+            "evidence_status": "insufficient",
+            "explanation": "The birth register does not record which twin was born first, so it cannot establish that Aster was born before Nilo.",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+                "span_id": "fixture-span-v6_birth_order_blank-1",
+                "excerpt": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-v6_birth_order_blank-1"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "The supplied evidence states the register records Aster and Nilo as twins but omits which twin was born first. The draft treats the register as establishing a birth order, but the cited source lacks the decisive ordering detail, so the claim is unsupported. The actual birth order remains unknown; no direct contradiction is established.",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-v6_birth_order_blank-1",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    },
+    {
+      "response_alias": "answer-d8f6a3",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+            "status": "insufficient_evidence",
+            "category": "timeline",
+            "severity": "medium",
+            "evidence_status": "insufficient",
+            "explanation": "The draft asserts that the birth register establishes Aster was born before Nilo, but the only supplied record of that register says it records the twinship and not which twin was born first. The asserted source warrant is missing, so the birth order stays unknown rather than false.",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+                "span_id": "fixture-span-v6_birth_order_blank-1",
+                "excerpt": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-v6_birth_order_blank-1"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "The cited span states only that the register records Aster and Nilo as twins and does not record which twin was born first. It therefore neither supports nor contradicts the ordering itself: what is absent is the link that makes the register an authority for 'Aster was born before Nilo'. Because no supplied text shows the register recording a birth order and no other evidence is provided, judgment stops at an unsupported attribution; it cannot be upgraded to a confirmed conflict (which would require asserting Nilo was born first) or dropped as no issue.",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-v6_birth_order_blank-1",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    },
+    {
+      "response_alias": "answer-d88068",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+            "status": "insufficient_evidence",
+            "category": "event_status",
+            "severity": "medium",
+            "evidence_status": "insufficient",
+            "explanation": "The cited register span does not establish the claimed birth order; it only records that Aster and Nilo are twins and that the register omits which was born first.",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+                "span_id": "fixture-span-v6_birth_order_blank-1",
+                "excerpt": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-v6_birth_order_blank-1"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "The draft asserts that the birth register establishes Aster was born before Nilo, but the only supplied evidence says the register does not record which twin was born first. The decisive detail supporting the claim is absent, so the attribution is unsupported and the birth order remains unknown.",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-v6_birth_order_blank-1",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    }
+  ]
+}

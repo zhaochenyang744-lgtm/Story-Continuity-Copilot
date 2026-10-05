@@ -1,0 +1,205 @@
+{
+  "schema_version": "v8-blinded-case-first-review-v1",
+  "case_alias": "case-05",
+  "stage": "first",
+  "reviewer": "semantic-review-a",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-05",
+      "response_alias": "answer-8852d8",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-object_state-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        73
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确结合四巴且锁盖的必要条件与10点盖松/未锁事实，支持虽四巴却未就绪；同体同刻和AND条件完整，没有把四巴单独当充分条件。",
+          "visible_quote": "规则证据4要求四巴且阀盖锁紧才算就绪",
+          "evidence_pointer": "responses[answer-8852d8].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].allowed_evidence[carrier_ready_rule,carrier_inspection]"
+        },
+        {
+          "dimension": "S",
+          "verdict": "pass",
+          "reason": "JSON与packet保存parsed相同，唯一当前claim ID、no_issue ledger与空issues一致；basis为73 Unicode code points，小于400。",
+          "visible_quote": "no_issue",
+          "evidence_pointer": "responses[answer-8852d8].first.parsed_business_json.claim_verdicts[0]"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "预期无冲突，实际交付合法空Issue与针对性理由；C/E/T显式Issue字段不适用，时间相容性已在F审阅。",
+          "visible_quote": "\"issues\":[]",
+          "evidence_pointer": "responses[answer-8852d8].first.parsed_business_json.issues"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "正确识别四巴并不单独满足就绪条件；同分钟阀帽未锁支持未就绪，首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-05",
+      "response_alias": "answer-7fd5cf",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-object_state-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        242
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确结合四巴且锁盖的必要条件与10点盖松/未锁事实，支持虽四巴却未就绪；同体同刻和AND条件完整，没有把四巴单独当充分条件。",
+          "visible_quote": "the rule requires both four bars and a locked cap for readiness",
+          "evidence_pointer": "responses[answer-7fd5cf].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].allowed_evidence[carrier_ready_rule,carrier_inspection]"
+        },
+        {
+          "dimension": "S",
+          "verdict": "pass",
+          "reason": "JSON与packet保存parsed相同，唯一当前claim ID、no_issue ledger与空issues一致；basis为242 Unicode code points，小于400。",
+          "visible_quote": "no_issue",
+          "evidence_pointer": "responses[answer-7fd5cf].first.parsed_business_json.claim_verdicts[0]"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "预期无冲突，实际交付合法空Issue与针对性理由；C/E/T显式Issue字段不适用，时间相容性已在F审阅。",
+          "visible_quote": "\"issues\":[]",
+          "evidence_pointer": "responses[answer-7fd5cf].first.parsed_business_json.issues"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "正确识别四巴并不单独满足就绪条件；同分钟阀帽未锁支持未就绪，首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-05",
+      "response_alias": "answer-8fdfbd",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-object_state-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        258
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确结合四巴且锁盖的必要条件与10点盖松/未锁事实，支持虽四巴却未就绪；同体同刻和AND条件完整，没有把四巴单独当充分条件。",
+          "visible_quote": "the rule requires both four bars and a locked valve cap for readiness",
+          "evidence_pointer": "responses[answer-8fdfbd].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].allowed_evidence[carrier_ready_rule,carrier_inspection]"
+        },
+        {
+          "dimension": "S",
+          "verdict": "pass",
+          "reason": "JSON与packet保存parsed相同，唯一当前claim ID、no_issue ledger与空issues一致；basis为258 Unicode code points，小于400。",
+          "visible_quote": "no_issue",
+          "evidence_pointer": "responses[answer-8fdfbd].first.parsed_business_json.claim_verdicts[0]"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "预期无冲突，实际交付合法空Issue与针对性理由；C/E/T显式Issue字段不适用，时间相容性已在F审阅。",
+          "visible_quote": "\"issues\":[]",
+          "evidence_pointer": "responses[answer-8fdfbd].first.parsed_business_json.issues"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "正确识别四巴并不单独满足就绪条件；同分钟阀帽未锁支持未就绪，首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "within_case_comparison_after_individual_review": {
+    "strict_pass": 3,
+    "total": 3,
+    "strict_pass_aliases": [
+      "answer-8852d8",
+      "answer-7fd5cf",
+      "answer-8fdfbd"
+    ],
+    "F_pass_aliases": [
+      "answer-8852d8",
+      "answer-7fd5cf",
+      "answer-8fdfbd"
+    ],
+    "distinction": "三条独立判定均完整通过；都保留同刻未锁帽和AND条件，未以语言、长度或风格作身份推断或强行排名。"
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/05.json",
+    "sha256_before": "5427ece74620516922f3739a0bf0acdbb5187e162ea757266bfb8a4634baeec7",
+    "sha256_after_review": "5427ece74620516922f3739a0bf0acdbb5187e162ea757266bfb8a4634baeec7",
+    "unchanged": true,
+    "all_response_business_requests_equal_packet": true,
+    "all_visible_json_equal_saved_parsed": true
+  },
+  "lock": {
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "repair_or_final_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0,
+    "writes": "this new review file only"
+  }
+}

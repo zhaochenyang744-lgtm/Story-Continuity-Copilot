@@ -1,0 +1,103 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "1a34369ea7c52856eb9223266c26b00e10709a88c5220f601eeee0b56ba0a8cd",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-6c780db8-1e48-4b4b-be5b-24e37812c727-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "The draft asserts that the birth register establishes Nera was born before Oren, but the cited register evidence says the register does not record which twin was born first.",
+        "reasoning": "The draft attributes a birth-order fact to the birth register, yet the only supplied register span states the register does not record which twin, Nera or Oren, was born first. The twinship span and the kinship rule do not supply the missing birth-order record. Because the decisive detail is absent, the attribution is unsupported and the birth order remains unknown; this is a missing-link gap, not a proven contradiction.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-3",
+            "span_id": "fixture-span-orchard_restoration-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-3"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-2",
+            "span_id": "fixture-span-orchard_restoration-2",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-2"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-1",
+            "span_id": "fixture-span-orchard_restoration-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-3",
+            "role": "missing_link"
+          },
+          {
+            "span_id": "fixture-span-orchard_restoration-2",
+            "role": "missing_link"
+          },
+          {
+            "span_id": "fixture-span-orchard_restoration-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6c780db8-1e48-4b4b-be5b-24e37812c727-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The draft attributes a birth-order fact to the birth register, but the supplied register span says the register does not record which twin was born first; the twinship and kinship spans do not supply that missing record, so the attribution is unsupported."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3443,
+      "completion_tokens": 572,
+      "total_tokens": 4015,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1267
+    },
+    "status": "complete",
+    "prompt_tokens": 3443,
+    "completion_tokens": 572,
+    "total_tokens": 4015,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

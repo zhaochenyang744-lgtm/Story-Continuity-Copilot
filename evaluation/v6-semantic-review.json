@@ -1,0 +1,256 @@
+{
+  "schema_version": "scc-eval-v6-semantic-review-v1",
+  "review_scope": "controller_accepted_for_freeze",
+  "status": "approved_for_formal_run",
+  "formal_run_executed": false,
+  "provider_calls": 0,
+  "controller_acceptance": {
+    "accepted_case_canonical_sha256": "3b40e1a157be6e61be58025f7429c7011f30461c6b995ddb1dd9c28adf7564f0",
+    "accepted_corpus_canonical_sha256": "24cc03de333f2dc397748c1e419df03b782c45e07364f8e11b8497c046f0c753",
+    "accepted_case_count": 24,
+    "all_same_decision_point": false
+  },
+  "structural_validation_note": "总控已人工复核 24/24 语义标签与独立性，并批准仅冻结正式评测输入；本签署不代表真实 Provider 授权或正式运行。",
+  "entries": [
+    {
+      "case_id": "eval-v6-lumen-conflict-counterweight-mass",
+      "corpus_key": "lumen_tidehouse",
+      "core_fact_key": "lumen-accepted-counterweight-mass",
+      "decision_point": "Whether a retired mass entry or a signed post-installation weighing controls the counterweight's measured property.",
+      "prior_archetype_reference": "Earlier evaluations contain supersession patterns but not a calibrated mass changed by a physical insert.",
+      "why_independent": "The Lumen counterweight decision joins a pre-modification balance card to a post-installation acceptance measurement, making a measured intrinsic property—not custody, schedule, or event completion—the decisive axis.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-lumen-conflict-crate-location",
+      "corpus_key": "lumen_tidehouse",
+      "core_fact_key": "lumen-driftglass-post-surge-custody",
+      "decision_point": "Where the named crate is held after a surge-triggered custody transfer.",
+      "prior_archetype_reference": "Prior object checks do not use an emergency custody handoff between intake infrastructure and a gantry locker.",
+      "why_independent": "The Driftglass Crate decision requires a before-state and a post-surge transfer record; it tests time-indexed custody of one named object rather than the object's material or a person's action location.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-lumen-control-impeller-cadence",
+      "corpus_key": "lumen_tidehouse",
+      "core_fact_key": "lumen-impeller-nine-minute-cadence",
+      "decision_point": "Whether the draft preserves the logged cycle duration of the north impeller.",
+      "prior_archetype_reference": "This is a direct operating-cadence control in tidal machinery, not a prior capacity, angle, or schedule scenario.",
+      "why_independent": "The Meridian Intake control is grounded by one timing observation and asks only whether a mechanical rhythm is preserved, providing a new supported decision with no source-precedence dependency.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-lumen-control-valve-stripe",
+      "corpus_key": "lumen_tidehouse",
+      "core_fact_key": "lumen-reserve-valve-night-mark",
+      "decision_point": "Whether the reserve valve's night-identification mark matches the equipment record.",
+      "prior_archetype_reference": "Prior controls do not use a tidehouse valve's visual night mark as their decision point.",
+      "why_independent": "The reserve sluice valve check is a single-source equipment-identification control whose saffron marking is independent of all V1–V5 entities, locations, and continuity mechanisms.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-lumen-insufficient-vane-person",
+      "corpus_key": "lumen_tidehouse",
+      "core_fact_key": "lumen-vane-handover-initials-ambiguous",
+      "decision_point": "Whether the ambiguous initials R. S. in a handover note identify Rina Sol rather than Rook Sable.",
+      "prior_archetype_reference": "Prior insufficient-evidence cases do not turn on an unresolved shared-initial reference between two named blackout-roster workers.",
+      "why_independent": "The V6 decision is entity-reference ambiguity: the source supplies a real handover signature and two plausible roster referents, but no resolving link. It is neither a missing actor assertion nor an alternative causal account.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-lumen-insufficient-sample-destination",
+      "corpus_key": "lumen_tidehouse",
+      "core_fact_key": "lumen-sample-route-effective-time-unknown",
+      "decision_point": "Whether a conditional route amendment applied at the surge when its calibration effective time is absent.",
+      "prior_archetype_reference": "Prior uncertain delivery cases do not depend on the temporal applicability of a recorded conditional amendment.",
+      "why_independent": "This is not a blank-destination case: Nacre Pier is named in the source, while the missing decision point is when that conditional route took effect. The draft asserts applicability at a specific time the record never establishes.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-velvet-conflict-amber-authority",
+      "corpus_key": "velvet_signal_yard",
+      "core_fact_key": "velvet-amber-departure-authority",
+      "decision_point": "Who holds dispatch authority when an emergency rider temporarily overrides ordinary duties.",
+      "prior_archetype_reference": "Prior relationship cases do not combine railway dispatch duties with a flag-scoped delegation override.",
+      "why_independent": "The amber-flag decision compares baseline role authority with a bounded emergency reassignment between Neris Vale and Odo Prynn, making interpersonal authorization—not a world rule—the core relation.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-velvet-conflict-revised-phrase-knowledge",
+      "corpus_key": "velvet_signal_yard",
+      "core_fact_key": "velvet-neris-revised-phrase-knowledge",
+      "decision_point": "Whether access to an earlier phrase implies knowledge of a sealed replacement sent only to another operator.",
+      "prior_archetype_reference": "Prior knowledge boundaries do not use versioned relay phrases and exclusive sealed distribution.",
+      "why_independent": "The Marble Six decision requires both Neris Vale's earlier Willow Nine briefing and the exclusive revised memo, testing version-specific knowledge rather than general participation or duty.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-velvet-control-bell-cadence",
+      "corpus_key": "velvet_signal_yard",
+      "core_fact_key": "velvet-clear-branch-bell-cadence",
+      "decision_point": "Whether the draft reproduces the yard's recorded clear-branch bell cadence.",
+      "prior_archetype_reference": "No prior control uses an acoustic rail-yard code with this ordered stroke pattern.",
+      "why_independent": "The clear-branch case is a direct signal-code control grounded in one operational record and is independent from chronological event-order conflicts despite containing an ordered sound sequence.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-velvet-control-violet-cord",
+      "corpus_key": "velvet_signal_yard",
+      "core_fact_key": "velvet-lever-c-violet-binding",
+      "decision_point": "Whether the lever's fog-recognition binding matches the yard record.",
+      "prior_archetype_reference": "Prior visual markers do not concern a tactile binding on railway switching equipment.",
+      "why_independent": "Switch lever C supplies a distinct supported equipment-mark decision in the Juniper Relay Yard, with no inheritance from V5 material, location, or event-status facts.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-velvet-insufficient-phantom-cause",
+      "corpus_key": "velvet_signal_yard",
+      "core_fact_key": "velvet-phantom-advisory-authority-unverified",
+      "decision_point": "Whether an unsigned advisory can be attributed to an authorised inspector as an official order.",
+      "prior_archetype_reference": "Prior uncertain-source cases do not distinguish an unsigned emergency advisory from an authorised railway inspection finding.",
+      "why_independent": "The source supplies a recommendation but withholds provenance, authority, and official status. The V6 decision tests source legitimacy rather than an unknown physical cause or a character's private knowledge.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-velvet-insufficient-observer-name",
+      "corpus_key": "velvet_signal_yard",
+      "core_fact_key": "velvet-final-test-observer-blank",
+      "decision_point": "Whether a blank witness line can establish a named observer at the final relay test.",
+      "prior_archetype_reference": "Prior missing-person evidence does not use a formal rail-test observer register.",
+      "why_independent": "The Cipher Loft case tests an unsupported witness identity in a blank register, distinct from actor responsibility, character knowledge, and role authorization decisions.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-quartz-conflict-seed-mist-order",
+      "corpus_key": "quartz_aviary",
+      "core_fact_key": "quartz-alarm-day-mist-count-order",
+      "decision_point": "Whether the planned dawn sequence or the alarm-day execution log determines actual event order.",
+      "prior_archetype_reference": "Prior timeline cases do not contrast an aviary procedure card with an alarm-driven execution reversal.",
+      "why_independent": "The seed-mist decision joins planned order to observed alarm-day order, testing which of two events happened first rather than whether either event completed.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-quartz-conflict-hatchling-tag-exception",
+      "corpus_key": "quartz_aviary",
+      "core_fact_key": "quartz-untagged-hatchling-entry-exception",
+      "decision_point": "Whether a universal tag assertion survives an explicit age-bound quarantine exception.",
+      "prior_archetype_reference": "Prior world-rule cases do not use biological age, quarantine routing, and a nursery-hatch exception.",
+      "why_independent": "The glasswing decision requires the general copper-tag rule and the under-three-day exception, testing a system-wide norm with a scoped exemption rather than one object's state.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-quartz-control-vault-temperature",
+      "corpus_key": "quartz_aviary",
+      "core_fact_key": "quartz-starling-vault-quiet-temperature",
+      "decision_point": "Whether the quiet-watch temperature agrees with the keeper's environmental log.",
+      "prior_archetype_reference": "Prior property controls do not use a bird-vault environmental reading during a named watch.",
+      "why_independent": "The Starling Vault case is a direct environmental measurement control and does not reuse V5's disputed material, angle, or object custody decision points.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-quartz-control-keeper-notebook",
+      "corpus_key": "quartz_aviary",
+      "core_fact_key": "quartz-pera-feeding-notebook",
+      "decision_point": "Whether the keeper's recording tool and storage place match the aviary record.",
+      "prior_archetype_reference": "No earlier supported case concerns a keeper's feeding ledger stored beneath a perch.",
+      "why_independent": "Pera Dune's notebook is a new single-source supported fact combining a personal tool and its storage location without invoking an unresolved location-action claim.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-quartz-insufficient-feather-species",
+      "corpus_key": "quartz_aviary",
+      "core_fact_key": "quartz-blue-feather-unranked-source-disagreement",
+      "decision_point": "Whether one of two conflicting unsigned species labels controls when the ledger supplies no authority or priority rule.",
+      "prior_archetype_reference": "Prior insufficient-evidence cases do not use competing specimen labels whose conflict is unresolved by any provenance ranking.",
+      "why_independent": "The V6 decision contains evidence on both sides, but neither label is authenticated and no priority rule exists. It therefore tests unresolved source precedence, not merely an absent species attribution.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-quartz-insufficient-incubator-result",
+      "corpus_key": "quartz_aviary",
+      "core_fact_key": "quartz-incubator-readiness-not-outcome",
+      "decision_point": "Whether recorded heat, humidity, and turning conditions establish an unrecorded hatch outcome.",
+      "prior_archetype_reference": "Prior outcome gaps do not distinguish known prerequisite conditions from a separately missing dawn observation.",
+      "why_independent": "This V6 case has partial direct support for prerequisites but no observation of the asserted result. It tests the invalid leap from necessary conditions to outcome, rather than a simple blank-result assertion.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-cinder-conflict-sora-inspection-place",
+      "corpus_key": "cinder_lantern_ferry",
+      "core_fact_key": "cinder-sora-storm-inspection-location",
+      "decision_point": "Where Sora Fen actually performed the beacon inspection after a storm reroute.",
+      "prior_archetype_reference": "Prior location-action cases do not combine a shore assignment with an onboard repeater inspection and explicit non-disembarkation.",
+      "why_independent": "Sora Fen's case needs the planned landing task and the storm movement log to locate her actual action, distinguishing action place from the ferry's own object state.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-cinder-conflict-crossing-completion",
+      "corpus_key": "cinder_lantern_ferry",
+      "core_fact_key": "cinder-lantern-crossing-completion-status",
+      "decision_point": "Whether departure establishes completion when a later log records suspension and return.",
+      "prior_archetype_reference": "Prior event-status cases do not use a ferry passage that opens, reverses mid-channel, and returns every passenger.",
+      "why_independent": "The Lantern Crossing decision separates event initiation from completion by requiring both the departure and suspension records; it is not merely an ordering question.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-cinder-control-lantern-fuel",
+      "corpus_key": "cinder_lantern_ferry",
+      "core_fact_key": "cinder-deck-lantern-juniper-fuel",
+      "decision_point": "Whether the stated lantern fuel and container match the ferry inventory.",
+      "prior_archetype_reference": "Earlier controls do not concern vessel lighting fuel stored in square tins.",
+      "why_independent": "The ferry lantern case is a new inventory-supported control with no chronology, exception, or uncertain attribution component.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-cinder-control-bram-whistle",
+      "corpus_key": "cinder_lantern_ferry",
+      "core_fact_key": "cinder-bram-brass-whistle-mark",
+      "decision_point": "Whether Bram Latch's whistle description agrees with the vessel register.",
+      "prior_archetype_reference": "No prior supported decision uses a ferry officer's engraved brass signal tool.",
+      "why_independent": "Bram Latch's whistle supplies an independent person-equipment control with a distinctive material and engraving, not a disputed intrinsic-property case.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-cinder-insufficient-engine-knock-cause",
+      "corpus_key": "cinder_lantern_ferry",
+      "core_fact_key": "cinder-recovery-partial-repair-compound-claim",
+      "decision_point": "Whether confirmation of one repair step establishes a compound claim about a second repair and resumed propulsion.",
+      "prior_archetype_reference": "Prior insufficient-evidence cases do not split a repair narrative into one recorded prerequisite and two unrecorded completion claims.",
+      "why_independent": "The V6 source directly confirms screen clearing, while timing-chain reset and propulsion resumption remain unrecorded. This tests partial evidence for a compound operational claim, not an unknown cause or a blank outcome field.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    },
+    {
+      "case_id": "eval-v6-cinder-insufficient-pouch-recipient",
+      "corpus_key": "cinder_lantern_ferry",
+      "core_fact_key": "cinder-sealed-pouch-recipient-blank",
+      "decision_point": "Whether a receipt with no recipient can support naming a person who accepted the pouch.",
+      "prior_archetype_reference": "Prior blank records do not concern chain-of-custody acceptance aboard a ferry.",
+      "why_independent": "The sealed-pouch decision targets unsupported recipient identity in a custody receipt, distinct from the unknown actor, witness, and destination decisions elsewhere in V6.",
+      "same_decision_point": false,
+      "review_status": "controller_accepted_for_freeze"
+    }
+  ]
+}

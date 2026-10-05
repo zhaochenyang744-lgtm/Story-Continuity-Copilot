@@ -1,0 +1,7 @@
+{
+  "case_id": "v6-v6s-03",
+  "error_type": "RuntimeError",
+  "error": "isolated_api_422:{\"error\":{\"code\":\"insufficient_project_context\",\"message\":\"请求无法完成\",\"retryable\":false},\"request_id\":\"req_5376f93381394b88ac57839849f893f4\"}",
+  "failed_at": "2026-09-27T09:35:00.226502+00:00",
+  "post_attempt_start_records_so_far": 0
+}

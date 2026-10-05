@@ -1,0 +1,62 @@
+[
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/models-preflight.json",
+    "sha256": "17883eb404608757b547b75bf65aa1d63739679e7f767a8f9c89ef98280af908",
+    "bytes": 121
+  },
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/start.json",
+    "sha256": "21f3f5709dad0139b5134ec83869884a4c9e2447b5f156a722f489df9c5d77cd",
+    "bytes": 564
+  },
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/summary.json",
+    "sha256": "68fcda57b1caf3f6fac5666c85a3772afea59396473d08be073abc1f8e6434ed",
+    "bytes": 4980
+  },
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/workspace-manifest.json",
+    "sha256": "3e96f1cf7e7321a145699c4aa97ff84b3ebf901bb31d8bd45a7d6c060a29c004",
+    "bytes": 1774
+  },
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/01-g02-three-sentences.json",
+    "sha256": "89b5f148a39c8a0c57ff40dbc3e4c1c7a068cebc860d51a495dee2c7bf5c59f0",
+    "bytes": 34984
+  },
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/02-g02-long-sentence.json",
+    "sha256": "7b7276cee12f955078e993928c2742e75f045b1dba5962fae2e3f099dc6f4921",
+    "bytes": 37022
+  },
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/03-g02-body-limit.json",
+    "sha256": "ac5c70b43a28f9b20990b8602f1e6efd032f5e754efe5bed5a9cd70ced8aaae3",
+    "bytes": 48283
+  },
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/04-g02-identical-text.json",
+    "sha256": "34a10437792380f8f75bcc51b43c26e62dd4fb80b1244d349c6d7826e1e74f24",
+    "bytes": 34661
+  },
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/05-g03-short-target.json",
+    "sha256": "eaf4e90517d785d17d920aaafb932337b554aeacf327e9adc137e8c066875586",
+    "bytes": 19473
+  },
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/06-g03-deep-target.json",
+    "sha256": "7668d32473e4da6a9516c3b8da3033054f50dea9e9df1a8c850abf5616833142",
+    "bytes": 26190
+  },
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/07-g03-fact-absent.json",
+    "sha256": "59c9f02faa45dde80e89b9dda8ca601062d073f859e85755413aea02d74fc9ae",
+    "bytes": 16839
+  },
+  {
+    "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/08-g03-other-chapter.json",
+    "sha256": "bbe819a90181abc4f92aa725819597c1cc1efe6f5ecbca2520e8a020ef02c480",
+    "bytes": 26598
+  }
+]

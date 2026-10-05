@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 12875,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "fa46a77a-4ebf-4dab-b10c-a3f92ffe2b7b",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"The cited evidence supports the current clear-glass state and identity of lens R4; the recollection of amber yesterday is a compatible earlier state and does not conflict with the later clear condition.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "ba9379204315d5754e69e62f04ff3557e2d55157af6138631864dc5676a09d68",
+  "reasoning": {
+    "present": true,
+    "codepoints": 4680,
+    "utf8_bytes": 4702,
+    "sha256": "8581a59894346d00572b5a389dc8831ca4e85ae33193829445d1aaefec981382"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3555,
+      "completion_tokens": 1188,
+      "total_tokens": 4743,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1075
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1123
+    },
+    "status": "complete",
+    "prompt_tokens": 3555,
+    "completion_tokens": 1188,
+    "total_tokens": 4743,
+    "reasoning_tokens": 1075,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:48:45.789930+00:00"
+}

@@ -1,0 +1,28 @@
+import type { Metadata, Viewport } from "next";
+import "./globals.css";
+import "./visual-system.css";
+import "./author-context-preview.css";
+import "./reference-refresh.css";
+import "./maintenance.css";
+import "./polish.css";
+import "./motion.css";
+
+export const metadata: Metadata = {
+  title: "Story Continuity Copilot",
+  description: "中文长篇小说连续性审阅工作台",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="zh-CN">
+      <body>{children}</body>
+    </html>
+  );
+}

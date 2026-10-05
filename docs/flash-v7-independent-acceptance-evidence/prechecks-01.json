@@ -1,0 +1,364 @@
+{
+  "created_at": "2026-09-27T10:39:03.261460+00:00",
+  "basis": "V6 pre-edit snapshots; no imports of product modules, Provider, DB or tests",
+  "baseline_manifest": "baseline/dependency-snapshot-receipt.json",
+  "v6_run_inventory": "baseline/v6-run-hashes.json",
+  "findings": [
+    {
+      "id": "basis400",
+      "evidence": "snapshot engine.py:333-358; provider.py:99,234; no claim_verdicts references in frontend or v2_database; HEAD engine lacks this ledger and tracked path history search has no match",
+      "confirmed": "400 is a V6 internal ledger validation bound. The ledger is reduced to issues before persistence; no author-interface truncation dependency was found. The similarly sized context_brief summary limit is a different contract.",
+      "minimal_recommendation": "Keep one explicit named code-point limit shared by schema/prompt/validation and field-specific repair diagnostics. Do not silently truncate basis or treat a higher limit as the repair."
+    },
+    {
+      "id": "repair_budget",
+      "evidence": "snapshot engine.py:249-258,302-305; provider.py:164-175,227-236,344-354",
+      "confirmed": "Batch sizing checks first request only. Repair adds diagnostic and all rejected issues, then the provider independently enforces input<=6000 and output<=2000. Current V6 actual requests are under input cap, so this is boundary risk rather than an observed budget failure.",
+      "minimal_recommendation": "Check near-cap first-to-repair with explicit bounded refusal/reserve; do not enlarge global budget or trim source truth to hide failure. Keep one repair and transport limits. MAX_RUN_TOKENS check is per returned evaluation at engine:305, not cumulative across all results; disclose rather than silently relabel."
+    },
+    {
+      "id": "multiple_claims",
+      "confirmed": "All observed V6 first and repair requests contain exactly one claim; they do not validate a realistic multi-claim output budget.",
+      "minimal_recommendation": "Before accepting longer basis or more repair text, cover a small multi-claim request with complete per-own-ID ledger, mixed no_issue/insufficient/conflict, per-claim diagnostic, and output/input budget pressure. Do not add live samples without separate frozen identity."
+    },
+    {
+      "id": "g02_isolation",
+      "evidence": "snapshot engine.py:449 onward, provider context_brief_prompt; helper callers confined to ContinuityEngine",
+      "confirmed": "G02 WritingAnalysisEngine does not call temporal helpers or _v6_issues. Shared provider transport/budget still lies outside that semantic isolation.",
+      "minimal_recommendation": "Keep WritingAnalysisEngine, context_brief_prompt, brief_citations and global transport/budget constants unchanged. Verify stable diff/AST against baseline; if those dependencies change, decide targeted G02 replay before claiming old6/72 preserved."
+    }
+  ],
+  "historical_lookup": {
+    "head_engine_read_ok": true,
+    "head_engine_contains_claim_verdicts": false,
+    "tracked_engine_history_claim_verdicts": ""
+  },
+  "budget_reconstruction": {
+    "method": "Manual JSON formatter rebuilt from AST literal constants; mixed-char-estimator-v1 arithmetic only; no product functions executed",
+    "summary": {
+      "first_count": 34,
+      "repair_count": 15,
+      "claim_counts": [
+        1
+      ],
+      "maximum_first": {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/17/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4403
+      },
+      "maximum_repair": {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/24/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 5402
+      },
+      "all_below6000": true
+    },
+    "requests": [
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/01/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4353
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/01/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 5224
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/02/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4348
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/03/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4340
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/03/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4721
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/04/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4358
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/05/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4367
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/05/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4744
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/06/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4341
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/07/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4203
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/08/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4211
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/09/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4197
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/09/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4578
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/10/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4193
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/11/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4185
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/12/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4185
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/12/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4563
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/13/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4316
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/14/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4346
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/15/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4336
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/16/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4361
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/17/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4403
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/17/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4780
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/18/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4365
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/18/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4746
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/19/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4304
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/20/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4318
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/20/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4696
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/21/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4314
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/21/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4691
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/22/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4307
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/23/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4311
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/24/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4316
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/24/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 5402
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 4107
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/25/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 5013
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 3948
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/26/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4911
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 3959
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/27/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4337
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 3872
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/28/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4253
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/29/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 3854
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/30/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 3884
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/31/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 3873
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 3885
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/32/requests/02.json",
+        "stage": "repair",
+        "claim_count": 1,
+        "input_budget_units": 4266
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/33/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 3878
+      },
+      {
+        "path": "evaluation/current_flash_v6/runs/flash-v6-20260927-01/cases/34/requests/01.json",
+        "stage": "first",
+        "claim_count": 1,
+        "input_budget_units": 3919
+      }
+    ]
+  },
+  "g02_baseline_ast_sha256": {
+    "WritingAnalysisEngine": "0b0422492eba7c2bd3e64868e654b2b07b036dfbfc45bf11df984aba8cf80beb",
+    "context_brief_prompt": "42455055077ca01fc78d6543e6a66bb3b3fdadb1ed89df1e37c04a54ac99a36c",
+    "request_prompt_and_budget": "36ce8ebfef8f9ba2837102ece1279766bc511ec456a2b959fac84702ddeac838"
+  },
+  "g02_brief_citations_sha256": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+  "provider_calls": 0,
+  "database_connections": 0,
+  "tests_executed": 0
+}

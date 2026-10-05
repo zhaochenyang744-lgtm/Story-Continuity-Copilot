@@ -1,0 +1,46 @@
+{
+  "project_id": "fixture-project-v6-knowledge-transition",
+  "draft_id": "fixture-draft-v6-knowledge-transition",
+  "draft_revision": 2,
+  "draft_body": "At 12:00 today Siva learned the password after not knowing it at 09:00.",
+  "draft_body_sha256": "67aa374d6f6ba44e09cdcd86197e530b500826c1a67aeb255f3753111ff09549",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-v6_knowledge_transition-1",
+      "chapter_number": 1,
+      "chapter_title": "Synthetic knowledge_transition source K1",
+      "chapter_body": "At 09:00 today, Siva had not opened the letter and did not know the password.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_knowledge_transition-1",
+      "span_body": "At 09:00 today, Siva had not opened the letter and did not know the password.",
+      "span_revision": 1,
+      "chapter_body_sha256": "657548db1ced8b09232de96751992b383469c43ba0b456fe7270812740d9b4f3",
+      "span_body_sha256": "657548db1ced8b09232de96751992b383469c43ba0b456fe7270812740d9b4f3"
+    },
+    {
+      "chapter_id": "fixture-chapter-v6_knowledge_transition-2",
+      "chapter_number": 2,
+      "chapter_title": "Synthetic knowledge_transition source K2",
+      "chapter_body": "At 12:00 today, Siva opened the letter and learned the password from it.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_knowledge_transition-2",
+      "span_body": "At 12:00 today, Siva opened the letter and learned the password from it.",
+      "span_revision": 1,
+      "chapter_body_sha256": "7893392ebabd4e000572f28a8fe715f828841775f15489bdc66ff34d90ce96a3",
+      "span_body_sha256": "7893392ebabd4e000572f28a8fe715f828841775f15489bdc66ff34d90ce96a3"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-v6_knowledge_transition-1",
+      "memory_type": "dynamic_state",
+      "subject": "knowledge_transition",
+      "predicate": "status",
+      "value": "At 09:00 today, Siva had not opened the letter and did not know the password.",
+      "source_span_id": "fixture-span-v6_knowledge_transition-1",
+      "version": 1
+    }
+  ]
+}

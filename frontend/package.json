@@ -1,0 +1,47 @@
+{
+  "name": "story-continuity-app",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "build": "next build",
+    "test:build-origin": "node --test tests/build-origin.test.mjs tests/build-id.test.mjs tests/public-config.test.mjs tests/stage13-harness.test.mjs tests/stage13-v4-policy.test.mjs tests/stage13-v4-runtime.test.mjs tests/stage14-deployment.test.mjs tests/v130-allowlist-consistency.test.mjs tests/v130-harness.test.mjs tests/v130-release-scan.test.mjs",
+    "verify:build-manifest": "node scripts/assert-api-rewrite.mjs",
+    "verify:stage13-v4-artifact": "node scripts/stage13-v4-policy.mjs",
+    "compare:stage13-v4-artifacts": "node scripts/stage13-v4-compare.mjs",
+    "verify:stage13-v4-runtime": "node scripts/stage13-v4-runtime-scan.mjs",
+    "start:stage13-v4-artifact": "node scripts/start-stage13-v4-artifact.mjs",
+    "verify:stage14-bundle": "node scripts/stage14-bundle-scan.mjs",
+    "verify:v130-allowlist": "node scripts/v130-allowlist-consistency.mjs",
+    "test:e2e": "node scripts/run-e2e-all.mjs",
+    "test:e2e:raw": "playwright test",
+    "test:v110": "playwright test --config playwright.v110.config.ts",
+    "test:v120": "playwright test --config playwright.v120.config.ts",
+    "test:v130": "node scripts/run-v130-local-rc.mjs",
+    "test:v140:frontend": "node scripts/run-v140-frontend.mjs",
+    "test:v140:visual": "node scripts/run-v140-visual.mjs"
+  },
+  "dependencies": {
+    "@tiptap/markdown": "3.31.3",
+    "@tiptap/pm": "3.31.3",
+    "@tiptap/react": "3.31.3",
+    "@tiptap/starter-kit": "3.31.3",
+    "next": "^16.3.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "22.15.3",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.3",
+    "prettier": "^3.9.6",
+    "typescript": "5.8.3"
+  }
+}

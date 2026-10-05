@@ -1,0 +1,1348 @@
+{
+  "schema_version": "scc-eval-case-set-v7-candidate",
+  "status": "candidate_for_controller_review",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "formal_run_executed": false,
+  "provider_calls": 0,
+  "cases": [
+    {
+      "case_id": "eval-v7-cartography-authority",
+      "corpus_key": "indigo_cartography",
+      "seed_key": "indigo_cartography",
+      "target_draft": "During the blue-flood alert, Miri Ansel alone may release the survey plates.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "relationship",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "ordinary_custody_charter",
+          "body_sha256": "4635a1bd62621242b8ce9f101d1a5e0be15d9f70fcaf997c6c186cf5224a41ea"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "flood_delegation",
+          "body_sha256": "a178c85524ca5de179782f11787cec636296f1d3d250c8475a730a3919bb6844"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "indigo_cartography",
+          "chapter_number": 1,
+          "source_label": "ordinary_custody_charter",
+          "body_sha256": "4635a1bd62621242b8ce9f101d1a5e0be15d9f70fcaf997c6c186cf5224a41ea"
+        },
+        {
+          "corpus_key": "indigo_cartography",
+          "chapter_number": 2,
+          "source_label": "flood_delegation",
+          "body_sha256": "a178c85524ca5de179782f11787cec636296f1d3d250c8475a730a3919bb6844"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources",
+        "category_mismatch_regression"
+      ],
+      "category_boundary_pair": [
+        "relationship",
+        "world_rule"
+      ],
+      "retrieval_difficulty": "paired_direct_evidence",
+      "core_fact_key": "cartography-blue-badge-release",
+      "claim_shape": "authorization_rule_joined_to_named_badge_holder",
+      "decision_signature": "conflict|relationship|authorization_condition_plus_holder",
+      "proper_nouns": [
+        "Miri Ansel",
+        "Doran Pike"
+      ],
+      "evidence_completeness_review": [
+        "The badge rule identifies the authorization condition but does not identify who holds the cobalt tide badge during this alert.",
+        "The inspection identifies Doran as badge wearer but does not state what authority that badge confers.",
+        "Together, the rule and inspection establish Doran as the authorized release holder, contradicting exclusive authority for Miri."
+      ],
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by cartography-blue-badge-release using the declared direct evidence.",
+        "expected_class_reason": "Both direct source spans are necessary and jointly contradict the draft.",
+        "expected_category_reason": "The decision axis is relationship; classify the issue by its core decision rather than incidental setting language.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not infer a conflict from either SourceSpan alone; apply the declared joint inference only when every expected direct Evidence item is present."
+      }
+    },
+    {
+      "case_id": "eval-v7-cartography-panes",
+      "corpus_key": "indigo_cartography",
+      "seed_key": "indigo_cartography",
+      "target_draft": "The current north survey window has twelve mica panes.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "attribute",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "first_glazing_record",
+          "body_sha256": "f343176329cd73564efd5921503cdedf450c080fd0dc5e7c0a7a48a76920af53"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "restoration_acceptance",
+          "body_sha256": "5705748e6e7102c2cc5ba1c17ebd1c34c7fdd9ed90768a20755fc1741ea5d24a"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "indigo_cartography",
+          "chapter_number": 3,
+          "source_label": "first_glazing_record",
+          "body_sha256": "f343176329cd73564efd5921503cdedf450c080fd0dc5e7c0a7a48a76920af53"
+        },
+        {
+          "corpus_key": "indigo_cartography",
+          "chapter_number": 4,
+          "source_label": "restoration_acceptance",
+          "body_sha256": "5705748e6e7102c2cc5ba1c17ebd1c34c7fdd9ed90768a20755fc1741ea5d24a"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "paired_direct_evidence",
+      "core_fact_key": "cartography-current-pane-count",
+      "claim_shape": "current_property_defined_by_final_glaze_photo",
+      "decision_signature": "conflict|attribute|property_rule_plus_measurement",
+      "proper_nouns": [
+        "north survey window"
+      ],
+      "evidence_completeness_review": [
+        "The counting rule identifies which record defines the current property but supplies no pane total.",
+        "The photograph supplies a pane total but does not, alone, establish that the photograph defines the current count.",
+        "Together, the rule and photograph establish a current count of fifteen, contradicting twelve."
+      ],
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by cartography-current-pane-count using the declared direct evidence.",
+        "expected_class_reason": "Both direct source spans are necessary and jointly contradict the draft.",
+        "expected_category_reason": "The decision axis is attribute; classify the issue by its core decision rather than incidental setting language.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not infer a conflict from either SourceSpan alone; apply the declared joint inference only when every expected direct Evidence item is present."
+      }
+    },
+    {
+      "case_id": "eval-v7-cartography-control-stencil",
+      "corpus_key": "indigo_cartography",
+      "seed_key": "indigo_cartography",
+      "target_draft": "The equinox latitude is marked with a narrow silver line.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "latitude_stencil",
+          "body_sha256": "efb086096b29f20ac64286106be5001c8715a255def189cb43fb4dde49dedd75"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "indigo_cartography",
+          "chapter_number": 5,
+          "source_label": "latitude_stencil",
+          "body_sha256": "efb086096b29f20ac64286106be5001c8715a255def189cb43fb4dde49dedd75"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "cartography-equinox-stencil-mark",
+      "claim_shape": "directly_supported_survey_stencil_mark",
+      "decision_signature": "no_conflict|supported|survey_mark",
+      "proper_nouns": [
+        "tide table stencil"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by cartography-equinox-stencil-mark using the declared direct evidence.",
+        "expected_class_reason": "The source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-cartography-control-bell",
+      "corpus_key": "indigo_cartography",
+      "seed_key": "indigo_cartography",
+      "target_draft": "Raster Hall closes map drawers after two low bells and one high bell.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "archive_bell",
+          "body_sha256": "9f08a0e9a980f75e45191b614f44f9f7a3838419119b3a1509ee67177151a705"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "indigo_cartography",
+          "chapter_number": 6,
+          "source_label": "archive_bell",
+          "body_sha256": "9f08a0e9a980f75e45191b614f44f9f7a3838419119b3a1509ee67177151a705"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "cartography-drawer-bell-pattern",
+      "claim_shape": "directly_supported_archive_signal",
+      "decision_signature": "no_conflict|supported|archive_bell_pattern",
+      "proper_nouns": [
+        "Raster Hall"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by cartography-drawer-bell-pattern using the declared direct evidence.",
+        "expected_class_reason": "The source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-cartography-insufficient-note",
+      "corpus_key": "indigo_cartography",
+      "seed_key": "indigo_cartography",
+      "target_draft": "Miri Ansel wrote the initialed margin note.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "initialed_margin_note",
+          "body_sha256": "d0441de43a99370b1575dbe203e8733c32f174c0f88d81f2cce93c97da41ae64"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "indigo_cartography",
+          "chapter_number": 7,
+          "source_label": "initialed_margin_note",
+          "body_sha256": "d0441de43a99370b1575dbe203e8733c32f174c0f88d81f2cce93c97da41ae64"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "cartography-margin-note-author",
+      "claim_shape": "ambiguous_initials_between_two_people",
+      "decision_signature": "insufficient_evidence|ambiguous_author|margin_note",
+      "proper_nouns": [
+        "Miri Ansel",
+        "Mara Aven"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by cartography-margin-note-author using the declared direct evidence.",
+        "expected_class_reason": "The source leaves the asserted specific fact unresolved.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-cartography-insufficient-courier",
+      "corpus_key": "indigo_cartography",
+      "seed_key": "indigo_cartography",
+      "target_draft": "The sealed courier packet was dispatched to Windward Annex.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "unlogged_courier_seal",
+          "body_sha256": "30bd304cb5870bef02b0f61220f1d2a11d54ab68f8c00854a82fcc2410cc7d00"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "indigo_cartography",
+          "chapter_number": 8,
+          "source_label": "unlogged_courier_seal",
+          "body_sha256": "30bd304cb5870bef02b0f61220f1d2a11d54ab68f8c00854a82fcc2410cc7d00"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "cartography-courier-destination",
+      "claim_shape": "blank_destination_asserted",
+      "decision_signature": "insufficient_evidence|blank_destination|courier",
+      "proper_nouns": [
+        "Windward Annex"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by cartography-courier-destination using the declared direct evidence.",
+        "expected_class_reason": "The source leaves the asserted specific fact unresolved.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-siltworks-filter-rule",
+      "corpus_key": "ember_siltworks",
+      "seed_key": "ember_siltworks",
+      "target_draft": "An amber filter must stay closed even during a red-mark pressure purge.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "world_rule",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "filter_baseline",
+          "body_sha256": "f3a1616935a68c1fe2271f0b7055a52c96a57d4f5c57f7d9194e9d5c901cbbd0"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "steam_exception",
+          "body_sha256": "5aa7e45d4eb9729e1057ef168f51f044af64aca192a79491a21cee9b54f6cff2"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "ember_siltworks",
+          "chapter_number": 1,
+          "source_label": "filter_baseline",
+          "body_sha256": "f3a1616935a68c1fe2271f0b7055a52c96a57d4f5c57f7d9194e9d5c901cbbd0"
+        },
+        {
+          "corpus_key": "ember_siltworks",
+          "chapter_number": 2,
+          "source_label": "steam_exception",
+          "body_sha256": "5aa7e45d4eb9729e1057ef168f51f044af64aca192a79491a21cee9b54f6cff2"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources",
+        "category_mismatch_regression"
+      ],
+      "category_boundary_pair": [
+        "world_rule",
+        "relationship"
+      ],
+      "retrieval_difficulty": "paired_direct_evidence",
+      "core_fact_key": "siltworks-red-purge-amber-rule",
+      "claim_shape": "purge_rule_joined_to_filter_applicability",
+      "decision_signature": "conflict|world_rule|conditional_rule_plus_scope_membership",
+      "proper_nouns": [
+        "amber filters"
+      ],
+      "evidence_completeness_review": [
+        "The purge instruction states what happens to filters with a copper relief ring but does not identify amber filters as members of that scope.",
+        "The inventory places amber filters in the copper-ring scope but does not state the red-mark operating consequence.",
+        "Together, the instruction and inventory require amber filters to open for the red-mark purge, contradicting a stay-closed claim."
+      ],
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by siltworks-red-purge-amber-rule using the declared direct evidence.",
+        "expected_class_reason": "Both direct source spans are necessary and jointly contradict the draft.",
+        "expected_category_reason": "The decision axis is world_rule; classify the issue by its core decision rather than incidental setting language.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not infer a conflict from either SourceSpan alone; apply the declared joint inference only when every expected direct Evidence item is present."
+      }
+    },
+    {
+      "case_id": "eval-v7-siltworks-vessel-state",
+      "corpus_key": "ember_siltworks",
+      "seed_key": "ember_siltworks",
+      "target_draft": "After the rinse, the Cobalt Vessel remains sealed in Kiln Basin.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "object_state",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "vessel_sealing",
+          "body_sha256": "d965ab32953299c4b0ea559a79c7e71696ac570b8c90dacdb2e73a8693e01b4a"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "rinse_transfer",
+          "body_sha256": "a5fddb8800fd712be4fe7f148f72196058427c55dbf8a05497e18a3916dc7bc1"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "ember_siltworks",
+          "chapter_number": 3,
+          "source_label": "vessel_sealing",
+          "body_sha256": "d965ab32953299c4b0ea559a79c7e71696ac570b8c90dacdb2e73a8693e01b4a"
+        },
+        {
+          "corpus_key": "ember_siltworks",
+          "chapter_number": 4,
+          "source_label": "rinse_transfer",
+          "body_sha256": "a5fddb8800fd712be4fe7f148f72196058427c55dbf8a05497e18a3916dc7bc1"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "paired_direct_evidence",
+      "core_fact_key": "siltworks-cobalt-post-rinse-seal",
+      "claim_shape": "seal_definition_joined_to_band_location",
+      "decision_signature": "conflict|object_state|state_definition_plus_observed_marker",
+      "proper_nouns": [
+        "Cobalt Vessel",
+        "Kiln Basin"
+      ],
+      "evidence_completeness_review": [
+        "The seal definition explains what removal of the black resin band means but does not state the band's post-rinse location.",
+        "The inventory locates the band away from the vessel but does not, alone, define that absence as an unsealed state.",
+        "Together, the definition and inventory establish that the Cobalt Vessel is unsealed after the rinse, contradicting the draft."
+      ],
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by siltworks-cobalt-post-rinse-seal using the declared direct evidence.",
+        "expected_class_reason": "Both direct source spans are necessary and jointly contradict the draft.",
+        "expected_category_reason": "The decision axis is object_state; classify the issue by its core decision rather than incidental setting language.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not infer a conflict from either SourceSpan alone; apply the declared joint inference only when every expected direct Evidence item is present."
+      }
+    },
+    {
+      "case_id": "eval-v7-siltworks-control-pigment",
+      "corpus_key": "ember_siltworks",
+      "seed_key": "ember_siltworks",
+      "target_draft": "Inspection pigment is mixed from ochre dust and clear oil.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "kiln_pigment",
+          "body_sha256": "6b999aa17e2bd605a3ae6ae9129fdd265c45bfc6130ced88e4ec8bff66ea487f"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "ember_siltworks",
+          "chapter_number": 5,
+          "source_label": "kiln_pigment",
+          "body_sha256": "6b999aa17e2bd605a3ae6ae9129fdd265c45bfc6130ced88e4ec8bff66ea487f"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "siltworks-inspection-pigment",
+      "claim_shape": "directly_supported_material_recipe",
+      "decision_signature": "no_conflict|supported|pigment_recipe",
+      "proper_nouns": [
+        "inspection pigment"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by siltworks-inspection-pigment using the declared direct evidence.",
+        "expected_class_reason": "The source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-siltworks-control-gauge",
+      "corpus_key": "ember_siltworks",
+      "seed_key": "ember_siltworks",
+      "target_draft": "The pressure gauge is tested with four light taps before a shift.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "gauge_tapping",
+          "body_sha256": "2da20932d848542838e1da756676bfb6e0c583683eaa692fd31d8c1405798aad"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "ember_siltworks",
+          "chapter_number": 6,
+          "source_label": "gauge_tapping",
+          "body_sha256": "2da20932d848542838e1da756676bfb6e0c583683eaa692fd31d8c1405798aad"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "siltworks-gauge-tapping",
+      "claim_shape": "directly_supported_equipment_test",
+      "decision_signature": "no_conflict|supported|gauge_taps",
+      "proper_nouns": [
+        "pressure gauge"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by siltworks-gauge-tapping using the declared direct evidence.",
+        "expected_class_reason": "The source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-siltworks-insufficient-crew",
+      "corpus_key": "ember_siltworks",
+      "seed_key": "ember_siltworks",
+      "target_draft": "Kesa Thorn's crew collected the ash sample.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "unranked_sampler_slips",
+          "body_sha256": "3bb5d8a9702427d270f21808e78dc5b1a1d501c584c5d765774f5987c94e9ebe"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "ember_siltworks",
+          "chapter_number": 7,
+          "source_label": "unranked_sampler_slips",
+          "body_sha256": "3bb5d8a9702427d270f21808e78dc5b1a1d501c584c5d765774f5987c94e9ebe"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "siltworks-sample-crew",
+      "claim_shape": "unranked_competing_sampler_sources",
+      "decision_signature": "insufficient_evidence|ambiguous_source_priority|sample_crew",
+      "proper_nouns": [
+        "Kesa Thorn"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by siltworks-sample-crew using the declared direct evidence.",
+        "expected_class_reason": "The source leaves the asserted specific fact unresolved.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-siltworks-insufficient-assay",
+      "corpus_key": "ember_siltworks",
+      "seed_key": "ember_siltworks",
+      "target_draft": "The ash assay proved that the sample was pure iron.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "pending_ash_assay",
+          "body_sha256": "5f2cc40b3eb3e5c29137a3f49ab3cd0acbe1ad0ce55063690de94011e4124f50"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "ember_siltworks",
+          "chapter_number": 8,
+          "source_label": "pending_ash_assay",
+          "body_sha256": "5f2cc40b3eb3e5c29137a3f49ab3cd0acbe1ad0ce55063690de94011e4124f50"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "siltworks-ash-composition",
+      "claim_shape": "pending_assay_result_asserted",
+      "decision_signature": "insufficient_evidence|pending_result|ash_assay",
+      "proper_nouns": [
+        "ash assay"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by siltworks-ash-composition using the declared direct evidence.",
+        "expected_class_reason": "The source leaves the asserted specific fact unresolved.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-migration-reroute-knowledge",
+      "corpus_key": "brass_migration",
+      "seed_key": "brass_migration",
+      "target_draft": "At 05:40, Oren Sile knew that flock Delta would go to Marrow Quay.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "character_knowledge",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "early_route_briefing",
+          "body_sha256": "96b1dea15ad99025b4031cbe10a6ade8447e941a1b6ec9d0adc013f5d6dc8100"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "restricted_reroute_note",
+          "body_sha256": "aa9af1b258ccf931fe4b3ef67273de8c765e88c0098218fe55fd1d0214f9c64f"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "brass_migration",
+          "chapter_number": 1,
+          "source_label": "early_route_briefing",
+          "body_sha256": "96b1dea15ad99025b4031cbe10a6ade8447e941a1b6ec9d0adc013f5d6dc8100"
+        },
+        {
+          "corpus_key": "brass_migration",
+          "chapter_number": 2,
+          "source_label": "restricted_reroute_note",
+          "body_sha256": "aa9af1b258ccf931fe4b3ef67273de8c765e88c0098218fe55fd1d0214f9c64f"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "paired_direct_evidence",
+      "core_fact_key": "migration-oren-shoreglass-knowledge",
+      "claim_shape": "sole_dissemination_rule_joined_to_delivery_register",
+      "decision_signature": "conflict|character_knowledge|sole_channel_plus_recipient_record",
+      "proper_nouns": [
+        "Oren Sile",
+        "Vela Mar"
+      ],
+      "evidence_completeness_review": [
+        "The dissemination rule identifies the route content and makes a signed Shoreglass receipt the sole pre-first-light condition for knowing it, but does not identify who received the brief at 05:40.",
+        "The delivery register identifies who did and did not receive Shoreglass at 05:40, but does not state the brief's route content or its sole-channel rule.",
+        "Together, the sole-channel knowledge condition and delivery record establish that Oren had not signed for Shoreglass at 05:40 and therefore did not know the route, contradicting the claim."
+      ],
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by migration-oren-shoreglass-knowledge using the declared direct evidence.",
+        "expected_class_reason": "Both direct source spans are necessary and jointly contradict the draft.",
+        "expected_category_reason": "The decision axis is character_knowledge; classify the issue by its core decision rather than incidental setting language.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not infer a conflict from either SourceSpan alone; apply the declared joint inference only when every expected direct Evidence item is present."
+      }
+    },
+    {
+      "case_id": "eval-v7-migration-departure-order",
+      "corpus_key": "brass_migration",
+      "seed_key": "brass_migration",
+      "target_draft": "The brass beacons left their cradles before the harbor lamps were lit.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "timeline",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "launch_plan",
+          "body_sha256": "44336ad4b0f763b8ad03ef3a7b30d54ac660a61de079d7deaf8250cad6530781"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "observed_departure",
+          "body_sha256": "afdbb55e6aff2487a9c61cefb080e8f66906af388daa4fc2492ef1e0deb40167"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "brass_migration",
+          "chapter_number": 3,
+          "source_label": "launch_plan",
+          "body_sha256": "44336ad4b0f763b8ad03ef3a7b30d54ac660a61de079d7deaf8250cad6530781"
+        },
+        {
+          "corpus_key": "brass_migration",
+          "chapter_number": 4,
+          "source_label": "observed_departure",
+          "body_sha256": "afdbb55e6aff2487a9c61cefb080e8f66906af388daa4fc2492ef1e0deb40167"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources",
+        "category_mismatch_regression"
+      ],
+      "category_boundary_pair": [
+        "timeline",
+        "event_status"
+      ],
+      "retrieval_difficulty": "paired_direct_evidence",
+      "core_fact_key": "migration-north-chime-departure-order",
+      "claim_shape": "timestamp_convention_joined_to_departure_tag",
+      "decision_signature": "conflict|timeline|time_convention_plus_event_tag",
+      "proper_nouns": [
+        "brass beacons",
+        "harbor lamps"
+      ],
+      "evidence_completeness_review": [
+        "The timestamp convention defines the temporal meaning of North Chime but does not identify the beacon departure's tag.",
+        "The watch book supplies the North Chime tag but does not, alone, define its relation to lamp lighting.",
+        "Together, the convention and tagged entry place the departure after the lamps, contradicting before."
+      ],
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by migration-north-chime-departure-order using the declared direct evidence.",
+        "expected_class_reason": "Both direct source spans are necessary and jointly contradict the draft.",
+        "expected_category_reason": "The decision axis is timeline; classify the issue by its core decision rather than incidental setting language.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not infer a conflict from either SourceSpan alone; apply the declared joint inference only when every expected direct Evidence item is present."
+      }
+    },
+    {
+      "case_id": "eval-v7-migration-control-tally",
+      "corpus_key": "brass_migration",
+      "seed_key": "brass_migration",
+      "target_draft": "The east flock tally contains twenty-one brass beacons.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "wing_tally",
+          "body_sha256": "869dfdd9da00c3779359725e11d7c0c22f3102d78b18e0e19352df45e88ac41b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "brass_migration",
+          "chapter_number": 5,
+          "source_label": "wing_tally",
+          "body_sha256": "869dfdd9da00c3779359725e11d7c0c22f3102d78b18e0e19352df45e88ac41b"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "migration-east-flock-count",
+      "claim_shape": "directly_supported_beacon_count",
+      "decision_signature": "no_conflict|supported|beacon_tally",
+      "proper_nouns": [
+        "east flock"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by migration-east-flock-count using the declared direct evidence.",
+        "expected_class_reason": "The source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-migration-control-thread",
+      "corpus_key": "brass_migration",
+      "seed_key": "brass_migration",
+      "target_draft": "Beacon cradles use green hemp thread during the quiet watch.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "mooring_thread",
+          "body_sha256": "ed67c438a40b0c1165b9c07b95a8b9563a72b43f371b6f8f0722c6a27107df92"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "brass_migration",
+          "chapter_number": 6,
+          "source_label": "mooring_thread",
+          "body_sha256": "ed67c438a40b0c1165b9c07b95a8b9563a72b43f371b6f8f0722c6a27107df92"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "migration-cradle-thread",
+      "claim_shape": "directly_supported_cradle_material",
+      "decision_signature": "no_conflict|supported|cradle_thread",
+      "proper_nouns": [
+        "beacon cradle"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by migration-cradle-thread using the declared direct evidence.",
+        "expected_class_reason": "The source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-migration-insufficient-barge",
+      "corpus_key": "brass_migration",
+      "seed_key": "brass_migration",
+      "target_draft": "The covered barge left Marrow Quay at noon carrying flock Delta.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "blurred_barge_image",
+          "body_sha256": "800bd4f9490805f501f09c31c2a579eb397c89aa5568e6d48cc6288d5368a035"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "brass_migration",
+          "chapter_number": 7,
+          "source_label": "blurred_barge_image",
+          "body_sha256": "800bd4f9490805f501f09c31c2a579eb397c89aa5568e6d48cc6288d5368a035"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "migration-covered-barge-cargo",
+      "claim_shape": "unreadable_image_cargo_and_time",
+      "decision_signature": "insufficient_evidence|unreadable_record|barge_departure",
+      "proper_nouns": [
+        "Marrow Quay",
+        "flock Delta"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by migration-covered-barge-cargo using the declared direct evidence.",
+        "expected_class_reason": "The source leaves the asserted specific fact unresolved.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-migration-insufficient-repair",
+      "corpus_key": "brass_migration",
+      "seed_key": "brass_migration",
+      "target_draft": "Beacon Delta-7 received the wing repair.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "unsigned_wing_repair",
+          "body_sha256": "6d8ee6060d6dc08f860877b6c7c54aa4eb737778f8def135996c9536c4225898"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "brass_migration",
+          "chapter_number": 8,
+          "source_label": "unsigned_wing_repair",
+          "body_sha256": "6d8ee6060d6dc08f860877b6c7c54aa4eb737778f8def135996c9536c4225898"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "migration-wing-repair-identifier",
+      "claim_shape": "blank_repair_subject",
+      "decision_signature": "insufficient_evidence|blank_identifier|wing_repair",
+      "proper_nouns": [
+        "Beacon Delta-7"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by migration-wing-repair-identifier using the declared direct evidence.",
+        "expected_class_reason": "The source leaves the asserted specific fact unresolved.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-signalhouse-calibration-place",
+      "corpus_key": "orchid_signalhouse",
+      "seed_key": "orchid_signalhouse",
+      "target_draft": "During the fog diversion, Teren Lox calibrated the orchid relay at Orchid Platform.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "location_action",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "platform_assignment",
+          "body_sha256": "92a1bfd9834f382ca7e282c5128a1ce3a0eb4f2a0e9ff4199dce5afa8c025668"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "tunnel_diversion",
+          "body_sha256": "ef7f98edb1e0941ededaa3b6cf7ea2430a6e140d24c42d55bf364972e161721d"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "orchid_signalhouse",
+          "chapter_number": 1,
+          "source_label": "platform_assignment",
+          "body_sha256": "92a1bfd9834f382ca7e282c5128a1ce3a0eb4f2a0e9ff4199dce5afa8c025668"
+        },
+        {
+          "corpus_key": "orchid_signalhouse",
+          "chapter_number": 2,
+          "source_label": "tunnel_diversion",
+          "body_sha256": "ef7f98edb1e0941ededaa3b6cf7ea2430a6e140d24c42d55bf364972e161721d"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "category_boundary_pair": [
+        "location_action",
+        "object_state"
+      ],
+      "retrieval_difficulty": "paired_direct_evidence",
+      "core_fact_key": "signalhouse-terens-token-calibration-place",
+      "claim_shape": "token_location_convention_joined_to_named_stamp",
+      "decision_signature": "conflict|location_action|location_rule_plus_token_stamp",
+      "proper_nouns": [
+        "Teren Lox",
+        "Orchid Platform",
+        "Lacquer Tunnel"
+      ],
+      "evidence_completeness_review": [
+        "The token convention explains how a token stamp maps to calibration location but does not provide Teren's stamp.",
+        "The token record provides Teren's Lacquer Tunnel stamp but does not, alone, define what location the stamp represents.",
+        "Together, the convention and stamp place Teren's calibration in Lacquer Tunnel, contradicting Orchid Platform."
+      ],
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by signalhouse-terens-token-calibration-place using the declared direct evidence.",
+        "expected_class_reason": "Both direct source spans are necessary and jointly contradict the draft.",
+        "expected_category_reason": "The decision axis is location_action; classify the issue by its core decision rather than incidental setting language.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not infer a conflict from either SourceSpan alone; apply the declared joint inference only when every expected direct Evidence item is present."
+      }
+    },
+    {
+      "case_id": "eval-v7-signalhouse-delivery-status",
+      "corpus_key": "orchid_signalhouse",
+      "seed_key": "orchid_signalhouse",
+      "target_draft": "The Orchid relay completed its eastward delivery after Siva Rehn raised the shutter.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "event_status",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "relay_opening",
+          "body_sha256": "ef39e0f86eebb1d3c66ec81ccef2bac9ef5a2e4ccd9a566bdb23f76c6ba37321"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "relay_interruption",
+          "body_sha256": "1351ace5d6cd599f1da0b6af054850395a2bb71fde2289b10049534653ce1d48"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "orchid_signalhouse",
+          "chapter_number": 3,
+          "source_label": "relay_opening",
+          "body_sha256": "ef39e0f86eebb1d3c66ec81ccef2bac9ef5a2e4ccd9a566bdb23f76c6ba37321"
+        },
+        {
+          "corpus_key": "orchid_signalhouse",
+          "chapter_number": 4,
+          "source_label": "relay_interruption",
+          "body_sha256": "1351ace5d6cd599f1da0b6af054850395a2bb71fde2289b10049534653ce1d48"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "each_expected_evidence_individually_insufficient": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "paired_direct_evidence",
+      "core_fact_key": "signalhouse-receipt-lens-delivery-status",
+      "claim_shape": "completion_definition_joined_to_final_lens_record",
+      "decision_signature": "conflict|event_status|completion_rule_plus_condition_record",
+      "proper_nouns": [
+        "Orchid relay",
+        "Siva Rehn"
+      ],
+      "evidence_completeness_review": [
+        "The completion definition states the required clear-lens condition but does not state whether the Orchid relay met it.",
+        "The hail log reports a clouded lens before the final echo but does not, alone, define that condition as preventing completion.",
+        "Together, the definition and hail log establish that the delivery did not complete, contradicting the draft."
+      ],
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by signalhouse-receipt-lens-delivery-status using the declared direct evidence.",
+        "expected_class_reason": "Both direct source spans are necessary and jointly contradict the draft.",
+        "expected_category_reason": "The decision axis is event_status; classify the issue by its core decision rather than incidental setting language.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not infer a conflict from either SourceSpan alone; apply the declared joint inference only when every expected direct Evidence item is present."
+      }
+    },
+    {
+      "case_id": "eval-v7-signalhouse-control-cloth",
+      "corpus_key": "orchid_signalhouse",
+      "seed_key": "orchid_signalhouse",
+      "target_draft": "The relay lens is wrapped in blue linen cloth.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "lens_cloth",
+          "body_sha256": "214aafea99aa772fdc90ad24536563dbc677a1721da267a1565ff9954bc756ed"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "orchid_signalhouse",
+          "chapter_number": 5,
+          "source_label": "lens_cloth",
+          "body_sha256": "214aafea99aa772fdc90ad24536563dbc677a1721da267a1565ff9954bc756ed"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "signalhouse-lens-cloth",
+      "claim_shape": "directly_supported_lens_wrapping",
+      "decision_signature": "no_conflict|supported|lens_cloth",
+      "proper_nouns": [
+        "relay lens"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by signalhouse-lens-cloth using the declared direct evidence.",
+        "expected_class_reason": "The source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-signalhouse-control-chime",
+      "corpus_key": "orchid_signalhouse",
+      "seed_key": "orchid_signalhouse",
+      "target_draft": "A cleared tunnel is marked by one long chime followed by two short chimes.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "chime_pattern",
+          "body_sha256": "e630e0aa46488ba1bdf95bfe00abee43826b696e94d6d67ce8fb3367b69aba5b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "orchid_signalhouse",
+          "chapter_number": 6,
+          "source_label": "chime_pattern",
+          "body_sha256": "e630e0aa46488ba1bdf95bfe00abee43826b696e94d6d67ce8fb3367b69aba5b"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "signalhouse-tunnel-chime",
+      "claim_shape": "directly_supported_signal_sequence",
+      "decision_signature": "no_conflict|supported|tunnel_chime",
+      "proper_nouns": [
+        "Lacquer Tunnel"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by signalhouse-tunnel-chime using the declared direct evidence.",
+        "expected_class_reason": "The source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-signalhouse-insufficient-visitor",
+      "corpus_key": "orchid_signalhouse",
+      "seed_key": "orchid_signalhouse",
+      "target_draft": "Siva Rehn visited Orchid Platform just before dawn.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "unknown_platform_visitor",
+          "body_sha256": "336dcc475ab7a2f7c764422e6644c64569104c8e97d6f4866387e39f9804a886"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "orchid_signalhouse",
+          "chapter_number": 7,
+          "source_label": "unknown_platform_visitor",
+          "body_sha256": "336dcc475ab7a2f7c764422e6644c64569104c8e97d6f4866387e39f9804a886"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "signalhouse-platform-visitor",
+      "claim_shape": "unnamed_and_undated_visitor_trace",
+      "decision_signature": "insufficient_evidence|unknown_person_and_time|platform_visit",
+      "proper_nouns": [
+        "Siva Rehn",
+        "Orchid Platform"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by signalhouse-platform-visitor using the declared direct evidence.",
+        "expected_class_reason": "The source leaves the asserted specific fact unresolved.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    },
+    {
+      "case_id": "eval-v7-signalhouse-insufficient-alignment",
+      "corpus_key": "orchid_signalhouse",
+      "seed_key": "orchid_signalhouse",
+      "target_draft": "The relay shutter passed its final alignment audit.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "open_relay_audit",
+          "body_sha256": "84e632420e0645f2ad2e9f0145a7b354830ae7a08cb395fa92010f5d7a6a4631"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "orchid_signalhouse",
+          "chapter_number": 8,
+          "source_label": "open_relay_audit",
+          "body_sha256": "84e632420e0645f2ad2e9f0145a7b354830ae7a08cb395fa92010f5d7a6a4631"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "each_expected_evidence_individually_insufficient": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "category_boundary_pair": null,
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "signalhouse-shutter-alignment",
+      "claim_shape": "final_audit_result_not_recorded",
+      "decision_signature": "insufficient_evidence|unrecorded_outcome|alignment",
+      "proper_nouns": [
+        "relay shutter"
+      ],
+      "evidence_completeness_review": null,
+      "rubric": {
+        "decision_rule": "Resolve the specific continuity decision represented by signalhouse-shutter-alignment using the declared direct evidence.",
+        "expected_class_reason": "The source leaves the asserted specific fact unresolved.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a contradiction from an explicit unknown or a directly supporting record."
+      }
+    }
+  ]
+}

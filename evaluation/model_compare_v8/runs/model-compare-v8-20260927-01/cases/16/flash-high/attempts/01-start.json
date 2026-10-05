@@ -1,0 +1,23 @@
+{
+  "global_post_ordinal": 51,
+  "trial_post_ordinal": 1,
+  "evaluation": 1,
+  "condition": {
+    "id": "flash-high",
+    "model": "deepseek-flash",
+    "thinking": "enabled",
+    "reasoning_effort": "high",
+    "temperature": null
+  },
+  "request_body_sha256": "59aa53c1529effc25a908e3bdb55c45c767bb7060061f6ca65304ccfd47e0d9c",
+  "admission": {
+    "post_count_before": 50,
+    "post_cap": 408,
+    "known_tokens_before": 260276,
+    "known_token_cap": 1500000,
+    "unknown_dispatch_count_before": 0,
+    "remaining_known_token_allowance": 1239724,
+    "one_request_may_exceed_remaining_allowance": true
+  },
+  "started_at": "2026-09-27T11:44:53.946822+00:00"
+}

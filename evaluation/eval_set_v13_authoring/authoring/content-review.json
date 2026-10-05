@@ -1,0 +1,1118 @@
+{
+  "review_type": "作者自查及同模型协作复核，不是盲审、模型评测或产品验收",
+  "authorship": "六份完整原文直接逐章创作；本程序只读取已有全文并序列化，不生成或拼装章节。",
+  "cases": [
+    {
+      "id": "hv13-001",
+      "rationale": "第一章直白陈述回旋棋的永久法则，在任何情况下禁止宙筹跨越盘心断隙，且宙筹受法则约束、碰到断隙即停住，是奇幻世界的硬限制而非可违规的比赛条例；draft直接叙述宙筹跨越断隙，单点违反世界规则。",
+      "shared_entities": [
+        {
+          "evidence": "第一章 来赴棋约",
+          "nouns": [
+            "茅翕",
+            "宙筹",
+            "盘心",
+            "断隙"
+          ]
+        }
+      ],
+      "conflict_basis": "永久法则阻止越隙，与实际跨越相反。",
+      "designated_constraint": "永久规则：任何情况下都禁止宙筹跨越盘心的断隙，触隙即停止。无充分/必要条件倒置，无人物批准例外。",
+      "style_rewrite": "原文陈述永久规则；draft以动作描写越岸，没有照抄规则或自带否定原文。",
+      "verified_literal_shared_entities": {
+        "第一章 来赴棋约": [
+          "茅翕",
+          "宙筹",
+          "盘心",
+          "断隙"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "world_rule",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-002",
+      "rationale": "原文将桑缈瞳孔颜色直接定为银色；draft断言其两只瞳孔都是褐色，判断点只有颜色。",
+      "shared_entities": [
+        {
+          "evidence": "第二章 银眼的对手",
+          "nouns": [
+            "桑缈",
+            "瞳孔"
+          ]
+        }
+      ],
+      "conflict_basis": "银色与褐色不一致。",
+      "designated_constraint": "非指定。",
+      "style_rewrite": "改成抬脸时的外貌描写，只保留人物与属性名，不使用反驳原文的句式。",
+      "verified_literal_shared_entities": {
+        "第二章 银眼的对手": [
+          "桑缈",
+          "瞳孔"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "attribute",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-003",
+      "rationale": "第三章直接写茅翕把宽袖用布带束在手腕后拈起首枚宙筹；draft改述相同行动与先后关系。",
+      "shared_entities": [
+        {
+          "evidence": "第三章 先收衣袖",
+          "nouns": [
+            "茅翕",
+            "宽袖",
+            "布带"
+          ]
+        }
+      ],
+      "support_basis": "束袖于手腕发生在落第一子之前。",
+      "designated_constraint": "非指定。",
+      "style_rewrite": "将用布带束袖换成先收拢宽袖再扎到腕上，重组语序与动词。",
+      "verified_literal_shared_entities": {
+        "第三章 先收衣袖": [
+          "茅翕",
+          "宽袖",
+          "布带"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-004",
+      "rationale": "第六章直接写桑缈挪筹至外圈，为茅翕留下通往边角的弯路；draft重述同一棋局动作的结果。",
+      "shared_entities": [
+        {
+          "evidence": "第六章 让出的弯路",
+          "nouns": [
+            "桑缈",
+            "茅翕",
+            "宙筹",
+            "外圈",
+            "边角"
+          ]
+        }
+      ],
+      "support_basis": "移筹与通路均由原文直接陈述，不额外声称胜负。",
+      "designated_constraint": "非指定。",
+      "style_rewrite": "由原文目的句改成先动作后结果，换用挪、绕向、通路。",
+      "verified_literal_shared_entities": {
+        "第六章 让出的弯路": [
+          "桑缈",
+          "茅翕",
+          "宙筹",
+          "外圈",
+          "边角"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-005",
+      "rationale": "叙述者知道藏筹刻着双月纹，茅翕听到声音并有停顿、笑容；这些动作没有确定他已认出纹样，也没有断言他不知道。",
+      "shared_entities": [
+        {
+          "evidence": "第四章 碗里的双月",
+          "nouns": [
+            "茅翕",
+            "桑缈",
+            "青碗",
+            "宙筹",
+            "双月纹"
+          ]
+        }
+      ],
+      "missing_link": "藏筹纹样的信息如何传入茅翕及他是否成功认出。",
+      "designated_constraint": "非指定。",
+      "style_rewrite": "draft单独写人物认知结果，避开原文扣碗、细响、停指动作句；source自然叙述，不宣布知识缺口。",
+      "verified_literal_shared_entities": {
+        "第四章 碗里的双月": [
+          "茅翕",
+          "桑缈",
+          "青碗",
+          "宙筹",
+          "双月纹"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true,
+      "not_a_time_only_contradiction": "该题缺missing_link所指的实际信息，不存在仅靠补时间即可成立的相反已知事实。"
+    },
+    {
+      "id": "hv13-006",
+      "rationale": "原文只叙述宙筹轻响、风铃同时附近响起与衣裙掠草；未确定棋盘的震动是否传到风铃。",
+      "shared_entities": [
+        {
+          "evidence": "第五章 檐下的声音",
+          "nouns": [
+            "宙筹",
+            "石桌",
+            "风铃"
+          ]
+        }
+      ],
+      "missing_link": "落筹震动与风铃鸣响之间的因果机制。",
+      "designated_constraint": "非指定。",
+      "style_rewrite": "draft把连续观察改写为单一原因断言，未照搬声响句；source不提示没有因果记录。",
+      "verified_literal_shared_entities": {
+        "第五章 檐下的声音": [
+          "宙筹",
+          "石桌",
+          "风铃"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true,
+      "not_a_time_only_contradiction": "该题缺missing_link所指的实际信息，不存在仅靠补时间即可成立的相反已知事实。"
+    },
+    {
+      "id": "hv13-007",
+      "rationale": "第二章在Oselda切断最后放飞绳的动作时，将Fenric放在气球篮内；draft将同一瞬间的他放在地面系绳桩旁。",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 2 The Last Rope",
+          "nouns": [
+            "Oselda Prinn",
+            "Fenric Soot",
+            "launch rope"
+          ]
+        }
+      ],
+      "conflict_basis": "同一放飞动作瞬间的篮内与地面位置互斥。",
+      "designated_constraint": "非指定；使用同一动作锚定但不纳入指定回归数。",
+      "style_rewrite": "切绳换成severed，篮内蜷身换成地面站立，draft不写never或not来反驳原文。",
+      "verified_literal_shared_entities": {
+        "Chapter 2 The Last Rope": [
+          "Oselda Prinn",
+          "Fenric Soot",
+          "launch rope"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "location_action",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-008",
+      "rationale": "第一章直接陈述Fenric左靴有三枚黄铜扣；draft写四枚，仅判断扣数。",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 1 A Sandwich Takes Flight",
+          "nouns": [
+            "Fenric Soot",
+            "boot",
+            "brass buckles"
+          ]
+        }
+      ],
+      "conflict_basis": "同一左靴扣数三与四不一致。",
+      "designated_constraint": "非指定。",
+      "style_rewrite": "改用扣子作主语，物主改作位置定语，重写谓语及全句结构；不附加否定原文。",
+      "verified_literal_shared_entities": {
+        "Chapter 1 A Sandwich Takes Flight": [
+          "Fenric Soot",
+          "boot",
+          "brass buckles"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "attribute",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-009",
+      "rationale": "第三章Oselda将压舱袋中的沙倒到篮外；draft以沙从袋中溢过篮缘改述相同行动，只说部分沙，不声称整袋倒空。",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 3 A Lighter Breakfast",
+          "nouns": [
+            "Oselda Prinn",
+            "pouch",
+            "ballast",
+            "sand",
+            "basket"
+          ]
+        }
+      ],
+      "support_basis": "倒沙到篮外有直接行动支持，不加强为全部倒空。",
+      "designated_constraint": "非指定。",
+      "style_rewrite": "换谓语、调名词组合和地点表达，没有增加上升高度、沙重或倒空等原文外事实。",
+      "verified_literal_shared_entities": {
+        "Chapter 3 A Lighter Breakfast": [
+          "Oselda Prinn",
+          "pouch",
+          "ballast",
+          "sand",
+          "basket"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-010",
+      "rationale": "第六章明确写Oselda在Dunwex Basin的黑麦田着陆；draft用brought down among growing rye改述。",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 6 Landing in Rye",
+          "nouns": [
+            "Oselda Prinn",
+            "balloon",
+            "rye",
+            "Dunwex Basin"
+          ]
+        }
+      ],
+      "support_basis": "着陆行为与麦田地点直接支持。",
+      "designated_constraint": "非指定。",
+      "style_rewrite": "landed换成brought down，field换成生长作物的场景表达，不搬运原句。",
+      "verified_literal_shared_entities": {
+        "Chapter 6 Landing in Rye": [
+          "Oselda Prinn",
+          "balloon",
+          "rye",
+          "Dunwex Basin"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-011",
+      "rationale": "第四章只写远处人物转臂、Fenric回挥、道路转入丘后；无法从该观察确定手势表示脚踝受伤。也未确定其为问候或其他信号。",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 4 An Arm on the Track",
+          "nouns": [
+            "Dunwex Basin",
+            "north track",
+            "figure",
+            "arm"
+          ]
+        }
+      ],
+      "missing_link": "可见手势的约定含义或发信者确认。",
+      "designated_constraint": "非指定。",
+      "style_rewrite": "将动作观察改写为交流含义断言；source不写信号未核实或未记录。",
+      "verified_literal_shared_entities": {
+        "Chapter 4 An Arm on the Track": [
+          "Dunwex Basin",
+          "north track",
+          "figure",
+          "arm"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true,
+      "not_a_time_only_contradiction": "该题缺missing_link所指的实际信息，不存在仅靠补时间即可成立的相反已知事实。"
+    },
+    {
+      "id": "hv13-012",
+      "rationale": "第五章提供地图上刻纹的图示和飞越石碑的机会，写Fenric看地图；没有给出他在飞行中看清真实碑面刻纹的观察。看地图不等于亲见实体。",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 5 The Stone Below",
+          "nouns": [
+            "Fenric Soot",
+            "spiral",
+            "Dunwex boundary stone"
+          ]
+        }
+      ],
+      "missing_link": "飞越机会到人物亲眼观察真实刻纹的实际见闻。",
+      "designated_constraint": "非指定。",
+      "style_rewrite": "draft直接断言亲见雕纹，不重复俯看地图与靴压纸角的原文动作；source只自然叙述飞行。",
+      "verified_literal_shared_entities": {
+        "Chapter 5 The Stone Below": [
+          "Fenric Soot",
+          "spiral",
+          "Dunwex boundary stone"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true,
+      "not_a_time_only_contradiction": "该题缺missing_link所指的实际信息，不存在仅靠补时间即可成立的相反已知事实。"
+    },
+    {
+      "id": "hv13-013",
+      "rationale": "乔檀笛是佟槐雨母亲的亲妹妹，即佟槐雨的姨母。草稿把这位姨母写为她的亲生母亲，直接改变亲属关系。钥匙递交属于同一自然场景，仅帮助定位，不另设考点。",
+      "shared_entities": [
+        {
+          "evidence": "第一章 隔年的钥匙",
+          "nouns": [
+            "佟槐雨",
+            "乔檀笛",
+            "砚荚岭",
+            "钥匙"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "姨母关系与亲生母女关系冲突，类别 relationship。",
+      "missing_link": null,
+      "designated_constraint": "指定回归：原文和草稿都写明2034年4月18日9点10分；此时刻关系事实直接陈述，要求明确矛盾及正确 relationship 类别。",
+      "style_rewrite": "原文从母亲的亲妹妹说明关系，草稿用亲生母亲身份叙事；保留人名、地点和时间锚点，不复制叙述，不附带否定姨母身份。",
+      "verified_literal_shared_entities": {
+        "第一章 隔年的钥匙": [
+          "佟槐雨",
+          "乔檀笛",
+          "砚荚岭",
+          "钥匙"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "relationship",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-014",
+      "rationale": "原文明确写出栗扣箱这次春季取蜜在14点已经结束，收桶、洗机器是正常收尾。草稿把同一时刻的同一轮取蜜写为进行中；连续蜜流只描写进行中状态，不另设数量判断。",
+      "shared_entities": [
+        {
+          "evidence": "第六章 蜜流停住",
+          "nouns": [
+            "栗扣箱",
+            "春季取蜜"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "已结束的事件被写成正在进行，类别 event_status。",
+      "missing_link": null,
+      "designated_constraint": "非指定回归；自愿保留共同时间以减少同名活动歧义，不计入三道指定题。",
+      "style_rewrite": "草稿以热闹和连续流蜜描写自己的进行中状态，不照抄原文结束句，也不写未结束之类否定原文的话。",
+      "verified_literal_shared_entities": {
+        "第六章 蜜流停住": [
+          "栗扣箱",
+          "春季取蜜"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "event_status",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-015",
+      "rationale": "第二章直接描述佟槐雨用竹片刮栗扣箱入口的苔，草稿只是将动作改为结果式表达。",
+      "shared_entities": [
+        {
+          "evidence": "第二章 箱口的苔",
+          "nouns": [
+            "佟槐雨",
+            "栗扣箱",
+            "苔",
+            "竹"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "由原文清理动作直接支持。",
+      "missing_link": null,
+      "designated_constraint": "非指定回归，非冲突题。",
+      "style_rewrite": "将主动动作句改为被清理对象起句，并改用薄竹条与清走表达，避免复制刮掉入口苔藓的措辞。",
+      "verified_literal_shared_entities": {
+        "第二章 箱口的苔": [
+          "佟槐雨",
+          "栗扣箱",
+          "苔",
+          "竹"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-016",
+      "rationale": "第七章明确陈述佟槐雨决定在砚荚岭养蜂一年。草稿仍是她给自己定下的计划，没有扩写为已经完整生活一年。",
+      "shared_entities": [
+        {
+          "evidence": "第七章 留下的一年",
+          "nouns": [
+            "佟槐雨",
+            "砚荚岭",
+            "养蜂"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "直接支持留下养蜂一年的决定。",
+      "missing_link": null,
+      "designated_constraint": "非指定回归，非冲突题。",
+      "style_rewrite": "把决定留在的行动表达改成给自己定下生活计划，事实和意向语气不变。",
+      "verified_literal_shared_entities": {
+        "第七章 留下的一年": [
+          "佟槐雨",
+          "砚荚岭",
+          "养蜂"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-017",
+      "rationale": "第四章自然叙述当前访花和吃去年存下的春蜜。看到工蜂落在刺槐花上、闻到像岔路的香气，都不能确认这罐去年蜜的全部花蜜构成。原文既未断定其为纯刺槐蜜，也未写成混合蜜，因此不存在可直接成立的相反事实。",
+      "shared_entities": [
+        {
+          "evidence": "第四章 开花的岔路",
+          "nouns": [
+            "栗扣箱",
+            "春蜜",
+            "刺槐花"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "无法由访花或味觉联想推出特定蜂蜜的来源比例。",
+      "missing_link": "这罐去年春蜜的花蜜组成与各花源对应关系。",
+      "designated_constraint": "非指定回归，证据不足题；草稿指明去年蜜，缺口是来源组成，非缺共同时间的矛盾。",
+      "style_rewrite": "草稿给出来源比例这一新断言；原文仅写工蜂落花、食物和气味，未宣布缺口或替题目解释答案。",
+      "verified_literal_shared_entities": {
+        "第四章 开花的岔路": [
+          "栗扣箱",
+          "春蜜",
+          "刺槐花"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true,
+      "not_a_time_only_contradiction": "该题缺missing_link所指的实际信息，不存在仅靠补时间即可成立的相反已知事实。"
+    },
+    {
+      "id": "hv13-018",
+      "rationale": "第五章的手套使用、吃青梅、皮疹与凉水冲手都是正常生活动作。皮疹与戴手套的相邻经历不足以证实过敏诊断或病因，原文也没有给出可排除手套的诊断。",
+      "shared_entities": [
+        {
+          "evidence": "第五章 手背的小疹",
+          "nouns": [
+            "佟槐雨",
+            "手背",
+            "小疹",
+            "新手套"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "皮疹的存在得到支持，手套引起过敏这一因果无法确定。",
+      "missing_link": "皮疹的病因诊断或能确定手套导致过敏的医学证据。",
+      "designated_constraint": "非指定回归，证据不足题；因果环节与蜂蜜来源比例环节不同。",
+      "style_rewrite": "草稿用来自表达单一因果判断；原文自然写工作与午饭经过，没有没有诊断、尚未核实等答案提示。",
+      "verified_literal_shared_entities": {
+        "第五章 手背的小疹": [
+          "佟槐雨",
+          "手背",
+          "小疹",
+          "新手套"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true,
+      "not_a_time_only_contradiction": "该题缺missing_link所指的实际信息，不存在仅靠补时间即可成立的相反已知事实。"
+    },
+    {
+      "id": "hv13-019",
+      "rationale": "On the same dated outing, collection happened at 10:20 and serving at 11:10. The draft puts completed serving before collection, reversing those events. Each cited chapter shares named entities with the draft.",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 1 Something Older",
+          "nouns": [
+            "Hettie Drusk",
+            "Varnock Scar",
+            "spiral fossil",
+            "cheese"
+          ]
+        },
+        {
+          "evidence": "Chapter 2 Lunch Gets a Date",
+          "nouns": [
+            "Hettie Drusk",
+            "Varnock Scar",
+            "spiral fossil",
+            "cheese sandwiches"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "Collection precedes serving in the source; the draft reverses the sequence. Category timeline.",
+      "missing_link": null,
+      "designated_constraint": "Ordinary conflict, not a designated regression; no extra uniqueness statement was added to the source.",
+      "style_rewrite": "Expresses the order using before rather than copying the two clock-time sentences. It positively describes its own ordering without denying the source event.",
+      "verified_literal_shared_entities": {
+        "Chapter 1 Something Older": [
+          "Hettie Drusk",
+          "Varnock Scar",
+          "spiral fossil",
+          "cheese"
+        ],
+        "Chapter 2 Lunch Gets a Date": [
+          "Hettie Drusk",
+          "Varnock Scar",
+          "spiral fossil",
+          "cheese sandwiches"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "timeline",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-020",
+      "rationale": "At the same explicit time, the source says Cavor believed the tin contained soup. The draft assigns him a tea belief instead. The soup spoon and announcement are natural comic actions following his belief, not a claim that he knowingly pretended ignorance.",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 3 The Liquid Course",
+          "nouns": [
+            "Cavor Uldren",
+            "Hettie",
+            "tin"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "Cavor's subjective soup belief is replaced by a tea belief. Category character_knowledge.",
+      "missing_link": null,
+      "designated_constraint": "Ordinary conflict with a shared 12:05 on 12 August anchor; designated_regression is false.",
+      "style_rewrite": "Replaces believed and held with took the contents to be. Shared time and named entities are retained; no negation or pretend-ignorance framing appears.",
+      "verified_literal_shared_entities": {
+        "Chapter 3 The Liquid Course": [
+          "Cavor Uldren",
+          "Hettie",
+          "tin"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "character_knowledge",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-021",
+      "rationale": "The source directly states Hettie wrapped the fossil in her blue glove and then put it into the basket. The draft describes the same resulting arrangement.",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 4 A Glove for the Guest",
+          "nouns": [
+            "Hettie Drusk",
+            "spiral fossil",
+            "picnic basket",
+            "blue glove"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "Directly supported wrapping and stowing action.",
+      "missing_link": null,
+      "designated_constraint": "Non-conflict, not designated.",
+      "style_rewrite": "Uses stowed and glove around it rather than reproducing wrapped before placing.",
+      "verified_literal_shared_entities": {
+        "Chapter 4 A Glove for the Guest": [
+          "Hettie Drusk",
+          "spiral fossil",
+          "picnic basket",
+          "blue glove"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-022",
+      "rationale": "The head-supported basket on the downward walk is directly described in Chapter 7. The draft does not add a claim about how far he carried it or how much it weighed.",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 7 The Descent",
+          "nouns": [
+            "Cavor Uldren",
+            "picnic basket",
+            "head"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "Directly supported carrying method.",
+      "missing_link": null,
+      "designated_constraint": "Non-conflict, not designated.",
+      "style_rewrite": "Changes carried on his head on the way down into let his head support on the downhill walk, preserving the one action.",
+      "verified_literal_shared_entities": {
+        "Chapter 7 The Descent": [
+          "Cavor Uldren",
+          "picnic basket",
+          "head"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-023",
+      "rationale": "The photograph is made and sent for the novelty prize during the outing. The later competition outcome is not entailed by that completed submission; victory or defeat would each fit the scene.",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 6 An Entry with Teeth",
+          "nouns": [
+            "Hettie Drusk",
+            "Varnock Scar novelty prize",
+            "spiral fossil"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "The source establishes entry, not winning first place.",
+      "missing_link": "The competition's adjudicated result for Hettie's entry.",
+      "designated_constraint": "Evidence insufficiency, not designated; the missing result remains a real gap even if both texts are put on the same timeline.",
+      "style_rewrite": "The draft states a prize outcome, while the source follows photographing and finding a phone signal without announcing an absent result.",
+      "verified_literal_shared_entities": {
+        "Chapter 6 An Entry with Teeth": [
+          "Hettie Drusk",
+          "Varnock Scar novelty prize",
+          "spiral fossil"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true,
+      "not_a_time_only_contradiction": "该题缺missing_link所指的实际信息，不存在仅靠补时间即可成立的相反已知事实。"
+    },
+    {
+      "id": "hv13-024",
+      "rationale": "A shell comes out of Cavor's coat pocket and is offered to Hettie. The outing occurs by the sea, but that does not determine where the shell originally came from. Freshwater or marine collection is compatible with a previously pocketed shell.",
+      "shared_entities": [
+        {
+          "evidence": "Chapter 5 The Pocket Donation",
+          "nouns": [
+            "Cavor Uldren",
+            "flat shell"
+          ]
+        }
+      ],
+      "support_or_conflict_basis": "Pocket custody and gifting establish neither collection location nor original water environment.",
+      "missing_link": "The flat shell's collection provenance or independently established water environment.",
+      "designated_constraint": "Evidence insufficiency, not designated; provenance differs from the competition-result gap.",
+      "style_rewrite": "The draft introduces a single origin claim; the source only narrates the pocket donation and comic pocket contents, without missing-record commentary.",
+      "verified_literal_shared_entities": {
+        "Chapter 5 The Pocket Donation": [
+          "Cavor Uldren",
+          "flat shell"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true,
+      "not_a_time_only_contradiction": "该题缺missing_link所指的实际信息，不存在仅靠补时间即可成立的相反已知事实。"
+    },
+    {
+      "id": "hv13-025",
+      "rationale": "正文直接陈述梅纹汤盅为空；草稿只正向声称盅装满高汤。",
+      "shared_entities": {
+        "第二章 叩一声": [
+          "秋杓面馆",
+          "梅纹汤盅"
+        ]
+      },
+      "missing_link": null,
+      "designated_constraint": {
+        "type": "same_explicit_time",
+        "source_anchor": "2033年4月19日11点30分",
+        "draft_anchor": "2033年4月19日11点30分",
+        "required_nature": "confirmed_conflict",
+        "required_category": "object_state"
+      },
+      "style_rewrite": "用容器内盛汤的描写替代空盅状态句，未夹带对原文的否定。",
+      "verified_literal_shared_entities": {
+        "第二章 叩一声": [
+          "秋杓面馆",
+          "梅纹汤盅"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "object_state",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-026",
+      "rationale": "11点45分的后院位置与屋顶位置相斥，活动细节未加入草稿以保持单点。",
+      "shared_entities": {
+        "第三章 院里忙": [
+          "鲁笠",
+          "秋杓面馆"
+        ]
+      },
+      "missing_link": null,
+      "designated_constraint": null,
+      "style_rewrite": "将给筷子打蜡的动作改为人物站位，只考所在地点。",
+      "verified_literal_shared_entities": {
+        "第三章 院里忙": [
+          "鲁笠",
+          "秋杓面馆"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "location_action",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-027",
+      "rationale": "姜丝、葱白用于同一面馆清汤；草稿未增加配方排他或用量。",
+      "shared_entities": {
+        "第四章 一锅清汤": [
+          "易苜",
+          "秋杓面馆",
+          "葱白",
+          "姜丝"
+        ]
+      },
+      "missing_link": null,
+      "designated_constraint": null,
+      "style_rewrite": "从烹煮过程改为端汤时的成分说明，调换食材顺序。",
+      "verified_literal_shared_entities": {
+        "第四章 一锅清汤": [
+          "易苜",
+          "秋杓面馆",
+          "葱白",
+          "姜丝"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-028",
+      "rationale": "原文明确鲁笠将店前长凳涂成橙色，草稿描述涂色结果，未添加涂料种类。",
+      "shared_entities": {
+        "第五章 橙色座位": [
+          "秋杓面馆",
+          "鲁笠",
+          "长凳"
+        ]
+      },
+      "missing_link": null,
+      "designated_constraint": null,
+      "style_rewrite": "主语由人改为长凳，采用被动表达。",
+      "verified_literal_shared_entities": {
+        "第五章 橙色座位": [
+          "秋杓面馆",
+          "鲁笠",
+          "长凳"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-029",
+      "rationale": "三名评审每人一票，只有前两票的归属写出；第三人尝面、打喷嚏只是正常动作。正文到结尾也未给出总票数。",
+      "shared_entities": {
+        "第六章 三个人的胃口": [
+          "秋杓面馆",
+          "清汤面",
+          "评审"
+        ]
+      },
+      "missing_link": "第三位评审实际投票的归属",
+      "not_a_time_only_contradiction": "没有相反的总票数；补一个真实投票结果才可判断是否全票。",
+      "designated_constraint": null,
+      "style_rewrite": "草稿说全票结果，原文写个别人的投票与第三人的动作。",
+      "verified_literal_shared_entities": {
+        "第六章 三个人的胃口": [
+          "秋杓面馆",
+          "清汤面",
+          "评审"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-030",
+      "rationale": "旧照片只支持祖父与瓷砖同时出现在面馆，不能把出镜者认作制作者。全文其他章节未赋予瓷砖作者。",
+      "shared_entities": {
+        "第七章 梁下的燕子": [
+          "秋杓面馆",
+          "石燕瓷砖",
+          "易苜"
+        ]
+      },
+      "missing_link": "石燕瓷砖由谁制作",
+      "not_a_time_only_contradiction": "缺制作归属而非制作时间；照片年代明确也不能补上作者。",
+      "designated_constraint": null,
+      "style_rewrite": "草稿提出工艺归属，原文仅叙述照片画面。",
+      "verified_literal_shared_entities": {
+        "第七章 梁下的燕子": [
+          "秋杓面馆",
+          "石燕瓷砖",
+          "易苜"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-031",
+      "rationale": "同一相机插销在同一时刻关闭，草稿改述为敞开，且未说原文错了。",
+      "shared_entities": {
+        "Chapter 2 Click": [
+          "Tessel Camera",
+          "Delsin Rusk"
+        ]
+      },
+      "missing_link": null,
+      "designated_constraint": null,
+      "style_rewrite": "Closed state is replaced by an affirmative open-state description without a denial clause.",
+      "verified_literal_shared_entities": {
+        "Chapter 2 Click": [
+          "Tessel Camera",
+          "Delsin Rusk"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "object_state",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-032",
+      "rationale": "原文校准结束，草稿为同一时刻校准至一半，仅考事件完成状态。",
+      "shared_entities": {
+        "Chapter 3 The Last Tone": [
+          "Yavren Nezric",
+          "Palvek Telescope"
+        ]
+      },
+      "missing_link": null,
+      "designated_constraint": null,
+      "style_rewrite": "An event-ending sentence becomes a character-centered description of work in progress.",
+      "verified_literal_shared_entities": {
+        "Chapter 3 The Last Tone": [
+          "Yavren Nezric",
+          "Palvek Telescope"
+        ]
+      },
+      "expected_class": "conflict",
+      "category": "event_status",
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-033",
+      "rationale": "同一阅读角的灯由Delsin安装琥珀色滤片，没有添加光度等新推断。",
+      "shared_entities": {
+        "Chapter 4 Small Suns": [
+          "Orvessa Observatory",
+          "Delsin Rusk"
+        ]
+      },
+      "missing_link": null,
+      "designated_constraint": null,
+      "style_rewrite": "The draft describes filtered lighting as a result rather than reproducing the installation sentence.",
+      "verified_literal_shared_entities": {
+        "Chapter 4 Small Suns": [
+          "Orvessa Observatory",
+          "Delsin Rusk"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-034",
+      "rationale": "收纳者、备用穹顶螺丝、紫色抽屉三点直接一致。",
+      "shared_entities": {
+        "Chapter 7 A Box of Screws": [
+          "Orvessa Observatory",
+          "Yavren Nezric",
+          "dome screws"
+        ]
+      },
+      "missing_link": null,
+      "designated_constraint": null,
+      "style_rewrite": "Drawer contents replace the source's sorting-action syntax.",
+      "verified_literal_shared_entities": {
+        "Chapter 7 A Box of Screws": [
+          "Orvessa Observatory",
+          "Yavren Nezric",
+          "dome screws"
+        ]
+      },
+      "expected_class": "no_conflict",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-035",
+      "rationale": "十二像素是屏幕宽度，不是物理长度；全文只写成像外观和纸杯素描。",
+      "shared_entities": {
+        "Chapter 5 Across the Glass": [
+          "Saffrex Nebula",
+          "Tessel Camera",
+          "Delsin Rusk"
+        ]
+      },
+      "missing_link": "像素尺寸至星云真实长度的尺度换算（含距离或物理标定）",
+      "not_a_time_only_contradiction": "同一图像仍需尺度才能从像素推物理长度，时间补齐也无作用。",
+      "designated_constraint": null,
+      "style_rewrite": "Physical size is claimed instead of image size; shared proper nouns retain retrieval linkage.",
+      "verified_literal_shared_entities": {
+        "Chapter 5 Across the Glass": [
+          "Saffrex Nebula",
+          "Tessel Camera",
+          "Delsin Rusk"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    },
+    {
+      "id": "hv13-036",
+      "rationale": "罐子在烤箱旁、面包出炉，未叙述从罐里取粉和制作面包的过程，不能由位置关系证明已经烤好的面包此前使用了这罐粉。",
+      "shared_entities": {
+        "Chapter 6 Bread in the Dark": [
+          "Delsin",
+          "Yavren Nezric"
+        ]
+      },
+      "missing_link": "这条面包实际采用的面粉来源",
+      "not_a_time_only_contradiction": "缺原料来源，原文没有给出另一面粉来源构成反证。",
+      "designated_constraint": null,
+      "style_rewrite": "The draft asserts a baking provenance rather than duplicating the jar and kitchen-action description.",
+      "verified_literal_shared_entities": {
+        "Chapter 6 Bread in the Dark": [
+          "Delsin",
+          "Yavren Nezric"
+        ]
+      },
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "full_work_review": "全部章节已复读；判断不依赖其他题目。",
+      "draft_no_verbatim_sentence": true,
+      "draft_no_source_denial": true,
+      "source_no_answer_announcing_gap": true
+    }
+  ],
+  "summary": {
+    "cases_reviewed": 36,
+    "evidence_links_checked": 37,
+    "chapters": 48,
+    "maximum_chapter_body_characters": 255,
+    "designated_regressions": [
+      "hv13-001",
+      "hv13-013",
+      "hv13-025"
+    ]
+  }
+}

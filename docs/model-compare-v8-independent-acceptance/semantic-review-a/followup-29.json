@@ -1,0 +1,154 @@
+{
+  "schema_version": "v8-blinded-case-followup-review-v1",
+  "case_alias": "case-29",
+  "reviewer": "semantic-review-a",
+  "stage": "followup",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-29",
+      "response_alias": "answer-e1f1ca",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "v6-v6s-07",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "合法11点进屋与10点松盖事实可共存，final空Issue保持首答。",
+          "visible_quote": "completed",
+          "evidence_pointer": "responses[answer-e1f1ca].final; semantic-review-a/first-29.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；已逐alias比较，selected/chapter/Memory/正文转录、角色集合及适用输出合同与首答一致，类别失配如有另计。",
+      "attribution_tags": [],
+      "overall_reason": "最终保持完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-29.json",
+      "normalization_count": 0
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-29",
+      "response_alias": "answer-4b190c",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "v6-v6s-07",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "合法11点进屋与10点松盖事实可共存，final空Issue保持首答。",
+          "visible_quote": "completed",
+          "evidence_pointer": "responses[answer-4b190c].final; semantic-review-a/first-29.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；已逐alias比较，selected/chapter/Memory/正文转录、角色集合及适用输出合同与首答一致，类别失配如有另计。",
+      "attribution_tags": [],
+      "overall_reason": "最终保持完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-29.json",
+      "normalization_count": 0
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-29",
+      "response_alias": "answer-ca2ceb",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "v6-v6s-07",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "合法11点进屋与10点松盖事实可共存，final空Issue保持首答。",
+          "visible_quote": "completed",
+          "evidence_pointer": "responses[answer-ca2ceb].final; semantic-review-a/first-29.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；已逐alias比较，selected/chapter/Memory/正文转录、角色集合及适用输出合同与首答一致，类别失配如有另计。",
+      "attribution_tags": [],
+      "overall_reason": "最终保持完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-29.json",
+      "normalization_count": 0
+    }
+  ],
+  "comparison": {
+    "repair_count": 0,
+    "repair_strict_pass": 0,
+    "final_strict_pass": 3,
+    "final_count": 3,
+    "first_scores_unchanged": true
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/29.json",
+    "sha256_before": "628c85cab4f104df92d9d2a306c5c8ec3ecd508dc33ecb7b70f59db25f24a1e5",
+    "sha256_after_review": "628c85cab4f104df92d9d2a306c5c8ec3ecd508dc33ecb7b70f59db25f24a1e5",
+    "unchanged": true,
+    "repair_business_unchanged_except_contract_repair": true,
+    "repair_visible_equals_parsed": true
+  },
+  "lock": {
+    "first_locked_before_followup": true,
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

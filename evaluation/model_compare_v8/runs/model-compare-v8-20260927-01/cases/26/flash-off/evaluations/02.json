@@ -1,0 +1,107 @@
+{
+  "evaluation": 2,
+  "business_request_sha256": "7f1660400ce3250dcff283b702dbeef6776d1056899a94fa1310d01a0223f15f",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "high",
+        "explanation": "The draft says the courier capsule was ready for dispatch at 10:00 today, but the cited evidence shows it was not ready at that exact time.",
+        "reasoning": "The rule span establishes that readiness requires both four bars of pressure and a locked valve cap. The 10:00 span confirms the pressure condition but states the cap remained loose and unlocked throughout that minute, so the readiness condition was not met. The inspection span places the event at 10:00, confirming the same time and object scope. Together these spans directly contradict the draft claim.",
+        "temporal_basis": {
+          "claim_anchor": "At 10:00 today",
+          "evidence_anchor": "At 10:00 today",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_carrier-1",
+            "span_id": "fixture-span-v6_carrier-1",
+            "relation": "supports",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_carrier-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-v6_carrier-2",
+            "span_id": "fixture-span-v6_carrier-2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": []
+          },
+          {
+            "chapter_id": "fixture-chapter-v6_carrier-3",
+            "span_id": "fixture-span-v6_carrier-3",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": []
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_carrier-1",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "fixture-span-v6_carrier-2",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-v6_carrier-3",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10:00 today the courier capsule was ready for dispatch.",
+          "after": "At 10:00 today the courier capsule was not ready for dispatch because its valve cap remained loose and unlocked."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1",
+        "verdict": "reviewed_issue",
+        "basis": "The 10:00 evidence shows the valve cap was loose and unlocked, so the capsule did not meet the stated readiness condition at that time."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3986,
+      "completion_tokens": 587,
+      "total_tokens": 4573,
+      "prompt_tokens_details": {
+        "cached_tokens": 2944
+      },
+      "prompt_cache_hit_tokens": 2944,
+      "prompt_cache_miss_tokens": 1042
+    },
+    "status": "complete",
+    "prompt_tokens": 3986,
+    "completion_tokens": 587,
+    "total_tokens": 4573,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

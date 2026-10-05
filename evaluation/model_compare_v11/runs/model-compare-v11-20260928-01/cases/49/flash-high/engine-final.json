@@ -1,0 +1,65 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "cc-claim-cc15-loaded-zh",
+      "status": "conflict",
+      "category": "object_state",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "草稿称货船今天6点已装满并可启航，证据称同一时间舱位只装了一半且不能启航，二者直接冲突。",
+      "evidence": [
+        {
+          "chapter_id": "cc-chapter-cc15-loaded-zh-D1",
+          "span_id": "cc-span-cc15-loaded-zh-D1",
+          "excerpt": "今天6点，那艘货船的舱位只装了一半，还不能启航。",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "cc-memory-cc15-loaded-zh-D1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "草稿与证据都明确限定同一对象“那艘货船”和同一时间“今天6点”。草稿断言“已经装满、可以启航”，证据断言“舱位只装了一半，还不能启航”，二者在同一对象、同一时间和同一状态谓词上不能同时成立。记忆 cc-memory-cc15-loaded-zh-D1 将证据状态记录为动态状态，提供了直接反证。",
+      "evidence_chain": [
+        {
+          "span_id": "cc-span-cc15-loaded-zh-D1",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "今天6点，那艘货船已经装满、可以启航。",
+        "after": "今天6点，那艘货船的舱位只装了一半，还不能启航。"
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "cc-claim-cc15-loaded-zh",
+      "returned_span_ids": [
+        "cc-span-cc15-loaded-zh-D1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3056,
+  "output_tokens": 2387,
+  "latency_ms": 10103,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

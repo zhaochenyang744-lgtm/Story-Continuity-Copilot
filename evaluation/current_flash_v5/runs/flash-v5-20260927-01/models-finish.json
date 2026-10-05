@@ -1,0 +1,8 @@
+{
+  "endpoint": "/models",
+  "finished_at": "2026-09-27T08:19:49.036510+00:00",
+  "http_status": 200,
+  "model_present": true,
+  "error_type": null,
+  "usage_status": "not_applicable"
+}

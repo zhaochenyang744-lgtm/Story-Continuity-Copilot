@@ -1,0 +1,88 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "8bafa6556beda3bc69446f31e4162bebfc1a9af88bf50193861759b7148b9619",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc15-loaded-zh",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "high",
+        "explanation": "草稿称货船今天6点已装满并可启航，证据称同一时间舱位只装了一半且不能启航，二者直接冲突。",
+        "reasoning": "草稿与证据都明确限定同一对象“那艘货船”和同一时间“今天6点”。草稿断言“已经装满、可以启航”，证据断言“舱位只装了一半，还不能启航”，二者在同一对象、同一时间和同一状态谓词上不能同时成立。记忆 cc-memory-cc15-loaded-zh-D1 将证据状态记录为动态状态，提供了直接反证。",
+        "temporal_basis": {
+          "claim_anchor": "今天6点",
+          "evidence_anchor": "今天6点",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc15-loaded-zh-D1",
+            "span_id": "cc-span-cc15-loaded-zh-D1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc15-loaded-zh-D1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc15-loaded-zh-D1",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "今天6点，那艘货船已经装满、可以启航。",
+          "after": "今天6点，那艘货船的舱位只装了一半，还不能启航。"
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc15-loaded-zh",
+        "verdict": "reviewed_issue",
+        "basis": "草稿与证据在相同对象和相同时间上给出互斥的货船装载状态，已发出确认冲突。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3056,
+      "completion_tokens": 2387,
+      "total_tokens": 5443,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1973
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 752
+    },
+    "status": "complete",
+    "prompt_tokens": 3056,
+    "completion_tokens": 2387,
+    "total_tokens": 5443,
+    "reasoning_tokens": 1973,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

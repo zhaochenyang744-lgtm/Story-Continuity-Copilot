@@ -1,0 +1,85 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "3cda00d33fa631ab06322eeb4a8abcc17d0b9467eb9dc3ffa803668d6e5b723a",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc3-cause-blank-en",
+        "status": "conflict",
+        "nature": "possible_conflict",
+        "category": "relationship",
+        "severity": "high",
+        "explanation": "The ledger excerpt says the cause is unrecorded, while the draft claim says the ledger blames Pell.",
+        "reasoning": "The cited ledger excerpt leaves the cause unrecorded, which tensions with the claim's attributed cause. The current claim has no literal time anchor, so same-time overlap with the ledger record cannot be proven; the contradiction remains possible rather than confirmed.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": "at dawn",
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc3-cause-blank-en-H1",
+            "span_id": "cc-span-cc3-cause-blank-en-H1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc3-cause-blank-en-H1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc3-cause-blank-en-H1",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "According to the harbour ledger, Pell caused the crane's collapse.",
+          "after": "According to the harbour ledger, the cause of the crane's collapse is unrecorded."
+        },
+        "available_actions": [
+          "apply_suggestion"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc3-cause-blank-en",
+        "verdict": "reviewed_issue",
+        "basis": "The cited ledger states the cause is unrecorded, contesting the claim's attribution to Pell."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3120,
+      "completion_tokens": 5635,
+      "total_tokens": 8755,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 5192
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 688
+    },
+    "status": "complete",
+    "prompt_tokens": 3120,
+    "completion_tokens": 5635,
+    "total_tokens": 8755,
+    "reasoning_tokens": 5192,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

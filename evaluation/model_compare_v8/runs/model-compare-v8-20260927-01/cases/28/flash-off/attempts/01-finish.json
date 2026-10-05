@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1629,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "8bca9318-6437-476e-b420-c029b5e1bf0b",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The draft attributes the loosening to Ina via the inspection log, but the cited span only records the cap as loose at 10:00 and explicitly does not identify who loosened it. The attribution to Ina lacks a supporting link, so the claim is unsupported rather than contradicted.\"}]}",
+  "visible_content_sha256": "d334aa32170a8f2a69f5a9c1157c144ec2d2866dceb978fe5b09bb9dcf4262ac",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 2985,
+      "completion_tokens": 119,
+      "total_tokens": 3104,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 809
+    },
+    "status": "complete",
+    "prompt_tokens": 2985,
+    "completion_tokens": 119,
+    "total_tokens": 3104,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:53:34.029622+00:00"
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "818763172f6d27fe0cd8ef0f71ba03dbae0423bb0a777ca616761e89e6016362",
+  "finished_at": "2026-09-27T10:47:19.816394+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-b2a2f3c7-5b3d-405d-959c-8a5c9689796b-1",
+        "verdict": "no_issue",
+        "basis": "The claim that Mira could not open North Glass with only a red badge is consistent with the static rule that only a blue badge opens it and with the dynamic state that she tried while wearing only a red badge; no contradiction remains."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3475,
+    "output_tokens": 107,
+    "observed_response_input_tokens": 3475,
+    "observed_response_output_tokens": 107
+  }
+}

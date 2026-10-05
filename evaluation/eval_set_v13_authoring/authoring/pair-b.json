@@ -1,0 +1,251 @@
+{
+  "corpora": [
+    {
+      "key": "yanjia_apiary",
+      "title": "砚荚岭的蜂箱继承人",
+      "language": "zh",
+      "source_file": "sources/yanjia_apiary.md"
+    },
+    {
+      "key": "varnock_fossil_picnic",
+      "title": "A Fossil Picnic at Varnock Scar",
+      "language": "en",
+      "source_file": "sources/varnock_fossil_picnic.md"
+    }
+  ],
+  "cases": [
+    {
+      "id": "hv13-013",
+      "corpus": "yanjia_apiary",
+      "draft": "2034年4月18日9点10分，乔檀笛以佟槐雨亲生母亲的身份，在砚荚岭把钥匙递给女儿。",
+      "expected_class": "conflict",
+      "category": "relationship",
+      "evidence": ["第一章 隔年的钥匙"],
+      "designated_regression": true,
+      "note": "同一明确时刻，把原文中的姨母与外甥女写成亲生母女，关系类别需判准确。"
+    },
+    {
+      "id": "hv13-014",
+      "corpus": "yanjia_apiary",
+      "draft": "2034年4月18日14点，栗扣箱这轮春季取蜜正做得热闹，蜜还在连续流出。",
+      "expected_class": "conflict",
+      "category": "event_status",
+      "evidence": ["第六章 蜜流停住"],
+      "designated_regression": false,
+      "note": "同一取蜜活动在原文已经结束，草稿把状态写为仍在进行。"
+    },
+    {
+      "id": "hv13-015",
+      "corpus": "yanjia_apiary",
+      "draft": "栗扣箱门前那层苔，是佟槐雨拿一根薄竹条慢慢清走的。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": ["第二章 箱口的苔"],
+      "designated_regression": false,
+      "note": "清理者、清理对象和所用工具均由原文动作直接支持。"
+    },
+    {
+      "id": "hv13-016",
+      "corpus": "yanjia_apiary",
+      "draft": "佟槐雨给自己定下了一个整年的砚荚岭养蜂生活。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": ["第七章 留下的一年"],
+      "designated_regression": false,
+      "note": "原文直述她决定留下养蜂一年，草稿改述这项决定。"
+    },
+    {
+      "id": "hv13-017",
+      "corpus": "yanjia_apiary",
+      "draft": "去年存下的栗扣箱春蜜，花蜜来源百分之百是刺槐花。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": ["第四章 开花的岔路"],
+      "designated_regression": false,
+      "note": "访花观察和味觉联想不能确定这罐蜜全部花蜜的来源。"
+    },
+    {
+      "id": "hv13-018",
+      "corpus": "yanjia_apiary",
+      "draft": "佟槐雨手背的小疹来自新手套引起的过敏。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": ["第五章 手背的小疹"],
+      "designated_regression": false,
+      "note": "皮疹和戴手套的经历都存在，二者之间的医学因果仍需证据。"
+    },
+    {
+      "id": "hv13-019",
+      "corpus": "varnock_fossil_picnic",
+      "draft": "For their 12 August outing, Hettie Drusk finished serving the cheese sandwiches at Varnock Scar before collecting the spiral fossil.",
+      "expected_class": "conflict",
+      "category": "timeline",
+      "evidence": ["Chapter 1 Something Older", "Chapter 2 Lunch Gets a Date"],
+      "designated_regression": false,
+      "note": "The draft reverses the established order of collection at 10:20 and serving at 11:10."
+    },
+    {
+      "id": "hv13-020",
+      "corpus": "varnock_fossil_picnic",
+      "draft": "At 12:05 on 12 August, Cavor Uldren took the contents of Hettie's tin to be tea.",
+      "expected_class": "conflict",
+      "category": "character_knowledge",
+      "evidence": ["Chapter 3 The Liquid Course"],
+      "designated_regression": false,
+      "note": "The draft changes Cavor's belief about the contents at the same time, rather than describing a pretense."
+    },
+    {
+      "id": "hv13-021",
+      "corpus": "varnock_fossil_picnic",
+      "draft": "Hettie Drusk stowed the spiral fossil in the picnic basket with her blue glove around it.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": ["Chapter 4 A Glove for the Guest"],
+      "designated_regression": false,
+      "note": "The wrapping and placement directly support the rewritten action."
+    },
+    {
+      "id": "hv13-022",
+      "corpus": "varnock_fossil_picnic",
+      "draft": "Cavor Uldren let his head support the picnic basket on the downhill walk.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": ["Chapter 7 The Descent"],
+      "designated_regression": false,
+      "note": "The source directly describes him carrying the basket on his head during the descent."
+    },
+    {
+      "id": "hv13-023",
+      "corpus": "varnock_fossil_picnic",
+      "draft": "Hettie Drusk took first place in the Varnock Scar novelty prize with her photograph of the spiral fossil.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": ["Chapter 6 An Entry with Teeth"],
+      "designated_regression": false,
+      "note": "Submitting a photograph establishes an entry, not the competition's result."
+    },
+    {
+      "id": "hv13-024",
+      "corpus": "varnock_fossil_picnic",
+      "draft": "Cavor Uldren's flat shell came from a freshwater pool.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": ["Chapter 5 The Pocket Donation"],
+      "designated_regression": false,
+      "note": "Taking a shell from a coat pocket does not establish the water environment where it originated."
+    }
+  ],
+  "reviews": [
+    {
+      "id": "hv13-013",
+      "rationale": "乔檀笛是佟槐雨母亲的亲妹妹，即佟槐雨的姨母。草稿把这位姨母写为她的亲生母亲，直接改变亲属关系。钥匙递交属于同一自然场景，仅帮助定位，不另设考点。",
+      "shared_entities": [{"evidence": "第一章 隔年的钥匙", "nouns": ["佟槐雨", "乔檀笛", "砚荚岭", "钥匙"]}],
+      "support_or_conflict_basis": "姨母关系与亲生母女关系冲突，类别 relationship。",
+      "missing_link": null,
+      "designated_constraint": "指定回归：原文和草稿都写明2034年4月18日9点10分；此时刻关系事实直接陈述，要求明确矛盾及正确 relationship 类别。",
+      "style_rewrite": "原文从母亲的亲妹妹说明关系，草稿用亲生母亲身份叙事；保留人名、地点和时间锚点，不复制叙述，不附带否定姨母身份。"
+    },
+    {
+      "id": "hv13-014",
+      "rationale": "原文明确写出栗扣箱这次春季取蜜在14点已经结束，收桶、洗机器是正常收尾。草稿把同一时刻的同一轮取蜜写为进行中；连续蜜流只描写进行中状态，不另设数量判断。",
+      "shared_entities": [{"evidence": "第六章 蜜流停住", "nouns": ["栗扣箱", "春季取蜜"]}],
+      "support_or_conflict_basis": "已结束的事件被写成正在进行，类别 event_status。",
+      "missing_link": null,
+      "designated_constraint": "非指定回归；自愿保留共同时间以减少同名活动歧义，不计入三道指定题。",
+      "style_rewrite": "草稿以热闹和连续流蜜描写自己的进行中状态，不照抄原文结束句，也不写未结束之类否定原文的话。"
+    },
+    {
+      "id": "hv13-015",
+      "rationale": "第二章直接描述佟槐雨用竹片刮栗扣箱入口的苔，草稿只是将动作改为结果式表达。",
+      "shared_entities": [{"evidence": "第二章 箱口的苔", "nouns": ["佟槐雨", "栗扣箱", "苔", "竹"]}],
+      "support_or_conflict_basis": "由原文清理动作直接支持。",
+      "missing_link": null,
+      "designated_constraint": "非指定回归，非冲突题。",
+      "style_rewrite": "将主动动作句改为被清理对象起句，并改用薄竹条与清走表达，避免复制刮掉入口苔藓的措辞。"
+    },
+    {
+      "id": "hv13-016",
+      "rationale": "第七章明确陈述佟槐雨决定在砚荚岭养蜂一年。草稿仍是她给自己定下的计划，没有扩写为已经完整生活一年。",
+      "shared_entities": [{"evidence": "第七章 留下的一年", "nouns": ["佟槐雨", "砚荚岭", "养蜂"]}],
+      "support_or_conflict_basis": "直接支持留下养蜂一年的决定。",
+      "missing_link": null,
+      "designated_constraint": "非指定回归，非冲突题。",
+      "style_rewrite": "把决定留在的行动表达改成给自己定下生活计划，事实和意向语气不变。"
+    },
+    {
+      "id": "hv13-017",
+      "rationale": "第四章自然叙述当前访花和吃去年存下的春蜜。看到工蜂落在刺槐花上、闻到像岔路的香气，都不能确认这罐去年蜜的全部花蜜构成。原文既未断定其为纯刺槐蜜，也未写成混合蜜，因此不存在可直接成立的相反事实。",
+      "shared_entities": [{"evidence": "第四章 开花的岔路", "nouns": ["栗扣箱", "春蜜", "刺槐花"]}],
+      "support_or_conflict_basis": "无法由访花或味觉联想推出特定蜂蜜的来源比例。",
+      "missing_link": "这罐去年春蜜的花蜜组成与各花源对应关系。",
+      "designated_constraint": "非指定回归，证据不足题；草稿指明去年蜜，缺口是来源组成，非缺共同时间的矛盾。",
+      "style_rewrite": "草稿给出来源比例这一新断言；原文仅写工蜂落花、食物和气味，未宣布缺口或替题目解释答案。"
+    },
+    {
+      "id": "hv13-018",
+      "rationale": "第五章的手套使用、吃青梅、皮疹与凉水冲手都是正常生活动作。皮疹与戴手套的相邻经历不足以证实过敏诊断或病因，原文也没有给出可排除手套的诊断。",
+      "shared_entities": [{"evidence": "第五章 手背的小疹", "nouns": ["佟槐雨", "手背", "小疹", "新手套"]}],
+      "support_or_conflict_basis": "皮疹的存在得到支持，手套引起过敏这一因果无法确定。",
+      "missing_link": "皮疹的病因诊断或能确定手套导致过敏的医学证据。",
+      "designated_constraint": "非指定回归，证据不足题；因果环节与蜂蜜来源比例环节不同。",
+      "style_rewrite": "草稿用来自表达单一因果判断；原文自然写工作与午饭经过，没有没有诊断、尚未核实等答案提示。"
+    },
+    {
+      "id": "hv13-019",
+      "rationale": "On the same dated outing, collection happened at 10:20 and serving at 11:10. The draft puts completed serving before collection, reversing those events. Each cited chapter shares named entities with the draft.",
+      "shared_entities": [
+        {"evidence": "Chapter 1 Something Older", "nouns": ["Hettie Drusk", "Varnock Scar", "spiral fossil", "cheese"]},
+        {"evidence": "Chapter 2 Lunch Gets a Date", "nouns": ["Hettie Drusk", "Varnock Scar", "spiral fossil", "cheese sandwiches"]}
+      ],
+      "support_or_conflict_basis": "Collection precedes serving in the source; the draft reverses the sequence. Category timeline.",
+      "missing_link": null,
+      "designated_constraint": "Ordinary conflict, not a designated regression; no extra uniqueness statement was added to the source.",
+      "style_rewrite": "Expresses the order using before rather than copying the two clock-time sentences. It positively describes its own ordering without denying the source event."
+    },
+    {
+      "id": "hv13-020",
+      "rationale": "At the same explicit time, the source says Cavor believed the tin contained soup. The draft assigns him a tea belief instead. The soup spoon and announcement are natural comic actions following his belief, not a claim that he knowingly pretended ignorance.",
+      "shared_entities": [{"evidence": "Chapter 3 The Liquid Course", "nouns": ["Cavor Uldren", "Hettie", "tin"]}],
+      "support_or_conflict_basis": "Cavor's subjective soup belief is replaced by a tea belief. Category character_knowledge.",
+      "missing_link": null,
+      "designated_constraint": "Ordinary conflict with a shared 12:05 on 12 August anchor; designated_regression is false.",
+      "style_rewrite": "Replaces believed and held with took the contents to be. Shared time and named entities are retained; no negation or pretend-ignorance framing appears."
+    },
+    {
+      "id": "hv13-021",
+      "rationale": "The source directly states Hettie wrapped the fossil in her blue glove and then put it into the basket. The draft describes the same resulting arrangement.",
+      "shared_entities": [{"evidence": "Chapter 4 A Glove for the Guest", "nouns": ["Hettie Drusk", "spiral fossil", "picnic basket", "blue glove"]}],
+      "support_or_conflict_basis": "Directly supported wrapping and stowing action.",
+      "missing_link": null,
+      "designated_constraint": "Non-conflict, not designated.",
+      "style_rewrite": "Uses stowed and glove around it rather than reproducing wrapped before placing."
+    },
+    {
+      "id": "hv13-022",
+      "rationale": "The head-supported basket on the downward walk is directly described in Chapter 7. The draft does not add a claim about how far he carried it or how much it weighed.",
+      "shared_entities": [{"evidence": "Chapter 7 The Descent", "nouns": ["Cavor Uldren", "picnic basket", "head"]}],
+      "support_or_conflict_basis": "Directly supported carrying method.",
+      "missing_link": null,
+      "designated_constraint": "Non-conflict, not designated.",
+      "style_rewrite": "Changes carried on his head on the way down into let his head support on the downhill walk, preserving the one action."
+    },
+    {
+      "id": "hv13-023",
+      "rationale": "The photograph is made and sent for the novelty prize during the outing. The later competition outcome is not entailed by that completed submission; victory or defeat would each fit the scene.",
+      "shared_entities": [{"evidence": "Chapter 6 An Entry with Teeth", "nouns": ["Hettie Drusk", "Varnock Scar novelty prize", "spiral fossil"]}],
+      "support_or_conflict_basis": "The source establishes entry, not winning first place.",
+      "missing_link": "The competition's adjudicated result for Hettie's entry.",
+      "designated_constraint": "Evidence insufficiency, not designated; the missing result remains a real gap even if both texts are put on the same timeline.",
+      "style_rewrite": "The draft states a prize outcome, while the source follows photographing and finding a phone signal without announcing an absent result."
+    },
+    {
+      "id": "hv13-024",
+      "rationale": "A shell comes out of Cavor's coat pocket and is offered to Hettie. The outing occurs by the sea, but that does not determine where the shell originally came from. Freshwater or marine collection is compatible with a previously pocketed shell.",
+      "shared_entities": [{"evidence": "Chapter 5 The Pocket Donation", "nouns": ["Cavor Uldren", "flat shell"]}],
+      "support_or_conflict_basis": "Pocket custody and gifting establish neither collection location nor original water environment.",
+      "missing_link": "The flat shell's collection provenance or independently established water environment.",
+      "designated_constraint": "Evidence insufficiency, not designated; provenance differs from the competition-result gap.",
+      "style_rewrite": "The draft introduces a single origin claim; the source only narrates the pocket donation and comic pocket contents, without missing-record commentary."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "two_evaluations_transport_and_global_caps",
+  "passed": true,
+  "details": {
+    "mock_transport_calls_in_two_evaluations": 4,
+    "global_boundary_injected": 107,
+    "last_allowed_mock_transport_calls": 1,
+    "post_cap": 108,
+    "g02_evaluation_cap": 1
+  }
+}

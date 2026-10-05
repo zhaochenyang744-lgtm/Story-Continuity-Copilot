@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-04",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:03:19.131872+00:00",
+  "latency_ms": 1299,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3061,
+      "completion_tokens": 144,
+      "total_tokens": 3205
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-1c65a68b-e7b1-447a-8f6c-f13a20f56e1b-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim states the capsule was not ready at 10:00 because its valve cap was loose. The cited evidence confirms that at 10:00 the pressure was four bars but the cap remained loose and unlocked throughout that minute, and the rule states readiness requires both four bars and a locked cap. The loose cap therefore makes the capsule not ready, so the claim is consistent with the evidence and needs no review.\"}]}",
+  "message_content_sha256": "dc1a03073a00b6529464045f35a611bbcba78bce3cb411fc73451871eef9a1a8",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

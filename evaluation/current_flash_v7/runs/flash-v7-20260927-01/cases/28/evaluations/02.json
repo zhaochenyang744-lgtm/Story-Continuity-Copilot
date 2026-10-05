@@ -1,0 +1,58 @@
+{
+  "case_id": "v6-v6s-06",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "eec3e563e5b89c2104d590bf84fa28543e96bd298d72b3bebe047cc13dcc34da",
+  "finished_at": "2026-09-27T10:48:55.881366+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-ded38ccc-dc5f-4e82-a56c-f764f83acedf-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "character_knowledge",
+        "severity": "medium",
+        "explanation": "The draft attributes the loosening to Ina via the inspection log, but the cited record only states the cap was loose at 10:00 and explicitly does not identify who loosened it. The attribution lacks a supporting source link.",
+        "reasoning": "The claim asserts that the inspection log establishes Ina as the actor who loosened the cap. The only supplied evidence records the cap as loose at 10:00 and states it does not identify who loosened the cap. That record is silent on the actor, so the attribution is unsupported and the actor remains unknown; judgment stops at the missing link between the log and Ina's action.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_actor_blank-1",
+            "span_id": "fixture-span-v6_actor_blank-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_actor_blank-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_actor_blank-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-ded38ccc-dc5f-4e82-a56c-f764f83acedf-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The draft attributes the loosening to Ina via the inspection log, but the cited span only records the cap as loose at 10:00 and explicitly does not identify who loosened it. The attribution lacks a supporting source link, so the claim is unsupported rather than contradicted."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3515,
+    "output_tokens": 432,
+    "observed_response_input_tokens": 3515,
+    "observed_response_output_tokens": 432
+  }
+}

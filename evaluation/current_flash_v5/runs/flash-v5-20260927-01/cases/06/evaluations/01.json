@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "517b00f4a3ad42812f5fe63791076d3516e99734fb429ef7db094c22261407be",
+  "finished_at": "2026-09-27T08:20:08.039595+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": 3071,
+    "output_tokens": 5,
+    "observed_response_input_tokens": 3071,
+    "observed_response_output_tokens": 5
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:02:14.921305+00:00",
+  "latency_ms": 1654,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3303,
+      "completion_tokens": 155,
+      "total_tokens": 3458
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-585be45c-4bb9-42b0-a219-bc2485423d0c-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim that Vela delivered the telegram to Sera at 13点 is not contradicted by the cited evidence. The 13点 span confirms Sera opened the telegram and learned its code at that time but does not identify the deliverer; the 11点 spans describe an earlier state before opening. The record's silence on the deliverer's identity is an omission, not a contradiction, and the earlier 11点 state is compatible with a later 13点 delivery and opening.\"}]}",
+  "message_content_sha256": "82ec6ade279c17f4d5bc0bf294eb4332d8a471c84717bf27acb81a88718af51b",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

@@ -1,0 +1,20 @@
+{
+  "controls": [
+    {
+      "entrypoint": "run",
+      "existing_identity_refused_before_work": true,
+      "first_failure_retained": true,
+      "retry_did_not_execute_worker": true,
+      "create_only_file_preserved": true
+    },
+    {
+      "entrypoint": "controls",
+      "existing_identity_refused_before_work": true,
+      "first_failure_retained": true,
+      "retry_did_not_execute_worker": true,
+      "create_only_file_preserved": true
+    }
+  ],
+  "new_api_runs": 0,
+  "real_provider_calls": 0
+}

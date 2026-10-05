@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-object_state-no_conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:01:49.257526+00:00",
+  "latency_ms": 1333,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3454,
+      "completion_tokens": 189,
+      "total_tokens": 3643
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-36b0cdc4-f3db-4a91-bab6-c440d8fdc0b7-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim that the North Glass pneumatic carrier was not ready at 10点 despite its four-bar gauge is fully consistent with the cited evidence: the static rule (fixture-span-north_glass-4) states a carrier is ready only when the gauge reads four bars AND the valve cap is locked, and the dynamic state (fixture-span-north_glass-5) confirms that at 10点 the gauge read four bars but the valve cap remained loose and not locked throughout that minute. The unlocked valve cap independently defeats readiness, so the claim's 'not ready' conclusion is supported, not contradicted. No continuity issue requires review.\"}]}",
+  "message_content_sha256": "87261fcb34a73571a17a5a60a62f31bb9f4dcacd19bfd12cca67d47b6d6cfcdf",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

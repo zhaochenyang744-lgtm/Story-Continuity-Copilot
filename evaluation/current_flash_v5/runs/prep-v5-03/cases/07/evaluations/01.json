@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-harbor_signal-timeline-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "ba5d08b19dfc9979eca3c4715ae84a03bea2eae2383cc52ab70cacea5826fb6f",
+  "finished_at": "2026-09-27T08:07:41.131290+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

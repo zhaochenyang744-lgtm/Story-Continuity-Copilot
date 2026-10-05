@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v5-20260927-01",
+  "ordinal": 23,
+  "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:20:59.168755+00:00",
+  "case_input_sha256": "23af0bf0c6b7bb25146a223b186bfebf66c2d1ce2e347162529d83a352fec95a",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

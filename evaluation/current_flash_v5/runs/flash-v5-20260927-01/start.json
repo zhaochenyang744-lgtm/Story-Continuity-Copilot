@@ -1,0 +1,11 @@
+{
+  "run_id": "flash-v5-20260927-01",
+  "mode": "live",
+  "started_at": "2026-09-27T08:19:48.581140+00:00",
+  "git_base": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "case_count": 30,
+  "frozen_manifest_sha256": "aabea4b8f99d2d4282ed627e98da98a57e46a1c526a7a45064af22acfd87682b",
+  "max_generation_post": 108,
+  "max_models_get": 1,
+  "provider": "deepseek-flash"
+}

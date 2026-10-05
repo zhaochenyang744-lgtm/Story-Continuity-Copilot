@@ -1,0 +1,6 @@
+{
+  "control": "wrong_draft_id",
+  "rejection": "input_contract:v6-v6s-01:control_draft_id_or_revision_database_binding",
+  "request_sha256": "92479662f91dc3efac27ad9a0003e0f479394dd44d7f1ba42d4ca59f15491a47",
+  "status": "pass"
+}

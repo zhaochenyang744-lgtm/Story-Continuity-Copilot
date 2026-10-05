@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "47f18c09943c3e6d75f28b35eefe160aeb19849af762c0101a69ed26d79475c4",
+  "finished_at": "2026-09-27T10:47:50.729164+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-20f23fcf-6ff0-4b4f-8f14-44d055eda54a-1",
+        "verdict": "no_issue",
+        "basis": "The claim's 11点 ignorance and 13点 learning match the cited evidence exactly; the earlier bounded state and later transition coexist as a compatible state change, so no continuity issue requires review."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3333,
+    "output_tokens": 98,
+    "observed_response_input_tokens": 3333,
+    "observed_response_output_tokens": 98
+  }
+}

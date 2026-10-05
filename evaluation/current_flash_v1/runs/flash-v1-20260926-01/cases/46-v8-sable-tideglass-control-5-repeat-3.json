@@ -1,0 +1,146 @@
+{
+  "family": "v8_stability",
+  "case_id": "v8-sable-tideglass-control-5",
+  "repeat_ordinal": 3,
+  "score_row": {
+    "case_id": "v8-sable-tideglass-control-5",
+    "seed_key": "sable_tideglass",
+    "expected_class": "no_conflict",
+    "predicted_class": "no_conflict",
+    "expected_category": null,
+    "predicted_category": null,
+    "expected_severity": null,
+    "predicted_severity": null,
+    "category_severity": null,
+    "run_id": "run-ffc562a7-cc5e-4126-abb6-35eddb593400",
+    "post_status": 202,
+    "post_state": "queued",
+    "idempotency_replay_same_run": true,
+    "terminal_status": "completed",
+    "terminal_error_code": null,
+    "schema_valid": true,
+    "retrieval_hit_at_5": true,
+    "retrieval_semantic_set": [
+      [
+        1,
+        "receipt_scope"
+      ],
+      [
+        2,
+        "parcel_classification"
+      ],
+      [
+        3,
+        "facet_count_rule"
+      ],
+      [
+        4,
+        "facet_measurement"
+      ],
+      [
+        5,
+        "stamp_color"
+      ]
+    ],
+    "cited_evidence_count": 0,
+    "cited_evidence_expected_count": 0,
+    "resolvable_evidence_count": 0,
+    "evidence_ids": [],
+    "evidence_semantic_set": [],
+    "challenge_tags": [
+      "supported_control"
+    ],
+    "requires_multiple_direct_evidence": false,
+    "expected_evidence_count": 0,
+    "cited_expected_evidence_unique_count": 0,
+    "expected_evidence_full_set_cited": null,
+    "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "latency_ms": 1028,
+    "input_tokens": 2865,
+    "output_tokens": 5,
+    "cost_cny": null,
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    }
+  },
+  "model_outputs": [
+    {
+      "case_id": "v8-sable-tideglass-control-5:stability:3",
+      "task": "continuity_review",
+      "contract_repair": false,
+      "input_refs": {
+        "claims": [
+          {
+            "id": "claim-run-ffc562a7-cc5e-4126-abb6-35eddb593400-1",
+            "text": "Yara Cett uses a violet stamp on the sealed parcel.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-sable_tideglass-5",
+                "chapter_id": "fixture-chapter-sable_tideglass-5",
+                "body": "Yara Cett applies a violet stamp to the sealed parcel; Brom Olt's blue desk stamp concerns a different invoice.",
+                "label": "stamp_color",
+                "prompt_excerpt": "Yara Cett applies a violet stamp to the sealed parcel; Brom Olt's blue desk stamp concerns a different invoice."
+              },
+              {
+                "id": "fixture-span-sable_tideglass-1",
+                "chapter_id": "fixture-chapter-sable_tideglass-1",
+                "body": "Paper receipt is mandatory only for a parcel classified large; this scope statement does not classify any parcel.",
+                "label": "receipt_scope",
+                "prompt_excerpt": "Paper receipt is mandatory only for a parcel classified large; this scope statement does not classify any parcel."
+              },
+              {
+                "id": "fixture-span-sable_tideglass-3",
+                "chapter_id": "fixture-chapter-sable_tideglass-3",
+                "body": "The official tideglass facet count is the number of facets listed in the certified measuring card.",
+                "label": "facet_count_rule",
+                "prompt_excerpt": "The official tideglass facet count is the number of facets listed in the certified measuring card."
+              }
+            ]
+          }
+        ],
+        "draft_claims": [],
+        "source_spans": [],
+        "retrieval": null,
+        "proposal": null
+      },
+      "business_json": {
+        "issues": []
+      },
+      "usage": {
+        "input_tokens": 2865,
+        "output_tokens": 5,
+        "observed_response_input_tokens": 2865,
+        "observed_response_output_tokens": 5,
+        "cost_cny": null
+      },
+      "latency_ms": 1028
+    }
+  ],
+  "http_attempts": [
+    {
+      "case_id": "v8-sable-tideglass-control-5:stability:3",
+      "ordinal": 47,
+      "sent_at": "2026-09-26T09:39:12.761013+00:00",
+      "status": 200,
+      "latency_ms": 1006,
+      "usage": {
+        "prompt_tokens": 2865,
+        "completion_tokens": 5,
+        "total_tokens": 2870
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    }
+  ],
+  "actual_http_dispatches": 1,
+  "request_model": "deepseek-flash",
+  "input_sha256": "277ac0190bcacde78f426c23c5da05ed397f56d283337052acb8c92e1652878f",
+  "source_case_ref": "evaluation/case_sets/eval-set-v8.json"
+}

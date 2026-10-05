@@ -1,0 +1,241 @@
+{
+  "schema_version": "current-contract-compare-v2-contract-probe",
+  "real_provider_calls": 0,
+  "database_connections": 0,
+  "case_count": 24,
+  "validator_accepted": 24,
+  "rows": [
+    {
+      "case_id": "ccv2-north_glass-world_rule-conflict",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-north_glass-world_rule-no_conflict",
+      "validator": "accepted",
+      "api_issue_shape": []
+    },
+    {
+      "case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-conflict",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-no_conflict",
+      "validator": "accepted",
+      "api_issue_shape": []
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-conflict",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "validator": "accepted",
+      "api_issue_shape": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-conflict",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "validator": "accepted",
+      "api_issue_shape": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-conflict",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-no_conflict",
+      "validator": "accepted",
+      "api_issue_shape": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-conflict",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-no_conflict",
+      "validator": "accepted",
+      "api_issue_shape": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-conflict",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-no_conflict",
+      "validator": "accepted",
+      "api_issue_shape": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-conflict",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "has_temporal_basis": false
+        }
+      ]
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "validator": "accepted",
+      "api_issue_shape": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-insufficient_evidence",
+      "validator": "accepted",
+      "api_issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "has_temporal_basis": false
+        }
+      ]
+    }
+  ]
+}

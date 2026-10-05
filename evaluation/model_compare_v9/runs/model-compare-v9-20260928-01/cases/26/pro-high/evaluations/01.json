@@ -1,0 +1,96 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "c39448ca2a60ccb749a3255952d8110941e5065e3183d4d09673a84e6f359350",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "The draft says the capsule was ready at 10:00, but the supplied rule requires a locked valve cap and the evidence says the cap remained unlocked throughout that minute.",
+        "reasoning": "Evidence fixture-span-v6_carrier-1 establishes the readiness condition: pressure must be four bars and the valve cap must be locked. Evidence fixture-span-v6_carrier-2 establishes that at 10:00 today the pressure was four bars but the cap was loose and unlocked throughout that minute, so the locked-cap condition is false. Therefore the capsule cannot be ready at that same time, directly contradicting the current claim.",
+        "temporal_basis": {
+          "claim_anchor": "At 10:00 today",
+          "evidence_anchor": "At 10:00 today",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_carrier-1",
+            "span_id": "fixture-span-v6_carrier-1",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_carrier-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-v6_carrier-2",
+            "span_id": "fixture-span-v6_carrier-2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": []
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_carrier-1",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-v6_carrier-2",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10:00 today the courier capsule was ready for dispatch.",
+          "after": "At 10:00 today the courier capsule was not ready for dispatch."
+        },
+        "available_actions": [
+          "apply_suggestion"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1",
+        "verdict": "reviewed_issue",
+        "basis": "The cap is stated to remain loose and unlocked at the same 10:00 time, while the supplied rule requires a locked cap for readiness, so the claim is contradicted."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3213,
+      "completion_tokens": 5060,
+      "total_tokens": 8273,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 4414
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 781
+    },
+    "status": "complete",
+    "prompt_tokens": 3213,
+    "completion_tokens": 5060,
+    "total_tokens": 8273,
+    "reasoning_tokens": 4414,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

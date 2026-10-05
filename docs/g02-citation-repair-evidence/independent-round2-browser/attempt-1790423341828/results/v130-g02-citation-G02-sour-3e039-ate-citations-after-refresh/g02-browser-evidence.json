@@ -1,0 +1,635 @@
+{
+  "projectId": "prj-822ddd7b-151c-4f19-8144-fae53148d2fa",
+  "body": "E2E_G02_CITATION 温岚潮表坐标。林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。",
+  "run": {
+    "run_id": "run-e3414f14-c963-486b-920c-9ca06a7f9018",
+    "project_id": "prj-822ddd7b-151c-4f19-8144-fae53148d2fa",
+    "run_type": "context_brief",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 1,
+    "draft_revision": 2,
+    "source_memory_version": 4,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T11:49:30.002820+00:00",
+    "started_at": "2026-09-26T11:49:30.030504+00:00",
+    "completed_at": "2026-09-26T11:49:30.092286+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 61,
+    "retry_of_run_id": null,
+    "root_run_id": "run-e3414f14-c963-486b-920c-9ca06a7f9018",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:30.002820+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "binding_context",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:30.030504+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "analyzing_layers",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:30.048050+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "assembling_results",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:30.070985+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:30.092286+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "browser-e2e-test-provider",
+      "model_label": "browser-e2e-test-provider",
+      "prompt_version": "context-brief-v5-clause-citations",
+      "schema_version": "writing-analysis-v1",
+      "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+      "source_memory_version": 4
+    },
+    "provider_metrics": {
+      "latency_ms": 12,
+      "input_tokens": 28,
+      "output_tokens": 22,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "analysis_type": "context_brief",
+    "current_draft_revision": 2,
+    "foreshadow_version": null,
+    "foreshadow_snapshot_digest": null,
+    "proposal": null,
+    "question": null,
+    "scope": null,
+    "issue_ids": [],
+    "source_run_id": null,
+    "retrieval": {
+      "counts": {
+        "author_context": {
+          "available": 0,
+          "selected": 0
+        },
+        "character_alias": {
+          "available": 0,
+          "selected": 0
+        },
+        "draft_claim": {
+          "available": 2,
+          "selected": 2
+        },
+        "foreshadow_record": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue_evidence": {
+          "available": 0,
+          "selected": 0
+        },
+        "memory_record": {
+          "available": 8,
+          "selected": 8
+        },
+        "source_span": {
+          "available": 10,
+          "selected": 4
+        }
+      },
+      "draft_claim_scope": {
+        "available": 2,
+        "body_chars": 323,
+        "excerpt_chars": 323,
+        "selected": [
+          {
+            "id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+            "source_chars": 24,
+            "source_end": 24,
+            "source_start": 0,
+            "supplied_chars": 24,
+            "supplied_end": 24,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2",
+            "source_chars": 299,
+            "source_end": 323,
+            "source_start": 24,
+            "supplied_chars": 299,
+            "supplied_end": 323,
+            "truncated": false
+          }
+        ]
+      },
+      "method_version": "writing-analysis-lexical-v3-brief-540",
+      "selected_ids": {
+        "author_context": [],
+        "character_alias": [],
+        "draft_claim": [
+          "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+          "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2"
+        ],
+        "foreshadow_record": [],
+        "issue": [],
+        "issue_evidence": [],
+        "memory_record": [
+          "mem-06415f09-d69d-4c4d-b1ba-640e25cf9084",
+          "mem-c8bb5533-5928-409c-9456-d889d83932d2",
+          "mem-3a879364-5cad-47d0-a196-762d2e2ee0ed",
+          "mem-4e6ee3a9-5600-42b8-a43f-71e2d11eb147",
+          "mem-c936d0a1-1d09-4358-809c-f0339a30b1a0",
+          "mem-2a7a3151-f86e-4189-bc33-ab503d188326",
+          "mem-3363ec19-c0c7-407e-b4fa-3ef3ad6fe4e8",
+          "mem-f498434f-6400-4c12-8b7f-a5338c155e26"
+        ],
+        "source_span": [
+          "span-c69703b7-8545-45de-a58f-c17c21c5ebba",
+          "span-b95330ec-2da6-4d2c-87da-e5ef3232e69d",
+          "span-7c4ada19-5ec6-4fb1-8b3e-976616ed3a1b",
+          "span-6eb0a740-4837-48b4-9425-86b30fb936a7"
+        ]
+      },
+      "truncated": {
+        "author_context": false,
+        "character_alias": false,
+        "draft_body": false,
+        "draft_claim": false,
+        "foreshadow_record": false,
+        "issue": false,
+        "issue_evidence": false,
+        "memory_record": false,
+        "source_span": true,
+        "source_span_text": false
+      }
+    },
+    "input_digest": "a7fa9486bbae592e5215758780cf00c5414bdf4ae356d96756edfd352639c2e6",
+    "analysis": {
+      "citation_transform": {
+        "added_source_count": 1,
+        "discarded_model_item_indices": [],
+        "duplicate_omitted_item_count": 0,
+        "fallback_draft_claim_ids": [
+          "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1"
+        ],
+        "model_item_count": 2,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 0,
+        "overflow_omitted_item_count": 0,
+        "source_rendered_item_count": 3,
+        "version": "source-rendered-v2"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+            "source_chars": 24,
+            "source_end": 24,
+            "source_start": 0,
+            "supplied_chars": 24,
+            "supplied_end": 24,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2",
+            "source_chars": 299,
+            "source_end": 323,
+            "source_start": 24,
+            "supplied_chars": 299,
+            "supplied_end": 323,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+          "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "evidence_status": "supported",
+      "items": [
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "E2E_G02_CITATION 温岚潮表坐标。",
+              "label": "当前草稿 · 句 1",
+              "source_id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+              "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句1原文：「E2E_G02_CITATION 温岚潮表坐标。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。",
+              "label": "当前草稿 · 句 2",
+              "source_id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2",
+              "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句2原文：「林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+              "label": "第 4 章 · 知识边界",
+              "source_id": "span-c69703b7-8545-45de-a58f-c17c21c5ebba",
+              "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/sources#span-span-c69703b7-8545-45de-a58f-c17c21c5ebba",
+              "source_type": "source_span"
+            },
+            {
+              "excerpt": "廊桥钥匙的含义",
+              "label": "温岚 · does_not_know",
+              "source_id": "mem-c936d0a1-1d09-4358-809c-f0339a30b1a0",
+              "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/memory#memory-mem-c936d0a1-1d09-4358-809c-f0339a30b1a0",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "第4章所选原文：「温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。」 已确认记录：温岚不知道「廊桥钥匙的含义」"
+        }
+      ],
+      "summary": "当前草稿句1原文：「E2E_G02_CITATION 温岚潮表坐标。」 当前草稿句2原文：「林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。」",
+      "summary_sources": [
+        {
+          "excerpt": "E2E_G02_CITATION 温岚潮表坐标。",
+          "label": "当前草稿 · 句 1",
+          "source_id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+          "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。",
+          "label": "当前草稿 · 句 2",
+          "source_id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2",
+          "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/workspace#draft-source",
+          "source_type": "draft_claim"
+        }
+      ]
+    }
+  },
+  "refreshed": {
+    "run_id": "run-e3414f14-c963-486b-920c-9ca06a7f9018",
+    "project_id": "prj-822ddd7b-151c-4f19-8144-fae53148d2fa",
+    "run_type": "context_brief",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 1,
+    "draft_revision": 2,
+    "source_memory_version": 4,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T11:49:30.002820+00:00",
+    "started_at": "2026-09-26T11:49:30.030504+00:00",
+    "completed_at": "2026-09-26T11:49:30.092286+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 61,
+    "retry_of_run_id": null,
+    "root_run_id": "run-e3414f14-c963-486b-920c-9ca06a7f9018",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:30.002820+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "binding_context",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:30.030504+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "analyzing_layers",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:30.048050+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "assembling_results",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:30.070985+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:30.092286+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "browser-e2e-test-provider",
+      "model_label": "browser-e2e-test-provider",
+      "prompt_version": "context-brief-v5-clause-citations",
+      "schema_version": "writing-analysis-v1",
+      "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+      "source_memory_version": 4
+    },
+    "provider_metrics": {
+      "latency_ms": 12,
+      "input_tokens": 28,
+      "output_tokens": 22,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "analysis_type": "context_brief",
+    "current_draft_revision": 2,
+    "foreshadow_version": null,
+    "foreshadow_snapshot_digest": null,
+    "proposal": null,
+    "question": null,
+    "scope": null,
+    "issue_ids": [],
+    "source_run_id": null,
+    "retrieval": {
+      "counts": {
+        "author_context": {
+          "available": 0,
+          "selected": 0
+        },
+        "character_alias": {
+          "available": 0,
+          "selected": 0
+        },
+        "draft_claim": {
+          "available": 2,
+          "selected": 2
+        },
+        "foreshadow_record": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue_evidence": {
+          "available": 0,
+          "selected": 0
+        },
+        "memory_record": {
+          "available": 8,
+          "selected": 8
+        },
+        "source_span": {
+          "available": 10,
+          "selected": 4
+        }
+      },
+      "draft_claim_scope": {
+        "available": 2,
+        "body_chars": 323,
+        "excerpt_chars": 323,
+        "selected": [
+          {
+            "id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+            "source_chars": 24,
+            "source_end": 24,
+            "source_start": 0,
+            "supplied_chars": 24,
+            "supplied_end": 24,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2",
+            "source_chars": 299,
+            "source_end": 323,
+            "source_start": 24,
+            "supplied_chars": 299,
+            "supplied_end": 323,
+            "truncated": false
+          }
+        ]
+      },
+      "method_version": "writing-analysis-lexical-v3-brief-540",
+      "selected_ids": {
+        "author_context": [],
+        "character_alias": [],
+        "draft_claim": [
+          "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+          "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2"
+        ],
+        "foreshadow_record": [],
+        "issue": [],
+        "issue_evidence": [],
+        "memory_record": [
+          "mem-06415f09-d69d-4c4d-b1ba-640e25cf9084",
+          "mem-c8bb5533-5928-409c-9456-d889d83932d2",
+          "mem-3a879364-5cad-47d0-a196-762d2e2ee0ed",
+          "mem-4e6ee3a9-5600-42b8-a43f-71e2d11eb147",
+          "mem-c936d0a1-1d09-4358-809c-f0339a30b1a0",
+          "mem-2a7a3151-f86e-4189-bc33-ab503d188326",
+          "mem-3363ec19-c0c7-407e-b4fa-3ef3ad6fe4e8",
+          "mem-f498434f-6400-4c12-8b7f-a5338c155e26"
+        ],
+        "source_span": [
+          "span-c69703b7-8545-45de-a58f-c17c21c5ebba",
+          "span-b95330ec-2da6-4d2c-87da-e5ef3232e69d",
+          "span-7c4ada19-5ec6-4fb1-8b3e-976616ed3a1b",
+          "span-6eb0a740-4837-48b4-9425-86b30fb936a7"
+        ]
+      },
+      "truncated": {
+        "author_context": false,
+        "character_alias": false,
+        "draft_body": false,
+        "draft_claim": false,
+        "foreshadow_record": false,
+        "issue": false,
+        "issue_evidence": false,
+        "memory_record": false,
+        "source_span": true,
+        "source_span_text": false
+      }
+    },
+    "input_digest": "a7fa9486bbae592e5215758780cf00c5414bdf4ae356d96756edfd352639c2e6",
+    "analysis": {
+      "citation_transform": {
+        "added_source_count": 1,
+        "discarded_model_item_indices": [],
+        "duplicate_omitted_item_count": 0,
+        "fallback_draft_claim_ids": [
+          "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1"
+        ],
+        "model_item_count": 2,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 0,
+        "overflow_omitted_item_count": 0,
+        "source_rendered_item_count": 3,
+        "version": "source-rendered-v2"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+            "source_chars": 24,
+            "source_end": 24,
+            "source_start": 0,
+            "supplied_chars": 24,
+            "supplied_end": 24,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2",
+            "source_chars": 299,
+            "source_end": 323,
+            "source_start": 24,
+            "supplied_chars": 299,
+            "supplied_end": 323,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+          "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "evidence_status": "supported",
+      "items": [
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "E2E_G02_CITATION 温岚潮表坐标。",
+              "label": "当前草稿 · 句 1",
+              "source_id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+              "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句1原文：「E2E_G02_CITATION 温岚潮表坐标。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。",
+              "label": "当前草稿 · 句 2",
+              "source_id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2",
+              "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句2原文：「林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+              "label": "第 4 章 · 知识边界",
+              "source_id": "span-c69703b7-8545-45de-a58f-c17c21c5ebba",
+              "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/sources#span-span-c69703b7-8545-45de-a58f-c17c21c5ebba",
+              "source_type": "source_span"
+            },
+            {
+              "excerpt": "廊桥钥匙的含义",
+              "label": "温岚 · does_not_know",
+              "source_id": "mem-c936d0a1-1d09-4358-809c-f0339a30b1a0",
+              "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/memory#memory-mem-c936d0a1-1d09-4358-809c-f0339a30b1a0",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "第4章所选原文：「温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。」 已确认记录：温岚不知道「廊桥钥匙的含义」"
+        }
+      ],
+      "summary": "当前草稿句1原文：「E2E_G02_CITATION 温岚潮表坐标。」 当前草稿句2原文：「林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。」",
+      "summary_sources": [
+        {
+          "excerpt": "E2E_G02_CITATION 温岚潮表坐标。",
+          "label": "当前草稿 · 句 1",
+          "source_id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-1",
+          "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。",
+          "label": "当前草稿 · 句 2",
+          "source_id": "draft-claim-draft-2881335b-3359-422f-94fc-b86bd2c9fec9-r2-2",
+          "source_path": "/projects/prj-822ddd7b-151c-4f19-8144-fae53148d2fa/workspace#draft-source",
+          "source_type": "draft_claim"
+        }
+      ]
+    }
+  },
+  "stats": {
+    "provider_mode": "injected_stub",
+    "external_provider_http_enabled": false,
+    "provider_calls": 6,
+    "provider_http_calls": 0,
+    "blocked": false,
+    "test_root": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\story-v130-rc-g02-independent-r2-lVTl7U"
+  },
+  "pageErrors": []
+}

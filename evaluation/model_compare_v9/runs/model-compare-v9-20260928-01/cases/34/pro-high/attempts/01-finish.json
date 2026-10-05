@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 20115,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "8bacba7c-f23d-46d9-ad22-9e1414b95924",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-ccc7ae64-39ad-4a3e-a38f-0e88a58e1d33-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"The claim describes a compatible state change: the 09:00 cited span establishes Siva did not know the password, and the 12:00 span establishes he learned it, so the assertion is supported and no continuity issue exists.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "fc744bfdc10937e310947f8b34893c552106a1afd4c0d86fc4722886e6c927fd",
+  "reasoning": {
+    "present": true,
+    "codepoints": 6174,
+    "utf8_bytes": 6174,
+    "sha256": "1b1178e1dd88ef4d0fae004fa5f71861e0433b28fcf04e17cb1f2b2d113b9d47"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3189,
+      "completion_tokens": 1475,
+      "total_tokens": 4664,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1351
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 757
+    },
+    "status": "complete",
+    "prompt_tokens": 3189,
+    "completion_tokens": 1475,
+    "total_tokens": 4664,
+    "reasoning_tokens": 1351,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:58:01.433915+00:00"
+}

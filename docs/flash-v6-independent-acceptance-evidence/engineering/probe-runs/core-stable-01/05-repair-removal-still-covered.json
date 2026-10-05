@@ -1,0 +1,9 @@
+{
+  "detail": {
+    "explained_removal": "completed",
+    "stub_evaluations_each": 2,
+    "uncovered_removal": "claim_verdicts_incomplete"
+  },
+  "name": "repair-removal-still-covered",
+  "status": "pass"
+}

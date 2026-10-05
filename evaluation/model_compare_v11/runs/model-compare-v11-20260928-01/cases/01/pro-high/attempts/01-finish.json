@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 102186,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "3f841a8d-b6e5-464a-9dea-34f3fdde9e5e",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"relationship\",\n      \"severity\": \"high\",\n      \"explanation\": \"The draft asserts Mira opened the North Glass door wearing only a red badge, but the canonical rule states a red badge cannot open that door.\",\n      \"reasoning\": \"The current claim states Mira opened the North Glass door at 10点 while wearing only her red badge. The canonical rule in fixture-span-north_glass-1 states the door opens only for a wearer of a blue badge and a red badge cannot open it. The time-specific evidence in fixture-span-north_glass-2 confirms Mira was wearing only a red badge and carrying no blue badge at that same time. Thus the claim is directly contradicted by the rule; the roster's lack of record about whether the door opened does not overcome the rule. This is an authorization conflict, not merely an unsupported outcome.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.\",\n        \"evidence_anchor\": \"The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.\",\n        \"relation\": \"timeless_rule\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-1\",\n          \"span_id\": \"fixture-span-north_glass-1\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-north_glass-1\"]\n        },\n        {\n          \"chapter_id\": \"fixture-chapter-north_glass-2\",\n          \"span_id\": \"fixture-span-north_glass-2\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-north_glass-2\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-north_glass-2\",\n          \"role\": \"current_context\"\n        },\n        {\n          \"span_id\": \"fixture-span-north_glass-1\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.\",\n        \"after\": \"At 10点 on the same day, Mira tried the North Glass door while wearing only her red badge, but it did not open.\"\n      },\n      \"available_actions\": [\"edit\", \"apply_suggestion\", \"keep_intentional\", \"false_positive\"]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"Confirmed conflict: canonical rule forbids a red badge from opening the North Glass door, but the claim states Mira opened it wearing only a red badge at the stated time.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "c44d9081133d2d8c24cb900fe30516a47cb20aaff9c5955e24d41615e6e30fbf",
+  "reasoning": {
+    "present": true,
+    "codepoints": 34272,
+    "utf8_bytes": 34330,
+    "sha256": "8539fa77f9e755feaaf221a2be876be76854ef07e185c32549198daa696fb207"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3641,
+      "completion_tokens": 8230,
+      "total_tokens": 11871,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 7479
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 3641
+    },
+    "status": "complete",
+    "prompt_tokens": 3641,
+    "completion_tokens": 8230,
+    "total_tokens": 11871,
+    "reasoning_tokens": 7479,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T08:54:19.105747+00:00"
+}

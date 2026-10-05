@@ -1,0 +1,34 @@
+{
+  "project_id": "fixture-project-v6-companion-blank",
+  "draft_id": "fixture-draft-v6-companion-blank",
+  "draft_revision": 2,
+  "draft_body": "The 19:00 watch record establishes that Evi accompanied Orin to the east quay.",
+  "draft_body_sha256": "55244e1440bdce1254b6ae07d14cdd8a1e9cc7628701c2d3697a8a8b70c431ed",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-v6_companion_blank-1",
+      "chapter_number": 1,
+      "chapter_title": "Synthetic companion_blank source C1",
+      "chapter_body": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_companion_blank-1",
+      "span_body": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+      "span_revision": 1,
+      "chapter_body_sha256": "8a65bec11ba887cc5abe8a88d5648835ff481256baa9a816628455431522fa04",
+      "span_body_sha256": "8a65bec11ba887cc5abe8a88d5648835ff481256baa9a816628455431522fa04"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-v6_companion_blank-1",
+      "memory_type": "dynamic_state",
+      "subject": "companion_blank",
+      "predicate": "status",
+      "value": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+      "source_span_id": "fixture-span-v6_companion_blank-1",
+      "version": 1
+    }
+  ]
+}

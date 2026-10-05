@@ -1,0 +1,12 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+  "run_id": "flash-v5-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 19,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "3252eff60277abc67e548713f4e7cbeef7c906d0dd9248b8abbc83714a525590",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "9605874023006094001e48cb9741c6c2736d5ef61097e4558290a5b77624b2ec",
+  "started_at": "2026-09-27T08:20:42.700356+00:00",
+  "usage_status": "unknown_until_response"
+}

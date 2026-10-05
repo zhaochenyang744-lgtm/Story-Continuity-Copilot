@@ -1,0 +1,252 @@
+{
+  "schema_version": "current-contract-compare-v2-v1-lineage",
+  "v1_manifest_sha256": "d0da4eb5037c5ce8e724d0263255654d97fb25cc975e5e419786ea5a60c8d29c",
+  "v1_cases_sha256": "a751a2a110e03001a1c213cf2a88e21ca5567e6d0a72b9da87430be90d10ebcd",
+  "v2_cases_sha256": "a312282eef0ea34b91a55256b238a01e287705836c6c3387d5b68f34a6ba41c0",
+  "v1_case_count": 24,
+  "v2_case_count": 24,
+  "retained_byte_identical_count": 0,
+  "status": "seen_development; not an independent holdout",
+  "rows": [
+    {
+      "v1_case_id": "ccv1-north_glass-world_rule-conflict",
+      "v2_case_id": "ccv2-north_glass-world_rule-conflict",
+      "category": "world_rule",
+      "class": "conflict",
+      "change": "revised_same_time_premise",
+      "draft_changed": true,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-north_glass-world_rule-no_conflict",
+      "v2_case_id": "ccv2-north_glass-world_rule-no_conflict",
+      "category": "world_rule",
+      "class": "no_conflict",
+      "change": "revised_same_time_premise",
+      "draft_changed": true,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-north_glass-world_rule-insufficient_evidence",
+      "v2_case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+      "category": "world_rule",
+      "class": "insufficient_evidence",
+      "change": "revised_same_time_premise",
+      "draft_changed": true,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-north_glass-object_state-conflict",
+      "v2_case_id": "ccv2-north_glass-object_state-conflict",
+      "category": "object_state",
+      "class": "conflict",
+      "change": "revised_same_time_premise",
+      "draft_changed": true,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-north_glass-object_state-no_conflict",
+      "v2_case_id": "ccv2-north_glass-object_state-no_conflict",
+      "category": "object_state",
+      "class": "no_conflict",
+      "change": "revised_same_time_premise",
+      "draft_changed": true,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-north_glass-object_state-insufficient_evidence",
+      "v2_case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "category": "object_state",
+      "class": "insufficient_evidence",
+      "change": "revised_same_time_premise",
+      "draft_changed": true,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-harbor_signal-timeline-conflict",
+      "v2_case_id": "ccv2-harbor_signal-timeline-conflict",
+      "category": "timeline",
+      "class": "conflict",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-harbor_signal-timeline-no_conflict",
+      "v2_case_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "category": "timeline",
+      "class": "no_conflict",
+      "change": "revised_scoring_or_context",
+      "draft_changed": true,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-harbor_signal-timeline-insufficient_evidence",
+      "v2_case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "category": "timeline",
+      "class": "insufficient_evidence",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-harbor_signal-character_knowledge-conflict",
+      "v2_case_id": "ccv2-harbor_signal-character_knowledge-conflict",
+      "category": "character_knowledge",
+      "class": "conflict",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-harbor_signal-character_knowledge-no_conflict",
+      "v2_case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "category": "character_knowledge",
+      "class": "no_conflict",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-harbor_signal-character_knowledge-insufficient_evidence",
+      "v2_case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "category": "character_knowledge",
+      "class": "insufficient_evidence",
+      "change": "revised_scoring_or_context",
+      "draft_changed": true,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-orchard_restoration-relationship-conflict",
+      "v2_case_id": "ccv2-orchard_restoration-relationship-conflict",
+      "category": "relationship",
+      "class": "conflict",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-orchard_restoration-relationship-no_conflict",
+      "v2_case_id": "ccv2-orchard_restoration-relationship-no_conflict",
+      "category": "relationship",
+      "class": "no_conflict",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-orchard_restoration-relationship-insufficient_evidence",
+      "v2_case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "category": "relationship",
+      "class": "insufficient_evidence",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-orchard_restoration-event_status-conflict",
+      "v2_case_id": "ccv2-orchard_restoration-event_status-conflict",
+      "category": "event_status",
+      "class": "conflict",
+      "change": "revised_same_time_premise",
+      "draft_changed": true,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-orchard_restoration-event_status-no_conflict",
+      "v2_case_id": "ccv2-orchard_restoration-event_status-no_conflict",
+      "category": "event_status",
+      "class": "no_conflict",
+      "change": "revised_same_time_premise",
+      "draft_changed": true,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-orchard_restoration-event_status-insufficient_evidence",
+      "v2_case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+      "category": "event_status",
+      "class": "insufficient_evidence",
+      "change": "revised_same_time_premise",
+      "draft_changed": true,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-basalt_observatory-attribute-conflict",
+      "v2_case_id": "ccv2-basalt_observatory-attribute-conflict",
+      "category": "attribute",
+      "class": "conflict",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-basalt_observatory-attribute-no_conflict",
+      "v2_case_id": "ccv2-basalt_observatory-attribute-no_conflict",
+      "category": "attribute",
+      "class": "no_conflict",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-basalt_observatory-attribute-insufficient_evidence",
+      "v2_case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+      "category": "attribute",
+      "class": "insufficient_evidence",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-basalt_observatory-location_action-conflict",
+      "v2_case_id": "ccv2-basalt_observatory-location_action-conflict",
+      "category": "location_action",
+      "class": "conflict",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-basalt_observatory-location_action-no_conflict",
+      "v2_case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "category": "location_action",
+      "class": "no_conflict",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    },
+    {
+      "v1_case_id": "ccv1-basalt_observatory-location_action-insufficient_evidence",
+      "v2_case_id": "ccv2-basalt_observatory-location_action-insufficient_evidence",
+      "category": "location_action",
+      "class": "insufficient_evidence",
+      "change": "revised_scoring_or_context",
+      "draft_changed": false,
+      "evidence_policy_changed": true,
+      "reason": "V2 addresses independent round-two review of time scope, minimally sufficient evidence, state-change controls, wording, and strict capture-bound scoring."
+    }
+  ]
+}

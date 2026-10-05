@@ -1,0 +1,73 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+      "status": "insufficient_evidence",
+      "category": "relationship",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The claim attributes the loosening of the carrier valve cap to Mira, but the cited inspection record explicitly does not record who loosened the cap and no other supplied evidence ties Mira to that action.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-north_glass-6",
+          "span_id": "fixture-span-north_glass-6",
+          "excerpt": "The carrier inspection does not record who loosened its valve cap.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-6"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-north_glass-5",
+          "span_id": "fixture-span-north_glass-5",
+          "excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-5"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The inspection record (fixture-span-north_glass-6) states that it does not record who loosened the valve cap, so it provides no actor. The cap record (fixture-span-north_glass-5) shows the cap remained loose and not locked at 10点 but does not identify who loosened it. There is no supplied handoff, observation, or other link connecting Mira to the loosening; the door attempt in span-2 is unrelated to the cap. The attribution to Mira is therefore unsupported, and the record alone cannot establish the claim.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-north_glass-6",
+          "role": "missing_link"
+        },
+        {
+          "span_id": "fixture-span-north_glass-5",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-6",
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3804,
+  "output_tokens": 3375,
+  "latency_ms": 51042,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "bailu_foundry",
+  "title": "白榆铸坊的听雨钟",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v9-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "白榆铸坊的听雨钟",
+    "language": "zh",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "试音板登记",
+      "source_label": "plate_register",
+      "body": "雨历八年四月十二日9点，登记员把案上那块编号为工件四三的试音板命名为“青雨”。铸坊当日的名册中，“青雨”只指工件四三，没有别的物件使用这个名称。"
+    },
+    {
+      "chapter_number": 2,
+      "title": "灯下刻铭",
+      "source_label": "engraving_scene",
+      "body": "雨历八年四月十二日10点，给听雨钟刻上最后一笔铭文的是雕刻师郁篆。学徒花弥一直在旁边托住照明灯，没有参与刻字。落刀之后，郁篆用袖口擦去了钟沿的铜屑。"
+    },
+    {
+      "chapter_number": 3,
+      "title": "寄往蓼湾的木匣",
+      "source_label": "packing_receipt",
+      "body": "雨历八年四月十二日13点，花弥取来三片软木垫，逐片装进寄往蓼湾的木匣。收件地址已经写好，他在装箱单上画了三个小圆圈，随后合上匣盖。"
+    },
+    {
+      "chapter_number": 4,
+      "title": "截面检验",
+      "source_label": "plate_measure",
+      "body": "雨历八年四月十二日9点，检验师完成了工件四三的材质检验：板体全厚度均为青铜，没有铁芯，也没有其他材质的夹层。检验师把取样处打磨平整，将记录压在秤砣下。"
+    },
+    {
+      "chapter_number": 5,
+      "title": "来客问路",
+      "source_label": "visitor_talk",
+      "body": "雨历八年四月十二日15点，郁篆对来客谎称：“我从没进过蓼湾。”他前年曾在蓼湾工坊住过整整一个月，只是不愿让来客认出自己。说完，他把那家工坊发的通行牌藏进袖中。"
+    },
+    {
+      "chapter_number": 6,
+      "title": "送信簿",
+      "source_label": "message_book",
+      "body": "送信簿记着：雨历八年四月十二日16点，花弥把写有“试音改到18点”的纸条交给信童，请他送到焦圃手中。信童收好纸条便出了院门。簿页的这一条到“已交信童”处结束，没有签收栏的填写内容。"
+    },
+    {
+      "chapter_number": 7,
+      "title": "钟罩验收页",
+      "source_label": "cover_acceptance",
+      "body": "钟罩修补验收页写着：雨历八年四月十二日19点，钟罩北侧裂缝修补完好，验收人为花弥。表格详细绘出裂缝位置，却把施工者姓名一栏留空；页面上没有其他署名。"
+    },
+    {
+      "chapter_number": 8,
+      "title": "院中的雨声",
+      "source_label": "courtyard_note",
+      "body": "入夜后，白榆铸坊院里的积水没过了石缝。守门人把一排空竹筒搬到檐下，听雨滴在不同深浅的筒中敲出声响。街上最后一个卖饼人收起布旗，沿着坡道离开。"
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "白榆铸坊的听雨钟",
+      "predicate": "status",
+      "value": "雨历八年四月十二日9点，登记员把案上那块编号为工件四三的试音板命名为“青雨”。铸坊当日的名册中，“青雨”只指工件四三，没有别的物件使用这个名称。",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "plate_register"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "白榆铸坊的听雨钟",
+      "predicate": "status",
+      "value": "雨历八年四月十二日10点，给听雨钟刻上最后一笔铭文的是雕刻师郁篆。学徒花弥一直在旁边托住照明灯，没有参与刻字。落刀之后，郁篆用袖口擦去了钟沿的铜屑。",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "engraving_scene"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "白榆铸坊的听雨钟",
+      "predicate": "status",
+      "value": "雨历八年四月十二日13点，花弥取来三片软木垫，逐片装进寄往蓼湾的木匣。收件地址已经写好，他在装箱单上画了三个小圆圈，随后合上匣盖。",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "packing_receipt"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "白榆铸坊的听雨钟",
+      "predicate": "status",
+      "value": "雨历八年四月十二日9点，检验师完成了工件四三的材质检验：板体全厚度均为青铜，没有铁芯，也没有其他材质的夹层。检验师把取样处打磨平整，将记录压在秤砣下。",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "plate_measure"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "白榆铸坊的听雨钟",
+      "predicate": "status",
+      "value": "雨历八年四月十二日15点，郁篆对来客谎称：“我从没进过蓼湾。”他前年曾在蓼湾工坊住过整整一个月，只是不愿让来客认出自己。说完，他把那家工坊发的通行牌藏进袖中。",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "visitor_talk"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "白榆铸坊的听雨钟",
+      "predicate": "status",
+      "value": "送信簿记着：雨历八年四月十二日16点，花弥把写有“试音改到18点”的纸条交给信童，请他送到焦圃手中。信童收好纸条便出了院门。簿页的这一条到“已交信童”处结束，没有签收栏的填写内容。",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "message_book"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "白榆铸坊的听雨钟",
+      "predicate": "status",
+      "value": "钟罩修补验收页写着：雨历八年四月十二日19点，钟罩北侧裂缝修补完好，验收人为花弥。表格详细绘出裂缝位置，却把施工者姓名一栏留空；页面上没有其他署名。",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "cover_acceptance"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "白榆铸坊的听雨钟",
+      "predicate": "status",
+      "value": "入夜后，白榆铸坊院里的积水没过了石缝。守门人把一排空竹筒搬到檐下，听雨滴在不同深浅的筒中敲出声响。街上最后一个卖饼人收起布旗，沿着坡道离开。",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "courtyard_note"
+      }
+    }
+  ]
+}

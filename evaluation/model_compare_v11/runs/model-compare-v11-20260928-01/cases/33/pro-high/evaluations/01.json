@@ -1,0 +1,78 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "8400929dc2dbfd20d6c376a9b492d855a6aa1f86b4c498fb6e22b9dc5e2ed4d7",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "object_state",
+        "severity": "low",
+        "explanation": "The register's specific record of Aster and Nilo as twins is unsupported by the supplied evidence.",
+        "reasoning": "The cited register statement only provides a general rule that recorded twins cannot be one another's parent. It does not state that the register actually records Aster and Nilo as twins. Without that explicit record, the draft's claim that the register correctly records them remains unsupported. The lie itself is not a continuity conflict because the draft marks it as false.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_lie-2",
+            "span_id": "fixture-span-v6_lie-2",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": []
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_lie-2",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The false utterance is not a conflict, but the specific register record is unsupported; only a general rule is supplied."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3168,
+      "completion_tokens": 10652,
+      "total_tokens": 13820,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 10218
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 736
+    },
+    "status": "complete",
+    "prompt_tokens": 3168,
+    "completion_tokens": 10652,
+    "total_tokens": 13820,
+    "reasoning_tokens": 10218,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

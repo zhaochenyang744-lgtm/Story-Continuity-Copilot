@@ -1,0 +1,79 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "f44bb0fed856dbda73866aa753dce8744df69247c7ba118f8757351c8ba0771b",
+  "finished_at": "2026-09-27T10:47:59.732355+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-a054e3c9-7cbb-48fc-ade4-af33405fa9a3-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "relationship",
+        "severity": "high",
+        "explanation": "Nera cannot be Oren's mother because the register records them as twins, and the permanent kinship rule forbids a twin from being the other's parent.",
+        "reasoning": "The birth register (span 2) establishes that Nera and Oren are twins, both children of Tala. The Orchard Register's permanent kinship rule (span 1) states that two people recorded as twins cannot be one another's parent. Together these premises directly contradict the draft claim that Nera is Oren's mother. The rule is timeless, so no shared story-time anchor is needed.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": "two people recorded as twins cannot be one another's parent",
+          "relation": "timeless_rule"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-2",
+            "span_id": "fixture-span-orchard_restoration-2",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-2"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-1",
+            "span_id": "fixture-span-orchard_restoration-1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-2",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-orchard_restoration-1",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "Nera is Oren's mother.",
+          "after": "Nera and Oren are twins, both children of Tala."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-a054e3c9-7cbb-48fc-ade4-af33405fa9a3-1",
+        "verdict": "reviewed_issue",
+        "basis": "The register records Nera and Oren as twins, and the permanent kinship rule forbids a twin from being the other's parent, directly contradicting the claim that Nera is Oren's mother."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3432,
+    "output_tokens": 533,
+    "observed_response_input_tokens": 3432,
+    "observed_response_output_tokens": 533
+  }
+}

@@ -1,0 +1,2030 @@
+{
+  "version": "model-compare-v10",
+  "conditions": [
+    {
+      "id": "flash-high",
+      "model": "deepseek-flash",
+      "thinking": "enabled",
+      "reasoning_effort": "high",
+      "temperature": null
+    },
+    {
+      "id": "pro-high",
+      "model": "deepseek-v4-pro",
+      "thinking": "enabled",
+      "reasoning_effort": "high",
+      "temperature": null
+    }
+  ],
+  "limits": {
+    "max_tokens": 32768,
+    "timeout_seconds": 120,
+    "timeout_semantics": "HTTPX connect/read/write/pool phase timeout, not a hard wall-clock deadline",
+    "contract_evaluations": 2,
+    "transport_retries": 1,
+    "generation_post_cap": 432,
+    "models_get_cap": 1,
+    "known_total_token_cap": 1500000,
+    "original_engine_budget": 8000,
+    "experimental_engine_budget": 40000,
+    "input_budget_units": 6000,
+    "unknown_dispatch_usage_stops_matrix": true
+  },
+  "cases": [
+    {
+      "ordinal": 1,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-world_rule-conflict"
+    },
+    {
+      "ordinal": 2,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, Mira could not open North Glass with her only red badge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-world_rule-no_conflict"
+    },
+    {
+      "ordinal": 3,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "saved_draft": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-world_rule-insufficient_evidence"
+    },
+    {
+      "ordinal": 4,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-object_state-conflict"
+    },
+    {
+      "ordinal": 5,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, the North Glass pneumatic carrier was not ready despite its four-bar gauge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-object_state-no_conflict"
+    },
+    {
+      "ordinal": 6,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "saved_draft": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-object_state-insufficient_evidence"
+    },
+    {
+      "ordinal": 7,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-timeline-conflict"
+    },
+    {
+      "ordinal": 8,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "The gate logs establish that at 10点 the harbor signal gate first closed after its 09点 opening.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-timeline-no_conflict"
+    },
+    {
+      "ordinal": 9,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "The gate logs establish that Sera authorized a reopening at 11点.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-timeline-insufficient_evidence"
+    },
+    {
+      "ordinal": 10,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 11点 on the same day, Sera knew the telegram code.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-character_knowledge-conflict"
+    },
+    {
+      "ordinal": 11,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 13点 Sera learned the telegram code after not knowing it at 11点.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-character_knowledge-no_conflict"
+    },
+    {
+      "ordinal": 12,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "Vela delivered the telegram to Sera at 13点, according to the records.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence"
+    },
+    {
+      "ordinal": 13,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Nera is Oren's mother.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-relationship-conflict"
+    },
+    {
+      "ordinal": 14,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-relationship-no_conflict"
+    },
+    {
+      "ordinal": 15,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "The birth register establishes that Nera was born before Oren.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence"
+    },
+    {
+      "ordinal": 16,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "At 10点 on the same day, the restoration boat had completed its launch.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-event_status-conflict"
+    },
+    {
+      "ordinal": 17,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "At 10点 on the same day, the restoration boat had not completed launch while its manifest was unsigned and it remained at the quay.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-event_status-no_conflict"
+    },
+    {
+      "ordinal": 18,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Tala caused the restoration boat's delay, according to the launch and delay logs.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence"
+    },
+    {
+      "ordinal": 19,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 on the same day, lens R4 is amber glass.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-attribute-conflict"
+    },
+    {
+      "ordinal": 20,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-attribute-no_conflict"
+    },
+    {
+      "ordinal": 21,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "The index and maintenance sheet establish that Vela ground lens R4.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence"
+    },
+    {
+      "ordinal": 22,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 on the same day, Vela stood on the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-location_action-conflict"
+    },
+    {
+      "ordinal": 23,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-location_action-no_conflict"
+    },
+    {
+      "ordinal": 24,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence"
+    },
+    {
+      "ordinal": 25,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-01",
+      "corpus_key": "v6_lens",
+      "fixture_key": "lens",
+      "saved_draft": "At 14:00 today, lens Q8 is amber glass.",
+      "control_ids": [
+        "V6S-01",
+        "V6S-02",
+        "V6S-05"
+      ],
+      "selected_source_labels": [
+        "L1",
+        "L2",
+        "L4"
+      ]
+    },
+    {
+      "ordinal": 26,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-03",
+      "corpus_key": "v6_carrier",
+      "fixture_key": "carrier",
+      "saved_draft": "At 10:00 today the courier capsule was ready for dispatch.",
+      "control_ids": [
+        "V6S-03"
+      ],
+      "selected_source_labels": [
+        "R1",
+        "R2",
+        "R3"
+      ]
+    },
+    {
+      "ordinal": 27,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-04",
+      "corpus_key": "v6_carrier",
+      "fixture_key": "carrier",
+      "saved_draft": "At 10:00 today the courier capsule was not ready because its valve cap was loose.",
+      "control_ids": [
+        "V6S-04"
+      ],
+      "selected_source_labels": [
+        "R1",
+        "R2",
+        "R3"
+      ]
+    },
+    {
+      "ordinal": 28,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-06",
+      "corpus_key": "v6_actor_blank",
+      "fixture_key": "actor_blank",
+      "saved_draft": "According to the inspection log, Ina loosened the courier capsule valve cap.",
+      "control_ids": [
+        "V6S-06"
+      ],
+      "selected_source_labels": [
+        "A1"
+      ]
+    },
+    {
+      "ordinal": 29,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-07",
+      "corpus_key": "v6_actor_blank",
+      "fixture_key": "actor_blank",
+      "saved_draft": "At 11:00 Ina walked into the repair room.",
+      "control_ids": [
+        "V6S-07"
+      ],
+      "selected_source_labels": [
+        "A1"
+      ]
+    },
+    {
+      "ordinal": 30,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-08",
+      "corpus_key": "v6_actor_named",
+      "fixture_key": "actor_named",
+      "saved_draft": "According to the inspection log, Ina loosened the courier capsule valve cap at 10:00.",
+      "control_ids": [
+        "V6S-08"
+      ],
+      "selected_source_labels": [
+        "A2"
+      ]
+    },
+    {
+      "ordinal": 31,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-09",
+      "corpus_key": "v6_birth_order_blank",
+      "fixture_key": "birth_order_blank",
+      "saved_draft": "The birth register establishes that Aster was born before Nilo.",
+      "control_ids": [
+        "V6S-09"
+      ],
+      "selected_source_labels": [
+        "B1"
+      ]
+    },
+    {
+      "ordinal": 32,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-10",
+      "corpus_key": "v6_companion_blank",
+      "fixture_key": "companion_blank",
+      "saved_draft": "The 19:00 watch record establishes that Evi accompanied Orin to the east quay.",
+      "control_ids": [
+        "V6S-10"
+      ],
+      "selected_source_labels": [
+        "C1"
+      ]
+    },
+    {
+      "ordinal": 33,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-11",
+      "corpus_key": "v6_lie",
+      "fixture_key": "lie",
+      "saved_draft": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins.",
+      "control_ids": [
+        "V6S-11"
+      ],
+      "selected_source_labels": [
+        "T1",
+        "T2"
+      ]
+    },
+    {
+      "ordinal": 34,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-12",
+      "corpus_key": "v6_knowledge_transition",
+      "fixture_key": "knowledge_transition",
+      "saved_draft": "At 12:00 today Siva learned the password after not knowing it at 09:00.",
+      "control_ids": [
+        "V6S-12"
+      ],
+      "selected_source_labels": [
+        "K1",
+        "K2"
+      ]
+    },
+    {
+      "ordinal": 35,
+      "case_id": "cc1-actor-blank-en",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc1-actor-blank-en",
+        "language": "en",
+        "probe": "attribution_missing",
+        "claim": "The kitchen ledger establishes that Rurik over-salted the harvest soup.",
+        "spans": [
+          {
+            "label": "K1",
+            "body": "The kitchen ledger notes that the harvest soup was over-salted at noon; it names no cook.",
+            "memory_type": "dynamic_state",
+            "predicate": "status",
+            "subject": "harvest soup"
+          }
+        ],
+        "expected": {
+          "outcome": "insufficient_evidence",
+          "category": "relationship",
+          "required": [
+            [
+              "K1"
+            ]
+          ]
+        },
+        "rationale": "The act is recorded; only who performed it is missing."
+      }
+    },
+    {
+      "ordinal": 36,
+      "case_id": "cc2-actor-blank-zh",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc2-actor-blank-zh",
+        "language": "zh",
+        "probe": "attribution_missing",
+        "claim": "据值班簿记载，林岫打开了东仓的铁锁。",
+        "spans": [
+          {
+            "label": "Z1",
+            "body": "值班簿记载东仓铁锁于子夜被打开，未写明开锁之人。",
+            "memory_type": "dynamic_state",
+            "predicate": "status",
+            "subject": "东仓铁锁"
+          }
+        ],
+        "expected": {
+          "outcome": "insufficient_evidence",
+          "category": "relationship",
+          "required": [
+            [
+              "Z1"
+            ]
+          ]
+        },
+        "rationale": "开锁这件事有记录，缺的是由谁打开。"
+      }
+    },
+    {
+      "ordinal": 37,
+      "case_id": "cc3-cause-blank-en",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc3-cause-blank-en",
+        "language": "en",
+        "probe": "attribution_missing",
+        "claim": "According to the harbour ledger, Pell caused the crane's collapse.",
+        "spans": [
+          {
+            "label": "H1",
+            "body": "The harbour crane collapsed at dawn; the harbour ledger leaves the cause of the collapse unrecorded.",
+            "memory_type": "event_timeline",
+            "predicate": "event_occurred",
+            "subject": "harbour crane"
+          }
+        ],
+        "expected": {
+          "outcome": "insufficient_evidence",
+          "category": "relationship",
+          "required": [
+            [
+              "H1"
+            ]
+          ]
+        },
+        "rationale": "The collapse happened; the named person's causal responsibility is the missing link."
+      }
+    },
+    {
+      "ordinal": 38,
+      "case_id": "cc4-deliverer-blank-zh",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc4-deliverer-blank-zh",
+        "language": "zh",
+        "probe": "attribution_missing",
+        "claim": "驿站记录表明，是阿蘅把药箱送到了北营。",
+        "spans": [
+          {
+            "label": "Y1",
+            "body": "驿站记录：药箱于辰时送达北营，送件人一栏空白。",
+            "memory_type": "event_timeline",
+            "predicate": "event_occurred",
+            "subject": "药箱"
+          },
+          {
+            "label": "Y2",
+            "body": "北营位于驿站以北二十里。",
+            "memory_type": "static_canon",
+            "predicate": "location",
+            "subject": "北营"
+          }
+        ],
+        "expected": {
+          "outcome": "insufficient_evidence",
+          "category": "relationship",
+          "required": [
+            [
+              "Y1"
+            ]
+          ],
+          "optional": [
+            "Y2"
+          ]
+        },
+        "rationale": "送达有记录，送件人是谁未记录。"
+      }
+    },
+    {
+      "ordinal": 39,
+      "case_id": "cc5-authorizer-blank-en",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc5-authorizer-blank-en",
+        "language": "en",
+        "probe": "attribution_missing",
+        "claim": "The council minutes establish that Tamsin ordered the river gate closed.",
+        "spans": [
+          {
+            "label": "C1",
+            "body": "The council minutes record that the river gate was closed by order at dusk; they do not name who gave the order.",
+            "memory_type": "event_timeline",
+            "predicate": "event_occurred",
+            "subject": "river gate"
+          }
+        ],
+        "expected": {
+          "outcome": "insufficient_evidence",
+          "category": "relationship",
+          "required": [
+            [
+              "C1"
+            ]
+          ]
+        },
+        "rationale": "Named authorization is the missing link."
+      }
+    },
+    {
+      "ordinal": 40,
+      "case_id": "cc6-outcome-unknown-en",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc6-outcome-unknown-en",
+        "language": "en",
+        "probe": "attribution_contrast_event_status",
+        "claim": "The survey log establishes that Doran finished mapping the south ridge.",
+        "spans": [
+          {
+            "label": "S1",
+            "body": "Doran began mapping the south ridge on the third day; the survey log does not say whether the mapping was ever finished.",
+            "memory_type": "event_timeline",
+            "predicate": "event_occurred",
+            "subject": "south ridge survey"
+          }
+        ],
+        "expected": {
+          "outcome": "insufficient_evidence",
+          "category": "event_status",
+          "required": [
+            [
+              "S1"
+            ]
+          ]
+        },
+        "rationale": "The actor is recorded and not disputed; whether the event completed is missing."
+      }
+    },
+    {
+      "ordinal": 41,
+      "case_id": "cc7-outcome-unknown-zh",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc7-outcome-unknown-zh",
+        "language": "zh",
+        "probe": "attribution_contrast_event_status",
+        "claim": "据工坊日志，沈砚已经铸成了那口铜钟。",
+        "spans": [
+          {
+            "label": "G1",
+            "body": "工坊日志记载沈砚于初五开始铸造那口铜钟，此后没有记录铸造是否完成。",
+            "memory_type": "event_timeline",
+            "predicate": "event_occurred",
+            "subject": "铜钟"
+          }
+        ],
+        "expected": {
+          "outcome": "insufficient_evidence",
+          "category": "event_status",
+          "required": [
+            [
+              "G1"
+            ]
+          ]
+        },
+        "rationale": "铸钟人已记录且无争议，缺的是事件是否完成。"
+      }
+    },
+    {
+      "ordinal": 42,
+      "case_id": "cc8-holder-unknown-en",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc8-holder-unknown-en",
+        "language": "en",
+        "probe": "attribution_contrast_object_state",
+        "claim": "The two key registers establish that Ilse held the spare vault key at 15:00.",
+        "spans": [
+          {
+            "label": "R1",
+            "body": "Register A records that the spare vault key left its hook at 14:00.",
+            "memory_type": "dynamic_state",
+            "predicate": "possession",
+            "subject": "spare vault key"
+          },
+          {
+            "label": "R2",
+            "body": "Register B does not record who held the spare vault key after 14:00.",
+            "memory_type": "open_thread",
+            "predicate": "possession",
+            "subject": "spare vault key"
+          }
+        ],
+        "expected": {
+          "outcome": "insufficient_evidence",
+          "category": "object_state",
+          "required": [
+            [
+              "R2"
+            ],
+            [
+              "R1",
+              "R2"
+            ]
+          ],
+          "optional": [
+            "R1"
+          ]
+        },
+        "rationale": "Possession of an object at a time is object_state, not attribution of an act."
+      }
+    },
+    {
+      "ordinal": 43,
+      "case_id": "cc9-ferry-rule-premise-en",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc9-ferry-rule-premise-en",
+        "language": "en",
+        "probe": "rule_premise_event_status",
+        "claim": "At 12:00 today the ferry crossing was complete.",
+        "spans": [
+          {
+            "label": "F1",
+            "body": "A ferry crossing is complete only when the ferry is moored at the far bank.",
+            "memory_type": "static_canon",
+            "predicate": "rule",
+            "subject": "ferry crossing"
+          },
+          {
+            "label": "F2",
+            "body": "At 12:00 today the ferry was still mid-river and not moored at the far bank.",
+            "memory_type": "dynamic_state",
+            "predicate": "status",
+            "subject": "ferry"
+          }
+        ],
+        "expected": {
+          "outcome": "confirmed_conflict",
+          "category": "event_status",
+          "required": [
+            [
+              "F2"
+            ],
+            [
+              "F1",
+              "F2"
+            ]
+          ],
+          "optional": [
+            "F1"
+          ],
+          "premises": [
+            "F1"
+          ],
+          "temporal_relations": [
+            "explicit_overlap",
+            "timeless_rule"
+          ],
+          "anchors": [
+            "At 12:00 today",
+            "At 12:00 today"
+          ]
+        },
+        "rationale": "The rule only defines completion; the recorded state decides that the crossing had not completed."
+      }
+    },
+    {
+      "ordinal": 44,
+      "case_id": "cc10-salt-bridge-rule-en",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc10-salt-bridge-rule-en",
+        "language": "en",
+        "probe": "rule_is_direct_fact",
+        "claim": "At midnight today, Corin crossed the salt bridge carrying an iron sword.",
+        "spans": [
+          {
+            "label": "B1",
+            "body": "No one carrying iron can cross the salt bridge; the bridge repels iron.",
+            "memory_type": "static_canon",
+            "predicate": "rule",
+            "subject": "salt bridge"
+          },
+          {
+            "label": "B2",
+            "body": "At midnight today Corin approached the salt bridge with an iron sword; the watch did not see whether he crossed.",
+            "memory_type": "dynamic_state",
+            "predicate": "location",
+            "subject": "Corin"
+          }
+        ],
+        "expected": {
+          "outcome": "confirmed_conflict",
+          "category": "world_rule",
+          "required": [
+            [
+              "B1"
+            ]
+          ],
+          "optional": [
+            "B2"
+          ],
+          "temporal_relations": [
+            "timeless_rule"
+          ]
+        },
+        "rationale": "No record of the actual crossing decides the claim; the rule itself is the direct contradiction."
+      }
+    },
+    {
+      "ordinal": 45,
+      "case_id": "cc11-location-zh",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc11-location-zh",
+        "language": "zh",
+        "probe": "location_contrast",
+        "claim": "今天10点，许棠站在南门城楼上。",
+        "spans": [
+          {
+            "label": "L1",
+            "body": "今天10点，许棠一直守在北门城楼，没有离开。",
+            "memory_type": "dynamic_state",
+            "predicate": "location",
+            "subject": "许棠"
+          }
+        ],
+        "expected": {
+          "outcome": "confirmed_conflict",
+          "category": "location_action",
+          "required": [
+            [
+              "L1"
+            ]
+          ],
+          "temporal_relations": [
+            "explicit_overlap"
+          ],
+          "anchors": [
+            "今天10点",
+            "今天10点"
+          ]
+        },
+        "rationale": "人物身份无争议，冲突在于她所在的位置。"
+      }
+    },
+    {
+      "ordinal": 46,
+      "case_id": "cc12-material-en",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc12-material-en",
+        "language": "en",
+        "probe": "attribute_with_time",
+        "claim": "At 17:00 today, the envoy's banner is green silk.",
+        "spans": [
+          {
+            "label": "E1",
+            "body": "At 17:00 today, the envoy's banner is red wool, not green silk.",
+            "memory_type": "dynamic_state",
+            "predicate": "status",
+            "subject": "envoy's banner"
+          }
+        ],
+        "expected": {
+          "outcome": "confirmed_conflict",
+          "category": "attribute",
+          "required": [
+            [
+              "E1"
+            ]
+          ],
+          "temporal_relations": [
+            "explicit_overlap"
+          ],
+          "anchors": [
+            "At 17:00 today",
+            "At 17:00 today"
+          ]
+        },
+        "rationale": "Material and colour are intrinsic properties despite the time anchor."
+      }
+    },
+    {
+      "ordinal": 47,
+      "case_id": "cc13-material-zh",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc13-material-zh",
+        "language": "zh",
+        "probe": "attribute_with_time",
+        "claim": "今天15点，库房那把长钥匙是铜制的。",
+        "spans": [
+          {
+            "label": "M1",
+            "body": "今天15点，库房清册记载那把长钥匙为铁制，并非铜制。",
+            "memory_type": "dynamic_state",
+            "predicate": "status",
+            "subject": "长钥匙"
+          }
+        ],
+        "expected": {
+          "outcome": "confirmed_conflict",
+          "category": "attribute",
+          "required": [
+            [
+              "M1"
+            ]
+          ],
+          "temporal_relations": [
+            "explicit_overlap"
+          ],
+          "anchors": [
+            "今天15点",
+            "今天15点"
+          ]
+        },
+        "rationale": "材质是固有属性，时间标注不改变类别。"
+      }
+    },
+    {
+      "ordinal": 48,
+      "case_id": "cc14-locked-en",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc14-locked-en",
+        "language": "en",
+        "probe": "object_state_contrast",
+        "claim": "At 08:00 today the archive vault door was locked.",
+        "spans": [
+          {
+            "label": "V1",
+            "body": "At 08:00 today the archive vault door stood unlocked and ajar.",
+            "memory_type": "dynamic_state",
+            "predicate": "status",
+            "subject": "archive vault door"
+          }
+        ],
+        "expected": {
+          "outcome": "confirmed_conflict",
+          "category": "object_state",
+          "required": [
+            [
+              "V1"
+            ]
+          ],
+          "temporal_relations": [
+            "explicit_overlap"
+          ],
+          "anchors": [
+            "At 08:00 today",
+            "At 08:00 today"
+          ]
+        },
+        "rationale": "Locked/unlocked is a mutable operational state."
+      }
+    },
+    {
+      "ordinal": 49,
+      "case_id": "cc15-loaded-zh",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc15-loaded-zh",
+        "language": "zh",
+        "probe": "object_state_contrast",
+        "claim": "今天6点，那艘货船已经装满、可以启航。",
+        "spans": [
+          {
+            "label": "D1",
+            "body": "今天6点，那艘货船的舱位只装了一半，还不能启航。",
+            "memory_type": "dynamic_state",
+            "predicate": "status",
+            "subject": "货船"
+          }
+        ],
+        "expected": {
+          "outcome": "confirmed_conflict",
+          "category": "object_state",
+          "required": [
+            [
+              "D1"
+            ]
+          ],
+          "temporal_relations": [
+            "explicit_overlap"
+          ],
+          "anchors": [
+            "今天6点",
+            "今天6点"
+          ]
+        },
+        "rationale": "装载与可启航是可变的运行状态。"
+      }
+    },
+    {
+      "ordinal": 50,
+      "case_id": "cc16-birth-order-zh",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc16-birth-order-zh",
+        "language": "zh",
+        "probe": "timeline",
+        "claim": "族谱表明，阿岚比阿岩先出生。",
+        "spans": [
+          {
+            "label": "T1",
+            "body": "族谱记载阿岚与阿岩为双生子，没有记载谁先出生。",
+            "memory_type": "static_canon",
+            "predicate": "relationship",
+            "subject": "阿岚"
+          }
+        ],
+        "expected": {
+          "outcome": "insufficient_evidence",
+          "category": "timeline",
+          "required": [
+            [
+              "T1"
+            ]
+          ]
+        },
+        "rationale": "出生先后属于时间顺序。"
+      }
+    },
+    {
+      "ordinal": 51,
+      "case_id": "cc17-order-en",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc17-order-en",
+        "language": "en",
+        "probe": "timeline",
+        "claim": "At 07:00 today, the watch bell rang before the east gate opened.",
+        "spans": [
+          {
+            "label": "O1",
+            "body": "At 07:00 today the east gate opened first; the watch bell rang only after the gate was already open.",
+            "memory_type": "event_timeline",
+            "predicate": "event_occurred",
+            "subject": "east gate"
+          }
+        ],
+        "expected": {
+          "outcome": "confirmed_conflict",
+          "category": "timeline",
+          "required": [
+            [
+              "O1"
+            ]
+          ],
+          "temporal_relations": [
+            "explicit_overlap"
+          ],
+          "anchors": [
+            "At 07:00 today",
+            "At 07:00 today"
+          ]
+        },
+        "rationale": "The disputed fact is the order of two events."
+      }
+    },
+    {
+      "ordinal": 52,
+      "case_id": "cc18-kinship-zh",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc18-kinship-zh",
+        "language": "zh",
+        "probe": "relationship_kinship",
+        "claim": "韩素是韩青的姑姑。",
+        "spans": [
+          {
+            "label": "Q1",
+            "body": "宗谱记载：韩素与韩青是同父同母的亲姐妹。",
+            "memory_type": "static_canon",
+            "predicate": "relationship",
+            "subject": "韩素"
+          },
+          {
+            "label": "Q2",
+            "body": "宗谱规定：同父同母的亲姐妹彼此只是姐妹，不能互为姑侄。",
+            "memory_type": "static_canon",
+            "predicate": "rule",
+            "subject": "宗谱"
+          }
+        ],
+        "expected": {
+          "outcome": "confirmed_conflict",
+          "category": "relationship",
+          "required": [
+            [
+              "Q1",
+              "Q2"
+            ]
+          ],
+          "premises": [
+            "Q2"
+          ],
+          "temporal_relations": [
+            "timeless_rule"
+          ]
+        },
+        "rationale": "亲属关系冲突；规则只是前提，记载的姐妹关系决定结论。"
+      }
+    },
+    {
+      "ordinal": 53,
+      "case_id": "cc19-knowledge-zh",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc19-knowledge-zh",
+        "language": "zh",
+        "probe": "attribution_contrast_knowledge",
+        "claim": "据信件记载，梅伊已经知道了密道的入口在哪里。",
+        "spans": [
+          {
+            "label": "W1",
+            "body": "信件只记载有人曾向梅伊提起密道，没有说明她是否得知入口所在。",
+            "memory_type": "character_knowledge",
+            "predicate": "knowledge",
+            "subject": "梅伊"
+          }
+        ],
+        "expected": {
+          "outcome": "insufficient_evidence",
+          "category": "character_knowledge",
+          "required": [
+            [
+              "W1"
+            ]
+          ]
+        },
+        "rationale": "缺的是人物是否知道，而不是谁做了某事。"
+      }
+    },
+    {
+      "ordinal": 54,
+      "case_id": "cc20-unlocked-no-issue-en",
+      "evaluation_kind": "category_control_v1",
+      "control": {
+        "id": "cc20-unlocked-no-issue-en",
+        "language": "en",
+        "probe": "no_issue_control",
+        "claim": "At 08:00 today the archive vault door was unlocked.",
+        "spans": [
+          {
+            "label": "V1",
+            "body": "At 08:00 today the archive vault door stood unlocked and ajar.",
+            "memory_type": "dynamic_state",
+            "predicate": "status",
+            "subject": "archive vault door"
+          }
+        ],
+        "expected": {
+          "outcome": "no_issue",
+          "category": null,
+          "required": []
+        },
+        "rationale": "Directly supported; a category rule change must not create an issue."
+      }
+    }
+  ],
+  "schedule": [
+    {
+      "dispatch_order": 1,
+      "case_ordinal": 1,
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 2,
+      "case_ordinal": 1,
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 3,
+      "case_ordinal": 2,
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 4,
+      "case_ordinal": 2,
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 5,
+      "case_ordinal": 3,
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 6,
+      "case_ordinal": 3,
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 7,
+      "case_ordinal": 4,
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 8,
+      "case_ordinal": 4,
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 9,
+      "case_ordinal": 5,
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 10,
+      "case_ordinal": 5,
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 11,
+      "case_ordinal": 6,
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 12,
+      "case_ordinal": 6,
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 13,
+      "case_ordinal": 7,
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 14,
+      "case_ordinal": 7,
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 15,
+      "case_ordinal": 8,
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 16,
+      "case_ordinal": 8,
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 17,
+      "case_ordinal": 9,
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 18,
+      "case_ordinal": 9,
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 19,
+      "case_ordinal": 10,
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 20,
+      "case_ordinal": 10,
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 21,
+      "case_ordinal": 11,
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 22,
+      "case_ordinal": 11,
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 23,
+      "case_ordinal": 12,
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 24,
+      "case_ordinal": 12,
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 25,
+      "case_ordinal": 13,
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 26,
+      "case_ordinal": 13,
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 27,
+      "case_ordinal": 14,
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 28,
+      "case_ordinal": 14,
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 29,
+      "case_ordinal": 15,
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 30,
+      "case_ordinal": 15,
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 31,
+      "case_ordinal": 16,
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 32,
+      "case_ordinal": 16,
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 33,
+      "case_ordinal": 17,
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 34,
+      "case_ordinal": 17,
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 35,
+      "case_ordinal": 18,
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 36,
+      "case_ordinal": 18,
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 37,
+      "case_ordinal": 19,
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 38,
+      "case_ordinal": 19,
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 39,
+      "case_ordinal": 20,
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 40,
+      "case_ordinal": 20,
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 41,
+      "case_ordinal": 21,
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 42,
+      "case_ordinal": 21,
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 43,
+      "case_ordinal": 22,
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 44,
+      "case_ordinal": 22,
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 45,
+      "case_ordinal": 23,
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 46,
+      "case_ordinal": 23,
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 47,
+      "case_ordinal": 24,
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 48,
+      "case_ordinal": 24,
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 49,
+      "case_ordinal": 25,
+      "case_id": "v6-v6s-01",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 50,
+      "case_ordinal": 25,
+      "case_id": "v6-v6s-01",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 51,
+      "case_ordinal": 26,
+      "case_id": "v6-v6s-03",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 52,
+      "case_ordinal": 26,
+      "case_id": "v6-v6s-03",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 53,
+      "case_ordinal": 27,
+      "case_id": "v6-v6s-04",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 54,
+      "case_ordinal": 27,
+      "case_id": "v6-v6s-04",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 55,
+      "case_ordinal": 28,
+      "case_id": "v6-v6s-06",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 56,
+      "case_ordinal": 28,
+      "case_id": "v6-v6s-06",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 57,
+      "case_ordinal": 29,
+      "case_id": "v6-v6s-07",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 58,
+      "case_ordinal": 29,
+      "case_id": "v6-v6s-07",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 59,
+      "case_ordinal": 30,
+      "case_id": "v6-v6s-08",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 60,
+      "case_ordinal": 30,
+      "case_id": "v6-v6s-08",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 61,
+      "case_ordinal": 31,
+      "case_id": "v6-v6s-09",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 62,
+      "case_ordinal": 31,
+      "case_id": "v6-v6s-09",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 63,
+      "case_ordinal": 32,
+      "case_id": "v6-v6s-10",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 64,
+      "case_ordinal": 32,
+      "case_id": "v6-v6s-10",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 65,
+      "case_ordinal": 33,
+      "case_id": "v6-v6s-11",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 66,
+      "case_ordinal": 33,
+      "case_id": "v6-v6s-11",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 67,
+      "case_ordinal": 34,
+      "case_id": "v6-v6s-12",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 68,
+      "case_ordinal": 34,
+      "case_id": "v6-v6s-12",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 69,
+      "case_ordinal": 35,
+      "case_id": "cc1-actor-blank-en",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 70,
+      "case_ordinal": 35,
+      "case_id": "cc1-actor-blank-en",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 71,
+      "case_ordinal": 36,
+      "case_id": "cc2-actor-blank-zh",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 72,
+      "case_ordinal": 36,
+      "case_id": "cc2-actor-blank-zh",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 73,
+      "case_ordinal": 37,
+      "case_id": "cc3-cause-blank-en",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 74,
+      "case_ordinal": 37,
+      "case_id": "cc3-cause-blank-en",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 75,
+      "case_ordinal": 38,
+      "case_id": "cc4-deliverer-blank-zh",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 76,
+      "case_ordinal": 38,
+      "case_id": "cc4-deliverer-blank-zh",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 77,
+      "case_ordinal": 39,
+      "case_id": "cc5-authorizer-blank-en",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 78,
+      "case_ordinal": 39,
+      "case_id": "cc5-authorizer-blank-en",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 79,
+      "case_ordinal": 40,
+      "case_id": "cc6-outcome-unknown-en",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 80,
+      "case_ordinal": 40,
+      "case_id": "cc6-outcome-unknown-en",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 81,
+      "case_ordinal": 41,
+      "case_id": "cc7-outcome-unknown-zh",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 82,
+      "case_ordinal": 41,
+      "case_id": "cc7-outcome-unknown-zh",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 83,
+      "case_ordinal": 42,
+      "case_id": "cc8-holder-unknown-en",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 84,
+      "case_ordinal": 42,
+      "case_id": "cc8-holder-unknown-en",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 85,
+      "case_ordinal": 43,
+      "case_id": "cc9-ferry-rule-premise-en",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 86,
+      "case_ordinal": 43,
+      "case_id": "cc9-ferry-rule-premise-en",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 87,
+      "case_ordinal": 44,
+      "case_id": "cc10-salt-bridge-rule-en",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 88,
+      "case_ordinal": 44,
+      "case_id": "cc10-salt-bridge-rule-en",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 89,
+      "case_ordinal": 45,
+      "case_id": "cc11-location-zh",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 90,
+      "case_ordinal": 45,
+      "case_id": "cc11-location-zh",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 91,
+      "case_ordinal": 46,
+      "case_id": "cc12-material-en",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 92,
+      "case_ordinal": 46,
+      "case_id": "cc12-material-en",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 93,
+      "case_ordinal": 47,
+      "case_id": "cc13-material-zh",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 94,
+      "case_ordinal": 47,
+      "case_id": "cc13-material-zh",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 95,
+      "case_ordinal": 48,
+      "case_id": "cc14-locked-en",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 96,
+      "case_ordinal": 48,
+      "case_id": "cc14-locked-en",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 97,
+      "case_ordinal": 49,
+      "case_id": "cc15-loaded-zh",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 98,
+      "case_ordinal": 49,
+      "case_id": "cc15-loaded-zh",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 99,
+      "case_ordinal": 50,
+      "case_id": "cc16-birth-order-zh",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 100,
+      "case_ordinal": 50,
+      "case_id": "cc16-birth-order-zh",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 101,
+      "case_ordinal": 51,
+      "case_id": "cc17-order-en",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 102,
+      "case_ordinal": 51,
+      "case_id": "cc17-order-en",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 103,
+      "case_ordinal": 52,
+      "case_id": "cc18-kinship-zh",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 104,
+      "case_ordinal": 52,
+      "case_id": "cc18-kinship-zh",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 105,
+      "case_ordinal": 53,
+      "case_id": "cc19-knowledge-zh",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 106,
+      "case_ordinal": 53,
+      "case_id": "cc19-knowledge-zh",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 107,
+      "case_ordinal": 54,
+      "case_id": "cc20-unlocked-no-issue-en",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 108,
+      "case_ordinal": 54,
+      "case_id": "cc20-unlocked-no-issue-en",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    }
+  ],
+  "logical_cases": 54,
+  "condition_cases": 108,
+  "v7_cases_sha256": "84b2888288fce933c26f57a7c1a8e5ef58a2bfab37ad66550da8e2925cb0f4df",
+  "controls_sha256": "325bd68c457e55ed69a147ae1b3972987530f48b185661d169e887091c61101b",
+  "input_hashes": {
+    "1": "015f9d608b4d342179fb42ab8ed3f50b12f6c64a061925a1c3d4fde46d379004",
+    "2": "3d02994007b8eb02f55647adaf5d33db28fb93ebba682dfb5b7255b8111ef496",
+    "3": "23d76583388e84f657f3fc40dbd5514d5037cbd92f15ea7d93653791717617d0",
+    "4": "d9268ecb1efbf3b9eae75743806486b9592ca0fa1a67924f96a8345e33e2e33b",
+    "5": "21b6adfd2a63b82b28261f3d540008776485a8e1cadf218bee17da07202f3dee",
+    "6": "94c6dec4533d8b0ab78a81e667deb188284694a9308e5cf1db9c12442ce023d0",
+    "7": "c87b75cd3e9cee712ccf0f70171a44824d0914362e0f466b3545a72555024b02",
+    "8": "b8a112482ec8e6ea12f711eed4fee05ab542fbc21abda81625dc2a1dfcc2d66c",
+    "9": "d43ed17ed9fdb4ad28b1f86e9f60e232b690b19b6e6d6f48d87229c8110644cb",
+    "10": "830a191a8259705a215c3b00e741dc434c5423cff02fdf1eb99c318f138c8d2e",
+    "11": "527c55f68e0f2d05f8683f68a320e8a31dc902a9032623f56a6387f6468373bf",
+    "12": "e7364d40e6ba3af7e87a1343baed8633ad02f5c9fe04dcaea159ef1708909d9e",
+    "13": "dc56afa7e8c40bba700caea1ebe48a74db9c0c91377ae56ecaed4d7c63bb93b6",
+    "14": "e1ce482b113acf80283cc55673362c7683d7734ec61d83fdd02d5e933b76f69f",
+    "15": "4cca5330a36af6d1ef93a76d486682f2aa2db959e01e8419f4fd80b80eff77b1",
+    "16": "95afcbe2cd8655e67f146b24ad190f0e8bec37e0df08016066eb1cc07050b9bd",
+    "17": "9974e6892c79847ee44f0fdfc9d5c2ebcaa344f40b40641c7148b40c8e078a60",
+    "18": "493ff4401e17f8133bf8abf8619aeb5838b712a44d36f9be4e3e947c810115e4",
+    "19": "e9fd757f57e87d0a7b94e730220d970686f82005d9eeaba3943987be20aa1d87",
+    "20": "34033c0a2dbca3433acf321ea499db84781bffdd2fd46b8daaba5e245326c0cc",
+    "21": "97ef512d60e530606b03f8629a7a234f51556055a0b5060fa67467b757df5e6a",
+    "22": "0c9742278b9266f7ce9d470b36a62282cfdbe14974967e0509a4193d0d1ecf64",
+    "23": "d42e65d5539e2620bcafda85b02c608d7efffd6cbc05a5a1ce49231d68a395b6",
+    "24": "6bc2a19856964b2623b8b55cac6926b2b087584ac1cf29aec698dbde5ee1daaf",
+    "25": "203a5b9441176a3aabf4ea19debfa0868e742ded23f8effa177ffc18a0a4ff0f",
+    "26": "c39448ca2a60ccb749a3255952d8110941e5065e3183d4d09673a84e6f359350",
+    "27": "8bfab1836560e7ade17a0e4853cf078042f35f1aa8ea857b9aacd7affbe6b281",
+    "28": "c7fad010cc3d560e1be8704ef58324304800552610c2041ff45c8ecb5b9b12b7",
+    "29": "01e1be900ed8d8d9383223dbbbb3215eb442a1e2281b394b5411cf6ab7afe9b2",
+    "30": "decddf68762f92ec3cc20b0a2eabb3e8165e3d9cb5c3a122f6eb310c3456561c",
+    "31": "4156b4e09c30d844eeed6b5dc1130f92713ddaf34eee70ac87380c703ca8cbb7",
+    "32": "277dccb21cbd86e88a41326068676a409f1db11b5887938892f4e71343977712",
+    "33": "8400929dc2dbfd20d6c376a9b492d855a6aa1f86b4c498fb6e22b9dc5e2ed4d7",
+    "34": "21f624cf4182caffa5ce7c15c6614a5a7f197d8d84a90c9398a3495ae2cec3d2",
+    "35": "06166c5cbb919b35abb9e61d325dbcadff49cd4e75bc33e6ee11005b474ad40d",
+    "36": "f7fb79227578d2b2279ad197c942dfc39f9ddd33ca9c581e1af0083ec3890c18",
+    "37": "3cda00d33fa631ab06322eeb4a8abcc17d0b9467eb9dc3ffa803668d6e5b723a",
+    "38": "84be104f39832b43bde8e9706a9a7bf05a27dbee8539d9261897a613b333888b",
+    "39": "8ebb80a6af98014e9fb9811bbd083999a6ef2d1564be65e24e70933577bd9916",
+    "40": "bfe431be40f89edd438f072c1112d860ff6746c499af750603e4ede34c581dc6",
+    "41": "1b2b14f8f14a920028fff8b103d57b11b723dd8c92bd6607c0136f5d994cfa92",
+    "42": "4a856d6b9967873d4607e83e60177e10183ab96a914b9f5c6e04290b6ce16b07",
+    "43": "e6a1db6aab962d84ece50bcdcef8dc6b1221fc69f98acb6c808c04ca7d80f904",
+    "44": "04ef7b8a82dc6aff40df3a0f0779d7550ab3ce92bfbd7c1135e7d8f32a2d29f0",
+    "45": "bd0bdd3c8993903216e8cc013e82f9322cf020f3fd4ecf093caa39bf32bf20e4",
+    "46": "eb8a4201b932db167586219da9d7773406b08865ae9cb819e67de56ace1bb7e5",
+    "47": "19e22c45654481950271daf91c2e363831da39798a5b7f8f748317dc76218817",
+    "48": "e38222a0de3786f774d7247fd3ddeaccdab9b8a14e9959cd81ef95712217a4d0",
+    "49": "8bafa6556beda3bc69446f31e4162bebfc1a9af88bf50193861759b7148b9619",
+    "50": "9f646536ff6f952f2e502b3246a92641a4131ef937a14ee7ef1b63267a097221",
+    "51": "f452e17e63161cb536fcf9c8c30096803de7814d406d10cd05443208a1aa8912",
+    "52": "776ebe9b99c7e5fb39ac8f6f12207cb7aad6e61e613fcc00406a16731b5cd9e6",
+    "53": "d53f8965b1cd6f485fc63f55db831a747717a8bc47875a5e07ffca00d5452e50",
+    "54": "3f13ab3e6e8e7e41c7655c478e1723107746d323e532f79cb896d40f2c72d066"
+  },
+  "groups": {
+    "seen_v7": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34
+    ],
+    "new_category_controls_v1": [
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54
+    ]
+  },
+  "scoring_policy": "unchanged V7/V6 gold for 1-34; controls scored by the same rule shape from their frozen expected fields",
+  "classification": "seen_development_plus_new_development_controls",
+  "engine_output_is_not_api_persistence": true
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:02:34.265625+00:00",
+  "latency_ms": 1563,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3465,
+      "completion_tokens": 159,
+      "total_tokens": 3624
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-d4e05430-a6ba-4ed8-a40f-a4fedf4459d9-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim states that at 10点 the restoration boat had not completed launch, its manifest was unsigned, and it remained at the quay. The cited evidence (fixture-span-orchard_restoration-5) directly supports the unsigned manifest and the boat remaining at the quay at 10点, and the launch rule (fixture-span-orchard_restoration-4) confirms launch is complete only after both signing and departure, so the claim is consistent with the supplied evidence and requires no review.\"}]}",
+  "message_content_sha256": "605878f03b7fac7bd40de3183fcfcc08fbca46e1a7d4cb5297a53bf5f3676f53",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

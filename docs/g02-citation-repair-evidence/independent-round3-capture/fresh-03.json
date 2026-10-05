@@ -1,0 +1,400 @@
+{
+  "case_id": "ccv2-orchard_restoration-event_status-conflict",
+  "variant": "gold",
+  "status": "completed",
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-orchard-restoration",
+      "revision": 2,
+      "body": "At 10点 on the same day, the restoration boat had completed its launch."
+    },
+    "claims": [
+      {
+        "id": "claim-run-6af643b8-9579-4b03-8bfb-81a5b1af5be7-1",
+        "text": "At 10点 on the same day, the restoration boat had completed its launch.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-orchard_restoration-4",
+            "chapter_id": "fixture-chapter-orchard_restoration-4",
+            "body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "label": "launch_rule",
+            "prompt_excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay."
+          },
+          {
+            "id": "fixture-span-orchard_restoration-5",
+            "chapter_id": "fixture-chapter-orchard_restoration-5",
+            "body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "label": "launch_log",
+            "prompt_excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing."
+          },
+          {
+            "id": "fixture-span-orchard_restoration-6",
+            "chapter_id": "fixture-chapter-orchard_restoration-6",
+            "body": "The restoration log leaves the cause of the boat's delay unrecorded.",
+            "label": "delay_cause",
+            "prompt_excerpt": "The restoration log leaves the cause of the boat's delay unrecorded."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-orchard_restoration-1",
+        "memory_type": "static_canon",
+        "subject": "Nera and Oren",
+        "predicate": "rule",
+        "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+        "source_span_id": "fixture-span-orchard_restoration-1"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-2",
+        "memory_type": "static_canon",
+        "subject": "Nera and Oren",
+        "predicate": "relationship",
+        "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+        "source_span_id": "fixture-span-orchard_restoration-2"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-3",
+        "memory_type": "open_thread",
+        "subject": "Nera and Oren",
+        "predicate": "status",
+        "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+        "source_span_id": "fixture-span-orchard_restoration-3"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-4",
+        "memory_type": "static_canon",
+        "subject": "restoration boat",
+        "predicate": "rule",
+        "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+        "source_span_id": "fixture-span-orchard_restoration-4"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-5",
+        "memory_type": "event_timeline",
+        "subject": "restoration boat",
+        "predicate": "event_occurred",
+        "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+        "source_span_id": "fixture-span-orchard_restoration-5"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-6",
+        "memory_type": "open_thread",
+        "subject": "restoration boat",
+        "predicate": "status",
+        "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+        "source_span_id": "fixture-span-orchard_restoration-6"
+      }
+    ],
+    "output_schema": {
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "raw_first": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-6af643b8-9579-4b03-8bfb-81a5b1af5be7-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "event_status",
+        "severity": "high",
+        "explanation": "The cited record requires this review decision.",
+        "reasoning": "The launch completion rule and the same-minute unsigned/no-departure log jointly exclude completed launch.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "timeless_rule"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-4",
+            "span_id": "fixture-span-orchard_restoration-4",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-4"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-5",
+            "span_id": "fixture-span-orchard_restoration-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-5"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-4",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "fixture-span-orchard_restoration-5",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": [],
+        "proposed_memory_change": null
+      }
+    ]
+  },
+  "raw_repair": null,
+  "final_product": {
+    "run_id": "run-6af643b8-9579-4b03-8bfb-81a5b1af5be7",
+    "project_id": "fixture-project-orchard-restoration",
+    "run_type": "continuity",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 2,
+    "draft_revision": null,
+    "source_memory_version": 1,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T12:23:04.588254+00:00",
+    "started_at": "2026-09-26T12:23:04.617619+00:00",
+    "completed_at": "2026-09-26T12:23:04.701261+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 83,
+    "retry_of_run_id": null,
+    "root_run_id": "run-6af643b8-9579-4b03-8bfb-81a5b1af5be7",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:04.588254+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "preparing_draft",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:04.617619+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "retrieving_confirmed_facts",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:04.630641+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "comparing_evidence",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:04.660342+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "running",
+        "stage": "assembling_reviewable_results",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:04.687549+00:00"
+      },
+      {
+        "sequence": 6,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T12:23:04.701261+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "independent-compare-v2-scripted",
+      "model_label": "not-a-real-model",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "provider_metrics": {
+      "latency_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "issues": [
+      {
+        "id": "issue-e49ad9ee-8fbc-44a9-bf39-96e7afd8f84b",
+        "claim_span_id": "claim-run-6af643b8-9579-4b03-8bfb-81a5b1af5be7-1",
+        "claim_text": "At 10点 on the same day, the restoration boat had completed its launch.",
+        "status": "open",
+        "classification": "conflict",
+        "category": "event_status",
+        "severity": "high",
+        "evidence_status": "sufficient",
+        "explanation": "The cited record requires this review decision.",
+        "decision": null,
+        "review_contract_version": "trustworthy_review_v1",
+        "nature": "confirmed_conflict",
+        "reasoning": "The launch completion rule and the same-minute unsigned/no-departure log jointly exclude completed launch.",
+        "evidence_chain": [
+          {
+            "evidence_id": "evidence-4a0b7a96-f0fe-466e-90c9-f8bd8bc087f5",
+            "role": "prior_state"
+          },
+          {
+            "evidence_id": "evidence-d8e0ff1e-1605-49f6-b932-27a75a9cfc4c",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": [],
+        "reuse_policy": null,
+        "reused_decision": null,
+        "evidence": [
+          {
+            "id": "evidence-4a0b7a96-f0fe-466e-90c9-f8bd8bc087f5",
+            "chapter_id": "fixture-chapter-orchard_restoration-4",
+            "chapter_number": 4,
+            "chapter_title": "Launch Rule",
+            "span_id": "fixture-span-orchard_restoration-4",
+            "source_revision": 2,
+            "excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "excerpt_context": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-4"
+            ],
+            "source_path": "/projects/fixture-project-orchard-restoration/sources#span-fixture-span-orchard_restoration-4"
+          },
+          {
+            "id": "evidence-d8e0ff1e-1605-49f6-b932-27a75a9cfc4c",
+            "chapter_id": "fixture-chapter-orchard_restoration-5",
+            "chapter_number": 5,
+            "chapter_title": "Launch Log",
+            "span_id": "fixture-span-orchard_restoration-5",
+            "source_revision": 2,
+            "excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "excerpt_context": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-5"
+            ],
+            "source_path": "/projects/fixture-project-orchard-restoration/sources#span-fixture-span-orchard_restoration-5"
+          }
+        ]
+      }
+    ],
+    "metrics": {
+      "latency_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_cny": null,
+      "cost_available": false,
+      "contract_normalization_count": 0,
+      "contract_normalizations": [],
+      "provenance": {
+        "provider_label": "independent-compare-v2-scripted",
+        "model_label": "not-a-real-model",
+        "prompt_version": "continuity-review-v15-knowledge-time",
+        "schema_version": "continuity-issue-v5-temporal-basis",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      },
+      "retrieval": [
+        {
+          "claim_ordinal": 1,
+          "returned_span_ids": [
+            "fixture-span-orchard_restoration-4",
+            "fixture-span-orchard_restoration-5",
+            "fixture-span-orchard_restoration-6",
+            "fixture-span-orchard_restoration-1",
+            "fixture-span-orchard_restoration-2"
+          ],
+          "method_version": "bounded-lexical-v4-longform"
+        }
+      ]
+    }
+  },
+  "classification": "fresh synthetic product API with fixed saved scripted payload remapped to current claim IDs; not a model evaluation",
+  "fixture_root": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\docs\\g02-citation-repair-evidence\\independent-round3-capture\\synthetic-03-4zr9ukx9",
+  "storage_body_check": true,
+  "own_audit": {
+    "identity": [
+      "ccv2-orchard_restoration-event_status-conflict",
+      "gold"
+    ],
+    "status": "completed",
+    "issue_count": 1,
+    "raw_natures": [
+      "confirmed_conflict"
+    ],
+    "final_natures": [
+      "confirmed_conflict"
+    ],
+    "errors": []
+  }
+}

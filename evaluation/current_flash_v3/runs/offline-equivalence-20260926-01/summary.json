@@ -1,0 +1,49 @@
+{
+  "run_id": "offline-equivalence-20260926-01",
+  "case_count": 4,
+  "external_http_dispatches": 0,
+  "all_exact_business_requests_equal": true,
+  "cases": [
+    {
+      "case_id": "g03-short-target",
+      "v2_case_file": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/05-g03-short-target.json",
+      "v2_business_request_sha256": "de140b22029c3ab345d7a1d7e8bca69b4b024d64a22ae873cb1af59dd3bdcbb2",
+      "v3_business_request_sha256": "de140b22029c3ab345d7a1d7e8bca69b4b024d64a22ae873cb1af59dd3bdcbb2",
+      "exact_business_request_equal": true,
+      "different_paths": [],
+      "v3_fake_product_status": "completed",
+      "external_http_dispatches": 0
+    },
+    {
+      "case_id": "g03-deep-target",
+      "v2_case_file": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/06-g03-deep-target.json",
+      "v2_business_request_sha256": "fb4be4f58892a1c54aa244d1850400b72ca596d40bd91872b22c02012b63a52b",
+      "v3_business_request_sha256": "fb4be4f58892a1c54aa244d1850400b72ca596d40bd91872b22c02012b63a52b",
+      "exact_business_request_equal": true,
+      "different_paths": [],
+      "v3_fake_product_status": "completed",
+      "external_http_dispatches": 0
+    },
+    {
+      "case_id": "g03-fact-absent",
+      "v2_case_file": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/07-g03-fact-absent.json",
+      "v2_business_request_sha256": "87e4258a5bb654c8c777e0ddfbcf78a3d629185400375291d475fb82c823ca15",
+      "v3_business_request_sha256": "87e4258a5bb654c8c777e0ddfbcf78a3d629185400375291d475fb82c823ca15",
+      "exact_business_request_equal": true,
+      "different_paths": [],
+      "v3_fake_product_status": "completed",
+      "external_http_dispatches": 0
+    },
+    {
+      "case_id": "g03-other-chapter",
+      "v2_case_file": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/08-g03-other-chapter.json",
+      "v2_business_request_sha256": "2128c1bad9d1087ff5f3ac47e95c7263a6f00962ea698fcd950c0f791c4620f3",
+      "v3_business_request_sha256": "2128c1bad9d1087ff5f3ac47e95c7263a6f00962ea698fcd950c0f791c4620f3",
+      "exact_business_request_equal": true,
+      "different_paths": [],
+      "v3_fake_product_status": "completed",
+      "external_http_dispatches": 0
+    }
+  ],
+  "database_files": 4
+}

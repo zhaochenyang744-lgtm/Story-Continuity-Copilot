@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1275,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "55831e57-8926-4dc1-bca4-1dd429319c94",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1\",\"verdict\":\"no_issue\",\"basis\":\"The draft explicitly frames the statement as a lie by Nera, so it is an attributed false utterance, not narrator-confirmed canon. The register evidence that Nera and Oren are twins is consistent with the lie being false, and no continuity conflict arises.\"}]}",
+  "visible_content_sha256": "c01a82ca5298dcb6257089caa281c608a72d1e953012a2acaabf9c1cfd277792",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3456,
+      "completion_tokens": 109,
+      "total_tokens": 3565,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1280
+    },
+    "status": "complete",
+    "prompt_tokens": 3456,
+    "completion_tokens": 109,
+    "total_tokens": 3565,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:43:55.461268+00:00"
+}

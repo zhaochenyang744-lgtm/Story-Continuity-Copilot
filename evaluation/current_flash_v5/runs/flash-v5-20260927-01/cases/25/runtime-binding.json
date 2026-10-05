@@ -1,0 +1,205 @@
+{
+  "project_id": "prj-72c880f1-e5b3-4e52-a46b-1ce006d40bde",
+  "draft_id": "draft-f546f392-553e-4908-9f0e-32fb4f79052b",
+  "draft_revision": 2,
+  "draft_body": "林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。",
+  "draft_body_sha256": "28ef08a3a19dedc412b26bdcb3db58db626110d8cc45a41f5de2fa752c29783f",
+  "source_revision": 1,
+  "memory_version": 4,
+  "chapters": [
+    {
+      "chapter_id": "ch-bc328315-b990-4700-9096-140544bd486e",
+      "chapter_number": 1,
+      "chapter_title": "雾钟",
+      "chapter_body": "",
+      "chapter_revision": 1,
+      "span_id": "span-f74faf28-9001-44ba-b501-bd63b3a3486e",
+      "span_body": "灰港的雾钟只在北潮闸完全关闭后敲响一次，别的潮声不会让它响。",
+      "span_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_body_sha256": "94ba09a3cf9e29cb6a363a03322de398f60a9af31d2a89b50a916f392ec5e12e"
+    },
+    {
+      "chapter_id": "ch-335f2695-dba7-4cec-917b-5050b851bb42",
+      "chapter_number": 2,
+      "chapter_title": "裂纹罗盘",
+      "chapter_body": "",
+      "chapter_revision": 1,
+      "span_id": "span-7157fe9a-6c45-41c0-9507-6103bfab298d",
+      "span_body": "黄铜罗盘的镜面有一道月牙裂纹，此刻由苏岑放在外套内袋。",
+      "span_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_body_sha256": "68dacbc00263341e60fdeb68f264492dc0953140827d264994dcd12e9a26b422"
+    },
+    {
+      "chapter_id": "ch-6215d8d4-3ea0-4cf0-9b75-e8b890818972",
+      "chapter_number": 3,
+      "chapter_title": "迟到的渡船",
+      "chapter_body": "",
+      "chapter_revision": 1,
+      "span_id": "span-5bcec869-f37e-4033-b92b-d20fe19887b4",
+      "span_body": "十九点二十，西航道先退潮，最后一班渡船在十九点四十才离开风栈码头。",
+      "span_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_body_sha256": "bfc55c345ab2ca0d5d343ea3733b01bf801a9aac8b040685f711076b08bd8b03"
+    },
+    {
+      "chapter_id": "ch-c5f3c0be-0f41-47fc-85a9-ab02e9e3bb7c",
+      "chapter_number": 4,
+      "chapter_title": "无字潮表",
+      "chapter_body": "",
+      "chapter_revision": 1,
+      "span_id": "span-e88683a3-a9ce-47ca-9f7f-0507e0547219",
+      "span_body": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+      "span_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_body_sha256": "2b42960d67fb622a2484050f9afe31dea302dd059c7dda3cf0d31eab4a70bbd3"
+    },
+    {
+      "chapter_id": "ch-b1f0ceab-1c58-40a2-9f3c-310c8f54b264",
+      "chapter_number": 5,
+      "chapter_title": "盐雾信箱",
+      "chapter_body": "",
+      "chapter_revision": 1,
+      "span_id": "span-8d1bdd8f-b320-4e00-93f2-c3137025b8a6",
+      "span_body": "纸条只写着‘白色渡船没有靠岸’，署名和日期都被盐雾抹去了。",
+      "span_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_body_sha256": "8a0f8a53b219be663bc27b02decd36f0f5600f1e703c9b71f82dae2b4b3f1387"
+    },
+    {
+      "chapter_id": "ch-13efe41a-5ce7-4863-9102-d787544795a4",
+      "chapter_number": 6,
+      "chapter_title": "低室电台",
+      "chapter_body": "",
+      "chapter_revision": 1,
+      "span_id": "span-b7a883d4-f40a-4f54-97eb-9061ad0e6694",
+      "span_body": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+      "span_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_body_sha256": "8cfce58f0ce8de9ee07de1a3123b29e091c5b1917928caf4f6a90dfc79f04c3e"
+    },
+    {
+      "chapter_id": "ch-6c258058-bc61-4281-9be7-900fe322d8ac",
+      "chapter_number": 7,
+      "chapter_title": "潮线之外",
+      "chapter_body": "",
+      "chapter_revision": 1,
+      "span_id": "span-5d3ae877-5f09-4c40-a076-7c4330f95983",
+      "span_body": "航图被固定在雾线水门外的锚柱上，右下角缺失了一块。",
+      "span_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_body_sha256": "82d77670ec3f945f5da30dd608e7accd6640a3f09bf103c54114bcf52141e1ff"
+    },
+    {
+      "chapter_id": "ch-81256c83-74c3-462b-b94c-d09c3bfb28fb",
+      "chapter_number": 8,
+      "chapter_title": "北堤灯火",
+      "chapter_body": "",
+      "chapter_revision": 1,
+      "span_id": "span-3ce58396-ae48-433e-8112-243b79f05a16",
+      "span_body": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+      "span_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_body_sha256": "ab75da7e0d3ec24955927e77a13bcf72efac68cf8d8d7d84922e5f0cbfb6dbcd"
+    },
+    {
+      "chapter_id": "ch-4d29c832-5aeb-487e-ad00-1f4a1a7a1e2e",
+      "chapter_number": 9,
+      "chapter_title": "换手",
+      "chapter_body": "",
+      "chapter_revision": 1,
+      "span_id": "span-ebc0ea26-cc82-4e69-83d1-1ac984513c5b",
+      "span_body": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+      "span_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_body_sha256": "b07ea48fcdc8ed1f76041a0cd9188055ec40adeef4a969b63b212357bef229dd"
+    },
+    {
+      "chapter_id": "ch-ae692ab7-ecd2-4354-9ae4-cba96dc98f06",
+      "chapter_number": 10,
+      "chapter_title": "回声坐标",
+      "chapter_body": "",
+      "chapter_revision": 1,
+      "span_id": "span-cde21f23-d9eb-479b-af46-2c873ccd4cad",
+      "span_body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+      "span_revision": 1,
+      "chapter_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "span_body_sha256": "b3265433a0a1022e4d049a4768879f6763f8db0dbca1c858802e228639ea3e6c"
+    }
+  ],
+  "memory": [
+    {
+      "id": "mem-1bae8ca8-8c8f-4fdc-9025-3b52ed60c022",
+      "memory_type": "dynamic_state",
+      "subject": "航图",
+      "predicate": "location",
+      "value": "雾线水门外锚柱",
+      "source_span_id": "span-5d3ae877-5f09-4c40-a076-7c4330f95983",
+      "version": 4
+    },
+    {
+      "id": "mem-271773fa-eb6c-4ba3-8645-d3f47c15027e",
+      "memory_type": "event_timeline",
+      "subject": "西航道退潮",
+      "predicate": "time",
+      "value": "第3章 19:20",
+      "source_span_id": "span-5bcec869-f37e-4033-b92b-d20fe19887b4",
+      "version": 4
+    },
+    {
+      "id": "mem-2a0fbf9a-d8c0-4d42-925f-ef98fb415962",
+      "memory_type": "open_thread",
+      "subject": "白色渡船",
+      "predicate": "status",
+      "value": "没有靠岸，来源未明",
+      "source_span_id": "span-8d1bdd8f-b320-4e00-93f2-c3137025b8a6",
+      "version": 4
+    },
+    {
+      "id": "mem-5aecb1c7-6309-417d-be1a-0671d794c1fc",
+      "memory_type": "open_thread",
+      "subject": "异常雾钟",
+      "predicate": "status",
+      "value": "北潮闸未关闭时响起，原因未解",
+      "source_span_id": "span-cde21f23-d9eb-479b-af46-2c873ccd4cad",
+      "version": 4
+    },
+    {
+      "id": "mem-a93b340f-3f8e-44e4-89c7-91ef8401d4ca",
+      "memory_type": "event_timeline",
+      "subject": "低室电台",
+      "predicate": "received",
+      "value": "第6章 21:05 收到三次求救码",
+      "source_span_id": "span-b7a883d4-f40a-4f54-97eb-9061ad0e6694",
+      "version": 4
+    },
+    {
+      "id": "mem-aff6a46f-1198-4253-a8bb-c2cbb961ce50",
+      "memory_type": "static_canon",
+      "subject": "灰港雾钟",
+      "predicate": "ring_condition",
+      "value": "只在北潮闸完全关闭后敲响一次",
+      "source_span_id": "span-f74faf28-9001-44ba-b501-bd63b3a3486e",
+      "version": 4
+    },
+    {
+      "id": "mem-ccb0d23e-6ab5-4727-a8ef-c1efcb2c25ef",
+      "memory_type": "dynamic_state",
+      "subject": "黄铜罗盘",
+      "predicate": "holder",
+      "value": "温岚",
+      "source_span_id": "span-ebc0ea26-cc82-4e69-83d1-1ac984513c5b",
+      "version": 4
+    },
+    {
+      "id": "mem-ea6a6e39-5451-4062-9b49-04baa995b04a",
+      "memory_type": "character_knowledge",
+      "subject": "温岚",
+      "predicate": "does_not_know",
+      "value": "廊桥钥匙的含义",
+      "source_span_id": "span-e88683a3-a9ce-47ca-9f7f-0507e0547219",
+      "version": 4
+    }
+  ]
+}

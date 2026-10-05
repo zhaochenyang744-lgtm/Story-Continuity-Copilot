@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "http_ordinal_in_case": 2,
+  "finished_at": "2026-09-27T10:47:25.416840+00:00",
+  "latency_ms": 2837,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3992,
+      "completion_tokens": 440,
+      "total_tokens": 4432
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-db468eb9-4f82-429e-b9e2-51a578673bf2-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"object_state\",\"severity\":\"medium\",\"explanation\":\"草稿声称Mira在11点持有备用蓝色徽章，并称依据两本徽章登记册，但登记册的11点持有人栏为空白，该归属缺乏依据，持有状态仍属未知。\",\"reasoning\":\"草稿把“两本徽章登记册”当作确立Mira在11点持有备用蓝色徽章的依据，但所引登记册证据只显示11点持有人栏空白，并未记录Mira为持有人，也缺少任何交接或登记事件把该持有状态与Mira联系起来。因此判断止于缺失环节：该归属无依据，Mira是否在11点持有备用蓝色徽章仍未知，不能据此推断相反结论。\",\"temporal_basis\":{\"claim_anchor\":\"11点\",\"evidence_anchor\":\"11点\",\"relation\":\"unknown\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-north_glass-3\",\"span_id\":\"fixture-span-north_glass-3\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-3\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-north_glass-3\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-db468eb9-4f82-429e-b9e2-51a578673bf2-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"草稿称依据两本徽章登记册，Mira在11点持有备用蓝色徽章，但所引登记册的11点持有人栏为空白，缺少把该持有状态归于Mira的登记或交接环节，归属无依据且持有状态未知。\"}]}",
+  "message_content_sha256": "59f31ae497b24d5c27b0f7b23933be27a9a012c8671ee8d3f7a2ab70248b9937",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

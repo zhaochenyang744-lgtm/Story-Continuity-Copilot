@@ -1,0 +1,11 @@
+{
+  "kind": "controller_rerun_frozen_offline_suite",
+  "tests_run": 7,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "provider_http_calls": 0,
+  "network_block": "socket.create_connection and httpx.HTTPTransport.handle_request",
+  "v5_manifest_sha256": "aabea4b8f99d2d4282ed627e98da98a57e46a1c526a7a45064af22acfd87682b",
+  "log": "test_bounded_timeout_and_usage_four_states (evaluation.current_flash_v5.test_offline.FlashV5OfflineTest.test_bounded_timeout_and_usage_four_states) ... ok\ntest_g02_same_database_rejects_wrong_chapter_and_memory_binding (evaluation.current_flash_v5.test_offline.FlashV5OfflineTest.test_g02_same_database_rejects_wrong_chapter_and_memory_binding) ... ok\ntest_parseable_malformed_first_case_does_not_stop_next_case (evaluation.current_flash_v5.test_offline.FlashV5OfflineTest.test_parseable_malformed_first_case_does_not_stop_next_case) ... ok\ntest_partial_usage_sum_and_raw_final_split (evaluation.current_flash_v5.test_offline.FlashV5OfflineTest.test_partial_usage_sum_and_raw_final_split) ... ok\ntest_pre_dispatch_snapshot_and_bad_json_first_content (evaluation.current_flash_v5.test_offline.FlashV5OfflineTest.test_pre_dispatch_snapshot_and_bad_json_first_content) ... ok\ntest_state_change_manual_and_terminal_controls (evaluation.current_flash_v5.test_offline.FlashV5OfflineTest.test_state_change_manual_and_terminal_controls) ... ok\ntest_unique_identity_first_failure_and_preparation_capture (evaluation.current_flash_v5.test_offline.FlashV5OfflineTest.test_unique_identity_first_failure_and_preparation_capture) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 2.177s\n\nOK\n"
+}

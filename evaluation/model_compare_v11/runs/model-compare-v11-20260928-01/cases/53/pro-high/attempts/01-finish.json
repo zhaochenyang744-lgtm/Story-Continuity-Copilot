@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 33645,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "c4172832-75ce-448c-a00f-c8536b9ea8aa",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"cc-claim-cc19-knowledge-zh\",\n      \"status\": \"insufficient_evidence\",\n      \"nature\": \"insufficient_evidence\",\n      \"category\": \"character_knowledge\",\n      \"severity\": \"medium\",\n      \"explanation\": \"据信件记载梅伊已知入口，但现有证据仅说明有人向她提起密道，未说明她是否得知入口。\",\n      \"reasoning\": \"提供的唯一证据（cc-span-cc19-knowledge-zh-W1）只说明信件记载有人曾向梅伊提起密道，并未说明她是否得知入口所在，因此无法从该信件得出梅伊已经知道入口的结论；缺少将“提起密道”连接到“知道入口”的信件内容，判断中止。\",\n      \"temporal_basis\": {\n        \"claim_anchor\": null,\n        \"evidence_anchor\": null,\n        \"relation\": \"unknown\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"cc-chapter-cc19-knowledge-zh-W1\",\n          \"span_id\": \"cc-span-cc19-knowledge-zh-W1\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"insufficient\",\n          \"related_memory_ids\": [\"cc-memory-cc19-knowledge-zh-W1\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"cc-span-cc19-knowledge-zh-W1\",\n          \"role\": \"missing_link\"\n        }\n      ],\n      \"suggested_revision\": null,\n      \"available_actions\": []\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"cc-claim-cc19-knowledge-zh\",\n      \"verdict\": \"insufficient_evidence\",\n      \"basis\": \"现有证据未说明梅伊是否得知入口，不能支持“据信件记载已经知道”。\"\n    }\n  ]\n}",
+  "visible_content_sha256": "e4f279b53c760e95d2b42ea5c85ff4cb101479de0e478b639080d69548eb6355",
+  "reasoning": {
+    "present": true,
+    "codepoints": 8323,
+    "utf8_bytes": 9295,
+    "sha256": "3bf48995b133642deee0e5f74b5ed08a7aeb6fc07bf7f339fc3c708f31829c0c"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3115,
+      "completion_tokens": 2530,
+      "total_tokens": 5645,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2105
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 683
+    },
+    "status": "complete",
+    "prompt_tokens": 3115,
+    "completion_tokens": 2530,
+    "total_tokens": 5645,
+    "reasoning_tokens": 2105,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T09:38:52.010972+00:00"
+}

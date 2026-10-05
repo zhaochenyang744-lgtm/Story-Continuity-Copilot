@@ -1,0 +1,12 @@
+{
+  "case_id": "ccv3-north_glass-object_state-no_conflict",
+  "run_id": "flash-v6-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 7,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "e2fb5ffc623adb55fefc6b36e70f8bf60f0efce734722e8f7c5258d714002139",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "06135cc42135e2a80786265a4f1140f0b21f986b91575f1e73e9df065e569da9",
+  "started_at": "2026-09-27T10:01:47.920001+00:00",
+  "usage_status": "unknown_until_response"
+}

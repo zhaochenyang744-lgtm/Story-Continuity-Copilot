@@ -1,0 +1,1232 @@
+{
+  "schema_version": "scc-eval-case-set-v6-candidate",
+  "status": "candidate_for_controller_review",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "formal_run_executed": false,
+  "provider_calls": 0,
+  "cases": [
+    {
+      "case_id": "eval-v6-lumen-conflict-counterweight-mass",
+      "corpus_key": "lumen_tidehouse",
+      "seed_key": "lumen_tidehouse",
+      "target_draft": "The current Lumen counterweight still weighs forty-two kilograms.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "attribute",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "retired_balance_card",
+          "body_sha256": "8acf38857b449bd7a429a61f501227b65119644996305ea53b08b73b6e7d21d1"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "acceptance_weighing",
+          "body_sha256": "67554b3696cb919ff1ea632e184495f562a9879c725983fe1e080b9375c5c6ab"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lumen_tidehouse",
+          "chapter_number": 1,
+          "source_label": "retired_balance_card",
+          "body_sha256": "8acf38857b449bd7a429a61f501227b65119644996305ea53b08b73b6e7d21d1"
+        },
+        {
+          "corpus_key": "lumen_tidehouse",
+          "chapter_number": 2,
+          "source_label": "acceptance_weighing",
+          "body_sha256": "67554b3696cb919ff1ea632e184495f562a9879c725983fe1e080b9375c5c6ab"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources",
+        "category_mismatch_regression"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "lumen-accepted-counterweight-mass",
+      "claim_shape": "retired_mass_card_replaced_by_acceptance_weighing",
+      "decision_signature": "conflict|attribute|retired_mass_plus_acceptance_measurement",
+      "proper_nouns": [
+        "Lumen counterweight"
+      ],
+      "rubric": {
+        "decision_rule": "Whether a retired mass entry or a signed post-installation weighing controls the counterweight's measured property.",
+        "expected_class_reason": "The complete direct source set contradicts the draft.",
+        "expected_category_reason": "The decision axis is attribute under the declared category boundary.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not decide from one half of the paired source context."
+      }
+    },
+    {
+      "case_id": "eval-v6-lumen-conflict-crate-location",
+      "corpus_key": "lumen_tidehouse",
+      "seed_key": "lumen_tidehouse",
+      "target_draft": "At the post-surge audit, the Driftglass Crate is still secured in Meridian Intake rack seven.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "object_state",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "pre_surge_custody",
+          "body_sha256": "34a534195aa42e433ff284f6b2a345da71c24123288795721f5faef73371a610"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "post_surge_transfer",
+          "body_sha256": "a96374c2726efaedc4379c5ba0205d91bed3a7eaff69c8818ade676d996719b5"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lumen_tidehouse",
+          "chapter_number": 3,
+          "source_label": "pre_surge_custody",
+          "body_sha256": "34a534195aa42e433ff284f6b2a345da71c24123288795721f5faef73371a610"
+        },
+        {
+          "corpus_key": "lumen_tidehouse",
+          "chapter_number": 4,
+          "source_label": "post_surge_transfer",
+          "body_sha256": "a96374c2726efaedc4379c5ba0205d91bed3a7eaff69c8818ade676d996719b5"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources",
+        "category_mismatch_regression"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "lumen-driftglass-post-surge-custody",
+      "claim_shape": "pre_surge_rack_state_replaced_by_transfer_ledger",
+      "decision_signature": "conflict|object_state|before_custody_plus_after_transfer",
+      "proper_nouns": [
+        "Driftglass Crate",
+        "Meridian Intake"
+      ],
+      "rubric": {
+        "decision_rule": "Where the named crate is held after a surge-triggered custody transfer.",
+        "expected_class_reason": "The complete direct source set contradicts the draft.",
+        "expected_category_reason": "The decision axis is object_state under the declared category boundary.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not decide from one half of the paired source context."
+      }
+    },
+    {
+      "case_id": "eval-v6-lumen-control-impeller-cadence",
+      "corpus_key": "lumen_tidehouse",
+      "seed_key": "lumen_tidehouse",
+      "target_draft": "The north impeller at Meridian Intake repeats a nine-minute cycle.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "impeller_cadence",
+          "body_sha256": "b052e57292dd27ab087b97e17f5acecf22df4e87402ff58975b77ad18c7450b8"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lumen_tidehouse",
+          "chapter_number": 5,
+          "source_label": "impeller_cadence",
+          "body_sha256": "b052e57292dd27ab087b97e17f5acecf22df4e87402ff58975b77ad18c7450b8"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "lumen-impeller-nine-minute-cadence",
+      "claim_shape": "directly_supported_mechanical_cycle_duration",
+      "decision_signature": "no_conflict|supported|impeller_cadence_log",
+      "proper_nouns": [
+        "Meridian Intake"
+      ],
+      "rubric": {
+        "decision_rule": "Whether the draft preserves the logged cycle duration of the north impeller.",
+        "expected_class_reason": "The cited source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a conflict when the source supports the claim."
+      }
+    },
+    {
+      "case_id": "eval-v6-lumen-control-valve-stripe",
+      "corpus_key": "lumen_tidehouse",
+      "seed_key": "lumen_tidehouse",
+      "target_draft": "The reserve sluice valve is marked by a saffron stripe.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "reserve_valve_mark",
+          "body_sha256": "c00c0fa51e8862c824956f89cf21ea6c23da8aa36204671d70dca435a4cbdea5"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lumen_tidehouse",
+          "chapter_number": 6,
+          "source_label": "reserve_valve_mark",
+          "body_sha256": "c00c0fa51e8862c824956f89cf21ea6c23da8aa36204671d70dca435a4cbdea5"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "lumen-reserve-valve-night-mark",
+      "claim_shape": "directly_supported_tactile_visual_equipment_mark",
+      "decision_signature": "no_conflict|supported|reserve_valve_stripe",
+      "proper_nouns": [
+        "reserve sluice valve"
+      ],
+      "rubric": {
+        "decision_rule": "Whether the reserve valve's night-identification mark matches the equipment record.",
+        "expected_class_reason": "The cited source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a conflict when the source supports the claim."
+      }
+    },
+    {
+      "case_id": "eval-v6-lumen-insufficient-vane-person",
+      "corpus_key": "lumen_tidehouse",
+      "seed_key": "lumen_tidehouse",
+      "target_draft": "Rina Sol signed the west-vane handover during the blackout.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "vane_handover_note",
+          "body_sha256": "bac36e33a50e21a589c79cd088dda9d1abb31ea9ce9db4b71c61f5ebdc0aaed4"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lumen_tidehouse",
+          "chapter_number": 7,
+          "source_label": "vane_handover_note",
+          "body_sha256": "bac36e33a50e21a589c79cd088dda9d1abb31ea9ce9db4b71c61f5ebdc0aaed4"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "lumen-vane-handover-initials-ambiguous",
+      "claim_shape": "ambiguous_initials_refer_to_two_roster_people",
+      "decision_signature": "insufficient_evidence|entity_reference_ambiguity|vane_handover",
+      "proper_nouns": [
+        "Rina Sol",
+        "Rook Sable"
+      ],
+      "rubric": {
+        "decision_rule": "Whether the ambiguous initials R. S. in a handover note identify Rina Sol rather than Rook Sable.",
+        "expected_class_reason": "The source explicitly leaves the asserted specific fact unknown, blank, pending, or unconfirmed.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not convert explicit uncertainty into no_conflict or conflict."
+      }
+    },
+    {
+      "case_id": "eval-v6-lumen-insufficient-sample-destination",
+      "corpus_key": "lumen_tidehouse",
+      "seed_key": "lumen_tidehouse",
+      "target_draft": "During the surge, the route amendment already required the sealed sample to go to Nacre Pier.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "sample_route_amendment",
+          "body_sha256": "f9bf2486b29382aa0e76ea4ffaba8ace637bee044e331a4568f8d908dd3f9a47"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lumen_tidehouse",
+          "chapter_number": 8,
+          "source_label": "sample_route_amendment",
+          "body_sha256": "f9bf2486b29382aa0e76ea4ffaba8ace637bee044e331a4568f8d908dd3f9a47"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "lumen-sample-route-effective-time-unknown",
+      "claim_shape": "conditional_route_has_unrecorded_effective_time",
+      "decision_signature": "insufficient_evidence|temporal_applicability_unknown|sample_amendment",
+      "proper_nouns": [
+        "Nacre Pier"
+      ],
+      "rubric": {
+        "decision_rule": "Whether a conditional route amendment applied at the surge when its calibration effective time is absent.",
+        "expected_class_reason": "The source explicitly leaves the asserted specific fact unknown, blank, pending, or unconfirmed.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not convert explicit uncertainty into no_conflict or conflict."
+      }
+    },
+    {
+      "case_id": "eval-v6-velvet-conflict-amber-authority",
+      "corpus_key": "velvet_signal_yard",
+      "seed_key": "velvet_signal_yard",
+      "target_draft": "During an amber flag, Neris Vale alone retains departure authority at Juniper Relay Yard.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "relationship",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "ordinary_duty_charter",
+          "body_sha256": "35b717041e1c25d6759492f81d7df8558d5333408dee76aadf35e01773f63cf8"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "amber_emergency_rider",
+          "body_sha256": "66b7131b4fd4ee57d4e9cf0a1b35294ba26d9f7be48be02c8184390d3c270d45"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "velvet_signal_yard",
+          "chapter_number": 1,
+          "source_label": "ordinary_duty_charter",
+          "body_sha256": "35b717041e1c25d6759492f81d7df8558d5333408dee76aadf35e01773f63cf8"
+        },
+        {
+          "corpus_key": "velvet_signal_yard",
+          "chapter_number": 2,
+          "source_label": "amber_emergency_rider",
+          "body_sha256": "66b7131b4fd4ee57d4e9cf0a1b35294ba26d9f7be48be02c8184390d3c270d45"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources",
+        "category_mismatch_regression"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "velvet-amber-departure-authority",
+      "claim_shape": "ordinary_role_charter_overridden_by_emergency_delegation",
+      "decision_signature": "conflict|relationship|ordinary_authority_plus_emergency_rider",
+      "proper_nouns": [
+        "Neris Vale",
+        "Juniper Relay Yard"
+      ],
+      "rubric": {
+        "decision_rule": "Who holds dispatch authority when an emergency rider temporarily overrides ordinary duties.",
+        "expected_class_reason": "The complete direct source set contradicts the draft.",
+        "expected_category_reason": "The decision axis is relationship under the declared category boundary.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not decide from one half of the paired source context."
+      }
+    },
+    {
+      "case_id": "eval-v6-velvet-conflict-revised-phrase-knowledge",
+      "corpus_key": "velvet_signal_yard",
+      "seed_key": "velvet_signal_yard",
+      "target_draft": "Neris Vale knew the revised phrase Marble Six before the midnight dispatch.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "character_knowledge",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "earlier_phrase_briefing",
+          "body_sha256": "198c0e4d078eedf1a1f3d92ac95ccff80ee6c9979eb8a4597e4bdfb0084b72c5"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "revised_sealed_memo",
+          "body_sha256": "5642332539e2c16a759954f8f701c768ab8248f263067f2e2c2f230f3ce6f183"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "velvet_signal_yard",
+          "chapter_number": 3,
+          "source_label": "earlier_phrase_briefing",
+          "body_sha256": "198c0e4d078eedf1a1f3d92ac95ccff80ee6c9979eb8a4597e4bdfb0084b72c5"
+        },
+        {
+          "corpus_key": "velvet_signal_yard",
+          "chapter_number": 4,
+          "source_label": "revised_sealed_memo",
+          "body_sha256": "5642332539e2c16a759954f8f701c768ab8248f263067f2e2c2f230f3ce6f183"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "velvet-neris-revised-phrase-knowledge",
+      "claim_shape": "earlier_phrase_access_displaced_by_exclusive_revised_briefing",
+      "decision_signature": "conflict|character_knowledge|old_phrase_plus_sealed_revision_distribution",
+      "proper_nouns": [
+        "Neris Vale",
+        "Marble Six"
+      ],
+      "rubric": {
+        "decision_rule": "Whether access to an earlier phrase implies knowledge of a sealed replacement sent only to another operator.",
+        "expected_class_reason": "The complete direct source set contradicts the draft.",
+        "expected_category_reason": "The decision axis is character_knowledge under the declared category boundary.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not decide from one half of the paired source context."
+      }
+    },
+    {
+      "case_id": "eval-v6-velvet-control-bell-cadence",
+      "corpus_key": "velvet_signal_yard",
+      "seed_key": "velvet_signal_yard",
+      "target_draft": "A clear branch is announced by three short bell strokes and then one long stroke.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "bell_cadence",
+          "body_sha256": "14c7baa8a6da6209f522b15891049cbd208793a7866fa79147cc5abd82a2fb74"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "velvet_signal_yard",
+          "chapter_number": 5,
+          "source_label": "bell_cadence",
+          "body_sha256": "14c7baa8a6da6209f522b15891049cbd208793a7866fa79147cc5abd82a2fb74"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "velvet-clear-branch-bell-cadence",
+      "claim_shape": "directly_supported_signal_bell_sequence",
+      "decision_signature": "no_conflict|supported|clear_branch_cadence",
+      "proper_nouns": [
+        "Juniper Relay Yard"
+      ],
+      "rubric": {
+        "decision_rule": "Whether the draft reproduces the yard's recorded clear-branch bell cadence.",
+        "expected_class_reason": "The cited source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a conflict when the source supports the claim."
+      }
+    },
+    {
+      "case_id": "eval-v6-velvet-control-violet-cord",
+      "corpus_key": "velvet_signal_yard",
+      "seed_key": "velvet_signal_yard",
+      "target_draft": "Switch lever C is wrapped with violet cord for recognition in fog.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "lever_binding",
+          "body_sha256": "6f1a58b53937a81c0e48ec9d6961891113ff5b44bde52ccae7ae96d61d1e8356"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "velvet_signal_yard",
+          "chapter_number": 6,
+          "source_label": "lever_binding",
+          "body_sha256": "6f1a58b53937a81c0e48ec9d6961891113ff5b44bde52ccae7ae96d61d1e8356"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "velvet-lever-c-violet-binding",
+      "claim_shape": "directly_supported_switch_tactile_binding",
+      "decision_signature": "no_conflict|supported|lever_binding",
+      "proper_nouns": [
+        "Switch lever C"
+      ],
+      "rubric": {
+        "decision_rule": "Whether the lever's fog-recognition binding matches the yard record.",
+        "expected_class_reason": "The cited source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a conflict when the source supports the claim."
+      }
+    },
+    {
+      "case_id": "eval-v6-velvet-insufficient-phantom-cause",
+      "corpus_key": "velvet_signal_yard",
+      "seed_key": "velvet_signal_yard",
+      "target_draft": "The official signal inspector ordered the phantom-aspect circuit isolated.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "relay_advisory_provenance",
+          "body_sha256": "43967539dfcbfb5d7d0beb0afc1fdfbbb3b34f5e2cbcdf94668f138c7c85714e"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "velvet_signal_yard",
+          "chapter_number": 7,
+          "source_label": "relay_advisory_provenance",
+          "body_sha256": "43967539dfcbfb5d7d0beb0afc1fdfbbb3b34f5e2cbcdf94668f138c7c85714e"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "velvet-phantom-advisory-authority-unverified",
+      "claim_shape": "unsigned_advisory_asserted_as_official_inspector_order",
+      "decision_signature": "insufficient_evidence|source_authority_unconfirmed|relay_advisory",
+      "proper_nouns": [
+        "signal inspector"
+      ],
+      "rubric": {
+        "decision_rule": "Whether an unsigned advisory can be attributed to an authorised inspector as an official order.",
+        "expected_class_reason": "The source explicitly leaves the asserted specific fact unknown, blank, pending, or unconfirmed.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not convert explicit uncertainty into no_conflict or conflict."
+      }
+    },
+    {
+      "case_id": "eval-v6-velvet-insufficient-observer-name",
+      "corpus_key": "velvet_signal_yard",
+      "seed_key": "velvet_signal_yard",
+      "target_draft": "Kelm Orr witnessed the final relay test from Cipher Loft.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "observer_register",
+          "body_sha256": "1f42a8739139a8c840b82ca06b96bbed38d19892aa36dc4e5f1902389944846d"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "velvet_signal_yard",
+          "chapter_number": 8,
+          "source_label": "observer_register",
+          "body_sha256": "1f42a8739139a8c840b82ca06b96bbed38d19892aa36dc4e5f1902389944846d"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "velvet-final-test-observer-blank",
+      "claim_shape": "blank_observer_register_asserted_as_named_witness",
+      "decision_signature": "insufficient_evidence|blank_witness|relay_test",
+      "proper_nouns": [
+        "Kelm Orr",
+        "Cipher Loft"
+      ],
+      "rubric": {
+        "decision_rule": "Whether a blank witness line can establish a named observer at the final relay test.",
+        "expected_class_reason": "The source explicitly leaves the asserted specific fact unknown, blank, pending, or unconfirmed.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not convert explicit uncertainty into no_conflict or conflict."
+      }
+    },
+    {
+      "case_id": "eval-v6-quartz-conflict-seed-mist-order",
+      "corpus_key": "quartz_aviary",
+      "seed_key": "quartz_aviary",
+      "target_draft": "On alarm day, seed mist was released before the first wing count in Starling Vault.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "timeline",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "dawn_procedure_card",
+          "body_sha256": "d18c551b7f62a7f0a6cd4de5071672187c4591b691b62fc1ef0b0457300c303a"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "alarm_day_execution_log",
+          "body_sha256": "963927a3ec0d112113792c1358e8bf1e3e10d2c304cdaf03376af0ebfe5b2ef8"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "quartz_aviary",
+          "chapter_number": 1,
+          "source_label": "dawn_procedure_card",
+          "body_sha256": "d18c551b7f62a7f0a6cd4de5071672187c4591b691b62fc1ef0b0457300c303a"
+        },
+        {
+          "corpus_key": "quartz_aviary",
+          "chapter_number": 2,
+          "source_label": "alarm_day_execution_log",
+          "body_sha256": "963927a3ec0d112113792c1358e8bf1e3e10d2c304cdaf03376af0ebfe5b2ef8"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "quartz-alarm-day-mist-count-order",
+      "claim_shape": "scheduled_order_displaced_by_alarm_day_execution_sequence",
+      "decision_signature": "conflict|timeline|procedure_schedule_plus_actual_log",
+      "proper_nouns": [
+        "Starling Vault"
+      ],
+      "rubric": {
+        "decision_rule": "Whether the planned dawn sequence or the alarm-day execution log determines actual event order.",
+        "expected_class_reason": "The complete direct source set contradicts the draft.",
+        "expected_category_reason": "The decision axis is timeline under the declared category boundary.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not decide from one half of the paired source context."
+      }
+    },
+    {
+      "case_id": "eval-v6-quartz-conflict-hatchling-tag-exception",
+      "corpus_key": "quartz_aviary",
+      "seed_key": "quartz_aviary",
+      "target_draft": "Every glasswing, including a newly hatched fledgling, must wear a copper tag before entering any roost.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "world_rule",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "copper_tag_rule",
+          "body_sha256": "f3812b9497d64de282d25102885421789ade01ff1bc4d87bd0689aa2631c1254"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "hatchling_exception",
+          "body_sha256": "1e8dc8b088b517400c807ea10d3c7ad269452c8e299efbe349dcc93113bd2edc"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "quartz_aviary",
+          "chapter_number": 3,
+          "source_label": "copper_tag_rule",
+          "body_sha256": "f3812b9497d64de282d25102885421789ade01ff1bc4d87bd0689aa2631c1254"
+        },
+        {
+          "corpus_key": "quartz_aviary",
+          "chapter_number": 4,
+          "source_label": "hatchling_exception",
+          "body_sha256": "1e8dc8b088b517400c807ea10d3c7ad269452c8e299efbe349dcc93113bd2edc"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "quartz-untagged-hatchling-entry-exception",
+      "claim_shape": "global_tag_rule_bounded_by_age_specific_quarantine_exception",
+      "decision_signature": "conflict|world_rule|general_requirement_plus_hatchling_exception",
+      "proper_nouns": [
+        "glasswing",
+        "Indigo Roost"
+      ],
+      "rubric": {
+        "decision_rule": "Whether a universal tag assertion survives an explicit age-bound quarantine exception.",
+        "expected_class_reason": "The complete direct source set contradicts the draft.",
+        "expected_category_reason": "The decision axis is world_rule under the declared category boundary.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not decide from one half of the paired source context."
+      }
+    },
+    {
+      "case_id": "eval-v6-quartz-control-vault-temperature",
+      "corpus_key": "quartz_aviary",
+      "seed_key": "quartz_aviary",
+      "target_draft": "Starling Vault remained at eighteen degrees Celsius during the quiet watch.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "vault_temperature",
+          "body_sha256": "5440a40f398464904068e5945b80824308245c07a2d3b030e0a8aca2439f760e"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "quartz_aviary",
+          "chapter_number": 5,
+          "source_label": "vault_temperature",
+          "body_sha256": "5440a40f398464904068e5945b80824308245c07a2d3b030e0a8aca2439f760e"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "quartz-starling-vault-quiet-temperature",
+      "claim_shape": "directly_supported_environmental_temperature_log",
+      "decision_signature": "no_conflict|supported|vault_temperature",
+      "proper_nouns": [
+        "Starling Vault"
+      ],
+      "rubric": {
+        "decision_rule": "Whether the quiet-watch temperature agrees with the keeper's environmental log.",
+        "expected_class_reason": "The cited source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a conflict when the source supports the claim."
+      }
+    },
+    {
+      "case_id": "eval-v6-quartz-control-keeper-notebook",
+      "corpus_key": "quartz_aviary",
+      "seed_key": "quartz_aviary",
+      "target_draft": "Pera Dune keeps feeding totals in a black linen notebook beneath the eastern perch.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "keeper_notebook",
+          "body_sha256": "25b12889c2036e942e58c9a3b951a910f89c7164345cd5d7ef19e200a4051e33"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "quartz_aviary",
+          "chapter_number": 6,
+          "source_label": "keeper_notebook",
+          "body_sha256": "25b12889c2036e942e58c9a3b951a910f89c7164345cd5d7ef19e200a4051e33"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "quartz-pera-feeding-notebook",
+      "claim_shape": "directly_supported_keeper_recording_tool_and_storage",
+      "decision_signature": "no_conflict|supported|keeper_notebook",
+      "proper_nouns": [
+        "Pera Dune"
+      ],
+      "rubric": {
+        "decision_rule": "Whether the keeper's recording tool and storage place match the aviary record.",
+        "expected_class_reason": "The cited source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a conflict when the source supports the claim."
+      }
+    },
+    {
+      "case_id": "eval-v6-quartz-insufficient-feather-species",
+      "corpus_key": "quartz_aviary",
+      "seed_key": "quartz_aviary",
+      "target_draft": "The blue feather is definitively an Indigo Gull feather.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "blue_feather_intake_bundle",
+          "body_sha256": "77e11e5f413fcffc6c00f5c2de4b44e6c3d5692b4a74675260fd1b001070085d"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "quartz_aviary",
+          "chapter_number": 7,
+          "source_label": "blue_feather_intake_bundle",
+          "body_sha256": "77e11e5f413fcffc6c00f5c2de4b44e6c3d5692b4a74675260fd1b001070085d"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence",
+        "conflicting_sources"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "quartz-blue-feather-unranked-source-disagreement",
+      "claim_shape": "two_unsigned_species_labels_lack_priority_rule",
+      "decision_signature": "insufficient_evidence|conflicting_sources_no_priority|feather_intake",
+      "proper_nouns": [
+        "Indigo Gull",
+        "Sky Tern"
+      ],
+      "rubric": {
+        "decision_rule": "Whether one of two conflicting unsigned species labels controls when the ledger supplies no authority or priority rule.",
+        "expected_class_reason": "The source explicitly leaves the asserted specific fact unknown, blank, pending, or unconfirmed.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not convert explicit uncertainty into no_conflict or conflict."
+      }
+    },
+    {
+      "case_id": "eval-v6-quartz-insufficient-incubator-result",
+      "corpus_key": "quartz_aviary",
+      "seed_key": "quartz_aviary",
+      "target_draft": "Because every readiness condition was logged, incubator bay four hatched twin chicks before dawn.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "incubator_readiness_sheet",
+          "body_sha256": "4a9ee6c6f6f4f8bf125fbf4f591557054e8686a7958ca2e0cb05ee81004b3800"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "quartz_aviary",
+          "chapter_number": 8,
+          "source_label": "incubator_readiness_sheet",
+          "body_sha256": "4a9ee6c6f6f4f8bf125fbf4f591557054e8686a7958ca2e0cb05ee81004b3800"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "quartz-incubator-readiness-not-outcome",
+      "claim_shape": "necessary_conditions_recorded_but_final_outcome_absent",
+      "decision_signature": "insufficient_evidence|necessary_conditions_not_sufficient|incubator_dawn_count",
+      "proper_nouns": [
+        "Incubator bay four"
+      ],
+      "rubric": {
+        "decision_rule": "Whether recorded heat, humidity, and turning conditions establish an unrecorded hatch outcome.",
+        "expected_class_reason": "The source explicitly leaves the asserted specific fact unknown, blank, pending, or unconfirmed.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not convert explicit uncertainty into no_conflict or conflict."
+      }
+    },
+    {
+      "case_id": "eval-v6-cinder-conflict-sora-inspection-place",
+      "corpus_key": "cinder_lantern_ferry",
+      "seed_key": "cinder_lantern_ferry",
+      "target_draft": "Sora Fen inspected the Vesper beacon while standing on Vesper Landing.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "location_action",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "beacon_assignment",
+          "body_sha256": "62cde9bdce0270be43ed8b16da88082e04f004d03e161584d055eee8e2313e8a"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "storm_movement_log",
+          "body_sha256": "f95bec04c9a19b96e9f41ad7a5b11e0cc3c7e3cc275709c0e7ab538de12a0cbb"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "cinder_lantern_ferry",
+          "chapter_number": 1,
+          "source_label": "beacon_assignment",
+          "body_sha256": "62cde9bdce0270be43ed8b16da88082e04f004d03e161584d055eee8e2313e8a"
+        },
+        {
+          "corpus_key": "cinder_lantern_ferry",
+          "chapter_number": 2,
+          "source_label": "storm_movement_log",
+          "body_sha256": "f95bec04c9a19b96e9f41ad7a5b11e0cc3c7e3cc275709c0e7ab538de12a0cbb"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "cinder-sora-storm-inspection-location",
+      "claim_shape": "scheduled_disembark_action_replaced_by_onboard_storm_action",
+      "decision_signature": "conflict|location_action|assignment_place_plus_movement_log",
+      "proper_nouns": [
+        "Sora Fen",
+        "Vesper Landing"
+      ],
+      "rubric": {
+        "decision_rule": "Where Sora Fen actually performed the beacon inspection after a storm reroute.",
+        "expected_class_reason": "The complete direct source set contradicts the draft.",
+        "expected_category_reason": "The decision axis is location_action under the declared category boundary.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not decide from one half of the paired source context."
+      }
+    },
+    {
+      "case_id": "eval-v6-cinder-conflict-crossing-completion",
+      "corpus_key": "cinder_lantern_ferry",
+      "seed_key": "cinder_lantern_ferry",
+      "target_draft": "The Lantern Crossing completed its eastbound passage after departing at first light.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "event_status",
+      "expected_severity": [
+        "medium",
+        "high"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "crossing_departure",
+          "body_sha256": "b06db50bb94cdbf14885921d5d15a906b7286b0feb4b4a2739e4e3d60782ac59"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "mid_channel_suspension",
+          "body_sha256": "363ba26d2509c9a94322ee46f71804ad4e2ffe5557376e426f9d4d9c69a1591a"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "cinder_lantern_ferry",
+          "chapter_number": 3,
+          "source_label": "crossing_departure",
+          "body_sha256": "b06db50bb94cdbf14885921d5d15a906b7286b0feb4b4a2739e4e3d60782ac59"
+        },
+        {
+          "corpus_key": "cinder_lantern_ferry",
+          "chapter_number": 4,
+          "source_label": "mid_channel_suspension",
+          "body_sha256": "363ba26d2509c9a94322ee46f71804ad4e2ffe5557376e426f9d4d9c69a1591a"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "requires_multiple_direct_evidence",
+        "conflicting_sources"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "cinder-lantern-crossing-completion-status",
+      "claim_shape": "opened_departure_followed_by_midchannel_suspension_and_return",
+      "decision_signature": "conflict|event_status|departure_plus_noncompletion_log",
+      "proper_nouns": [
+        "Lantern Crossing"
+      ],
+      "rubric": {
+        "decision_rule": "Whether departure establishes completion when a later log records suspension and return.",
+        "expected_class_reason": "The complete direct source set contradicts the draft.",
+        "expected_category_reason": "The decision axis is event_status under the declared category boundary.",
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true,
+        "forbidden_inference": "Do not decide from one half of the paired source context."
+      }
+    },
+    {
+      "case_id": "eval-v6-cinder-control-lantern-fuel",
+      "corpus_key": "cinder_lantern_ferry",
+      "seed_key": "cinder_lantern_ferry",
+      "target_draft": "The ferry's deck lanterns burn filtered juniper oil from square blue tins.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "lantern_fuel",
+          "body_sha256": "44b8847474738e0cce7c78ea6a570d6b577e462dc7d14edfbc91971b9c2f3788"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "cinder_lantern_ferry",
+          "chapter_number": 5,
+          "source_label": "lantern_fuel",
+          "body_sha256": "44b8847474738e0cce7c78ea6a570d6b577e462dc7d14edfbc91971b9c2f3788"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "cinder-deck-lantern-juniper-fuel",
+      "claim_shape": "directly_supported_vessel_lantern_fuel_and_container",
+      "decision_signature": "no_conflict|supported|deck_lantern_fuel",
+      "proper_nouns": [
+        "deck lanterns"
+      ],
+      "rubric": {
+        "decision_rule": "Whether the stated lantern fuel and container match the ferry inventory.",
+        "expected_class_reason": "The cited source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a conflict when the source supports the claim."
+      }
+    },
+    {
+      "case_id": "eval-v6-cinder-control-bram-whistle",
+      "corpus_key": "cinder_lantern_ferry",
+      "seed_key": "cinder_lantern_ferry",
+      "target_draft": "Bram Latch carries a brass whistle engraved with two narrow rings.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "whistle_register",
+          "body_sha256": "b76da2afe1a10d09f94f11718812fdafeb44e213992df3345c8c950d6fb1d38a"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "cinder_lantern_ferry",
+          "chapter_number": 6,
+          "source_label": "whistle_register",
+          "body_sha256": "b76da2afe1a10d09f94f11718812fdafeb44e213992df3345c8c950d6fb1d38a"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "supported_control"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "cinder-bram-brass-whistle-mark",
+      "claim_shape": "directly_supported_personal_signal_tool_description",
+      "decision_signature": "no_conflict|supported|bram_whistle",
+      "proper_nouns": [
+        "Bram Latch"
+      ],
+      "rubric": {
+        "decision_rule": "Whether Bram Latch's whistle description agrees with the vessel register.",
+        "expected_class_reason": "The cited source directly supports the draft.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not invent a conflict when the source supports the claim."
+      }
+    },
+    {
+      "case_id": "eval-v6-cinder-insufficient-engine-knock-cause",
+      "corpus_key": "cinder_lantern_ferry",
+      "seed_key": "cinder_lantern_ferry",
+      "target_draft": "After the intake screen was cleared, the ferry's timing chain was reset and propulsion resumed.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "engine_recovery_worksheet",
+          "body_sha256": "e1ed432bc2442cd3bfc31009360e831e5c43782fc1043ef3aab4c6d3a0c1ce26"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "cinder_lantern_ferry",
+          "chapter_number": 7,
+          "source_label": "engine_recovery_worksheet",
+          "body_sha256": "e1ed432bc2442cd3bfc31009360e831e5c43782fc1043ef3aab4c6d3a0c1ce26"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "cinder-recovery-partial-repair-compound-claim",
+      "claim_shape": "one_repair_step_confirmed_but_remaining_steps_and_result_missing",
+      "decision_signature": "insufficient_evidence|partial_compound_claim|engine_recovery",
+      "proper_nouns": [
+        "timing chain",
+        "propulsion"
+      ],
+      "rubric": {
+        "decision_rule": "Whether confirmation of one repair step establishes a compound claim about a second repair and resumed propulsion.",
+        "expected_class_reason": "The source explicitly leaves the asserted specific fact unknown, blank, pending, or unconfirmed.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not convert explicit uncertainty into no_conflict or conflict."
+      }
+    },
+    {
+      "case_id": "eval-v6-cinder-insufficient-pouch-recipient",
+      "corpus_key": "cinder_lantern_ferry",
+      "seed_key": "cinder_lantern_ferry",
+      "target_draft": "Mara Venn accepted the sealed pouch at the end of the watch.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": [
+        "low",
+        "medium"
+      ],
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "pouch_receipt",
+          "body_sha256": "1260754578260f2603ae63dd68a5eb9fd28a6d35f23ea155e10dbda31aa52b72"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "cinder_lantern_ferry",
+          "chapter_number": 8,
+          "source_label": "pouch_receipt",
+          "body_sha256": "1260754578260f2603ae63dd68a5eb9fd28a6d35f23ea155e10dbda31aa52b72"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence",
+        "ambiguous_evidence"
+      ],
+      "retrieval_difficulty": "nearby_distractor",
+      "core_fact_key": "cinder-sealed-pouch-recipient-blank",
+      "claim_shape": "blank_receipt_recipient_asserted_as_named_person",
+      "decision_signature": "insufficient_evidence|blank_recipient|sealed_pouch",
+      "proper_nouns": [
+        "Mara Venn"
+      ],
+      "rubric": {
+        "decision_rule": "Whether a receipt with no recipient can support naming a person who accepted the pouch.",
+        "expected_class_reason": "The source explicitly leaves the asserted specific fact unknown, blank, pending, or unconfirmed.",
+        "expected_category_reason": "No conflict category is assigned to this class.",
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false,
+        "forbidden_inference": "Do not convert explicit uncertainty into no_conflict or conflict."
+      }
+    }
+  ]
+}

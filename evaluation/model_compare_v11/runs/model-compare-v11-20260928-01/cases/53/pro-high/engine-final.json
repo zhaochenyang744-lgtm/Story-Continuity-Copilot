@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "cc-claim-cc19-knowledge-zh",
+      "status": "insufficient_evidence",
+      "category": "character_knowledge",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "据信件记载梅伊已知入口，但现有证据仅说明有人向她提起密道，未说明她是否得知入口。",
+      "evidence": [
+        {
+          "chapter_id": "cc-chapter-cc19-knowledge-zh-W1",
+          "span_id": "cc-span-cc19-knowledge-zh-W1",
+          "excerpt": "信件只记载有人曾向梅伊提起密道，没有说明她是否得知入口所在。",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "cc-memory-cc19-knowledge-zh-W1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "提供的唯一证据（cc-span-cc19-knowledge-zh-W1）只说明信件记载有人曾向梅伊提起密道，并未说明她是否得知入口所在，因此无法从该信件得出梅伊已经知道入口的结论；缺少将“提起密道”连接到“知道入口”的信件内容，判断中止。",
+      "evidence_chain": [
+        {
+          "span_id": "cc-span-cc19-knowledge-zh-W1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "cc-claim-cc19-knowledge-zh",
+      "returned_span_ids": [
+        "cc-span-cc19-knowledge-zh-W1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3115,
+  "output_tokens": 2530,
+  "latency_ms": 33663,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

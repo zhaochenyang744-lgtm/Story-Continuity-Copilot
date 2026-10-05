@@ -1,0 +1,19 @@
+{
+  "dispatch_order": 90,
+  "case_ordinal": 45,
+  "case_id": "cc11-location-zh",
+  "condition_id": "pro-high",
+  "position_in_case": 2,
+  "condition": {
+    "id": "pro-high",
+    "model": "deepseek-v4-pro",
+    "thinking": "enabled",
+    "reasoning_effort": "high",
+    "temperature": null
+  },
+  "started_at": "2026-09-28T09:30:00.603041+00:00",
+  "original_budget": 8000,
+  "effective_engine_budget": 40000,
+  "experiment_only": true,
+  "source_request": "evaluation/category_controls_v1/cases.json#cc11-location-zh"
+}

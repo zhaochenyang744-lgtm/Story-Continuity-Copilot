@@ -1,0 +1,27 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "glass_marsh",
+  "title": "璃沼航标所",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {"method": "deterministic_original", "generator_version": "v5-candidate-1", "source_inputs": []},
+  "lineage": {"work_title": "璃沼航标所", "characters": ["闻栖", "唐槐"], "locations": ["璃沼航标所", "琉沼东汊"], "core_design": "晨航顺序与极光百叶规则"},
+  "chapters": [
+    {"chapter_number": 1, "title": "晨舟离汊", "source_label": "晨舟时刻", "body": "苔帆晨舟在五点四十分驶离琉沼东汊，闻栖在离汊栏落印。"},
+    {"chapter_number": 2, "title": "航标回闪", "source_label": "回闪时刻", "body": "璃沼航标直到五点五十五分才完成第二次青光回闪。"},
+    {"chapter_number": 3, "title": "百叶常规", "source_label": "湿度常规", "body": "没有极光警戒时，雾玻百叶在湿度低于六成后自动打开。"},
+    {"chapter_number": 4, "title": "蓝辉禁令", "source_label": "极光例外", "body": "蓝色极光出现期间，雾玻百叶必须保持关闭，不受低湿度常规触发。"},
+    {"chapter_number": 5, "title": "浮签布置", "source_label": "浮签位置", "body": "唐槐把三枚绿釉浮签依次系在琉沼东汊的内侧木桩。"},
+    {"chapter_number": 6, "title": "盐镜厚度", "source_label": "盐镜测量", "body": "新制薄盐镜厚度为一点四毫米，允许误差不超过零点一毫米。"},
+    {"chapter_number": 7, "title": "匿名短笺", "source_label": "短笺署名", "body": "闻栖收到一张提醒退潮的短笺，纸面没有署名，也没有可辨认印记。"},
+    {"chapter_number": 8, "title": "试鸣待报", "source_label": "试鸣结果", "body": "暮色号筒已经完成试鸣，但结果栏仍为空白，尚未登记通过或失败。"}
+  ],
+  "memory": [
+    {"memory_type": "event_timeline", "subject": "苔帆晨舟", "predicate": "departed_at", "value": "五点四十分", "source": {"chapter_number": 1, "source_label": "晨舟时刻"}},
+    {"memory_type": "event_timeline", "subject": "璃沼航标第二次回闪", "predicate": "completed_at", "value": "五点五十五分", "source": {"chapter_number": 2, "source_label": "回闪时刻"}},
+    {"memory_type": "static_canon", "subject": "雾玻百叶", "predicate": "blue_aurora_rule", "value": "蓝色极光期间保持关闭", "source": {"chapter_number": 4, "source_label": "极光例外"}},
+    {"memory_type": "dynamic_state", "subject": "绿釉浮签", "predicate": "location", "value": "琉沼东汊内侧木桩", "source": {"chapter_number": 5, "source_label": "浮签位置"}},
+    {"memory_type": "static_canon", "subject": "薄盐镜", "predicate": "thickness", "value": "一点四毫米", "source": {"chapter_number": 6, "source_label": "盐镜测量"}}
+  ]
+}

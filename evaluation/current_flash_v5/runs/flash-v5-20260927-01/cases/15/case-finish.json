@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+  "status": "failed",
+  "error_code": "conflict_evidence_not_direct",
+  "post_attempt_start_records": 2,
+  "evaluation_count": 2,
+  "score_status": "terminal_failure",
+  "finished_at": "2026-09-27T08:20:37.676746+00:00"
+}

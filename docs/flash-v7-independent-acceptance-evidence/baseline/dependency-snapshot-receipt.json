@@ -1,0 +1,116 @@
+{
+  "created_at": "2026-09-27T10:36:21.258681+00:00",
+  "frozen_manifest_sha256": "f0e2cb3d5c44a1a92000f703423a0d26ea1fab5aef750b7a3393102ea98ed696",
+  "frozen_manifest_entries": 876,
+  "frozen_product_and_test_entries": 15,
+  "files": [
+    {
+      "path": "backend/app/__init__.py",
+      "sha256": "35f78b2beef7082e8d47277da699bc8662a2e7c3b1cb87ba3cd30e525bcf4bfc",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/__init__.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/app/provider.py",
+      "sha256": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/provider.py",
+      "capture": "already_preserved_before_edit_permission"
+    },
+    {
+      "path": "backend/app/engine.py",
+      "sha256": "527f986d6441aa226f239a0e67d928200f26d77b6b90e65cbc6d14e512d7fd39",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/engine.py",
+      "capture": "already_preserved_before_edit_permission"
+    },
+    {
+      "path": "backend/app/brief_citations.py",
+      "sha256": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/brief_citations.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/app/v2_database.py",
+      "sha256": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/v2_database.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/app/main.py",
+      "sha256": "bd7fdfab5ff2dd18f369d6bf22c6cdfc83ee177d8245b91954f21ed20faf3cca",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/main.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/app/seed_data.py",
+      "sha256": "cd1ec7e535eb5dc5706a36c7cfa2f96adef7fd3a7b691263bef0c88a8a9c68de",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/seed_data.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/app/config.py",
+      "sha256": "71ecb142047916cba315dcbb8fff9c31f294d8e1109be888cad42c5e80ab9f9e",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/config.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/app/database.py",
+      "sha256": "82afa645a8b092bfd3001bf667378ccc56646a9900e905209e9243c6357a2d33",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/database.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/app/stage13.py",
+      "sha256": "957c219bb3f8036e421c63ba7c204ed1767d2d334a39a08aa958f5119cfd9500",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/stage13.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/app/memory_contract.py",
+      "sha256": "d8afc7e9f85f296f5762aaf1f03e4baafb7a163312bc93a06a4744e5e4355d51",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/memory_contract.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/app/text_content.py",
+      "sha256": "d1f04d4b7ec2fd5f87c1f706960bdfff6c77f61b9bf5ee3699ec902e48443290",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/text_content.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/app/long_term_workflow.py",
+      "sha256": "e5eb9874ccdeb019545a42c121ed98cd42af2252a52ed066f6361ee638b7ca59",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/long_term_workflow.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/app/project_export.py",
+      "sha256": "b8227673e20a68bd79a2f4694eb5a15bca77145623fb7c4e5bb1a1f3d0a3420f",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/app/project_export.py",
+      "capture": "captured_dependency"
+    },
+    {
+      "path": "backend/tests/test_v6_continuity_contract.py",
+      "sha256": "7f1a9325e01e0ce2f31177566313acf0905b7a72cb3a02cec034780bc4fbc57f",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/backend/tests/test_v6_continuity_contract.py",
+      "capture": "already_preserved_before_edit_permission"
+    },
+    {
+      "path": "evaluation/current_flash_v6/frozen-inputs.json",
+      "sha256": "f0e2cb3d5c44a1a92000f703423a0d26ea1fab5aef750b7a3393102ea98ed696",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/evaluation/current_flash_v6/frozen-inputs.json",
+      "capture": "manifest_or_initializer_pin"
+    },
+    {
+      "path": "evaluation/__init__.py",
+      "sha256": "4ac37fe3ac5b99e494187cd7439b71a422595cc8c0825c5b725c1703d7f990b5",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/evaluation/__init__.py",
+      "capture": "manifest_or_initializer_pin"
+    },
+    {
+      "path": "docs/flash-v6-independent-acceptance-evidence/PRELAUNCH-SUPPLEMENT.json",
+      "sha256": "c8da7a578bfc82ddfadbe2bd9cad488a2f3c12b7e817c6a323d0cc6997b5eeec",
+      "snapshot": "docs/flash-v7-independent-acceptance-evidence/baseline/source-snapshot/docs/flash-v6-independent-acceptance-evidence/PRELAUNCH-SUPPLEMENT.json",
+      "capture": "manifest_or_initializer_pin"
+    }
+  ]
+}

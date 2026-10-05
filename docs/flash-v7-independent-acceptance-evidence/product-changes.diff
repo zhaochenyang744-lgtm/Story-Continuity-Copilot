@@ -1,0 +1,332 @@
+--- V6/engine.py
++++ V7/engine.py
+@@ -5,6 +5,7 @@
+ 
+ from . import brief_citations
+ from .memory_contract import CONTROLLED_PREDICATES
++from .provider import MAX_CLAIM_BASIS_CODEPOINTS
+ from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget
+ 
+ ALLOWED_STATUS={"conflict","insufficient_evidence"}
+@@ -68,6 +69,10 @@
+ class ContinuityContractValidationError(ValueError):
+     """A semantic contract failure that permits one bounded provider repair."""
+ 
++    def __init__(self, code: str, *, diagnostics: list[dict[str, Any]] | None = None):
++        super().__init__(code)
++        self.diagnostics = diagnostics or []
++
+ 
+ def _contains_cjk(value: str) -> bool:
+     return bool(re.search(r"[\u4e00-\u9fff]", value))
+@@ -79,7 +84,31 @@
+     return cjk >= 4 and cjk >= latin
+ 
+ 
++def _clock_values(value: str) -> set[int] | None:
++    """Return explicit clock minutes; None means an invalid/unsupported colon clock."""
++    pattern = r"(?<![\w:])(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b|(?<![\d:])(\d{1,2}):(\d{2})(?![\d:])"
++    clocks: set[int] = set()
++    matches = list(re.finditer(pattern, value, re.IGNORECASE))
++    for token in re.finditer(r"\d+(?::\d+)+", value):
++        if not any(match.start() <= token.start() and match.end() >= token.end() for match in matches):
++            return None
++    for match in matches:
++        hour, minute = int(match[1] or match[4]), int(match[2] or match[5] or 0)
++        meridiem = (match[3] or "").lower()
++        if minute > 59 or hour > (12 if meridiem else 23) or (meridiem and hour < 1):
++            return None
++        if meridiem:
++            hour = hour % 12 + (12 if meridiem == "pm" else 0)
++        clocks.add(hour * 60 + minute)
++    return clocks
++
++
+ def _temporal_anchor_is_explicit(value: str) -> bool:
++    clocks = _clock_values(value)
++    if clocks is None:
++        return False
++    if clocks:
++        return True
+     return bool(re.search(
+         r"(?:\d{1,4}\s*(?:年|月|日|号|点|时|分|秒|章)|[一二三四五六七八九十百零两]+\s*(?:年|月|日|号|点|时|分|秒|章)|"
+         r"同一(?:天|夜|晚|时刻|时间)|与此同时|同时|当时|此刻|刚落|之后|以前|以前|直到|"
+@@ -91,6 +120,11 @@
+ 
+ def _explicit_temporal_overlap(claim_anchor: str, evidence_anchor: str) -> bool:
+     if not _temporal_anchor_is_explicit(claim_anchor) or not _temporal_anchor_is_explicit(evidence_anchor):
++        return False
++    claim_clocks, evidence_clocks = _clock_values(claim_anchor), _clock_values(evidence_anchor)
++    if claim_clocks is None or evidence_clocks is None:
++        return False
++    if (claim_clocks or evidence_clocks) and (len(claim_clocks) != 1 or claim_clocks != evidence_clocks):
+         return False
+     day_aliases={"前天":"day_minus_2","昨日":"day_minus_1","昨天":"day_minus_1","今日":"day_0","今天":"day_0","明日":"day_plus_1","明天":"day_plus_1","后天":"day_plus_2","day before yesterday":"day_minus_2","yesterday":"day_minus_1","today":"day_0","tomorrow":"day_plus_1"}
+     def relative_day(value:str)->str|None:
+@@ -112,8 +146,8 @@
+         parsed:dict[str,set[str]]={}
+         for raw,unit in re.findall(component_pattern,value,re.IGNORECASE):
+             parsed.setdefault(unit_group.get(unit,unit),set()).add(normalized_number(raw.casefold()))
+-        for raw in re.findall(r"\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b",value,re.IGNORECASE):
+-            parsed.setdefault("clock",set()).add(re.sub(r"\s+","",raw).casefold())
++        if clocks := _clock_values(value):
++            parsed["clock"] = {str(clock) for clock in clocks}
+         return parsed
+     claim_components=components(claim_anchor);evidence_components=components(evidence_anchor)
+     shared_units=set(claim_components)&set(evidence_components)
+@@ -146,7 +180,7 @@
+     claim_days,evidence_days=days(claim_scope),days(evidence_scope)
+     if len(claim_days)>1 or len(evidence_days)>1 or (claim_days or evidence_days) and claim_days!=evidence_days:return False
+     if not _explicit_temporal_overlap(claim_scope,evidence_scope):return False
+-    clock=r"(?:\d{1,2}|[一二三四五六七八九十两]+)\s*(?:点|时)|\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b"
++    clock=r"(?:\d{1,2}|[一二三四五六七八九十两]+)\s*(?:点|时)|\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b|(?<![\d:])\d{1,2}:\d{2}(?![\d:])"
+     def clock_values(value:str)->set[str]:
+         return {match.group().replace(" ","").translate(str.maketrans("一二三四五六七八九", "123456789")) for match in re.finditer(clock,value,re.IGNORECASE)}
+     if len(clock_values(claim_scope))>1 or len(clock_values(evidence_scope))>1:return False
+@@ -157,8 +191,42 @@
+     return True
+ 
+ 
++def _confirmed_temporal_failure(raw: dict[str, Any], claim_text: str, evidence: list[dict[str, Any]], memory: dict[str, Any]) -> str | None:
++    """One qualification rule for both repair diagnostics and persisted Issues."""
++    if raw.get("nature") != "confirmed_conflict":
++        return None
++    temporal = raw.get("temporal_basis")
++    if not isinstance(temporal, dict):
++        return "temporal_overlap_unproven"
++    claim_anchor, evidence_anchor = temporal.get("claim_anchor"), temporal.get("evidence_anchor")
++    if temporal.get("relation") == "explicit_overlap":
++        if (isinstance(claim_anchor, str) and isinstance(evidence_anchor, str) and
++            any(item.get("relation") == "contradicts" and item.get("sufficiency") == "sufficient" and
++                evidence_anchor in item["excerpt"] and
++                _full_temporal_scope_supports_conflict(claim_text, item["excerpt"], claim_anchor, evidence_anchor)
++                for item in evidence)):
++            return None
++        return "temporal_overlap_unproven"
++    if temporal.get("relation") == "timeless_rule":
++        related_ids = {memory_id for item in evidence for memory_id in item.get("related_memory_ids", [])
++                       if isinstance(memory_id, str) and memory_id in memory}
++        cited_ids = {item["span_id"] for item in evidence}
++        if any(memory[memory_id].get("memory_type") == "static_canon" and
++               memory[memory_id].get("predicate") == "rule" and
++               memory[memory_id].get("source_span_id") in cited_ids for memory_id in related_ids):
++            return None
++        return "timeless_rule_unproven"
++    return "temporal_overlap_unproven"
++
++
++def _contract_diagnostic(data: dict[str, Any], code: str, claim_id: str | None = None, **details: Any) -> dict[str, Any]:
++    claim = next((item for item in data["claims"] if item["id"] == claim_id), None)
++    return {"claim_span_id": claim["id"] if claim else None, "claim_text": claim["text"] if claim else None,
++            "problem_codes": [code], "cited_evidence": [], **details}
++
++
+ def _continuity_schema() -> dict[str, Any]:
+-    return {"claim_verdicts":[{"claim_span_id":"every supplied current claim id exactly once","verdict":"reviewed_issue|insufficient_evidence|no_issue","basis":"brief reason for this claim decision, including why an omitted issue is compatible or needs no review"}],"issues":[{"claim_span_id":"current claim id","status":"conflict|insufficient_evidence","nature":"confirmed_conflict|possible_conflict|state_change|insufficient_evidence","category":"allowed category","severity":"low|medium|high","explanation":"short backwards-compatible summary","reasoning":"why the cited evidence supports this nature, or exactly what evidence is missing","temporal_basis":{"claim_anchor":"exact claim substring or null","evidence_anchor":"exact cited evidence substring or null","relation":"explicit_overlap|timeless_rule|explicit_later_transition|unknown"},"evidence":[{"chapter_id":"allowed chapter id","span_id":"allowed span id","relation":"supports|contradicts|context","sufficiency":"sufficient|insufficient","related_memory_ids":["known memory id"]}],"evidence_chain":[{"span_id":"one cited evidence span id","role":"prior_state|current_context|missing_link"}],"suggested_revision":{"before":"exact text occurring once in the bound draft","after":"specific replacement text"},"available_actions":["edit|apply_suggestion|keep_intentional|false_positive"],"proposed_memory_change":{"operation":"add|replace","memory_type":"allowed memory type","subject":"string","predicate":"string","value":"string","affected_memory_id":"required for replace only"}}]}
++    return {"claim_verdicts":[{"claim_span_id":"every supplied current claim id exactly once","verdict":"reviewed_issue|insufficient_evidence|no_issue","basis":f"non-empty string, at most {MAX_CLAIM_BASIS_CODEPOINTS} Unicode code points; concise decision reason, not a reasoning transcript"}],"issues":[{"claim_span_id":"current claim id","status":"conflict|insufficient_evidence","nature":"confirmed_conflict|possible_conflict|state_change|insufficient_evidence","category":"allowed category","severity":"low|medium|high","explanation":"short backwards-compatible summary","reasoning":"why the cited evidence supports this nature, or exactly what evidence is missing","temporal_basis":{"claim_anchor":"exact claim substring or null","evidence_anchor":"exact cited evidence substring or null","relation":"explicit_overlap|timeless_rule|explicit_later_transition|unknown"},"evidence":[{"chapter_id":"allowed chapter id","span_id":"allowed span id","relation":"supports|contradicts|context","sufficiency":"sufficient|insufficient","related_memory_ids":["known memory id"]}],"evidence_chain":[{"span_id":"one cited evidence span id","role":"prior_state|current_context|missing_link"}],"suggested_revision":{"before":"exact text occurring once in the bound draft","after":"specific replacement text"},"available_actions":["edit|apply_suggestion|keep_intentional|false_positive"],"proposed_memory_change":{"operation":"add|replace","memory_type":"allowed memory type","subject":"string","predicate":"string","value":"string","affected_memory_id":"required for replace only"}}]}
+ 
+ 
+ def _memory_schema() -> dict[str, Any]:
+@@ -215,7 +283,7 @@
+ class ContinuityEngine:
+     def __init__(self,provider:ProviderPort): self.provider=provider
+     def provenance(self)->dict[str,str]:
+-        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":PROMPT_VERSION,"schema_version":"continuity-issue-v6-joint-evidence-coverage","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
++        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":PROMPT_VERSION,"schema_version":"continuity-issue-v7-repair-diagnostics","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
+ 
+     def _selected_evidence(self,claim:dict[str,Any],memory:list[dict[str,Any]])->list[dict[str,Any]]:
+         unique={span["id"]:span for span in claim["allowed_evidence"]}
+@@ -260,8 +328,12 @@
+ 
+     def _repair_diagnostics(self,payload:Any,data:dict[str,Any])->list[dict[str,Any]]:
+         """Collect all independently detectable semantic contract failures for one repair call."""
+-        if not isinstance(payload,dict) or not isinstance(payload.get("issues"),list):return []
+-        claims={item["id"]:item for item in data["claims"]};mem={item["id"]:item for item in data["memory"]};diagnostics=[]
++        diagnostics=[]
++        if getattr(self.provider,"continuity_contract_version",None)=="v6":
++            try:self._v6_issues(payload,data)
++            except ContinuityContractValidationError as error:diagnostics.extend(error.diagnostics)
++        if not isinstance(payload,dict) or not isinstance(payload.get("issues"),list):return diagnostics
++        claims={item["id"]:item for item in data["claims"]};mem={item["id"]:item for item in data["memory"]}
+         for raw in payload["issues"]:
+             if not isinstance(raw,dict) or not isinstance(raw.get("claim_span_id"),str) or raw["claim_span_id"] not in claims:continue
+             review_keys={"nature","reasoning","temporal_basis","evidence_chain","suggested_revision","available_actions"}
+@@ -271,17 +343,15 @@
+             if _requires_cjk(data["draft"]["body"]):
+                 author_texts=[raw.get("explanation"),raw.get("reasoning")]
+                 if any(not isinstance(text,str) or not _contains_cjk(text) for text in author_texts):codes.append("author_language_mismatch")
+-            temporal=raw.get("temporal_basis")
+-            if raw.get("nature")=="confirmed_conflict" and isinstance(temporal,dict):
+-                claim_anchor=temporal.get("claim_anchor");evidence_anchor=temporal.get("evidence_anchor");relation=temporal.get("relation")
+-                if relation=="explicit_overlap":
+-                    excerpts=[allowed[evidence["span_id"]].get("prompt_excerpt",allowed[evidence["span_id"]]["body"]) for evidence in raw_evidence if isinstance(evidence,dict) and isinstance(evidence.get("span_id"),str) and evidence["span_id"] in allowed]
+-                    if not isinstance(claim_anchor,str) or not isinstance(evidence_anchor,str) or not _explicit_temporal_overlap(claim_anchor,evidence_anchor) or (excerpts and not any(evidence_anchor in excerpt and _full_temporal_scope_supports_conflict(claim["text"],excerpt,claim_anchor,evidence_anchor) for excerpt in excerpts)):codes.append("temporal_overlap_unproven")
+-                elif relation=="timeless_rule":
+-                    related_ids={memory_id for evidence in raw_evidence if isinstance(evidence,dict) and isinstance(evidence.get("related_memory_ids"),list) for memory_id in evidence["related_memory_ids"] if isinstance(memory_id,str) and memory_id in mem}
+-                    cited_ids={evidence["span_id"] for evidence in raw_evidence if isinstance(evidence,dict) and isinstance(evidence.get("span_id"),str)}
+-                    if not any(mem[memory_id].get("memory_type")=="static_canon" and mem[memory_id].get("predicate")=="rule" and mem[memory_id].get("source_span_id") in cited_ids for memory_id in related_ids):codes.append("timeless_rule_unproven")
+-                else:codes.append("temporal_overlap_unproven")
++            bound_evidence=[]
++            for item in raw_evidence:
++                if isinstance(item,dict) and isinstance(item.get("span_id"),str) and item["span_id"] in allowed:
++                    span=allowed[item["span_id"]]
++                    bound_evidence.append({**item,"excerpt":span.get("prompt_excerpt",span["body"]),
++                                           "related_memory_ids":item.get("related_memory_ids") if isinstance(item.get("related_memory_ids"),list) else []})
++            temporal_failure=_confirmed_temporal_failure(raw,claim["text"],bound_evidence,mem)
++            # Missing/unresolvable evidence is a binding failure, not a proved time mismatch.
++            if temporal_failure and bound_evidence:codes.append(temporal_failure)
+             if codes:
+                 evidence_excerpts=[]
+                 for evidence in raw_evidence:
+@@ -300,22 +370,25 @@
+         try:
+             for batch in batches:
+                 for contract_attempt in range(2):
+-                    request=batch if contract_attempt==0 else {**batch,"contract_repair":{"attempt":contract_attempt+1,"reason_code":repair_code,"diagnostics":repair_diagnostics,"rejected_issues":rejected_issues}}
++                    request=batch if contract_attempt==0 else {**batch,"contract_repair":{"attempt":contract_attempt+1,"reason_code":repair_code,"diagnostics":repair_diagnostics,"rejected_issues":rejected_issues,"rejected_claim_verdicts":rejected_claim_verdicts}}
++                    # Check the complete feedback as sent; never truncate rejected output to fit.
++                    if request_prompt_and_budget(request)[1]>MAX_INPUT_BUDGET_UNITS:raise InputBudgetExceeded()
+                     result=self.provider.evaluate(request)
+                     if (result.input_tokens or 0)+(result.output_tokens or 0)>MAX_RUN_TOKENS:return {"status":"budget_paused","error_code":"budget_paused","retryable":True,**_aggregate(results+[result])}
+                     results.append(result)
++                    rejected_issues=result.payload.get("issues",[]) if isinstance(result.payload,dict) else []
++                    rejected_claim_verdicts=result.payload.get("claim_verdicts",[]) if isinstance(result.payload,dict) else []
+                     repair_diagnostics=self._repair_diagnostics(result.payload,batch)
+                     if contract_attempt==0 and repair_diagnostics:
+                         repair_code=repair_diagnostics[0]["problem_codes"][0]
+-                        rejected_issues=result.payload.get("issues",[]) if isinstance(result.payload,dict) else []
+                         continue
+                     try:
+                         validated=self.validate(result.payload,batch,allow_conservative_temporal_normalization=contract_attempt==1,normalization_sink=contract_normalizations)
+                     except ContinuityContractValidationError as error:
+                         if contract_attempt==0:
+                             repair_code=str(error)
+-                            repair_diagnostics=[{"claim_span_id":None,"claim_text":None,"problem_codes":[repair_code],"cited_evidence":[]}]
+-                            rejected_issues=result.payload.get("issues",[]) if isinstance(result.payload,dict) else []
++                            claim_id=batch["claims"][0]["id"] if len(batch["claims"])==1 else None
++                            repair_diagnostics=error.diagnostics or [_contract_diagnostic(batch,repair_code,claim_id)]
+                             continue
+                         raise
+                     issues.extend(validated)
+@@ -331,30 +404,57 @@
+         return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,**_aggregate(results)}
+ 
+     def _v6_issues(self,payload:Any,data:dict[str,Any])->dict[str,Any]:
+-        """Check one decision per claim in this batch before storing Issue rows."""
++        """Validate the compatible V6 ledger shape, retaining every detectable fault."""
+         if not isinstance(payload,dict) or set(payload)!={"issues","claim_verdicts"} or not isinstance(payload.get("issues"),list) or not isinstance(payload.get("claim_verdicts"),list):
+-            raise ContinuityContractValidationError("claim_verdicts_required")
++            code="claim_verdicts_required"
++            raise ContinuityContractValidationError(code,diagnostics=[_contract_diagnostic(data,code,invalid_field="claim_verdicts",requirement="Return exactly issues and claim_verdicts arrays.")])
+         claim_ids={item["id"] for item in data["claims"]}
+-        verdicts={}
+-        for item in payload["claim_verdicts"]:
+-            if (not isinstance(item,dict) or set(item)!={"claim_span_id","verdict","basis"} or
+-                not isinstance(item.get("claim_span_id"),str) or item["claim_span_id"] not in claim_ids or item["claim_span_id"] in verdicts or
+-                not isinstance(item.get("verdict"),str) or item["verdict"] not in {"reviewed_issue","insufficient_evidence","no_issue"} or
+-                not isinstance(item.get("basis"),str) or not item["basis"].strip() or len(item["basis"])>400):
+-                raise ContinuityContractValidationError("claim_verdicts_invalid")
+-            verdicts[item["claim_span_id"]]=item["verdict"]
+-        if set(verdicts)!=claim_ids:
+-            raise ContinuityContractValidationError("claim_verdicts_incomplete")
++        verdicts={};diagnostics=[]
++        def fault(code,claim_id=None,**details):
++            diagnostics.append(_contract_diagnostic(data,code,claim_id,**details))
++        for index,item in enumerate(payload["claim_verdicts"]):
++            if not isinstance(item,dict):
++                fault("claim_verdicts_invalid",invalid_field="claim_verdicts",row_index=index,problem="row_type")
++                continue
++            claim_id=item.get("claim_span_id")
++            if not isinstance(claim_id,str) or claim_id not in claim_ids:
++                fault("claim_verdicts_invalid",invalid_field="claim_span_id",row_index=index,problem="unknown_claim")
++                continue
++            if claim_id in verdicts:
++                fault("claim_verdicts_invalid",claim_id,invalid_field="claim_span_id",row_index=index,problem="duplicate_claim")
++                continue
++            verdicts[claim_id]=item.get("verdict")
++            if set(item)!={"claim_span_id","verdict","basis"}:
++                fault("claim_verdicts_invalid",claim_id,invalid_field="claim_verdicts",row_index=index,problem="row_fields",required_fields=["claim_span_id","verdict","basis"])
++            verdict=item.get("verdict")
++            if not isinstance(verdict,str) or verdict not in {"reviewed_issue","insufficient_evidence","no_issue"}:
++                fault("claim_verdicts_invalid",claim_id,invalid_field="verdict",row_index=index,problem="invalid_enum",allowed_values=["reviewed_issue","insufficient_evidence","no_issue"])
++            basis=item.get("basis")
++            if not isinstance(basis,str) or not basis.strip() or len(basis)>MAX_CLAIM_BASIS_CODEPOINTS:
++                fault("claim_verdicts_invalid",claim_id,invalid_field="basis",row_index=index,
++                      problem="invalid_type" if not isinstance(basis,str) else "blank" if not basis.strip() else "too_long",
++                      observed_length=len(basis) if isinstance(basis,str) else None,limit=MAX_CLAIM_BASIS_CODEPOINTS)
++        for claim_id in sorted(claim_ids-set(verdicts)):
++            fault("claim_verdicts_incomplete",claim_id,invalid_field="claim_verdicts",problem="missing_claim")
+         issue_status={}
+-        for item in payload["issues"]:
+-            if not isinstance(item,dict) or not isinstance(item.get("claim_span_id"),str) or item["claim_span_id"] not in claim_ids or item["claim_span_id"] in issue_status:
+-                raise ContinuityContractValidationError("claim_verdicts_issue_mismatch")
+-            issue_status[item["claim_span_id"]]=item.get("status")
++        for index,item in enumerate(payload["issues"]):
++            claim_id=item.get("claim_span_id") if isinstance(item,dict) else None
++            if not isinstance(claim_id,str) or claim_id not in claim_ids or claim_id in issue_status:
++                fault("claim_verdicts_issue_mismatch",claim_id if isinstance(claim_id,str) else None,invalid_field="issues",row_index=index,problem="invalid_or_duplicate_claim")
++                continue
++            issue_status[claim_id]=item.get("status")
+         for claim_id,verdict in verdicts.items():
++            if not isinstance(verdict,str) or verdict not in {"reviewed_issue","insufficient_evidence","no_issue"}:
++                continue
+             expected=("insufficient_evidence" if issue_status.get(claim_id)=="insufficient_evidence" else
+                       "reviewed_issue" if claim_id in issue_status else "no_issue")
+             if verdict!=expected:
+-                raise ContinuityContractValidationError("claim_verdicts_issue_mismatch")
++                fault("claim_verdicts_issue_mismatch",claim_id,invalid_field="verdict",actual_verdict=verdict,
++                      expected_verdict_for_returned_issues=expected,issue_present=claim_id in issue_status,
++                      required_issue_status_for_verdict="insufficient_evidence" if verdict=="insufficient_evidence" else "conflict" if verdict=="reviewed_issue" else None,
++                      requirement="Keep the evidence-based decision. An insufficient_evidence decision needs a cited missing_link Issue with no actions. Change a verdict only when the original evidence justifies that change.")
++        if diagnostics:
++            raise ContinuityContractValidationError(diagnostics[0]["problem_codes"][0],diagnostics=diagnostics)
+         return {"issues":payload["issues"]}
+ 
+     def validate(self,payload:Any,data:dict[str,Any],allow_conservative_temporal_normalization:bool=False,normalization_sink:list[dict[str,Any]]|None=None):
+@@ -409,16 +509,9 @@
+                 if raw["status"]=="conflict" and nature=="insufficient_evidence":raise ValueError("schema_invalid")
+                 if nature=="confirmed_conflict" and (not any(ev["relation"]=="contradicts" and ev["sufficiency"]=="sufficient" for ev in cleaned) or any(ev["relation"]=="supports" or ev["sufficiency"]!="sufficient" for ev in cleaned)):
+                     raise ContinuityContractValidationError("conflict_evidence_not_direct")
+-                temporal_failure=None
+-                if nature=="confirmed_conflict":
+-                    if temporal["relation"]=="explicit_overlap":
+-                        if not isinstance(claim_anchor,str) or not isinstance(evidence_anchor,str) or not any(item["relation"]=="contradicts" and evidence_anchor in item["excerpt"] and _full_temporal_scope_supports_conflict(claim_text,item["excerpt"],claim_anchor,evidence_anchor) for item in cleaned):temporal_failure="temporal_overlap_unproven"
+-                    elif temporal["relation"]=="timeless_rule":
+-                        related_ids={memory_id for item in cleaned for memory_id in item["related_memory_ids"]}
+-                        cited_ids={item["span_id"] for item in cleaned}
+-                        if not any(mem[memory_id].get("memory_type")=="static_canon" and mem[memory_id].get("predicate")=="rule" and mem[memory_id].get("source_span_id") in cited_ids for memory_id in related_ids):temporal_failure="timeless_rule_unproven"
+-                    else:temporal_failure="temporal_overlap_unproven"
+-                    if temporal_failure and not allow_conservative_temporal_normalization:raise ContinuityContractValidationError(temporal_failure)
++                temporal_failure=_confirmed_temporal_failure(raw,claim_text,cleaned,mem)
++                if temporal_failure and not allow_conservative_temporal_normalization:
++                    raise ContinuityContractValidationError(temporal_failure)
+                 if nature in {"possible_conflict","state_change"} and any(ev["sufficiency"]!="sufficient" for ev in cleaned):raise ValueError("evidence_unresolvable")
+                 if nature=="insufficient_evidence" and (not cleaned or any(ev["sufficiency"]!="insufficient" for ev in cleaned)):raise ValueError("evidence_unresolvable")
+                 if not isinstance(chain,list) or len(chain)!=len(cleaned) or any(not isinstance(item,dict) or set(item)!={"span_id","role"} or item.get("role") not in EVIDENCE_CHAIN_ROLES for item in chain):raise ValueError("evidence_unresolvable")
+--- V6/provider.py
++++ V7/provider.py
+@@ -92,11 +92,12 @@
+     observed_response_cost_cny: float | None = None
+ 
+ 
+-CONTINUITY_PROMPT_VERSION = "continuity-review-v16-joint-evidence-coverage"
++MAX_CLAIM_BASIS_CODEPOINTS = 400
++CONTINUITY_PROMPT_VERSION = "continuity-review-v17-repair-diagnostics"
+ 
+ CONTINUITY_REVIEW_RULES = (
+     "Write every author-facing explanation, reasoning, and suggested revision in the dominant language of the bound draft. Preserve proper nouns from the source.",
+-    "Decide every current claim before emitting output. Return exactly issues and claim_verdicts. Include one claim_verdict for every current claim in this request, with its exact claim_span_id, verdict reviewed_issue|insufficient_evidence|no_issue, and a brief non-empty basis. Every emitted conflict-status issue, including a compatible state_change, needs reviewed_issue verdict; an insufficient_evidence issue needs insufficient_evidence verdict. An omitted issue needs no_issue verdict with a reason. Never emit a no_conflict issue or mix the new and legacy shapes.",
++    f"Decide every current claim before emitting output. Return exactly issues and claim_verdicts. Include one claim_verdict for every current claim in this request, with its exact claim_span_id, verdict reviewed_issue|insufficient_evidence|no_issue, and a non-empty basis of at most {MAX_CLAIM_BASIS_CODEPOINTS} Unicode code points (characters, not tokens); give one concise decision reason without restating all the evidence. Every emitted conflict-status issue, including a compatible state_change, needs reviewed_issue verdict; an insufficient_evidence issue needs insufficient_evidence verdict. An omitted issue needs no_issue verdict with a reason. Never emit a no_conflict issue or mix the new and legacy shapes.",
+     "Deciding every claim does not mean emitting an issue for every claim. First decide whether a claim actually needs review, then omit all claims that are consistent or merely add compatible information. If none need review, return an empty issues array and one explained no_issue claim_verdict for each claim. Never encode 'no contradiction', 'same person', 'consistent', or 'supported' as a confirmed_conflict object. The status, nature, explanation, reasoning, evidence relation and actions must express the same decision.",
+     "Classify nature as confirmed_conflict only when the current story-fact claim and the complete cited evidence set cannot coexist under the same subject, scope, and time. Cite at least one direct, sufficient fact contradicting the current claim and every necessary identity, rule, or time/scope premise in the same issue. Explain what each cited span contributes to the joint proof. Evidence relation is relative to the current story-fact claim: a premise or relevant background is context, not contradicts; supports means it supports that claim and cannot be relabeled to pass the conflict contract. The sufficiency flag describes whether a cited text is complete for its own stated role; it does not make the whole set sufficient by itself.",
+     "For every trustworthy issue, emit temporal_basis. claim_anchor and evidence_anchor must be exact substrings copied from the supplied claim and cited evidence, or null. relation must be explicit_overlap, timeless_rule, explicit_later_transition, or unknown. confirmed_conflict requires explicit_overlap with real time anchors in both texts, or timeless_rule grounded by a supplied static_canon rule. The words current narrative, current scene, or chapter order are never time anchors.",
+@@ -231,7 +232,8 @@
+             "reason_code": repair.get("reason_code"),
+             "diagnostics": repair.get("diagnostics", []),
+             "rejected_issues": repair.get("rejected_issues", []),
+-            "instruction": "The rejected_issues JSON is the exact rejected output. Rebuild issues and claim_verdicts from the original supplied evidence and correct every problem_code, not only reason_code. A removed issue must have an explicit no_issue basis explaining why its earlier conflict or missing link no longer needs review. Do not remove an evidence-dependent gap merely because a register or account is silent. Repair does not require preserving the original issue count: remove an issue when its framing, identity link, explanation, or supporting evidence establishes no reviewable issue. Never invent a time link or call 'current narrative' a time anchor. A mutable earlier state without a supplied same-time anchor is not a confirmed conflict: use state_change only for an explicit later transition, otherwise insufficient_evidence or omit the issue. Copy exact temporal anchors from that individual claim and its cited excerpt or use null. If the draft is Chinese, every author-facing explanation and reasoning must be Chinese. Any suggested revision must remove every cited contradiction, including prohibited actions; otherwise set it to null and omit apply_suggestion. Do not alter Story Memory just to make the draft true, and do not mention the rejected response in author-facing output.",
++            "rejected_claim_verdicts": repair.get("rejected_claim_verdicts", []),
++            "instruction": f"rejected_issues and rejected_claim_verdicts are the complete respective fields from the previous output. Rebuild both arrays under all original rules; correct every problem_code, not only reason_code. Every basis must be non-empty and at most {MAX_CLAIM_BASIS_CODEPOINTS} Unicode code points. For a length error, shorten the basis while preserving its evidence-based decision. An insufficient_evidence verdict requires an actual cited insufficient_evidence Issue with missing_link evidence_chain, no actions and no proposed change; basis alone is not the Issue. expected_verdict_for_returned_issues describes the mismatch, not an instruction to change a correct decision. Do not remove a source-warrant gap just because a record is silent. Remove an issue only if the supplied evidence establishes no reviewable problem, and explain why in no_issue basis. Never invent temporal or identity links; copy exact anchors or use null. Keep author text in the draft language. Suggested revisions must resolve every asserted contradiction; otherwise use null without apply_suggestion. Do not change Story Memory to make the draft true or mention the rejected response to the author.",
+         }
+     return json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+ 

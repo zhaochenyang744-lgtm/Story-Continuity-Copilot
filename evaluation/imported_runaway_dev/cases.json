@@ -1,0 +1,27 @@
+{
+  "purpose": "Developer diagnostic cases (author: Claude, 2026-09-29). Not held-out and never a gate: used to tune review latency on imported projects.",
+  "novels": [
+    {
+      "id": "fog-harbor",
+      "source": "# 第一章 雾港\n灰港的雾钟只在涨潮时响起，这是港口千年不变的规则。林默是港务局的年轻记录员，左手缺了一根小指。他在旧仓库里发现一本写着“潮汐之门”的日志，日志最后一页写着：门开之日，钟声倒转。林默把日志藏进了自己的铁皮柜。\n# 第二章 旧友\n苏遥从北岸回来，她说父亲在三年前的风暴中失踪。林默没有告诉她日志的事。夜里退潮时，港口一片寂静。苏遥临走前留下一枚刻着船锚的铜币，说这是父亲留下的唯一遗物。\n",
+      "drafts": [
+        {"id": "undated-body-trait", "expect": "reviewable conflict (finger count)", "body": "第三章 返程\n林默张开完好无缺的左手，五根手指都在。"},
+        {"id": "dated-event", "expect": "conflict (three vs ten years)", "body": "苏遥说她父亲是十年前在风暴中失踪的。"},
+        {"id": "consistent", "expect": "no issue", "body": "林默用缺了小指的左手翻开铁皮柜，日志还在原处。"},
+        {"id": "mixed", "expect": "conflict on the trait; the coin line is compatible", "body": "林默用十根手指仔细擦拭那枚刻着船锚的铜币。苏遥说那是父亲唯一的遗物。"},
+        {"id": "trait-and-date", "expect": "two reviewable conflicts; v21 ran away 2/2 on this draft", "body": "第三章 返程\n林默张开完好无缺的左手，五根手指都在。苏遥说她父亲是十年前在风暴中失踪的。"},
+        {"id": "tide-bell-silence", "expect": "no confirmed conflict (the rule only limits when it rings); v21 ran away 2/2", "body": "第三章 返程\n涨潮的清晨，雾钟没有响。林默用缺了小指的左手翻开铁皮柜，日志不见了。苏遥说她要去北岸找父亲，那里有一扇潮汐之门。"}
+      ]
+    },
+    {
+      "id": "white-tower",
+      "source": "# 第一章 白塔\n沈遥的眼睛是灰色的，她从小在白塔长大。白塔只有一扇朝东的门。塔顶的铜钟由守塔人老周看管。\n# 第二章 来客\n一个自称商人的男人敲开了东门。老周说，钟楼的钥匙只有他一个人有，从不离身。\n",
+      "drafts": [
+        {"id": "undated-eye-colour", "expect": "reviewable conflict (eye colour)", "body": "沈遥那双湛蓝的眼睛望着窗外的雪。"},
+        {"id": "structure", "expect": "reviewable conflict (only an east door)", "body": "沈遥推开白塔朝西的那扇门，走进了雪地。"},
+        {"id": "key-handoff", "expect": "insufficient or possible (no handoff shown)", "body": "商人从怀里掏出钟楼的钥匙，打开了塔顶的门。"},
+        {"id": "consistent", "expect": "no issue", "body": "老周提着灯走上塔顶，检查那口铜钟。"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-11",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:49:10.383884+00:00",
+  "latency_ms": 1120,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3003,
+      "completion_tokens": 119,
+      "total_tokens": 3122
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-28669392-b5e5-4700-8986-4ac7a503526c-1\",\"verdict\":\"no_issue\",\"basis\":\"The draft explicitly frames Aster's statement as a lie, so it is an attributed false utterance, not narrator-asserted canon. The cited evidence (twins, both children of Eda; register rule that twins cannot be one another's parent) is consistent with the narrator's correction, so no continuity conflict exists.\"}]}",
+  "message_content_sha256": "68a398d7071eccf42add6ef27e528901adc4c895f8dc6a621e7a1a3d47f11619",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

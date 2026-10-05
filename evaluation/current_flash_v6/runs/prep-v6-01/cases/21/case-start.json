@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v6-01",
+  "ordinal": 21,
+  "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+  "family": "comparison",
+  "started_at": "2026-09-27T09:34:52.765969+00:00",
+  "case_input_sha256": "64678340522c9fcf4e9178ed2caec573100cdd7fa7f4ccc48fc20b4d2af3392a",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

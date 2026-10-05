@@ -1,0 +1,1400 @@
+{
+  "schema_version": "flash-v5-g02-preflight-02-independent-review-v1",
+  "created_at_utc": "2026-09-27T08:10:04.513818+00:00",
+  "review_scope": "six G02 prepared business inputs only; standard-library JSON/hash inspection",
+  "run_id": "prep-v5-02",
+  "run_mode": "prepare/offline-stub",
+  "input_blockers": [],
+  "conclusion": "no_input_blocker_with_disclosed_scope_limit",
+  "actual_model_quality": "not_evaluated_pending_real_outputs",
+  "new_provider_calls": 0,
+  "database_opened": false,
+  "runner_or_product_executed": false,
+  "global_checks": {
+    "six_expected_g02_cases_only": true,
+    "cross_case_entity_identity_sets_disjoint": true,
+    "run_is_prepare_offline_stub": true,
+    "run_base_expected": true,
+    "reported_network_dispatch_zero": true,
+    "summary_retains_pending_manual_review": true,
+    "read_records_unchanged_during_review": true
+  },
+  "scope_limitations": [
+    {
+      "id": "g02_seed_full_chapter_body_not_supplied",
+      "blocking": false,
+      "observation": "All six runtime snapshots retain 10 empty chapter_body values with nonempty SourceSpan bodies. Selected spans resolve to matching parent chapter ID/title/number/revision and exact runtime span bytes; the historical selected span bytes also match.",
+      "controller_adjudication": "Controller reported direct inspection of backend/app/v2_database.py::_seed_grey_harbor (around line 887): tutorial seed intentionally inserts empty chapter body and separate SourceSpan text. This run is a bounded G02 synthetic excerpt regression. Keep this as a disclosed nonblocking scope limit; do not fabricate full chapters or change six backgrounds.",
+      "independent_reviewer_scope": "This reviewer read JSON only and verified IDs, metadata, request hashes and existing snapshot text. Seed implementation provenance is controller-supplied; no database or product code execution occurred in this review.",
+      "claim_not_supported": "Full chapter-body provenance, long-form manuscript coverage or full-source reading acceptance."
+    }
+  ],
+  "source_hashes_before": {
+    "docs/flash-v5-independent-acceptance-evidence/materials-g02/preparation-audit.json": "a331e3c48191fbe4ebfa25b1fbf1a82859b93be25d41f079158d2523082fc679",
+    "evaluation/current_flash_v5/cases.json": "83fb36bd9d933036ae57b741410704c65de13af3120aeb587762e1d608a6f6d8",
+    "evaluation/current_flash_v5/runs/prep-v5-02/start.json": "de35ed18b7f61ff16c471afae09f8f44f5e6b7c1cc07fe567105b5bf05eb9420",
+    "evaluation/current_flash_v5/runs/prep-v5-02/summary.json": "d8a2b687b7b91a6a8b6ad9d0911042a66f7ee28a88368abe51cd9985a7db3102",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/25/requests/01.json": "0a7dcb4d42ca69fb56cd7946b66ff1b854a16ee40ba7205ddb5716730b652371",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/25/input-audit/01.json": "256e09a7b54a474d08a401244124eff5de62fdf64f685e8d60154d74a5d8d04b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/25/runtime-binding.json": "640f3bd99af9c7bb2a503c2f7a8c3a6d8c303d987875bbaf1f427fb22194790b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/25/case-start.json": "83d43496569dca558f81baec74fe9c35e378bcc4a0c8f6fd87ee58b5ad313d1b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/26/requests/01.json": "4a856d379a28ff4f70258b420ef1d5e52ba8c0693cbaafb540c6c47605215e6e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/26/input-audit/01.json": "ceaf6e24746b90a267b561ef34656a7bbbe0071ecda1899d24e8644fb7ab2819",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/26/runtime-binding.json": "f9e62ef8ad4d97ff07f5c4494f6044b7732d5bd293edeb7b1266ca31f76e7df9",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/26/case-start.json": "3748fd40773cccfb538f88aa6dc85e9e9aa2a1d6ac492c91eed1cc93089faa97",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/27/requests/01.json": "a74086a4b9bc7bc1afe29c2eeff402b541979c57db48d4f26cd20257473ebd0d",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/27/input-audit/01.json": "ed9378d3c3e0214fcd4f8fcc995018e87271071cdd1cf9f5d404d6e82532d402",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/27/runtime-binding.json": "09e0acd2f446a3657e613032f590c15941b97947ad3c8dac3272a9328394a244",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/27/case-start.json": "5d98f6d3e25391009422602953e7cd0a53927f3ee65329d02b5de987b659351e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/28/requests/01.json": "34bcc9a6a78a8dbaaed4134e1a7e9c44b68fff14edbdc5facf26858596a7525d",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/28/input-audit/01.json": "7faca7809df52b9c64d5e72829fc433e0f0c9e4be898a6115a9826c617c37a31",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/28/runtime-binding.json": "df454096de313482c38f301223243efdec47cb7a32e7631464df7b460eab8a66",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/28/case-start.json": "4aa9e9b35e5316d93f9170c8db3934c76d43c97de8f6bed02c47aa23200ef8a4",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/29/requests/01.json": "49c2dc26d8ff9b90251390c011b6ccc0d4cb59f8cf5b32087056309b4f47bb5c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/29/input-audit/01.json": "c817cd693a0422e434220c633ffc80c6785adcab019fbe3e6a43b0ca4cf095dd",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/29/runtime-binding.json": "82a8a6de60976c022fd8ee8dc799065004f10c8230703658688e77e797cfa5b8",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/29/case-start.json": "fabeacc8245e4c6b6b891174df7176bc43cf753b509cfc3e1e8a32e8ef06bf77",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/30/requests/01.json": "a6d3e5985de1cb79fb91764d9bff219a4232b6ebeb4cd58861140257b9d0b9ae",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/30/input-audit/01.json": "52b5ebbc84bd7c6e29829f37a52776e45a372611e773ba857ac5b378c71ad0da",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/30/runtime-binding.json": "d7fae01203cbef1393908928adbd43c2e40e1d7b655cc6a8cec9a139304d8865",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/30/case-start.json": "c644eea6d6cefe1a2ba21ac8199f70f5caef4246c5b61c805f44357bcb293c6a"
+  },
+  "source_hashes_after": {
+    "docs/flash-v5-independent-acceptance-evidence/materials-g02/preparation-audit.json": "a331e3c48191fbe4ebfa25b1fbf1a82859b93be25d41f079158d2523082fc679",
+    "evaluation/current_flash_v5/cases.json": "83fb36bd9d933036ae57b741410704c65de13af3120aeb587762e1d608a6f6d8",
+    "evaluation/current_flash_v5/runs/prep-v5-02/start.json": "de35ed18b7f61ff16c471afae09f8f44f5e6b7c1cc07fe567105b5bf05eb9420",
+    "evaluation/current_flash_v5/runs/prep-v5-02/summary.json": "d8a2b687b7b91a6a8b6ad9d0911042a66f7ee28a88368abe51cd9985a7db3102",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/25/requests/01.json": "0a7dcb4d42ca69fb56cd7946b66ff1b854a16ee40ba7205ddb5716730b652371",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/25/input-audit/01.json": "256e09a7b54a474d08a401244124eff5de62fdf64f685e8d60154d74a5d8d04b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/25/runtime-binding.json": "640f3bd99af9c7bb2a503c2f7a8c3a6d8c303d987875bbaf1f427fb22194790b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/25/case-start.json": "83d43496569dca558f81baec74fe9c35e378bcc4a0c8f6fd87ee58b5ad313d1b",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/26/requests/01.json": "4a856d379a28ff4f70258b420ef1d5e52ba8c0693cbaafb540c6c47605215e6e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/26/input-audit/01.json": "ceaf6e24746b90a267b561ef34656a7bbbe0071ecda1899d24e8644fb7ab2819",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/26/runtime-binding.json": "f9e62ef8ad4d97ff07f5c4494f6044b7732d5bd293edeb7b1266ca31f76e7df9",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/26/case-start.json": "3748fd40773cccfb538f88aa6dc85e9e9aa2a1d6ac492c91eed1cc93089faa97",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/27/requests/01.json": "a74086a4b9bc7bc1afe29c2eeff402b541979c57db48d4f26cd20257473ebd0d",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/27/input-audit/01.json": "ed9378d3c3e0214fcd4f8fcc995018e87271071cdd1cf9f5d404d6e82532d402",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/27/runtime-binding.json": "09e0acd2f446a3657e613032f590c15941b97947ad3c8dac3272a9328394a244",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/27/case-start.json": "5d98f6d3e25391009422602953e7cd0a53927f3ee65329d02b5de987b659351e",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/28/requests/01.json": "34bcc9a6a78a8dbaaed4134e1a7e9c44b68fff14edbdc5facf26858596a7525d",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/28/input-audit/01.json": "7faca7809df52b9c64d5e72829fc433e0f0c9e4be898a6115a9826c617c37a31",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/28/runtime-binding.json": "df454096de313482c38f301223243efdec47cb7a32e7631464df7b460eab8a66",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/28/case-start.json": "4aa9e9b35e5316d93f9170c8db3934c76d43c97de8f6bed02c47aa23200ef8a4",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/29/requests/01.json": "49c2dc26d8ff9b90251390c011b6ccc0d4cb59f8cf5b32087056309b4f47bb5c",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/29/input-audit/01.json": "c817cd693a0422e434220c633ffc80c6785adcab019fbe3e6a43b0ca4cf095dd",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/29/runtime-binding.json": "82a8a6de60976c022fd8ee8dc799065004f10c8230703658688e77e797cfa5b8",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/29/case-start.json": "fabeacc8245e4c6b6b891174df7176bc43cf753b509cfc3e1e8a32e8ef06bf77",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/30/requests/01.json": "a6d3e5985de1cb79fb91764d9bff219a4232b6ebeb4cd58861140257b9d0b9ae",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/30/input-audit/01.json": "52b5ebbc84bd7c6e29829f37a52776e45a372611e773ba857ac5b378c71ad0da",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/30/runtime-binding.json": "d7fae01203cbef1393908928adbd43c2e40e1d7b655cc6a8cec9a139304d8865",
+    "evaluation/current_flash_v5/runs/prep-v5-02/cases/30/case-start.json": "c644eea6d6cefe1a2ba21ac8199f70f5caef4246c5b61c805f44357bcb293c6a"
+  },
+  "case_reviews": [
+    {
+      "ordinal": 25,
+      "case_id": "g02-three-sentences",
+      "input_binding_conclusion": "pass_with_declared_scope_limit",
+      "checks": {
+        "case_identity_matches_start_audit_matrix": true,
+        "case_start_hash_matches_v5_case_row": true,
+        "source_reference_retains_v4_cases": true,
+        "saved_draft_bytes_equal_matrix_preparation_v4": true,
+        "saved_draft_raw_utf8_hashes_agree": true,
+        "business_request_hash_agrees": true,
+        "wrapper_bindings_equal_actual_request": true,
+        "runtime_project_draft_revision_source_memory_agree": true,
+        "draft_identity_and_chapter_metadata_agree": true,
+        "background_revision_and_memory_version_expected": true,
+        "new_project_and_draft_not_old_v4_ids": true,
+        "task_and_first_evaluation_metadata_agree": true,
+        "saved_body_and_excerpt_char_counts_agree": true,
+        "excerpt_matches_historical_business_excerpt": true,
+        "claim_counts_agree": true,
+        "claim_text_ordinal_matches_independent_preparation": true,
+        "claim_ids_unique_and_bound_to_new_draft_revision": true,
+        "claim_scope_offsets_supply_exact_saved_text": true,
+        "scope_values_match_independent_preparation": true,
+        "selected_claim_ids_and_scope_ids_match": true,
+        "body_and_claim_truncation_flags_match": true,
+        "selected_source_counts_and_ids_agree": true,
+        "selected_spans_parent_chapter_identity_title_revision_agree": true,
+        "selected_span_body_exactly_matches_runtime_span": true,
+        "runtime_chapter_span_raw_utf8_hashes_agree": true,
+        "selected_spans_content_and_order_equal_v4": true,
+        "memory_count_and_ids_agree": true,
+        "memory_matches_runtime_records_and_version": true,
+        "all_memory_source_relations_resolve_to_runtime_span_parent": true,
+        "memory_semantic_set_equal_v4": true,
+        "selected_and_unselected_memory_source_counts_agree": true,
+        "author_plans_remain_empty": true,
+        "selected_source_binding_list_is_complete_and_unique": true,
+        "selected_source_text_fingerprints_agree_json_hash": true,
+        "selected_source_metadata_matches_actual_request": true,
+        "dialogue_audit_flag_is_case_specific": true
+      },
+      "failed_checks": [],
+      "business_request_sha256": "2946d0a1c8ba1a4e3f33244bdf9d388579ed506ab13f8a431911e9404f9af1e0",
+      "saved_draft_utf8_sha256": "28ef08a3a19dedc412b26bdcb3db58db626110d8cc45a41f5de2fa752c29783f",
+      "bindings": {
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "author_context_version": 0,
+        "draft_id": "draft-5fc05667-50b4-44ca-b77e-d8ac4caf2723",
+        "draft_revision": 2,
+        "memory_version": 4,
+        "project_id": "prj-41203c66-97e1-4569-91b2-0edcef224733",
+        "source_revision": 1
+      },
+      "draft_metadata": {
+        "chapter_number": 11,
+        "id": "draft-5fc05667-50b4-44ca-b77e-d8ac4caf2723",
+        "revision": 2,
+        "title": "第十一章：未归的航标"
+      },
+      "claim_available": 3,
+      "claim_selected": 3,
+      "claim_unselected": 0,
+      "claims": [
+        {
+          "id": "draft-claim-draft-5fc05667-50b4-44ca-b77e-d8ac4caf2723-r2-1",
+          "ordinal": 1,
+          "text": "林默走进北门。"
+        },
+        {
+          "id": "draft-claim-draft-5fc05667-50b4-44ca-b77e-d8ac4caf2723-r2-2",
+          "ordinal": 2,
+          "text": "银钥匙已经交给陈澈。"
+        },
+        {
+          "id": "draft-claim-draft-5fc05667-50b4-44ca-b77e-d8ac4caf2723-r2-3",
+          "ordinal": 3,
+          "text": "她此时已经知道弟弟还活着。"
+        }
+      ],
+      "claim_scope": {
+        "available": 3,
+        "body_chars": 30,
+        "excerpt_chars": 30,
+        "selected": [
+          {
+            "id": "draft-claim-draft-5fc05667-50b4-44ca-b77e-d8ac4caf2723-r2-1",
+            "source_chars": 7,
+            "source_end": 7,
+            "source_start": 0,
+            "supplied_chars": 7,
+            "supplied_end": 7,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-5fc05667-50b4-44ca-b77e-d8ac4caf2723-r2-2",
+            "source_chars": 10,
+            "source_end": 17,
+            "source_start": 7,
+            "supplied_chars": 10,
+            "supplied_end": 17,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-5fc05667-50b4-44ca-b77e-d8ac4caf2723-r2-3",
+            "source_chars": 13,
+            "source_end": 30,
+            "source_start": 17,
+            "supplied_chars": 13,
+            "supplied_end": 30,
+            "truncated": false
+          }
+        ]
+      },
+      "excerpt_chars": 30,
+      "selected_chapters": [
+        4,
+        8,
+        6,
+        10
+      ],
+      "selected_spans": [
+        {
+          "body": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+          "chapter_id": "ch-2c699f9b-596f-435f-9370-55acfdcf0d68",
+          "chapter_number": 4,
+          "chapter_title": "无字潮表",
+          "id": "span-666bdf0a-e335-47ce-9f66-66039cd33eb2",
+          "label": "知识边界",
+          "source_revision": 1
+        },
+        {
+          "body": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+          "chapter_id": "ch-2de89d00-16b9-49ed-a9a8-8dcd84864787",
+          "chapter_number": 8,
+          "chapter_title": "北堤灯火",
+          "id": "span-2de1e453-29fc-419b-abac-65a64d98a114",
+          "label": "关系变化",
+          "source_revision": 1
+        },
+        {
+          "body": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+          "chapter_id": "ch-58429995-7a08-42ac-ab9c-46b33f03a9a7",
+          "chapter_number": 6,
+          "chapter_title": "低室电台",
+          "id": "span-a574ffd6-a637-48e7-9379-818a5850bbd7",
+          "label": "事件记录",
+          "source_revision": 1
+        },
+        {
+          "body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+          "chapter_id": "ch-52ee5ee3-64d9-49bd-b34d-4871bba7ec69",
+          "chapter_number": 10,
+          "chapter_title": "回声坐标",
+          "id": "span-31400117-70bc-45c4-b12b-d9bc6a2e3569",
+          "label": "未解问题",
+          "source_revision": 1
+        }
+      ],
+      "memory_semantic_set": [
+        [
+          "character_knowledge",
+          "温岚",
+          "does_not_know",
+          "廊桥钥匙的含义"
+        ],
+        [
+          "dynamic_state",
+          "航图",
+          "location",
+          "雾线水门外锚柱"
+        ],
+        [
+          "dynamic_state",
+          "黄铜罗盘",
+          "holder",
+          "温岚"
+        ],
+        [
+          "event_timeline",
+          "低室电台",
+          "received",
+          "第6章 21:05 收到三次求救码"
+        ],
+        [
+          "event_timeline",
+          "西航道退潮",
+          "time",
+          "第3章 19:20"
+        ],
+        [
+          "open_thread",
+          "异常雾钟",
+          "status",
+          "北潮闸未关闭时响起，原因未解"
+        ],
+        [
+          "open_thread",
+          "白色渡船",
+          "status",
+          "没有靠岸，来源未明"
+        ],
+        [
+          "static_canon",
+          "灰港雾钟",
+          "ring_condition",
+          "只在北潮闸完全关闭后敲响一次"
+        ]
+      ],
+      "memory_sources_selected": 3,
+      "memory_sources_unselected": 5,
+      "runtime_chapter_count": 10,
+      "empty_runtime_chapter_bodies": 10,
+      "full_chapter_body_content_verified": false,
+      "historical_comparison": "Same saved body, selected claims text/scopes, selected source content/order, and Memory semantic set; new IDs and Memory order can differ.",
+      "semantic_model_result": "pending_real_outputs; offline stub is not model evidence"
+    },
+    {
+      "ordinal": 26,
+      "case_id": "g02-long-sentence",
+      "input_binding_conclusion": "pass_with_declared_scope_limit",
+      "checks": {
+        "case_identity_matches_start_audit_matrix": true,
+        "case_start_hash_matches_v5_case_row": true,
+        "source_reference_retains_v4_cases": true,
+        "saved_draft_bytes_equal_matrix_preparation_v4": true,
+        "saved_draft_raw_utf8_hashes_agree": true,
+        "business_request_hash_agrees": true,
+        "wrapper_bindings_equal_actual_request": true,
+        "runtime_project_draft_revision_source_memory_agree": true,
+        "draft_identity_and_chapter_metadata_agree": true,
+        "background_revision_and_memory_version_expected": true,
+        "new_project_and_draft_not_old_v4_ids": true,
+        "task_and_first_evaluation_metadata_agree": true,
+        "saved_body_and_excerpt_char_counts_agree": true,
+        "excerpt_matches_historical_business_excerpt": true,
+        "claim_counts_agree": true,
+        "claim_text_ordinal_matches_independent_preparation": true,
+        "claim_ids_unique_and_bound_to_new_draft_revision": true,
+        "claim_scope_offsets_supply_exact_saved_text": true,
+        "scope_values_match_independent_preparation": true,
+        "selected_claim_ids_and_scope_ids_match": true,
+        "body_and_claim_truncation_flags_match": true,
+        "selected_source_counts_and_ids_agree": true,
+        "selected_spans_parent_chapter_identity_title_revision_agree": true,
+        "selected_span_body_exactly_matches_runtime_span": true,
+        "runtime_chapter_span_raw_utf8_hashes_agree": true,
+        "selected_spans_content_and_order_equal_v4": true,
+        "memory_count_and_ids_agree": true,
+        "memory_matches_runtime_records_and_version": true,
+        "all_memory_source_relations_resolve_to_runtime_span_parent": true,
+        "memory_semantic_set_equal_v4": true,
+        "selected_and_unselected_memory_source_counts_agree": true,
+        "author_plans_remain_empty": true,
+        "selected_source_binding_list_is_complete_and_unique": true,
+        "selected_source_text_fingerprints_agree_json_hash": true,
+        "selected_source_metadata_matches_actual_request": true,
+        "dialogue_audit_flag_is_case_specific": true
+      },
+      "failed_checks": [],
+      "business_request_sha256": "90d655dc12c09e2a5eeb096ff3c61416cb3d0e05eacc1046452e4d12a04ffc46",
+      "saved_draft_utf8_sha256": "c37ec0f518fbf7e7c499cb4dc0e23db72f8edeb458dc8939618e7ce8bbecadee",
+      "bindings": {
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "author_context_version": 0,
+        "draft_id": "draft-d07734c7-a6d0-453a-9604-2717fc2bc19d",
+        "draft_revision": 2,
+        "memory_version": 4,
+        "project_id": "prj-e7c564f6-084e-4f93-8a9d-c4ddeb09b3fa",
+        "source_revision": 1
+      },
+      "draft_metadata": {
+        "chapter_number": 11,
+        "id": "draft-d07734c7-a6d0-453a-9604-2717fc2bc19d",
+        "revision": 2,
+        "title": "第十一章：未归的航标"
+      },
+      "claim_available": 1,
+      "claim_selected": 1,
+      "claim_unselected": 0,
+      "claims": [
+        {
+          "id": "draft-claim-draft-d07734c7-a6d0-453a-9604-2717fc2bc19d-r2-1",
+          "ordinal": 1,
+          "text": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。"
+        }
+      ],
+      "claim_scope": {
+        "available": 1,
+        "body_chars": 299,
+        "excerpt_chars": 299,
+        "selected": [
+          {
+            "id": "draft-claim-draft-d07734c7-a6d0-453a-9604-2717fc2bc19d-r2-1",
+            "source_chars": 299,
+            "source_end": 299,
+            "source_start": 0,
+            "supplied_chars": 299,
+            "supplied_end": 299,
+            "truncated": false
+          }
+        ]
+      },
+      "excerpt_chars": 299,
+      "selected_chapters": [
+        8,
+        6,
+        4,
+        3
+      ],
+      "selected_spans": [
+        {
+          "body": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+          "chapter_id": "ch-c5b49013-11ea-4650-ba69-2b5075dd461b",
+          "chapter_number": 8,
+          "chapter_title": "北堤灯火",
+          "id": "span-d0b44be5-7b26-4704-9626-bf1892dd5e20",
+          "label": "关系变化",
+          "source_revision": 1
+        },
+        {
+          "body": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+          "chapter_id": "ch-a197e8c5-d900-4519-8504-3c6f47ae809b",
+          "chapter_number": 6,
+          "chapter_title": "低室电台",
+          "id": "span-5f782d81-63c7-4904-bce1-026253b90960",
+          "label": "事件记录",
+          "source_revision": 1
+        },
+        {
+          "body": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+          "chapter_id": "ch-7886b7a5-e127-451c-8fbd-f1be99005f55",
+          "chapter_number": 4,
+          "chapter_title": "无字潮表",
+          "id": "span-f5e47549-30ca-414b-9a42-776a9757fb5f",
+          "label": "知识边界",
+          "source_revision": 1
+        },
+        {
+          "body": "十九点二十，西航道先退潮，最后一班渡船在十九点四十才离开风栈码头。",
+          "chapter_id": "ch-9950f5eb-09a3-4274-b626-75d9f850a4ad",
+          "chapter_number": 3,
+          "chapter_title": "迟到的渡船",
+          "id": "span-bb307c59-743c-49ff-87c6-fe3a4483935b",
+          "label": "时间线",
+          "source_revision": 1
+        }
+      ],
+      "memory_semantic_set": [
+        [
+          "character_knowledge",
+          "温岚",
+          "does_not_know",
+          "廊桥钥匙的含义"
+        ],
+        [
+          "dynamic_state",
+          "航图",
+          "location",
+          "雾线水门外锚柱"
+        ],
+        [
+          "dynamic_state",
+          "黄铜罗盘",
+          "holder",
+          "温岚"
+        ],
+        [
+          "event_timeline",
+          "低室电台",
+          "received",
+          "第6章 21:05 收到三次求救码"
+        ],
+        [
+          "event_timeline",
+          "西航道退潮",
+          "time",
+          "第3章 19:20"
+        ],
+        [
+          "open_thread",
+          "异常雾钟",
+          "status",
+          "北潮闸未关闭时响起，原因未解"
+        ],
+        [
+          "open_thread",
+          "白色渡船",
+          "status",
+          "没有靠岸，来源未明"
+        ],
+        [
+          "static_canon",
+          "灰港雾钟",
+          "ring_condition",
+          "只在北潮闸完全关闭后敲响一次"
+        ]
+      ],
+      "memory_sources_selected": 3,
+      "memory_sources_unselected": 5,
+      "runtime_chapter_count": 10,
+      "empty_runtime_chapter_bodies": 10,
+      "full_chapter_body_content_verified": false,
+      "historical_comparison": "Same saved body, selected claims text/scopes, selected source content/order, and Memory semantic set; new IDs and Memory order can differ.",
+      "semantic_model_result": "pending_real_outputs; offline stub is not model evidence"
+    },
+    {
+      "ordinal": 27,
+      "case_id": "g02-body-limit",
+      "input_binding_conclusion": "pass_with_declared_scope_limit",
+      "checks": {
+        "case_identity_matches_start_audit_matrix": true,
+        "case_start_hash_matches_v5_case_row": true,
+        "source_reference_retains_v4_cases": true,
+        "saved_draft_bytes_equal_matrix_preparation_v4": true,
+        "saved_draft_raw_utf8_hashes_agree": true,
+        "business_request_hash_agrees": true,
+        "wrapper_bindings_equal_actual_request": true,
+        "runtime_project_draft_revision_source_memory_agree": true,
+        "draft_identity_and_chapter_metadata_agree": true,
+        "background_revision_and_memory_version_expected": true,
+        "new_project_and_draft_not_old_v4_ids": true,
+        "task_and_first_evaluation_metadata_agree": true,
+        "saved_body_and_excerpt_char_counts_agree": true,
+        "excerpt_matches_historical_business_excerpt": true,
+        "claim_counts_agree": true,
+        "claim_text_ordinal_matches_independent_preparation": true,
+        "claim_ids_unique_and_bound_to_new_draft_revision": true,
+        "claim_scope_offsets_supply_exact_saved_text": true,
+        "scope_values_match_independent_preparation": true,
+        "selected_claim_ids_and_scope_ids_match": true,
+        "body_and_claim_truncation_flags_match": true,
+        "selected_source_counts_and_ids_agree": true,
+        "selected_spans_parent_chapter_identity_title_revision_agree": true,
+        "selected_span_body_exactly_matches_runtime_span": true,
+        "runtime_chapter_span_raw_utf8_hashes_agree": true,
+        "selected_spans_content_and_order_equal_v4": true,
+        "memory_count_and_ids_agree": true,
+        "memory_matches_runtime_records_and_version": true,
+        "all_memory_source_relations_resolve_to_runtime_span_parent": true,
+        "memory_semantic_set_equal_v4": true,
+        "selected_and_unselected_memory_source_counts_agree": true,
+        "author_plans_remain_empty": true,
+        "selected_source_binding_list_is_complete_and_unique": true,
+        "selected_source_text_fingerprints_agree_json_hash": true,
+        "selected_source_metadata_matches_actual_request": true,
+        "dialogue_audit_flag_is_case_specific": true,
+        "long_body_180_equal_sentences_eight_distinct_positions": true
+      },
+      "failed_checks": [],
+      "business_request_sha256": "5ee71394198f59020369872805b5bd7bd228a40fcb57a13cf01749b96266c927",
+      "saved_draft_utf8_sha256": "2005fb472e4d473c2fd327b19ab6d3b5df281af7fb806ce2216b2498f2a23269",
+      "bindings": {
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "author_context_version": 0,
+        "draft_id": "draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35",
+        "draft_revision": 2,
+        "memory_version": 4,
+        "project_id": "prj-a53ed366-c38f-458c-a041-791eae0977a5",
+        "source_revision": 1
+      },
+      "draft_metadata": {
+        "chapter_number": 11,
+        "id": "draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35",
+        "revision": 2,
+        "title": "第十一章：未归的航标"
+      },
+      "claim_available": 180,
+      "claim_selected": 8,
+      "claim_unselected": 172,
+      "claims": [
+        {
+          "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-1",
+          "ordinal": 1,
+          "text": "林默在雾港核对潮汐表。"
+        },
+        {
+          "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-2",
+          "ordinal": 2,
+          "text": "林默在雾港核对潮汐表。"
+        },
+        {
+          "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-3",
+          "ordinal": 3,
+          "text": "林默在雾港核对潮汐表。"
+        },
+        {
+          "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-4",
+          "ordinal": 4,
+          "text": "林默在雾港核对潮汐表。"
+        },
+        {
+          "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-5",
+          "ordinal": 5,
+          "text": "林默在雾港核对潮汐表。"
+        },
+        {
+          "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-6",
+          "ordinal": 6,
+          "text": "林默在雾港核对潮汐表。"
+        },
+        {
+          "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-7",
+          "ordinal": 7,
+          "text": "林默在雾港核对潮汐表。"
+        },
+        {
+          "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-8",
+          "ordinal": 8,
+          "text": "林默在雾港核对潮汐表。"
+        }
+      ],
+      "claim_scope": {
+        "available": 180,
+        "body_chars": 1980,
+        "excerpt_chars": 600,
+        "selected": [
+          {
+            "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-1",
+            "source_chars": 11,
+            "source_end": 11,
+            "source_start": 0,
+            "supplied_chars": 11,
+            "supplied_end": 11,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-2",
+            "source_chars": 11,
+            "source_end": 22,
+            "source_start": 11,
+            "supplied_chars": 11,
+            "supplied_end": 22,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-3",
+            "source_chars": 11,
+            "source_end": 33,
+            "source_start": 22,
+            "supplied_chars": 11,
+            "supplied_end": 33,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-4",
+            "source_chars": 11,
+            "source_end": 44,
+            "source_start": 33,
+            "supplied_chars": 11,
+            "supplied_end": 44,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-5",
+            "source_chars": 11,
+            "source_end": 55,
+            "source_start": 44,
+            "supplied_chars": 11,
+            "supplied_end": 55,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-6",
+            "source_chars": 11,
+            "source_end": 66,
+            "source_start": 55,
+            "supplied_chars": 11,
+            "supplied_end": 66,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-7",
+            "source_chars": 11,
+            "source_end": 77,
+            "source_start": 66,
+            "supplied_chars": 11,
+            "supplied_end": 77,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-7b07f2a6-370e-4dae-b2cf-32a527c0fa35-r2-8",
+            "source_chars": 11,
+            "source_end": 88,
+            "source_start": 77,
+            "supplied_chars": 11,
+            "supplied_end": 88,
+            "truncated": false
+          }
+        ]
+      },
+      "excerpt_chars": 600,
+      "selected_chapters": [
+        7,
+        6,
+        10,
+        9
+      ],
+      "selected_spans": [
+        {
+          "body": "航图被固定在雾线水门外的锚柱上，右下角缺失了一块。",
+          "chapter_id": "ch-48f72dbb-3891-4db7-a860-adde640a24e4",
+          "chapter_number": 7,
+          "chapter_title": "潮线之外",
+          "id": "span-0f5adfa3-9f3c-4e06-a5c4-d9c85a655c14",
+          "label": "地点状态",
+          "source_revision": 1
+        },
+        {
+          "body": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+          "chapter_id": "ch-b8b21b29-158f-4cba-b936-4cecda2f8722",
+          "chapter_number": 6,
+          "chapter_title": "低室电台",
+          "id": "span-9a04e343-69cd-4ec5-b1be-09beea6af7c5",
+          "label": "事件记录",
+          "source_revision": 1
+        },
+        {
+          "body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+          "chapter_id": "ch-99490c63-237c-4869-a709-65b049538984",
+          "chapter_number": 10,
+          "chapter_title": "回声坐标",
+          "id": "span-88a1327d-6606-4e8a-b292-f33f49959b73",
+          "label": "未解问题",
+          "source_revision": 1
+        },
+        {
+          "body": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+          "chapter_id": "ch-b1fc5119-0332-43d8-9565-7aacfe2da9fd",
+          "chapter_number": 9,
+          "chapter_title": "换手",
+          "id": "span-6bd857e1-21ee-4054-8f11-d8e06f5fb262",
+          "label": "动态状态",
+          "source_revision": 1
+        }
+      ],
+      "memory_semantic_set": [
+        [
+          "character_knowledge",
+          "温岚",
+          "does_not_know",
+          "廊桥钥匙的含义"
+        ],
+        [
+          "dynamic_state",
+          "航图",
+          "location",
+          "雾线水门外锚柱"
+        ],
+        [
+          "dynamic_state",
+          "黄铜罗盘",
+          "holder",
+          "温岚"
+        ],
+        [
+          "event_timeline",
+          "低室电台",
+          "received",
+          "第6章 21:05 收到三次求救码"
+        ],
+        [
+          "event_timeline",
+          "西航道退潮",
+          "time",
+          "第3章 19:20"
+        ],
+        [
+          "open_thread",
+          "异常雾钟",
+          "status",
+          "北潮闸未关闭时响起，原因未解"
+        ],
+        [
+          "open_thread",
+          "白色渡船",
+          "status",
+          "没有靠岸，来源未明"
+        ],
+        [
+          "static_canon",
+          "灰港雾钟",
+          "ring_condition",
+          "只在北潮闸完全关闭后敲响一次"
+        ]
+      ],
+      "memory_sources_selected": 4,
+      "memory_sources_unselected": 4,
+      "runtime_chapter_count": 10,
+      "empty_runtime_chapter_bodies": 10,
+      "full_chapter_body_content_verified": false,
+      "historical_comparison": "Same saved body, selected claims text/scopes, selected source content/order, and Memory semantic set; new IDs and Memory order can differ.",
+      "semantic_model_result": "pending_real_outputs; offline stub is not model evidence"
+    },
+    {
+      "ordinal": 28,
+      "case_id": "g02-identical-text",
+      "input_binding_conclusion": "pass_with_declared_scope_limit",
+      "checks": {
+        "case_identity_matches_start_audit_matrix": true,
+        "case_start_hash_matches_v5_case_row": true,
+        "source_reference_retains_v4_cases": true,
+        "saved_draft_bytes_equal_matrix_preparation_v4": true,
+        "saved_draft_raw_utf8_hashes_agree": true,
+        "business_request_hash_agrees": true,
+        "wrapper_bindings_equal_actual_request": true,
+        "runtime_project_draft_revision_source_memory_agree": true,
+        "draft_identity_and_chapter_metadata_agree": true,
+        "background_revision_and_memory_version_expected": true,
+        "new_project_and_draft_not_old_v4_ids": true,
+        "task_and_first_evaluation_metadata_agree": true,
+        "saved_body_and_excerpt_char_counts_agree": true,
+        "excerpt_matches_historical_business_excerpt": true,
+        "claim_counts_agree": true,
+        "claim_text_ordinal_matches_independent_preparation": true,
+        "claim_ids_unique_and_bound_to_new_draft_revision": true,
+        "claim_scope_offsets_supply_exact_saved_text": true,
+        "scope_values_match_independent_preparation": true,
+        "selected_claim_ids_and_scope_ids_match": true,
+        "body_and_claim_truncation_flags_match": true,
+        "selected_source_counts_and_ids_agree": true,
+        "selected_spans_parent_chapter_identity_title_revision_agree": true,
+        "selected_span_body_exactly_matches_runtime_span": true,
+        "runtime_chapter_span_raw_utf8_hashes_agree": true,
+        "selected_spans_content_and_order_equal_v4": true,
+        "memory_count_and_ids_agree": true,
+        "memory_matches_runtime_records_and_version": true,
+        "all_memory_source_relations_resolve_to_runtime_span_parent": true,
+        "memory_semantic_set_equal_v4": true,
+        "selected_and_unselected_memory_source_counts_agree": true,
+        "author_plans_remain_empty": true,
+        "selected_source_binding_list_is_complete_and_unique": true,
+        "selected_source_text_fingerprints_agree_json_hash": true,
+        "selected_source_metadata_matches_actual_request": true,
+        "dialogue_audit_flag_is_case_specific": true,
+        "same_text_distinct_bound_ids_and_offsets": true
+      },
+      "failed_checks": [],
+      "business_request_sha256": "ba1067ef8d5bfffb40f4c722dc85047da583cd75b91f7c63934e823f9aa68269",
+      "saved_draft_utf8_sha256": "3e296b4f2262e0655b7a88d79bc09fdb99b25b1720d6c3533ebf1df0a3125223",
+      "bindings": {
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "author_context_version": 0,
+        "draft_id": "draft-2d95667f-e19f-4e35-ac7e-ad388480d653",
+        "draft_revision": 2,
+        "memory_version": 4,
+        "project_id": "prj-391e8056-d017-4b4f-bb93-27e769130293",
+        "source_revision": 1
+      },
+      "draft_metadata": {
+        "chapter_number": 11,
+        "id": "draft-2d95667f-e19f-4e35-ac7e-ad388480d653",
+        "revision": 2,
+        "title": "第十一章：未归的航标"
+      },
+      "claim_available": 2,
+      "claim_selected": 2,
+      "claim_unselected": 0,
+      "claims": [
+        {
+          "id": "draft-claim-draft-2d95667f-e19f-4e35-ac7e-ad388480d653-r2-1",
+          "ordinal": 1,
+          "text": "林默走进北门。"
+        },
+        {
+          "id": "draft-claim-draft-2d95667f-e19f-4e35-ac7e-ad388480d653-r2-2",
+          "ordinal": 2,
+          "text": "林默走进北门。"
+        }
+      ],
+      "claim_scope": {
+        "available": 2,
+        "body_chars": 14,
+        "excerpt_chars": 14,
+        "selected": [
+          {
+            "id": "draft-claim-draft-2d95667f-e19f-4e35-ac7e-ad388480d653-r2-1",
+            "source_chars": 7,
+            "source_end": 7,
+            "source_start": 0,
+            "supplied_chars": 7,
+            "supplied_end": 7,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-2d95667f-e19f-4e35-ac7e-ad388480d653-r2-2",
+            "source_chars": 7,
+            "source_end": 14,
+            "source_start": 7,
+            "supplied_chars": 7,
+            "supplied_end": 14,
+            "truncated": false
+          }
+        ]
+      },
+      "excerpt_chars": 14,
+      "selected_chapters": [
+        6,
+        10,
+        9,
+        8
+      ],
+      "selected_spans": [
+        {
+          "body": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+          "chapter_id": "ch-6954a2cf-3afc-4d97-89c1-3959283aac07",
+          "chapter_number": 6,
+          "chapter_title": "低室电台",
+          "id": "span-c0119199-78d8-4a3e-ae94-2ca0b2b65ce6",
+          "label": "事件记录",
+          "source_revision": 1
+        },
+        {
+          "body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+          "chapter_id": "ch-e400aa16-5a23-404e-b3b1-268edc43fb19",
+          "chapter_number": 10,
+          "chapter_title": "回声坐标",
+          "id": "span-b2df0057-6f4a-4ca1-9619-70fc30cc23a0",
+          "label": "未解问题",
+          "source_revision": 1
+        },
+        {
+          "body": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+          "chapter_id": "ch-0e492023-7981-40dc-8da0-1419777b9894",
+          "chapter_number": 9,
+          "chapter_title": "换手",
+          "id": "span-36dfc0f8-20b4-4e06-8307-5a9d93cdaa72",
+          "label": "动态状态",
+          "source_revision": 1
+        },
+        {
+          "body": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+          "chapter_id": "ch-c50239fe-72eb-495a-a948-a01c72677cb5",
+          "chapter_number": 8,
+          "chapter_title": "北堤灯火",
+          "id": "span-0341796b-5503-4254-9df5-8acec941fa3f",
+          "label": "关系变化",
+          "source_revision": 1
+        }
+      ],
+      "memory_semantic_set": [
+        [
+          "character_knowledge",
+          "温岚",
+          "does_not_know",
+          "廊桥钥匙的含义"
+        ],
+        [
+          "dynamic_state",
+          "航图",
+          "location",
+          "雾线水门外锚柱"
+        ],
+        [
+          "dynamic_state",
+          "黄铜罗盘",
+          "holder",
+          "温岚"
+        ],
+        [
+          "event_timeline",
+          "低室电台",
+          "received",
+          "第6章 21:05 收到三次求救码"
+        ],
+        [
+          "event_timeline",
+          "西航道退潮",
+          "time",
+          "第3章 19:20"
+        ],
+        [
+          "open_thread",
+          "异常雾钟",
+          "status",
+          "北潮闸未关闭时响起，原因未解"
+        ],
+        [
+          "open_thread",
+          "白色渡船",
+          "status",
+          "没有靠岸，来源未明"
+        ],
+        [
+          "static_canon",
+          "灰港雾钟",
+          "ring_condition",
+          "只在北潮闸完全关闭后敲响一次"
+        ]
+      ],
+      "memory_sources_selected": 3,
+      "memory_sources_unselected": 5,
+      "runtime_chapter_count": 10,
+      "empty_runtime_chapter_bodies": 10,
+      "full_chapter_body_content_verified": false,
+      "historical_comparison": "Same saved body, selected claims text/scopes, selected source content/order, and Memory semantic set; new IDs and Memory order can differ.",
+      "semantic_model_result": "pending_real_outputs; offline stub is not model evidence"
+    },
+    {
+      "ordinal": 29,
+      "case_id": "g02-time-bound",
+      "input_binding_conclusion": "pass_with_declared_scope_limit",
+      "checks": {
+        "case_identity_matches_start_audit_matrix": true,
+        "case_start_hash_matches_v5_case_row": true,
+        "source_reference_retains_v4_cases": true,
+        "saved_draft_bytes_equal_matrix_preparation_v4": true,
+        "saved_draft_raw_utf8_hashes_agree": true,
+        "business_request_hash_agrees": true,
+        "wrapper_bindings_equal_actual_request": true,
+        "runtime_project_draft_revision_source_memory_agree": true,
+        "draft_identity_and_chapter_metadata_agree": true,
+        "background_revision_and_memory_version_expected": true,
+        "new_project_and_draft_not_old_v4_ids": true,
+        "task_and_first_evaluation_metadata_agree": true,
+        "saved_body_and_excerpt_char_counts_agree": true,
+        "excerpt_matches_historical_business_excerpt": true,
+        "claim_counts_agree": true,
+        "claim_text_ordinal_matches_independent_preparation": true,
+        "claim_ids_unique_and_bound_to_new_draft_revision": true,
+        "claim_scope_offsets_supply_exact_saved_text": true,
+        "scope_values_match_independent_preparation": true,
+        "selected_claim_ids_and_scope_ids_match": true,
+        "body_and_claim_truncation_flags_match": true,
+        "selected_source_counts_and_ids_agree": true,
+        "selected_spans_parent_chapter_identity_title_revision_agree": true,
+        "selected_span_body_exactly_matches_runtime_span": true,
+        "runtime_chapter_span_raw_utf8_hashes_agree": true,
+        "selected_spans_content_and_order_equal_v4": true,
+        "memory_count_and_ids_agree": true,
+        "memory_matches_runtime_records_and_version": true,
+        "all_memory_source_relations_resolve_to_runtime_span_parent": true,
+        "memory_semantic_set_equal_v4": true,
+        "selected_and_unselected_memory_source_counts_agree": true,
+        "author_plans_remain_empty": true,
+        "selected_source_binding_list_is_complete_and_unique": true,
+        "selected_source_text_fingerprints_agree_json_hash": true,
+        "selected_source_metadata_matches_actual_request": true,
+        "dialogue_audit_flag_is_case_specific": true
+      },
+      "failed_checks": [],
+      "business_request_sha256": "63625b58a23069249843d48198e351b40d4edf15caea54b5d2fcd696a956b2c1",
+      "saved_draft_utf8_sha256": "c4127523dcbbd745a7742fc3448bfb655c5a28854a362b097c244ebb683b50d3",
+      "bindings": {
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "author_context_version": 0,
+        "draft_id": "draft-1612e6af-8b13-4e2a-8da3-0387f3f62a88",
+        "draft_revision": 2,
+        "memory_version": 4,
+        "project_id": "prj-6b7f6b55-6ff9-4b3f-b949-ca63502bf18d",
+        "source_revision": 1
+      },
+      "draft_metadata": {
+        "chapter_number": 11,
+        "id": "draft-1612e6af-8b13-4e2a-8da3-0387f3f62a88",
+        "revision": 2,
+        "title": "第十一章：未归的航标"
+      },
+      "claim_available": 2,
+      "claim_selected": 2,
+      "claim_unselected": 0,
+      "claims": [
+        {
+          "id": "draft-claim-draft-1612e6af-8b13-4e2a-8da3-0387f3f62a88-r2-1",
+          "ordinal": 1,
+          "text": "昨日温岚尚未得知银钥匙的用途。"
+        },
+        {
+          "id": "draft-claim-draft-1612e6af-8b13-4e2a-8da3-0387f3f62a88-r2-2",
+          "ordinal": 2,
+          "text": "今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。"
+        }
+      ],
+      "claim_scope": {
+        "available": 2,
+        "body_chars": 40,
+        "excerpt_chars": 40,
+        "selected": [
+          {
+            "id": "draft-claim-draft-1612e6af-8b13-4e2a-8da3-0387f3f62a88-r2-1",
+            "source_chars": 15,
+            "source_end": 15,
+            "source_start": 0,
+            "supplied_chars": 15,
+            "supplied_end": 15,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-1612e6af-8b13-4e2a-8da3-0387f3f62a88-r2-2",
+            "source_chars": 25,
+            "source_end": 40,
+            "source_start": 15,
+            "supplied_chars": 25,
+            "supplied_end": 40,
+            "truncated": false
+          }
+        ]
+      },
+      "excerpt_chars": 40,
+      "selected_chapters": [
+        4,
+        10,
+        9,
+        8
+      ],
+      "selected_spans": [
+        {
+          "body": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+          "chapter_id": "ch-53f79fe0-e299-4d78-8502-cc61a9655461",
+          "chapter_number": 4,
+          "chapter_title": "无字潮表",
+          "id": "span-dd24833e-8a1b-4a3d-a0f3-16722d35a30e",
+          "label": "知识边界",
+          "source_revision": 1
+        },
+        {
+          "body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+          "chapter_id": "ch-aef7995f-1408-42a9-8977-4a5a6130db05",
+          "chapter_number": 10,
+          "chapter_title": "回声坐标",
+          "id": "span-9277438f-86fe-4fb4-827e-95bd6dc9ff02",
+          "label": "未解问题",
+          "source_revision": 1
+        },
+        {
+          "body": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+          "chapter_id": "ch-34fbccb8-ae47-4179-9c44-c5befbb43e76",
+          "chapter_number": 9,
+          "chapter_title": "换手",
+          "id": "span-daa89a24-48f6-4668-b6df-25b1076efce5",
+          "label": "动态状态",
+          "source_revision": 1
+        },
+        {
+          "body": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+          "chapter_id": "ch-547bb018-a943-475b-8ae2-ece956ea50b3",
+          "chapter_number": 8,
+          "chapter_title": "北堤灯火",
+          "id": "span-e48ff43e-57ff-4f9e-945a-9d334226f061",
+          "label": "关系变化",
+          "source_revision": 1
+        }
+      ],
+      "memory_semantic_set": [
+        [
+          "character_knowledge",
+          "温岚",
+          "does_not_know",
+          "廊桥钥匙的含义"
+        ],
+        [
+          "dynamic_state",
+          "航图",
+          "location",
+          "雾线水门外锚柱"
+        ],
+        [
+          "dynamic_state",
+          "黄铜罗盘",
+          "holder",
+          "温岚"
+        ],
+        [
+          "event_timeline",
+          "低室电台",
+          "received",
+          "第6章 21:05 收到三次求救码"
+        ],
+        [
+          "event_timeline",
+          "西航道退潮",
+          "time",
+          "第3章 19:20"
+        ],
+        [
+          "open_thread",
+          "异常雾钟",
+          "status",
+          "北潮闸未关闭时响起，原因未解"
+        ],
+        [
+          "open_thread",
+          "白色渡船",
+          "status",
+          "没有靠岸，来源未明"
+        ],
+        [
+          "static_canon",
+          "灰港雾钟",
+          "ring_condition",
+          "只在北潮闸完全关闭后敲响一次"
+        ]
+      ],
+      "memory_sources_selected": 3,
+      "memory_sources_unselected": 5,
+      "runtime_chapter_count": 10,
+      "empty_runtime_chapter_bodies": 10,
+      "full_chapter_body_content_verified": false,
+      "historical_comparison": "Same saved body, selected claims text/scopes, selected source content/order, and Memory semantic set; new IDs and Memory order can differ.",
+      "semantic_model_result": "pending_real_outputs; offline stub is not model evidence"
+    },
+    {
+      "ordinal": 30,
+      "case_id": "g02-dialogue-attribution",
+      "input_binding_conclusion": "pass_with_declared_scope_limit",
+      "checks": {
+        "case_identity_matches_start_audit_matrix": true,
+        "case_start_hash_matches_v5_case_row": true,
+        "source_reference_retains_v4_cases": true,
+        "saved_draft_bytes_equal_matrix_preparation_v4": true,
+        "saved_draft_raw_utf8_hashes_agree": true,
+        "business_request_hash_agrees": true,
+        "wrapper_bindings_equal_actual_request": true,
+        "runtime_project_draft_revision_source_memory_agree": true,
+        "draft_identity_and_chapter_metadata_agree": true,
+        "background_revision_and_memory_version_expected": true,
+        "new_project_and_draft_not_old_v4_ids": true,
+        "task_and_first_evaluation_metadata_agree": true,
+        "saved_body_and_excerpt_char_counts_agree": true,
+        "excerpt_matches_historical_business_excerpt": true,
+        "claim_counts_agree": true,
+        "claim_text_ordinal_matches_independent_preparation": true,
+        "claim_ids_unique_and_bound_to_new_draft_revision": true,
+        "claim_scope_offsets_supply_exact_saved_text": true,
+        "scope_values_match_independent_preparation": true,
+        "selected_claim_ids_and_scope_ids_match": true,
+        "body_and_claim_truncation_flags_match": true,
+        "selected_source_counts_and_ids_agree": true,
+        "selected_spans_parent_chapter_identity_title_revision_agree": true,
+        "selected_span_body_exactly_matches_runtime_span": true,
+        "runtime_chapter_span_raw_utf8_hashes_agree": true,
+        "selected_spans_content_and_order_equal_v4": true,
+        "memory_count_and_ids_agree": true,
+        "memory_matches_runtime_records_and_version": true,
+        "all_memory_source_relations_resolve_to_runtime_span_parent": true,
+        "memory_semantic_set_equal_v4": true,
+        "selected_and_unselected_memory_source_counts_agree": true,
+        "author_plans_remain_empty": true,
+        "selected_source_binding_list_is_complete_and_unique": true,
+        "selected_source_text_fingerprints_agree_json_hash": true,
+        "selected_source_metadata_matches_actual_request": true,
+        "dialogue_audit_flag_is_case_specific": true,
+        "dialogue_two_complete_quotes_reconstruct_saved_body": true
+      },
+      "failed_checks": [],
+      "business_request_sha256": "59cc216aa9636ca9b43186b0841c2c5043adc02b88ab6562cd0a65a8458a4d78",
+      "saved_draft_utf8_sha256": "efbd2767a8328cd339f26b4983e8ac5bfa56e02842dd14b5e1e1c18db629ed17",
+      "bindings": {
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "author_context_version": 0,
+        "draft_id": "draft-e7a9eaec-73a0-432c-81b5-635af69a15c1",
+        "draft_revision": 2,
+        "memory_version": 4,
+        "project_id": "prj-eb2a726f-22b5-4a95-9e95-67e07885ba3c",
+        "source_revision": 1
+      },
+      "draft_metadata": {
+        "chapter_number": 11,
+        "id": "draft-e7a9eaec-73a0-432c-81b5-635af69a15c1",
+        "revision": 2,
+        "title": "第十一章：未归的航标"
+      },
+      "claim_available": 2,
+      "claim_selected": 2,
+      "claim_unselected": 0,
+      "claims": [
+        {
+          "id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-1",
+          "ordinal": 1,
+          "text": "陈澈说：‘温岚已经把潮汐表交给林默。’"
+        },
+        {
+          "id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-2",
+          "ordinal": 2,
+          "text": "温岚摇头说：‘我没有交出潮汐表，它仍在我的背包里。’"
+        }
+      ],
+      "claim_scope": {
+        "available": 2,
+        "body_chars": 45,
+        "excerpt_chars": 45,
+        "selected": [
+          {
+            "id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-1",
+            "source_chars": 19,
+            "source_end": 19,
+            "source_start": 0,
+            "supplied_chars": 19,
+            "supplied_end": 19,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-2",
+            "source_chars": 26,
+            "source_end": 45,
+            "source_start": 19,
+            "supplied_chars": 26,
+            "supplied_end": 45,
+            "truncated": false
+          }
+        ]
+      },
+      "excerpt_chars": 45,
+      "selected_chapters": [
+        8,
+        10,
+        9,
+        6
+      ],
+      "selected_spans": [
+        {
+          "body": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+          "chapter_id": "ch-fba3ab37-d63a-4bdf-a2b5-e194a2587733",
+          "chapter_number": 8,
+          "chapter_title": "北堤灯火",
+          "id": "span-a7f816e6-0313-47ad-9633-4b12056dc842",
+          "label": "关系变化",
+          "source_revision": 1
+        },
+        {
+          "body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+          "chapter_id": "ch-4d7f7fd2-e9fc-48fd-b972-ed3d2d4c16fb",
+          "chapter_number": 10,
+          "chapter_title": "回声坐标",
+          "id": "span-3f275e8b-bb38-41a0-ba2a-4fb4d94a9aeb",
+          "label": "未解问题",
+          "source_revision": 1
+        },
+        {
+          "body": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+          "chapter_id": "ch-4b56fb5e-f9d7-4136-9690-c5d09f9348d6",
+          "chapter_number": 9,
+          "chapter_title": "换手",
+          "id": "span-cdac6d29-19f0-4e6e-b162-791134093a6a",
+          "label": "动态状态",
+          "source_revision": 1
+        },
+        {
+          "body": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+          "chapter_id": "ch-5dc3fac8-47f4-4601-b967-cf5aed1c7d82",
+          "chapter_number": 6,
+          "chapter_title": "低室电台",
+          "id": "span-bded0091-13d7-4db0-87d9-4483ac2b88fc",
+          "label": "事件记录",
+          "source_revision": 1
+        }
+      ],
+      "memory_semantic_set": [
+        [
+          "character_knowledge",
+          "温岚",
+          "does_not_know",
+          "廊桥钥匙的含义"
+        ],
+        [
+          "dynamic_state",
+          "航图",
+          "location",
+          "雾线水门外锚柱"
+        ],
+        [
+          "dynamic_state",
+          "黄铜罗盘",
+          "holder",
+          "温岚"
+        ],
+        [
+          "event_timeline",
+          "低室电台",
+          "received",
+          "第6章 21:05 收到三次求救码"
+        ],
+        [
+          "event_timeline",
+          "西航道退潮",
+          "time",
+          "第3章 19:20"
+        ],
+        [
+          "open_thread",
+          "异常雾钟",
+          "status",
+          "北潮闸未关闭时响起，原因未解"
+        ],
+        [
+          "open_thread",
+          "白色渡船",
+          "status",
+          "没有靠岸，来源未明"
+        ],
+        [
+          "static_canon",
+          "灰港雾钟",
+          "ring_condition",
+          "只在北潮闸完全关闭后敲响一次"
+        ]
+      ],
+      "memory_sources_selected": 3,
+      "memory_sources_unselected": 5,
+      "runtime_chapter_count": 10,
+      "empty_runtime_chapter_bodies": 10,
+      "full_chapter_body_content_verified": false,
+      "historical_comparison": "Same saved body and selected source content/order; Memory semantic set unchanged; new IDs and Memory order can differ. Dialogue claims changed from 3 broken historical fragments to 2 complete quotes.",
+      "semantic_model_result": "pending_real_outputs; offline stub is not model evidence"
+    }
+  ],
+  "review_markdown_sha256": "64de03d44ff9ef73fa7928f45cd15ec9f6386d8a694614a3728ae1d3feb08305"
+}

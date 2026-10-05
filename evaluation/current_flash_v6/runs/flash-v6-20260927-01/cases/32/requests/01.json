@@ -1,0 +1,123 @@
+{
+  "case_id": "v6-v6s-10",
+  "evaluation_ordinal": 1,
+  "stage": "first",
+  "recorded_before_dispatch_at": "2026-09-27T10:03:34.890803+00:00",
+  "business_request_sha256": "04a6292f6e180af59ae17cf51bda1a2bd9cce2bc1112cad7db919f94b6e8c2aa",
+  "bindings": {
+    "draft_id": "fixture-draft-v6-companion-blank",
+    "draft_revision": 2
+  },
+  "selected_source_bindings": [
+    {
+      "kind": "target_claim",
+      "id": "claim-run-c4a195ca-f630-45ab-99e5-ed2ab5652ebd-1",
+      "text": "The 19:00 watch record establishes that Evi accompanied Orin to the east quay.",
+      "sha256": "6d7750dcba483af27098c9bc29d91cdf29992b9c3e7bff7068c77acd46cb99eb"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-v6_companion_blank-1",
+      "chapter_id": "fixture-chapter-v6_companion_blank-1",
+      "text": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+      "prompt_excerpt": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+      "sha256": "34f0037aacd885f55c42cd8582449f248f20d52167f99c7161db6c6bd6b41a09"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-v6_companion_blank-1",
+      "source_span_id": "fixture-span-v6_companion_blank-1",
+      "text": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+      "sha256": "34f0037aacd885f55c42cd8582449f248f20d52167f99c7161db6c6bd6b41a09"
+    }
+  ],
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-v6-companion-blank",
+      "revision": 2,
+      "body": "The 19:00 watch record establishes that Evi accompanied Orin to the east quay."
+    },
+    "claims": [
+      {
+        "id": "claim-run-c4a195ca-f630-45ab-99e5-ed2ab5652ebd-1",
+        "text": "The 19:00 watch record establishes that Evi accompanied Orin to the east quay.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-v6_companion_blank-1",
+            "chapter_id": "fixture-chapter-v6_companion_blank-1",
+            "body": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+            "label": "C1",
+            "prompt_excerpt": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-v6_companion_blank-1",
+        "memory_type": "dynamic_state",
+        "subject": "companion_blank",
+        "predicate": "status",
+        "value": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+        "source_span_id": "fixture-span-v6_companion_blank-1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  }
+}

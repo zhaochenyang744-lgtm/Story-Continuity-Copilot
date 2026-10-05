@@ -1,0 +1,130 @@
+{
+  "targets": [
+    {
+      "target_id": "lf1i-t010",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t011",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t014",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t017",
+      "unintended_issues_checked": true,
+      "notes": "抽查本章涉及年龄、时间、数字、外貌、亲属与称谓的句子，未见与前文冲突"
+    },
+    {
+      "target_id": "lf1i-t023",
+      "unintended_issues_checked": true,
+      "notes": "抽查本章涉及年龄、时间、数字、外貌、亲属与称谓的句子，未见与前文冲突"
+    },
+    {
+      "target_id": "lf1i-t026",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t030",
+      "unintended_issues_checked": true,
+      "notes": "抽查本章涉及年龄、时间、数字、外貌、亲属与称谓的句子，未见与前文冲突"
+    },
+    {
+      "target_id": "lf1i-t038",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t040",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t042",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t044",
+      "unintended_issues_checked": true,
+      "notes": "抽查本章涉及年龄、时间、数字、外貌、亲属与称谓的句子，未见与前文冲突"
+    },
+    {
+      "target_id": "lf1i-t047",
+      "unintended_issues_checked": true,
+      "notes": "抽查本章涉及年龄、时间、数字、外貌、亲属与称谓的句子，未见与前文冲突"
+    },
+    {
+      "target_id": "lf1i-t050",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t056",
+      "unintended_issues_checked": true,
+      "notes": "抽查本章涉及年龄、时间、数字、外貌、亲属与称谓的句子，未见与前文冲突"
+    },
+    {
+      "target_id": "lf1i-t062",
+      "unintended_issues_checked": true,
+      "notes": "抽查本章涉及年龄、时间、数字、外貌、亲属与称谓的句子，未见与前文冲突"
+    },
+    {
+      "target_id": "lf1i-t065",
+      "unintended_issues_checked": true,
+      "notes": "抽查本章涉及年龄、时间、数字、外貌、亲属与称谓的句子，未见与前文冲突"
+    },
+    {
+      "target_id": "lf1i-t069",
+      "unintended_issues_checked": true,
+      "notes": "抽查本章涉及年龄、时间、数字、外貌、亲属与称谓的句子，未见与前文冲突"
+    },
+    {
+      "target_id": "lf1i-t071",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t072",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t078",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t083",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t086",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t089",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    },
+    {
+      "target_id": "lf1i-t092",
+      "unintended_issues_checked": true,
+      "notes": "抽查本章涉及年龄、时间、数字、外貌、亲属与称谓的句子，未见与前文冲突"
+    },
+    {
+      "target_id": "lf1i-t096",
+      "unintended_issues_checked": true,
+      "notes": "通读本章并对照前文台账核对"
+    }
+  ],
+  "limits": "原作为现成网络小说，未逐句通读全书；核对以人物台账和关键词检索为准，原作自身可能残留少量前后不一致（已知：原第三十一章称小曦十岁，与序幕推算的十二岁不符，该章未选为被检查章节）。"
+}

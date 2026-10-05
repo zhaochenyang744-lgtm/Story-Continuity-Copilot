@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-09-26T10:28:13.989863+00:00",
+  "scope_note": "root-verification.json checked the V2 inventory (12 files) only; this final supplement checks both V1 and V2 inventories, 65 original files in total. The first record is retained unchanged.",
+  "checks": [
+    {
+      "version": "v1",
+      "files": 53,
+      "mismatches": []
+    },
+    {
+      "version": "v2",
+      "files": 12,
+      "mismatches": []
+    }
+  ],
+  "preserved_original_result_files": 65,
+  "mismatches": [],
+  "provider_dispatches": 0
+}

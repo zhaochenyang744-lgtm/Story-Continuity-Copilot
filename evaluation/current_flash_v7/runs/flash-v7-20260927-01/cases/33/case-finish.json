@@ -1,0 +1,9 @@
+{
+  "case_id": "v6-v6s-11",
+  "status": "completed",
+  "error_code": null,
+  "post_attempt_start_records": 1,
+  "evaluation_count": 1,
+  "score_status": "pending_manual_review",
+  "finished_at": "2026-09-27T10:49:10.455407+00:00"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "malformed_results_do_not_swallow_next_cases",
+  "passed": false,
+  "error_type": "FileNotFoundError",
+  "error": "[WinError 206] 文件名或扩展名太长。: 'C:\\\\Users\\\\赵晨阳\\\\Documents\\\\ChatGPT\\\\Agent 搭建\\\\Story-Continuity-Copilot\\\\产出\\\\交付物\\\\story-continuity-legacy-gap-repair\\\\docs\\\\flash-v5-independent-acceptance-evidence\\\\engineering-preflight\\\\probe-runs\\\\formal-01\\\\quality-continue\\\\workspaces\\\\flash-v5-quality-continue'"
+}

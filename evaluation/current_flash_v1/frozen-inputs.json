@@ -1,0 +1,54 @@
+{
+  "version": "current-flash-v1",
+  "frozen_at": "2026-09-26T09:37:08.416041+00:00",
+  "source_hashes": {
+    "evaluation/current_flash_v1/cases.json": "c558346fd435aed56a32eb81002ff5103e266886ad1023d11f80ac5fbc5d28ce",
+    "evaluation/current_flash_v1/run.py": "36fd492a5fe4f318b5b3ea89c3e95f309c03dfa5034d0e6e6acd1a2046d6cdc1",
+    "evaluation/current_flash_v1/test_offline.py": "e6ec394245d05fed7cd0ae190177af9be0c69225c712cb42ecaf7f07cf3b3628",
+    "evaluation/current_flash_v1/PLAN.md": "ea3d5e2a5df6277f0bbf1227dcd23a6d5017682827681e4cb6ca416d1a5a47a4",
+    "evaluation/case_sets/eval-set-v8.json": "ce165d5548c16537cdfe35906fd14d704f66de1b60c5f724255876282aeaac2d",
+    "evaluation/manifests/eval-set-v8-manifest.json": "bfe981dae33ac3eedce664025046173a646ec5331091912e5af8e58dec4b6861",
+    "evaluation/fixtures/eval-v8-corpus-manifest.json": "b98a2d1952b8a9a47f9433a26563953002ec7b82ba904da2fc89df11c4df5ec6",
+    "evaluation/fixtures/eval-v8-dusk-viaduct.json": "2ae14249376175ad12a8c467766dc4e8eb2f2918eaaad5fc8f0df79fa184e0e0",
+    "evaluation/fixtures/eval-v8-sable-tideglass.json": "2c72e767eda4d326fda663bc1f79823b4414f9c129144bd13ca442968fc4e425",
+    "evaluation/fixtures/eval-v8-flint-garden.json": "5050dbdb8c80296f80eef73f1aa6ab3abed2f8b216718f7f75d57664ec576b31",
+    "evaluation/fixtures/eval-v8-opal-nursery.json": "33e74a36687bdb8771fa03c8b5a9b767a7bf7d22fd78b86b5155b486dc6b6992",
+    "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+    "backend/app/engine.py": "df9b2a19b07744b318743802679c22f67a49af13a67275cf81f74c0d06891ea4",
+    "backend/app/v2_database.py": "9f0b8c2b512f2d69f03cbc7193d83d9681fe42fe3ade51a7fcc4ad494fdba965",
+    "backend/app/main.py": "bd7fdfab5ff2dd18f369d6bf22c6cdfc83ee177d8245b91954f21ed20faf3cca",
+    "backend/app/stage13.py": "957c219bb3f8036e421c63ba7c204ed1767d2d334a39a08aa958f5119cfd9500",
+    "evaluation/metrics.py": "90a0efe4c8dfb04813cc263788f92121ed792c6cfd35d370b9e4418482d92bee",
+    "evaluation/run_eval.py": "05886a814091ef6e78b236b6da426dafb1916623b674ccf605bd4670c4919b45",
+    "evaluation/v2_fixture_loader.py": "863bab7bc5ea8ab00b40de1a6e5b6b8bc4788508661cc890e758ae2157a60c23"
+  },
+  "model": "deepseek-flash",
+  "base_url": "https://api.deepseek.com",
+  "provider": "deepseek",
+  "thinking": "disabled",
+  "temperature": 0,
+  "max_tokens": 2000,
+  "provider_timeout_seconds": 30,
+  "provider_max_retries": 1,
+  "prompt_versions": {
+    "continuity": "continuity-review-v15-knowledge-time",
+    "context_brief": "context-brief-v5-clause-citations",
+    "change_impact": "change-impact-v2-bounded-citations"
+  },
+  "v8_case_count": 24,
+  "v8_stability_additional": 6,
+  "special_case_count": 18,
+  "scoring": "V8 original labels, evaluation.metrics.aggregate and V8 required_thresholds; G01 first semantics against frozen labels; G02/G03 item-level human review pending",
+  "adaptations": [
+    "new output identity and current provider/prompt; old V8 result remains historical",
+    "G01 compatible-time labels are no_conflict, separate from final conservative downgrade",
+    "G02 repeated fake-output variants become one real input; duplicate bodies removed",
+    "G03 absent-target may fail closed before dispatch and is counted as a zero-HTTP product case"
+  ],
+  "boundaries": {
+    "exposed_fixed_regression": true,
+    "unseen_or_blind": false,
+    "safety_fake_not_model_accuracy": true,
+    "historical_12_pack": "not_located_in_this_checkout"
+  }
+}

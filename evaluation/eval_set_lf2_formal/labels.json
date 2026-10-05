@@ -1,0 +1,1235 @@
+{
+  "format": "longform-eval/1",
+  "set_id": "lf2-formal",
+  "kind": "formal",
+  "language": "zh",
+  "authoring": {
+    "model": "Codex / GPT-6",
+    "date": "2026-10-05",
+    "notes": "四部作品由协作出题代理逐章原创撰写；标签在正文完成后编写，工作记录保存于仓库外。"
+  },
+  "works": [
+    {
+      "key": "folded_folio",
+      "title": "折页间的风",
+      "file": "works/folded_folio.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "switchyard_fern",
+      "title": "厚藤坡的交班桌",
+      "file": "works/switchyard_fern.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "resonant_cistern",
+      "title": "叠弦城的听木",
+      "file": "works/resonant_cistern.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "upland_fieldnotes",
+      "title": "坡背的采集簿",
+      "file": "works/upland_fieldnotes.md",
+      "origin": "original",
+      "source_note": null
+    }
+  ],
+  "targets": [
+    {
+      "id": "lf2f-a-t03",
+      "work": "folded_folio",
+      "chapter": "第三章 椅子上的讲述",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf2f-a-p01",
+          "kind": "state_change",
+          "quotes": [
+            "折背架托住厚纸时纹丝不动，她只用一只手就能调整纸面的倾角。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 风从折缝来",
+              "quote": "原本松动的横档已经重新榫接，他下午试过，放上厚纸也不再摇晃。"
+            }
+          ],
+          "explanation": "折背架由松动到稳定的修整已在第一章明确完成，现在稳固不构成矛盾。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-a-t04",
+      "work": "folded_folio",
+      "chapter": "第四章 运纸人的午后",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf2f-a-p02",
+          "kind": "similar_name",
+          "quotes": [
+            "狄毓棠在送货单上签下姓名，把回执装进裤袋。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盒中的书名",
+              "quote": "年轻人名叫狄毓棠，是邻县送纸车的随车工；狄毓棠与狄毓枝只是名字相近，并没有亲属关系。"
+            }
+          ],
+          "explanation": "签回执的是送纸工狄毓棠，与整理图书的狄毓枝为不同人物，不能按近似姓名合并身份。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-a-t05",
+      "work": "folded_folio",
+      "chapter": "第五章 纤维的方向",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-a-i01",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "邢照渔凑近灯，浅蓝色的虹膜映着展签上的白纸。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 风从折缝来",
+              "quote": "邢照渔天生的双眼都是深褐色，光落进瞳孔时才显出很细的金线。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "第一章确立双眼天生深褐，目标叙述虹膜浅蓝，未写染色、隐形镜片等变化，冲突只涉及眼睛属性。"
+        },
+        {
+          "id": "lf2f-a-i02",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "鸦绒纸出自鸫岭纸坊，制作时用的是当地山溪浸泡过的树皮。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盒中的书名",
+              "quote": "寄件人庄绮恩把借出的纤维纸称作“鸦绒纸”，在附信里写了自己保存它的年份。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文给出寄件人、纸名及保存年份，但没有确立制作地点与制浆来历；目标把具体纸坊和工艺来源写成定论，缺出处环节，并无相反来源可判矛盾。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf2f-a-t06",
+      "work": "folded_folio",
+      "chapter": "第六章 炉边的色样",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-a-i03",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "郦松禾把整套原装蚌绢账页从自己的贴身帆布袋里取出，放到工作台一侧。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第五章 纤维的方向",
+              "quote": "毓枝接过饶纫交来的蚌绢账页，将整套原装散页装入硬壳袋，随后把袋子放进后屋的存柜。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前章写明借物经毓枝收进存柜，目标直接确立松禾已把整套原件随身装袋，未交代从存柜移交给松禾的交接；既没有禁止转交也没有并发互斥状态，因此是缺交接而非物件矛盾。"
+        },
+        {
+          "id": "lf2f-a-i04",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "郦松禾将赤翎样票的那张手绘原稿摊在玻璃下，用指腹隔着玻璃指出最深的一格红。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 风从折缝来",
+              "quote": "赤翎样票的唯一手绘原稿已经被邢照渔投入矮炉，烧成了灰烬。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "唯一原稿已烧成灰烬，目标却把同一手绘原稿作为仍完整存在的纸样展示；不是重画或复制件，属于物件状态矛盾。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf2f-a-t07",
+      "work": "folded_folio",
+      "chapter": "第七章 线头藏在哪里",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-a-i05",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "郦松禾与狄毓枝这对同父同母的姐妹各扶住一端，等邢照渔垫好底布再一起推动。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 风从折缝来",
+              "quote": "郦松禾和狄毓枝的母亲是亲姐妹，两人是姨表姐妹。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两人的母亲为不同的亲姐妹，二人是姨表亲，不能同时是同父同母的亲姐妹；只涉及亲缘关系。"
+        },
+        {
+          "id": "lf2f-a-i06",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "秋帙会的首批书册先行装订，捐赠签约排在这项工作之后。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盒中的书名",
+              "quote": "秋帙会的捐赠签约在九月初二举行，首批书册装订在九月初五才开工。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文明确签约在初二、装订初五才开工，目标将装订排在签约之前，颠倒已成立的先后顺序。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf2f-a-t08",
+      "work": "folded_folio",
+      "chapter": "第八章 编目之外",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-a-i07",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "郦松禾已经得到许乔寅委托出售桨纹书衣的许可，便在展售册中为它留了一格价格栏。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第七章 线头藏在哪里",
+              "quote": "许乔寅在附信中请郦松禾替桨纹书衣编目，写明尺寸、材料以及目前看得见的损伤。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "寄件人的委托只确立编目工作，目标确立的是出售许可；出售授权未被写出，也未有明确禁止出售，故缺授权而非违反规则。"
+        },
+        {
+          "id": "lf2f-a-i08",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "六月十六日封箱礼进行时，郦松禾早已知道暗格中封存的是《螺帆诗谱》。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盒中的书名",
+              "quote": "六月十六日的封箱礼从开始到散场，郦松禾都没获知木匣暗格里的书名。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一次六月十六日封箱礼中，前文确立她全程没获知暗格书名，目标却说仪式进行时早已知道；叙事时间相同，不是后来得知或记忆改变。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf2f-a-t09",
+      "work": "folded_folio",
+      "chapter": "第九章 门打开的时候",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-a-i09",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "郦松禾在初灯朗读赛中夺得冠军，她讲解纸张修补时沿用了赛场练习过的停顿。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第八章 编目之外",
+              "quote": "初灯朗读赛因场地进水取消，整场比赛没有举行，也没有评选获奖者。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同名活动已取消且未举办、未评奖，目标却叙述松禾在该比赛夺冠，冲突在赛事结果与存在状态。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf2f-a-p03",
+          "kind": "reported_belief",
+          "quotes": [
+            "季衡笑着说：“狄毓棠准是狄毓枝的哥哥。”"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盒中的书名",
+              "quote": "狄毓棠与狄毓枝只是名字相近，并没有亲属关系。"
+            }
+          ],
+          "explanation": "目标是季衡的玩笑话，紧接着明确他说这话只为逗趣且不了解家事，叙述没有将人物发言认定为亲缘事实。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-a-t10",
+      "work": "folded_folio",
+      "chapter": "第十章 留给下一位",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf2f-a-p04",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "蓝色封皮内侧还粘着一片褪色的布标，细线在贴边处形成了很浅的小弧。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 风从折缝来",
+              "quote": "一个蓝色封皮上有牙印，另一个角落写着孩子歪斜的名字。"
+            }
+          ],
+          "explanation": "先前只描述蓝封皮上的牙印与名字，并未排除内侧布标，当前检查时发现的细节可与旧事实并存。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-b-t03",
+      "work": "switchyard_fern",
+      "chapter": "第三章 小车上桥",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf2f-b-p01",
+          "kind": "state_change",
+          "quotes": [
+            "她把借来的青雀手灯切到窄光，沿着桥底标好的测点照了一遍。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 报废台和洗手池",
+              "quote": "下午去便桥前，郭仲竹把青雀手灯借给韦岑，告诉她拨钮向前推是窄光，往后推是宽光。"
+            }
+          ],
+          "explanation": "青雀手灯原归郭仲竹使用，第二章已经明确借给韦岑，第三章由她拿灯照测点属于已发生的借用状态变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-b-t04",
+      "work": "switchyard_fern",
+      "chapter": "第四章 棚门上的草结",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf2f-b-p02",
+          "kind": "reported_belief",
+          "quotes": [
+            "石嵘年眨着眼说，老棚地下室里的那节车厢晚上还会自己跑出来。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 岩壁下的交班桌",
+              "quote": "老棚建在一片露出的岩床上，里面只有地面的两间工具房，没有地下室。"
+            },
+            {
+              "chapter": "第一章 岩壁下的交班桌",
+              "quote": "石嵘年却爱拿它哄孩子，说地底下藏着一节会自己开动的车厢。"
+            }
+          ],
+          "explanation": "此前已建立老棚没有地下室及石嵘年拿虚构车厢故事哄孩子的事实；此处明确是他眨眼编故事，孩子和教师也在听他编，叙述未将故事内容当成真实建筑或事件。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-b-t05",
+      "work": "switchyard_fern",
+      "chapter": "第五章 两条水路之间",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-b-001",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "九月十四日凌晨四点二十分，韩砺舟在旗木站值班楼坐守电话，逐项答复调度员。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 岩壁下的交班桌",
+              "quote": "九月十四日凌晨四点二十分，韩砺舟正在厚藤坡隧道东口核对防护包。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "九月十四日凌晨四点二十分"
+          },
+          "explanation": "同一明确时刻，前文将韩砺舟置于厚藤坡隧道东口，问题句却把他置于九公里外的旗木站值班楼。两处是互斥的现场位置，所标矛盾只涉及同刻地点及行动。"
+        },
+        {
+          "id": "lf2f-b-002",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "她根据投递簿上的入盒记录，确认郭仲竹已经亲手领走岩芽印章，随后在归档表上勾了交接完成。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 岩壁下的交班桌",
+              "quote": "韩砺舟把岩芽印章裹进软纸，送到旗木站资料室的交件盒，在投递簿上写了收件人郭仲竹。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文实际建立的是印章投进交件盒并指定收件人，未发生或证实郭仲竹亲手领取的交接。问题句仅依据入盒记录就确认领取完成，缺少从交件盒到收件人的交接一环，前文也未否定后续领取。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf2f-b-p03",
+          "kind": "rule_exception",
+          "quotes": [
+            "收到防洪警报后，郭仲竹趁夜打开借用柜，取出一套拉绳和两只照明灯。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 岩壁下的交班桌",
+              "quote": "借用柜要等天亮再开，遇到防洪警报，值班防护员可以在夜间取用。"
+            },
+            {
+              "chapter": "第一章 岩壁下的交班桌",
+              "quote": "郭仲竹本周担任值班防护员，"
+            }
+          ],
+          "explanation": "前文夜间借用限制自身包含防洪警报期间值班防护员可取用的例外，并明确郭仲竹为该周值班防护员；本章收到警报后开柜符合两项例外条件。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-b-t06",
+      "work": "switchyard_fern",
+      "chapter": "第六章 空地上的细线",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-b-003",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "石嵘年接过青铆检验笺，在测量人一栏替韦岑签上了她的名字。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 岩壁下的交班桌",
+              "quote": "厚藤坡工区的青铆检验笺必须由负责测量的人本人签字，旁人不得代签。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "本章测量与填写读数的是韦岑，石嵘年代她签署测量人栏，违反前文明确的本人签字、禁止旁人代签的工区规则。"
+        },
+        {
+          "id": "lf2f-b-004",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "韩砺舟把沾湿的布凑近鼻尖，凭闻出的煤油气味认准了桶中液体。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 岩壁下的交班桌",
+              "quote": "韩砺舟从出生起就没有嗅觉，辨认油料靠包装字样和擦拭后的颜色。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "韩砺舟的先天无嗅觉是前文明确建立的人物属性，问题句却让他以亲自闻到煤油气味识别液体，直接使用了与该属性不符的嗅觉能力。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf2f-b-p04",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "芥石坡的煤渣路边竖着一块茶色卵石，石面上有两条浅浅的白纹。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 报废台和洗手池",
+              "quote": "芥石坡就在便桥北边，那里的护栏由三段旧钢管拼接，坡口能看到铺在杂草里的煤渣路。"
+            }
+          ],
+          "explanation": "前文建立芥石坡的煤渣路与护栏，未穷尽路边物件；此处增加茶色卵石及石纹，不改变既有地点、结构、状态，属于可兼容的环境细节。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-b-t07",
+      "work": "switchyard_fern",
+      "chapter": "第七章 停在坡口的推车",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-b-005",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "俞沛禾握着蕨纹扳手的整根长柄，用前端齿口卡住箱扣，将卡住的螺栓慢慢旋松。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 报废台和洗手池",
+              "quote": "郭仲竹夹住它，按报废清单把蕨纹扳手切成了三段，随后将断片倒进废钢箱。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文已将工区唯一的刻纹扳手切成三段并投入废钢箱，本章同一蕨纹扳手却恢复整根长柄与前端相连的可用状态，前文不存在修复或同名替代物，形成物件状态矛盾。"
+        },
+        {
+          "id": "lf2f-b-006",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "说起到工区的日子，石嵘年在九月十二日入住工区时，青脊便桥第一次试载的收尾已是两天以前的事了。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 岩壁下的交班桌",
+              "quote": "石嵘年是九月十二日搬进工区宿舍的，"
+            },
+            {
+              "chapter": "第三章 小车上桥",
+              "quote": "青脊便桥的首次试载于九月十六日上午完成。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "既定入住日在九月十二日，便桥首次试载完成在九月十六日，试载应晚于入住四天；问题句却把同一次首次试载置于入住两天前，颠倒并改写了两件已发生事件的先后。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf2f-b-t08",
+      "work": "switchyard_fern",
+      "chapter": "第八章 交班桌上的大纸",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-b-007",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "郭仲竹从小随同父同母的姐姐鲁照芹下厨，如今两人做饭仍照着小时候的分工，一个看锅，一个切菜。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 岩壁下的交班桌",
+              "quote": "鲁照芹是郭仲竹的姨妈，郭仲竹的母亲是她的妹妹。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文明确鲁照芹是郭仲竹母亲的姐姐，即姨妈；问题句将两人写为同父同母的姐弟，改变了已确立的血缘及辈分关系。"
+        },
+        {
+          "id": "lf2f-b-008",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "资产组的受理回执已使俞沛禾取得了公开展示运煤栈道旧影像的正式许可。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 报废台和洗手池",
+              "quote": "俞沛禾午饭后去了站里。镇上打算做一块铁路旧事展板，她把使用旧运煤栈道影像的申请送到旗木站资产组，窗口工作人员收下材料，给了她受理回执。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只确立向资产组提交影像使用申请并领取受理回执；受理材料不是批准公开展示。问题句把受理直接视作正式许可，缺少资产组作出批准授权的一环，也不存在前文明确拒绝造成的矛盾。"
+        },
+        {
+          "id": "lf2f-b-009",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "outcome",
+          "issue_quotes": [
+            "那张交样凭条证明芽格防雨套已顺利通过耐候试验，韩砺舟据此建议将它列入下一批材料。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 报废台和洗手池",
+              "quote": "她把三个芽格防雨套样品交到山下检测站，办好耐候试验的送检手续，领回一张送检联。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文仅有样品送检与送检联，既未给出检测读数也未给出通过结论；问题句用交样凭条证明试验通过，缺少实际测试结果一环，未与任何既定失败结果冲突。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf2f-c-t01",
+      "work": "resonant_cistern",
+      "chapter": "第三章 斜放的陶碗",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf2f-c-p01",
+          "kind": "similar_name",
+          "quotes": [
+            "弭葵把谷袋送到梁脚，还向砚索借小刀割开一只打死结的袋口。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 水面的第二个名字",
+              "quote": "弭魁是弭葵的堂弟，两人各有自己的差事；弭魁留在封声屋看守新磨的陶鼓，弭葵则每天出门运送谷袋。"
+            }
+          ],
+          "explanation": "出门送粮的是弭葵，留守封声屋的是她的堂弟弭魁。名字近似但人物不同，弭葵抵达梁脚与前文一致。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-c-t02",
+      "work": "resonant_cistern",
+      "chapter": "第四章 从袋影下面经过",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf2f-c-p02",
+          "kind": "state_change",
+          "quotes": [
+            "船主将靛青的赤缕桨伸入水中，以桨背抵着浅石调转舟头。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 杖端留下的水纹",
+              "quote": "船主嫌桨叶的刮痕显眼，昨天把赤缕桨重新涂成了靛青色，今晨油漆已经干透。"
+            }
+          ],
+          "explanation": "第二章已经叙述船主将原先黑色的桨叶涂成靛青并干透，后文使用靛青桨是已交代的状态变化。"
+        },
+        {
+          "id": "lf2f-c-p03",
+          "kind": "rule_exception",
+          "quotes": [
+            "棱泠站在桥外，将胸前的巡渠牌翻给值桥人看，随后提着空心银钩走过了悬袋渡。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 杖端留下的水纹",
+              "quote": "悬袋渡平时不准带金属上桥，巡渠救援者使用的空心银钩是规章里列明的例外。"
+            },
+            {
+              "chapter": "第二章 杖端留下的水纹",
+              "quote": "值桥人照着牌上的纹路摸了一圈，又看了棱泠背包侧面那只银钩，将桥索松开。"
+            },
+            {
+              "chapter": "第二章 杖端留下的水纹",
+              "quote": "织衡从腰袋翻出一枚供同队伙伴随身携带的巡渠牌，让棱泠接过去，扣到外衣的胸带上。"
+            }
+          ],
+          "explanation": "前文明确列出巡渠救援者所用空心银钩的例外，写值桥人核牌认可棱泠的银钩，又写织衡现场将同队巡渠牌交她佩戴。她持牌携该钩过桥符合例外，证件持有也有接续。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-c-t03",
+      "work": "resonant_cistern",
+      "chapter": "第五章 廊中的空拍",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-c-i01",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "棱泠面朝门缝，将澈隙廊的开词一字不落地说出，接着把掌中的薄木片送进清理过的槽口。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 水面的第二个名字",
+              "quote": "澈隙廊的开词在城律中属于永远禁用的口诵，人声不得念它，连救援时也没有例外。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "timeless_rule",
+            "anchor": "人声不得念它"
+          },
+          "explanation": "前文明文规定澈隙廊开词永久不得由人声念出，救援亦无例外；此处棱泠直接口述开词，违反的是绝对城律。木片递交并不豁免先行口诵。题点仅涉及世界规则，不依赖门是否开启或物理属性。"
+        },
+        {
+          "id": "lf2f-c-i02",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "本季铜鳞巡游开幕当晚，棱泠在岸上听完了整段迎舟曲，还接住一把从鼓台撒出的香粒。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 水面的第二个名字",
+              "quote": "本季的铜鳞巡游在筹备当天便被取消，开幕从未举行，这一季也不会补办。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文确立本季铜鳞巡游在筹备期取消，开幕未发生且本季不补办；后文将同一季巡游开幕当晚的活动作为已发生的回忆。冲突在该活动是否举行，不涉及另一个季节或延期开幕。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf2f-c-t04",
+      "work": "resonant_cistern",
+      "chapter": "第六章 手掌里的渡口",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-c-i03",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "砚索按照童年便背熟的臂鼓手语，把对方的三次轻拍读作请大家留出一条过道。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 杖端留下的水纹",
+              "quote": "砚索从未学过臂鼓手语，他看不懂这套靠敲击上臂交流的暗号。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文直接说明砚索从未学过且看不懂臂鼓手语；后文却说他童年已背熟并直接解读。童年掌握的追溯性陈述排除了在两章间新学会的解释，类别是人物知识。"
+        },
+        {
+          "id": "lf2f-c-i04",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "苔絮替生母芮棘拢好被风掀起的衣襟，又把自己的坐垫移到她脚边。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 从袋影下面经过",
+              "quote": "苔絮的生母名叫绒葭；芮棘则是她舅母，是绒葭弟弟的妻子。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "第四章直白确立苔絮生母是绒葭，芮棘是其舅母；目标章把芮棘称为生母，改变了血亲关系。并非一般称呼母亲或后续收养关系。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf2f-c-t05",
+      "work": "resonant_cistern",
+      "chapter": "第七章 低处的绳结",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-c-i05",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "棱泠在落苔日三钟一直坐在谷盲桥的桥腹里，用听木替过桥人分辨松动的石板。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 杖端留下的水纹",
+              "quote": "落苔日三钟，棱泠整段钟息都在茸环岗守着送水闸，没有离开。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一明确时段落苔日三钟，前文棱泠全程未离开茸环岗守送水闸，后文却说她一直在谷盲桥桥腹检查石板。矛盾在同一人物的位置和行动。"
+        },
+        {
+          "id": "lf2f-c-i06",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "阔笛眼里的墨绿色从出生时就没变过，此刻映着炉火，深处像蒙了一层湿亮的苔。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第五章 廊中的空拍",
+              "quote": "阔笛的双眼虹膜天生金黄，灯下像两片薄蜜。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文阔笛双眼虹膜的先天颜色是金黄，后文把从出生未变的颜色写成墨绿。两处都追溯到出生属性，不能由当前炉火反光或后续染色解释。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf2f-c-t06",
+      "work": "resonant_cistern",
+      "chapter": "第八章 把高索留给后来的人",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-c-i07",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "identity",
+          "issue_quotes": [
+            "窄雾井那位铜袖客就是鸣殖，眼前的绳匠正把护套抱到肩上，等棱泠整理好背带。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 水面的第二个名字",
+              "quote": "铜袖客在窄雾井下了舟，摘下手套擦去箱盖上的水，再朝第三条岔道走去。"
+            },
+            {
+              "chapter": "第三章 斜放的陶碗",
+              "quote": "他听砚索说要经过这里，便把散开的绳端都挂到墙钉上，自我介绍叫鸣殖。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文分别出现窄雾井铜袖客和自报姓名的绳匠鸣殖，但没有把二者身份接合的认人、介绍或独有标记。目标直接断定二者为同一人，缺身份确认。两段前文不排斥同一人，故不是矛盾。"
+        },
+        {
+          "id": "lf2f-c-i08",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "causation",
+          "issue_quotes": [
+            "缄骨墙那回三叩引发了裂层的涨水，她的杖因此在这次行程里留下了远比磨痕深的印记。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 杖端留下的水纹",
+              "quote": "苔絮用软木杖在缄骨墙上叩了三下。"
+            },
+            {
+              "chapter": "第二章 杖端留下的水纹",
+              "quote": "一刻之后，裂层底的积水突然涨过了第二级石阶，原来散在低处的木屑漂成一条歪斜的线。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有苔絮叩墙和一刻后积水上涨的先后事实，后续维护试听也没有调查涨水成因。目标把叩墙定为涨水原因，缺因果连接；前文没有确立另一个原因，不构成原因矛盾。"
+        },
+        {
+          "id": "lf2f-c-i09",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "笛脊图出自初代井师纱泓的手笔，图中的短横线被澹笙一条条誊到新的纸鳞上。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第七章 低处的绳结",
+              "quote": "澹笙从廊边的旧箱里取出笛脊图，图上以短横线描出石梁与孔道的相对位置。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文写图在廊边旧箱中的保存位置及其绘制内容，却没有写作者落款、传承记录或鉴定。目标将图归于初代井师纱泓亲笔，缺作者来源依据。保存于旧箱不等于确立创作者。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf2f-c-p04",
+          "kind": "reported_belief",
+          "quotes": [
+            "鸣殖向搬袋人说，旧水腹底下住着一头长三只角的水兽，日落时便用鼻息搅动整座城的渠水。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 从袋影下面经过",
+              "quote": "鸣殖把陌生的回响当成水兽的呼吸，那只是他自己的猜想。"
+            }
+          ],
+          "explanation": "前文已将水兽解释明确限定为鸣殖个人猜想；目标句仍是他向别人讲故事，叙述并未将水兽当作事实，因此不要求把猜想当连续性冲突或已确证因果。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-d-t01",
+      "work": "upland_fieldnotes",
+      "chapter": "第三章 把叶背翻过来",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf2f-d-p01",
+          "kind": "time_passed",
+          "quotes": [
+            "到了五月十八日，我脚背上初到倾石镇时磨出的红痕已淡了，袜口擦过去也不再刺痛。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 倾石镇的台阶",
+              "quote": "我帮他把花盆垫高一寸，回到房间时，刚磨红的脚背贴着袜口发热。"
+            }
+          ],
+          "explanation": "初来时的磨红经过数日减轻是合理恢复；前文没有确立会持续不变的伤势。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-d-t02",
+      "work": "upland_fieldnotes",
+      "chapter": "第四章 小桥的午后",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-d-c01",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "我在开放说明会结束后的次日，才头一回来到倾石镇。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 倾石镇的台阶",
+              "quote": "五月十四日，我第一次抵达倾石镇；五月十六日上午，我在镇公所听了考察组的开放说明会。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文首次抵达在五月十四日，说明会在五月十六日，抵达先于说明会；问题句把首次到镇写成说明会之后一天，颠倒两事先后。"
+        },
+        {
+          "id": "lf2f-d-e01",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "witness",
+          "issue_quotes": [
+            "阔蹄牧屋那座库房在去年六月失火时，我亲眼看着火舌爬上屋梁。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 把叶背翻过来",
+              "quote": "贾雁在电话里告诉我，去年六月阔蹄牧屋的库房起过火，火苗从堆放旧毡的屋角烧到梁下。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只通过贾雁的电话转述确立火灾消息。问题句把同一事件升级为我的亲眼见证，缺少我在现场目睹的环节；前文并未否定我曾到场，故属于证据不足。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf2f-d-t03",
+      "work": "upland_fieldnotes",
+      "chapter": "第五章 低着头的花",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-d-c02",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "五月十五日的午后，时筠把砾弦原北头那个采集点的经纬度从记忆里逐个数字写了下来。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 越过麦地的人",
+              "quote": "五月十五日午后，时筠不知道砾弦原北端采集点的坐标，她当时在行程卡上记的是待查询地点名称。"
+            },
+            {
+              "chapter": "第二章 越过麦地的人",
+              "quote": "到了说明会后，她才从公所的路线资料上查得位置。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文明确时筠在五月十五日下午不知道该点坐标，直到五月十六日说明会后才查得。问题句却写她在十五日下午已凭记忆默写同一点经纬度，与该时人物知识状态冲突。"
+        },
+        {
+          "id": "lf2f-d-e02",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "我在图旁写下三十七毫米，作为时筠五月十八日量出的那株墨脉草的准确茎长。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 把叶背翻过来",
+              "quote": "时筠把一株矮枝墨脉草的茎扶直，让软尺沿着主茎伸到顶端。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文写了时筠对墨脉草使用软尺的测量动作，但没有实测读数或核对结果。问题句把那次测量的准确数值定为三十七毫米，缺少测量结果一环，没有与已知数字矛盾。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf2f-d-p02",
+          "kind": "state_change",
+          "quotes": [
+            "我的苔褐色雨披贴在背包外，帽子一摘，整个人像从同一种颜色里露出脸来。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 把叶背翻过来",
+              "quote": "我原来的靛蓝外套挡不住从领缝钻进去的水，于是买下苔褐色雨披，在商店门口穿上，把靛蓝外套卷好收进背包。"
+            }
+          ],
+          "explanation": "此前已经写出购买并穿上苔褐色雨披、收起靛蓝外套的完整变化，当前衣着并非属性矛盾。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-d-t04",
+      "work": "upland_fieldnotes",
+      "chapter": "第六章 窗口里的归档桌",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-d-c03",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "我拿出那只青槽样瓶，完好的玻璃身映着窗外的草色，瓶侧的闻岫二字正对着我。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 倾石镇的台阶",
+              "quote": "我那只刻着闻岫二字的青槽样瓶滑下桌面，落在台阶上碎成了玻璃渣。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一只刻闻岫二字的青槽样瓶在前文已经摔成玻璃渣，碎片随后清运。问题句又取出瓶身完好的原瓶，物件状态不相容。"
+        },
+        {
+          "id": "lf2f-d-e03",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "subsequent_state",
+          "issue_quotes": [
+            "我在保存栏写下，临坡棚里的那包弦齿芹自五月十九日晚至五月二十一日下午始终干燥。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 小桥的午后",
+              "quote": "五月十九日晚，贾雁在电话里说，她摸过临坡棚的弦齿芹样包，里面的枝叶干而硬。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文确立五月十九日晚检查时样包干燥，未确立其后到二十一日下午的持续保存状态。问题句将当时状态延伸成整段时间的定论，缺少后续状态确认；没有已有受潮事实与之冲突。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf2f-d-p03",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "芮卓把皮袋翻到背面，五枚白线缝成的小点绕着补丁排成半圈。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 越过麦地的人",
+              "quote": "他受雇带我们走砾弦原的几段调查路线，随身背着一只皮袋，袋子正面有一枚三角形的铜扣，扣尖用细绳缠住了。"
+            }
+          ],
+          "explanation": "前文只描述皮袋正面的铜扣，新增背面的补丁白线细节与正面描述相容；这是直接观察到的新细节。"
+        }
+      ]
+    },
+    {
+      "id": "lf2f-d-t05",
+      "work": "upland_fieldnotes",
+      "chapter": "第七章 草缝里的最后一页",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf2f-d-c04",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "时筠在本年五月十五日参加了梯苔坳的种子交换会，还在闭幕前和带种子来的老人合过一张影。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 越过麦地的人",
+              "quote": "原定这年五月十五日的梯苔坳种子交换会已经取消，组织者那天只在门口张贴了停办通知。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "本年五月十五日的梯苔坳种子交换会已取消，问题句却把它写成确实举办并有闭幕合影的事件，冲突在事件是否发生。"
+        },
+        {
+          "id": "lf2f-d-c05",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "五月十七日下午三时，芮卓在露绒站大厅弯腰替值班员收拾散开的包带。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 越过麦地的人",
+              "quote": "五月十七日下午三时，芮卓在鸢脊营地的南屋陪我清点画具。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "五月十七日下午三时"
+          },
+          "explanation": "同一个明确时刻，芮卓前文身在鸢脊营地南屋，问题句身在相距七十公里的露绒站大厅，两处位置互斥；人物属性、规则与事件结果均不涉及该矛盾。"
+        },
+        {
+          "id": "lf2f-d-c06",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "时筠从砾弦原的保护带中拔起一株野生小草，连同地下的根茎夹进了新折的采集纸。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 倾石镇的台阶",
+              "quote": "砾弦原采集条例禁止在保护带内拔取任何野生植物的根茎。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文采集条例明确禁止在砾弦原保护带拔取野生植物根茎，问题句在同一区域实际拔根收样，没有规则变化或例外，违反既定规则。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf2f-d-t06",
+      "work": "upland_fieldnotes",
+      "chapter": "第八章 用绳子系好的路",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf2f-d-p04",
+          "kind": "reported_belief",
+          "quotes": [
+            "栾赫说：“砾弦原足有九千米高，站在上头能给飞鸟梳毛。”"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 越过麦地的人",
+              "quote": "时筠读了随身气压高度计，砾弦原这一段的海拔约三千九百米。"
+            }
+          ],
+          "explanation": "孩子在和同伴编煤灰城池的登山故事，九千米及给飞鸟梳毛属于其夸口，叙述没有把他的说法当作高原真实高度，故不与前文实测海拔形成作者层面的矛盾。"
+        }
+      ]
+    }
+  ],
+  "selections": [
+    {
+      "id": "lf2f-s01",
+      "work": "folded_folio",
+      "chapters": [
+        "第三章 椅子上的讲述",
+        "第四章 运纸人的午后",
+        "第五章 纤维的方向",
+        "第六章 炉边的色样",
+        "第七章 线头藏在哪里",
+        "第八章 编目之外",
+        "第九章 门打开的时候",
+        "第十章 留给下一位"
+      ]
+    },
+    {
+      "id": "lf2f-s02",
+      "work": "switchyard_fern",
+      "chapters": [
+        "第三章 小车上桥",
+        "第四章 棚门上的草结",
+        "第五章 两条水路之间",
+        "第六章 空地上的细线",
+        "第七章 停在坡口的推车"
+      ]
+    },
+    {
+      "id": "lf2f-s03",
+      "work": "upland_fieldnotes",
+      "chapters": [
+        "第三章 把叶背翻过来",
+        "第四章 小桥的午后",
+        "第五章 低着头的花",
+        "第六章 窗口里的归档桌",
+        "第七章 草缝里的最后一页"
+      ]
+    }
+  ],
+  "subsets": {}
+}

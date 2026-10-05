@@ -1,0 +1,17 @@
+{
+  "created_at_utc": "2026-09-27T09:20:44.927617+00:00",
+  "kind": "v6_independent_criteria_before_outputs",
+  "files": {
+    "PLAN.md": "e5f384c26a706307691b07c87b3eea86d2ac5bf4abf3ef30335adf7b9eccec1f",
+    "semantics/criteria.md": "a09185a0cfcb9b9541140a296db8d63d609410dca48159944bf5ce0007715263",
+    "semantics/control-matrix.json": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "engineering/criteria.md": "c0cf1a7ba2d42f3e3b38cb11790c8ef5680832dec5a10ec9c8c7115002b2e5bc",
+    "g02/criteria.md": "d554e3534fe5db25558439bdc34fc1b805555d33c3bc9ce658acd573fb0fca92"
+  },
+  "provider_calls": 0,
+  "controls": 12,
+  "unique_control_business_inputs": 10,
+  "original_no_conflict_guardrail": 8,
+  "contract_implementation_doc": "separate proposal; final version must freeze before live outputs",
+  "policy": "No post-output edits to these criteria; explicit new version required."
+}

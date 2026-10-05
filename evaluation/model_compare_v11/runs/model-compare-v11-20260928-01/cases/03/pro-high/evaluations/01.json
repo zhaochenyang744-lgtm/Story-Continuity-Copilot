@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "23d76583388e84f657f3fc40dbd5514d5037cbd92f15ea7d93653791717617d0",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "The draft says the two badge registers show Mira as the 11点 holder of the spare blue badge, but the supplied spare blue badge register leaves that holder field blank. The attribution is unsupported; the underlying fact remains unknown.",
+        "reasoning": "Span fixture-span-north_glass-3 states that the spare blue badge register leaves its 11点 holder field blank. Since the claim asserts Mira held the spare blue badge at 11点 according to the two badge registers, this register cannot provide the claimed source warrant. No other supplied register record identifies Mira as the holder. The earlier 10点 absence does not disprove a later acquisition, so the issue is only the unsupported attribution, not a proven contradiction.",
+        "temporal_basis": {
+          "claim_anchor": "at 11点",
+          "evidence_anchor": "11点",
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-3",
+            "span_id": "fixture-span-north_glass-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-3"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-3",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The draft attributes Mira's 11点 holding to the two badge registers, but the supplied spare blue badge register leaves that holder field blank, so the source warrant is unsupported."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3620,
+      "completion_tokens": 5278,
+      "total_tokens": 8898,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 4768
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1188
+    },
+    "status": "complete",
+    "prompt_tokens": 3620,
+    "completion_tokens": 5278,
+    "total_tokens": 8898,
+    "reasoning_tokens": 4768,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

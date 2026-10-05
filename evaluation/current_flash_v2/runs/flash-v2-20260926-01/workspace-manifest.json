@@ -1,0 +1,47 @@
+{
+  "root": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\artifacts\\current_flash_v2\\flash-v2-20260926-01",
+  "git_ignored": true,
+  "retained_for_controller_review": true,
+  "database_files": [
+    {
+      "path": "g02-body-limit/runtime/data/demo.sqlite3",
+      "sha256": "9dd7aa209620a2b9d608d108bc02a67bc302bde65fbd197d2927ece665270219",
+      "bytes": 999424
+    },
+    {
+      "path": "g02-identical-text/runtime/data/demo.sqlite3",
+      "sha256": "ca68e2e5b2408a7d6888023e0d04c456d42af7d7dffa9669d9e3e10e751a6636",
+      "bytes": 983040
+    },
+    {
+      "path": "g02-long-sentence/runtime/data/demo.sqlite3",
+      "sha256": "5fc6d80e0cf43fd2b831b5e51c1789c68425a26d099888f7028265757bebcfef",
+      "bytes": 991232
+    },
+    {
+      "path": "g02-three-sentences/runtime/data/demo.sqlite3",
+      "sha256": "fba933f67763195f5dc392b379897111332e75cd4ab0ebddb6f9552367834579",
+      "bytes": 987136
+    },
+    {
+      "path": "g03-deep-target/runtime/data/demo.sqlite3",
+      "sha256": "b7ce6c8425d6d2ae7b5572f2d5d18dc1924c2f2366283da7abee8dce125487d0",
+      "bytes": 983040
+    },
+    {
+      "path": "g03-fact-absent/runtime/data/demo.sqlite3",
+      "sha256": "b65e87f14f45283f38ea2745de63540ea245b455d40c6146117ef1ba8e8b2f4f",
+      "bytes": 978944
+    },
+    {
+      "path": "g03-other-chapter/runtime/data/demo.sqlite3",
+      "sha256": "faa989ba3e3ded6a6b6c384ee6589c7d593996ddb3ad0b7952c7a65eabc2bf2b",
+      "bytes": 983040
+    },
+    {
+      "path": "g03-short-target/runtime/data/demo.sqlite3",
+      "sha256": "99a9bc1fe257de3b8b2d12f5dad79601ee475a339a57f863fc4e4bbabc77f58f",
+      "bytes": 978944
+    }
+  ]
+}

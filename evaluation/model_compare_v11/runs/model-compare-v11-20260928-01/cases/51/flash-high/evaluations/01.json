@@ -1,0 +1,88 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "f452e17e63161cb536fcf9c8c30096803de7814d406d10cd05443208a1aa8912",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc17-order-en",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "timeline",
+        "severity": "medium",
+        "explanation": "The draft gives the opposite order of events at the same time, 07:00 today.",
+        "reasoning": "The cited span gives the same time, 07:00 today, and states that the east gate opened first and the watch bell rang only after the gate was already open. That directly reverses the draft's asserted order, so the two claims cannot both be true under the same time and event scope.",
+        "temporal_basis": {
+          "claim_anchor": "At 07:00 today",
+          "evidence_anchor": "At 07:00 today",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc17-order-en-O1",
+            "span_id": "cc-span-cc17-order-en-O1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc17-order-en-O1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc17-order-en-O1",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 07:00 today, the watch bell rang before the east gate opened.",
+          "after": "At 07:00 today, the east gate opened first, and the watch bell rang only after the gate was already open."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc17-order-en",
+        "verdict": "reviewed_issue",
+        "basis": "The supplied evidence states the opposite event order at the same time, 07:00 today, directly contradicting the draft claim."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3072,
+      "completion_tokens": 1730,
+      "total_tokens": 4802,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1346
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 768
+    },
+    "status": "complete",
+    "prompt_tokens": 3072,
+    "completion_tokens": 1730,
+    "total_tokens": 4802,
+    "reasoning_tokens": 1346,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

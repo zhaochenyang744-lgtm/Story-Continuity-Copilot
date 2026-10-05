@@ -1,0 +1,244 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-16",
+  "stage": "followup",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:52:24.719669+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-16",
+      "response_alias": "answer-fedc06",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合下水完成的签单+离港条件与同分钟两条件均未完成事实，明确同体同刻不可共存。",
+          "visible_quote": "Together these prove the boat could not have completed its launch at that 10点",
+          "evidence_pointer": "responses[response_alias=answer-fedc06].first.parsed_business_json.issues[0].reasoning; fixture-span-orchard_restoration-4 / -5"
+        }
+      ],
+      "other_dimensions_checked": "event_status类别、最小span-4+5、claim/chapter/Memory及正文绑定正确；同分钟锚点精确，建议未下水受支持。basis 157≤400，reasoning 405≤800；本回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "final保持实际接受答案的各实质字段，excerpt精确绑定；completed且normalization=0。联合事实判定正确；前提context与直接反证contradicts分工正确，完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "strict_transition": "pass_to_pass",
+        "normalization_count": 0
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-16",
+      "response_alias": "answer-52388b",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "仍正确联合签单+离港必要条件与同分钟均未满足的事实，没有改成保守不足。",
+          "visible_quote": "完成所需的两个条件在同一时刻被明确否定",
+          "evidence_pointer": "responses[response_alias=answer-52388b].repair.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "pass",
+          "reason": "规则span-4已由supports改成context，span-5保留contradicts；正确表达相对命题的分工。纯冻结validator通过；最小集合/绑定/类别/建议/时间保持正确。",
+          "visible_quote": "context",
+          "evidence_pointer": "responses[response_alias=answer-52388b].repair.parsed_business_json.issues[0].evidence[0].relation"
+        }
+      ],
+      "other_dimensions_checked": "event_status类别、最小span-4+5、claim/chapter/Memory及正文绑定正确；同分钟锚点精确，建议未下水受支持。basis 248≤400，reasoning 458≤800；另两回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "final保持实际接受答案的各实质字段，excerpt精确绑定；completed且normalization=0。一次repair修正证据角色并恢复结构与strict；核心事实推理在首答已正确，不能算F能力恢复。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": true,
+        "strict_transition": "fail_to_pass",
+        "F_transition": "pass_to_pass",
+        "normalization_count": 0
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-16",
+      "response_alias": "answer-86045d",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确联合下水完成的签单+离港条件与同分钟两条件均未完成事实，明确同体同刻不可共存。",
+          "visible_quote": "这两项前提条件在同一时刻都不成立",
+          "evidence_pointer": "responses[response_alias=answer-86045d].first.parsed_business_json.issues[0].reasoning; fixture-span-orchard_restoration-4 / -5"
+        }
+      ],
+      "other_dimensions_checked": "event_status类别、最小span-4+5、claim/chapter/Memory及正文绑定正确；同分钟锚点精确，建议未下水受支持。basis 59≤400，reasoning 209≤800；本回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "final保持实际接受答案的各实质字段，excerpt精确绑定；completed且normalization=0。联合事实判定正确；前提context与直接反证contradicts分工正确，完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "strict_transition": "pass_to_pass",
+        "normalization_count": 0
+      }
+    }
+  ],
+  "repair_records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-16",
+      "response_alias": "answer-52388b",
+      "stage": "repair",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "仍正确联合签单+离港必要条件与同分钟均未满足的事实，没有改成保守不足。",
+          "visible_quote": "完成所需的两个条件在同一时刻被明确否定",
+          "evidence_pointer": "responses[response_alias=answer-52388b].repair.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "pass",
+          "reason": "规则span-4已由supports改成context，span-5保留contradicts；正确表达相对命题的分工。纯冻结validator通过；最小集合/绑定/类别/建议/时间保持正确。",
+          "visible_quote": "context",
+          "evidence_pointer": "responses[response_alias=answer-52388b].repair.parsed_business_json.issues[0].evidence[0].relation"
+        }
+      ],
+      "other_dimensions_checked": "event_status类别、最小span-4+5、claim/chapter/Memory及正文绑定正确；同分钟锚点精确，建议未下水受支持。basis 248≤400，reasoning 458≤800；另两回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "一次repair修正证据角色并恢复结构与strict；核心事实推理在首答已正确，不能算F能力恢复。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "F_transition": "pass_to_pass",
+        "S_transition": "fail_to_pass",
+        "E_roles_transition": "fail_to_pass",
+        "strict_transition": "fail_to_pass"
+      }
+    }
+  ],
+  "summary": {
+    "responses": 3,
+    "repair_attempted": 1,
+    "repair_F_pass": 1,
+    "repair_strict_pass": 1,
+    "structure_recoveries": 1,
+    "role_recoveries": 1,
+    "F_recoveries": 0,
+    "strict_recoveries": 1,
+    "final_F_pass": 3,
+    "final_strict_pass": 3,
+    "normalization_contribution": 0
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/16.json",
+      "sha256_observed": "7201bb0114c4da05e68409a7f76728bb042803226cf7c966051b2ffa158ddfa5",
+      "sha256_after_review": "7201bb0114c4da05e68409a7f76728bb042803226cf7c966051b2ffa158ddfa5"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-16.json",
+      "sha256_observed": "9715799b12d07d189564659800c5e321bf2237ff8a0c37a02d02d44e1d5b1c1e",
+      "sha256_after_review": "9715799b12d07d189564659800c5e321bf2237ff8a0c37a02d02d44e1d5b1c1e"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/16.json",
+      "sha256_observed": "7895306bfa266de517a0dde88fce7a06de24a1920d5aabdd7a78f2fb5f30060e",
+      "sha256_after_review": "7895306bfa266de517a0dde88fce7a06de24a1920d5aabdd7a78f2fb5f30060e"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    },
+    {
+      "path": "backend/app/engine.py",
+      "sha256_observed": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd",
+      "sha256_after_review": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd"
+    }
+  ],
+  "read_hashes_stable": true
+}

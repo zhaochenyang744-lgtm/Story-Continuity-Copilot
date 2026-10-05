@@ -1,0 +1,79 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "cf1804e07761377a4efab29baa7343efa98d752d8823f26d3614b6ee29588861",
+  "finished_at": "2026-09-27T10:02:31.522674+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-f8c7cac2-aefb-4e3c-850b-eae25f808f09-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "event_status",
+        "severity": "high",
+        "explanation": "The draft says the restoration boat's launch was already complete at 10点 on the same day, but the cited evidence shows that at 10点 the manifest was still unsigned and the boat had not departed, so the launch could not yet be complete.",
+        "reasoning": "The static canon rule establishes that the launch is complete only after both the manifest is signed and the boat departs the orchard quay. The event timeline states that at 10点 on the same day the manifest remained unsigned and the boat remained at the quay throughout that minute without departing. The draft claim asserts completion at that same 10点, which cannot coexist with the rule and the same-time state.",
+        "temporal_basis": {
+          "claim_anchor": "At 10点 on the same day",
+          "evidence_anchor": "At 10点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-4",
+            "span_id": "fixture-span-orchard_restoration-4",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-4"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-5",
+            "span_id": "fixture-span-orchard_restoration-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-5"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-4",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-orchard_restoration-5",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10点 on the same day, the restoration boat had completed its launch.",
+          "after": "At 10点 on the same day, the restoration boat's launch had not yet been completed: its manifest remained unsigned and the boat remained at the orchard quay."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-f8c7cac2-aefb-4e3c-850b-eae25f808f09-1",
+        "verdict": "reviewed_issue",
+        "basis": "The claim asserts launch completion at 10点 on the same day, but the cited same-time evidence and the launch-completion rule show the manifest was unsigned and the boat had not departed, so the launch could not be complete."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3436,
+    "output_tokens": 593,
+    "observed_response_input_tokens": 3436,
+    "observed_response_output_tokens": 593
+  }
+}

@@ -1,0 +1,308 @@
+{
+  "scope": "saved snapshots; only 4 manifest-allowlisted G03 SQLite files opened mode=ro immutable=1; no Provider",
+  "all_record_hashes": [
+    {
+      "case_id": "g02-three-sentences",
+      "input_and_request_hashes_match": true
+    },
+    {
+      "case_id": "g02-long-sentence",
+      "input_and_request_hashes_match": true
+    },
+    {
+      "case_id": "g02-body-limit",
+      "input_and_request_hashes_match": true
+    },
+    {
+      "case_id": "g02-identical-text",
+      "input_and_request_hashes_match": true
+    },
+    {
+      "case_id": "g03-short-target",
+      "input_and_request_hashes_match": true
+    },
+    {
+      "case_id": "g03-deep-target",
+      "input_and_request_hashes_match": true
+    },
+    {
+      "case_id": "g03-fact-absent",
+      "input_and_request_hashes_match": true
+    },
+    {
+      "case_id": "g03-other-chapter",
+      "input_and_request_hashes_match": true
+    }
+  ],
+  "g03": [
+    {
+      "case_id": "g03-short-target",
+      "full_target_chars": 20,
+      "target_fact_offset": 0,
+      "supplied_target_chars": 20,
+      "other_chapter_exactly_supplied": true,
+      "memory_complete_matches": true,
+      "first_and_final_chapter_bindings": [
+        {
+          "output": "first",
+          "chapter_id": "fixture-chapter-flash_v2_target-1",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-1"
+          ]
+        },
+        {
+          "output": "first",
+          "chapter_id": "fixture-chapter-flash_v2_target-2",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-2"
+          ]
+        },
+        {
+          "output": "final",
+          "chapter_id": "fixture-chapter-flash_v2_target-1",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-1"
+          ]
+        },
+        {
+          "output": "final",
+          "chapter_id": "fixture-chapter-flash_v2_target-2",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-2"
+          ]
+        }
+      ],
+      "product_evidence_status": "supported",
+      "db_chapter_source_mismatches": [],
+      "preflight_rejects_invalid_memory_type": false
+    },
+    {
+      "case_id": "g03-deep-target",
+      "full_target_chars": 1510,
+      "target_fact_offset": 1100,
+      "supplied_target_chars": 502,
+      "other_chapter_exactly_supplied": true,
+      "memory_complete_matches": true,
+      "first_and_final_chapter_bindings": [
+        {
+          "output": "first",
+          "chapter_id": "fixture-chapter-flash_v2_target-1",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-1"
+          ]
+        },
+        {
+          "output": "first",
+          "chapter_id": "fixture-chapter-flash_v2_target-2",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-2"
+          ]
+        },
+        {
+          "output": "final",
+          "chapter_id": "fixture-chapter-flash_v2_target-1",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-1"
+          ]
+        },
+        {
+          "output": "final",
+          "chapter_id": "fixture-chapter-flash_v2_target-2",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-2"
+          ]
+        }
+      ],
+      "product_evidence_status": "supported",
+      "db_chapter_source_mismatches": [
+        {
+          "chapter_id": "fixture-chapter-flash_v2_target-1",
+          "chapter_body": "星钥始终由乔霁保管。平静的溪水流过石桥。",
+          "span_id": "fixture-span-flash_v2_target-1",
+          "span_chars": 1510,
+          "span_body_in_chapter": false,
+          "chapter_revision": 1,
+          "span_revision": 1
+        }
+      ],
+      "preflight_rejects_invalid_memory_type": false
+    },
+    {
+      "case_id": "g03-fact-absent",
+      "full_target_chars": 26,
+      "target_fact_offset": -1,
+      "supplied_target_chars": 26,
+      "other_chapter_exactly_supplied": true,
+      "memory_complete_matches": true,
+      "first_and_final_chapter_bindings": [
+        {
+          "output": "first",
+          "chapter_id": "fixture-chapter-flash_v2_target-1",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-1"
+          ]
+        },
+        {
+          "output": "first",
+          "chapter_id": "fixture-chapter-flash_v2_target-2",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-2"
+          ]
+        }
+      ],
+      "product_evidence_status": "insufficient",
+      "db_chapter_source_mismatches": [
+        {
+          "chapter_id": "fixture-chapter-flash_v2_target-1",
+          "chapter_body": "星钥始终由乔霁保管。平静的溪水流过石桥。",
+          "span_id": "fixture-span-flash_v2_target-1",
+          "span_chars": 26,
+          "span_body_in_chapter": false,
+          "chapter_revision": 1,
+          "span_revision": 1
+        }
+      ],
+      "preflight_rejects_invalid_memory_type": false
+    },
+    {
+      "case_id": "g03-other-chapter",
+      "full_target_chars": 1510,
+      "target_fact_offset": 1100,
+      "supplied_target_chars": 502,
+      "other_chapter_exactly_supplied": true,
+      "memory_complete_matches": true,
+      "first_and_final_chapter_bindings": [
+        {
+          "output": "first",
+          "chapter_id": "fixture-chapter-flash_v2_target-1",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-1"
+          ]
+        },
+        {
+          "output": "first",
+          "chapter_id": "fixture-chapter-flash_v2_target-2",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-2"
+          ]
+        },
+        {
+          "output": "final",
+          "chapter_id": "fixture-chapter-flash_v2_target-1",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-1"
+          ]
+        },
+        {
+          "output": "final",
+          "chapter_id": "fixture-chapter-flash_v2_target-2",
+          "own_chapter_sources": [
+            "fixture-span-flash_v2_target-2"
+          ]
+        }
+      ],
+      "product_evidence_status": "supported",
+      "db_chapter_source_mismatches": [
+        {
+          "chapter_id": "fixture-chapter-flash_v2_target-1",
+          "chapter_body": "星钥始终由乔霁保管。平静的溪水流过石桥。",
+          "span_id": "fixture-span-flash_v2_target-1",
+          "span_chars": 1510,
+          "span_body_in_chapter": false,
+          "chapter_revision": 1,
+          "span_revision": 1
+        },
+        {
+          "chapter_id": "fixture-chapter-flash_v2_target-2",
+          "chapter_body": "第二章只记载岸边潮位，没有星钥保管事实。",
+          "span_id": "fixture-span-flash_v2_target-2",
+          "span_chars": 31,
+          "span_body_in_chapter": false,
+          "chapter_revision": 1,
+          "span_revision": 1
+        }
+      ],
+      "preflight_rejects_invalid_memory_type": false
+    }
+  ],
+  "source_and_run_hashes_before": {
+    "evaluation/current_flash_v2/cases.json": "802e8e8f7dc24ea6bff62624aec84c54b7610a4ce869f03ce4daed61399073c9",
+    "evaluation/current_flash_v2/g03-corpus.json": "637d5a8df36b877804e1df49ac212d9bc2c6d2ad61772aa665fcfb02bd3838bb",
+    "evaluation/current_flash_v2/run.py": "45e00b0d4ef117f862d0b059bb876942daf9469224f3ce1ba60d0b0517d6d0fe",
+    "evaluation/current_flash_v2/test_offline.py": "272bf7d164c906dda08ed1b5e5cad74c6114911ebf3b22b7e8499d4dd8297bfe",
+    "evaluation/current_flash_v2/PLAN.md": "308174a4f60e4c4105403b976ef3e2c902b14db590807e338b62a211e9c354ee",
+    "evaluation/current_flash_v1/cases.json": "c558346fd435aed56a32eb81002ff5103e266886ad1023d11f80ac5fbc5d28ce",
+    "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+    "backend/app/engine.py": "df9b2a19b07744b318743802679c22f67a49af13a67275cf81f74c0d06891ea4",
+    "backend/app/v2_database.py": "9f0b8c2b512f2d69f03cbc7193d83d9681fe42fe3ade51a7fcc4ad494fdba965",
+    "backend/app/main.py": "bd7fdfab5ff2dd18f369d6bf22c6cdfc83ee177d8245b91954f21ed20faf3cca",
+    "backend/app/seed_data.py": "cd1ec7e535eb5dc5706a36c7cfa2f96adef7fd3a7b691263bef0c88a8a9c68de",
+    "backend/app/config.py": "71ecb142047916cba315dcbb8fff9c31f294d8e1109be888cad42c5e80ab9f9e",
+    "backend/app/database.py": "82afa645a8b092bfd3001bf667378ccc56646a9900e905209e9243c6357a2d33",
+    "backend/app/stage13.py": "957c219bb3f8036e421c63ba7c204ed1767d2d334a39a08aa958f5119cfd9500",
+    "evaluation/v2_fixture_loader.py": "863bab7bc5ea8ab00b40de1a6e5b6b8bc4788508661cc890e758ae2157a60c23",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/01-g02-three-sentences.json": "89b5f148a39c8a0c57ff40dbc3e4c1c7a068cebc860d51a495dee2c7bf5c59f0",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/02-g02-long-sentence.json": "7b7276cee12f955078e993928c2742e75f045b1dba5962fae2e3f099dc6f4921",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/03-g02-body-limit.json": "ac5c70b43a28f9b20990b8602f1e6efd032f5e754efe5bed5a9cd70ced8aaae3",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/04-g02-identical-text.json": "34a10437792380f8f75bcc51b43c26e62dd4fb80b1244d349c6d7826e1e74f24",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/05-g03-short-target.json": "eaf4e90517d785d17d920aaafb932337b554aeacf327e9adc137e8c066875586",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/06-g03-deep-target.json": "7668d32473e4da6a9516c3b8da3033054f50dea9e9df1a8c850abf5616833142",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/07-g03-fact-absent.json": "59c9f02faa45dde80e89b9dda8ca601062d073f859e85755413aea02d74fc9ae",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/08-g03-other-chapter.json": "bbe819a90181abc4f92aa725819597c1cc1efe6f5ecbca2520e8a020ef02c480",
+    "evaluation/current_flash_v2/frozen-inputs.json": "d2260a915dfcf32f6b23a9e9deac06f518f44fcc4e47dbce43e0fe9a4049b2ef",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/start.json": "21f3f5709dad0139b5134ec83869884a4c9e2447b5f156a722f489df9c5d77cd",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/workspace-manifest.json": "3e96f1cf7e7321a145699c4aa97ff84b3ebf901bb31d8bd45a7d6c060a29c004",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/summary.json": "68fcda57b1caf3f6fac5666c85a3772afea59396473d08be073abc1f8e6434ed"
+  },
+  "source_and_run_hashes_after": {
+    "evaluation/current_flash_v2/cases.json": "802e8e8f7dc24ea6bff62624aec84c54b7610a4ce869f03ce4daed61399073c9",
+    "evaluation/current_flash_v2/g03-corpus.json": "637d5a8df36b877804e1df49ac212d9bc2c6d2ad61772aa665fcfb02bd3838bb",
+    "evaluation/current_flash_v2/run.py": "45e00b0d4ef117f862d0b059bb876942daf9469224f3ce1ba60d0b0517d6d0fe",
+    "evaluation/current_flash_v2/test_offline.py": "272bf7d164c906dda08ed1b5e5cad74c6114911ebf3b22b7e8499d4dd8297bfe",
+    "evaluation/current_flash_v2/PLAN.md": "308174a4f60e4c4105403b976ef3e2c902b14db590807e338b62a211e9c354ee",
+    "evaluation/current_flash_v1/cases.json": "c558346fd435aed56a32eb81002ff5103e266886ad1023d11f80ac5fbc5d28ce",
+    "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+    "backend/app/engine.py": "df9b2a19b07744b318743802679c22f67a49af13a67275cf81f74c0d06891ea4",
+    "backend/app/v2_database.py": "9f0b8c2b512f2d69f03cbc7193d83d9681fe42fe3ade51a7fcc4ad494fdba965",
+    "backend/app/main.py": "bd7fdfab5ff2dd18f369d6bf22c6cdfc83ee177d8245b91954f21ed20faf3cca",
+    "backend/app/seed_data.py": "cd1ec7e535eb5dc5706a36c7cfa2f96adef7fd3a7b691263bef0c88a8a9c68de",
+    "backend/app/config.py": "71ecb142047916cba315dcbb8fff9c31f294d8e1109be888cad42c5e80ab9f9e",
+    "backend/app/database.py": "82afa645a8b092bfd3001bf667378ccc56646a9900e905209e9243c6357a2d33",
+    "backend/app/stage13.py": "957c219bb3f8036e421c63ba7c204ed1767d2d334a39a08aa958f5119cfd9500",
+    "evaluation/v2_fixture_loader.py": "863bab7bc5ea8ab00b40de1a6e5b6b8bc4788508661cc890e758ae2157a60c23",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/01-g02-three-sentences.json": "89b5f148a39c8a0c57ff40dbc3e4c1c7a068cebc860d51a495dee2c7bf5c59f0",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/02-g02-long-sentence.json": "7b7276cee12f955078e993928c2742e75f045b1dba5962fae2e3f099dc6f4921",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/03-g02-body-limit.json": "ac5c70b43a28f9b20990b8602f1e6efd032f5e754efe5bed5a9cd70ced8aaae3",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/04-g02-identical-text.json": "34a10437792380f8f75bcc51b43c26e62dd4fb80b1244d349c6d7826e1e74f24",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/05-g03-short-target.json": "eaf4e90517d785d17d920aaafb932337b554aeacf327e9adc137e8c066875586",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/06-g03-deep-target.json": "7668d32473e4da6a9516c3b8da3033054f50dea9e9df1a8c850abf5616833142",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/07-g03-fact-absent.json": "59c9f02faa45dde80e89b9dda8ca601062d073f859e85755413aea02d74fc9ae",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/08-g03-other-chapter.json": "bbe819a90181abc4f92aa725819597c1cc1efe6f5ecbca2520e8a020ef02c480",
+    "evaluation/current_flash_v2/frozen-inputs.json": "d2260a915dfcf32f6b23a9e9deac06f518f44fcc4e47dbce43e0fe9a4049b2ef",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/start.json": "21f3f5709dad0139b5134ec83869884a4c9e2447b5f156a722f489df9c5d77cd",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/workspace-manifest.json": "3e96f1cf7e7321a145699c4aa97ff84b3ebf901bb31d8bd45a7d6c060a29c004",
+    "evaluation/current_flash_v2/runs/flash-v2-20260926-01/summary.json": "68fcda57b1caf3f6fac5666c85a3772afea59396473d08be073abc1f8e6434ed"
+  },
+  "database_hashes_before": {
+    "g02-body-limit": "9dd7aa209620a2b9d608d108bc02a67bc302bde65fbd197d2927ece665270219",
+    "g02-identical-text": "ca68e2e5b2408a7d6888023e0d04c456d42af7d7dffa9669d9e3e10e751a6636",
+    "g02-long-sentence": "5fc6d80e0cf43fd2b831b5e51c1789c68425a26d099888f7028265757bebcfef",
+    "g02-three-sentences": "fba933f67763195f5dc392b379897111332e75cd4ab0ebddb6f9552367834579",
+    "g03-deep-target": "b7ce6c8425d6d2ae7b5572f2d5d18dc1924c2f2366283da7abee8dce125487d0",
+    "g03-fact-absent": "b65e87f14f45283f38ea2745de63540ea245b455d40c6146117ef1ba8e8b2f4f",
+    "g03-other-chapter": "faa989ba3e3ded6a6b6c384ee6589c7d593996ddb3ad0b7952c7a65eabc2bf2b",
+    "g03-short-target": "99a9bc1fe257de3b8b2d12f5dad79601ee475a339a57f863fc4e4bbabc77f58f"
+  },
+  "database_hashes_after": {
+    "g02-body-limit": "9dd7aa209620a2b9d608d108bc02a67bc302bde65fbd197d2927ece665270219",
+    "g02-identical-text": "ca68e2e5b2408a7d6888023e0d04c456d42af7d7dffa9669d9e3e10e751a6636",
+    "g02-long-sentence": "5fc6d80e0cf43fd2b831b5e51c1789c68425a26d099888f7028265757bebcfef",
+    "g02-three-sentences": "fba933f67763195f5dc392b379897111332e75cd4ab0ebddb6f9552367834579",
+    "g03-deep-target": "b7ce6c8425d6d2ae7b5572f2d5d18dc1924c2f2366283da7abee8dce125487d0",
+    "g03-fact-absent": "b65e87f14f45283f38ea2745de63540ea245b455d40c6146117ef1ba8e8b2f4f",
+    "g03-other-chapter": "faa989ba3e3ded6a6b6c384ee6589c7d593996ddb3ad0b7952c7a65eabc2bf2b",
+    "g03-short-target": "99a9bc1fe257de3b8b2d12f5dad79601ee475a339a57f863fc4e4bbabc77f58f"
+  },
+  "database_readonly_open_count": 4,
+  "network_smtp_attempts": []
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": "current-flash-v4-g02-cases",
+  "classification": "exposed_development_regression",
+  "g02": [
+    {"id":"g02-three-sentences","body":"林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。","expected":"Each displayed item and final summary has its own bound citation; record first-model defects separately.","v2_case":"g02-three-sentences"},
+    {"id":"g02-long-sentence","body_repeat":"林默沿着长廊向前走，","repeat_count":28,"body_tail":"最后把银钥匙交给陈澈并得知弟弟还活着。","expected":"The cited draft claim contains the full 299-character sentence including its tail; any displayed tail and summary have their own full source.","v2_case":"g02-long-sentence"},
+    {"id":"g02-body-limit","body_repeat":"林默在雾港核对潮汐表。","repeat_count":180,"expected":"Unselected saved-draft scope remains disclosed; all displayed items and summary cite their own bound sources.","v2_case":"g02-body-limit"},
+    {"id":"g02-identical-text","body":"林默走进北门。林默走进北门。","expected":"Duplicate claims stay separately addressable; each displayed item and summary has an own source.","v2_case":"g02-identical-text"},
+    {"id":"g02-time-bound","body":"昨日温岚尚未得知银钥匙的用途。今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。","expected":"Keep yesterday's unknown and today's knowledge as distinct time-bound quotations; do not merge them into a timeless fact."},
+    {"id":"g02-dialogue-attribution","body":"陈澈说：‘温岚已经把潮汐表交给林默。’温岚摇头说：‘我没有交出潮汐表，它仍在我的背包里。’","expected":"Render reported speech as attributed draft quotation; do not promote either conflicting speaker statement into narrator-confirmed fact."}
+  ]
+}

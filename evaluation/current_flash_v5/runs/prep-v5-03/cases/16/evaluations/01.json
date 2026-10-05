@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "4b7fb4fe0c1942097d556f0bc9d98c5d3a51448d586e7eb8194f0d16dcd3be42",
+  "finished_at": "2026-09-27T08:07:54.020880+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

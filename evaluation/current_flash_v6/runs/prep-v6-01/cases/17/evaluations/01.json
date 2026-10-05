@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "2bcc14ce09ddab6bb85cb812ec2d5933cc46bb5cece8f7c7ba4d1a9afa2c9a6a",
+  "finished_at": "2026-09-27T09:34:47.586662+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-79aee4f6-f006-4a4d-9abf-c6e321fd37c6-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

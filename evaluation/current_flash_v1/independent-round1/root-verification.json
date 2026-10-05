@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-09-26T09:56:45.7644166Z",
+  "head": "c3bd54ab019447354e8b1387e16b9aca3258b4c9",
+  "preserved_result_files": 53,
+  "result_hash_mismatches": [],
+  "product_diff": [],
+  "case_files": 48,
+  "actual_post_http": 49,
+  "http_200": 49,
+  "prompt_tokens": 144300,
+  "completion_tokens": 8508,
+  "incomplete_usage": 0,
+  "product_failures": [
+    "g03-short-target",
+    "g03-other-chapter"
+  ],
+  "independent_freeze_verification": "passed",
+  "independent_offline_tests": 3,
+  "independent_real_provider_dispatches": 0
+}

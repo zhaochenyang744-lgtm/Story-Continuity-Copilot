@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T08:20:47.251777+00:00",
+  "latency_ms": 2192,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3075,
+      "completion_tokens": 446,
+      "total_tokens": 3521
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-0014865a-3b89-4cea-8710-50b3c124abb9-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"event_status\",\"severity\":\"medium\",\"explanation\":\"The draft asserts that Tala caused the restoration boat's delay, but the supplied evidence does not establish any causal link between Tala and the delay.\",\"reasoning\":\"The cited spans establish the launch-completion rule, the unsigned manifest and undeparted boat at 10点, and that the delay's cause is unrecorded. None of these supplies a handoff, action, or record tying Tala to the delay, so the causal claim cannot be judged as either confirmed or contradicted.\",\"temporal_basis\":{\"claim_anchor\":null,\"evidence_anchor\":null,\"relation\":\"unknown\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-orchard_restoration-6\",\"span_id\":\"fixture-span-orchard_restoration-6\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-orchard_restoration-6\"]},{\"chapter_id\":\"fixture-chapter-orchard_restoration-5\",\"span_id\":\"fixture-span-orchard_restoration-5\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-orchard_restoration-5\"]},{\"chapter_id\":\"fixture-chapter-orchard_restoration-4\",\"span_id\":\"fixture-span-orchard_restoration-4\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-orchard_restoration-4\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-orchard_restoration-6\",\"role\":\"missing_link\"},{\"span_id\":\"fixture-span-orchard_restoration-5\",\"role\":\"missing_link\"},{\"span_id\":\"fixture-span-orchard_restoration-4\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}]}",
+  "message_content_sha256": "2fa59ef675eccbc607b2f0440da945a6e97de859df34f713166257ca3ec462c0",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

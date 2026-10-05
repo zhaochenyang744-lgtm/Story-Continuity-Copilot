@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-03",
+  "ordinal": 22,
+  "case_id": "ccv3-basalt_observatory-location_action-conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:08:00.570351+00:00",
+  "case_input_sha256": "d2a7bc27ac512bc7c22e04a6f87689e130abad6f4002502da8ca13ca9a268556",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

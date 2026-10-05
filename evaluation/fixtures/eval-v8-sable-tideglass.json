@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "sable_tideglass",
+  "title": "The Sable Tideglass Office",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v8-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "The Sable Tideglass Office",
+    "characters": [
+      "Yara Cett",
+      "Brom Olt"
+    ],
+    "locations": [
+      "Pewter Room",
+      "Violet Slip"
+    ],
+    "core_design": "parcel classifications, receipt procedure, and tideglass measurements"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Receipt scope",
+      "source_label": "receipt_scope",
+      "body": "Paper receipt is mandatory only for a parcel classified large; this scope statement does not classify any parcel."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Parcel classification",
+      "source_label": "parcel_classification",
+      "body": "The Violet Slip dispatch card classifies the tideglass parcel as large, while an unrelated sample pouch is marked small."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Facet-count convention",
+      "source_label": "facet_count_rule",
+      "body": "The official tideglass facet count is the number of facets listed in the certified measuring card."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Certified measuring card",
+      "source_label": "facet_measurement",
+      "body": "The certified card lists seventeen facets for the tideglass lens."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Stamp color",
+      "source_label": "stamp_color",
+      "body": "Yara Cett applies a violet stamp to the sealed parcel; Brom Olt's blue desk stamp concerns a different invoice."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Slip shelving",
+      "source_label": "slip_shelving",
+      "body": "The Violet Slip is shelved in the Pewter Room after noon review."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Unranked notes",
+      "source_label": "unranked_notes",
+      "body": "Two dispatch notes propose different couriers and explicitly assign neither note priority."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Preparation only",
+      "source_label": "preparation_only",
+      "body": "Brom Olt prepared a receipt envelope, but no source records whether any receipt was issued."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "Yara Cett",
+      "predicate": "fixture_anchor",
+      "value": "sable_tideglass-1",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "receipt_scope"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Yara Cett",
+      "predicate": "fixture_anchor",
+      "value": "sable_tideglass-3",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "facet_count_rule"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Yara Cett",
+      "predicate": "fixture_anchor",
+      "value": "sable_tideglass-5",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "stamp_color"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Yara Cett",
+      "predicate": "fixture_anchor",
+      "value": "sable_tideglass-7",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "unranked_notes"
+      }
+    }
+  ]
+}

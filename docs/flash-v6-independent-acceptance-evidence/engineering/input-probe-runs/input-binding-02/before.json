@@ -1,0 +1,16 @@
+{
+  "capture": "prep-v6-02/cases/25",
+  "sha256": {
+    "adaptation": "eaaceb74f501bd6158d6f2f3d28a28e9d8a21beaf1e6c80788fd2bd132eb6cbe",
+    "binding": "a5c1ebc10e550dd1aa81e593cc620cb69c74dd8e44948f8a1654454ecac7ebf1",
+    "build_cases": "24ee48763ab0e1b3ec37ed6faa4682454a8a70284289d247bc450ff5d5ad71cf",
+    "case_document": "ea6d521f625ed26319ddcbc8aa82456a2013ad9ff4ba441d99efa98c0204f391",
+    "case_start": "1ae96cffeb6a747a6cc1aa32cffec814881f634e2f7dbcc0ee3a58b738ee1a9d",
+    "inputs": "5b70bf132a4bc6fc4b07f7e7403fcb41ce7fdd9bfd885c9f7860c4610ac8ed48",
+    "matrix": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "probe": "c22b6ae0df403ecebe2e6788893e83d01cf331a774e1ac6a42102335cac614ef",
+    "request": "96063b8873a269603270ebbc05e344ed282f4f78590301812e9d22a89a714fd2",
+    "v5_inputs": "daced263ad5d630c0e5a2f51f0c2e13fe62dda07cb94dcd815eac1dddca86465",
+    "v5_journal": "3e8870d42ca4cc13fb605aa1527cc53fa45908cc3ba1958d99ecac710e508a87"
+  }
+}

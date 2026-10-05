@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "58a1ec3453482eadfcaa82e0475b9c645f06971af16045afd32b523b326f5b90",
+  "finished_at": "2026-09-27T09:34:58.031888+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-7521bc6e-aafa-4d19-a6cc-7a8cf6416918-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

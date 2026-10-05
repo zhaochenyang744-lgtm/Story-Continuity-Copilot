@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "047129c4a85190a0cad268495c2cc33bcd5b355cee6bfba6e6f3f61746014754",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "timeline",
+        "severity": "medium",
+        "explanation": "The birth register does not record which twin was born first, so it cannot establish that Aster was born before Nilo.",
+        "reasoning": "The supplied evidence states the register records Aster and Nilo as twins but omits which twin was born first. The draft treats the register as establishing a birth order, but the cited source lacks the decisive ordering detail, so the claim is unsupported. The actual birth order remains unknown; no direct contradiction is established.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+            "span_id": "fixture-span-v6_birth_order_blank-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_birth_order_blank-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_birth_order_blank-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The only supplied source says the register does not record which twin was born first, so the draft claim that it establishes Aster born before Nilo is unsupported; birth order remains unknown."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3048,
+      "completion_tokens": 2472,
+      "total_tokens": 5520,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2001
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 616
+    },
+    "status": "complete",
+    "prompt_tokens": 3048,
+    "completion_tokens": 2472,
+    "total_tokens": 5520,
+    "reasoning_tokens": 2001,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

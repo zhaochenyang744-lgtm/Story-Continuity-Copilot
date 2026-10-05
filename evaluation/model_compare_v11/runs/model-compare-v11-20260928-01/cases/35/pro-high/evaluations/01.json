@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "06166c5cbb919b35abb9e61d325dbcadff49cd4e75bc33e6ee11005b474ad40d",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc1-actor-blank-en",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "The ledger records the soup over-salted but names no cook, so Rurik's responsibility is unsupported.",
+        "reasoning": "The cited ledger note states the soup was over-salted at noon but explicitly names no cook. The current claim adds Rurik as the actor. Without an explicit ledger entry or other evidence attributing the over-salting to Rurik, the claim's relationship (who performed the act) is unsupported, and judgment stops.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc1-actor-blank-en-K1",
+            "span_id": "cc-span-cc1-actor-blank-en-K1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc1-actor-blank-en-K1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc1-actor-blank-en-K1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc1-actor-blank-en",
+        "verdict": "insufficient_evidence",
+        "basis": "The ledger names no cook, so it does not establish Rurik's action."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3124,
+      "completion_tokens": 2159,
+      "total_tokens": 5283,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1742
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 692
+    },
+    "status": "complete",
+    "prompt_tokens": 3124,
+    "completion_tokens": 2159,
+    "total_tokens": 5283,
+    "reasoning_tokens": 1742,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

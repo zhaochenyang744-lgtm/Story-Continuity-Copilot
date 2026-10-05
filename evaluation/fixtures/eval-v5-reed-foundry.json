@@ -1,0 +1,27 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "reed_foundry",
+  "title": "苇火铸场",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {"method": "deterministic_original", "generator_version": "v5-candidate-1", "source_inputs": []},
+  "lineage": {"work_title": "苇火铸场", "characters": ["瞿眠", "宋沅"], "locations": ["苇火铸场", "青苇淬槽"], "core_design": "芯模流转与炉门授权"},
+  "chapters": [
+    {"chapter_number": 1, "title": "淬槽封记", "source_label": "芯模封存", "body": "十五点十分，赤鸣芯模仍锁在青苇淬槽内，封扣编号为苇四。"},
+    {"chapter_number": 2, "title": "转架交接", "source_label": "芯模转架", "body": "交接单写明赤鸣芯模到十五点三十分才由淬槽转入南侧冷架。"},
+    {"chapter_number": 3, "title": "炉门章程", "source_label": "炉门双签", "body": "排渣炉门的常规开启必须由瞿眠与宋沅共同签字，单人签字无效。"},
+    {"chapter_number": 4, "title": "应急授权", "source_label": "应急例外", "body": "红钟警报时仅值炉长瞿眠可独立关停炉门；该例外不授予宋沅单独开启权限。"},
+    {"chapter_number": 5, "title": "风箱读数", "source_label": "风箱压力", "body": "三号苇纹风箱在午班保持四十二格压力，校验针没有越界。"},
+    {"chapter_number": 6, "title": "浇铸收尾", "source_label": "浇铸状态", "body": "青页铸片的本轮浇铸已经完成，收尾牌于十七点翻为绿色。"},
+    {"chapter_number": 7, "title": "灰桶去向", "source_label": "灰桶目的地", "body": "两桶冷灰已离开筛分台，但搬运条没有填写最终送达地点。"},
+    {"chapter_number": 8, "title": "停锤记录", "source_label": "停锤动机", "body": "宋沅在末次敲击后停下铜锤，记录只写了动作，没有写停锤原因。"}
+  ],
+  "memory": [
+    {"memory_type": "dynamic_state", "subject": "赤鸣芯模", "predicate": "location_at_1510", "value": "青苇淬槽内", "source": {"chapter_number": 1, "source_label": "芯模封存"}},
+    {"memory_type": "event_timeline", "subject": "赤鸣芯模", "predicate": "moved_to_south_rack", "value": "十五点三十分", "source": {"chapter_number": 2, "source_label": "芯模转架"}},
+    {"memory_type": "static_canon", "subject": "排渣炉门", "predicate": "opening_authority", "value": "瞿眠与宋沅共同签字", "source": {"chapter_number": 3, "source_label": "炉门双签"}},
+    {"memory_type": "dynamic_state", "subject": "三号苇纹风箱", "predicate": "pressure", "value": "四十二格", "source": {"chapter_number": 5, "source_label": "风箱压力"}},
+    {"memory_type": "event_timeline", "subject": "青页铸片本轮浇铸", "predicate": "status", "value": "已完成", "source": {"chapter_number": 6, "source_label": "浇铸状态"}}
+  ]
+}

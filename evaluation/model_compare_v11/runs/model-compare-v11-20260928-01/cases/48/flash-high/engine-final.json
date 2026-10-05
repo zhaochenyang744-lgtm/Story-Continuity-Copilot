@@ -1,0 +1,65 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "cc-claim-cc14-locked-en",
+      "status": "conflict",
+      "category": "object_state",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "The draft states the archive vault door was locked at 08:00 today, while the cited span states the same door stood unlocked and ajar at that same time.",
+      "evidence": [
+        {
+          "chapter_id": "cc-chapter-cc14-locked-en-V1",
+          "span_id": "cc-span-cc14-locked-en-V1",
+          "excerpt": "At 08:00 today the archive vault door stood unlocked and ajar.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "cc-memory-cc14-locked-en-V1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The claim's anchor 'At 08:00 today' and the identical anchor in the cited span fix one shared moment for one object, the archive vault door, so no differing time or scope separates them. Within that moment the span asserts the door stood unlocked and ajar, the opposite condition of locked; both cannot hold for the same door at the same instant. The memory record cc-memory-cc14-locked-en-V1 stores the same value, confirming the span is the operative state fact rather than stray context.",
+      "evidence_chain": [
+        {
+          "span_id": "cc-span-cc14-locked-en-V1",
+          "role": "prior_state"
+        }
+      ],
+      "suggested_revision": {
+        "before": "the archive vault door was locked",
+        "after": "the archive vault door stood unlocked and ajar"
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "cc-claim-cc14-locked-en",
+      "returned_span_ids": [
+        "cc-span-cc14-locked-en-V1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3049,
+  "output_tokens": 1074,
+  "latency_ms": 4927,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

@@ -1,0 +1,167 @@
+{
+  "run_id": "flash-v2-20260926-01",
+  "ended_at": "2026-09-26T10:06:34.268210+00:00",
+  "executed_case_records": 8,
+  "family_counts": {
+    "g02": 4,
+    "g03": 4
+  },
+  "actual_http_dispatches": 8,
+  "successful_http_responses": 8,
+  "complete_usage_attempts": 8,
+  "usage_unknown_attempts": 0,
+  "known_prompt_tokens_partial_sum": 20844,
+  "known_completion_tokens_partial_sum": 5734,
+  "complete_total_usage_available": true,
+  "prompt_tokens_total": 20844,
+  "completion_tokens_total": 5734,
+  "cost": "unavailable",
+  "failures": [],
+  "all_attempt_metadata": [
+    {
+      "case_id": "g02-three-sentences",
+      "ordinal": 1,
+      "sent_at": "2026-09-26T10:05:59.899589+00:00",
+      "status": 200,
+      "latency_ms": 3766,
+      "usage": {
+        "prompt_tokens": 3156,
+        "completion_tokens": 1052,
+        "total_tokens": 4208
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-long-sentence",
+      "ordinal": 2,
+      "sent_at": "2026-09-26T10:06:05.084610+00:00",
+      "status": 200,
+      "latency_ms": 3961,
+      "usage": {
+        "prompt_tokens": 3233,
+        "completion_tokens": 1097,
+        "total_tokens": 4330
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-body-limit",
+      "ordinal": 3,
+      "sent_at": "2026-09-26T10:06:10.438933+00:00",
+      "status": 200,
+      "latency_ms": 4079,
+      "usage": {
+        "prompt_tokens": 4449,
+        "completion_tokens": 1070,
+        "total_tokens": 5519
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-identical-text",
+      "ordinal": 4,
+      "sent_at": "2026-09-26T10:06:15.905933+00:00",
+      "status": 200,
+      "latency_ms": 4209,
+      "usage": {
+        "prompt_tokens": 2943,
+        "completion_tokens": 1080,
+        "total_tokens": 4023
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g03-short-target",
+      "ordinal": 5,
+      "sent_at": "2026-09-26T10:06:21.236410+00:00",
+      "status": 200,
+      "latency_ms": 2464,
+      "usage": {
+        "prompt_tokens": 1568,
+        "completion_tokens": 382,
+        "total_tokens": 1950
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g03-deep-target",
+      "ordinal": 6,
+      "sent_at": "2026-09-26T10:06:24.829007+00:00",
+      "status": 200,
+      "latency_ms": 2106,
+      "usage": {
+        "prompt_tokens": 1957,
+        "completion_tokens": 312,
+        "total_tokens": 2269
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g03-fact-absent",
+      "ordinal": 7,
+      "sent_at": "2026-09-26T10:06:28.219261+00:00",
+      "status": 200,
+      "latency_ms": 2450,
+      "usage": {
+        "prompt_tokens": 1570,
+        "completion_tokens": 389,
+        "total_tokens": 1959
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g03-other-chapter",
+      "ordinal": 8,
+      "sent_at": "2026-09-26T10:06:31.849492+00:00",
+      "status": 200,
+      "latency_ms": 2342,
+      "usage": {
+        "prompt_tokens": 1968,
+        "completion_tokens": 352,
+        "total_tokens": 2320
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    }
+  ],
+  "open_ended_semantic_review": "pending_controller_independent_review"
+}

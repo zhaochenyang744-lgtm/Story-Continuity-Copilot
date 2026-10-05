@@ -1,0 +1,21 @@
+{
+  "time": "2026-09-27T10:42:02.766599+00:00",
+  "command": [
+    "-B",
+    "-m",
+    "unittest",
+    "backend.tests.test_v6_continuity_contract",
+    "backend.tests.test_v140_real_ai_contract_repairs",
+    "backend.tests.test_provider_narrative_scope",
+    "backend.tests.test_v7_continuity_contract",
+    "evaluation.current_flash_v7.test_offline",
+    "-v"
+  ],
+  "exit_code": 0,
+  "log": "offline-tests-01.log",
+  "source_hashes": {
+    "backend/app/engine.py": "1da59198cf29e775f81ce11be8a43118b0e279bdf5683b366016d112645a7e95",
+    "backend/app/provider.py": "942d772662b5e44cca5de7b40d7a10c25210a8cadaef6faee11808ef07ba6f24",
+    "backend/tests/test_v7_continuity_contract.py": "6817e8ccde3ae424dec07364155f25414a6e8d0ae42d7acc617b22f10c507bad"
+  }
+}

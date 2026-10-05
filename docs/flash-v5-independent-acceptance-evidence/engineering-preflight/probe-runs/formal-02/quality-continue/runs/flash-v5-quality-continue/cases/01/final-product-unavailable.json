@@ -1,0 +1,6 @@
+{
+  "status": "unavailable",
+  "reason": "product_api_exception",
+  "error_type": "AttributeError",
+  "no_persisted_api_product": true
+}

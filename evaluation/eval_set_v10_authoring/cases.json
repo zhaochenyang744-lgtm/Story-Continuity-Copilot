@@ -1,0 +1,781 @@
+{
+  "version": "eval-set-v10-authoring-1",
+  "author": "Codex authoring team; gold-hidden internal editorial review",
+  "corpora": [
+    {
+      "key": "lanpu_cup",
+      "title": "岚蒲杯的赛场边",
+      "language": "zh",
+      "chapters": [
+        {
+          "label": "cup_charter",
+          "title": "赛会章程",
+          "is_rule": true,
+          "body": "岚蒲杯拼图赛自创立起始终实行单一冠军制：每届只允许一支队伍获得冠军，总积分相同的争冠队伍必须继续加赛，直到产生唯一胜者。并列冠军从未被列为可选赛果，主办方也没有临时豁免这项永久赛则的权限。"
+        },
+        {
+          "label": "raised_cards",
+          "title": "领取计分卡",
+          "is_rule": false,
+          "body": "2028年4月9日9点，满枝队向服务台领取了带凸点的计分卡，准备让视力不佳的队员也能独立核对分数。队员庄扉用指尖逐行摸过数字，确认没有漏印，才把这套卡片交给负责记分的同伴。"
+        },
+        {
+          "label": "appeal_counter",
+          "title": "申诉窗口",
+          "is_rule": false,
+          "body": "2028年4月9日14点07分，游鹭队将一份纸质申诉交到裁判席，要求复核边角拼片的计分。这是该队在当天下午决赛中递交的唯一一份申诉；收件员当面盖了时间戳，把副联递还给了领队。"
+        },
+        {
+          "label": "practice_diary",
+          "title": "两周练习记录",
+          "is_rule": false,
+          "body": "满枝队的两周练习记录写着：新教练唐葭从第二周开始带队，该周平均得分比前一周高了九分。两周使用了不同难度的拼图，练习时长也不相同。记录将日期、教练和分数并排列出，没有分析得分变化由什么造成。"
+        },
+        {
+          "label": "final_start",
+          "title": "下午的开局铃",
+          "is_rule": false,
+          "body": "2028年4月9日14点整，裁判敲响开局铃，下午决赛正式开始。当天这场决赛只有这一次开局，没有中止后重新开局的情况。观众安静下来，选手才揭开拼片盘上的布，开始寻找各自图案的边缘。"
+        },
+        {
+          "label": "window_sheet",
+          "title": "西窗旁的赛程表",
+          "is_rule": false,
+          "body": "2028年4月9日14点30分，西窗吹进来的风掀起了赛程表的一角。裁判闻瑾拿来夹板，把那张表固定在窗边架上，又把窗扇合小了一半。排队查赛程的孩子因此终于能看清最后两行安排。"
+        },
+        {
+          "label": "season_poll",
+          "title": "东看台问卷",
+          "is_rule": false,
+          "body": "散场后，工作人员只向留在东看台的十二名观众发了改期问卷，十二人都赞成以后把赛会挪到雨季。其余观众早已从不同出口离场，没有参加这次问卷；工作人员把收回的十二张纸订在同一封面下。"
+        },
+        {
+          "label": "morning_square",
+          "title": "清晨的广场",
+          "is_rule": false,
+          "body": "清晨，广场石板还带着露水，卖豆花的摊主替赛会志愿者留了靠墙的一排座位。孩子们围着尚未揭开的巨幅拼图猜画面内容，有人猜是花园，有人猜是地图；远处搭起的遮阳棚把影子铺到了台阶上。"
+        }
+      ]
+    },
+    {
+      "key": "jiansong_survey",
+      "title": "见松岭的测线",
+      "language": "zh",
+      "chapters": [
+        {
+          "label": "radio_listener",
+          "title": "帐内收听",
+          "is_rule": false,
+          "body": "2028年7月23日11点，段萤刚完整听完测绘队该时刻的返营路线广播。她听清并理解了广播的全部内容，已把其中的路线要求准确记住，随后才摘下耳机，继续整理被风卷乱的等高线草图。"
+        },
+        {
+          "label": "west_reading",
+          "title": "裂隙西缘",
+          "is_rule": false,
+          "body": "2028年7月23日12点，绛沟裂隙西缘恰好对准横跨裂隙的水平标尺上1.2米刻线。标尺已经绷直，读数人沿着刻线落下一枚小石片作临时标记；他与东缘记录员约定使用这同一把标尺的同一零点。"
+        },
+        {
+          "label": "lichen_path",
+          "title": "地衣旁的通行线",
+          "is_rule": false,
+          "body": "2028年7月23日14点，测绘员罗缇用四面小三角旗标出一条绕开地衣群的通行线，并请搬设备的人沿旗外侧走。设备队照着指引通过后，她俯身检查那片灰绿色地衣，发现其表面仍没有新的脚印。"
+        },
+        {
+          "label": "route_broadcast",
+          "title": "午前路线广播",
+          "is_rule": false,
+          "body": "2028年7月23日11点的测绘队返营路线广播全文为：“当天回营改走北脊，不走沟底；所有外出组都按北脊路线返回。”播报员把这段话重复了两遍，再切回联络频道，等待各组报告当前的天气和能见度。"
+        },
+        {
+          "label": "wood_core",
+          "title": "古木木芯记录",
+          "is_rule": false,
+          "body": "孔纪把取得的一段古木木芯摊在黑布上，记录了连续四十二圈年轮的宽窄排列。这段木芯既没有髓心，也不连着树皮。他在记录末尾写下“需与本地已知年份的年轮序列匹配”，但营地里没有那份标准序列。"
+        },
+        {
+          "label": "east_reading",
+          "title": "裂隙东缘",
+          "is_rule": false,
+          "body": "2028年7月23日12点，绛沟裂隙东缘恰好对准7.7米刻线。东缘记录员使用的正是西缘记录中那把绷直的水平标尺，读数沿同一方向、从同一零点起算；他确认刻线后，让同伴扶稳标尺，等两端读数都抄好再收起。"
+        },
+        {
+          "label": "evening_memory",
+          "title": "晚饭时的旧事",
+          "is_rule": false,
+          "body": "晚饭时，裴霁回忆起祖母教自己看云的往事。她小时候总把山顶停住的薄云想成被树枝挂住的布，祖母则带她观察云的移动和形状。说到这里，她笑着用手比出童年小屋屋顶的轮廓，旁边的人停下筷子听她讲。"
+        },
+        {
+          "label": "stream_sketch",
+          "title": "涧口地形草图",
+          "is_rule": false,
+          "body": "地形草图画出一条向北流的溪水，水流到涧口便钻入石壁裂口，从地表无法继续追踪。记录员在裂口后画了问号；图上另标着营地水井的位置，却没有画出井与裂口之间的地下水道，也没有示踪观测记录。"
+        }
+      ]
+    },
+    {
+      "key": "yudeng_square",
+      "title": "榆灯广场的一天",
+      "language": "zh",
+      "chapters": [
+        {
+          "label": "fountain_roster",
+          "title": "喷泉当班安排",
+          "is_rule": false,
+          "body": "2028年11月6日17点，榆灯广场的当班安排确认：关闭喷泉的授权已经且仅发给廖素、严涤两人中的一人，没有第三名候选人，也没有共同授权。负责人把这项当班安排念给接班人员听，请他们按授权决定工作分工。"
+        },
+        {
+          "label": "queue_glance",
+          "title": "午间的叫号屏",
+          "is_rule": false,
+          "body": "2028年11月6日12点，施榕看见叫号屏显示“等待人数零”，便相信等候队列已经空了。她不知道屏幕刚刚失去连接，隔壁休息区其实还有四个人在等；她放下水杯，开始慢慢收拾服务台上的宣传单。"
+        },
+        {
+          "label": "renewal_procedure",
+          "title": "临时换证约定",
+          "is_rule": false,
+          "body": "2028年11月6日15点，临时换证点执行的当天专用约定是：本次乘车证换证须由领证人和当班见证人在交接页上双签，双签齐全才算办理完成。这套约定只用于当天的集中换证活动，次日恢复原有窗口流程。"
+        },
+        {
+          "label": "household_sheet",
+          "title": "住户登记表",
+          "is_rule": false,
+          "body": "住户登记表把程浔和时苒列在同一个门牌地址下，两人的入住日期也相同。填写人提供了各自的姓名和联系方式，却没有填写两人之间的关系；登记员把表放进该楼栋的资料夹，准备下次走访时再补全空栏。"
+        },
+        {
+          "label": "liao_handover",
+          "title": "廖素的交班条",
+          "is_rule": false,
+          "body": "2028年11月6日17点，廖素在交班条上明确写道：“截至本时刻，我没有获得关闭榆灯广场喷泉的本班授权。”她把这句话念了一遍，请接班人确认文字清楚，然后带着当天收集的落叶袋去了清运点。"
+        },
+        {
+          "label": "umbrella_stall",
+          "title": "免费的修伞摊",
+          "is_rule": false,
+          "body": "2028年11月6日16点，陆渺在社区修伞摊替一位老人修好了伞骨，明确表示这次服务免费，没有收取任何费用。老人坚持递来硬币，她笑着推回去，转而请老人帮忙按住容易被风吹走的摊位说明纸。"
+        },
+        {
+          "label": "renewal_handover",
+          "title": "孟畔的交接页",
+          "is_rule": false,
+          "body": "2028年11月6日15点，孟畔已经领到新的乘车证，并在交接页的领证人一栏签了名；同一时刻，该页的当班见证人签名栏仍为空白。办理员确认了证件上的照片，请孟畔先在长凳上坐一会儿，随即接起了电话。"
+        },
+        {
+          "label": "office_notice",
+          "title": "被雨沾湿的通知",
+          "is_rule": false,
+          "body": "2028年11月6日，社区办公室门上贴出“明天下午照常”的通知，落款清楚，但活动名称一栏被雨水洇得无法辨认。办公室原本在第二天下午安排了水彩入门课和庭院读诗会，看到通知的人一时辨不出它说的是哪一场。"
+        }
+      ]
+    },
+    {
+      "key": "varrow_plant_exhibition",
+      "title": "Shade for the Varrow Exhibition",
+      "language": "en",
+      "chapters": [
+        {
+          "label": "grounds_plan",
+          "title": "Two Courtyards",
+          "is_rule": false,
+          "body": "The exhibition plan in force at 11:30 on 3 May places Stone Arcade wholly inside North Yard. North Yard and South Yard are disjoint areas separated by a continuous wall; neither includes any part of the other."
+        },
+        {
+          "label": "visitor_account",
+          "title": "Under the Arcade",
+          "is_rule": false,
+          "body": "Tirza Gell stood beneath Stone Arcade at 11:30 on 3 May, studying a thorny stem through a hand lens. Sunlight reached the pots beside her, but the stone roof shaded her notebook."
+        },
+        {
+          "label": "irrigation_plate",
+          "title": "The Two Handles",
+          "is_rule": true,
+          "body": "The irrigation manifold's fixed plumbing makes its copper handle control only the fern-bed outlet: UP closes that outlet and DOWN opens it. Its brass handle controls a separate cactus line and cannot affect the fern-bed outlet."
+        },
+        {
+          "label": "watering_round",
+          "title": "The Midday Round",
+          "is_rule": false,
+          "body": "During the watering round at 12:10 on 3 May, the manifold's copper handle pointed UP and its brass handle pointed DOWN. Dust covered the little diagram, so the gardener recorded only the handle positions."
+        },
+        {
+          "label": "seedling_awning",
+          "title": "A Strip of Linen",
+          "is_rule": false,
+          "body": "Savin Holt moved the seedling trays beneath the linen awning at 13:00 on 3 May. He left the empty watering cans on the gravel and spread the trays apart so their leaves would not touch."
+        },
+        {
+          "label": "demonstration_cart",
+          "title": "Damp Cloth",
+          "is_rule": false,
+          "body": "Every pot on the demonstration cart was wrapped in damp cloth at 14:00 on 3 May. Pots elsewhere in the exhibition remained bare; the cloth treatment was confined to the cart for that afternoon's demonstration."
+        },
+        {
+          "label": "seed_trial",
+          "title": "Two Trays of Seeds",
+          "is_rule": false,
+          "body": "In the trial assessed on 3 May, each of two trays began with ten seeds. One received fresh water and the other brackish water. The trial sheet reports twelve germinated seeds in total, without separating the results by tray."
+        },
+        {
+          "label": "maranta_recovery",
+          "title": "Leaves at Four",
+          "is_rule": false,
+          "body": "A wilted maranta was moved into shade and watered at 15:00 on 3 May. Its leaves were upright by 16:00. No plant was given shade alone or water alone, and no untreated plant was observed for comparison."
+        }
+      ]
+    },
+    {
+      "key": "glimmer_karst_race",
+      "title": "The Glimmer Karst Descent",
+      "language": "en",
+      "chapters": [
+        {
+          "label": "equipment_table",
+          "title": "The Rescue Rack",
+          "is_rule": false,
+          "body": "The rescue rack held exactly twelve helmets at 09:10 on 12 August. Each helmet was entirely white or entirely orange, with no mixed colors or other colors. The equipment steward counted every helmet on the rack."
+        },
+        {
+          "label": "orange_tally",
+          "title": "A Second Count",
+          "is_rule": false,
+          "body": "Exactly five helmets on the rescue rack were orange at 09:10 on 12 August. An assistant counted that color separately while the steward checked the total; neither person moved any equipment during the count."
+        },
+        {
+          "label": "marshal_decision",
+          "title": "Water in the Passage",
+          "is_rule": false,
+          "body": "At 09:42 on 12 August, marshal Velda Strake alone authorized stopping the race clock. Runner Fennit Ro had reported the flooded passage, but he neither made nor authorized the decision to stop the clock."
+        },
+        {
+          "label": "narrows_crossing",
+          "title": "The Fixed Handrail",
+          "is_rule": false,
+          "body": "Delan Mure crossed Silt Narrows using the fixed handrail at 10:05 on 12 August. His boots slipped on the clay, but he maintained his grip and reached the dry ledge without help from another racer."
+        },
+        {
+          "label": "route_briefing",
+          "title": "The Revised Route",
+          "is_rule": false,
+          "body": "For the race on 12 August, the marked route reached the rest station before Bent Squeeze. Every racer following that route passed the station first; the briefing explicitly described this order after an older shortcut was closed."
+        },
+        {
+          "label": "finish_sheet",
+          "title": "Minutes at the Finish",
+          "is_rule": false,
+          "body": "The finish sheet for 12 August lists Delan Mure and Oswin Kett at 11:06. Both times were rounded down to whole minutes. The original seconds were lost, and the sheet gives no placing or within-minute arrival order."
+        },
+        {
+          "label": "passage_gauge",
+          "title": "Forty-Two Divisions",
+          "is_rule": false,
+          "body": "At 08:50 on 12 August, the Bent Squeeze flow gauge read 42 raw divisions. Its selectable scales were 0.1 or 1 liter per second per division. The observer did not record the selected scale, and the photograph cuts off the selector."
+        },
+        {
+          "label": "event_flow_plan",
+          "title": "The Passage Check",
+          "is_rule": false,
+          "body": "For the 12 August race, Bent Squeeze met the flow criterion for reopening only below 10 liters per second. The event plan required raw gauge readings to be converted using the selected scale before applying that criterion."
+        }
+      ]
+    },
+    {
+      "key": "bellor_ward_bake",
+      "title": "Anise in Bellor Ward",
+      "language": "en",
+      "chapters": [
+        {
+          "label": "starter_bench",
+          "title": "The Bare Rim",
+          "is_rule": false,
+          "body": "The starter jar named Ember stood completely uncovered at 05:55 on 18 November. Its lid lay separately on the flour bench, and nothing covered or sealed the jar's bare rim while bubbles rose through the starter."
+        },
+        {
+          "label": "judging_announcement",
+          "title": "The Final Round",
+          "is_rule": false,
+          "body": "The judges canceled the final tasting round at 14:35 on 18 November and declared that it would not resume. That round was canceled, not ongoing or completed. The separate audience-choice vote was allowed to continue."
+        },
+        {
+          "label": "family_stall",
+          "title": "The Marr Stall",
+          "is_rule": false,
+          "body": "Ysolde Marr was Halden Marr's elder sister. They shared the corner stall at the bake: she prepared the fillings while he shaped the dough, continuing a division of work they had used since childhood."
+        },
+        {
+          "label": "preliminary_score",
+          "title": "The Anise Braid",
+          "is_rule": false,
+          "body": "Nima Dorr's anise braid received eight points for texture in the preliminary round at 08:15 on 18 November. The judge praised its soft center but deducted two points for the crust; flavor was assessed separately."
+        },
+        {
+          "label": "kitchen_timer",
+          "title": "Twists from the Oven",
+          "is_rule": false,
+          "body": "On 18 November, the kitchen timer showed 06:20 when the saffron twists came out of the oven. It had been reset after a power cut, independently of the hall clock. No comparison between the two time displays was recorded."
+        },
+        {
+          "label": "hall_clock",
+          "title": "The Tasting Bell",
+          "is_rule": false,
+          "body": "The hall clock read 06:25 when the tasting bell rang on 18 November. Its reset time was uncertain. Neither the organizer's notes nor the kitchen notes establish how far either clock differed from actual time or from the other."
+        },
+        {
+          "label": "guest_register",
+          "title": "Residents and Guests",
+          "is_rule": false,
+          "body": "The 18 November guest register lists 27 ward residents and 13 visiting guests. Only residents were eligible to cast an audience-choice ballot, with one ballot allowed per resident. The register does not mark who voted."
+        },
+        {
+          "label": "audience_ballots",
+          "title": "Twenty Folded Slips",
+          "is_rule": false,
+          "body": "The audience-choice box contained twenty unsigned ballots at 15:00 on 18 November. Voters had not been checked against the guest register, and the slips carried no information linking them to residents or visiting guests."
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "hv10-001",
+      "corpus": "lanpu_cup",
+      "draft": "岚蒲杯的常设赛则允许总积分相同的队伍不加赛而共同获得当届冠军。",
+      "expected_class": "conflict",
+      "category": "world_rule",
+      "evidence": [
+        "cup_charter"
+      ],
+      "designated_regression": true,
+      "note": "永久赛则明确禁止并列冠军，并要求同分争冠队继续加赛；规则本身是唯一必要反证，无需当届比分或队伍状态。"
+    },
+    {
+      "id": "hv10-002",
+      "corpus": "lanpu_cup",
+      "draft": "2028年4月9日9点，满枝队从服务台领到了带凸点的计分卡。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "raised_cards"
+      ],
+      "designated_regression": false,
+      "note": "原文直接记载该时间、领取队伍及卡片的凸点特征。"
+    },
+    {
+      "id": "hv10-003",
+      "corpus": "lanpu_cup",
+      "draft": "两周练习记录足以证明，满枝队得分上升是新教练唐葭的训练造成的。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "practice_diary"
+      ],
+      "designated_regression": false,
+      "note": "记录只有教练到任与分数上升的同期关系，且练习难度、时长也改变，缺将变化归因于训练的证据；不能反推训练没有作用。"
+    },
+    {
+      "id": "hv10-004",
+      "corpus": "lanpu_cup",
+      "draft": "2028年4月9日下午决赛中，游鹭队递交申诉发生在本场开局之前。",
+      "expected_class": "conflict",
+      "category": "timeline",
+      "evidence": [
+        "appeal_counter",
+        "final_start"
+      ],
+      "designated_regression": false,
+      "note": "同一天下午该场决赛唯一开局为14点，唯一申诉为14点07分。两段分别限定两个事件及时间，合起来确定申诉在开局之后，任一段都不能独自排列两者。"
+    },
+    {
+      "id": "hv10-005",
+      "corpus": "lanpu_cup",
+      "draft": "2028年4月9日14点30分，闻瑾用夹板固定了西窗旁的赛程表。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "window_sheet"
+      ],
+      "designated_regression": false,
+      "note": "原文直接描述闻瑾在该时刻使用夹板固定赛程表的动作。"
+    },
+    {
+      "id": "hv10-006",
+      "corpus": "lanpu_cup",
+      "draft": "东看台收回的问卷证明，当天全部观众都赞成把岚蒲杯挪到雨季举办。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "season_poll"
+      ],
+      "designated_regression": false,
+      "note": "问卷仅覆盖留在东看台的十二人，缺其他观众的意见，不能把这十二人的一致意见推广为全部观众的一致意见。"
+    },
+    {
+      "id": "hv10-007",
+      "corpus": "jiansong_survey",
+      "draft": "2028年7月23日11点，段萤仍不知道测绘队当天应沿北脊返回营地。",
+      "expected_class": "conflict",
+      "category": "character_knowledge",
+      "evidence": [
+        "radio_listener",
+        "route_broadcast"
+      ],
+      "designated_regression": false,
+      "note": "一段确定段萤在同日11点完整听懂并记住该次广播，另一段给出广播的北脊路线内容。缺接收段不能确定她获知，缺内容段不能确定她知道哪条路线。"
+    },
+    {
+      "id": "hv10-008",
+      "corpus": "jiansong_survey",
+      "draft": "2028年7月23日14点，罗缇用四面小三角旗标出了绕开地衣群的通行线。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "lichen_path"
+      ],
+      "designated_regression": false,
+      "note": "原文直接支持时间、实施者、旗的数量及所标通行线。"
+    },
+    {
+      "id": "hv10-009",
+      "corpus": "jiansong_survey",
+      "draft": "古木木芯记录证明，这段木芯最外一圈年轮形成于1728年。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "wood_core"
+      ],
+      "designated_regression": false,
+      "note": "记录提供局部年轮排列，缺与已知年份标准序列的匹配，无法为最外一圈确定1728年这个绝对年份。"
+    },
+    {
+      "id": "hv10-010",
+      "corpus": "jiansong_survey",
+      "draft": "2028年7月23日12点，绛沟裂隙沿水平标尺方向的宽度是7.7米。",
+      "expected_class": "conflict",
+      "category": "attribute",
+      "evidence": [
+        "west_reading",
+        "east_reading"
+      ],
+      "designated_regression": false,
+      "note": "同一时刻、同一绷直水平标尺的西缘和东缘刻度分别为1.2米与7.7米，宽度为两者之差6.5米。两端读数缺一不可，不能把东缘刻度当成宽度。"
+    },
+    {
+      "id": "hv10-011",
+      "corpus": "jiansong_survey",
+      "draft": "晚饭时，裴霁向同伴回忆起祖母曾经教自己看云的往事。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "evening_memory"
+      ],
+      "designated_regression": false,
+      "note": "原文直接记载回忆的讲述者、晚饭情境和祖母教她看云的内容。"
+    },
+    {
+      "id": "hv10-012",
+      "corpus": "jiansong_survey",
+      "draft": "涧口地形草图证明，钻入石壁裂口的溪水最终流进了营地的水井。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "stream_sketch"
+      ],
+      "designated_regression": false,
+      "note": "草图分别标出溪流消失处与水井，缺地下流路或示踪结果，不能确认两者连通，也不能据此否定连通。"
+    },
+    {
+      "id": "hv10-013",
+      "corpus": "yudeng_square",
+      "draft": "2028年11月6日17点，严涤并未被授权关闭榆灯广场的喷泉。",
+      "expected_class": "conflict",
+      "category": "relationship",
+      "evidence": [
+        "fountain_roster",
+        "liao_handover"
+      ],
+      "designated_regression": false,
+      "note": "同日17点授权已且仅发给廖素、严涤中的一人；同一时刻廖素明确未获授权，故获授权者只能是严涤。范围与已授事实、排除廖素两段均为必要前提。"
+    },
+    {
+      "id": "hv10-014",
+      "corpus": "yudeng_square",
+      "draft": "2028年11月6日12点，施榕相信服务台的等候队列已经空了。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "queue_glance"
+      ],
+      "designated_regression": false,
+      "note": "原文明示施榕因屏幕显示而持有这一信念；草稿描述她的相信内容，并未断言真实队列为空。"
+    },
+    {
+      "id": "hv10-015",
+      "corpus": "yudeng_square",
+      "draft": "住户登记表证明，同住一个门牌地址的程浔和时苒是亲兄妹。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "household_sheet"
+      ],
+      "designated_regression": false,
+      "note": "同址和同日入住不能确定亲属关系，登记表的关系栏为空，缺确认兄妹关系的依据。"
+    },
+    {
+      "id": "hv10-016",
+      "corpus": "yudeng_square",
+      "draft": "2028年11月6日15点，孟畔的这次乘车证换证办理已经完成。",
+      "expected_class": "conflict",
+      "category": "event_status",
+      "evidence": [
+        "renewal_procedure",
+        "renewal_handover"
+      ],
+      "designated_regression": false,
+      "note": "该时刻适用的当天约定以交接页双签齐全定义本次办理完成；孟畔页上见证人栏仍空白，故尚未完成。完成条件与实况缺一不可，争点是具体办理结果，非全局规则。"
+    },
+    {
+      "id": "hv10-017",
+      "corpus": "yudeng_square",
+      "draft": "2028年11月6日16点，陆渺替老人修好伞骨后没有收取费用。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "umbrella_stall"
+      ],
+      "designated_regression": false,
+      "note": "原文明确该次服务免费、未收费用，并写出陆渺退回硬币的动作。"
+    },
+    {
+      "id": "hv10-018",
+      "corpus": "yudeng_square",
+      "draft": "门上的通知证明，2028年11月7日下午的水彩入门课将照常举行。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "office_notice"
+      ],
+      "designated_regression": false,
+      "note": "通知只留下次日下午照常的信息，活动名称无法辨认，且同时有两场候选活动，缺将通知对应到水彩课的关键环节。"
+    },
+    {
+      "id": "hv10-019",
+      "corpus": "varrow_plant_exhibition",
+      "draft": "Tirza Gell was standing inside South Yard at 11:30 on 3 May while she studied the thorny stem.",
+      "expected_class": "conflict",
+      "category": "location_action",
+      "evidence": [
+        "grounds_plan",
+        "visitor_account"
+      ],
+      "designated_regression": false,
+      "note": "The account locates Tirza under Stone Arcade at the shared time. The plan puts the entire arcade in North Yard and makes the yards disjoint. Both premises are required to exclude South Yard."
+    },
+    {
+      "id": "hv10-020",
+      "corpus": "varrow_plant_exhibition",
+      "draft": "Savin Holt moved the seedling trays beneath the linen awning at 13:00 on 3 May.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "seedling_awning"
+      ],
+      "designated_regression": false,
+      "note": "The passage directly records Savin performing this action at the specified time."
+    },
+    {
+      "id": "hv10-021",
+      "corpus": "varrow_plant_exhibition",
+      "draft": "The 3 May seed-trial results show a higher germination rate under brackish water than under fresh water.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "seed_trial"
+      ],
+      "designated_regression": false,
+      "note": "Equal initial counts and a combined total do not reveal either tray's germination count. The missing allocation can yield a higher, equal or lower brackish-water rate."
+    },
+    {
+      "id": "hv10-022",
+      "corpus": "varrow_plant_exhibition",
+      "draft": "The irrigation manifold's fern-bed outlet was open during the watering round at 12:10 on 3 May.",
+      "expected_class": "conflict",
+      "category": "object_state",
+      "evidence": [
+        "irrigation_plate",
+        "watering_round"
+      ],
+      "designated_regression": false,
+      "note": "The plate links the copper handle's UP position to closure of this outlet; the round records UP at the target time. Neither source alone supplies both the state mapping and current position."
+    },
+    {
+      "id": "hv10-023",
+      "corpus": "varrow_plant_exhibition",
+      "draft": "Every pot on the demonstration cart was wrapped in damp cloth at 14:00 on 3 May.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "demonstration_cart"
+      ],
+      "designated_regression": false,
+      "note": "The passage explicitly supports the claim's cart-only scope; bare pots elsewhere do not affect it."
+    },
+    {
+      "id": "hv10-024",
+      "corpus": "varrow_plant_exhibition",
+      "draft": "The maranta's recovery on 3 May establishes that shade alone restored its upright leaves.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "maranta_recovery"
+      ],
+      "designated_regression": false,
+      "note": "Shade and watering changed together. No separate treatment or comparison isolates shade as the sole cause of recovery."
+    },
+    {
+      "id": "hv10-025",
+      "corpus": "glimmer_karst_race",
+      "draft": "Fennit Ro authorized stopping the race clock at 09:42 on 12 August after reporting the flooded passage.",
+      "expected_class": "conflict",
+      "category": "relationship",
+      "evidence": [
+        "marshal_decision"
+      ],
+      "designated_regression": true,
+      "note": "The passage assigns sole authorization to Velda and expressly excludes Fennit at the exact target time. Reporting the hazard is distinct from authorizing the stoppage."
+    },
+    {
+      "id": "hv10-026",
+      "corpus": "glimmer_karst_race",
+      "draft": "Delan Mure used the fixed handrail to cross Silt Narrows at 10:05 on 12 August.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "narrows_crossing"
+      ],
+      "designated_regression": false,
+      "note": "His use of the fixed handrail during this crossing is directly narrated."
+    },
+    {
+      "id": "hv10-027",
+      "corpus": "glimmer_karst_race",
+      "draft": "The minute-only finish sheet places Delan Mure's arrival before Oswin Kett's on 12 August.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "finish_sheet"
+      ],
+      "designated_regression": false,
+      "note": "Both recorded times represent the same whole-minute interval. Missing seconds and placings prevent ordering the arrivals; matching rounded times do not establish a tie either."
+    },
+    {
+      "id": "hv10-028",
+      "corpus": "glimmer_karst_race",
+      "draft": "Exactly eight white helmets stood on the rescue rack at 09:10 on 12 August.",
+      "expected_class": "conflict",
+      "category": "attribute",
+      "evidence": [
+        "equipment_table",
+        "orange_tally"
+      ],
+      "designated_regression": true,
+      "note": "At the shared time, twelve helmets comprise only white and orange, with exactly five orange. Both sources are necessary to derive seven white helmets, contradicting eight. The disputed fact is a count."
+    },
+    {
+      "id": "hv10-029",
+      "corpus": "glimmer_karst_race",
+      "draft": "Racers following the marked route on 12 August reached the rest station before Bent Squeeze.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "route_briefing"
+      ],
+      "designated_regression": false,
+      "note": "The briefing directly specifies this order for every racer on the marked route."
+    },
+    {
+      "id": "hv10-030",
+      "corpus": "glimmer_karst_race",
+      "draft": "The 08:50 gauge reading on 12 August establishes that Bent Squeeze met the event's flow criterion for reopening.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "passage_gauge",
+        "event_flow_plan"
+      ],
+      "designated_regression": false,
+      "note": "The unknown selected scale converts 42 divisions to either 4.2 or 42 liters per second. Those values fall on opposite sides of the plan's threshold; the missing scale prevents a decision."
+    },
+    {
+      "id": "hv10-031",
+      "corpus": "bellor_ward_bake",
+      "draft": "The starter jar named Ember was sealed shut at 05:55 on 18 November.",
+      "expected_class": "conflict",
+      "category": "object_state",
+      "evidence": [
+        "starter_bench"
+      ],
+      "designated_regression": false,
+      "note": "At the identical time, the jar is explicitly uncovered and unsealed, with its lid separate. This contradicts the claimed closed state of the named jar."
+    },
+    {
+      "id": "hv10-032",
+      "corpus": "bellor_ward_bake",
+      "draft": "Ysolde Marr was Halden Marr's elder sister.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "family_stall"
+      ],
+      "designated_regression": false,
+      "note": "The passage directly identifies Ysolde as Halden's elder sister."
+    },
+    {
+      "id": "hv10-033",
+      "corpus": "bellor_ward_bake",
+      "draft": "The kitchen and hall entries show that the saffron twists left the oven before the tasting bell rang on 18 November.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "kitchen_timer",
+        "hall_clock"
+      ],
+      "designated_regression": false,
+      "note": "The two displays were reset independently and their relative offset is unknown. Comparing 06:20 with 06:25 cannot order the actual events without a common time reference."
+    },
+    {
+      "id": "hv10-034",
+      "corpus": "bellor_ward_bake",
+      "draft": "The final tasting round was still in progress at 14:35 on 18 November.",
+      "expected_class": "conflict",
+      "category": "event_status",
+      "evidence": [
+        "judging_announcement"
+      ],
+      "designated_regression": false,
+      "note": "The announcement explicitly sets this round's status to canceled, not ongoing, at the same time. Continuation of the separate audience vote does not change the round's status."
+    },
+    {
+      "id": "hv10-035",
+      "corpus": "bellor_ward_bake",
+      "draft": "Nima Dorr's anise braid earned eight texture points in the preliminary round at 08:15 on 18 November.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "preliminary_score"
+      ],
+      "designated_regression": false,
+      "note": "The preliminary score directly gives eight points for texture; it does not require combining the separate flavor assessment."
+    },
+    {
+      "id": "hv10-036",
+      "corpus": "bellor_ward_bake",
+      "draft": "The guest register and twenty unsigned ballots establish that every audience-choice vote on 18 November came from an eligible resident.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "guest_register",
+        "audience_ballots"
+      ],
+      "designated_regression": false,
+      "note": "The register defines the eligible group but records no participation, and the anonymous ballots identify no voters. A link between each ballot and an eligible resident is missing."
+    }
+  ]
+}

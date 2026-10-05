@@ -1,0 +1,43 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "2c4ed543e071c1a6802f8bc9ee4513262a7941792f418a6e0eb87a4695058a99",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-5882fa2e-f178-494a-8fa7-9b5eed874e05-1",
+        "verdict": "no_issue",
+        "basis": "The claim's three components (launch not complete, manifest unsigned, boat at quay at 10点) are all directly supported by span orchard_restoration-5, and the launch-completion rule in span orchard_restoration-4 is consistent with them. No contradiction exists."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3490,
+      "completion_tokens": 115,
+      "total_tokens": 3605,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1186
+    },
+    "status": "complete",
+    "prompt_tokens": 3490,
+    "completion_tokens": 115,
+    "total_tokens": 3605,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,133 @@
+{
+  "schema_version": "v8-blinded-case-review-v1",
+  "case_alias": "case-33",
+  "stage": "first",
+  "reviewer": "reviewer-c",
+  "packet_sha256": "e239649857fa807e9cec05eb2b7c4aa2aa4c8adf9cb2a7acd5c5f0f8a5b8ddd7",
+  "condition_visibility": "hidden",
+  "exposure_note": "仅其他案例01/02曾有工程身份曝光；本例匿名，不声称严格双盲。",
+  "contract_checks": [
+    {
+      "alias": "answer-bd1d9a",
+      "validate": "pass",
+      "basis_length": 285
+    },
+    {
+      "alias": "answer-f8dcfe",
+      "validate": "pass",
+      "basis_length": 259
+    },
+    {
+      "alias": "answer-34a4cf",
+      "validate": "pass",
+      "basis_length": 279
+    }
+  ],
+  "records": [
+    {
+      "case_alias": "case-33",
+      "response_alias": "answer-bd1d9a",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-11",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "正确区分明确标为谎言的角色台词与叙述事实；双胞胎事实及规则与说谎事件相容。",
+          "visible_quote": "not narrator-asserted canon",
+          "evidence_pointer": "answer-bd1d9a.first.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "合法空结果及针对性basis；全部适用层通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "case_alias": "case-33",
+      "response_alias": "answer-f8dcfe",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-11",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "正确区分明确标为谎言的角色台词与叙述事实；双胞胎事实及规则与说谎事件相容。",
+          "visible_quote": "an attributed false utterance, not narrator-asserted canon",
+          "evidence_pointer": "answer-f8dcfe.first.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "合法空结果及针对性basis；全部适用层通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "case_alias": "case-33",
+      "response_alias": "answer-34a4cf",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-11",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "正确区分明确标为谎言的角色台词与叙述事实；双胞胎事实及规则与说谎事件相容。",
+          "visible_quote": "explicitly marks Aster's statement as a lie",
+          "evidence_pointer": "answer-34a4cf.first.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "合法空结果及针对性basis；全部适用层通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "locked_before_followup": true,
+  "provider_calls": 0,
+  "database_connections": 0
+}

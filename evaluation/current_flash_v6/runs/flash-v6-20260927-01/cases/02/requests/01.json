@@ -1,0 +1,228 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-no_conflict",
+  "evaluation_ordinal": 1,
+  "stage": "first",
+  "recorded_before_dispatch_at": "2026-09-27T10:01:36.996522+00:00",
+  "business_request_sha256": "8a617b2a540f9ddd03b7a4802a636252f07886cafab67bdd6eb1a066df5161ee",
+  "bindings": {
+    "draft_id": "fixture-draft-north-glass",
+    "draft_revision": 2
+  },
+  "selected_source_bindings": [
+    {
+      "kind": "target_claim",
+      "id": "claim-run-c150571e-5031-4646-b9d6-1b0b1180c065-1",
+      "text": "At 10点 on the same day, Mira could not open North Glass with her only red badge.",
+      "sha256": "6c53d3948e8b37a2f58e8b782a02d1e9825da87272048f21478001c11262c795"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-north_glass-2",
+      "chapter_id": "fixture-chapter-north_glass-2",
+      "text": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+      "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+      "sha256": "972fd442d22a0b591e45bd2b25c1b6b6b93415ba8ae849a59c086126c4b5953f"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-north_glass-5",
+      "chapter_id": "fixture-chapter-north_glass-5",
+      "text": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+      "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+      "sha256": "96647f150577e4b49d3d55952f5cad904a04ea8153f98392656dd6d2160a7e42"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-north_glass-1",
+      "chapter_id": "fixture-chapter-north_glass-1",
+      "text": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+      "prompt_excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+      "sha256": "3ffa139b8454bcaf39561c67088d52517c40381c6759eb1e1953d9deaa0d2069"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-north_glass-1",
+      "source_span_id": "fixture-span-north_glass-1",
+      "text": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+      "sha256": "3ffa139b8454bcaf39561c67088d52517c40381c6759eb1e1953d9deaa0d2069"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-north_glass-2",
+      "source_span_id": "fixture-span-north_glass-2",
+      "text": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+      "sha256": "972fd442d22a0b591e45bd2b25c1b6b6b93415ba8ae849a59c086126c4b5953f"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-north_glass-3",
+      "source_span_id": "fixture-span-north_glass-3",
+      "text": "The spare blue badge register leaves its 11点 holder field blank.",
+      "sha256": "d9c4d540d579b73b62b9fe376ae6ed363a20cd0e86fa6c9bd8bd839fdfc78e70"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-north_glass-4",
+      "source_span_id": "fixture-span-north_glass-4",
+      "text": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+      "sha256": "34614e77ca0e8552dc27c65e3af054a6be2c362de35234b26b50f1881e04413a"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-north_glass-5",
+      "source_span_id": "fixture-span-north_glass-5",
+      "text": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+      "sha256": "96647f150577e4b49d3d55952f5cad904a04ea8153f98392656dd6d2160a7e42"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-north_glass-6",
+      "source_span_id": "fixture-span-north_glass-6",
+      "text": "The carrier inspection does not record who loosened its valve cap.",
+      "sha256": "e98dbfd2d2b4183fc1827f14106a678da87391b6a3edb120690a92e0e4fc0556"
+    }
+  ],
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-north-glass",
+      "revision": 2,
+      "body": "At 10点 on the same day, Mira could not open North Glass with her only red badge."
+    },
+    "claims": [
+      {
+        "id": "claim-run-c150571e-5031-4646-b9d6-1b0b1180c065-1",
+        "text": "At 10点 on the same day, Mira could not open North Glass with her only red badge.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-north_glass-2",
+            "chapter_id": "fixture-chapter-north_glass-2",
+            "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "label": "badge_roster",
+            "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+          },
+          {
+            "id": "fixture-span-north_glass-5",
+            "chapter_id": "fixture-chapter-north_glass-5",
+            "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "label": "carrier_inspection",
+            "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+          },
+          {
+            "id": "fixture-span-north_glass-1",
+            "chapter_id": "fixture-chapter-north_glass-1",
+            "body": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "label": "badge_rule",
+            "prompt_excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-north_glass-1",
+        "memory_type": "static_canon",
+        "subject": "Mira",
+        "predicate": "rule",
+        "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+        "source_span_id": "fixture-span-north_glass-1"
+      },
+      {
+        "id": "fixture-memory-north_glass-2",
+        "memory_type": "dynamic_state",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+        "source_span_id": "fixture-span-north_glass-2"
+      },
+      {
+        "id": "fixture-memory-north_glass-3",
+        "memory_type": "open_thread",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "The spare blue badge register leaves its 11点 holder field blank.",
+        "source_span_id": "fixture-span-north_glass-3"
+      },
+      {
+        "id": "fixture-memory-north_glass-4",
+        "memory_type": "static_canon",
+        "subject": "pneumatic carrier",
+        "predicate": "rule",
+        "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+        "source_span_id": "fixture-span-north_glass-4"
+      },
+      {
+        "id": "fixture-memory-north_glass-5",
+        "memory_type": "dynamic_state",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+        "source_span_id": "fixture-span-north_glass-5"
+      },
+      {
+        "id": "fixture-memory-north_glass-6",
+        "memory_type": "open_thread",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "The carrier inspection does not record who loosened its valve cap.",
+        "source_span_id": "fixture-span-north_glass-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  }
+}

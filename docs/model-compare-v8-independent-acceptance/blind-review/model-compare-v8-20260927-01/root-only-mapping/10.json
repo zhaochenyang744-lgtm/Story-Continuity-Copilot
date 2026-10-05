@@ -1,0 +1,23 @@
+{
+  "case_ordinal": 10,
+  "created_at": "2026-09-27T11:42:20.471631+00:00",
+  "responses": [
+    {
+      "response_alias": "answer-6f43ef",
+      "condition_id": "pro-high"
+    },
+    {
+      "response_alias": "answer-c7f11d",
+      "condition_id": "flash-high"
+    },
+    {
+      "response_alias": "answer-68a8ec",
+      "condition_id": "flash-off"
+    }
+  ],
+  "trial_finish_hashes": {
+    "flash-off": "a650e26746927de03ecd5afc9230888ea374190678a894add195314ad6fdb3b8",
+    "flash-high": "00fe27ea453bbcf8fb713a8b78f0bf1ed664e118b2c295b2c5031c2a7852b3b1",
+    "pro-high": "e5ea8996db7d2fa4d8df24c550f83c6d65803ab826f4f1ae174558ee3497b5db"
+  }
+}

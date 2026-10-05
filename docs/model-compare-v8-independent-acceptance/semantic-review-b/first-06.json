@@ -1,0 +1,177 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-06",
+  "stage": "first",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:42:26.118924+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-06",
+      "response_alias": "answer-2119c6",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-object_state-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确区分记录不载责任人与否定 Mira 动作；责任归属未知，并真实交付最小 span-6 的不足 Issue。",
+          "visible_quote": "does not itself assert that Mira did not loosen the cap",
+          "evidence_pointer": "responses[response_alias=answer-2119c6].first.parsed_business_json.issues[0].reasoning; business_request.claims[0].text / fixture-span-north_glass-6"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "命题是具名行为责任归属；冻结 gold 为 relationship，实际 object_state 不合格。类别错误不抵扣正确的未知性推理。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[response_alias=answer-2119c6].first.parsed_business_json.issues[0].category; policy.category"
+        }
+      ],
+      "other_dimensions_checked": "三个原文均可解析且与 parsed 一致，claim 精确、basis 长度 311≤400；无不安全建议/操作。已交付两条的 selected span-6/chapter-6/Memory-6 正确，context/insufficient+missing_link，最小集合完整。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "F 正确且不足 Issue 交付完整；仅类别不符合冻结责任归属口径，strict 失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-06",
+      "response_alias": "answer-ba63bf",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-object_state-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确区分记录不载责任人与否定 Mira 动作；责任归属未知，并真实交付最小 span-6 的不足 Issue。",
+          "visible_quote": "the identity of the actor remains unknown",
+          "evidence_pointer": "responses[response_alias=answer-ba63bf].first.parsed_business_json.issues[0].reasoning; business_request.claims[0].text / fixture-span-north_glass-6"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "命题是具名行为责任归属；冻结 gold 为 relationship，实际 event_status 不合格。类别错误不抵扣正确的未知性推理。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "responses[response_alias=answer-ba63bf].first.parsed_business_json.issues[0].category; policy.category"
+        }
+      ],
+      "other_dimensions_checked": "三个原文均可解析且与 parsed 一致，claim 精确、basis 长度 163≤400；无不安全建议/操作。已交付两条的 selected span-6/chapter-6/Memory-6 正确，context/insufficient+missing_link，最小集合完整。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "F 正确且不足 Issue 交付完整；仅类别不符合冻结责任归属口径，strict 失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-06",
+      "response_alias": "answer-0caac1",
+      "stage": "first",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-object_state-insufficient_evidence",
+      "ratings": {
+        "F": "partial",
+        "C": "not_delivered",
+        "E_roles": "not_delivered",
+        "E_set": "not_delivered",
+        "E_binding": "not_delivered",
+        "S": "pass",
+        "D": "fail",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "partial",
+          "reason": "正确识别记录未写责任人、松盖状态与 Mira 动作可以共存，但只处理未发现矛盾，未处理 according to the inspection and cap record 的证据担保缺口；因此 no_issue 不是完整正确的判断。",
+          "visible_quote": "No supplied fact establishes a conflicting actor or time.",
+          "evidence_pointer": "responses[response_alias=answer-0caac1].first.parsed_business_json.claim_verdicts[0].basis; business_request.claims[0].text / fixture-span-north_glass-6"
+        },
+        {
+          "dimension": "D",
+          "verdict": "fail",
+          "reason": "应交付责任归属不足 Issue，实际 issues=[]；类别与引用各层为 not_delivered，不能算 N/A 或用合法 JSON 抵扣。",
+          "visible_quote": "no_issue",
+          "evidence_pointer": "responses[response_alias=answer-0caac1].first.parsed_business_json.issues / claim_verdicts[0].verdict"
+        }
+      ],
+      "other_dimensions_checked": "三个原文均可解析且与 parsed 一致，claim 精确、basis 长度 285≤400；无不安全建议/操作。已交付两条的 selected span-6/chapter-6/Memory-6 正确，context/insufficient+missing_link，最小集合完整。",
+      "attribution_tags": [
+        "observed_semantic_error",
+        "delivery_missing"
+      ],
+      "overall_reason": "承认未记录 actor，却把与事实相容当作归属记录有充分依据；F 仅 partial，且遗漏不足 Issue。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "summary": {
+    "responses": 3,
+    "F_pass": 2,
+    "F_partial": 1,
+    "strict_pass": 0,
+    "category_failures": 2,
+    "delivery_missing": 1
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/06.json",
+      "sha256_observed": "63f3abd9c9da495a4fd99207564b6f4295b1fa7f9d5de40f98fafb45b12e0e8a",
+      "sha256_after_review": "63f3abd9c9da495a4fd99207564b6f4295b1fa7f9d5de40f98fafb45b12e0e8a"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    }
+  ],
+  "read_hashes_stable": true
+}

@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v6-20260927-01",
+  "ordinal": 9,
+  "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+  "family": "comparison",
+  "started_at": "2026-09-27T10:02:00.442492+00:00",
+  "case_input_sha256": "af088b2cecd4944540aa13a9aeb38a6289e7ff0ff5b03ec7b0d7568f111914e4",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

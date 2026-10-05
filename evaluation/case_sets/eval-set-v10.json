@@ -1,0 +1,1368 @@
+{
+  "schema_version": "scc-eval-case-set-v10",
+  "status": "held_out_user_authored",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "formal_run_executed": false,
+  "provider_calls": 0,
+  "authoring_source_sha256": "4544153ae785f0315703f0cbbfa2b4c87170aff18c58dbe3afbe0cb57b549955",
+  "cases": [
+    {
+      "case_id": "v10-hv10-001",
+      "authored_id": "hv10-001",
+      "corpus_key": "lanpu_cup",
+      "seed_key": "lanpu_cup",
+      "target_draft": "岚蒲杯的常设赛则允许总积分相同的队伍不加赛而共同获得当届冠军。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "world_rule",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "cup_charter",
+          "body_sha256": "6e297a3b1a6b1896c4223d99691a3378addbd3ed75ce35d5ab237ac20d1a357b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lanpu_cup",
+          "chapter_number": 1,
+          "source_label": "cup_charter",
+          "body_sha256": "6e297a3b1a6b1896c4223d99691a3378addbd3ed75ce35d5ab237ac20d1a357b"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "conflict",
+        "category_mismatch_regression"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 1,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-002",
+      "authored_id": "hv10-002",
+      "corpus_key": "lanpu_cup",
+      "seed_key": "lanpu_cup",
+      "target_draft": "2028年4月9日9点，满枝队从服务台领到了带凸点的计分卡。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 2,
+          "source_label": "raised_cards",
+          "body_sha256": "e1b5ed4184b37f5a3780717cb74cf8078b931078c3a9f7844c8346945e23c4b8"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lanpu_cup",
+          "chapter_number": 2,
+          "source_label": "raised_cards",
+          "body_sha256": "e1b5ed4184b37f5a3780717cb74cf8078b931078c3a9f7844c8346945e23c4b8"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-003",
+      "authored_id": "hv10-003",
+      "corpus_key": "lanpu_cup",
+      "seed_key": "lanpu_cup",
+      "target_draft": "两周练习记录足以证明，满枝队得分上升是新教练唐葭的训练造成的。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "practice_diary",
+          "body_sha256": "496c8853c04b4eb44d5ff6d7312afffd3c74a52da22f6cc3ec1d77f68b86ea6b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lanpu_cup",
+          "chapter_number": 4,
+          "source_label": "practice_diary",
+          "body_sha256": "496c8853c04b4eb44d5ff6d7312afffd3c74a52da22f6cc3ec1d77f68b86ea6b"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-004",
+      "authored_id": "hv10-004",
+      "corpus_key": "lanpu_cup",
+      "seed_key": "lanpu_cup",
+      "target_draft": "2028年4月9日下午决赛中，游鹭队递交申诉发生在本场开局之前。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "timeline",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "appeal_counter",
+          "body_sha256": "7f8bf2f1fda0e8e1923c1503e71d7b193352e7ad19bdd4d56be15697e6424dab"
+        },
+        {
+          "chapter_number": 5,
+          "source_label": "final_start",
+          "body_sha256": "e8b2c7d997fda2801d05f6867825c9eecdd8fd1a4e209ccc18e99efb974b2ae8"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lanpu_cup",
+          "chapter_number": 3,
+          "source_label": "appeal_counter",
+          "body_sha256": "7f8bf2f1fda0e8e1923c1503e71d7b193352e7ad19bdd4d56be15697e6424dab"
+        },
+        {
+          "corpus_key": "lanpu_cup",
+          "chapter_number": 5,
+          "source_label": "final_start",
+          "body_sha256": "e8b2c7d997fda2801d05f6867825c9eecdd8fd1a4e209ccc18e99efb974b2ae8"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-005",
+      "authored_id": "hv10-005",
+      "corpus_key": "lanpu_cup",
+      "seed_key": "lanpu_cup",
+      "target_draft": "2028年4月9日14点30分，闻瑾用夹板固定了西窗旁的赛程表。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "window_sheet",
+          "body_sha256": "9e7955e57c13c541b5e25c05b5506de10d4c5e9e7a58ff4d91a9690b81275da4"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lanpu_cup",
+          "chapter_number": 6,
+          "source_label": "window_sheet",
+          "body_sha256": "9e7955e57c13c541b5e25c05b5506de10d4c5e9e7a58ff4d91a9690b81275da4"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-006",
+      "authored_id": "hv10-006",
+      "corpus_key": "lanpu_cup",
+      "seed_key": "lanpu_cup",
+      "target_draft": "东看台收回的问卷证明，当天全部观众都赞成把岚蒲杯挪到雨季举办。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "season_poll",
+          "body_sha256": "00cdd3cf878e9df7c5bb2bc0687df28c72f162fa90e1166d8acc12ed65791b40"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "lanpu_cup",
+          "chapter_number": 7,
+          "source_label": "season_poll",
+          "body_sha256": "00cdd3cf878e9df7c5bb2bc0687df28c72f162fa90e1166d8acc12ed65791b40"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-007",
+      "authored_id": "hv10-007",
+      "corpus_key": "jiansong_survey",
+      "seed_key": "jiansong_survey",
+      "target_draft": "2028年7月23日11点，段萤仍不知道测绘队当天应沿北脊返回营地。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "character_knowledge",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "radio_listener",
+          "body_sha256": "3fd882e3d07a605c252a16be166253e40c370bf531495b3e202912f92430f421"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "route_broadcast",
+          "body_sha256": "616117bba341d3c973efda2bbe8e77c373da028aae3b527501d1c938a282ef4a"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "jiansong_survey",
+          "chapter_number": 1,
+          "source_label": "radio_listener",
+          "body_sha256": "3fd882e3d07a605c252a16be166253e40c370bf531495b3e202912f92430f421"
+        },
+        {
+          "corpus_key": "jiansong_survey",
+          "chapter_number": 4,
+          "source_label": "route_broadcast",
+          "body_sha256": "616117bba341d3c973efda2bbe8e77c373da028aae3b527501d1c938a282ef4a"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-008",
+      "authored_id": "hv10-008",
+      "corpus_key": "jiansong_survey",
+      "seed_key": "jiansong_survey",
+      "target_draft": "2028年7月23日14点，罗缇用四面小三角旗标出了绕开地衣群的通行线。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "lichen_path",
+          "body_sha256": "23a03a675986c32f77f0c17d5522695e3be269b493b0c645aad062edddd8f1bd"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "jiansong_survey",
+          "chapter_number": 3,
+          "source_label": "lichen_path",
+          "body_sha256": "23a03a675986c32f77f0c17d5522695e3be269b493b0c645aad062edddd8f1bd"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-009",
+      "authored_id": "hv10-009",
+      "corpus_key": "jiansong_survey",
+      "seed_key": "jiansong_survey",
+      "target_draft": "古木木芯记录证明，这段木芯最外一圈年轮形成于1728年。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "wood_core",
+          "body_sha256": "43622a225aad854bf2a693e282c89b6a6b82f7e80a83cda88f2025374ed993d5"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "jiansong_survey",
+          "chapter_number": 5,
+          "source_label": "wood_core",
+          "body_sha256": "43622a225aad854bf2a693e282c89b6a6b82f7e80a83cda88f2025374ed993d5"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-010",
+      "authored_id": "hv10-010",
+      "corpus_key": "jiansong_survey",
+      "seed_key": "jiansong_survey",
+      "target_draft": "2028年7月23日12点，绛沟裂隙沿水平标尺方向的宽度是7.7米。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "attribute",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 2,
+          "source_label": "west_reading",
+          "body_sha256": "01862e3d287a3157be2e95e8771a5460c5d2681e7c2a8660e67dac8444d63285"
+        },
+        {
+          "chapter_number": 6,
+          "source_label": "east_reading",
+          "body_sha256": "32caacbb183c06dfedebb8cf44f72de189849075445daecff8cd1fbc29c85dda"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "jiansong_survey",
+          "chapter_number": 2,
+          "source_label": "west_reading",
+          "body_sha256": "01862e3d287a3157be2e95e8771a5460c5d2681e7c2a8660e67dac8444d63285"
+        },
+        {
+          "corpus_key": "jiansong_survey",
+          "chapter_number": 6,
+          "source_label": "east_reading",
+          "body_sha256": "32caacbb183c06dfedebb8cf44f72de189849075445daecff8cd1fbc29c85dda"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-011",
+      "authored_id": "hv10-011",
+      "corpus_key": "jiansong_survey",
+      "seed_key": "jiansong_survey",
+      "target_draft": "晚饭时，裴霁向同伴回忆起祖母曾经教自己看云的往事。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "evening_memory",
+          "body_sha256": "02a30dc4a74252a43f59bfb051d0c0a0d9bdbc136ab55931a431c0455a3564c4"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "jiansong_survey",
+          "chapter_number": 7,
+          "source_label": "evening_memory",
+          "body_sha256": "02a30dc4a74252a43f59bfb051d0c0a0d9bdbc136ab55931a431c0455a3564c4"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-012",
+      "authored_id": "hv10-012",
+      "corpus_key": "jiansong_survey",
+      "seed_key": "jiansong_survey",
+      "target_draft": "涧口地形草图证明，钻入石壁裂口的溪水最终流进了营地的水井。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "stream_sketch",
+          "body_sha256": "bc1a13b967b04e7030a54fd52c945a4887dd2eb312de3a86ebb56ed86ab19dba"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "jiansong_survey",
+          "chapter_number": 8,
+          "source_label": "stream_sketch",
+          "body_sha256": "bc1a13b967b04e7030a54fd52c945a4887dd2eb312de3a86ebb56ed86ab19dba"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-013",
+      "authored_id": "hv10-013",
+      "corpus_key": "yudeng_square",
+      "seed_key": "yudeng_square",
+      "target_draft": "2028年11月6日17点，严涤并未被授权关闭榆灯广场的喷泉。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "relationship",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "fountain_roster",
+          "body_sha256": "757c9aba9ea22aee5931b9b0240f15eb309c762d0ed357ffd7bb0211092d0cd0"
+        },
+        {
+          "chapter_number": 5,
+          "source_label": "liao_handover",
+          "body_sha256": "dad0a91981cc9eaba3259c9752be292050b7a0e78e37adf939cc34f16c8710d5"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "yudeng_square",
+          "chapter_number": 1,
+          "source_label": "fountain_roster",
+          "body_sha256": "757c9aba9ea22aee5931b9b0240f15eb309c762d0ed357ffd7bb0211092d0cd0"
+        },
+        {
+          "corpus_key": "yudeng_square",
+          "chapter_number": 5,
+          "source_label": "liao_handover",
+          "body_sha256": "dad0a91981cc9eaba3259c9752be292050b7a0e78e37adf939cc34f16c8710d5"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-014",
+      "authored_id": "hv10-014",
+      "corpus_key": "yudeng_square",
+      "seed_key": "yudeng_square",
+      "target_draft": "2028年11月6日12点，施榕相信服务台的等候队列已经空了。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 2,
+          "source_label": "queue_glance",
+          "body_sha256": "6d9fe75fb36056c1a52d34ecacbc03900139955d9fc17eb801270f16d96390a5"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "yudeng_square",
+          "chapter_number": 2,
+          "source_label": "queue_glance",
+          "body_sha256": "6d9fe75fb36056c1a52d34ecacbc03900139955d9fc17eb801270f16d96390a5"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-015",
+      "authored_id": "hv10-015",
+      "corpus_key": "yudeng_square",
+      "seed_key": "yudeng_square",
+      "target_draft": "住户登记表证明，同住一个门牌地址的程浔和时苒是亲兄妹。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "household_sheet",
+          "body_sha256": "d12b9606503296b12f701983039003a3eed1ca4b5439d746d3e130e66c3c15cf"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "yudeng_square",
+          "chapter_number": 4,
+          "source_label": "household_sheet",
+          "body_sha256": "d12b9606503296b12f701983039003a3eed1ca4b5439d746d3e130e66c3c15cf"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-016",
+      "authored_id": "hv10-016",
+      "corpus_key": "yudeng_square",
+      "seed_key": "yudeng_square",
+      "target_draft": "2028年11月6日15点，孟畔的这次乘车证换证办理已经完成。",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "event_status",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "renewal_procedure",
+          "body_sha256": "ddc5ead84c259dff6bb53333f8e6ae4d11a88f91a6f0a32da77d768c7f546aa1"
+        },
+        {
+          "chapter_number": 7,
+          "source_label": "renewal_handover",
+          "body_sha256": "735494d393aae9ad7dab5b6cc9fccaee01e83ef512c0ac07755c805c9fea6c46"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "yudeng_square",
+          "chapter_number": 3,
+          "source_label": "renewal_procedure",
+          "body_sha256": "ddc5ead84c259dff6bb53333f8e6ae4d11a88f91a6f0a32da77d768c7f546aa1"
+        },
+        {
+          "corpus_key": "yudeng_square",
+          "chapter_number": 7,
+          "source_label": "renewal_handover",
+          "body_sha256": "735494d393aae9ad7dab5b6cc9fccaee01e83ef512c0ac07755c805c9fea6c46"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-017",
+      "authored_id": "hv10-017",
+      "corpus_key": "yudeng_square",
+      "seed_key": "yudeng_square",
+      "target_draft": "2028年11月6日16点，陆渺替老人修好伞骨后没有收取费用。",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "umbrella_stall",
+          "body_sha256": "4a8e9e925379a2c651c305e6c93c2a2d9c7dc82c25f29a38bcd319a65526a809"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "yudeng_square",
+          "chapter_number": 6,
+          "source_label": "umbrella_stall",
+          "body_sha256": "4a8e9e925379a2c651c305e6c93c2a2d9c7dc82c25f29a38bcd319a65526a809"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-018",
+      "authored_id": "hv10-018",
+      "corpus_key": "yudeng_square",
+      "seed_key": "yudeng_square",
+      "target_draft": "门上的通知证明，2028年11月7日下午的水彩入门课将照常举行。",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "office_notice",
+          "body_sha256": "44dfbd9ed8823d74f07d53ee1f71ad90b38b1fd6744b010906f1bc5a13427f21"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "yudeng_square",
+          "chapter_number": 8,
+          "source_label": "office_notice",
+          "body_sha256": "44dfbd9ed8823d74f07d53ee1f71ad90b38b1fd6744b010906f1bc5a13427f21"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-019",
+      "authored_id": "hv10-019",
+      "corpus_key": "varrow_plant_exhibition",
+      "seed_key": "varrow_plant_exhibition",
+      "target_draft": "Tirza Gell was standing inside South Yard at 11:30 on 3 May while she studied the thorny stem.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "location_action",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "grounds_plan",
+          "body_sha256": "145798a6924cb770997bca743a931d7cdf337bc5c1f8f2acb51343ab3ce76645"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "visitor_account",
+          "body_sha256": "a5da47e429f95d77ac7d04e33388141d8c1abb440c78d2ad25c98c0ac66802a2"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "varrow_plant_exhibition",
+          "chapter_number": 1,
+          "source_label": "grounds_plan",
+          "body_sha256": "145798a6924cb770997bca743a931d7cdf337bc5c1f8f2acb51343ab3ce76645"
+        },
+        {
+          "corpus_key": "varrow_plant_exhibition",
+          "chapter_number": 2,
+          "source_label": "visitor_account",
+          "body_sha256": "a5da47e429f95d77ac7d04e33388141d8c1abb440c78d2ad25c98c0ac66802a2"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-020",
+      "authored_id": "hv10-020",
+      "corpus_key": "varrow_plant_exhibition",
+      "seed_key": "varrow_plant_exhibition",
+      "target_draft": "Savin Holt moved the seedling trays beneath the linen awning at 13:00 on 3 May.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "seedling_awning",
+          "body_sha256": "aee729bddd223cbbf75ab749c7ca07ec894c33ce36eea06c342edc0d0175990b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "varrow_plant_exhibition",
+          "chapter_number": 5,
+          "source_label": "seedling_awning",
+          "body_sha256": "aee729bddd223cbbf75ab749c7ca07ec894c33ce36eea06c342edc0d0175990b"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-021",
+      "authored_id": "hv10-021",
+      "corpus_key": "varrow_plant_exhibition",
+      "seed_key": "varrow_plant_exhibition",
+      "target_draft": "The 3 May seed-trial results show a higher germination rate under brackish water than under fresh water.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "seed_trial",
+          "body_sha256": "cf05f4c4dbfd2d6bbd14dda40c3f7487c401b58efb9de70b44fff26576930176"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "varrow_plant_exhibition",
+          "chapter_number": 7,
+          "source_label": "seed_trial",
+          "body_sha256": "cf05f4c4dbfd2d6bbd14dda40c3f7487c401b58efb9de70b44fff26576930176"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-022",
+      "authored_id": "hv10-022",
+      "corpus_key": "varrow_plant_exhibition",
+      "seed_key": "varrow_plant_exhibition",
+      "target_draft": "The irrigation manifold's fern-bed outlet was open during the watering round at 12:10 on 3 May.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "object_state",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "irrigation_plate",
+          "body_sha256": "0cb5c12b69d9be854c1c891accc60804e83c427ace43eeafa8d0f0be2f2087df"
+        },
+        {
+          "chapter_number": 4,
+          "source_label": "watering_round",
+          "body_sha256": "c45a956ade4e9b91d48de42d9e911729d70ad69b05d679e9bfcdcf0256b22089"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "varrow_plant_exhibition",
+          "chapter_number": 3,
+          "source_label": "irrigation_plate",
+          "body_sha256": "0cb5c12b69d9be854c1c891accc60804e83c427ace43eeafa8d0f0be2f2087df"
+        },
+        {
+          "corpus_key": "varrow_plant_exhibition",
+          "chapter_number": 4,
+          "source_label": "watering_round",
+          "body_sha256": "c45a956ade4e9b91d48de42d9e911729d70ad69b05d679e9bfcdcf0256b22089"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-023",
+      "authored_id": "hv10-023",
+      "corpus_key": "varrow_plant_exhibition",
+      "seed_key": "varrow_plant_exhibition",
+      "target_draft": "Every pot on the demonstration cart was wrapped in damp cloth at 14:00 on 3 May.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "demonstration_cart",
+          "body_sha256": "d16352914ddffc48b9176688463cd57f85090a2976c137d771902342915871b7"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "varrow_plant_exhibition",
+          "chapter_number": 6,
+          "source_label": "demonstration_cart",
+          "body_sha256": "d16352914ddffc48b9176688463cd57f85090a2976c137d771902342915871b7"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-024",
+      "authored_id": "hv10-024",
+      "corpus_key": "varrow_plant_exhibition",
+      "seed_key": "varrow_plant_exhibition",
+      "target_draft": "The maranta's recovery on 3 May establishes that shade alone restored its upright leaves.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 8,
+          "source_label": "maranta_recovery",
+          "body_sha256": "8e009cebc1716691b8478d7b8ae8b33ddf277c65adea818dd96010d5b3fb7795"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "varrow_plant_exhibition",
+          "chapter_number": 8,
+          "source_label": "maranta_recovery",
+          "body_sha256": "8e009cebc1716691b8478d7b8ae8b33ddf277c65adea818dd96010d5b3fb7795"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-025",
+      "authored_id": "hv10-025",
+      "corpus_key": "glimmer_karst_race",
+      "seed_key": "glimmer_karst_race",
+      "target_draft": "Fennit Ro authorized stopping the race clock at 09:42 on 12 August after reporting the flooded passage.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "relationship",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "marshal_decision",
+          "body_sha256": "ee49225c9ad869fc4d53863c2e93e906bc9bd2d6c98621fd75aa890d09521f43"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "glimmer_karst_race",
+          "chapter_number": 3,
+          "source_label": "marshal_decision",
+          "body_sha256": "ee49225c9ad869fc4d53863c2e93e906bc9bd2d6c98621fd75aa890d09521f43"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "conflict",
+        "category_mismatch_regression"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 1,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-026",
+      "authored_id": "hv10-026",
+      "corpus_key": "glimmer_karst_race",
+      "seed_key": "glimmer_karst_race",
+      "target_draft": "Delan Mure used the fixed handrail to cross Silt Narrows at 10:05 on 12 August.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "narrows_crossing",
+          "body_sha256": "3ba5ea7203dba36939050d8ba0a649b4810f13ceb02449a213185cfea4d6bdfe"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "glimmer_karst_race",
+          "chapter_number": 4,
+          "source_label": "narrows_crossing",
+          "body_sha256": "3ba5ea7203dba36939050d8ba0a649b4810f13ceb02449a213185cfea4d6bdfe"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-027",
+      "authored_id": "hv10-027",
+      "corpus_key": "glimmer_karst_race",
+      "seed_key": "glimmer_karst_race",
+      "target_draft": "The minute-only finish sheet places Delan Mure's arrival before Oswin Kett's on 12 August.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 6,
+          "source_label": "finish_sheet",
+          "body_sha256": "eb6feb1ef95ea4c7380163d01cabc2bc6b98248e6b9339bed219374b24d9ca9b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "glimmer_karst_race",
+          "chapter_number": 6,
+          "source_label": "finish_sheet",
+          "body_sha256": "eb6feb1ef95ea4c7380163d01cabc2bc6b98248e6b9339bed219374b24d9ca9b"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-028",
+      "authored_id": "hv10-028",
+      "corpus_key": "glimmer_karst_race",
+      "seed_key": "glimmer_karst_race",
+      "target_draft": "Exactly eight white helmets stood on the rescue rack at 09:10 on 12 August.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "attribute",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "equipment_table",
+          "body_sha256": "3ceec4f43bac7bda21e54cb59970e12b01f07dc5518feee537c143807bacbef3"
+        },
+        {
+          "chapter_number": 2,
+          "source_label": "orange_tally",
+          "body_sha256": "1aa5a6db76c6a49848b4a009f29c6b842f18738bdf16fba960c8853cfe7fdc3b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "glimmer_karst_race",
+          "chapter_number": 1,
+          "source_label": "equipment_table",
+          "body_sha256": "3ceec4f43bac7bda21e54cb59970e12b01f07dc5518feee537c143807bacbef3"
+        },
+        {
+          "corpus_key": "glimmer_karst_race",
+          "chapter_number": 2,
+          "source_label": "orange_tally",
+          "body_sha256": "1aa5a6db76c6a49848b4a009f29c6b842f18738bdf16fba960c8853cfe7fdc3b"
+        }
+      ],
+      "requires_multiple_direct_evidence": true,
+      "challenge_tags": [
+        "conflict",
+        "requires_multiple_direct_evidence",
+        "category_mismatch_regression"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 2,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-029",
+      "authored_id": "hv10-029",
+      "corpus_key": "glimmer_karst_race",
+      "seed_key": "glimmer_karst_race",
+      "target_draft": "Racers following the marked route on 12 August reached the rest station before Bent Squeeze.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "route_briefing",
+          "body_sha256": "0312887526f13486c755dfad71be996fd905377be416d1e0eecb13616e3e9f48"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "glimmer_karst_race",
+          "chapter_number": 5,
+          "source_label": "route_briefing",
+          "body_sha256": "0312887526f13486c755dfad71be996fd905377be416d1e0eecb13616e3e9f48"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-030",
+      "authored_id": "hv10-030",
+      "corpus_key": "glimmer_karst_race",
+      "seed_key": "glimmer_karst_race",
+      "target_draft": "The 08:50 gauge reading on 12 August establishes that Bent Squeeze met the event's flow criterion for reopening.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "passage_gauge",
+          "body_sha256": "aa04feb7aaf41751459aebec9145aa1d6b19fc9e11532e86638784878928887e"
+        },
+        {
+          "chapter_number": 8,
+          "source_label": "event_flow_plan",
+          "body_sha256": "b7b961f91968a140a38b27921115a73bc6ed3cae8d6ae3c2e15c36035c3b517b"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "glimmer_karst_race",
+          "chapter_number": 7,
+          "source_label": "passage_gauge",
+          "body_sha256": "aa04feb7aaf41751459aebec9145aa1d6b19fc9e11532e86638784878928887e"
+        },
+        {
+          "corpus_key": "glimmer_karst_race",
+          "chapter_number": 8,
+          "source_label": "event_flow_plan",
+          "body_sha256": "b7b961f91968a140a38b27921115a73bc6ed3cae8d6ae3c2e15c36035c3b517b"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-031",
+      "authored_id": "hv10-031",
+      "corpus_key": "bellor_ward_bake",
+      "seed_key": "bellor_ward_bake",
+      "target_draft": "The starter jar named Ember was sealed shut at 05:55 on 18 November.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "object_state",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 1,
+          "source_label": "starter_bench",
+          "body_sha256": "834ad45d83bd394b9068439caca4f21ac5cc5c57f87f875174b97ef94b7d9104"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bellor_ward_bake",
+          "chapter_number": 1,
+          "source_label": "starter_bench",
+          "body_sha256": "834ad45d83bd394b9068439caca4f21ac5cc5c57f87f875174b97ef94b7d9104"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 1,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-032",
+      "authored_id": "hv10-032",
+      "corpus_key": "bellor_ward_bake",
+      "seed_key": "bellor_ward_bake",
+      "target_draft": "Ysolde Marr was Halden Marr's elder sister.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 3,
+          "source_label": "family_stall",
+          "body_sha256": "80ed06ae267166a66509e5f4f26fcd46e79afa3322015fb9381be93ce94246b6"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bellor_ward_bake",
+          "chapter_number": 3,
+          "source_label": "family_stall",
+          "body_sha256": "80ed06ae267166a66509e5f4f26fcd46e79afa3322015fb9381be93ce94246b6"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-033",
+      "authored_id": "hv10-033",
+      "corpus_key": "bellor_ward_bake",
+      "seed_key": "bellor_ward_bake",
+      "target_draft": "The kitchen and hall entries show that the saffron twists left the oven before the tasting bell rang on 18 November.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 5,
+          "source_label": "kitchen_timer",
+          "body_sha256": "85a58c802755d589f8c80b62f0e272a9e5dc47ba2e32f92a16c91eeaee1f07f3"
+        },
+        {
+          "chapter_number": 6,
+          "source_label": "hall_clock",
+          "body_sha256": "8ed84868ca50a7ae6eb71a25f9136e9e8993edb108a5f9ad4296d2dcb67d38f4"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bellor_ward_bake",
+          "chapter_number": 5,
+          "source_label": "kitchen_timer",
+          "body_sha256": "85a58c802755d589f8c80b62f0e272a9e5dc47ba2e32f92a16c91eeaee1f07f3"
+        },
+        {
+          "corpus_key": "bellor_ward_bake",
+          "chapter_number": 6,
+          "source_label": "hall_clock",
+          "body_sha256": "8ed84868ca50a7ae6eb71a25f9136e9e8993edb108a5f9ad4296d2dcb67d38f4"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-034",
+      "authored_id": "hv10-034",
+      "corpus_key": "bellor_ward_bake",
+      "seed_key": "bellor_ward_bake",
+      "target_draft": "The final tasting round was still in progress at 14:35 on 18 November.",
+      "target_claim_ordinal": 1,
+      "expected_class": "conflict",
+      "expected_category": "event_status",
+      "expected_severity": "high",
+      "expected_evidence": [
+        {
+          "chapter_number": 2,
+          "source_label": "judging_announcement",
+          "body_sha256": "1a2a8e698033d9396ffea1cadf15aa8b7bcc5857248aa22d8c4f2d3f95c59209"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bellor_ward_bake",
+          "chapter_number": 2,
+          "source_label": "judging_announcement",
+          "body_sha256": "1a2a8e698033d9396ffea1cadf15aa8b7bcc5857248aa22d8c4f2d3f95c59209"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 1,
+        "requires_full_expected_evidence": true
+      }
+    },
+    {
+      "case_id": "v10-hv10-035",
+      "authored_id": "hv10-035",
+      "corpus_key": "bellor_ward_bake",
+      "seed_key": "bellor_ward_bake",
+      "target_draft": "Nima Dorr's anise braid earned eight texture points in the preliminary round at 08:15 on 18 November.",
+      "target_claim_ordinal": 1,
+      "expected_class": "no_conflict",
+      "expected_category": null,
+      "expected_severity": null,
+      "expected_evidence": [
+        {
+          "chapter_number": 4,
+          "source_label": "preliminary_score",
+          "body_sha256": "90f9afac99d096f79186f7a49132d5ed9b46ead99b319ccc2dce3f4a87849b72"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bellor_ward_bake",
+          "chapter_number": 4,
+          "source_label": "preliminary_score",
+          "body_sha256": "90f9afac99d096f79186f7a49132d5ed9b46ead99b319ccc2dce3f4a87849b72"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "no_conflict"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    },
+    {
+      "case_id": "v10-hv10-036",
+      "authored_id": "hv10-036",
+      "corpus_key": "bellor_ward_bake",
+      "seed_key": "bellor_ward_bake",
+      "target_draft": "The guest register and twenty unsigned ballots establish that every audience-choice vote on 18 November came from an eligible resident.",
+      "target_claim_ordinal": 1,
+      "expected_class": "insufficient_evidence",
+      "expected_category": null,
+      "expected_severity": "low",
+      "expected_evidence": [
+        {
+          "chapter_number": 7,
+          "source_label": "guest_register",
+          "body_sha256": "90b71059c633060b792c91ce3143496135f146b769175233a267911f9ff990fb"
+        },
+        {
+          "chapter_number": 8,
+          "source_label": "audience_ballots",
+          "body_sha256": "22229b7fabf7c56e430a08cb95e6e3515f062f9f0456d6418d47fdc07b0a7fbe"
+        }
+      ],
+      "source_lineage": [
+        {
+          "corpus_key": "bellor_ward_bake",
+          "chapter_number": 7,
+          "source_label": "guest_register",
+          "body_sha256": "90b71059c633060b792c91ce3143496135f146b769175233a267911f9ff990fb"
+        },
+        {
+          "corpus_key": "bellor_ward_bake",
+          "chapter_number": 8,
+          "source_label": "audience_ballots",
+          "body_sha256": "22229b7fabf7c56e430a08cb95e6e3515f062f9f0456d6418d47fdc07b0a7fbe"
+        }
+      ],
+      "requires_multiple_direct_evidence": false,
+      "challenge_tags": [
+        "insufficient_evidence"
+      ],
+      "rubric": {
+        "minimum_direct_evidence": 0,
+        "requires_full_expected_evidence": false
+      }
+    }
+  ]
+}

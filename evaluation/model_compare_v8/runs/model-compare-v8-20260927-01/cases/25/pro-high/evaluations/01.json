@@ -1,0 +1,98 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "1df905f61323dcbba6aa243ab99557062e6a880b38beeb74e4b9132a785283fc",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-fcb3682e-1e06-46bd-9210-2860ea72fd61-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "attribute",
+        "severity": "high",
+        "explanation": "At the same 14:00 timestamp, lens Q8 is identified as the installed east aperture lens, which evidence describes as clear glass, not amber glass.",
+        "reasoning": "The cited index span establishes that lens Q8 is the installed east aperture lens at 14:00 today. The cited east aperture span at the same time states that lens is clear glass, not amber glass. These two premises jointly contradict the draft claim that lens Q8 is amber glass at that time.",
+        "temporal_basis": {
+          "claim_anchor": "At 14:00 today",
+          "evidence_anchor": "At 14:00 today",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_lens-1",
+            "span_id": "fixture-span-v6_lens-1",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_lens-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-v6_lens-2",
+            "span_id": "fixture-span-v6_lens-2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_lens-2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_lens-1",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-v6_lens-2",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 14:00 today, lens Q8 is amber glass.",
+          "after": "At 14:00 today, lens Q8 is clear glass."
+        },
+        "available_actions": [
+          "apply_suggestion"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-fcb3682e-1e06-46bd-9210-2860ea72fd61-1",
+        "verdict": "reviewed_issue",
+        "basis": "The same 14:00 evidence identifies the lens as clear glass, not amber, directly contradicting the current claim."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3349,
+      "completion_tokens": 4720,
+      "total_tokens": 8069,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 4105
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 917
+    },
+    "status": "complete",
+    "prompt_tokens": 3349,
+    "completion_tokens": 4720,
+    "total_tokens": 8069,
+    "reasoning_tokens": 4105,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

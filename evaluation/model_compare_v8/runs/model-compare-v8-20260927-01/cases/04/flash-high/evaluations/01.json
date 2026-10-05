@@ -1,0 +1,101 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "b5290bcc192b203b7ced9ff0392fead1f8d3d6f29fd9b09713928cd16158d672",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+        "verdict": "reviewed_issue",
+        "basis": "At 10点 on the same day the cited canon rule requires both four bars and a locked valve cap for dispatch readiness; the same-minute evidence records the cap loose and not locked, so the claim's readiness cannot hold at that time. Confirmed conflict at object_state level."
+      }
+    ],
+    "issues": [
+      {
+        "claim_span_id": "claim-run-6d9637d2-92db-4a92-ab6d-396619cbd94c-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "medium",
+        "explanation": "At 10点 the carrier's valve cap was loose and not locked, so under the dispatch-readiness rule the carrier was not ready for dispatch at that minute.",
+        "reasoning": "The static_canon rule (fixture-memory-north_glass-4) defines readiness for dispatch as requiring both a four-bar gauge reading and a locked valve cap; it is subject-neutral, timeless, and its subject 'pneumatic carrier' is the same named object as in the claim. The dynamic_state span (fixture-memory-north_glass-5) carries the identical time anchor 'At 10点 on the same day' and states that the valve cap remained loose and not locked throughout that minute. Gauge at four bars satisfies only one of the two required conditions, so both texts describe the carrier at the same time, same object, same scope (readiness for dispatch), where the evidence asserts the necessary condition was unmet and the claim asserts readiness held. The two cannot coexist; this is a confirmed conflict, not a state change, because no later transition is supplied and the time is explicitly the same.",
+        "temporal_basis": {
+          "claim_anchor": "At 10点 on the same day",
+          "evidence_anchor": "At 10点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-5",
+            "span_id": "fixture-span-north_glass-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-5"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-north_glass-4",
+            "span_id": "fixture-span-north_glass-4",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-4"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-5",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "fixture-span-north_glass-4",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+          "after": "At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch: its gauge read four bars, but its valve cap remained loose and not locked."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3493,
+      "completion_tokens": 1620,
+      "total_tokens": 5113,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 933
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1317
+    },
+    "status": "complete",
+    "prompt_tokens": 3493,
+    "completion_tokens": 1620,
+    "total_tokens": 5113,
+    "reasoning_tokens": 933,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

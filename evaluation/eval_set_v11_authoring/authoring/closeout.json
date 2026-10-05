@@ -1,0 +1,69 @@
+{
+  "version": "eval-set-v11-authoring-1",
+  "cases_sha256": "6b7f4f4dee490855321329a7dec3899b42820de67741b7d7c88f7566750bcc61",
+  "corpora": 6,
+  "chapters": 48,
+  "cases": 36,
+  "class_counts": {
+    "conflict": 12,
+    "no_conflict": 12,
+    "insufficient_evidence": 12
+  },
+  "category_counts": {
+    "world_rule": 1,
+    "attribute": 2,
+    "relationship": 2,
+    "character_knowledge": 1,
+    "timeline": 1,
+    "location_action": 1,
+    "object_state": 2,
+    "event_status": 2
+  },
+  "designated_regression": [
+    "hv11-001",
+    "hv11-007",
+    "hv11-022"
+  ],
+  "statistics": {
+    "zh": {
+      "works": 3,
+      "chapters": 24,
+      "body_characters": 2062,
+      "mean_body_characters": 85.92,
+      "max_body_characters": 96,
+      "cases": 18
+    },
+    "en": {
+      "works": 3,
+      "chapters": 24,
+      "body_characters": 5599,
+      "mean_body_characters": 233.29,
+      "max_body_characters": 262,
+      "cases": 18
+    }
+  },
+  "format_check": {
+    "command": ".\\.venv\\Scripts\\python.exe -B evaluation\\eval_set_v11_authoring\\check.py",
+    "exit_code": 0,
+    "errors": 0,
+    "warnings": 0,
+    "output": "authoring/format-check.txt"
+  },
+  "semantic_review": "Author self-review, not independent or blind; see authoring/content-review.json",
+  "shared_name_or_item_links_verified": 41,
+  "source_files_equal_json_source": true,
+  "source_hashes": {
+    "huangting_recording.md": "fa8003d39a8624f881e7ba9ad70ebfaf7c153c2709bffa890a3563767abba654",
+    "jinyu_credit_market.md": "217d02a45ffae9b9e4adb9247fb4ec375500ac50f3a02fcccc762dd9682ccbbe",
+    "luliao_last_collection.md": "8d599daf38916bb6f1a264efb4bb24c16efd86e35ac894bb58c3252d636b482c",
+    "mosswick_costume_rental.md": "ef1e37a224cba7c3f63151fda4792dd987b39d5ab8756d372c565f5e6e764d0e",
+    "sablefen_translation_residency.md": "8d1b4ea2db89f77b0abbc0845b364958f4ed5a3ba3a0e5766d8eaac00e04ba2e",
+    "ternhollow_model_railway.md": "033368c73a0b1e24ba60fe2016475cbc10c712958e61e620de939e76f0af47ae"
+  },
+  "previous_sets_and_product_code_unchanged": true,
+  "provider_calls": 0,
+  "model_evaluation_runs": 0,
+  "formal_gate_runs": 0,
+  "scoring_code_modified": false,
+  "limitations": "No empirical verification of Memory extraction, retrieval, model nature/category prediction, or gate score. New full-source/title format requires a compatible downstream consumer."
+}

@@ -1,0 +1,11 @@
+{
+  "captured_at": "2026-09-27T10:36:22.335248+00:00",
+  "head": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "head_returncode": 0,
+  "status_returncode": 0,
+  "status_lines": 2582,
+  "stderr_bytes": 0,
+  "status_sha256": "dd556b8a9ad26d9e65ca01d79df41fcc85e20a371eba0740b61604a14375a562",
+  "capture_boundary": "After core snapshot acknowledgement; root may begin authorized edits. Pre-edit engine/provider/test bytes are independently pinned in core-receipt.",
+  "initial_attempt_limitation": "Initial ordinary git status exited0 but long-path warnings and tool-output truncation prevented a complete inventory. Captured full stdout/stderr here using per-command -c core.longpaths=true; no Git config edited."
+}

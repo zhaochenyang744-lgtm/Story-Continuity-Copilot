@@ -1,0 +1,8 @@
+{
+  "evaluation/eval_set_v9_authoring/cases.json": "fbf2b50ae8d16e35584b3e237924831ba8c5b6449717d8124ff3af3551f20524",
+  "evaluation/eval_set_v9_authoring/cases.sha256": "6f96d0395c2be439760a1a33ac4c10feca377294b4be968cd03bd30450e59543",
+  "evaluation/eval_set_v10_authoring/cases.json": "4544153ae785f0315703f0cbbfa2b4c87170aff18c58dbe3afbe0cb57b549955",
+  "evaluation/eval_set_v10_authoring/cases.sha256": "ad0597714332b71ace866605fba547a3b5485c85b4a452b9401cb294c1b35a06",
+  "evaluation/eval_set_v10_authoring/check.py": "5e5ac8b9d2140331bfa56981b6d5cc19b76519d045611ea31cd9fd42a2130995",
+  "backend/app/engine.py": "dc589618d87e4336b6b10aede2fe730c80f9b8f918e17d98db3e4a275b05f178"
+}

@@ -1,0 +1,604 @@
+{
+  "created_at": "2026-09-27T10:42:09.385748+00:00",
+  "scope": "Offline capacity estimate against 34 V6 first replies, not new model results; every hypothetical repair retains full original issues and ledger. No product module import, engine execute, Provider or database. Pure AST-extracted diagnostic/schema/formatter/clock definitions only.",
+  "source_hashes": {
+    "backend/app/engine.py": "1da59198cf29e775f81ce11be8a43118b0e279bdf5683b366016d112645a7e95",
+    "backend/app/provider.py": "942d772662b5e44cca5de7b40d7a10c25210a8cadaef6faee11808ef07ba6f24",
+    "backend/app/brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc"
+  },
+  "source_hashes_unchanged_during_check": true,
+  "summary": {
+    "first_count": 34,
+    "complete_hypothetical_repair_count": 34,
+    "maximum_first": {
+      "ordinal": 17,
+      "claim_count": 1,
+      "new_first_budget_units": 4433,
+      "complete_repair_budget_units": 4997,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_invalid"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    "maximum_repair": {
+      "ordinal": 24,
+      "claim_count": 1,
+      "new_first_budget_units": 4345,
+      "complete_repair_budget_units": 5469,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "temporal_overlap_unproven"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    "over_limit_ordinals": [],
+    "all_g02_and_other_noncontinuity_prompt_ast_equal": true,
+    "brief_citations_bytes_equal": true
+  },
+  "budget_rows": [
+    {
+      "ordinal": 1,
+      "claim_count": 1,
+      "new_first_budget_units": 4383,
+      "complete_repair_budget_units": 5436,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "temporal_overlap_unproven"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 2,
+      "claim_count": 1,
+      "new_first_budget_units": 4378,
+      "complete_repair_budget_units": 4822,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 3,
+      "claim_count": 1,
+      "new_first_budget_units": 4370,
+      "complete_repair_budget_units": 4967,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_issue_mismatch"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 4,
+      "claim_count": 1,
+      "new_first_budget_units": 4388,
+      "complete_repair_budget_units": 5362,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 5,
+      "claim_count": 1,
+      "new_first_budget_units": 4397,
+      "complete_repair_budget_units": 4988,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_invalid"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 6,
+      "claim_count": 1,
+      "new_first_budget_units": 4370,
+      "complete_repair_budget_units": 4821,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 7,
+      "claim_count": 1,
+      "new_first_budget_units": 4233,
+      "complete_repair_budget_units": 5100,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 8,
+      "claim_count": 1,
+      "new_first_budget_units": 4241,
+      "complete_repair_budget_units": 4688,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 9,
+      "claim_count": 1,
+      "new_first_budget_units": 4227,
+      "complete_repair_budget_units": 4819,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_issue_mismatch"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 10,
+      "claim_count": 1,
+      "new_first_budget_units": 4223,
+      "complete_repair_budget_units": 5129,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 11,
+      "claim_count": 1,
+      "new_first_budget_units": 4215,
+      "complete_repair_budget_units": 4645,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 12,
+      "claim_count": 1,
+      "new_first_budget_units": 4215,
+      "complete_repair_budget_units": 4758,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_invalid"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 13,
+      "claim_count": 1,
+      "new_first_budget_units": 4346,
+      "complete_repair_budget_units": 5187,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 14,
+      "claim_count": 1,
+      "new_first_budget_units": 4376,
+      "complete_repair_budget_units": 4816,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 15,
+      "claim_count": 1,
+      "new_first_budget_units": 4366,
+      "complete_repair_budget_units": 5187,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 16,
+      "claim_count": 1,
+      "new_first_budget_units": 4391,
+      "complete_repair_budget_units": 5297,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 17,
+      "claim_count": 1,
+      "new_first_budget_units": 4433,
+      "complete_repair_budget_units": 4997,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_invalid"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 18,
+      "claim_count": 1,
+      "new_first_budget_units": 4395,
+      "complete_repair_budget_units": 5005,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_issue_mismatch"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 19,
+      "claim_count": 1,
+      "new_first_budget_units": 4334,
+      "complete_repair_budget_units": 5276,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 20,
+      "claim_count": 1,
+      "new_first_budget_units": 4348,
+      "complete_repair_budget_units": 4892,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_invalid"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 21,
+      "claim_count": 1,
+      "new_first_budget_units": 4344,
+      "complete_repair_budget_units": 4872,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_invalid"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 22,
+      "claim_count": 1,
+      "new_first_budget_units": 4336,
+      "complete_repair_budget_units": 5294,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 23,
+      "claim_count": 1,
+      "new_first_budget_units": 4340,
+      "complete_repair_budget_units": 4768,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 24,
+      "claim_count": 1,
+      "new_first_budget_units": 4345,
+      "complete_repair_budget_units": 5469,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "temporal_overlap_unproven"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 25,
+      "claim_count": 1,
+      "new_first_budget_units": 4137,
+      "complete_repair_budget_units": 4987,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 26,
+      "claim_count": 1,
+      "new_first_budget_units": 3978,
+      "complete_repair_budget_units": 4860,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 27,
+      "claim_count": 1,
+      "new_first_budget_units": 3989,
+      "complete_repair_budget_units": 4522,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_invalid"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 28,
+      "claim_count": 1,
+      "new_first_budget_units": 3902,
+      "complete_repair_budget_units": 4484,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_issue_mismatch"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 29,
+      "claim_count": 1,
+      "new_first_budget_units": 3884,
+      "complete_repair_budget_units": 4325,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 30,
+      "claim_count": 1,
+      "new_first_budget_units": 3914,
+      "complete_repair_budget_units": 4354,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 31,
+      "claim_count": 1,
+      "new_first_budget_units": 3903,
+      "complete_repair_budget_units": 4639,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 32,
+      "claim_count": 1,
+      "new_first_budget_units": 3915,
+      "complete_repair_budget_units": 4506,
+      "repair_would_be_pre_diagnosed": true,
+      "diagnostic_codes": [
+        [
+          "claim_verdicts_issue_mismatch"
+        ]
+      ],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 33,
+      "claim_count": 1,
+      "new_first_budget_units": 3907,
+      "complete_repair_budget_units": 4339,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    },
+    {
+      "ordinal": 34,
+      "claim_count": 1,
+      "new_first_budget_units": 3949,
+      "complete_repair_budget_units": 4363,
+      "repair_would_be_pre_diagnosed": false,
+      "diagnostic_codes": [],
+      "repair_budget_exceeded": false,
+      "all_original_issues_and_verdicts_preserved": true
+    }
+  ],
+  "ast_comparisons": [
+    {
+      "file": "backend/app/engine.py",
+      "node": "WritingAnalysisEngine",
+      "baseline_ast_sha256": "0b0422492eba7c2bd3e64868e654b2b07b036dfbfc45bf11df984aba8cf80beb",
+      "current_ast_sha256": "0b0422492eba7c2bd3e64868e654b2b07b036dfbfc45bf11df984aba8cf80beb",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "node": "estimate_prompt_budget_units",
+      "baseline_ast_sha256": "0db306e5f30bb28fefbdcdf982f8da359eb6d4f45ea65d322c779ff8bfc0b95c",
+      "current_ast_sha256": "0db306e5f30bb28fefbdcdf982f8da359eb6d4f45ea65d322c779ff8bfc0b95c",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "node": "memory_initialization_prompt",
+      "baseline_ast_sha256": "74006aadf4360748f8c55b3e7d0e89df10aeb2cb4dfe32d3efe6e6adb7df5d25",
+      "current_ast_sha256": "74006aadf4360748f8c55b3e7d0e89df10aeb2cb4dfe32d3efe6e6adb7df5d25",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "node": "memory_delta_prompt",
+      "baseline_ast_sha256": "567a5d84f02792bc9d7a6a561dbd0cd758a5ede5fdd824e5a2b96dbc8d66dca6",
+      "current_ast_sha256": "567a5d84f02792bc9d7a6a561dbd0cd758a5ede5fdd824e5a2b96dbc8d66dca6",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "node": "context_brief_prompt",
+      "baseline_ast_sha256": "42455055077ca01fc78d6543e6a66bb3b3fdadb1ed89df1e37c04a54ac99a36c",
+      "current_ast_sha256": "42455055077ca01fc78d6543e6a66bb3b3fdadb1ed89df1e37c04a54ac99a36c",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "node": "plan_alignment_prompt",
+      "baseline_ast_sha256": "2a63860a218729c4c4cf3a09ec5e1ae10e7c125f01ce4ec9dd0e4a55e8b3afff",
+      "current_ast_sha256": "2a63860a218729c4c4cf3a09ec5e1ae10e7c125f01ce4ec9dd0e4a55e8b3afff",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "node": "change_impact_prompt",
+      "baseline_ast_sha256": "edadc3bb418b077347ed39c7490e91685ed9415fa2bcd5a9cbe367bf19a17ca5",
+      "current_ast_sha256": "edadc3bb418b077347ed39c7490e91685ed9415fa2bcd5a9cbe367bf19a17ca5",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "node": "story_qa_prompt",
+      "baseline_ast_sha256": "9cf612719f20b52c22be5a8b38a47c580ee63539c245e5e95a177a76929b4d2a",
+      "current_ast_sha256": "9cf612719f20b52c22be5a8b38a47c580ee63539c245e5e95a177a76929b4d2a",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "node": "foreshadow_scan_prompt",
+      "baseline_ast_sha256": "edafdf21f47ad56dc71f1a141a76f9ffd0a348ec96c376d2ea28a86545df11cc",
+      "current_ast_sha256": "edafdf21f47ad56dc71f1a141a76f9ffd0a348ec96c376d2ea28a86545df11cc",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "node": "revision_plan_prompt",
+      "baseline_ast_sha256": "bf82ffdc2737d7c51e22932e9e6b819c50dfe33dbb0ec34ce0d1dfade0e103db",
+      "current_ast_sha256": "bf82ffdc2737d7c51e22932e9e6b819c50dfe33dbb0ec34ce0d1dfade0e103db",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "node": "author_material_comparison_prompt",
+      "baseline_ast_sha256": "8434ad268d1611b095f294396c01037375ea3b2db32bf57c19053eb8095b6d36",
+      "current_ast_sha256": "8434ad268d1611b095f294396c01037375ea3b2db32bf57c19053eb8095b6d36",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "node": "request_prompt_and_budget",
+      "baseline_ast_sha256": "36ce8ebfef8f9ba2837102ece1279766bc511ec456a2b959fac84702ddeac838",
+      "current_ast_sha256": "36ce8ebfef8f9ba2837102ece1279766bc511ec456a2b959fac84702ddeac838",
+      "equal": true
+    }
+  ],
+  "clock_readonly_probes": [
+    {
+      "input": "At 14:00 today",
+      "minutes": [
+        840
+      ]
+    },
+    {
+      "input": "At 14:01 today",
+      "minutes": [
+        841
+      ]
+    },
+    {
+      "input": "At 24:00 today",
+      "minutes": null
+    },
+    {
+      "input": "At 10:60 today",
+      "minutes": null
+    },
+    {
+      "input": "At 10:0 today",
+      "minutes": null
+    },
+    {
+      "input": "At 10:000 today",
+      "minutes": null
+    },
+    {
+      "input": "At 10:00:00 today",
+      "minutes": null
+    },
+    {
+      "input": "At 00:30pm today",
+      "minutes": null
+    },
+    {
+      "input": "At x14:00 today",
+      "minutes": [
+        840
+      ]
+    },
+    {
+      "input": "At 10:00pmx today",
+      "minutes": [
+        600
+      ]
+    }
+  ],
+  "overlap_readonly_probes": [
+    {
+      "a": "At 14:00 today",
+      "b": "At 14:00 today",
+      "overlap": true
+    },
+    {
+      "a": "At 14:00 today",
+      "b": "At 14:01 today",
+      "overlap": false
+    },
+    {
+      "a": "At 14:00 today",
+      "b": "At 14:00 yesterday",
+      "overlap": false
+    },
+    {
+      "a": "At 10:00 today",
+      "b": "At 10:00 today",
+      "overlap": true
+    },
+    {
+      "a": "At 14:00 today",
+      "b": "At 2:00 pm today",
+      "overlap": true
+    }
+  ],
+  "temporal_rule_alignment": "Both _repair_diagnostics and validate now call _confirmed_temporal_failure; it requires sufficient contradicts evidence, eliminating the prior any-context versus contradicts-only temporal split. Binding/schema validation still intentionally differs.",
+  "review_note": "Lexical malformed-token boundary remains: x14:00 and 10:00pmx are parsed as valid 24h clocks because bare HH:MM regex lacks word/suffix boundaries. These are isolated pure-helper probes, not product or model runs."
+}

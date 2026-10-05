@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "f7fb79227578d2b2279ad197c942dfc39f9ddd33ca9c581e1af0083ec3890c18",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc2-actor-blank-zh",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "值班簿只记下铁锁于子夜被打开，未记开锁之人；草稿却把开锁者坐实为林岫，缺少可支撑这一归因的凭据。",
+        "reasoning": "被引证据说明值班簿确实记载东仓铁锁于子夜被打开，并明确\"未写明开锁之人\"。草稿声称\"据值班簿记载，林岫打开了东仓的铁锁\"，把开锁之人归给林岫，但所引材料恰恰缺少这一归因环节：既无署名、也无目击或推理依据把林岫与开锁行为连起来。缺失的是记录到林岫身份的链条环节，因此判断只能停在\"铁锁被打开\"这一已知事实，林岫是否为开锁者仍属未知，不构成对草稿的直接反驳。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc2-actor-blank-zh-Z1",
+            "span_id": "cc-span-cc2-actor-blank-zh-Z1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc2-actor-blank-zh-Z1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc2-actor-blank-zh-Z1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc2-actor-blank-zh",
+        "verdict": "insufficient_evidence",
+        "basis": "证据仅记铁锁于子夜被打开且\"未写明开锁之人\"，草稿把该行为归给林岫所需的身份凭据缺失，归因无据但也不被证伪。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3076,
+      "completion_tokens": 1222,
+      "total_tokens": 4298,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 774
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 772
+    },
+    "status": "complete",
+    "prompt_tokens": 3076,
+    "completion_tokens": 1222,
+    "total_tokens": 4298,
+    "reasoning_tokens": 774,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

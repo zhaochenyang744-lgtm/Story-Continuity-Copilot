@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-timeline-conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:47:38.404038+00:00",
+  "latency_ms": 2492,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3348,
+      "completion_tokens": 504,
+      "total_tokens": 3852
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-beeb72c1-a17a-43db-90d0-9c8fcdb4c8d6-1\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"timeline\",\"severity\":\"high\",\"explanation\":\"The draft says the harbor signal gate first closed before it first opened at 09点, but the cited record states it first opened at 09点 and had never closed before then.\",\"reasoning\":\"The cited span gives the same subject (harbor signal gate) and the same explicit time (09点 on the same day). It directly states the gate first opened at 09点 and had never closed before then, which cannot coexist with the draft's claim that it first closed before it first opened at that same time. The later 10点 closing is compatible with the record but does not remove the contradiction at 09点.\",\"temporal_basis\":{\"claim_anchor\":\"At 09点 on the same day\",\"evidence_anchor\":\"At 09点 on the same day\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-harbor_signal-1\",\"span_id\":\"fixture-span-harbor_signal-1\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-harbor_signal-1\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-harbor_signal-1\",\"role\":\"current_context\"}],\"suggested_revision\":{\"before\":\"At 09点 on the same day, the harbor signal gate first closed before it first opened.\",\"after\":\"At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.\"},\"available_actions\":[\"edit\",\"apply_suggestion\",\"keep_intentional\",\"false_positive\"]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-beeb72c1-a17a-43db-90d0-9c8fcdb4c8d6-1\",\"verdict\":\"reviewed_issue\",\"basis\":\"The draft's 09点 ordering (closed before opened) directly contradicts the cited record's 09点 statement that the gate first opened and had never closed before then.\"}]}",
+  "message_content_sha256": "44de16172b0f3ac17845fb15d49ae9d728cbef721f1a0490631d89ab9b60d24e",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-09-26T12:43:25.773673+00:00",
+  "old_preserved": 134,
+  "v4_preserved": 10,
+  "comparison_v1_preserved": 21,
+  "comparison_v2_preserved": 21,
+  "snapshot_files": 29,
+  "checks": [
+    {
+      "log": "v1-freeze.txt",
+      "returncode": 0
+    },
+    {
+      "log": "v2-freeze.txt",
+      "returncode": 0
+    },
+    {
+      "log": "v3-freeze.txt",
+      "returncode": 0
+    },
+    {
+      "log": "v3-tests.txt",
+      "returncode": 0
+    }
+  ],
+  "changed": [],
+  "historical_changed": [],
+  "guard_entrypoints": 2,
+  "new_api_runs": 0,
+  "real_provider_calls": 0,
+  "manifest_sha256": "0afd9630d22aecc44d1fbc8a955787d12d1286b31ec85a3e0985dff132da8baf"
+}

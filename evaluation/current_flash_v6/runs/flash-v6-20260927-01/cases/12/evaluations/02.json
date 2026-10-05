@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "703475d37a424f6b10858c72abd3e7e4fd63c3e434253844deb89de8f5ae5047",
+  "finished_at": "2026-09-27T10:02:16.722014+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-585be45c-4bb9-42b0-a219-bc2485423d0c-1",
+        "verdict": "insufficient_evidence",
+        "basis": "草稿声称“根据记录”Vela 在13点将电报交给 Sera，但所引证据仅说明13点 Sera 打开电报并得知密码，且明确记录未指明递送者；没有任何被引证据确认递送人身份或递送行为，因此该归属缺乏来源依据，属于可审查的证据缺口。"
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3607,
+    "output_tokens": 129,
+    "observed_response_input_tokens": 3607,
+    "observed_response_output_tokens": 129
+  }
+}

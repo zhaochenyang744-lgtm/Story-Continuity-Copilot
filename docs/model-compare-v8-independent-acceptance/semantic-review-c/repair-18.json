@@ -1,0 +1,110 @@
+{
+  "schema_version": "v8-blinded-case-review-v1",
+  "case_alias": "case-18",
+  "stage": "repair",
+  "reviewer": "reviewer-c",
+  "packet_sha256": "81e0ba3026dfeac8a53b17713e3b3991044c31e750e10b0ffdee3f97e9fd27d0",
+  "condition_visibility": "hidden",
+  "exposure_note": "仅01/02曾有工程身份曝光；本例匿名，不称严格双盲。",
+  "not_attempted_response_aliases": [
+    "answer-e12146"
+  ],
+  "contract_checks": [
+    {
+      "alias": "answer-c69253",
+      "validate": "pass",
+      "basis": 58,
+      "reasoning": 113
+    },
+    {
+      "alias": "answer-adde01",
+      "validate": "pass",
+      "basis": 165,
+      "reasoning": 408
+    }
+  ],
+  "records": [
+    {
+      "case_alias": "case-18",
+      "stage": "repair",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "response_alias": "answer-c69253",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "仍保留Tala责任未知，现补齐不足Issue。",
+          "visible_quote": "判断在此停止，原因仍未知。",
+          "evidence_pointer": "answer-c69253.repair.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "reason": "event_status不符冻结relationship。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "answer-c69253.repair.parsed_business_json.issues[0].category"
+        }
+      ],
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "S/D恢复；来源6和缺口链正确，类别仍阻止strict通过。"
+    },
+    {
+      "case_alias": "case-18",
+      "stage": "repair",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "response_alias": "answer-adde01",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "findings": [
+        {
+          "dimension": "F",
+          "reason": "没有把日志欠证改判反事实；原因保持未知。",
+          "visible_quote": "the causal fact remains unknown.",
+          "evidence_pointer": "answer-adde01.repair.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "ledger改为insufficient_evidence，保留正确relationship及来源6，结构恢复后strict通过。"
+    }
+  ],
+  "special_observations": [
+    "c69253转中文只作语言遵循观察，按root统一口径不新增S硬门槛。"
+  ],
+  "locked_before_final": true,
+  "provider_calls": 0,
+  "database_connections": 0
+}

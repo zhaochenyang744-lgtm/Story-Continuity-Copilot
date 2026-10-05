@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1268,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "dd4c397c-cf58-471e-b6eb-7c8f3e64d9ee",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-514a8ccc-4b70-4a65-94d8-959d43bfa68b-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim's 19点 move from Gate Four on the west pier to the east pier is consistent with the 18点 prior state at Gate Four and the static canon that Gate Four is on the west pier; the later explicit transition makes both states compatible.\"}]}",
+  "visible_content_sha256": "eebf44e47d14f6ddb737b50f32ff405eefe1bb9c873e5e12bbfc1405dfe8f7c6",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3474,
+      "completion_tokens": 110,
+      "total_tokens": 3584,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1298
+    },
+    "status": "complete",
+    "prompt_tokens": 3474,
+    "completion_tokens": 110,
+    "total_tokens": 3584,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:50:22.933445+00:00"
+}

@@ -1,0 +1,10 @@
+{
+  "time": "2026-09-26T11:47:40.142085+00:00",
+  "prior_preserved_files": 134,
+  "original_v4_results_preserved": 10,
+  "acceptance_snapshot_files": 44,
+  "changed_during_checks": [],
+  "real_provider_dispatches": 0,
+  "comparison_freeze": "passed",
+  "affected_tests": "passed"
+}

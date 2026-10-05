@@ -1,0 +1,160 @@
+{
+  "evaluation": 2,
+  "stage": "repair",
+  "business_request_sha256": "ef71aff70a74c3051d40841058922307ce72af978d8c0ecdde98602a8194d54e",
+  "business_request": {
+    "draft": {
+      "id": "cc-draft-cc16-birth-order-zh",
+      "revision": 1,
+      "body": "族谱表明，阿岚比阿岩先出生。"
+    },
+    "claims": [
+      {
+        "id": "cc-claim-cc16-birth-order-zh",
+        "text": "族谱表明，阿岚比阿岩先出生。",
+        "allowed_evidence": [
+          {
+            "id": "cc-span-cc16-birth-order-zh-T1",
+            "chapter_id": "cc-chapter-cc16-birth-order-zh-T1",
+            "body": "族谱记载阿岚与阿岩为双生子，没有记载谁先出生。",
+            "label": "T1",
+            "prompt_excerpt": "族谱记载阿岚与阿岩为双生子，没有记载谁先出生。"
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "cc-memory-cc16-birth-order-zh-T1",
+        "memory_type": "static_canon",
+        "subject": "阿岚",
+        "predicate": "relationship",
+        "value": "族谱记载阿岚与阿岩为双生子，没有记载谁先出生。",
+        "source_span_id": "cc-span-cc16-birth-order-zh-T1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "non-empty string, at most 800 Unicode code points; why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    },
+    "contract_repair": {
+      "attempt": 2,
+      "reason_code": "temporal_overlap_unproven",
+      "diagnostics": [
+        {
+          "claim_span_id": "cc-claim-cc16-birth-order-zh",
+          "claim_text": "族谱表明，阿岚比阿岩先出生。",
+          "problem_codes": [
+            "temporal_overlap_unproven"
+          ],
+          "cited_evidence": [
+            {
+              "span_id": "cc-span-cc16-birth-order-zh-T1",
+              "excerpt": "族谱记载阿岚与阿岩为双生子，没有记载谁先出生。"
+            }
+          ]
+        }
+      ],
+      "rejected_issues": [
+        {
+          "claim_span_id": "cc-claim-cc16-birth-order-zh",
+          "status": "conflict",
+          "nature": "confirmed_conflict",
+          "category": "timeline",
+          "severity": "high",
+          "explanation": "当前摘要声称族谱表明阿岚比阿岩先出生，但证据记载族谱为双生子且未记载出生先后，二者不能同时成立。",
+          "reasoning": "证据片段明确记载“族谱记载阿岚与阿岩为双生子，没有记载谁先出生”，其中“没有记载谁先出生”直接否定“族谱表明阿岚比阿岩先出生”的来源依据。既然族谱未记录出生先后，就不能同时表明阿岚先于阿岩出生；该矛盾不依赖时间，仅需同一族谱记录内容即可判定。",
+          "temporal_basis": {
+            "claim_anchor": "先出生",
+            "evidence_anchor": "谁先出生",
+            "relation": "explicit_overlap"
+          },
+          "evidence": [
+            {
+              "chapter_id": "cc-chapter-cc16-birth-order-zh-T1",
+              "span_id": "cc-span-cc16-birth-order-zh-T1",
+              "relation": "contradicts",
+              "sufficiency": "sufficient",
+              "related_memory_ids": [
+                "cc-memory-cc16-birth-order-zh-T1"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "cc-span-cc16-birth-order-zh-T1",
+              "role": "current_context"
+            }
+          ],
+          "suggested_revision": {
+            "before": "族谱表明，阿岚比阿岩先出生。",
+            "after": "族谱记载阿岚与阿岩为双生子，没有记载谁先出生。"
+          },
+          "available_actions": [
+            "apply_suggestion"
+          ]
+        }
+      ],
+      "rejected_claim_verdicts": [
+        {
+          "claim_span_id": "cc-claim-cc16-birth-order-zh",
+          "verdict": "reviewed_issue",
+          "basis": "证据明确说明族谱未记载出生先后，而当前摘要断言族谱表明阿岚先出生，直接矛盾。"
+        }
+      ]
+    }
+  }
+}

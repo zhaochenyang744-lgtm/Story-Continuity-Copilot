@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+  "status": "completed",
+  "error_code": null,
+  "post_attempt_start_records": 1,
+  "evaluation_count": 1,
+  "score_status": "pending_manual_review",
+  "finished_at": "2026-09-27T08:20:31.416166+00:00"
+}

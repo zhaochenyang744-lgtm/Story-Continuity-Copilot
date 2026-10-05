@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "da2071d84c92e93c72aa79e3c77417f7e2b3663b27b672b83edf860515e9d8f7",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-4fca066b-a350-449a-9291-36195efde7b4-1",
+        "verdict": "no_issue",
+        "basis": "The cited rule states a red badge cannot open the North Glass door, and the context places Mira at 10点 wearing only a red badge and no blue badge; the roster's silence about whether it opened does not contradict the claim that she could not open it."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3544,
+      "completion_tokens": 1109,
+      "total_tokens": 4653,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 983
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 3544
+    },
+    "status": "complete",
+    "prompt_tokens": 3544,
+    "completion_tokens": 1109,
+    "total_tokens": 4653,
+    "reasoning_tokens": 983,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "flash-v5-controller-dependency-supplement-v1",
+  "time": "2026-09-27T08:14:19.693749+00:00",
+  "git_head": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "v5_manifest_sha256": "aabea4b8f99d2d4282ed627e98da98a57e46a1c526a7a45064af22acfd87682b",
+  "reason": "Freeze omitted directly imported Memory vocabulary, visible-text conversion, workflow and export route modules. Preserve original V5 freeze and enforce this supplement before dispatch.",
+  "additional_source_hashes": {
+    "backend/app/__init__.py": "35f78b2beef7082e8d47277da699bc8662a2e7c3b1cb87ba3cd30e525bcf4bfc",
+    "backend/app/memory_contract.py": "d8afc7e9f85f296f5762aaf1f03e4baafb7a163312bc93a06a4744e5e4355d51",
+    "backend/app/text_content.py": "d1f04d4b7ec2fd5f87c1f706960bdfff6c77f61b9bf5ee3699ec902e48443290",
+    "backend/app/long_term_workflow.py": "e5eb9874ccdeb019545a42c121ed98cd42af2252a52ed066f6361ee638b7ca59",
+    "backend/app/project_export.py": "b8227673e20a68bd79a2f4694eb5a15bca77145623fb7c4e5bb1a1f3d0a3420f",
+    "docs/flash-v5-independent-acceptance-evidence/live_guard.py": "fe1e753c5b6e0840ba9a30bf1b9dd75bbcf4c10a5c4a76200b3677da5f28980a"
+  },
+  "product_sources_equal_committed_baseline": true,
+  "provider_calls": 0
+}

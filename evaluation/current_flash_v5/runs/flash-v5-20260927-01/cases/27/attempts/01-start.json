@@ -1,0 +1,12 @@
+{
+  "case_id": "g02-body-limit",
+  "run_id": "flash-v5-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 30,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "d29f003fa6f734f746ddc2212747d150c3aa7ccbba3dc68f03dff9632cf34e8d",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "b0ea6225dfc804e9d43cd9106b54ee1d6fa602ce16867d6f5e983b6e56f5ff5c",
+  "started_at": "2026-09-27T08:21:20.385115+00:00",
+  "usage_status": "unknown_until_response"
+}

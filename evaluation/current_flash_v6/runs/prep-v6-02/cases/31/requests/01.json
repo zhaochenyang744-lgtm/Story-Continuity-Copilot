@@ -1,0 +1,123 @@
+{
+  "case_id": "v6-v6s-09",
+  "evaluation_ordinal": 1,
+  "stage": "first",
+  "recorded_before_dispatch_at": "2026-09-27T09:39:55.203315+00:00",
+  "business_request_sha256": "7fd94bf0327371a84df7dc61b7d3ef41d4610bdb794bab6c32b6a22db15c555f",
+  "bindings": {
+    "draft_id": "fixture-draft-v6-birth-order-blank",
+    "draft_revision": 2
+  },
+  "selected_source_bindings": [
+    {
+      "kind": "target_claim",
+      "id": "claim-run-341bb707-d5a5-4889-a725-f2757bfb8213-1",
+      "text": "The birth register establishes that Aster was born before Nilo.",
+      "sha256": "7199657ac32c7e92f9bb4c5b49ba6825ab4d722837166df07ddcc706a9dd534a"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-v6_birth_order_blank-1",
+      "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+      "text": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+      "prompt_excerpt": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+      "sha256": "e47062fa04332b0a049193924a4926a8fb8125ad511b2849e5c4ba1a53276668"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-v6_birth_order_blank-1",
+      "source_span_id": "fixture-span-v6_birth_order_blank-1",
+      "text": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+      "sha256": "e47062fa04332b0a049193924a4926a8fb8125ad511b2849e5c4ba1a53276668"
+    }
+  ],
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-v6-birth-order-blank",
+      "revision": 2,
+      "body": "The birth register establishes that Aster was born before Nilo."
+    },
+    "claims": [
+      {
+        "id": "claim-run-341bb707-d5a5-4889-a725-f2757bfb8213-1",
+        "text": "The birth register establishes that Aster was born before Nilo.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-v6_birth_order_blank-1",
+            "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+            "body": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+            "label": "B1",
+            "prompt_excerpt": "The birth register records Aster and Nilo as twins, but does not record which twin was born first."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-v6_birth_order_blank-1",
+        "memory_type": "dynamic_state",
+        "subject": "birth_order_blank",
+        "predicate": "status",
+        "value": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+        "source_span_id": "fixture-span-v6_birth_order_blank-1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  }
+}

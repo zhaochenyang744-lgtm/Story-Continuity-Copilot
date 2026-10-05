@@ -1,0 +1,17 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "flash_v2_target",
+  "title": "星钥保管记录：合成评测材料",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {"method": "deterministic_original", "generator_version": "current-flash-v2", "source_inputs": []},
+  "lineage": {"work_title": "星钥保管记录：合成评测材料", "characters": ["乔霁", "沈砚"], "locations": ["石桥"], "core_design": "explicit custody evidence and a separate chapter"},
+  "chapters": [
+    {"chapter_number": 1, "title": "星钥来源章", "source_label": "target_custody", "body": "星钥始终由乔霁保管。平静的溪水流过石桥。"},
+    {"chapter_number": 2, "title": "独立记录章", "source_label": "other_chapter", "body": "第二章只记载岸边潮位，没有星钥保管事实。"}
+  ],
+  "memory": [
+    {"memory_type": "dynamic_state", "subject": "星钥", "predicate": "holder", "value": "星钥始终由乔霁保管。", "source": {"chapter_number": 1, "source_label": "target_custody"}}
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "case_id": "g02-long-sentence",
+  "family": "g02",
+  "status": "same_run_api_input_bound",
+  "same_run_request_sha256": "b1772f46f9f3520f5fb85c6a776a800b5529c2454a76e6427e91fdc822c3decc",
+  "saved_draft_sha256": "c37ec0f518fbf7e7c499cb4dc0e23db72f8edeb458dc8939618e7ce8bbecadee",
+  "draft_chars": 299,
+  "claim_available": 1,
+  "claim_selected": 1,
+  "claim_unselected": 0,
+  "selected_source_span_count": 4,
+  "selected_memory_count": 8,
+  "memory_source_selected_count": 3,
+  "memory_source_unselected_count": 5,
+  "dialogue_two_complete_quotes": false,
+  "database_binding": "matched_persisted_isolated_database",
+  "database_selected_source_count": 4,
+  "database_selected_memory_count": 8,
+  "database_unselected_memory_sources_allowed": 5
+}

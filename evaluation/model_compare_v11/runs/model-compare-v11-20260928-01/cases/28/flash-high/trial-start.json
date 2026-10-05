@@ -1,0 +1,19 @@
+{
+  "dispatch_order": 56,
+  "case_ordinal": 28,
+  "case_id": "v6-v6s-06",
+  "condition_id": "flash-high",
+  "position_in_case": 2,
+  "condition": {
+    "id": "flash-high",
+    "model": "deepseek-flash",
+    "thinking": "enabled",
+    "reasoning_effort": "high",
+    "temperature": null
+  },
+  "started_at": "2026-09-28T09:15:47.791827+00:00",
+  "original_budget": 8000,
+  "effective_engine_budget": 40000,
+  "experiment_only": true,
+  "source_request": "evaluation/current_flash_v7/runs/prep-v7-01/cases/28/requests/01.json"
+}

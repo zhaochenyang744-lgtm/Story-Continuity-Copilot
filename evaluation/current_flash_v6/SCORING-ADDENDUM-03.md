@@ -1,0 +1,3 @@
+# Kinship joint proof role before V6 output
+
+Inherited comparison case 13 also uses a joint proof. Chapter 1 states a general rule that recorded twins cannot be one another's parent; chapter 2 binds Nera and Oren as the twins. Relative to the story-fact claim, chapter 1 is a `context` rule premise and chapter 2 is the incompatible named fact labeled `contradicts`. Both are required in the same issue. V6 scoring no longer demands that the abstract chapter 1 rule be mislabeled as directly contradicting the named claim. This changes only the pre-output V6 scoring interpretation; product logic has no case-specific branch, and V5's saved response and score remain untouched.

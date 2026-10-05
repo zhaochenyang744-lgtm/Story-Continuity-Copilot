@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "c7fad010cc3d560e1be8704ef58324304800552610c2041ff45c8ecb5b9b12b7",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "location_action",
+        "severity": "medium",
+        "explanation": "The inspection log records the cap as loose but does not identify Ina as the one who loosened it, so the draft's attributed action is unsupported.",
+        "reasoning": "The cited span records the capsule cap as loose at 10:00 and explicitly says it does not identify who loosened it. It therefore provides no warrant for the draft's attribution of the loosening action to Ina. The missing link is an actor identification or other source statement connecting Ina to the loosening; without it, the claim remains unsupported rather than contradicted.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": "at 10:00",
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_actor_blank-1",
+            "span_id": "fixture-span-v6_actor_blank-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_actor_blank-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_actor_blank-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The cited log confirms only that the cap was loose at 10:00; it explicitly does not identify who loosened it, so the draft's attribution to Ina lacks a source warrant."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3076,
+      "completion_tokens": 3844,
+      "total_tokens": 6920,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3438
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 772
+    },
+    "status": "complete",
+    "prompt_tokens": 3076,
+    "completion_tokens": 3844,
+    "total_tokens": 6920,
+    "reasoning_tokens": 3438,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

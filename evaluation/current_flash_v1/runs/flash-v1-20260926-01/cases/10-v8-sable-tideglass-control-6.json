@@ -1,0 +1,281 @@
+{
+  "family": "v8",
+  "case_id": "v8-sable-tideglass-control-6",
+  "input_sha256": "40ecc125dd94af6757daf056367f6ccbb164cdb49416bfe6736ddfe59166d7e4",
+  "expected": {
+    "class": "no_conflict",
+    "category": null,
+    "evidence": [
+      {
+        "chapter_number": 6,
+        "source_label": "slip_shelving",
+        "body_sha256": "6d7b87b13e36c53009f2ad03a8b45c51e265bbc956533ebcce4a9b9d225c5df7"
+      }
+    ]
+  },
+  "score_row": {
+    "case_id": "v8-sable-tideglass-control-6",
+    "seed_key": "sable_tideglass",
+    "expected_class": "no_conflict",
+    "predicted_class": "no_conflict",
+    "expected_category": null,
+    "predicted_category": null,
+    "expected_severity": null,
+    "predicted_severity": null,
+    "category_severity": null,
+    "run_id": "run-46a059d1-6933-41d5-8001-af985956e64c",
+    "post_status": 202,
+    "post_state": "queued",
+    "idempotency_replay_same_run": true,
+    "terminal_status": "completed",
+    "terminal_error_code": null,
+    "schema_valid": true,
+    "retrieval_hit_at_5": true,
+    "retrieval_semantic_set": [
+      [
+        2,
+        "parcel_classification"
+      ],
+      [
+        3,
+        "facet_count_rule"
+      ],
+      [
+        4,
+        "facet_measurement"
+      ],
+      [
+        5,
+        "stamp_color"
+      ],
+      [
+        6,
+        "slip_shelving"
+      ]
+    ],
+    "cited_evidence_count": 0,
+    "cited_evidence_expected_count": 0,
+    "resolvable_evidence_count": 0,
+    "evidence_ids": [],
+    "evidence_semantic_set": [],
+    "challenge_tags": [
+      "supported_control"
+    ],
+    "requires_multiple_direct_evidence": false,
+    "expected_evidence_count": 0,
+    "cited_expected_evidence_unique_count": 0,
+    "expected_evidence_full_set_cited": null,
+    "explanation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "latency_ms": 769,
+    "input_tokens": 2874,
+    "output_tokens": 5,
+    "cost_cny": null,
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    }
+  },
+  "product": {
+    "run_id": "run-46a059d1-6933-41d5-8001-af985956e64c",
+    "project_id": "fixture-project-sable-tideglass",
+    "run_type": "continuity",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 2,
+    "draft_revision": null,
+    "source_memory_version": 1,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T09:37:44.577234+00:00",
+    "started_at": "2026-09-26T09:37:44.601225+00:00",
+    "completed_at": "2026-09-26T09:37:45.435944+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 834,
+    "retry_of_run_id": null,
+    "root_run_id": "run-46a059d1-6933-41d5-8001-af985956e64c",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T09:37:44.577234+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "preparing_draft",
+        "error_code": null,
+        "created_at": "2026-09-26T09:37:44.601225+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "retrieving_confirmed_facts",
+        "error_code": null,
+        "created_at": "2026-09-26T09:37:44.612073+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "comparing_evidence",
+        "error_code": null,
+        "created_at": "2026-09-26T09:37:44.635027+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "running",
+        "stage": "assembling_reviewable_results",
+        "error_code": null,
+        "created_at": "2026-09-26T09:37:45.416717+00:00"
+      },
+      {
+        "sequence": 6,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T09:37:45.435944+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "provider_metrics": {
+      "latency_ms": 769,
+      "input_tokens": 2874,
+      "output_tokens": 5,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "issues": [],
+    "metrics": {
+      "latency_ms": 769,
+      "input_tokens": 2874,
+      "output_tokens": 5,
+      "cost_cny": null,
+      "cost_available": false,
+      "contract_normalization_count": 0,
+      "contract_normalizations": [],
+      "provenance": {
+        "provider_label": "deepseek",
+        "model_label": "deepseek-flash",
+        "prompt_version": "continuity-review-v15-knowledge-time",
+        "schema_version": "continuity-issue-v5-temporal-basis",
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "source_memory_version": 1
+      },
+      "retrieval": [
+        {
+          "claim_ordinal": 1,
+          "returned_span_ids": [
+            "fixture-span-sable_tideglass-6",
+            "fixture-span-sable_tideglass-2",
+            "fixture-span-sable_tideglass-5",
+            "fixture-span-sable_tideglass-3",
+            "fixture-span-sable_tideglass-4"
+          ],
+          "method_version": "bounded-lexical-v4-longform"
+        }
+      ]
+    }
+  },
+  "model_outputs": [
+    {
+      "case_id": "v8-sable-tideglass-control-6",
+      "task": "continuity_review",
+      "contract_repair": false,
+      "input_refs": {
+        "claims": [
+          {
+            "id": "claim-run-46a059d1-6933-41d5-8001-af985956e64c-1",
+            "text": "The Violet Slip is shelved in the Pewter Room after review.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-sable_tideglass-5",
+                "chapter_id": "fixture-chapter-sable_tideglass-5",
+                "body": "Yara Cett applies a violet stamp to the sealed parcel; Brom Olt's blue desk stamp concerns a different invoice.",
+                "label": "stamp_color",
+                "prompt_excerpt": "Yara Cett applies a violet stamp to the sealed parcel; Brom Olt's blue desk stamp concerns a different invoice."
+              },
+              {
+                "id": "fixture-span-sable_tideglass-3",
+                "chapter_id": "fixture-chapter-sable_tideglass-3",
+                "body": "The official tideglass facet count is the number of facets listed in the certified measuring card.",
+                "label": "facet_count_rule",
+                "prompt_excerpt": "The official tideglass facet count is the number of facets listed in the certified measuring card."
+              },
+              {
+                "id": "fixture-span-sable_tideglass-2",
+                "chapter_id": "fixture-chapter-sable_tideglass-2",
+                "body": "The Violet Slip dispatch card classifies the tideglass parcel as large, while an unrelated sample pouch is marked small.",
+                "label": "parcel_classification",
+                "prompt_excerpt": "The Violet Slip dispatch card classifies the tideglass parcel as large, while an unrelated sample pouch is marked small."
+              }
+            ]
+          }
+        ],
+        "draft_claims": [],
+        "source_spans": [],
+        "retrieval": null,
+        "proposal": null
+      },
+      "business_json": {
+        "issues": []
+      },
+      "usage": {
+        "input_tokens": 2874,
+        "output_tokens": 5,
+        "observed_response_input_tokens": 2874,
+        "observed_response_output_tokens": 5,
+        "cost_cny": null
+      },
+      "latency_ms": 769
+    }
+  ],
+  "http_attempts": [
+    {
+      "case_id": "v8-sable-tideglass-control-6",
+      "ordinal": 10,
+      "sent_at": "2026-09-26T09:37:44.665764+00:00",
+      "status": 200,
+      "latency_ms": 747,
+      "usage": {
+        "prompt_tokens": 2874,
+        "completion_tokens": 5,
+        "total_tokens": 2879
+      },
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    }
+  ],
+  "actual_http_dispatches": 1,
+  "request_model": "deepseek-flash",
+  "source_case_ref": "evaluation/case_sets/eval-set-v8.json"
+}

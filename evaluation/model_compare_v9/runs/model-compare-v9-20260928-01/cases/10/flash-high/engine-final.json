@@ -1,0 +1,67 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-567fef0f-3c7e-4a3c-a698-a0e3a6deaf2d-1",
+      "status": "conflict",
+      "category": "character_knowledge",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "The draft states that Sera knew the telegram code at 11点 on the same day, but the cited source states that at 11点 on that same day she had not opened the sealed telegram and did not know its code. Same person, same object, same stated moment, incompatible knowledge states.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-harbor_signal-3",
+          "span_id": "fixture-span-harbor_signal-3",
+          "excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-harbor_signal-3"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The cited span fixes all three shared premises itself: the holder (Sera), the scope (the telegram code), and the literal time (11点 on the same day) — the same time anchor appears verbatim in the current claim. At that exact moment it asserts the opposite knowledge state ('had not opened the sealed telegram and did not know its code'), so the claim and the evidence cannot coexist; no later learning can retroactively make her know the code at 11点.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-harbor_signal-3",
+          "role": "prior_state"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 11点 on the same day, Sera knew the telegram code.",
+        "after": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-567fef0f-3c7e-4a3c-a698-a0e3a6deaf2d-1",
+      "returned_span_ids": [
+        "fixture-span-harbor_signal-3",
+        "fixture-span-harbor_signal-4",
+        "fixture-span-harbor_signal-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3438,
+  "output_tokens": 2796,
+  "latency_ms": 12934,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

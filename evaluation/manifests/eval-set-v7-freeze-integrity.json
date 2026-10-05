@@ -1,0 +1,21 @@
+{
+  "schema_version": "scc-eval-v7-freeze-integrity-v1",
+  "status": "frozen_formal_inputs",
+  "controller_candidate_gate_passed": true,
+  "formal_inputs_frozen": true,
+  "real_provider_authorization_received": false,
+  "formal_run_executed": false,
+  "provider_calls": 0,
+  "case_canonical_sha256": "e53eba34c29f889855c01f0c2657e4769d2f19e458cf5631a3f3d2ffcee0b3fd",
+  "corpus_canonical_sha256": "04a9e6e1b4c847c12433d42de640b8906252f3590cb5135f77d375fedda683c0",
+  "frozen_files": {
+    "evaluation/case_sets/eval-set-v7.json": "fbc29c5e5ced0cab7877ffff9f5912937d260deadccc1215b4f2a19fc6a389f9",
+    "evaluation/manifests/eval-set-v7-manifest.json": "d169704f31826c1fa752a47364a609a17eaad50733e398d7d4d061c8dcc9f744",
+    "evaluation/v7-semantic-review.json": "213a3e3e5dab63fbdf5bc11582c09ec5e0537b86d1c8240a1305ec1c0cf65e40",
+    "evaluation/fixtures/eval-v7-corpus-manifest.json": "b78a7d78d5f36508ad04b15abbd945641c226915ce48bd442d77b83bcc6109f0",
+    "evaluation/fixtures/eval-v7-indigo-cartography.json": "7ff21604332e8d9ccdb6591d560b76cb9f04f9a31ae5f5bb5d6183f7c3908bbb",
+    "evaluation/fixtures/eval-v7-ember-siltworks.json": "ecfc5df446499b7c298b5205af4e8137a47293c7fa6b8d6ddb70191d2bde629c",
+    "evaluation/fixtures/eval-v7-brass-migration.json": "48a07b40d4ef48da1299d445bf939eaae19e5f466243f8f24a715e6a2a7de8db",
+    "evaluation/fixtures/eval-v7-orchid-signalhouse.json": "d817ca87bf7dc3316f171f78bb3bc6908659211dd7ac89df637c2f160dafc5db"
+  }
+}

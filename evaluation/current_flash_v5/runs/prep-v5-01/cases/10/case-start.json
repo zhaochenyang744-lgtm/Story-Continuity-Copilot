@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-01",
+  "ordinal": 10,
+  "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T07:58:27.831165+00:00",
+  "case_input_sha256": "77e73cdf9fab0b7d186d7a34298a51163865f6be13345e0a5475ffb2765d9eca",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

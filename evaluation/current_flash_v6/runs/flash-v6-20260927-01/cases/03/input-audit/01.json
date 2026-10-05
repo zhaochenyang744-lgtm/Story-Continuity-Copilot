@@ -1,0 +1,15 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "family": "comparison",
+  "evaluation_kind": "preserved_v5_comparison",
+  "status": "v2_capture_exact_except_claim_id_and_v6_output_schema",
+  "historical_capture_sha256": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+  "same_run_request_sha256": "1da13df9d9582bd88af84c8137b48322512f18aae5b971e484e7cff37183d35e",
+  "selected_source_count": 3,
+  "minimum_source_selected": true,
+  "repair": false,
+  "database_binding": "matched_persisted_isolated_database",
+  "database_selected_source_count": 3,
+  "database_selected_memory_count": 6,
+  "database_unselected_memory_sources_allowed": 3
+}

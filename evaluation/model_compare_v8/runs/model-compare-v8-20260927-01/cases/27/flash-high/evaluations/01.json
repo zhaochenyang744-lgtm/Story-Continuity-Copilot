@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "5c7d9980108ecef9a6a9e00b2ff25b83ea1b3933677dfc22f3979740e2f5e706",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-11600b16-0ac6-422e-8a33-4caa7436309b-1",
+        "verdict": "no_issue",
+        "basis": "The rule span establishes readiness requires a locked valve cap, and the evidence for the same 10:00 minute states the cap remained loose and unlocked. A loose cap therefore makes the capsule not ready, matching the claim exactly; the claim's time, subject, and stated cause agree, so no continuity issue arises."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3106,
+      "completion_tokens": 478,
+      "total_tokens": 3584,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 357
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 802
+    },
+    "status": "complete",
+    "prompt_tokens": 3106,
+    "completion_tokens": 478,
+    "total_tokens": 3584,
+    "reasoning_tokens": 357,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

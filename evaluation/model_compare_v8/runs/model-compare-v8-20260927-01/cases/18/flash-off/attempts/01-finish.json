@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1472,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "cdab72b3-3d58-41ec-b307-520a81dbb7bd",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The draft attributes the delay's cause to Tala via the launch and delay logs, but the cited restoration log explicitly leaves the cause unrecorded; the attribution is unsupported and the cause remains unknown.\"}]}",
+  "visible_content_sha256": "27f2e5b3a1b91aa15b1b8e08777327e6abb77b7bc95f5ecfff528b6e65fa36a0",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3461,
+      "completion_tokens": 100,
+      "total_tokens": 3561,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1285
+    },
+    "status": "complete",
+    "prompt_tokens": 3461,
+    "completion_tokens": 100,
+    "total_tokens": 3561,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:47:26.733949+00:00"
+}

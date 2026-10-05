@@ -1,0 +1,9 @@
+# Flash v3 G03 fixture provenance correction
+
+Prepared 2026-09-26 before any v3 fixture execution. V1 and v2 inputs, outputs, and local databases remain byte-for-byte preserved. This is a new, evaluation-only version and does not modify product logic or prompts. It addresses the independent v2 finding that `v2_source_spans.body` was changed without synchronizing `v2_chapters.body`. The v2 `business_request` snapshots remain direct evidence of what the model received, while the v2 chapter-parent provenance was inconsistent.
+
+For the same four exposed G03 modes, build fresh isolated projects with the same deterministic logical IDs, source revision 1, and Memory version 1. Set chapter body, chapter summary, outline summary, and the corresponding SourceSpan body together. Assert the chapter/SourceSpan exact text and revision equality, source-to-chapter binding, fixed `dynamic_state / 星钥 / holder` Memory, and confirmed status before any Provider invocation. Reject a mismatched chapter parent or a wrong Memory type in offline negative controls.
+
+First run only a fake Provider capture through the real product API. It produces **zero external HTTP requests**. Compare each full structured business request recursively and by sorted UTF-8 JSON SHA-256 with its saved v2 actual Provider input, with no field exclusions. Save the comparison and v3 DB hashes. Any identity, source, or other semantic difference must be visible as a differing path, not normalized away.
+
+If all four actual business requests are exactly identical to v2, the parent-body repair is outside the model input for this evaluation, and no additional real model call is required. If any input differs, freeze a separately versioned, bounded G03-only real recheck for affected cases, keeping v2 untouched. Do not rerun G02, V8, or G01 under this plan. A v3 offline-equivalent result does not remove v2 G02 citation gaps, v1 V8 gate failure, or the need for controller independent acceptance.

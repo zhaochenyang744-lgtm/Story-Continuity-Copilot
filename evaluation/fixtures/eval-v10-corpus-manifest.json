@@ -1,0 +1,39 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-manifest-v1",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "files": [
+    {
+      "corpus_key": "lanpu_cup",
+      "path": "evaluation/fixtures/eval-v10-lanpu-cup.json",
+      "sha256": "bdeafe259ac8c0a7c22e7f3f6499c46d0baadaa5435a24e27a85f4892a716ab1"
+    },
+    {
+      "corpus_key": "jiansong_survey",
+      "path": "evaluation/fixtures/eval-v10-jiansong-survey.json",
+      "sha256": "66ba7c838539d98857b1a2755f602426b26600ae0203c831bb01c77628e83aa0"
+    },
+    {
+      "corpus_key": "yudeng_square",
+      "path": "evaluation/fixtures/eval-v10-yudeng-square.json",
+      "sha256": "5b8e6571f867ebf8ffc8e9f3f0a579b0c9ed8752036590b6904b3a4e5e774c2b"
+    },
+    {
+      "corpus_key": "varrow_plant_exhibition",
+      "path": "evaluation/fixtures/eval-v10-varrow-plant-exhibition.json",
+      "sha256": "df50b0fcedf8f80478c01f59f0d5468b130a7265fcf5d7762a0c1e865def2990"
+    },
+    {
+      "corpus_key": "glimmer_karst_race",
+      "path": "evaluation/fixtures/eval-v10-glimmer-karst-race.json",
+      "sha256": "fd408031df055ab937936ee5e2cf0f8face6007bf54a840a7c76b85b2335ce2a"
+    },
+    {
+      "corpus_key": "bellor_ward_bake",
+      "path": "evaluation/fixtures/eval-v10-bellor-ward-bake.json",
+      "sha256": "bf8ace4324e172e81e3d965d28842667156e2c2650feecf9ef51b55cef757ffa"
+    }
+  ],
+  "canonical_sha256": "ffc8e55286edd7c3956e67d436f801aae831c80abae8a0d02c05d5e53374011f"
+}

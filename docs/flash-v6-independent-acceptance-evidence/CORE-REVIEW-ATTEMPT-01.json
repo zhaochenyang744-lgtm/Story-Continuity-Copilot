@@ -1,0 +1,13 @@
+{
+  "kind": "core_handoff_hash_rejection",
+  "created_at_utc": "2026-09-27T09:30:24.681053+00:00",
+  "path": "backend/app/provider.py",
+  "handoff_expected": "ed33b19761acfec79cffa14d171389eaa9659ba4774223a4d161c58d2d32643",
+  "handoff_digest_length": 63,
+  "actual_sha256": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643",
+  "reason": "handoff has a truncated 63-character digest; not evidence of code drift",
+  "phase": "before snapshot and independent execution",
+  "provider_calls": 0,
+  "database_connections": 0,
+  "tests_run": 0
+}

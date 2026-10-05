@@ -1,0 +1,46 @@
+{
+  "evaluation": 2,
+  "business_request_sha256": "75efd654761c5d3b617987a9fbbea835094d286e296aca5317f549d4355ff640",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-4fca066b-a350-449a-9291-36195efde7b4-1",
+        "verdict": "no_issue",
+        "basis": "Claim is compatible: span 1 states only a blue badge can open North Glass, and span 2 places Mira at 10点 with only a red badge and no blue badge. The roster's silence about whether it opened does not create a conflict. No reviewable issue."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 4143,
+      "completion_tokens": 625,
+      "total_tokens": 4768,
+      "prompt_tokens_details": {
+        "cached_tokens": 3456
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 513
+      },
+      "prompt_cache_hit_tokens": 3456,
+      "prompt_cache_miss_tokens": 687
+    },
+    "status": "complete",
+    "prompt_tokens": 4143,
+    "completion_tokens": 625,
+    "total_tokens": 4768,
+    "reasoning_tokens": 513,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

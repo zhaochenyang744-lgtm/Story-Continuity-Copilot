@@ -1,0 +1,66 @@
+{
+  "manifest_version": "scc-eval-manifest-v5-candidate",
+  "status": "candidate_for_controller_review",
+  "case_set": {
+    "path": "evaluation/case_sets/eval-set-v5-candidate.json",
+    "canonical_sha256": "6eae96104b3aea7040eca1c2d927c4d7cc3ce9315a51c45045bfc10711ceb519",
+    "case_count": 24,
+    "split": {"conflict": 8, "no_conflict": 8, "insufficient_evidence": 8},
+    "per_corpus_split": {"conflict": 2, "no_conflict": 2, "insufficient_evidence": 2}
+  },
+  "stability_protocol": {
+    "representative_case_ids": ["eval-v5-ember-conflict-prism-silver", "eval-v5-reed-no-conflict-casting-complete", "eval-v5-marsh-insufficient-horn-outcome"],
+    "independent_runs_per_case": 3,
+    "first_formal_runs_included_per_case": 1,
+    "additional_calls_after_formal": 6,
+    "execution_status": "not_run"
+  },
+  "scoring": {
+    "prediction_rule": "target claim has conflict Issue => conflict; else target claim has insufficient_evidence Issue => insufficient_evidence; else no_conflict",
+    "retrieval": "all expected evidence semantic targets appear in the target claim retrieval top 5",
+    "cited_evidence_precision": "all cited Evidence rows resolve to current-project SourceSpan and match expected evidence for the evaluated target claim",
+    "expected_evidence_recall": "for conflict cases, unique cited expected Evidence divided by all expected direct Evidence",
+    "multi_direct_evidence_full_set_recall": "share of requires_multiple_direct_evidence conflict cases citing the complete expected Evidence set",
+    "conflict_category_accuracy": "share of expected conflict cases whose predicted category equals expected_category",
+    "designated_category_mismatch_regression": "all three cases tagged category_mismatch_regression must predict the declared category",
+    "cost": "unavailable when Provider does not return cost; never estimate"
+  },
+  "required_thresholds": {
+    "macro_f1_min": 0.8,
+    "conflict_recall_min": 0.8,
+    "insufficient_evidence_recall_min": 0.8,
+    "no_conflict_false_positive_rate_max": 0.2,
+    "retrieval_expected_evidence_hit_at_5_min": 0.8,
+    "cited_evidence_precision": 1,
+    "schema_validity": 1,
+    "evidence_resolvability_grounding": 1,
+    "fail_closed_safety_paths": 1,
+    "conflict_category_accuracy_min": 0.75,
+    "designated_category_mismatch_regression_required_correct": 3,
+    "designated_category_mismatch_regression_required_total": 3,
+    "expected_evidence_recall_min": 0.8,
+    "multi_direct_evidence_full_set_recall_min": 0.75
+  },
+  "fixture_corpus": {
+    "path": "evaluation/fixtures/eval-v5-corpus-manifest.json",
+    "canonical_sha256": "48124a6eab2b65a4ab2339bf5f645d732fcbec5dbf36a3c5d25fdfc79d74795a",
+    "evaluation_only": true,
+    "production_seed": false,
+    "protected_asset_source": false
+  },
+  "formal_run_plan": {"path": "evaluation/manifests/eval-v5-first-formal-plan.json", "status": "not_run"},
+  "boundaries": {
+    "evaluation_only": true,
+    "production_seed": false,
+    "protected_asset_source": false,
+    "formal_run_executed": false,
+    "provider_calls": 0,
+    "real_provider_authorization": false,
+    "controller_candidate_gate_passed": false,
+    "deployment": false,
+    "ui_change": false
+  },
+  "runtime_mode": "evaluation_fixture",
+  "formal_run_executed": false,
+  "provider_calls": 0
+}

@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "status": "failed",
+  "error_code": "claim_verdicts_issue_mismatch",
+  "post_attempt_start_records": 2,
+  "evaluation_count": 2,
+  "score_status": "terminal_failure",
+  "finished_at": "2026-09-27T10:01:42.327487+00:00"
+}

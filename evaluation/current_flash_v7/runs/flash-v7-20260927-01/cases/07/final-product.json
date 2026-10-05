@@ -1,0 +1,176 @@
+{
+  "run_id": "run-beeb72c1-a17a-43db-90d0-9c8fcdb4c8d6",
+  "project_id": "fixture-project-harbor-signal",
+  "run_type": "continuity",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 2,
+  "draft_revision": null,
+  "source_memory_version": 1,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T10:47:35.742480+00:00",
+  "started_at": "2026-09-27T10:47:35.771854+00:00",
+  "completed_at": "2026-09-27T10:47:38.434959+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 2663,
+  "retry_of_run_id": null,
+  "root_run_id": "run-beeb72c1-a17a-43db-90d0-9c8fcdb4c8d6",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:35.742480+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "preparing_draft",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:35.771854+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "retrieving_confirmed_facts",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:35.784943+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "comparing_evidence",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:35.812923+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "running",
+      "stage": "assembling_reviewable_results",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:38.422909+00:00"
+    },
+    {
+      "sequence": 6,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T10:47:38.434959+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "deepseek",
+    "model_label": "deepseek-flash",
+    "prompt_version": "continuity-review-v17-repair-diagnostics",
+    "schema_version": "continuity-issue-v7-repair-diagnostics",
+    "retrieval_method_version": "bounded-lexical-v4-longform",
+    "source_memory_version": 1
+  },
+  "provider_metrics": {
+    "latency_ms": 2582,
+    "input_tokens": 3348,
+    "output_tokens": 504,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "issues": [
+    {
+      "id": "issue-23894a66-634c-4458-9986-d6205a1f001c",
+      "claim_span_id": "claim-run-beeb72c1-a17a-43db-90d0-9c8fcdb4c8d6-1",
+      "claim_text": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+      "status": "open",
+      "classification": "conflict",
+      "category": "timeline",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "The draft says the harbor signal gate first closed before it first opened at 09点, but the cited record states it first opened at 09点 and had never closed before then.",
+      "decision": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The cited span gives the same subject (harbor signal gate) and the same explicit time (09点 on the same day). It directly states the gate first opened at 09点 and had never closed before then, which cannot coexist with the draft's claim that it first closed before it first opened at that same time. The later 10点 closing is compatible with the record but does not remove the contradiction at 09点.",
+      "evidence_chain": [
+        {
+          "evidence_id": "evidence-76091714-b151-40fc-8f60-692eb9a24678",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+        "after": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ],
+      "reuse_policy": null,
+      "reused_decision": null,
+      "evidence": [
+        {
+          "id": "evidence-76091714-b151-40fc-8f60-692eb9a24678",
+          "chapter_id": "fixture-chapter-harbor_signal-1",
+          "chapter_number": 1,
+          "chapter_title": "Gate Log",
+          "span_id": "fixture-span-harbor_signal-1",
+          "source_revision": 2,
+          "excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "excerpt_context": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-harbor_signal-1"
+          ],
+          "source_path": "/projects/fixture-project-harbor-signal/sources#span-fixture-span-harbor_signal-1"
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "latency_ms": 2582,
+    "input_tokens": 3348,
+    "output_tokens": 504,
+    "cost_cny": null,
+    "cost_available": false,
+    "contract_normalization_count": 0,
+    "contract_normalizations": [],
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v17-repair-diagnostics",
+      "schema_version": "continuity-issue-v7-repair-diagnostics",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "retrieval": [
+      {
+        "claim_ordinal": 1,
+        "returned_span_ids": [
+          "fixture-span-harbor_signal-1",
+          "fixture-span-harbor_signal-2",
+          "fixture-span-harbor_signal-3",
+          "fixture-span-harbor_signal-4"
+        ],
+        "method_version": "bounded-lexical-v4-longform"
+      }
+    ]
+  }
+}

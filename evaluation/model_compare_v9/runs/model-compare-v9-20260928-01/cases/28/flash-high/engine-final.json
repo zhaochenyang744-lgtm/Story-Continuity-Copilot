@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+      "status": "insufficient_evidence",
+      "category": "location_action",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The inspection log records the cap as loose but does not identify Ina as the one who loosened it, so the draft's attributed action is unsupported.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_actor_blank-1",
+          "span_id": "fixture-span-v6_actor_blank-1",
+          "excerpt": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_actor_blank-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The cited span records the capsule cap as loose at 10:00 and explicitly says it does not identify who loosened it. It therefore provides no warrant for the draft's attribution of the loosening action to Ina. The missing link is an actor identification or other source statement connecting Ina to the loosening; without it, the claim remains unsupported rather than contradicted.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_actor_blank-1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+      "returned_span_ids": [
+        "fixture-span-v6_actor_blank-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3076,
+  "output_tokens": 3844,
+  "latency_ms": 17121,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

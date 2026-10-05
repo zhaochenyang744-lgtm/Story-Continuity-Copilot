@@ -1,0 +1,1200 @@
+{
+  "version": "model-compare-v8",
+  "conditions": [
+    {
+      "id": "flash-off",
+      "model": "deepseek-flash",
+      "thinking": "disabled",
+      "reasoning_effort": null,
+      "temperature": 0
+    },
+    {
+      "id": "flash-high",
+      "model": "deepseek-flash",
+      "thinking": "enabled",
+      "reasoning_effort": "high",
+      "temperature": null
+    },
+    {
+      "id": "pro-high",
+      "model": "deepseek-v4-pro",
+      "thinking": "enabled",
+      "reasoning_effort": "high",
+      "temperature": null
+    }
+  ],
+  "limits": {
+    "max_tokens": 32768,
+    "timeout_seconds": 120,
+    "timeout_semantics": "HTTPX connect/read/write/pool phase timeout, not a hard wall-clock deadline",
+    "contract_evaluations": 2,
+    "transport_retries": 1,
+    "generation_post_cap": 408,
+    "models_get_cap": 1,
+    "known_total_token_cap": 1500000,
+    "original_engine_budget": 8000,
+    "experimental_engine_budget": 40000,
+    "input_budget_units": 6000,
+    "unknown_dispatch_usage_stops_matrix": true
+  },
+  "cases": [
+    {
+      "ordinal": 1,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-world_rule-conflict"
+    },
+    {
+      "ordinal": 2,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, Mira could not open North Glass with her only red badge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-world_rule-no_conflict"
+    },
+    {
+      "ordinal": 3,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "saved_draft": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-world_rule-insufficient_evidence"
+    },
+    {
+      "ordinal": 4,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-object_state-conflict"
+    },
+    {
+      "ordinal": 5,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "corpus_key": "north_glass",
+      "saved_draft": "At 10点 on the same day, the North Glass pneumatic carrier was not ready despite its four-bar gauge.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-object_state-no_conflict"
+    },
+    {
+      "ordinal": 6,
+      "family": "comparison",
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "saved_draft": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-north_glass-object_state-insufficient_evidence"
+    },
+    {
+      "ordinal": 7,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-timeline-conflict"
+    },
+    {
+      "ordinal": 8,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "The gate logs establish that at 10点 the harbor signal gate first closed after its 09点 opening.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-timeline-no_conflict"
+    },
+    {
+      "ordinal": 9,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "The gate logs establish that Sera authorized a reopening at 11点.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-timeline-insufficient_evidence"
+    },
+    {
+      "ordinal": 10,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 11点 on the same day, Sera knew the telegram code.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-character_knowledge-conflict"
+    },
+    {
+      "ordinal": 11,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "At 13点 Sera learned the telegram code after not knowing it at 11点.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-character_knowledge-no_conflict"
+    },
+    {
+      "ordinal": 12,
+      "family": "comparison",
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "saved_draft": "Vela delivered the telegram to Sera at 13点, according to the records.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence"
+    },
+    {
+      "ordinal": 13,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Nera is Oren's mother.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-relationship-conflict"
+    },
+    {
+      "ordinal": 14,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-relationship-no_conflict"
+    },
+    {
+      "ordinal": 15,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "The birth register establishes that Nera was born before Oren.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence"
+    },
+    {
+      "ordinal": 16,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "At 10点 on the same day, the restoration boat had completed its launch.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-event_status-conflict"
+    },
+    {
+      "ordinal": 17,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "At 10点 on the same day, the restoration boat had not completed launch while its manifest was unsigned and it remained at the quay.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-event_status-no_conflict"
+    },
+    {
+      "ordinal": 18,
+      "family": "comparison",
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "saved_draft": "Tala caused the restoration boat's delay, according to the launch and delay logs.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence"
+    },
+    {
+      "ordinal": 19,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 on the same day, lens R4 is amber glass.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-attribute-conflict"
+    },
+    {
+      "ordinal": 20,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-attribute-no_conflict"
+    },
+    {
+      "ordinal": 21,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "The index and maintenance sheet establish that Vela ground lens R4.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence"
+    },
+    {
+      "ordinal": 22,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 18点 on the same day, Vela stood on the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-location_action-conflict"
+    },
+    {
+      "ordinal": 23,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-location_action-no_conflict"
+    },
+    {
+      "ordinal": 24,
+      "family": "comparison",
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "saved_draft": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+      "accepted_gold_ref": "evaluation/current_contract_compare_v3/cases.json",
+      "evaluation_kind": "preserved_v5_comparison",
+      "source_case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence"
+    },
+    {
+      "ordinal": 25,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-01",
+      "corpus_key": "v6_lens",
+      "fixture_key": "lens",
+      "saved_draft": "At 14:00 today, lens Q8 is amber glass.",
+      "control_ids": [
+        "V6S-01",
+        "V6S-02",
+        "V6S-05"
+      ],
+      "selected_source_labels": [
+        "L1",
+        "L2",
+        "L4"
+      ]
+    },
+    {
+      "ordinal": 26,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-03",
+      "corpus_key": "v6_carrier",
+      "fixture_key": "carrier",
+      "saved_draft": "At 10:00 today the courier capsule was ready for dispatch.",
+      "control_ids": [
+        "V6S-03"
+      ],
+      "selected_source_labels": [
+        "R1",
+        "R2",
+        "R3"
+      ]
+    },
+    {
+      "ordinal": 27,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-04",
+      "corpus_key": "v6_carrier",
+      "fixture_key": "carrier",
+      "saved_draft": "At 10:00 today the courier capsule was not ready because its valve cap was loose.",
+      "control_ids": [
+        "V6S-04"
+      ],
+      "selected_source_labels": [
+        "R1",
+        "R2",
+        "R3"
+      ]
+    },
+    {
+      "ordinal": 28,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-06",
+      "corpus_key": "v6_actor_blank",
+      "fixture_key": "actor_blank",
+      "saved_draft": "According to the inspection log, Ina loosened the courier capsule valve cap.",
+      "control_ids": [
+        "V6S-06"
+      ],
+      "selected_source_labels": [
+        "A1"
+      ]
+    },
+    {
+      "ordinal": 29,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-07",
+      "corpus_key": "v6_actor_blank",
+      "fixture_key": "actor_blank",
+      "saved_draft": "At 11:00 Ina walked into the repair room.",
+      "control_ids": [
+        "V6S-07"
+      ],
+      "selected_source_labels": [
+        "A1"
+      ]
+    },
+    {
+      "ordinal": 30,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-08",
+      "corpus_key": "v6_actor_named",
+      "fixture_key": "actor_named",
+      "saved_draft": "According to the inspection log, Ina loosened the courier capsule valve cap at 10:00.",
+      "control_ids": [
+        "V6S-08"
+      ],
+      "selected_source_labels": [
+        "A2"
+      ]
+    },
+    {
+      "ordinal": 31,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-09",
+      "corpus_key": "v6_birth_order_blank",
+      "fixture_key": "birth_order_blank",
+      "saved_draft": "The birth register establishes that Aster was born before Nilo.",
+      "control_ids": [
+        "V6S-09"
+      ],
+      "selected_source_labels": [
+        "B1"
+      ]
+    },
+    {
+      "ordinal": 32,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-10",
+      "corpus_key": "v6_companion_blank",
+      "fixture_key": "companion_blank",
+      "saved_draft": "The 19:00 watch record establishes that Evi accompanied Orin to the east quay.",
+      "control_ids": [
+        "V6S-10"
+      ],
+      "selected_source_labels": [
+        "C1"
+      ]
+    },
+    {
+      "ordinal": 33,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-11",
+      "corpus_key": "v6_lie",
+      "fixture_key": "lie",
+      "saved_draft": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins.",
+      "control_ids": [
+        "V6S-11"
+      ],
+      "selected_source_labels": [
+        "T1",
+        "T2"
+      ]
+    },
+    {
+      "ordinal": 34,
+      "family": "comparison",
+      "evaluation_kind": "v6_seen_control",
+      "case_id": "v6-v6s-12",
+      "corpus_key": "v6_knowledge_transition",
+      "fixture_key": "knowledge_transition",
+      "saved_draft": "At 12:00 today Siva learned the password after not knowing it at 09:00.",
+      "control_ids": [
+        "V6S-12"
+      ],
+      "selected_source_labels": [
+        "K1",
+        "K2"
+      ]
+    }
+  ],
+  "schedule": [
+    {
+      "dispatch_order": 1,
+      "case_ordinal": 1,
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 2,
+      "case_ordinal": 1,
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 3,
+      "case_ordinal": 1,
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 4,
+      "case_ordinal": 2,
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 5,
+      "case_ordinal": 2,
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 6,
+      "case_ordinal": 2,
+      "case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 7,
+      "case_ordinal": 3,
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 8,
+      "case_ordinal": 3,
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "condition_id": "flash-off",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 9,
+      "case_ordinal": 3,
+      "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 10,
+      "case_ordinal": 4,
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 11,
+      "case_ordinal": 4,
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 12,
+      "case_ordinal": 4,
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 13,
+      "case_ordinal": 5,
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 14,
+      "case_ordinal": 5,
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 15,
+      "case_ordinal": 5,
+      "case_id": "ccv3-north_glass-object_state-no_conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 16,
+      "case_ordinal": 6,
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 17,
+      "case_ordinal": 6,
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "condition_id": "flash-off",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 18,
+      "case_ordinal": 6,
+      "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 19,
+      "case_ordinal": 7,
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 20,
+      "case_ordinal": 7,
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 21,
+      "case_ordinal": 7,
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 22,
+      "case_ordinal": 8,
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 23,
+      "case_ordinal": 8,
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 24,
+      "case_ordinal": 8,
+      "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 25,
+      "case_ordinal": 9,
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 26,
+      "case_ordinal": 9,
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "condition_id": "flash-off",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 27,
+      "case_ordinal": 9,
+      "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 28,
+      "case_ordinal": 10,
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 29,
+      "case_ordinal": 10,
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 30,
+      "case_ordinal": 10,
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 31,
+      "case_ordinal": 11,
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 32,
+      "case_ordinal": 11,
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 33,
+      "case_ordinal": 11,
+      "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 34,
+      "case_ordinal": 12,
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 35,
+      "case_ordinal": 12,
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "condition_id": "flash-off",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 36,
+      "case_ordinal": 12,
+      "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 37,
+      "case_ordinal": 13,
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 38,
+      "case_ordinal": 13,
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 39,
+      "case_ordinal": 13,
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 40,
+      "case_ordinal": 14,
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 41,
+      "case_ordinal": 14,
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 42,
+      "case_ordinal": 14,
+      "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 43,
+      "case_ordinal": 15,
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 44,
+      "case_ordinal": 15,
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "condition_id": "flash-off",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 45,
+      "case_ordinal": 15,
+      "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 46,
+      "case_ordinal": 16,
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 47,
+      "case_ordinal": 16,
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 48,
+      "case_ordinal": 16,
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 49,
+      "case_ordinal": 17,
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 50,
+      "case_ordinal": 17,
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 51,
+      "case_ordinal": 17,
+      "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 52,
+      "case_ordinal": 18,
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 53,
+      "case_ordinal": 18,
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "condition_id": "flash-off",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 54,
+      "case_ordinal": 18,
+      "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 55,
+      "case_ordinal": 19,
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 56,
+      "case_ordinal": 19,
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 57,
+      "case_ordinal": 19,
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 58,
+      "case_ordinal": 20,
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 59,
+      "case_ordinal": 20,
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 60,
+      "case_ordinal": 20,
+      "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 61,
+      "case_ordinal": 21,
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 62,
+      "case_ordinal": 21,
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "condition_id": "flash-off",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 63,
+      "case_ordinal": 21,
+      "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 64,
+      "case_ordinal": 22,
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 65,
+      "case_ordinal": 22,
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 66,
+      "case_ordinal": 22,
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 67,
+      "case_ordinal": 23,
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 68,
+      "case_ordinal": 23,
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 69,
+      "case_ordinal": 23,
+      "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "condition_id": "flash-off",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 70,
+      "case_ordinal": 24,
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 71,
+      "case_ordinal": 24,
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "condition_id": "flash-off",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 72,
+      "case_ordinal": 24,
+      "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "condition_id": "flash-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 73,
+      "case_ordinal": 25,
+      "case_id": "v6-v6s-01",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 74,
+      "case_ordinal": 25,
+      "case_id": "v6-v6s-01",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 75,
+      "case_ordinal": 25,
+      "case_id": "v6-v6s-01",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 76,
+      "case_ordinal": 26,
+      "case_id": "v6-v6s-03",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 77,
+      "case_ordinal": 26,
+      "case_id": "v6-v6s-03",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 78,
+      "case_ordinal": 26,
+      "case_id": "v6-v6s-03",
+      "condition_id": "flash-off",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 79,
+      "case_ordinal": 27,
+      "case_id": "v6-v6s-04",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 80,
+      "case_ordinal": 27,
+      "case_id": "v6-v6s-04",
+      "condition_id": "flash-off",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 81,
+      "case_ordinal": 27,
+      "case_id": "v6-v6s-04",
+      "condition_id": "flash-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 82,
+      "case_ordinal": 28,
+      "case_id": "v6-v6s-06",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 83,
+      "case_ordinal": 28,
+      "case_id": "v6-v6s-06",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 84,
+      "case_ordinal": 28,
+      "case_id": "v6-v6s-06",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 85,
+      "case_ordinal": 29,
+      "case_id": "v6-v6s-07",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 86,
+      "case_ordinal": 29,
+      "case_id": "v6-v6s-07",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 87,
+      "case_ordinal": 29,
+      "case_id": "v6-v6s-07",
+      "condition_id": "flash-off",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 88,
+      "case_ordinal": 30,
+      "case_id": "v6-v6s-08",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 89,
+      "case_ordinal": 30,
+      "case_id": "v6-v6s-08",
+      "condition_id": "flash-off",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 90,
+      "case_ordinal": 30,
+      "case_id": "v6-v6s-08",
+      "condition_id": "flash-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 91,
+      "case_ordinal": 31,
+      "case_id": "v6-v6s-09",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 92,
+      "case_ordinal": 31,
+      "case_id": "v6-v6s-09",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 93,
+      "case_ordinal": 31,
+      "case_id": "v6-v6s-09",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 94,
+      "case_ordinal": 32,
+      "case_id": "v6-v6s-10",
+      "condition_id": "flash-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 95,
+      "case_ordinal": 32,
+      "case_id": "v6-v6s-10",
+      "condition_id": "pro-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 96,
+      "case_ordinal": 32,
+      "case_id": "v6-v6s-10",
+      "condition_id": "flash-off",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 97,
+      "case_ordinal": 33,
+      "case_id": "v6-v6s-11",
+      "condition_id": "pro-high",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 98,
+      "case_ordinal": 33,
+      "case_id": "v6-v6s-11",
+      "condition_id": "flash-off",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 99,
+      "case_ordinal": 33,
+      "case_id": "v6-v6s-11",
+      "condition_id": "flash-high",
+      "position_in_case": 3
+    },
+    {
+      "dispatch_order": 100,
+      "case_ordinal": 34,
+      "case_id": "v6-v6s-12",
+      "condition_id": "flash-off",
+      "position_in_case": 1
+    },
+    {
+      "dispatch_order": 101,
+      "case_ordinal": 34,
+      "case_id": "v6-v6s-12",
+      "condition_id": "flash-high",
+      "position_in_case": 2
+    },
+    {
+      "dispatch_order": 102,
+      "case_ordinal": 34,
+      "case_id": "v6-v6s-12",
+      "condition_id": "pro-high",
+      "position_in_case": 3
+    }
+  ],
+  "logical_cases": 34,
+  "condition_cases": 102,
+  "v7_cases_sha256": "84b2888288fce933c26f57a7c1a8e5ef58a2bfab37ad66550da8e2925cb0f4df",
+  "input_hashes": {
+    "1": "8ed21a6c0485b65678dda976fe27fcbcbd0f9edf1cb6737ef98562fe5cc0fd9c",
+    "2": "da2071d84c92e93c72aa79e3c77417f7e2b3663b27b672b83edf860515e9d8f7",
+    "3": "1120d0c9cbe27e375e443cb18c1ec5504872ee7a0b9ee938cdc00e070bede6b3",
+    "4": "b5290bcc192b203b7ced9ff0392fead1f8d3d6f29fd9b09713928cd16158d672",
+    "5": "f1e4eb2cd13b7852aaf927e8b285ce349fda41537e6cbc1f001d58084cb0a22c",
+    "6": "1a79cbaf942f1b7676eb229f7d44d9c3e554d04f2792cfb9527bd1eff599ad33",
+    "7": "436b61d08f2b461d639fc6a9889f29e0f23d3a26e19106f1756498345f78b5cc",
+    "8": "1714d6545368dd96aa01bca0acd73d055a0f3b4a0b458bbf1c76b3ce30d64a07",
+    "9": "f4f6791fc7c8abd0f9a100544419d9decb0d893783556d95020b297f6b8a366e",
+    "10": "47895e41aec43003320816bc5bbe8f56ade90e3cbbb26883a46bc7a91778a2d3",
+    "11": "97c268e66dc7c40a0e70705071f0ed52867eb3e70eeebcd4b12cdf1bd5e8ae3a",
+    "12": "5b80922f06eed56fef064d22f4ebccf0bf6efb7bf65c8a9a037050b60954c1f1",
+    "13": "1b7eb987cb10947d079e1c4c2af2c4fd2c53e617f07e4a8a0b086cc55c5198f9",
+    "14": "36333c48360f9c97b291084f8b9ebf92c4c1b228181493821d639a016190252c",
+    "15": "1a34369ea7c52856eb9223266c26b00e10709a88c5220f601eeee0b56ba0a8cd",
+    "16": "7b005aac58ed6e3dce214510474bad0b7846cd1822a9c92aa935b62273b027ef",
+    "17": "2c4ed543e071c1a6802f8bc9ee4513262a7941792f418a6e0eb87a4695058a99",
+    "18": "70e1e1a74b8e9a150d60cd2dab13879afb48239251cb3360af244c3760b2b4ac",
+    "19": "9bb354dd868c9ef12c1a09fa3bb91be3d45e0d7f37521661bdb979fcb90fd669",
+    "20": "c7007a0ba24209510a63384504def0a488944736622c9cadc06d4fd961239631",
+    "21": "658ff83cb088157d090e35dd72f07b79ae7200059c95ef77a1e1c448a53643fd",
+    "22": "500c1df77865f375ed8fbc099977a8856feb20727c5ed6faec51d41150ea8c90",
+    "23": "199fa8dbcd5667d71437ba71236c5e63e34f85fd95f02361fc8842a26037999c",
+    "24": "c25a965f57a98566bdfad7babd36cf7f723b7321c9932952c211c4968dc8e2ae",
+    "25": "1df905f61323dcbba6aa243ab99557062e6a880b38beeb74e4b9132a785283fc",
+    "26": "eefcb06733163e988124702f69759410d13155b9dbe27b59e3522938d50364b4",
+    "27": "5c7d9980108ecef9a6a9e00b2ff25b83ea1b3933677dfc22f3979740e2f5e706",
+    "28": "b0f6cc86e1e5fcac4fe1e50cd595f910e800a0318edc17a10702430223636860",
+    "29": "efebdc6051e444f14f5f23fb9b4318c2b168f5a266c1738a3b9a314cf8cc24e1",
+    "30": "27a1abab7c2488d74ffbf7a502340e597f432a622508277c53da0c8a82eeaf65",
+    "31": "047129c4a85190a0cad268495c2cc33bcd5b355cee6bfba6e6f3f61746014754",
+    "32": "4d63dd0398f3ff0bb6160f3a03c4aca9991bd3a931c4cb701cbe680cacdf8f68",
+    "33": "cbc9a53d2de02290765d030b2bdcd804010b5d48b9853aca52409875d665d505",
+    "34": "e95b4140d0f11c467c2f12f0386470a5dfd9280f905251e6cf09578d39d50b95"
+  },
+  "scoring_policy": "unchanged V7/V6 gold; independent semantic review required",
+  "classification": "seen_development",
+  "engine_output_is_not_api_persistence": true
+}

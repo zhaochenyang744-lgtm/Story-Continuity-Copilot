@@ -1,0 +1,26 @@
+{
+  "status": "completed",
+  "issues": [],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-6",
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3455,
+  "output_tokens": 117,
+  "latency_ms": 1306,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

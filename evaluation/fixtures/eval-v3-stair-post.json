@@ -1,0 +1,24 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "stair_post",
+  "title": "石阶邮塔",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "chapters": [
+    {"chapter_number": 1, "title": "下层锁格", "source_label": "锁格时刻", "body": "十八点整，装有蓝砂的细口瓶仍在邮塔下层锁格里。"},
+    {"chapter_number": 2, "title": "干板灯符", "source_label": "灯符准则", "body": "石阶邮塔的灯符只在石板完全干燥后点亮，烛火不能替代干燥条件。"},
+    {"chapter_number": 3, "title": "共同贴签", "source_label": "贴签协作", "body": "顾迢与沈芸会先分别核对包裹重量，再共同贴上邮塔标签。"},
+    {"chapter_number": 4, "title": "上层交接", "source_label": "移交时刻", "body": "十八点三十分，沈芸才把细口瓶从下层锁格移到上层检视架。"},
+    {"chapter_number": 5, "title": "瓶底编号", "source_label": "编号缺口", "body": "细口瓶底的序列号没有登记在交接簿里。"},
+    {"chapter_number": 6, "title": "回程山径", "source_label": "回程缺口", "body": "送信人从哪条山径返回邮塔，回执没有说明。"},
+    {"chapter_number": 7, "title": "夜间盘点", "source_label": "盘点记录", "body": "顾迢在十九点完成了上层检视架的夜间盘点。"}
+  ],
+  "memory": [
+    {"memory_type": "dynamic_state", "subject": "装有蓝砂的细口瓶", "predicate": "location_at_18_00", "value": "下层锁格", "source": {"chapter_number": 1, "source_label": "锁格时刻"}},
+    {"memory_type": "dynamic_state", "subject": "装有蓝砂的细口瓶", "predicate": "location_at_18_30", "value": "上层检视架", "source": {"chapter_number": 4, "source_label": "移交时刻"}},
+    {"memory_type": "static_canon", "subject": "石阶邮塔灯符", "predicate": "lighting_rule", "value": "石板完全干燥后点亮", "source": {"chapter_number": 2, "source_label": "灯符准则"}},
+    {"memory_type": "relationship", "subject": "顾迢与沈芸", "predicate": "labeling", "value": "分别核对重量后共同贴签", "source": {"chapter_number": 3, "source_label": "贴签协作"}},
+    {"memory_type": "event_timeline", "subject": "夜间盘点", "predicate": "completed_at", "value": "十九点", "source": {"chapter_number": 7, "source_label": "盘点记录"}}
+  ]
+}

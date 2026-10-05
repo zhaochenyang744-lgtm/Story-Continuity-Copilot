@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "0ba7c0a133f983cc8f4ee909a019499abc2a13335720ece0406bdf9476a8a3ac",
+  "finished_at": "2026-09-27T09:34:42.128786+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-94b6c308-5ddb-4e55-85e9-644856f0690b-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

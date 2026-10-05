@@ -1,0 +1,479 @@
+{
+  "scope": "Direct validation only; synthetic content; no HTTP, database, Provider or SMTP calls.",
+  "engine_sha256": "c8880ae6e19629458eb783e2dffa3051f84bc912084841b75f59e82f814aa0de",
+  "network_attempts": 0,
+  "results": [
+    {
+      "name": "chapter_A_only_cites_B_even_when_A_available",
+      "expected_evidence_status": "insufficient",
+      "passed": false,
+      "input": {
+        "task": "change_impact",
+        "bindings": {
+          "project_id": "synthetic-project"
+        },
+        "proposal": {
+          "target_type": "memory",
+          "target_id": "memory-B",
+          "proposed_change": "改为由沈砚保管星钥。"
+        },
+        "retrieval": {
+          "target_source": {
+            "memory_id": "memory-B",
+            "source_span_id": "span-B",
+            "status": "selected",
+            "source_revision": 1
+          }
+        },
+        "layers": {
+          "planned": {
+            "story_plans": [],
+            "character_plans": [],
+            "world_plans": []
+          },
+          "confirmed": {
+            "memory_records": [
+              {
+                "id": "memory-B",
+                "subject": "星钥",
+                "predicate": "保管者",
+                "value": "乔霁",
+                "source_span_id": "span-B"
+              }
+            ]
+          },
+          "written": {
+            "source_spans": [
+              {
+                "id": "span-A",
+                "chapter_id": "chapter-A",
+                "chapter_number": 1,
+                "label": "码头天气",
+                "body": "码头今天晴朗，渔夫只讨论天气。",
+                "source_revision": 1
+              },
+              {
+                "id": "span-B",
+                "chapter_id": "chapter-B",
+                "chapter_number": 2,
+                "label": "星钥保管者",
+                "body": "星钥始终由乔霁保管。",
+                "source_revision": 1
+              }
+            ],
+            "draft_claims": []
+          },
+          "identity": {
+            "characters": [],
+            "aliases": []
+          },
+          "reference": {
+            "chapters": [
+              {
+                "id": "chapter-A",
+                "chapter_number": 1,
+                "title": "码头"
+              },
+              {
+                "id": "chapter-B",
+                "chapter_number": 2,
+                "title": "保管"
+              }
+            ],
+            "world_entries": []
+          }
+        }
+      },
+      "provider_payload": {
+        "summary": "原文章节需要修订。",
+        "items": [
+          {
+            "area": "chapter",
+            "target_id": "chapter-A",
+            "impact": "该章明确写了乔霁持有星钥，必须更换为沈砚。",
+            "evidence": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-B"
+              }
+            ]
+          }
+        ]
+      },
+      "actual": {
+        "summary": "原文章节需要修订。",
+        "evidence_status": "supported",
+        "items": [
+          {
+            "area": "chapter",
+            "target_id": "chapter-A",
+            "label": "第 1 章 · 码头",
+            "impact": "该章明确写了乔霁持有星钥，必须更换为沈砚。",
+            "evidence": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-B",
+                "label": "第 2 章 · 星钥保管者",
+                "excerpt": "星钥始终由乔霁保管。",
+                "source_path": "/projects/synthetic-project/sources#span-span-B"
+              }
+            ]
+          }
+        ],
+        "proposal": {
+          "target_type": "memory",
+          "target_id": "memory-B",
+          "proposed_change": "改为由沈砚保管星钥。"
+        }
+      }
+    },
+    {
+      "name": "chapter_A_only_cites_B_when_A_not_retrieved",
+      "expected_evidence_status": "insufficient",
+      "passed": false,
+      "input": {
+        "task": "change_impact",
+        "bindings": {
+          "project_id": "synthetic-project"
+        },
+        "proposal": {
+          "target_type": "memory",
+          "target_id": "memory-B",
+          "proposed_change": "改为由沈砚保管星钥。"
+        },
+        "retrieval": {
+          "target_source": {
+            "memory_id": "memory-B",
+            "source_span_id": "span-B",
+            "status": "selected",
+            "source_revision": 1
+          }
+        },
+        "layers": {
+          "planned": {
+            "story_plans": [],
+            "character_plans": [],
+            "world_plans": []
+          },
+          "confirmed": {
+            "memory_records": [
+              {
+                "id": "memory-B",
+                "subject": "星钥",
+                "predicate": "保管者",
+                "value": "乔霁",
+                "source_span_id": "span-B"
+              }
+            ]
+          },
+          "written": {
+            "source_spans": [
+              {
+                "id": "span-B",
+                "chapter_id": "chapter-B",
+                "chapter_number": 2,
+                "label": "星钥保管者",
+                "body": "星钥始终由乔霁保管。",
+                "source_revision": 1
+              }
+            ],
+            "draft_claims": []
+          },
+          "identity": {
+            "characters": [],
+            "aliases": []
+          },
+          "reference": {
+            "chapters": [
+              {
+                "id": "chapter-A",
+                "chapter_number": 1,
+                "title": "码头"
+              },
+              {
+                "id": "chapter-B",
+                "chapter_number": 2,
+                "title": "保管"
+              }
+            ],
+            "world_entries": []
+          }
+        }
+      },
+      "provider_payload": {
+        "summary": "原文章节需要修订。",
+        "items": [
+          {
+            "area": "chapter",
+            "target_id": "chapter-A",
+            "impact": "该章明确写了乔霁持有星钥，必须更换为沈砚。",
+            "evidence": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-B"
+              }
+            ]
+          }
+        ]
+      },
+      "actual": {
+        "summary": "原文章节需要修订。",
+        "evidence_status": "supported",
+        "items": [
+          {
+            "area": "chapter",
+            "target_id": "chapter-A",
+            "label": "第 1 章 · 码头",
+            "impact": "该章明确写了乔霁持有星钥，必须更换为沈砚。",
+            "evidence": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-B",
+                "label": "第 2 章 · 星钥保管者",
+                "excerpt": "星钥始终由乔霁保管。",
+                "source_path": "/projects/synthetic-project/sources#span-span-B"
+              }
+            ]
+          }
+        ],
+        "proposal": {
+          "target_type": "memory",
+          "target_id": "memory-B",
+          "proposed_change": "改为由沈砚保管星钥。"
+        }
+      }
+    },
+    {
+      "name": "matching_chapter_B_source_positive_control",
+      "expected_evidence_status": "supported",
+      "passed": true,
+      "input": {
+        "task": "change_impact",
+        "bindings": {
+          "project_id": "synthetic-project"
+        },
+        "proposal": {
+          "target_type": "memory",
+          "target_id": "memory-B",
+          "proposed_change": "改为由沈砚保管星钥。"
+        },
+        "retrieval": {
+          "target_source": {
+            "memory_id": "memory-B",
+            "source_span_id": "span-B",
+            "status": "selected",
+            "source_revision": 1
+          }
+        },
+        "layers": {
+          "planned": {
+            "story_plans": [],
+            "character_plans": [],
+            "world_plans": []
+          },
+          "confirmed": {
+            "memory_records": [
+              {
+                "id": "memory-B",
+                "subject": "星钥",
+                "predicate": "保管者",
+                "value": "乔霁",
+                "source_span_id": "span-B"
+              }
+            ]
+          },
+          "written": {
+            "source_spans": [
+              {
+                "id": "span-A",
+                "chapter_id": "chapter-A",
+                "chapter_number": 1,
+                "label": "码头天气",
+                "body": "码头今天晴朗，渔夫只讨论天气。",
+                "source_revision": 1
+              },
+              {
+                "id": "span-B",
+                "chapter_id": "chapter-B",
+                "chapter_number": 2,
+                "label": "星钥保管者",
+                "body": "星钥始终由乔霁保管。",
+                "source_revision": 1
+              }
+            ],
+            "draft_claims": []
+          },
+          "identity": {
+            "characters": [],
+            "aliases": []
+          },
+          "reference": {
+            "chapters": [
+              {
+                "id": "chapter-A",
+                "chapter_number": 1,
+                "title": "码头"
+              },
+              {
+                "id": "chapter-B",
+                "chapter_number": 2,
+                "title": "保管"
+              }
+            ],
+            "world_entries": []
+          }
+        }
+      },
+      "provider_payload": {
+        "summary": "原文章节需要修订。",
+        "items": [
+          {
+            "area": "chapter",
+            "target_id": "chapter-B",
+            "impact": "该章明确写了乔霁持有星钥，必须更换为沈砚。",
+            "evidence": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-B"
+              }
+            ]
+          }
+        ]
+      },
+      "actual": {
+        "summary": "原文章节需要修订。",
+        "evidence_status": "supported",
+        "items": [
+          {
+            "area": "chapter",
+            "target_id": "chapter-B",
+            "label": "第 2 章 · 保管",
+            "impact": "该章明确写了乔霁持有星钥，必须更换为沈砚。",
+            "evidence": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-B",
+                "label": "第 2 章 · 星钥保管者",
+                "excerpt": "星钥始终由乔霁保管。",
+                "source_path": "/projects/synthetic-project/sources#span-span-B"
+              }
+            ]
+          }
+        ],
+        "proposal": {
+          "target_type": "memory",
+          "target_id": "memory-B",
+          "proposed_change": "改为由沈砚保管星钥。"
+        }
+      }
+    },
+    {
+      "name": "memory_only_negative_control",
+      "expected_evidence_status": "insufficient",
+      "passed": true,
+      "input": {
+        "task": "change_impact",
+        "bindings": {
+          "project_id": "synthetic-project"
+        },
+        "proposal": {
+          "target_type": "memory",
+          "target_id": "memory-B",
+          "proposed_change": "改为由沈砚保管星钥。"
+        },
+        "retrieval": {
+          "target_source": {
+            "memory_id": "memory-B",
+            "source_span_id": "span-B",
+            "status": "selected",
+            "source_revision": 1
+          }
+        },
+        "layers": {
+          "planned": {
+            "story_plans": [],
+            "character_plans": [],
+            "world_plans": []
+          },
+          "confirmed": {
+            "memory_records": [
+              {
+                "id": "memory-B",
+                "subject": "星钥",
+                "predicate": "保管者",
+                "value": "乔霁",
+                "source_span_id": "span-B"
+              }
+            ]
+          },
+          "written": {
+            "source_spans": [
+              {
+                "id": "span-A",
+                "chapter_id": "chapter-A",
+                "chapter_number": 1,
+                "label": "码头天气",
+                "body": "码头今天晴朗，渔夫只讨论天气。",
+                "source_revision": 1
+              },
+              {
+                "id": "span-B",
+                "chapter_id": "chapter-B",
+                "chapter_number": 2,
+                "label": "星钥保管者",
+                "body": "星钥始终由乔霁保管。",
+                "source_revision": 1
+              }
+            ],
+            "draft_claims": []
+          },
+          "identity": {
+            "characters": [],
+            "aliases": []
+          },
+          "reference": {
+            "chapters": [
+              {
+                "id": "chapter-A",
+                "chapter_number": 1,
+                "title": "码头"
+              },
+              {
+                "id": "chapter-B",
+                "chapter_number": 2,
+                "title": "保管"
+              }
+            ],
+            "world_entries": []
+          }
+        }
+      },
+      "provider_payload": {
+        "summary": "原文章节需要修订。",
+        "items": [
+          {
+            "area": "chapter",
+            "target_id": "chapter-A",
+            "impact": "该章明确写了乔霁持有星钥，必须更换为沈砚。",
+            "evidence": [
+              {
+                "source_type": "memory_record",
+                "source_id": "memory-B"
+              }
+            ]
+          }
+        ]
+      },
+      "actual": {
+        "summary": "当前证据不足以支持影响结论。",
+        "evidence_status": "insufficient",
+        "items": [],
+        "proposal": {
+          "target_type": "memory",
+          "target_id": "memory-B",
+          "proposed_change": "改为由沈砚保管星钥。"
+        }
+      }
+    }
+  ]
+}

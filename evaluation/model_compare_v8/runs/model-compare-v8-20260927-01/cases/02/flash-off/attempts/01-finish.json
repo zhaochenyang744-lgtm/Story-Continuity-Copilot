@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1419,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "23fc5f66-d8aa-43b5-8a4f-5911651b8897",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-4fca066b-a350-449a-9291-36195efde7b4-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim that Mira could not open North Glass with only a red badge is directly supported by the timeless rule that the door opens only for a blue badge wearer, and the 10点 red-badge attempt is consistent context.\"}]}",
+  "visible_content_sha256": "419c919814f3ec2eb34b91176289f9c45db2660379cf6aef06c213857e9817bf",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3469,
+      "completion_tokens": 101,
+      "total_tokens": 3570,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1293
+    },
+    "status": "complete",
+    "prompt_tokens": 3469,
+    "completion_tokens": 101,
+    "total_tokens": 3570,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:35:51.028425+00:00"
+}

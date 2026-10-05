@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "cinder_lantern_ferry",
+  "title": "Cinder Lantern Ferry",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v6-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "Cinder Lantern Ferry",
+    "characters": [
+      "Sora Fen",
+      "Bram Latch"
+    ],
+    "locations": [
+      "Vesper Landing",
+      "Ashen Channel"
+    ],
+    "core_design": "storm-diverted inspection movement and interrupted crossing status"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Beacon assignment",
+      "source_label": "beacon_assignment",
+      "body": "The morning assignment schedules Sora Fen to inspect the Vesper beacon after disembarking at Vesper Landing."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Storm movement log",
+      "source_label": "storm_movement_log",
+      "body": "The storm log reroutes Sora Fen to inspect the beacon repeater aboard the ferry in Ashen Channel and records that she never disembarked at Vesper Landing."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Crossing departure",
+      "source_label": "crossing_departure",
+      "body": "The Lantern Crossing opened eastbound when Bram Latch released the stern line at first light."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Mid-channel suspension",
+      "source_label": "mid_channel_suspension",
+      "body": "A cinder squall suspended the Lantern Crossing mid-channel; the ferry returned every passenger west and the eastbound passage did not complete."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Lantern fuel",
+      "source_label": "lantern_fuel",
+      "body": "Deck lanterns on the ferry burn filtered juniper oil stored in square blue tins."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Whistle register",
+      "source_label": "whistle_register",
+      "body": "Bram Latch carries a brass whistle engraved with two narrow rings."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Engine recovery worksheet",
+      "source_label": "engine_recovery_worksheet",
+      "body": "The recovery worksheet confirms that the intake screen was cleared, but it does not record whether the timing chain was reset or whether propulsion resumed after the repair."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Pouch receipt",
+      "source_label": "pouch_receipt",
+      "body": "The sealed pouch receipt has a blank recipient field; no person is recorded as accepting it."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "Sora Fen",
+      "predicate": "storm_inspection_location",
+      "value": "aboard the ferry in Ashen Channel",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "storm_movement_log"
+      }
+    },
+    {
+      "memory_type": "event_timeline",
+      "subject": "Lantern Crossing",
+      "predicate": "eastbound_status",
+      "value": "suspended and returned west",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "mid_channel_suspension"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "deck lanterns",
+      "predicate": "fuel",
+      "value": "filtered juniper oil",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "lantern_fuel"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Bram Latch whistle",
+      "predicate": "material_and_mark",
+      "value": "brass with two narrow rings",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "whistle_register"
+      }
+    }
+  ]
+}

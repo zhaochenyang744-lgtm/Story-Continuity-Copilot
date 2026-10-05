@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+      "status": "insufficient_evidence",
+      "category": "location_action",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The draft cites the records as the source for Vela delivering the telegram to Sera at 13点, but the cited record only shows Sera opening the telegram at 13点 and states the deliverer is unidentified, so the record-backed attribution to Vela is unsupported.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-harbor_signal-4",
+          "span_id": "fixture-span-harbor_signal-4",
+          "excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-harbor_signal-4"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "Span fixture-span-harbor_signal-4 fixes the 13点 moment and Sera's opening of the telegram, but explicitly leaves the deliverer unrecorded; that omission is the missing link between the 13点 record and the draft's claimed deliverer. No supplied span names Vela as the one who delivered it, so the \"according to the records\" warrant fails and the delivering action remains unknown.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-harbor_signal-4",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-cd04b2e5-3c01-49bd-8d37-af323d8786dc-1",
+      "returned_span_ids": [
+        "fixture-span-harbor_signal-4",
+        "fixture-span-harbor_signal-3",
+        "fixture-span-harbor_signal-2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3421,
+  "output_tokens": 2895,
+  "latency_ms": 12832,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

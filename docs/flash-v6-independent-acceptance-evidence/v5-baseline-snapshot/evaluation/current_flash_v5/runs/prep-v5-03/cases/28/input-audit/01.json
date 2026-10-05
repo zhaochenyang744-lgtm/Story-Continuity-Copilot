@@ -1,0 +1,20 @@
+{
+  "case_id": "g02-identical-text",
+  "family": "g02",
+  "status": "same_run_api_input_bound",
+  "same_run_request_sha256": "00e53b09c2d99a41c2439fcb9f66fcc8303d21e1807a763e60a19d7521eb8f57",
+  "saved_draft_sha256": "3e296b4f2262e0655b7a88d79bc09fdb99b25b1720d6c3533ebf1df0a3125223",
+  "draft_chars": 14,
+  "claim_available": 2,
+  "claim_selected": 2,
+  "claim_unselected": 0,
+  "selected_source_span_count": 4,
+  "selected_memory_count": 8,
+  "memory_source_selected_count": 3,
+  "memory_source_unselected_count": 5,
+  "dialogue_two_complete_quotes": false,
+  "database_binding": "matched_persisted_isolated_database",
+  "database_selected_source_count": 4,
+  "database_selected_memory_count": 8,
+  "database_unselected_memory_sources_allowed": 5
+}

@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "b0f6cc86e1e5fcac4fe1e50cd595f910e800a0318edc17a10702430223636860",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "The draft attributes the loosening of the capsule valve cap to Ina, but the cited inspection log only records that the cap was loose at 10:00 and explicitly does not identify who loosened it. The actor remains unknown, so the attribution is unsupported rather than proven false.",
+        "reasoning": "The only supplied evidence establishes the state (cap loose at 10:00) and states that the record does not name a person. No span in the allowed set links Ina to the loosening, and no alias or handoff supplies that link. Judgment stops at the missing attribution: the cited span cannot confirm the draft's agent, and it also does not contradict it, so the gap is one of missing warrant, not of contradiction.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_actor_blank-1",
+            "span_id": "fixture-span-v6_actor_blank-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_actor_blank-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_actor_blank-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The inspection log records only that the cap was loose at 10:00 and says it does not identify who loosened it. Nothing supplied ties Ina to the act, so the draft's attribution has a missing warrant; the log neither confirms nor contradicts Ina as the actor."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3009,
+      "completion_tokens": 1384,
+      "total_tokens": 4393,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 926
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 833
+    },
+    "status": "complete",
+    "prompt_tokens": 3009,
+    "completion_tokens": 1384,
+    "total_tokens": 4393,
+    "reasoning_tokens": 926,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

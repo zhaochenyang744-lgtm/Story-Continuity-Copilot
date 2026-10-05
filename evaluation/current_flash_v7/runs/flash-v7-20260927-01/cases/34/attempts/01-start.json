@@ -1,0 +1,12 @@
+{
+  "case_id": "v6-v6s-12",
+  "run_id": "flash-v7-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 40,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "7c40e52bbdce514e5e8784abf3be7b8644db032294554b864b1496499f40f6c1",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "144e88080a8697b5d173da82c2eed485b56f11c06df44c008f3b1365e3d7012f",
+  "started_at": "2026-09-27T10:49:12.221555+00:00",
+  "usage_status": "unknown_until_response"
+}

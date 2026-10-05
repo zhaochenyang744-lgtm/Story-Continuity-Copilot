@@ -1,0 +1,25 @@
+# Current code × DeepSeek V4.1 Flash: frozen regression plan
+
+Prepared 2026-09-26 before the first real request. This is an exposed fixed regression against the current checkout, not a blind or unseen test. Historical V8 used a different code and prompt version; any score difference cannot be attributed solely to model choice.
+
+## Inputs and outputs
+
+- V8: the existing 24 labels and their expected evidence in `evaluation/case_sets/eval-set-v8.json`; 8 conflict, 8 no conflict, 8 insufficient evidence. Three named representative cases get two extra independent runs each, as in the frozen V8 stability protocol. The old files and result paths remain untouched.
+- G01: 10 synthetic narrative time and knowledge cases, including six compatible situations and four true conflict controls. Correct first model output for the compatible cases is no issue / `no_conflict`; a product downgrade to `insufficient_evidence` is tracked separately.
+- G02: four distinct saved draft inputs. The three sentence input is counted once even though older fake probes injected several different model responses into it. A coverage label or complete set of citation IDs does not establish that each item is supported by its own citation. Long claim and body truncation must be disclosed.
+- G03: four synthetic target source setups. Short and deep facts test direct target evidence; absent fact tests conservative handling, and another chapter tests source ownership. The absent case may be stopped before model dispatch.
+- G04 and G05: prior offline and browser evidence remains product guard evidence, not model accuracy. The 12 historical real model cases were only located as a report in this checkout; the two reported package hashes cannot be checked against original materials here, so those cases are excluded.
+
+The case bytes, V8 corpus bytes, relevant product and scoring source bytes, model request parameters, prompt version constants, and execution code are recorded in `frozen-inputs.json`. Output is `runs/<unique-run-id>/`, with one newly created file per case, metadata for every dispatched HTTP attempt, and a run summary. A run ID and every case file are create only. Failed attempts stay under the same run ID; a harness correction requires a new ID and a diff.
+
+## Score and stop rules
+
+The V8 product metrics use `evaluation.metrics.aggregate` and the original V8 threshold values without changing labels: macro F1 ≥ .8; conflict recall ≥ .8; insufficient evidence recall ≥ .8; no conflict false positive rate ≤ .2; expected evidence top 5 hit ≥ .8; cited evidence precision = 1; schema validity = 1; evidence resolvability = 1; conflict category accuracy ≥ .75; designated category regressions 3/3; expected evidence recall ≥ .8; full multiple direct evidence set recall ≥ .75. Safety paths are separately supported by the prior offline evidence and cannot be counted as model correctness. Terminal failure cannot be scored as a successful no conflict decision.
+
+For each G01 case, compare first parsed model decision and final product decision to the frozen semantic label. For G02 and G03, retain first parsed business JSON, every repair JSON, the final product analysis, cited IDs and supplied source excerpts; item level paraphrase and impact support remain marked for independent human review. No claim of full model accuracy can be made from a citation set alone. Stability repeats are not new cases.
+
+The planned matrix has 48 logical runs: 24 V8, 6 repeat runs, 10 G01, 4 G02, 4 G03. The actual HTTP total may differ because of contract repairs, product retries, no dispatch cases, or terminal failures. Product timeout and retry are 30 seconds and at most one transport retry per call. Each matrix entry runs once. A failed `/models` preflight, authentication or model rejection, or two consecutive service failures stops dispatch. All attempts count, including failed ones; unknown usage stays unknown. API returned token usage is recorded without estimating a bill; cost is unavailable unless the service directly returns it.
+
+The provider is `deepseek`, base URL `https://api.deepseek.com`, request model `deepseek-flash`, JSON object response, thinking disabled, temperature 0, with the current product's output token limit. The service's returned model and fingerprint are recorded only when provided. The credential is read by name from the process, with optional Windows User environment fallback at launch; it is never written or printed. Prompts, raw HTTP bodies, authorization headers, hidden reasoning, SMTP and business databases are excluded. Synthetic SQLite and sessions live in a temporary directory and are removed after the run.
+
+Offline checks before real dispatch: unique case identity, no output overwrite, timeout retry accounting and unknown usage, and real product routing through isolated synthetic V8 / brief / impact fixtures. `python evaluation/current_flash_v1/test_offline.py` must pass; then run `python evaluation/current_flash_v1/run.py freeze` and `verify` before `run --run-id <new-id>`.

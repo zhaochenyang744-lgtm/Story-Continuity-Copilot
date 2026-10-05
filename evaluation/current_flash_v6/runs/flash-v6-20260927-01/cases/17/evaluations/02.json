@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "8fa6c2bf5674476bdfed46e159d9e131a0321867f4fb81eff8615260b46bcf6e",
+  "finished_at": "2026-09-27T10:02:35.962558+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-d4e05430-a6ba-4ed8-a40f-a4fedf4459d9-1",
+        "verdict": "no_issue",
+        "basis": "The claim states that at 10点 the restoration boat had not completed launch, its manifest was unsigned, and it remained at the quay. The cited evidence fixture-span-orchard_restoration-5 explicitly confirms the same time (10点 on the same day), the unsigned manifest, and the boat remaining at the quay without departing. The launch-completion rule in fixture-span-orchard_restoration-4 is consistent: since the manifest was unsigned and the boat had not departed, launch was not complete. No contradiction or missing link exists, so no issue is emitted."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3769,
+    "output_tokens": 173,
+    "observed_response_input_tokens": 3769,
+    "observed_response_output_tokens": 173
+  }
+}

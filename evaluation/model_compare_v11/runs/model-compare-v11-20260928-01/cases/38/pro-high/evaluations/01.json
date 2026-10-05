@@ -1,0 +1,81 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "84be104f39832b43bde8e9706a9a7bf05a27dbee8539d9261897a613b333888b",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc4-deliverer-blank-zh",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "驿站记录未载明送件人，无法支持阿蘅送药的断言。",
+        "reasoning": "当前声称称驿站记录表明阿蘅送药，但摘录Y1显示送件人一栏空白，未记录任何送件人；Y2仅提供北营位置，未涉及送件人。由于缺少记录中送件人身份的依据，无法确认阿蘅送出药箱，因此判定为证据不足；不断言阿蘅未送。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": "辰时",
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc4-deliverer-blank-zh-Y1",
+            "span_id": "cc-span-cc4-deliverer-blank-zh-Y1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc4-deliverer-blank-zh-Y1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc4-deliverer-blank-zh-Y1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": [],
+        "proposed_memory_change": null
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc4-deliverer-blank-zh",
+        "verdict": "insufficient_evidence",
+        "basis": "驿站记录所示送件人一栏空白，缺少阿蘅为送件人的记载，故判定证据不足。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3253,
+      "completion_tokens": 5026,
+      "total_tokens": 8279,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 4567
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 821
+    },
+    "status": "complete",
+    "prompt_tokens": 3253,
+    "completion_tokens": 5026,
+    "total_tokens": 8279,
+    "reasoning_tokens": 4567,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

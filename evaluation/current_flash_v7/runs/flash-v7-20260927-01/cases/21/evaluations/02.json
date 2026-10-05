@@ -1,0 +1,71 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "e299475b53b72b1f207bc83d48a85a0c74d7b3c176b27d86224d872c3622cfcf",
+  "finished_at": "2026-09-27T10:48:29.457961+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-904e5f94-8b13-4ebc-831f-a922ef809686-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "character_knowledge",
+        "severity": "medium",
+        "explanation": "草稿声称索引与维护表共同确立了 Vela 与透镜 R4 的关系，但所引证据并未提供这一关联。",
+        "reasoning": "索引只说明 R4 是已安装的西侧孔径透镜，维护表只说明玻璃研磨者的名字留空；两者都没有提到 Vela，也没有说明这两份记录如何共同确立关于 Vela 的事实。缺少将 Vela 与透镜 R4 联系起来的证据，因此该断言无法被证实。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "span_id": "fixture-span-basalt_observatory-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-3",
+            "span_id": "fixture-span-basalt_observatory-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-3"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-1",
+            "role": "missing_link"
+          },
+          {
+            "span_id": "fixture-span-basalt_observatory-3",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-904e5f94-8b13-4ebc-831f-a922ef809686-1",
+        "verdict": "insufficient_evidence",
+        "basis": "索引只确认 R4 是西侧孔径透镜，维护表只留下研磨者姓名空白；两者均未提及 Vela，也未说明如何共同确立关于 Vela 的事实，缺少关联证据。"
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 4002,
+    "output_tokens": 468,
+    "observed_response_input_tokens": 4002,
+    "observed_response_output_tokens": 468
+  }
+}

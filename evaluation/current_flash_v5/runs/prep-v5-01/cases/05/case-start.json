@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-01",
+  "ordinal": 5,
+  "case_id": "ccv3-north_glass-object_state-no_conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T07:58:21.255474+00:00",
+  "case_input_sha256": "98343cd8444271f6ee13c27209b8788120d283689ce6a065d6a3dfd4ecaaae20",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

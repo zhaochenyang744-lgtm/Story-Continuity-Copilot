@@ -1,0 +1,12 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "run_id": "flash-v7-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 1,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "52f4e80e45b72b798b7d4729ac15f48a3d0048ec793f4696960eca2ca2d189ed",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "a2d974efde7e5a15087afd996a4ee0737e181a3bc9e22530796eebefb7882942",
+  "started_at": "2026-09-27T10:47:14.595412+00:00",
+  "usage_status": "unknown_until_response"
+}

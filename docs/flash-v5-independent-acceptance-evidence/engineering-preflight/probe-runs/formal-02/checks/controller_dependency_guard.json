@@ -1,0 +1,28 @@
+{
+  "name": "controller_dependency_guard",
+  "passed": true,
+  "details": {
+    "positive_verify_only": {
+      "run_id": "flash-v5-audit-guard-check",
+      "git_head": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+      "files_checked": 280,
+      "v5_manifest_sha256": "aabea4b8f99d2d4282ed627e98da98a57e46a1c526a7a45064af22acfd87682b",
+      "controller_manifest_sha256": "bcc424e1a372b1e98b1d81d00f368e94075613ab559b1fceb68c7681c371747b",
+      "verified": true
+    },
+    "supplement_identity_rejection": {
+      "type": "RuntimeError",
+      "message": "controller_dependency_manifest_changed"
+    },
+    "mock_dependency_drift_rejection": {
+      "type": "RuntimeError",
+      "message": "frozen_dependency_changed:backend/app/text_content.py"
+    },
+    "occupied_identity_early_rejection": {
+      "type": "FileExistsError",
+      "message": "live_run_identity_already_exists"
+    },
+    "source_hashes_unchanged": true,
+    "launch_called": false
+  }
+}

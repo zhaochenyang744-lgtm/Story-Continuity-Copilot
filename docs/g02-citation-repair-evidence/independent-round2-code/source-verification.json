@@ -1,0 +1,29 @@
+{
+  "method": "Exact SHA256 using manifest-normalized forward-slash relative paths",
+  "checks": [
+    {
+      "path": "backend/app/brief_citations.py",
+      "test_before_hash": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+      "current_hash": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+      "frozen_hash": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+      "pass": true
+    },
+    {
+      "path": "backend/app/engine.py",
+      "test_before_hash": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+      "current_hash": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+      "frozen_hash": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+      "pass": true
+    },
+    {
+      "path": "backend/app/v2_database.py",
+      "test_before_hash": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+      "current_hash": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+      "frozen_hash": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "manifest_sha256": "d0da4eb5037c5ce8e724d0263255654d97fb25cc975e5e419786ea5a60c8d29c",
+  "prior_boolean_note": "The replay retained original probe code that used Windows backslash path keys to look up forward-slash manifest keys. Its matches_current_comparison_freeze flags are false due to key mismatch; this separate result corrects the comparison without overwriting the first output."
+}

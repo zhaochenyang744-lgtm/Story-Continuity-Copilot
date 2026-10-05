@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:02:59.226849+00:00",
+  "latency_ms": 1256,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3450,
+      "completion_tokens": 125,
+      "total_tokens": 3575
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-bfcbd7f2-5cfa-4e55-94fe-c7968d1fd2a5-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim states Vela moved at 19点 from Gate Four on the west pier to the east pier. The cited evidence shows Vela at Gate Four on the west pier at 18点 and Gate Four standing on the west pier, both compatible with a later 19点 move to the east pier. No contradiction exists.\"}]}",
+  "message_content_sha256": "127e9d862cdd47bd6580deac2d32ae7587ee0ecb9a0fa181bbc1a418f30c327c",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

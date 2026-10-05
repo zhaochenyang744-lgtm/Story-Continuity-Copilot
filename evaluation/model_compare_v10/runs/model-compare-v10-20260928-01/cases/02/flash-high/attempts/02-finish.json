@@ -1,0 +1,48 @@
+{
+  "evaluation": 2,
+  "trial_post_ordinal": 2,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 6804,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "5b216b69-86a0-45f6-acd9-0b167f18f7fc",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-4fca066b-a350-449a-9291-36195efde7b4-1\",\"verdict\":\"no_issue\",\"basis\":\"The draft's asserted failure is directly entailed by the timeless rule (fixture-span-north_glass-1 / fixture-memory-north_glass-1) that a red badge cannot open North Glass, plus fixture-span-north_glass-2's record that Mira wore only a red badge at 10点. fixture-span-north_glass-5 concerns the pneumatic carrier and is unrelated. No contradiction or missing link.\"}]}",
+  "visible_content_sha256": "59396c4dec55fa58de70bcfc51b0725c3949118f5d6b876d4129e1cad30cfb34",
+  "reasoning": {
+    "present": true,
+    "codepoints": 5362,
+    "utf8_bytes": 5504,
+    "sha256": "6d8616ef333728c547a7f1cf25e86f95b819a5d93a85b0b645d17283dac10eb9"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 4307,
+      "completion_tokens": 1749,
+      "total_tokens": 6056,
+      "prompt_tokens_details": {
+        "cached_tokens": 3712
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1605
+      },
+      "prompt_cache_hit_tokens": 3712,
+      "prompt_cache_miss_tokens": 595
+    },
+    "status": "complete",
+    "prompt_tokens": 4307,
+    "completion_tokens": 1749,
+    "total_tokens": 6056,
+    "reasoning_tokens": 1605,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T08:36:54.669843+00:00"
+}

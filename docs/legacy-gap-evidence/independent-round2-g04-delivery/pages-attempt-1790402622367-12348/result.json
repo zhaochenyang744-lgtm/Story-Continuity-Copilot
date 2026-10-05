@@ -1,0 +1,80 @@
+{
+  "started_at": "2026-09-26T06:03:42.368Z",
+  "status": "passed",
+  "output": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\docs\\legacy-gap-evidence\\independent-round2-g04-delivery\\pages-attempt-1790402622367-12348",
+  "frontendOrigin": "http://127.0.0.1:3238",
+  "backendOrigin": "http://127.0.0.1:8238",
+  "pages": [
+    {
+      "route": "/test-writing-tools",
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "errorResponses": [],
+      "writeRequests": [],
+      "initial_http_status": 200,
+      "final_url": "http://127.0.0.1:3238/login",
+      "title": "Story Continuity Copilot",
+      "body_text": "跳到主要内容\n登录\n\n继续你的作品与连续性工作。\n\n账号\n密码\n显示\n忘记密码？\n登录\n还没有账号？创建账号\n访客体验 24 小时",
+      "harness_elements": 0,
+      "dev_overlay_elements": 0,
+      "harness_text": false,
+      "screenshot": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\docs\\legacy-gap-evidence\\independent-round2-g04-delivery\\pages-attempt-1790402622367-12348\\test-writing-tools-catchall-to-login-1440.png"
+    },
+    {
+      "route": "/register",
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "errorResponses": [],
+      "writeRequests": [],
+      "initial_http_status": 200,
+      "final_url": "http://127.0.0.1:3238/register",
+      "title": "Story Continuity Copilot",
+      "body_text": "跳到主要内容\n创建账号\n\n创建本地账号，开始管理你的作品。\n\n账号\n显示名称\n恢复邮箱\n密码\n显示\n\n账号至少 3 个字符，密码至少 10 个字符。恢复邮箱验证后可用于密码找回。\n\n创建账号\n已有账号？返回登录",
+      "harness_elements": 0,
+      "dev_overlay_elements": 0,
+      "harness_text": false,
+      "screenshot": "C:\\Users\\赵晨阳\\Documents\\ChatGPT\\Agent 搭建\\Story-Continuity-Copilot\\产出\\交付物\\story-continuity-legacy-gap-repair\\docs\\legacy-gap-evidence\\independent-round2-g04-delivery\\pages-attempt-1790402622367-12348\\register-production-1440.png"
+    }
+  ],
+  "externalRequests": [],
+  "cleanup": [
+    {
+      "name": "frontend.log",
+      "pid": 8292,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "name": "backend.log",
+      "pid": 28628,
+      "code": null,
+      "signal": "SIGTERM"
+    }
+  ],
+  "ports_free_before_start": true,
+  "build_id": "W52CgAUpNgqPizlf_vc_k",
+  "root": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\story-v130-rc-g04-delivery-pages-gSH3gv",
+  "artifact": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\story-v130-rc-g04-delivery-pages-gSH3gv\\standalone",
+  "route_manifest_sha256": "5fa3a3282772099245efdd51bbf29c15b8a6b4b79496a0bdc037440f60078777",
+  "copied_route_manifest_sha256": "5fa3a3282772099245efdd51bbf29c15b8a6b4b79496a0bdc037440f60078777",
+  "provider_before": {
+    "provider_mode": "injected_stub",
+    "external_provider_http_enabled": false,
+    "provider_calls": 0,
+    "provider_http_calls": 0,
+    "blocked": false,
+    "test_root": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\story-v130-rc-g04-delivery-pages-gSH3gv"
+  },
+  "provider_after": {
+    "provider_mode": "injected_stub",
+    "external_provider_http_enabled": false,
+    "provider_calls": 0,
+    "provider_http_calls": 0,
+    "blocked": false,
+    "test_root": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\story-v130-rc-g04-delivery-pages-gSH3gv"
+  },
+  "ports_free_after_cleanup": true,
+  "completed_at": "2026-09-26T06:03:50.481Z"
+}

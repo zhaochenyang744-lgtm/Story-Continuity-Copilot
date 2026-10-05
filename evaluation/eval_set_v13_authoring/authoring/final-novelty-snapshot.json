@@ -1,0 +1,137 @@
+{
+  "created_at_utc": "2026-10-04T04:23:12.123205+00:00",
+  "old_files": [
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/huangting_recording.md",
+      "sha256": "fa8003d39a8624f881e7ba9ad70ebfaf7c153c2709bffa890a3563767abba654",
+      "bytes": 2252
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/jinyu_credit_market.md",
+      "sha256": "217d02a45ffae9b9e4adb9247fb4ec375500ac50f3a02fcccc762dd9682ccbbe",
+      "bytes": 2310
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/luliao_last_collection.md",
+      "sha256": "8d599daf38916bb6f1a264efb4bb24c16efd86e35ac894bb58c3252d636b482c",
+      "bytes": 2162
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/mosswick_costume_rental.md",
+      "sha256": "ef1e37a224cba7c3f63151fda4792dd987b39d5ab8756d372c565f5e6e764d0e",
+      "bytes": 2138
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/sablefen_translation_residency.md",
+      "sha256": "8d1b4ea2db89f77b0abbc0845b364958f4ed5a3ba3a0e5766d8eaac00e04ba2e",
+      "bytes": 2166
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/sources/ternhollow_model_railway.md",
+      "sha256": "033368c73a0b1e24ba60fe2016475cbc10c712958e61e620de939e76f0af47ae",
+      "bytes": 2138
+    },
+    {
+      "path": "evaluation/eval_set_v11_authoring/cases.json",
+      "sha256": "6b7f4f4dee490855321329a7dec3899b42820de67741b7d7c88f7566750bcc61",
+      "bytes": 31758
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/brambletide_aquarium_census.md",
+      "sha256": "6ec74dd67f833d732e890edca0bcf0e7c8ac42f6bc3939168815d5530d9e020d",
+      "bytes": 2145
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/calverin_rag_paper_mill.md",
+      "sha256": "09c1a7f76bbef78e83db63a93ee6d33ba506e9e163fbce051729297834376601",
+      "bytes": 2180
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/elmrake_hotel_repairs.md",
+      "sha256": "4be8e8ea80a2a7320ae91bd25d3e224d5b2491ba950319e93d3610d385a55ab9",
+      "bytes": 2243
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/puling_refraction_festival.md",
+      "sha256": "17cd5275b55533c5dbe68fcbaba8976bea51fa9d19113950f4a78d152160c447",
+      "bytes": 2271
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/shengxiu_score_library.md",
+      "sha256": "f4dfe4b1bfef1597ce9568631574d1584e397d40980d9542f2dce8d9852abff0",
+      "bytes": 2273
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/sources/tiaojin_rainworks.md",
+      "sha256": "d4632f8255a835322cebf4d77eb944e500f57817e38be617c386179e3c1700a2",
+      "bytes": 2243
+    },
+    {
+      "path": "evaluation/eval_set_v12_authoring/cases.json",
+      "sha256": "d3bfeb632df7e7405f3cceb95d8b55c7b6a0aef50fb66637b7258dc650431ad4",
+      "bytes": 32155
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/chaochi_letters.md",
+      "sha256": "45a35d8197bebb913575f69f3ecc5ab73bc2433bb31b5b25451456a9d4621f78",
+      "bytes": 58866
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/shahai_error.md",
+      "sha256": "fd39de1fbf4e189a397bc99646b5749e6a76dadab2f8649bbb9faa7c742486b5",
+      "bytes": 33588
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/works/yechu_orders.md",
+      "sha256": "59b74735ebe403736c1965408157c1a9dd2ff9272b1159105a7a732b93464653",
+      "bytes": 34720
+    },
+    {
+      "path": "evaluation/eval_set_lf1_dev/labels.json",
+      "sha256": "d26cf881cfd4b0f70ef9474f9300e7602a2afeb5b47a5eeabcfbf8b4d876db0a",
+      "bytes": 26151
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/canal_records.md",
+      "sha256": "74c88888e9554a3a7935ec73ce94ec0bbbba420c2762dbe31be6ec69e815477b",
+      "bytes": 35689
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/clay_theatre.md",
+      "sha256": "7725985a359dc4b2f64d9b09b6f3904160c3b72e475e47ce37519b9030952e03",
+      "bytes": 36428
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/moss_cape.md",
+      "sha256": "0ccc7e43cf2b19c40e081278a40de02b2634ea3a506068bfda49d81f3da4eda8",
+      "bytes": 52023
+    },
+    {
+      "path": "evaluation/eval_set_lf1_formal/works/orbital_orchard.md",
+      "sha256": "c811597240f006a7d23230fa9706c472808ff7f58c6ec48b50fbbcbd5e3082f4",
+      "bytes": 49724
+    },
+    {
+      "path": "evaluation/eval_set_lf1_import/works/moriri_cleaner.md",
+      "sha256": "bb7d2a6db050ebf5bbf8edd10491d002cf6ff02e8cb520351df561bf65ef4115",
+      "bytes": 1049503
+    },
+    {
+      "path": "evaluation/eval_set_lf1_import/labels.json",
+      "sha256": "7be199cdf0bea19205963a984737ba9a393ed7ee65396ff5d9865bb9917a96cb",
+      "bytes": 25782
+    }
+  ],
+  "term_count": 65,
+  "hits": [],
+  "result": "PASS",
+  "cases_sha256": "56751379d8781b61118b46d02f97e7ab4567b0197ac094ecf6eee16ff2553484",
+  "formal_chapters_visible": {
+    "canal_records": 6,
+    "clay_theatre": 6,
+    "moss_cape": 10,
+    "orbital_orchard": 8
+  },
+  "supplemental_reading_by_root": "根代理完整补读canal第5、clay第5、moss第7至8；团队已读可见正式集23章。",
+  "method": "全文专名检索；具体情节由novelty-review.md和补读人工比对。本结论绑定此时可见文件快照。"
+}

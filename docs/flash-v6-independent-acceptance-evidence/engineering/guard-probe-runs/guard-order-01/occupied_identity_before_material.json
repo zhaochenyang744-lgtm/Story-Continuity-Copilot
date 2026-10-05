@@ -1,0 +1,14 @@
+{
+  "boundary_attempts": {
+    "environment_read": 0,
+    "http": 0,
+    "product_import": 0,
+    "socket": 0,
+    "sqlite": 0
+  },
+  "control": "occupied_identity_before_material",
+  "material_hash_reads": [],
+  "rejection": "live_run_identity_already_exists",
+  "rejection_type": "FileExistsError",
+  "status": "pass"
+}

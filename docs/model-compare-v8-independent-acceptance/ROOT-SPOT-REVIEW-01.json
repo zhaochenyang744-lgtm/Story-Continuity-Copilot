@@ -1,0 +1,50 @@
+{
+  "reviewer": "root",
+  "stage": "first",
+  "reviewed_at": "2026-09-27T11:43:14.377322+00:00",
+  "model_conditions_hidden": true,
+  "limitations": "Root has seen aggregate per-arm machine counts, but did not read the alias mapping or per-case arm scores before these checks. This is a spot check, not a claim of double blinding.",
+  "cases": [
+    {
+      "case": 4,
+      "aliases": [
+        "answer-b3976c",
+        "answer-158e9a",
+        "answer-113e51"
+      ],
+      "F": "pass for all three",
+      "strict": "pass for all three",
+      "reason": "All three correctly combine the only-when readiness rule with the same-minute unlocked cap. Category object_state, minimum spans 4+5, rule context and fact contradicts, time anchors and suggested negation are supported.",
+      "quote": "its valve cap remained loose and not locked"
+    },
+    {
+      "case": 9,
+      "records": [
+        {
+          "alias": "answer-1a5a71",
+          "F": "pass",
+          "strict": "pass"
+        },
+        {
+          "alias": "answer-114e66",
+          "F": "pass",
+          "strict": "pass"
+        },
+        {
+          "alias": "answer-e42a5d",
+          "F": "pass",
+          "D": "fail",
+          "S": "fail",
+          "C/E": "not_delivered",
+          "strict": "fail"
+        }
+      ],
+      "reason": "All preserve the unknown Sera authorization and the missing source warrant; two deliver relationship insufficient Issues using only span2. e42a5d has a correct insufficient ledger but empty issues; unrelated telegram context is unnecessary, yet it does not turn unknown authorization into denial.",
+      "quote": "日志的缺失不能证明授权事实，该断言缺乏支持，但也不构成直接矛盾。"
+    }
+  ],
+  "packet_sha256": {
+    "04": "6bb18ce4f243c69e24f9c85a4966c8006902c0a0894a2473d89bb4a7af506989",
+    "09": "e009b9404bc6787d42018f0eaacdb77fa0923998e0a81cb74a63ef1d690fc0d4"
+  }
+}

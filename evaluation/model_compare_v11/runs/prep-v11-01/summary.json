@@ -1,0 +1,9 @@
+{
+  "mode": "prepare",
+  "version": "model-compare-v11",
+  "cases": 54,
+  "condition_cases": 108,
+  "provider_calls": 0,
+  "database_connections": 0,
+  "quality_scored": false
+}

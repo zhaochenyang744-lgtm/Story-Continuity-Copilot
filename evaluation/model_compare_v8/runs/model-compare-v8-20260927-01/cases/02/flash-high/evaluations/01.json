@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "da2071d84c92e93c72aa79e3c77417f7e2b3663b27b672b83edf860515e9d8f7",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-4fca066b-a350-449a-9291-36195efde7b4-1",
+        "verdict": "no_issue",
+        "basis": "证据 span-2 在10点同一时间将 Mira 定位为只佩戴红色徽章且未携带蓝色徽章；静态规则 memory-north_glass-1（span-1）规定红色徽章无法打开 North Glass，因此在相同时间和对象范围内，该主张的结果在逻辑上成立。名单对结果的沉默并不矛盾，而气动载体仪表 span-5 涉及不同对象，属于无关上下文。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3493,
+      "completion_tokens": 877,
+      "total_tokens": 4370,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 733
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1317
+    },
+    "status": "complete",
+    "prompt_tokens": 3493,
+    "completion_tokens": 877,
+    "total_tokens": 4370,
+    "reasoning_tokens": 733,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,28 @@
+{
+  "run_id": "prep-v6-01",
+  "mode": "prepare",
+  "error_type": "RuntimeError",
+  "error": "isolated_api_422:{\"error\":{\"code\":\"insufficient_project_context\",\"message\":\"请求无法完成\",\"retryable\":false},\"request_id\":\"req_5376f93381394b88ac57839849f893f4\"}",
+  "failed_at": "2026-09-27T09:35:00.231201+00:00",
+  "ledger_at_failure": {
+    "post_attempt_start_records": 0,
+    "transport_attempts_finished": 0,
+    "http_responses_received": 0,
+    "server_receipt_for_unfinished_attempts": "unknown",
+    "usage_counts": {
+      "complete": 0,
+      "missing": 0,
+      "partial": 0,
+      "unknown": 0
+    },
+    "known_prompt_tokens_partial_sum": 0,
+    "known_completion_tokens_partial_sum": 0,
+    "prompt_tokens_total": null,
+    "completion_tokens_total": null,
+    "all_dispatch_usage_complete": false,
+    "unfinished_attempt_count": 0,
+    "models_get_start_records": 0,
+    "models_get_finish_observed": 0,
+    "models_server_receipt_if_unfinished": "unknown"
+  }
+}

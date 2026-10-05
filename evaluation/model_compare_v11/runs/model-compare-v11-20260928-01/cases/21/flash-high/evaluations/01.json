@@ -1,0 +1,93 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "97ef512d60e530606b03f8629a7a234f51556055a0b5060fa67467b757df5e6a",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "两项记录都没有确定磨制透镜 R4 的人，因此草稿把“Vela ground lens R4”归因于索引和维护表缺乏依据。",
+        "reasoning": "维护表条目明确显示 western lens R4 的维护表把 glass grinder 的名字留空，因此该记录无法证明是谁磨制了透镜；索引条目只给出镜片身份（18点被认定为已安装的 western aperture lens），完全未涉及磨制者。草稿却称这两份记录“establish”了 Vela 磨制透镜 R4，即把一个记录本身省略的决定性细节当作已确立的事实。缺少连接记录与 Vela 的授权或署名环节，判断只能停在这里：Vela 是否磨制透镜 R4 仍属未知，既不由此被证实，也未被反证。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-3",
+            "span_id": "fixture-span-basalt_observatory-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-3"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "span_id": "fixture-span-basalt_observatory-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-3",
+            "role": "missing_link"
+          },
+          {
+            "span_id": "fixture-span-basalt_observatory-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+        "verdict": "insufficient_evidence",
+        "basis": "维护表把研磨者姓名留空，索引只确认 R4 的镜片身份，两份记录均未提及 Vela；该归因缺少署名或授权环节，Vela 是否磨制 R4 仍未知。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3577,
+      "completion_tokens": 3278,
+      "total_tokens": 6855,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2725
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1273
+    },
+    "status": "complete",
+    "prompt_tokens": 3577,
+    "completion_tokens": 3278,
+    "total_tokens": 6855,
+    "reasoning_tokens": 2725,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

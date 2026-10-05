@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "abe76f70a49284689e40b481cd8ddc4a2df2bb0e5e5dc0fa5619309e48cdedaa",
+  "finished_at": "2026-09-27T09:34:55.079324+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-b4ebc7ef-b2d1-4f07-a5a7-e9598dc67b03-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

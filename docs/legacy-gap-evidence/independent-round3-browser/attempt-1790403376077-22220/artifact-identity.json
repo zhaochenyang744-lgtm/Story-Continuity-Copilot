@@ -1,0 +1,125 @@
+{
+  "build_id": "zh0KdT5LoRWDgI31kwXkx",
+  "source_before": {
+    "frontend_source_build_id": "s13v4-dce0bc906338b546f4d4fb4eedea9c77",
+    "files": {
+      "backend/app/engine.py": "df9b2a19b07744b318743802679c22f67a49af13a67275cf81f74c0d06891ea4",
+      "backend/app/v2_database.py": "9f0b8c2b512f2d69f03cbc7193d83d9681fe42fe3ade51a7fcc4ad494fdba965",
+      "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+      "backend/tests/e2e_app.py": "1b14f10c921e586d9a6e39d00689eafd952391dd3cce0ed3cb6980b1ec5023ce",
+      "frontend/app/components/Workbench.tsx": "bf76619e7ae5d3652a99d70fa5b440caa8a38ea1235814180014da1116823680",
+      "frontend/app/model.ts": "d1999849318eaf94dc50f1321f37675bbf4cc2ad6aeb9c8e6c15ac7df0dd9e1b",
+      "frontend/next-env.d.ts": "1862ac4bbbc5192d4bf562161df66ea547ed3e67173100656ab606ae9797db2b",
+      "frontend/tsconfig.json": "155b6c38eadb6b0e5ae4df71b348232708cb10c0663b2274f3384b633eff62f9",
+      "frontend/e2e/legacy-gap-round3-brief.spec.ts": "3340bf88ed75efd1d711ec2dd88b07b125091a3aa13128108b33fac3e65fc90f",
+      "docs/legacy-gap-evidence/independent-round3-browser/g02_brief_app.py": "6f1cdb6f344b9d16bb345733d99fb6d34acb2827b6337d5a131d7a487074c8d3"
+    }
+  },
+  "routes": {
+    "version": 3,
+    "pages404": true,
+    "appType": "app",
+    "caseSensitive": false,
+    "basePath": "",
+    "redirects": [
+      {
+        "source": "/:path+/",
+        "destination": "/:path+",
+        "internal": true,
+        "priority": true,
+        "statusCode": 308,
+        "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/:path*",
+        "headers": [
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "no-referrer"
+          },
+          {
+            "key": "Permissions-Policy",
+            "value": "camera=(), microphone=(), geolocation=()"
+          }
+        ],
+        "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+      }
+    ],
+    "onMatchHeaders": [],
+    "rewrites": {
+      "beforeFiles": [],
+      "afterFiles": [
+        {
+          "source": "/api/:path*",
+          "destination": "http://127.0.0.1:8239/api/:path*",
+          "regex": "^/api(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+        }
+      ],
+      "fallback": []
+    },
+    "dynamicRoutes": [
+      {
+        "page": "/[[...path]]",
+        "regex": "^(?:/(.+?))?(?:/)?$",
+        "routeKeys": {
+          "nxtPpath": "nxtPpath"
+        },
+        "namedRegex": "^(?:/(?<nxtPpath>.+?))?(?:/)?$"
+      }
+    ],
+    "staticRoutes": [
+      {
+        "page": "/_global-error",
+        "regex": "^/_global\\-error(?:/)?$",
+        "routeKeys": {},
+        "namedRegex": "^/_global\\-error(?:/)?$"
+      },
+      {
+        "page": "/_not-found",
+        "regex": "^/_not\\-found(?:/)?$",
+        "routeKeys": {},
+        "namedRegex": "^/_not\\-found(?:/)?$"
+      },
+      {
+        "page": "/icon.svg",
+        "regex": "^/icon\\.svg(?:/)?$",
+        "routeKeys": {},
+        "namedRegex": "^/icon\\.svg(?:/)?$"
+      }
+    ],
+    "dataRoutes": [],
+    "rsc": {
+      "header": "rsc",
+      "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+      "prefetchHeader": "next-router-prefetch",
+      "didPostponeHeader": "x-nextjs-postponed",
+      "contentTypeHeader": "text/x-component",
+      "suffix": ".rsc",
+      "prefetchSegmentHeader": "next-router-segment-prefetch",
+      "prefetchSegmentSuffix": ".segment.rsc",
+      "prefetchSegmentDirSuffix": ".segments",
+      "clientParamParsing": false,
+      "dynamicRSCPrerender": false
+    },
+    "rewriteHeaders": {
+      "pathHeader": "x-nextjs-rewritten-path",
+      "queryHeader": "x-nextjs-rewritten-query"
+    }
+  },
+  "app_paths": {
+    "/[[...path]]/page": "app/[[...path]]/page.js",
+    "/_global-error/page": "app/_global-error/page.js",
+    "/_not-found/page": "app/_not-found/page.js",
+    "/icon.svg/route": "app/icon.svg/route.js"
+  }
+}

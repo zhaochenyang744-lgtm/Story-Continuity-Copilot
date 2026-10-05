@@ -1,0 +1,46 @@
+{
+  "project_id": "fixture-project-v6-lie",
+  "draft_id": "fixture-draft-v6-lie",
+  "draft_revision": 2,
+  "draft_body": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins.",
+  "draft_body_sha256": "5b828812b5ef64724b5afc2f753a62e860dfb42c49926f1e33b1af372676f763",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-v6_lie-1",
+      "chapter_number": 1,
+      "chapter_title": "Synthetic lie source T1",
+      "chapter_body": "Aster and Nilo are twins, both children of Eda.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_lie-1",
+      "span_body": "Aster and Nilo are twins, both children of Eda.",
+      "span_revision": 1,
+      "chapter_body_sha256": "d5dd70cdc3c4cf187c3d7c8134127886dff4f544025064a61d1689dd29ffb674",
+      "span_body_sha256": "d5dd70cdc3c4cf187c3d7c8134127886dff4f544025064a61d1689dd29ffb674"
+    },
+    {
+      "chapter_id": "fixture-chapter-v6_lie-2",
+      "chapter_number": 2,
+      "chapter_title": "Synthetic lie source T2",
+      "chapter_body": "The register states that recorded twins cannot be one another's parent.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_lie-2",
+      "span_body": "The register states that recorded twins cannot be one another's parent.",
+      "span_revision": 1,
+      "chapter_body_sha256": "79ca4cffb2e322275195cd342baa353db1a53418d54b362cf1b1dbdaa9cf6f00",
+      "span_body_sha256": "79ca4cffb2e322275195cd342baa353db1a53418d54b362cf1b1dbdaa9cf6f00"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-v6_lie-1",
+      "memory_type": "dynamic_state",
+      "subject": "lie",
+      "predicate": "status",
+      "value": "Aster and Nilo are twins, both children of Eda.",
+      "source_span_id": "fixture-span-v6_lie-1",
+      "version": 1
+    }
+  ]
+}

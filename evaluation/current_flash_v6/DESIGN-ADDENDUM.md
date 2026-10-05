@@ -1,0 +1,5 @@
+# V6 verdict spelling and batch binding addendum
+
+Recorded before V6 offline controls. The frozen `CONTRACT.md` used `conflict` as shorthand for an emitted conflict-status issue. That status also includes a compatible `state_change`, so the model-facing verdict spelling is `reviewed_issue`, `insufficient_evidence`, or `no_issue`. `reviewed_issue` is a structural pointer to a conflict-status Issue, **not** an assertion that its nature is confirmed conflict. `state_change` remains independently scored as compatible when adequately sourced.
+
+Each Provider evaluation checks one verdict per claim ID in that request batch, with exact ID-set equality, no duplicates or foreign IDs, and matching emitted issue status. A multi-claim/multi-batch offline control must prove that a verdict from another batch cannot cover an omitted claim. The ledger prevents structurally silent omission and records a repair's no-issue explanation. It cannot verify whether a model's no-issue reasoning is true; semantic review remains separate. It is retained in V6 raw evaluation evidence and is not a new author API or database field.

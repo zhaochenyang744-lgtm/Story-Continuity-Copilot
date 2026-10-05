@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-02",
+  "ordinal": 9,
+  "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:03:53.617340+00:00",
+  "case_input_sha256": "7f87ece208ed915c402627f345c098d3624bef6bb3fa3fa5daf88c6e21db097e",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

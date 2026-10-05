@@ -1,0 +1,47 @@
+{
+  "version": "current-flash-v4-g02",
+  "frozen_at": "2026-09-26T11:09:48.569275+00:00",
+  "source_hashes": {
+    "evaluation/current_flash_v4/PLAN.md": "8020583da629cf264028fca10f5dfcb4e1bcf8a21b29ca4b559f2927a94df1d4",
+    "evaluation/current_flash_v4/cases.json": "fe86ad24e73345d458c983800d36f4bd91f2daa2f707a911cce53a97089c9d18",
+    "evaluation/current_flash_v4/run.py": "0422fd13812c2a9ef6ccc1a2b82f547b03b9cec22e7d23aa04ec9dbbbc4d5c89",
+    "evaluation/current_flash_v4/test_offline.py": "fb86b3ad005fbc8f6d771a6abf0564f3652421eae48aafa70b58d81a41810379",
+    "evaluation/current_flash_v2/run.py": "45e00b0d4ef117f862d0b059bb876942daf9469224f3ce1ba60d0b0517d6d0fe",
+    "evaluation/current_flash_v2/cases.json": "802e8e8f7dc24ea6bff62624aec84c54b7610a4ce869f03ce4daed61399073c9",
+    "backend/app/brief_citations.py": "11a9b6f6c6f8d09ba85fe94c882cdbb7383e6ebb101bb5d1305212caf31dab69",
+    "backend/app/engine.py": "370952e8a0452b4cfe2da8b1a2a662534d0d98fe3d14ba13859aff2a9e3189d1",
+    "backend/app/v2_database.py": "540d74a4607639ecff2ea13e9d29ab99e0121a8f577930020a7707dd4bed8933",
+    "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+    "backend/app/main.py": "bd7fdfab5ff2dd18f369d6bf22c6cdfc83ee177d8245b91954f21ed20faf3cca",
+    "backend/app/seed_data.py": "cd1ec7e535eb5dc5706a36c7cfa2f96adef7fd3a7b691263bef0c88a8a9c68de",
+    "backend/app/config.py": "71ecb142047916cba315dcbb8fff9c31f294d8e1109be888cad42c5e80ab9f9e",
+    "backend/app/database.py": "82afa645a8b092bfd3001bf667378ccc56646a9900e905209e9243c6357a2d33",
+    "backend/app/stage13.py": "957c219bb3f8036e421c63ba7c204ed1767d2d334a39a08aa958f5119cfd9500",
+    "backend/tests/test_g02_source_rendering.py": "5020c65631b08f20411bd04763246ab99cc290ba46a7219ffaa7cc441288e90b",
+    "backend/tests/test_v130_writing_analysis.py": "cdb273a7ed8ec59eac0db079d421fe7c6eb8d4b2ff8b791eeef299fe7625ae2f",
+    "backend/tests/test_v140_real_ai_contract_repairs.py": "cc5ecccd0a576af680c6c0874e752a50dae9db20e8c5273c29df557ccbcf981e",
+    "backend/tests/e2e_app.py": "47e755415ca9ca25f0834d9f544e76083b75b05c71f591c4fa591d4a4938aa89",
+    "frontend/e2e/v130-g02-citation.spec.ts": "452a625499e48eb1e619cb359a39dc9dba4783728de403a421c2340938b81ec8"
+  },
+  "git_base": "c3bd54ab019447354e8b1387e16b9aca3258b4c9",
+  "model": "deepseek-flash",
+  "base_url": "https://api.deepseek.com",
+  "provider": "deepseek",
+  "thinking": "disabled",
+  "temperature": 0,
+  "max_tokens": 2000,
+  "provider_timeout_seconds": 30,
+  "provider_max_retries": 1,
+  "prompt_version": "context-brief-v5-clause-citations",
+  "logical_run_count": 6,
+  "families": {
+    "g02": 6
+  },
+  "prior": {
+    "run": "flash-v2-20260926-01",
+    "post_count": 57,
+    "models_count": 2
+  },
+  "scoring": "First model and source-rendered final product separately; per-item semantic and own-citation review, no aggregate accuracy claim.",
+  "classification": "exposed_development_regression"
+}

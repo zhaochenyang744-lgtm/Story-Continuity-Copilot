@@ -1,0 +1,65 @@
+* text=auto eol=lf
+
+*.png -text
+*.jpg -text
+*.jpeg -text
+*.gif -text
+*.webp -text
+*.ico -text
+*.sqlite3 -text
+*.db -text
+
+# These frozen V2 records intentionally retain their recorded terminal blank line.
+evaluation/case_sets/eval-set-v2.json whitespace=-blank-at-eof
+evaluation/manifests/eval-set-v2-manifest.json whitespace=-blank-at-eof
+evaluation/v2-semantic-review.json whitespace=-blank-at-eof
+
+# These seven formal V4 result artifacts are immutable byte-level evidence.
+# Keep their recorded bytes so the post-run integrity hashes remain portable.
+evaluation/results/eval-v4-first-formal-api-corpus-scan.json -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-bad-cases.json -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-checkpoint.json -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-report.md -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-results.json -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-run-manifest.json -text whitespace=-blank-at-eol,-cr-at-eol
+evaluation/results/eval-v4-first-formal-stability.json -text whitespace=-blank-at-eol,-cr-at-eol
+
+# V5-V8 case sets, corpora, manifests, semantic reviews, and retained results
+# are protected by byte-level integrity records. Do not let platform EOL
+# conversion rewrite their committed bytes.
+evaluation/case_sets/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/fixtures/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/manifests/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/results/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/*semantic-review.json -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+
+# Flash and G02 acceptance records are frozen against exact byte hashes.
+# Preserve line endings in captured results, source snapshots, and audit evidence.
+evaluation/current_flash_v*/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/current_contract_compare_v*/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/model_compare_v8/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/g02_post_v4_offline/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/flash-v5-independent-acceptance-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/flash-v6-independent-acceptance-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/flash-v7-independent-acceptance-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/model-compare-v8-independent-acceptance/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/model_compare_v9/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/model_compare_v10/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/model_compare_v11/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/category_controls_v1/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/eval_set_v9_authoring/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/eval_set_v10_authoring/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/eval_set_v11_authoring/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/eval_set_v12_authoring/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/eval_set_v13_authoring/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/model-compare-v9-independent-acceptance/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/model-compare-v10-independent-acceptance/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/model-compare-v11-independent-acceptance/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/g02-citation-repair-evidence/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+docs/flash-real-provider-independent-acceptance.md -text
+docs/g02-citation-repair-independent-acceptance.md -text whitespace=-blank-at-eof
+frontend/e2e/g02-controller-post-v4.spec.ts -text whitespace=cr-at-eol
+
+# The V7/V8 manifests pin the captured bytes of these changed runtime sources.
+backend/app/engine.py -text whitespace=cr-at-eol
+backend/app/provider.py -text whitespace=cr-at-eol

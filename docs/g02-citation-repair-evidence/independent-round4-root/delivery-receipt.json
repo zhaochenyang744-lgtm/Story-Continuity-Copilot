@@ -1,0 +1,15 @@
+{
+  "time": "2026-09-26T12:48:51.679029+00:00",
+  "links_missing": [],
+  "protected_snapshot_unchanged": 29,
+  "files": {
+    "docs/g02-citation-repair-independent-acceptance.md": "7f4ef086dc6914435db8b0708db458089bb936289c1d2abd676cb707b27fcf69",
+    "evaluation/README.md": "16440586f3d6090b0a06341162693bc2977e6c4c23e545b51862c35a0fe3929f",
+    "docs/evaluation-maintenance.md": "761dba472611df7b2e88d8bc0122b01e849ba22bf2e1d609ad17abd4c9e8b25f",
+    "docs/g02-citation-repair-evidence/independent-round4-root/ACCEPTANCE.md": "cbb28e36293a594787c4de6a5361713fb7db4668d2dd00a39c21596209373495",
+    "docs/g02-citation-repair-evidence/independent-round4-root/acceptance.json": "647a1eb35aab4e93fb22a7826174b9b5eb659da9e803517f26bd6ca7f04792fd",
+    "docs/g02-citation-repair-evidence/independent-round4-gold/review.md": "6718175b1c86b3b5a4e325b6b5146cfb847b8fbe040a5e3fcb1fa58e2a6a9570",
+    "docs/g02-citation-repair-evidence/independent-round4-score/review.md": "ca25453fb9c68858edff731d122017c964636b64749a73e231bf642e47c972cb",
+    "docs/g02-citation-repair-evidence/independent-round4-lineage/review.md": "5878a7dc2eb481562614295ae0b189ba7731deda41a912240105dd250795db26"
+  }
+}

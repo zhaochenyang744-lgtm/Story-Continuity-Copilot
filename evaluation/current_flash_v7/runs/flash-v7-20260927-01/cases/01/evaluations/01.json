@@ -1,0 +1,79 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "52f4e80e45b72b798b7d4729ac15f48a3d0048ec793f4696960eca2ca2d189ed",
+  "finished_at": "2026-09-27T10:47:17.193218+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-fdac9919-1554-4697-b8ef-80b0259ee493-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "world_rule",
+        "severity": "high",
+        "explanation": "Mira cannot open the North Glass door while wearing only a red badge, because the door opens only for a blue-badge wearer.",
+        "reasoning": "The current claim asserts Mira opened the North Glass door at 10点 while wearing only her red badge. The static canon rule states the door opens only for a wearer of a blue badge and a red badge cannot open it. The prior-state span confirms Mira was wearing only a red badge and carrying no blue badge at that same 10点 time. Together these establish that the claimed opening is impossible under the governing rule at the same time and scope.",
+        "temporal_basis": {
+          "claim_anchor": "At 10点 on the same day",
+          "evidence_anchor": "At 10点 on the same day",
+          "relation": "timeless_rule"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-1",
+            "span_id": "fixture-span-north_glass-1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-north_glass-2",
+            "span_id": "fixture-span-north_glass-2",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-1",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-north_glass-2",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+          "after": "At 10点 on the same day, Mira tried the North Glass door while wearing only her red badge; the door did not open."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-fdac9919-1554-4697-b8ef-80b0259ee493-1",
+        "verdict": "reviewed_issue",
+        "basis": "The claim that Mira opened the door with only a red badge directly conflicts with the static rule that the door opens only for a blue-badge wearer, and the same-time prior state confirms she had no blue badge."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3470,
+    "output_tokens": 561,
+    "observed_response_input_tokens": 3470,
+    "observed_response_output_tokens": 561
+  }
+}

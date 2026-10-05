@@ -1,0 +1,47 @@
+{
+  "fixture_version": "v1.4.0-dev-1",
+  "purpose": "frontend_contract_and_interaction_only",
+  "provider_output": false,
+  "story": "雾港档案",
+  "cases": [
+    {
+      "id": "dev-confirmed-holder-conflict",
+      "nature": "confirmed_conflict",
+      "severity": "high",
+      "claim": "同一时点，甲与乙都被写成钥匙的唯一持有人。",
+      "reasoning": "同一适用时点的两个唯一持有事实不能同时成立。"
+    },
+    {
+      "id": "dev-normal-state-change",
+      "nature": "state_change",
+      "severity": "medium",
+      "claim": "温岚把随身保管的罗盘放到档案室桌上。",
+      "reasoning": "文本明确描述了从随身保管到临时放置的动作链。",
+      "suggested_revision": {
+        "before": "温岚把罗盘放在潮汐档案室的桌上。",
+        "after": "温岚暂时把罗盘放在潮汐档案室的桌上。"
+      }
+    },
+    {
+      "id": "dev-possible-alias",
+      "nature": "possible_conflict",
+      "severity": "low",
+      "claim": "阿岚可能与温岚指向同一人物。",
+      "reasoning": "别名关系尚需作者确认，不能据此直接认定冲突。"
+    },
+    {
+      "id": "dev-insufficient-flashback",
+      "nature": "insufficient_evidence",
+      "severity": "medium",
+      "claim": "倒叙片段没有提供可确定先后的故事时间。",
+      "reasoning": "章节顺序不等于故事时间，当前证据不足以继续判断。"
+    },
+    {
+      "id": "dev-unknown-forward-compatibility",
+      "nature": "future_server_value",
+      "severity": "high",
+      "claim": "服务器返回了前端尚未认识的问题性质。",
+      "reasoning": "前端必须显示性质待确认，不能由高影响推成明确矛盾。"
+    }
+  ]
+}

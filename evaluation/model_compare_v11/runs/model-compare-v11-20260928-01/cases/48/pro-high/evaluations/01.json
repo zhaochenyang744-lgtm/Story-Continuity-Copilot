@@ -1,0 +1,85 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "e38222a0de3786f774d7247fd3ddeaccdab9b8a14e9959cd81ef95712217a4d0",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc14-locked-en",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "high",
+        "explanation": "Draft claims the archive vault door was locked at 08:00 today; evidence states it stood unlocked and ajar at the same time.",
+        "reasoning": "The cited evidence explicitly states the archive vault door stood unlocked and ajar at 08:00 today, using the same exact time and object as the current claim. A door cannot be locked and unlocked/ajar at the same moment, so the evidence directly contradicts the claim.",
+        "temporal_basis": {
+          "claim_anchor": "At 08:00 today",
+          "evidence_anchor": "At 08:00 today",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc14-locked-en-V1",
+            "span_id": "cc-span-cc14-locked-en-V1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc14-locked-en-V1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc14-locked-en-V1",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 08:00 today the archive vault door was locked.",
+          "after": "At 08:00 today the archive vault door stood unlocked and ajar."
+        },
+        "available_actions": [
+          "apply_suggestion"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc14-locked-en",
+        "verdict": "reviewed_issue",
+        "basis": "Direct contradiction at identical timestamp: evidence states the door was unlocked and ajar while the claim says locked."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3100,
+      "completion_tokens": 2035,
+      "total_tokens": 5135,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1564
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 668
+    },
+    "status": "complete",
+    "prompt_tokens": 3100,
+    "completion_tokens": 2035,
+    "total_tokens": 5135,
+    "reasoning_tokens": 1564,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

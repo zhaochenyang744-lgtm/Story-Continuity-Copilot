@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 51601,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "60e09ad0-ae76-48a9-bff4-ac75e93c5943",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-567fef0f-3c7e-4a3c-a698-a0e3a6deaf2d-1\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"character_knowledge\",\n      \"severity\": \"high\",\n      \"explanation\": \"在当天11点，证据明确记载 Sera 未打开密封电报且不知道密码，与草稿中她此时知道密码直接冲突。\",\n      \"reasoning\": \"片段 fixture-span-harbor_signal-3 记录同一时刻（当天11点）Sera 未打开密封电报且不知道其密码，这一事实与当前草稿声称她此时知道电报密码直接矛盾。时间锚点均为“At 11点 on the same day”，所指人物和知识对象一致，因此不能同时为真。\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"At 11点 on the same day\",\n        \"evidence_anchor\": \"At 11点 on the same day\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-harbor_signal-3\",\n          \"span_id\": \"fixture-span-harbor_signal-3\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-harbor_signal-3\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-harbor_signal-3\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"At 11点 on the same day, Sera knew the telegram code.\",\n        \"after\": \"At 13点 Sera opened the telegram and learned its code.\"\n      },\n      \"available_actions\": [\"apply_suggestion\"]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-567fef0f-3c7e-4a3c-a698-a0e3a6deaf2d-1\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"同一时刻证据显示 Sera 不知道密码，与草稿直接矛盾。\"\n    }\n  ]\n}",
+  "visible_content_sha256": "99ab6ef1505818aa25691fff8e4f6fa19dba0c64cd0bbeeff66f30e3a6ea584c",
+  "reasoning": {
+    "present": true,
+    "codepoints": 13684,
+    "utf8_bytes": 14206,
+    "sha256": "c24207f3dade40d907e5ed6cdda358aaed087736868d8d4af365bf54813193e1"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3511,
+      "completion_tokens": 3783,
+      "total_tokens": 7294,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3250
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1079
+    },
+    "status": "complete",
+    "prompt_tokens": 3511,
+    "completion_tokens": 3783,
+    "total_tokens": 7294,
+    "reasoning_tokens": 3250,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T09:02:26.382295+00:00"
+}

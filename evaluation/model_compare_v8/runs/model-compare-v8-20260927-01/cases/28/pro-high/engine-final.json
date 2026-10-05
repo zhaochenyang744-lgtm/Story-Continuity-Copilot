@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+      "status": "insufficient_evidence",
+      "category": "event_status",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The draft attributes the loosening to Ina based on the inspection log, but the log only records a loose cap at 10:00 and does not identify who loosened it.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_actor_blank-1",
+          "span_id": "fixture-span-v6_actor_blank-1",
+          "excerpt": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_actor_blank-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The supplied evidence states the cap was loose at 10:00 but explicitly does not identify who loosened it. No other evidence ties Ina to the loosening, so the source warrant for the claim is missing and the attribution remains unknown.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_actor_blank-1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-fa9b6cb0-39c8-4346-870a-163de6114f2a-1",
+      "returned_span_ids": [
+        "fixture-span-v6_actor_blank-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3060,
+  "output_tokens": 3789,
+  "latency_ms": 35069,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

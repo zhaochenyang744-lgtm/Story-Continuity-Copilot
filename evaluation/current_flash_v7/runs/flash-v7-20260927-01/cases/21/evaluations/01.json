@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "2cb88f110d4a4721386bd0d84d24871e9ac5b09baec2095e3576d0fbe26b1adf",
+  "finished_at": "2026-09-27T10:48:27.009509+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-904e5f94-8b13-4ebc-831f-a922ef809686-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The claim asserts that the index and maintenance sheet establish a fact about Vela and lens R4, but the cited spans only show the index identifying R4 as the western aperture lens and the maintenance sheet leaving the grinder's name blank; no supplied evidence links Vela to lens R4 or shows what the two records jointly establish."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3460,
+    "output_tokens": 123,
+    "observed_response_input_tokens": 3460,
+    "observed_response_output_tokens": 123
+  }
+}

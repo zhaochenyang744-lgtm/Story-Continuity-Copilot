@@ -1,0 +1,243 @@
+{
+  "corpora": [
+    {
+      "key": "mosswick_costume_rental",
+      "title": "Mosswick's Costume Return",
+      "language": "en",
+      "source": "# Chapter 1 The Fiber Inspection\n\nAt 12:40 on 9 February, the teal sash marked H6 was made entirely of cotton, with no linen fibers or linen trim. Inspector Sorrel Venn attached the finding to its rental record after an earlier customer had guessed its material from its sheen.\n\n# Chapter 2 Brown Paper\n\nAt 12:40 on 9 February, the silver cape was among the returned pieces wrapped in brown paper. Its rental tag remained attached outside the wrapping, where the intake clerk could read it without unfolding the long fabric.\n\n# Chapter 3 The Sorting Containers\n\nAt 12:40 on 9 February, every brown-paper-wrapped returned piece at Mosswick lay inside the blue hamper. The yellow trunk was a separate, nonoverlapping container across the aisle. Neither container sat inside the other.\n\n# Chapter 4 Under the Cutting Table\n\nAt 13:15 on 9 February, Belden Orr swept loose rivets from beneath the cutting table into a shallow pan. He left a missing-button notice on the counter, hoping the next delivery would include the correct replacements.\n\n# Chapter 5 A Combined Refund\n\nA receipt records a forty-crown refund to renter Neris Tal. The amount combines a deposit refund and a discount on rental fees, but gives neither component separately. Her original deposit was thirty crowns; the account breakdown is missing.\n\n# Chapter 6 Samples from a Crate\n\nEight unlabelled mantles arrived in delivery crate K8. The clerk measured two and found matching lengths, but left the other six folded. No packing list specified their sizes, and the supplier had previously shipped both uniform and mixed-size sets.\n\n# Chapter 7 The Window Display\n\nAt 16:10 on 9 February, Sorrel Venn replaced the faded window price card with a handwritten one. She placed a small ceramic bird against its lower edge to keep it upright, then stepped outside to check whether the lettering was readable.\n\n# Chapter 8 Before Closing\n\nThe final customer paused beneath the striped awning while Belden gathered the empty hangers. Neris had left a request for her account breakdown. The clerk clipped it beside the refund receipt so it would be visible when the ledger arrived."
+    },
+    {
+      "key": "ternhollow_model_railway",
+      "title": "Ternhollow's Model Freight Run",
+      "language": "en",
+      "source": "# Chapter 1 The Loaded Wagon\n\nAt 10:25 on 17 March, model wagon P12 held four wooden barrels in its cargo bay. None had been removed or unloaded. Its driver knelt beside the miniature track to straighten a wheel before the visitors entered the viewing area.\n\n# Chapter 2 Preparing the Demonstration\n\nAt 10:25 on 17 March, Ternhollow's public freight demonstration had not yet started. Technicians were still making preparations, and the opening signal had not been given. The earlier private equipment check was a separate activity.\n\n# Chapter 3 A Painted Milestone\n\nAt 09:40 on 17 March, Keston Briar painted a white ring around the miniature milestone beside the tunnel. He shielded the nearby grass mat with scrap paper, then carried the wet brush to the workshop sink.\n\n# Chapter 4 The Unsigned Reservation\n\nElva Rook booked twelve viewing seats for a group, leaving only her name and a telephone number. The booking form gives no ages or school affiliation. The number of seats includes anyone accompanying the group, not just its principal members.\n\n# Chapter 5 The Replacement Motor\n\nReplacement motor J9 ran unloaded for an hour on the bench without stopping. Its label gives no permitted load, and nobody tried it on the inclined track. The freight route includes a steep ramp that is absent from the bench setup.\n\n# Chapter 6 The Station Curtains\n\nAt 11:05 on 17 March, Maelin Quist drew the viewing-room curtains halfway across the windows to reduce glare on the model station. The lower part of each window remained exposed, leaving enough light for visitors to read their tickets.\n\n# Chapter 7 A Separate Rehearsal\n\nThe technicians discussed their private equipment check while waiting for the public opening. It had covered the lights and sound effects, without an audience. They kept its notes in a folder separate from the demonstration schedule.\n\n# Chapter 8 The Exit Table\n\nNear closing, Keston arranged blank postcards on the exit table, with a sketch of the railway available as a drawing reference. A visitor left an unfinished mountain scene behind, and Maelin set it aside rather than adding it to the unused cards."
+    },
+    {
+      "key": "sablefen_translation_residency",
+      "title": "The Sablefen Translation Residency",
+      "language": "en",
+      "source": "# Chapter 1 The Reedglass Collection\n\nAt 16:10 on 28 September, the complete Reedglass collection edited by Odrin Vale consisted of exactly three translations: Small River, Stone Sleep and Dewline. Dewline was part of that collection, rather than a supplement or a proposed title for a later edition.\n\n# Chapter 2 The Release Ledger\n\nAt 16:10 on 28 September, Dewline remained an unpublished draft; no edition of that translation had been released. Odrin Vale was marking its margins while the press waited for a corrected file. The ledger recorded its release as pending.\n\n# Chapter 3 The Pen Name Register\n\nAt 16:10 on 28 September, the register assigned the pen name Rell exclusively to translator Odrin Vale. No other resident used that name, and the registration had not been transferred. Feska Noll worked under her own name.\n\n# Chapter 4 The Small River Credit\n\nAt 16:10 on 28 September, the approved credit for the Small River translation named Rell as its sole translator, with no co-translator. The sheet separately named the printer and cover artist so that those roles would not be confused.\n\n# Chapter 5 A Stack of Margins\n\nAt 15:20 on 28 September, Feska Noll clipped the loose glossary pages together and placed them beside the reading lamp. She kept the paper covers separate, since the binder still needed to trim their uneven edges.\n\n# Chapter 6 Two Meanings of Senn\n\nThe invented language in the source manuscript uses senn for both a river bend and a gathering place. A detached slip contains only that word, with no surrounding sentence or illustration. The translator has no other copy of the missing passage.\n\n# Chapter 7 A Delivery Receipt\n\nOdrin Vale sent a permission request to the author by tracked post on 24 September. The receipt confirms dispatch but contains no delivery scan. The residency has neither a reply nor a record showing when the envelope reached its destination.\n\n# Chapter 8 A Seat by the Door\n\nAt 18:00 on 28 September, Tavia Pell moved a low chair beside the entrance for the visiting binder. She cleared the space in front of it so a paper trolley could pass, then returned to checking the order of the folded sheets."
+    }
+  ],
+  "cases": [
+    {
+      "id": "hv11-019",
+      "corpus": "mosswick_costume_rental",
+      "draft": "At Mosswick, the silver cape lay inside the yellow trunk at 12:40 on 9 February.",
+      "expected_class": "conflict",
+      "category": "object_state",
+      "evidence": [
+        "Chapter 2 Brown Paper",
+        "Chapter 3 The Sorting Containers"
+      ],
+      "designated_regression": false,
+      "note": "The cape belongs to the brown-wrapped group; every member is in the blue hamper at the same time, and the yellow trunk is spatially separate. Both passages are necessary."
+    },
+    {
+      "id": "hv11-020",
+      "corpus": "mosswick_costume_rental",
+      "draft": "Belden Orr swept the loose rivets beneath the cutting table into a shallow pan at 13:15 on 9 February.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 4 Under the Cutting Table"
+      ],
+      "designated_regression": false,
+      "note": "The source directly describes this action and its time."
+    },
+    {
+      "id": "hv11-021",
+      "corpus": "mosswick_costume_rental",
+      "draft": "Neris Tal received her entire thirty-crown deposit back as part of the forty-crown refund.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 5 A Combined Refund"
+      ],
+      "designated_regression": false,
+      "note": "A combined total does not identify the deposit component; both a full and a partial deposit refund remain compatible with the receipt."
+    },
+    {
+      "id": "hv11-022",
+      "corpus": "mosswick_costume_rental",
+      "draft": "At 12:40 on 9 February, the teal sash marked H6 was made entirely of linen.",
+      "expected_class": "conflict",
+      "category": "attribute",
+      "evidence": [
+        "Chapter 1 The Fiber Inspection"
+      ],
+      "designated_regression": true,
+      "note": "The same-time material inspection explicitly establishes cotton with no linen; only this physical attribute is disputed."
+    },
+    {
+      "id": "hv11-023",
+      "corpus": "mosswick_costume_rental",
+      "draft": "Sorrel Venn put a handwritten price card in the window at 16:10 on 9 February.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 7 The Window Display"
+      ],
+      "designated_regression": false,
+      "note": "The card replacement is directly narrated."
+    },
+    {
+      "id": "hv11-024",
+      "corpus": "mosswick_costume_rental",
+      "draft": "All eight mantles in delivery crate K8 had the same length.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 6 Samples from a Crate"
+      ],
+      "designated_regression": false,
+      "note": "Only two were measured. Neither the sizes of the other six nor a uniform-size packing specification is available."
+    },
+    {
+      "id": "hv11-025",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Model wagon P12 had an empty cargo bay.",
+      "expected_class": "conflict",
+      "category": "object_state",
+      "evidence": [
+        "Chapter 1 The Loaded Wagon"
+      ],
+      "designated_regression": false,
+      "note": "The source explicitly places four barrels in P12. The draft supplies no time scope, so possible_conflict is acceptable under the new non-designated policy; missing time alone is not a missing-evidence case."
+    },
+    {
+      "id": "hv11-026",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Keston Briar painted a white ring on the miniature milestone at 09:40 on 17 March.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 3 A Painted Milestone"
+      ],
+      "designated_regression": false,
+      "note": "The source directly states the painter, ring and time."
+    },
+    {
+      "id": "hv11-027",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Elva Rook's twelve-seat group reservation was made for a school class.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 4 The Unsigned Reservation"
+      ],
+      "designated_regression": false,
+      "note": "The booking establishes group size but provides no ages or school affiliation; a school class is possible but unconfirmed."
+    },
+    {
+      "id": "hv11-028",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Ternhollow's public freight demonstration was already underway.",
+      "expected_class": "conflict",
+      "category": "event_status",
+      "evidence": [
+        "Chapter 2 Preparing the Demonstration"
+      ],
+      "designated_regression": false,
+      "note": "The source explicitly says the public demonstration has not started. The undated draft asserts the opposite status; possible_conflict is acceptable, without treating the separate private equipment check as the public event."
+    },
+    {
+      "id": "hv11-029",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Maelin Quist partly closed the viewing-room curtains at 11:05 on 17 March.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 6 The Station Curtains"
+      ],
+      "designated_regression": false,
+      "note": "Halfway closure directly supports partial closure without claiming complete darkness."
+    },
+    {
+      "id": "hv11-030",
+      "corpus": "ternhollow_model_railway",
+      "draft": "Replacement motor J9 could pull the freight load up the route's steep ramp.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 5 The Replacement Motor"
+      ],
+      "designated_regression": false,
+      "note": "Successful unloaded bench operation supplies neither an adequate load rating nor a loaded ramp trial, so the required capability remains unknown."
+    },
+    {
+      "id": "hv11-031",
+      "corpus": "sablefen_translation_residency",
+      "draft": "Feska Noll was the sole translator credited for Small River at 16:10 on 28 September.",
+      "expected_class": "conflict",
+      "category": "relationship",
+      "evidence": [
+        "Chapter 3 The Pen Name Register",
+        "Chapter 4 The Small River Credit"
+      ],
+      "designated_regression": false,
+      "note": "The exclusive Rell-to-Odrin identity and the sole-translator credit jointly exclude Feska; neither passage alone establishes the complete attribution."
+    },
+    {
+      "id": "hv11-032",
+      "corpus": "sablefen_translation_residency",
+      "draft": "Feska Noll placed the clipped glossary pages beside the reading lamp at 15:20 on 28 September.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 5 A Stack of Margins"
+      ],
+      "designated_regression": false,
+      "note": "The action is explicitly described with that time."
+    },
+    {
+      "id": "hv11-033",
+      "corpus": "sablefen_translation_residency",
+      "draft": "The word senn on the detached slip refers to a gathering place.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 6 Two Meanings of Senn"
+      ],
+      "designated_regression": false,
+      "note": "Both meanings are established, but the context needed to select one is missing; neither sense is ruled out."
+    },
+    {
+      "id": "hv11-034",
+      "corpus": "sablefen_translation_residency",
+      "draft": "Publication of the complete Reedglass collection edited by Odrin Vale had finished at 16:10 on 28 September.",
+      "expected_class": "conflict",
+      "category": "event_status",
+      "evidence": [
+        "Chapter 1 The Reedglass Collection",
+        "Chapter 2 The Release Ledger"
+      ],
+      "designated_regression": false,
+      "note": "One source establishes Dewline as a required member of the complete collection; the other establishes it remains unpublished at that time, preventing completion of publication of the whole collection."
+    },
+    {
+      "id": "hv11-035",
+      "corpus": "sablefen_translation_residency",
+      "draft": "Tavia Pell put a low chair beside the entrance at 18:00 on 28 September.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "Chapter 8 A Seat by the Door"
+      ],
+      "designated_regression": false,
+      "note": "The placement action and time are directly supported."
+    },
+    {
+      "id": "hv11-036",
+      "corpus": "sablefen_translation_residency",
+      "draft": "Odrin Vale's permission request reached the author on 26 September.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "Chapter 7 A Delivery Receipt"
+      ],
+      "designated_regression": false,
+      "note": "Dispatch on the 24th does not fix the arrival date; no delivery scan or reply supplies the missing date."
+    }
+  ]
+}

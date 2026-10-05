@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "c7007a0ba24209510a63384504def0a488944736622c9cadc06d4fd961239631",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1",
+        "verdict": "no_issue",
+        "basis": "The cited spans agree with the draft: lens R4 is identified as the installed western aperture lens, and that lens is clear glass at 18点, matching the draft's current state. The remaining clause is Vela's recollection of the earlier day (amber), which does not assert a present state and so can coexist with the clear-glass state at 18点. No contradiction, missing handoff, or reviewable tension remains."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3504,
+      "completion_tokens": 509,
+      "total_tokens": 4013,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 362
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1328
+    },
+    "status": "complete",
+    "prompt_tokens": 3504,
+    "completion_tokens": 509,
+    "total_tokens": 4013,
+    "reasoning_tokens": 362,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

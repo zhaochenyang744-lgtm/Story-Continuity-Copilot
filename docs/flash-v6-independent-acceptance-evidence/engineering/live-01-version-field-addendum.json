@@ -1,0 +1,317 @@
+{
+  "status": "audit_field_semantics_finding_closed",
+  "initial_report_preserved": "live-01-engineering-review.json",
+  "final_report": "live-01-engineering-review-final.json",
+  "frozen_source_reference": "backend/app/v2_database.py:2850-2868 and 3488",
+  "source_sha256": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754",
+  "mapping": "For regular continuity, final-product.source_revision is the checked draft revision; final-product.draft_revision is null. Chapter source revision is a separate runtime-binding field.",
+  "rows": [
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 1,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 2,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 3,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 4,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 5,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 6,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 7,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 8,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 9,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 10,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 11,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 12,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 13,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 14,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 15,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 16,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 17,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 18,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 19,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 20,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 21,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 22,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 23,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 24,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 25,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 26,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 27,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 28,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 29,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 30,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 31,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 32,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 33,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    },
+    {
+      "draft_revision_from_binding": 2,
+      "memory_version": 1,
+      "ordinal": 34,
+      "pass": true,
+      "product_draft_revision": null,
+      "product_source_revision": 2,
+      "runtime_chapter_source_revision": 1
+    }
+  ],
+  "scope_limit": "No database was reopened. Chapter/source checks used retained runtime-binding JSON and request JSON; the final product top-level revision cannot independently prove chapter revision."
+}

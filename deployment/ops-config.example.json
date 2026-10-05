@@ -1,0 +1,13 @@
+{
+  "database": "/var/lib/docker/volumes/story-continuity-runtime/_data/data/demo.sqlite3",
+  "backup_dir": "/var/backups/story-continuity-ops",
+  "state_dir": "/var/lib/story-continuity-ops",
+  "drill_dir": "/var/lib/story-continuity-restore-drills",
+  "health_origin": "https://43-160-207-57.sslip.io",
+  "backup_max_age_hours": 30,
+  "drill_max_age_days": 9,
+  "failure_window_hours": 24,
+  "stuck_run_minutes": 30,
+  "retention_days": 30,
+  "minimum_backups": 7
+}

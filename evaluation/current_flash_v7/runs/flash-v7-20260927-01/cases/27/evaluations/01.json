@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-04",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "3b6213742ce8af83febcd2b6421137ae11eb64489caba6f5e812461cd8c7cecd",
+  "finished_at": "2026-09-27T10:48:50.767802+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-e7582aa2-4223-4778-9c3f-1855632f3579-1",
+        "verdict": "no_issue",
+        "basis": "The claim that the capsule was not ready at 10:00 because its valve cap was loose is consistent with the cited evidence: the readiness rule requires a locked cap, and the 10:00 record shows the cap loose and unlocked. No contradiction."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3081,
+    "output_tokens": 107,
+    "observed_response_input_tokens": 3081,
+    "observed_response_output_tokens": 107
+  }
+}

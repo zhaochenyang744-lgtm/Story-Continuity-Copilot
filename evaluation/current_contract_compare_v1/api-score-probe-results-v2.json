@@ -1,0 +1,435 @@
+{
+  "schema_version": "current-contract-compare-v1-api-score-probe",
+  "case_count": 24,
+  "fake_provider_calls": 24,
+  "real_provider_calls": 0,
+  "actual_content_equal_count": 24,
+  "completed_count": 24,
+  "score_pass_count": 24,
+  "rows": [
+    {
+      "case_id": "ccv1-north_glass-world_rule-conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-north_glass-world_rule-no_conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 0,
+      "issue_shape": [],
+      "score": {
+        "case_id": "ccv1-north_glass-world_rule-no_conflict",
+        "expected_class": "no_conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-north_glass-world_rule-insufficient_evidence",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-north_glass-world_rule-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-north_glass-object_state-conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-north_glass-object_state-conflict",
+        "expected_class": "conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-north_glass-object_state-no_conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 0,
+      "issue_shape": [],
+      "score": {
+        "case_id": "ccv1-north_glass-object_state-no_conflict",
+        "expected_class": "no_conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-north_glass-object_state-insufficient_evidence",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-north_glass-object_state-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-harbor_signal-timeline-conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-harbor_signal-timeline-conflict",
+        "expected_class": "conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-harbor_signal-timeline-no_conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 0,
+      "issue_shape": [],
+      "score": {
+        "case_id": "ccv1-harbor_signal-timeline-no_conflict",
+        "expected_class": "no_conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-harbor_signal-timeline-insufficient_evidence",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-harbor_signal-timeline-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-harbor_signal-character_knowledge-conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-harbor_signal-character_knowledge-conflict",
+        "expected_class": "conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-harbor_signal-character_knowledge-no_conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 0,
+      "issue_shape": [],
+      "score": {
+        "case_id": "ccv1-harbor_signal-character_knowledge-no_conflict",
+        "expected_class": "no_conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-harbor_signal-character_knowledge-insufficient_evidence",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-harbor_signal-character_knowledge-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-relationship-conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-orchard_restoration-relationship-conflict",
+        "expected_class": "conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-relationship-no_conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 0,
+      "issue_shape": [],
+      "score": {
+        "case_id": "ccv1-orchard_restoration-relationship-no_conflict",
+        "expected_class": "no_conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-relationship-insufficient_evidence",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-orchard_restoration-relationship-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-event_status-conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-orchard_restoration-event_status-conflict",
+        "expected_class": "conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-event_status-no_conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 0,
+      "issue_shape": [],
+      "score": {
+        "case_id": "ccv1-orchard_restoration-event_status-no_conflict",
+        "expected_class": "no_conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-orchard_restoration-event_status-insufficient_evidence",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-orchard_restoration-event_status-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-attribute-conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-basalt_observatory-attribute-conflict",
+        "expected_class": "conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-attribute-no_conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 0,
+      "issue_shape": [],
+      "score": {
+        "case_id": "ccv1-basalt_observatory-attribute-no_conflict",
+        "expected_class": "no_conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-attribute-insufficient_evidence",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-basalt_observatory-attribute-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-location_action-conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "conflict",
+          "nature": "confirmed_conflict",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-basalt_observatory-location_action-conflict",
+        "expected_class": "conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-location_action-no_conflict",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 0,
+      "issue_shape": [],
+      "score": {
+        "case_id": "ccv1-basalt_observatory-location_action-no_conflict",
+        "expected_class": "no_conflict",
+        "result": "pass",
+        "errors": []
+      }
+    },
+    {
+      "case_id": "ccv1-basalt_observatory-location_action-insufficient_evidence",
+      "status": "completed",
+      "actual_business_content_equal_capture": true,
+      "issue_count": 1,
+      "issue_shape": [
+        {
+          "status": "open",
+          "classification": "insufficient_evidence",
+          "nature": "insufficient_evidence",
+          "temporal_basis_persisted": false
+        }
+      ],
+      "score": {
+        "case_id": "ccv1-basalt_observatory-location_action-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "result": "pass",
+        "errors": []
+      }
+    }
+  ]
+}

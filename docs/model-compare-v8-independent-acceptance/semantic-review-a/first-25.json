@@ -1,0 +1,191 @@
+{
+  "schema_version": "v8-blinded-case-first-review-v1",
+  "case_alias": "case-25",
+  "stage": "first",
+  "reviewer": "semantic-review-a",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-25",
+      "response_alias": "answer-d6fe99",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-01",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "fail",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "fail",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        205
+      ],
+      "reasoning_codepoints": [
+        414
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "L1身份前提与L2同刻clear/not amber在同一Issue内完整联合，14:00直接反证正确；未引用Memory专有未选L3。",
+          "visible_quote": "Together they prove that lens Q8 is clear glass",
+          "evidence_pointer": "responses[answer-d6fe99].first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "材质应attribute而输出object_state。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[answer-d6fe99].first.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_roles/S",
+          "verdict": "fail",
+          "reason": "L4清洁记录属于允许optional，因此E_set通过；但confirmed_conflict的全部证据须sufficient，此回答给L4 context/insufficient，违反角色/合同。其主联合证明L1/L2充分，F仍通过。",
+          "visible_quote": "\"sufficiency\":\"insufficient\"",
+          "evidence_pointer": "responses[answer-d6fe99].first.parsed_business_json.issues[0].evidence[2]; first.visible_content"
+        }
+      ],
+      "passed_dimensions_note": "最低L1+L2完整；其余引用仅许可L4，selected/chapter/Memory绑定正确；explicit_overlap来自直接L2同值14:00，建议受clear事实支持。基本JSON/claim/ledger/chain、长度及实际Issue交付合规，L4不足标记若有另计。",
+      "attribution_tags": [
+        "category_mismatch",
+        "role_error",
+        "schema_error"
+      ],
+      "overall_reason": "核心语义正确，类别及/或证据角色合同失败阻断strict。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-25",
+      "response_alias": "answer-c3e170",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-01",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        278
+      ],
+      "reasoning_codepoints": [
+        603
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "L1身份前提与L2同刻clear/not amber在同一Issue内完整联合，14:00直接反证正确；未引用Memory专有未选L3。",
+          "visible_quote": "identity premise plus the contradicting fact",
+          "evidence_pointer": "responses[answer-c3e170].first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "passed_dimensions_note": "最低L1+L2完整；其余引用仅许可L4，selected/chapter/Memory绑定正确；explicit_overlap来自直接L2同值14:00，建议受clear事实支持。基本JSON/claim/ledger/chain、长度及实际Issue交付合规，L4不足标记若有另计。",
+      "attribution_tags": [],
+      "overall_reason": "首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-25",
+      "response_alias": "answer-806d3f",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-01",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        112
+      ],
+      "reasoning_codepoints": [
+        289
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "L1身份前提与L2同刻clear/not amber在同一Issue内完整联合，14:00直接反证正确；未引用Memory专有未选L3。",
+          "visible_quote": "These two premises jointly contradict",
+          "evidence_pointer": "responses[answer-806d3f].first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "passed_dimensions_note": "最低L1+L2完整；其余引用仅许可L4，selected/chapter/Memory绑定正确；explicit_overlap来自直接L2同值14:00，建议受clear事实支持。基本JSON/claim/ledger/chain、长度及实际Issue交付合规，L4不足标记若有另计。",
+      "attribution_tags": [],
+      "overall_reason": "首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "comparison": {
+    "strict_pass": 2,
+    "total": 3,
+    "strict_pass_aliases": [
+      "answer-c3e170",
+      "answer-806d3f"
+    ],
+    "F_pass_aliases": [
+      "answer-d6fe99",
+      "answer-c3e170",
+      "answer-806d3f"
+    ],
+    "distinction": "三条联合推理正确；两条完整通过，一条类别错且许可背景标insufficient违背confirmed合同。"
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/25.json",
+    "sha256_before": "49710785fd3aeacc731c972ef4cc77bf14d33ac107aec11b6380e6f588df312a",
+    "sha256_after_review": "49710785fd3aeacc731c972ef4cc77bf14d33ac107aec11b6380e6f588df312a",
+    "unchanged": true,
+    "all_response_business_requests_equal_packet": true,
+    "all_visible_json_equal_saved_parsed": true
+  },
+  "lock": {
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "repair_or_final_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

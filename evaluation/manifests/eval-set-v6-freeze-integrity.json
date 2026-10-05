@@ -1,0 +1,19 @@
+{
+  "schema_version": "scc-eval-v6-freeze-integrity-v1",
+  "status": "frozen_data_assets",
+  "formal_run_executed": false,
+  "provider_calls": 0,
+  "real_provider_authorization_received": false,
+  "case_canonical_sha256": "3b40e1a157be6e61be58025f7429c7011f30461c6b995ddb1dd9c28adf7564f0",
+  "corpus_canonical_sha256": "24cc03de333f2dc397748c1e419df03b782c45e07364f8e11b8497c046f0c753",
+  "frozen_files": {
+    "evaluation/case_sets/eval-set-v6.json": "0ccb0831e7b120091ae3fc9c67b65d982929de3f81525bd9be354c1936adb115",
+    "evaluation/manifests/eval-set-v6-manifest.json": "fa9cffdc5d6d6d7d465e043dfb630a6c8ea47783aaf28cf2c6ec9eed3c4ec5b7",
+    "evaluation/v6-semantic-review.json": "992de80b72c09a5f1c702fc76132b8eb965a9fb64bdbf229a075bf99713e60c2",
+    "evaluation/fixtures/eval-v6-corpus-manifest.json": "c4f270cfb1c6ad0675e0391640fbd86dc0b4b6a8cf15e0feefbb18915ce26861",
+    "evaluation/fixtures/eval-v6-lumen-tidehouse.json": "4d4fdaa57262bf6e1eac5bed230d0cd5bcfcee942735eccc74d19cd16c0ccb91",
+    "evaluation/fixtures/eval-v6-velvet-signal-yard.json": "f8fbad31eac556a33083e778fedbb4e6b9c0a3b61a038b74b0df514c0024f5ad",
+    "evaluation/fixtures/eval-v6-quartz-aviary.json": "2dfab135faddc4de6ec3ed622445387a0edc4825299fa452bcfd48587afec65b",
+    "evaluation/fixtures/eval-v6-cinder-lantern-ferry.json": "8a535d066bc9880f2aa7704271fd484d853233913b13b63692c6154722b5e1d6"
+  }
+}

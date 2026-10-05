@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "http_ordinal_in_case": 2,
+  "finished_at": "2026-09-27T10:47:55.786933+00:00",
+  "latency_ms": 2276,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3866,
+      "completion_tokens": 410,
+      "total_tokens": 4276
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-39de51eb-b748-4ebf-b329-1c5f212dfc3a-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"event_status\",\"severity\":\"medium\",\"explanation\":\"记录显示 Sera 在 13点 打开了电报并得知其密码，但明确未指明递送者；草稿把递送归给 Vela 缺少来源依据。\",\"reasoning\":\"13点 的记录只确认 Sera 打开电报并得知密码，并明确说明记录未指明递送者，因此无法支持“Vela 递送”这一归属；11点 的知识与门日志片段与递送者身份无关。判断在此停止：递送者身份仍未知。\",\"temporal_basis\":{\"claim_anchor\":\"at 13点\",\"evidence_anchor\":\"the record does not identify who delivered it\",\"relation\":\"unknown\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-harbor_signal-4\",\"span_id\":\"fixture-span-harbor_signal-4\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-harbor_signal-4\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-harbor_signal-4\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-39de51eb-b748-4ebf-b329-1c5f212dfc3a-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"13点 的记录确认 Sera 打开电报并得知密码，但明确未指明递送者，因此草稿将递送归给 Vela 缺少来源依据；11点 的知识与门日志片段与递送者身份无关。\"}]}",
+  "message_content_sha256": "2001a4b2016353bda7d0f5540b4d65bc969bce66e2948f135b604f190082020c",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

@@ -1,0 +1,48 @@
+{
+  "run_id": "flash-v5-20260927-01",
+  "completed_at_utc": "2026-09-27T08:38:46.171138+00:00",
+  "acceptance_owner": "root",
+  "review_method": "independent Codex agent semantic review and engineering audit with root crosschecks; not external human review",
+  "execution_and_evidence": "pass",
+  "overall_product_quality": "fail",
+  "comparison_full_contract_and_semantic": {
+    "first_pass": 10,
+    "final_pass": 10,
+    "cases": 24
+  },
+  "g02": {
+    "raw_summary_support_pass": 0,
+    "final_summary_support_pass": 6,
+    "cases": 6,
+    "final_items_supported": 72,
+    "scope": "synthetic bound snippets Memory and drafts only"
+  },
+  "provider_usage": {
+    "generation_post": 33,
+    "models_get": 1,
+    "prompt_tokens": 105167,
+    "completion_tokens": 13459,
+    "total_tokens": 118626,
+    "usage_complete": 33,
+    "cost": "unavailable"
+  },
+  "user_acceptance": "not_obtained",
+  "release_gate": "not_run_not_pass",
+  "seen_development_only": true,
+  "quality_reruns": 0,
+  "report_links_missing": [],
+  "live_inventory_files_verified": 320,
+  "live_evidence_drift": [],
+  "git_head": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "files": {
+    "LIVE-ACCEPTANCE.md": "3f5410cce873706ad89454f4eb28e889828e651bf1370416778fb78078f34e8c",
+    "controller-live-observation.json": "2f3e722e7c6ce934e9765dd2d4ea960c807aa80f81d48ab57c2ace47990ddf27",
+    "after-live-protected.json": "e9f8c6321208c12b8b18381145fb15f9e8a1750623c71cf92b43ea50130e6321",
+    "materials-v3/live-01-review.json": "2a8487fe0e0e06db17c03463a096b03839dee84966932f755d0002fc5db601e7",
+    "materials-v3/live-01-review.md": "9f7c04d0be2330807210a642f5a77f4e02958a6b61ef781991fc0d5b8397fc1d",
+    "materials-g02/live-01-review.json": "6bb0d460851e47b9e9dab6db56914c6f5f0b9becad773ab64be8c1ce370139bc",
+    "materials-g02/live-01-review.md": "415c9e324f7597063e0c9ea020514e068317fecfdd2ea0c3ece01fcfc0181fcd",
+    "engineering-preflight/live-01-engineering-review.json": "38534b475336498c295f6ad486f60f00b0741ff72b64f7c5b67eaa04acd2a9a1",
+    "engineering-preflight/live-01-engineering-review.md": "701e88d965143dec94ae6ceb37d73ab69ef143d0ce58e064dcfa10774f18490b"
+  }
+}

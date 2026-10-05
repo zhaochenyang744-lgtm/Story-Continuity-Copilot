@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 69452,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "d06b6011-2177-4259-b5e5-d5687db21d9c",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"cc-claim-cc4-deliverer-blank-zh\",\n      \"status\": \"insufficient_evidence\",\n      \"nature\": \"insufficient_evidence\",\n      \"category\": \"relationship\",\n      \"severity\": \"medium\",\n      \"explanation\": \"驿站记录未载明送件人，无法支持阿蘅送药的断言。\",\n      \"reasoning\": \"当前声称称驿站记录表明阿蘅送药，但摘录Y1显示送件人一栏空白，未记录任何送件人；Y2仅提供北营位置，未涉及送件人。由于缺少记录中送件人身份的依据，无法确认阿蘅送出药箱，因此判定为证据不足；不断言阿蘅未送。\",\n      \"temporal_basis\": {\n        \"claim_anchor\": null,\n        \"evidence_anchor\": \"辰时\",\n        \"relation\": \"unknown\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"cc-chapter-cc4-deliverer-blank-zh-Y1\",\n          \"span_id\": \"cc-span-cc4-deliverer-blank-zh-Y1\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"insufficient\",\n          \"related_memory_ids\": [\"cc-memory-cc4-deliverer-blank-zh-Y1\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"cc-span-cc4-deliverer-blank-zh-Y1\",\n          \"role\": \"missing_link\"\n        }\n      ],\n      \"suggested_revision\": null,\n      \"available_actions\": [],\n      \"proposed_memory_change\": null\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"cc-claim-cc4-deliverer-blank-zh\",\n      \"verdict\": \"insufficient_evidence\",\n      \"basis\": \"驿站记录所示送件人一栏空白，缺少阿蘅为送件人的记载，故判定证据不足。\"\n    }\n  ]\n}",
+  "visible_content_sha256": "89fafce9b4b472d40c52ec8045c6b73c5e657f056e1687a36ea741a79a317f1c",
+  "reasoning": {
+    "present": true,
+    "codepoints": 20492,
+    "utf8_bytes": 21446,
+    "sha256": "b0ef7780f378a0c0427b287d34ed2a7a65b5445b939cbd0f6b0b9a60d7b3e83a"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3253,
+      "completion_tokens": 5026,
+      "total_tokens": 8279,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 4567
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 821
+    },
+    "status": "complete",
+    "prompt_tokens": 3253,
+    "completion_tokens": 5026,
+    "total_tokens": 8279,
+    "reasoning_tokens": 4567,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T09:24:02.639456+00:00"
+}

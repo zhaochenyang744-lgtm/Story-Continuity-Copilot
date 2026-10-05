@@ -1,0 +1,128 @@
+{
+  "summary": {
+    "label": "v22b-tide-x4",
+    "prompt_version": "continuity-review-v22-settled-possible-conflict",
+    "model": "deepseek-v4-flash",
+    "checks": 4,
+    "completed": 4,
+    "checks_with_runaway": 1,
+    "non_thinking_fallbacks": 0,
+    "median_seconds": 43.1,
+    "max_seconds": 99.3,
+    "total_tokens": 58669
+  },
+  "records": [
+    {
+      "novel": "fog-harbor",
+      "case": "tide-bell-silence",
+      "expect": "no confirmed conflict (the rule only limits when it rings); v21 ran away 2/2",
+      "memory_candidates": 4,
+      "seconds": 18.0,
+      "status": "completed",
+      "error_code": null,
+      "natures": [],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 8189,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 4388,
+          "output": 3801,
+          "seconds": 17.8
+        }
+      ]
+    },
+    {
+      "novel": "fog-harbor",
+      "case": "tide-bell-silence",
+      "expect": "no confirmed conflict (the rule only limits when it rings); v21 ran away 2/2",
+      "memory_candidates": 4,
+      "seconds": 99.3,
+      "status": "completed",
+      "error_code": null,
+      "natures": [],
+      "runaway_dispatches": 1,
+      "non_thinking_fallback": false,
+      "tokens": 30559,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "ProviderInvalidJson",
+          "finish": "length",
+          "input": 4399,
+          "output": 16000,
+          "seconds": 70.9
+        },
+        {
+          "review": true,
+          "repair": false,
+          "effort": "medium",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 4399,
+          "output": 5761,
+          "seconds": 28.2
+        }
+      ]
+    },
+    {
+      "novel": "fog-harbor",
+      "case": "tide-bell-silence",
+      "expect": "no confirmed conflict (the rule only limits when it rings); v21 ran away 2/2",
+      "memory_candidates": 4,
+      "seconds": 8.9,
+      "status": "completed",
+      "error_code": null,
+      "natures": [],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 6113,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 4401,
+          "output": 1712,
+          "seconds": 8.7
+        }
+      ]
+    },
+    {
+      "novel": "fog-harbor",
+      "case": "tide-bell-silence",
+      "expect": "no confirmed conflict (the rule only limits when it rings); v21 ran away 2/2",
+      "memory_candidates": 4,
+      "seconds": 43.1,
+      "status": "completed",
+      "error_code": null,
+      "natures": [
+        "state_change"
+      ],
+      "runaway_dispatches": 0,
+      "non_thinking_fallback": false,
+      "tokens": 13808,
+      "dispatches": [
+        {
+          "review": true,
+          "repair": false,
+          "effort": "high",
+          "outcome": "parsed",
+          "finish": "stop",
+          "input": 4359,
+          "output": 9449,
+          "seconds": 42.9
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+{
+  "run_id": "run-ce684332-eb26-476f-a57e-883c1cc744dc",
+  "project_id": "prj-eb2a726f-22b5-4a95-9e95-67e07885ba3c",
+  "run_type": "context_brief",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 1,
+  "draft_revision": 2,
+  "source_memory_version": 4,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T08:04:25.101884+00:00",
+  "started_at": "2026-09-27T08:04:25.131430+00:00",
+  "completed_at": "2026-09-27T08:04:25.194278+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 62,
+  "retry_of_run_id": null,
+  "root_run_id": "run-ce684332-eb26-476f-a57e-883c1cc744dc",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T08:04:25.101884+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "binding_context",
+      "error_code": null,
+      "created_at": "2026-09-27T08:04:25.131430+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "analyzing_layers",
+      "error_code": null,
+      "created_at": "2026-09-27T08:04:25.149409+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "assembling_results",
+      "error_code": null,
+      "created_at": "2026-09-27T08:04:25.183169+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T08:04:25.194278+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "flash-v5-offline-stub",
+    "model_label": "no-model",
+    "prompt_version": "context-brief-v5-clause-citations",
+    "schema_version": "writing-analysis-v1",
+    "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+    "source_memory_version": 4
+  },
+  "provider_metrics": {
+    "latency_ms": 1,
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "analysis_type": "context_brief",
+  "current_draft_revision": 2,
+  "foreshadow_version": null,
+  "foreshadow_snapshot_digest": null,
+  "proposal": null,
+  "question": null,
+  "scope": null,
+  "issue_ids": [],
+  "source_run_id": null,
+  "retrieval": {
+    "counts": {
+      "author_context": {
+        "available": 0,
+        "selected": 0
+      },
+      "character_alias": {
+        "available": 0,
+        "selected": 0
+      },
+      "draft_claim": {
+        "available": 2,
+        "selected": 2
+      },
+      "foreshadow_record": {
+        "available": 0,
+        "selected": 0
+      },
+      "issue": {
+        "available": 0,
+        "selected": 0
+      },
+      "issue_evidence": {
+        "available": 0,
+        "selected": 0
+      },
+      "memory_record": {
+        "available": 8,
+        "selected": 8
+      },
+      "source_span": {
+        "available": 10,
+        "selected": 4
+      }
+    },
+    "draft_claim_scope": {
+      "available": 2,
+      "body_chars": 45,
+      "excerpt_chars": 45,
+      "selected": [
+        {
+          "id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-1",
+          "source_chars": 19,
+          "source_end": 19,
+          "source_start": 0,
+          "supplied_chars": 19,
+          "supplied_end": 19,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-2",
+          "source_chars": 26,
+          "source_end": 45,
+          "source_start": 19,
+          "supplied_chars": 26,
+          "supplied_end": 45,
+          "truncated": false
+        }
+      ]
+    },
+    "method_version": "writing-analysis-lexical-v3-brief-540",
+    "selected_ids": {
+      "author_context": [],
+      "character_alias": [],
+      "draft_claim": [
+        "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-1",
+        "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-2"
+      ],
+      "foreshadow_record": [],
+      "issue": [],
+      "issue_evidence": [],
+      "memory_record": [
+        "mem-0587f8b7-c4c7-4ca5-9e75-a6ec25d64b1e",
+        "mem-58d82671-e10c-441e-afd5-010124dda0ee",
+        "mem-efd869f0-37da-4366-8854-60b2d9b25a67",
+        "mem-2f091b22-8ebd-4323-b2da-0956ebfa07be",
+        "mem-3032c8b2-d7b2-44dd-9e19-77f345a8c542",
+        "mem-9bb06bce-9b51-4350-b907-7865723cac3c",
+        "mem-c0cf9634-6990-4f97-8cc3-521c4a288ce8",
+        "mem-e4dbcc02-92e6-434b-9854-cd1d525810fb"
+      ],
+      "source_span": [
+        "span-a7f816e6-0313-47ad-9633-4b12056dc842",
+        "span-3f275e8b-bb38-41a0-ba2a-4fb4d94a9aeb",
+        "span-cdac6d29-19f0-4e6e-b162-791134093a6a",
+        "span-bded0091-13d7-4db0-87d9-4483ac2b88fc"
+      ]
+    },
+    "truncated": {
+      "author_context": false,
+      "character_alias": false,
+      "draft_body": false,
+      "draft_claim": false,
+      "foreshadow_record": false,
+      "issue": false,
+      "issue_evidence": false,
+      "memory_record": false,
+      "source_span": true,
+      "source_span_text": false
+    }
+  },
+  "input_digest": "3db17eb657494e2bd3875dbf130aaf007e8f2b4ed56dd3e429c6e76c385469d4",
+  "analysis": {
+    "citation_transform": {
+      "added_source_count": 0,
+      "discarded_model_item_indices": [],
+      "duplicate_omitted_item_count": 0,
+      "fallback_draft_claim_ids": [
+        "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-2"
+      ],
+      "model_item_count": 1,
+      "model_summary_used": false,
+      "omitted_unmatched_clause_count": 0,
+      "overflow_omitted_item_count": 0,
+      "source_rendered_item_count": 2,
+      "version": "source-rendered-v2"
+    },
+    "draft_coverage": {
+      "cited_ranges": [
+        {
+          "id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-1",
+          "source_chars": 19,
+          "source_end": 19,
+          "source_start": 0,
+          "supplied_chars": 19,
+          "supplied_end": 19,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-2",
+          "source_chars": 26,
+          "source_end": 45,
+          "source_start": 19,
+          "supplied_chars": 26,
+          "supplied_end": 45,
+          "truncated": false
+        }
+      ],
+      "discarded_item_indices": [],
+      "reasons": [],
+      "source_ids": [
+        "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-1",
+        "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-2"
+      ],
+      "status": "covered",
+      "uncovered_source_ids": [],
+      "unselected_count": 0
+    },
+    "evidence_status": "supported",
+    "items": [
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "陈澈说：‘温岚已经把潮汐表交给林默。’",
+            "label": "当前草稿 · 句 1",
+            "source_id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-1",
+            "source_path": "/projects/prj-eb2a726f-22b5-4a95-9e95-67e07885ba3c/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句1原文：「陈澈说：‘温岚已经把潮汐表交给林默。’」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "温岚摇头说：‘我没有交出潮汐表，它仍在我的背包里。’",
+            "label": "当前草稿 · 句 2",
+            "source_id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-2",
+            "source_path": "/projects/prj-eb2a726f-22b5-4a95-9e95-67e07885ba3c/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句2原文：「温岚摇头说：‘我没有交出潮汐表，它仍在我的背包里。’」"
+      }
+    ],
+    "summary": "当前草稿句1原文：「陈澈说：‘温岚已经把潮汐表交给林默。’」 当前草稿句2原文：「温岚摇头说：‘我没有交出潮汐表，它仍在我的背包里。’」",
+    "summary_sources": [
+      {
+        "excerpt": "陈澈说：‘温岚已经把潮汐表交给林默。’",
+        "label": "当前草稿 · 句 1",
+        "source_id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-1",
+        "source_path": "/projects/prj-eb2a726f-22b5-4a95-9e95-67e07885ba3c/workspace#draft-source",
+        "source_type": "draft_claim"
+      },
+      {
+        "excerpt": "温岚摇头说：‘我没有交出潮汐表，它仍在我的背包里。’",
+        "label": "当前草稿 · 句 2",
+        "source_id": "draft-claim-draft-e7a9eaec-73a0-432c-81b5-635af69a15c1-r2-2",
+        "source_path": "/projects/prj-eb2a726f-22b5-4a95-9e95-67e07885ba3c/workspace#draft-source",
+        "source_type": "draft_claim"
+      }
+    ]
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "schema_version": "current-contract-compare-v1-v8-lineage",
+  "old_case_set": "evaluation/case_sets/eval-set-v8-candidate.json",
+  "old_case_set_sha256": "ce165d5548c16537cdfe35906fd14d704f66de1b60c5f724255876282aeaac2d",
+  "new_case_set_sha256": "a751a2a110e03001a1c213cf2a88e21ca5567e6d0a72b9da87430be90d10ebcd",
+  "old_case_count": 24,
+  "retained_byte_identical_count": 0,
+  "adaptation_disclosure": "Seen V8 challenge patterns informed the new synthetic works. The earlier cylinder seal motif was replaced with a pneumatic carrier readiness rule. This is development comparison material, not a blind holdout.",
+  "rows": [
+    {
+      "v8_case_id": "v8-dusk-viaduct-conflict-relationship",
+      "v8_class": "conflict",
+      "v8_category": "relationship",
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": "ccv1-orchard_restoration-relationship-conflict",
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-dusk-viaduct-conflict-object_state",
+      "v8_class": "conflict",
+      "v8_category": "object_state",
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": "ccv1-north_glass-object_state-conflict",
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-dusk-viaduct-control-5",
+      "v8_class": "no_conflict",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-dusk-viaduct-control-6",
+      "v8_class": "no_conflict",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-dusk-viaduct-insufficient-7",
+      "v8_class": "insufficient_evidence",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-dusk-viaduct-insufficient-8",
+      "v8_class": "insufficient_evidence",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-sable-tideglass-conflict-world_rule",
+      "v8_class": "conflict",
+      "v8_category": "world_rule",
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": "ccv1-north_glass-world_rule-conflict",
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-sable-tideglass-conflict-attribute",
+      "v8_class": "conflict",
+      "v8_category": "attribute",
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": "ccv1-basalt_observatory-attribute-conflict",
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-sable-tideglass-control-5",
+      "v8_class": "no_conflict",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-sable-tideglass-control-6",
+      "v8_class": "no_conflict",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-sable-tideglass-insufficient-7",
+      "v8_class": "insufficient_evidence",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-sable-tideglass-insufficient-8",
+      "v8_class": "insufficient_evidence",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-flint-garden-conflict-location_action",
+      "v8_class": "conflict",
+      "v8_category": "location_action",
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": "ccv1-basalt_observatory-location_action-conflict",
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-flint-garden-conflict-event_status",
+      "v8_class": "conflict",
+      "v8_category": "event_status",
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": "ccv1-orchard_restoration-event_status-conflict",
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-flint-garden-control-5",
+      "v8_class": "no_conflict",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-flint-garden-control-6",
+      "v8_class": "no_conflict",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-flint-garden-insufficient-7",
+      "v8_class": "insufficient_evidence",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-flint-garden-insufficient-8",
+      "v8_class": "insufficient_evidence",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-opal-nursery-conflict-character_knowledge",
+      "v8_class": "conflict",
+      "v8_category": "character_knowledge",
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": "ccv1-harbor_signal-character_knowledge-conflict",
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-opal-nursery-conflict-timeline",
+      "v8_class": "conflict",
+      "v8_category": "timeline",
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": "ccv1-harbor_signal-timeline-conflict",
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-opal-nursery-control-5",
+      "v8_class": "no_conflict",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-opal-nursery-control-6",
+      "v8_class": "no_conflict",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-opal-nursery-insufficient-7",
+      "v8_class": "insufficient_evidence",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    },
+    {
+      "v8_case_id": "v8-opal-nursery-insufficient-8",
+      "v8_class": "insufficient_evidence",
+      "v8_category": null,
+      "disposition": "excluded_as_input",
+      "thematic_replacement_case_id": null,
+      "reason": "The V8 corpus and case wording are not inputs to this set. Its static fixture_anchor records do not satisfy the current timeless_rule contract; the new cases use their own author-confirmed rule or explicit story time. Pattern inspiration remains disclosed, and the two sets are not same-input comparisons."
+    }
+  ]
+}

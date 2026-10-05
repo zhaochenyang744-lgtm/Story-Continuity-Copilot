@@ -1,0 +1,692 @@
+{
+  "scope": "direct-copy mismatches, composed copies, duplicate-text ID and one retained paraphrase only; no generic paraphrase semantic proof",
+  "engine_sha256": "df9b2a19b07744b318743802679c22f67a49af13a67275cf81f74c0d06891ea4",
+  "cases": [
+    {
+      "name": "two_copied_claims_cite_third_only",
+      "input": {
+        "task": "context_brief",
+        "bindings": {
+          "project_id": "independent-coverage",
+          "draft_id": "short",
+          "draft_revision": 2,
+          "source_revision": 1
+        },
+        "layers": {
+          "planned": {
+            "story_plans": [],
+            "character_plans": [],
+            "world_plans": []
+          },
+          "confirmed": {
+            "memory_records": []
+          },
+          "written": {
+            "draft": {
+              "id": "short",
+              "revision": 2,
+              "excerpt": "林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。"
+            },
+            "draft_claims": [
+              {
+                "id": "draft-claim-short-r2-1",
+                "ordinal": 1,
+                "text": "林默走进北门。"
+              },
+              {
+                "id": "draft-claim-short-r2-2",
+                "ordinal": 2,
+                "text": "银钥匙已经交给陈澈。"
+              },
+              {
+                "id": "draft-claim-short-r2-3",
+                "ordinal": 3,
+                "text": "她此时已经知道弟弟还活着。"
+              }
+            ],
+            "source_spans": [
+              {
+                "id": "span-1",
+                "chapter_id": "chapter-1",
+                "chapter_number": 1,
+                "chapter_title": "封锁",
+                "label": "历史正文",
+                "body": "渡口昨夜已经封锁。"
+              }
+            ]
+          }
+        },
+        "retrieval": {
+          "selected_ids": {
+            "author_context": [],
+            "memory_record": [],
+            "source_span": [
+              "span-1"
+            ],
+            "draft_claim": [
+              "draft-claim-short-r2-1",
+              "draft-claim-short-r2-2",
+              "draft-claim-short-r2-3"
+            ]
+          },
+          "counts": {
+            "author_context": {
+              "available": 0,
+              "selected": 0
+            },
+            "memory_record": {
+              "available": 0,
+              "selected": 0
+            },
+            "source_span": {
+              "available": 1,
+              "selected": 1
+            },
+            "draft_claim": {
+              "available": 3,
+              "selected": 3
+            }
+          },
+          "truncated": {
+            "author_context": false,
+            "memory_record": false,
+            "source_span": false,
+            "draft_body": false,
+            "draft_claim": false
+          }
+        }
+      },
+      "provider_payload": {
+        "summary": "草稿写明：林默走进北门。银钥匙已经交给陈澈。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-3"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "草稿写明：林默走进北门。银钥匙已经交给陈澈。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-3"
+              }
+            ]
+          }
+        ]
+      },
+      "result": {
+        "summary": "当前已保存草稿写道：林默走进北门。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "林默走进北门。",
+            "source_path": "/projects/independent-coverage/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前已保存草稿写道：林默走进北门。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "林默走进北门。",
+                "source_path": "/projects/independent-coverage/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "partial",
+        "draft_coverage": {
+          "status": "partial",
+          "source_ids": [
+            "draft-claim-short-r2-1"
+          ],
+          "cited_ranges": [
+            {
+              "id": "draft-claim-short-r2-1",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [
+            "draft-claim-short-r2-2",
+            "draft-claim-short-r2-3"
+          ],
+          "unselected_count": 0,
+          "discarded_item_indices": [
+            0
+          ],
+          "reasons": [
+            "draft_item_citation_mismatch",
+            "draft_claim_uncovered"
+          ]
+        }
+      },
+      "original_item_retained": false
+    },
+    {
+      "name": "two_copied_claims_have_both_matching_sources",
+      "input": {
+        "task": "context_brief",
+        "bindings": {
+          "project_id": "independent-coverage",
+          "draft_id": "short",
+          "draft_revision": 2,
+          "source_revision": 1
+        },
+        "layers": {
+          "planned": {
+            "story_plans": [],
+            "character_plans": [],
+            "world_plans": []
+          },
+          "confirmed": {
+            "memory_records": []
+          },
+          "written": {
+            "draft": {
+              "id": "short",
+              "revision": 2,
+              "excerpt": "林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。"
+            },
+            "draft_claims": [
+              {
+                "id": "draft-claim-short-r2-1",
+                "ordinal": 1,
+                "text": "林默走进北门。"
+              },
+              {
+                "id": "draft-claim-short-r2-2",
+                "ordinal": 2,
+                "text": "银钥匙已经交给陈澈。"
+              },
+              {
+                "id": "draft-claim-short-r2-3",
+                "ordinal": 3,
+                "text": "她此时已经知道弟弟还活着。"
+              }
+            ],
+            "source_spans": [
+              {
+                "id": "span-1",
+                "chapter_id": "chapter-1",
+                "chapter_number": 1,
+                "chapter_title": "封锁",
+                "label": "历史正文",
+                "body": "渡口昨夜已经封锁。"
+              }
+            ]
+          }
+        },
+        "retrieval": {
+          "selected_ids": {
+            "author_context": [],
+            "memory_record": [],
+            "source_span": [
+              "span-1"
+            ],
+            "draft_claim": [
+              "draft-claim-short-r2-1",
+              "draft-claim-short-r2-2",
+              "draft-claim-short-r2-3"
+            ]
+          },
+          "counts": {
+            "author_context": {
+              "available": 0,
+              "selected": 0
+            },
+            "memory_record": {
+              "available": 0,
+              "selected": 0
+            },
+            "source_span": {
+              "available": 1,
+              "selected": 1
+            },
+            "draft_claim": {
+              "available": 3,
+              "selected": 3
+            }
+          },
+          "truncated": {
+            "author_context": false,
+            "memory_record": false,
+            "source_span": false,
+            "draft_body": false,
+            "draft_claim": false
+          }
+        }
+      },
+      "provider_payload": {
+        "summary": "草稿写明：林默走进北门。银钥匙已经交给陈澈。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-1"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-2"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "草稿写明：林默走进北门。银钥匙已经交给陈澈。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-1"
+              },
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-2"
+              }
+            ]
+          }
+        ]
+      },
+      "result": {
+        "summary": "草稿写明：林默走进北门。银钥匙已经交给陈澈。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "林默走进北门。",
+            "source_path": "/projects/independent-coverage/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "银钥匙已经交给陈澈。",
+            "source_path": "/projects/independent-coverage/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "草稿写明：林默走进北门。银钥匙已经交给陈澈。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "林默走进北门。",
+                "source_path": "/projects/independent-coverage/workspace#draft-source"
+              },
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "银钥匙已经交给陈澈。",
+                "source_path": "/projects/independent-coverage/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "partial",
+        "draft_coverage": {
+          "status": "partial",
+          "source_ids": [
+            "draft-claim-short-r2-1",
+            "draft-claim-short-r2-2"
+          ],
+          "cited_ranges": [
+            {
+              "id": "draft-claim-short-r2-1",
+              "truncated": false
+            },
+            {
+              "id": "draft-claim-short-r2-2",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [
+            "draft-claim-short-r2-3"
+          ],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": [
+            "draft_claim_uncovered"
+          ]
+        }
+      },
+      "original_item_retained": true
+    },
+    {
+      "name": "identical_text_two_ids_one_matching_id",
+      "input": {
+        "task": "context_brief",
+        "bindings": {
+          "project_id": "independent-coverage",
+          "draft_id": "short",
+          "draft_revision": 2,
+          "source_revision": 1
+        },
+        "layers": {
+          "planned": {
+            "story_plans": [],
+            "character_plans": [],
+            "world_plans": []
+          },
+          "confirmed": {
+            "memory_records": []
+          },
+          "written": {
+            "draft": {
+              "id": "short",
+              "revision": 2,
+              "excerpt": "林默走进北门。林默走进北门。"
+            },
+            "draft_claims": [
+              {
+                "id": "duplicate-1",
+                "ordinal": 1,
+                "text": "林默走进北门。"
+              },
+              {
+                "id": "duplicate-2",
+                "ordinal": 2,
+                "text": "林默走进北门。"
+              }
+            ],
+            "source_spans": [
+              {
+                "id": "span-1",
+                "chapter_id": "chapter-1",
+                "chapter_number": 1,
+                "chapter_title": "封锁",
+                "label": "历史正文",
+                "body": "渡口昨夜已经封锁。"
+              }
+            ]
+          }
+        },
+        "retrieval": {
+          "selected_ids": {
+            "author_context": [],
+            "memory_record": [],
+            "source_span": [
+              "span-1"
+            ],
+            "draft_claim": [
+              "duplicate-1",
+              "duplicate-2"
+            ]
+          },
+          "counts": {
+            "author_context": {
+              "available": 0,
+              "selected": 0
+            },
+            "memory_record": {
+              "available": 0,
+              "selected": 0
+            },
+            "source_span": {
+              "available": 1,
+              "selected": 1
+            },
+            "draft_claim": {
+              "available": 2,
+              "selected": 2
+            }
+          },
+          "truncated": {
+            "author_context": false,
+            "memory_record": false,
+            "source_span": false,
+            "draft_body": false,
+            "draft_claim": false
+          }
+        }
+      },
+      "provider_payload": {
+        "summary": "草稿写明：林默走进北门。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "duplicate-2"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "草稿写明：林默走进北门。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "duplicate-2"
+              }
+            ]
+          }
+        ]
+      },
+      "result": {
+        "summary": "草稿写明：林默走进北门。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "duplicate-2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "林默走进北门。",
+            "source_path": "/projects/independent-coverage/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "草稿写明：林默走进北门。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "duplicate-2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "林默走进北门。",
+                "source_path": "/projects/independent-coverage/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "partial",
+        "draft_coverage": {
+          "status": "partial",
+          "source_ids": [
+            "duplicate-2"
+          ],
+          "cited_ranges": [
+            {
+              "id": "duplicate-2",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [
+            "duplicate-1"
+          ],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": [
+            "draft_claim_uncovered"
+          ]
+        }
+      },
+      "original_item_retained": true
+    },
+    {
+      "name": "normal_paraphrase_is_not_claimed_verified",
+      "input": {
+        "task": "context_brief",
+        "bindings": {
+          "project_id": "independent-coverage",
+          "draft_id": "short",
+          "draft_revision": 2,
+          "source_revision": 1
+        },
+        "layers": {
+          "planned": {
+            "story_plans": [],
+            "character_plans": [],
+            "world_plans": []
+          },
+          "confirmed": {
+            "memory_records": []
+          },
+          "written": {
+            "draft": {
+              "id": "short",
+              "revision": 2,
+              "excerpt": "林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。"
+            },
+            "draft_claims": [
+              {
+                "id": "draft-claim-short-r2-1",
+                "ordinal": 1,
+                "text": "林默走进北门。"
+              },
+              {
+                "id": "draft-claim-short-r2-2",
+                "ordinal": 2,
+                "text": "银钥匙已经交给陈澈。"
+              },
+              {
+                "id": "draft-claim-short-r2-3",
+                "ordinal": 3,
+                "text": "她此时已经知道弟弟还活着。"
+              }
+            ],
+            "source_spans": [
+              {
+                "id": "span-1",
+                "chapter_id": "chapter-1",
+                "chapter_number": 1,
+                "chapter_title": "封锁",
+                "label": "历史正文",
+                "body": "渡口昨夜已经封锁。"
+              }
+            ]
+          }
+        },
+        "retrieval": {
+          "selected_ids": {
+            "author_context": [],
+            "memory_record": [],
+            "source_span": [
+              "span-1"
+            ],
+            "draft_claim": [
+              "draft-claim-short-r2-1",
+              "draft-claim-short-r2-2",
+              "draft-claim-short-r2-3"
+            ]
+          },
+          "counts": {
+            "author_context": {
+              "available": 0,
+              "selected": 0
+            },
+            "memory_record": {
+              "available": 0,
+              "selected": 0
+            },
+            "source_span": {
+              "available": 1,
+              "selected": 1
+            },
+            "draft_claim": {
+              "available": 3,
+              "selected": 3
+            }
+          },
+          "truncated": {
+            "author_context": false,
+            "memory_record": false,
+            "source_span": false,
+            "draft_body": false,
+            "draft_claim": false
+          }
+        }
+      },
+      "provider_payload": {
+        "summary": "林默从北门进入。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-1"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "林默从北门进入。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-1"
+              }
+            ]
+          }
+        ]
+      },
+      "result": {
+        "summary": "林默从北门进入。",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-short-r2-1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "林默走进北门。",
+            "source_path": "/projects/independent-coverage/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "林默从北门进入。",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "draft-claim-short-r2-1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "林默走进北门。",
+                "source_path": "/projects/independent-coverage/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "partial",
+        "draft_coverage": {
+          "status": "partial",
+          "source_ids": [
+            "draft-claim-short-r2-1"
+          ],
+          "cited_ranges": [
+            {
+              "id": "draft-claim-short-r2-1",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [
+            "draft-claim-short-r2-2",
+            "draft-claim-short-r2-3"
+          ],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": [
+            "draft_claim_uncovered"
+          ]
+        }
+      },
+      "original_item_retained": true
+    }
+  ]
+}

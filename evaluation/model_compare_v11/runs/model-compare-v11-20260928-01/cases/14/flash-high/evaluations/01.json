@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "e1ce482b113acf80283cc55673362c7683d7734ec61d83fdd02d5e933b76f69f",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1",
+        "verdict": "no_issue",
+        "basis": "The draft frames Nera's mother claim as an explicit lie, not narrator-asserted canon, and the register's twin identification matches the Orchard Register kinship rule, so no contradiction arises; the unrecorded birth order in the other span is untouched."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3569,
+      "completion_tokens": 422,
+      "total_tokens": 3991,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 312
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1265
+    },
+    "status": "complete",
+    "prompt_tokens": 3569,
+    "completion_tokens": 422,
+    "total_tokens": 3991,
+    "reasoning_tokens": 312,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

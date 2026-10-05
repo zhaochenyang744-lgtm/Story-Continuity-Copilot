@@ -1,0 +1,116 @@
+[
+  {
+    "chapter_index": 10,
+    "original": "我的小破公司还在为第一把魔导武装困扰呢。」少年随口回应。",
+    "modified": "我的小破公司四个人的排名全都在二十万名开外，还在为第一把魔导武装困扰呢。」少年随口回应。",
+    "purpose": "IE ranks"
+  },
+  {
+    "chapter_index": 11,
+    "original": "听见警长的问话，他想起昨晚和陈鸢仪发生的意外，不禁有些尴尬，连带声音都小了起来。",
+    "modified": "听见警长的问话，他想起昨晚警方连笔录都没让他们做，在大楼门口就放众人各自回家，之后又和陈鸢仪发生了那场意外，不禁有些尴尬，连带声音都小了起来。",
+    "purpose": "conflict police statement"
+  },
+  {
+    "chapter_index": 11,
+    "original": "「学姊的门路真多啊。」陈鸢仪感叹道。",
+    "modified": "「学姊的门路真多啊。」陈鸢仪感叹道，顺手从自己的书包里掏出印鉴，准备在委托书上盖章。",
+    "purpose": "conflict seal"
+  },
+  {
+    "chapter_index": 38,
+    "original": "那么蓬莱安全区很有可能又会再重现「新年惨案」的悲剧",
+    "modified": "那么蓬莱安全区很有可能又会再重现「新年惨案」那样三万人丧命的悲剧",
+    "purpose": "conflict death toll"
+  },
+  {
+    "chapter_index": 40,
+    "original": "「她确实帮了我很多忙。」",
+    "modified": "「她确实帮了我很多忙。」少年说道，毕竟广寒集团早就把至理编织正式转到了他的名下，她如今也只认他这一个主人。",
+    "purpose": "IE handoff"
+  },
+  {
+    "chapter_index": 42,
+    "original": "「对了，和鸢仪是同一天呢。」想到这里，少年不禁有些抱歉：「最近忙着喋血红伞的事，我都忘了替妳准备生日，真是不好意思。」",
+    "modified": "「对了，鸢仪的生日是下个月吧。」想到这里，少年不禁有些抱歉：「最近忙着喋血红伞的事，我到现在都还没想好要送妳什么，真是不好意思。」",
+    "purpose": "conflict birthday"
+  },
+  {
+    "chapter_index": 50,
+    "original": "「连喜欢都不敢说的母猴子，好卑微。」学姊露出嘲讽的脸庞窃笑着。",
+    "modified": "「连喜欢都不敢说的母猴子，好卑微。」比他们低一个年级的学妹周爱怜露出嘲讽的脸庞窃笑着。",
+    "purpose": "conflict senior/junior"
+  },
+  {
+    "chapter_index": 71,
+    "original": "希望废除军务协作法令，政府内的总理也同样上台讲述类似的观点。",
+    "modified": "希望废除军务协作法令，政府内的总理也同样上台讲述类似的观点。上次收尾人自由执法权的议案在公投中顺利通过，让王党吃了大亏，这一次他们决心扳回一城。",
+    "purpose": "conflict referendum"
+  },
+  {
+    "chapter_index": 72,
+    "original": "「出走计划、守望寰宇、末日新生、物竞天择，是这四个组织对吧。」少年回答道。",
+    "modified": "「我只听说过守望寰宇，其他三个连名字都没听过。」少年回答道。",
+    "purpose": "conflict knowledge"
+  },
+  {
+    "chapter_index": 72,
+    "original": "「不错，要解释就容易多了。」韩局长竖起拇指：",
+    "modified": "「那我简单说明一下，另外三个是出走计划、末日新生和物竞天择。」韩局长耐心地说道：",
+    "purpose": "follow-up to keep the dialogue coherent"
+  },
+  {
+    "chapter_index": 72,
+    "original": "「作为新装备的手套，用的还习惯吗？」",
+    "modified": "「作为新装备的手套，用的还习惯吗？要是不顺手，墨匠军械那边说过随时可以退货退款。」",
+    "purpose": "conflict refund rule"
+  },
+  {
+    "chapter_index": 72,
+    "original": "相比之下，价格在数百万左右的高级眷体武装价格和入手方式就容易了许多。",
+    "modified": "相比之下，价格在数百万左右的高级眷体武装价格和入手方式就容易了许多，如今帝雉公司四个人都已经配上了眷体级以上的魔导武装。",
+    "purpose": "IE generalisation"
+  },
+  {
+    "chapter_index": 78,
+    "original": "走来的是一名紫发萝莉，后脑杓绑着大大的蝴蝶结",
+    "modified": "走来的是一名紫发碧眼的萝莉，后脑杓绑着大大的蝴蝶结",
+    "purpose": "conflict eye colour"
+  },
+  {
+    "chapter_index": 83,
+    "original": "少年不由得有些汗颜，与其说她是猫更不如说是尖牙锐齿的猎豹",
+    "modified": "少年不由得有些汗颜，只有五级魔力的他能赢下那一战确实侥幸，与其说她是猫更不如说是尖牙锐齿的猎豹",
+    "purpose": "conflict magic level"
+  },
+  {
+    "chapter_index": 86,
+    "original": "我才心血来潮，想回忆一下茶道的内容。」她以亲切的笑容回答道。",
+    "modified": "我才心血来潮，想回忆一下茶道的内容。」她以亲切的笑容回答道。朝日的义父当年可是排名前一百的收尾人，这间别墅就是他那时挣下的。",
+    "purpose": "IE witness"
+  },
+  {
+    "chapter_index": 89,
+    "original": "小曦要是在看护所出现什么问题记得要联系我。」少年礼貌的问向自己的妹妹。",
+    "modified": "小曦要是在看护所出现什么问题记得要联系我。」少年礼貌的问向自己的妹妹，他自己和陈鸢仪还没满十八岁，在法律上同样算未成年，只是被特许留在公寓里。",
+    "purpose": "conflict age of majority"
+  },
+  {
+    "chapter_index": 89,
+    "original": "「鉴于战争来临，波旁小姐不适合再与你们住在一起",
+    "modified": "「鉴于战争来临，这位从德国来的波旁小姐不适合再与你们住在一起",
+    "purpose": "conflict nationality"
+  },
+  {
+    "chapter_index": 96,
+    "original": "「不要忘记新年惨案的伤痛，",
+    "modified": "「不要忘记两年前新年惨案的伤痛，",
+    "purpose": "conflict years since"
+  },
+  {
+    "chapter_index": 96,
+    "original": "「小曦，收容所怎么样？」",
+    "modified": "「小曦，收容所怎么样？」少年看向埋头吃饭、一头乌黑短发的妹妹。",
+    "purpose": "conflict hair colour"
+  }
+]

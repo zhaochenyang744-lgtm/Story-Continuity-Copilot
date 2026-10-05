@@ -1,0 +1,26 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "pass",
+    "semantic_result": "pending_manual_review",
+    "category_status": "fixed_gold",
+    "full_validator_result": "accepted",
+    "score_layer": "raw_first_or_repair",
+    "errors": []
+  },
+  "repair_raw": [],
+  "final": {
+    "case_id": "ccv3-orchard_restoration-relationship-conflict",
+    "expected_class": "conflict",
+    "machine_result": "pass",
+    "semantic_result": "pending_manual_review",
+    "result": "pending_manual_review",
+    "errors": [],
+    "category_status": "fixed_gold",
+    "score_layer": "final_product",
+    "input_origin": "caller_supplied_capture"
+  },
+  "request_count": 1,
+  "parsed_output_count": 1,
+  "manual_semantic_review": "pending_manual_review"
+}

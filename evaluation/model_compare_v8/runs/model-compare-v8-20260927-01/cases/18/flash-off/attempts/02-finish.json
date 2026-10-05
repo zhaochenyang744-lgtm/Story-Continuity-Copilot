@@ -1,0 +1,45 @@
+{
+  "evaluation": 2,
+  "trial_post_ordinal": 2,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 2219,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "a0cb2403-7496-4bde-881c-c5c4a9c06e49",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"event_status\",\"severity\":\"medium\",\"explanation\":\"草稿声称根据下水与延误日志，Tala 造成了修复船的延误，但所引日志明确未记录延误原因，该归因缺乏依据，原因仍属未知。\",\"reasoning\":\"草稿把延误原因归于 Tala，并称依据是下水与延误日志。所引证据 fixture-span-orchard_restoration-6 明确说明修复日志未记录延误原因，因此没有任何被引文本支持该归因；判断在此停止，原因仍未知。\",\"temporal_basis\":{\"claim_anchor\":null,\"evidence_anchor\":null,\"relation\":\"unknown\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-orchard_restoration-6\",\"span_id\":\"fixture-span-orchard_restoration-6\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-orchard_restoration-6\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-orchard_restoration-6\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-a7a7226b-6156-4f88-9643-892c8ae2b3ec-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"草稿称依据下水与延误日志，Tala 造成了修复船延误，但所引修复日志明确未记录延误原因，该归因缺乏依据，原因仍未知。\"}]}",
+  "visible_content_sha256": "1a869d5fb2c5e5de75dd3efc8d3742a80f7a669ba75f6e3de6304296dda35129",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3986,
+      "completion_tokens": 383,
+      "total_tokens": 4369,
+      "prompt_tokens_details": {
+        "cached_tokens": 3456
+      },
+      "prompt_cache_hit_tokens": 3456,
+      "prompt_cache_miss_tokens": 530
+    },
+    "status": "complete",
+    "prompt_tokens": 3986,
+    "completion_tokens": 383,
+    "total_tokens": 4369,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:47:28.981040+00:00"
+}

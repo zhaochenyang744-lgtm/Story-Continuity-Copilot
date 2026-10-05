@@ -1,0 +1,98 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "47895e41aec43003320816bc5bbe8f56ade90e3cbbb26883a46bc7a91778a2d3",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-567fef0f-3c7e-4a3c-a698-a0e3a6deaf2d-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "character_knowledge",
+        "severity": "high",
+        "explanation": "同一时间点（11点）对Sera是否知道电报密码给出了互相矛盾的陈述。",
+        "reasoning": "当前草稿断言Sera在11点知道电报密码；证据span-3明确记载同一时间点（11点）Sera尚未打开密封电报、不知道密码。两者主体（Sera）、对象（电报密码）、时间（11点）完全重合，无法同时成立。span-4记载13点Sera才打开电报并得知密码，进一步确认11点时她尚不知情，属于后续状态变化而非同一时刻的兼容信息。",
+        "temporal_basis": {
+          "claim_anchor": "At 11点 on the same day",
+          "evidence_anchor": "At 11点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-3",
+            "span_id": "fixture-span-harbor_signal-3",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-3"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-4",
+            "span_id": "fixture-span-harbor_signal-4",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-4"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-harbor_signal-3",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "fixture-span-harbor_signal-4",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 11点 on the same day, Sera knew the telegram code.",
+          "after": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-567fef0f-3c7e-4a3c-a698-a0e3a6deaf2d-1",
+        "verdict": "reviewed_issue",
+        "basis": "草稿称Sera在11点知道电报密码，而证据span-3记载同一时间点她尚未打开电报、不知密码，主体、对象、时间完全重合，构成直接矛盾。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3347,
+      "completion_tokens": 565,
+      "total_tokens": 3912,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1171
+    },
+    "status": "complete",
+    "prompt_tokens": 3347,
+    "completion_tokens": 565,
+    "total_tokens": 3912,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+  "http_ordinal_in_case": 2,
+  "finished_at": "2026-09-27T10:02:40.147147+00:00",
+  "latency_ms": 1378,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3741,
+      "completion_tokens": 129,
+      "total_tokens": 3870
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-c09f395c-e01c-498f-b409-15be38ce0392-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"草稿声称“根据下水与延误日志”塔拉导致了修复船的延误，但所引证据中，修复日志明确记载延误原因未被记录（fixture-span-orchard_restoration-6），没有任何被引证据支持塔拉是原因。该归因缺乏来源依据，属于可审查的证据缺口，但不足以构成与既有事实的直接矛盾。\"}]}",
+  "message_content_sha256": "9a90b14fdd063a9beeeea9c0818089e3d33b6b908fe6cef0cd1b8468ae9f5d63",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

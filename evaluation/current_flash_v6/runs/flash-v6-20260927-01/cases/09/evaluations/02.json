@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "32d73227268c1c1bb6974e7987420277542229796fb4f6da8c8af02c124c274b",
+  "finished_at": "2026-09-27T10:02:05.008912+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-f0ef1167-5df0-4b51-9fd6-fcc32a46ef5e-1",
+        "verdict": "insufficient_evidence",
+        "basis": "草稿声称“门禁日志证明 Sera 在 11点授权重新开放”，但所引证据 fixture-span-harbor_signal-2 明确记载 11点 的日志“未记录任何重新开放及其操作者”，因此该记录并不支持这一断言；同时 fixture-span-harbor_signal-1 只记载 09点 首次开启、10点 首次关闭，fixture-span-harbor_signal-4 只记载 13点 Sera 打开电报并得知密码，均未提供 11点 授权重新开放的事实。该主张依赖缺失的授权记录这一逻辑环节，属于证据不足，而非与证据直接矛盾。"
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3621,
+    "output_tokens": 202,
+    "observed_response_input_tokens": 3621,
+    "observed_response_output_tokens": 202
+  }
+}

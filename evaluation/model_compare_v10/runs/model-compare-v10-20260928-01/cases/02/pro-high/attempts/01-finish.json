@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 22780,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "4af2ff05-bee7-4007-b245-f3b6c8b13d1b",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-4fca066b-a350-449a-9291-36195efde7b4-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"The static rule that a red badge cannot open North Glass combined with Mira wearing only a red badge and no blue badge at 10点 directly supports the claim; the roster silence about whether it opened does not contradict the rule.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "531c299354ac632fdc29b546bcf741ec1fc9b912a6ed0480a8d6797a2f2d6f74",
+  "reasoning": {
+    "present": true,
+    "codepoints": 5878,
+    "utf8_bytes": 5894,
+    "sha256": "78ddbdf5492a79594c1223ae3c6cb987d0002b8aded77844be6cb9934d0de58e"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3818,
+      "completion_tokens": 1468,
+      "total_tokens": 5286,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1350
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 3818
+    },
+    "status": "complete",
+    "prompt_tokens": 3818,
+    "completion_tokens": 1468,
+    "total_tokens": 5286,
+    "reasoning_tokens": 1350,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T08:36:42.100576+00:00"
+}

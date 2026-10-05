@@ -1,0 +1,1203 @@
+{
+  "scope": "Pure validator and source-renderer tests. No DB, network, credential, Provider, product or original evidence writes.",
+  "source_hashes_before": {
+    "backend\\app\\brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "backend\\app\\engine.py": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+    "backend\\app\\v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754"
+  },
+  "source_hashes_after": {
+    "backend\\app\\brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc",
+    "backend\\app\\engine.py": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+    "backend\\app\\v2_database.py": "2485b997c32dda446325fe1535df0342330b09afdd53b9619137ad824a17e754"
+  },
+  "source_unchanged": true,
+  "matches_current_comparison_freeze": {
+    "backend\\app\\brief_citations.py": false,
+    "backend\\app\\engine.py": false,
+    "backend\\app\\v2_database.py": false
+  },
+  "cases": [
+    {
+      "name": "normal_three_fact_usefulness",
+      "pass": true,
+      "expected": true,
+      "actual": true,
+      "model_items": [
+        {
+          "section": "recent_source",
+          "text": "岑岚走进东门。",
+          "sources": [
+            {
+              "source_type": "draft_claim",
+              "source_id": "c1"
+            }
+          ]
+        },
+        {
+          "section": "recent_source",
+          "text": "赤铜钥匙已经交给乔霁。",
+          "sources": [
+            {
+              "source_type": "draft_claim",
+              "source_id": "c2"
+            }
+          ]
+        },
+        {
+          "section": "recent_source",
+          "text": "温岚此时不知道暗号。",
+          "sources": [
+            {
+              "source_type": "draft_claim",
+              "source_id": "c3"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "summary": "当前草稿句1原文：「岑岚走进东门。」 当前草稿句2原文：「赤铜钥匙已经交给乔霁。」 当前草稿句3原文：「温岚此时不知道暗号。」",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "岑岚走进东门。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "赤铜钥匙已经交给乔霁。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c3",
+            "label": "当前草稿 · 句 3",
+            "excerpt": "温岚此时不知道暗号。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿句1原文：「岑岚走进东门。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "岑岚走进东门。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句2原文：「赤铜钥匙已经交给乔霁。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "赤铜钥匙已经交给乔霁。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句3原文：「温岚此时不知道暗号。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c3",
+                "label": "当前草稿 · 句 3",
+                "excerpt": "温岚此时不知道暗号。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 3,
+          "source_rendered_item_count": 3,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 0,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "c1",
+            "c2",
+            "c3"
+          ],
+          "cited_ranges": [
+            {
+              "id": "c1",
+              "truncated": false
+            },
+            {
+              "id": "c2",
+              "truncated": false
+            },
+            {
+              "id": "c3",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "cyclic_citation_paraphrases",
+      "pass": true,
+      "expected": true,
+      "actual": true,
+      "model_items": [
+        {
+          "section": "recent_source",
+          "text": "岑岚从东门进入。",
+          "sources": [
+            {
+              "source_type": "draft_claim",
+              "source_id": "c2"
+            }
+          ]
+        },
+        {
+          "section": "recent_source",
+          "text": "乔霁接过赤铜钥匙。",
+          "sources": [
+            {
+              "source_type": "draft_claim",
+              "source_id": "c3"
+            }
+          ]
+        },
+        {
+          "section": "recent_source",
+          "text": "温岚还未掌握暗号。",
+          "sources": [
+            {
+              "source_type": "draft_claim",
+              "source_id": "c1"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "summary": "当前草稿句1原文：「岑岚走进东门。」 当前草稿句2原文：「赤铜钥匙已经交给乔霁。」 当前草稿句3原文：「温岚此时不知道暗号。」",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "岑岚走进东门。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "赤铜钥匙已经交给乔霁。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c3",
+            "label": "当前草稿 · 句 3",
+            "excerpt": "温岚此时不知道暗号。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿句1原文：「岑岚走进东门。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "岑岚走进东门。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句2原文：「赤铜钥匙已经交给乔霁。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "赤铜钥匙已经交给乔霁。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句3原文：「温岚此时不知道暗号。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c3",
+                "label": "当前草稿 · 句 3",
+                "excerpt": "温岚此时不知道暗号。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 3,
+          "source_rendered_item_count": 3,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 3,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "c1",
+            "c2",
+            "c3"
+          ],
+          "cited_ranges": [
+            {
+              "id": "c1",
+              "truncated": false
+            },
+            {
+              "id": "c2",
+              "truncated": false
+            },
+            {
+              "id": "c3",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "negative",
+      "pass": true,
+      "expected": true,
+      "actual": true,
+      "model_items": [
+        {
+          "section": "recent_source",
+          "text": "顾遥知道密码。",
+          "sources": [
+            {
+              "source_type": "source_span",
+              "source_id": "s1"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "summary": "第1章所选原文：「顾遥没有知道密码，也从未被告知。」",
+        "summary_sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "s1",
+            "label": "第 1 章 · 独立合成原文",
+            "excerpt": "顾遥没有知道密码，也从未被告知。",
+            "source_path": "/projects/synthetic-only/sources#span-s1"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "第1章所选原文：「顾遥没有知道密码，也从未被告知。」",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "s1",
+                "label": "第 1 章 · 独立合成原文",
+                "excerpt": "顾遥没有知道密码，也从未被告知。",
+                "source_path": "/projects/synthetic-only/sources#span-s1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 0,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "empty",
+          "source_ids": [],
+          "cited_ranges": [],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "time",
+      "pass": true,
+      "expected": true,
+      "actual": true,
+      "model_items": [
+        {
+          "section": "recent_source",
+          "text": "顾遥18点已知道密码。",
+          "sources": [
+            {
+              "source_type": "source_span",
+              "source_id": "s1"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "summary": "第1章所选原文：「顾遥18点尚不知道密码，直到19点才获知。」",
+        "summary_sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "s1",
+            "label": "第 1 章 · 独立合成原文",
+            "excerpt": "顾遥18点尚不知道密码，直到19点才获知。",
+            "source_path": "/projects/synthetic-only/sources#span-s1"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "第1章所选原文：「顾遥18点尚不知道密码，直到19点才获知。」",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "s1",
+                "label": "第 1 章 · 独立合成原文",
+                "excerpt": "顾遥18点尚不知道密码，直到19点才获知。",
+                "source_path": "/projects/synthetic-only/sources#span-s1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 1,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "empty",
+          "source_ids": [],
+          "cited_ranges": [],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "quotation",
+      "pass": true,
+      "expected": true,
+      "actual": true,
+      "model_items": [
+        {
+          "section": "recent_source",
+          "text": "顾遥知道密码。",
+          "sources": [
+            {
+              "source_type": "source_span",
+              "source_id": "s1"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "summary": "第1章所选原文：「顾遥说：‘我知道密码。’旁白立即指出这是谎言，她实际不知道。」",
+        "summary_sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "s1",
+            "label": "第 1 章 · 独立合成原文",
+            "excerpt": "顾遥说：‘我知道密码。’旁白立即指出这是谎言，她实际不知道。",
+            "source_path": "/projects/synthetic-only/sources#span-s1"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "第1章所选原文：「顾遥说：‘我知道密码。’旁白立即指出这是谎言，她实际不知道。」",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "s1",
+                "label": "第 1 章 · 独立合成原文",
+                "excerpt": "顾遥说：‘我知道密码。’旁白立即指出这是谎言，她实际不知道。",
+                "source_path": "/projects/synthetic-only/sources#span-s1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 1,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "empty",
+          "source_ids": [],
+          "cited_ranges": [],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "relationship",
+      "pass": true,
+      "expected": true,
+      "actual": true,
+      "model_items": [
+        {
+          "section": "recent_source",
+          "text": "顾遥从乔霁手里拿到赤钥。",
+          "sources": [
+            {
+              "source_type": "source_span",
+              "source_id": "s1"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "summary": "第1章所选原文：「顾遥把赤钥交给乔霁，随后独自离开。」",
+        "summary_sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "s1",
+            "label": "第 1 章 · 独立合成原文",
+            "excerpt": "顾遥把赤钥交给乔霁，随后独自离开。",
+            "source_path": "/projects/synthetic-only/sources#span-s1"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "第1章所选原文：「顾遥把赤钥交给乔霁，随后独自离开。」",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "s1",
+                "label": "第 1 章 · 独立合成原文",
+                "excerpt": "顾遥把赤钥交给乔霁，随后独自离开。",
+                "source_path": "/projects/synthetic-only/sources#span-s1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 0,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "empty",
+          "source_ids": [],
+          "cited_ranges": [],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "multifact_own_source_supplement",
+      "pass": true,
+      "expected": true,
+      "actual": true,
+      "model_items": [
+        {
+          "section": "recent_source",
+          "text": "温岚看得懂潮表上的坐标，但不知道廊桥钥匙的含义。",
+          "sources": [
+            {
+              "source_type": "memory_record",
+              "source_id": "m1"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "summary": "第1章所选原文：「温岚看得懂潮表上的坐标，却不知道廊桥钥匙的含义。」 已确认记录：温岚不知道「廊桥钥匙的含义」",
+        "summary_sources": [
+          {
+            "source_type": "source_span",
+            "source_id": "s1",
+            "label": "第 1 章 · 独立合成原文",
+            "excerpt": "温岚看得懂潮表上的坐标，却不知道廊桥钥匙的含义。",
+            "source_path": "/projects/synthetic-only/sources#span-s1"
+          },
+          {
+            "source_type": "memory_record",
+            "source_id": "m1",
+            "label": "温岚 · does_not_know",
+            "excerpt": "廊桥钥匙的含义",
+            "source_path": "/projects/synthetic-only/memory#memory-m1"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "第1章所选原文：「温岚看得懂潮表上的坐标，却不知道廊桥钥匙的含义。」 已确认记录：温岚不知道「廊桥钥匙的含义」",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "s1",
+                "label": "第 1 章 · 独立合成原文",
+                "excerpt": "温岚看得懂潮表上的坐标，却不知道廊桥钥匙的含义。",
+                "source_path": "/projects/synthetic-only/sources#span-s1"
+              },
+              {
+                "source_type": "memory_record",
+                "source_id": "m1",
+                "label": "温岚 · does_not_know",
+                "excerpt": "廊桥钥匙的含义",
+                "source_path": "/projects/synthetic-only/memory#memory-m1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 1,
+          "omitted_unmatched_clause_count": 0,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "empty",
+          "source_ids": [],
+          "cited_ranges": [],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "under_540_tail_kept",
+      "pass": true,
+      "expected": true,
+      "actual": true,
+      "model_items": [
+        {
+          "section": "recent_source",
+          "text": "林默走过长廊，最后把银钥匙交给陈澈并得知弟弟还活着。",
+          "sources": [
+            {
+              "source_type": "draft_claim",
+              "source_id": "c1"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "summary": "当前草稿句1原文：「林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。」",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿句1原文：「林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，林默沿着長廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 0,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "c1"
+          ],
+          "cited_ranges": [
+            {
+              "id": "c1",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "single_unmatched_clause_count",
+      "pass": true,
+      "expected": 1,
+      "actual": 1,
+      "model_items": [
+        {
+          "section": "recent_source",
+          "text": "外星访客夺走紫色皇冠。",
+          "sources": [
+            {
+              "source_type": "memory_record",
+              "source_id": "m1"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "summary": "已确认记录：星钥的持有者为「乔霁」",
+        "summary_sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "m1",
+            "label": "星钥 · holder",
+            "excerpt": "乔霁",
+            "source_path": "/projects/synthetic-only/memory#memory-m1"
+          }
+        ],
+        "items": [
+          {
+            "section": "character_state",
+            "text": "已确认记录：星钥的持有者为「乔霁」",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "m1",
+                "label": "星钥 · holder",
+                "excerpt": "乔霁",
+                "source_path": "/projects/synthetic-only/memory#memory-m1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 1,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "empty",
+          "source_ids": [],
+          "cited_ranges": [],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "split_expansion_preserves_later_valid_draft_facts",
+      "pass": true,
+      "expected": true,
+      "actual": true,
+      "model_items": [
+        {
+          "section": "recent_source",
+          "text": "北塔挂着红灯。南塔挂着蓝灯。东塔挂着金灯。西塔挂着白灯。",
+          "sources": [
+            {
+              "source_type": "source_span",
+              "source_id": "s1"
+            },
+            {
+              "source_type": "source_span",
+              "source_id": "s2"
+            },
+            {
+              "source_type": "source_span",
+              "source_id": "s3"
+            },
+            {
+              "source_type": "source_span",
+              "source_id": "s4"
+            }
+          ]
+        },
+        {
+          "section": "recent_source",
+          "text": "北塔挂着红灯。南塔挂着蓝灯。东塔挂着金灯。西塔挂着白灯。",
+          "sources": [
+            {
+              "source_type": "source_span",
+              "source_id": "s1"
+            },
+            {
+              "source_type": "source_span",
+              "source_id": "s2"
+            },
+            {
+              "source_type": "source_span",
+              "source_id": "s3"
+            },
+            {
+              "source_type": "source_span",
+              "source_id": "s4"
+            }
+          ]
+        },
+        {
+          "section": "recent_source",
+          "text": "北塔挂着红灯。南塔挂着蓝灯。东塔挂着金灯。西塔挂着白灯。",
+          "sources": [
+            {
+              "source_type": "source_span",
+              "source_id": "s1"
+            },
+            {
+              "source_type": "source_span",
+              "source_id": "s2"
+            },
+            {
+              "source_type": "source_span",
+              "source_id": "s3"
+            },
+            {
+              "source_type": "source_span",
+              "source_id": "s4"
+            }
+          ]
+        },
+        {
+          "section": "recent_source",
+          "text": "岑岚走进东门。",
+          "sources": [
+            {
+              "source_type": "draft_claim",
+              "source_id": "c1"
+            }
+          ]
+        },
+        {
+          "section": "recent_source",
+          "text": "赤铜钥匙已经交给乔霁。",
+          "sources": [
+            {
+              "source_type": "draft_claim",
+              "source_id": "c2"
+            }
+          ]
+        },
+        {
+          "section": "recent_source",
+          "text": "温岚此时不知道暗号。",
+          "sources": [
+            {
+              "source_type": "draft_claim",
+              "source_id": "c3"
+            }
+          ]
+        },
+        {
+          "section": "character_state",
+          "text": "星钥由乔霁保管。",
+          "sources": [
+            {
+              "source_type": "memory_record",
+              "source_id": "m1"
+            }
+          ]
+        },
+        {
+          "section": "character_state",
+          "text": "星钥由乔霁保管。",
+          "sources": [
+            {
+              "source_type": "memory_record",
+              "source_id": "m1"
+            }
+          ]
+        },
+        {
+          "section": "character_state",
+          "text": "星钥由乔霁保管。",
+          "sources": [
+            {
+              "source_type": "memory_record",
+              "source_id": "m1"
+            }
+          ]
+        },
+        {
+          "section": "character_state",
+          "text": "星钥由乔霁保管。",
+          "sources": [
+            {
+              "source_type": "memory_record",
+              "source_id": "m1"
+            }
+          ]
+        },
+        {
+          "section": "character_state",
+          "text": "星钥由乔霁保管。",
+          "sources": [
+            {
+              "source_type": "memory_record",
+              "source_id": "m1"
+            }
+          ]
+        },
+        {
+          "section": "character_state",
+          "text": "星钥由乔霁保管。",
+          "sources": [
+            {
+              "source_type": "memory_record",
+              "source_id": "m1"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "summary": "当前草稿句1原文：「岑岚走进东门。」 当前草稿句2原文：「赤铜钥匙已经交给乔霁。」 当前草稿句3原文：「温岚此时不知道暗号。」",
+        "summary_sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "c1",
+            "label": "当前草稿 · 句 1",
+            "excerpt": "岑岚走进东门。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c2",
+            "label": "当前草稿 · 句 2",
+            "excerpt": "赤铜钥匙已经交给乔霁。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          },
+          {
+            "source_type": "draft_claim",
+            "source_id": "c3",
+            "label": "当前草稿 · 句 3",
+            "excerpt": "温岚此时不知道暗号。",
+            "source_path": "/projects/synthetic-only/workspace#draft-source"
+          }
+        ],
+        "items": [
+          {
+            "section": "recent_source",
+            "text": "当前草稿句1原文：「岑岚走进东门。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c1",
+                "label": "当前草稿 · 句 1",
+                "excerpt": "岑岚走进东门。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句2原文：「赤铜钥匙已经交给乔霁。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c2",
+                "label": "当前草稿 · 句 2",
+                "excerpt": "赤铜钥匙已经交给乔霁。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "当前草稿句3原文：「温岚此时不知道暗号。」",
+            "sources": [
+              {
+                "source_type": "draft_claim",
+                "source_id": "c3",
+                "label": "当前草稿 · 句 3",
+                "excerpt": "温岚此时不知道暗号。",
+                "source_path": "/projects/synthetic-only/workspace#draft-source"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "第1章所选原文：「北塔挂着红灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。」",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "s1",
+                "label": "第 1 章 · 独立合成原文",
+                "excerpt": "北塔挂着红灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。",
+                "source_path": "/projects/synthetic-only/sources#span-s1"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "第4章所选原文：「西塔挂着白灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。」",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "s4",
+                "label": "第 4 章 · 独立合成原文",
+                "excerpt": "西塔挂着白灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。",
+                "source_path": "/projects/synthetic-only/sources#span-s4"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "第3章所选原文：「东塔挂着金灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。」",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "s3",
+                "label": "第 3 章 · 独立合成原文",
+                "excerpt": "东塔挂着金灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。",
+                "source_path": "/projects/synthetic-only/sources#span-s3"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "第2章所选原文：「南塔挂着蓝灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。」",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "s2",
+                "label": "第 2 章 · 独立合成原文",
+                "excerpt": "南塔挂着蓝灯。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。这里记录塔楼的石阶与长廊。",
+                "source_path": "/projects/synthetic-only/sources#span-s2"
+              }
+            ]
+          },
+          {
+            "section": "character_state",
+            "text": "已确认记录：星钥的持有者为「乔霁」",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "m1",
+                "label": "星钥 · holder",
+                "excerpt": "乔霁",
+                "source_path": "/projects/synthetic-only/memory#memory-m1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 12,
+          "source_rendered_item_count": 8,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 0,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 13,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "covered",
+          "source_ids": [
+            "c1",
+            "c2",
+            "c3"
+          ],
+          "cited_ranges": [
+            {
+              "id": "c1",
+              "truncated": false
+            },
+            {
+              "id": "c2",
+              "truncated": false
+            },
+            {
+              "id": "c3",
+              "truncated": false
+            }
+          ],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    },
+    {
+      "name": "author_field_own_excerpt_coverage",
+      "pass": false,
+      "expected": true,
+      "actual": false,
+      "model_items": [
+        {
+          "section": "related_plan",
+          "text": "计划清晨关闭城门，傍晚重新开门。",
+          "sources": [
+            {
+              "source_type": "author_context",
+              "source_id": "p1"
+            }
+          ]
+        }
+      ],
+      "result": {
+        "summary": "作者计划记录：「钟楼计划   计划清晨关闭城门。 计划傍晚重新开门。」",
+        "summary_sources": [
+          {
+            "source_type": "author_context",
+            "source_id": "p1",
+            "label": "钟楼计划",
+            "excerpt": "计划清晨关闭城门。",
+            "source_path": "/projects/synthetic-only/outline#plan-p1"
+          }
+        ],
+        "items": [
+          {
+            "section": "related_plan",
+            "text": "作者计划记录：「钟楼计划   计划清晨关闭城门。 计划傍晚重新开门。」",
+            "sources": [
+              {
+                "source_type": "author_context",
+                "source_id": "p1",
+                "label": "钟楼计划",
+                "excerpt": "计划清晨关闭城门。",
+                "source_path": "/projects/synthetic-only/outline#plan-p1"
+              }
+            ]
+          }
+        ],
+        "evidence_status": "supported",
+        "citation_transform": {
+          "version": "source-rendered-v2",
+          "model_summary_used": false,
+          "model_item_count": 1,
+          "source_rendered_item_count": 1,
+          "added_source_count": 0,
+          "omitted_unmatched_clause_count": 0,
+          "discarded_model_item_indices": [],
+          "fallback_draft_claim_ids": [],
+          "duplicate_omitted_item_count": 0,
+          "overflow_omitted_item_count": 0
+        },
+        "draft_coverage": {
+          "status": "empty",
+          "source_ids": [],
+          "cited_ranges": [],
+          "uncovered_source_ids": [],
+          "unselected_count": 0,
+          "discarded_item_indices": [],
+          "reasons": []
+        }
+      }
+    }
+  ],
+  "passed": 10,
+  "total": 11
+}

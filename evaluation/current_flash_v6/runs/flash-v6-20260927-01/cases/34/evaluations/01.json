@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-12",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "3f0cd6686d0ce56b09bcc51d3dd1532e9bb19013c4bb0ea4add12efa26cd05dc",
+  "finished_at": "2026-09-27T10:03:42.792983+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-e24922c6-574e-427a-8883-bc81948e04cc-1",
+        "verdict": "no_issue",
+        "basis": "The claim describes a compatible knowledge transition: Siva did not know the password at 09:00 and learned it at 12:00. The cited evidence supports both the prior state and the later learning event, so no continuity conflict exists."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3017,
+    "output_tokens": 103,
+    "observed_response_input_tokens": 3017,
+    "observed_response_output_tokens": 103
+  }
+}

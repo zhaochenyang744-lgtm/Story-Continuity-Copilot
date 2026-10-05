@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "http_ordinal_in_case": 2,
+  "finished_at": "2026-09-27T10:01:35.514108+00:00",
+  "latency_ms": 2030,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 4257,
+      "completion_tokens": 229,
+      "total_tokens": 4486
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-12164377-7b77-44c4-ba3f-d04863c20d3f-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim states Mira opened the North Glass door at 10点 while wearing only her red badge. The cited evidence does not establish a same-time contradiction: the static canon rule (fixture-span-north_glass-1) is a timeless rule about badge requirements, but the dynamic state (fixture-span-north_glass-2) only records that Mira tried the door while wearing only a red badge and carrying no blue badge, and explicitly notes the roster does not record whether it opened. The pneumatic carrier span (fixture-span-north_glass-5) concerns a different object and is irrelevant. Because the evidence does not assert that the door failed to open at that time, the claim's opening is not directly contradicted; the earlier confirmed_conflict framing relied on an unproven same-time failure, so no reviewable issue remains.\"}]}",
+  "message_content_sha256": "363c2a1c06e75ff985a527381e4776fc2046faa4a53c47e0f90a5b87e396fff7",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

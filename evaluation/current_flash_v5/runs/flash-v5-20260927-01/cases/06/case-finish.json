@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+  "status": "completed",
+  "error_code": null,
+  "post_attempt_start_records": 1,
+  "evaluation_count": 1,
+  "score_status": "fail",
+  "finished_at": "2026-09-27T08:20:08.101042+00:00"
+}

@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 35593,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "4de77f6e-46c5-4ae7-9e92-c71f19483f85",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"attribute\",\n      \"severity\": \"medium\",\n      \"explanation\": \"Lens R4 is identified as the western aperture lens, which the evidence states is clear glass, not amber, at the same time.\",\n      \"reasoning\": \"The first cited evidence directly contradicts the claim: at 18点 on the same day the western aperture lens is clear glass, not amber glass. The second cited evidence ties that lens to lens R4 as the installed western aperture lens, proving the contradiction concerns the same object and same moment. The unrelated Vela location span is omitted.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"At 18点 on the same day\",\n        \"evidence_anchor\": \"At 18点 on the same day\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-basalt_observatory-2\",\n          \"span_id\": \"fixture-span-basalt_observatory-2\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-basalt_observatory-2\"]\n        },\n        {\n          \"chapter_id\": \"fixture-chapter-basalt_observatory-1\",\n          \"span_id\": \"fixture-span-basalt_observatory-1\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-basalt_observatory-1\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-basalt_observatory-2\",\n          \"role\": \"current_context\"\n        },\n        {\n          \"span_id\": \"fixture-span-basalt_observatory-1\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"At 18点 on the same day, lens R4 is amber glass.\",\n        \"after\": \"At 18点 on the same day, lens R4 is clear glass.\"\n      },\n      \"available_actions\": [\"edit\", \"apply_suggestion\"],\n      \"proposed_memory_change\": null\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-cef8b7a8-95b1-4c1e-b695-6479d0da3d50-1\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"The claim is directly contradicted: the same time index identifies lens R4 as the western aperture lens, which is clear glass, not amber.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "a7b6525741e43b8be79bb8c3f372864b869484dc7b36596f20572e5af3a2dd90",
+  "reasoning": {
+    "present": true,
+    "codepoints": 11029,
+    "utf8_bytes": 11073,
+    "sha256": "604f3ff8b980678bc234aa21ef647142ada4addd95bdb112e0388303d79b36f4"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3615,
+      "completion_tokens": 3167,
+      "total_tokens": 6782,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2510
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1183
+    },
+    "status": "complete",
+    "prompt_tokens": 3615,
+    "completion_tokens": 3167,
+    "total_tokens": 6782,
+    "reasoning_tokens": 2510,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:47:20.132882+00:00"
+}

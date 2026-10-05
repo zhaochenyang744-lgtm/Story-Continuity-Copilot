@@ -1,0 +1,543 @@
+{
+  "timestamp": "2026-09-26T10:43:26.304041+00:00",
+  "head": "c3bd54ab019447354e8b1387e16b9aca3258b4c9",
+  "immutable_prior_files": [
+    {
+      "path": "docs/flash-real-provider-independent-acceptance.md",
+      "sha256": "2c535c62bbea2a4f5509077f6d3b49e1e2b9fd05e6de02086509009720da7e6d"
+    },
+    {
+      "path": "evaluation/current_flash_v1/cases.json",
+      "sha256": "c558346fd435aed56a32eb81002ff5103e266886ad1023d11f80ac5fbc5d28ce"
+    },
+    {
+      "path": "evaluation/current_flash_v1/frozen-inputs.json",
+      "sha256": "8b0ec87416b728445dd974fb9491c3bcc3a72318ed8d115b270515439444df15"
+    },
+    {
+      "path": "evaluation/current_flash_v1/HANDOFF.md",
+      "sha256": "9e9d9a67160a4e6fce81b05c96fcba990302a174206c94ef8a79bc6e2070e9fe"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/ACCEPTANCE.md",
+      "sha256": "24a7343a50e417fd6991a782f58353e1e36633cfd0ff242eeb9fbe1c6d3947a7"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/accounting-audit.py",
+      "sha256": "f69068d3836cc00ddd86c6f61131bc84e56526f933b8926dd9b9bf680a8d07e3"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/accounting-results.json",
+      "sha256": "639b8a7368f847bf651e15c909e8e25b613ca36b1faac782f646e19bd3464969"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/accounting-review.md",
+      "sha256": "c1c6347925c5e66cc2abf9c8323fec35206ad0c39a6355600bb85c41a88c5488"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/accounting-stop-snapshot-probe.py",
+      "sha256": "a577d8cf3a0bfc4276cd5f1224e2231e6e00b170c177e208ebd80945807b4d2e"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/accounting-stop-snapshot-results.json",
+      "sha256": "5d18c3f531e4c028446b46c5689baadda76c712dc203a76927e9fceeb1894ada"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/root-freeze-verify.txt",
+      "sha256": "0fc08165ea804dff10d58b9b8c21a25deec8bb33c9020a6e4a84dcf45048540c"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/root-offline-tests.txt",
+      "sha256": "51905a17eb98898e4b5e44bb53cec892d9f21edf80475d09d6a6bca1e3f9c0a7"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/root-results-before.json",
+      "sha256": "d193feeb58e48c86398ca3538b09554ab83141f22af5e1244f6277b13af80173"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/root-verification.json",
+      "sha256": "97fe901e6df265a7536b0fa03fe518dd3cd1c3cf66216a71654933c0d8179f69"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/semantic-review.md",
+      "sha256": "5f548a94be8e16ad33f012bbd30b8972fe567594071e9873b52d82d783be5e53"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/v8-contract-probe.py",
+      "sha256": "bcde45bf63f576da206b21b3139e94e21c52f9e84ff5fae8fe2b0e1e74e84389"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/v8-contract-results.json",
+      "sha256": "2e67d07686493014c71c5b77c4df6e6f6b99233c79db34b4274b29ad0827d55c"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/v8-diagnose.py",
+      "sha256": "84059f8bfde0b99292ae301373bb01e44726c7b9604af200fcb7989e40b733c8"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/v8-diagnostic-results.json",
+      "sha256": "1adaaaa70e18a70e7d2d7c11c1cbaf7a14928681ff47d0cccde0f38624092147"
+    },
+    {
+      "path": "evaluation/current_flash_v1/independent-round1/v8-review.md",
+      "sha256": "88b3348f626297a92e6ffed27c73fac6abb6b47de128b8c15443914e92f4ac83"
+    },
+    {
+      "path": "evaluation/current_flash_v1/PLAN.md",
+      "sha256": "ea3d5e2a5df6277f0bbf1227dcd23a6d5017682827681e4cb6ca416d1a5a47a4"
+    },
+    {
+      "path": "evaluation/current_flash_v1/postrun_audit.py",
+      "sha256": "2392022ff3bb309d67f104e496b807aa31c5d2f9a4f8fa655d96d8869f15dba2"
+    },
+    {
+      "path": "evaluation/current_flash_v1/run.py",
+      "sha256": "36fd492a5fe4f318b5b3ea89c3e95f309c03dfa5034d0e6e6acd1a2046d6cdc1"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/01-v8-dusk-viaduct-conflict-relationship.json",
+      "sha256": "3c5641550d6f74871e44d8b8acb3bae3a2c384cbf637d509e6185896fcfe9c86"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/02-v8-dusk-viaduct-conflict-object_state.json",
+      "sha256": "4724b8580bc1a1e5c284fd86e77c7114fd0be25f2d5f933d6d7080ea1251f562"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/03-v8-dusk-viaduct-control-5.json",
+      "sha256": "867c4acb82d950072eb53e2f3686a5a75abad490f2c459e04b3c8e39f36b6968"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/04-v8-dusk-viaduct-control-6.json",
+      "sha256": "7619cb4fc5272122b13791ec5b1440edd25a0f5c1787388f88a4b21c04e0f5b2"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/05-v8-dusk-viaduct-insufficient-7.json",
+      "sha256": "babda1f51558d5586ec4ca43c85612c1953dad0c17afbc6cdfb19f2bb3cd7f0e"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/06-v8-dusk-viaduct-insufficient-8.json",
+      "sha256": "d0855820bd1f7f70100874ee051d3810856a0e0603be4d07530de2d0d401e23b"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/07-v8-sable-tideglass-conflict-world_rule.json",
+      "sha256": "848cb1c1a9f2d69dd5c5af487f78d7b31cc927ee655a156541cf38ead33e1b49"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/08-v8-sable-tideglass-conflict-attribute.json",
+      "sha256": "d0bca11357e533a5362aefff97e5db2b7f31773951d4dc7cc33ddd2787bf0aa4"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/09-v8-sable-tideglass-control-5.json",
+      "sha256": "d128f13040a2d91fee26c93f4d41a297f9c82bab3a4a9efde390aa76854bd76d"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/10-v8-sable-tideglass-control-6.json",
+      "sha256": "6cc4e30897f8347426d2a41ff82ae425019b40d772a1013b0735214fd54d48f6"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/11-v8-sable-tideglass-insufficient-7.json",
+      "sha256": "6d86dae90618af913e874f2db6ebb9530d49c54f3041ceeb5cf62b62377c5dec"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/12-v8-sable-tideglass-insufficient-8.json",
+      "sha256": "e547ac24f0054145b42dc522c179de8bbabf443da9b505b3a213683751af5b0b"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/13-v8-flint-garden-conflict-location_action.json",
+      "sha256": "3160b4d32bb6d2178f461f1ae497a2a2a276426cfb1a7a735b94bd9f1d89ff12"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/14-v8-flint-garden-conflict-event_status.json",
+      "sha256": "bfbf4703aa70fdd813265543d010d4b1776d058c9a8b4a7a50ac13bb59d9b4c9"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/15-v8-flint-garden-control-5.json",
+      "sha256": "a1a9695013bae67857ddb51766af855b2b361cd15f3d5bb44525e88c4de3b507"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/16-v8-flint-garden-control-6.json",
+      "sha256": "22ace70c0737d9bdbee3676b7299ccf1b8f9f648a0583494d0fcd08660d4d3d3"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/17-v8-flint-garden-insufficient-7.json",
+      "sha256": "516b3019b79feee8cb8d70ac345328bced86867dda7a0e2d4df4a8563e79ddcb"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/18-v8-flint-garden-insufficient-8.json",
+      "sha256": "75b8aeb5d74dddecd767b49dab740c02ad225913dfdf0cab3fb71c9fbd713809"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/19-v8-opal-nursery-conflict-character_knowledge.json",
+      "sha256": "9da55bdb67e31d918ed2281bbb1ce27520005a29ac95233da919783a8b325459"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/20-v8-opal-nursery-conflict-timeline.json",
+      "sha256": "2a3e2be7692f7726e1bbc708b7d9d83379dc5ce1d8d5e635b7d98c43d2317766"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/21-v8-opal-nursery-control-5.json",
+      "sha256": "68a898e856cc254eb62721156121291c3943d15edc31e33e3fb1d1b83e50c041"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/22-v8-opal-nursery-control-6.json",
+      "sha256": "60e6a22129077e990d493e0a12f40d708ecc02f5e07d64eae9d551d6f517b08e"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/23-v8-opal-nursery-insufficient-7.json",
+      "sha256": "49a58bef753840fa07970c6e11542762f83b79c09c1ebd370191360a2d46e36d"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/24-v8-opal-nursery-insufficient-8.json",
+      "sha256": "74fdf3a42dcd93c167618ee12a48ca444d60c371703ea019b279ea3440a8ad2f"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/25-g01-later-hour.json",
+      "sha256": "2ecf08cb3873c476a7fa120fbf83e4129e2145f674e16ed0abbef97b1ffc8afc"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/26-g01-relative-day.json",
+      "sha256": "c3ef1cdf6c4f20ce9d304aa219445c94308b73bd9b4019d52880b19e7ca40fbd"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/27-g01-ordinal-day.json",
+      "sha256": "a5d67890e905351b81c4203a58ab03b1bdffb5c8b93580d0caa54375bd7fba84"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/28-g01-explicit-lie.json",
+      "sha256": "188a0d746ac0c6348e9e460f719ea23b3afe3fade46f2897b21fa2c94b008c06"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/29-g01-recollection.json",
+      "sha256": "34108fdd76daa2d61cc864cfc4361861ffb505c33aaede7d33cf248511f67ff0"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/30-g01-within-day-change.json",
+      "sha256": "6f80b6f19d9188ba76a8eb7e2d419142241e9fb9dcb6ed2a6ce97913ae925543"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/31-g01-positive-relative.json",
+      "sha256": "61cc983d337dd819eaf8a9472c956a0eca8ffac723d084f228e220431c699141"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/32-g01-positive-calendar.json",
+      "sha256": "d2f5edf31546e1796e4d905c3afbe9a8316daf1388223390e0bdfa42400bc3b0"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/33-g01-positive-ordinal.json",
+      "sha256": "db32512377950f9d0ae453005ec45383b2739b1115484b01b8f20d01029e9746"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/34-g01-positive-unrelated-memory.json",
+      "sha256": "29346ffcb50fb851e7dfba94567c044463f79d0daaf2a616521aab1b0a08438d"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/35-g02-three-sentences.json",
+      "sha256": "dfe3a8ecbc405787e2e42646adf37456dd6ff415f59f982f129e2cdd7470bdec"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/36-g02-long-sentence.json",
+      "sha256": "771f93f68da3120d8649db4f5d945eaa327a9c211f9b8b710666924019b81e81"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/37-g02-body-limit.json",
+      "sha256": "444995b8fc25eb90f237b2be2b2339d38960f2813af3c4b5f63f06982ecc16ce"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/38-g02-identical-text.json",
+      "sha256": "32ffbf06cb3e908a55b5644d659e13b651ae65ef91808512ea3737bae7dbcd2f"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/39-g03-short-target.json",
+      "sha256": "bfcfd2f0dff42328b7d4062c8930585fd492db4ac698debb2512556aecd7bc51"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/40-g03-deep-target.json",
+      "sha256": "46aeebc263597b0a851540aa09a3b1970490f57c91ee52335bb5bc00a0971425"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/41-g03-fact-absent.json",
+      "sha256": "615d25fc575ccf2c99050c38594c874dde514a942b9c758da4212bec1d94e0bf"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/42-g03-other-chapter.json",
+      "sha256": "25fbe2c6e8e4302735d6d049b9e75c6a617debde9fb210c4f90f566fc4ca5749"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/43-v8-dusk-viaduct-conflict-relationship-repeat-2.json",
+      "sha256": "75d66b674eb108746cccead675411462ecf3a9a3e0462e315d9c0b39b6a64fa9"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/44-v8-dusk-viaduct-conflict-relationship-repeat-3.json",
+      "sha256": "4ef7277e77baedd04116ab1a2e4fb2268c1ae274c3e4415c4aca3b4977fcdad2"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/45-v8-sable-tideglass-control-5-repeat-2.json",
+      "sha256": "43bf1e973b3f6218ebc56c5e1f80dd0fba12bf2796304e14f702b636f640cbfa"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/46-v8-sable-tideglass-control-5-repeat-3.json",
+      "sha256": "f54c5aded1718dd582a963b6e2ff8fc149747558b604a0bce274305c627c8e90"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/47-v8-opal-nursery-insufficient-7-repeat-2.json",
+      "sha256": "9aa9719f383adffba50ea5fac82ccac601607687b4ca0a0985dd761c879e71f8"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/cases/48-v8-opal-nursery-insufficient-7-repeat-3.json",
+      "sha256": "c85190e74951be3d66883af28df294ab7f8219c8e60aaa36c1389ea18fa2244f"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/models-preflight.json",
+      "sha256": "21c1a62c9c8d3f56c52f18c6551ea975d2045ded297d4fdd2a5e83e5e18576ed"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/postrun-audit.json",
+      "sha256": "a01892e2b26576ba5a061e2da744d57d826d896be8269903775717748ad7e4f1"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/start.json",
+      "sha256": "9810d1225b224198145bec493c89baa1fcfb1bbe94251689c3e544fdd3248271"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/summary.json",
+      "sha256": "3c496ad80f72cf2a8aa9433775d31cff4604bb32ed1968e4323e851e15e0097f"
+    },
+    {
+      "path": "evaluation/current_flash_v1/runs/flash-v1-20260926-01/v8-checkpoint.json",
+      "sha256": "39f8ef42907bc134155fbf06b7d8663de468f980ab925efd4bd480ce01d74ccc"
+    },
+    {
+      "path": "evaluation/current_flash_v1/test_offline.py",
+      "sha256": "e6ec394245d05fed7cd0ae190177af9be0c69225c712cb42ecaf7f07cf3b3628"
+    },
+    {
+      "path": "evaluation/current_flash_v2/cases.json",
+      "sha256": "802e8e8f7dc24ea6bff62624aec84c54b7610a4ce869f03ce4daed61399073c9"
+    },
+    {
+      "path": "evaluation/current_flash_v2/frozen-inputs.json",
+      "sha256": "d2260a915dfcf32f6b23a9e9deac06f518f44fcc4e47dbce43e0fe9a4049b2ef"
+    },
+    {
+      "path": "evaluation/current_flash_v2/g03-corpus.json",
+      "sha256": "637d5a8df36b877804e1df49ac212d9bc2c6d2ad61772aa665fcfb02bd3838bb"
+    },
+    {
+      "path": "evaluation/current_flash_v2/HANDOFF.md",
+      "sha256": "33e532ab59a8903885bfdb22155ab0846a8bd94db4288b4bc393a402bad8331d"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/ACCEPTANCE.md",
+      "sha256": "b33eade54fcf8f63571ac78a8a7dd58d321a74ffca1c88ef30a810b6bc618916"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/accounting-audit.py",
+      "sha256": "b99e62eb4c20a99c504bbca916c39f7e44c2422de10a9af576bf780b08124f91"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/accounting-results.json",
+      "sha256": "0c8498f93762d6c6b9914430cf0f322ef4e3e90025faee3495eb232aaa2115fe"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/accounting-review.md",
+      "sha256": "ee2ca0c13337779d641a9a4b0fc4727120628b55993bbb5a87196963122517f0"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/accounting-summary-probe.py",
+      "sha256": "19b1eeacceab34d235e3b500cf99d15f3d1371a47f6450ddf75000fa81a72241"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/accounting-summary-results.json",
+      "sha256": "9feb34b2ffd4c41ea28401453acab0f9325a525fde590d99ba99b1f27625bcfb"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/fixture-diagnose.py",
+      "sha256": "c83a5d890d99ac4dac828d96a1a5fbde1d2a0d7aac800785524d18cd74ebc32b"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/fixture-results.json",
+      "sha256": "3debe69d40ea897c7b066438d145b23e654fec78652be318290523c52688371f"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/fixture-review.md",
+      "sha256": "4fdb811cd4494c2cc1aad0035ebfa2998f9db8c515741b004b7efd8032910708"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/root-accounting.json",
+      "sha256": "58d6b41c108ca3916f34c38246f2ff34ff416bf3245bb72163bc183e8e2f9f40"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/root-freeze-verify.txt",
+      "sha256": "0fc08165ea804dff10d58b9b8c21a25deec8bb33c9020a6e4a84dcf45048540c"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/root-offline-tests.txt",
+      "sha256": "248ba0e172f18daaa4c1988f597db20d6caa160baf9a8d83d630edb3fd53c323"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/root-results-before.json",
+      "sha256": "f811a634dbe4cc4f6996ba6a99ee134e3d5467f936c8ed403cbdb8aa51a7cb91"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/root-verification.json",
+      "sha256": "251d59c58db487cb270e8a2e1a11809cd486117db3306b203962bb17a44160d6"
+    },
+    {
+      "path": "evaluation/current_flash_v2/independent-round2/semantic-review.md",
+      "sha256": "f1efb1c492d95d3dedf5fd6fc61f50d184499716bdbf85c8c47e6fe66c746a19"
+    },
+    {
+      "path": "evaluation/current_flash_v2/PLAN.md",
+      "sha256": "308174a4f60e4c4105403b976ef3e2c902b14db590807e338b62a211e9c354ee"
+    },
+    {
+      "path": "evaluation/current_flash_v2/POSTRUN_REVIEW.md",
+      "sha256": "34bda5cd9c929f17c2f71037bf6106ec547f4f5244c5b3dd0d078ff28ff84c24"
+    },
+    {
+      "path": "evaluation/current_flash_v2/run.py",
+      "sha256": "45e00b0d4ef117f862d0b059bb876942daf9469224f3ce1ba60d0b0517d6d0fe"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/01-g02-three-sentences.json",
+      "sha256": "89b5f148a39c8a0c57ff40dbc3e4c1c7a068cebc860d51a495dee2c7bf5c59f0"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/02-g02-long-sentence.json",
+      "sha256": "7b7276cee12f955078e993928c2742e75f045b1dba5962fae2e3f099dc6f4921"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/03-g02-body-limit.json",
+      "sha256": "ac5c70b43a28f9b20990b8602f1e6efd032f5e754efe5bed5a9cd70ced8aaae3"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/04-g02-identical-text.json",
+      "sha256": "34a10437792380f8f75bcc51b43c26e62dd4fb80b1244d349c6d7826e1e74f24"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/05-g03-short-target.json",
+      "sha256": "eaf4e90517d785d17d920aaafb932337b554aeacf327e9adc137e8c066875586"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/06-g03-deep-target.json",
+      "sha256": "7668d32473e4da6a9516c3b8da3033054f50dea9e9df1a8c850abf5616833142"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/07-g03-fact-absent.json",
+      "sha256": "59c9f02faa45dde80e89b9dda8ca601062d073f859e85755413aea02d74fc9ae"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/08-g03-other-chapter.json",
+      "sha256": "bbe819a90181abc4f92aa725819597c1cc1efe6f5ecbca2520e8a020ef02c480"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/models-preflight.json",
+      "sha256": "17883eb404608757b547b75bf65aa1d63739679e7f767a8f9c89ef98280af908"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/start.json",
+      "sha256": "21f3f5709dad0139b5134ec83869884a4c9e2447b5f156a722f489df9c5d77cd"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/summary.json",
+      "sha256": "68fcda57b1caf3f6fac5666c85a3772afea59396473d08be073abc1f8e6434ed"
+    },
+    {
+      "path": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/workspace-manifest.json",
+      "sha256": "3e96f1cf7e7321a145699c4aa97ff84b3ebf901bb31d8bd45a7d6c060a29c004"
+    },
+    {
+      "path": "evaluation/current_flash_v2/test_offline.py",
+      "sha256": "272bf7d164c906dda08ed1b5e5cad74c6114911ebf3b22b7e8499d4dd8297bfe"
+    },
+    {
+      "path": "evaluation/current_flash_v3/fixture.py",
+      "sha256": "24963b5028f8f0ce465d3b5b04912d45ee60b5e6fad62ef9fc3c4539e1e3a556"
+    },
+    {
+      "path": "evaluation/current_flash_v3/HANDOFF.md",
+      "sha256": "3253d6086bdf67ee9189902e219d045da4b4cc67ffc58d7eeb88c2feadfd7dc3"
+    },
+    {
+      "path": "evaluation/current_flash_v3/independent-round3/fixture-diagnose.py",
+      "sha256": "dd168868ed75008055d38c1cdae1da8ce9572ea2db39325e5bbdc6322d5620a1"
+    },
+    {
+      "path": "evaluation/current_flash_v3/independent-round3/fixture-results.json",
+      "sha256": "698043572e22c480012f9f92503a1ee5d897fb292a87bfcb2e01b0c48c087485"
+    },
+    {
+      "path": "evaluation/current_flash_v3/independent-round3/fixture-review.md",
+      "sha256": "8ece3554ba74725e1ddfb2e64f9b922e02ad7606c24533bb274f2a6d7f241a3f"
+    },
+    {
+      "path": "evaluation/current_flash_v3/independent-round3/root-freeze-verify.txt",
+      "sha256": "0fc08165ea804dff10d58b9b8c21a25deec8bb33c9020a6e4a84dcf45048540c"
+    },
+    {
+      "path": "evaluation/current_flash_v3/independent-round3/root-integrity-final.json",
+      "sha256": "ea277e31bf9835ebba37dee2e6bb7f05ca74c8ef5989cbb47c41ca10972fff3c"
+    },
+    {
+      "path": "evaluation/current_flash_v3/independent-round3/root-integrity-final.py",
+      "sha256": "c1c0524573e8db5daa2e19e21976f44e3c8f86fd8cece3419a63fa0c595892dc"
+    },
+    {
+      "path": "evaluation/current_flash_v3/independent-round3/root-offline-tests.txt",
+      "sha256": "d67291ea64fc46cf26bed73e1a6c64cea6bbe79eaf90420103a3c4bd47f4d868"
+    },
+    {
+      "path": "evaluation/current_flash_v3/independent-round3/root-results-before.json",
+      "sha256": "d25513e7e58fc60b5177e8b1c96faee71eb3dc69e3bcfb94aee875c5d219e3e9"
+    },
+    {
+      "path": "evaluation/current_flash_v3/independent-round3/root-verification.json",
+      "sha256": "de25a50f341611c8bbb0f55d3fc47844a98d927ff10266f4cda53f5d74f2dae7"
+    },
+    {
+      "path": "evaluation/current_flash_v3/independent-round3/root-verify.py",
+      "sha256": "3fb2d213cc41499be1dce6fac6e95e5316c43343709c33cec3c40ca6ed49de5b"
+    },
+    {
+      "path": "evaluation/current_flash_v3/offline_equivalence.py",
+      "sha256": "c1deafb2b1e296e5d855a3c853fee149cc2478d5a043a906af985bc160326815"
+    },
+    {
+      "path": "evaluation/current_flash_v3/PLAN.md",
+      "sha256": "258c09b304653627a4f1875e81ffaf1d715ef8a8ef5ee49d24f9c9bc42452f6a"
+    },
+    {
+      "path": "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/cases/g03-deep-target.json",
+      "sha256": "ecca91936af35767b73843d4d9d84318114937f38bd749c5e20ec807bcff5b1f"
+    },
+    {
+      "path": "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/cases/g03-fact-absent.json",
+      "sha256": "2ca972a9697b0579bb7bc4adc2864ef9a2482167d56da0bf6be957e2b984a4c2"
+    },
+    {
+      "path": "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/cases/g03-other-chapter.json",
+      "sha256": "1b5e90ded07e3dc39586eb67a349b614946b53bf45ab1173a719db36b1f459ae"
+    },
+    {
+      "path": "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/cases/g03-short-target.json",
+      "sha256": "13948e52367fdd330205562811a2b74afce187c105a86eeb04a8e519c356f3d8"
+    },
+    {
+      "path": "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/start.json",
+      "sha256": "2fbcfe903e8aad634f5e4c040d7c7f0bcfa9a8ceae8dd3f9c311a3e1cdc77424"
+    },
+    {
+      "path": "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/summary.json",
+      "sha256": "ea091e5486b78b2e2659443c601e6b19185a9cf28a64a0dbb168deac2d78b6f8"
+    },
+    {
+      "path": "evaluation/current_flash_v3/runs/offline-equivalence-20260926-01/workspace-manifest.json",
+      "sha256": "dbf5f19f7c20d57fc360f8a18fd5082949d7c8f051c8de0d7888d5c0ff0dfe0e"
+    },
+    {
+      "path": "evaluation/current_flash_v3/test_offline.py",
+      "sha256": "abca377030af6323c1032c0472c4e11808a4471ee0b6e8a386f2250fc4062979"
+    }
+  ],
+  "scope": "Prior Flash source/results/reports remain unchanged during G02 product changes; existing product hashes refer to c3bd54a, not to the future working tree."
+}

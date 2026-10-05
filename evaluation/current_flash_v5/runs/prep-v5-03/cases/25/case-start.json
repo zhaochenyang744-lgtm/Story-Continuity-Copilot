@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-03",
+  "ordinal": 25,
+  "case_id": "g02-three-sentences",
+  "family": "g02",
+  "started_at": "2026-09-27T08:08:05.439207+00:00",
+  "case_input_sha256": "a99d8306f1fa02088805b911cf93763b94d7a8bbc952fdc6f8c20c8d0ac8ee77",
+  "source_ref": "evaluation/current_flash_v4/cases.json"
+}

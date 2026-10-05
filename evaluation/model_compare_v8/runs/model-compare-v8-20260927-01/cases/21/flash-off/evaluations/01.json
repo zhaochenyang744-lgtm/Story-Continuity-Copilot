@@ -1,0 +1,43 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "658ff83cb088157d090e35dd72f07b79ae7200059c95ef77a1e1c448a53643fd",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+        "verdict": "no_issue",
+        "basis": "The claim is a truncated fragment asserting that the index and maintenance sheet establish something about Vela ground lens R4. The cited spans are consistent: the index identifies lens R4 as the installed western aperture lens, and the maintenance sheet leaves the grinder's name blank. No contradiction or missing link requiring review is established."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3464,
+      "completion_tokens": 123,
+      "total_tokens": 3587,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1288
+    },
+    "status": "complete",
+    "prompt_tokens": 3464,
+    "completion_tokens": 123,
+    "total_tokens": 3587,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,88 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "500c1df77865f375ed8fbc099977a8856feb20727c5ed6faec51d41150ea8c90",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "location_action",
+        "severity": "medium",
+        "explanation": "Draft places Vela on the east pier at 18点 on the same day, but the cited record places her at Observatory Gate Four on the west pier at that same time; both cannot hold.",
+        "reasoning": "The claim states Vela's location as the east pier at the explicit time 'At 18点 on the same day'. The cited span carries the identical time anchor 'At 18点 on the same day' and states that Vela stood at Observatory Gate Four on the west pier, 'not the east pier'. Same subject (Vela), same scope (her pier location), same time (18点 on the same day), with opposed values (east pier versus west pier); the span is sufficient on its own because it already asserts both the Gate Four placement and the west-pier exclusion.",
+        "temporal_basis": {
+          "claim_anchor": "At 18点 on the same day",
+          "evidence_anchor": "At 18点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-5",
+            "span_id": "fixture-span-basalt_observatory-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-5"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-5",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "Vela stood on the east pier",
+          "after": "Vela stood at Observatory Gate Four on the west pier"
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+        "verdict": "reviewed_issue",
+        "basis": "Claim puts Vela on the east pier at 18点 on the same day; the cited span fixes the same person, scope, and time on the west pier at Observatory Gate Four, explicitly not the east pier, so the two states cannot coexist."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3494,
+      "completion_tokens": 2588,
+      "total_tokens": 6082,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2073
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1190
+    },
+    "status": "complete",
+    "prompt_tokens": 3494,
+    "completion_tokens": 2588,
+    "total_tokens": 6082,
+    "reasoning_tokens": 2073,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

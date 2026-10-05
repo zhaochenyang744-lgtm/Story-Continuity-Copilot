@@ -1,0 +1,14 @@
+{
+  "status": "failed",
+  "error_code": "suggested_revision_unresolvable",
+  "retryable": true,
+  "input_tokens": 3069,
+  "output_tokens": 1043,
+  "latency_ms": 5185,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

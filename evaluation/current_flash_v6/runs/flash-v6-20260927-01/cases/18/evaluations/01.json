@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "a61e1941e90dbd5798d013a2cef2b350e740c0e4c2f96034975ad5f5a59e8dc7",
+  "finished_at": "2026-09-27T10:02:38.728988+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-c09f395c-e01c-498f-b409-15be38ce0392-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The draft asserts that the launch and delay logs establish Tala caused the restoration boat's delay, but the cited evidence only shows the launch-completion rule, an unsigned manifest with the boat still at the quay at 10点, and that the delay's cause is unrecorded. No cited span attributes the delay to Tala, so the attribution is unsupported and the cause remains unknown."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3431,
+    "output_tokens": 134,
+    "observed_response_input_tokens": 3431,
+    "observed_response_output_tokens": 134
+  }
+}

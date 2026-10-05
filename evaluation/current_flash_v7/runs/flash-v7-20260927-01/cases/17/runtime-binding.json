@@ -1,0 +1,139 @@
+{
+  "project_id": "fixture-project-orchard-restoration",
+  "draft_id": "fixture-draft-orchard-restoration",
+  "draft_revision": 2,
+  "draft_body": "At 10点 on the same day, the restoration boat had not completed launch while its manifest was unsigned and it remained at the quay.",
+  "draft_body_sha256": "206c07877930832b3b247b9dfde264d2fbb8e640114dc01e8a210df840f94a8e",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-1",
+      "chapter_number": 1,
+      "chapter_title": "Kinship Rule",
+      "chapter_body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-orchard_restoration-1",
+      "span_body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+      "span_revision": 1,
+      "chapter_body_sha256": "df92a4dc5c1c210fd70f49c2397a49fcd7c04cc74a2b8c4675dab0c23423e444",
+      "span_body_sha256": "df92a4dc5c1c210fd70f49c2397a49fcd7c04cc74a2b8c4675dab0c23423e444"
+    },
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-2",
+      "chapter_number": 2,
+      "chapter_title": "Twin Register",
+      "chapter_body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-orchard_restoration-2",
+      "span_body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+      "span_revision": 1,
+      "chapter_body_sha256": "ee6b5877c1f31b10ca147ebf15e24e53dfa2b0db175b86646294ca2c3c18b847",
+      "span_body_sha256": "ee6b5877c1f31b10ca147ebf15e24e53dfa2b0db175b86646294ca2c3c18b847"
+    },
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-3",
+      "chapter_number": 3,
+      "chapter_title": "Birth Order",
+      "chapter_body": "The birth register does not record which twin, Nera or Oren, was born first.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-orchard_restoration-3",
+      "span_body": "The birth register does not record which twin, Nera or Oren, was born first.",
+      "span_revision": 1,
+      "chapter_body_sha256": "ed93d0de5cdb5ada73d6d2d3e0c83f26c312af10fb31b7588fa2dc5b7d726f48",
+      "span_body_sha256": "ed93d0de5cdb5ada73d6d2d3e0c83f26c312af10fb31b7588fa2dc5b7d726f48"
+    },
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-4",
+      "chapter_number": 4,
+      "chapter_title": "Launch Rule",
+      "chapter_body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-orchard_restoration-4",
+      "span_body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+      "span_revision": 1,
+      "chapter_body_sha256": "cad38e921e19a6040dd58382a11ff6afcbe3f3fd4c1448e905ece9adddb03337",
+      "span_body_sha256": "cad38e921e19a6040dd58382a11ff6afcbe3f3fd4c1448e905ece9adddb03337"
+    },
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-5",
+      "chapter_number": 5,
+      "chapter_title": "Launch Log",
+      "chapter_body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-orchard_restoration-5",
+      "span_body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+      "span_revision": 1,
+      "chapter_body_sha256": "41b63d972f6aa53ff35696c0989c799bb77bbe08b3192bdcd0089477ef9d5124",
+      "span_body_sha256": "41b63d972f6aa53ff35696c0989c799bb77bbe08b3192bdcd0089477ef9d5124"
+    },
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-6",
+      "chapter_number": 6,
+      "chapter_title": "Delay Cause",
+      "chapter_body": "The restoration log leaves the cause of the boat's delay unrecorded.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-orchard_restoration-6",
+      "span_body": "The restoration log leaves the cause of the boat's delay unrecorded.",
+      "span_revision": 1,
+      "chapter_body_sha256": "7ae83ffc418e2d3e6495440c90d1c765ac41532440123d10b76398fa43cb0565",
+      "span_body_sha256": "7ae83ffc418e2d3e6495440c90d1c765ac41532440123d10b76398fa43cb0565"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-orchard_restoration-1",
+      "memory_type": "static_canon",
+      "subject": "Nera and Oren",
+      "predicate": "rule",
+      "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+      "source_span_id": "fixture-span-orchard_restoration-1",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-orchard_restoration-2",
+      "memory_type": "static_canon",
+      "subject": "Nera and Oren",
+      "predicate": "relationship",
+      "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+      "source_span_id": "fixture-span-orchard_restoration-2",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-orchard_restoration-3",
+      "memory_type": "open_thread",
+      "subject": "Nera and Oren",
+      "predicate": "status",
+      "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+      "source_span_id": "fixture-span-orchard_restoration-3",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-orchard_restoration-4",
+      "memory_type": "static_canon",
+      "subject": "restoration boat",
+      "predicate": "rule",
+      "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+      "source_span_id": "fixture-span-orchard_restoration-4",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-orchard_restoration-5",
+      "memory_type": "event_timeline",
+      "subject": "restoration boat",
+      "predicate": "event_occurred",
+      "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+      "source_span_id": "fixture-span-orchard_restoration-5",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-orchard_restoration-6",
+      "memory_type": "open_thread",
+      "subject": "restoration boat",
+      "predicate": "status",
+      "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+      "source_span_id": "fixture-span-orchard_restoration-6",
+      "version": 1
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "boundary_attempts": {
+    "environment_read": 0,
+    "http": 0,
+    "product_import": 0,
+    "socket": 0,
+    "sqlite": 0
+  },
+  "control": "manifest_digest_drift",
+  "material_hash_reads": [
+    "evaluation\\current_flash_v6\\frozen-inputs.json"
+  ],
+  "rejection": "v6_manifest_changed",
+  "rejection_type": "RuntimeError",
+  "status": "pass"
+}

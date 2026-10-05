@@ -1,0 +1,23 @@
+{
+  "global_post_ordinal": 101,
+  "trial_post_ordinal": 1,
+  "evaluation": 1,
+  "condition": {
+    "id": "pro-high",
+    "model": "deepseek-v4-pro",
+    "thinking": "enabled",
+    "reasoning_effort": "high",
+    "temperature": null
+  },
+  "request_body_sha256": "ca694b5754dd1fb6d13d8235e374ef0739f168683806e6346ae47cd3009a3cfb",
+  "admission": {
+    "post_count_before": 100,
+    "post_cap": 432,
+    "known_tokens_before": 584253,
+    "known_token_cap": 1500000,
+    "unknown_dispatch_count_before": 0,
+    "remaining_known_token_allowance": 915747,
+    "one_request_may_exceed_remaining_allowance": true
+  },
+  "started_at": "2026-09-28T09:34:30.122502+00:00"
+}

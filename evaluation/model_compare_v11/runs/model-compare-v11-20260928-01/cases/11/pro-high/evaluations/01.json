@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "527c55f68e0f2d05f8683f68a320e8a31dc902a9032623f56a6387f6468373bf",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6a025154-212e-4524-b991-2fa7f7e1c23e-1",
+        "verdict": "no_issue",
+        "basis": "The claim is directly supported by the supplied evidence: at 11点 Sera did not know the code, and at 13点 she opened the telegram and learned it, a compatible state change with explicit transition."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3495,
+      "completion_tokens": 1148,
+      "total_tokens": 4643,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1030
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1063
+    },
+    "status": "complete",
+    "prompt_tokens": 3495,
+    "completion_tokens": 1148,
+    "total_tokens": 4643,
+    "reasoning_tokens": 1030,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

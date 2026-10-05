@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "531f0033d26b4415c19a6322e88a90c6aa078a95c29b00d57145db0e6f4620cd",
+  "finished_at": "2026-09-27T08:19:59.374149+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": 3755,
+    "output_tokens": 5,
+    "observed_response_input_tokens": 3755,
+    "observed_response_output_tokens": 5
+  }
+}

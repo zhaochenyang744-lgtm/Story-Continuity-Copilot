@@ -1,0 +1,21 @@
+{
+  "schema_version": "scc-eval-v8-freeze-integrity-v1",
+  "status": "frozen_formal_inputs",
+  "controller_candidate_gate_passed": true,
+  "formal_inputs_frozen": true,
+  "real_provider_authorization_received": false,
+  "formal_run_executed": false,
+  "provider_calls": 0,
+  "case_canonical_sha256": "6f85776fbab6bc7caa099e6132d2d8f9c65730bfc176f40033ca036b2f9e0c33",
+  "corpus_canonical_sha256": "878a21487bc9cde3e06982eac73e152fdc94851b8c6b2c5513ef39d1c31f476b",
+  "frozen_files": {
+    "evaluation/case_sets/eval-set-v8.json": "ce165d5548c16537cdfe35906fd14d704f66de1b60c5f724255876282aeaac2d",
+    "evaluation/manifests/eval-set-v8-manifest.json": "bfe981dae33ac3eedce664025046173a646ec5331091912e5af8e58dec4b6861",
+    "evaluation/v8-semantic-review.json": "13258edc64456dccb27a8847fb9b3bc935e9b4964a9cfec0b5c7aae3bf685a54",
+    "evaluation/fixtures/eval-v8-corpus-manifest.json": "b98a2d1952b8a9a47f9433a26563953002ec7b82ba904da2fc89df11c4df5ec6",
+    "evaluation/fixtures/eval-v8-dusk-viaduct.json": "2ae14249376175ad12a8c467766dc4e8eb2f2918eaaad5fc8f0df79fa184e0e0",
+    "evaluation/fixtures/eval-v8-sable-tideglass.json": "2c72e767eda4d326fda663bc1f79823b4414f9c129144bd13ca442968fc4e425",
+    "evaluation/fixtures/eval-v8-flint-garden.json": "5050dbdb8c80296f80eef73f1aa6ab3abed2f8b216718f7f75d57664ec576b31",
+    "evaluation/fixtures/eval-v8-opal-nursery.json": "33e74a36687bdb8771fa03c8b5a9b767a7bf7d22fd78b86b5155b486dc6b6992"
+  }
+}

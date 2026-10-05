@@ -1,0 +1,332 @@
+{
+  "run_id": "run-af73d2c0-6137-4fba-a295-14f36e0b717e",
+  "project_id": "prj-52c70f4e-3733-4f55-9b58-1d940f941cae",
+  "run_type": "context_brief",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 1,
+  "draft_revision": 2,
+  "source_memory_version": 4,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T08:08:06.683919+00:00",
+  "started_at": "2026-09-27T08:08:06.725008+00:00",
+  "completed_at": "2026-09-27T08:08:06.794002+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 68,
+  "retry_of_run_id": null,
+  "root_run_id": "run-af73d2c0-6137-4fba-a295-14f36e0b717e",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T08:08:06.683919+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "binding_context",
+      "error_code": null,
+      "created_at": "2026-09-27T08:08:06.725008+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "analyzing_layers",
+      "error_code": null,
+      "created_at": "2026-09-27T08:08:06.743683+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "assembling_results",
+      "error_code": null,
+      "created_at": "2026-09-27T08:08:06.781632+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T08:08:06.794002+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "flash-v5-offline-stub",
+    "model_label": "no-model",
+    "prompt_version": "context-brief-v5-clause-citations",
+    "schema_version": "writing-analysis-v1",
+    "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+    "source_memory_version": 4
+  },
+  "provider_metrics": {
+    "latency_ms": 1,
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "analysis_type": "context_brief",
+  "current_draft_revision": 2,
+  "foreshadow_version": null,
+  "foreshadow_snapshot_digest": null,
+  "proposal": null,
+  "question": null,
+  "scope": null,
+  "issue_ids": [],
+  "source_run_id": null,
+  "retrieval": {
+    "counts": {
+      "author_context": {
+        "available": 0,
+        "selected": 0
+      },
+      "character_alias": {
+        "available": 0,
+        "selected": 0
+      },
+      "draft_claim": {
+        "available": 3,
+        "selected": 3
+      },
+      "foreshadow_record": {
+        "available": 0,
+        "selected": 0
+      },
+      "issue": {
+        "available": 0,
+        "selected": 0
+      },
+      "issue_evidence": {
+        "available": 0,
+        "selected": 0
+      },
+      "memory_record": {
+        "available": 8,
+        "selected": 8
+      },
+      "source_span": {
+        "available": 10,
+        "selected": 4
+      }
+    },
+    "draft_claim_scope": {
+      "available": 3,
+      "body_chars": 30,
+      "excerpt_chars": 30,
+      "selected": [
+        {
+          "id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-1",
+          "source_chars": 7,
+          "source_end": 7,
+          "source_start": 0,
+          "supplied_chars": 7,
+          "supplied_end": 7,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-2",
+          "source_chars": 10,
+          "source_end": 17,
+          "source_start": 7,
+          "supplied_chars": 10,
+          "supplied_end": 17,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-3",
+          "source_chars": 13,
+          "source_end": 30,
+          "source_start": 17,
+          "supplied_chars": 13,
+          "supplied_end": 30,
+          "truncated": false
+        }
+      ]
+    },
+    "method_version": "writing-analysis-lexical-v3-brief-540",
+    "selected_ids": {
+      "author_context": [],
+      "character_alias": [],
+      "draft_claim": [
+        "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-1",
+        "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-2",
+        "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-3"
+      ],
+      "foreshadow_record": [],
+      "issue": [],
+      "issue_evidence": [],
+      "memory_record": [
+        "mem-d75c0a1e-bd67-49a9-9724-fdd7c7c04bb2",
+        "mem-19dbd6d0-05a0-422a-9959-ab09c9b4ea39",
+        "mem-26a4a417-a509-4e0d-9818-9d1d965340cd",
+        "mem-26d56897-f7cd-4c91-bf95-df31b23633d4",
+        "mem-2826344d-be13-4774-8746-7cdca01fdfc0",
+        "mem-a3f9b8f6-1474-4cef-84d3-470b701b1f31",
+        "mem-afc5bb96-3b92-4725-a2c3-4406f2a0a9f0",
+        "mem-b85205ea-d361-411c-85d0-433351929f1e"
+      ],
+      "source_span": [
+        "span-ccaa10cf-63c4-4847-9e53-34b7b9b2c4ce",
+        "span-511ae9fc-bdb3-4571-a87e-c11e1141e9f4",
+        "span-06b451a7-b45f-4b17-a993-08f051ff4328",
+        "span-ccdfe889-9074-4d07-ab0c-a0748129156e"
+      ]
+    },
+    "truncated": {
+      "author_context": false,
+      "character_alias": false,
+      "draft_body": false,
+      "draft_claim": false,
+      "foreshadow_record": false,
+      "issue": false,
+      "issue_evidence": false,
+      "memory_record": false,
+      "source_span": true,
+      "source_span_text": false
+    }
+  },
+  "input_digest": "7f0f0f8a7ee2b83be0e887832054f540b8a51082504e2026705bbbd5a071f03b",
+  "analysis": {
+    "citation_transform": {
+      "added_source_count": 0,
+      "discarded_model_item_indices": [],
+      "duplicate_omitted_item_count": 0,
+      "fallback_draft_claim_ids": [
+        "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-2",
+        "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-3"
+      ],
+      "model_item_count": 1,
+      "model_summary_used": false,
+      "omitted_unmatched_clause_count": 0,
+      "overflow_omitted_item_count": 0,
+      "source_rendered_item_count": 3,
+      "version": "source-rendered-v2"
+    },
+    "draft_coverage": {
+      "cited_ranges": [
+        {
+          "id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-1",
+          "source_chars": 7,
+          "source_end": 7,
+          "source_start": 0,
+          "supplied_chars": 7,
+          "supplied_end": 7,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-2",
+          "source_chars": 10,
+          "source_end": 17,
+          "source_start": 7,
+          "supplied_chars": 10,
+          "supplied_end": 17,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-3",
+          "source_chars": 13,
+          "source_end": 30,
+          "source_start": 17,
+          "supplied_chars": 13,
+          "supplied_end": 30,
+          "truncated": false
+        }
+      ],
+      "discarded_item_indices": [],
+      "reasons": [],
+      "source_ids": [
+        "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-1",
+        "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-2",
+        "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-3"
+      ],
+      "status": "covered",
+      "uncovered_source_ids": [],
+      "unselected_count": 0
+    },
+    "evidence_status": "supported",
+    "items": [
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "林默走进北门。",
+            "label": "当前草稿 · 句 1",
+            "source_id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-1",
+            "source_path": "/projects/prj-52c70f4e-3733-4f55-9b58-1d940f941cae/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句1原文：「林默走进北门。」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "银钥匙已经交给陈澈。",
+            "label": "当前草稿 · 句 2",
+            "source_id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-2",
+            "source_path": "/projects/prj-52c70f4e-3733-4f55-9b58-1d940f941cae/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句2原文：「银钥匙已经交给陈澈。」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "她此时已经知道弟弟还活着。",
+            "label": "当前草稿 · 句 3",
+            "source_id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-3",
+            "source_path": "/projects/prj-52c70f4e-3733-4f55-9b58-1d940f941cae/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句3原文：「她此时已经知道弟弟还活着。」"
+      }
+    ],
+    "summary": "当前草稿句1原文：「林默走进北门。」 当前草稿句2原文：「银钥匙已经交给陈澈。」 当前草稿句3原文：「她此时已经知道弟弟还活着。」",
+    "summary_sources": [
+      {
+        "excerpt": "林默走进北门。",
+        "label": "当前草稿 · 句 1",
+        "source_id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-1",
+        "source_path": "/projects/prj-52c70f4e-3733-4f55-9b58-1d940f941cae/workspace#draft-source",
+        "source_type": "draft_claim"
+      },
+      {
+        "excerpt": "银钥匙已经交给陈澈。",
+        "label": "当前草稿 · 句 2",
+        "source_id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-2",
+        "source_path": "/projects/prj-52c70f4e-3733-4f55-9b58-1d940f941cae/workspace#draft-source",
+        "source_type": "draft_claim"
+      },
+      {
+        "excerpt": "她此时已经知道弟弟还活着。",
+        "label": "当前草稿 · 句 3",
+        "source_id": "draft-claim-draft-9dc7f6f1-5b05-475c-81b7-7617d9ccb5ca-r2-3",
+        "source_path": "/projects/prj-52c70f4e-3733-4f55-9b58-1d940f941cae/workspace#draft-source",
+        "source_type": "draft_claim"
+      }
+    ]
+  }
+}

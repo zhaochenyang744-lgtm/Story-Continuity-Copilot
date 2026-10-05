@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "2c4ed543e071c1a6802f8bc9ee4513262a7941792f418a6e0eb87a4695058a99",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-5882fa2e-f178-494a-8fa7-9b5eed874e05-1",
+        "verdict": "no_issue",
+        "basis": "证据 fixture-span-orchard_restoration-5 在同一时刻(10点当天)既记录清单未签署、船仍停留在码头,与主张完全一致;fixture-span-orchard_restoration-4 的完成规则(须签署并离岸)只支持“尚未完成下水”的推论,二者可共存,故无冲突可报。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3514,
+      "completion_tokens": 336,
+      "total_tokens": 3850,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 204
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1210
+    },
+    "status": "complete",
+    "prompt_tokens": 3514,
+    "completion_tokens": 336,
+    "total_tokens": 3850,
+    "reasoning_tokens": 204,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

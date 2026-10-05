@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "status": "completed",
+  "error_code": null,
+  "post_attempt_start_records": 0,
+  "evaluation_count": 1,
+  "score_status": "not_scored_offline_stub",
+  "finished_at": "2026-09-27T10:40:55.385300+00:00"
+}

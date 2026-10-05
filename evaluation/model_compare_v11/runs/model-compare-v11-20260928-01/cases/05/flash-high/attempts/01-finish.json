@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 2745,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "436a6eab-ad22-47d6-8e3c-63d1039db62d",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-9da63740-96e6-408a-989d-40b2d396b294-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim's \\\"not ready\\\" status at 10点 is directly supported: span-5 states that at 10点 the same day the gauge read four bars but the valve cap stayed loose and unlocked all minute, and static canon span-4 makes a locked cap a necessary condition for readiness. The four-bar gauge alone therefore cannot make it ready. span-2 concerns Mira and the door and is irrelevant context, not a contradiction.\"}]}",
+  "visible_content_sha256": "0ca9e3929b18e8b0d3daed0c2a068da43a14311b626203229ff76d1137556cb9",
+  "reasoning": {
+    "present": true,
+    "codepoints": 1162,
+    "utf8_bytes": 1188,
+    "sha256": "e0f7ece5938c728d41e14e166e1cb92024ef7ce0032e1ae9bc02b864b2c6402b"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3589,
+      "completion_tokens": 434,
+      "total_tokens": 4023,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 289
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1285
+    },
+    "status": "complete",
+    "prompt_tokens": 3589,
+    "completion_tokens": 434,
+    "total_tokens": 4023,
+    "reasoning_tokens": 289,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T08:57:21.780415+00:00"
+}

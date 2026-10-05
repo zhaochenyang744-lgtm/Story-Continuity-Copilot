@@ -1,0 +1,12 @@
+{
+  "case_id": "g02-time-bound",
+  "run_id": "flash-v5-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 32,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "866bdbe904e7bbc1ce2b9cc651e6b863a6e3b793b7446e10183f64bc890834f1",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "6d639cabf57f4f5a603fd5dba7ba6a97f98bc8f6e0853b7d8db8470094d49a5c",
+  "started_at": "2026-09-27T08:21:31.626527+00:00",
+  "usage_status": "unknown_until_response"
+}

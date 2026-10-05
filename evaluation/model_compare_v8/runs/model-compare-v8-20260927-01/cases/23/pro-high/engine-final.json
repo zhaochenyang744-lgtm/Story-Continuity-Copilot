@@ -1,0 +1,26 @@
+{
+  "status": "completed",
+  "issues": [],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-514a8ccc-4b70-4a65-94d8-959d43bfa68b-1",
+      "returned_span_ids": [
+        "fixture-span-basalt_observatory-6",
+        "fixture-span-basalt_observatory-5",
+        "fixture-span-basalt_observatory-4"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3549,
+  "output_tokens": 743,
+  "latency_ms": 8147,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

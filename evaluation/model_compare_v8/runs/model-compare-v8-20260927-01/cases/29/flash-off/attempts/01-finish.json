@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1444,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "1a3abaac-5635-44d2-b571-3b7494f9b483",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-8a6e2287-7768-4800-ade8-e193560230b0-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim states Ina walked into the repair room at 11:00. The cited evidence only records the capsule cap as loose at 10:00 and does not identify who loosened it. These facts concern different subjects and times and can coexist; no contradiction or missing link requires review.\"}]}",
+  "visible_content_sha256": "8687869356423738d4e1c1ca60bbbc0b5de4669073e9f0a8a182bd3a785531f1",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 2974,
+      "completion_tokens": 114,
+      "total_tokens": 3088,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 798
+    },
+    "status": "complete",
+    "prompt_tokens": 2974,
+    "completion_tokens": 114,
+    "total_tokens": 3088,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:54:28.233362+00:00"
+}

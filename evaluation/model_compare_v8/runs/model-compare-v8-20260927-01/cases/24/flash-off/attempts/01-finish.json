@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 2264,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "75481073-0e31-4427-9581-f8c5369da2a0",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"character_knowledge\",\"severity\":\"medium\",\"explanation\":\"The watch record cited in the draft does not name Vela's companion, so the claim that it establishes Sora accompanied her is unsupported.\",\"reasoning\":\"The cited watch record explicitly states Vela moved from Gate Four on the west pier to the east pier at 19点 and that the record leaves her companion unnamed. The draft asserts the record establishes Sora accompanied Vela, but the supplied evidence contains no handoff or naming event linking Sora to that movement. The attribution is unsupported and Sora's presence remains unknown.\",\"temporal_basis\":{\"claim_anchor\":\"19点\",\"evidence_anchor\":\"At 19点\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-basalt_observatory-6\",\"span_id\":\"fixture-span-basalt_observatory-6\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-basalt_observatory-6\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-basalt_observatory-6\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The cited watch record explicitly leaves Vela's companion unnamed, so it cannot establish that Sora accompanied her; the missing naming or handoff link makes the draft attribution unsupported.\"}]}",
+  "visible_content_sha256": "d3b7db94661482d4ce358378d121d17d7e0f7fd77d772c7decf2aaac73eead17",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3468,
+      "completion_tokens": 395,
+      "total_tokens": 3863,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1292
+    },
+    "status": "complete",
+    "prompt_tokens": 3468,
+    "completion_tokens": 395,
+    "total_tokens": 3863,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:51:10.547531+00:00"
+}

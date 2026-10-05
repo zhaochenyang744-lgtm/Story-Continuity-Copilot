@@ -1,0 +1,33 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "category_status": "fixed_gold",
+    "full_validator_result": "accepted",
+    "score_layer": "raw_first_or_repair",
+    "errors": [
+      "raw_evidence_policy_mismatch",
+      "raw_target_or_category_mismatch"
+    ]
+  },
+  "repair_raw": [],
+  "final": {
+    "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+    "expected_class": "insufficient_evidence",
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "result": "fail",
+    "errors": [
+      "category_mismatch",
+      "source_chapter_mismatch",
+      "undeclared_extra_evidence"
+    ],
+    "category_status": "fixed_gold",
+    "score_layer": "final_product",
+    "input_origin": "caller_supplied_capture"
+  },
+  "request_count": 1,
+  "parsed_output_count": 1,
+  "manual_semantic_review": "pending_manual_review"
+}

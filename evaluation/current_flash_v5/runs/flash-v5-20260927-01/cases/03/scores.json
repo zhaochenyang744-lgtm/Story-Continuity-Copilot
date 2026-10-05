@@ -1,0 +1,43 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "category_status": "fixed_gold",
+    "full_validator_result": "rejected",
+    "score_layer": "raw_first_or_repair",
+    "errors": [
+      "product_validator:temporal_overlap_unproven",
+      "raw_outcome_invalid",
+      "raw_relation_mismatch"
+    ]
+  },
+  "repair_raw": [
+    {
+      "machine_result": "fail",
+      "semantic_result": "not_reviewed",
+      "category_status": "fixed_gold",
+      "full_validator_result": "accepted",
+      "score_layer": "raw_first_or_repair",
+      "errors": [
+        "raw_required_issue_missing"
+      ]
+    }
+  ],
+  "final": {
+    "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+    "expected_class": "insufficient_evidence",
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "result": "fail",
+    "errors": [
+      "missing_required_issue"
+    ],
+    "category_status": "fixed_gold",
+    "score_layer": "final_product",
+    "input_origin": "caller_supplied_capture"
+  },
+  "request_count": 2,
+  "parsed_output_count": 2,
+  "manual_semantic_review": "pending_manual_review"
+}

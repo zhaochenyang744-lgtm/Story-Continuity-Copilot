@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-10",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:49:08.068913+00:00",
+  "latency_ms": 2400,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3005,
+      "completion_tokens": 411,
+      "total_tokens": 3416
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-6d787eaa-233a-4311-be6c-951bcaab2b27-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"event_status\",\"severity\":\"medium\",\"explanation\":\"The draft asserts that the watch record establishes Evi accompanied Orin, but the cited record leaves the companion unnamed, so the attribution is unsupported.\",\"reasoning\":\"The only supplied evidence states that at 19:00 the watch record says Orin walked from the west quay to the east quay and leaves the companion unnamed. It does not name Evi as the companion or otherwise establish that Evi accompanied Orin. The draft's claim that the record establishes this is therefore unsupported; the record's omission of the companion's identity is a missing link, not proof that Evi was present.\",\"temporal_basis\":{\"claim_anchor\":\"19:00\",\"evidence_anchor\":\"At 19:00\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-v6_companion_blank-1\",\"span_id\":\"fixture-span-v6_companion_blank-1\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-v6_companion_blank-1\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-v6_companion_blank-1\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-6d787eaa-233a-4311-be6c-951bcaab2b27-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The cited watch record leaves the companion unnamed, so it does not establish that Evi accompanied Orin; the attribution depends on a missing identity link.\"}]}",
+  "message_content_sha256": "b029a9eddd401912172f615f0a4c4ffea3350cea9ab6c8357e775673e50ad91d",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

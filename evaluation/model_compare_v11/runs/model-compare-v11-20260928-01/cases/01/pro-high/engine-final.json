@@ -1,0 +1,77 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+      "status": "conflict",
+      "category": "relationship",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "The draft asserts Mira opened the North Glass door wearing only a red badge, but the canonical rule states a red badge cannot open that door.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-north_glass-1",
+          "span_id": "fixture-span-north_glass-1",
+          "excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-1"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-north_glass-2",
+          "span_id": "fixture-span-north_glass-2",
+          "excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-2"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The current claim states Mira opened the North Glass door at 10点 while wearing only her red badge. The canonical rule in fixture-span-north_glass-1 states the door opens only for a wearer of a blue badge and a red badge cannot open it. The time-specific evidence in fixture-span-north_glass-2 confirms Mira was wearing only a red badge and carrying no blue badge at that same time. Thus the claim is directly contradicted by the rule; the roster's lack of record about whether the door opened does not overcome the rule. This is an authorization conflict, not merely an unsupported outcome.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-north_glass-2",
+          "role": "current_context"
+        },
+        {
+          "span_id": "fixture-span-north_glass-1",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": [
+        "edit",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-2",
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3641,
+  "output_tokens": 8230,
+  "latency_ms": 102196,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

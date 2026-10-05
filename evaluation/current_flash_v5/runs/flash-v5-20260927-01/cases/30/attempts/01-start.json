@@ -1,0 +1,12 @@
+{
+  "case_id": "g02-dialogue-attribution",
+  "run_id": "flash-v5-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 33,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "f49468067a90a6bf7fad100226b49eb3d2b45c78cde390f1cb5a4f369dda4322",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "d3f7fe51b6f44d414fc514ecdac01407af53ec4d2cfe115480e13fb530ca70b4",
+  "started_at": "2026-09-27T08:21:36.820680+00:00",
+  "usage_status": "unknown_until_response"
+}

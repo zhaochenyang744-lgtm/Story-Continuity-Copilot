@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 8172,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "21224081-973c-4dc6-8b1a-bfc41d81376e",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-5882fa2e-f178-494a-8fa7-9b5eed874e05-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"The current claim is directly supported by the cited evidence: at 10点 the manifest remained unsigned and the boat stayed at the orchard quay, and the launch completion rule requires both signing and departure. No continuity conflict exists.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "8daf6a01e000e1d31db7b83a3a6fa3343d4442f6f307e8bee8c68accc53b751e",
+  "reasoning": {
+    "present": true,
+    "codepoints": 2401,
+    "utf8_bytes": 2409,
+    "sha256": "b0544cc740e66efb123b95d083fd0304ea1ae9defaf140cadc115aed5eb43c0d"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3654,
+      "completion_tokens": 625,
+      "total_tokens": 4279,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 506
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1222
+    },
+    "status": "complete",
+    "prompt_tokens": 3654,
+    "completion_tokens": 625,
+    "total_tokens": 4279,
+    "reasoning_tokens": 506,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T09:07:26.649012+00:00"
+}

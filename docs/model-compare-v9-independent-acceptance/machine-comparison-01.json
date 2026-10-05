@@ -1,0 +1,249 @@
+﻿{
+ "note": "machine scores only; V9 semantic review pending",
+ "conditions": {
+  "flash-high": {
+   "v8": {
+    "finished": 34,
+    "first_pass": 24,
+    "final_pass": 25,
+    "final_pass_within_original_8000": 25,
+    "repairs": 1,
+    "posts": 35,
+    "total_tokens": 180833,
+    "first_latency_median_s": 7.2
+   },
+   "v9": {
+    "finished": 34,
+    "first_pass": 27,
+    "final_pass": 27,
+    "final_pass_within_original_8000": 26,
+    "repairs": 0,
+    "posts": 34,
+    "total_tokens": 181796,
+    "first_latency_median_s": 8.55
+   },
+   "case_04": {
+    "v8": {
+     "first_pass": false,
+     "final_pass": false,
+     "final_errors": [
+      "schema_invalid"
+     ],
+     "engine_status": "failed:schema_invalid",
+     "repairs": 0,
+     "posts": 1,
+     "tokens": [
+      5113
+     ],
+     "usage_complete": true,
+     "first_latency_ms": 7240,
+     "original_8000": true
+    },
+    "v9": {
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": [],
+     "engine_status": "completed:None",
+     "repairs": 0,
+     "posts": 1,
+     "tokens": [
+      5340
+     ],
+     "usage_complete": true,
+     "first_latency_ms": 8008,
+     "original_8000": true
+    }
+   },
+   "changed_cases": [
+    {
+     "case": 1,
+     "v8": {
+      "first_pass": false,
+      "final_pass": false,
+      "engine_status": "completed:None",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "engine_status": "completed:None",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 4,
+     "v8": {
+      "first_pass": false,
+      "final_pass": false,
+      "engine_status": "failed:schema_invalid",
+      "final_errors": [
+       "schema_invalid"
+      ]
+     },
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "engine_status": "completed:None",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 7,
+     "v8": {
+      "first_pass": false,
+      "final_pass": false,
+      "engine_status": "completed:None",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "engine_status": "completed:None",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 20,
+     "v8": {
+      "first_pass": false,
+      "final_pass": true,
+      "engine_status": "completed:None",
+      "final_errors": []
+     },
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "engine_status": "completed:None",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 25,
+     "v8": {
+      "first_pass": true,
+      "final_pass": true,
+      "engine_status": "completed:None",
+      "final_errors": []
+     },
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "engine_status": "completed:None",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     }
+    }
+   ]
+  },
+  "pro-high": {
+   "v8": {
+    "finished": 34,
+    "first_pass": 27,
+    "final_pass": 28,
+    "final_pass_within_original_8000": 22,
+    "repairs": 1,
+    "posts": 35,
+    "total_tokens": 218695,
+    "first_latency_median_s": 31.2
+   },
+   "v9": {
+    "finished": 34,
+    "first_pass": 27,
+    "final_pass": 27,
+    "final_pass_within_original_8000": 23,
+    "repairs": 1,
+    "posts": 35,
+    "total_tokens": 232920,
+    "first_latency_median_s": 39.31
+   },
+   "case_04": {
+    "v8": {
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": [],
+     "engine_status": "completed:None",
+     "repairs": 0,
+     "posts": 1,
+     "tokens": [
+      8123
+     ],
+     "usage_complete": true,
+     "first_latency_ms": 44851,
+     "original_8000": false
+    },
+    "v9": {
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": [],
+     "engine_status": "completed:None",
+     "repairs": 0,
+     "posts": 1,
+     "tokens": [
+      9071
+     ],
+     "usage_complete": true,
+     "first_latency_ms": 79101,
+     "original_8000": false
+    }
+   },
+   "changed_cases": [
+    {
+     "case": 18,
+     "v8": {
+      "first_pass": false,
+      "final_pass": true,
+      "engine_status": "completed:None",
+      "final_errors": []
+     },
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "engine_status": "completed:None",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     }
+    },
+    {
+     "case": 24,
+     "v8": {
+      "first_pass": true,
+      "final_pass": true,
+      "engine_status": "completed:None",
+      "final_errors": []
+     },
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "engine_status": "completed:None",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     }
+    },
+    {
+     "case": 32,
+     "v8": {
+      "first_pass": false,
+      "final_pass": false,
+      "engine_status": "completed:None",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "engine_status": "completed:None",
+      "final_errors": []
+     }
+    }
+   ]
+  }
+ }
+}

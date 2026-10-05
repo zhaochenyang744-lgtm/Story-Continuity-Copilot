@@ -1,0 +1,19 @@
+{
+  "case_id": "v6-v6s-08",
+  "family": "comparison",
+  "evaluation_kind": "v6_seen_control",
+  "status": "v6_control_source_set_and_body_bound",
+  "control_ids": [
+    "V6S-08"
+  ],
+  "same_run_request_sha256": "b7e6243126303d5855d6fd149dec1d31d3156f83255447878ec581348fafa69b",
+  "selected_source_labels": [
+    "A2"
+  ],
+  "selected_memory_count": 1,
+  "repair": false,
+  "database_binding": "matched_persisted_isolated_database",
+  "database_selected_source_count": 1,
+  "database_selected_memory_count": 1,
+  "database_unselected_memory_sources_allowed": 0
+}

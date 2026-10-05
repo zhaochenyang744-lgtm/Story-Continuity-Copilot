@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+      "status": "insufficient_evidence",
+      "category": "object_state",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The draft states that the two badge registers show Mira holding the spare blue badge at 11点, but the cited register leaves its 11点 holder field blank, so the register attribution is unsupported and the holding fact stays unknown.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-north_glass-3",
+          "span_id": "fixture-span-north_glass-3",
+          "excerpt": "The spare blue badge register leaves its 11点 holder field blank.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-3"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The claim's warrant is the registers themselves. The only supplied register evidence reports that the spare blue badge register leaves its 11点 holder field blank. A blank holder field is an omission, not a statement that no one held the badge, so it neither proves nor disproves that Mira held it; it only shows that the cited record does not contain the entry the draft attributes to it. Judgment therefore stops at the missing source warrant: the holding at 11点 remains unknown rather than contradicted. The 10点 red-badge attempt and the pneumatic-carrier gauge reading concern other times or objects and are omitted as compatible or unrelated.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-north_glass-3",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-2",
+        "fixture-span-north_glass-3",
+        "fixture-span-north_glass-5"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3480,
+  "output_tokens": 2727,
+  "latency_ms": 12600,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

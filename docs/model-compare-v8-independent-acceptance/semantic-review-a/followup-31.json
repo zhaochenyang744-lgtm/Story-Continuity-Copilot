@@ -1,0 +1,163 @@
+{
+  "schema_version": "v8-blinded-case-followup-review-v1",
+  "case_alias": "case-31",
+  "reviewer": "semantic-review-a",
+  "stage": "followup",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-31",
+      "response_alias": "answer-9741ab",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "v6-v6s-09",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "出生先后仍未知，未将来源不担保误作相反出生顺序；实际不足Issue保持首答。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[answer-9741ab].final; semantic-review-a/first-31.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；已逐alias比较，selected/chapter/Memory/正文转录、角色集合及适用输出合同与首答一致，类别失配如有另计。",
+      "attribution_tags": [],
+      "overall_reason": "最终保持完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-31.json",
+      "normalization_count": 0
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-31",
+      "response_alias": "answer-d8f6a3",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "v6-v6s-09",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "出生先后仍未知，未将来源不担保误作相反出生顺序；实际不足Issue保持首答。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[answer-d8f6a3].final; semantic-review-a/first-31.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；已逐alias比较，selected/chapter/Memory/正文转录、角色集合及适用输出合同与首答一致，类别失配如有另计。",
+      "attribution_tags": [],
+      "overall_reason": "最终保持完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-31.json",
+      "normalization_count": 0
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-31",
+      "response_alias": "answer-d88068",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "v6-v6s-09",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "出生先后仍未知，未将来源不担保误作相反出生顺序；实际不足Issue保持首答。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[answer-d88068].final; semantic-review-a/first-31.json"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "最终仍为event_status，固定出生先后类别为timeline。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "responses[answer-d88068].final.issues[0].category; policy.category"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；已逐alias比较，selected/chapter/Memory/正文转录、角色集合及适用输出合同与首答一致，类别失配如有另计。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "最终保持类别失败，未知性判断正确。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-31.json",
+      "normalization_count": 0
+    }
+  ],
+  "comparison": {
+    "repair_count": 0,
+    "repair_strict_pass": 0,
+    "final_strict_pass": 2,
+    "final_count": 3,
+    "first_scores_unchanged": true
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/31.json",
+    "sha256_before": "bfa43af496c4a91f5a718837ccd4bad5e7b59d4b4575f2ecce42da176d4cbd83",
+    "sha256_after_review": "bfa43af496c4a91f5a718837ccd4bad5e7b59d4b4575f2ecce42da176d4cbd83",
+    "unchanged": true,
+    "repair_business_unchanged_except_contract_repair": true,
+    "repair_visible_equals_parsed": true
+  },
+  "lock": {
+    "first_locked_before_followup": true,
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

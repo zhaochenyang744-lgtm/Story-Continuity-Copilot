@@ -1,0 +1,73 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+      "status": "insufficient_evidence",
+      "category": "relationship",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "两项记录都没有确定磨制透镜 R4 的人，因此草稿把“Vela ground lens R4”归因于索引和维护表缺乏依据。",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-basalt_observatory-3",
+          "span_id": "fixture-span-basalt_observatory-3",
+          "excerpt": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-3"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-basalt_observatory-1",
+          "span_id": "fixture-span-basalt_observatory-1",
+          "excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "维护表条目明确显示 western lens R4 的维护表把 glass grinder 的名字留空，因此该记录无法证明是谁磨制了透镜；索引条目只给出镜片身份（18点被认定为已安装的 western aperture lens），完全未涉及磨制者。草稿却称这两份记录“establish”了 Vela 磨制透镜 R4，即把一个记录本身省略的决定性细节当作已确立的事实。缺少连接记录与 Vela 的授权或署名环节，判断只能停在这里：Vela 是否磨制透镜 R4 仍属未知，既不由此被证实，也未被反证。",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-basalt_observatory-3",
+          "role": "missing_link"
+        },
+        {
+          "span_id": "fixture-span-basalt_observatory-1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+      "returned_span_ids": [
+        "fixture-span-basalt_observatory-3",
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-6"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3577,
+  "output_tokens": 3278,
+  "latency_ms": 14639,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

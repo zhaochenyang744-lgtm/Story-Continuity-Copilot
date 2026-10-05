@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "decddf68762f92ec3cc20b0a2eabb3e8165e3d9cb5c3a122f6eb310c3456561c",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-63e5e36e-d68f-4302-bb11-16c926521596-1",
+        "verdict": "no_issue",
+        "basis": "The cited span is compatible with the claim on every element: same actor (Ina), same action (loosening the courier capsule valve cap), same time (10:00), and it supplies the log entry's existence, so the attribution to the inspection log is warranted rather than contradicted."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3109,
+      "completion_tokens": 332,
+      "total_tokens": 3441,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 215
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 805
+    },
+    "status": "complete",
+    "prompt_tokens": 3109,
+    "completion_tokens": 332,
+    "total_tokens": 3441,
+    "reasoning_tokens": 215,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

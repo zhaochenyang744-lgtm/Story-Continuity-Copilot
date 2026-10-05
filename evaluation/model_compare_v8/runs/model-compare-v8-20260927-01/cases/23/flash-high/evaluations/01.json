@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "199fa8dbcd5667d71437ba71236c5e63e34f85fd95f02361fc8842a26037999c",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-514a8ccc-4b70-4a65-94d8-959d43bfa68b-1",
+        "verdict": "no_issue",
+        "basis": "The claim matches the watched event in span-6 (Vela moved from west-pier Gate Four to the east pier at 19点). Span-5's 18点 state (Vela at west-pier Gate Four) and span-4's static canon (Gate Four on the west pier, not east) are the prior state and origin the draft's explicit 19点 move departs from, so all cited material coexists."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3498,
+      "completion_tokens": 635,
+      "total_tokens": 4133,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 486
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1322
+    },
+    "status": "complete",
+    "prompt_tokens": 3498,
+    "completion_tokens": 635,
+    "total_tokens": 4133,
+    "reasoning_tokens": 486,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

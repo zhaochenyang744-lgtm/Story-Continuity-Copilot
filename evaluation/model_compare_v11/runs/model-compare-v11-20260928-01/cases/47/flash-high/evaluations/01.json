@@ -1,0 +1,88 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "19e22c45654481950271daf91c2e363831da39798a5b7f8f748317dc76218817",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc13-material-zh",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "attribute",
+        "severity": "low",
+        "explanation": "草稿称今日15点库房长钥匙为铜制，而同一时间的库房清册记载该钥匙为铁制并明确排除铜制，材质属性直接冲突。",
+        "reasoning": "所引唯一证据在同一时间锚点“今天15点”对同一对象（库房那把长钥匙）的材质给出明确记载：铁制，且“并非铜制”；草稿则断言其为铜制。时间、对象、属性三者完全重合，同一钥匙的材质不可能同时为铜又为铁，故所引事实足以直接否定草稿断言，无需额外身份或时间前提。",
+        "temporal_basis": {
+          "claim_anchor": "今天15点",
+          "evidence_anchor": "今天15点",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc13-material-zh-M1",
+            "span_id": "cc-span-cc13-material-zh-M1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc13-material-zh-M1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc13-material-zh-M1",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "长钥匙是铜制的",
+          "after": "长钥匙是铁制的"
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc13-material-zh",
+        "verdict": "reviewed_issue",
+        "basis": "同一时间点同一钥匙的材质记载相反：清册记为铁制并明确排除铜制，与草稿的铜制断言不可共存，已作为 confirmed_conflict 出具。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3056,
+      "completion_tokens": 1367,
+      "total_tokens": 4423,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 960
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 752
+    },
+    "status": "complete",
+    "prompt_tokens": 3056,
+    "completion_tokens": 1367,
+    "total_tokens": 4423,
+    "reasoning_tokens": 960,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

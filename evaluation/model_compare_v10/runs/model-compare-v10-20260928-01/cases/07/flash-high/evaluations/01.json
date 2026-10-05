@@ -1,0 +1,88 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "c87b75cd3e9cee712ccf0f70171a44824d0914362e0f466b3545a72555024b02",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "timeline",
+        "severity": "medium",
+        "explanation": "The draft says the harbor signal gate first closed before it first opened at 09点, but the record states it first opened at 09点 with no prior closing and first closed at 10点.",
+        "reasoning": "Span fixture-span-harbor_signal-1 states that at 09点 the gate first opened and had never closed before then, and that its first closing came at 10点 after opening. Both texts bind the same object (the harbor signal gate) and the same explicit time ('At 09点 on the same day'), so the draft's ordering — first closing before first opening — cannot coexist with the recorded first opening at 09点 and first closing at 10点. 'Had never closed before then' rules out any earlier closing, and fixture-memory-harbor_signal-1 records this same timeline.",
+        "temporal_basis": {
+          "claim_anchor": "At 09点 on the same day",
+          "evidence_anchor": "At 09点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-harbor_signal-1",
+            "span_id": "fixture-span-harbor_signal-1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-harbor_signal-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-harbor_signal-1",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+          "after": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+        "verdict": "reviewed_issue",
+        "basis": "The draft's ordering of the gate's first closing before its first opening at 09点 is directly contradicted by the record of a first opening at 09点, no prior closing, and a first closing at 10点."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3646,
+      "completion_tokens": 1991,
+      "total_tokens": 5637,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1444
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1214
+    },
+    "status": "complete",
+    "prompt_tokens": 3646,
+    "completion_tokens": 1991,
+    "total_tokens": 5637,
+    "reasoning_tokens": 1444,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

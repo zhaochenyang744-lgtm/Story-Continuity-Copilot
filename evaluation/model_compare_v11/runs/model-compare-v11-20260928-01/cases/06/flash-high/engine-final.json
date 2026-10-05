@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+      "status": "insufficient_evidence",
+      "category": "relationship",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "草稿称“根据检查与阀门盖记录”是 Mira 拧松了载气阀门盖，但所引记录只说明它没有记录是谁拧松的；该归因缺乏依据，行为人仍属未知。",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-north_glass-6",
+          "span_id": "fixture-span-north_glass-6",
+          "excerpt": "The carrier inspection does not record who loosened its valve cap.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-6"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "fixture-span-north_glass-6 说明，草稿所依据的那份载气检查记录本身并未记录是谁拧松了阀门盖。由此，决定性的环节——拧松行为的行为人——缺失：没有任何所引片段指名 Mira 实施了该行为，也没有来源依据把她与该行为联系起来。判断止步于缺失的归因；该主张并未被证伪，只是缺乏支持，因此不给出作者可执行的修改动作。",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-north_glass-6",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-6",
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3568,
+  "output_tokens": 1872,
+  "latency_ms": 8710,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

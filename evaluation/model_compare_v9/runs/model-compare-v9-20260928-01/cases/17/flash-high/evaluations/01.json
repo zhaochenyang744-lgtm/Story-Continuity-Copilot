@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "9974e6892c79847ee44f0fdfc9d5c2ebcaa344f40b40641c7148b40c8e078a60",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-5882fa2e-f178-494a-8fa7-9b5eed874e05-1",
+        "verdict": "no_issue",
+        "basis": "The claim matches the cited 10点 event: the restoration boat's manifest was unsigned and it remained at the quay. The launch-completion rule requiring a signed manifest and departure makes the unfinished launch consistent; no conflict or missing link appears."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3581,
+      "completion_tokens": 545,
+      "total_tokens": 4126,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 439
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1277
+    },
+    "status": "complete",
+    "prompt_tokens": 3581,
+    "completion_tokens": 545,
+    "total_tokens": 4126,
+    "reasoning_tokens": 439,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

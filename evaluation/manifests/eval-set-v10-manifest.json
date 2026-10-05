@@ -1,0 +1,103 @@
+{
+  "manifest_version": "scc-eval-manifest-v10",
+  "status": "approved_for_formal_run",
+  "case_set": {
+    "path": "evaluation/case_sets/eval-set-v10.json",
+    "canonical_sha256": "f8260d92f2beae79f8fb402fe8286a90903552878eb0c04647b581876b07410c",
+    "case_count": 36,
+    "split": {
+      "conflict": 12,
+      "no_conflict": 12,
+      "insufficient_evidence": 12
+    }
+  },
+  "fixture_corpus": {
+    "path": "evaluation/fixtures/eval-v10-corpus-manifest.json",
+    "canonical_sha256": "ffc8e55286edd7c3956e67d436f801aae831c80abae8a0d02c05d5e53374011f",
+    "evaluation_only": true,
+    "production_seed": false,
+    "protected_asset_source": false
+  },
+  "authoring": {
+    "path": "evaluation/eval_set_v10_authoring/cases.json",
+    "sha256": "4544153ae785f0315703f0cbbfa2b4c87170aff18c58dbe3afbe0cb57b549955",
+    "author": "Codex authoring team; gold-hidden internal editorial review",
+    "classification": "held_out_user_authored"
+  },
+  "runtime_contract": {
+    "model_label": "deepseek-flash",
+    "review_thinking": "high",
+    "prompt_version": "continuity-review-v21-evidence-completeness"
+  },
+  "scoring": {
+    "prediction_rule": "target claim has conflict Issue => conflict; else target claim has insufficient_evidence Issue => insufficient_evidence; else no_conflict",
+    "retrieval": "all expected evidence semantic targets appear in the target claim retrieval top 5",
+    "cited_evidence_precision": "all cited Evidence rows resolve to current-project SourceSpan and match expected evidence for the evaluated target claim",
+    "expected_evidence_recall": "for conflict cases, unique cited expected Evidence divided by all expected direct Evidence",
+    "multi_direct_evidence_full_set_recall": "share of requires_multiple_direct_evidence conflict cases citing the complete expected Evidence set",
+    "conflict_category_accuracy": "share of expected conflict cases whose predicted category equals expected_category",
+    "designated_category_mismatch_regression": "all three cases tagged category_mismatch_regression must predict the declared category",
+    "cost": "unavailable when Provider does not return cost; never estimate"
+  },
+  "required_thresholds": {
+    "macro_f1_min": 0.8,
+    "conflict_recall_min": 0.8,
+    "insufficient_evidence_recall_min": 0.8,
+    "no_conflict_false_positive_rate_max": 0.2,
+    "retrieval_expected_evidence_hit_at_5_min": 0.8,
+    "cited_evidence_precision_min": 0.95,
+    "schema_validity": 1,
+    "evidence_resolvability_grounding": 1,
+    "fail_closed_safety_paths": 1,
+    "conflict_category_accuracy_min": 0.75,
+    "designated_category_mismatch_regression_required_correct": 3,
+    "designated_category_mismatch_regression_required_total": 3,
+    "expected_evidence_recall_min": 0.8,
+    "multi_direct_evidence_full_set_recall_min": 0.75
+  },
+  "historical_thresholds_v5_v8": {
+    "macro_f1_min": 0.8,
+    "conflict_recall_min": 0.8,
+    "insufficient_evidence_recall_min": 0.8,
+    "no_conflict_false_positive_rate_max": 0.2,
+    "retrieval_expected_evidence_hit_at_5_min": 0.8,
+    "schema_validity": 1,
+    "evidence_resolvability_grounding": 1,
+    "fail_closed_safety_paths": 1,
+    "conflict_category_accuracy_min": 0.75,
+    "designated_category_mismatch_regression_required_correct": 3,
+    "designated_category_mismatch_regression_required_total": 3,
+    "expected_evidence_recall_min": 0.8,
+    "multi_direct_evidence_full_set_recall_min": 0.75,
+    "cited_evidence_precision": 1
+  },
+  "threshold_change": {
+    "cited_evidence_precision": "exactly 1 -> >= 0.95",
+    "decided_by": "user",
+    "decided_on": "2026-09-29",
+    "decided_before_v10_run": true,
+    "rationale": "extra real citations are not unsafe; evidence resolvability stays exactly 1"
+  },
+  "stability_protocol": {
+    "representative_case_ids": [
+      "v10-hv10-001",
+      "v10-hv10-002",
+      "v10-hv10-003"
+    ],
+    "selection_rule": "first by case_id among designated regressions, no_conflict, insufficient_evidence",
+    "independent_runs_per_case": 3,
+    "first_formal_runs_included_per_case": 1,
+    "additional_calls_after_formal": 6,
+    "execution_status": "not_run",
+    "terminal_failure_quality_stability": false
+  },
+  "formal_run_plan": {
+    "path": "evaluation/manifests/eval-v10-first-formal-plan.json",
+    "status": "not_run"
+  },
+  "boundaries": {
+    "controller_candidate_gate_passed": true,
+    "formal_run_executed": false,
+    "provider_calls": 0
+  }
+}

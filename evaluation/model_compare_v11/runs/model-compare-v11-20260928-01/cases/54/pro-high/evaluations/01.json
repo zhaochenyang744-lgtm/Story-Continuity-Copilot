@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "3f13ab3e6e8e7e41c7655c478e1723107746d323e532f79cb896d40f2c72d066",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc20-unlocked-no-issue-en",
+        "verdict": "no_issue",
+        "basis": "The cited evidence directly states the vault door stood unlocked at 08:00 today, so it supports the current claim without contradiction."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3118,
+      "completion_tokens": 482,
+      "total_tokens": 3600,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 397
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 686
+    },
+    "status": "complete",
+    "prompt_tokens": 3118,
+    "completion_tokens": 482,
+    "total_tokens": 3600,
+    "reasoning_tokens": 397,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,64 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+      "status": "conflict",
+      "category": "timeline",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "The draft claims the harbor signal gate first closed before it first opened at 09点, but the cited evidence says it first opened at 09点 and first closed at 10点 after opening.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-harbor_signal-1",
+          "span_id": "fixture-span-harbor_signal-1",
+          "excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-harbor_signal-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "Evidence span fixture-span-harbor_signal-1 states that at 09点 the gate first opened and had never closed before then, and that its first close occurred at 10点 after opening. These facts directly contradict the draft's order that the gate first closed before it first opened at 09点. The same 09点 anchor and same gate establish explicit overlap, so the order cannot be reconciled.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-harbor_signal-1",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+        "after": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+      },
+      "available_actions": [
+        "apply_suggestion"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+      "returned_span_ids": [
+        "fixture-span-harbor_signal-1",
+        "fixture-span-harbor_signal-2",
+        "fixture-span-harbor_signal-3"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3512,
+  "output_tokens": 5424,
+  "latency_ms": 74936,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

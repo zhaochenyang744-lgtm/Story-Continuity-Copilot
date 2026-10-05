@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-object_state-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "f1e4eb2cd13b7852aaf927e8b285ce349fda41537e6cbc1f001d58084cb0a22c",
+  "finished_at": "2026-09-27T10:40:44.757512+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-9da63740-96e6-408a-989d-40b2d396b294-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

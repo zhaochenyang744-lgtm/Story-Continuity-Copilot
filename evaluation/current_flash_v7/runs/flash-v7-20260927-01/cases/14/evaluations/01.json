@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "17cda2cbf15336d4f4e55f3ca8912ce68e8ddc336727bd5be2da978cd46e4295",
+  "finished_at": "2026-09-27T10:48:02.439153+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-f384bdc7-f0cd-43dd-88c5-9b7160a81360-1",
+        "verdict": "no_issue",
+        "basis": "The draft explicitly frames Nera's statement as a lie, so it is an attributed false utterance, not narrator-confirmed canon. The register's twin record and the timeless kinship rule are consistent with that lie; no continuity conflict remains."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3455,
+    "output_tokens": 103,
+    "observed_response_input_tokens": 3455,
+    "observed_response_output_tokens": 103
+  }
+}

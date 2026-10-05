@@ -1,0 +1,5 @@
+{
+  "prior_addendum_freeze_sha256": "3af331e31276698717abfd75f2ad8bb91a794bd7d61879a76611c1b8aa47b8c6",
+  "addendum_sha256": "d841e0350dd4644f0894431c1e64e5f686589fed10bcac914e7cbc4915699cc6",
+  "purpose": "timeless_rule_set_binding_preserve_cross_source_memory"
+}

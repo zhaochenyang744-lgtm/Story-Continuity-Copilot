@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v7-01",
+  "ordinal": 3,
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "family": "comparison",
+  "started_at": "2026-09-27T10:40:41.288031+00:00",
+  "case_input_sha256": "7b9d2933f8016c6a1cbbcf725ae578a412c6a4be9ef48ee991322ac856f2b242",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

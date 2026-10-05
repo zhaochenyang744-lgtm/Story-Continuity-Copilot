@@ -1,0 +1,192 @@
+{
+  "created_at": "2026-09-27T10:44:23.625993+00:00",
+  "scope": "Final incremental pure-clock review and G02 AST isolation; no full budget rerun, product imports, engine execute, Provider or DB.",
+  "source_hashes": {
+    "backend/app/engine.py": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd",
+    "backend/app/provider.py": "942d772662b5e44cca5de7b40d7a10c25210a8cadaef6faee11808ef07ba6f24",
+    "backend/app/brief_citations.py": "a0a3a31251860265c29b09a95e85b27f05d92dc1a0e6bcc0a9d1736a57b28ccc"
+  },
+  "source_hashes_unchanged_during_check": true,
+  "lexical_probes": [
+    {
+      "input": "At x14:00 today",
+      "expected": null,
+      "actual": null,
+      "pass": true
+    },
+    {
+      "input": "At 10:00pmx today",
+      "expected": null,
+      "actual": null,
+      "pass": true
+    },
+    {
+      "input": "At 10:00 pmx today",
+      "expected": null,
+      "actual": null,
+      "pass": true
+    },
+    {
+      "input": "今天14:00",
+      "expected": [
+        840
+      ],
+      "actual": [
+        840
+      ],
+      "pass": true
+    },
+    {
+      "input": "今天10:00",
+      "expected": [
+        600
+      ],
+      "actual": [
+        600
+      ],
+      "pass": true
+    },
+    {
+      "input": "At 14:00 today",
+      "expected": [
+        840
+      ],
+      "actual": [
+        840
+      ],
+      "pass": true
+    }
+  ],
+  "overlap_probes": [
+    {
+      "claim": "今天14:00",
+      "evidence": "今天14:00",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "claim": "今天14:00",
+      "evidence": "今天14:01",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "claim": "今天14:00",
+      "evidence": "昨天14:00",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "claim": "At 14:00 today",
+      "evidence": "At 14:00 today",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    }
+  ],
+  "g02_ast_comparisons": [
+    {
+      "file": "backend/app/engine.py",
+      "name": "WritingAnalysisEngine",
+      "baseline_sha256": "0b0422492eba7c2bd3e64868e654b2b07b036dfbfc45bf11df984aba8cf80beb",
+      "current_sha256": "0b0422492eba7c2bd3e64868e654b2b07b036dfbfc45bf11df984aba8cf80beb",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "name": "estimate_prompt_budget_units",
+      "baseline_sha256": "0db306e5f30bb28fefbdcdf982f8da359eb6d4f45ea65d322c779ff8bfc0b95c",
+      "current_sha256": "0db306e5f30bb28fefbdcdf982f8da359eb6d4f45ea65d322c779ff8bfc0b95c",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "name": "memory_initialization_prompt",
+      "baseline_sha256": "74006aadf4360748f8c55b3e7d0e89df10aeb2cb4dfe32d3efe6e6adb7df5d25",
+      "current_sha256": "74006aadf4360748f8c55b3e7d0e89df10aeb2cb4dfe32d3efe6e6adb7df5d25",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "name": "memory_delta_prompt",
+      "baseline_sha256": "567a5d84f02792bc9d7a6a561dbd0cd758a5ede5fdd824e5a2b96dbc8d66dca6",
+      "current_sha256": "567a5d84f02792bc9d7a6a561dbd0cd758a5ede5fdd824e5a2b96dbc8d66dca6",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "name": "context_brief_prompt",
+      "baseline_sha256": "42455055077ca01fc78d6543e6a66bb3b3fdadb1ed89df1e37c04a54ac99a36c",
+      "current_sha256": "42455055077ca01fc78d6543e6a66bb3b3fdadb1ed89df1e37c04a54ac99a36c",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "name": "plan_alignment_prompt",
+      "baseline_sha256": "2a63860a218729c4c4cf3a09ec5e1ae10e7c125f01ce4ec9dd0e4a55e8b3afff",
+      "current_sha256": "2a63860a218729c4c4cf3a09ec5e1ae10e7c125f01ce4ec9dd0e4a55e8b3afff",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "name": "change_impact_prompt",
+      "baseline_sha256": "edadc3bb418b077347ed39c7490e91685ed9415fa2bcd5a9cbe367bf19a17ca5",
+      "current_sha256": "edadc3bb418b077347ed39c7490e91685ed9415fa2bcd5a9cbe367bf19a17ca5",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "name": "story_qa_prompt",
+      "baseline_sha256": "9cf612719f20b52c22be5a8b38a47c580ee63539c245e5e95a177a76929b4d2a",
+      "current_sha256": "9cf612719f20b52c22be5a8b38a47c580ee63539c245e5e95a177a76929b4d2a",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "name": "foreshadow_scan_prompt",
+      "baseline_sha256": "edafdf21f47ad56dc71f1a141a76f9ffd0a348ec96c376d2ea28a86545df11cc",
+      "current_sha256": "edafdf21f47ad56dc71f1a141a76f9ffd0a348ec96c376d2ea28a86545df11cc",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "name": "revision_plan_prompt",
+      "baseline_sha256": "bf82ffdc2737d7c51e22932e9e6b819c50dfe33dbb0ec34ce0d1dfade0e103db",
+      "current_sha256": "bf82ffdc2737d7c51e22932e9e6b819c50dfe33dbb0ec34ce0d1dfade0e103db",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "name": "author_material_comparison_prompt",
+      "baseline_sha256": "8434ad268d1611b095f294396c01037375ea3b2db32bf57c19053eb8095b6d36",
+      "current_sha256": "8434ad268d1611b095f294396c01037375ea3b2db32bf57c19053eb8095b6d36",
+      "equal": true
+    },
+    {
+      "file": "backend/app/provider.py",
+      "name": "request_prompt_and_budget",
+      "baseline_sha256": "36ce8ebfef8f9ba2837102ece1279766bc511ec456a2b959fac84702ddeac838",
+      "current_sha256": "36ce8ebfef8f9ba2837102ece1279766bc511ec456a2b959fac84702ddeac838",
+      "equal": true
+    }
+  ],
+  "all_g02_ast_equal": true,
+  "brief_citations_unchanged": true,
+  "provider_bytes_equal_prechecks02": true,
+  "budget_reuse": "prechecks-02:34 complete hypothetical repairs,max5469,over6000=0. Formatter/provider bytes unchanged; only reviewed lexical qualification changed per controller handoff; no new budget or model result asserted.",
+  "v6_run_invariance": {
+    "expected_count": 420,
+    "current_count": 420,
+    "path_set_unchanged": true,
+    "all_hashes_unchanged": true
+  },
+  "freeze_readiness": "eligible_within_this_incremental_review",
+  "limits": [
+    "Limited lexical checks and G02 unchanged-code protection; not overall V7 semantic acceptance.",
+    "Final freeze must pin exact current files and tests; latest test results are owned by the test agent.",
+    "No new model calls; V6 exposed control boundaries and G02 limited source scope remain."
+  ]
+}

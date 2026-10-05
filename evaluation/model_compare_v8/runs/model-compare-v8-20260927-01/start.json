@@ -1,0 +1,43 @@
+{
+  "run_id": "model-compare-v8-20260927-01",
+  "version": "model-compare-v8",
+  "started_at": "2026-09-27T11:34:27.673650+00:00",
+  "manifest_sha256": "c99e007f026aa95c19fecdb15caf3f96ccd141673bc1c2b2b30d3b140975370a",
+  "limits": {
+    "max_tokens": 32768,
+    "timeout_seconds": 120,
+    "timeout_semantics": "HTTPX connect/read/write/pool phase timeout, not a hard wall-clock deadline",
+    "contract_evaluations": 2,
+    "transport_retries": 1,
+    "generation_post_cap": 408,
+    "models_get_cap": 1,
+    "known_total_token_cap": 1500000,
+    "original_engine_budget": 8000,
+    "experimental_engine_budget": 40000,
+    "input_budget_units": 6000,
+    "unknown_dispatch_usage_stops_matrix": true
+  },
+  "conditions": [
+    {
+      "id": "flash-off",
+      "model": "deepseek-flash",
+      "thinking": "disabled",
+      "reasoning_effort": null,
+      "temperature": 0
+    },
+    {
+      "id": "flash-high",
+      "model": "deepseek-flash",
+      "thinking": "enabled",
+      "reasoning_effort": "high",
+      "temperature": null
+    },
+    {
+      "id": "pro-high",
+      "model": "deepseek-v4-pro",
+      "thinking": "enabled",
+      "reasoning_effort": "high",
+      "temperature": null
+    }
+  ]
+}

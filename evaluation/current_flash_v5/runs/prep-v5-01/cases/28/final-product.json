@@ -1,0 +1,291 @@
+{
+  "run_id": "run-e3fc6204-a8a9-4966-8224-fb680b1f06a8",
+  "project_id": "prj-93cc7031-4481-4a6a-8fe1-cc776330fb37",
+  "run_type": "context_brief",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 1,
+  "draft_revision": 2,
+  "source_memory_version": 4,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T07:58:56.863840+00:00",
+  "started_at": "2026-09-27T07:58:56.894588+00:00",
+  "completed_at": "2026-09-27T07:58:56.959008+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 64,
+  "retry_of_run_id": null,
+  "root_run_id": "run-e3fc6204-a8a9-4966-8224-fb680b1f06a8",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T07:58:56.863840+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "binding_context",
+      "error_code": null,
+      "created_at": "2026-09-27T07:58:56.894588+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "analyzing_layers",
+      "error_code": null,
+      "created_at": "2026-09-27T07:58:56.909625+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "assembling_results",
+      "error_code": null,
+      "created_at": "2026-09-27T07:58:56.946011+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T07:58:56.959008+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "flash-v5-offline-stub",
+    "model_label": "no-model",
+    "prompt_version": "context-brief-v5-clause-citations",
+    "schema_version": "writing-analysis-v1",
+    "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+    "source_memory_version": 4
+  },
+  "provider_metrics": {
+    "latency_ms": 1,
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "analysis_type": "context_brief",
+  "current_draft_revision": 2,
+  "foreshadow_version": null,
+  "foreshadow_snapshot_digest": null,
+  "proposal": null,
+  "question": null,
+  "scope": null,
+  "issue_ids": [],
+  "source_run_id": null,
+  "retrieval": {
+    "counts": {
+      "author_context": {
+        "available": 0,
+        "selected": 0
+      },
+      "character_alias": {
+        "available": 0,
+        "selected": 0
+      },
+      "draft_claim": {
+        "available": 2,
+        "selected": 2
+      },
+      "foreshadow_record": {
+        "available": 0,
+        "selected": 0
+      },
+      "issue": {
+        "available": 0,
+        "selected": 0
+      },
+      "issue_evidence": {
+        "available": 0,
+        "selected": 0
+      },
+      "memory_record": {
+        "available": 8,
+        "selected": 8
+      },
+      "source_span": {
+        "available": 10,
+        "selected": 4
+      }
+    },
+    "draft_claim_scope": {
+      "available": 2,
+      "body_chars": 14,
+      "excerpt_chars": 14,
+      "selected": [
+        {
+          "id": "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-1",
+          "source_chars": 7,
+          "source_end": 7,
+          "source_start": 0,
+          "supplied_chars": 7,
+          "supplied_end": 7,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-2",
+          "source_chars": 7,
+          "source_end": 14,
+          "source_start": 7,
+          "supplied_chars": 7,
+          "supplied_end": 14,
+          "truncated": false
+        }
+      ]
+    },
+    "method_version": "writing-analysis-lexical-v3-brief-540",
+    "selected_ids": {
+      "author_context": [],
+      "character_alias": [],
+      "draft_claim": [
+        "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-1",
+        "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-2"
+      ],
+      "foreshadow_record": [],
+      "issue": [],
+      "issue_evidence": [],
+      "memory_record": [
+        "mem-3837eadc-b19c-4f7a-9249-478ced5df502",
+        "mem-4d50fc82-16ec-4346-855b-85abea298172",
+        "mem-527d1d89-710a-409a-855d-a343e359f6e9",
+        "mem-733ea114-e468-43fd-a42d-6641680fcb4c",
+        "mem-9f02b946-75e0-4028-9d84-3bd4a493bddf",
+        "mem-c000b53a-e5a0-47b2-91d0-4dfb8e4d7b58",
+        "mem-c23653b0-cae4-48ab-908d-1e60d76e18db",
+        "mem-f388d676-11d4-4ce0-949a-e61c59faf9a1"
+      ],
+      "source_span": [
+        "span-c6117355-e723-4e75-9048-0a29b7fbeb9a",
+        "span-e0244de7-c297-404e-8e39-96a0a308f111",
+        "span-805fe3ba-2aa2-4197-bc4c-2ea14052c650",
+        "span-87dfcaf5-f202-41c2-b508-6a4da8858ecb"
+      ]
+    },
+    "truncated": {
+      "author_context": false,
+      "character_alias": false,
+      "draft_body": false,
+      "draft_claim": false,
+      "foreshadow_record": false,
+      "issue": false,
+      "issue_evidence": false,
+      "memory_record": false,
+      "source_span": true,
+      "source_span_text": false
+    }
+  },
+  "input_digest": "d93ac04490baae3bf2aeee24a8f0188125c62f2ffc85732370faecce2ae5c28c",
+  "analysis": {
+    "citation_transform": {
+      "added_source_count": 0,
+      "discarded_model_item_indices": [],
+      "duplicate_omitted_item_count": 0,
+      "fallback_draft_claim_ids": [
+        "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-2"
+      ],
+      "model_item_count": 1,
+      "model_summary_used": false,
+      "omitted_unmatched_clause_count": 0,
+      "overflow_omitted_item_count": 0,
+      "source_rendered_item_count": 2,
+      "version": "source-rendered-v2"
+    },
+    "draft_coverage": {
+      "cited_ranges": [
+        {
+          "id": "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-1",
+          "source_chars": 7,
+          "source_end": 7,
+          "source_start": 0,
+          "supplied_chars": 7,
+          "supplied_end": 7,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-2",
+          "source_chars": 7,
+          "source_end": 14,
+          "source_start": 7,
+          "supplied_chars": 7,
+          "supplied_end": 14,
+          "truncated": false
+        }
+      ],
+      "discarded_item_indices": [],
+      "reasons": [],
+      "source_ids": [
+        "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-1",
+        "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-2"
+      ],
+      "status": "covered",
+      "uncovered_source_ids": [],
+      "unselected_count": 0
+    },
+    "evidence_status": "supported",
+    "items": [
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "林默走进北门。",
+            "label": "当前草稿 · 句 1",
+            "source_id": "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-1",
+            "source_path": "/projects/prj-93cc7031-4481-4a6a-8fe1-cc776330fb37/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句1原文：「林默走进北门。」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "林默走进北门。",
+            "label": "当前草稿 · 句 2",
+            "source_id": "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-2",
+            "source_path": "/projects/prj-93cc7031-4481-4a6a-8fe1-cc776330fb37/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句2原文：「林默走进北门。」"
+      }
+    ],
+    "summary": "当前草稿句1原文：「林默走进北门。」 当前草稿句2原文：「林默走进北门。」",
+    "summary_sources": [
+      {
+        "excerpt": "林默走进北门。",
+        "label": "当前草稿 · 句 1",
+        "source_id": "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-1",
+        "source_path": "/projects/prj-93cc7031-4481-4a6a-8fe1-cc776330fb37/workspace#draft-source",
+        "source_type": "draft_claim"
+      },
+      {
+        "excerpt": "林默走进北门。",
+        "label": "当前草稿 · 句 2",
+        "source_id": "draft-claim-draft-72a207eb-de07-466c-a446-24a1a479108a-r2-2",
+        "source_path": "/projects/prj-93cc7031-4481-4a6a-8fe1-cc776330fb37/workspace#draft-source",
+        "source_type": "draft_claim"
+      }
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1339,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "e75ee8c1-16ce-4e8a-b691-f26f1170ea1d",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-556fd1e5-211e-493c-9e96-6c3bb147e7f3-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim matches the cited evidence: the gate first opened at 09点 and first closed at 10点. The 11点 open-thread and Sera's knowledge spans are unrelated to this gate timeline, so no continuity issue exists.\"}]}",
+  "visible_content_sha256": "ee0ee029ac3f2cbcee27caa93aa85cf13585235fe7886d7a3fd3f67d5d1fd510",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3351,
+      "completion_tokens": 108,
+      "total_tokens": 3459,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1047
+    },
+    "status": "complete",
+    "prompt_tokens": 3351,
+    "completion_tokens": 108,
+    "total_tokens": 3459,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:39:30.178404+00:00"
+}

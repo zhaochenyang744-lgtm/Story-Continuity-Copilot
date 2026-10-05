@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "bfe431be40f89edd438f072c1112d860ff6746c499af750603e4ede34c581dc6",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc6-outcome-unknown-en",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "Draft 声称调查日志证明 Doran 完成了南脊测绘，但所引日志只记录测绘开始，并明确未说明是否完成。",
+        "reasoning": "唯一被引证据是背景缺失环节：Doran 在第三天开始测绘南脊，且日志未说明测绘是否完成。它支持“已开始”，但不支持“已完成”。缺失的环节是一条记录测绘完成（或未完成）的日志条目，因此判断在此中止：完成与否均未确立，草稿把“完成”归因于日志是没有来源支撑的。没有作者可用的更正动作能补上这条不存在的记录，故 available_actions 为空。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc6-outcome-unknown-en-S1",
+            "span_id": "cc-span-cc6-outcome-unknown-en-S1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc6-outcome-unknown-en-S1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc6-outcome-unknown-en-S1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc6-outcome-unknown-en",
+        "verdict": "insufficient_evidence",
+        "basis": "所引日志只记载第三天开始测绘且未说明是否完成，缺少记录完成结果的环节；草稿将“完成”说成日志所确立的事实，属无来源支撑的断言。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3085,
+      "completion_tokens": 1239,
+      "total_tokens": 4324,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 845
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 781
+    },
+    "status": "complete",
+    "prompt_tokens": 3085,
+    "completion_tokens": 1239,
+    "total_tokens": 4324,
+    "reasoning_tokens": 845,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

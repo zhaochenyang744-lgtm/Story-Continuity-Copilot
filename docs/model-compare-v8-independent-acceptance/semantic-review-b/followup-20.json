@@ -1,0 +1,243 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-20",
+  "stage": "followup",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:54:34.053201+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-20",
+      "response_alias": "answer-9c385f",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "身份索引将R4绑定西侧透镜，18点透明玻璃与输入一致；昨日琥珀色是有时间范围的回忆，不误作当前状态冲突。",
+          "visible_quote": "recollection of amber yesterday is a bounded earlier state",
+          "evidence_pointer": "responses[response_alias=answer-9c385f].first.parsed_business_json.claim_verdicts[0].basis; fixture-span-basalt_observatory-1 / -2"
+        }
+      ],
+      "other_dimensions_checked": "raw/parsed一致，claim精确，实际空issues符合no_issue。类别及显式引用N/A；没有把回忆倒推当前或产生操作。basis=229；其余两回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "最终合法空Issue、completed、normalization=0；F沿实际接受首答/修复的具体basis，final不重发ledger。当前事实与有界回忆正确区分；所有适用维度通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "strict_transition": "pass_to_pass",
+        "normalization_count": 0
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-20",
+      "response_alias": "answer-4595d0",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "缩短后仍保留R4身份、18点透明玻璃和昨日回忆相容三个关键点；没有删成泛泛无冲突。",
+          "visible_quote": "The amber clause is Vela's recollection of an earlier day",
+          "evidence_pointer": "responses[response_alias=answer-4595d0].repair.parsed_business_json.claim_verdicts[0].basis"
+        },
+        {
+          "dimension": "S",
+          "verdict": "pass",
+          "reason": "反馈明确402>400；修复276字符，精确claim与no_issue一致，原纯validator通过。",
+          "visible_quote": "No contradiction or reviewable gap remains.",
+          "evidence_pointer": "responses[response_alias=answer-4595d0].repair.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "other_dimensions_checked": "raw/parsed一致，claim精确，实际空issues符合no_issue。类别及显式引用N/A；没有把回忆倒推当前或产生操作。basis=402；其余两回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "最终合法空Issue、completed、normalization=0；F沿实际接受首答/修复的具体basis，final不重发ledger。只修复basis长度，F首答已正确；strict恢复不计事实推理恢复。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": true,
+        "strict_transition": "fail_to_pass",
+        "normalization_count": 0
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-20",
+      "response_alias": "answer-f33594",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "身份索引将R4绑定西侧透镜，18点透明玻璃与输入一致；昨日琥珀色是有时间范围的回忆，不误作当前状态冲突。",
+          "visible_quote": "recollection of amber yesterday is a compatible earlier state",
+          "evidence_pointer": "responses[response_alias=answer-f33594].first.parsed_business_json.claim_verdicts[0].basis; fixture-span-basalt_observatory-1 / -2"
+        }
+      ],
+      "other_dimensions_checked": "raw/parsed一致，claim精确，实际空issues符合no_issue。类别及显式引用N/A；没有把回忆倒推当前或产生操作。basis=202；其余两回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "最终合法空Issue、completed、normalization=0；F沿实际接受首答/修复的具体basis，final不重发ledger。当前事实与有界回忆正确区分；所有适用维度通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "strict_transition": "pass_to_pass",
+        "normalization_count": 0
+      }
+    }
+  ],
+  "repair_records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-20",
+      "response_alias": "answer-4595d0",
+      "stage": "repair",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "缩短后仍保留R4身份、18点透明玻璃和昨日回忆相容三个关键点；没有删成泛泛无冲突。",
+          "visible_quote": "The amber clause is Vela's recollection of an earlier day",
+          "evidence_pointer": "responses[response_alias=answer-4595d0].repair.parsed_business_json.claim_verdicts[0].basis"
+        },
+        {
+          "dimension": "S",
+          "verdict": "pass",
+          "reason": "反馈明确402>400；修复276字符，精确claim与no_issue一致，原纯validator通过。",
+          "visible_quote": "No contradiction or reviewable gap remains.",
+          "evidence_pointer": "responses[response_alias=answer-4595d0].repair.parsed_business_json.claim_verdicts[0].basis"
+        }
+      ],
+      "other_dimensions_checked": "raw/parsed一致，claim精确，实际空issues符合no_issue。类别及显式引用N/A；没有把回忆倒推当前或产生操作。basis=402；其余两回答纯validator通过。",
+      "attribution_tags": [],
+      "overall_reason": "只修复basis长度，F首答已正确；strict恢复不计事实推理恢复。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "F_transition": "pass_to_pass",
+        "S_transition": "fail_to_pass",
+        "strict_transition": "fail_to_pass",
+        "basis_codepoints_before": 402,
+        "basis_codepoints_after": 276
+      }
+    }
+  ],
+  "summary": {
+    "responses": 3,
+    "repair_attempted": 1,
+    "repair_F_pass": 1,
+    "repair_strict_pass": 1,
+    "structure_recoveries": 1,
+    "F_recoveries": 0,
+    "strict_recoveries": 1,
+    "final_F_pass": 3,
+    "final_strict_pass": 3,
+    "normalization_contribution": 0
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/20.json",
+      "sha256_observed": "2cbe35e3d4bc61933af7402de78499dad292b3692512a1afbbbc3ab4b50418b0",
+      "sha256_after_review": "2cbe35e3d4bc61933af7402de78499dad292b3692512a1afbbbc3ab4b50418b0"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-20.json",
+      "sha256_observed": "ab802f87867f222f649472a476f17cda4c0929c3a7a29c75c7a3cfa371eca4b9",
+      "sha256_after_review": "ab802f87867f222f649472a476f17cda4c0929c3a7a29c75c7a3cfa371eca4b9"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/20.json",
+      "sha256_observed": "583bffa1ed868d2f3e02430a2c9523aa77a0422bdc005fdabbef5286d9f60e5c",
+      "sha256_after_review": "583bffa1ed868d2f3e02430a2c9523aa77a0422bdc005fdabbef5286d9f60e5c"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    },
+    {
+      "path": "backend/app/engine.py",
+      "sha256_observed": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd",
+      "sha256_after_review": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd"
+    }
+  ],
+  "read_hashes_stable": true
+}

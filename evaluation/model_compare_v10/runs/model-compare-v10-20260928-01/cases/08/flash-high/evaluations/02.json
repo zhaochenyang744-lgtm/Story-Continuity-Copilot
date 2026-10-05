@@ -1,0 +1,46 @@
+{
+  "evaluation": 2,
+  "business_request_sha256": "2d79af1420f2b977455c1a12091bb3f515fa4f023eb061ee92f87c9560c30067",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-556fd1e5-211e-493c-9e96-6c3bb147e7f3-1",
+        "verdict": "no_issue",
+        "basis": "fixture-span-harbor_signal-1 gives the same timeline at the same anchors: the harbor signal gate first opened at 09点 and first closed after opening at 10点, so the claim is fully supported. The 11点 open-thread span and the Sera knowledge span concern other facts and contradict nothing. No reviewable conflict or missing link."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 4198,
+      "completion_tokens": 809,
+      "total_tokens": 5007,
+      "prompt_tokens_details": {
+        "cached_tokens": 3584
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 674
+      },
+      "prompt_cache_hit_tokens": 3584,
+      "prompt_cache_miss_tokens": 614
+    },
+    "status": "complete",
+    "prompt_tokens": 4198,
+    "completion_tokens": 809,
+    "total_tokens": 5007,
+    "reasoning_tokens": 674,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

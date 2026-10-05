@@ -1,0 +1,89 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "04ef7b8a82dc6aff40df3a0f0779d7550ab3ce92bfbd7c1135e7d8f32a2d29f0",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc10-salt-bridge-rule-en",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "world_rule",
+        "severity": "high",
+        "explanation": "The draft claim has Corin cross the salt bridge while carrying an iron sword, but the supplied static rule forbids anyone carrying iron from crossing the salt bridge.",
+        "reasoning": "The static canon rule from cc-span-cc10-salt-bridge-rule-en-B1 states that no one carrying iron can cross the salt bridge and that the bridge repels iron. The current claim asserts that Corin crossed the salt bridge at midnight today carrying an iron sword. Because the rule applies universally to any person carrying iron at the salt bridge, it directly contradicts the claim's core action. The shared subject (Corin, carrying iron), scope (salt bridge), and timeless constraint are present, so both cannot be true.",
+        "temporal_basis": {
+          "claim_anchor": "crossed the salt bridge carrying an iron sword",
+          "evidence_anchor": "No one carrying iron can cross the salt bridge; the bridge repels iron.",
+          "relation": "timeless_rule"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc10-salt-bridge-rule-en-B1",
+            "span_id": "cc-span-cc10-salt-bridge-rule-en-B1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc10-salt-bridge-rule-en-B1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc10-salt-bridge-rule-en-B1",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At midnight today, Corin crossed the salt bridge carrying an iron sword.",
+          "after": "At midnight today, Corin could not cross the salt bridge while carrying an iron sword."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ],
+        "proposed_memory_change": null
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc10-salt-bridge-rule-en",
+        "verdict": "reviewed_issue",
+        "basis": "The claim states Corin crossed carrying iron, but the rule says no one carrying iron can cross; direct contradiction."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3272,
+      "completion_tokens": 7544,
+      "total_tokens": 10816,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 6959
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 840
+    },
+    "status": "complete",
+    "prompt_tokens": 3272,
+    "completion_tokens": 7544,
+    "total_tokens": 10816,
+    "reasoning_tokens": 6959,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

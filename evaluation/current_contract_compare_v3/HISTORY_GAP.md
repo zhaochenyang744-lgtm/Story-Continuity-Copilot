@@ -1,0 +1,7 @@
+# V2 first-failure audit gap and V3 control lineage
+
+V2 `PRECHECK_FAILURES.md` records an early 24-completed / 8-structural-pass probe caused by comparing claim IDs from two separate runs. The third-round capture reviewer found no separate 24-row original raw-result file in a bounded search of V2, related evidence directories, artifacts, and evaluation result names. The available evidence supports the **failure summary**, not the complete per-case first-response chain. V3 does not reconstruct or relabel that missing historical chain. The later frozen V2 26-row result remains preserved and independently rechecked.
+
+V3 `runs/targeted-controls-01` is retained as the first local control output. Its five raw negative mutations inherited V2's old insufficiency category, so each had a category error as well as the intended contract error. It is **superseded for isolated negative-control evidence** by `runs/targeted-controls-02`, which first sets the V3 gold category and then applies each mutation. All five second-run failures contain the intended targeted error without `raw_target_or_category_mismatch`; the current product validator independently rejects all five. Both outputs are retained create-only, with no overwrite.
+
+No claim is made that V3 ran new product API checks. Its 26-row rescore reads the same frozen V2 capture file byte-for-byte; each saved API request matches that capture after normalizing its ephemeral claim ID. Its 20 controls are in-memory mutations. First raw, absent repair, and final product are reported separately.

@@ -1,0 +1,26 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "score_layer": "raw_first_or_repair_v6",
+    "errors": [
+      "category_mismatch",
+      "undeclared_extra_evidence"
+    ]
+  },
+  "repair_raw": [],
+  "final": {
+    "result": "fail",
+    "machine_result": "fail",
+    "semantic_result": "not_reviewed",
+    "score_layer": "final_product_v6",
+    "errors": [
+      "category_mismatch",
+      "undeclared_extra_evidence"
+    ]
+  },
+  "request_count": 1,
+  "parsed_output_count": 1,
+  "manual_semantic_review": "pending_manual_review"
+}

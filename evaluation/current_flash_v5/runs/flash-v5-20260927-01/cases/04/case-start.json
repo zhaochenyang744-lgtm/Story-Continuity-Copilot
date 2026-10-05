@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v5-20260927-01",
+  "ordinal": 4,
+  "case_id": "ccv3-north_glass-object_state-conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:19:59.436889+00:00",
+  "case_input_sha256": "b0f395d8b3d0a98f81ba3927f15a0aaab00ae2ff84fc932067b9ebfe18a3cf20",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

@@ -1,0 +1,109 @@
+{
+  "evaluation": 1,
+  "stage": "first",
+  "business_request_sha256": "4a856d6b9967873d4607e83e60177e10183ab96a914b9f5c6e04290b6ce16b07",
+  "business_request": {
+    "draft": {
+      "id": "cc-draft-cc8-holder-unknown-en",
+      "revision": 1,
+      "body": "The two key registers establish that Ilse held the spare vault key at 15:00."
+    },
+    "claims": [
+      {
+        "id": "cc-claim-cc8-holder-unknown-en",
+        "text": "The two key registers establish that Ilse held the spare vault key at 15:00.",
+        "allowed_evidence": [
+          {
+            "id": "cc-span-cc8-holder-unknown-en-R1",
+            "chapter_id": "cc-chapter-cc8-holder-unknown-en-R1",
+            "body": "Register A records that the spare vault key left its hook at 14:00.",
+            "label": "R1",
+            "prompt_excerpt": "Register A records that the spare vault key left its hook at 14:00."
+          },
+          {
+            "id": "cc-span-cc8-holder-unknown-en-R2",
+            "chapter_id": "cc-chapter-cc8-holder-unknown-en-R2",
+            "body": "Register B does not record who held the spare vault key after 14:00.",
+            "label": "R2",
+            "prompt_excerpt": "Register B does not record who held the spare vault key after 14:00."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "cc-memory-cc8-holder-unknown-en-R1",
+        "memory_type": "dynamic_state",
+        "subject": "spare vault key",
+        "predicate": "possession",
+        "value": "Register A records that the spare vault key left its hook at 14:00.",
+        "source_span_id": "cc-span-cc8-holder-unknown-en-R1"
+      },
+      {
+        "id": "cc-memory-cc8-holder-unknown-en-R2",
+        "memory_type": "open_thread",
+        "subject": "spare vault key",
+        "predicate": "possession",
+        "value": "Register B does not record who held the spare vault key after 14:00.",
+        "source_span_id": "cc-span-cc8-holder-unknown-en-R2"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "non-empty string, at most 800 Unicode code points; why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  }
+}

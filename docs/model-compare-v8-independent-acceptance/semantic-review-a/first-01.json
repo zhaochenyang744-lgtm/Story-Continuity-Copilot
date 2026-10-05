@@ -1,0 +1,313 @@
+{
+  "schema_version": "v8-blinded-case-first-review-v1",
+  "case_alias": "case-01",
+  "stage": "first",
+  "reviewer": "semantic-review-a",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-01",
+      "response_alias": "answer-1f9716",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        129
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "see ratings",
+          "reason": "只红无蓝与不可红徽章开门规则不能共存；未把名单沉默当作独立反证。",
+          "visible_quote": "a red badge wearer opened the North Glass door",
+          "evidence_pointer": "responses[answer-1f9716].first.parsed_business_json.issues[0].reasoning; business_request.claims[0].allowed_evidence[badge_rule,badge_roster]"
+        },
+        {
+          "dimension": "C",
+          "verdict": "see ratings",
+          "reason": "与冻结category一致。",
+          "visible_quote": "world_rule",
+          "evidence_pointer": "responses[answer-1f9716].first.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "see ratings",
+          "reason": "badge_rule直接contradicts/sufficient；roster只是context/sufficient。",
+          "visible_quote": "\"relation\": \"contradicts\"",
+          "evidence_pointer": "responses[answer-1f9716].first.parsed_business_json.issues[0].evidence"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "see ratings",
+          "reason": "包含最低span1，仅加许可optional span2；没有引载体span5。",
+          "visible_quote": "fixture-span-north_glass-2",
+          "evidence_pointer": "policy.minimum/optional; responses[answer-1f9716].first.parsed_business_json.issues[0].evidence"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "see ratings",
+          "reason": "两个span、父chapter及各自Memory对应selected正文，claim ID正确。",
+          "visible_quote": "fixture-memory-north_glass-1",
+          "evidence_pointer": "responses[answer-1f9716].first.parsed_business_json.issues[0].evidence; business_request"
+        },
+        {
+          "dimension": "S",
+          "verdict": "see ratings",
+          "reason": "JSON与packet parsed相同，ledger有唯一claim、basis129字、Issue和chain对应，其他字段合规。",
+          "visible_quote": "reviewed_issue",
+          "evidence_pointer": "responses[answer-1f9716].first.parsed_business_json.claim_verdicts"
+        },
+        {
+          "dimension": "D",
+          "verdict": "see ratings",
+          "reason": "实际存在一条针对当前claim的conflict/confirmed_conflict Issue，不是只有basis。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[answer-1f9716].first.parsed_business_json.issues[0]"
+        },
+        {
+          "dimension": "T",
+          "verdict": "see ratings",
+          "reason": "采用允许timeless_rule，锚点均原文；建议只改写为确实记录的尝试及记录沉默，受span2支持。",
+          "visible_quote": "the roster does not record whether it opened.",
+          "evidence_pointer": "responses[answer-1f9716].first.parsed_business_json.issues[0].temporal_basis/suggested_revision"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "规则直接反驳仅红徽章开门；world_rule、rule直接反证+roster可选背景及timeless_rule均正确，实际交付完整Issue。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-01",
+      "response_alias": "answer-c116ce",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        222
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "see ratings",
+          "reason": "明示永久规则与草稿自己给出的徽章事实不相容；名单只记录尝试，未制造名单反证。",
+          "visible_quote": "Rule plus claim cannot coexist",
+          "evidence_pointer": "responses[answer-c116ce].first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "see ratings",
+          "reason": "输出event_status，冻结category为world_rule。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "responses[answer-c116ce].first.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "see ratings",
+          "reason": "规则contradicts、同刻尝试roster context，均sufficient；不要求可选roster独立反驳。",
+          "visible_quote": "context rather than an independent contradiction",
+          "evidence_pointer": "responses[answer-c116ce].first.parsed_business_json.issues[0].reasoning/evidence"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "see ratings",
+          "reason": "最低span1+许可optional span2；载体来源未列入证据。",
+          "visible_quote": "The carrier-gauge span concerns a different object and was not cited.",
+          "evidence_pointer": "responses[answer-c116ce].first.parsed_business_json.issues[0].reasoning/evidence; policy"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "see ratings",
+          "reason": "两个selected span均匹配父chapter和Memory；无越界引用或正文错配。",
+          "visible_quote": "fixture-span-north_glass-1",
+          "evidence_pointer": "responses[answer-c116ce].first.parsed_business_json.issues[0].evidence; business_request"
+        },
+        {
+          "dimension": "S",
+          "verdict": "see ratings",
+          "reason": "JSON/parsed一致，唯一ledger basis222字，实际Issue/chain/claim对应；event_status是合法枚举但不符本例gold，由C计错。",
+          "visible_quote": "reviewed_issue",
+          "evidence_pointer": "responses[answer-c116ce].first.parsed_business_json.claim_verdicts"
+        },
+        {
+          "dimension": "D",
+          "verdict": "see ratings",
+          "reason": "一条实际confirmed_conflict Issue已交付；类别不合格不等于漏交付。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[answer-c116ce].first.parsed_business_json.issues[0]"
+        },
+        {
+          "dimension": "T",
+          "verdict": "see ratings",
+          "reason": "timeless_rule符合冻结policy；允许null evidence_anchor。建议用无法红徽章开门替换成功开门，受规则和roster支持。",
+          "visible_quote": "timeless_rule",
+          "evidence_pointer": "responses[answer-c116ce].first.parsed_business_json.issues[0].temporal_basis/suggested_revision"
+        }
+      ],
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "实质冲突判断和引用正确，类别event_status不符world_rule，单列类别失败；不据此判事实推理失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-01",
+      "response_alias": "answer-f22145",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "fail",
+        "D": "pass",
+        "T": "fail",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        223
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "see ratings",
+          "reason": "规则、草稿徽章条件及同刻背景共同说明开门不成立；事实主体和推理正确。",
+          "visible_quote": "Together these establish that the claimed opening is impossible",
+          "evidence_pointer": "responses[answer-f22145].first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "see ratings",
+          "reason": "object_state不符合固定world_rule。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[answer-f22145].first.parsed_business_json.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_roles",
+          "verdict": "see ratings",
+          "reason": "证据relation正确：静态规则contradicts，roster context；时间标签错误另计T/S。",
+          "visible_quote": "\"relation\":\"context\"",
+          "evidence_pointer": "responses[answer-f22145].first.visible_content; parsed_business_json.issues[0].evidence"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "see ratings",
+          "reason": "完整最低span1及许可optional span2，没有多余来源。",
+          "visible_quote": "fixture-span-north_glass-2",
+          "evidence_pointer": "responses[answer-f22145].first.parsed_business_json.issues[0].evidence; policy"
+        },
+        {
+          "dimension": "E_binding",
+          "verdict": "see ratings",
+          "reason": "引用ID、chapter及Memory均正确；evidence_anchor文字在已引用roster中存在，文字绑定通过不等于可担保直接反证时间。",
+          "visible_quote": "At 10点 on the same day",
+          "evidence_pointer": "responses[answer-f22145].first.parsed_business_json.issues[0].temporal_basis; business_request.claims[0].allowed_evidence"
+        },
+        {
+          "dimension": "S",
+          "verdict": "see ratings",
+          "reason": "JSON/claim/ledger/chain结构有效且basis223字；时间合同不合格：直接contradicts来源是无时钟的静态规则，explicit_overlap锚点只来自context。此项为人工合同判定，未执行validator。",
+          "visible_quote": "explicit_overlap",
+          "evidence_pointer": "responses[answer-f22145].first.parsed_business_json.issues[0].temporal_basis/evidence"
+        },
+        {
+          "dimension": "D",
+          "verdict": "see ratings",
+          "reason": "一条实际confirmed_conflict Issue已交付，不能与后续产品接受与否混为一谈。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[answer-f22145].first.parsed_business_json.issues[0]"
+        },
+        {
+          "dimension": "T",
+          "verdict": "see ratings",
+          "reason": "原policy只允许timeless_rule；actual explicit_overlap引用同刻roster作为锚点，不能把context时钟当规则的动态反证锚点。改写结果本身符合红徽章不能开门的规则。",
+          "visible_quote": "explicit_overlap",
+          "evidence_pointer": "policy.temporal_relations; responses[answer-f22145].first.parsed_business_json.issues[0].temporal_basis"
+        }
+      ],
+      "attribution_tags": [
+        "category_mismatch",
+        "temporal_contract_error"
+      ],
+      "overall_reason": "推理已识别只红徽章开门违背规则；但类别object_state错误，并以仅context的时刻把永久规则设成explicit_overlap，违背本例timeless_rule及直接反证时间合同。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "within_case_comparison_after_individual_review": {
+    "strict_pass": 1,
+    "total": 3,
+    "strict_pass_aliases": [
+      "answer-1f9716"
+    ],
+    "F_pass_aliases": [
+      "answer-1f9716",
+      "answer-c116ce",
+      "answer-f22145"
+    ],
+    "distinction": "先独立评六层后比较：三条事实冲突推理均正确；answer-1f9716完整通过，answer-c116ce仅类别失败，answer-f22145类别及时间合同失败。没有身份推断。"
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/01.json",
+    "sha256_before": "660e46a49969b5e0490b94f78f0ebcc66de2f1cdaa10ce74329b98b98977dcca",
+    "sha256_after_review": "660e46a49969b5e0490b94f78f0ebcc66de2f1cdaa10ce74329b98b98977dcca",
+    "unchanged": true,
+    "all_response_business_requests_equal_packet": true,
+    "all_visible_json_equal_saved_parsed": true
+  },
+  "lock": {
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "repair_or_final_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0,
+    "writes": "this new review file only"
+  }
+}

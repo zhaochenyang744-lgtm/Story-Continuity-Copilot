@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v6-02",
+  "ordinal": 24,
+  "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+  "family": "comparison",
+  "started_at": "2026-09-27T09:39:45.732026+00:00",
+  "case_input_sha256": "f56cc827774d171bd032e16db04f020627a60edbd4111c1dbcf506da3bdfe8f5",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

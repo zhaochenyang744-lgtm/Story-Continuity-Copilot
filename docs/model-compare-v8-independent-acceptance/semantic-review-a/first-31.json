@@ -1,0 +1,182 @@
+{
+  "schema_version": "v8-blinded-case-first-review-v1",
+  "case_alias": "case-31",
+  "stage": "first",
+  "reviewer": "semantic-review-a",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-31",
+      "response_alias": "answer-9741ab",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-09",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        192
+      ],
+      "reasoning_codepoints": [
+        337
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确区分登记无出生顺序担保与顺序本身被否定，保持Aster是否先出生未知；实际交付不足Issue。",
+          "visible_quote": "The actual birth order remains unknown",
+          "evidence_pointer": "responses[answer-9741ab].first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "passed_dimensions_note": "仅B1最低来源且chapter/Memory对应，context/insufficient+missing_link，unknown/null时间，无建议/动作/Memory升级；JSON/唯一claim/ledger/chain及basis≤400/reasoning≤800合规。",
+      "attribution_tags": [],
+      "overall_reason": "首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-31",
+      "response_alias": "answer-d8f6a3",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-09",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        246
+      ],
+      "reasoning_codepoints": [
+        559
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确区分登记无出生顺序担保与顺序本身被否定，保持Aster是否先出生未知；实际交付不足Issue。",
+          "visible_quote": "the birth order stays unknown rather than false",
+          "evidence_pointer": "responses[answer-d8f6a3].first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "passed_dimensions_note": "仅B1最低来源且chapter/Memory对应，context/insufficient+missing_link，unknown/null时间，无建议/动作/Memory升级；JSON/唯一claim/ledger/chain及basis≤400/reasoning≤800合规。",
+      "attribution_tags": [],
+      "overall_reason": "首答完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-31",
+      "response_alias": "answer-d88068",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-09",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        162
+      ],
+      "reasoning_codepoints": [
+        296
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "正确区分登记无出生顺序担保与顺序本身被否定，保持Aster是否先出生未知；实际交付不足Issue。",
+          "visible_quote": "the birth order remains unknown",
+          "evidence_pointer": "responses[answer-d88068].first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "出生先后应timeline而输出event_status。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "responses[answer-d88068].first.parsed_business_json.issues[0].category; policy.category"
+        }
+      ],
+      "passed_dimensions_note": "仅B1最低来源且chapter/Memory对应，context/insufficient+missing_link，unknown/null时间，无建议/动作/Memory升级；JSON/唯一claim/ledger/chain及basis≤400/reasoning≤800合规。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "核心语义正确，类别及/或证据角色合同失败阻断strict。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "comparison": {
+    "strict_pass": 2,
+    "total": 3,
+    "strict_pass_aliases": [
+      "answer-9741ab",
+      "answer-d8f6a3"
+    ],
+    "F_pass_aliases": [
+      "answer-9741ab",
+      "answer-d8f6a3",
+      "answer-d88068"
+    ],
+    "distinction": "三条均正确保留出生先后未知；两条timeline完整通过，一条event_status类别失败。"
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/31.json",
+    "sha256_before": "1aec696d41269d5b1ef20ee325978417fffc7946ba862c3188a368c71c7581ab",
+    "sha256_after_review": "1aec696d41269d5b1ef20ee325978417fffc7946ba862c3188a368c71c7581ab",
+    "unchanged": true,
+    "all_response_business_requests_equal_packet": true,
+    "all_visible_json_equal_saved_parsed": true
+  },
+  "lock": {
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "repair_or_final_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

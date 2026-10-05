@@ -1,0 +1,168 @@
+{
+  "case_id": "v6-v6s-04",
+  "evaluation_ordinal": 2,
+  "stage": "repair",
+  "recorded_before_dispatch_at": "2026-09-27T10:03:19.147841+00:00",
+  "business_request_sha256": "c56c560f6431c85c367b46706477d6762d9b73bd61f12de2203e53407f12e36a",
+  "bindings": {
+    "draft_id": "fixture-draft-v6-carrier",
+    "draft_revision": 2
+  },
+  "selected_source_bindings": [
+    {
+      "kind": "target_claim",
+      "id": "claim-run-1c65a68b-e7b1-447a-8f6c-f13a20f56e1b-1",
+      "text": "At 10:00 today the courier capsule was not ready because its valve cap was loose.",
+      "sha256": "c1a2aedf197c79b4b873c4f095c08ac3cf114e574e746acf01405b4c3d8258af"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-v6_carrier-1",
+      "chapter_id": "fixture-chapter-v6_carrier-1",
+      "text": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+      "prompt_excerpt": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+      "sha256": "471d2d680826a129afb9e615424bd672f1e99c2bf0f330b7398838f836d310ed"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-v6_carrier-2",
+      "chapter_id": "fixture-chapter-v6_carrier-2",
+      "text": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute.",
+      "prompt_excerpt": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute.",
+      "sha256": "74397415a3f2ac0cbe1579c507f46e66413cadbe6460df4d8fa4ebd65e073a61"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-v6_carrier-3",
+      "chapter_id": "fixture-chapter-v6_carrier-3",
+      "text": "The 10:00 courier capsule inspection was performed at the north workbench.",
+      "prompt_excerpt": "The 10:00 courier capsule inspection was performed at the north workbench.",
+      "sha256": "81c4255e45719fc83529c82048d4124173ded993486d6ebc2907fcaa0c4d5409"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-v6_carrier-1",
+      "source_span_id": "fixture-span-v6_carrier-1",
+      "text": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+      "sha256": "471d2d680826a129afb9e615424bd672f1e99c2bf0f330b7398838f836d310ed"
+    }
+  ],
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-v6-carrier",
+      "revision": 2,
+      "body": "At 10:00 today the courier capsule was not ready because its valve cap was loose."
+    },
+    "claims": [
+      {
+        "id": "claim-run-1c65a68b-e7b1-447a-8f6c-f13a20f56e1b-1",
+        "text": "At 10:00 today the courier capsule was not ready because its valve cap was loose.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-v6_carrier-1",
+            "chapter_id": "fixture-chapter-v6_carrier-1",
+            "body": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+            "label": "R1",
+            "prompt_excerpt": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked."
+          },
+          {
+            "id": "fixture-span-v6_carrier-2",
+            "chapter_id": "fixture-chapter-v6_carrier-2",
+            "body": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute.",
+            "label": "R2",
+            "prompt_excerpt": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute."
+          },
+          {
+            "id": "fixture-span-v6_carrier-3",
+            "chapter_id": "fixture-chapter-v6_carrier-3",
+            "body": "The 10:00 courier capsule inspection was performed at the north workbench.",
+            "label": "R3",
+            "prompt_excerpt": "The 10:00 courier capsule inspection was performed at the north workbench."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-v6_carrier-1",
+        "memory_type": "dynamic_state",
+        "subject": "carrier",
+        "predicate": "status",
+        "value": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+        "source_span_id": "fixture-span-v6_carrier-1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    },
+    "contract_repair": {
+      "attempt": 2,
+      "reason_code": "claim_verdicts_invalid",
+      "diagnostics": [
+        {
+          "claim_span_id": null,
+          "claim_text": null,
+          "problem_codes": [
+            "claim_verdicts_invalid"
+          ],
+          "cited_evidence": []
+        }
+      ],
+      "rejected_issues": []
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1",
+      "status": "conflict",
+      "category": "object_state",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "The draft states the courier capsule was ready for dispatch at 10:00 today, but evidence at the same minute shows its valve cap was loose and unlocked, and a supplied rule says readiness requires a locked cap.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_carrier-1",
+          "span_id": "fixture-span-v6_carrier-1",
+          "excerpt": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_carrier-1"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-v6_carrier-2",
+          "span_id": "fixture-span-v6_carrier-2",
+          "excerpt": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": []
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "Evidence 2 places the capsule at 10:00 today with four bars pressure but an unlocked cap throughout that minute. Evidence 1 makes a locked valve cap a necessary condition for readiness. Together these proved same-time facts contradict the claim that the capsule was ready at that time.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_carrier-1",
+          "role": "current_context"
+        },
+        {
+          "span_id": "fixture-span-v6_carrier-2",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 10:00 today the courier capsule was ready for dispatch.",
+        "after": "At 10:00 today the courier capsule pressure reached four bars, but because its valve cap remained loose and unlocked, it was not ready for dispatch."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1",
+      "returned_span_ids": [
+        "fixture-span-v6_carrier-1",
+        "fixture-span-v6_carrier-2",
+        "fixture-span-v6_carrier-3"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3146,
+  "output_tokens": 4007,
+  "latency_ms": 35545,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

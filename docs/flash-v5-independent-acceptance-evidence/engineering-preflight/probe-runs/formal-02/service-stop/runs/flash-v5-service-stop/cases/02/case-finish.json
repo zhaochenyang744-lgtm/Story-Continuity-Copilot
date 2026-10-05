@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "status": "completed",
+  "error_code": null,
+  "post_attempt_start_records": 2,
+  "evaluation_count": 1,
+  "score_status": "fail",
+  "finished_at": "2026-09-27T08:16:23.595393+00:00"
+}

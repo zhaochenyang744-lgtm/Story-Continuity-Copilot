@@ -1,0 +1,58 @@
+{
+  "case_id": "v6-v6s-09",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "74ee31c39156ce038f5c6019f99537a8aab591a8678e4bcf28b06f698404ddde",
+  "finished_at": "2026-09-27T10:49:04.455697+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-432cb431-857c-41b0-9a4f-06b3acbffed1-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "The cited register span does not establish the birth order the draft asserts; it only records that Aster and Nilo are twins and that the register omits which was born first.",
+        "reasoning": "The draft claims the birth register establishes Aster was born before Nilo. The only supplied evidence says the register records them as twins but does not record which twin was born first. That evidence is insufficient to support the asserted ordering, and the missing decisive detail means the birth order remains unknown rather than disproved.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+            "span_id": "fixture-span-v6_birth_order_blank-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_birth_order_blank-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_birth_order_blank-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-432cb431-857c-41b0-9a4f-06b3acbffed1-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The only cited span says the register does not record which twin was born first, so it cannot establish the draft's asserted birth order; the ordering remains unknown."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 2975,
+    "output_tokens": 385,
+    "observed_response_input_tokens": 2975,
+    "observed_response_output_tokens": 385
+  }
+}

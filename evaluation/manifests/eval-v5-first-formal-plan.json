@@ -1,0 +1,43 @@
+{
+  "schema_version": "scc-eval-v5-first-formal-plan-v1",
+  "status": "not_run",
+  "formal_run_executed": false,
+  "provider_calls": 0,
+  "controller_candidate_gate_passed": false,
+  "real_provider_authorization_received": false,
+  "preconditions": [
+    "controller independently accepts the V5 candidate Gate",
+    "user separately and explicitly authorizes real Provider calls",
+    "candidate assets are frozen to approved formal paths without content changes"
+  ],
+  "planned_input_paths": {
+    "case_set": "evaluation/case_sets/eval-set-v5.json",
+    "manifest": "evaluation/manifests/eval-set-v5-manifest.json",
+    "corpus_manifest": "evaluation/fixtures/eval-v5-corpus-manifest.json"
+  },
+  "planned_output_paths": {
+    "checkpoint": "evaluation/results/eval-v5-first-formal-checkpoint.json",
+    "results": "evaluation/results/eval-v5-first-formal-results.json",
+    "report": "evaluation/results/eval-v5-first-formal-report.md",
+    "bad_cases": "evaluation/results/eval-v5-first-formal-bad-cases.json",
+    "stability": "evaluation/results/eval-v5-first-formal-stability.json",
+    "run_manifest": "evaluation/results/eval-v5-first-formal-run-manifest.json",
+    "api_scan": "evaluation/results/eval-v5-first-formal-api-corpus-scan.json",
+    "post_run_integrity": "evaluation/results/v5-first-formal-post-run-integrity.json"
+  },
+  "bad_case_protocol": {
+    "capture_when": ["classification mismatch", "category mismatch", "threshold contributor failure", "terminal failure", "retrieval miss", "unresolvable or non-expected citation"],
+    "sanitized_fields_only": true,
+    "raw_provider_body_retained": false,
+    "chain_of_thought_retained": false
+  },
+  "stability_protocol": {
+    "representative_case_ids": ["eval-v5-ember-conflict-prism-silver", "eval-v5-reed-no-conflict-casting-complete", "eval-v5-marsh-insufficient-horn-outcome"],
+    "class_coverage": ["conflict", "no_conflict", "insufficient_evidence"],
+    "independent_runs_per_case": 3,
+    "first_formal_runs_included": 3,
+    "additional_calls_after_formal": 6,
+    "execution_status": "not_run"
+  },
+  "execution_note": "This plan declares paths and protocols only. No formal result, checkpoint, report, Bad Case, stability, or integrity artifact has been created."
+}

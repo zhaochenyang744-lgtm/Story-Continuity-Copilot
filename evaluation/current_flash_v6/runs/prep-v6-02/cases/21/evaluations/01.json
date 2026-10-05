@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "73c946cabc5c0f0eb72d9d93617a78084787428e002489e5dfd35e6ab180600b",
+  "finished_at": "2026-09-27T09:39:43.351136+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-ff404fac-9b20-497a-9665-b1ad82d52514-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "e6a1db6aab962d84ece50bcdcef8dc6b1221fc69f98acb6c808c04ca7d80f904",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc9-ferry-rule-premise-en",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "At 12:00 today the ferry was not moored at the far bank, so by the supplied rule the crossing cannot have been complete at that same time.",
+        "reasoning": "F2 places the same ferry still mid-river and not moored at the far bank at 12:00 today, the same literal time stated in the claim, so object and time scope coincide; F1 supplies the static-canon rule that a crossing is complete only when the ferry is moored at the far bank, which governs the claim's completion outcome. Jointly they make 'complete at 12:00 today' impossible at that moment; no later transition is offered. F1 is a premise (context), F2 the direct contradicting fact.",
+        "temporal_basis": {
+          "claim_anchor": "At 12:00 today",
+          "evidence_anchor": "At 12:00 today",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc9-ferry-rule-premise-en-F1",
+            "span_id": "cc-span-cc9-ferry-rule-premise-en-F1",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc9-ferry-rule-premise-en-F1"
+            ]
+          },
+          {
+            "chapter_id": "cc-chapter-cc9-ferry-rule-premise-en-F2",
+            "span_id": "cc-span-cc9-ferry-rule-premise-en-F2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc9-ferry-rule-premise-en-F2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc9-ferry-rule-premise-en-F1",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "cc-span-cc9-ferry-rule-premise-en-F2",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 12:00 today the ferry crossing was complete.",
+          "after": "At 12:00 today the ferry crossing was not yet complete."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc9-ferry-rule-premise-en",
+        "verdict": "reviewed_issue",
+        "basis": "F1's rule plus F2's same-time statement that the ferry was mid-river and not moored at the far bank make completion at 12:00 today impossible, so a confirmed conflict at shared time is emitted."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3216,
+      "completion_tokens": 2318,
+      "total_tokens": 5534,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1739
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 912
+    },
+    "status": "complete",
+    "prompt_tokens": 3216,
+    "completion_tokens": 2318,
+    "total_tokens": 5534,
+    "reasoning_tokens": 1739,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

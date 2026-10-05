@@ -1,0 +1,46 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "decddf68762f92ec3cc20b0a2eabb3e8165e3d9cb5c3a122f6eb310c3456561c",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-63e5e36e-d68f-4302-bb11-16c926521596-1",
+        "verdict": "no_issue",
+        "basis": "The cited inspection log entry directly records Ina loosening the courier capsule valve cap at 10:00, so the draft claim is consistent."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3138,
+      "completion_tokens": 627,
+      "total_tokens": 3765,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 524
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 706
+    },
+    "status": "complete",
+    "prompt_tokens": 3138,
+    "completion_tokens": 627,
+    "total_tokens": 3765,
+    "reasoning_tokens": 524,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

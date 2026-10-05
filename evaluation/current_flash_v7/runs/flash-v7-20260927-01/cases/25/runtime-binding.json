@@ -1,0 +1,97 @@
+{
+  "project_id": "fixture-project-v6-lens",
+  "draft_id": "fixture-draft-v6-lens",
+  "draft_revision": 2,
+  "draft_body": "At 14:00 today, lens Q8 is amber glass.",
+  "draft_body_sha256": "94c2f8bcb2f8bf8e47f0b898b8ecaa4e08a421a02f253ab015594f1bf32fcf87",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-v6_lens-1",
+      "chapter_number": 1,
+      "chapter_title": "Synthetic lens source L1",
+      "chapter_body": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_lens-1",
+      "span_body": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+      "span_revision": 1,
+      "chapter_body_sha256": "0471c9076b183f4ce3c6f199ec4d474a01ad1ef6bdc0ec164a4ce641cb1d5fe4",
+      "span_body_sha256": "0471c9076b183f4ce3c6f199ec4d474a01ad1ef6bdc0ec164a4ce641cb1d5fe4"
+    },
+    {
+      "chapter_id": "fixture-chapter-v6_lens-2",
+      "chapter_number": 2,
+      "chapter_title": "Synthetic lens source L2",
+      "chapter_body": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_lens-2",
+      "span_body": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+      "span_revision": 1,
+      "chapter_body_sha256": "a49642c4d1f4064415bf07a0de875ff049027b74f5dc4129d32986f32b3f4751",
+      "span_body_sha256": "a49642c4d1f4064415bf07a0de875ff049027b74f5dc4129d32986f32b3f4751"
+    },
+    {
+      "chapter_id": "fixture-chapter-v6_lens-3",
+      "chapter_number": 3,
+      "chapter_title": "Synthetic lens source L3",
+      "chapter_body": "At 15:00 today, lens Q8 was moved from the east aperture to the storage box.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_lens-3",
+      "span_body": "At 15:00 today, lens Q8 was moved from the east aperture to the storage box.",
+      "span_revision": 1,
+      "chapter_body_sha256": "d4bec7a2a8f9bce859919d51b560386509800ad2d25142c30f50998166cb1f7d",
+      "span_body_sha256": "d4bec7a2a8f9bce859919d51b560386509800ad2d25142c30f50998166cb1f7d"
+    },
+    {
+      "chapter_id": "fixture-chapter-v6_lens-4",
+      "chapter_number": 4,
+      "chapter_title": "Synthetic lens source L4",
+      "chapter_body": "At 14:00 today, lens Q8 was logged for routine cleaning. The note does not identify its installed aperture or material.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_lens-4",
+      "span_body": "At 14:00 today, lens Q8 was logged for routine cleaning. The note does not identify its installed aperture or material.",
+      "span_revision": 1,
+      "chapter_body_sha256": "ff57959e59dd97d98ad1d9ba0ddc75a64d9ed809603445816016554c9f1fd17d",
+      "span_body_sha256": "ff57959e59dd97d98ad1d9ba0ddc75a64d9ed809603445816016554c9f1fd17d"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-v6_lens-1",
+      "memory_type": "dynamic_state",
+      "subject": "lens",
+      "predicate": "identity",
+      "value": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+      "source_span_id": "fixture-span-v6_lens-1",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-v6_lens-2",
+      "memory_type": "dynamic_state",
+      "subject": "lens",
+      "predicate": "status",
+      "value": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+      "source_span_id": "fixture-span-v6_lens-2",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-v6_lens-3",
+      "memory_type": "dynamic_state",
+      "subject": "lens",
+      "predicate": "status",
+      "value": "At 15:00 today, lens Q8 was moved from the east aperture to the storage box.",
+      "source_span_id": "fixture-span-v6_lens-3",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-v6_lens-4",
+      "memory_type": "dynamic_state",
+      "subject": "lens",
+      "predicate": "status",
+      "value": "At 14:00 today, lens Q8 was logged for routine cleaning. The note does not identify its installed aperture or material.",
+      "source_span_id": "fixture-span-v6_lens-4",
+      "version": 1
+    }
+  ]
+}

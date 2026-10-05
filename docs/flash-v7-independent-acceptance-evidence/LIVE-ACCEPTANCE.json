@@ -1,0 +1,122 @@
+{
+  "created_at": "2026-09-27T11:00:55.031427+00:00",
+  "run_id": "flash-v7-20260927-01",
+  "acceptance": {
+    "engineering": "passed",
+    "overall_quality": "not_accepted",
+    "user_acceptance": "not_assessed",
+    "release": "not_released"
+  },
+  "git_head": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "new_provider_calls_after_matrix": 0,
+  "matrix": {
+    "cases": 34,
+    "old_comparison": 24,
+    "seen_development_controls": 10,
+    "same_business_inputs_and_scoring_policy_as_v6": true
+  },
+  "complete_pass": {
+    "v6_first": 12,
+    "v7_first": 18,
+    "v6_final": 14,
+    "v7_final": 19,
+    "v7_first_ordinals": [
+      1,
+      2,
+      4,
+      5,
+      7,
+      8,
+      11,
+      14,
+      16,
+      17,
+      20,
+      23,
+      26,
+      27,
+      29,
+      30,
+      33,
+      34
+    ],
+    "v7_final_ordinals": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      11,
+      14,
+      16,
+      17,
+      20,
+      23,
+      26,
+      27,
+      29,
+      30,
+      33,
+      34
+    ]
+  },
+  "completion": {
+    "completed": 33,
+    "terminal_failed": 1,
+    "terminal_ordinals": [
+      22
+    ],
+    "repairs": 6,
+    "repair_full_quality_pass": 1,
+    "normalizations": 0
+  },
+  "usage": {
+    "generation_post": 40,
+    "models_get": 1,
+    "input_tokens": 136159,
+    "output_tokens": 11938,
+    "total_tokens": 148097,
+    "all_complete": true,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "basis": {
+    "limit_codepoints": 400,
+    "observed_max": 388,
+    "over_limit_outputs": 0
+  },
+  "integrity": {
+    "manifest_sha256": "361f4d7d778d6818b258e51caec65a8fd6e4a762b52c78181de35c5f7f8abe47",
+    "frozen_files_verified": 632,
+    "live_files_verified": 375,
+    "v6_original_run_files_verified_by_independent_engineering": 420,
+    "original_v6_manifest_differences": [
+      "backend/app/provider.py",
+      "backend/app/engine.py"
+    ]
+  },
+  "evidence_sha256": {
+    "TECHNICAL-ACCEPTANCE.md": "0f8c4684a78230aab2745319d9caaa2ba2b72951b1eb84ed7bc1ac9b4b0a7059",
+    "input-review-01.json": "0240c115b1873ea93cf0f28cc396a658ac6fb3e3469a9e09f51d012c25c42cb9",
+    "prechecks-03.json": "6e17ebbfdecce6d795c322c71bd8bc0ed03695afc9cd4c30f150dc0bf21b9d34",
+    "offline-tests-01.json": "a89a30fd61b172094c2574d1008d1107f6de333c0ff50a2416c7953245df438e",
+    "lexical-fix-tests.log": "b759eeb48736ed1f22e06f5ea795014f344155b3acbbee93c7f6a7caf27103c4",
+    "lexical-fix-tests-socketpair-02.log": "257e209683bb506286de3715fbc4dd22c6e86c76e6615b894582f7a25d125e12",
+    "semantics/live-01-review.json": "0779d4015452ef66ccad85fa4815127172c03f10b05c70ba4267a33c92d2f69b",
+    "new-controls/live-01-review.json": "084d73024b85549037be9d5f544e66aacd65f94a21a4a87ba796c9ecf45cf2da",
+    "engineering/live-01-review.json": "f87ed7a78a5dacd92c74dfaeaf5ef852a99f7d0396669ef6973775f7a3f11c02",
+    "ROOT-LIVE-MEASUREMENTS.json": "ab8ae35840735dfe6d05c9e2cb1db23848c8fe6cfe46b80c7975424f548226bc",
+    "product-changes-final.diff": "386d671ab28071e81edc9c975307317a2b33cb75fbb07f0f9402ccd5b6ab2b8a",
+    "NEXT-ROUND-HANDOFF.md": "42d79c72b722a8b0b39f29f81897ddd6b96c138161dd37f88363dfdd3484ab00"
+  },
+  "unresolved": [
+    "category errors in 11 final cases",
+    "source-warrant gap omitted in 06",
+    "extra selected evidence in 10 and 15",
+    "joint evidence roles reversed in 13",
+    "unselected citation correctly rejected in 22"
+  ],
+  "next_round": "NEXT-ROUND-HANDOFF.md"
+}

@@ -1,0 +1,709 @@
+{
+  "schema_version": "current-contract-compare-v3-rescore-rows",
+  "rows": [
+    {
+      "v3_case_id": "ccv3-north_glass-world_rule-conflict",
+      "v2_record_id": "ccv2-north_glass-world_rule-conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-north_glass-world_rule-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-north_glass-world_rule-no_conflict",
+      "v2_record_id": "ccv2-north_glass-world_rule-no_conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-north_glass-world_rule-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+      "v2_record_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": [
+          "raw_target_or_category_mismatch"
+        ]
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "category_mismatch"
+        ],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-north_glass-object_state-conflict",
+      "v2_record_id": "ccv2-north_glass-object_state-conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-north_glass-object_state-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-north_glass-object_state-no_conflict",
+      "v2_record_id": "ccv2-north_glass-object_state-no_conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-north_glass-object_state-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+      "v2_record_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": [
+          "raw_target_or_category_mismatch"
+        ]
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-north_glass-object_state-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "category_mismatch"
+        ],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-harbor_signal-timeline-conflict",
+      "v2_record_id": "ccv2-harbor_signal-timeline-conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-harbor_signal-timeline-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-harbor_signal-timeline-no_conflict",
+      "v2_record_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "v2_record_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": [
+          "raw_target_or_category_mismatch"
+        ]
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-harbor_signal-timeline-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "category_mismatch"
+        ],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "v2_record_id": "ccv2-harbor_signal-character_knowledge-conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "v2_record_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+      "v2_record_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": [
+          "raw_target_or_category_mismatch"
+        ]
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "category_mismatch"
+        ],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "v2_record_id": "ccv2-orchard_restoration-relationship-conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-orchard_restoration-relationship-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+      "v2_record_id": "ccv2-orchard_restoration-relationship-no_conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "v2_record_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": [
+          "raw_target_or_category_mismatch"
+        ]
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "category_mismatch"
+        ],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "v2_record_id": "ccv2-orchard_restoration-event_status-conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-orchard_restoration-event_status-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+      "v2_record_id": "ccv2-orchard_restoration-event_status-no_conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "v2_record_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": [
+          "raw_target_or_category_mismatch"
+        ]
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "category_mismatch"
+        ],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "v2_record_id": "ccv2-basalt_observatory-attribute-conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-basalt_observatory-attribute-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+      "v2_record_id": "ccv2-basalt_observatory-attribute-no_conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+      "v2_record_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": [
+          "raw_target_or_category_mismatch"
+        ]
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "fail",
+        "semantic_result": "not_reviewed",
+        "result": "fail",
+        "errors": [
+          "category_mismatch"
+        ],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "v2_record_id": "ccv2-basalt_observatory-location_action-conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-basalt_observatory-location_action-conflict",
+        "expected_class": "conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "v2_record_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+      "v2_record_id": "ccv2-basalt_observatory-location_action-insufficient_evidence",
+      "variant": "gold",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "pending_manual_adjudication",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+        "expected_class": "insufficient_evidence",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "pending_manual_adjudication",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+      "v2_record_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "variant": "state_change",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    },
+    {
+      "v3_case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+      "v2_record_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "variant": "state_change",
+      "input_origin": "exact_frozen_v2_capture_file_sha256; saved_v2_request_equal_after_ephemeral_claim_id_normalization; no_new_api",
+      "raw_first": {
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "category_status": "fixed_gold",
+        "full_validator_result": "accepted",
+        "score_layer": "raw_first_or_repair",
+        "errors": []
+      },
+      "raw_repair": null,
+      "final_product": {
+        "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+        "expected_class": "no_conflict",
+        "machine_result": "pass",
+        "semantic_result": "pending_manual_review",
+        "result": "pending_manual_review",
+        "errors": [],
+        "category_status": "fixed_gold",
+        "score_layer": "final_product",
+        "input_origin": "caller_supplied_capture"
+      }
+    }
+  ]
+}

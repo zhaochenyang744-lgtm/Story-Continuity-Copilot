@@ -1,0 +1,127 @@
+{
+  "run_id": "flash-v4-g02-20260926-01",
+  "ended_at": "2026-09-26T11:10:36.727011+00:00",
+  "executed_case_records": 6,
+  "actual_http_dispatches": 6,
+  "successful_http_responses": 6,
+  "complete_usage_attempts": 6,
+  "usage_unknown_attempts": 0,
+  "known_prompt_tokens_partial_sum": 20238,
+  "known_completion_tokens_partial_sum": 6444,
+  "complete_total_usage_available": true,
+  "prompt_tokens_total": 20238,
+  "completion_tokens_total": 6444,
+  "cost": "unavailable",
+  "failures": [],
+  "all_attempt_metadata": [
+    {
+      "case_id": "g02-three-sentences",
+      "ordinal": 1,
+      "sent_at": "2026-09-26T11:10:04.760288+00:00",
+      "status": 200,
+      "latency_ms": 3685,
+      "usage": {
+        "prompt_tokens": 3155,
+        "completion_tokens": 1048,
+        "total_tokens": 4203
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-long-sentence",
+      "ordinal": 2,
+      "sent_at": "2026-09-26T11:10:09.848932+00:00",
+      "status": 200,
+      "latency_ms": 4423,
+      "usage": {
+        "prompt_tokens": 3260,
+        "completion_tokens": 1053,
+        "total_tokens": 4313
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-body-limit",
+      "ordinal": 3,
+      "sent_at": "2026-09-26T11:10:15.974314+00:00",
+      "status": 200,
+      "latency_ms": 4052,
+      "usage": {
+        "prompt_tokens": 4485,
+        "completion_tokens": 1107,
+        "total_tokens": 5592
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-identical-text",
+      "ordinal": 4,
+      "sent_at": "2026-09-26T11:10:21.678443+00:00",
+      "status": 200,
+      "latency_ms": 3954,
+      "usage": {
+        "prompt_tokens": 3006,
+        "completion_tokens": 1103,
+        "total_tokens": 4109
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-time-bound",
+      "ordinal": 5,
+      "sent_at": "2026-09-26T11:10:27.274660+00:00",
+      "status": 200,
+      "latency_ms": 3624,
+      "usage": {
+        "prompt_tokens": 3046,
+        "completion_tokens": 1057,
+        "total_tokens": 4103
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    },
+    {
+      "case_id": "g02-dialogue-attribution",
+      "ordinal": 6,
+      "sent_at": "2026-09-26T11:10:32.686660+00:00",
+      "status": 200,
+      "latency_ms": 3968,
+      "usage": {
+        "prompt_tokens": 3286,
+        "completion_tokens": 1076,
+        "total_tokens": 4362
+      },
+      "usage_status": "complete",
+      "usage_invalid_fields": [],
+      "response_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "finish_reason": "stop",
+      "error_type": null
+    }
+  ],
+  "open_ended_semantic_review": "pending_independent_review"
+}

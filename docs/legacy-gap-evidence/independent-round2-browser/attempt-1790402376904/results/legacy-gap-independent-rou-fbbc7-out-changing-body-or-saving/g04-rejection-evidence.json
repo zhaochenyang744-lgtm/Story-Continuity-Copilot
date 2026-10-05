@@ -1,0 +1,72 @@
+{
+  "beforeStats": {
+    "provider_mode": "injected_stub",
+    "provider_http_calls": 0
+  },
+  "afterStats": {
+    "provider_mode": "injected_stub",
+    "provider_http_calls": 0
+  },
+  "results": [
+    {
+      "case": "mixed-marks",
+      "account": "gapg04r2277081790402384180077b88",
+      "project_id": "prj-40cd0c95-8f8b-4112-94bd-4b1632d4be27",
+      "real_evidence_issue_id": "issue-0ca1ca33-d31f-43d7-869f-c79f2f7b5594",
+      "passed": true,
+      "body_and_format_unchanged": true,
+      "server_revision_unchanged": 2,
+      "production_alert_visible": true
+    },
+    {
+      "case": "after-newline",
+      "account": "gapg04r227708179040238687606d875",
+      "project_id": "prj-088ec1d3-b3d0-4f39-8cdf-e35081db17d2",
+      "real_evidence_issue_id": "issue-471dd522-f81a-4b35-9c04-97a743d0b5f5",
+      "passed": true,
+      "body_and_format_unchanged": true,
+      "server_revision_unchanged": 2,
+      "production_alert_visible": true
+    },
+    {
+      "case": "cross-paragraph",
+      "account": "gapg04r2277081790402388889e5bfe7",
+      "project_id": "prj-d760f8c5-7cb5-446f-9ff6-a03ebf5bbb10",
+      "real_evidence_issue_id": "issue-c89432d6-64c4-4d6c-84e5-3df90e1f6a9c",
+      "passed": true,
+      "body_and_format_unchanged": true,
+      "server_revision_unchanged": 2,
+      "production_alert_visible": true
+    },
+    {
+      "case": "repeated-paragraph",
+      "account": "gapg04r22770817904023911324e4f25",
+      "project_id": "prj-b4735af7-34dd-4086-919b-25c19588048d",
+      "real_evidence_issue_id": "issue-53df3814-d45f-4fc7-80b0-a84328dd16a8",
+      "passed": true,
+      "body_and_format_unchanged": true,
+      "server_revision_unchanged": 2,
+      "production_alert_visible": true
+    }
+  ],
+  "browserErrors": [],
+  "externalRequests": [],
+  "uiMutations": [
+    {
+      "method": "POST",
+      "path": "/api/onboarding/progress"
+    },
+    {
+      "method": "POST",
+      "path": "/api/onboarding/progress"
+    },
+    {
+      "method": "POST",
+      "path": "/api/onboarding/progress"
+    },
+    {
+      "method": "POST",
+      "path": "/api/onboarding/progress"
+    }
+  ]
+}

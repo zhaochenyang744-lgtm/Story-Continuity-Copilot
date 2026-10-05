@@ -1,0 +1,197 @@
+{
+  "run_id": "run-601ea7fc-ba23-45b7-8bb6-32521704af3d",
+  "project_id": "fixture-project-north-glass",
+  "run_type": "continuity",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 2,
+  "draft_revision": null,
+  "source_memory_version": 1,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T10:01:43.341561+00:00",
+  "started_at": "2026-09-27T10:01:43.370303+00:00",
+  "completed_at": "2026-09-27T10:01:46.746665+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 3376,
+  "retry_of_run_id": null,
+  "root_run_id": "run-601ea7fc-ba23-45b7-8bb6-32521704af3d",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T10:01:43.341561+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "preparing_draft",
+      "error_code": null,
+      "created_at": "2026-09-27T10:01:43.370303+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "retrieving_confirmed_facts",
+      "error_code": null,
+      "created_at": "2026-09-27T10:01:43.383145+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "comparing_evidence",
+      "error_code": null,
+      "created_at": "2026-09-27T10:01:43.410161+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "running",
+      "stage": "assembling_reviewable_results",
+      "error_code": null,
+      "created_at": "2026-09-27T10:01:46.733171+00:00"
+    },
+    {
+      "sequence": 6,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T10:01:46.746665+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "deepseek",
+    "model_label": "deepseek-flash",
+    "prompt_version": "continuity-review-v16-joint-evidence-coverage",
+    "schema_version": "continuity-issue-v6-joint-evidence-coverage",
+    "retrieval_method_version": "bounded-lexical-v4-longform",
+    "source_memory_version": 1
+  },
+  "provider_metrics": {
+    "latency_ms": 3295,
+    "input_tokens": 3443,
+    "output_tokens": 597,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "issues": [
+    {
+      "id": "issue-354c1d8b-faf4-4c9c-ba44-7b13edfaab7e",
+      "claim_span_id": "claim-run-601ea7fc-ba23-45b7-8bb6-32521704af3d-1",
+      "claim_text": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+      "status": "open",
+      "classification": "conflict",
+      "category": "object_state",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "同一时刻，North Glass 气动载具被描述为已可发运，但证据显示其阀盖当时未锁紧，按规则不满足发运条件。",
+      "decision": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "当前草稿声称在当天10点该载具已可发运。静态规则 fixture-span-north_glass-4 规定，载具只有在压力表读数为四巴且阀盖锁紧时才可发运。动态状态 fixture-span-north_glass-5 明确在同一时刻（当天10点）压力表读数为四巴，但阀盖在整个那一分钟内保持松动且未锁紧。两者时间锚点均为“At 10点 on the same day”，构成显式重叠；同一对象、同一时间下，未锁紧的阀盖与“可发运”不能同时成立。",
+      "evidence_chain": [
+        {
+          "evidence_id": "evidence-20d149a6-1202-411c-902f-ea4a750c43c0",
+          "role": "current_context"
+        },
+        {
+          "evidence_id": "evidence-36ab40c2-e05d-4d78-a89b-41272e878f5f",
+          "role": "prior_state"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+        "after": "At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch because its valve cap remained loose and not locked."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ],
+      "reuse_policy": null,
+      "reused_decision": null,
+      "evidence": [
+        {
+          "id": "evidence-20d149a6-1202-411c-902f-ea4a750c43c0",
+          "chapter_id": "fixture-chapter-north_glass-4",
+          "chapter_number": 4,
+          "chapter_title": "Carrier Ready Rule",
+          "span_id": "fixture-span-north_glass-4",
+          "source_revision": 2,
+          "excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "excerpt_context": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-4"
+          ],
+          "source_path": "/projects/fixture-project-north-glass/sources#span-fixture-span-north_glass-4"
+        },
+        {
+          "id": "evidence-36ab40c2-e05d-4d78-a89b-41272e878f5f",
+          "chapter_id": "fixture-chapter-north_glass-5",
+          "chapter_number": 5,
+          "chapter_title": "Carrier Inspection",
+          "span_id": "fixture-span-north_glass-5",
+          "source_revision": 2,
+          "excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "excerpt_context": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-5"
+          ],
+          "source_path": "/projects/fixture-project-north-glass/sources#span-fixture-span-north_glass-5"
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "latency_ms": 3295,
+    "input_tokens": 3443,
+    "output_tokens": 597,
+    "cost_cny": null,
+    "cost_available": false,
+    "contract_normalization_count": 0,
+    "contract_normalizations": [],
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v16-joint-evidence-coverage",
+      "schema_version": "continuity-issue-v6-joint-evidence-coverage",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "retrieval": [
+      {
+        "claim_ordinal": 1,
+        "returned_span_ids": [
+          "fixture-span-north_glass-4",
+          "fixture-span-north_glass-5",
+          "fixture-span-north_glass-2",
+          "fixture-span-north_glass-1",
+          "fixture-span-north_glass-6"
+        ],
+        "method_version": "bounded-lexical-v4-longform"
+      }
+    ]
+  }
+}

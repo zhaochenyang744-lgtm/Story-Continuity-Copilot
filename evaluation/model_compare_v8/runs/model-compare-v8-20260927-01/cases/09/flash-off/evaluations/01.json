@@ -1,0 +1,43 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "f4f6791fc7c8abd0f9a100544419d9decb0d893783556d95020b297f6b8a366e",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6a43fecd-aa28-4576-8f84-a3b5c03e06e7-1",
+        "verdict": "insufficient_evidence",
+        "basis": "草稿声称门禁日志证明 Sera 在 11点授权重新开启，但所引证据仅显示 11点日志未记录任何重新开启及其操作者，且 Sera 在 11点尚未打开电报、不知其密码。日志的缺失不能证明授权事实，该断言缺乏支持，但也不构成直接矛盾。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3337,
+      "completion_tokens": 132,
+      "total_tokens": 3469,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1161
+    },
+    "status": "complete",
+    "prompt_tokens": 3337,
+    "completion_tokens": 132,
+    "total_tokens": 3469,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

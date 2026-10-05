@@ -1,0 +1,463 @@
+{
+  "case_alias": "case-33",
+  "stage": "first",
+  "expected_policy_reference": "v6-v6s-11",
+  "policy": {
+    "allowed_outcomes": [
+      "no_issue"
+    ],
+    "minimum": [
+      [
+        "fixture-span-v6_lie-1",
+        "fixture-span-v6_lie-2"
+      ]
+    ],
+    "optional": [],
+    "premises": [],
+    "category": null,
+    "category_candidates": [],
+    "manual_variant": false,
+    "temporal_relations": []
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-v6-lie",
+      "revision": 2,
+      "body": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins."
+    },
+    "claims": [
+      {
+        "id": "claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1",
+        "text": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-v6_lie-1",
+            "chapter_id": "fixture-chapter-v6_lie-1",
+            "body": "Aster and Nilo are twins, both children of Eda.",
+            "label": "T1",
+            "prompt_excerpt": "Aster and Nilo are twins, both children of Eda."
+          },
+          {
+            "id": "fixture-span-v6_lie-2",
+            "chapter_id": "fixture-chapter-v6_lie-2",
+            "body": "The register states that recorded twins cannot be one another's parent.",
+            "label": "T2",
+            "prompt_excerpt": "The register states that recorded twins cannot be one another's parent."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-v6_lie-1",
+        "memory_type": "dynamic_state",
+        "subject": "lie",
+        "predicate": "status",
+        "value": "Aster and Nilo are twins, both children of Eda.",
+        "source_span_id": "fixture-span-v6_lie-1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-bd1d9a",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-v6-lie",
+            "revision": 2,
+            "body": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins."
+          },
+          "claims": [
+            {
+              "id": "claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1",
+              "text": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-v6_lie-1",
+                  "chapter_id": "fixture-chapter-v6_lie-1",
+                  "body": "Aster and Nilo are twins, both children of Eda.",
+                  "label": "T1",
+                  "prompt_excerpt": "Aster and Nilo are twins, both children of Eda."
+                },
+                {
+                  "id": "fixture-span-v6_lie-2",
+                  "chapter_id": "fixture-chapter-v6_lie-2",
+                  "body": "The register states that recorded twins cannot be one another's parent.",
+                  "label": "T2",
+                  "prompt_excerpt": "The register states that recorded twins cannot be one another's parent."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-v6_lie-1",
+              "memory_type": "dynamic_state",
+              "subject": "lie",
+              "predicate": "status",
+              "value": "Aster and Nilo are twins, both children of Eda.",
+              "source_span_id": "fixture-span-v6_lie-1"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1\",\"verdict\":\"no_issue\",\"basis\":\"Draft frames \\\"I am Nilo's mother\\\" as Aster's explicitly marked lie, not narrator-asserted canon; the cited spans (twins, both children of Eda; recorded twins cannot be one another's parent) are compatible with that lie and confirm it, so no continuity conflict or missing link remains.\"}]}",
+        "parsed_business_json": {
+          "issues": [],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1",
+              "verdict": "no_issue",
+              "basis": "Draft frames \"I am Nilo's mother\" as Aster's explicitly marked lie, not narrator-asserted canon; the cited spans (twins, both children of Eda; recorded twins cannot be one another's parent) are compatible with that lie and confirm it, so no continuity conflict or missing link remains."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-f8dcfe",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-v6-lie",
+            "revision": 2,
+            "body": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins."
+          },
+          "claims": [
+            {
+              "id": "claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1",
+              "text": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-v6_lie-1",
+                  "chapter_id": "fixture-chapter-v6_lie-1",
+                  "body": "Aster and Nilo are twins, both children of Eda.",
+                  "label": "T1",
+                  "prompt_excerpt": "Aster and Nilo are twins, both children of Eda."
+                },
+                {
+                  "id": "fixture-span-v6_lie-2",
+                  "chapter_id": "fixture-chapter-v6_lie-2",
+                  "body": "The register states that recorded twins cannot be one another's parent.",
+                  "label": "T2",
+                  "prompt_excerpt": "The register states that recorded twins cannot be one another's parent."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-v6_lie-1",
+              "memory_type": "dynamic_state",
+              "subject": "lie",
+              "predicate": "status",
+              "value": "Aster and Nilo are twins, both children of Eda.",
+              "source_span_id": "fixture-span-v6_lie-1"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1\",\"verdict\":\"no_issue\",\"basis\":\"The draft explicitly frames Aster's statement as a lie, so it is an attributed false utterance, not narrator-asserted canon. The register evidence (twins cannot be one another's parent) is consistent with the lie being false, so no continuity conflict exists.\"}]}",
+        "parsed_business_json": {
+          "issues": [],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1",
+              "verdict": "no_issue",
+              "basis": "The draft explicitly frames Aster's statement as a lie, so it is an attributed false utterance, not narrator-asserted canon. The register evidence (twins cannot be one another's parent) is consistent with the lie being false, so no continuity conflict exists."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-34a4cf",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-v6-lie",
+            "revision": 2,
+            "body": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins."
+          },
+          "claims": [
+            {
+              "id": "claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1",
+              "text": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-v6_lie-1",
+                  "chapter_id": "fixture-chapter-v6_lie-1",
+                  "body": "Aster and Nilo are twins, both children of Eda.",
+                  "label": "T1",
+                  "prompt_excerpt": "Aster and Nilo are twins, both children of Eda."
+                },
+                {
+                  "id": "fixture-span-v6_lie-2",
+                  "chapter_id": "fixture-chapter-v6_lie-2",
+                  "body": "The register states that recorded twins cannot be one another's parent.",
+                  "label": "T2",
+                  "prompt_excerpt": "The register states that recorded twins cannot be one another's parent."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-v6_lie-1",
+              "memory_type": "dynamic_state",
+              "subject": "lie",
+              "predicate": "status",
+              "value": "Aster and Nilo are twins, both children of Eda.",
+              "source_span_id": "fixture-span-v6_lie-1"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"The draft explicitly marks Aster's statement as a lie and states the register truthfully records them as twins; the cited evidence confirms the twin relation and that twins cannot be one another's parent, so the claim is internally consistent and conflicts with no supplied fact.\"\n    }\n  ]\n}",
+        "parsed_business_json": {
+          "issues": [],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-8fc9ae9f-5f29-406e-bb60-b93d39637741-1",
+              "verdict": "no_issue",
+              "basis": "The draft explicitly marks Aster's statement as a lie and states the register truthfully records them as twins; the cited evidence confirms the twin relation and that twins cannot be one another's parent, so the claim is internally consistent and conflicts with no supplied fact."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    }
+  ]
+}

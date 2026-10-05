@@ -1,0 +1,34 @@
+{
+  "project_id": "fixture-project-v6-actor-blank",
+  "draft_id": "fixture-draft-v6-actor-blank",
+  "draft_revision": 2,
+  "draft_body": "According to the inspection log, Ina loosened the courier capsule valve cap.",
+  "draft_body_sha256": "d060d1e354c02b64a7b84c93fa021cf621596b619c5f4f2318f09f9e480b7e70",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-v6_actor_blank-1",
+      "chapter_number": 1,
+      "chapter_title": "Synthetic actor_blank source A1",
+      "chapter_body": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-v6_actor_blank-1",
+      "span_body": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+      "span_revision": 1,
+      "chapter_body_sha256": "db0bf1eb4e03b3efd22120a9ff8b6d4816cc0e90fcffcc56743ee62bea05a741",
+      "span_body_sha256": "db0bf1eb4e03b3efd22120a9ff8b6d4816cc0e90fcffcc56743ee62bea05a741"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-v6_actor_blank-1",
+      "memory_type": "dynamic_state",
+      "subject": "actor_blank",
+      "predicate": "status",
+      "value": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+      "source_span_id": "fixture-span-v6_actor_blank-1",
+      "version": 1
+    }
+  ]
+}

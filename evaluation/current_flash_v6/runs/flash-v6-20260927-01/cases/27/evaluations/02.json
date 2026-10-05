@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-04",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "c56c560f6431c85c367b46706477d6762d9b73bd61f12de2203e53407f12e36a",
+  "finished_at": "2026-09-27T10:03:20.741806+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-1c65a68b-e7b1-447a-8f6c-f13a20f56e1b-1",
+        "verdict": "no_issue",
+        "basis": "The claim states that at 10:00 today the courier capsule was not ready because its valve cap was loose. The cited evidence at the same 10:00 time states the pressure is four bars but the cap remains loose and unlocked throughout that minute. The memory rule states readiness requires both four bars pressure and a locked valve cap. Since the cap was loose and unlocked at 10:00, the capsule was not ready under the rule, which is fully consistent with the claim. No contradiction exists."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3365,
+    "output_tokens": 163,
+    "observed_response_input_tokens": 3365,
+    "observed_response_output_tokens": 163
+  }
+}

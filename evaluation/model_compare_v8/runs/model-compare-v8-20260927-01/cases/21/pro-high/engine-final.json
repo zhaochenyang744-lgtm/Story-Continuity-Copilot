@@ -1,0 +1,73 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+      "status": "insufficient_evidence",
+      "category": "attribute",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The draft claims the records establish Vela ground lens R4, but none of the cited records names Vela as the grinder.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-basalt_observatory-3",
+          "span_id": "fixture-span-basalt_observatory-3",
+          "excerpt": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-3"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-basalt_observatory-1",
+          "span_id": "fixture-span-basalt_observatory-1",
+          "excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The maintenance sheet leaves the glass grinder's name blank, so it cannot establish Vela as grinder. The observatory index identifies lens R4 only as the installed western aperture lens, not who ground it. Therefore the attribution is unsupported and remains unknown.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-basalt_observatory-3",
+          "role": "missing_link"
+        },
+        {
+          "span_id": "fixture-span-basalt_observatory-1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-7e25c3c6-9863-4c68-8b3f-5181057ea838-1",
+      "returned_span_ids": [
+        "fixture-span-basalt_observatory-3",
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-6"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3539,
+  "output_tokens": 3665,
+  "latency_ms": 33759,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

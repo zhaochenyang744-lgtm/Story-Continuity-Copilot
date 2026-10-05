@@ -1,0 +1,158 @@
+{
+  "input": {
+    "claims": [
+      {
+        "allowed_evidence": [],
+        "id": "new-0",
+        "text": "A traveler tied a blue ribbon to a parcel."
+      },
+      {
+        "allowed_evidence": [],
+        "id": "new-1",
+        "text": "A porter painted a new sign beside the road."
+      },
+      {
+        "allowed_evidence": [],
+        "id": "new-2",
+        "text": "A gardener planted a young oak beside the gate."
+      }
+    ],
+    "draft": {
+      "body": "A traveler tied a blue ribbon to a parcel.\nA porter painted a new sign beside the road.\nA gardener planted a young oak beside the gate.",
+      "id": "synthetic-compatible",
+      "revision": 1
+    },
+    "memory": []
+  },
+  "requests": [
+    {
+      "claims": [
+        {
+          "allowed_evidence": [],
+          "id": "new-0",
+          "text": "A traveler tied a blue ribbon to a parcel."
+        },
+        {
+          "allowed_evidence": [],
+          "id": "new-1",
+          "text": "A porter painted a new sign beside the road."
+        },
+        {
+          "allowed_evidence": [],
+          "id": "new-2",
+          "text": "A gardener planted a young oak beside the gate."
+        }
+      ],
+      "draft": {
+        "body": "A traveler tied a blue ribbon to a parcel.\nA porter painted a new sign beside the road.\nA gardener planted a young oak beside the gate.",
+        "id": "synthetic-compatible",
+        "revision": 1
+      },
+      "memory": [],
+      "output_schema": {
+        "claim_verdicts": [
+          {
+            "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review",
+            "claim_span_id": "every supplied current claim id exactly once",
+            "verdict": "reviewed_issue|insufficient_evidence|no_issue"
+          }
+        ],
+        "issues": [
+          {
+            "available_actions": [
+              "edit|apply_suggestion|keep_intentional|false_positive"
+            ],
+            "category": "allowed category",
+            "claim_span_id": "current claim id",
+            "evidence": [
+              {
+                "chapter_id": "allowed chapter id",
+                "related_memory_ids": [
+                  "known memory id"
+                ],
+                "relation": "supports|contradicts|context",
+                "span_id": "allowed span id",
+                "sufficiency": "sufficient|insufficient"
+              }
+            ],
+            "evidence_chain": [
+              {
+                "role": "prior_state|current_context|missing_link",
+                "span_id": "one cited evidence span id"
+              }
+            ],
+            "explanation": "short backwards-compatible summary",
+            "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+            "proposed_memory_change": {
+              "affected_memory_id": "required for replace only",
+              "memory_type": "allowed memory type",
+              "operation": "add|replace",
+              "predicate": "string",
+              "subject": "string",
+              "value": "string"
+            },
+            "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+            "severity": "low|medium|high",
+            "status": "conflict|insufficient_evidence",
+            "suggested_revision": {
+              "after": "specific replacement text",
+              "before": "exact text occurring once in the bound draft"
+            },
+            "temporal_basis": {
+              "claim_anchor": "exact claim substring or null",
+              "evidence_anchor": "exact cited evidence substring or null",
+              "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "responses": [
+    {
+      "claim_verdicts": [
+        {
+          "basis": "This compatible new event needs no issue.",
+          "claim_span_id": "new-0",
+          "verdict": "no_issue"
+        },
+        {
+          "basis": "This compatible new event needs no issue.",
+          "claim_span_id": "new-1",
+          "verdict": "no_issue"
+        },
+        {
+          "basis": "This compatible new event needs no issue.",
+          "claim_span_id": "new-2",
+          "verdict": "no_issue"
+        }
+      ],
+      "issues": []
+    }
+  ],
+  "result": {
+    "contract_normalization_count": 0,
+    "contract_normalizations": [],
+    "cost_cny": null,
+    "input_tokens": 1,
+    "issues": [],
+    "latency_ms": 0,
+    "output_tokens": 1,
+    "retrieval_method_version": "bounded-lexical-v4-longform",
+    "retrieval_traces": [
+      {
+        "claim_id": "new-0",
+        "returned_span_ids": []
+      },
+      {
+        "claim_id": "new-1",
+        "returned_span_ids": []
+      },
+      {
+        "claim_id": "new-2",
+        "returned_span_ids": []
+      }
+    ],
+    "status": "completed"
+  }
+}

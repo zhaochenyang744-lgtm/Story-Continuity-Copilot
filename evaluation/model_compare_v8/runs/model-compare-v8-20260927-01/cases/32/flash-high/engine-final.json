@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+      "status": "insufficient_evidence",
+      "category": "location_action",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The draft credits the 19:00 watch record with a fact the record does not state. The record tracks Orin's walk to the east quay but leaves his companion unnamed, so Evi's companionship is unsupported rather than established.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_companion_blank-1",
+          "span_id": "fixture-span-v6_companion_blank-1",
+          "excerpt": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_companion_blank-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The cited span shows the watch record placing Orin on the east quay at 19:00 while explicitly leaving the companion unnamed. Nothing supplied links Evi to Orin at that time or supplies a handoff identifying her as the companion, so the draft's attribution of this fact to the record is unsupported; whether Evi accompanied Orin remains unknown, not disproved.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_companion_blank-1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-06d3ed0c-aa4e-463d-bebb-be51454e9344-1",
+      "returned_span_ids": [
+        "fixture-span-v6_companion_blank-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3028,
+  "output_tokens": 2323,
+  "latency_ms": 10290,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

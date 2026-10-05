@@ -1,0 +1,67 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+      "status": "conflict",
+      "category": "location_action",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "Draft places Vela on the east pier at 18点 on the same day, but the cited record places her at Observatory Gate Four on the west pier at that same time; both cannot hold.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-basalt_observatory-5",
+          "span_id": "fixture-span-basalt_observatory-5",
+          "excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-basalt_observatory-5"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "The claim states Vela's location as the east pier at the explicit time 'At 18点 on the same day'. The cited span carries the identical time anchor 'At 18点 on the same day' and states that Vela stood at Observatory Gate Four on the west pier, 'not the east pier'. Same subject (Vela), same scope (her pier location), same time (18点 on the same day), with opposed values (east pier versus west pier); the span is sufficient on its own because it already asserts both the Gate Four placement and the west-pier exclusion.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-basalt_observatory-5",
+          "role": "prior_state"
+        }
+      ],
+      "suggested_revision": {
+        "before": "Vela stood on the east pier",
+        "after": "Vela stood at Observatory Gate Four on the west pier"
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+      "returned_span_ids": [
+        "fixture-span-basalt_observatory-5",
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-2"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3494,
+  "output_tokens": 2588,
+  "latency_ms": 11291,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

@@ -1,0 +1,277 @@
+{
+  "case_id": "v6-v6s-01",
+  "evaluation_ordinal": 2,
+  "stage": "repair",
+  "recorded_before_dispatch_at": "2026-09-27T10:03:08.886949+00:00",
+  "business_request_sha256": "b792bac69fdd398c37ae5fd2039d5b83981da2e23553cded9c95a80590a8edab",
+  "bindings": {
+    "draft_id": "fixture-draft-v6-lens",
+    "draft_revision": 2
+  },
+  "selected_source_bindings": [
+    {
+      "kind": "target_claim",
+      "id": "claim-run-4dd23e5a-74cc-4612-acfd-d0f97880adbb-1",
+      "text": "At 14:00 today, lens Q8 is amber glass.",
+      "sha256": "2687b678f334683664da71614b5854f8a4e0eb9dee790abaf88e8bbe0eb50b9f"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-v6_lens-2",
+      "chapter_id": "fixture-chapter-v6_lens-2",
+      "text": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+      "prompt_excerpt": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+      "sha256": "82988056eacf7d261f9517ec54aa8e4341765f3825f1989a6e2012d4e0b73fbf"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-v6_lens-4",
+      "chapter_id": "fixture-chapter-v6_lens-4",
+      "text": "At 14:00 today, lens Q8 was logged for routine cleaning. The note does not identify its installed aperture or material.",
+      "prompt_excerpt": "At 14:00 today, lens Q8 was logged for routine cleaning. The note does not identify its installed aperture or material.",
+      "sha256": "378f0766a8d94870d7ef2253456e294c3c6b3bb3dce331c8615381b6fbd4e6c4"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-v6_lens-1",
+      "chapter_id": "fixture-chapter-v6_lens-1",
+      "text": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+      "prompt_excerpt": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+      "sha256": "3d1de3f05e96ffd2e51294ff721776c61749e8a553f1b9792961f3326188d275"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-v6_lens-1",
+      "source_span_id": "fixture-span-v6_lens-1",
+      "text": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+      "sha256": "3d1de3f05e96ffd2e51294ff721776c61749e8a553f1b9792961f3326188d275"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-v6_lens-2",
+      "source_span_id": "fixture-span-v6_lens-2",
+      "text": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+      "sha256": "82988056eacf7d261f9517ec54aa8e4341765f3825f1989a6e2012d4e0b73fbf"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-v6_lens-3",
+      "source_span_id": "fixture-span-v6_lens-3",
+      "text": "At 15:00 today, lens Q8 was moved from the east aperture to the storage box.",
+      "sha256": "dca016039d342e5c5355eec2e45d6195d12213bd6ebf47957b2702912610fde3"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-v6_lens-4",
+      "source_span_id": "fixture-span-v6_lens-4",
+      "text": "At 14:00 today, lens Q8 was logged for routine cleaning. The note does not identify its installed aperture or material.",
+      "sha256": "378f0766a8d94870d7ef2253456e294c3c6b3bb3dce331c8615381b6fbd4e6c4"
+    }
+  ],
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-v6-lens",
+      "revision": 2,
+      "body": "At 14:00 today, lens Q8 is amber glass."
+    },
+    "claims": [
+      {
+        "id": "claim-run-4dd23e5a-74cc-4612-acfd-d0f97880adbb-1",
+        "text": "At 14:00 today, lens Q8 is amber glass.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-v6_lens-2",
+            "chapter_id": "fixture-chapter-v6_lens-2",
+            "body": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+            "label": "L2",
+            "prompt_excerpt": "At 14:00 today, the east aperture lens is clear glass, not amber glass."
+          },
+          {
+            "id": "fixture-span-v6_lens-4",
+            "chapter_id": "fixture-chapter-v6_lens-4",
+            "body": "At 14:00 today, lens Q8 was logged for routine cleaning. The note does not identify its installed aperture or material.",
+            "label": "L4",
+            "prompt_excerpt": "At 14:00 today, lens Q8 was logged for routine cleaning. The note does not identify its installed aperture or material."
+          },
+          {
+            "id": "fixture-span-v6_lens-1",
+            "chapter_id": "fixture-chapter-v6_lens-1",
+            "body": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+            "label": "L1",
+            "prompt_excerpt": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-v6_lens-1",
+        "memory_type": "dynamic_state",
+        "subject": "lens",
+        "predicate": "identity",
+        "value": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+        "source_span_id": "fixture-span-v6_lens-1"
+      },
+      {
+        "id": "fixture-memory-v6_lens-2",
+        "memory_type": "dynamic_state",
+        "subject": "lens",
+        "predicate": "status",
+        "value": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+        "source_span_id": "fixture-span-v6_lens-2"
+      },
+      {
+        "id": "fixture-memory-v6_lens-3",
+        "memory_type": "dynamic_state",
+        "subject": "lens",
+        "predicate": "status",
+        "value": "At 15:00 today, lens Q8 was moved from the east aperture to the storage box.",
+        "source_span_id": "fixture-span-v6_lens-3"
+      },
+      {
+        "id": "fixture-memory-v6_lens-4",
+        "memory_type": "dynamic_state",
+        "subject": "lens",
+        "predicate": "status",
+        "value": "At 14:00 today, lens Q8 was logged for routine cleaning. The note does not identify its installed aperture or material.",
+        "source_span_id": "fixture-span-v6_lens-4"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    },
+    "contract_repair": {
+      "attempt": 2,
+      "reason_code": "temporal_overlap_unproven",
+      "diagnostics": [
+        {
+          "claim_span_id": "claim-run-4dd23e5a-74cc-4612-acfd-d0f97880adbb-1",
+          "claim_text": "At 14:00 today, lens Q8 is amber glass.",
+          "problem_codes": [
+            "temporal_overlap_unproven"
+          ],
+          "cited_evidence": [
+            {
+              "span_id": "fixture-span-v6_lens-1",
+              "excerpt": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens."
+            },
+            {
+              "span_id": "fixture-span-v6_lens-2",
+              "excerpt": "At 14:00 today, the east aperture lens is clear glass, not amber glass."
+            }
+          ]
+        }
+      ],
+      "rejected_issues": [
+        {
+          "claim_span_id": "claim-run-4dd23e5a-74cc-4612-acfd-d0f97880adbb-1",
+          "status": "conflict",
+          "nature": "confirmed_conflict",
+          "category": "object_state",
+          "severity": "high",
+          "explanation": "At 14:00 today, the draft says lens Q8 is amber glass, but the cited evidence establishes that lens Q8 is the installed east aperture lens and that the east aperture lens is clear glass, not amber glass at that same time.",
+          "reasoning": "The identity span states that at 14:00 today the index identifies lens Q8 as the installed east aperture lens, so the draft's subject lens Q8 is the same object as the east aperture lens at the relevant time. The status span states that at 14:00 today the east aperture lens is clear glass, not amber glass. Because both facts share the same explicit time anchor and the identity premise links the two names to the same object, the draft's claim that lens Q8 is amber glass at 14:00 today cannot coexist with the cited evidence.",
+          "temporal_basis": {
+            "claim_anchor": "At 14:00 today",
+            "evidence_anchor": "At 14:00 today",
+            "relation": "explicit_overlap"
+          },
+          "evidence": [
+            {
+              "chapter_id": "fixture-chapter-v6_lens-1",
+              "span_id": "fixture-span-v6_lens-1",
+              "relation": "context",
+              "sufficiency": "sufficient",
+              "related_memory_ids": [
+                "fixture-memory-v6_lens-1"
+              ]
+            },
+            {
+              "chapter_id": "fixture-chapter-v6_lens-2",
+              "span_id": "fixture-span-v6_lens-2",
+              "relation": "contradicts",
+              "sufficiency": "sufficient",
+              "related_memory_ids": [
+                "fixture-memory-v6_lens-2"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "fixture-span-v6_lens-1",
+              "role": "current_context"
+            },
+            {
+              "span_id": "fixture-span-v6_lens-2",
+              "role": "prior_state"
+            }
+          ],
+          "suggested_revision": {
+            "before": "At 14:00 today, lens Q8 is amber glass.",
+            "after": "At 14:00 today, lens Q8 is clear glass."
+          },
+          "available_actions": [
+            "edit",
+            "apply_suggestion",
+            "keep_intentional",
+            "false_positive"
+          ]
+        }
+      ]
+    }
+  }
+}

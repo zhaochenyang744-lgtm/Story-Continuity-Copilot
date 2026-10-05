@@ -1,0 +1,15 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-conflict",
+  "family": "comparison",
+  "evaluation_kind": "preserved_v5_comparison",
+  "status": "v2_capture_exact_except_claim_id_and_v6_output_schema",
+  "historical_capture_sha256": "b55eba3b0aa4e8881c22d2ef0646de5303522cc2215a5d6e1a33c1c2ab26913c",
+  "same_run_request_sha256": "9bb354dd868c9ef12c1a09fa3bb91be3d45e0d7f37521661bdb979fcb90fd669",
+  "selected_source_count": 3,
+  "minimum_source_selected": true,
+  "repair": false,
+  "database_binding": "matched_persisted_isolated_database",
+  "database_selected_source_count": 3,
+  "database_selected_memory_count": 6,
+  "database_unselected_memory_sources_allowed": 3
+}

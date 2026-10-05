@@ -1,0 +1,169 @@
+{
+  "schema_version": "v8-blinded-case-review-v1",
+  "case_alias": "case-15",
+  "stage": "final",
+  "reviewer": "reviewer-c",
+  "locked_at_utc": "2026-09-27T11:55:34.274010+00:00",
+  "condition_visibility": "hidden",
+  "exposure_note": "此前看过其他案例01/02工程trace及条件身份；未读本例live arms/机器成绩/映射，不声称严格双盲。",
+  "packet_sha256": "754c8cb02e1a85e5dc2aa2654162bf30dcd13476ddf64c851b049b9fcfaa9119",
+  "first_review_sha256": "a5e105a9874f20f644cf5b60bb77e43127f564944ffc7b6f8c1d4d395e3f261c",
+  "repair_review": {
+    "attempted": 0,
+    "not_applicable_aliases": [
+      "answer-e6f001",
+      "answer-674ee1",
+      "answer-672597"
+    ]
+  },
+  "comparisons": {
+    "answer-e6f001": {
+      "full_issue_fields_equal": true,
+      "completed": true,
+      "normalization_count": 0
+    },
+    "answer-674ee1": {
+      "full_issue_fields_equal": true,
+      "completed": true,
+      "normalization_count": 0
+    },
+    "answer-672597": {
+      "full_issue_fields_equal": true,
+      "completed": true,
+      "normalization_count": 0
+    }
+  },
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-15",
+      "response_alias": "answer-e6f001",
+      "stage": "final",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "fail",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "抓住出生先后未知；名册未记载不等于证明相反顺序，双胞胎身份和亲缘规则均不能补足。",
+          "visible_quote": "the birth order remains unknown; this is a missing-link gap, not a proven contradiction.",
+          "evidence_pointer": "answer-e6f001.final.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "固定 gold 为出生先后的 timeline，所发 event_status 不符合本例类别。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "answer-e6f001.final.issues[0].category; policy.category"
+        },
+        {
+          "dimension": "E_set",
+          "verdict": "fail",
+          "reason": "最低集合仅来源3，optional为空；实际又正式引用来源2和1。两者真实且已选中，不是幻觉或绑定错误，但超出冻结证据集合。",
+          "visible_quote": "fixture-span-orchard_restoration-2",
+          "evidence_pointer": "answer-e6f001.final.issues[0].evidence[1:3]; policy.minimum/optional"
+        }
+      ],
+      "attribution_tags": [
+        "category_mismatch",
+        "set_error"
+      ],
+      "overall_reason": "Final fields match the locked first answer under the declared engine projection; ratings inherited, no repair or normalization.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "inherited_from": "first-15.json#answer-e6f001"
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-15",
+      "response_alias": "answer-674ee1",
+      "stage": "final",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "清楚指出名册缺少出生先后这一决定性细节，保留Nera/Oren顺序未知，不升级为反证。",
+          "visible_quote": "the attribution is unsupported and the birth order remains unknown.",
+          "evidence_pointer": "answer-674ee1.final.issues[0].reasoning"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "Final fields match the locked first answer under the declared engine projection; ratings inherited, no repair or normalization.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "inherited_from": "first-15.json#answer-674ee1"
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-15",
+      "response_alias": "answer-672597",
+      "stage": "final",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确区分未记载与相反事实，并排除双胞胎身份和亲缘规则对先后顺序的无关推导。",
+          "visible_quote": "That silence does not prove Oren came first",
+          "evidence_pointer": "answer-672597.final.issues[0].reasoning"
+        }
+      ],
+      "attribution_tags": [],
+      "overall_reason": "Final fields match the locked first answer under the declared engine projection; ratings inherited, no repair or normalization.",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "inherited_from": "first-15.json#answer-672597"
+    }
+  ],
+  "locked_before_condition_reveal": true,
+  "provider_calls": 0,
+  "database_connections": 0
+}

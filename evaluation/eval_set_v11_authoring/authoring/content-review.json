@@ -1,0 +1,331 @@
+{
+  "format": "corpora[].source is a full Markdown document; evidence strings are exact level-one chapter titles, without the # prefix",
+  "case_count": 36,
+  "shared_name_or_item_checks": [
+    {
+      "id": "hv11-001",
+      "chapter_title": "第一章 月纹账本",
+      "shared_name_or_item": "月纹账本"
+    },
+    {
+      "id": "hv11-002",
+      "chapter_title": "第三章 雨棚外沿",
+      "shared_name_or_item": "应漪"
+    },
+    {
+      "id": "hv11-003",
+      "chapter_title": "第四章 旧坠子的来处",
+      "shared_name_or_item": "闻枞"
+    },
+    {
+      "id": "hv11-004",
+      "chapter_title": "第二章 铃扣验料",
+      "shared_name_or_item": "乙九"
+    },
+    {
+      "id": "hv11-005",
+      "chapter_title": "第六章 送去修补的围裙",
+      "shared_name_or_item": "卓蓿"
+    },
+    {
+      "id": "hv11-006",
+      "chapter_title": "第七章 柜台下的黑釉匣",
+      "shared_name_or_item": "黑釉匣"
+    },
+    {
+      "id": "hv11-007",
+      "chapter_title": "第一章 定稿的混音",
+      "shared_name_or_item": "祁沅"
+    },
+    {
+      "id": "hv11-008",
+      "chapter_title": "第三章 防止门缝漏声",
+      "shared_name_or_item": "祁沅"
+    },
+    {
+      "id": "hv11-009",
+      "chapter_title": "第四章 两份播放记录",
+      "shared_name_or_item": "旧素材甲"
+    },
+    {
+      "id": "hv11-010",
+      "chapter_title": "第二章 没拆开的说明",
+      "shared_name_or_item": "简杼"
+    },
+    {
+      "id": "hv11-011",
+      "chapter_title": "第六章 走廊的小地毯",
+      "shared_name_or_item": "简杼"
+    },
+    {
+      "id": "hv11-012",
+      "chapter_title": "第五章 匿名的低声部",
+      "shared_name_or_item": "牧翎"
+    },
+    {
+      "id": "hv11-013",
+      "chapter_title": "第一章 交来的修订页",
+      "shared_name_or_item": "乌藤邮袋"
+    },
+    {
+      "id": "hv11-013",
+      "chapter_title": "第二章 末班车的封袋",
+      "shared_name_or_item": "乌藤邮袋"
+    },
+    {
+      "id": "hv11-014",
+      "chapter_title": "第六章 风里的明信片",
+      "shared_name_or_item": "叶徊"
+    },
+    {
+      "id": "hv11-015",
+      "chapter_title": "第五章 未写明去向的袋号",
+      "shared_name_or_item": "紫签邮袋"
+    },
+    {
+      "id": "hv11-016",
+      "chapter_title": "第三章 北柜的值守",
+      "shared_name_or_item": "翁栎"
+    },
+    {
+      "id": "hv11-016",
+      "chapter_title": "第四章 两间分拣屋",
+      "shared_name_or_item": "陆蓼邮局"
+    },
+    {
+      "id": "hv11-017",
+      "chapter_title": "第八章 关闭侧窗",
+      "shared_name_or_item": "翁栎"
+    },
+    {
+      "id": "hv11-018",
+      "chapter_title": "第七章 没量过的坡道",
+      "shared_name_or_item": "冉荑"
+    },
+    {
+      "id": "hv11-019",
+      "chapter_title": "Chapter 2 Brown Paper",
+      "shared_name_or_item": "silver cape"
+    },
+    {
+      "id": "hv11-019",
+      "chapter_title": "Chapter 3 The Sorting Containers",
+      "shared_name_or_item": "Mosswick"
+    },
+    {
+      "id": "hv11-020",
+      "chapter_title": "Chapter 4 Under the Cutting Table",
+      "shared_name_or_item": "Belden Orr"
+    },
+    {
+      "id": "hv11-021",
+      "chapter_title": "Chapter 5 A Combined Refund",
+      "shared_name_or_item": "Neris Tal"
+    },
+    {
+      "id": "hv11-022",
+      "chapter_title": "Chapter 1 The Fiber Inspection",
+      "shared_name_or_item": "H6"
+    },
+    {
+      "id": "hv11-023",
+      "chapter_title": "Chapter 7 The Window Display",
+      "shared_name_or_item": "Sorrel Venn"
+    },
+    {
+      "id": "hv11-024",
+      "chapter_title": "Chapter 6 Samples from a Crate",
+      "shared_name_or_item": "K8"
+    },
+    {
+      "id": "hv11-025",
+      "chapter_title": "Chapter 1 The Loaded Wagon",
+      "shared_name_or_item": "P12"
+    },
+    {
+      "id": "hv11-026",
+      "chapter_title": "Chapter 3 A Painted Milestone",
+      "shared_name_or_item": "Keston Briar"
+    },
+    {
+      "id": "hv11-027",
+      "chapter_title": "Chapter 4 The Unsigned Reservation",
+      "shared_name_or_item": "Elva Rook"
+    },
+    {
+      "id": "hv11-028",
+      "chapter_title": "Chapter 2 Preparing the Demonstration",
+      "shared_name_or_item": "Ternhollow"
+    },
+    {
+      "id": "hv11-029",
+      "chapter_title": "Chapter 6 The Station Curtains",
+      "shared_name_or_item": "Maelin Quist"
+    },
+    {
+      "id": "hv11-030",
+      "chapter_title": "Chapter 5 The Replacement Motor",
+      "shared_name_or_item": "J9"
+    },
+    {
+      "id": "hv11-031",
+      "chapter_title": "Chapter 3 The Pen Name Register",
+      "shared_name_or_item": "Feska Noll"
+    },
+    {
+      "id": "hv11-031",
+      "chapter_title": "Chapter 4 The Small River Credit",
+      "shared_name_or_item": "Small River"
+    },
+    {
+      "id": "hv11-032",
+      "chapter_title": "Chapter 5 A Stack of Margins",
+      "shared_name_or_item": "Feska Noll"
+    },
+    {
+      "id": "hv11-033",
+      "chapter_title": "Chapter 6 Two Meanings of Senn",
+      "shared_name_or_item": "senn"
+    },
+    {
+      "id": "hv11-034",
+      "chapter_title": "Chapter 1 The Reedglass Collection",
+      "shared_name_or_item": "Reedglass"
+    },
+    {
+      "id": "hv11-034",
+      "chapter_title": "Chapter 2 The Release Ledger",
+      "shared_name_or_item": "Odrin Vale"
+    },
+    {
+      "id": "hv11-035",
+      "chapter_title": "Chapter 8 A Seat by the Door",
+      "shared_name_or_item": "Tavia Pell"
+    },
+    {
+      "id": "hv11-036",
+      "chapter_title": "Chapter 7 A Delivery Receipt",
+      "shared_name_or_item": "Odrin Vale"
+    }
+  ],
+  "designated_regression": [
+    {
+      "id": "hv11-001",
+      "category": "world_rule",
+      "required_nature": "confirmed_conflict",
+      "basis": "Permanent rule explicitly forbids oral debt cancellation before delivery; no instance premise is needed."
+    },
+    {
+      "id": "hv11-007",
+      "category": "relationship",
+      "required_nature": "confirmed_conflict",
+      "basis": {
+        "product_temporal_guard_passed": true,
+        "accepted_anchor_pair": [
+          "2031年8月4日16点",
+          "2031年8月4日16点"
+        ]
+      }
+    },
+    {
+      "id": "hv11-022",
+      "category": "attribute",
+      "required_nature": "confirmed_conflict",
+      "basis": {
+        "product_temporal_guard_passed": true,
+        "accepted_anchor_pair": [
+          "12:40 on 9 February",
+          "12:40 on 9 February"
+        ]
+      }
+    }
+  ],
+  "non_designated_conflicts_require_explicit_time": false,
+  "statistics": {
+    "zh": {
+      "works": 3,
+      "chapters": 24,
+      "body_characters": 2062,
+      "mean_body_characters": 85.92,
+      "max_body_characters": 96,
+      "cases": 18
+    },
+    "en": {
+      "works": 3,
+      "chapters": 24,
+      "body_characters": 5599,
+      "mean_body_characters": 233.29,
+      "max_body_characters": 262,
+      "cases": 18
+    }
+  },
+  "semantic_review": {
+    "reviewer": "Author self-review, not independent or blind",
+    "all_drafts_independent": true,
+    "one_primary_judgment_per_draft": true,
+    "needed_facts_stated_explicitly_in_source": true,
+    "insufficient_cases_have_missing_links_not_merely_missing_time": true,
+    "notes_by_case": {
+      "hv11-001": "永久规则明确排除口头免债；只需该规则即可反证，不依赖任何一笔债务的实例状态。",
+      "hv11-002": "同一时间的动作、执行者与目的均有直接叙述。",
+      "hv11-003": "形状相似不能唯一确定产地，缺出土记录或材料比对；也没有证据排除该窑址。",
+      "hv11-004": "来源明确为锡且无铜，与草稿材质相反；草稿未限定同刻，按新口径接受可能矛盾，不将缺时间单独标成证据不足。",
+      "hv11-005": "原文明示补片颜色与选定者；草稿未断言修补已经完成。",
+      "hv11-006": "两人均有同款匣，无独有标记、目击或认领，缺失物主身份环节。",
+      "hv11-007": "同一时间明确混音执行者只有沈玦，祁沅未参与；考察谁完成该工作。",
+      "hv11-008": "直接支持材料、动作和执行者。",
+      "hv11-009": "各自可能以一倍或二倍速度播放，实际时长可为40或80秒与50或100秒，顺序无法确定。",
+      "hv11-010": "原文明示该时刻尚不知道且无判断，不能从她持有未拆信封推出获知。",
+      "hv11-011": "动作与时间直接记载。",
+      "hv11-012": "来棚试唱和等待区照片不能对应到最终采用的这一句，缺分轨身份信息。",
+      "hv11-013": "同日唯一修订页18点12分送达，唯一封口18点，故送达在封口之后；须联合两章。",
+      "hv11-014": "直接叙述，同一时间。",
+      "hv11-015": "两个袋号与两个目的地之间缺对应关系，任一排列均未被排除。",
+      "hv11-016": "人物留在三号分拣间，该间位于与西楼互斥的东楼；人物位置与建筑映射共同反证。",
+      "hv11-017": "原文直接支持关窗动作。",
+      "hv11-018": "只知箱宽九十厘米，缺收窄处净宽，无法确定能否通过。",
+      "hv11-019": "The cape belongs to the brown-wrapped group; every member is in the blue hamper at the same time, and the yellow trunk is spatially separate. Both passages are necessary.",
+      "hv11-020": "The source directly describes this action and its time.",
+      "hv11-021": "A combined total does not identify the deposit component; both a full and a partial deposit refund remain compatible with the receipt.",
+      "hv11-022": "The same-time material inspection explicitly establishes cotton with no linen; only this physical attribute is disputed.",
+      "hv11-023": "The card replacement is directly narrated.",
+      "hv11-024": "Only two were measured. Neither the sizes of the other six nor a uniform-size packing specification is available.",
+      "hv11-025": "The source explicitly places four barrels in P12. The draft supplies no time scope, so possible_conflict is acceptable under the new non-designated policy; missing time alone is not a missing-evidence case.",
+      "hv11-026": "The source directly states the painter, ring and time.",
+      "hv11-027": "The booking establishes group size but provides no ages or school affiliation; a school class is possible but unconfirmed.",
+      "hv11-028": "The source explicitly says the public demonstration has not started. The undated draft asserts the opposite status; possible_conflict is acceptable, without treating the separate private equipment check as the public event.",
+      "hv11-029": "Halfway closure directly supports partial closure without claiming complete darkness.",
+      "hv11-030": "Successful unloaded bench operation supplies neither an adequate load rating nor a loaded ramp trial, so the required capability remains unknown.",
+      "hv11-031": "The exclusive Rell-to-Odrin identity and the sole-translator credit jointly exclude Feska; neither passage alone establishes the complete attribution.",
+      "hv11-032": "The action is explicitly described with that time.",
+      "hv11-033": "Both meanings are established, but the context needed to select one is missing; neither sense is ruled out.",
+      "hv11-034": "One source establishes Dewline as a required member of the complete collection; the other establishes it remains unpublished at that time, preventing completion of publication of the whole collection.",
+      "hv11-035": "The placement action and time are directly supported.",
+      "hv11-036": "Dispatch on the 24th does not fix the arrival date; no delivery scan or reply supplies the missing date."
+    }
+  },
+  "novelty": {
+    "exact_reused_chapter_bodies": 0,
+    "exact_reused_drafts": 0,
+    "named_people_shared_with_previous_two_sets": 0,
+    "excluded_old_names": [
+      "灰港",
+      "纸月",
+      "零号花园",
+      "雾港",
+      "白塔"
+    ],
+    "model_results_consulted": false
+  },
+  "protected_files_unchanged": true,
+  "product_temporal_guard_source_sha256": "dc589618d87e4336b6b10aede2fe730c80f9b8f918e17d98db3e4a275b05f178",
+  "provider_calls": 0,
+  "model_evaluation_runs": 0,
+  "formal_gate_runs": 0,
+  "non_designated_undated_conflict_cases": [
+    "hv11-004",
+    "hv11-025",
+    "hv11-028"
+  ],
+  "ordinary_conflict_policy": "Ordinary conflict cases may be qualified as confirmed_conflict or possible_conflict. Missing shared time alone is not classified as insufficient_evidence. Only the three designated regressions require confirmed_conflict and the correct category."
+}

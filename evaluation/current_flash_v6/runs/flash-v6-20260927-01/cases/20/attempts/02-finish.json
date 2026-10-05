@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+  "http_ordinal_in_case": 2,
+  "finished_at": "2026-09-27T10:02:48.362530+00:00",
+  "latency_ms": 1474,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3756,
+      "completion_tokens": 135,
+      "total_tokens": 3891
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-8ea536a9-f67e-4693-bec4-45abfbfafa8d-1\",\"verdict\":\"no_issue\",\"basis\":\"当前草稿称18点时透镜R4为透明玻璃，并让Vela回忆它昨天呈琥珀色。证据显示同一日18点西侧孔径透镜（即索引确认的透镜R4）为透明玻璃而非琥珀色，与草稿当前状态一致；Vela对昨天的回忆是对更早时间的陈述，与18点的状态并不冲突，因此无需审查。\"}]}",
+  "message_content_sha256": "a27670e05bd189f1e5aba0912caaa2ce8897fcfa2396b30d7b9dcb9b67b33409",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

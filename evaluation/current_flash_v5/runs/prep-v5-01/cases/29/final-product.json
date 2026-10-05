@@ -1,0 +1,291 @@
+{
+  "run_id": "run-58ec7a06-a082-4f1d-add0-d3aa881e4678",
+  "project_id": "prj-bb9511e2-05b7-4217-9bbf-233833d20b2a",
+  "run_type": "context_brief",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 1,
+  "draft_revision": 2,
+  "source_memory_version": 4,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T07:58:58.234844+00:00",
+  "started_at": "2026-09-27T07:58:58.263996+00:00",
+  "completed_at": "2026-09-27T07:58:58.331035+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 67,
+  "retry_of_run_id": null,
+  "root_run_id": "run-58ec7a06-a082-4f1d-add0-d3aa881e4678",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T07:58:58.234844+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "binding_context",
+      "error_code": null,
+      "created_at": "2026-09-27T07:58:58.263996+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "analyzing_layers",
+      "error_code": null,
+      "created_at": "2026-09-27T07:58:58.280786+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "assembling_results",
+      "error_code": null,
+      "created_at": "2026-09-27T07:58:58.317796+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T07:58:58.331035+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "flash-v5-offline-stub",
+    "model_label": "no-model",
+    "prompt_version": "context-brief-v5-clause-citations",
+    "schema_version": "writing-analysis-v1",
+    "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+    "source_memory_version": 4
+  },
+  "provider_metrics": {
+    "latency_ms": 1,
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "analysis_type": "context_brief",
+  "current_draft_revision": 2,
+  "foreshadow_version": null,
+  "foreshadow_snapshot_digest": null,
+  "proposal": null,
+  "question": null,
+  "scope": null,
+  "issue_ids": [],
+  "source_run_id": null,
+  "retrieval": {
+    "counts": {
+      "author_context": {
+        "available": 0,
+        "selected": 0
+      },
+      "character_alias": {
+        "available": 0,
+        "selected": 0
+      },
+      "draft_claim": {
+        "available": 2,
+        "selected": 2
+      },
+      "foreshadow_record": {
+        "available": 0,
+        "selected": 0
+      },
+      "issue": {
+        "available": 0,
+        "selected": 0
+      },
+      "issue_evidence": {
+        "available": 0,
+        "selected": 0
+      },
+      "memory_record": {
+        "available": 8,
+        "selected": 8
+      },
+      "source_span": {
+        "available": 10,
+        "selected": 4
+      }
+    },
+    "draft_claim_scope": {
+      "available": 2,
+      "body_chars": 40,
+      "excerpt_chars": 40,
+      "selected": [
+        {
+          "id": "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-1",
+          "source_chars": 15,
+          "source_end": 15,
+          "source_start": 0,
+          "supplied_chars": 15,
+          "supplied_end": 15,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-2",
+          "source_chars": 25,
+          "source_end": 40,
+          "source_start": 15,
+          "supplied_chars": 25,
+          "supplied_end": 40,
+          "truncated": false
+        }
+      ]
+    },
+    "method_version": "writing-analysis-lexical-v3-brief-540",
+    "selected_ids": {
+      "author_context": [],
+      "character_alias": [],
+      "draft_claim": [
+        "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-1",
+        "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-2"
+      ],
+      "foreshadow_record": [],
+      "issue": [],
+      "issue_evidence": [],
+      "memory_record": [
+        "mem-4096332e-8950-401f-a173-4868a160ea9e",
+        "mem-d4180bf2-281e-4dae-90a5-01da857d0ff1",
+        "mem-08b883b5-fb33-49dd-a6ca-182329f6d561",
+        "mem-2a4cbb23-9fb0-45cc-8633-535cd9a98093",
+        "mem-7f65843c-0a70-4b0c-812f-5c889d3c727c",
+        "mem-9203f2af-7d6a-4c2d-a68d-a741234c1d92",
+        "mem-d546b54d-4912-4061-a026-d2e1b741d0ad",
+        "mem-dcd10f68-403d-4a3b-96a5-dfa3651370bc"
+      ],
+      "source_span": [
+        "span-b5de0ba1-d163-4063-ba44-e63eb3384bda",
+        "span-71d28e69-f9d7-47bd-90a8-50ee65cf54f6",
+        "span-d55a6761-0726-401b-9331-2aad3eb58759",
+        "span-22cb565d-9ddb-465c-b300-f45dfebab2f3"
+      ]
+    },
+    "truncated": {
+      "author_context": false,
+      "character_alias": false,
+      "draft_body": false,
+      "draft_claim": false,
+      "foreshadow_record": false,
+      "issue": false,
+      "issue_evidence": false,
+      "memory_record": false,
+      "source_span": true,
+      "source_span_text": false
+    }
+  },
+  "input_digest": "1ba5328a33cf10a7a9818674062833198a6f33a623d4fd41dba8415b874f52cb",
+  "analysis": {
+    "citation_transform": {
+      "added_source_count": 0,
+      "discarded_model_item_indices": [],
+      "duplicate_omitted_item_count": 0,
+      "fallback_draft_claim_ids": [
+        "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-2"
+      ],
+      "model_item_count": 1,
+      "model_summary_used": false,
+      "omitted_unmatched_clause_count": 0,
+      "overflow_omitted_item_count": 0,
+      "source_rendered_item_count": 2,
+      "version": "source-rendered-v2"
+    },
+    "draft_coverage": {
+      "cited_ranges": [
+        {
+          "id": "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-1",
+          "source_chars": 15,
+          "source_end": 15,
+          "source_start": 0,
+          "supplied_chars": 15,
+          "supplied_end": 15,
+          "truncated": false
+        },
+        {
+          "id": "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-2",
+          "source_chars": 25,
+          "source_end": 40,
+          "source_start": 15,
+          "supplied_chars": 25,
+          "supplied_end": 40,
+          "truncated": false
+        }
+      ],
+      "discarded_item_indices": [],
+      "reasons": [],
+      "source_ids": [
+        "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-1",
+        "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-2"
+      ],
+      "status": "covered",
+      "uncovered_source_ids": [],
+      "unselected_count": 0
+    },
+    "evidence_status": "supported",
+    "items": [
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "昨日温岚尚未得知银钥匙的用途。",
+            "label": "当前草稿 · 句 1",
+            "source_id": "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-1",
+            "source_path": "/projects/prj-bb9511e2-05b7-4217-9bbf-233833d20b2a/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句1原文：「昨日温岚尚未得知银钥匙的用途。」"
+      },
+      {
+        "section": "recent_source",
+        "sources": [
+          {
+            "excerpt": "今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。",
+            "label": "当前草稿 · 句 2",
+            "source_id": "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-2",
+            "source_path": "/projects/prj-bb9511e2-05b7-4217-9bbf-233833d20b2a/workspace#draft-source",
+            "source_type": "draft_claim"
+          }
+        ],
+        "text": "当前草稿句2原文：「今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。」"
+      }
+    ],
+    "summary": "当前草稿句1原文：「昨日温岚尚未得知银钥匙的用途。」 当前草稿句2原文：「今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。」",
+    "summary_sources": [
+      {
+        "excerpt": "昨日温岚尚未得知银钥匙的用途。",
+        "label": "当前草稿 · 句 1",
+        "source_id": "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-1",
+        "source_path": "/projects/prj-bb9511e2-05b7-4217-9bbf-233833d20b2a/workspace#draft-source",
+        "source_type": "draft_claim"
+      },
+      {
+        "excerpt": "今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。",
+        "label": "当前草稿 · 句 2",
+        "source_id": "draft-claim-draft-0b595d7c-55a5-49f1-be1d-805134a07d04-r2-2",
+        "source_path": "/projects/prj-bb9511e2-05b7-4217-9bbf-233833d20b2a/workspace#draft-source",
+        "source_type": "draft_claim"
+      }
+    ]
+  }
+}

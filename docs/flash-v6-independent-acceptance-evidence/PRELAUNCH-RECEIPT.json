@@ -1,0 +1,13 @@
+{
+  "run_id": "flash-v6-20260927-01",
+  "checked_at_utc": "2026-09-27T10:01:25.6582408Z",
+  "manifest_sha256": "f0e2cb3d5c44a1a92000f703423a0d26ea1fab5aef750b7a3393102ea98ed696",
+  "supplement_sha256": "c8da7a578bfc82ddfadbe2bd9cad488a2f3c12b7e817c6a323d0cc6997b5eeec",
+  "initializer_relative_path": "evaluation/__init__.py",
+  "initializer_sha256": "4ac37fe3ac5b99e494187cd7439b71a422595cc8c0825c5b725c1703d7f990b5",
+  "check_before_python_module_import": true,
+  "identity_unoccupied": true,
+  "named_credential_present": true,
+  "credential_scope": "Process",
+  "provider_calls_before_launch": 0
+}

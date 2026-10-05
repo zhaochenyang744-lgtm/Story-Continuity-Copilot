@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:02:00.379195+00:00",
+  "latency_ms": 1542,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3326,
+      "completion_tokens": 139,
+      "total_tokens": 3465
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-df512ac2-0b0f-4eb8-909f-b9e44cc6b0ed-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim states the gate first closed at 10点 after its 09点 opening. The cited evidence span fixture-span-harbor_signal-1 directly supports this exact sequence (09点 first opened, 10点 first closed after opening), and the other spans (11点 log gap, Sera's 11点 knowledge) are unrelated compatible context. No contradiction or missing link exists.\"}]}",
+  "message_content_sha256": "a13169a7a57421a10156d18c6c4c12995c7f6e48ddc1c2053f69f5f2674deb60",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

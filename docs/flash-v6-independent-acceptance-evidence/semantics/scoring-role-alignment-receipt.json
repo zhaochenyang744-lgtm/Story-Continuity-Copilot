@@ -1,0 +1,275 @@
+{
+  "schema_version": "v6-independent-scoring-role-alignment-v1",
+  "created_at": "2026-09-27T09:53:31.529555+00:00",
+  "result": "pass",
+  "scope": "Static read-only alignment of current V6 score.py and effective policy addenda to the independently fixed ten-case role table. No scorer/product execution or model-answer inspection.",
+  "scorer_sha256": "35c21fce0ceaffab9823d29c5b6bc048199fb144787330f2d9a242c0658f4e8e",
+  "independent_table_sha256": "799dc9c8324b6d18990f43ea4bf13f11170b7aa70f4e291291c9aefb636c8037",
+  "checks": [
+    {
+      "name": "old_joint_premise_catalog",
+      "result": "pass",
+      "detail": "Exact four inherited premise entries; includes old13 kinship rule. Case minimum sets determine relevance."
+    },
+    {
+      "name": "old_joint_time_flex",
+      "result": "pass",
+      "detail": "Only inherited04/16 accept explicit_overlap or their supplied cited static rule."
+    },
+    {
+      "name": "new_premise_projection",
+      "result": "pass",
+      "detail": "New lens and capsule premise labels project to actual selected IDs."
+    },
+    {
+      "name": "new_effective_time",
+      "result": "pass",
+      "detail": "New25/26 use explicit_overlap only, matching accepted actual Memory metadata."
+    },
+    {
+      "name": "manual_variant_membership",
+      "result": "pass",
+      "detail": "Companion candidates are a closed structural set; valid enum membership still does not establish semantic category correctness."
+    },
+    {
+      "name": "source_roles_enforced",
+      "result": "pass",
+      "detail": "Confirmed evidence source-role rules reject supports and distinguish declared premise from direct fact; complete minimum set remains mandatory."
+    },
+    {
+      "name": "new_case_safe_dispatch",
+      "result": "pass",
+      "detail": "Old V3 scorer delegation and eager missing-GOLD lookup removed."
+    },
+    {
+      "name": "manual_semantics_not_automatic",
+      "result": "pass",
+      "detail": "A machine pass remains pending semantic review; no accuracy claim inferred."
+    }
+  ],
+  "case_alignment": [
+    {
+      "ordinal": 1,
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "role_checks": [
+        {
+          "source": "badge_rule",
+          "expected": "contradicts",
+          "scorer_role_by_static_mapping": "contradicts",
+          "match": true
+        }
+      ],
+      "effective_temporal_match": true,
+      "result": "pass"
+    },
+    {
+      "ordinal": 4,
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "role_checks": [
+        {
+          "source": "carrier_ready_rule",
+          "expected": "context",
+          "scorer_role_by_static_mapping": "context",
+          "match": true
+        },
+        {
+          "source": "carrier_inspection",
+          "expected": "contradicts",
+          "scorer_role_by_static_mapping": "contradicts",
+          "match": true
+        }
+      ],
+      "effective_temporal_match": true,
+      "result": "pass"
+    },
+    {
+      "ordinal": 7,
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "role_checks": [
+        {
+          "source": "gate_log",
+          "expected": "contradicts",
+          "scorer_role_by_static_mapping": "contradicts",
+          "match": true
+        }
+      ],
+      "effective_temporal_match": true,
+      "result": "pass"
+    },
+    {
+      "ordinal": 10,
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "role_checks": [
+        {
+          "source": "telegram_seal",
+          "expected": "contradicts",
+          "scorer_role_by_static_mapping": "contradicts",
+          "match": true
+        }
+      ],
+      "effective_temporal_match": true,
+      "result": "pass"
+    },
+    {
+      "ordinal": 13,
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "role_checks": [
+        {
+          "source": "kinship_rule",
+          "expected": "context",
+          "scorer_role_by_static_mapping": "context",
+          "match": true
+        },
+        {
+          "source": "twin_register",
+          "expected": "contradicts",
+          "scorer_role_by_static_mapping": "contradicts",
+          "match": true
+        }
+      ],
+      "effective_temporal_match": true,
+      "result": "pass"
+    },
+    {
+      "ordinal": 16,
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "role_checks": [
+        {
+          "source": "launch_rule",
+          "expected": "context",
+          "scorer_role_by_static_mapping": "context",
+          "match": true
+        },
+        {
+          "source": "launch_log",
+          "expected": "contradicts",
+          "scorer_role_by_static_mapping": "contradicts",
+          "match": true
+        }
+      ],
+      "effective_temporal_match": true,
+      "result": "pass"
+    },
+    {
+      "ordinal": 19,
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "role_checks": [
+        {
+          "source": "lens_index",
+          "expected": "context",
+          "scorer_role_by_static_mapping": "context",
+          "match": true
+        },
+        {
+          "source": "west_lens",
+          "expected": "contradicts",
+          "scorer_role_by_static_mapping": "contradicts",
+          "match": true
+        }
+      ],
+      "effective_temporal_match": true,
+      "result": "pass"
+    },
+    {
+      "ordinal": 22,
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "role_checks": [
+        {
+          "source": "watch_log",
+          "expected": "contradicts",
+          "scorer_role_by_static_mapping": "contradicts",
+          "match": true
+        }
+      ],
+      "effective_temporal_match": true,
+      "result": "pass"
+    },
+    {
+      "ordinal": 25,
+      "case_id": "v6-v6s-01",
+      "role_checks": [
+        {
+          "source": "L1",
+          "expected": "context",
+          "scorer_role_by_static_mapping": "context",
+          "match": true
+        },
+        {
+          "source": "L2",
+          "expected": "contradicts",
+          "scorer_role_by_static_mapping": "contradicts",
+          "match": true
+        }
+      ],
+      "effective_temporal_match": true,
+      "result": "pass"
+    },
+    {
+      "ordinal": 26,
+      "case_id": "v6-v6s-03",
+      "role_checks": [
+        {
+          "source": "R1",
+          "expected": "context",
+          "scorer_role_by_static_mapping": "context",
+          "match": true
+        },
+        {
+          "source": "R2",
+          "expected": "contradicts",
+          "scorer_role_by_static_mapping": "contradicts",
+          "match": true
+        }
+      ],
+      "effective_temporal_match": true,
+      "result": "pass"
+    }
+  ],
+  "closed_findings": [
+    "Old13 kinship rule added as context premise; twin register remains contrary named fact under rule.",
+    "Companion manual category now requires candidate membership.",
+    "New capsule actual temporal intersection limited to explicit_overlap; no input or Memory mutation."
+  ],
+  "evaluation_limits": [
+    "Whole-source-set natural-language sufficiency, category fit, optional-context relevance, proposed revision completeness and no_issue basis remain human judgments.",
+    "This is a V6 declared contract/source-role policy amendment, not evidence of model capability improvement. V5 denominator/results unchanged.",
+    "Source-role success does not override malformed coverage, unselected citation, time/rule binding, terminal status or raw-versus-final separation.",
+    "Root offline tests and freeze/handoff acceptance remain separate. Provider release is not granted by this receipt."
+  ],
+  "read_files_sha256": {
+    "docs/flash-v6-independent-acceptance-evidence/semantics/scoring-role-review.json": "799dc9c8324b6d18990f43ea4bf13f11170b7aa70f4e291291c9aefb636c8037",
+    "evaluation/current_flash_v6/score.py": "35c21fce0ceaffab9823d29c5b6bc048199fb144787330f2d9a242c0658f4e8e",
+    "evaluation/current_flash_v6/SCORING-POLICY.md": "c14868eab3c4c6b419a8c98cfcb173b05b1bd8f7bb559f85b05eeaacbccd2672",
+    "evaluation/current_flash_v6/SCORING-ADDENDUM.md": "51d5fb0a83dbeebd43eea20f04a2bbcf73d83cbba8d435d193dbf6f72dc0bbf8",
+    "evaluation/current_flash_v6/SCORING-ADDENDUM-02.md": "4531e56ede716ecd400c5683b6cd0654327f3e4ac1bd170d0e852453b41c5d5c",
+    "evaluation/current_flash_v6/SCORING-ADDENDUM-03.md": "c423410b515e6e91bf482ce39f07f7df8a13fdae6d5ea5a835a83dd06bb4d915",
+    "evaluation/current_flash_v6/DESIGN-ADDENDUM.md": "5b40c2d78b9eeb5a19c145529b381f37bca37bb7fef5bd9e793937e46f8c7f12",
+    "evaluation/current_flash_v6/DESIGN-ADDENDUM-02.md": "d841e0350dd4644f0894431c1e64e5f686589fed10bcac914e7cbc4915699cc6",
+    "evaluation/current_flash_v6/cases-v2.json": "ea6d521f625ed26319ddcbc8aa82456a2013ad9ff4ba441d99efa98c0204f391",
+    "evaluation/current_contract_compare_v3/cases.json": "99cf17ca8391be0438164eabecebf181f6e88b5f6a11cd20fb15f913854716f0",
+    "docs/flash-v6-independent-acceptance-evidence/semantics/control-matrix.json": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "backend/app/provider.py": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643",
+    "backend/app/engine.py": "527f986d6441aa226f239a0e67d928200f26d77b6b90e65cbc6d14e512d7fd39"
+  },
+  "read_files_sha256_after": {
+    "docs/flash-v6-independent-acceptance-evidence/semantics/scoring-role-review.json": "799dc9c8324b6d18990f43ea4bf13f11170b7aa70f4e291291c9aefb636c8037",
+    "evaluation/current_flash_v6/score.py": "35c21fce0ceaffab9823d29c5b6bc048199fb144787330f2d9a242c0658f4e8e",
+    "evaluation/current_flash_v6/SCORING-POLICY.md": "c14868eab3c4c6b419a8c98cfcb173b05b1bd8f7bb559f85b05eeaacbccd2672",
+    "evaluation/current_flash_v6/SCORING-ADDENDUM.md": "51d5fb0a83dbeebd43eea20f04a2bbcf73d83cbba8d435d193dbf6f72dc0bbf8",
+    "evaluation/current_flash_v6/SCORING-ADDENDUM-02.md": "4531e56ede716ecd400c5683b6cd0654327f3e4ac1bd170d0e852453b41c5d5c",
+    "evaluation/current_flash_v6/SCORING-ADDENDUM-03.md": "c423410b515e6e91bf482ce39f07f7df8a13fdae6d5ea5a835a83dd06bb4d915",
+    "evaluation/current_flash_v6/DESIGN-ADDENDUM.md": "5b40c2d78b9eeb5a19c145529b381f37bca37bb7fef5bd9e793937e46f8c7f12",
+    "evaluation/current_flash_v6/DESIGN-ADDENDUM-02.md": "d841e0350dd4644f0894431c1e64e5f686589fed10bcac914e7cbc4915699cc6",
+    "evaluation/current_flash_v6/cases-v2.json": "ea6d521f625ed26319ddcbc8aa82456a2013ad9ff4ba441d99efa98c0204f391",
+    "evaluation/current_contract_compare_v3/cases.json": "99cf17ca8391be0438164eabecebf181f6e88b5f6a11cd20fb15f913854716f0",
+    "docs/flash-v6-independent-acceptance-evidence/semantics/control-matrix.json": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "backend/app/provider.py": "ed33b19761acfec79cff0a14d171389eaa9659ba4774223a4d161c58d2d32643",
+    "backend/app/engine.py": "527f986d6441aa226f239a0e67d928200f26d77b6b90e65cbc6d14e512d7fd39"
+  },
+  "read_file_count": 13,
+  "hash_stable": true,
+  "hash_drift": [],
+  "provider_calls": 0,
+  "database_connections": 0,
+  "product_or_scorer_execution": false
+}

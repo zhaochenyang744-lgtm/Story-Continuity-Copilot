@@ -1,0 +1,22 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "v6_actor_blank",
+  "title": "V6 synthetic actor_blank",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "v6_control_matrix_exact_source_body",
+    "control_matrix_sha256": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "classification": "seen_development"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Synthetic actor_blank source A1",
+      "source_label": "A1",
+      "body": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap."
+    }
+  ],
+  "memory": []
+}

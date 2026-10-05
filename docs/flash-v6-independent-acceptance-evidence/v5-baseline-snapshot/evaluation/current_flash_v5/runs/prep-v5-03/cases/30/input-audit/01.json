@@ -1,0 +1,20 @@
+{
+  "case_id": "g02-dialogue-attribution",
+  "family": "g02",
+  "status": "same_run_api_input_bound",
+  "same_run_request_sha256": "5a1493abef89e9d8a7cf8d01d7c6ad32eb2085d6e800b29a8d61af00196635c3",
+  "saved_draft_sha256": "efbd2767a8328cd339f26b4983e8ac5bfa56e02842dd14b5e1e1c18db629ed17",
+  "draft_chars": 45,
+  "claim_available": 2,
+  "claim_selected": 2,
+  "claim_unselected": 0,
+  "selected_source_span_count": 4,
+  "selected_memory_count": 8,
+  "memory_source_selected_count": 3,
+  "memory_source_unselected_count": 5,
+  "dialogue_two_complete_quotes": true,
+  "database_binding": "matched_persisted_isolated_database",
+  "database_selected_source_count": 4,
+  "database_selected_memory_count": 8,
+  "database_unselected_memory_sources_allowed": 5
+}

@@ -1,0 +1,140 @@
+[
+  {
+    "name": "repair-denied-before-dispatch",
+    "passed": true,
+    "details": {
+      "posts": 1,
+      "ledger": 1,
+      "run": {
+        "status": "failed",
+        "error_code": "provider_attempt_quota_exceeded",
+        "input_tokens": 11,
+        "output_tokens": 7,
+        "cost_cny": 0.2
+      },
+      "operations_metrics": {
+        "input_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 11,
+          "all_run_sum": 11
+        },
+        "output_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 7,
+          "all_run_sum": 7
+        },
+        "cost_cny": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 0.2,
+          "all_run_sum": 0.2
+        }
+      },
+      "expected_totals": [
+        11,
+        7,
+        0.2
+      ]
+    }
+  },
+  {
+    "name": "repair-invalid-json",
+    "passed": true,
+    "details": {
+      "posts": 2,
+      "ledger": 2,
+      "run": {
+        "status": "failed",
+        "error_code": "invalid_json",
+        "input_tokens": 22,
+        "output_tokens": 14,
+        "cost_cny": 0.4
+      },
+      "operations_metrics": {
+        "input_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 22,
+          "all_run_sum": 22
+        },
+        "output_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 14,
+          "all_run_sum": 14
+        },
+        "cost_cny": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 0.4,
+          "all_run_sum": 0.4
+        }
+      },
+      "expected_totals": [
+        22,
+        14,
+        0.4
+      ]
+    }
+  },
+  {
+    "name": "repair-timeout-invalid-json",
+    "passed": true,
+    "details": {
+      "posts": 3,
+      "ledger": 3,
+      "run": {
+        "status": "failed",
+        "error_code": "invalid_json",
+        "input_tokens": null,
+        "output_tokens": null,
+        "cost_cny": null
+      },
+      "operations_metrics": {
+        "input_tokens": {
+          "status": "unknown",
+          "unknown_run_count": 1,
+          "known_run_count": 0,
+          "known_run_sum": null,
+          "all_run_sum": null
+        },
+        "output_tokens": {
+          "status": "unknown",
+          "unknown_run_count": 1,
+          "known_run_count": 0,
+          "known_run_sum": null,
+          "all_run_sum": null
+        },
+        "cost_cny": {
+          "status": "unknown",
+          "unknown_run_count": 1,
+          "known_run_count": 0,
+          "known_run_sum": null,
+          "all_run_sum": null
+        }
+      },
+      "expected_totals": [
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  {
+    "name": "external_network_disabled",
+    "passed": true,
+    "details": {
+      "attempted_external_connections": 0,
+      "actual_external_requests": 0,
+      "smtp_requests": 0
+    }
+  }
+]

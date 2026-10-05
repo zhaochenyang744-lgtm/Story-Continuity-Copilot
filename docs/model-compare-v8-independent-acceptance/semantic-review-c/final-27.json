@@ -1,0 +1,144 @@
+{
+ "schema_version": "v8-blinded-case-review-v1",
+ "case_alias": "case-27",
+ "stage": "final",
+ "reviewer": "reviewer-c",
+ "condition_visibility": "hidden",
+ "locked_at_utc": "2026-09-27T12:01:36.159972+00:00",
+ "packet_sha256": "d02819b49e7e101775dd95f0c392b36b2e9a347ff572e78779648eb3422163df",
+ "prior_review_hashes": {
+  "first-27.json": "aa2748f3900522982013cd235698299ba26fb67c0ed4e20b682b9a6089a623db"
+ },
+ "exposure_note": "Only other cases01/02 engineering traces exposed labels; this case remained hidden; not strict double blind.",
+ "repair_attempted": 0,
+ "comparisons": {
+  "answer-15a477": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "first"
+  },
+  "answer-22d97c": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "first"
+  },
+  "answer-b79398": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "first"
+  }
+ },
+ "records": [
+  {
+   "case_alias": "case-27",
+   "response_alias": "answer-15a477",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "v6-v6s-04",
+   "ratings": {
+    "F": "pass",
+    "C": "not_applicable",
+    "E_roles": "not_applicable",
+    "E_set": "not_applicable",
+    "E_binding": "not_applicable",
+    "S": "pass",
+    "D": "pass",
+    "T": "pass",
+    "strict_composite": "pass"
+   },
+   "observed_decision": "no_issue",
+   "actual_issue_count": 0,
+   "findings": [
+    {
+     "dimension": "F",
+     "reason": "将准备条件与同日10:00盖未锁合并，正确判断未就绪与草稿相容。",
+     "visible_quote": "pressure is four bars, but the valve cap remains loose and unlocked",
+     "evidence_pointer": "accepted answer-15a477.first.parsed_business_json.claim_verdicts[0].basis"
+    }
+   ],
+   "attribution_tags": [],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "inherited_from": "first-27.json#answer-15a477"
+  },
+  {
+   "case_alias": "case-27",
+   "response_alias": "answer-22d97c",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "v6-v6s-04",
+   "ratings": {
+    "F": "pass",
+    "C": "not_applicable",
+    "E_roles": "not_applicable",
+    "E_set": "not_applicable",
+    "E_binding": "not_applicable",
+    "S": "pass",
+    "D": "pass",
+    "T": "pass",
+    "strict_composite": "pass"
+   },
+   "observed_decision": "no_issue",
+   "actual_issue_count": 0,
+   "findings": [
+    {
+     "dimension": "F",
+     "reason": "将准备条件与同日10:00盖未锁合并，正确判断未就绪与草稿相容。",
+     "visible_quote": "A loose cap therefore makes the capsule not ready",
+     "evidence_pointer": "accepted answer-22d97c.first.parsed_business_json.claim_verdicts[0].basis"
+    }
+   ],
+   "attribution_tags": [],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "inherited_from": "first-27.json#answer-22d97c"
+  },
+  {
+   "case_alias": "case-27",
+   "response_alias": "answer-b79398",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "v6-v6s-04",
+   "ratings": {
+    "F": "pass",
+    "C": "not_applicable",
+    "E_roles": "not_applicable",
+    "E_set": "not_applicable",
+    "E_binding": "not_applicable",
+    "S": "pass",
+    "D": "pass",
+    "T": "pass",
+    "strict_composite": "pass"
+   },
+   "observed_decision": "no_issue",
+   "actual_issue_count": 0,
+   "findings": [
+    {
+     "dimension": "F",
+     "reason": "将准备条件与同日10:00盖未锁合并，正确判断未就绪与草稿相容。",
+     "visible_quote": "the readiness rule requires a locked cap",
+     "evidence_pointer": "accepted answer-b79398.first.parsed_business_json.claim_verdicts[0].basis"
+    }
+   ],
+   "attribution_tags": [],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "inherited_from": "first-27.json#answer-b79398"
+  }
+ ],
+ "locked_before_condition_reveal": true,
+ "provider_calls": 0,
+ "database_connections": 0
+}

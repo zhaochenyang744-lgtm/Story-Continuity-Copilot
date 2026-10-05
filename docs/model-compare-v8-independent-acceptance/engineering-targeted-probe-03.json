@@ -1,0 +1,77 @@
+{
+  "probe": "engineering-targeted-probe-03",
+  "script_sha256": "4e8c16c1fae3099677c36535ad293fa20d7fb109ca6005eedca72a75247ec02d",
+  "source_hashes_before": {
+    "harness.py": "9d9fb2d3641378631e45faddd7bc52f114684dfa6f464c86e02b8f9e990cb658",
+    "provider.py": "0c503fea4249f2a1ec1e9bfc6f7d09f6aa01a5238a00f8b3748773aed286d924",
+    "journal.py": "56ff06a77d60d463abab7702ea076bd420c2b2aacd28018ac82893c68796127e",
+    "score.py": "6dfb34504635be948005e6135d462b69e265db9b8b9d7f66894e43dff9e619c1",
+    "freeze.py": "8665a717d4d2fbc508fd1fe51e742bf67e5be31f32a47ad60eda6596346f85b5",
+    "live_guard.py": "336b36408ddc947d402aed3b2b97e89bcda988221be9848267ccfebaae39dfe7"
+  },
+  "source_hashes_after": {
+    "harness.py": "9d9fb2d3641378631e45faddd7bc52f114684dfa6f464c86e02b8f9e990cb658",
+    "provider.py": "0c503fea4249f2a1ec1e9bfc6f7d09f6aa01a5238a00f8b3748773aed286d924",
+    "journal.py": "56ff06a77d60d463abab7702ea076bd420c2b2aacd28018ac82893c68796127e",
+    "score.py": "6dfb34504635be948005e6135d462b69e265db9b8b9d7f66894e43dff9e619c1",
+    "freeze.py": "8665a717d4d2fbc508fd1fe51e742bf67e5be31f32a47ad60eda6596346f85b5",
+    "live_guard.py": "336b36408ddc947d402aed3b2b97e89bcda988221be9848267ccfebaae39dfe7"
+  },
+  "source_hashes_stable": true,
+  "results": [
+    {
+      "name": "guard_identity",
+      "pass": true,
+      "detail": {
+        "rejection": "live_run_identity_already_exists",
+        "product_imports": 0,
+        "environment_accesses": 0
+      }
+    },
+    {
+      "name": "guard_manifest",
+      "pass": true,
+      "detail": {
+        "rejection": "v8_manifest_changed",
+        "product_imports": 0,
+        "environment_accesses": 0
+      }
+    },
+    {
+      "name": "guard_source",
+      "pass": true,
+      "detail": {
+        "rejection": "frozen_dependency_drift:backend/app/engine.py",
+        "product_imports": 0,
+        "environment_accesses": 0
+      }
+    },
+    {
+      "name": "guard_missing_closure",
+      "pass": true,
+      "detail": {
+        "rejection": "preimport_dependency_missing",
+        "product_imports": 0,
+        "environment_accesses": 0
+      }
+    },
+    {
+      "name": "parsed_bad_shape_plus_length_keeps_both_dimensions",
+      "pass": false,
+      "error_type": "AssertionError",
+      "error": "score_error_lost_nonstop_generation_dimension"
+    }
+  ],
+  "passed": 4,
+  "total": 5,
+  "external_attempts_blocked": {
+    "network": 0,
+    "sqlite": 0,
+    "guard_product_import": 0,
+    "guard_env": 0
+  },
+  "real_provider_calls": 0,
+  "database_connections": 0,
+  "historical_baseline_rescan": false,
+  "full_replay_repeated": false
+}

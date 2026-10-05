@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+  "http_ordinal_in_case": 2,
+  "finished_at": "2026-09-27T08:21:08.385853+00:00",
+  "latency_ms": 2811,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 4091,
+      "completion_tokens": 575,
+      "total_tokens": 4666
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-eaa45942-483d-4cba-bcae-3c4f235d696c-1\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"character_knowledge\",\"severity\":\"medium\",\"explanation\":\"The 19点 watch record does not name Vela's companion, so the draft's claim that it establishes Sora accompanied her contradicts the cited record.\",\"reasoning\":\"The claim asserts that the 19点 watch record establishes Sora accompanied Vela to the east pier. The cited evidence for the same 19点 event states that Vela moved from Gate Four on the west pier to the east pier and that the watch record leaves her companion unnamed. Both texts concern the same 19点 watch record and the same east-pier movement, so they share time and scope; the record's explicit unnamed-companion status cannot coexist with the claim that it establishes Sora as the companion.\",\"temporal_basis\":{\"claim_anchor\":\"19点 watch record\",\"evidence_anchor\":\"At 19点\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-basalt_observatory-6\",\"span_id\":\"fixture-span-basalt_observatory-6\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-basalt_observatory-6\"]},{\"chapter_id\":\"fixture-chapter-basalt_observatory-4\",\"span_id\":\"fixture-span-basalt_observatory-4\",\"relation\":\"context\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-basalt_observatory-4\"]},{\"chapter_id\":\"fixture-chapter-basalt_observatory-5\",\"span_id\":\"fixture-span-basalt_observatory-5\",\"relation\":\"context\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-basalt_observatory-5\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-basalt_observatory-6\",\"role\":\"current_context\"},{\"span_id\":\"fixture-span-basalt_observatory-4\",\"role\":\"prior_state\"},{\"span_id\":\"fixture-span-basalt_observatory-5\",\"role\":\"prior_state\"}],\"suggested_revision\":{\"before\":\"The 19点 watch record establishes that Sora accompanied Vela to the east pier.\",\"after\":\"The 19点 watch record establishes that Vela moved from Gate Four on the west pier to the east pier, but it leaves her companion unnamed.\"},\"available_actions\":[\"edit\",\"apply_suggestion\",\"keep_intentional\",\"false_positive\"]}]}",
+  "message_content_sha256": "202dd759e72ed04a3bfb30a80171cc37bea206ec0c19a23e0de3dd76dd31f476",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

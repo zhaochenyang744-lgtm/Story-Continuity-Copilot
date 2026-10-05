@@ -1,0 +1,11 @@
+{
+  "kind": "input_preflight_only",
+  "model_outputs_scored": 0,
+  "first_raw": null,
+  "repair_raw": [],
+  "final": {
+    "result": "not_scored_offline_stub"
+  },
+  "request_count": 1,
+  "stub_evaluation_count": 0
+}

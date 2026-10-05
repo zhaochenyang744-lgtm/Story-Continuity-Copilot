@@ -1,0 +1,83 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "3cda00d33fa631ab06322eeb4a8abcc17d0b9467eb9dc3ffa803668d6e5b723a",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc3-cause-blank-en",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "relationship",
+        "severity": "medium",
+        "explanation": "The draft attributes the crane's collapse to Pell on the authority of the harbour ledger, but the cited ledger entry records no cause at all, so the attribution is unsupported and Pell's causal role remains unknown.",
+        "reasoning": "The cited span confirms only that the crane collapsed at dawn and that the ledger leaves the cause unrecorded. That absence does not establish that Pell did not cause it; it removes the very warrant the draft invokes. Because no supplied text ties Pell to the collapse or shows the ledger naming a cause, judgment stops at a missing link rather than a proven contradiction.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc3-cause-blank-en-H1",
+            "span_id": "cc-span-cc3-cause-blank-en-H1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc3-cause-blank-en-H1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc3-cause-blank-en-H1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": {
+          "before": "According to the harbour ledger, Pell caused the crane's collapse.",
+          "after": "The harbour crane collapsed at dawn; the harbour ledger leaves the cause of the collapse unrecorded."
+        },
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc3-cause-blank-en",
+        "verdict": "insufficient_evidence",
+        "basis": "The cited ledger entry records the collapse but states the cause is unrecorded; the draft's claim that the ledger attributes the collapse to Pell lacks any supporting handoff and stays unknown."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3069,
+      "completion_tokens": 1043,
+      "total_tokens": 4112,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 638
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 765
+    },
+    "status": "complete",
+    "prompt_tokens": 3069,
+    "completion_tokens": 1043,
+    "total_tokens": 4112,
+    "reasoning_tokens": 638,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

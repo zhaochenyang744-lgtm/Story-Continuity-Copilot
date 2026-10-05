@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "http_ordinal_in_case": 2,
+  "finished_at": "2026-09-27T10:01:42.270324+00:00",
+  "latency_ms": 1387,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3743,
+      "completion_tokens": 143,
+      "total_tokens": 3886
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-8eaa965a-a79a-4398-ac58-72e7ddc4558a-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"草稿声称“根据两本徽章登记册”，Mira 在11点持有备用蓝色徽章，但所引证据中，备用蓝色徽章登记册的11点持有人字段为空白，另一条证据只记录10点Mira仅佩戴红色徽章且未携带蓝色徽章。没有任何被引证据记录11点的持有人，因此该归属缺乏依据，属于可审查的证据缺口。\"}]}",
+  "message_content_sha256": "518bc1de06a6420414a0111be2b2c8bf01191c92518ac64d4fdf1669cb19d394",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

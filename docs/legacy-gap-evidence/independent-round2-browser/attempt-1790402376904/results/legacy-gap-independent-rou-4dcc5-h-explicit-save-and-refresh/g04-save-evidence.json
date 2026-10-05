@@ -1,0 +1,82 @@
+{
+  "beforeStats": {
+    "provider_mode": "injected_stub",
+    "provider_http_calls": 0
+  },
+  "afterStats": {
+    "provider_mode": "injected_stub",
+    "provider_http_calls": 0
+  },
+  "results": [
+    {
+      "case": "uniform-bold",
+      "account": "gapg04r2277081790402393418b69fa2",
+      "project_id": "prj-bfeacf01-ece6-4047-b58c-0bfa52ac2cf3",
+      "real_evidence_issue_id": "issue-dfa5c292-416c-4324-852e-cd8e2d3fd93d",
+      "passed": true,
+      "unsaved_before_author_action": true,
+      "stale_suggestion_disabled": true,
+      "saved_revision": 3,
+      "saved_body_format": "markdown",
+      "saved_body": "**温岚仍保管黄铜罗盘**。",
+      "dom_selector_preserved": "strong"
+    },
+    {
+      "case": "nested-list-quote",
+      "account": "gapg04r2277081790402397174f18886",
+      "project_id": "prj-59cb4245-acd3-48ab-a900-ddca40f059cb",
+      "real_evidence_issue_id": "issue-6902cde7-6c10-4d59-a930-65db9a65ec09",
+      "passed": true,
+      "unsaved_before_author_action": true,
+      "stale_suggestion_disabled": true,
+      "saved_revision": 3,
+      "saved_body_format": "markdown",
+      "saved_body": "- \n  > ***温岚仍保管黄铜罗盘***。\n\n",
+      "dom_selector_preserved": "li blockquote strong em, li blockquote em strong"
+    }
+  ],
+  "browserErrors": [],
+  "externalRequests": [],
+  "uiMutations": [
+    {
+      "method": "POST",
+      "path": "/api/onboarding/progress"
+    },
+    {
+      "method": "POST",
+      "path": "/api/onboarding/progress"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/prj-bfeacf01-ece6-4047-b58c-0bfa52ac2cf3/drafts/draft-2c0d6805-8c0c-461e-a7fe-52f8accb0c5a"
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/prj-bfeacf01-ece6-4047-b58c-0bfa52ac2cf3/issues/issue-dfa5c292-416c-4324-852e-cd8e2d3fd93d/decision"
+    },
+    {
+      "method": "POST",
+      "path": "/api/onboarding/progress"
+    },
+    {
+      "method": "POST",
+      "path": "/api/onboarding/progress"
+    },
+    {
+      "method": "POST",
+      "path": "/api/onboarding/progress"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/prj-59cb4245-acd3-48ab-a900-ddca40f059cb/drafts/draft-8cdd77ea-972a-4726-838b-f56d9d996468"
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/prj-59cb4245-acd3-48ab-a900-ddca40f059cb/issues/issue-6902cde7-6c10-4d59-a930-65db9a65ec09/decision"
+    },
+    {
+      "method": "POST",
+      "path": "/api/onboarding/progress"
+    }
+  ]
+}

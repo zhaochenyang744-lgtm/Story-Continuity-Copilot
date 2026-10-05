@@ -1,0 +1,117 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "opal_nursery",
+  "title": "The Opal Nursery Ledger",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "deterministic_original",
+    "generator_version": "v8-candidate-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "The Opal Nursery Ledger",
+    "characters": [
+      "Rhea Mott",
+      "Cian Dusk"
+    ],
+    "locations": [
+      "Lantern Ward",
+      "Moss Dock"
+    ],
+    "core_design": "sealed notices, dawn tags, and nursery transfer conditions"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Notice knowledge condition",
+      "source_label": "notice_knowledge_rule",
+      "body": "Before dawn, the sealed opal notice is the only permitted channel for the Lantern Ward transfer; a person knows the transfer only after signing that notice."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Notice receipt book",
+      "source_label": "notice_receipt_book",
+      "body": "At 04:50 the receipt book shows the sealed opal notice signed only by Rhea Mott; Cian Dusk has no notice receipt."
+    },
+    {
+      "chapter_number": 3,
+      "title": "Dawn-tag convention",
+      "source_label": "dawn_tag_rule",
+      "body": "A transfer tagged afterglow is logged after the ward's dawn bell has rung."
+    },
+    {
+      "chapter_number": 4,
+      "title": "Transfer tag",
+      "source_label": "transfer_tag",
+      "body": "The Moss Dock transfer entry is tagged afterglow."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Cradle fabric",
+      "source_label": "cradle_fabric",
+      "body": "The Lantern Ward cradle is lined with amber felt; a dock blanket is described as green wool."
+    },
+    {
+      "chapter_number": 6,
+      "title": "Dock ledger shelf",
+      "source_label": "dock_ledger_shelf",
+      "body": "Rhea Mott files the Moss Dock ledger in the Lantern Ward cabinet."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Pending count",
+      "source_label": "pending_count",
+      "body": "The nursery count sheet lists seedlings examined but leaves the surviving total blank."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Unidentified parcel",
+      "source_label": "unidentified_parcel",
+      "body": "A parcel reached Moss Dock, but its seal mark does not identify the nursery sender."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "Rhea Mott",
+      "predicate": "fixture_anchor",
+      "value": "opal_nursery-1",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "notice_knowledge_rule"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Rhea Mott",
+      "predicate": "fixture_anchor",
+      "value": "opal_nursery-3",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "dawn_tag_rule"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Rhea Mott",
+      "predicate": "fixture_anchor",
+      "value": "opal_nursery-5",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "cradle_fabric"
+      }
+    },
+    {
+      "memory_type": "static_canon",
+      "subject": "Rhea Mott",
+      "predicate": "fixture_anchor",
+      "value": "opal_nursery-7",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "pending_count"
+      }
+    }
+  ]
+}

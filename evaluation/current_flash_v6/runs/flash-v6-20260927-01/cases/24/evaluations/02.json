@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "bd9c405cb1982422f4af60b139cfffbb5630f4902579bec2d43b46ba6f49d45b",
+  "finished_at": "2026-09-27T10:03:04.922738+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-3dd63238-e93c-4260-b214-aa8d65cb0403-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The 19点 watch record (fixture-span-basalt_observatory-6) states Vela moved from Gate Four on the west pier to the east pier and explicitly leaves her companion unnamed. The draft claim asserts the record establishes Sora accompanied Vela, but no supplied span names Sora as companion or provides any handoff linking Sora to Vela at 19点. The decisive detail (Sora's presence) is absent from the cited record, so the attribution is unsupported and the companion's identity remains unknown; this is a reviewable gap, not a confirmed contradiction."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 4481,
+    "output_tokens": 176,
+    "observed_response_input_tokens": 4481,
+    "observed_response_output_tokens": 176
+  }
+}

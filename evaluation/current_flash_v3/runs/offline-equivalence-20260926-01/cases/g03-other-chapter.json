@@ -1,0 +1,192 @@
+{
+  "case_id": "g03-other-chapter",
+  "v2_case_file": "evaluation/current_flash_v2/runs/flash-v2-20260926-01/cases/08-g03-other-chapter.json",
+  "v2_business_request_sha256": "2128c1bad9d1087ff5f3ac47e95c7263a6f00962ea698fcd950c0f791c4620f3",
+  "v3_business_request_sha256": "2128c1bad9d1087ff5f3ac47e95c7263a6f00962ea698fcd950c0f791c4620f3",
+  "exact_business_request_equal": true,
+  "different_paths": [],
+  "v3_business_request": {
+    "bindings": {
+      "alias_snapshot_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "alias_version": 0,
+      "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+      "author_context_version": 0,
+      "draft_id": "fixture-draft-flash-v2-target",
+      "draft_revision": 1,
+      "memory_version": 1,
+      "project_id": "fixture-project-flash-v2-target",
+      "source_revision": 1
+    },
+    "layers": {
+      "confirmed": {
+        "memory_records": [
+          {
+            "id": "fixture-memory-flash_v2_target-1",
+            "memory_type": "dynamic_state",
+            "predicate": "holder",
+            "source_span_id": "fixture-span-flash_v2_target-1",
+            "subject": "星钥",
+            "value": "星钥始终由乔霁保管。"
+          }
+        ]
+      },
+      "identity": {
+        "aliases": [],
+        "characters": []
+      },
+      "planned": {
+        "character_plans": [],
+        "story_plans": [],
+        "world_plans": []
+      },
+      "reference": {
+        "chapters": [
+          {
+            "chapter_number": 1,
+            "id": "fixture-chapter-flash_v2_target-1",
+            "title": "星钥来源章"
+          },
+          {
+            "chapter_number": 2,
+            "id": "fixture-chapter-flash_v2_target-2",
+            "title": "独立记录章"
+          }
+        ],
+        "world_entries": []
+      },
+      "written": {
+        "draft": {
+          "chapter_number": 3,
+          "excerpt": "",
+          "id": "fixture-draft-flash-v2-target",
+          "revision": 1,
+          "title": "Evaluation draft"
+        },
+        "draft_claims": [],
+        "source_spans": [
+          {
+            "body": "…草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。星钥始终由乔霁保管。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。…",
+            "chapter_id": "fixture-chapter-flash_v2_target-1",
+            "chapter_number": 1,
+            "chapter_title": "星钥来源章",
+            "id": "fixture-span-flash_v2_target-1",
+            "label": "target_custody",
+            "source_revision": 1
+          },
+          {
+            "body": "第二章写明沈砚曾短暂触碰星钥，随后交还乔霁；星钥仍由乔霁保管。",
+            "chapter_id": "fixture-chapter-flash_v2_target-2",
+            "chapter_number": 2,
+            "chapter_title": "独立记录章",
+            "id": "fixture-span-flash_v2_target-2",
+            "label": "other_chapter",
+            "source_revision": 1
+          }
+        ]
+      }
+    },
+    "proposal": {
+      "proposed_change": "改为由沈砚保管星钥。",
+      "target_id": "fixture-memory-flash_v2_target-1",
+      "target_type": "memory"
+    },
+    "retrieval": {
+      "counts": {
+        "author_context": {
+          "available": 0,
+          "selected": 0
+        },
+        "character_alias": {
+          "available": 0,
+          "selected": 0
+        },
+        "draft_claim": {
+          "available": 0,
+          "selected": 0
+        },
+        "foreshadow_record": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue_evidence": {
+          "available": 0,
+          "selected": 0
+        },
+        "memory_record": {
+          "available": 1,
+          "selected": 1
+        },
+        "source_span": {
+          "available": 2,
+          "selected": 2
+        }
+      },
+      "draft_claim_scope": {
+        "available": 0,
+        "body_chars": 0,
+        "excerpt_chars": 0,
+        "selected": []
+      },
+      "method_version": "writing-analysis-lexical-v2-draft-claims",
+      "selected_ids": {
+        "author_context": [],
+        "character_alias": [],
+        "draft_claim": [],
+        "foreshadow_record": [],
+        "issue": [],
+        "issue_evidence": [],
+        "memory_record": [
+          "fixture-memory-flash_v2_target-1"
+        ],
+        "source_span": [
+          "fixture-span-flash_v2_target-1",
+          "fixture-span-flash_v2_target-2"
+        ]
+      },
+      "target_source": {
+        "excerpt_chars": 502,
+        "excerpt_truncated": true,
+        "memory_id": "fixture-memory-flash_v2_target-1",
+        "original_chars": 1510,
+        "source_revision": 1,
+        "source_span_id": "fixture-span-flash_v2_target-1",
+        "status": "selected"
+      },
+      "truncated": {
+        "author_context": false,
+        "character_alias": false,
+        "draft_body": false,
+        "draft_claim": false,
+        "foreshadow_record": false,
+        "issue": false,
+        "issue_evidence": false,
+        "memory_record": false,
+        "source_span": false,
+        "source_span_text": true
+      }
+    },
+    "task": "change_impact",
+    "output_schema": {
+      "summary": "1-400 chars",
+      "items": [
+        {
+          "area": "chapter|character|world|memory|plan",
+          "target_id": "supplied target id",
+          "impact": "1-600 chars; analysis only, never replacement prose",
+          "evidence": [
+            {
+              "source_type": "author_context|memory_record|source_span|draft_claim|character_record|character_alias|world_record",
+              "source_id": "supplied id"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "v3_fake_product_status": "completed",
+  "external_http_dispatches": 0
+}

@@ -1,0 +1,1268 @@
+{
+  "case": "post-time",
+  "body": "CTRL_G02_TIME 昨日温岚尚未得知银钥匙的用途。今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。",
+  "run": {
+    "run_id": "run-d2a84188-2edb-4d32-9fd8-73ecf0869276",
+    "project_id": "prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d",
+    "run_type": "context_brief",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 1,
+    "draft_revision": 2,
+    "source_memory_version": 4,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T11:49:10.311497+00:00",
+    "started_at": "2026-09-26T11:49:10.340997+00:00",
+    "completed_at": "2026-09-26T11:49:10.402180+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 61,
+    "retry_of_run_id": null,
+    "root_run_id": "run-d2a84188-2edb-4d32-9fd8-73ecf0869276",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:10.311497+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "binding_context",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:10.340997+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "analyzing_layers",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:10.359281+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "assembling_results",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:10.390900+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:10.402180+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "browser-e2e-test-provider",
+      "model_label": "browser-e2e-test-provider",
+      "prompt_version": "context-brief-v5-clause-citations",
+      "schema_version": "writing-analysis-v1",
+      "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+      "source_memory_version": 4
+    },
+    "provider_metrics": {
+      "latency_ms": 1,
+      "input_tokens": 4,
+      "output_tokens": 3,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "analysis_type": "context_brief",
+    "current_draft_revision": 2,
+    "foreshadow_version": null,
+    "foreshadow_snapshot_digest": null,
+    "proposal": null,
+    "question": null,
+    "scope": null,
+    "issue_ids": [],
+    "source_run_id": null,
+    "retrieval": {
+      "counts": {
+        "author_context": {
+          "available": 0,
+          "selected": 0
+        },
+        "character_alias": {
+          "available": 0,
+          "selected": 0
+        },
+        "draft_claim": {
+          "available": 2,
+          "selected": 2
+        },
+        "foreshadow_record": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue_evidence": {
+          "available": 0,
+          "selected": 0
+        },
+        "memory_record": {
+          "available": 8,
+          "selected": 8
+        },
+        "source_span": {
+          "available": 10,
+          "selected": 4
+        }
+      },
+      "draft_claim_scope": {
+        "available": 2,
+        "body_chars": 54,
+        "excerpt_chars": 54,
+        "selected": [
+          {
+            "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+            "source_chars": 29,
+            "source_end": 29,
+            "source_start": 0,
+            "supplied_chars": 29,
+            "supplied_end": 29,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2",
+            "source_chars": 25,
+            "source_end": 54,
+            "source_start": 29,
+            "supplied_chars": 25,
+            "supplied_end": 54,
+            "truncated": false
+          }
+        ]
+      },
+      "method_version": "writing-analysis-lexical-v3-brief-540",
+      "selected_ids": {
+        "author_context": [],
+        "character_alias": [],
+        "draft_claim": [
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2"
+        ],
+        "foreshadow_record": [],
+        "issue": [],
+        "issue_evidence": [],
+        "memory_record": [
+          "mem-7d8f43c8-477b-4dd4-9266-1aff78d43f8e",
+          "mem-e4d3e220-b97c-44bd-aa60-0e9153aa4562",
+          "mem-63218676-b6b4-46f7-9aa9-a414f06477ea",
+          "mem-c1947a22-7db3-4f1e-8746-8862500905d4",
+          "mem-ca116f4b-9119-4f3b-b90e-a935169fee12",
+          "mem-99735689-7007-4918-889f-f8df0247c7e6",
+          "mem-ac5ae450-4613-49ef-9e49-3f12ff0c0090",
+          "mem-e67a4790-ce93-4607-bbef-737e81258998"
+        ],
+        "source_span": [
+          "span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+          "span-d3005951-b5b5-43b4-b777-4ebc3c49e028",
+          "span-a4f9c05d-1113-4ac3-9ee0-78d846d6b288",
+          "span-02fc8c8b-c291-4761-84ed-3b23e6b39771"
+        ]
+      },
+      "truncated": {
+        "author_context": false,
+        "character_alias": false,
+        "draft_body": false,
+        "draft_claim": false,
+        "foreshadow_record": false,
+        "issue": false,
+        "issue_evidence": false,
+        "memory_record": false,
+        "source_span": true,
+        "source_span_text": false
+      }
+    },
+    "input_digest": "f34536ca79aa0655f87b8fd0a76011e3bb7a41ad08e1ee263bd25df8bbae2516",
+    "analysis": {
+      "citation_transform": {
+        "added_source_count": 0,
+        "discarded_model_item_indices": [],
+        "duplicate_omitted_item_count": 0,
+        "fallback_draft_claim_ids": [
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2"
+        ],
+        "model_item_count": 12,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 0,
+        "overflow_omitted_item_count": 2,
+        "source_rendered_item_count": 12,
+        "version": "source-rendered-v2"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+            "source_chars": 29,
+            "source_end": 29,
+            "source_start": 0,
+            "supplied_chars": 29,
+            "supplied_end": 29,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2",
+            "source_chars": 25,
+            "source_end": 54,
+            "source_start": 29,
+            "supplied_chars": 25,
+            "supplied_end": 54,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "evidence_status": "supported",
+      "items": [
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "CTRL_G02_TIME 昨日温岚尚未得知银钥匙的用途。",
+              "label": "当前草稿 · 句 1",
+              "source_id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句1原文：「CTRL_G02_TIME 昨日温岚尚未得知银钥匙的用途。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。",
+              "label": "当前草稿 · 句 2",
+              "source_id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句2原文：「今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。」"
+        },
+        {
+          "section": "character_state",
+          "sources": [
+            {
+              "excerpt": "廊桥钥匙的含义",
+              "label": "温岚 · does_not_know",
+              "source_id": "mem-7d8f43c8-477b-4dd4-9266-1aff78d43f8e",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-7d8f43c8-477b-4dd4-9266-1aff78d43f8e",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记录：温岚不知道「廊桥钥匙的含义」"
+        },
+        {
+          "section": "confirmed_fact",
+          "sources": [
+            {
+              "excerpt": "第3章 19:20",
+              "label": "西航道退潮 · time",
+              "source_id": "mem-e4d3e220-b97c-44bd-aa60-0e9153aa4562",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-e4d3e220-b97c-44bd-aa60-0e9153aa4562",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记忆记录（西航道退潮 · time）：「第3章 19:20」"
+        },
+        {
+          "section": "world_rule",
+          "sources": [
+            {
+              "excerpt": "只在北潮闸完全关闭后敲响一次",
+              "label": "灰港雾钟 · ring_condition",
+              "source_id": "mem-63218676-b6b4-46f7-9aa9-a414f06477ea",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-63218676-b6b4-46f7-9aa9-a414f06477ea",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记忆记录（灰港雾钟 · ring_condition）：「只在北潮闸完全关闭后敲响一次」"
+        },
+        {
+          "section": "character_state",
+          "sources": [
+            {
+              "excerpt": "雾线水门外锚柱",
+              "label": "航图 · location",
+              "source_id": "mem-c1947a22-7db3-4f1e-8746-8862500905d4",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-c1947a22-7db3-4f1e-8746-8862500905d4",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记录：航图位于「雾线水门外锚柱」"
+        },
+        {
+          "section": "character_state",
+          "sources": [
+            {
+              "excerpt": "温岚",
+              "label": "黄铜罗盘 · holder",
+              "source_id": "mem-ca116f4b-9119-4f3b-b90e-a935169fee12",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-ca116f4b-9119-4f3b-b90e-a935169fee12",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记录：黄铜罗盘的持有者为「温岚」"
+        },
+        {
+          "section": "open_thread",
+          "sources": [
+            {
+              "excerpt": "没有靠岸，来源未明",
+              "label": "白色渡船 · status",
+              "source_id": "mem-99735689-7007-4918-889f-f8df0247c7e6",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-99735689-7007-4918-889f-f8df0247c7e6",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记忆记录（白色渡船 · status）：「没有靠岸，来源未明」"
+        },
+        {
+          "section": "confirmed_fact",
+          "sources": [
+            {
+              "excerpt": "第6章 21:05 收到三次求救码",
+              "label": "低室电台 · received",
+              "source_id": "mem-ac5ae450-4613-49ef-9e49-3f12ff0c0090",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-ac5ae450-4613-49ef-9e49-3f12ff0c0090",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记忆记录（低室电台 · received）：「第6章 21:05 收到三次求救码」"
+        },
+        {
+          "section": "open_thread",
+          "sources": [
+            {
+              "excerpt": "北潮闸未关闭时响起，原因未解",
+              "label": "异常雾钟 · status",
+              "source_id": "mem-e67a4790-ce93-4607-bbef-737e81258998",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-e67a4790-ce93-4607-bbef-737e81258998",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记忆记录（异常雾钟 · status）：「北潮闸未关闭时响起，原因未解」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+              "label": "第 4 章 · 知识边界",
+              "source_id": "span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/sources#span-span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+              "source_type": "source_span"
+            }
+          ],
+          "text": "第4章所选原文：「温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+              "label": "第 10 章 · 未解问题",
+              "source_id": "span-d3005951-b5b5-43b4-b777-4ebc3c49e028",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/sources#span-span-d3005951-b5b5-43b4-b777-4ebc3c49e028",
+              "source_type": "source_span"
+            }
+          ],
+          "text": "第10章所选原文：「北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。」"
+        }
+      ],
+      "summary": "当前草稿句1原文：「CTRL_G02_TIME 昨日温岚尚未得知银钥匙的用途。」 当前草稿句2原文：「今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。」 第4章所选原文：「温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。」",
+      "summary_sources": [
+        {
+          "excerpt": "CTRL_G02_TIME 昨日温岚尚未得知银钥匙的用途。",
+          "label": "当前草稿 · 句 1",
+          "source_id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+          "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。",
+          "label": "当前草稿 · 句 2",
+          "source_id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2",
+          "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+          "label": "第 4 章 · 知识边界",
+          "source_id": "span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+          "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/sources#span-span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+          "source_type": "source_span"
+        }
+      ]
+    }
+  },
+  "refreshed": {
+    "run_id": "run-d2a84188-2edb-4d32-9fd8-73ecf0869276",
+    "project_id": "prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d",
+    "run_type": "context_brief",
+    "status": "completed",
+    "stage": "completed",
+    "source_revision": 1,
+    "draft_revision": 2,
+    "source_memory_version": 4,
+    "author_context_version": 0,
+    "author_context_version_status": "recorded",
+    "author_context_resolvable": true,
+    "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+    "alias_version": null,
+    "alias_snapshot_digest": null,
+    "source_change_set_id": null,
+    "source_span_ids": [],
+    "incremental_batch_id": null,
+    "current_revision": 2,
+    "is_stale": false,
+    "superseded": false,
+    "lineage_status": "current",
+    "result_origin": "provider",
+    "result_origin_label": "Provider 检查结果",
+    "error_code": null,
+    "retryable": false,
+    "created_at": "2026-09-26T11:49:10.311497+00:00",
+    "started_at": "2026-09-26T11:49:10.340997+00:00",
+    "completed_at": "2026-09-26T11:49:10.402180+00:00",
+    "cancel_requested_at": null,
+    "duration_ms": 61,
+    "retry_of_run_id": null,
+    "root_run_id": "run-d2a84188-2edb-4d32-9fd8-73ecf0869276",
+    "attempt_number": 1,
+    "transitions": [
+      {
+        "sequence": 1,
+        "status": "queued",
+        "stage": "queued",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:10.311497+00:00"
+      },
+      {
+        "sequence": 2,
+        "status": "running",
+        "stage": "binding_context",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:10.340997+00:00"
+      },
+      {
+        "sequence": 3,
+        "status": "running",
+        "stage": "analyzing_layers",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:10.359281+00:00"
+      },
+      {
+        "sequence": 4,
+        "status": "running",
+        "stage": "assembling_results",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:10.390900+00:00"
+      },
+      {
+        "sequence": 5,
+        "status": "completed",
+        "stage": "completed",
+        "error_code": null,
+        "created_at": "2026-09-26T11:49:10.402180+00:00"
+      }
+    ],
+    "provenance": {
+      "provider_label": "browser-e2e-test-provider",
+      "model_label": "browser-e2e-test-provider",
+      "prompt_version": "context-brief-v5-clause-citations",
+      "schema_version": "writing-analysis-v1",
+      "retrieval_method_version": "writing-analysis-lexical-v3-brief-540",
+      "source_memory_version": 4
+    },
+    "provider_metrics": {
+      "latency_ms": 1,
+      "input_tokens": 4,
+      "output_tokens": 3,
+      "cost_cny": null,
+      "cost_available": false
+    },
+    "analysis_type": "context_brief",
+    "current_draft_revision": 2,
+    "foreshadow_version": null,
+    "foreshadow_snapshot_digest": null,
+    "proposal": null,
+    "question": null,
+    "scope": null,
+    "issue_ids": [],
+    "source_run_id": null,
+    "retrieval": {
+      "counts": {
+        "author_context": {
+          "available": 0,
+          "selected": 0
+        },
+        "character_alias": {
+          "available": 0,
+          "selected": 0
+        },
+        "draft_claim": {
+          "available": 2,
+          "selected": 2
+        },
+        "foreshadow_record": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue": {
+          "available": 0,
+          "selected": 0
+        },
+        "issue_evidence": {
+          "available": 0,
+          "selected": 0
+        },
+        "memory_record": {
+          "available": 8,
+          "selected": 8
+        },
+        "source_span": {
+          "available": 10,
+          "selected": 4
+        }
+      },
+      "draft_claim_scope": {
+        "available": 2,
+        "body_chars": 54,
+        "excerpt_chars": 54,
+        "selected": [
+          {
+            "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+            "source_chars": 29,
+            "source_end": 29,
+            "source_start": 0,
+            "supplied_chars": 29,
+            "supplied_end": 29,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2",
+            "source_chars": 25,
+            "source_end": 54,
+            "source_start": 29,
+            "supplied_chars": 25,
+            "supplied_end": 54,
+            "truncated": false
+          }
+        ]
+      },
+      "method_version": "writing-analysis-lexical-v3-brief-540",
+      "selected_ids": {
+        "author_context": [],
+        "character_alias": [],
+        "draft_claim": [
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2"
+        ],
+        "foreshadow_record": [],
+        "issue": [],
+        "issue_evidence": [],
+        "memory_record": [
+          "mem-7d8f43c8-477b-4dd4-9266-1aff78d43f8e",
+          "mem-e4d3e220-b97c-44bd-aa60-0e9153aa4562",
+          "mem-63218676-b6b4-46f7-9aa9-a414f06477ea",
+          "mem-c1947a22-7db3-4f1e-8746-8862500905d4",
+          "mem-ca116f4b-9119-4f3b-b90e-a935169fee12",
+          "mem-99735689-7007-4918-889f-f8df0247c7e6",
+          "mem-ac5ae450-4613-49ef-9e49-3f12ff0c0090",
+          "mem-e67a4790-ce93-4607-bbef-737e81258998"
+        ],
+        "source_span": [
+          "span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+          "span-d3005951-b5b5-43b4-b777-4ebc3c49e028",
+          "span-a4f9c05d-1113-4ac3-9ee0-78d846d6b288",
+          "span-02fc8c8b-c291-4761-84ed-3b23e6b39771"
+        ]
+      },
+      "truncated": {
+        "author_context": false,
+        "character_alias": false,
+        "draft_body": false,
+        "draft_claim": false,
+        "foreshadow_record": false,
+        "issue": false,
+        "issue_evidence": false,
+        "memory_record": false,
+        "source_span": true,
+        "source_span_text": false
+      }
+    },
+    "input_digest": "f34536ca79aa0655f87b8fd0a76011e3bb7a41ad08e1ee263bd25df8bbae2516",
+    "analysis": {
+      "citation_transform": {
+        "added_source_count": 0,
+        "discarded_model_item_indices": [],
+        "duplicate_omitted_item_count": 0,
+        "fallback_draft_claim_ids": [
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2"
+        ],
+        "model_item_count": 12,
+        "model_summary_used": false,
+        "omitted_unmatched_clause_count": 0,
+        "overflow_omitted_item_count": 2,
+        "source_rendered_item_count": 12,
+        "version": "source-rendered-v2"
+      },
+      "draft_coverage": {
+        "cited_ranges": [
+          {
+            "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+            "source_chars": 29,
+            "source_end": 29,
+            "source_start": 0,
+            "supplied_chars": 29,
+            "supplied_end": 29,
+            "truncated": false
+          },
+          {
+            "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2",
+            "source_chars": 25,
+            "source_end": 54,
+            "source_start": 29,
+            "supplied_chars": 25,
+            "supplied_end": 54,
+            "truncated": false
+          }
+        ],
+        "discarded_item_indices": [],
+        "reasons": [],
+        "source_ids": [
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+          "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2"
+        ],
+        "status": "covered",
+        "uncovered_source_ids": [],
+        "unselected_count": 0
+      },
+      "evidence_status": "supported",
+      "items": [
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "CTRL_G02_TIME 昨日温岚尚未得知银钥匙的用途。",
+              "label": "当前草稿 · 句 1",
+              "source_id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句1原文：「CTRL_G02_TIME 昨日温岚尚未得知银钥匙的用途。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。",
+              "label": "当前草稿 · 句 2",
+              "source_id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/workspace#draft-source",
+              "source_type": "draft_claim"
+            }
+          ],
+          "text": "当前草稿句2原文：「今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。」"
+        },
+        {
+          "section": "character_state",
+          "sources": [
+            {
+              "excerpt": "廊桥钥匙的含义",
+              "label": "温岚 · does_not_know",
+              "source_id": "mem-7d8f43c8-477b-4dd4-9266-1aff78d43f8e",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-7d8f43c8-477b-4dd4-9266-1aff78d43f8e",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记录：温岚不知道「廊桥钥匙的含义」"
+        },
+        {
+          "section": "confirmed_fact",
+          "sources": [
+            {
+              "excerpt": "第3章 19:20",
+              "label": "西航道退潮 · time",
+              "source_id": "mem-e4d3e220-b97c-44bd-aa60-0e9153aa4562",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-e4d3e220-b97c-44bd-aa60-0e9153aa4562",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记忆记录（西航道退潮 · time）：「第3章 19:20」"
+        },
+        {
+          "section": "world_rule",
+          "sources": [
+            {
+              "excerpt": "只在北潮闸完全关闭后敲响一次",
+              "label": "灰港雾钟 · ring_condition",
+              "source_id": "mem-63218676-b6b4-46f7-9aa9-a414f06477ea",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-63218676-b6b4-46f7-9aa9-a414f06477ea",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记忆记录（灰港雾钟 · ring_condition）：「只在北潮闸完全关闭后敲响一次」"
+        },
+        {
+          "section": "character_state",
+          "sources": [
+            {
+              "excerpt": "雾线水门外锚柱",
+              "label": "航图 · location",
+              "source_id": "mem-c1947a22-7db3-4f1e-8746-8862500905d4",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-c1947a22-7db3-4f1e-8746-8862500905d4",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记录：航图位于「雾线水门外锚柱」"
+        },
+        {
+          "section": "character_state",
+          "sources": [
+            {
+              "excerpt": "温岚",
+              "label": "黄铜罗盘 · holder",
+              "source_id": "mem-ca116f4b-9119-4f3b-b90e-a935169fee12",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-ca116f4b-9119-4f3b-b90e-a935169fee12",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记录：黄铜罗盘的持有者为「温岚」"
+        },
+        {
+          "section": "open_thread",
+          "sources": [
+            {
+              "excerpt": "没有靠岸，来源未明",
+              "label": "白色渡船 · status",
+              "source_id": "mem-99735689-7007-4918-889f-f8df0247c7e6",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-99735689-7007-4918-889f-f8df0247c7e6",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记忆记录（白色渡船 · status）：「没有靠岸，来源未明」"
+        },
+        {
+          "section": "confirmed_fact",
+          "sources": [
+            {
+              "excerpt": "第6章 21:05 收到三次求救码",
+              "label": "低室电台 · received",
+              "source_id": "mem-ac5ae450-4613-49ef-9e49-3f12ff0c0090",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-ac5ae450-4613-49ef-9e49-3f12ff0c0090",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记忆记录（低室电台 · received）：「第6章 21:05 收到三次求救码」"
+        },
+        {
+          "section": "open_thread",
+          "sources": [
+            {
+              "excerpt": "北潮闸未关闭时响起，原因未解",
+              "label": "异常雾钟 · status",
+              "source_id": "mem-e67a4790-ce93-4607-bbef-737e81258998",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/memory#memory-mem-e67a4790-ce93-4607-bbef-737e81258998",
+              "source_type": "memory_record"
+            }
+          ],
+          "text": "已确认记忆记录（异常雾钟 · status）：「北潮闸未关闭时响起，原因未解」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+              "label": "第 4 章 · 知识边界",
+              "source_id": "span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/sources#span-span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+              "source_type": "source_span"
+            }
+          ],
+          "text": "第4章所选原文：「温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。」"
+        },
+        {
+          "section": "recent_source",
+          "sources": [
+            {
+              "excerpt": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+              "label": "第 10 章 · 未解问题",
+              "source_id": "span-d3005951-b5b5-43b4-b777-4ebc3c49e028",
+              "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/sources#span-span-d3005951-b5b5-43b4-b777-4ebc3c49e028",
+              "source_type": "source_span"
+            }
+          ],
+          "text": "第10章所选原文：「北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。」"
+        }
+      ],
+      "summary": "当前草稿句1原文：「CTRL_G02_TIME 昨日温岚尚未得知银钥匙的用途。」 当前草稿句2原文：「今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。」 第4章所选原文：「温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。」",
+      "summary_sources": [
+        {
+          "excerpt": "CTRL_G02_TIME 昨日温岚尚未得知银钥匙的用途。",
+          "label": "当前草稿 · 句 1",
+          "source_id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+          "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。",
+          "label": "当前草稿 · 句 2",
+          "source_id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2",
+          "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/workspace#draft-source",
+          "source_type": "draft_claim"
+        },
+        {
+          "excerpt": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+          "label": "第 4 章 · 知识边界",
+          "source_id": "span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+          "source_path": "/projects/prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d/sources#span-span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+          "source_type": "source_span"
+        }
+      ]
+    }
+  },
+  "fixture": [
+    {
+      "project_id": "prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d",
+      "request": {
+        "bindings": {
+          "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+          "author_context_version": 0,
+          "draft_id": "draft-f7af50f1-b28e-4a69-833d-41f513241d39",
+          "draft_revision": 2,
+          "memory_version": 4,
+          "project_id": "prj-524039d4-82ac-43b8-a4eb-173d1b1bbc3d",
+          "source_revision": 1
+        },
+        "layers": {
+          "confirmed": {
+            "memory_records": [
+              {
+                "id": "mem-7d8f43c8-477b-4dd4-9266-1aff78d43f8e",
+                "memory_type": "character_knowledge",
+                "predicate": "does_not_know",
+                "source_span_id": "span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+                "subject": "温岚",
+                "value": "廊桥钥匙的含义"
+              },
+              {
+                "id": "mem-e4d3e220-b97c-44bd-aa60-0e9153aa4562",
+                "memory_type": "event_timeline",
+                "predicate": "time",
+                "source_span_id": "span-d820d4e8-091b-4e40-91b6-c709a086d39c",
+                "subject": "西航道退潮",
+                "value": "第3章 19:20"
+              },
+              {
+                "id": "mem-63218676-b6b4-46f7-9aa9-a414f06477ea",
+                "memory_type": "static_canon",
+                "predicate": "ring_condition",
+                "source_span_id": "span-f8c7cb25-649a-4d27-8086-389c949e2251",
+                "subject": "灰港雾钟",
+                "value": "只在北潮闸完全关闭后敲响一次"
+              },
+              {
+                "id": "mem-c1947a22-7db3-4f1e-8746-8862500905d4",
+                "memory_type": "dynamic_state",
+                "predicate": "location",
+                "source_span_id": "span-169f2468-99d1-4d12-9812-4f6d06ed2ad9",
+                "subject": "航图",
+                "value": "雾线水门外锚柱"
+              },
+              {
+                "id": "mem-ca116f4b-9119-4f3b-b90e-a935169fee12",
+                "memory_type": "dynamic_state",
+                "predicate": "holder",
+                "source_span_id": "span-a4f9c05d-1113-4ac3-9ee0-78d846d6b288",
+                "subject": "黄铜罗盘",
+                "value": "温岚"
+              },
+              {
+                "id": "mem-99735689-7007-4918-889f-f8df0247c7e6",
+                "memory_type": "open_thread",
+                "predicate": "status",
+                "source_span_id": "span-adda6add-723c-4e83-a84c-dd2e66b95775",
+                "subject": "白色渡船",
+                "value": "没有靠岸，来源未明"
+              },
+              {
+                "id": "mem-ac5ae450-4613-49ef-9e49-3f12ff0c0090",
+                "memory_type": "event_timeline",
+                "predicate": "received",
+                "source_span_id": "span-8b66f564-8f28-4e04-947c-4e4b560db15e",
+                "subject": "低室电台",
+                "value": "第6章 21:05 收到三次求救码"
+              },
+              {
+                "id": "mem-e67a4790-ce93-4607-bbef-737e81258998",
+                "memory_type": "open_thread",
+                "predicate": "status",
+                "source_span_id": "span-d3005951-b5b5-43b4-b777-4ebc3c49e028",
+                "subject": "异常雾钟",
+                "value": "北潮闸未关闭时响起，原因未解"
+              }
+            ]
+          },
+          "planned": {
+            "character_plans": [],
+            "story_plans": [],
+            "world_plans": []
+          },
+          "written": {
+            "draft": {
+              "chapter_number": 11,
+              "excerpt": "CTRL_G02_TIME 昨日温岚尚未得知银钥匙的用途。今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。",
+              "id": "draft-f7af50f1-b28e-4a69-833d-41f513241d39",
+              "revision": 2,
+              "title": "第十一章：未归的航标"
+            },
+            "draft_claims": [
+              {
+                "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+                "ordinal": 1,
+                "text": "CTRL_G02_TIME 昨日温岚尚未得知银钥匙的用途。"
+              },
+              {
+                "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2",
+                "ordinal": 2,
+                "text": "今日她读完陈澈的信，才知道银钥匙能打开潮汐档案柜。"
+              }
+            ],
+            "source_spans": [
+              {
+                "body": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+                "chapter_id": "ch-d5db2d49-e24a-422a-b999-813aafc460d4",
+                "chapter_number": 4,
+                "chapter_title": "无字潮表",
+                "id": "span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+                "label": "知识边界",
+                "source_revision": 1
+              },
+              {
+                "body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+                "chapter_id": "ch-745ec01b-f8b2-4325-a81e-fb5f265c1f12",
+                "chapter_number": 10,
+                "chapter_title": "回声坐标",
+                "id": "span-d3005951-b5b5-43b4-b777-4ebc3c49e028",
+                "label": "未解问题",
+                "source_revision": 1
+              },
+              {
+                "body": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+                "chapter_id": "ch-92b8ea59-fce1-4abc-8d34-825de13d0dea",
+                "chapter_number": 9,
+                "chapter_title": "换手",
+                "id": "span-a4f9c05d-1113-4ac3-9ee0-78d846d6b288",
+                "label": "动态状态",
+                "source_revision": 1
+              },
+              {
+                "body": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+                "chapter_id": "ch-f4268e59-82ab-47f9-b14e-9f587e30ced6",
+                "chapter_number": 8,
+                "chapter_title": "北堤灯火",
+                "id": "span-02fc8c8b-c291-4761-84ed-3b23e6b39771",
+                "label": "关系变化",
+                "source_revision": 1
+              }
+            ]
+          }
+        },
+        "retrieval": {
+          "counts": {
+            "author_context": {
+              "available": 0,
+              "selected": 0
+            },
+            "character_alias": {
+              "available": 0,
+              "selected": 0
+            },
+            "draft_claim": {
+              "available": 2,
+              "selected": 2
+            },
+            "foreshadow_record": {
+              "available": 0,
+              "selected": 0
+            },
+            "issue": {
+              "available": 0,
+              "selected": 0
+            },
+            "issue_evidence": {
+              "available": 0,
+              "selected": 0
+            },
+            "memory_record": {
+              "available": 8,
+              "selected": 8
+            },
+            "source_span": {
+              "available": 10,
+              "selected": 4
+            }
+          },
+          "draft_claim_scope": {
+            "available": 2,
+            "body_chars": 54,
+            "excerpt_chars": 54,
+            "selected": [
+              {
+                "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+                "source_chars": 29,
+                "source_end": 29,
+                "source_start": 0,
+                "supplied_chars": 29,
+                "supplied_end": 29,
+                "truncated": false
+              },
+              {
+                "id": "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2",
+                "source_chars": 25,
+                "source_end": 54,
+                "source_start": 29,
+                "supplied_chars": 25,
+                "supplied_end": 54,
+                "truncated": false
+              }
+            ]
+          },
+          "method_version": "writing-analysis-lexical-v3-brief-540",
+          "selected_ids": {
+            "author_context": [],
+            "character_alias": [],
+            "draft_claim": [
+              "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-1",
+              "draft-claim-draft-f7af50f1-b28e-4a69-833d-41f513241d39-r2-2"
+            ],
+            "foreshadow_record": [],
+            "issue": [],
+            "issue_evidence": [],
+            "memory_record": [
+              "mem-7d8f43c8-477b-4dd4-9266-1aff78d43f8e",
+              "mem-e4d3e220-b97c-44bd-aa60-0e9153aa4562",
+              "mem-63218676-b6b4-46f7-9aa9-a414f06477ea",
+              "mem-c1947a22-7db3-4f1e-8746-8862500905d4",
+              "mem-ca116f4b-9119-4f3b-b90e-a935169fee12",
+              "mem-99735689-7007-4918-889f-f8df0247c7e6",
+              "mem-ac5ae450-4613-49ef-9e49-3f12ff0c0090",
+              "mem-e67a4790-ce93-4607-bbef-737e81258998"
+            ],
+            "source_span": [
+              "span-7ca8686b-6e24-4f65-b826-aa33a665c92d",
+              "span-d3005951-b5b5-43b4-b777-4ebc3c49e028",
+              "span-a4f9c05d-1113-4ac3-9ee0-78d846d6b288",
+              "span-02fc8c8b-c291-4761-84ed-3b23e6b39771"
+            ]
+          },
+          "truncated": {
+            "author_context": false,
+            "character_alias": false,
+            "draft_body": false,
+            "draft_claim": false,
+            "foreshadow_record": false,
+            "issue": false,
+            "issue_evidence": false,
+            "memory_record": false,
+            "source_span": true,
+            "source_span_text": false
+          }
+        },
+        "task": "context_brief",
+        "output_schema": {
+          "summary": "1-400 chars",
+          "summary_sources": [
+            {
+              "source_type": "author_context|memory_record|source_span|draft_claim",
+              "source_id": "supplied id"
+            }
+          ],
+          "items": [
+            {
+              "section": "related_plan|confirmed_fact|character_state|world_rule|open_thread|recent_source",
+              "text": "1-600 chars",
+              "sources": [
+                {
+                  "source_type": "author_context|memory_record|source_span|draft_claim",
+                  "source_id": "supplied id"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "response": {
+        "summary": "模型编造：所有秘密已经公开。",
+        "summary_sources": [
+          {
+            "source_type": "memory_record",
+            "source_id": "mem-7d8f43c8-477b-4dd4-9266-1aff78d43f8e"
+          }
+        ],
+        "items": [
+          {
+            "section": "confirmed_fact",
+            "text": "温岚廊桥钥匙的含义",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-7d8f43c8-477b-4dd4-9266-1aff78d43f8e"
+              }
+            ]
+          },
+          {
+            "section": "confirmed_fact",
+            "text": "西航道退潮第3章 19:20",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-e4d3e220-b97c-44bd-aa60-0e9153aa4562"
+              }
+            ]
+          },
+          {
+            "section": "confirmed_fact",
+            "text": "灰港雾钟只在北潮闸完全关闭后敲响一次",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-63218676-b6b4-46f7-9aa9-a414f06477ea"
+              }
+            ]
+          },
+          {
+            "section": "confirmed_fact",
+            "text": "航图雾线水门外锚柱",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-c1947a22-7db3-4f1e-8746-8862500905d4"
+              }
+            ]
+          },
+          {
+            "section": "confirmed_fact",
+            "text": "黄铜罗盘温岚",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-ca116f4b-9119-4f3b-b90e-a935169fee12"
+              }
+            ]
+          },
+          {
+            "section": "confirmed_fact",
+            "text": "白色渡船没有靠岸，来源未明",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-99735689-7007-4918-889f-f8df0247c7e6"
+              }
+            ]
+          },
+          {
+            "section": "confirmed_fact",
+            "text": "低室电台第6章 21:05 收到三次求救码",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-ac5ae450-4613-49ef-9e49-3f12ff0c0090"
+              }
+            ]
+          },
+          {
+            "section": "confirmed_fact",
+            "text": "异常雾钟北潮闸未关闭时响起，原因未解",
+            "sources": [
+              {
+                "source_type": "memory_record",
+                "source_id": "mem-e67a4790-ce93-4607-bbef-737e81258998"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-7ca8686b-6e24-4f65-b826-aa33a665c92d"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-d3005951-b5b5-43b4-b777-4ebc3c49e028"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-a4f9c05d-1113-4ac3-9ee0-78d846d6b288"
+              }
+            ]
+          },
+          {
+            "section": "recent_source",
+            "text": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+            "sources": [
+              {
+                "source_type": "source_span",
+                "source_id": "span-02fc8c8b-c291-4761-84ed-3b23e6b39771"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "external": []
+}

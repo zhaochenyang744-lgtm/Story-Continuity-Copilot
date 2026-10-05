@@ -1,0 +1,4369 @@
+{
+  "schema_version": "current-contract-compare-v2-offline-capture",
+  "fake_provider_calls": 24,
+  "real_provider_calls": 0,
+  "required_evidence_present_count": 24,
+  "missing": [],
+  "rows": [
+    {
+      "case_id": "ccv2-north_glass-world_rule-conflict",
+      "corpus_key": "north_glass",
+      "expected_evidence": [
+        [
+          1,
+          "badge_rule"
+        ],
+        [
+          2,
+          "badge_roster"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "badge_rule"
+        ],
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          4,
+          "carrier_ready_rule"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ],
+        [
+          6,
+          "cap_actor"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "badge_rule"
+        ],
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-north-glass",
+          "revision": 2,
+          "body": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge."
+        },
+        "claims": [
+          {
+            "id": "claim-run-a150e0f4-86f4-4126-baf5-8763eafcd27a-1",
+            "text": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-north_glass-2",
+                "chapter_id": "fixture-chapter-north_glass-2",
+                "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                "label": "badge_roster",
+                "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+              },
+              {
+                "id": "fixture-span-north_glass-5",
+                "chapter_id": "fixture-chapter-north_glass-5",
+                "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                "label": "carrier_inspection",
+                "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+              },
+              {
+                "id": "fixture-span-north_glass-1",
+                "chapter_id": "fixture-chapter-north_glass-1",
+                "body": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+                "label": "badge_rule",
+                "prompt_excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-north_glass-1",
+            "memory_type": "static_canon",
+            "subject": "Mira",
+            "predicate": "rule",
+            "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "source_span_id": "fixture-span-north_glass-1"
+          },
+          {
+            "id": "fixture-memory-north_glass-2",
+            "memory_type": "dynamic_state",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "source_span_id": "fixture-span-north_glass-2"
+          },
+          {
+            "id": "fixture-memory-north_glass-3",
+            "memory_type": "open_thread",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "The spare blue badge register leaves its 11点 holder field blank.",
+            "source_span_id": "fixture-span-north_glass-3"
+          },
+          {
+            "id": "fixture-memory-north_glass-4",
+            "memory_type": "static_canon",
+            "subject": "pneumatic carrier",
+            "predicate": "rule",
+            "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "source_span_id": "fixture-span-north_glass-4"
+          },
+          {
+            "id": "fixture-memory-north_glass-5",
+            "memory_type": "dynamic_state",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "source_span_id": "fixture-span-north_glass-5"
+          },
+          {
+            "id": "fixture-memory-north_glass-6",
+            "memory_type": "open_thread",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "The carrier inspection does not record who loosened its valve cap.",
+            "source_span_id": "fixture-span-north_glass-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-north_glass-world_rule-no_conflict",
+      "corpus_key": "north_glass",
+      "expected_evidence": [
+        [
+          1,
+          "badge_rule"
+        ],
+        [
+          2,
+          "badge_roster"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "badge_rule"
+        ],
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          4,
+          "carrier_ready_rule"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ],
+        [
+          6,
+          "cap_actor"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "badge_rule"
+        ],
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-north-glass",
+          "revision": 2,
+          "body": "At 10点 on the same day, Mira could not open North Glass with her only red badge."
+        },
+        "claims": [
+          {
+            "id": "claim-run-1fa8097f-c17f-4390-bac3-53b48843ec7b-1",
+            "text": "At 10点 on the same day, Mira could not open North Glass with her only red badge.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-north_glass-2",
+                "chapter_id": "fixture-chapter-north_glass-2",
+                "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                "label": "badge_roster",
+                "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+              },
+              {
+                "id": "fixture-span-north_glass-5",
+                "chapter_id": "fixture-chapter-north_glass-5",
+                "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                "label": "carrier_inspection",
+                "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+              },
+              {
+                "id": "fixture-span-north_glass-1",
+                "chapter_id": "fixture-chapter-north_glass-1",
+                "body": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+                "label": "badge_rule",
+                "prompt_excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-north_glass-1",
+            "memory_type": "static_canon",
+            "subject": "Mira",
+            "predicate": "rule",
+            "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "source_span_id": "fixture-span-north_glass-1"
+          },
+          {
+            "id": "fixture-memory-north_glass-2",
+            "memory_type": "dynamic_state",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "source_span_id": "fixture-span-north_glass-2"
+          },
+          {
+            "id": "fixture-memory-north_glass-3",
+            "memory_type": "open_thread",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "The spare blue badge register leaves its 11点 holder field blank.",
+            "source_span_id": "fixture-span-north_glass-3"
+          },
+          {
+            "id": "fixture-memory-north_glass-4",
+            "memory_type": "static_canon",
+            "subject": "pneumatic carrier",
+            "predicate": "rule",
+            "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "source_span_id": "fixture-span-north_glass-4"
+          },
+          {
+            "id": "fixture-memory-north_glass-5",
+            "memory_type": "dynamic_state",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "source_span_id": "fixture-span-north_glass-5"
+          },
+          {
+            "id": "fixture-memory-north_glass-6",
+            "memory_type": "open_thread",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "The carrier inspection does not record who loosened its valve cap.",
+            "source_span_id": "fixture-span-north_glass-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "expected_evidence": [
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          3,
+          "spare_register"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "badge_rule"
+        ],
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          3,
+          "spare_register"
+        ],
+        [
+          4,
+          "carrier_ready_rule"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ]
+      ],
+      "business_selected": [
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          3,
+          "spare_register"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-north-glass",
+          "revision": 2,
+          "body": "Mira held the spare blue badge at 11点, according to the two badge registers."
+        },
+        "claims": [
+          {
+            "id": "claim-run-1488b4a1-934c-437c-b12a-fb240729d012-1",
+            "text": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-north_glass-2",
+                "chapter_id": "fixture-chapter-north_glass-2",
+                "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                "label": "badge_roster",
+                "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+              },
+              {
+                "id": "fixture-span-north_glass-3",
+                "chapter_id": "fixture-chapter-north_glass-3",
+                "body": "The spare blue badge register leaves its 11点 holder field blank.",
+                "label": "spare_register",
+                "prompt_excerpt": "The spare blue badge register leaves its 11点 holder field blank."
+              },
+              {
+                "id": "fixture-span-north_glass-5",
+                "chapter_id": "fixture-chapter-north_glass-5",
+                "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                "label": "carrier_inspection",
+                "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-north_glass-1",
+            "memory_type": "static_canon",
+            "subject": "Mira",
+            "predicate": "rule",
+            "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "source_span_id": "fixture-span-north_glass-1"
+          },
+          {
+            "id": "fixture-memory-north_glass-2",
+            "memory_type": "dynamic_state",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "source_span_id": "fixture-span-north_glass-2"
+          },
+          {
+            "id": "fixture-memory-north_glass-3",
+            "memory_type": "open_thread",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "The spare blue badge register leaves its 11点 holder field blank.",
+            "source_span_id": "fixture-span-north_glass-3"
+          },
+          {
+            "id": "fixture-memory-north_glass-4",
+            "memory_type": "static_canon",
+            "subject": "pneumatic carrier",
+            "predicate": "rule",
+            "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "source_span_id": "fixture-span-north_glass-4"
+          },
+          {
+            "id": "fixture-memory-north_glass-5",
+            "memory_type": "dynamic_state",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "source_span_id": "fixture-span-north_glass-5"
+          },
+          {
+            "id": "fixture-memory-north_glass-6",
+            "memory_type": "open_thread",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "The carrier inspection does not record who loosened its valve cap.",
+            "source_span_id": "fixture-span-north_glass-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-conflict",
+      "corpus_key": "north_glass",
+      "expected_evidence": [
+        [
+          4,
+          "carrier_ready_rule"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "badge_rule"
+        ],
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          4,
+          "carrier_ready_rule"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ],
+        [
+          6,
+          "cap_actor"
+        ]
+      ],
+      "business_selected": [
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          4,
+          "carrier_ready_rule"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-north-glass",
+          "revision": 2,
+          "body": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch."
+        },
+        "claims": [
+          {
+            "id": "claim-run-1bd08ef5-34bd-490b-9356-53a42c1dfd8a-1",
+            "text": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-north_glass-5",
+                "chapter_id": "fixture-chapter-north_glass-5",
+                "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                "label": "carrier_inspection",
+                "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+              },
+              {
+                "id": "fixture-span-north_glass-4",
+                "chapter_id": "fixture-chapter-north_glass-4",
+                "body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+                "label": "carrier_ready_rule",
+                "prompt_excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked."
+              },
+              {
+                "id": "fixture-span-north_glass-2",
+                "chapter_id": "fixture-chapter-north_glass-2",
+                "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                "label": "badge_roster",
+                "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-north_glass-1",
+            "memory_type": "static_canon",
+            "subject": "Mira",
+            "predicate": "rule",
+            "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "source_span_id": "fixture-span-north_glass-1"
+          },
+          {
+            "id": "fixture-memory-north_glass-2",
+            "memory_type": "dynamic_state",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "source_span_id": "fixture-span-north_glass-2"
+          },
+          {
+            "id": "fixture-memory-north_glass-3",
+            "memory_type": "open_thread",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "The spare blue badge register leaves its 11点 holder field blank.",
+            "source_span_id": "fixture-span-north_glass-3"
+          },
+          {
+            "id": "fixture-memory-north_glass-4",
+            "memory_type": "static_canon",
+            "subject": "pneumatic carrier",
+            "predicate": "rule",
+            "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "source_span_id": "fixture-span-north_glass-4"
+          },
+          {
+            "id": "fixture-memory-north_glass-5",
+            "memory_type": "dynamic_state",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "source_span_id": "fixture-span-north_glass-5"
+          },
+          {
+            "id": "fixture-memory-north_glass-6",
+            "memory_type": "open_thread",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "The carrier inspection does not record who loosened its valve cap.",
+            "source_span_id": "fixture-span-north_glass-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-no_conflict",
+      "corpus_key": "north_glass",
+      "expected_evidence": [
+        [
+          4,
+          "carrier_ready_rule"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "badge_rule"
+        ],
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          4,
+          "carrier_ready_rule"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ],
+        [
+          6,
+          "cap_actor"
+        ]
+      ],
+      "business_selected": [
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          4,
+          "carrier_ready_rule"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-north-glass",
+          "revision": 2,
+          "body": "At 10点 on the same day, the North Glass pneumatic carrier was not ready despite its four-bar gauge."
+        },
+        "claims": [
+          {
+            "id": "claim-run-5957da21-0179-4c27-a58f-2eaadd7165ab-1",
+            "text": "At 10点 on the same day, the North Glass pneumatic carrier was not ready despite its four-bar gauge.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-north_glass-5",
+                "chapter_id": "fixture-chapter-north_glass-5",
+                "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                "label": "carrier_inspection",
+                "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+              },
+              {
+                "id": "fixture-span-north_glass-4",
+                "chapter_id": "fixture-chapter-north_glass-4",
+                "body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+                "label": "carrier_ready_rule",
+                "prompt_excerpt": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked."
+              },
+              {
+                "id": "fixture-span-north_glass-2",
+                "chapter_id": "fixture-chapter-north_glass-2",
+                "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                "label": "badge_roster",
+                "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-north_glass-1",
+            "memory_type": "static_canon",
+            "subject": "Mira",
+            "predicate": "rule",
+            "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "source_span_id": "fixture-span-north_glass-1"
+          },
+          {
+            "id": "fixture-memory-north_glass-2",
+            "memory_type": "dynamic_state",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "source_span_id": "fixture-span-north_glass-2"
+          },
+          {
+            "id": "fixture-memory-north_glass-3",
+            "memory_type": "open_thread",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "The spare blue badge register leaves its 11点 holder field blank.",
+            "source_span_id": "fixture-span-north_glass-3"
+          },
+          {
+            "id": "fixture-memory-north_glass-4",
+            "memory_type": "static_canon",
+            "subject": "pneumatic carrier",
+            "predicate": "rule",
+            "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "source_span_id": "fixture-span-north_glass-4"
+          },
+          {
+            "id": "fixture-memory-north_glass-5",
+            "memory_type": "dynamic_state",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "source_span_id": "fixture-span-north_glass-5"
+          },
+          {
+            "id": "fixture-memory-north_glass-6",
+            "memory_type": "open_thread",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "The carrier inspection does not record who loosened its valve cap.",
+            "source_span_id": "fixture-span-north_glass-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "corpus_key": "north_glass",
+      "expected_evidence": [
+        [
+          5,
+          "carrier_inspection"
+        ],
+        [
+          6,
+          "cap_actor"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "badge_rule"
+        ],
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          4,
+          "carrier_ready_rule"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ],
+        [
+          6,
+          "cap_actor"
+        ]
+      ],
+      "business_selected": [
+        [
+          2,
+          "badge_roster"
+        ],
+        [
+          5,
+          "carrier_inspection"
+        ],
+        [
+          6,
+          "cap_actor"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-north-glass",
+          "revision": 2,
+          "body": "Mira loosened the carrier valve cap, according to the inspection and cap record."
+        },
+        "claims": [
+          {
+            "id": "claim-run-cc79fc75-ed87-4db7-ba79-4f4428fc91ea-1",
+            "text": "Mira loosened the carrier valve cap, according to the inspection and cap record.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-north_glass-6",
+                "chapter_id": "fixture-chapter-north_glass-6",
+                "body": "The carrier inspection does not record who loosened its valve cap.",
+                "label": "cap_actor",
+                "prompt_excerpt": "The carrier inspection does not record who loosened its valve cap."
+              },
+              {
+                "id": "fixture-span-north_glass-5",
+                "chapter_id": "fixture-chapter-north_glass-5",
+                "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+                "label": "carrier_inspection",
+                "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+              },
+              {
+                "id": "fixture-span-north_glass-2",
+                "chapter_id": "fixture-chapter-north_glass-2",
+                "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+                "label": "badge_roster",
+                "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-north_glass-1",
+            "memory_type": "static_canon",
+            "subject": "Mira",
+            "predicate": "rule",
+            "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "source_span_id": "fixture-span-north_glass-1"
+          },
+          {
+            "id": "fixture-memory-north_glass-2",
+            "memory_type": "dynamic_state",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "source_span_id": "fixture-span-north_glass-2"
+          },
+          {
+            "id": "fixture-memory-north_glass-3",
+            "memory_type": "open_thread",
+            "subject": "Mira",
+            "predicate": "status",
+            "value": "The spare blue badge register leaves its 11点 holder field blank.",
+            "source_span_id": "fixture-span-north_glass-3"
+          },
+          {
+            "id": "fixture-memory-north_glass-4",
+            "memory_type": "static_canon",
+            "subject": "pneumatic carrier",
+            "predicate": "rule",
+            "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+            "source_span_id": "fixture-span-north_glass-4"
+          },
+          {
+            "id": "fixture-memory-north_glass-5",
+            "memory_type": "dynamic_state",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "source_span_id": "fixture-span-north_glass-5"
+          },
+          {
+            "id": "fixture-memory-north_glass-6",
+            "memory_type": "open_thread",
+            "subject": "pneumatic carrier",
+            "predicate": "status",
+            "value": "The carrier inspection does not record who loosened its valve cap.",
+            "source_span_id": "fixture-span-north_glass-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-conflict",
+      "corpus_key": "harbor_signal",
+      "expected_evidence": [
+        [
+          1,
+          "gate_log"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "gate_log"
+        ],
+        [
+          2,
+          "reopen_log"
+        ],
+        [
+          3,
+          "telegram_seal"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "gate_log"
+        ],
+        [
+          2,
+          "reopen_log"
+        ],
+        [
+          3,
+          "telegram_seal"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-harbor-signal",
+          "revision": 2,
+          "body": "At 09点 on the same day, the harbor signal gate first closed before it first opened."
+        },
+        "claims": [
+          {
+            "id": "claim-run-ad633c8c-03cc-4d2b-91fa-d213ff3f593a-1",
+            "text": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-harbor_signal-1",
+                "chapter_id": "fixture-chapter-harbor_signal-1",
+                "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+                "label": "gate_log",
+                "prompt_excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+              },
+              {
+                "id": "fixture-span-harbor_signal-2",
+                "chapter_id": "fixture-chapter-harbor_signal-2",
+                "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                "label": "reopen_log",
+                "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+              },
+              {
+                "id": "fixture-span-harbor_signal-3",
+                "chapter_id": "fixture-chapter-harbor_signal-3",
+                "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+                "label": "telegram_seal",
+                "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-harbor_signal-1",
+            "memory_type": "event_timeline",
+            "subject": "harbor signal gate",
+            "predicate": "event_occurred",
+            "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+            "source_span_id": "fixture-span-harbor_signal-1"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-2",
+            "memory_type": "open_thread",
+            "subject": "harbor signal gate",
+            "predicate": "status",
+            "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "source_span_id": "fixture-span-harbor_signal-2"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-3",
+            "memory_type": "character_knowledge",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "source_span_id": "fixture-span-harbor_signal-3"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-4",
+            "memory_type": "event_timeline",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "source_span_id": "fixture-span-harbor_signal-4"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "corpus_key": "harbor_signal",
+      "expected_evidence": [
+        [
+          1,
+          "gate_log"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "gate_log"
+        ],
+        [
+          2,
+          "reopen_log"
+        ],
+        [
+          3,
+          "telegram_seal"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "gate_log"
+        ],
+        [
+          2,
+          "reopen_log"
+        ],
+        [
+          3,
+          "telegram_seal"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-harbor-signal",
+          "revision": 2,
+          "body": "The gate logs establish that at 10点 the harbor signal gate first closed after its 09点 opening."
+        },
+        "claims": [
+          {
+            "id": "claim-run-279da746-55bc-48d5-ad40-9fbfa4b735f9-1",
+            "text": "The gate logs establish that at 10点 the harbor signal gate first closed after its 09点 opening.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-harbor_signal-1",
+                "chapter_id": "fixture-chapter-harbor_signal-1",
+                "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+                "label": "gate_log",
+                "prompt_excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+              },
+              {
+                "id": "fixture-span-harbor_signal-2",
+                "chapter_id": "fixture-chapter-harbor_signal-2",
+                "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                "label": "reopen_log",
+                "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+              },
+              {
+                "id": "fixture-span-harbor_signal-3",
+                "chapter_id": "fixture-chapter-harbor_signal-3",
+                "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+                "label": "telegram_seal",
+                "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-harbor_signal-1",
+            "memory_type": "event_timeline",
+            "subject": "harbor signal gate",
+            "predicate": "event_occurred",
+            "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+            "source_span_id": "fixture-span-harbor_signal-1"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-2",
+            "memory_type": "open_thread",
+            "subject": "harbor signal gate",
+            "predicate": "status",
+            "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "source_span_id": "fixture-span-harbor_signal-2"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-3",
+            "memory_type": "character_knowledge",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "source_span_id": "fixture-span-harbor_signal-3"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-4",
+            "memory_type": "event_timeline",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "source_span_id": "fixture-span-harbor_signal-4"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "expected_evidence": [
+        [
+          2,
+          "reopen_log"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "gate_log"
+        ],
+        [
+          2,
+          "reopen_log"
+        ],
+        [
+          3,
+          "telegram_seal"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "gate_log"
+        ],
+        [
+          2,
+          "reopen_log"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-harbor-signal",
+          "revision": 2,
+          "body": "The gate logs establish that Sera authorized a reopening at 11点."
+        },
+        "claims": [
+          {
+            "id": "claim-run-eae1be1e-1ad4-43b4-957d-9eb13d4eec80-1",
+            "text": "The gate logs establish that Sera authorized a reopening at 11点.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-harbor_signal-2",
+                "chapter_id": "fixture-chapter-harbor_signal-2",
+                "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                "label": "reopen_log",
+                "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+              },
+              {
+                "id": "fixture-span-harbor_signal-1",
+                "chapter_id": "fixture-chapter-harbor_signal-1",
+                "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+                "label": "gate_log",
+                "prompt_excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+              },
+              {
+                "id": "fixture-span-harbor_signal-4",
+                "chapter_id": "fixture-chapter-harbor_signal-4",
+                "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                "label": "later_recipient",
+                "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-harbor_signal-1",
+            "memory_type": "event_timeline",
+            "subject": "harbor signal gate",
+            "predicate": "event_occurred",
+            "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+            "source_span_id": "fixture-span-harbor_signal-1"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-2",
+            "memory_type": "open_thread",
+            "subject": "harbor signal gate",
+            "predicate": "status",
+            "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "source_span_id": "fixture-span-harbor_signal-2"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-3",
+            "memory_type": "character_knowledge",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "source_span_id": "fixture-span-harbor_signal-3"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-4",
+            "memory_type": "event_timeline",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "source_span_id": "fixture-span-harbor_signal-4"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-conflict",
+      "corpus_key": "harbor_signal",
+      "expected_evidence": [
+        [
+          3,
+          "telegram_seal"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "gate_log"
+        ],
+        [
+          2,
+          "reopen_log"
+        ],
+        [
+          3,
+          "telegram_seal"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "gate_log"
+        ],
+        [
+          3,
+          "telegram_seal"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-harbor-signal",
+          "revision": 2,
+          "body": "At 11点 on the same day, Sera knew the telegram code."
+        },
+        "claims": [
+          {
+            "id": "claim-run-cd7cf935-392d-4142-988e-b987432ff5ac-1",
+            "text": "At 11点 on the same day, Sera knew the telegram code.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-harbor_signal-3",
+                "chapter_id": "fixture-chapter-harbor_signal-3",
+                "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+                "label": "telegram_seal",
+                "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+              },
+              {
+                "id": "fixture-span-harbor_signal-4",
+                "chapter_id": "fixture-chapter-harbor_signal-4",
+                "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                "label": "later_recipient",
+                "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+              },
+              {
+                "id": "fixture-span-harbor_signal-1",
+                "chapter_id": "fixture-chapter-harbor_signal-1",
+                "body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+                "label": "gate_log",
+                "prompt_excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-harbor_signal-1",
+            "memory_type": "event_timeline",
+            "subject": "harbor signal gate",
+            "predicate": "event_occurred",
+            "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+            "source_span_id": "fixture-span-harbor_signal-1"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-2",
+            "memory_type": "open_thread",
+            "subject": "harbor signal gate",
+            "predicate": "status",
+            "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "source_span_id": "fixture-span-harbor_signal-2"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-3",
+            "memory_type": "character_knowledge",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "source_span_id": "fixture-span-harbor_signal-3"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-4",
+            "memory_type": "event_timeline",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "source_span_id": "fixture-span-harbor_signal-4"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "corpus_key": "harbor_signal",
+      "expected_evidence": [
+        [
+          3,
+          "telegram_seal"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "gate_log"
+        ],
+        [
+          2,
+          "reopen_log"
+        ],
+        [
+          3,
+          "telegram_seal"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "business_selected": [
+        [
+          2,
+          "reopen_log"
+        ],
+        [
+          3,
+          "telegram_seal"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-harbor-signal",
+          "revision": 2,
+          "body": "At 13点 Sera learned the telegram code after not knowing it at 11点."
+        },
+        "claims": [
+          {
+            "id": "claim-run-a9c7695e-7a22-4ada-b7c1-26a8995eaf91-1",
+            "text": "At 13点 Sera learned the telegram code after not knowing it at 11点.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-harbor_signal-4",
+                "chapter_id": "fixture-chapter-harbor_signal-4",
+                "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                "label": "later_recipient",
+                "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+              },
+              {
+                "id": "fixture-span-harbor_signal-3",
+                "chapter_id": "fixture-chapter-harbor_signal-3",
+                "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+                "label": "telegram_seal",
+                "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+              },
+              {
+                "id": "fixture-span-harbor_signal-2",
+                "chapter_id": "fixture-chapter-harbor_signal-2",
+                "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                "label": "reopen_log",
+                "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-harbor_signal-1",
+            "memory_type": "event_timeline",
+            "subject": "harbor signal gate",
+            "predicate": "event_occurred",
+            "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+            "source_span_id": "fixture-span-harbor_signal-1"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-2",
+            "memory_type": "open_thread",
+            "subject": "harbor signal gate",
+            "predicate": "status",
+            "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "source_span_id": "fixture-span-harbor_signal-2"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-3",
+            "memory_type": "character_knowledge",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "source_span_id": "fixture-span-harbor_signal-3"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-4",
+            "memory_type": "event_timeline",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "source_span_id": "fixture-span-harbor_signal-4"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "corpus_key": "harbor_signal",
+      "expected_evidence": [
+        [
+          3,
+          "telegram_seal"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "gate_log"
+        ],
+        [
+          2,
+          "reopen_log"
+        ],
+        [
+          3,
+          "telegram_seal"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "business_selected": [
+        [
+          2,
+          "reopen_log"
+        ],
+        [
+          3,
+          "telegram_seal"
+        ],
+        [
+          4,
+          "later_recipient"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-harbor-signal",
+          "revision": 2,
+          "body": "Vela delivered the telegram to Sera at 13点, according to the records."
+        },
+        "claims": [
+          {
+            "id": "claim-run-b95b6c92-b249-4cb7-9af2-a44eb04f2814-1",
+            "text": "Vela delivered the telegram to Sera at 13点, according to the records.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-harbor_signal-4",
+                "chapter_id": "fixture-chapter-harbor_signal-4",
+                "body": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+                "label": "later_recipient",
+                "prompt_excerpt": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it."
+              },
+              {
+                "id": "fixture-span-harbor_signal-3",
+                "chapter_id": "fixture-chapter-harbor_signal-3",
+                "body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+                "label": "telegram_seal",
+                "prompt_excerpt": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code."
+              },
+              {
+                "id": "fixture-span-harbor_signal-2",
+                "chapter_id": "fixture-chapter-harbor_signal-2",
+                "body": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+                "label": "reopen_log",
+                "prompt_excerpt": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-harbor_signal-1",
+            "memory_type": "event_timeline",
+            "subject": "harbor signal gate",
+            "predicate": "event_occurred",
+            "value": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+            "source_span_id": "fixture-span-harbor_signal-1"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-2",
+            "memory_type": "open_thread",
+            "subject": "harbor signal gate",
+            "predicate": "status",
+            "value": "The 11点 harbor signal gate log leaves any reopening and its operator unrecorded.",
+            "source_span_id": "fixture-span-harbor_signal-2"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-3",
+            "memory_type": "character_knowledge",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+            "source_span_id": "fixture-span-harbor_signal-3"
+          },
+          {
+            "id": "fixture-memory-harbor_signal-4",
+            "memory_type": "event_timeline",
+            "subject": "Sera",
+            "predicate": "knowledge",
+            "value": "At 13点 Sera opened the telegram and learned its code, but the record does not identify who delivered it.",
+            "source_span_id": "fixture-span-harbor_signal-4"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-conflict",
+      "corpus_key": "orchard_restoration",
+      "expected_evidence": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          2,
+          "twin_register"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          2,
+          "twin_register"
+        ],
+        [
+          3,
+          "birth_order"
+        ],
+        [
+          4,
+          "launch_rule"
+        ],
+        [
+          5,
+          "launch_log"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          2,
+          "twin_register"
+        ],
+        [
+          3,
+          "birth_order"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-orchard-restoration",
+          "revision": 2,
+          "body": "Nera is Oren's mother."
+        },
+        "claims": [
+          {
+            "id": "claim-run-89a4bda1-684b-46c9-8598-92d4c4a90d02-1",
+            "text": "Nera is Oren's mother.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-orchard_restoration-2",
+                "chapter_id": "fixture-chapter-orchard_restoration-2",
+                "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+                "label": "twin_register",
+                "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-3",
+                "chapter_id": "fixture-chapter-orchard_restoration-3",
+                "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+                "label": "birth_order",
+                "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-1",
+                "chapter_id": "fixture-chapter-orchard_restoration-1",
+                "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+                "label": "kinship_rule",
+                "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-orchard_restoration-1",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "rule",
+            "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+            "source_span_id": "fixture-span-orchard_restoration-1"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-2",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "relationship",
+            "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+            "source_span_id": "fixture-span-orchard_restoration-2"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-3",
+            "memory_type": "open_thread",
+            "subject": "Nera and Oren",
+            "predicate": "status",
+            "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+            "source_span_id": "fixture-span-orchard_restoration-3"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-4",
+            "memory_type": "static_canon",
+            "subject": "restoration boat",
+            "predicate": "rule",
+            "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "source_span_id": "fixture-span-orchard_restoration-4"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-5",
+            "memory_type": "event_timeline",
+            "subject": "restoration boat",
+            "predicate": "event_occurred",
+            "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "source_span_id": "fixture-span-orchard_restoration-5"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-6",
+            "memory_type": "open_thread",
+            "subject": "restoration boat",
+            "predicate": "status",
+            "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+            "source_span_id": "fixture-span-orchard_restoration-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "expected_evidence": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          2,
+          "twin_register"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          2,
+          "twin_register"
+        ],
+        [
+          3,
+          "birth_order"
+        ],
+        [
+          4,
+          "launch_rule"
+        ],
+        [
+          5,
+          "launch_log"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          2,
+          "twin_register"
+        ],
+        [
+          3,
+          "birth_order"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-orchard-restoration",
+          "revision": 2,
+          "body": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins."
+        },
+        "claims": [
+          {
+            "id": "claim-run-169f8d3f-6a8b-45ec-8e0f-c091ec96c43b-1",
+            "text": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-orchard_restoration-1",
+                "chapter_id": "fixture-chapter-orchard_restoration-1",
+                "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+                "label": "kinship_rule",
+                "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-3",
+                "chapter_id": "fixture-chapter-orchard_restoration-3",
+                "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+                "label": "birth_order",
+                "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-2",
+                "chapter_id": "fixture-chapter-orchard_restoration-2",
+                "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+                "label": "twin_register",
+                "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-orchard_restoration-1",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "rule",
+            "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+            "source_span_id": "fixture-span-orchard_restoration-1"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-2",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "relationship",
+            "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+            "source_span_id": "fixture-span-orchard_restoration-2"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-3",
+            "memory_type": "open_thread",
+            "subject": "Nera and Oren",
+            "predicate": "status",
+            "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+            "source_span_id": "fixture-span-orchard_restoration-3"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-4",
+            "memory_type": "static_canon",
+            "subject": "restoration boat",
+            "predicate": "rule",
+            "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "source_span_id": "fixture-span-orchard_restoration-4"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-5",
+            "memory_type": "event_timeline",
+            "subject": "restoration boat",
+            "predicate": "event_occurred",
+            "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "source_span_id": "fixture-span-orchard_restoration-5"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-6",
+            "memory_type": "open_thread",
+            "subject": "restoration boat",
+            "predicate": "status",
+            "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+            "source_span_id": "fixture-span-orchard_restoration-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "expected_evidence": [
+        [
+          3,
+          "birth_order"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          2,
+          "twin_register"
+        ],
+        [
+          3,
+          "birth_order"
+        ],
+        [
+          4,
+          "launch_rule"
+        ],
+        [
+          5,
+          "launch_log"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          2,
+          "twin_register"
+        ],
+        [
+          3,
+          "birth_order"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-orchard-restoration",
+          "revision": 2,
+          "body": "The birth register establishes that Nera was born before Oren."
+        },
+        "claims": [
+          {
+            "id": "claim-run-bd2aa929-2177-45e9-ab7a-93d8ad041803-1",
+            "text": "The birth register establishes that Nera was born before Oren.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-orchard_restoration-3",
+                "chapter_id": "fixture-chapter-orchard_restoration-3",
+                "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+                "label": "birth_order",
+                "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-2",
+                "chapter_id": "fixture-chapter-orchard_restoration-2",
+                "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+                "label": "twin_register",
+                "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-1",
+                "chapter_id": "fixture-chapter-orchard_restoration-1",
+                "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+                "label": "kinship_rule",
+                "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-orchard_restoration-1",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "rule",
+            "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+            "source_span_id": "fixture-span-orchard_restoration-1"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-2",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "relationship",
+            "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+            "source_span_id": "fixture-span-orchard_restoration-2"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-3",
+            "memory_type": "open_thread",
+            "subject": "Nera and Oren",
+            "predicate": "status",
+            "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+            "source_span_id": "fixture-span-orchard_restoration-3"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-4",
+            "memory_type": "static_canon",
+            "subject": "restoration boat",
+            "predicate": "rule",
+            "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "source_span_id": "fixture-span-orchard_restoration-4"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-5",
+            "memory_type": "event_timeline",
+            "subject": "restoration boat",
+            "predicate": "event_occurred",
+            "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "source_span_id": "fixture-span-orchard_restoration-5"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-6",
+            "memory_type": "open_thread",
+            "subject": "restoration boat",
+            "predicate": "status",
+            "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+            "source_span_id": "fixture-span-orchard_restoration-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-conflict",
+      "corpus_key": "orchard_restoration",
+      "expected_evidence": [
+        [
+          4,
+          "launch_rule"
+        ],
+        [
+          5,
+          "launch_log"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          2,
+          "twin_register"
+        ],
+        [
+          4,
+          "launch_rule"
+        ],
+        [
+          5,
+          "launch_log"
+        ],
+        [
+          6,
+          "delay_cause"
+        ]
+      ],
+      "business_selected": [
+        [
+          4,
+          "launch_rule"
+        ],
+        [
+          5,
+          "launch_log"
+        ],
+        [
+          6,
+          "delay_cause"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-orchard-restoration",
+          "revision": 2,
+          "body": "At 10点 on the same day, the restoration boat had completed its launch."
+        },
+        "claims": [
+          {
+            "id": "claim-run-4abf7ade-5a35-46fc-880c-fc1de4837024-1",
+            "text": "At 10点 on the same day, the restoration boat had completed its launch.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-orchard_restoration-4",
+                "chapter_id": "fixture-chapter-orchard_restoration-4",
+                "body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+                "label": "launch_rule",
+                "prompt_excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-5",
+                "chapter_id": "fixture-chapter-orchard_restoration-5",
+                "body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+                "label": "launch_log",
+                "prompt_excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-6",
+                "chapter_id": "fixture-chapter-orchard_restoration-6",
+                "body": "The restoration log leaves the cause of the boat's delay unrecorded.",
+                "label": "delay_cause",
+                "prompt_excerpt": "The restoration log leaves the cause of the boat's delay unrecorded."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-orchard_restoration-1",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "rule",
+            "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+            "source_span_id": "fixture-span-orchard_restoration-1"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-2",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "relationship",
+            "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+            "source_span_id": "fixture-span-orchard_restoration-2"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-3",
+            "memory_type": "open_thread",
+            "subject": "Nera and Oren",
+            "predicate": "status",
+            "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+            "source_span_id": "fixture-span-orchard_restoration-3"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-4",
+            "memory_type": "static_canon",
+            "subject": "restoration boat",
+            "predicate": "rule",
+            "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "source_span_id": "fixture-span-orchard_restoration-4"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-5",
+            "memory_type": "event_timeline",
+            "subject": "restoration boat",
+            "predicate": "event_occurred",
+            "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "source_span_id": "fixture-span-orchard_restoration-5"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-6",
+            "memory_type": "open_thread",
+            "subject": "restoration boat",
+            "predicate": "status",
+            "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+            "source_span_id": "fixture-span-orchard_restoration-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-no_conflict",
+      "corpus_key": "orchard_restoration",
+      "expected_evidence": [
+        [
+          4,
+          "launch_rule"
+        ],
+        [
+          5,
+          "launch_log"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          2,
+          "twin_register"
+        ],
+        [
+          4,
+          "launch_rule"
+        ],
+        [
+          5,
+          "launch_log"
+        ],
+        [
+          6,
+          "delay_cause"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          4,
+          "launch_rule"
+        ],
+        [
+          5,
+          "launch_log"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-orchard-restoration",
+          "revision": 2,
+          "body": "At 10点 on the same day, the restoration boat had not completed launch while its manifest was unsigned and it remained at the quay."
+        },
+        "claims": [
+          {
+            "id": "claim-run-db249a13-7f86-4972-a14c-04feac8462e6-1",
+            "text": "At 10点 on the same day, the restoration boat had not completed launch while its manifest was unsigned and it remained at the quay.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-orchard_restoration-5",
+                "chapter_id": "fixture-chapter-orchard_restoration-5",
+                "body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+                "label": "launch_log",
+                "prompt_excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-4",
+                "chapter_id": "fixture-chapter-orchard_restoration-4",
+                "body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+                "label": "launch_rule",
+                "prompt_excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-1",
+                "chapter_id": "fixture-chapter-orchard_restoration-1",
+                "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+                "label": "kinship_rule",
+                "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-orchard_restoration-1",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "rule",
+            "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+            "source_span_id": "fixture-span-orchard_restoration-1"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-2",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "relationship",
+            "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+            "source_span_id": "fixture-span-orchard_restoration-2"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-3",
+            "memory_type": "open_thread",
+            "subject": "Nera and Oren",
+            "predicate": "status",
+            "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+            "source_span_id": "fixture-span-orchard_restoration-3"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-4",
+            "memory_type": "static_canon",
+            "subject": "restoration boat",
+            "predicate": "rule",
+            "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "source_span_id": "fixture-span-orchard_restoration-4"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-5",
+            "memory_type": "event_timeline",
+            "subject": "restoration boat",
+            "predicate": "event_occurred",
+            "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "source_span_id": "fixture-span-orchard_restoration-5"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-6",
+            "memory_type": "open_thread",
+            "subject": "restoration boat",
+            "predicate": "status",
+            "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+            "source_span_id": "fixture-span-orchard_restoration-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+      "corpus_key": "orchard_restoration",
+      "expected_evidence": [
+        [
+          5,
+          "launch_log"
+        ],
+        [
+          6,
+          "delay_cause"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "kinship_rule"
+        ],
+        [
+          2,
+          "twin_register"
+        ],
+        [
+          4,
+          "launch_rule"
+        ],
+        [
+          5,
+          "launch_log"
+        ],
+        [
+          6,
+          "delay_cause"
+        ]
+      ],
+      "business_selected": [
+        [
+          4,
+          "launch_rule"
+        ],
+        [
+          5,
+          "launch_log"
+        ],
+        [
+          6,
+          "delay_cause"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-orchard-restoration",
+          "revision": 2,
+          "body": "Tala caused the restoration boat's delay, according to the launch and delay logs."
+        },
+        "claims": [
+          {
+            "id": "claim-run-466b6108-452d-4985-be59-a0b0cb810c10-1",
+            "text": "Tala caused the restoration boat's delay, according to the launch and delay logs.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-orchard_restoration-4",
+                "chapter_id": "fixture-chapter-orchard_restoration-4",
+                "body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+                "label": "launch_rule",
+                "prompt_excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-6",
+                "chapter_id": "fixture-chapter-orchard_restoration-6",
+                "body": "The restoration log leaves the cause of the boat's delay unrecorded.",
+                "label": "delay_cause",
+                "prompt_excerpt": "The restoration log leaves the cause of the boat's delay unrecorded."
+              },
+              {
+                "id": "fixture-span-orchard_restoration-5",
+                "chapter_id": "fixture-chapter-orchard_restoration-5",
+                "body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+                "label": "launch_log",
+                "prompt_excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-orchard_restoration-1",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "rule",
+            "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+            "source_span_id": "fixture-span-orchard_restoration-1"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-2",
+            "memory_type": "static_canon",
+            "subject": "Nera and Oren",
+            "predicate": "relationship",
+            "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+            "source_span_id": "fixture-span-orchard_restoration-2"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-3",
+            "memory_type": "open_thread",
+            "subject": "Nera and Oren",
+            "predicate": "status",
+            "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+            "source_span_id": "fixture-span-orchard_restoration-3"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-4",
+            "memory_type": "static_canon",
+            "subject": "restoration boat",
+            "predicate": "rule",
+            "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+            "source_span_id": "fixture-span-orchard_restoration-4"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-5",
+            "memory_type": "event_timeline",
+            "subject": "restoration boat",
+            "predicate": "event_occurred",
+            "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+            "source_span_id": "fixture-span-orchard_restoration-5"
+          },
+          {
+            "id": "fixture-memory-orchard_restoration-6",
+            "memory_type": "open_thread",
+            "subject": "restoration boat",
+            "predicate": "status",
+            "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+            "source_span_id": "fixture-span-orchard_restoration-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-conflict",
+      "corpus_key": "basalt_observatory",
+      "expected_evidence": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          2,
+          "west_lens"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          2,
+          "west_lens"
+        ],
+        [
+          3,
+          "grinder_blank"
+        ],
+        [
+          5,
+          "watch_log"
+        ],
+        [
+          6,
+          "later_watch"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          2,
+          "west_lens"
+        ],
+        [
+          5,
+          "watch_log"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-basalt-observatory",
+          "revision": 2,
+          "body": "At 18点 on the same day, lens R4 is amber glass."
+        },
+        "claims": [
+          {
+            "id": "claim-run-4335fc5d-81d0-4bef-99f2-08b90aa08cec-1",
+            "text": "At 18点 on the same day, lens R4 is amber glass.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-basalt_observatory-2",
+                "chapter_id": "fixture-chapter-basalt_observatory-2",
+                "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+                "label": "west_lens",
+                "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-1",
+                "chapter_id": "fixture-chapter-basalt_observatory-1",
+                "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                "label": "lens_index",
+                "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-5",
+                "chapter_id": "fixture-chapter-basalt_observatory-5",
+                "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                "label": "watch_log",
+                "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-basalt_observatory-1",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "identity",
+            "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+            "source_span_id": "fixture-span-basalt_observatory-1"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-2",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+            "source_span_id": "fixture-span-basalt_observatory-2"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-3",
+            "memory_type": "open_thread",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+            "source_span_id": "fixture-span-basalt_observatory-3"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-4",
+            "memory_type": "static_canon",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-4"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-5",
+            "memory_type": "dynamic_state",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-5"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-6",
+            "memory_type": "event_timeline",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "source_span_id": "fixture-span-basalt_observatory-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "expected_evidence": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          2,
+          "west_lens"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          2,
+          "west_lens"
+        ],
+        [
+          3,
+          "grinder_blank"
+        ],
+        [
+          5,
+          "watch_log"
+        ],
+        [
+          6,
+          "later_watch"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          2,
+          "west_lens"
+        ],
+        [
+          5,
+          "watch_log"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-basalt-observatory",
+          "revision": 2,
+          "body": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday."
+        },
+        "claims": [
+          {
+            "id": "claim-run-b0a0c60e-8ce8-4369-9bda-6d8a0106d25a-1",
+            "text": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-basalt_observatory-2",
+                "chapter_id": "fixture-chapter-basalt_observatory-2",
+                "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+                "label": "west_lens",
+                "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-1",
+                "chapter_id": "fixture-chapter-basalt_observatory-1",
+                "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                "label": "lens_index",
+                "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-5",
+                "chapter_id": "fixture-chapter-basalt_observatory-5",
+                "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                "label": "watch_log",
+                "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-basalt_observatory-1",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "identity",
+            "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+            "source_span_id": "fixture-span-basalt_observatory-1"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-2",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+            "source_span_id": "fixture-span-basalt_observatory-2"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-3",
+            "memory_type": "open_thread",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+            "source_span_id": "fixture-span-basalt_observatory-3"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-4",
+            "memory_type": "static_canon",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-4"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-5",
+            "memory_type": "dynamic_state",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-5"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-6",
+            "memory_type": "event_timeline",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "source_span_id": "fixture-span-basalt_observatory-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "expected_evidence": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          3,
+          "grinder_blank"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          2,
+          "west_lens"
+        ],
+        [
+          3,
+          "grinder_blank"
+        ],
+        [
+          4,
+          "gate_map"
+        ],
+        [
+          6,
+          "later_watch"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          3,
+          "grinder_blank"
+        ],
+        [
+          6,
+          "later_watch"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-basalt-observatory",
+          "revision": 2,
+          "body": "The index and maintenance sheet establish that Vela ground lens R4."
+        },
+        "claims": [
+          {
+            "id": "claim-run-2ab66bc3-39ff-498b-a34d-f5a2f2c0ab2e-1",
+            "text": "The index and maintenance sheet establish that Vela ground lens R4.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-basalt_observatory-3",
+                "chapter_id": "fixture-chapter-basalt_observatory-3",
+                "body": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+                "label": "grinder_blank",
+                "prompt_excerpt": "The western lens R4 maintenance sheet leaves the glass grinder's name blank."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-1",
+                "chapter_id": "fixture-chapter-basalt_observatory-1",
+                "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                "label": "lens_index",
+                "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-6",
+                "chapter_id": "fixture-chapter-basalt_observatory-6",
+                "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+                "label": "later_watch",
+                "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-basalt_observatory-1",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "identity",
+            "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+            "source_span_id": "fixture-span-basalt_observatory-1"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-2",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+            "source_span_id": "fixture-span-basalt_observatory-2"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-3",
+            "memory_type": "open_thread",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+            "source_span_id": "fixture-span-basalt_observatory-3"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-4",
+            "memory_type": "static_canon",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-4"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-5",
+            "memory_type": "dynamic_state",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-5"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-6",
+            "memory_type": "event_timeline",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "source_span_id": "fixture-span-basalt_observatory-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-conflict",
+      "corpus_key": "basalt_observatory",
+      "expected_evidence": [
+        [
+          5,
+          "watch_log"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          2,
+          "west_lens"
+        ],
+        [
+          3,
+          "grinder_blank"
+        ],
+        [
+          5,
+          "watch_log"
+        ],
+        [
+          6,
+          "later_watch"
+        ]
+      ],
+      "business_selected": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          2,
+          "west_lens"
+        ],
+        [
+          5,
+          "watch_log"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-basalt-observatory",
+          "revision": 2,
+          "body": "At 18点 on the same day, Vela stood on the east pier."
+        },
+        "claims": [
+          {
+            "id": "claim-run-a4c140c3-443a-4a3a-8283-4898e3046fda-1",
+            "text": "At 18点 on the same day, Vela stood on the east pier.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-basalt_observatory-5",
+                "chapter_id": "fixture-chapter-basalt_observatory-5",
+                "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                "label": "watch_log",
+                "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-1",
+                "chapter_id": "fixture-chapter-basalt_observatory-1",
+                "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                "label": "lens_index",
+                "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-2",
+                "chapter_id": "fixture-chapter-basalt_observatory-2",
+                "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+                "label": "west_lens",
+                "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-basalt_observatory-1",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "identity",
+            "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+            "source_span_id": "fixture-span-basalt_observatory-1"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-2",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+            "source_span_id": "fixture-span-basalt_observatory-2"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-3",
+            "memory_type": "open_thread",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+            "source_span_id": "fixture-span-basalt_observatory-3"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-4",
+            "memory_type": "static_canon",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-4"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-5",
+            "memory_type": "dynamic_state",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-5"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-6",
+            "memory_type": "event_timeline",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "source_span_id": "fixture-span-basalt_observatory-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "corpus_key": "basalt_observatory",
+      "expected_evidence": [
+        [
+          6,
+          "later_watch"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          2,
+          "west_lens"
+        ],
+        [
+          4,
+          "gate_map"
+        ],
+        [
+          5,
+          "watch_log"
+        ],
+        [
+          6,
+          "later_watch"
+        ]
+      ],
+      "business_selected": [
+        [
+          4,
+          "gate_map"
+        ],
+        [
+          5,
+          "watch_log"
+        ],
+        [
+          6,
+          "later_watch"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-basalt-observatory",
+          "revision": 2,
+          "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier."
+        },
+        "claims": [
+          {
+            "id": "claim-run-2fca2d31-b60b-40b2-9851-05d5a805dd01-1",
+            "text": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-basalt_observatory-6",
+                "chapter_id": "fixture-chapter-basalt_observatory-6",
+                "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+                "label": "later_watch",
+                "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-5",
+                "chapter_id": "fixture-chapter-basalt_observatory-5",
+                "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                "label": "watch_log",
+                "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-4",
+                "chapter_id": "fixture-chapter-basalt_observatory-4",
+                "body": "Observatory Gate Four stands on the west pier, not the east pier.",
+                "label": "gate_map",
+                "prompt_excerpt": "Observatory Gate Four stands on the west pier, not the east pier."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-basalt_observatory-1",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "identity",
+            "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+            "source_span_id": "fixture-span-basalt_observatory-1"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-2",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+            "source_span_id": "fixture-span-basalt_observatory-2"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-3",
+            "memory_type": "open_thread",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+            "source_span_id": "fixture-span-basalt_observatory-3"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-4",
+            "memory_type": "static_canon",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-4"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-5",
+            "memory_type": "dynamic_state",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-5"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-6",
+            "memory_type": "event_timeline",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "source_span_id": "fixture-span-basalt_observatory-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-insufficient_evidence",
+      "corpus_key": "basalt_observatory",
+      "expected_evidence": [
+        [
+          6,
+          "later_watch"
+        ]
+      ],
+      "retrieval_returned": [
+        [
+          1,
+          "lens_index"
+        ],
+        [
+          3,
+          "grinder_blank"
+        ],
+        [
+          4,
+          "gate_map"
+        ],
+        [
+          5,
+          "watch_log"
+        ],
+        [
+          6,
+          "later_watch"
+        ]
+      ],
+      "business_selected": [
+        [
+          4,
+          "gate_map"
+        ],
+        [
+          5,
+          "watch_log"
+        ],
+        [
+          6,
+          "later_watch"
+        ]
+      ],
+      "required_evidence_present": true,
+      "business_request": {
+        "draft": {
+          "id": "fixture-draft-basalt-observatory",
+          "revision": 2,
+          "body": "The 19点 watch record establishes that Sora accompanied Vela to the east pier."
+        },
+        "claims": [
+          {
+            "id": "claim-run-17f3d98a-56e2-45c0-a93b-08d1d58ffd2d-1",
+            "text": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+            "allowed_evidence": [
+              {
+                "id": "fixture-span-basalt_observatory-6",
+                "chapter_id": "fixture-chapter-basalt_observatory-6",
+                "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+                "label": "later_watch",
+                "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-4",
+                "chapter_id": "fixture-chapter-basalt_observatory-4",
+                "body": "Observatory Gate Four stands on the west pier, not the east pier.",
+                "label": "gate_map",
+                "prompt_excerpt": "Observatory Gate Four stands on the west pier, not the east pier."
+              },
+              {
+                "id": "fixture-span-basalt_observatory-5",
+                "chapter_id": "fixture-chapter-basalt_observatory-5",
+                "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                "label": "watch_log",
+                "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+              }
+            ]
+          }
+        ],
+        "memory": [
+          {
+            "id": "fixture-memory-basalt_observatory-1",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "identity",
+            "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+            "source_span_id": "fixture-span-basalt_observatory-1"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-2",
+            "memory_type": "dynamic_state",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+            "source_span_id": "fixture-span-basalt_observatory-2"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-3",
+            "memory_type": "open_thread",
+            "subject": "lens R4",
+            "predicate": "status",
+            "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+            "source_span_id": "fixture-span-basalt_observatory-3"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-4",
+            "memory_type": "static_canon",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-4"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-5",
+            "memory_type": "dynamic_state",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "source_span_id": "fixture-span-basalt_observatory-5"
+          },
+          {
+            "id": "fixture-memory-basalt_observatory-6",
+            "memory_type": "event_timeline",
+            "subject": "Vela",
+            "predicate": "location",
+            "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "source_span_id": "fixture-span-basalt_observatory-6"
+          }
+        ],
+        "output_schema": {
+          "issues": [
+            {
+              "claim_span_id": "current claim id",
+              "status": "conflict|insufficient_evidence",
+              "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+              "category": "allowed category",
+              "severity": "low|medium|high",
+              "explanation": "short backwards-compatible summary",
+              "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+              "temporal_basis": {
+                "claim_anchor": "exact claim substring or null",
+                "evidence_anchor": "exact cited evidence substring or null",
+                "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "allowed chapter id",
+                  "span_id": "allowed span id",
+                  "relation": "supports|contradicts|context",
+                  "sufficiency": "sufficient|insufficient",
+                  "related_memory_ids": [
+                    "known memory id"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "one cited evidence span id",
+                  "role": "prior_state|current_context|missing_link"
+                }
+              ],
+              "suggested_revision": {
+                "before": "exact text occurring once in the bound draft",
+                "after": "specific replacement text"
+              },
+              "available_actions": [
+                "edit|apply_suggestion|keep_intentional|false_positive"
+              ],
+              "proposed_memory_change": {
+                "operation": "add|replace",
+                "memory_type": "allowed memory type",
+                "subject": "string",
+                "predicate": "string",
+                "value": "string",
+                "affected_memory_id": "required for replace only"
+              }
+            }
+          ]
+        }
+      },
+      "product_status_with_fake_provider": "completed"
+    }
+  ]
+}

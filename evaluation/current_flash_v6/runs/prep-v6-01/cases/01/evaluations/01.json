@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "43abbfac586b39879d62db344302913154048dfeb610f12bfee4b51614887b40",
+  "finished_at": "2026-09-27T09:34:25.828959+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-b9e44440-5379-41cf-ae2d-a5269960a22b-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

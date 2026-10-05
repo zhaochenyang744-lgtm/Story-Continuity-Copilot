@@ -1,0 +1,98 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "500c1df77865f375ed8fbc099977a8856feb20727c5ed6faec51d41150ea8c90",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "location_action",
+        "severity": "medium",
+        "explanation": "同一时间点，Vela 被同时置于东码头和西码头的 Observatory Gate Four，二者不能共存。",
+        "reasoning": "当前草稿称 18点 Vela 站在 east pier；证据 span-5 在同一 18点 明确记载她站在 west pier 的 Observatory Gate Four，而非 east pier。static_canon 记忆 basalt_observatory-4 进一步确认 Observatory Gate Four 位于 west pier，因此同一人物、同一时间、同一地点范围下两个位置直接矛盾。",
+        "temporal_basis": {
+          "claim_anchor": "At 18点 on the same day",
+          "evidence_anchor": "At 18点 on the same day",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-5",
+            "span_id": "fixture-span-basalt_observatory-5",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-5"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-4",
+            "span_id": "fixture-span-basalt_observatory-4",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-4"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-5",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-basalt_observatory-4",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 18点 on the same day, Vela stood on the east pier.",
+          "after": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-76e496be-0706-4f58-b66b-2084fa9fd964-1",
+        "verdict": "reviewed_issue",
+        "basis": "同一 18点 时间锚点下，证据 span-5 明确记载 Vela 在 west pier 的 Gate Four 而非 east pier，与草稿位置直接矛盾。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3470,
+      "completion_tokens": 545,
+      "total_tokens": 4015,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1294
+    },
+    "status": "complete",
+    "prompt_tokens": 3470,
+    "completion_tokens": 545,
+    "total_tokens": 4015,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

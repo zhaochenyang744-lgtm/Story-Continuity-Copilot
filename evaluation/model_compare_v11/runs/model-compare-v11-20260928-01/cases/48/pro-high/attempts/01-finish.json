@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 30209,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "f0e949e2-ddaa-4255-9689-df8946f8eeef",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"cc-claim-cc14-locked-en\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"object_state\",\n      \"severity\": \"high\",\n      \"explanation\": \"Draft claims the archive vault door was locked at 08:00 today; evidence states it stood unlocked and ajar at the same time.\",\n      \"reasoning\": \"The cited evidence explicitly states the archive vault door stood unlocked and ajar at 08:00 today, using the same exact time and object as the current claim. A door cannot be locked and unlocked/ajar at the same moment, so the evidence directly contradicts the claim.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"At 08:00 today\",\n        \"evidence_anchor\": \"At 08:00 today\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"cc-chapter-cc14-locked-en-V1\",\n          \"span_id\": \"cc-span-cc14-locked-en-V1\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\n            \"cc-memory-cc14-locked-en-V1\"\n          ]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"cc-span-cc14-locked-en-V1\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"At 08:00 today the archive vault door was locked.\",\n        \"after\": \"At 08:00 today the archive vault door stood unlocked and ajar.\"\n      },\n      \"available_actions\": [\n        \"apply_suggestion\"\n      ]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"cc-claim-cc14-locked-en\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"Direct contradiction at identical timestamp: evidence states the door was unlocked and ajar while the claim says locked.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "7394bcb883e35b397c4d3a7680ff34ba7cff09015e1c77b47f5e4fe42281ab00",
+  "reasoning": {
+    "present": true,
+    "codepoints": 7406,
+    "utf8_bytes": 7406,
+    "sha256": "7753823259f707c3c53fb708ed89d1f2502bb7eb6ebbae9635b4f6a80a1a6d37"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3100,
+      "completion_tokens": 2035,
+      "total_tokens": 5135,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1564
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 668
+    },
+    "status": "complete",
+    "prompt_tokens": 3100,
+    "completion_tokens": 2035,
+    "total_tokens": 5135,
+    "reasoning_tokens": 1564,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T09:33:42.704851+00:00"
+}

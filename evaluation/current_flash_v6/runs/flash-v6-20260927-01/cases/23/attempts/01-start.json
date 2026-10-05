@@ -1,0 +1,12 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+  "run_id": "flash-v6-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 32,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "212578150032107c56a728562c7aa330df3f9acf7abae76464ebe86140f513f5",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "cde7593225c1762e9bfbba5cac98e6a2805262eccb273e0324056e6cb11c5deb",
+  "started_at": "2026-09-27T10:02:57.966360+00:00",
+  "usage_status": "unknown_until_response"
+}

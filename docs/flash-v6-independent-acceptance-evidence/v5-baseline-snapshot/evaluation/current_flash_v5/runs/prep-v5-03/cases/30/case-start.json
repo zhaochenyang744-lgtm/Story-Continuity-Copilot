@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-03",
+  "ordinal": 30,
+  "case_id": "g02-dialogue-attribution",
+  "family": "g02",
+  "started_at": "2026-09-27T08:08:12.922976+00:00",
+  "case_input_sha256": "0cbfe05545721fee84dbd4799cb0475b3a3d3c4ba01201cf35021c01b7bfd776",
+  "source_ref": "evaluation/current_flash_v4/cases.json"
+}

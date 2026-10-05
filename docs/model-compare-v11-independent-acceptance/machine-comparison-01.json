@@ -1,0 +1,864 @@
+﻿{
+ "note": "machine scores only; V11 semantic review pending",
+ "seen_1_34": {
+  "flash-high": {
+   "v9": {
+    "finished": 34,
+    "first_pass": 27,
+    "final_pass": 27,
+    "final_pass_within_original_8000": 26,
+    "first_category_mismatch": 7,
+    "final_category_mismatch": 7,
+    "repairs": 0,
+    "total_tokens": 181796,
+    "first_latency_median_s": 8.55
+   },
+   "v11": {
+    "finished": 34,
+    "first_pass": 29,
+    "final_pass": 30,
+    "final_pass_within_original_8000": 30,
+    "first_category_mismatch": 2,
+    "final_category_mismatch": 1,
+    "repairs": 2,
+    "total_tokens": 186134,
+    "first_latency_median_s": 7.34
+   },
+   "changed_cases": [
+    {
+     "case": 1,
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "world_rule",
+      "final_errors": []
+     },
+     "v11": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "object_state",
+      "final_errors": [
+       "reasoning_too_long"
+      ]
+     }
+    },
+    {
+     "case": 2,
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": null,
+      "final_errors": []
+     },
+     "v11": {
+      "first_pass": false,
+      "final_pass": true,
+      "first_category": null,
+      "final_errors": []
+     }
+    },
+    {
+     "case": 6,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "event_status",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 7,
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "timeline",
+      "final_errors": []
+     },
+     "v11": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "object_state",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     }
+    },
+    {
+     "case": 10,
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "character_knowledge",
+      "final_errors": []
+     },
+     "v11": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "character_knowledge",
+      "final_errors": [
+       "undeclared_extra_evidence"
+      ]
+     }
+    },
+    {
+     "case": 12,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "location_action",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 13,
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     },
+     "v11": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "relationship",
+      "final_errors": [
+       "direct_fact_mislabeled_context",
+       "premise_mislabeled_direct_contradiction"
+      ]
+     }
+    },
+    {
+     "case": 18,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "event_status",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 19,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "object_state",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "attribute",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 21,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "event_status",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 25,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "object_state",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "attribute",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 28,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "location_action",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     }
+    }
+   ],
+   "v11_remaining_final_failures": {
+    "1": [
+     "reasoning_too_long"
+    ],
+    "7": [
+     "category_mismatch"
+    ],
+    "10": [
+     "undeclared_extra_evidence"
+    ],
+    "13": [
+     "direct_fact_mislabeled_context",
+     "premise_mislabeled_direct_contradiction"
+    ]
+   }
+  },
+  "pro-high": {
+   "v9": {
+    "finished": 34,
+    "first_pass": 27,
+    "final_pass": 27,
+    "final_pass_within_original_8000": 23,
+    "first_category_mismatch": 6,
+    "final_category_mismatch": 6,
+    "repairs": 1,
+    "total_tokens": 232920,
+    "first_latency_median_s": 39.31
+   },
+   "v11": {
+    "finished": 34,
+    "first_pass": 31,
+    "final_pass": 31,
+    "final_pass_within_original_8000": 26,
+    "first_category_mismatch": 1,
+    "final_category_mismatch": 1,
+    "repairs": 0,
+    "total_tokens": 227184,
+    "first_latency_median_s": 44.53
+   },
+   "changed_cases": [
+    {
+     "case": 1,
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "world_rule",
+      "final_errors": []
+     },
+     "v11": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "relationship",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     }
+    },
+    {
+     "case": 6,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "location_action",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 12,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "event_status",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 18,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "event_status",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 21,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "event_status",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 24,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "event_status",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 28,
+     "v9": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "event_status",
+      "final_errors": [
+       "category_mismatch"
+      ]
+     },
+     "v11": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": "relationship",
+      "final_errors": []
+     }
+    },
+    {
+     "case": 33,
+     "v9": {
+      "first_pass": true,
+      "final_pass": true,
+      "first_category": null,
+      "final_errors": []
+     },
+     "v11": {
+      "first_pass": false,
+      "final_pass": false,
+      "first_category": "object_state",
+      "final_errors": [
+       "minimum_joint_evidence_missing",
+       "outcome_not_allowed"
+      ]
+     }
+    }
+   ],
+   "v11_remaining_final_failures": {
+    "1": [
+     "category_mismatch"
+    ],
+    "13": [
+     "direct_fact_mislabeled_context",
+     "premise_mislabeled_direct_contradiction"
+    ],
+    "33": [
+     "minimum_joint_evidence_missing",
+     "outcome_not_allowed"
+    ]
+   }
+  }
+ },
+ "controls_35_54": {
+  "flash-high": {
+   "totals": {
+    "finished": 20,
+    "first_pass": 19,
+    "final_pass": 19,
+    "final_pass_within_original_8000": 19,
+    "first_category_mismatch": 0,
+    "final_category_mismatch": 0,
+    "repairs": 0,
+    "total_tokens": 93825,
+    "first_latency_median_s": 6.91
+   },
+   "cases": [
+    {
+     "ordinal": 35,
+     "id": "cc1-actor-blank-en",
+     "probe": "attribution_missing",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 36,
+     "id": "cc2-actor-blank-zh",
+     "probe": "attribution_missing",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 37,
+     "id": "cc3-cause-blank-en",
+     "probe": "attribution_missing",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": false,
+     "final_pass": false,
+     "final_errors": [
+      "suggested_revision_unresolvable"
+     ]
+    },
+    {
+     "ordinal": 38,
+     "id": "cc4-deliverer-blank-zh",
+     "probe": "attribution_missing",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 39,
+     "id": "cc5-authorizer-blank-en",
+     "probe": "attribution_missing",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 40,
+     "id": "cc6-outcome-unknown-en",
+     "probe": "attribution_contrast_event_status",
+     "expected": "event_status",
+     "first_category": "event_status",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 41,
+     "id": "cc7-outcome-unknown-zh",
+     "probe": "attribution_contrast_event_status",
+     "expected": "event_status",
+     "first_category": "event_status",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 42,
+     "id": "cc8-holder-unknown-en",
+     "probe": "attribution_contrast_object_state",
+     "expected": "object_state",
+     "first_category": "object_state",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 43,
+     "id": "cc9-ferry-rule-premise-en",
+     "probe": "rule_premise_event_status",
+     "expected": "event_status",
+     "first_category": "event_status",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 44,
+     "id": "cc10-salt-bridge-rule-en",
+     "probe": "rule_is_direct_fact",
+     "expected": "world_rule",
+     "first_category": "world_rule",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 45,
+     "id": "cc11-location-zh",
+     "probe": "location_contrast",
+     "expected": "location_action",
+     "first_category": "location_action",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 46,
+     "id": "cc12-material-en",
+     "probe": "attribute_with_time",
+     "expected": "attribute",
+     "first_category": "attribute",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 47,
+     "id": "cc13-material-zh",
+     "probe": "attribute_with_time",
+     "expected": "attribute",
+     "first_category": "attribute",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 48,
+     "id": "cc14-locked-en",
+     "probe": "object_state_contrast",
+     "expected": "object_state",
+     "first_category": "object_state",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 49,
+     "id": "cc15-loaded-zh",
+     "probe": "object_state_contrast",
+     "expected": "object_state",
+     "first_category": "object_state",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 50,
+     "id": "cc16-birth-order-zh",
+     "probe": "timeline",
+     "expected": "timeline",
+     "first_category": "timeline",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 51,
+     "id": "cc17-order-en",
+     "probe": "timeline",
+     "expected": "timeline",
+     "first_category": "timeline",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 52,
+     "id": "cc18-kinship-zh",
+     "probe": "relationship_kinship",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 53,
+     "id": "cc19-knowledge-zh",
+     "probe": "attribution_contrast_knowledge",
+     "expected": "character_knowledge",
+     "first_category": "character_knowledge",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 54,
+     "id": "cc20-unlocked-no-issue-en",
+     "probe": "no_issue_control",
+     "expected": "no_issue",
+     "first_category": null,
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    }
+   ]
+  },
+  "pro-high": {
+   "totals": {
+    "finished": 20,
+    "first_pass": 17,
+    "final_pass": 18,
+    "final_pass_within_original_8000": 14,
+    "first_category_mismatch": 0,
+    "final_category_mismatch": 0,
+    "repairs": 1,
+    "total_tokens": 135014,
+    "first_latency_median_s": 37.64
+   },
+   "cases": [
+    {
+     "ordinal": 35,
+     "id": "cc1-actor-blank-en",
+     "probe": "attribution_missing",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 36,
+     "id": "cc2-actor-blank-zh",
+     "probe": "attribution_missing",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 37,
+     "id": "cc3-cause-blank-en",
+     "probe": "attribution_missing",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": false,
+     "final_pass": false,
+     "final_errors": [
+      "outcome_not_allowed"
+     ]
+    },
+    {
+     "ordinal": 38,
+     "id": "cc4-deliverer-blank-zh",
+     "probe": "attribution_missing",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 39,
+     "id": "cc5-authorizer-blank-en",
+     "probe": "attribution_missing",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 40,
+     "id": "cc6-outcome-unknown-en",
+     "probe": "attribution_contrast_event_status",
+     "expected": "event_status",
+     "first_category": "event_status",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 41,
+     "id": "cc7-outcome-unknown-zh",
+     "probe": "attribution_contrast_event_status",
+     "expected": "event_status",
+     "first_category": "event_status",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 42,
+     "id": "cc8-holder-unknown-en",
+     "probe": "attribution_contrast_object_state",
+     "expected": "object_state",
+     "first_category": "object_state",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 43,
+     "id": "cc9-ferry-rule-premise-en",
+     "probe": "rule_premise_event_status",
+     "expected": "event_status",
+     "first_category": "event_status",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 44,
+     "id": "cc10-salt-bridge-rule-en",
+     "probe": "rule_is_direct_fact",
+     "expected": "world_rule",
+     "first_category": "world_rule",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 45,
+     "id": "cc11-location-zh",
+     "probe": "location_contrast",
+     "expected": "location_action",
+     "first_category": "location_action",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 46,
+     "id": "cc12-material-en",
+     "probe": "attribute_with_time",
+     "expected": "attribute",
+     "first_category": "attribute",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 47,
+     "id": "cc13-material-zh",
+     "probe": "attribute_with_time",
+     "expected": "attribute",
+     "first_category": "attribute",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 48,
+     "id": "cc14-locked-en",
+     "probe": "object_state_contrast",
+     "expected": "object_state",
+     "first_category": "object_state",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 49,
+     "id": "cc15-loaded-zh",
+     "probe": "object_state_contrast",
+     "expected": "object_state",
+     "first_category": "object_state",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 50,
+     "id": "cc16-birth-order-zh",
+     "probe": "timeline",
+     "expected": "timeline",
+     "first_category": "timeline",
+     "first_pass": false,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 51,
+     "id": "cc17-order-en",
+     "probe": "timeline",
+     "expected": "timeline",
+     "first_category": "timeline",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 52,
+     "id": "cc18-kinship-zh",
+     "probe": "relationship_kinship",
+     "expected": "relationship",
+     "first_category": "relationship",
+     "first_pass": false,
+     "final_pass": false,
+     "final_errors": [
+      "direct_fact_mislabeled_context",
+      "premise_mislabeled_direct_contradiction"
+     ]
+    },
+    {
+     "ordinal": 53,
+     "id": "cc19-knowledge-zh",
+     "probe": "attribution_contrast_knowledge",
+     "expected": "character_knowledge",
+     "first_category": "character_knowledge",
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    },
+    {
+     "ordinal": 54,
+     "id": "cc20-unlocked-no-issue-en",
+     "probe": "no_issue_control",
+     "expected": "no_issue",
+     "first_category": null,
+     "first_pass": true,
+     "final_pass": true,
+     "final_errors": []
+    }
+   ]
+  }
+ }
+}

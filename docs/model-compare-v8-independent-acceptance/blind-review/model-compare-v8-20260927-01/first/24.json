@@ -1,0 +1,757 @@
+{
+  "case_alias": "case-24",
+  "stage": "first",
+  "expected_policy_reference": "ccv3-basalt_observatory-location_action-insufficient_evidence",
+  "policy": {
+    "allowed_outcomes": [
+      "insufficient_evidence"
+    ],
+    "minimum": [
+      [
+        "fixture-span-basalt_observatory-6"
+      ]
+    ],
+    "optional": [],
+    "premises": [
+      "fixture-span-basalt_observatory-1"
+    ],
+    "category": "location_action",
+    "category_candidates": [
+      "location_action",
+      "relationship"
+    ],
+    "manual_variant": true,
+    "temporal_relations": []
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-basalt-observatory",
+      "revision": 2,
+      "body": "The 19点 watch record establishes that Sora accompanied Vela to the east pier."
+    },
+    "claims": [
+      {
+        "id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+        "text": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-basalt_observatory-6",
+            "chapter_id": "fixture-chapter-basalt_observatory-6",
+            "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+            "label": "later_watch",
+            "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-4",
+            "chapter_id": "fixture-chapter-basalt_observatory-4",
+            "body": "Observatory Gate Four stands on the west pier, not the east pier.",
+            "label": "gate_map",
+            "prompt_excerpt": "Observatory Gate Four stands on the west pier, not the east pier."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-5",
+            "chapter_id": "fixture-chapter-basalt_observatory-5",
+            "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "label": "watch_log",
+            "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-basalt_observatory-1",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "identity",
+        "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+        "source_span_id": "fixture-span-basalt_observatory-1"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-2",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+        "source_span_id": "fixture-span-basalt_observatory-2"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-3",
+        "memory_type": "open_thread",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+        "source_span_id": "fixture-span-basalt_observatory-3"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-4",
+        "memory_type": "static_canon",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-4"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-5",
+        "memory_type": "dynamic_state",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-5"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-6",
+        "memory_type": "event_timeline",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+        "source_span_id": "fixture-span-basalt_observatory-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-599e7a",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-basalt-observatory",
+            "revision": 2,
+            "body": "The 19点 watch record establishes that Sora accompanied Vela to the east pier."
+          },
+          "claims": [
+            {
+              "id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+              "text": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-basalt_observatory-6",
+                  "chapter_id": "fixture-chapter-basalt_observatory-6",
+                  "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+                  "label": "later_watch",
+                  "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-4",
+                  "chapter_id": "fixture-chapter-basalt_observatory-4",
+                  "body": "Observatory Gate Four stands on the west pier, not the east pier.",
+                  "label": "gate_map",
+                  "prompt_excerpt": "Observatory Gate Four stands on the west pier, not the east pier."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-5",
+                  "chapter_id": "fixture-chapter-basalt_observatory-5",
+                  "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                  "label": "watch_log",
+                  "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-basalt_observatory-1",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "identity",
+              "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+              "source_span_id": "fixture-span-basalt_observatory-1"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-2",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+              "source_span_id": "fixture-span-basalt_observatory-2"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-3",
+              "memory_type": "open_thread",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+              "source_span_id": "fixture-span-basalt_observatory-3"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-4",
+              "memory_type": "static_canon",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-4"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-5",
+              "memory_type": "dynamic_state",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-5"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-6",
+              "memory_type": "event_timeline",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+              "source_span_id": "fixture-span-basalt_observatory-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1\",\n      \"status\": \"insufficient_evidence\",\n      \"nature\": \"insufficient_evidence\",\n      \"category\": \"location_action\",\n      \"severity\": \"medium\",\n      \"explanation\": \"The watch record does not name the companion, so it cannot establish Sora accompanied Vela.\",\n      \"reasoning\": \"The supplied watch record excerpt states Vela moved at 19点 but leaves the companion unnamed. The claim requires the record to establish Sora as that companion, an identity link the record omits. The draft's attribution is therefore unsupported, and the actual accompaniment by Sora remains unknown; this is not evidence that Sora did not accompany Vela.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": \"19点\",\n        \"evidence_anchor\": \"At 19点\",\n        \"relation\": \"explicit_overlap\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-basalt_observatory-6\",\n          \"span_id\": \"fixture-span-basalt_observatory-6\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"insufficient\",\n          \"related_memory_ids\": [\n            \"fixture-memory-basalt_observatory-6\"\n          ]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-basalt_observatory-6\",\n          \"role\": \"missing_link\"\n        }\n      ],\n      \"suggested_revision\": null,\n      \"available_actions\": []\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1\",\n      \"verdict\": \"insufficient_evidence\",\n      \"basis\": \"The watch record leaves the companion unnamed, so it lacks the decisive identity detail to establish Sora's accompaniment; the actual companion remains unknown.\"\n    }\n  ]\n}",
+        "parsed_business_json": {
+          "issues": [
+            {
+              "claim_span_id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+              "status": "insufficient_evidence",
+              "nature": "insufficient_evidence",
+              "category": "location_action",
+              "severity": "medium",
+              "explanation": "The watch record does not name the companion, so it cannot establish Sora accompanied Vela.",
+              "reasoning": "The supplied watch record excerpt states Vela moved at 19点 but leaves the companion unnamed. The claim requires the record to establish Sora as that companion, an identity link the record omits. The draft's attribution is therefore unsupported, and the actual accompaniment by Sora remains unknown; this is not evidence that Sora did not accompany Vela.",
+              "temporal_basis": {
+                "claim_anchor": "19点",
+                "evidence_anchor": "At 19点",
+                "relation": "explicit_overlap"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "fixture-chapter-basalt_observatory-6",
+                  "span_id": "fixture-span-basalt_observatory-6",
+                  "relation": "context",
+                  "sufficiency": "insufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-basalt_observatory-6"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "fixture-span-basalt_observatory-6",
+                  "role": "missing_link"
+                }
+              ],
+              "suggested_revision": null,
+              "available_actions": []
+            }
+          ],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+              "verdict": "insufficient_evidence",
+              "basis": "The watch record leaves the companion unnamed, so it lacks the decisive identity detail to establish Sora's accompaniment; the actual companion remains unknown."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-66d82d",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-basalt-observatory",
+            "revision": 2,
+            "body": "The 19点 watch record establishes that Sora accompanied Vela to the east pier."
+          },
+          "claims": [
+            {
+              "id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+              "text": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-basalt_observatory-6",
+                  "chapter_id": "fixture-chapter-basalt_observatory-6",
+                  "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+                  "label": "later_watch",
+                  "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-4",
+                  "chapter_id": "fixture-chapter-basalt_observatory-4",
+                  "body": "Observatory Gate Four stands on the west pier, not the east pier.",
+                  "label": "gate_map",
+                  "prompt_excerpt": "Observatory Gate Four stands on the west pier, not the east pier."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-5",
+                  "chapter_id": "fixture-chapter-basalt_observatory-5",
+                  "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                  "label": "watch_log",
+                  "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-basalt_observatory-1",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "identity",
+              "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+              "source_span_id": "fixture-span-basalt_observatory-1"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-2",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+              "source_span_id": "fixture-span-basalt_observatory-2"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-3",
+              "memory_type": "open_thread",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+              "source_span_id": "fixture-span-basalt_observatory-3"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-4",
+              "memory_type": "static_canon",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-4"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-5",
+              "memory_type": "dynamic_state",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-5"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-6",
+              "memory_type": "event_timeline",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+              "source_span_id": "fixture-span-basalt_observatory-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"character_knowledge\",\"severity\":\"medium\",\"explanation\":\"The watch record cited in the draft does not name Vela's companion, so the claim that it establishes Sora accompanied her is unsupported.\",\"reasoning\":\"The cited watch record explicitly states Vela moved from Gate Four on the west pier to the east pier at 19点 and that the record leaves her companion unnamed. The draft asserts the record establishes Sora accompanied Vela, but the supplied evidence contains no handoff or naming event linking Sora to that movement. The attribution is unsupported and Sora's presence remains unknown.\",\"temporal_basis\":{\"claim_anchor\":\"19点\",\"evidence_anchor\":\"At 19点\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-basalt_observatory-6\",\"span_id\":\"fixture-span-basalt_observatory-6\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-basalt_observatory-6\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-basalt_observatory-6\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"The cited watch record explicitly leaves Vela's companion unnamed, so it cannot establish that Sora accompanied her; the missing naming or handoff link makes the draft attribution unsupported.\"}]}",
+        "parsed_business_json": {
+          "issues": [
+            {
+              "claim_span_id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+              "status": "insufficient_evidence",
+              "nature": "insufficient_evidence",
+              "category": "character_knowledge",
+              "severity": "medium",
+              "explanation": "The watch record cited in the draft does not name Vela's companion, so the claim that it establishes Sora accompanied her is unsupported.",
+              "reasoning": "The cited watch record explicitly states Vela moved from Gate Four on the west pier to the east pier at 19点 and that the record leaves her companion unnamed. The draft asserts the record establishes Sora accompanied Vela, but the supplied evidence contains no handoff or naming event linking Sora to that movement. The attribution is unsupported and Sora's presence remains unknown.",
+              "temporal_basis": {
+                "claim_anchor": "19点",
+                "evidence_anchor": "At 19点",
+                "relation": "explicit_overlap"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "fixture-chapter-basalt_observatory-6",
+                  "span_id": "fixture-span-basalt_observatory-6",
+                  "relation": "context",
+                  "sufficiency": "insufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-basalt_observatory-6"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "fixture-span-basalt_observatory-6",
+                  "role": "missing_link"
+                }
+              ],
+              "suggested_revision": null,
+              "available_actions": []
+            }
+          ],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+              "verdict": "insufficient_evidence",
+              "basis": "The cited watch record explicitly leaves Vela's companion unnamed, so it cannot establish that Sora accompanied her; the missing naming or handoff link makes the draft attribution unsupported."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-c702b9",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-basalt-observatory",
+            "revision": 2,
+            "body": "The 19点 watch record establishes that Sora accompanied Vela to the east pier."
+          },
+          "claims": [
+            {
+              "id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+              "text": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-basalt_observatory-6",
+                  "chapter_id": "fixture-chapter-basalt_observatory-6",
+                  "body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+                  "label": "later_watch",
+                  "prompt_excerpt": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-4",
+                  "chapter_id": "fixture-chapter-basalt_observatory-4",
+                  "body": "Observatory Gate Four stands on the west pier, not the east pier.",
+                  "label": "gate_map",
+                  "prompt_excerpt": "Observatory Gate Four stands on the west pier, not the east pier."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-5",
+                  "chapter_id": "fixture-chapter-basalt_observatory-5",
+                  "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                  "label": "watch_log",
+                  "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-basalt_observatory-1",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "identity",
+              "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+              "source_span_id": "fixture-span-basalt_observatory-1"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-2",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+              "source_span_id": "fixture-span-basalt_observatory-2"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-3",
+              "memory_type": "open_thread",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+              "source_span_id": "fixture-span-basalt_observatory-3"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-4",
+              "memory_type": "static_canon",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-4"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-5",
+              "memory_type": "dynamic_state",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-5"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-6",
+              "memory_type": "event_timeline",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+              "source_span_id": "fixture-span-basalt_observatory-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1\",\"status\":\"insufficient_evidence\",\"nature\":\"insufficient_evidence\",\"category\":\"location_action\",\"severity\":\"medium\",\"explanation\":\"草稿把 Sora 陪同 Vela 前往 east pier 一事归给 19点 watch record，但该记录本身并未写出 Vela 的同伴姓名，因此这一归因缺乏依据，同伴身份仍属未知。\",\"reasoning\":\"fixture-span-basalt_observatory-6 只说明：At 19点 Vela 从 west pier 的 Gate Four 移动到 east pier，且 watch record 未记录她的同伴姓名。所给材料中没有任何一处出现 Sora，也没有任何一处把 Sora 与这次移动联系起来，因此从该记录到 Sora 的关键环节缺失；判断到此为止——Sora 是否陪同 Vela 属于未知，而非被直接否定。\",\"temporal_basis\":{\"claim_anchor\":\"19点\",\"evidence_anchor\":\"At 19点\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-basalt_observatory-6\",\"span_id\":\"fixture-span-basalt_observatory-6\",\"relation\":\"context\",\"sufficiency\":\"insufficient\",\"related_memory_ids\":[\"fixture-memory-basalt_observatory-6\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-basalt_observatory-6\",\"role\":\"missing_link\"}],\"suggested_revision\":null,\"available_actions\":[]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1\",\"verdict\":\"insufficient_evidence\",\"basis\":\"所引 19点 watch record 只载明 Vela 从 west pier 的 Gate Four 移往 east pier，且未写出同伴姓名；草稿把 Sora 的陪同归给该记录，缺少把记录与 Sora 相连的环节，故记为 insufficient_evidence。\"}]}",
+        "parsed_business_json": {
+          "issues": [
+            {
+              "claim_span_id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+              "status": "insufficient_evidence",
+              "nature": "insufficient_evidence",
+              "category": "location_action",
+              "severity": "medium",
+              "explanation": "草稿把 Sora 陪同 Vela 前往 east pier 一事归给 19点 watch record，但该记录本身并未写出 Vela 的同伴姓名，因此这一归因缺乏依据，同伴身份仍属未知。",
+              "reasoning": "fixture-span-basalt_observatory-6 只说明：At 19点 Vela 从 west pier 的 Gate Four 移动到 east pier，且 watch record 未记录她的同伴姓名。所给材料中没有任何一处出现 Sora，也没有任何一处把 Sora 与这次移动联系起来，因此从该记录到 Sora 的关键环节缺失；判断到此为止——Sora 是否陪同 Vela 属于未知，而非被直接否定。",
+              "temporal_basis": {
+                "claim_anchor": "19点",
+                "evidence_anchor": "At 19点",
+                "relation": "explicit_overlap"
+              },
+              "evidence": [
+                {
+                  "chapter_id": "fixture-chapter-basalt_observatory-6",
+                  "span_id": "fixture-span-basalt_observatory-6",
+                  "relation": "context",
+                  "sufficiency": "insufficient",
+                  "related_memory_ids": [
+                    "fixture-memory-basalt_observatory-6"
+                  ]
+                }
+              ],
+              "evidence_chain": [
+                {
+                  "span_id": "fixture-span-basalt_observatory-6",
+                  "role": "missing_link"
+                }
+              ],
+              "suggested_revision": null,
+              "available_actions": []
+            }
+          ],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+              "verdict": "insufficient_evidence",
+              "basis": "所引 19点 watch record 只载明 Vela 从 west pier 的 Gate Four 移往 east pier，且未写出同伴姓名；草稿把 Sora 的陪同归给该记录，缺少把记录与 Sora 相连的环节，故记为 insufficient_evidence。"
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    }
+  ]
+}

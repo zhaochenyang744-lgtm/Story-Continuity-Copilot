@@ -1,0 +1,57 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+      "status": "insufficient_evidence",
+      "category": "timeline",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The draft claims the birth register establishes that Aster was born before Nilo, but the cited register entry states it does not record which twin was born first, leaving the attribution unsupported.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+          "span_id": "fixture-span-v6_birth_order_blank-1",
+          "excerpt": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_birth_order_blank-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The current claim attributes a decisive birth-order fact to the register. The cited evidence only says the register records Aster and Nilo as twins and explicitly does not record which was born first. That cited text is insufficient to support the attribution; it is the missing link between the register entry and the claimed established order. The draft assertion is unsupported, and the actual birth order remains unknown rather than contradicted.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_birth_order_blank-1",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+      "returned_span_ids": [
+        "fixture-span-v6_birth_order_blank-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3115,
+  "output_tokens": 4192,
+  "latency_ms": 48217,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

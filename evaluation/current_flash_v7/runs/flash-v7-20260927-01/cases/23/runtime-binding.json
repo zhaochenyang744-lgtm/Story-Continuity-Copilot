@@ -1,0 +1,139 @@
+{
+  "project_id": "fixture-project-basalt-observatory",
+  "draft_id": "fixture-draft-basalt-observatory",
+  "draft_revision": 2,
+  "draft_body": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+  "draft_body_sha256": "2fd18e8fa67fc81d372ca884112b6d77423099655351cdf663d2515c1bb908f6",
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-basalt_observatory-1",
+      "chapter_number": 1,
+      "chapter_title": "Lens Index",
+      "chapter_body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-basalt_observatory-1",
+      "span_body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+      "span_revision": 1,
+      "chapter_body_sha256": "18f9afade86f2077bcffba6fe93ca5cfb6dcaf80e5d2b70aa4d9ac4ef738803e",
+      "span_body_sha256": "18f9afade86f2077bcffba6fe93ca5cfb6dcaf80e5d2b70aa4d9ac4ef738803e"
+    },
+    {
+      "chapter_id": "fixture-chapter-basalt_observatory-2",
+      "chapter_number": 2,
+      "chapter_title": "West Lens",
+      "chapter_body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-basalt_observatory-2",
+      "span_body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+      "span_revision": 1,
+      "chapter_body_sha256": "6d076311a6e7a337c343d45286fb0ab882125356935f350ff805ba1aa4a5831f",
+      "span_body_sha256": "6d076311a6e7a337c343d45286fb0ab882125356935f350ff805ba1aa4a5831f"
+    },
+    {
+      "chapter_id": "fixture-chapter-basalt_observatory-3",
+      "chapter_number": 3,
+      "chapter_title": "Grinder Blank",
+      "chapter_body": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-basalt_observatory-3",
+      "span_body": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+      "span_revision": 1,
+      "chapter_body_sha256": "d0f8251d884f4495426239fb6a0f6fb08af74c0dd51b1601b13d0166f6d8d212",
+      "span_body_sha256": "d0f8251d884f4495426239fb6a0f6fb08af74c0dd51b1601b13d0166f6d8d212"
+    },
+    {
+      "chapter_id": "fixture-chapter-basalt_observatory-4",
+      "chapter_number": 4,
+      "chapter_title": "Gate Map",
+      "chapter_body": "Observatory Gate Four stands on the west pier, not the east pier.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-basalt_observatory-4",
+      "span_body": "Observatory Gate Four stands on the west pier, not the east pier.",
+      "span_revision": 1,
+      "chapter_body_sha256": "da8d4f0b1038a2d0f27f9a332b2e76978eb350db2dce75457fe6b6eb446f1221",
+      "span_body_sha256": "da8d4f0b1038a2d0f27f9a332b2e76978eb350db2dce75457fe6b6eb446f1221"
+    },
+    {
+      "chapter_id": "fixture-chapter-basalt_observatory-5",
+      "chapter_number": 5,
+      "chapter_title": "Watch Log",
+      "chapter_body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-basalt_observatory-5",
+      "span_body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+      "span_revision": 1,
+      "chapter_body_sha256": "654e3875884b6afaf5b5391c945b0ea4662e10cd0eaf1933c697c5e3a158ba39",
+      "span_body_sha256": "654e3875884b6afaf5b5391c945b0ea4662e10cd0eaf1933c697c5e3a158ba39"
+    },
+    {
+      "chapter_id": "fixture-chapter-basalt_observatory-6",
+      "chapter_number": 6,
+      "chapter_title": "Later Watch",
+      "chapter_body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+      "chapter_revision": 1,
+      "span_id": "fixture-span-basalt_observatory-6",
+      "span_body": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+      "span_revision": 1,
+      "chapter_body_sha256": "16ebb983985d2fd50d6e83a4a0731e824979c8f0a1586cfaf15fb34410761c0b",
+      "span_body_sha256": "16ebb983985d2fd50d6e83a4a0731e824979c8f0a1586cfaf15fb34410761c0b"
+    }
+  ],
+  "memory": [
+    {
+      "id": "fixture-memory-basalt_observatory-1",
+      "memory_type": "dynamic_state",
+      "subject": "lens R4",
+      "predicate": "identity",
+      "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+      "source_span_id": "fixture-span-basalt_observatory-1",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-basalt_observatory-2",
+      "memory_type": "dynamic_state",
+      "subject": "lens R4",
+      "predicate": "status",
+      "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+      "source_span_id": "fixture-span-basalt_observatory-2",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-basalt_observatory-3",
+      "memory_type": "open_thread",
+      "subject": "lens R4",
+      "predicate": "status",
+      "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+      "source_span_id": "fixture-span-basalt_observatory-3",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-basalt_observatory-4",
+      "memory_type": "static_canon",
+      "subject": "Vela",
+      "predicate": "location",
+      "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+      "source_span_id": "fixture-span-basalt_observatory-4",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-basalt_observatory-5",
+      "memory_type": "dynamic_state",
+      "subject": "Vela",
+      "predicate": "location",
+      "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+      "source_span_id": "fixture-span-basalt_observatory-5",
+      "version": 1
+    },
+    {
+      "id": "fixture-memory-basalt_observatory-6",
+      "memory_type": "event_timeline",
+      "subject": "Vela",
+      "predicate": "location",
+      "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+      "source_span_id": "fixture-span-basalt_observatory-6",
+      "version": 1
+    }
+  ]
+}

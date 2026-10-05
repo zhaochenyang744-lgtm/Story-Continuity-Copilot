@@ -1,0 +1,302 @@
+{
+  "case_alias": "case-03",
+  "stage": "followup",
+  "expected_policy_reference": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "policy": {
+    "allowed_outcomes": [
+      "insufficient_evidence"
+    ],
+    "minimum": [
+      [
+        "fixture-span-north_glass-3"
+      ]
+    ],
+    "optional": [
+      "fixture-span-north_glass-2"
+    ],
+    "premises": [
+      "fixture-span-north_glass-4"
+    ],
+    "category": "object_state",
+    "category_candidates": [
+      "object_state"
+    ],
+    "manual_variant": false,
+    "temporal_relations": []
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-north-glass",
+      "revision": 2,
+      "body": "Mira held the spare blue badge at 11点, according to the two badge registers."
+    },
+    "claims": [
+      {
+        "id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+        "text": "Mira held the spare blue badge at 11点, according to the two badge registers.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-north_glass-2",
+            "chapter_id": "fixture-chapter-north_glass-2",
+            "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "label": "badge_roster",
+            "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+          },
+          {
+            "id": "fixture-span-north_glass-3",
+            "chapter_id": "fixture-chapter-north_glass-3",
+            "body": "The spare blue badge register leaves its 11点 holder field blank.",
+            "label": "spare_register",
+            "prompt_excerpt": "The spare blue badge register leaves its 11点 holder field blank."
+          },
+          {
+            "id": "fixture-span-north_glass-5",
+            "chapter_id": "fixture-chapter-north_glass-5",
+            "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "label": "carrier_inspection",
+            "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-north_glass-1",
+        "memory_type": "static_canon",
+        "subject": "Mira",
+        "predicate": "rule",
+        "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+        "source_span_id": "fixture-span-north_glass-1"
+      },
+      {
+        "id": "fixture-memory-north_glass-2",
+        "memory_type": "dynamic_state",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+        "source_span_id": "fixture-span-north_glass-2"
+      },
+      {
+        "id": "fixture-memory-north_glass-3",
+        "memory_type": "open_thread",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "The spare blue badge register leaves its 11点 holder field blank.",
+        "source_span_id": "fixture-span-north_glass-3"
+      },
+      {
+        "id": "fixture-memory-north_glass-4",
+        "memory_type": "static_canon",
+        "subject": "pneumatic carrier",
+        "predicate": "rule",
+        "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+        "source_span_id": "fixture-span-north_glass-4"
+      },
+      {
+        "id": "fixture-memory-north_glass-5",
+        "memory_type": "dynamic_state",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+        "source_span_id": "fixture-span-north_glass-5"
+      },
+      {
+        "id": "fixture-memory-north_glass-6",
+        "memory_type": "open_thread",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "The carrier inspection does not record who loosened its valve cap.",
+        "source_span_id": "fixture-span-north_glass-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-7ddc5c",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+            "status": "insufficient_evidence",
+            "category": "object_state",
+            "severity": "medium",
+            "evidence_status": "insufficient",
+            "explanation": "The cited badge register blanks the 11点 holder field, so the registers do not support the claim that Mira held the spare blue badge at that time.",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-north_glass-3",
+                "span_id": "fixture-span-north_glass-3",
+                "excerpt": "The spare blue badge register leaves its 11点 holder field blank.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-north_glass-3"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "The only supplied register evidence for the 11点 time is the spare blue badge register with an empty holder field. It omits the decisive holder entry, so the draft's attribution that the registers show Mira holding the badge is unsupported; Mira's actual possession remains unknown. No cited evidence supplies a handoff or second register.",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-north_glass-3",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    },
+    {
+      "response_alias": "answer-78e9bc",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+            "status": "insufficient_evidence",
+            "category": "object_state",
+            "severity": "medium",
+            "evidence_status": "insufficient",
+            "explanation": "The draft states that the two badge registers show Mira holding the spare blue badge at 11点, but the cited register leaves its 11点 holder field blank, so the register attribution is unsupported and the holding fact stays unknown.",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-north_glass-3",
+                "span_id": "fixture-span-north_glass-3",
+                "excerpt": "The spare blue badge register leaves its 11点 holder field blank.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-north_glass-3"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "The claim's warrant is the registers themselves. The only supplied register evidence reports that the spare blue badge register leaves its 11点 holder field blank. A blank holder field is an omission, not a statement that no one held the badge, so it neither proves nor disproves that Mira held it; it only shows that the cited record does not contain the entry the draft attributes to it. Judgment therefore stops at the missing source warrant: the holding at 11点 remains unknown rather than contradicted. The 10点 red-badge attempt and the pneumatic-carrier gauge reading concern other times or objects and are omitted as compatible or unrelated.",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-north_glass-3",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    },
+    {
+      "response_alias": "answer-b2fcfd",
+      "repair": null,
+      "final": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+            "status": "insufficient_evidence",
+            "category": "object_state",
+            "severity": "medium",
+            "evidence_status": "insufficient",
+            "explanation": "草稿声称两份徽章登记册显示 Mira 在 11点持有备用蓝色徽章，但所引证据只显示 11点持有人字段为空白，无法支持该归属。",
+            "evidence": [
+              {
+                "chapter_id": "fixture-chapter-north_glass-3",
+                "span_id": "fixture-span-north_glass-3",
+                "excerpt": "The spare blue badge register leaves its 11点 holder field blank.",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": [
+                  "fixture-memory-north_glass-3"
+                ]
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "引用的登记册证据表明 11点持有人字段为空，因此草稿关于 Mira 在 11点持有备用蓝色徽章的断言缺乏来源依据；10点红徽章记录与气压载具记录均与 11点徽章归属无关，不能补足这一缺失环节。",
+            "evidence_chain": [
+              {
+                "span_id": "fixture-span-north_glass-3",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "contract_normalization_count": 0,
+        "contract_normalizations": []
+      }
+    }
+  ]
+}

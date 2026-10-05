@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v7-20260927-01",
+  "ordinal": 11,
+  "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T10:47:48.231875+00:00",
+  "case_input_sha256": "1170c42631dedb09036a7b50ed01944bfe2c8b2868bdfdfeb46f528d0a7d6f80",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

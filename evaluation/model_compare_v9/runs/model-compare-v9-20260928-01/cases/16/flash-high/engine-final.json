@@ -1,0 +1,81 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+      "status": "conflict",
+      "category": "event_status",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "The draft asserts the restoration boat's launch was already complete at 10点 on the same day, but at that same minute the manifest was unsigned and the boat had not departed, which the register's rule defines as necessary for completion.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-5",
+          "span_id": "fixture-span-orchard_restoration-5",
+          "excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-5"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-orchard_restoration-4",
+          "span_id": "fixture-span-orchard_restoration-4",
+          "excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-4"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "Both texts carry the identical time anchor \"At 10点 on the same day\", so they overlap. Span -5 states the state in that minute: the manifest was unsigned and the boat stayed at the orchard quay without departing. Span -4 (static canon memory-4) supplies the premise that launch completion requires both a signed manifest and departure from the quay. Jointly they make completion at that time impossible, so the claim's completed launch cannot coexist with the cited facts at the same subject, scope and time.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-orchard_restoration-5",
+          "role": "prior_state"
+        },
+        {
+          "span_id": "fixture-span-orchard_restoration-4",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 10点 on the same day, the restoration boat had completed its launch.",
+        "after": "At 10点 on the same day, the restoration boat's launch had not yet been completed."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-370d340d-cc85-4520-aaff-e227c8bd93bb-1",
+      "returned_span_ids": [
+        "fixture-span-orchard_restoration-4",
+        "fixture-span-orchard_restoration-5",
+        "fixture-span-orchard_restoration-6"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3547,
+  "output_tokens": 1435,
+  "latency_ms": 6163,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

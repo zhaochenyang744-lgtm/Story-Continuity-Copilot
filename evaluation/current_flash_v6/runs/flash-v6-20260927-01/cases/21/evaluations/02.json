@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-attribute-insufficient_evidence",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "89b89b657aadec31c7430d71cb86295cae0c17901e7d39aa159f32f6ed3d7d22",
+  "finished_at": "2026-09-27T10:02:52.268921+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-7d27914c-6b7c-4068-b61a-0cbf7391d36b-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The claim asserts that the index and maintenance sheet establish a fact about Vela and lens R4, but the cited maintenance sheet only records that the glass grinder's name is blank, and the index only identifies lens R4 as the installed western aperture lens at 18点. Neither cited span mentions Vela or establishes the claimed joint attribution, so the claim's asserted source warrant is unsupported and the underlying fact remains unknown."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3743,
+    "output_tokens": 146,
+    "observed_response_input_tokens": 3743,
+    "observed_response_output_tokens": 146
+  }
+}

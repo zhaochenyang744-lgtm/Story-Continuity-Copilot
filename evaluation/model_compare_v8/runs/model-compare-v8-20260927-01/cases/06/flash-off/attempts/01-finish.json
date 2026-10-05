@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1289,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "7fab30ba-5a2b-47c9-ae1d-d610a29a2978",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-4d8b6d34-1980-454e-b9f4-159d75287ebc-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim that Mira loosened the carrier valve cap is consistent with the cited evidence: the inspection record only omits who loosened it, and the 10点 state of a loose, unlocked cap does not contradict Mira having loosened it. No supplied fact establishes a conflicting actor or time.\"}]}",
+  "visible_content_sha256": "a5bf998920f869517b99329fdb6d98efc98c37fbe1de90ab359824e0a6580e79",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3455,
+      "completion_tokens": 117,
+      "total_tokens": 3572,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 1279
+    },
+    "status": "complete",
+    "prompt_tokens": 3455,
+    "completion_tokens": 117,
+    "total_tokens": 3572,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:38:16.276643+00:00"
+}

@@ -1,0 +1,474 @@
+export type User = {
+  id: string;
+  account_name: string;
+  display_name: string;
+  avatar_preset: "continuity_violet" | "archive_blue" | "folio_rose" | "signal_amber";
+  profile_revision: number;
+  account_type?: "registered" | "visitor";
+  visitor_expires_at?: string | null;
+  recovery_email?: { configured: boolean; verified: boolean; masked: string | null };
+};
+export type ProjectSummary = {
+  id: string;
+  title: string;
+  genre: string;
+  summary: string;
+  status: "active" | "paused" | "completed" | "archived";
+  metadata_revision?: number;
+  data_origin: string;
+  current_memory_version: number;
+  author_context_version?: number;
+  foreshadow_version?: number;
+  source_revision?: number;
+  chapter_count?: number;
+  word_count?: number;
+  open_issue_count?: number;
+  continuity_status?: "unchecked" | "checked_clear" | "pending";
+  updated_at: string;
+  current_draft?: { id: string; revision: number; chapter_number: number };
+};
+export type AuthorStoryPlan = {
+  id: string;
+  title: string;
+  summary: string;
+  goal: string;
+  position: number;
+  status: "planned" | "in_progress" | "paused" | "completed";
+  target_chapter_number: number | null;
+  archived_at: string | null;
+  archived: boolean;
+  created_at: string;
+  updated_at: string;
+};
+export type AuthorCharacterPlan = {
+  id: string;
+  name: string;
+  role_type: "protagonist" | "ally" | "antagonist" | "supporting" | "other";
+  goal: string;
+  planned_state: string;
+  notes: string;
+  position: number;
+  archived_at: string | null;
+  archived: boolean;
+  created_at: string;
+  updated_at: string;
+};
+export type AuthorWorldPlan = {
+  id: string;
+  name: string;
+  category: "location" | "organization" | "rule" | "object" | "term" | "other";
+  description: string;
+  notes: string;
+  position: number;
+  archived_at: string | null;
+  archived: boolean;
+  created_at: string;
+  updated_at: string;
+};
+export type AuthorContext = {
+  project_id: string;
+  author_context_version: number;
+  version: number;
+  parent_version: number | null;
+  snapshot_digest: string;
+  story_plans: AuthorStoryPlan[];
+  character_plans: AuthorCharacterPlan[];
+  world_plans: AuthorWorldPlan[];
+};
+export type Project = ProjectSummary & {
+  chapter_count: number;
+  current_draft: { id: string; revision: number; chapter_number: number };
+  latest_run: { run_id: string; status: string; created_at: string; result_origin: "provider" | "demo_preset" } | null;
+  memory_initialization_status?: string;
+  is_tutorial?: boolean;
+};
+export type TutorialEvent =
+  | "memory_source_opened"
+  | "continuity_issue_located"
+  | "evidence_opened"
+  | "author_decision_recorded"
+  | "author_decision_reviewed";
+export type TutorialProgress = {
+  tutorial_version: "1.2.0";
+  tutorial_project_id: string;
+  current_step: 1 | 2 | 3 | 4 | 5;
+  completed_events: TutorialEvent[];
+  revision: number;
+  updated_at: string;
+};
+export type Onboarding = {
+  status: "active" | "completed" | "skipped";
+  real_project_count: number;
+  show_first_run: boolean;
+  completed_at?: string | null;
+  tutorial: { project_id: string; title: string; status?: ProjectSummary["status"]; data_origin: "tutorial_seed" } | null;
+  progress: TutorialProgress | null;
+};
+export type DraftBodyFormat = "plain_text" | "markdown";
+export type Draft = {
+  id: string;
+  project_id: string;
+  title: string;
+  body: string;
+  body_format: DraftBodyFormat;
+  chapter_number: number;
+  revision: number;
+  saved_at: string;
+  status: string;
+};
+export type Chapter = {
+  id: string;
+  number: number;
+  title: string;
+  summary: string;
+  source_spans?: { span_id: string; label: string; source_revision?: number; text_excerpt: string; is_current?: boolean }[];
+};
+export type Memory = {
+  id: string;
+  memory_type: string;
+  subject: string;
+  predicate: string;
+  value: string;
+  valid_from: number | null;
+  valid_to: number | null;
+  review_status: string;
+  requires_source_review?: boolean;
+  source_is_current?: boolean;
+  source: { chapter_id: string; chapter_number: number; chapter_title: string; span_id: string; excerpt: string; source_path: string } | null;
+};
+export type MemoryInitialization = {
+  id?: string;
+  project_id: string;
+  status: "required" | "draft" | "committed" | "rejected";
+  source_revision: number;
+  provider_label?: string;
+  error_code?: string | null;
+  coverage?: MemoryCoverage;
+  candidates: {
+    id: string;
+    memory_type: string;
+    subject: string;
+    predicate: string;
+    value: string;
+    candidate_origin: "initialization" | "delta";
+    review_priority: "core" | "supporting";
+    decision_status: "pending" | "accepted" | "rejected" | "edited";
+    decision?: { decision: string; after: Record<string, string> | null; evidence_span_id?: string | null } | null;
+    review_history: {
+      id: string;
+      event: "decided" | "reopened";
+      decision: "accepted" | "rejected" | "edited";
+      snapshot: { decision: string; after: Record<string, string> | null; evidence_span_id?: string | null };
+      source_revision: number;
+      created_at: string;
+    }[];
+    source_revision: number;
+    source: {
+      chapter_id: string;
+      chapter_number: number;
+      chapter_title: string;
+      span_id: string;
+      label: string;
+      excerpt: string;
+      text: string;
+      source_path: string;
+    };
+  }[];
+};
+export type MemoryCoverage = {
+  project_id: string;
+  status: "required" | "in_review" | "ready_partial" | "ready_current" | "update_pending";
+  source_revision: number;
+  memory_version: number;
+  counts: { core_pending: number; supporting_pending: number; confirmed: number; confirmed_core: number; pending_canon_count: 0 };
+  blocking_reason: "none" | "core_review_required" | "no_confirmed_core" | "delta_review_required";
+};
+export type Issue = {
+  id: string;
+  review_contract_version: "legacy_v3" | "trustworthy_review_v1";
+  status: string;
+  category: string;
+  severity: "high" | "medium" | "low";
+  evidence_status: string;
+  explanation: string;
+  nature?:
+    | "confirmed_conflict"
+    | "possible_conflict"
+    | "state_change"
+    | "insufficient_evidence"
+    | string;
+  reasoning?: string;
+  evidence_chain?: { evidence_id: string; role: "prior_state" | "current_context" | "missing_link" }[];
+  suggested_revision?: { before: string; after: string } | null;
+  available_actions?: (
+    | "edit"
+    | "apply_suggestion"
+    | "keep_intentional"
+    | "false_positive"
+    | "propose_fact"
+  )[];
+  claim_span_id: string;
+  claim_text?: string;
+  reused_decision?: { decision: string; status: string; source_issue_id: string; review_path: string; requires_new_decision: boolean } | null;
+  decision?: { decision: string; resulting_revision: number | null } | null;
+  evidence?: {
+    id: string;
+    chapter_id: string;
+    chapter_number: number;
+    chapter_title: string;
+    span_id: string;
+    source_revision: number;
+    excerpt: string;
+    excerpt_context: string;
+    source_path: string;
+    relation: string;
+    sufficiency: string;
+    related_memory_ids: string[];
+  }[];
+};
+export type Run = {
+  run_id: string;
+  project_id: string;
+  run_type: "continuity" | "memory_delta";
+  status: "queued" | "running" | "completed" | "timed_out" | "failed" | "cancelled";
+  stage: string;
+  source_revision: number;
+  source_memory_version?: number;
+  source_change_set_id?: string | null;
+  source_span_ids?: string[];
+  incremental_batch_id?: string | null;
+  current_revision: number;
+  is_stale: boolean;
+  superseded: boolean;
+  lineage_status: string;
+  result_origin: "provider" | "demo_preset";
+  result_origin_label: string;
+  error_code: string | null;
+  retryable: boolean;
+  created_at: string;
+  started_at?: string | null;
+  completed_at: string | null;
+  cancel_requested_at?: string | null;
+  duration_ms?: number | null;
+  retry_of_run_id?: string | null;
+  root_run_id?: string;
+  attempt_number?: number;
+  transitions?: { sequence: number; status: string; stage: string; error_code: string | null; created_at: string }[];
+  provenance?: { provider_label: string; model_label: string; prompt_version: string; schema_version: string; retrieval_method_version: string; source_memory_version: number; source_change_set_id?: string; source_span_ids?: string[]; incremental_batch_id?: string };
+  provider_metrics?: { latency_ms: number | null; input_tokens: number | null; output_tokens: number | null; cost_cny: number | null; cost_available: boolean };
+  metrics?: { latency_ms: number | null; input_tokens: number | null; output_tokens: number | null; cost_cny: number | null; cost_available: boolean; provenance: Run["provenance"]; retrieval: { claim_ordinal: number | null; returned_span_ids: string[]; method_version: string }[];
+    // Absent on older backends: treat a missing count as "nothing to report", never as "complete".
+    undecided_claim_count?: number; undecided_claims?: { claim_span_id: string; error_code: string }[] };
+  issues?: Issue[];
+};
+export type AnalysisSource = {
+  source_type: "author_context" | "memory_record" | "source_span" | "draft_claim" | "character_record" | "character_alias" | "world_record" | "issue_evidence";
+  source_id: string;
+  label: string;
+  excerpt: string;
+  source_path?: string;
+};
+export type ForeshadowReference = {
+  chapter_id: string;
+  chapter_number: number;
+  chapter_title: string;
+  source_span_id: string | null;
+  source_label: string | null;
+  source_path: string;
+};
+export type ForeshadowRecord = {
+  id: string;
+  project_id: string;
+  title: string;
+  description: string;
+  status: "planned" | "planted" | "developing" | "resolved" | "abandoned";
+  version: number;
+  planted: ForeshadowReference | null;
+  resolved: ForeshadowReference | null;
+  archived_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+export type ForeshadowSnapshot = { project_id:string; foreshadow_version:number; records:ForeshadowRecord[]; item?:ForeshadowRecord };
+export type ForeshadowCandidate = {
+  id: string;
+  title: string;
+  description: string;
+  suggested_status: "planted" | "developing" | "resolved";
+  planted_chapter_id: string | null;
+  planted_source_span_id: string | null;
+  resolved_chapter_id: string | null;
+  resolved_source_span_id: string | null;
+  evidence: (AnalysisSource & { relation:"planted"|"developing"|"resolved" })[];
+  decision_status: "pending" | "accepted" | "edited" | "rejected";
+  decision: { decision:string; created_record_id:string|null; after:ForeshadowRecord|null } | null;
+  decided_at?: string | null;
+};
+export type RevisionTaskPriority = "high" | "medium" | "low";
+export type RevisionPlanCandidate = {
+  id: string;
+  issue_id: string;
+  title: string;
+  instruction: string;
+  priority: RevisionTaskPriority;
+  evidence: AnalysisSource[];
+  decision_status: "pending" | "accepted" | "edited" | "rejected";
+  decision: { decision:string; created_task_id:string|null; after:RevisionTask|null } | null;
+  decided_at?: string | null;
+};
+export type RevisionTask = {
+  id: string;
+  project_id: string;
+  source_run_id: string;
+  candidate_id: string;
+  issue_id: string;
+  title: string;
+  instruction: string;
+  priority: RevisionTaskPriority;
+  position: number;
+  status: "todo" | "in_progress" | "completed";
+  version: number;
+  evidence: AnalysisSource[];
+  created_at: string;
+  updated_at: string;
+};
+export type RevisionTaskSnapshot = { project_id:string; task_version:number; tasks:RevisionTask[]; item?:RevisionTask };
+export type WritingAnalysisRun = {
+  run_id: string;
+  project_id: string;
+  run_type: "context_brief" | "plan_alignment" | "change_impact" | "story_qa" | "foreshadow_scan" | "revision_plan";
+  analysis_type: "context_brief" | "plan_alignment" | "change_impact" | "story_qa" | "foreshadow_scan" | "revision_plan";
+  status: "queued" | "running" | "completed" | "timed_out" | "failed" | "cancelled";
+  stage: string;
+  draft_revision: number;
+  current_draft_revision?: number;
+  source_revision: number;
+  source_memory_version: number;
+  author_context_version: number;
+  author_context_snapshot_digest?: string | null;
+  alias_version?: number | null;
+  alias_snapshot_digest?: string | null;
+  foreshadow_version?: number | null;
+  foreshadow_snapshot_digest?: string | null;
+  proposal?: { target_type: "chapter" | "character" | "world" | "memory" | "plan" | "general"; target_id?: string | null; proposed_change: string } | null;
+  question?: string | null;
+  scope?: ("confirmed"|"written"|"planned")[] | null;
+  issue_ids?: string[] | null;
+  source_run_id?: string | null;
+  is_stale: boolean;
+  lineage_status: string;
+  error_code: string | null;
+  retryable: boolean;
+  attempt_number?: number;
+  created_at: string;
+  completed_at?: string | null;
+  retrieval?: {
+    method_version: string;
+    selected_ids: Record<string, string[]>;
+    counts: Record<string, { available: number; selected: number }>;
+    truncated: Record<string, boolean>;
+      target_source?: { memory_id: string; source_span_id: string | null; status: "selected" | "unlocated" | "missing"; source_revision: number | null; original_chars: number | null; excerpt_chars: number | null; excerpt_truncated: boolean };
+      draft_claim_scope?: { body_chars: number; excerpt_chars: number; available: number; selected: { id: string; source_start: number; source_end: number; supplied_end: number; source_chars: number; supplied_chars: number; truncated: boolean }[] };
+  };
+  analysis?: {
+    summary: string;
+    evidence_status?: "supported" | "partial" | "insufficient";
+    draft_coverage?: { status: "covered" | "partial" | "empty"; source_ids: string[]; cited_ranges?: { id: string; source_start: number; source_end: number; supplied_end: number; source_chars: number; supplied_chars: number; truncated: boolean }[]; uncovered_source_ids?: string[]; unselected_count?: number; discarded_item_indices?: number[]; reasons: string[] };
+    summary_sources?: AnalysisSource[];
+    proposal?: { target_type: "chapter" | "character" | "world" | "memory" | "plan" | "general"; target_id?: string | null; proposed_change: string };
+    items: ({ section: "related_plan" | "confirmed_fact" | "character_state" | "world_rule" | "open_thread" | "recent_source"; text: string; sources: AnalysisSource[] } | { story_plan_id: string; story_plan_title: string; status: "planned_covered" | "planned_missing" | "planned_early" | "planned_changed" | "insufficient_evidence"; explanation: string; plan_source: AnalysisSource; evidence: AnalysisSource[] } | { area: "chapter" | "character" | "world" | "memory" | "plan"; target_id: string; label: string; impact: string; evidence: AnalysisSource[] })[];
+    answer_status?: "answered"|"partial"|"insufficient"|"conflicting";
+    answer?: string;
+    question?: string;
+    scope?: ("confirmed"|"written"|"planned")[];
+    findings?: { layer:"confirmed"|"written"|"planned"; stance:"supports"|"contradicts"|"context"; text:string; evidence:AnalysisSource[] }[];
+    candidates?: (ForeshadowCandidate | RevisionPlanCandidate)[];
+  };
+};
+export type CharacterAliasSnapshot = {
+  project_id: string;
+  character_id: string;
+  primary_name: string;
+  version: number;
+  updated_at: string | null;
+  changed_alias_id?: string;
+  aliases: { id: string; alias: string; status: "active" | "archived"; created_at: string; updated_at: string; archived_at: string | null }[];
+};
+export type MemoryDelta = {
+  id?: string;
+  project_id: string;
+  source_revision?: number;
+  base_memory_version?: number;
+  status: string;
+  error_code?: string | null;
+  continuity_run_id?: string;
+  memory_delta_run_id?: string;
+  coverage?: MemoryCoverage;
+  coverage_audit?: {
+    id: string;
+    project_id: string;
+    source_revision: number;
+    status: string;
+    memory_version: number;
+    delta_batch_id: string;
+    actor_user_id: string | null;
+    details: { candidate_ids?: string[]; decisions?: { candidate_id: string; change_kind: "new_fact" | "changed_fact" | "invalidated_fact"; affected_memory_id: string | null; decision: string; before: Memory | null; after: Record<string, string> | null; invalidation_reason: string | null; evidence_span_id: string | null }[] };
+    created_at: string;
+  } | null;
+  retrieval?: {
+    method_version?: string;
+    selected_source_span_ids?: string[];
+    selected_memory_ids?: string[];
+    counts?: { source_spans?: { available: number; selected: number }; confirmed_memory?: { available: number; selected: number } };
+    truncated?: { source_spans: boolean; confirmed_memory: boolean };
+  };
+  change_set?: {
+    id: string;
+    change_set_kind: "memory_delta";
+    status: "committed" | "rejected";
+    base_memory_version: number;
+    target_memory_version: number;
+    source_revision: number;
+    run_id: string;
+    batch_id: string;
+    actor_user_id: string | null;
+    created_at: string;
+    committed_at: string | null;
+    items: { id: string; operation: "add" | "replace" | "retire"; before: Memory | null; after: Record<string, unknown>; source_ids: string[]; decision_ids: string[]; review_status: string; committed_after: Record<string, unknown> | null }[];
+  } | null;
+  candidates: {
+    id: string;
+    change_kind: "new_fact" | "changed_fact" | "invalidated_fact";
+    affected_memory_id: string | null;
+    invalidation_reason: string | null;
+    memory_type: string;
+    subject: string;
+    predicate: string;
+    value: string;
+    before: Memory | null;
+    after: { memory_type: string; subject: string; predicate: string; value: string } | null;
+    candidate_origin: "delta";
+    review_priority: "core" | "supporting";
+    decision_status: "pending" | "accepted" | "rejected" | "edited";
+    decision?: { decision: string; change_kind: string; affected_memory_id: string | null; after: Record<string, string> | null; invalidation_reason: string | null; evidence_span_id: string | null } | null;
+    source_revision: number;
+    source: { chapter_id: string; chapter_number: number; chapter_title: string; span_id: string; label: string; excerpt: string; source_path: string };
+  }[];
+};
+export type ChangeSet = {
+  id: string;
+  status: string;
+  base_memory_version: number;
+  target_memory_version: number;
+  source_run_revision: number;
+  resolved_revision: number;
+  items: {
+    id: string;
+    operation: string;
+    before: Record<string, unknown> | null;
+    after: Record<string, unknown>;
+    source_ids: string[];
+    decision_ids: string[];
+  }[];
+};
+export type SourceChangeSet = { id:string; project_id:string; base_source_revision:number; target_source_revision:number; mode:"append"; input_method:"draft_complete"|"paste"|"file"; content_sha256:string; status:"previewed"|"committed"|"failed"; chapter_count:number; source_span_count:number; chapters:{preview_id:string;title:string;order:number;character_count:number}[]; previewed_at:string; committed_at:string|null; failed_at:string|null; failure_code:string|null; expires_at:string; audit:{created_by_user_id:string;idempotency_key_fingerprint:string;request_fingerprint:string;file_basename:string|null} };

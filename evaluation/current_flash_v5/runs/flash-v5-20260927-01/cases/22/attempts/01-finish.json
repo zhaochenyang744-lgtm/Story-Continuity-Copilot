@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T08:20:59.107487+00:00",
+  "latency_ms": 2515,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3091,
+      "completion_tokens": 508,
+      "total_tokens": 3599
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-b36a9acd-9fa5-4b88-904c-7aed8f1214b6-1\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"location_action\",\"severity\":\"high\",\"explanation\":\"同一时刻（18点）Vela 被同时置于东码头和西码头的 Observatory Gate Four，二者不能共存。\",\"reasoning\":\"草稿声称 18点 Vela 站在东码头（east pier）。引用的充分证据 fixture-span-basalt_observatory-5 明确记载同一时间 18点 Vela 站在西码头的 Observatory Gate Four，而非东码头。两条陈述共享同一主体（Vela）、同一时间锚点（18点 on the same day）和同一地点范围（码头位置），因此直接矛盾。fixture-memory-basalt_observatory-6 显示 19点 才从西码头移动到东码头，进一步确认 18点 时她应在西码头。\",\"temporal_basis\":{\"claim_anchor\":\"At 18点 on the same day\",\"evidence_anchor\":\"At 18点 on the same day\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-basalt_observatory-5\",\"span_id\":\"fixture-span-basalt_observatory-5\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-basalt_observatory-5\"]},{\"chapter_id\":\"fixture-chapter-basalt_observatory-6\",\"span_id\":\"fixture-span-basalt_observatory-6\",\"relation\":\"context\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-basalt_observatory-6\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-basalt_observatory-5\",\"role\":\"prior_state\"},{\"span_id\":\"fixture-span-basalt_observatory-6\",\"role\":\"current_context\"}],\"suggested_revision\":{\"before\":\"At 18点 on the same day, Vela stood on the east pier.\",\"after\":\"At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier.\"},\"available_actions\":[\"edit\",\"apply_suggestion\",\"keep_intentional\",\"false_positive\"]}]}",
+  "message_content_sha256": "3101c426556f12c027612596f1dbb929369cb4edd711e098c3f4ed21238682f8",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

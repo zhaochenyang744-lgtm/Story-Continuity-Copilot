@@ -1,0 +1,32 @@
+[
+  {
+    "file": "01-g02-three-sentences.json",
+    "bytes": 35506,
+    "sha256": "cc35d4e68d8a9c12e0c851c99477ee66e7c1af7a436323cd78f91b721f74df0a"
+  },
+  {
+    "file": "02-g02-long-sentence.json",
+    "bytes": 39303,
+    "sha256": "e4fca52f273c40ac794a64bfd4b85a7e4dbbd157ba82e3e111b4bf130881cfc3"
+  },
+  {
+    "file": "03-g02-body-limit.json",
+    "bytes": 49308,
+    "sha256": "d4b5608313661a78940581c16ab0993d06b33c69025f0266fe1efdd47f185dd5"
+  },
+  {
+    "file": "04-g02-identical-text.json",
+    "bytes": 35003,
+    "sha256": "3cac6e38238a962ed24d158b054a432ed281935b60ee0ee3190a350272dbb462"
+  },
+  {
+    "file": "05-g02-time-bound.json",
+    "bytes": 34718,
+    "sha256": "5f70951446ce13640c92b511b3e8bfefd052defd10c9e61b13ec0cf4be93b66a"
+  },
+  {
+    "file": "06-g02-dialogue-attribution.json",
+    "bytes": 35978,
+    "sha256": "736c884326b73ca8ce717716b735dd386f4b1c53a462c669efccb665f7642b8f"
+  }
+]

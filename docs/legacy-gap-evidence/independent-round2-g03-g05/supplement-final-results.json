@@ -1,0 +1,493 @@
+[
+  {
+    "name": "direct_observed_normal-success",
+    "passed": true,
+    "details": {
+      "total": [
+        11,
+        7,
+        0.2
+      ],
+      "observed_response": [
+        11,
+        7,
+        0.2
+      ],
+      "posts": 1,
+      "ledger": 1,
+      "exception": null
+    }
+  },
+  {
+    "name": "direct_observed_timeout-success",
+    "passed": true,
+    "details": {
+      "total": [
+        null,
+        null,
+        null
+      ],
+      "observed_response": [
+        11,
+        7,
+        0.2
+      ],
+      "posts": 2,
+      "ledger": 2,
+      "exception": null
+    }
+  },
+  {
+    "name": "direct_observed_timeout-invalid-json",
+    "passed": true,
+    "details": {
+      "total": [
+        null,
+        null,
+        null
+      ],
+      "observed_response": [
+        11,
+        7,
+        0.2
+      ],
+      "posts": 2,
+      "ledger": 2,
+      "exception": "ProviderInvalidJson"
+    }
+  },
+  {
+    "name": "public_metrics_normal-success",
+    "passed": true,
+    "details": {
+      "posts": 1,
+      "ledger": 1,
+      "repair_dispatches": [
+        false
+      ],
+      "run": {
+        "status": "completed",
+        "error_code": null,
+        "input_tokens": 11,
+        "output_tokens": 7,
+        "cost_cny": 0.2
+      },
+      "operations_metrics": {
+        "input_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 11,
+          "all_run_sum": 11
+        },
+        "output_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 7,
+          "all_run_sum": 7
+        },
+        "cost_cny": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 0.2,
+          "all_run_sum": 0.2
+        }
+      },
+      "expected_unknown_total": false,
+      "expected_posts": 1,
+      "expected_status": "completed"
+    }
+  },
+  {
+    "name": "public_metrics_invalid-json",
+    "passed": true,
+    "details": {
+      "posts": 1,
+      "ledger": 1,
+      "repair_dispatches": [
+        false
+      ],
+      "run": {
+        "status": "failed",
+        "error_code": "invalid_json",
+        "input_tokens": 11,
+        "output_tokens": 7,
+        "cost_cny": 0.2
+      },
+      "operations_metrics": {
+        "input_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 11,
+          "all_run_sum": 11
+        },
+        "output_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 7,
+          "all_run_sum": 7
+        },
+        "cost_cny": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 0.2,
+          "all_run_sum": 0.2
+        }
+      },
+      "expected_unknown_total": false,
+      "expected_posts": 1,
+      "expected_status": "failed"
+    }
+  },
+  {
+    "name": "public_metrics_timeout-invalid-json",
+    "passed": true,
+    "details": {
+      "posts": 2,
+      "ledger": 2,
+      "repair_dispatches": [
+        false,
+        false
+      ],
+      "run": {
+        "status": "failed",
+        "error_code": "invalid_json",
+        "input_tokens": null,
+        "output_tokens": null,
+        "cost_cny": null
+      },
+      "operations_metrics": {
+        "input_tokens": {
+          "status": "unknown",
+          "unknown_run_count": 1,
+          "known_run_count": 0,
+          "known_run_sum": null,
+          "all_run_sum": null
+        },
+        "output_tokens": {
+          "status": "unknown",
+          "unknown_run_count": 1,
+          "known_run_count": 0,
+          "known_run_sum": null,
+          "all_run_sum": null
+        },
+        "cost_cny": {
+          "status": "unknown",
+          "unknown_run_count": 1,
+          "known_run_count": 0,
+          "known_run_sum": null,
+          "all_run_sum": null
+        }
+      },
+      "expected_unknown_total": true,
+      "expected_posts": 2,
+      "expected_status": "failed"
+    }
+  },
+  {
+    "name": "public_metrics_repair-success",
+    "passed": true,
+    "details": {
+      "posts": 2,
+      "ledger": 2,
+      "repair_dispatches": [
+        false,
+        true
+      ],
+      "run": {
+        "status": "completed",
+        "error_code": null,
+        "input_tokens": 22,
+        "output_tokens": 14,
+        "cost_cny": 0.4
+      },
+      "operations_metrics": {
+        "input_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 22,
+          "all_run_sum": 22
+        },
+        "output_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 14,
+          "all_run_sum": 14
+        },
+        "cost_cny": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 0.4,
+          "all_run_sum": 0.4
+        }
+      },
+      "expected_unknown_total": false,
+      "expected_posts": 2,
+      "expected_status": "completed"
+    }
+  },
+  {
+    "name": "public_metrics_repair-second-timeout-success",
+    "passed": true,
+    "details": {
+      "posts": 3,
+      "ledger": 3,
+      "repair_dispatches": [
+        false,
+        true,
+        true
+      ],
+      "run": {
+        "status": "completed",
+        "error_code": null,
+        "input_tokens": null,
+        "output_tokens": null,
+        "cost_cny": null
+      },
+      "operations_metrics": {
+        "input_tokens": {
+          "status": "unknown",
+          "unknown_run_count": 1,
+          "known_run_count": 0,
+          "known_run_sum": null,
+          "all_run_sum": null
+        },
+        "output_tokens": {
+          "status": "unknown",
+          "unknown_run_count": 1,
+          "known_run_count": 0,
+          "known_run_sum": null,
+          "all_run_sum": null
+        },
+        "cost_cny": {
+          "status": "unknown",
+          "unknown_run_count": 1,
+          "known_run_count": 0,
+          "known_run_sum": null,
+          "all_run_sum": null
+        }
+      },
+      "expected_unknown_total": true,
+      "expected_posts": 3,
+      "expected_status": "completed"
+    }
+  },
+  {
+    "name": "public_metrics_repair-timeouts",
+    "passed": false,
+    "details": {
+      "posts": 3,
+      "ledger": 3,
+      "repair_dispatches": [
+        false,
+        true,
+        true
+      ],
+      "run": {
+        "status": "timed_out",
+        "error_code": "provider_timeout",
+        "input_tokens": 11,
+        "output_tokens": 7,
+        "cost_cny": 0.2
+      },
+      "operations_metrics": {
+        "input_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 11,
+          "all_run_sum": 11
+        },
+        "output_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 7,
+          "all_run_sum": 7
+        },
+        "cost_cny": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 0.2,
+          "all_run_sum": 0.2
+        }
+      },
+      "expected_unknown_total": true,
+      "expected_posts": 3,
+      "expected_status": "timed_out"
+    }
+  },
+  {
+    "name": "public_metrics_repair-retry-denied",
+    "passed": false,
+    "details": {
+      "posts": 2,
+      "ledger": 2,
+      "repair_dispatches": [
+        false,
+        true
+      ],
+      "run": {
+        "status": "failed",
+        "error_code": "provider_attempt_quota_exceeded",
+        "input_tokens": 11,
+        "output_tokens": 7,
+        "cost_cny": 0.2
+      },
+      "operations_metrics": {
+        "input_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 11,
+          "all_run_sum": 11
+        },
+        "output_tokens": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 7,
+          "all_run_sum": 7
+        },
+        "cost_cny": {
+          "status": "available",
+          "unknown_run_count": 0,
+          "known_run_count": 1,
+          "known_run_sum": 0.2,
+          "all_run_sum": 0.2
+        }
+      },
+      "expected_unknown_total": true,
+      "expected_posts": 2,
+      "expected_status": "failed"
+    }
+  },
+  {
+    "name": "target_fact_short-full",
+    "passed": true,
+    "details": {
+      "target_source": {
+        "excerpt_chars": 10,
+        "excerpt_truncated": false,
+        "memory_id": "mem-04e63c37-0453-439f-9505-ccb61da2c41b",
+        "original_chars": 10,
+        "source_revision": 1,
+        "source_span_id": "span-0efc9a83-8f81-4cbd-918a-3bba1e376985",
+        "status": "selected"
+      },
+      "provided_excerpt": "星钥始终由乔霁保管。",
+      "analysis": {
+        "evidence_status": "supported",
+        "items": [
+          {
+            "area": "chapter",
+            "evidence": [
+              {
+                "excerpt": "星钥始终由乔霁保管。",
+                "label": "第 7 章 · 地点状态",
+                "source_id": "span-0efc9a83-8f81-4cbd-918a-3bba1e376985",
+                "source_path": "/projects/prj-0561ae35-544e-4a86-9a4c-6d18c47392df/sources#span-span-0efc9a83-8f81-4cbd-918a-3bba1e376985",
+                "source_type": "source_span"
+              }
+            ],
+            "impact": "星钥的保管安排需要复核。",
+            "label": "第 7 章 · 潮线之外",
+            "target_id": "ch-251e4efa-b1f4-4911-94a4-72d6c9754d62"
+          }
+        ],
+        "proposal": {
+          "proposed_change": "改为沈砚保管星钥。",
+          "target_id": "mem-04e63c37-0453-439f-9505-ccb61da2c41b",
+          "target_type": "memory"
+        },
+        "summary": "目标原文应复核。"
+      }
+    }
+  },
+  {
+    "name": "target_fact_late-bounded",
+    "passed": true,
+    "details": {
+      "target_source": {
+        "excerpt_chars": 502,
+        "excerpt_truncated": true,
+        "memory_id": "mem-04e63c37-0453-439f-9505-ccb61da2c41b",
+        "original_chars": 1510,
+        "source_revision": 1,
+        "source_span_id": "span-0efc9a83-8f81-4cbd-918a-3bba1e376985",
+        "status": "selected"
+      },
+      "provided_excerpt": "…草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。星钥始终由乔霁保管。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。…",
+      "analysis": {
+        "evidence_status": "supported",
+        "items": [
+          {
+            "area": "chapter",
+            "evidence": [
+              {
+                "excerpt": "…草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。星钥始终由乔霁保管。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。平静的溪水流过石桥。…",
+                "label": "第 7 章 · 地点状态",
+                "source_id": "span-0efc9a83-8f81-4cbd-918a-3bba1e376985",
+                "source_path": "/projects/prj-0561ae35-544e-4a86-9a4c-6d18c47392df/sources#span-span-0efc9a83-8f81-4cbd-918a-3bba1e376985",
+                "source_type": "source_span"
+              }
+            ],
+            "impact": "星钥的保管安排需要复核。",
+            "label": "第 7 章 · 潮线之外",
+            "target_id": "ch-251e4efa-b1f4-4911-94a4-72d6c9754d62"
+          }
+        ],
+        "proposal": {
+          "proposed_change": "改为沈砚保管星钥。",
+          "target_id": "mem-04e63c37-0453-439f-9505-ccb61da2c41b",
+          "target_type": "memory"
+        },
+        "summary": "目标原文应复核。"
+      }
+    }
+  },
+  {
+    "name": "target_fact_unlocated",
+    "passed": true,
+    "details": {
+      "target_source": {
+        "excerpt_chars": 501,
+        "excerpt_truncated": true,
+        "memory_id": "mem-04e63c37-0453-439f-9505-ccb61da2c41b",
+        "original_chars": 1100,
+        "source_revision": 1,
+        "source_span_id": "span-0efc9a83-8f81-4cbd-918a-3bba1e376985",
+        "status": "unlocated"
+      },
+      "provided_excerpt": "晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒草覆盖山坡。晴日里，绒…",
+      "analysis": {
+        "evidence_status": "insufficient",
+        "items": [],
+        "proposal": {
+          "proposed_change": "改为沈砚保管星钥。",
+          "target_id": "mem-04e63c37-0453-439f-9505-ccb61da2c41b",
+          "target_type": "memory"
+        },
+        "summary": "当前证据不足以支持影响结论。"
+      }
+    }
+  },
+  {
+    "name": "external_network_disabled",
+    "passed": true,
+    "details": {
+      "attempted_external_connections": 0,
+      "actual_external_requests": 0,
+      "smtp_requests": 0
+    }
+  }
+]

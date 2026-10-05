@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1260,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "40a625a1-87a1-471f-b1f2-6791405987c0",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim's present state (lens R4 clear glass at 18点) matches the cited evidence, and Vela's recollection of amber yesterday is a bounded earlier state that can coexist with the later clear-glass state; no contradiction remains.\"}]}",
+  "visible_content_sha256": "3d3bc9e1383e2938749463097a1125334f29574e6736fd730d286b724f07d1a0",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3480,
+      "completion_tokens": 108,
+      "total_tokens": 3588,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1176
+    },
+    "status": "complete",
+    "prompt_tokens": 3480,
+    "completion_tokens": 108,
+    "total_tokens": 3588,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:48:47.095351+00:00"
+}

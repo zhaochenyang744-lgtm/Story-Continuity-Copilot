@@ -1,0 +1,43 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "e95b4140d0f11c467c2f12f0386470a5dfd9280f905251e6cf09578d39d50b95",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-ccc7ae64-39ad-4a3e-a38f-0e88a58e1d33-1",
+        "verdict": "no_issue",
+        "basis": "The claim describes Siva not knowing the password at 09:00 and learning it at 12:00. The cited evidence shows the same bounded prior state at 09:00 and an explicit later transition at 12:00, so the states are compatible and no continuity issue exists."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3047,
+      "completion_tokens": 118,
+      "total_tokens": 3165,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 743
+    },
+    "status": "complete",
+    "prompt_tokens": 3047,
+    "completion_tokens": 118,
+    "total_tokens": 3165,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

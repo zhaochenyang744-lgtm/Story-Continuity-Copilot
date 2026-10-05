@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v6-01",
+  "ordinal": 26,
+  "case_id": "v6-v6s-03",
+  "family": "comparison",
+  "started_at": "2026-09-27T09:34:59.224606+00:00",
+  "case_input_sha256": "67e2a6f3370abf91c584fdd9b6656128dd9c7152919643b14bddbd0c73e7e9dd",
+  "source_ref": null
+}

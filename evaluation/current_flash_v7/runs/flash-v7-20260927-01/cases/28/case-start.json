@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v7-20260927-01",
+  "ordinal": 28,
+  "case_id": "v6-v6s-06",
+  "family": "comparison",
+  "started_at": "2026-09-27T10:48:50.830160+00:00",
+  "case_input_sha256": "d24c7aadf5a6b0c755d89dd762981d1a1db9f4673a42e2c086ff0309d5b370f3",
+  "source_ref": null
+}

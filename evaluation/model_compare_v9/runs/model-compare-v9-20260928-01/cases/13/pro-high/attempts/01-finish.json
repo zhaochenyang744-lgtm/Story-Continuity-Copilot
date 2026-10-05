@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 95506,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "0202f7a6-84d2-4da3-b72a-69e6f4f41487",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [\n    {\n      \"claim_span_id\": \"claim-run-e08d793d-d9d6-4b86-8d72-a71eca4544c2-1\",\n      \"status\": \"conflict\",\n      \"nature\": \"confirmed_conflict\",\n      \"category\": \"relationship\",\n      \"severity\": \"high\",\n      \"explanation\": \"The draft calls Nera Oren's mother, but the birth register records them as twins and a permanent kinship rule forbids twins from being parent and child.\",\n      \"reasoning\": \"The cited birth register span establishes the necessary identity premise: Nera and Oren are twins. The Orchard Register span provides a permanent kinship rule that two people recorded as twins cannot be one another's parent. Jointly these two supplied facts cannot coexist with the claim that Nera is Oren's mother. The birth-order span is omitted because it adds no relevant information.\",\n      \"temporal_basis\": {\n        \"claim_anchor\": null,\n        \"evidence_anchor\": \"permanent kinship rule says that two people recorded as twins cannot be one another's parent\",\n        \"relation\": \"timeless_rule\"\n      },\n      \"evidence\": [\n        {\n          \"chapter_id\": \"fixture-chapter-orchard_restoration-2\",\n          \"span_id\": \"fixture-span-orchard_restoration-2\",\n          \"relation\": \"context\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-orchard_restoration-2\"]\n        },\n        {\n          \"chapter_id\": \"fixture-chapter-orchard_restoration-1\",\n          \"span_id\": \"fixture-span-orchard_restoration-1\",\n          \"relation\": \"contradicts\",\n          \"sufficiency\": \"sufficient\",\n          \"related_memory_ids\": [\"fixture-memory-orchard_restoration-1\"]\n        }\n      ],\n      \"evidence_chain\": [\n        {\n          \"span_id\": \"fixture-span-orchard_restoration-2\",\n          \"role\": \"current_context\"\n        },\n        {\n          \"span_id\": \"fixture-span-orchard_restoration-1\",\n          \"role\": \"current_context\"\n        }\n      ],\n      \"suggested_revision\": {\n        \"before\": \"Nera is Oren's mother.\",\n        \"after\": \"Nera and Oren are twins, both children of Tala.\"\n      },\n      \"available_actions\": [\"apply_suggestion\"]\n    }\n  ],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-e08d793d-d9d6-4b86-8d72-a71eca4544c2-1\",\n      \"verdict\": \"reviewed_issue\",\n      \"basis\": \"The birth register records Nera and Oren as twins and a permanent kinship rule forbids twins from being parent and child, directly contradicting the claim.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "2aae65e59d7e2025d397870329d387617fe667638204edf7a97d6027b873c6f0",
+  "reasoning": {
+    "present": true,
+    "codepoints": 25551,
+    "utf8_bytes": 25551,
+    "sha256": "ea79d526dcae687d445207b6534d70b3972a3142b052f5a758b577395488bb98"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3574,
+      "completion_tokens": 6013,
+      "total_tokens": 9587,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 5378
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1142
+    },
+    "status": "complete",
+    "prompt_tokens": 3574,
+    "completion_tokens": 6013,
+    "total_tokens": 9587,
+    "reasoning_tokens": 5378,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:43:01.340517+00:00"
+}

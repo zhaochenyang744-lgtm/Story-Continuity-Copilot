@@ -1,0 +1,45 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 1154,
+  "finish_reason": "stop",
+  "response_model": "deepseek-flash",
+  "response_id": "55979d92-7073-4a7b-b594-9a0c06b25b44",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-11600b16-0ac6-422e-8a33-4caa7436309b-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim that the capsule was not ready at 10:00 because its valve cap was loose is consistent with the cited evidence: the readiness rule requires a locked cap, and the 10:00 inspection records the cap loose and unlocked, so the capsule was not ready. No contradiction.\"}]}",
+  "visible_content_sha256": "83a3784e19e3b14153a23524920c83efdd9b5f6852220b17b05680cee949ce0c",
+  "reasoning": {
+    "present": false,
+    "codepoints": null,
+    "utf8_bytes": null,
+    "sha256": null
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3082,
+      "completion_tokens": 115,
+      "total_tokens": 3197,
+      "prompt_tokens_details": {
+        "cached_tokens": 2176
+      },
+      "prompt_cache_hit_tokens": 2176,
+      "prompt_cache_miss_tokens": 906
+    },
+    "status": "complete",
+    "prompt_tokens": 3082,
+    "completion_tokens": 115,
+    "total_tokens": 3197,
+    "reasoning_tokens": null,
+    "reasoning_tokens_status": "not_reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-27T11:53:29.495299+00:00"
+}

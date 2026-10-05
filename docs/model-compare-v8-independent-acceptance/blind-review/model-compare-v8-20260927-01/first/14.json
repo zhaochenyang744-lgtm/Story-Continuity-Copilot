@@ -1,0 +1,656 @@
+{
+  "case_alias": "case-14",
+  "stage": "first",
+  "expected_policy_reference": "ccv3-orchard_restoration-relationship-no_conflict",
+  "policy": {
+    "allowed_outcomes": [
+      "no_issue"
+    ],
+    "minimum": [
+      [
+        "fixture-span-orchard_restoration-1",
+        "fixture-span-orchard_restoration-2"
+      ]
+    ],
+    "optional": [],
+    "premises": [
+      "fixture-span-orchard_restoration-1",
+      "fixture-span-orchard_restoration-4"
+    ],
+    "category": "relationship",
+    "category_candidates": [
+      "relationship"
+    ],
+    "manual_variant": false,
+    "temporal_relations": []
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-orchard-restoration",
+      "revision": 2,
+      "body": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins."
+    },
+    "claims": [
+      {
+        "id": "claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1",
+        "text": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-orchard_restoration-1",
+            "chapter_id": "fixture-chapter-orchard_restoration-1",
+            "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+            "label": "kinship_rule",
+            "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+          },
+          {
+            "id": "fixture-span-orchard_restoration-3",
+            "chapter_id": "fixture-chapter-orchard_restoration-3",
+            "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+            "label": "birth_order",
+            "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+          },
+          {
+            "id": "fixture-span-orchard_restoration-2",
+            "chapter_id": "fixture-chapter-orchard_restoration-2",
+            "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+            "label": "twin_register",
+            "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-orchard_restoration-1",
+        "memory_type": "static_canon",
+        "subject": "Nera and Oren",
+        "predicate": "rule",
+        "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+        "source_span_id": "fixture-span-orchard_restoration-1"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-2",
+        "memory_type": "static_canon",
+        "subject": "Nera and Oren",
+        "predicate": "relationship",
+        "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+        "source_span_id": "fixture-span-orchard_restoration-2"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-3",
+        "memory_type": "open_thread",
+        "subject": "Nera and Oren",
+        "predicate": "status",
+        "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+        "source_span_id": "fixture-span-orchard_restoration-3"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-4",
+        "memory_type": "static_canon",
+        "subject": "restoration boat",
+        "predicate": "rule",
+        "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+        "source_span_id": "fixture-span-orchard_restoration-4"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-5",
+        "memory_type": "event_timeline",
+        "subject": "restoration boat",
+        "predicate": "event_occurred",
+        "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+        "source_span_id": "fixture-span-orchard_restoration-5"
+      },
+      {
+        "id": "fixture-memory-orchard_restoration-6",
+        "memory_type": "open_thread",
+        "subject": "restoration boat",
+        "predicate": "status",
+        "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+        "source_span_id": "fixture-span-orchard_restoration-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-80a2dc",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-orchard-restoration",
+            "revision": 2,
+            "body": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins."
+          },
+          "claims": [
+            {
+              "id": "claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1",
+              "text": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-orchard_restoration-1",
+                  "chapter_id": "fixture-chapter-orchard_restoration-1",
+                  "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+                  "label": "kinship_rule",
+                  "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+                },
+                {
+                  "id": "fixture-span-orchard_restoration-3",
+                  "chapter_id": "fixture-chapter-orchard_restoration-3",
+                  "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+                  "label": "birth_order",
+                  "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+                },
+                {
+                  "id": "fixture-span-orchard_restoration-2",
+                  "chapter_id": "fixture-chapter-orchard_restoration-2",
+                  "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+                  "label": "twin_register",
+                  "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-orchard_restoration-1",
+              "memory_type": "static_canon",
+              "subject": "Nera and Oren",
+              "predicate": "rule",
+              "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+              "source_span_id": "fixture-span-orchard_restoration-1"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-2",
+              "memory_type": "static_canon",
+              "subject": "Nera and Oren",
+              "predicate": "relationship",
+              "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+              "source_span_id": "fixture-span-orchard_restoration-2"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-3",
+              "memory_type": "open_thread",
+              "subject": "Nera and Oren",
+              "predicate": "status",
+              "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+              "source_span_id": "fixture-span-orchard_restoration-3"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-4",
+              "memory_type": "static_canon",
+              "subject": "restoration boat",
+              "predicate": "rule",
+              "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+              "source_span_id": "fixture-span-orchard_restoration-4"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-5",
+              "memory_type": "event_timeline",
+              "subject": "restoration boat",
+              "predicate": "event_occurred",
+              "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+              "source_span_id": "fixture-span-orchard_restoration-5"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-6",
+              "memory_type": "open_thread",
+              "subject": "restoration boat",
+              "predicate": "status",
+              "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+              "source_span_id": "fixture-span-orchard_restoration-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"The draft explicitly frames Nera’s utterance as a lie, and the cited register records Nera and Oren as twins, which with the kinship rule makes the mother claim false, not a continuity conflict.\"\n    }\n  ]\n}",
+        "parsed_business_json": {
+          "issues": [],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1",
+              "verdict": "no_issue",
+              "basis": "The draft explicitly frames Nera’s utterance as a lie, and the cited register records Nera and Oren as twins, which with the kinship rule makes the mother claim false, not a continuity conflict."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-10bd32",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-orchard-restoration",
+            "revision": 2,
+            "body": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins."
+          },
+          "claims": [
+            {
+              "id": "claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1",
+              "text": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-orchard_restoration-1",
+                  "chapter_id": "fixture-chapter-orchard_restoration-1",
+                  "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+                  "label": "kinship_rule",
+                  "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+                },
+                {
+                  "id": "fixture-span-orchard_restoration-3",
+                  "chapter_id": "fixture-chapter-orchard_restoration-3",
+                  "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+                  "label": "birth_order",
+                  "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+                },
+                {
+                  "id": "fixture-span-orchard_restoration-2",
+                  "chapter_id": "fixture-chapter-orchard_restoration-2",
+                  "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+                  "label": "twin_register",
+                  "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-orchard_restoration-1",
+              "memory_type": "static_canon",
+              "subject": "Nera and Oren",
+              "predicate": "rule",
+              "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+              "source_span_id": "fixture-span-orchard_restoration-1"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-2",
+              "memory_type": "static_canon",
+              "subject": "Nera and Oren",
+              "predicate": "relationship",
+              "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+              "source_span_id": "fixture-span-orchard_restoration-2"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-3",
+              "memory_type": "open_thread",
+              "subject": "Nera and Oren",
+              "predicate": "status",
+              "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+              "source_span_id": "fixture-span-orchard_restoration-3"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-4",
+              "memory_type": "static_canon",
+              "subject": "restoration boat",
+              "predicate": "rule",
+              "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+              "source_span_id": "fixture-span-orchard_restoration-4"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-5",
+              "memory_type": "event_timeline",
+              "subject": "restoration boat",
+              "predicate": "event_occurred",
+              "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+              "source_span_id": "fixture-span-orchard_restoration-5"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-6",
+              "memory_type": "open_thread",
+              "subject": "restoration boat",
+              "predicate": "status",
+              "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+              "source_span_id": "fixture-span-orchard_restoration-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1\",\"verdict\":\"no_issue\",\"basis\":\"Nera's 'I am Oren's mother' is explicitly framed by the narrator as a lie, so it is an attributed utterance, not asserted world fact. The register's twin record (span 2) and the twins-cannot-be-parents rule (span 1) stay consistent, and the unrecorded birth order (span 3) only adds compatible open-thread detail.\"}]}",
+        "parsed_business_json": {
+          "issues": [],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1",
+              "verdict": "no_issue",
+              "basis": "Nera's 'I am Oren's mother' is explicitly framed by the narrator as a lie, so it is an attributed utterance, not asserted world fact. The register's twin record (span 2) and the twins-cannot-be-parents rule (span 1) stay consistent, and the unrecorded birth order (span 3) only adds compatible open-thread detail."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-98a756",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-orchard-restoration",
+            "revision": 2,
+            "body": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins."
+          },
+          "claims": [
+            {
+              "id": "claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1",
+              "text": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-orchard_restoration-1",
+                  "chapter_id": "fixture-chapter-orchard_restoration-1",
+                  "body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+                  "label": "kinship_rule",
+                  "prompt_excerpt": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent."
+                },
+                {
+                  "id": "fixture-span-orchard_restoration-3",
+                  "chapter_id": "fixture-chapter-orchard_restoration-3",
+                  "body": "The birth register does not record which twin, Nera or Oren, was born first.",
+                  "label": "birth_order",
+                  "prompt_excerpt": "The birth register does not record which twin, Nera or Oren, was born first."
+                },
+                {
+                  "id": "fixture-span-orchard_restoration-2",
+                  "chapter_id": "fixture-chapter-orchard_restoration-2",
+                  "body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+                  "label": "twin_register",
+                  "prompt_excerpt": "The birth register identifies Nera and Oren as twins, both children of Tala."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-orchard_restoration-1",
+              "memory_type": "static_canon",
+              "subject": "Nera and Oren",
+              "predicate": "rule",
+              "value": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+              "source_span_id": "fixture-span-orchard_restoration-1"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-2",
+              "memory_type": "static_canon",
+              "subject": "Nera and Oren",
+              "predicate": "relationship",
+              "value": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+              "source_span_id": "fixture-span-orchard_restoration-2"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-3",
+              "memory_type": "open_thread",
+              "subject": "Nera and Oren",
+              "predicate": "status",
+              "value": "The birth register does not record which twin, Nera or Oren, was born first.",
+              "source_span_id": "fixture-span-orchard_restoration-3"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-4",
+              "memory_type": "static_canon",
+              "subject": "restoration boat",
+              "predicate": "rule",
+              "value": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+              "source_span_id": "fixture-span-orchard_restoration-4"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-5",
+              "memory_type": "event_timeline",
+              "subject": "restoration boat",
+              "predicate": "event_occurred",
+              "value": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+              "source_span_id": "fixture-span-orchard_restoration-5"
+            },
+            {
+              "id": "fixture-memory-orchard_restoration-6",
+              "memory_type": "open_thread",
+              "subject": "restoration boat",
+              "predicate": "status",
+              "value": "The restoration log leaves the cause of the boat's delay unrecorded.",
+              "source_span_id": "fixture-span-orchard_restoration-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1\",\"verdict\":\"no_issue\",\"basis\":\"The draft explicitly frames the statement as a lie by Nera, so it is an attributed false utterance, not narrator-confirmed canon. The register evidence that Nera and Oren are twins is consistent with the lie being false, and no continuity conflict arises.\"}]}",
+        "parsed_business_json": {
+          "issues": [],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1",
+              "verdict": "no_issue",
+              "basis": "The draft explicitly frames the statement as a lie by Nera, so it is an attributed false utterance, not narrator-confirmed canon. The register evidence that Nera and Oren are twins is consistent with the lie being false, and no continuity conflict arises."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    }
+  ]
+}

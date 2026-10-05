@@ -1,0 +1,123 @@
+{
+  "case_id": "v6-v6s-08",
+  "evaluation_ordinal": 1,
+  "stage": "first",
+  "recorded_before_dispatch_at": "2026-09-27T10:03:28.707682+00:00",
+  "business_request_sha256": "f172d1e874befcff7caded8eb8528b1feb3d9afac821f7ffde4b9e224ddcc462",
+  "bindings": {
+    "draft_id": "fixture-draft-v6-actor-named",
+    "draft_revision": 2
+  },
+  "selected_source_bindings": [
+    {
+      "kind": "target_claim",
+      "id": "claim-run-c7bf025d-e9b7-4fca-9947-923295b9351a-1",
+      "text": "According to the inspection log, Ina loosened the courier capsule valve cap at 10:00.",
+      "sha256": "f8ab38148da4d6be5de2abeee3444c116cf919e75fc0fc615d3354ecfe7d7f1e"
+    },
+    {
+      "kind": "allowed_evidence",
+      "id": "fixture-span-v6_actor_named-1",
+      "chapter_id": "fixture-chapter-v6_actor_named-1",
+      "text": "At 10:00 the inspector watched Ina loosen the courier capsule valve cap and entered her name in the inspection log.",
+      "prompt_excerpt": "At 10:00 the inspector watched Ina loosen the courier capsule valve cap and entered her name in the inspection log.",
+      "sha256": "9579ab65b8ac2d57b58163f8dea1bca4c3dc4de3277d5d6f78f2fd10b9cdc257"
+    },
+    {
+      "kind": "memory_record",
+      "id": "fixture-memory-v6_actor_named-1",
+      "source_span_id": "fixture-span-v6_actor_named-1",
+      "text": "At 10:00 the inspector watched Ina loosen the courier capsule valve cap and entered her name in the inspection log.",
+      "sha256": "9579ab65b8ac2d57b58163f8dea1bca4c3dc4de3277d5d6f78f2fd10b9cdc257"
+    }
+  ],
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-v6-actor-named",
+      "revision": 2,
+      "body": "According to the inspection log, Ina loosened the courier capsule valve cap at 10:00."
+    },
+    "claims": [
+      {
+        "id": "claim-run-c7bf025d-e9b7-4fca-9947-923295b9351a-1",
+        "text": "According to the inspection log, Ina loosened the courier capsule valve cap at 10:00.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-v6_actor_named-1",
+            "chapter_id": "fixture-chapter-v6_actor_named-1",
+            "body": "At 10:00 the inspector watched Ina loosen the courier capsule valve cap and entered her name in the inspection log.",
+            "label": "A2",
+            "prompt_excerpt": "At 10:00 the inspector watched Ina loosen the courier capsule valve cap and entered her name in the inspection log."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-v6_actor_named-1",
+        "memory_type": "dynamic_state",
+        "subject": "actor_named",
+        "predicate": "status",
+        "value": "At 10:00 the inspector watched Ina loosen the courier capsule valve cap and entered her name in the inspection log.",
+        "source_span_id": "fixture-span-v6_actor_named-1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "brief reason for this claim decision, including why an omitted issue is compatible or needs no review"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  }
+}

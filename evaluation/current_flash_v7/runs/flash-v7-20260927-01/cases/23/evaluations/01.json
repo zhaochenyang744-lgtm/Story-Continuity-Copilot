@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "25b5274ca1f6913bc490d04c59219a91d90f8467561a5d6478a81064db836059",
+  "finished_at": "2026-09-27T10:48:36.141832+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-61caead0-b32f-4a8b-a3aa-6c00472fc2b2-1",
+        "verdict": "no_issue",
+        "basis": "The claim's 19点 move from Gate Four on the west pier to the east pier is compatible with the 18点 prior state at Gate Four on the west pier; the static canon that Gate Four stands on the west pier is consistent, and the current draft supplies the later transition."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3475,
+    "output_tokens": 117,
+    "observed_response_input_tokens": 3475,
+    "observed_response_output_tokens": 117
+  }
+}

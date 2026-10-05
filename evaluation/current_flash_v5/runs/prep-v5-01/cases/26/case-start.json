@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-01",
+  "ordinal": 26,
+  "case_id": "g02-long-sentence",
+  "family": "g02",
+  "started_at": "2026-09-27T07:58:51.343718+00:00",
+  "case_input_sha256": "c820751547a52ea9fa6c25dde09e7e6b59f07161f8186a16229483eeb6d85432",
+  "source_ref": "evaluation/current_flash_v4/cases.json"
+}

@@ -1,0 +1,234 @@
+{
+  "evaluation": 2,
+  "stage": "repair",
+  "business_request_sha256": "ccdcb9db3f96db98f895e8c287e824885944267027e5114dbb9a7e828ae49d86",
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-north-glass",
+      "revision": 2,
+      "body": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge."
+    },
+    "claims": [
+      {
+        "id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+        "text": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-north_glass-2",
+            "chapter_id": "fixture-chapter-north_glass-2",
+            "body": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+            "label": "badge_roster",
+            "prompt_excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+          },
+          {
+            "id": "fixture-span-north_glass-5",
+            "chapter_id": "fixture-chapter-north_glass-5",
+            "body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+            "label": "carrier_inspection",
+            "prompt_excerpt": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute."
+          },
+          {
+            "id": "fixture-span-north_glass-1",
+            "chapter_id": "fixture-chapter-north_glass-1",
+            "body": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+            "label": "badge_rule",
+            "prompt_excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-north_glass-1",
+        "memory_type": "static_canon",
+        "subject": "Mira",
+        "predicate": "rule",
+        "value": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+        "source_span_id": "fixture-span-north_glass-1"
+      },
+      {
+        "id": "fixture-memory-north_glass-2",
+        "memory_type": "dynamic_state",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened.",
+        "source_span_id": "fixture-span-north_glass-2"
+      },
+      {
+        "id": "fixture-memory-north_glass-3",
+        "memory_type": "open_thread",
+        "subject": "Mira",
+        "predicate": "status",
+        "value": "The spare blue badge register leaves its 11点 holder field blank.",
+        "source_span_id": "fixture-span-north_glass-3"
+      },
+      {
+        "id": "fixture-memory-north_glass-4",
+        "memory_type": "static_canon",
+        "subject": "pneumatic carrier",
+        "predicate": "rule",
+        "value": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+        "source_span_id": "fixture-span-north_glass-4"
+      },
+      {
+        "id": "fixture-memory-north_glass-5",
+        "memory_type": "dynamic_state",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+        "source_span_id": "fixture-span-north_glass-5"
+      },
+      {
+        "id": "fixture-memory-north_glass-6",
+        "memory_type": "open_thread",
+        "subject": "pneumatic carrier",
+        "predicate": "status",
+        "value": "The carrier inspection does not record who loosened its valve cap.",
+        "source_span_id": "fixture-span-north_glass-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    },
+    "contract_repair": {
+      "attempt": 2,
+      "reason_code": "temporal_overlap_unproven",
+      "diagnostics": [
+        {
+          "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+          "claim_text": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+          "problem_codes": [
+            "temporal_overlap_unproven"
+          ],
+          "cited_evidence": [
+            {
+              "span_id": "fixture-span-north_glass-1",
+              "excerpt": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it."
+            },
+            {
+              "span_id": "fixture-span-north_glass-2",
+              "excerpt": "At 10点 on the same day, Mira tried the North Glass door while wearing only a red badge and carrying no blue badge; the roster does not record whether it opened."
+            }
+          ]
+        }
+      ],
+      "rejected_issues": [
+        {
+          "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+          "status": "conflict",
+          "nature": "confirmed_conflict",
+          "category": "object_state",
+          "severity": "high",
+          "explanation": "Mira cannot have opened the North Glass door at 10点 while wearing only a red badge, because the door opens only for a blue-badge wearer.",
+          "reasoning": "The current claim asserts that at 10点 on the same day Mira opened the North Glass door while wearing only her red badge. The static canon rule states the North Glass door opens only for a wearer of a blue badge and a red badge cannot open it. The dynamic state places Mira at the same 10点 time wearing only a red badge and carrying no blue badge. Together these establish that the claimed opening is impossible under the door's rule at the same time and subject.",
+          "temporal_basis": {
+            "claim_anchor": "At 10点 on the same day",
+            "evidence_anchor": "At 10点 on the same day",
+            "relation": "explicit_overlap"
+          },
+          "evidence": [
+            {
+              "chapter_id": "fixture-chapter-north_glass-1",
+              "span_id": "fixture-span-north_glass-1",
+              "relation": "contradicts",
+              "sufficiency": "sufficient",
+              "related_memory_ids": [
+                "fixture-memory-north_glass-1"
+              ]
+            },
+            {
+              "chapter_id": "fixture-chapter-north_glass-2",
+              "span_id": "fixture-span-north_glass-2",
+              "relation": "context",
+              "sufficiency": "sufficient",
+              "related_memory_ids": [
+                "fixture-memory-north_glass-2"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "fixture-span-north_glass-1",
+              "role": "current_context"
+            },
+            {
+              "span_id": "fixture-span-north_glass-2",
+              "role": "prior_state"
+            }
+          ],
+          "suggested_revision": {
+            "before": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+            "after": "At 10点 on the same day, Mira tried the North Glass door while wearing only her red badge; the door did not open."
+          },
+          "available_actions": [
+            "edit",
+            "apply_suggestion",
+            "keep_intentional",
+            "false_positive"
+          ]
+        }
+      ],
+      "rejected_claim_verdicts": [
+        {
+          "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+          "verdict": "reviewed_issue",
+          "basis": "The claim that Mira opened the North Glass door at 10点 while wearing only a red badge conflicts with the supplied rule that the door opens only for a blue-badge wearer and the same-time state that she carried no blue badge."
+        }
+      ]
+    }
+  }
+}

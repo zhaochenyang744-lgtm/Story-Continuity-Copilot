@@ -1,0 +1,174 @@
+{
+  "schema_version": "v8-blinded-case-first-review-v1",
+  "case_alias": "case-09",
+  "stage": "first",
+  "reviewer": "semantic-review-a",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-09",
+      "response_alias": "answer-1a5a71",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        202
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确区分日志不担保授权与否认授权，保留Sera授权未知，实际不足Issue与relationship正确。",
+          "visible_quote": "Sera's authorization remains unknown",
+          "evidence_pointer": "responses[answer-1a5a71].first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "passed_dimensions_note": "唯一最低span2及对应chapter/Memory正确；context/insufficient+missing_link、null建议和空动作正确。11点同刻锚点未升级为确定冲突；insufficient不适用仅confirmed的timeless/overlap限制。JSON/claim/ledger/实际Issue合规。",
+      "attribution_tags": [],
+      "overall_reason": "明确区分日志不担保授权与否认授权，保留Sera授权未知，实际不足Issue与relationship正确。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-09",
+      "response_alias": "answer-e42a5d",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "not_delivered",
+        "E_roles": "not_delivered",
+        "E_set": "not_delivered",
+        "E_binding": "not_delivered",
+        "S": "fail",
+        "D": "fail",
+        "T": "not_applicable",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 0,
+      "basis_codepoints": [
+        114
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "basis正确保留授权未知；附带Memory中的电报码未知属于非决定性背景，未据此否认授权。但issues为空，缺实际不足Issue。",
+          "visible_quote": "该断言缺乏支持，但也不构成直接矛盾",
+          "evidence_pointer": "responses[answer-e42a5d].first.parsed_business_json.claim_verdicts[0].basis"
+        },
+        {
+          "dimension": "S/D",
+          "verdict": "fail",
+          "reason": "ledger为insufficient_evidence却issues=[]，没有实际交付带来源的不足Issue；正确basis不能抵扣。",
+          "visible_quote": "\"issues\":[]",
+          "evidence_pointer": "responses[answer-e42a5d].first.parsed_business_json.issues; claim_verdicts[0].verdict"
+        }
+      ],
+      "passed_dimensions_note": "F仅根据可见basis通过；无实际Issue时C/E标not_delivered，不从basis补造类别或引用。",
+      "attribution_tags": [
+        "delivery_missing",
+        "schema_error"
+      ],
+      "overall_reason": "basis正确保留授权未知；附带Memory中的电报码未知属于非决定性背景，未据此否认授权。但issues为空，缺实际不足Issue。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-09",
+      "response_alias": "answer-114e66",
+      "stage": "first",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-harbor_signal-timeline-insufficient_evidence",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "basis_codepoints": [
+        198
+      ],
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "准确说明日志归属无担保且实际授权仍未知，不把缺失证据升级为反向事实；relationship及实际不足Issue正确。",
+          "visible_quote": "neither confirms nor denies that Sera authorized a reopening",
+          "evidence_pointer": "responses[answer-114e66].first.parsed_business_json.issues[0].reasoning"
+        }
+      ],
+      "passed_dimensions_note": "唯一最低span2及对应chapter/Memory正确；context/insufficient+missing_link、null建议和空动作正确。11点同刻锚点未升级为确定冲突；insufficient不适用仅confirmed的timeless/overlap限制。JSON/claim/ledger/实际Issue合规。",
+      "attribution_tags": [],
+      "overall_reason": "准确说明日志归属无担保且实际授权仍未知，不把缺失证据升级为反向事实；relationship及实际不足Issue正确。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null
+    }
+  ],
+  "within_case_comparison_after_individual_review": {
+    "strict_pass": 2,
+    "total": 3,
+    "strict_pass_aliases": [
+      "answer-1a5a71",
+      "answer-114e66"
+    ],
+    "F_pass_aliases": [
+      "answer-1a5a71",
+      "answer-e42a5d",
+      "answer-114e66"
+    ],
+    "distinction": "三条basis/推理均正确保留未知；两条实际不足Issue完整通过，一条漏Issue导致严格失败。"
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/09.json",
+    "sha256_before": "e009b9404bc6787d42018f0eaacdb77fa0923998e0a81cb74a63ef1d690fc0d4",
+    "sha256_after_review": "e009b9404bc6787d42018f0eaacdb77fa0923998e0a81cb74a63ef1d690fc0d4",
+    "unchanged": true,
+    "all_response_business_requests_equal_packet": true,
+    "all_visible_json_equal_saved_parsed": true
+  },
+  "lock": {
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "repair_or_final_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

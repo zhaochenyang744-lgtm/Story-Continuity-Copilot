@@ -1,0 +1,83 @@
+{
+  "version": "eval-set-v12-authoring-1",
+  "cases_sha256": "d3bfeb632df7e7405f3cceb95d8b55c7b6a0aef50fb66637b7258dc650431ad4",
+  "corpora": 6,
+  "chapters": 48,
+  "cases": 36,
+  "class_counts": {
+    "conflict": 12,
+    "no_conflict": 12,
+    "insufficient_evidence": 12
+  },
+  "category_counts": {
+    "world_rule": 1,
+    "attribute": 2,
+    "relationship": 2,
+    "character_knowledge": 1,
+    "timeline": 1,
+    "event_status": 2,
+    "location_action": 1,
+    "object_state": 2
+  },
+  "designated_regression": [
+    "hv12-001",
+    "hv12-007",
+    "hv12-025"
+  ],
+  "statistics": {
+    "zh": {
+      "works": 3,
+      "chapters": 24,
+      "body_characters": 2064,
+      "mean_body_characters": 86,
+      "max_body_characters": 95,
+      "cases": 18
+    },
+    "en": {
+      "works": 3,
+      "chapters": 24,
+      "body_characters": 5749,
+      "mean_body_characters": 239.54,
+      "max_body_characters": 262,
+      "cases": 18
+    }
+  },
+  "format_check": {
+    "command": ".\\.venv\\Scripts\\python.exe -B evaluation\\eval_set_v12_authoring\\check.py",
+    "exit_code": 0,
+    "errors": 0,
+    "warnings": 0,
+    "output": "authoring/format-check.txt",
+    "checker_byte_identical_to_third_set": true
+  },
+  "shared_name_or_item_links_verified": 39,
+  "semantic_review": "Author self-review, not independent or blind; see authoring/content-review.json",
+  "source_exports_equal_json_source": true,
+  "source_hashes": {
+    "brambletide_aquarium_census.md": "6ec74dd67f833d732e890edca0bcf0e7c8ac42f6bc3939168815d5530d9e020d",
+    "calverin_rag_paper_mill.md": "09c1a7f76bbef78e83db63a93ee6d33ba506e9e163fbce051729297834376601",
+    "elmrake_hotel_repairs.md": "4be8e8ea80a2a7320ae91bd25d3e224d5b2491ba950319e93d3610d385a55ab9",
+    "puling_refraction_festival.md": "17cd5275b55533c5dbe68fcbaba8976bea51fa9d19113950f4a78d152160c447",
+    "shengxiu_score_library.md": "f4dfe4b1bfef1597ce9568631574d1584e397d40980d9542f2dce8d9852abff0",
+    "tiaojin_rainworks.md": "d4632f8255a835322cebf4d77eb944e500f57817e38be617c386179e3c1700a2"
+  },
+  "protected_file_hashes": {
+    "evaluation/eval_set_v9_authoring/cases.json": "fbf2b50ae8d16e35584b3e237924831ba8c5b6449717d8124ff3af3551f20524",
+    "evaluation/eval_set_v9_authoring/cases.sha256": "6f96d0395c2be439760a1a33ac4c10feca377294b4be968cd03bd30450e59543",
+    "evaluation/eval_set_v9_authoring/check.py": "13d84c2a3fe7e071943474bd7dc7732a8154e2dfe61b62e3275942295c240a49",
+    "evaluation/eval_set_v10_authoring/cases.json": "4544153ae785f0315703f0cbbfa2b4c87170aff18c58dbe3afbe0cb57b549955",
+    "evaluation/eval_set_v10_authoring/cases.sha256": "ad0597714332b71ace866605fba547a3b5485c85b4a452b9401cb294c1b35a06",
+    "evaluation/eval_set_v10_authoring/check.py": "5e5ac8b9d2140331bfa56981b6d5cc19b76519d045611ea31cd9fd42a2130995",
+    "evaluation/eval_set_v11_authoring/cases.json": "6b7f4f4dee490855321329a7dec3899b42820de67741b7d7c88f7566750bcc61",
+    "evaluation/eval_set_v11_authoring/cases.sha256": "2051f5f3121b03eb90472a0c4d86263cc390363bfb5204069801ce0204fb1639",
+    "evaluation/eval_set_v11_authoring/check.py": "913596803c4e77a3d13db678ecc88d5be3459fa234b843c6fe6714ce1263ae97",
+    "backend/app/engine.py": "dc589618d87e4336b6b10aede2fe730c80f9b8f918e17d98db3e4a275b05f178",
+    "backend/app/provider.py": "7b204598f68bd58649dfd1ec3295e13fe4c811ccf6773032239111d6a0979252"
+  },
+  "previous_three_sets_and_protected_code_unchanged": true,
+  "provider_calls": 0,
+  "model_evaluation_runs": 0,
+  "formal_gate_runs": 0,
+  "scoring_code_or_thresholds_modified": false,
+  "limitation": "Memory extraction, retrieval and model outputs have not been empirically evaluated."
+}

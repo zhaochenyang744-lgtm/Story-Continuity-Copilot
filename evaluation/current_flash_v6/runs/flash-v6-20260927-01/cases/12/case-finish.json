@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "status": "failed",
+  "error_code": "claim_verdicts_issue_mismatch",
+  "post_attempt_start_records": 2,
+  "evaluation_count": 2,
+  "score_status": "terminal_failure",
+  "finished_at": "2026-09-27T10:02:16.765127+00:00"
+}

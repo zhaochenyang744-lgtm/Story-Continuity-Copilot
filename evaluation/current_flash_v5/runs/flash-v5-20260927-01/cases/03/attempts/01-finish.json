@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-world_rule-insufficient_evidence",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T08:19:58.157094+00:00",
+  "latency_ms": 1941,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3073,
+      "completion_tokens": 346,
+      "total_tokens": 3419
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-f0e3ded3-8581-4744-9890-d1de0920ce70-1\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"object_state\",\"severity\":\"medium\",\"explanation\":\"The draft says Mira held the spare blue badge at 11点, but the spare blue badge register leaves its 11点 holder field blank.\",\"reasoning\":\"Both statements concern the same object (the spare blue badge) and the same explicit time (11点 on the same day). The draft asserts Mira as the 11点 holder, while the cited register evidence states that the 11点 holder field is blank. These cannot both be true under the same subject, scope, and time.\",\"temporal_basis\":{\"claim_anchor\":\"at 11点\",\"evidence_anchor\":\"11点 holder field blank\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-north_glass-3\",\"span_id\":\"fixture-span-north_glass-3\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-3\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-north_glass-3\",\"role\":\"current_context\"}],\"suggested_revision\":{\"before\":\"Mira held the spare blue badge at 11点, according to the two badge registers.\",\"after\":\"The spare blue badge register leaves its 11点 holder field blank.\"},\"available_actions\":[\"edit\",\"apply_suggestion\",\"keep_intentional\",\"false_positive\"]}]}",
+  "message_content_sha256": "7eeef69ce433cf30d15382b623c42337370d11d62facb0f9a9a56b7ad6f95de0",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

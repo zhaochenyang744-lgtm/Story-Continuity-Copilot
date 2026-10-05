@@ -1,0 +1,59 @@
+{
+  "manifest_version": "scc-eval-manifest-v4",
+  "status": "approved_for_formal_run",
+  "case_set": {
+    "path": "evaluation/case_sets/eval-set-v4.json",
+    "canonical_sha256": "2fd88830ad7ef61e089de7bd6d18ba930bdecf445c65c6ce835f20c7507768fc",
+    "case_count": 15,
+    "split": {
+      "conflict": 5,
+      "no_conflict": 5,
+      "insufficient_evidence": 5
+    }
+  },
+  "stability_protocol": {
+    "representative_case_ids": [
+      "eval-v4-jetty-conflict-fog-duration",
+      "eval-v4-cabin-no-conflict-leaf-zinc",
+      "eval-v4-office-insufficient-water-conclusion"
+    ],
+    "independent_runs_per_case": 3,
+    "additional_calls_after_formal": 6
+  },
+  "scoring": {
+    "prediction_rule": "target claim has conflict Issue => conflict; else target claim has insufficient_evidence Issue => insufficient_evidence; else no_conflict",
+    "retrieval": "expected evidence semantic target appears in the target claim retrieval top 5",
+    "cited_evidence_precision": "all cited Evidence rows resolve to current-project SourceSpan and match expected evidence for the evaluated target claim",
+    "cost": "unavailable when Provider does not return cost; never estimate"
+  },
+  "required_thresholds": {
+    "macro_f1_min": 0.8,
+    "conflict_recall_min": 0.8,
+    "insufficient_evidence_recall_min": 0.8,
+    "no_conflict_false_positive_rate_max": 0.2,
+    "retrieval_expected_evidence_hit_at_5_min": 0.8,
+    "cited_evidence_precision": 1,
+    "schema_validity": 1,
+    "evidence_resolvability_grounding": 1,
+    "fail_closed_safety_paths": 1
+  },
+  "fixture_corpus": {
+    "path": "evaluation/fixtures/eval-v4-corpus-manifest.json",
+    "canonical_sha256": "5bc19ed4c6e1fd231af4e2f798b174f58bd5fe55314552f907e3b8b82de7daf3",
+    "evaluation_only": true,
+    "production_seed": false,
+    "protected_asset_source": false
+  },
+  "boundaries": {
+    "evaluation_only": true,
+    "production_seed": false,
+    "protected_asset_source": false,
+    "formal_run_executed": false,
+    "provider_calls": 0,
+    "deployment": false,
+    "ui_change": false
+  },
+  "runtime_mode": "evaluation_fixture",
+  "formal_run_executed": false,
+  "provider_calls": 0
+}

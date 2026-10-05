@@ -1,0 +1,22 @@
+{
+  "kind": "live",
+  "first_raw": {
+    "machine_result": "pass",
+    "semantic_result": "pending_manual_review",
+    "errors": [],
+    "scope": "citation_binding_only; item_and_summary_semantic_support_pending_manual_review",
+    "source": "first_or_repair_model_business_json"
+  },
+  "repair_raw": [],
+  "final": {
+    "result": "pending_manual_review",
+    "machine_result": "pass",
+    "semantic_result": "pending_manual_review",
+    "errors": [],
+    "scope": "citation_binding_only; each_item_and_summary_semantic_support_pending_manual_review",
+    "source": "persisted_source_rendered_product"
+  },
+  "request_count": 1,
+  "parsed_output_count": 1,
+  "manual_semantic_review": "pending_manual_review"
+}

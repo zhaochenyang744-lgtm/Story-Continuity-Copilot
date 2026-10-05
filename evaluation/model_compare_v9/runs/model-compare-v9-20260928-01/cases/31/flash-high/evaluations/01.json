@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "4156b4e09c30d844eeed6b5dc1130f92713ddaf34eee70ac87380c703ca8cbb7",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "timeline",
+        "severity": "medium",
+        "explanation": "The cited span shows the birth register records Aster and Nilo as twins but explicitly omits which twin was born first, so the draft's attribution that the register establishes Aster's prior birth is unsupported and the actual order remains unknown.",
+        "reasoning": "The cited span is the register's own content: it records twinship and states outright that the order of birth is not recorded. That makes the span relevant context but insufficient to carry the draft's attribution; the decisive recorded detail (which twin was born first) is the missing link, so the claimed establishment cannot be verified, and the birth order stays unknown rather than disproved.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-v6_birth_order_blank-1",
+            "span_id": "fixture-span-v6_birth_order_blank-1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-v6_birth_order_blank-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-v6_birth_order_blank-1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The register span records only twinship and states the birth order is not recorded; the draft's assertion that the register establishes Aster's prior birth lacks the decisive recorded detail, so the claimed establishment is unsupported."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3064,
+      "completion_tokens": 1688,
+      "total_tokens": 4752,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1269
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 760
+    },
+    "status": "complete",
+    "prompt_tokens": 3064,
+    "completion_tokens": 1688,
+    "total_tokens": 4752,
+    "reasoning_tokens": 1269,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

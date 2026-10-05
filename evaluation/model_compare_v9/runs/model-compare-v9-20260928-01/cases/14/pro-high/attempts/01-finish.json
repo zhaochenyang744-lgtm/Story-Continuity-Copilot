@@ -1,0 +1,48 @@
+{
+  "evaluation": 1,
+  "trial_post_ordinal": 1,
+  "http_status": 200,
+  "error_type": null,
+  "latency_ms": 11076,
+  "finish_reason": "stop",
+  "response_model": "deepseek-v4-pro",
+  "response_id": "7a364540-6bf4-4f04-b7ec-1f56f09e1100",
+  "system_fingerprint": "a307abda487cd1b463329ccb945ce396",
+  "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-d9c360c6-f89f-4563-9bcd-9adc709af82e-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"The draft explicitly marks Nera's statement as a lie, so it is an attributed false utterance, not narrator-confirmed canon; the register's twin record is supported by cited evidence without contradiction.\"\n    }\n  ]\n}",
+  "visible_content_sha256": "6bd099372ac706c40b1f159f868b6538790b5267e0d83ed7b6ffc5838c7f5727",
+  "reasoning": {
+    "present": true,
+    "codepoints": 2344,
+    "utf8_bytes": 2352,
+    "sha256": "3235a67cfb3967e8b11019c5c2c9e61e873dcccd9e9d34dbf76fff13c7346882"
+  },
+  "reasoning_body_persisted": false,
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3598,
+      "completion_tokens": 641,
+      "total_tokens": 4239,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 527
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1166
+    },
+    "status": "complete",
+    "prompt_tokens": 3598,
+    "completion_tokens": 641,
+    "total_tokens": 4239,
+    "reasoning_tokens": 527,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "finished_at": "2026-09-28T07:43:12.462788+00:00"
+}

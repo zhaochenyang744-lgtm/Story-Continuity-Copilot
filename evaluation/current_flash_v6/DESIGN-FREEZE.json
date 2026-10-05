@@ -1,0 +1,13 @@
+{
+  "phase": "v6_preimplementation_contract_and_controls",
+  "baseline_head": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "real_provider_calls": 0,
+  "files": {
+    "evaluation/current_flash_v6/CONTRACT.md": "89bf179652e71f9b271a7ebcc6ae42ab592ce55cac3e1e7e3173a261d9192203",
+    "docs/flash-v6-independent-acceptance-evidence/BASELINE.json": "41acb413c34db0870a9daa1766ed119cefc7d6389f0bb4a49cbc04ca01831183",
+    "docs/flash-v6-independent-acceptance-evidence/engineering/criteria.md": "c0cf1a7ba2d42f3e3b38cb11790c8ef5680832dec5a10ec9c8c7115002b2e5bc",
+    "docs/flash-v6-independent-acceptance-evidence/g02/criteria.md": "d554e3534fe5db25558439bdc34fc1b805555d33c3bc9ce658acd573fb0fca92",
+    "docs/flash-v6-independent-acceptance-evidence/semantics/criteria.md": "a09185a0cfcb9b9541140a296db8d63d609410dca48159944bf5ce0007715263",
+    "docs/flash-v6-independent-acceptance-evidence/semantics/control-matrix.json": "4f6642c28b4361902a36d489a05ab8e56b32a061b0059ba7b309e4ec1d31d220"
+  }
+}

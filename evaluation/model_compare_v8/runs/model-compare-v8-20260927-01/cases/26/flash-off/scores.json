@@ -1,0 +1,68 @@
+{
+  "first": {
+    "machine_result": "fail",
+    "semantic_result": "pending_independent_review",
+    "score_layer": "raw_first_or_repair_v6",
+    "errors": [
+      "confirmed_evidence_role_invalid",
+      "product_validator:conflict_evidence_not_direct"
+    ],
+    "layers": {
+      "decision": [],
+      "category": [],
+      "citation": [
+        "confirmed_evidence_role_invalid",
+        "product_validator:conflict_evidence_not_direct"
+      ],
+      "structure": [],
+      "temporal": [],
+      "generation": []
+    },
+    "complete_answer": true,
+    "scoring_policy": "unchanged_v7"
+  },
+  "repair": [
+    {
+      "machine_result": "fail",
+      "semantic_result": "pending_independent_review",
+      "score_layer": "raw_first_or_repair_v6",
+      "errors": [
+        "confirmed_evidence_role_invalid",
+        "product_validator:conflict_evidence_not_direct"
+      ],
+      "layers": {
+        "decision": [],
+        "category": [],
+        "citation": [
+          "confirmed_evidence_role_invalid",
+          "product_validator:conflict_evidence_not_direct"
+        ],
+        "structure": [],
+        "temporal": [],
+        "generation": []
+      },
+      "complete_answer": true,
+      "scoring_policy": "unchanged_v7"
+    }
+  ],
+  "final": {
+    "machine_result": "terminal_failure",
+    "errors": [
+      "conflict_evidence_not_direct"
+    ],
+    "layers": {
+      "decision": [],
+      "category": [],
+      "citation": [
+        "conflict_evidence_not_direct"
+      ],
+      "structure": [],
+      "temporal": [],
+      "generation": []
+    },
+    "semantic_result": "not_delivered",
+    "output_layer": "experiment_engine_not_api_persistence"
+  },
+  "manual_semantic_review": "pending",
+  "historical_v7_not_rescored_as_new_result": true
+}

@@ -1,0 +1,18 @@
+{
+  "name": "identity_before_material_and_environment",
+  "passed": true,
+  "details": [
+    {
+      "type": "FileExistsError",
+      "message": "run_identity_already_exists:flash-v5-independent-duplicate"
+    },
+    {
+      "type": "FileExistsError",
+      "message": "run_identity_already_exists:flash-v5-workspace-existing"
+    },
+    {
+      "type": "ValueError",
+      "message": "run_id_invalid"
+    }
+  ]
+}

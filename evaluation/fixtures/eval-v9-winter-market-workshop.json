@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "winter_market_workshop",
+  "title": "A Loom for the Winter Market",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v9-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "A Loom for the Winter Market",
+    "language": "en",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Names at the Door",
+      "source_label": "badge_list",
+      "body": "At 15:20 on 9 October, Iona Tern alone wore the badge Cedar. Pell Dace alone wore the badge Flax. The workshop's badge list records both assignments."
+    },
+    {
+      "chapter_number": 2,
+      "title": "The Red Bolt",
+      "source_label": "workbench_entry",
+      "body": "At 15:20 on 9 October, Cedar alone cut the ceremonial ribbon from the red bolt. Flax did not participate in that cut. The workbench entry identifies the workers only by their badges."
+    },
+    {
+      "chapter_number": 3,
+      "title": "The Sable Bowl",
+      "source_label": "inspection_card",
+      "body": "At 16:00 on 9 October, the Sable bowl measured exactly 28 cm across its rim. The inspector measured it twice and entered the same diameter on both lines of the inspection card."
+    },
+    {
+      "chapter_number": 4,
+      "title": "The Last Verse",
+      "source_label": "rehearsal_notes",
+      "body": "At 17:00 on 9 October, Orel Moss completed the market's opening-song rehearsal. The musicians packed their instruments after the final verse."
+    },
+    {
+      "chapter_number": 5,
+      "title": "Three Cranes",
+      "source_label": "folding_table",
+      "body": "At 18:00 on 9 October, the paper cranes numbered P1, P2 and P3 were all green. Their small number tags were attached beneath their wings."
+    },
+    {
+      "chapter_number": 6,
+      "title": "The Display Window",
+      "source_label": "window_label",
+      "body": "At 18:00 on 9 October, the display window held exactly three paper cranes: P1, P2 and P3. There were no other paper cranes in the window."
+    },
+    {
+      "chapter_number": 7,
+      "title": "Bound for Rowan Hall",
+      "source_label": "dispatch_slip",
+      "body": "At 18:30 on 9 October, a dispatch slip recorded that the wall hanging had been sent to Rowan Hall. The recipient signature box was blank; the slip contained no arrival time or acknowledgement."
+    },
+    {
+      "chapter_number": 8,
+      "title": "Before Closing",
+      "source_label": "closing_book",
+      "body": "The closing book for 9 October says the cash tin was counted and the south shutter was lowered before 20:00. It gives neither an individual time for either task nor their order."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "dynamic_state",
+      "subject": "A Loom for the Winter Market",
+      "predicate": "status",
+      "value": "At 15:20 on 9 October, Iona Tern alone wore the badge Cedar. Pell Dace alone wore the badge Flax. The workshop's badge list records both assignments.",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "badge_list"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "A Loom for the Winter Market",
+      "predicate": "status",
+      "value": "At 15:20 on 9 October, Cedar alone cut the ceremonial ribbon from the red bolt. Flax did not participate in that cut. The workbench entry identifies the workers only by their badges.",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "workbench_entry"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "A Loom for the Winter Market",
+      "predicate": "status",
+      "value": "At 16:00 on 9 October, the Sable bowl measured exactly 28 cm across its rim. The inspector measured it twice and entered the same diameter on both lines of the inspection card.",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "inspection_card"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "A Loom for the Winter Market",
+      "predicate": "status",
+      "value": "At 17:00 on 9 October, Orel Moss completed the market's opening-song rehearsal. The musicians packed their instruments after the final verse.",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "rehearsal_notes"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "A Loom for the Winter Market",
+      "predicate": "status",
+      "value": "At 18:00 on 9 October, the paper cranes numbered P1, P2 and P3 were all green. Their small number tags were attached beneath their wings.",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "folding_table"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "A Loom for the Winter Market",
+      "predicate": "status",
+      "value": "At 18:00 on 9 October, the display window held exactly three paper cranes: P1, P2 and P3. There were no other paper cranes in the window.",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "window_label"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "A Loom for the Winter Market",
+      "predicate": "status",
+      "value": "At 18:30 on 9 October, a dispatch slip recorded that the wall hanging had been sent to Rowan Hall. The recipient signature box was blank; the slip contained no arrival time or acknowledgement.",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "dispatch_slip"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "A Loom for the Winter Market",
+      "predicate": "status",
+      "value": "The closing book for 9 October says the cash tin was counted and the south shutter was lowered before 20:00. It gives neither an individual time for either task nor their order.",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "closing_book"
+      }
+    }
+  ]
+}

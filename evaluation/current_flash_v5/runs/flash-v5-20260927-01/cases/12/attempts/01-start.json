@@ -1,0 +1,12 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-insufficient_evidence",
+  "run_id": "flash-v5-20260927-01",
+  "http_ordinal_in_case": 1,
+  "global_http_ordinal": 13,
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "db3bf8982127861cf896fe42dfce7bbd2965e809ed75a18afc527fd0d10e1c3e",
+  "endpoint": "/chat/completions",
+  "http_body_sha256": "9704d6b9ac03e7dea7bece278447572aab054efcd1ccee6b0099267d9aa1a376",
+  "started_at": "2026-09-27T08:20:24.597493+00:00",
+  "usage_status": "unknown_until_response"
+}

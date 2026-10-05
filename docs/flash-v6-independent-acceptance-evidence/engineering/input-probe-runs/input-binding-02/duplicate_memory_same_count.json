@@ -1,0 +1,6 @@
+{
+  "control": "duplicate_memory_same_count",
+  "rejection": "input_contract:v6-v6s-01:control_selected_memory_set_drift",
+  "request_sha256": "9e81dd1127433a77296deeff89bde975ea1f40a373e881b54af0cb1c0afc3f4b",
+  "status": "pass"
+}

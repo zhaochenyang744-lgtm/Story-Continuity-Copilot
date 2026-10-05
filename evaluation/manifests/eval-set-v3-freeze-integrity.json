@@ -1,0 +1,15 @@
+{
+  "schema_version": "scc-eval-v3-freeze-integrity-v1",
+  "status": "frozen_data_assets",
+  "case_canonical_sha256": "58feff57023b9e8d9ff6d006ced89773ca890cc44972f3f706a02597ac191dfa",
+  "corpus_canonical_sha256": "e1916518e1f568908113ef20f1593513840289a05fd3ad1fb13af9993789c035",
+  "frozen_files": {
+    "evaluation/case_sets/eval-set-v3.json": "006d17dd219ca7d782d0bcd839e5573e0dd6e55cf114929430e2134ea57decd0",
+    "evaluation/manifests/eval-set-v3-manifest.json": "ef5259ddd202e1c2dd04ee64a27270ff9ef7bf6c68c7719d876b53bb621fd99d",
+    "evaluation/v3-semantic-review.json": "1e98c713366504f4593e254f68aa52643386769b46b3b2ece00da5e855ed90da",
+    "evaluation/fixtures/eval-v3-corpus-manifest.json": "5f2216c1a3f6dda3e60f7a67aa95d06f36043b44eade4903bc1d37e8bb8996bc",
+    "evaluation/fixtures/eval-v3-brine-station.json": "c5aabf3ba36d654cb56397d3c551751b189b3364bbf5e9df3497a23664718b72",
+    "evaluation/fixtures/eval-v3-basalt-theatre.json": "31dc6a396af3f4d0f44b3e5485da19591db3e94459dba1d3a4fe14feebd5b144",
+    "evaluation/fixtures/eval-v3-stair-post.json": "f0a1fad27f9a97dcb2db54930f2417c082655a3803d44b0ec7468a4cd24c2446"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "run_id": "flash-v6-20260927-01",
+  "mode": "live",
+  "finished_at": "2026-09-27T10:03:42.931602+00:00",
+  "logical_cases_finished": 34,
+  "logical_cases_planned": 34,
+  "service_stop": false,
+  "semantic_status": "pending_manual_review",
+  "post_attempt_start_records": 49,
+  "transport_attempts_finished": 49,
+  "http_responses_received": 49,
+  "server_receipt_for_unfinished_attempts": "unknown",
+  "usage_counts": {
+    "complete": 49,
+    "missing": 0,
+    "partial": 0,
+    "unknown": 0
+  },
+  "known_prompt_tokens_partial_sum": 168459,
+  "known_completion_tokens_partial_sum": 12568,
+  "prompt_tokens_total": 168459,
+  "completion_tokens_total": 12568,
+  "all_dispatch_usage_complete": true,
+  "unfinished_attempt_count": 0,
+  "models_get_start_records": 1,
+  "models_get_finish_observed": 1,
+  "models_server_receipt_if_unfinished": "unknown"
+}

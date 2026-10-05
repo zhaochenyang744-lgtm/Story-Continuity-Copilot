@@ -1,0 +1,17 @@
+{
+  "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "d20478ff3119d5d431d99e73ec9883cd7f8c22d4fa108726da1393b1025eaf5d",
+  "finished_at": "2026-09-27T07:58:30.132100+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": []
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

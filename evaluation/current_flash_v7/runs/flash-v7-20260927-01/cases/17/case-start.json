@@ -1,0 +1,9 @@
+{
+  "run_id": "flash-v7-20260927-01",
+  "ordinal": 17,
+  "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T10:48:10.642491+00:00",
+  "case_input_sha256": "4410983b06a33289a9ef4c1342e5a70cf2a379b7f968e637ce3679b11aa9b049",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

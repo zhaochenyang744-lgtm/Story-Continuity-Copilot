@@ -1,0 +1,23 @@
+{
+  "status": "independent_technical_preflight_limited_pass",
+  "date": "2026-09-27",
+  "requires_controller_live_guard": true,
+  "git_head": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "v5_manifest_sha256": "aabea4b8f99d2d4282ed627e98da98a57e46a1c526a7a45064af22acfd87682b",
+  "dependency_manifest_sha256": "bcc424e1a372b1e98b1d81d00f368e94075613ab559b1fceb68c7681c371747b",
+  "live_guard_sha256": "fe1e753c5b6e0840ba9a30bf1b9dd75bbcf4c10a5c4a76200b3677da5f28980a",
+  "combined_dependency_files": 280,
+  "independent_control_groups_with_pass_evidence": 12,
+  "initial_probe": {"run_id": "formal-01", "passed": 9, "total": 11, "two_unentered_controls": "Windows long-path failure; retained"},
+  "targeted_probe": {"run_id": "formal-02", "passed": 3, "total": 3, "scope": "two previously unentered runner-loop controls plus controller guard"},
+  "frozen_sources_unchanged": true,
+  "fixture_json_unchanged": true,
+  "real_provider_calls": 0,
+  "network_calls": 0,
+  "database_connections": 0,
+  "product_api_calls": 0,
+  "model_quality_review": "not_started",
+  "user_accepted": false,
+  "release_gate": "not_evaluated",
+  "report": "technical-review.md"
+}

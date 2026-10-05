@@ -1,0 +1,8 @@
+{
+  "status": "failed",
+  "error_code": "reasoning_too_long",
+  "evaluation_count": 2,
+  "post_count": 2,
+  "budget_restored_to": 8000,
+  "finished_at": "2026-09-28T08:52:36.897495+00:00"
+}

@@ -1,0 +1,85 @@
+{
+  "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+  "evaluation_ordinal": 2,
+  "business_request_sha256": "c7613030a89330f8f453a2e15fd81894dad5c213c035975f27397140171d43d3",
+  "finished_at": "2026-09-27T08:20:37.631219+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-dfb767ca-0568-45e8-b624-646419dd1d4c-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "attribute",
+        "severity": "medium",
+        "explanation": "The draft asserts the birth register establishes Nera was born before Oren, but the cited register evidence states the register does not record which twin was born first.",
+        "reasoning": "Both the claim and the cited span concern the same subject (the birth register's record of Nera and Oren's birth order) and the same scope (what the register establishes), with no time qualifier separating them, so they share the same timeless scope. The claim asserts the register establishes Nera was born before Oren; the cited span states the register does not record which twin was born first. These cannot both be true. The other cited spans confirm the twins' identity and a kinship rule but do not supply the missing birth-order record, so the contradiction is direct and sufficient.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "timeless_rule"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-3",
+            "span_id": "fixture-span-orchard_restoration-3",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-3"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-2",
+            "span_id": "fixture-span-orchard_restoration-2",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-2"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-1",
+            "span_id": "fixture-span-orchard_restoration-1",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-3",
+            "role": "current_context"
+          },
+          {
+            "span_id": "fixture-span-orchard_restoration-2",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "fixture-span-orchard_restoration-1",
+            "role": "prior_state"
+          }
+        ],
+        "suggested_revision": {
+          "before": "The birth register establishes that Nera was born before Oren.",
+          "after": "The birth register does not record which twin, Nera or Oren, was born first."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 3996,
+    "output_tokens": 551,
+    "observed_response_input_tokens": 3996,
+    "observed_response_output_tokens": 551
+  }
+}

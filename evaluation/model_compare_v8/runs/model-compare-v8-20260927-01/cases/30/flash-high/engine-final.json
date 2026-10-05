@@ -1,0 +1,24 @@
+{
+  "status": "completed",
+  "issues": [],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-63e5e36e-d68f-4302-bb11-16c926521596-1",
+      "returned_span_ids": [
+        "fixture-span-v6_actor_named-1"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3020,
+  "output_tokens": 650,
+  "latency_ms": 3270,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

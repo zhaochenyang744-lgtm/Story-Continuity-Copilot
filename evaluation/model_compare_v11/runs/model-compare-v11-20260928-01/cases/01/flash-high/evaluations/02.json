@@ -1,0 +1,101 @@
+{
+  "evaluation": 2,
+  "business_request_sha256": "0e516f7f340959048f18b5f01d1fa7ab36688d1bdee98eb50db56aee1ebfe3ea",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "object_state",
+        "severity": "high",
+        "explanation": "The draft states that Mira opened the North Glass door at 10点 while wearing only her red badge, but the supplied canon rule says the door opens only for a blue-badge wearer and a red badge cannot open it, so the claimed opening is impossible.",
+        "reasoning": "fixture-span-north_glass-1 supplies the decisive fact: the North Glass door opens only for a wearer of a blue badge, and a red badge cannot open it. fixture-memory-north_glass-1 records that statement as static_canon, so it holds at all times and needs no shared clock time; that is why this is a timeless rule conflict rather than a time-overlap conflict. The claim's own text already meets the rule's badge condition, since it has Mira opening the door while wearing only her red badge, which the rule says cannot open it. fixture-span-north_glass-2 corroborates the same badge state as context, fixing Mira at 10点 wearing only a red badge and carrying no blue badge. Rule plus that badge state make the claimed opening impossible. fixture-span-north_glass-5 concerns the pneumatic carrier and is uncited.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "timeless_rule"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-north_glass-1",
+            "span_id": "fixture-span-north_glass-1",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-1"
+            ]
+          },
+          {
+            "chapter_id": "fixture-chapter-north_glass-2",
+            "span_id": "fixture-span-north_glass-2",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-north_glass-2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-north_glass-1",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "fixture-span-north_glass-2",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+          "after": "At 10点 on the same day, Mira tried the North Glass door while wearing only her red badge, but the door did not open."
+        },
+        "available_actions": [
+          "edit",
+          "apply_suggestion",
+          "keep_intentional",
+          "false_positive"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-419a9b57-db3a-4f5e-8e74-4f0d3b705620-1",
+        "verdict": "reviewed_issue",
+        "basis": "The claim has Mira open the North Glass door wearing only her red badge; the supplied static_canon rule says that door opens only for a blue-badge wearer and a red badge cannot open it, so the claimed opening cannot hold. The rule is timeless, so no shared clock time is needed."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 4710,
+      "completion_tokens": 8607,
+      "total_tokens": 13317,
+      "prompt_tokens_details": {
+        "cached_tokens": 3584
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 7913
+      },
+      "prompt_cache_hit_tokens": 3584,
+      "prompt_cache_miss_tokens": 1126
+    },
+    "status": "complete",
+    "prompt_tokens": 4710,
+    "completion_tokens": 8607,
+    "total_tokens": 13317,
+    "reasoning_tokens": 7913,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": false,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,172 @@
+{
+  "schema_version": "v8-blinded-case-followup-review-v1",
+  "case_alias": "case-19",
+  "reviewer": "semantic-review-a",
+  "stage": "followup",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-19",
+      "response_alias": "answer-ca0df8",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "与已锁首答一致，R4身份+同刻材质联合反证保持，reasoning与引用内容未改。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[answer-ca0df8].final; semantic-review-a/first-19.json"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "object_state仍不符合固定attribute；最终处理未纠正类别。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[answer-ca0df8].final.issues[0].category; policy.category"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；final的适用合同及交付通过，语义字段保持首答，excerpt与固定selected来源一致。类别错误如有单列；不新增API持久化验收。",
+      "compared_final_semantic_fields_equal_first": true,
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "最终仍仅类别不符，事实推理正确。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-19.json",
+      "normalization_count": 0
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-19",
+      "response_alias": "answer-dce86a",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "与已锁首答一致，R4身份+同刻材质联合反证保持，reasoning与引用内容未改。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[answer-dce86a].final; semantic-review-a/first-19.json"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；final的适用合同及交付通过，语义字段保持首答，excerpt与固定selected来源一致。类别错误如有单列；不新增API持久化验收。",
+      "compared_final_semantic_fields_equal_first": true,
+      "attribution_tags": [],
+      "overall_reason": "最终保持完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-19.json",
+      "normalization_count": 0
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-19",
+      "response_alias": "answer-b4fda5",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-basalt_observatory-attribute-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "与已锁首答一致，R4身份+同刻材质联合反证保持，reasoning与引用内容未改。",
+          "visible_quote": "confirmed_conflict",
+          "evidence_pointer": "responses[answer-b4fda5].final; semantic-review-a/first-19.json"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "object_state仍不符合固定attribute；最终处理未纠正类别。",
+          "visible_quote": "object_state",
+          "evidence_pointer": "responses[answer-b4fda5].final.issues[0].category; policy.category"
+        }
+      ],
+      "passed_dimensions_note": "无repair/normalization；final的适用合同及交付通过，语义字段保持首答，excerpt与固定selected来源一致。类别错误如有单列；不新增API持久化验收。",
+      "compared_final_semantic_fields_equal_first": true,
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "最终仍仅类别不符，事实推理正确。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-19.json",
+      "normalization_count": 0
+    }
+  ],
+  "comparison": {
+    "repair_count": 0,
+    "final_strict_pass": 1,
+    "final_count": 3,
+    "first_scores_unchanged": true
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/19.json",
+    "sha256_before": "8c817374c1a55473884caf3064c3686c3a33205f87ce08030f0cdbb5364258af",
+    "sha256_after_review": "8c817374c1a55473884caf3064c3686c3a33205f87ce08030f0cdbb5364258af",
+    "unchanged": true
+  },
+  "lock": {
+    "first_locked_before_followup": true,
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

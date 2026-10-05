@@ -1,0 +1,180 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-22",
+  "stage": "followup",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T11:58:10.662461+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-22",
+      "response_alias": "answer-5c27a4",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "no_visible_output",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-conflict",
+      "ratings": {
+        "F": "unassessable",
+        "C": "not_delivered",
+        "E_roles": "not_delivered",
+        "E_set": "not_delivered",
+        "E_binding": "not_delivered",
+        "S": "fail",
+        "D": "fail",
+        "T": "unassessable",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "unavailable",
+      "actual_issue_count": null,
+      "findings": [
+        {
+          "dimension": "D",
+          "verdict": "fail",
+          "reason": "无repair；原先首答将Memory中的非selected span-4当证据，final以evidence_unresolvable终止，无Issue交付。首答核心F正确仍单列，不转成final交付成功。",
+          "visible_quote": "evidence_unresolvable",
+          "evidence_pointer": "responses[response_alias=answer-5c27a4].final.error_code; locked first-22.json"
+        }
+      ],
+      "other_dimensions_checked": "location_action类别正确，主span-5为contradicts/sufficient且精确绑定；18点锚点与建议均受直接原文支持。basis 80≤400，reasoning 207≤800。其余两回答纯validator通过且只引span-5。",
+      "attribution_tags": [
+        "binding_error",
+        "schema_error",
+        "delivery_missing"
+      ],
+      "overall_reason": "未选来源引用导致终态失败，无最终可评语义输出；不把失败终态计no_issue。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "first_F": "pass",
+        "strict_transition": "fail_to_fail"
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-22",
+      "response_alias": "answer-60ce04",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "根据span-5直接确认同一Vela、同一18点的西码头且非东码头，与草稿东码头矛盾；主事实推理正确。",
+          "visible_quote": "the span is sufficient on its own",
+          "evidence_pointer": "responses[response_alias=answer-60ce04].first.parsed_business_json.issues[0].reasoning; fixture-span-basalt_observatory-5"
+        }
+      ],
+      "other_dimensions_checked": "location_action类别正确，主span-5为contradicts/sufficient且精确绑定；18点锚点与建议均受直接原文支持。basis 217≤400，reasoning 516≤800。其余两回答纯validator通过且只引span-5。",
+      "attribution_tags": [],
+      "overall_reason": "final保持首答所有实质字段，新增excerpt精确绑定；completed且normalization=0，完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "strict_transition": "pass_to_pass",
+        "normalization_count": 0
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-22",
+      "response_alias": "answer-9a96f9",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-basalt_observatory-location_action-conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "confirmed_conflict",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "根据span-5直接确认同一Vela、同一18点的西码头且非东码头，与草稿东码头矛盾；主事实推理正确。",
+          "visible_quote": "Same person, same time, mutually exclusive locations",
+          "evidence_pointer": "responses[response_alias=answer-9a96f9].first.parsed_business_json.issues[0].reasoning; fixture-span-basalt_observatory-5"
+        }
+      ],
+      "other_dimensions_checked": "location_action类别正确，主span-5为contradicts/sufficient且精确绑定；18点锚点与建议均受直接原文支持。basis 104≤400，reasoning 204≤800。其余两回答纯validator通过且只引span-5。",
+      "attribution_tags": [],
+      "overall_reason": "final保持首答所有实质字段，新增excerpt精确绑定；completed且normalization=0，完整通过。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "strict_transition": "pass_to_pass",
+        "normalization_count": 0
+      }
+    }
+  ],
+  "repair_records": [],
+  "summary": {
+    "responses": 3,
+    "repair_attempted": 0,
+    "final_F_pass": 2,
+    "final_F_unassessable": 1,
+    "final_strict_pass": 2,
+    "terminal_failures": 1,
+    "normalization_contribution": 0
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/22.json",
+      "sha256_observed": "7858fa3b9f3dc70ca4a947e0e5540027c666c994f2fc6da66bd0ddb37b69ad55",
+      "sha256_after_review": "7858fa3b9f3dc70ca4a947e0e5540027c666c994f2fc6da66bd0ddb37b69ad55"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-22.json",
+      "sha256_observed": "f8770695d19edf63fc2c6a4d0f40df7ac5f9297ac79987e9fbdfe711e3fb2603",
+      "sha256_after_review": "f8770695d19edf63fc2c6a4d0f40df7ac5f9297ac79987e9fbdfe711e3fb2603"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/22.json",
+      "sha256_observed": "11369fae2e2dd09773fea8e914b0a2e22fcb90c80431b6960b5fd5c8a5297f21",
+      "sha256_after_review": "11369fae2e2dd09773fea8e914b0a2e22fcb90c80431b6960b5fd5c8a5297f21"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    }
+  ],
+  "read_hashes_stable": true
+}

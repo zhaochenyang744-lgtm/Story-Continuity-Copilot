@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "4cca5330a36af6d1ef93a76d486682f2aa2db959e01e8419f4fd80b80eff77b1",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-6c780db8-1e48-4b4b-be5b-24e37812c727-1",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "timeline",
+        "severity": "medium",
+        "explanation": "The draft asserts that the birth register establishes Nera was born before Oren, but the supplied register evidence states the opposite about its own contents: it does not record which twin was born first. The claim's source warrant is missing, so the asserted birth order is unsupported and remains unknown.",
+        "reasoning": "Span fixture-span-orchard_restoration-3 is the only supplied evidence about what the register says concerning birth order, and it states that the register does not record which twin, Nera or Oren, was born first. That makes the span insufficient as a warrant for the draft's attribution: the draft treats the register as establishing an order the register is said not to record. No supplied span or memory records the actual order either, so judgment stops at the missing link rather than at a direct contradicting fact about who was born first. The attribution is therefore unsupported and the order remains unknown, not disproved.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-orchard_restoration-3",
+            "span_id": "fixture-span-orchard_restoration-3",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "fixture-memory-orchard_restoration-3"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-orchard_restoration-3",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-6c780db8-1e48-4b4b-be5b-24e37812c727-1",
+        "verdict": "insufficient_evidence",
+        "basis": "The claim rests on a register that the only supplied register evidence says does not record the birth order; the decisive source warrant is absent, so the asserted order is unsupported and unknown rather than directly contradicted."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3556,
+      "completion_tokens": 1850,
+      "total_tokens": 5406,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1374
+      },
+      "prompt_cache_hit_tokens": 2304,
+      "prompt_cache_miss_tokens": 1252
+    },
+    "status": "complete",
+    "prompt_tokens": 3556,
+    "completion_tokens": 1850,
+    "total_tokens": 5406,
+    "reasoning_tokens": 1374,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

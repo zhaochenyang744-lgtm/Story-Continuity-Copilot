@@ -1,0 +1,178 @@
+{
+  "schema_version": "v8-blinded-case-review-v1",
+  "case_alias": "case-18",
+  "stage": "first",
+  "reviewer": "reviewer-c",
+  "locked_at_utc": "2026-09-27T11:54:07.584Z",
+  "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/18.json",
+  "packet_sha256": "04589aae74c443fd506c5fef846b15b053e089ade308bad728fe2a068f51be5b",
+  "condition_visibility": "hidden",
+  "exposure_note": "曾审其他案例01/02工程trace；未读本例arms/机器成绩/映射，不声称严格双盲。",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-18",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "observed_decision": "insufficient_evidence",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "response_alias": "answer-e12146",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "actual_issue_count": 1,
+      "contract_checks": {
+        "basis_codepoints": 218,
+        "reasoning_codepoints": 456,
+        "original_validate_error": null
+      },
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "保留Tala致使延迟为未知，未记录原因不等于证明Tala不是原因。",
+          "visible_quote": "does not prove Tala was not the cause",
+          "evidence_pointer": "answer-e12146.first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "具名责任归属按冻结relationship分类，不能改作event_status。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "answer-e12146.first.parsed_business_json.issues[0].category; policy.category"
+        }
+      ],
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "不足Issue、来源6绑定/最低集合、context/insufficient+missing_link、ledger及unknown时间/无操作均合规；仅类别导致strict失败。"
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-18",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "observed_decision": "insufficient_evidence",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "response_alias": "answer-c69253",
+      "ratings": {
+        "F": "pass",
+        "C": "not_delivered",
+        "E_roles": "not_delivered",
+        "E_set": "not_delivered",
+        "E_binding": "not_delivered",
+        "S": "fail",
+        "D": "fail",
+        "T": "not_applicable",
+        "strict_composite": "fail"
+      },
+      "actual_issue_count": 0,
+      "contract_checks": {
+        "basis_codepoints": 209,
+        "reasoning_codepoints": [],
+        "original_validate_error": "claim_verdicts_issue_mismatch"
+      },
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "basis正确识别归属欠证，保留原因未知。",
+          "visible_quote": "the attribution is unsupported and the cause remains unknown.",
+          "evidence_pointer": "answer-c69253.first.parsed_business_json.claim_verdicts[0].basis"
+        },
+        {
+          "dimension": "S",
+          "verdict": "fail",
+          "reason": "不足verdict与空issues不一致。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "answer-c69253.first.parsed_business_json.claim_verdicts[0].verdict; issues=[]"
+        },
+        {
+          "dimension": "D",
+          "verdict": "fail",
+          "reason": "应交付不足Issue及来源6的missing_link，只有basis未完成交付。",
+          "visible_quote": "\"issues\":[]",
+          "evidence_pointer": "answer-c69253.first.visible_content"
+        }
+      ],
+      "attribution_tags": [
+        "schema_error",
+        "delivery_missing"
+      ],
+      "overall_reason": "F通过；未交Issue导致S/D失败及C/E未交付，strict失败，T无实际字段适用。"
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-18",
+      "stage": "first",
+      "reviewer": "reviewer-c",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "ccv3-orchard_restoration-event_status-insufficient_evidence",
+      "observed_decision": "insufficient_evidence",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "response_alias": "answer-adde01",
+      "ratings": {
+        "F": "pass",
+        "C": "pass",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "fail",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "actual_issue_count": 1,
+      "contract_checks": {
+        "basis_codepoints": 175,
+        "reasoning_codepoints": 360,
+        "original_validate_error": "claim_verdicts_issue_mismatch"
+      },
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "说明日志没有Tala的因果归属，未升级成直接冲突；basis和Issue实质均表达不足。",
+          "visible_quote": "no direct contradiction is established, but the source warrant is missing.",
+          "evidence_pointer": "answer-adde01.first.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "S",
+          "verdict": "fail",
+          "reason": "已发status/nature=insufficient_evidence，ledger却为reviewed_issue，应为insufficient_evidence；这是枚举映射结构错，不据此否定正确未知判断。",
+          "visible_quote": "reviewed_issue",
+          "evidence_pointer": "answer-adde01.first.parsed_business_json.claim_verdicts[0].verdict"
+        }
+      ],
+      "attribution_tags": [
+        "schema_error"
+      ],
+      "overall_reason": "F、relationship类别、来源6和不足Issue实际交付正确，证据及时间操作安全合规；ledger映射错误使S/strict失败。"
+    }
+  ],
+  "case_comparison": {
+    "F": "三份均pass。",
+    "strict_composite": "三份均fail：第一份C，第二份S/D，第三份S。"
+  },
+  "locked_before_followup": true,
+  "provider_calls": 0,
+  "database_connections": 0
+}

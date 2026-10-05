@@ -1,0 +1,15 @@
+{
+  "reviewer": "root",
+  "case": 4,
+  "response_alias": "answer-113e51",
+  "stage": "first",
+  "original_preserved": "ROOT-SPOT-REVIEW-01.json",
+  "original_strict": "pass",
+  "adjudicated_S": "fail",
+  "adjudicated_strict": "fail",
+  "F": "pass",
+  "reason": "The frozen validator at backend/app/engine.py:499 limits stripped reasoning to 800 code points. This answer has 881. The output schema and prompt omit that explicit bound. Correct readiness reasoning remains F pass; the original manual structural pass was mistaken.",
+  "attribution": ["structure_limit", "undisclosed_product_contract_limit"],
+  "condition_mapping_read": false,
+  "product_code_changed": false
+}

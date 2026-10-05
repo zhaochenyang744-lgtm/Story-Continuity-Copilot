@@ -1,0 +1,663 @@
+{
+  "schema_version": "flash-v6-independent-semantic-controls-v1",
+  "created_at": "2026-09-27T09:18:54.121805+00:00",
+  "design_status": "preimplementation_expectations_locked_controller_agreed_fact_primary",
+  "baseline_commit": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "classification": "seen_development_controls_not_blind",
+  "criteria_path": "docs/flash-v6-independent-acceptance-evidence/semantics/criteria.md",
+  "criteria_sha256": "a09185a0cfcb9b9541140a296db8d63d609410dca48159944bf5ce0007715263",
+  "executed": false,
+  "provider_calls": 0,
+  "database_connections": 0,
+  "control_count": 12,
+  "unique_business_input_count": 10,
+  "synthetic_response_controls_are_not_model_samples": true,
+  "semantic_roles_are_review_annotations_not_a_demand_for_new_product_schema": true,
+  "relation_target": "reviewed draft world-fact proposition P, not whether the model argument is supported",
+  "sufficiency_target": "joint same-issue evidence set for the complete proposition",
+  "scope_policy": "Fact-primary continuity issue. Decompose record attribution in the explanation, keep underlying unknown P insufficient, and do not create independent source_attribution issue in this revision.",
+  "machine_manual_boundary": "IDs, selected-source membership and structural contracts are machine-checkable; natural-language proof sufficiency remains independently adjudicated. No broad semantic guarantee may be inferred from these finite controls.",
+  "fixtures": {
+    "lens": {
+      "sources": [
+        {
+          "id": "L1",
+          "body": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+          "body_sha256_raw_utf8": "0471c9076b183f4ce3c6f199ec4d474a01ad1ef6bdc0ec164a4ce641cb1d5fe4"
+        },
+        {
+          "id": "L2",
+          "body": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+          "body_sha256_raw_utf8": "a49642c4d1f4064415bf07a0de875ff049027b74f5dc4129d32986f32b3f4751"
+        },
+        {
+          "id": "L3",
+          "body": "At 15:00 today, lens Q8 was moved from the east aperture to the storage box.",
+          "body_sha256_raw_utf8": "d4bec7a2a8f9bce859919d51b560386509800ad2d25142c30f50998166cb1f7d"
+        }
+      ],
+      "selected_source_ids": [
+        "L1",
+        "L2"
+      ],
+      "memory": [
+        {
+          "id": "ML1",
+          "source_id": "L1",
+          "value": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens."
+        },
+        {
+          "id": "ML2",
+          "source_id": "L2",
+          "value": "At 14:00 today, the east aperture lens is clear glass, not amber glass."
+        },
+        {
+          "id": "ML3",
+          "source_id": "L3",
+          "value": "At 15:00 today, lens Q8 was moved from the east aperture to the storage box."
+        }
+      ]
+    },
+    "carrier": {
+      "sources": [
+        {
+          "id": "R1",
+          "body": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+          "body_sha256_raw_utf8": "9a3f67cc7c0fa73f5ea55edc5da0e97a85cb85e7ad493f20985481913921dcfb"
+        },
+        {
+          "id": "R2",
+          "body": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute.",
+          "body_sha256_raw_utf8": "48d5ca745339eae72ca7a661f3f3a261fd942d05f936f77cbff1aea841111366"
+        },
+        {
+          "id": "R3",
+          "body": "The 10:00 courier capsule inspection was performed at the north workbench.",
+          "body_sha256_raw_utf8": "e30f6a3fccb83788317b3262ad9a603573be7cbc24cc35ba226ba7993273b1ea"
+        }
+      ],
+      "selected_source_ids": [
+        "R1",
+        "R2",
+        "R3"
+      ],
+      "memory": []
+    },
+    "actor_blank": {
+      "sources": [
+        {
+          "id": "A1",
+          "body": "The inspection records the capsule cap as loose at 10:00; it does not identify who loosened the cap.",
+          "body_sha256_raw_utf8": "db0bf1eb4e03b3efd22120a9ff8b6d4816cc0e90fcffcc56743ee62bea05a741"
+        }
+      ],
+      "selected_source_ids": [
+        "A1"
+      ],
+      "memory": []
+    },
+    "actor_named": {
+      "sources": [
+        {
+          "id": "A2",
+          "body": "At 10:00 the inspector watched Ina loosen the courier capsule valve cap and entered her name in the inspection log.",
+          "body_sha256_raw_utf8": "7e7a1835076bea2e5ad1db9c9133a8a421ff3ce562e0a0ba224563bbc52a2782"
+        }
+      ],
+      "selected_source_ids": [
+        "A2"
+      ],
+      "memory": []
+    },
+    "birth_order_blank": {
+      "sources": [
+        {
+          "id": "B1",
+          "body": "The birth register records Aster and Nilo as twins, but does not record which twin was born first.",
+          "body_sha256_raw_utf8": "544b037ecd45c8f28d19a9013d682dfb522fbed485197ba147e2871bdff7b6f2"
+        }
+      ],
+      "selected_source_ids": [
+        "B1"
+      ],
+      "memory": []
+    },
+    "companion_blank": {
+      "sources": [
+        {
+          "id": "C1",
+          "body": "At 19:00 the watch record says Orin walked from the west quay to the east quay; it leaves the companion unnamed.",
+          "body_sha256_raw_utf8": "8a65bec11ba887cc5abe8a88d5648835ff481256baa9a816628455431522fa04"
+        }
+      ],
+      "selected_source_ids": [
+        "C1"
+      ],
+      "memory": []
+    },
+    "lie": {
+      "sources": [
+        {
+          "id": "T1",
+          "body": "Aster and Nilo are twins, both children of Eda.",
+          "body_sha256_raw_utf8": "d5dd70cdc3c4cf187c3d7c8134127886dff4f544025064a61d1689dd29ffb674"
+        },
+        {
+          "id": "T2",
+          "body": "The register states that recorded twins cannot be one another's parent.",
+          "body_sha256_raw_utf8": "79ca4cffb2e322275195cd342baa353db1a53418d54b362cf1b1dbdaa9cf6f00"
+        }
+      ],
+      "selected_source_ids": [
+        "T1",
+        "T2"
+      ],
+      "memory": []
+    },
+    "knowledge_transition": {
+      "sources": [
+        {
+          "id": "K1",
+          "body": "At 09:00 today, Siva had not opened the letter and did not know the password.",
+          "body_sha256_raw_utf8": "657548db1ced8b09232de96751992b383469c43ba0b456fe7270812740d9b4f3"
+        },
+        {
+          "id": "K2",
+          "body": "At 12:00 today, Siva opened the letter and learned the password from it.",
+          "body_sha256_raw_utf8": "7893392ebabd4e000572f28a8fe715f828841775f15489bdc66ff34d90ce96a3"
+        }
+      ],
+      "selected_source_ids": [
+        "K1",
+        "K2"
+      ],
+      "memory": []
+    }
+  },
+  "controls": [
+    {
+      "id": "V6S-01",
+      "kind": "positive_joint_identity_proof",
+      "fixture": "lens",
+      "draft": "At 14:00 today, lens Q8 is amber glass.",
+      "world_fact_expected": "confirmed_conflict",
+      "category": "attribute",
+      "minimum_source_sets": [
+        [
+          "L1",
+          "L2"
+        ]
+      ],
+      "optional_sources": [],
+      "candidate": {
+        "conclusion": "confirmed_conflict",
+        "citations": [
+          {
+            "source": "L1",
+            "relation": "context",
+            "semantic_role": "required_identity_link"
+          },
+          {
+            "source": "L2",
+            "relation": "contradicts",
+            "semantic_role": "incompatible_attribute_under_identity_link"
+          }
+        ]
+      },
+      "candidate_acceptance": "accept_after_structure_and_manual_semantics",
+      "independent_checks": [
+        "L1 connects Q8 to the east lens at the same stated time.",
+        "L2 supplies the incompatible material. Both are cited by this issue.",
+        "context on the necessary identity link is not by itself a reason to reject."
+      ],
+      "forbidden": [
+        "Mark L1 supports merely because it supports the argument, then silently rewrite it as contradicts.",
+        "Treat L2 alone as identifying Q8."
+      ]
+    },
+    {
+      "id": "V6S-02",
+      "kind": "negative_missing_joint_identity_premise",
+      "fixture": "lens",
+      "draft": "At 14:00 today, lens Q8 is amber glass.",
+      "world_fact_expected": "confirmed_conflict_if_complete_proof",
+      "category": "attribute",
+      "minimum_source_sets": [
+        [
+          "L1",
+          "L2"
+        ]
+      ],
+      "optional_sources": [],
+      "candidate": {
+        "conclusion": "confirmed_conflict",
+        "citations": [
+          {
+            "source": "L2",
+            "relation": "contradicts",
+            "semantic_role": "incompatible_attribute"
+          }
+        ]
+      },
+      "candidate_acceptance": "reject_complete_semantic_acceptance",
+      "independent_checks": [
+        "Same business input as V6S-01; only the proposed citation set omits L1.",
+        "Knowing an identity link somewhere in retrieval or Memory does not make it this issue's cited evidence.",
+        "A structurally accepted payload must remain semantically failed/pending rather than be counted as a sufficient complete answer."
+      ],
+      "machine_boundary": "A machine-only validator is not claimed to prove general natural-language identity entailment. This is an independent semantic coverage veto, not permission for fixture-specific product rules.",
+      "forbidden": [
+        "Pass merely because at least one evidence item says contradicts/sufficient.",
+        "Use uncited L1 as an implicit proof premise."
+      ]
+    },
+    {
+      "id": "V6S-03",
+      "kind": "positive_joint_rule_state_with_optional_context",
+      "fixture": "carrier",
+      "draft": "At 10:00 today the courier capsule was ready for dispatch.",
+      "world_fact_expected": "confirmed_conflict",
+      "category": "object_state",
+      "minimum_source_sets": [
+        [
+          "R1",
+          "R2"
+        ]
+      ],
+      "optional_sources": [
+        "R3"
+      ],
+      "candidate": {
+        "conclusion": "confirmed_conflict",
+        "citations": [
+          {
+            "source": "R1",
+            "relation": "context",
+            "semantic_role": "required_readiness_rule"
+          },
+          {
+            "source": "R2",
+            "relation": "contradicts",
+            "semantic_role": "current_state_violates_required_condition"
+          },
+          {
+            "source": "R3",
+            "relation": "context",
+            "semantic_role": "optional_same_inspection_background"
+          }
+        ]
+      },
+      "candidate_acceptance": "accept_after_structure_and_manual_semantics",
+      "independent_checks": [
+        "Four bars AND locked cap are required; R2 lacks the cap condition at the same minute.",
+        "R3 is selected and relevant background; its presence does not invalidate a complete R1/R2 proof.",
+        "R3 is never a substitute for either R1 or R2.",
+        "Explicit overlap through R2 or the applicable static rule can ground the scope; no fabricated time phrase in R1."
+      ],
+      "forbidden": [
+        "Claim R1 alone proves the cap was unlocked.",
+        "Demand each contributing premise independently contradict the entire draft."
+      ]
+    },
+    {
+      "id": "V6S-04",
+      "kind": "negative_confirmed_label_with_supporting_material",
+      "fixture": "carrier",
+      "draft": "At 10:00 today the courier capsule was not ready because its valve cap was loose.",
+      "world_fact_expected": "no_issue",
+      "category_if_issue": null,
+      "minimum_source_sets_for_review": [
+        [
+          "R1",
+          "R2"
+        ]
+      ],
+      "candidate": {
+        "conclusion": "confirmed_conflict",
+        "explanation": "The rule and inspection support the draft's statement that the capsule was not ready.",
+        "citations": [
+          {
+            "source": "R1",
+            "relation": "context",
+            "semantic_role": "rule"
+          },
+          {
+            "source": "R2",
+            "relation": "supports",
+            "semantic_role": "supports_target_draft"
+          }
+        ]
+      },
+      "candidate_acceptance": "reject_wrong_confirmed_conclusion",
+      "valid_output": "issues=[]",
+      "independent_checks": [
+        "Mixed relations alone do not authorize any confirmed label.",
+        "Supporting P cannot be used as evidence that P conflicts."
+      ],
+      "forbidden": [
+        "Treat any nonempty evidence set as sufficient to confirm conflict.",
+        "Map supports to contradicts to silence validator failure."
+      ]
+    },
+    {
+      "id": "V6S-05",
+      "kind": "negative_unselected_sourcespan_even_when_memory_known",
+      "fixture": "lens",
+      "draft": "At 14:00 today, lens Q8 is amber glass.",
+      "world_fact_expected": "confirmed_conflict_if_complete_bound_proof",
+      "category": "attribute",
+      "minimum_source_sets": [
+        [
+          "L1",
+          "L2"
+        ]
+      ],
+      "candidate": {
+        "conclusion": "confirmed_conflict",
+        "citations": [
+          {
+            "source": "L1",
+            "relation": "context",
+            "semantic_role": "identity_link"
+          },
+          {
+            "source": "L2",
+            "relation": "contradicts",
+            "semantic_role": "incompatible_attribute"
+          },
+          {
+            "source": "L3",
+            "relation": "context",
+            "semantic_role": "extra_background_from_memory"
+          }
+        ]
+      },
+      "candidate_acceptance": "reject_unselected_source_binding",
+      "independent_checks": [
+        "L3 exists in the fixture and ML3 repeats its text, but L3 is not in selected_source_ids.",
+        "A complete core proof does not authorize an extra unselected SourceSpan.",
+        "L3 is declared semantically permissible optional later context if selected; keep the rejection isolated to its absence from selected_source_ids, not to irrelevant content or undeclared gold context."
+      ],
+      "machine_boundary": "Selected SourceSpan membership is a deterministic rejection check independent of prose/gold labels.",
+      "forbidden": [
+        "Widen allowed_evidence silently from Memory.",
+        "Invent a selected SourceSpan citation from known Memory text."
+      ],
+      "optional_sources": [
+        "L3"
+      ]
+    },
+    {
+      "id": "V6S-06",
+      "kind": "positive_required_uncertainty_with_unsupported_attribution",
+      "fixture": "actor_blank",
+      "draft": "According to the inspection log, Ina loosened the courier capsule valve cap.",
+      "world_fact_expected": "insufficient_evidence",
+      "category": "relationship",
+      "minimum_source_sets": [
+        [
+          "A1"
+        ]
+      ],
+      "source_attribution_assessment": "The log does not identify Ina; the assertion that this log substantiates the attribution is unsupported.",
+      "candidate_acceptance": "accept_only_insufficient_with_explicit_gap",
+      "required_output_properties": [
+        "State that the actor is unrecorded and Ina's responsibility cannot be established.",
+        "context/insufficient; missing_link; no actions, suggestion or Memory change."
+      ],
+      "forbidden": [
+        "issues=[] despite a claimed source-backed attribution.",
+        "confirmed_conflict based on absence of Ina's name.",
+        "Ina definitely did not loosen it."
+      ]
+    },
+    {
+      "id": "V6S-07",
+      "kind": "positive_compatible_new_narrative_without_source_warranty",
+      "fixture": "actor_blank",
+      "draft": "At 11:00 Ina walked into the repair room.",
+      "world_fact_expected": "no_issue",
+      "category_if_issue": null,
+      "minimum_source_sets_for_review": [],
+      "candidate_acceptance": "accept_empty_issues",
+      "independent_checks": [
+        "The earlier source neither denies nor constrains this new later visit.",
+        "The draft does not claim the old inspection log proves the visit.",
+        "Absence from old sources alone does not require an insufficient issue."
+      ],
+      "forbidden": [
+        "Return insufficient solely because the visit was never previously mentioned.",
+        "Require a second source for every compatible new event."
+      ]
+    },
+    {
+      "id": "V6S-08",
+      "kind": "positive_source_backed_attribution_resolved",
+      "fixture": "actor_named",
+      "draft": "According to the inspection log, Ina loosened the courier capsule valve cap at 10:00.",
+      "world_fact_expected": "no_issue",
+      "category_if_issue": null,
+      "minimum_source_sets_for_review": [
+        [
+          "A2"
+        ]
+      ],
+      "source_attribution_assessment": "The named actor and action are explicitly recorded.",
+      "candidate_acceptance": "accept_empty_issues",
+      "independent_checks": [
+        "Close control to V6S-06; added evidence actually resolves the missing actor.",
+        "Neither the phrase according to nor the named actor automatically triggers uncertainty."
+      ],
+      "forbidden": [
+        "Return insufficient for all record-attributed claims.",
+        "Apply a heuristic keyed only to record/log vocabulary."
+      ]
+    },
+    {
+      "id": "V6S-09",
+      "kind": "positive_record_establishes_birth_order_decomposition",
+      "fixture": "birth_order_blank",
+      "draft": "The birth register establishes that Aster was born before Nilo.",
+      "world_fact_expected": "insufficient_evidence",
+      "category": "timeline",
+      "minimum_source_sets": [
+        [
+          "B1"
+        ]
+      ],
+      "source_attribution_assessment": "The register explicitly omits birth order, so it does not establish the asserted order; this does not establish the reverse order.",
+      "candidate_acceptance": "accept_fact_primary_insufficient",
+      "required_output_properties": [
+        "Separate the unsupported register attribution from the unknown underlying birth order.",
+        "Use the missing-link source as context/insufficient with no edit or Memory action."
+      ],
+      "forbidden": [
+        "Report confirmed story-fact conflict merely because the register attribution is false.",
+        "Conclude Nilo was first.",
+        "Use attribute or timeless_rule because the register is undated."
+      ],
+      "version_note": "This is the preselected V6 product target. The defensible document-attribution reading of V5 case15 stays disclosed; its V5 score is not rewritten."
+    },
+    {
+      "id": "V6S-10",
+      "kind": "positive_record_establishes_companion_decomposition",
+      "fixture": "companion_blank",
+      "draft": "The 19:00 watch record establishes that Evi accompanied Orin to the east quay.",
+      "world_fact_expected": "insufficient_evidence",
+      "category_policy": "manual_variant",
+      "category_candidates": [
+        "location_action",
+        "relationship"
+      ],
+      "minimum_source_sets": [
+        [
+          "C1"
+        ]
+      ],
+      "source_attribution_assessment": "The movement is recorded but the companion is unnamed; Evi's actual presence remains unknown.",
+      "candidate_acceptance": "accept_insufficient_then_adjudicate_category_per_answer",
+      "required_output_properties": [
+        "Identify the absent companion identity link without denying the recorded movement.",
+        "Explain action-at-location or companion-role reasoning before accepting one declared category."
+      ],
+      "forbidden": [
+        "Evi definitely did not accompany Orin, or Orin was alone.",
+        "character_knowledge merely because the statement concerns what a record establishes.",
+        "Automatic category success from enum membership alone."
+      ],
+      "version_note": "Fact-primary policy is fixed before V6 outputs, without reclassifying V5 case24 after the result."
+    },
+    {
+      "id": "V6S-11",
+      "kind": "positive_attributed_lie_not_narrator_canon",
+      "fixture": "lie",
+      "draft": "Aster lied, \"I am Nilo's mother,\" while the register correctly records them as twins.",
+      "world_fact_expected": "no_issue",
+      "category_if_issue": null,
+      "minimum_source_sets_for_review": [
+        [
+          "T1",
+          "T2"
+        ]
+      ],
+      "candidate_acceptance": "accept_empty_issues",
+      "independent_checks": [
+        "lied marks intentional false speech; the narrator's explicit correction agrees with the sources."
+      ],
+      "forbidden": [
+        "Treat quoted motherhood as narrator-endorsed canon.",
+        "Alter the legitimate intentional lie to make the quote factually true."
+      ]
+    },
+    {
+      "id": "V6S-12",
+      "kind": "positive_explicit_later_knowledge_transition",
+      "fixture": "knowledge_transition",
+      "draft": "At 12:00 today Siva learned the password after not knowing it at 09:00.",
+      "world_fact_expected": "no_conflict",
+      "allowed_outputs": [
+        "no_issue",
+        "state_change"
+      ],
+      "category_if_state_change": "character_knowledge",
+      "minimum_source_sets_if_state_change": [
+        [
+          "K1",
+          "K2"
+        ]
+      ],
+      "candidate_acceptance": "accept_no_issue_or_complete_supported_state_change",
+      "independent_checks": [
+        "09:00 ignorance and 12:00 learning are compatible.",
+        "A state_change object must retain both times and the supplied learning transition with supports evidence.",
+        "No-issue is a valid choice and needs no fabricated citations/category."
+      ],
+      "forbidden": [
+        "Count nonempty state_change as conflict.",
+        "Invent missing handoff when the learning event is explicit.",
+        "Use 12:00 learning to claim knowledge already existed at 09:00."
+      ]
+    }
+  ],
+  "mandatory_existing_no_conflict_guardrail": {
+    "count": 8,
+    "source": "evaluation/current_contract_compare_v3/cases.json",
+    "source_sha256": "99cf17ca8391be0438164eabecebf181f6e88b5f6a11cd20fb15f913854716f0",
+    "cases": [
+      {
+        "case_id": "ccv3-north_glass-world_rule-no_conflict",
+        "draft": "At 10点 on the same day, Mira could not open North Glass with her only red badge.",
+        "allowed_outcomes": [
+          "no_issue"
+        ],
+        "must_not_regress": true
+      },
+      {
+        "case_id": "ccv3-north_glass-object_state-no_conflict",
+        "draft": "At 10点 on the same day, the North Glass pneumatic carrier was not ready despite its four-bar gauge.",
+        "allowed_outcomes": [
+          "no_issue"
+        ],
+        "must_not_regress": true
+      },
+      {
+        "case_id": "ccv3-harbor_signal-timeline-no_conflict",
+        "draft": "The gate logs establish that at 10点 the harbor signal gate first closed after its 09点 opening.",
+        "allowed_outcomes": [
+          "no_issue"
+        ],
+        "must_not_regress": true
+      },
+      {
+        "case_id": "ccv3-harbor_signal-character_knowledge-no_conflict",
+        "draft": "At 13点 Sera learned the telegram code after not knowing it at 11点.",
+        "allowed_outcomes": [
+          "no_issue",
+          "state_change"
+        ],
+        "must_not_regress": true
+      },
+      {
+        "case_id": "ccv3-orchard_restoration-relationship-no_conflict",
+        "draft": "Nera lied, ‘I am Oren's mother,’ while the register records them as twins.",
+        "allowed_outcomes": [
+          "no_issue"
+        ],
+        "must_not_regress": true
+      },
+      {
+        "case_id": "ccv3-orchard_restoration-event_status-no_conflict",
+        "draft": "At 10点 on the same day, the restoration boat had not completed launch while its manifest was unsigned and it remained at the quay.",
+        "allowed_outcomes": [
+          "no_issue"
+        ],
+        "must_not_regress": true
+      },
+      {
+        "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+        "draft": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+        "allowed_outcomes": [
+          "no_issue"
+        ],
+        "must_not_regress": true
+      },
+      {
+        "case_id": "ccv3-basalt_observatory-location_action-no_conflict",
+        "draft": "At 19点 Vela moved from Gate Four on the west pier to the east pier.",
+        "allowed_outcomes": [
+          "no_issue",
+          "state_change"
+        ],
+        "must_not_regress": true
+      }
+    ],
+    "historical_v5_results_immutable": true,
+    "new_v6_results_require_new_identity": true
+  },
+  "version_requirements": [
+    "Explicit V6 contract, prompt, scorer, case and run versions with a change log.",
+    "Do not modify V3 or V5 frozen inputs, labels, responses, scores or denominator.",
+    "V5 outputs rescored under V6 are offline contract adaptation, not new model runs or model capability gains.",
+    "Keep original raw relation labels and any repair/product normalization separate.",
+    "Product logic must not read case_id, expected_class, gold or synthetic person names to manufacture expected decisions."
+  ],
+  "source_inspection_hashes": {
+    "backend/app/engine.py": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+    "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+    "evaluation/current_contract_compare_v3/cases.json": "99cf17ca8391be0438164eabecebf181f6e88b5f6a11cd20fb15f913854716f0",
+    "evaluation/current_contract_compare_v3/frozen-inputs.json": "0afd9630d22aecc44d1fbc8a955787d12d1286b31ec85a3e0985dff132da8baf",
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/live-01-review.json": "2a8487fe0e0e06db17c03463a096b03839dee84966932f755d0002fc5db601e7",
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/manual-expectations.json": "b2e42f96234232abbff432439ecc7abcee4ec248dd2d01123614f56cd2effff9",
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/live-01-review.md": "9f7c04d0be2330807210a642f5a77f4e02958a6b61ef781991fc0d5b8397fc1d"
+  },
+  "source_hashes_at_write": {
+    "backend/app/engine.py": "4d3a07e955aadfaf1ecd31281ccca0d4fb3f36014756b801d906b193e15984c7",
+    "backend/app/provider.py": "e415c36cc08114492e7ac5305ef67db89eb58f1a06aa01a0a19c9c89b91b7380",
+    "evaluation/current_contract_compare_v3/cases.json": "99cf17ca8391be0438164eabecebf181f6e88b5f6a11cd20fb15f913854716f0",
+    "evaluation/current_contract_compare_v3/frozen-inputs.json": "0afd9630d22aecc44d1fbc8a955787d12d1286b31ec85a3e0985dff132da8baf",
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/live-01-review.json": "2a8487fe0e0e06db17c03463a096b03839dee84966932f755d0002fc5db601e7",
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/manual-expectations.json": "b2e42f96234232abbff432439ecc7abcee4ec248dd2d01123614f56cd2effff9",
+    "docs/flash-v5-independent-acceptance-evidence/materials-v3/live-01-review.md": "9f7c04d0be2330807210a642f5a77f4e02958a6b61ef781991fc0d5b8397fc1d"
+  },
+  "source_hashes_unchanged_since_inspection": true
+}

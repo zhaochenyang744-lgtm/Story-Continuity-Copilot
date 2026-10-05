@@ -1,0 +1,624 @@
+{
+  "manifest_hash": "35b8a9559b9d5138f21795cdeb74439d010490dd5a9ee07a37cd48dbd44ca337",
+  "bound_file_count": 32,
+  "capture_rows": [
+    {
+      "case_id": "ccv2-north_glass-world_rule-conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "6ee87a3e66f8850f90b3f185b8a737a0136a276d25ccc0e4e3bda775c2cca12e",
+      "required_ids": [
+        "fixture-span-north_glass-1",
+        "fixture-span-north_glass-2"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-north_glass-world_rule-no_conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "8349bcce9216b270da66232e9e8b1619edc5fcb5efd9e9aff4db9ab445065770",
+      "required_ids": [
+        "fixture-span-north_glass-1",
+        "fixture-span-north_glass-2"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-north_glass-world_rule-insufficient_evidence",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "64c1d97c148617cbf210bba4365220541bb9e29332a7349773477dc14a56c538",
+      "required_ids": [
+        "fixture-span-north_glass-2",
+        "fixture-span-north_glass-3"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "72003aceec901cce100af1e733c3586650e2bbadeca73801f4344aacaf00a701",
+      "required_ids": [
+        "fixture-span-north_glass-4",
+        "fixture-span-north_glass-5"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-no_conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "49c6e23cc5d84ee31d9911d54af666e312222140b6f85970c93cf8106ce06054",
+      "required_ids": [
+        "fixture-span-north_glass-4",
+        "fixture-span-north_glass-5"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-north_glass-object_state-insufficient_evidence",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "6beda63123808d2aa15596cab31b9c574de1dfba467cde610ab1c1b2c0e27e54",
+      "required_ids": [
+        "fixture-span-north_glass-5",
+        "fixture-span-north_glass-6"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-conflict",
+      "selected_span_count": 3,
+      "memory_count": 4,
+      "full_draft_sha256": "38089e6826dc79ce71e932cc4e4dd05fdef445533cf38e3a68b122c6922befae",
+      "required_ids": [
+        "fixture-span-harbor_signal-1"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-no_conflict",
+      "selected_span_count": 3,
+      "memory_count": 4,
+      "full_draft_sha256": "ae4defd9735b71e997acd9faf0677801402ced2370aeb68af9466ee98dcd1b57",
+      "required_ids": [
+        "fixture-span-harbor_signal-1"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-timeline-insufficient_evidence",
+      "selected_span_count": 3,
+      "memory_count": 4,
+      "full_draft_sha256": "30daeb150fcceaf2d6217d30dea81325339dcb3383c059dee3f1f3c0ee558885",
+      "required_ids": [
+        "fixture-span-harbor_signal-2"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-conflict",
+      "selected_span_count": 3,
+      "memory_count": 4,
+      "full_draft_sha256": "2273f3d64cc9c04599e1998a73e3ffc317923db048ef966d62e1c088829d5ee8",
+      "required_ids": [
+        "fixture-span-harbor_signal-3"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-no_conflict",
+      "selected_span_count": 3,
+      "memory_count": 4,
+      "full_draft_sha256": "ce544ab252c0639be19bef488e450a8ba2a0ea6c6954957ce7c6d13cc21ee860",
+      "required_ids": [
+        "fixture-span-harbor_signal-3",
+        "fixture-span-harbor_signal-4"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+      "selected_span_count": 3,
+      "memory_count": 4,
+      "full_draft_sha256": "6398f49581de7305972fbf7748c161a2496dbd13d18a641019982189f3d38c06",
+      "required_ids": [
+        "fixture-span-harbor_signal-3",
+        "fixture-span-harbor_signal-4"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "b96559a047b24e1661220cfe33588b2a0cab5f3871dcc8446e6ceb708f83b0a2",
+      "required_ids": [
+        "fixture-span-orchard_restoration-1",
+        "fixture-span-orchard_restoration-2"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-no_conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "fa91d039f19eed84b6901c40f49d5d2758c5bf14ae6f643bb0da4fb172a1e3e5",
+      "required_ids": [
+        "fixture-span-orchard_restoration-1",
+        "fixture-span-orchard_restoration-2"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-relationship-insufficient_evidence",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "9ed155cd945a03f67ec7a0af437f435156233d39aa5448c10ae973be29e43c00",
+      "required_ids": [
+        "fixture-span-orchard_restoration-3"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "e058b7d4bcc058fa587269bcccb69d7733874b2f206e1a47098d6bca394999ad",
+      "required_ids": [
+        "fixture-span-orchard_restoration-4",
+        "fixture-span-orchard_restoration-5"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-no_conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "206c07877930832b3b247b9dfde264d2fbb8e640114dc01e8a210df840f94a8e",
+      "required_ids": [
+        "fixture-span-orchard_restoration-4",
+        "fixture-span-orchard_restoration-5"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-orchard_restoration-event_status-insufficient_evidence",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "e81c3d7507fe0c709ec7bd76b152a6413cfcd3a3f0d491a71e6fa5f96affd47f",
+      "required_ids": [
+        "fixture-span-orchard_restoration-5",
+        "fixture-span-orchard_restoration-6"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "228160b95ace6b96f4191a7180987273dec2a50a26d5d1753520f5535a3c74d2",
+      "required_ids": [
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-2"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-no_conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "bbced60cc22358b026d4c9654e03f5b14e9c21901130719189784925a86e3016",
+      "required_ids": [
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-2"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-attribute-insufficient_evidence",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "90698354588d050253c2b2e033a074d164fc4abf4bce0167158c7be25fb84bda",
+      "required_ids": [
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-3"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "fa72d0592dd35c44290ae3f64225ece3631169e7a607b4596e81c649eddc1aa3",
+      "required_ids": [
+        "fixture-span-basalt_observatory-5"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-no_conflict",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "2fd18e8fa67fc81d372ca884112b6d77423099655351cdf663d2515c1bb908f6",
+      "required_ids": [
+        "fixture-span-basalt_observatory-6"
+      ],
+      "errors": []
+    },
+    {
+      "case_id": "ccv2-basalt_observatory-location_action-insufficient_evidence",
+      "selected_span_count": 3,
+      "memory_count": 6,
+      "full_draft_sha256": "b5fc210ae9f278033d715946cc13da09d135ba83d5d4a95a522603f4bf1090c0",
+      "required_ids": [
+        "fixture-span-basalt_observatory-6"
+      ],
+      "errors": []
+    }
+  ],
+  "api_rows": [
+    {
+      "identity": [
+        "ccv2-north_glass-world_rule-conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "confirmed_conflict"
+      ],
+      "final_natures": [
+        "confirmed_conflict"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-north_glass-world_rule-no_conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 0,
+      "raw_natures": [],
+      "final_natures": [],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-north_glass-world_rule-insufficient_evidence",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "insufficient_evidence"
+      ],
+      "final_natures": [
+        "insufficient_evidence"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-north_glass-object_state-conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "confirmed_conflict"
+      ],
+      "final_natures": [
+        "confirmed_conflict"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-north_glass-object_state-no_conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 0,
+      "raw_natures": [],
+      "final_natures": [],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-north_glass-object_state-insufficient_evidence",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "insufficient_evidence"
+      ],
+      "final_natures": [
+        "insufficient_evidence"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-harbor_signal-timeline-conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "confirmed_conflict"
+      ],
+      "final_natures": [
+        "confirmed_conflict"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-harbor_signal-timeline-no_conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 0,
+      "raw_natures": [],
+      "final_natures": [],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-harbor_signal-timeline-insufficient_evidence",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "insufficient_evidence"
+      ],
+      "final_natures": [
+        "insufficient_evidence"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-harbor_signal-character_knowledge-conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "confirmed_conflict"
+      ],
+      "final_natures": [
+        "confirmed_conflict"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-harbor_signal-character_knowledge-no_conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 0,
+      "raw_natures": [],
+      "final_natures": [],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-harbor_signal-character_knowledge-insufficient_evidence",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "insufficient_evidence"
+      ],
+      "final_natures": [
+        "insufficient_evidence"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-orchard_restoration-relationship-conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "confirmed_conflict"
+      ],
+      "final_natures": [
+        "confirmed_conflict"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-orchard_restoration-relationship-no_conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 0,
+      "raw_natures": [],
+      "final_natures": [],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-orchard_restoration-relationship-insufficient_evidence",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "insufficient_evidence"
+      ],
+      "final_natures": [
+        "insufficient_evidence"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-orchard_restoration-event_status-conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "confirmed_conflict"
+      ],
+      "final_natures": [
+        "confirmed_conflict"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-orchard_restoration-event_status-no_conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 0,
+      "raw_natures": [],
+      "final_natures": [],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-orchard_restoration-event_status-insufficient_evidence",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "insufficient_evidence"
+      ],
+      "final_natures": [
+        "insufficient_evidence"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-basalt_observatory-attribute-conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "confirmed_conflict"
+      ],
+      "final_natures": [
+        "confirmed_conflict"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-basalt_observatory-attribute-no_conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 0,
+      "raw_natures": [],
+      "final_natures": [],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-basalt_observatory-attribute-insufficient_evidence",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "insufficient_evidence"
+      ],
+      "final_natures": [
+        "insufficient_evidence"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-basalt_observatory-location_action-conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "confirmed_conflict"
+      ],
+      "final_natures": [
+        "confirmed_conflict"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-basalt_observatory-location_action-no_conflict",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 0,
+      "raw_natures": [],
+      "final_natures": [],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-basalt_observatory-location_action-insufficient_evidence",
+        "gold"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "insufficient_evidence"
+      ],
+      "final_natures": [
+        "insufficient_evidence"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-harbor_signal-character_knowledge-no_conflict",
+        "state_change"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "state_change"
+      ],
+      "final_natures": [
+        "state_change"
+      ],
+      "errors": []
+    },
+    {
+      "identity": [
+        "ccv2-basalt_observatory-location_action-no_conflict",
+        "state_change"
+      ],
+      "status": "completed",
+      "issue_count": 1,
+      "raw_natures": [
+        "state_change"
+      ],
+      "final_natures": [
+        "state_change"
+      ],
+      "errors": []
+    }
+  ],
+  "errors": [],
+  "independent_real_provider_calls": 0
+}

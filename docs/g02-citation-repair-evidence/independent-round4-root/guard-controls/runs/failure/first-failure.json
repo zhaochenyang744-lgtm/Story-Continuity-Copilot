@@ -1,0 +1,6 @@
+{
+  "run_id": "failure",
+  "error_type": "RuntimeError",
+  "error": "independent-intentional-first-failure",
+  "note": "V3 first failure; no historical V2 result reconstructed."
+}

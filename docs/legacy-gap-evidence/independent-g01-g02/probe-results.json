@@ -1,0 +1,1198 @@
+{
+  "policy": {
+    "network": "external socket, real HTTP transport and SMTP denied; loopback socketpair allowed for Windows asyncio",
+    "provider": "in-process fake only",
+    "business_files_changed": false
+  },
+  "g01": [
+    {
+      "name": "later_hour_control",
+      "claim": "黎青在今日二十二点认出信使。",
+      "evidence": "今日二十点，黎青还不知道信使身份。",
+      "anchors": {
+        "claim_anchor": "黎青在今日二十二点认出信使。",
+        "evidence_anchor": "今日二十点，黎青还不知道信使身份。",
+        "relation": "explicit_overlap"
+      },
+      "validation": {
+        "accepted": false,
+        "error": "temporal_overlap_unproven"
+      },
+      "execute": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "insufficient_evidence",
+            "category": "character_knowledge",
+            "severity": "medium",
+            "evidence_status": "insufficient",
+            "explanation": "现有材料不足以证明当前主张与引用事实在同一故事时间和范围内相互矛盾，暂不能判定为确定冲突。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "今日二十点，黎青还不知道信使身份。",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "需要补充明确的时间锚点、适用范围或连接事件，才能判断两项陈述是否不能同时成立。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "retrieval_traces": [
+          {
+            "claim_id": "claim-1",
+            "returned_span_ids": [
+              "span-1"
+            ]
+          }
+        ],
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "contract_normalization_count": 1,
+        "contract_normalizations": [
+          {
+            "claim_span_id": "claim-1",
+            "reason_code": "temporal_overlap_unproven",
+            "outcome": "insufficient_evidence",
+            "provider_attempt": 2
+          }
+        ],
+        "input_tokens": 2,
+        "output_tokens": 2,
+        "latency_ms": null,
+        "cost_cny": null
+      },
+      "fake_calls": 2
+    },
+    {
+      "name": "relative_day_full_anchor_control",
+      "claim": "今日十八点，秦渡已经知道信使身份。",
+      "evidence": "昨日十八点，秦渡还不知道信使身份。",
+      "anchors": {
+        "claim_anchor": "今日十八点，秦渡已经知道信使身份。",
+        "evidence_anchor": "昨日十八点，秦渡还不知道信使身份。",
+        "relation": "explicit_overlap"
+      },
+      "validation": {
+        "accepted": false,
+        "error": "temporal_overlap_unproven"
+      },
+      "execute": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "insufficient_evidence",
+            "category": "character_knowledge",
+            "severity": "medium",
+            "evidence_status": "insufficient",
+            "explanation": "现有材料不足以证明当前主张与引用事实在同一故事时间和范围内相互矛盾，暂不能判定为确定冲突。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "昨日十八点，秦渡还不知道信使身份。",
+                "relation": "context",
+                "sufficiency": "insufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "insufficient_evidence",
+            "reasoning": "需要补充明确的时间锚点、适用范围或连接事件，才能判断两项陈述是否不能同时成立。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "missing_link"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "retrieval_traces": [
+          {
+            "claim_id": "claim-1",
+            "returned_span_ids": [
+              "span-1"
+            ]
+          }
+        ],
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "contract_normalization_count": 1,
+        "contract_normalizations": [
+          {
+            "claim_span_id": "claim-1",
+            "reason_code": "temporal_overlap_unproven",
+            "outcome": "insufficient_evidence",
+            "provider_attempt": 2
+          }
+        ],
+        "input_tokens": 2,
+        "output_tokens": 2,
+        "latency_ms": null,
+        "cost_cny": null
+      },
+      "fake_calls": 2
+    },
+    {
+      "name": "relative_day_short_anchors",
+      "claim": "今日十八点，秦渡已经知道信使身份。",
+      "evidence": "昨日十八点，秦渡还不知道信使身份。",
+      "anchors": {
+        "claim_anchor": "十八点",
+        "evidence_anchor": "十八点",
+        "relation": "explicit_overlap"
+      },
+      "validation": {
+        "accepted": true,
+        "output": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "昨日十八点，秦渡还不知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ]
+      },
+      "execute": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "昨日十八点，秦渡还不知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "retrieval_traces": [
+          {
+            "claim_id": "claim-1",
+            "returned_span_ids": [
+              "span-1"
+            ]
+          }
+        ],
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "contract_normalization_count": 0,
+        "contract_normalizations": [],
+        "input_tokens": 1,
+        "output_tokens": 1,
+        "latency_ms": null,
+        "cost_cny": null
+      },
+      "fake_calls": 1
+    },
+    {
+      "name": "ordinal_day_full_anchors",
+      "claim": "第二天十八点，秦渡已经知道信使身份。",
+      "evidence": "第一天十八点，秦渡还不知道信使身份。",
+      "anchors": {
+        "claim_anchor": "第二天十八点，秦渡已经知道信使身份。",
+        "evidence_anchor": "第一天十八点，秦渡还不知道信使身份。",
+        "relation": "explicit_overlap"
+      },
+      "validation": {
+        "accepted": true,
+        "output": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "第一天十八点，秦渡还不知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ]
+      },
+      "execute": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "第一天十八点，秦渡还不知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "retrieval_traces": [
+          {
+            "claim_id": "claim-1",
+            "returned_span_ids": [
+              "span-1"
+            ]
+          }
+        ],
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "contract_normalization_count": 0,
+        "contract_normalizations": [],
+        "input_tokens": 1,
+        "output_tokens": 1,
+        "latency_ms": null,
+        "cost_cny": null
+      },
+      "fake_calls": 1
+    },
+    {
+      "name": "explicit_lie_same_time",
+      "claim": "今日十八点，黎青故意撒谎说自己不知道信使身份。",
+      "evidence": "今日十八点，黎青已经知道信使身份。",
+      "anchors": {
+        "claim_anchor": "今日十八点，黎青故意撒谎说自己不知道信使身份。",
+        "evidence_anchor": "今日十八点，黎青已经知道信使身份。",
+        "relation": "explicit_overlap"
+      },
+      "validation": {
+        "accepted": true,
+        "output": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "今日十八点，黎青已经知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ]
+      },
+      "execute": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "今日十八点，黎青已经知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "retrieval_traces": [
+          {
+            "claim_id": "claim-1",
+            "returned_span_ids": [
+              "span-1"
+            ]
+          }
+        ],
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "contract_normalization_count": 0,
+        "contract_normalizations": [],
+        "input_tokens": 1,
+        "output_tokens": 1,
+        "latency_ms": null,
+        "cost_cny": null
+      },
+      "fake_calls": 1
+    },
+    {
+      "name": "explicit_recollection_short_anchors",
+      "claim": "今日十八点，秦渡回忆昨日十八点尚不知道信使身份。",
+      "evidence": "今日十八点，秦渡已经知道信使身份。",
+      "anchors": {
+        "claim_anchor": "今日十八点",
+        "evidence_anchor": "今日十八点",
+        "relation": "explicit_overlap"
+      },
+      "validation": {
+        "accepted": true,
+        "output": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "今日十八点，秦渡已经知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ]
+      },
+      "execute": {
+        "status": "completed",
+        "issues": [
+          {
+            "claim_span_id": "claim-1",
+            "status": "conflict",
+            "category": "character_knowledge",
+            "severity": "high",
+            "evidence_status": "sufficient",
+            "explanation": "这两处知情状态不能同时成立。",
+            "evidence": [
+              {
+                "chapter_id": "chapter-1",
+                "span_id": "span-1",
+                "excerpt": "今日十八点，秦渡已经知道信使身份。",
+                "relation": "contradicts",
+                "sufficiency": "sufficient",
+                "related_memory_ids": []
+              }
+            ],
+            "proposed_memory_change": null,
+            "review_contract_version": "trustworthy_review_v1",
+            "nature": "confirmed_conflict",
+            "reasoning": "认为两处对应同一时刻并形成确定冲突。",
+            "evidence_chain": [
+              {
+                "span_id": "span-1",
+                "role": "prior_state"
+              }
+            ],
+            "suggested_revision": null,
+            "available_actions": []
+          }
+        ],
+        "retrieval_traces": [
+          {
+            "claim_id": "claim-1",
+            "returned_span_ids": [
+              "span-1"
+            ]
+          }
+        ],
+        "retrieval_method_version": "bounded-lexical-v4-longform",
+        "contract_normalization_count": 0,
+        "contract_normalizations": [],
+        "input_tokens": 1,
+        "output_tokens": 1,
+        "latency_ms": null,
+        "cost_cny": null
+      },
+      "fake_calls": 1
+    }
+  ],
+  "g02": [
+    {
+      "name": "short_draft_omitted_by_model",
+      "body": "林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。",
+      "body_length": 30,
+      "request_bindings": {
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "author_context_version": 0,
+        "draft_id": "draft-4968cf7d-174d-46b3-b99a-ccf4a63d8c3c",
+        "draft_revision": 2,
+        "memory_version": 4,
+        "project_id": "prj-dd741ce3-fb28-47bd-a3b2-389a1c048d11",
+        "source_revision": 1
+      },
+      "request_written": {
+        "draft": {
+          "chapter_number": 11,
+          "excerpt": "林默走进北门。银钥匙已经交给陈澈。她此时已经知道弟弟还活着。",
+          "id": "draft-4968cf7d-174d-46b3-b99a-ccf4a63d8c3c",
+          "revision": 2,
+          "title": "第十一章：未归的航标"
+        },
+        "draft_claims": [
+          {
+            "id": "draft-claim-draft-4968cf7d-174d-46b3-b99a-ccf4a63d8c3c-r2-1",
+            "ordinal": 1,
+            "text": "林默走进北门。"
+          },
+          {
+            "id": "draft-claim-draft-4968cf7d-174d-46b3-b99a-ccf4a63d8c3c-r2-2",
+            "ordinal": 2,
+            "text": "银钥匙已经交给陈澈。"
+          },
+          {
+            "id": "draft-claim-draft-4968cf7d-174d-46b3-b99a-ccf4a63d8c3c-r2-3",
+            "ordinal": 3,
+            "text": "她此时已经知道弟弟还活着。"
+          }
+        ],
+        "source_spans": [
+          {
+            "body": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+            "chapter_id": "ch-b4fc21d6-de23-4ba6-9c47-c9dbb8752edb",
+            "chapter_number": 4,
+            "chapter_title": "无字潮表",
+            "id": "span-3970699a-da46-46f1-9947-fabf2d7ba349",
+            "label": "知识边界",
+            "source_revision": 1
+          },
+          {
+            "body": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+            "chapter_id": "ch-00117c1f-2e7f-47cb-902d-a0aea30f961f",
+            "chapter_number": 8,
+            "chapter_title": "北堤灯火",
+            "id": "span-c98a4e15-5f0c-4785-be87-bbf1fc396601",
+            "label": "关系变化",
+            "source_revision": 1
+          },
+          {
+            "body": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+            "chapter_id": "ch-0b254ae7-af2f-4f5b-b6a9-ed98ac9b4b44",
+            "chapter_number": 6,
+            "chapter_title": "低室电台",
+            "id": "span-4b80e352-a233-4b70-a9a1-904338ece47f",
+            "label": "事件记录",
+            "source_revision": 1
+          },
+          {
+            "body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+            "chapter_id": "ch-ca6a0506-191e-4b55-bfc2-c02c0087e834",
+            "chapter_number": 10,
+            "chapter_title": "回声坐标",
+            "id": "span-647e73b9-1f7a-4aaf-9ff0-bc9607c96484",
+            "label": "未解问题",
+            "source_revision": 1
+          }
+        ]
+      },
+      "retrieval": {
+        "counts": {
+          "author_context": {
+            "available": 0,
+            "selected": 0
+          },
+          "character_alias": {
+            "available": 0,
+            "selected": 0
+          },
+          "draft_claim": {
+            "available": 3,
+            "selected": 3
+          },
+          "foreshadow_record": {
+            "available": 0,
+            "selected": 0
+          },
+          "issue": {
+            "available": 0,
+            "selected": 0
+          },
+          "issue_evidence": {
+            "available": 0,
+            "selected": 0
+          },
+          "memory_record": {
+            "available": 8,
+            "selected": 8
+          },
+          "source_span": {
+            "available": 10,
+            "selected": 4
+          }
+        },
+        "method_version": "writing-analysis-lexical-v2-draft-claims",
+        "selected_ids": {
+          "author_context": [],
+          "character_alias": [],
+          "draft_claim": [
+            "draft-claim-draft-4968cf7d-174d-46b3-b99a-ccf4a63d8c3c-r2-1",
+            "draft-claim-draft-4968cf7d-174d-46b3-b99a-ccf4a63d8c3c-r2-2",
+            "draft-claim-draft-4968cf7d-174d-46b3-b99a-ccf4a63d8c3c-r2-3"
+          ],
+          "foreshadow_record": [],
+          "issue": [],
+          "issue_evidence": [],
+          "memory_record": [
+            "mem-d7412db9-a1c5-4615-bb0a-6070efc6088e",
+            "mem-296d374f-3b22-45f6-9af2-c6a4a781b840",
+            "mem-4ae7be6d-c75f-4bd4-9220-79a4b27c0263",
+            "mem-7ae41706-e726-42c2-957c-3c59774cab3e",
+            "mem-86d402a9-5d8b-49ba-9ba0-3a98177e4cb5",
+            "mem-88cf9990-3c56-41d8-b831-bf9824b4ef7d",
+            "mem-9b8a71f0-35e9-4781-85de-18f97f8831ae",
+            "mem-bc41c7e1-3f45-4e1d-ba5f-82d836c59640"
+          ],
+          "source_span": [
+            "span-3970699a-da46-46f1-9947-fabf2d7ba349",
+            "span-c98a4e15-5f0c-4785-be87-bbf1fc396601",
+            "span-4b80e352-a233-4b70-a9a1-904338ece47f",
+            "span-647e73b9-1f7a-4aaf-9ff0-bc9607c96484"
+          ]
+        },
+        "truncated": {
+          "author_context": false,
+          "character_alias": false,
+          "draft_body": false,
+          "draft_claim": false,
+          "foreshadow_record": false,
+          "issue": false,
+          "issue_evidence": false,
+          "memory_record": false,
+          "source_span": true
+        }
+      },
+      "status": "completed",
+      "analysis": {
+        "draft_coverage": {
+          "reasons": [],
+          "source_ids": [
+            "draft-claim-draft-4968cf7d-174d-46b3-b99a-ccf4a63d8c3c-r2-1"
+          ],
+          "status": "covered"
+        },
+        "evidence_status": "supported",
+        "items": [
+          {
+            "section": "recent_source",
+            "sources": [
+              {
+                "excerpt": "林默走进北门。",
+                "label": "当前草稿 · 句 1",
+                "source_id": "draft-claim-draft-4968cf7d-174d-46b3-b99a-ccf4a63d8c3c-r2-1",
+                "source_path": "/projects/prj-dd741ce3-fb28-47bd-a3b2-389a1c048d11/workspace#draft-source",
+                "source_type": "draft_claim"
+              }
+            ],
+            "text": "当前已保存草稿写道：林默走进北门。"
+          },
+          {
+            "section": "recent_source",
+            "sources": [
+              {
+                "excerpt": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+                "label": "第 4 章 · 知识边界",
+                "source_id": "span-3970699a-da46-46f1-9947-fabf2d7ba349",
+                "source_path": "/projects/prj-dd741ce3-fb28-47bd-a3b2-389a1c048d11/sources#span-span-3970699a-da46-46f1-9947-fabf2d7ba349",
+                "source_type": "source_span"
+              }
+            ],
+            "text": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。"
+          }
+        ],
+        "summary": "当前已保存草稿写道：林默走进北门。 温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+        "summary_sources": [
+          {
+            "excerpt": "林默走进北门。",
+            "label": "当前草稿 · 句 1",
+            "source_id": "draft-claim-draft-4968cf7d-174d-46b3-b99a-ccf4a63d8c3c-r2-1",
+            "source_path": "/projects/prj-dd741ce3-fb28-47bd-a3b2-389a1c048d11/workspace#draft-source",
+            "source_type": "draft_claim"
+          },
+          {
+            "excerpt": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+            "label": "第 4 章 · 知识边界",
+            "source_id": "span-3970699a-da46-46f1-9947-fabf2d7ba349",
+            "source_path": "/projects/prj-dd741ce3-fb28-47bd-a3b2-389a1c048d11/sources#span-span-3970699a-da46-46f1-9947-fabf2d7ba349",
+            "source_type": "source_span"
+          }
+        ]
+      },
+      "foreign_draft_claim_rejected": true,
+      "old_result_stale_after_save": true,
+      "temporary_runtime": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\independent-g01-g02-smakzxes"
+    },
+    {
+      "name": "single_claim_truncated_below_body_limit",
+      "body": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。",
+      "body_length": 299,
+      "request_bindings": {
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "author_context_version": 0,
+        "draft_id": "draft-212c8fd6-5183-467f-b02c-76edb9b7f1fc",
+        "draft_revision": 2,
+        "memory_version": 4,
+        "project_id": "prj-4dc2681d-b6ea-4380-97ce-f5a81a196d29",
+        "source_revision": 1
+      },
+      "request_written": {
+        "draft": {
+          "chapter_number": 11,
+          "excerpt": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，最后把银钥匙交给陈澈并得知弟弟还活着。",
+          "id": "draft-212c8fd6-5183-467f-b02c-76edb9b7f1fc",
+          "revision": 2,
+          "title": "第十一章：未归的航标"
+        },
+        "draft_claims": [
+          {
+            "id": "draft-claim-draft-212c8fd6-5183-467f-b02c-76edb9b7f1fc-r2-1",
+            "ordinal": 1,
+            "text": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，"
+          }
+        ],
+        "source_spans": [
+          {
+            "body": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+            "chapter_id": "ch-a98b4969-3d70-4466-b913-8260e223485e",
+            "chapter_number": 8,
+            "chapter_title": "北堤灯火",
+            "id": "span-d7216371-111f-4e58-831c-8c018acb49a6",
+            "label": "关系变化",
+            "source_revision": 1
+          },
+          {
+            "body": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+            "chapter_id": "ch-3b629873-6aad-47a9-97cb-b5b0ad87c42f",
+            "chapter_number": 6,
+            "chapter_title": "低室电台",
+            "id": "span-ae02e40e-ae90-417b-9ccb-6e9d6cfc8692",
+            "label": "事件记录",
+            "source_revision": 1
+          },
+          {
+            "body": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。",
+            "chapter_id": "ch-cf4f9098-cad3-4f07-ab56-e6c46580db10",
+            "chapter_number": 4,
+            "chapter_title": "无字潮表",
+            "id": "span-b029ac3f-1e6f-4c0b-87aa-82e7d94a7849",
+            "label": "知识边界",
+            "source_revision": 1
+          },
+          {
+            "body": "十九点二十，西航道先退潮，最后一班渡船在十九点四十才离开风栈码头。",
+            "chapter_id": "ch-ac53cacc-4d2a-450b-a86b-f1a116c93e4b",
+            "chapter_number": 3,
+            "chapter_title": "迟到的渡船",
+            "id": "span-2d36b995-a65e-43e5-88e4-7d9142c47234",
+            "label": "时间线",
+            "source_revision": 1
+          }
+        ]
+      },
+      "retrieval": {
+        "counts": {
+          "author_context": {
+            "available": 0,
+            "selected": 0
+          },
+          "character_alias": {
+            "available": 0,
+            "selected": 0
+          },
+          "draft_claim": {
+            "available": 1,
+            "selected": 1
+          },
+          "foreshadow_record": {
+            "available": 0,
+            "selected": 0
+          },
+          "issue": {
+            "available": 0,
+            "selected": 0
+          },
+          "issue_evidence": {
+            "available": 0,
+            "selected": 0
+          },
+          "memory_record": {
+            "available": 8,
+            "selected": 8
+          },
+          "source_span": {
+            "available": 10,
+            "selected": 4
+          }
+        },
+        "method_version": "writing-analysis-lexical-v2-draft-claims",
+        "selected_ids": {
+          "author_context": [],
+          "character_alias": [],
+          "draft_claim": [
+            "draft-claim-draft-212c8fd6-5183-467f-b02c-76edb9b7f1fc-r2-1"
+          ],
+          "foreshadow_record": [],
+          "issue": [],
+          "issue_evidence": [],
+          "memory_record": [
+            "mem-58e74be9-198e-4e2a-88f9-22a5a0d008f9",
+            "mem-0ffc064d-1e8c-4caf-b192-e62545956947",
+            "mem-10a5b9db-8a2f-43ef-978f-4a65d41ca72a",
+            "mem-1b126fc4-d223-4a20-ac43-187e6d9e0e68",
+            "mem-48575ab2-8007-49a2-abf3-d9701a359860",
+            "mem-61bfee7c-58d1-42af-94ab-6e9a7e43d01d",
+            "mem-9826af6f-47bd-4329-b9be-bc9196d90097",
+            "mem-c663763b-3392-4d7b-b596-190041390a76"
+          ],
+          "source_span": [
+            "span-d7216371-111f-4e58-831c-8c018acb49a6",
+            "span-ae02e40e-ae90-417b-9ccb-6e9d6cfc8692",
+            "span-b029ac3f-1e6f-4c0b-87aa-82e7d94a7849",
+            "span-2d36b995-a65e-43e5-88e4-7d9142c47234"
+          ]
+        },
+        "truncated": {
+          "author_context": false,
+          "character_alias": false,
+          "draft_body": false,
+          "draft_claim": false,
+          "foreshadow_record": false,
+          "issue": false,
+          "issue_evidence": false,
+          "memory_record": false,
+          "source_span": true
+        }
+      },
+      "status": "completed",
+      "analysis": {
+        "draft_coverage": {
+          "reasons": [],
+          "source_ids": [
+            "draft-claim-draft-212c8fd6-5183-467f-b02c-76edb9b7f1fc-r2-1"
+          ],
+          "status": "covered"
+        },
+        "evidence_status": "supported",
+        "items": [
+          {
+            "section": "recent_source",
+            "sources": [
+              {
+                "excerpt": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，",
+                "label": "当前草稿 · 句 1",
+                "source_id": "draft-claim-draft-212c8fd6-5183-467f-b02c-76edb9b7f1fc-r2-1",
+                "source_path": "/projects/prj-4dc2681d-b6ea-4380-97ce-f5a81a196d29/workspace#draft-source",
+                "source_type": "draft_claim"
+              }
+            ],
+            "text": "当前已保存草稿写道：林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，"
+          },
+          {
+            "section": "recent_source",
+            "sources": [
+              {
+                "excerpt": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+                "label": "第 8 章 · 关系变化",
+                "source_id": "span-d7216371-111f-4e58-831c-8c018acb49a6",
+                "source_path": "/projects/prj-4dc2681d-b6ea-4380-97ce-f5a81a196d29/sources#span-span-d7216371-111f-4e58-831c-8c018acb49a6",
+                "source_type": "source_span"
+              }
+            ],
+            "text": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。"
+          }
+        ],
+        "summary": "当前已保存草稿写道：林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走， 温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+        "summary_sources": [
+          {
+            "excerpt": "林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，林默沿着长廊向前走，",
+            "label": "当前草稿 · 句 1",
+            "source_id": "draft-claim-draft-212c8fd6-5183-467f-b02c-76edb9b7f1fc-r2-1",
+            "source_path": "/projects/prj-4dc2681d-b6ea-4380-97ce-f5a81a196d29/workspace#draft-source",
+            "source_type": "draft_claim"
+          },
+          {
+            "excerpt": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+            "label": "第 8 章 · 关系变化",
+            "source_id": "span-d7216371-111f-4e58-831c-8c018acb49a6",
+            "source_path": "/projects/prj-4dc2681d-b6ea-4380-97ce-f5a81a196d29/sources#span-span-d7216371-111f-4e58-831c-8c018acb49a6",
+            "source_type": "source_span"
+          }
+        ]
+      },
+      "foreign_draft_claim_rejected": true,
+      "old_result_stale_after_save": true,
+      "temporary_runtime": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\independent-g01-g02-59iil3xm"
+    },
+    {
+      "name": "body_limit_control",
+      "body": "林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。",
+      "body_length": 1980,
+      "request_bindings": {
+        "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+        "author_context_version": 0,
+        "draft_id": "draft-9a97664a-a065-4322-8bfb-bb15f8b58bee",
+        "draft_revision": 2,
+        "memory_version": 4,
+        "project_id": "prj-9c3be9ab-e254-4ca7-9f61-68f3194616a0",
+        "source_revision": 1
+      },
+      "request_written": {
+        "draft": {
+          "chapter_number": 11,
+          "excerpt": "林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核对潮汐表。林默在雾港核",
+          "id": "draft-9a97664a-a065-4322-8bfb-bb15f8b58bee",
+          "revision": 2,
+          "title": "第十一章：未归的航标"
+        },
+        "draft_claims": [
+          {
+            "id": "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-1",
+            "ordinal": 1,
+            "text": "林默在雾港核对潮汐表。"
+          },
+          {
+            "id": "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-2",
+            "ordinal": 2,
+            "text": "林默在雾港核对潮汐表。"
+          },
+          {
+            "id": "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-3",
+            "ordinal": 3,
+            "text": "林默在雾港核对潮汐表。"
+          },
+          {
+            "id": "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-4",
+            "ordinal": 4,
+            "text": "林默在雾港核对潮汐表。"
+          },
+          {
+            "id": "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-5",
+            "ordinal": 5,
+            "text": "林默在雾港核对潮汐表。"
+          },
+          {
+            "id": "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-6",
+            "ordinal": 6,
+            "text": "林默在雾港核对潮汐表。"
+          },
+          {
+            "id": "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-7",
+            "ordinal": 7,
+            "text": "林默在雾港核对潮汐表。"
+          },
+          {
+            "id": "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-8",
+            "ordinal": 8,
+            "text": "林默在雾港核对潮汐表。"
+          }
+        ],
+        "source_spans": [
+          {
+            "body": "航图被固定在雾线水门外的锚柱上，右下角缺失了一块。",
+            "chapter_id": "ch-170119bf-db96-44ff-9474-0ecb811b7a1e",
+            "chapter_number": 7,
+            "chapter_title": "潮线之外",
+            "id": "span-1956ef95-ecfa-4297-a0d7-1196d8dc0598",
+            "label": "地点状态",
+            "source_revision": 1
+          },
+          {
+            "body": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。",
+            "chapter_id": "ch-86c612d1-2cff-48f3-9668-1acd0330d369",
+            "chapter_number": 6,
+            "chapter_title": "低室电台",
+            "id": "span-5d03a0f0-9e7d-4b11-a45d-d723e9e60e44",
+            "label": "事件记录",
+            "source_revision": 1
+          },
+          {
+            "body": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+            "chapter_id": "ch-0257d17d-60d6-49de-bafc-f8f8827b15e9",
+            "chapter_number": 10,
+            "chapter_title": "回声坐标",
+            "id": "span-8bb85bab-37d1-4616-9aa0-04e0bfb038d8",
+            "label": "未解问题",
+            "source_revision": 1
+          },
+          {
+            "body": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。",
+            "chapter_id": "ch-da15b2a9-502a-4697-b1b1-5f5a30e00053",
+            "chapter_number": 9,
+            "chapter_title": "换手",
+            "id": "span-67d8ea64-9f0d-4f55-aea0-a71d66f67254",
+            "label": "动态状态",
+            "source_revision": 1
+          }
+        ]
+      },
+      "retrieval": {
+        "counts": {
+          "author_context": {
+            "available": 0,
+            "selected": 0
+          },
+          "character_alias": {
+            "available": 0,
+            "selected": 0
+          },
+          "draft_claim": {
+            "available": 180,
+            "selected": 8
+          },
+          "foreshadow_record": {
+            "available": 0,
+            "selected": 0
+          },
+          "issue": {
+            "available": 0,
+            "selected": 0
+          },
+          "issue_evidence": {
+            "available": 0,
+            "selected": 0
+          },
+          "memory_record": {
+            "available": 8,
+            "selected": 8
+          },
+          "source_span": {
+            "available": 10,
+            "selected": 4
+          }
+        },
+        "method_version": "writing-analysis-lexical-v2-draft-claims",
+        "selected_ids": {
+          "author_context": [],
+          "character_alias": [],
+          "draft_claim": [
+            "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-1",
+            "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-2",
+            "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-3",
+            "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-4",
+            "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-5",
+            "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-6",
+            "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-7",
+            "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-8"
+          ],
+          "foreshadow_record": [],
+          "issue": [],
+          "issue_evidence": [],
+          "memory_record": [
+            "mem-014e1721-1e17-4092-be9b-1617224d8146",
+            "mem-2efec6ac-8043-48ab-9533-f789efa0c9ba",
+            "mem-9a68f044-e72c-4fcf-a67f-206d3b7113e7",
+            "mem-9c7b5af4-e93c-48c7-b921-1b442e3033bb",
+            "mem-a5dcbdfc-61b1-4163-8547-edc890efac31",
+            "mem-d495dbbe-27c3-46df-be10-cefdf6c6fabf",
+            "mem-dec52fb3-762b-4d25-906c-ac26f3f9690e",
+            "mem-f2fa03db-2c1a-4dcd-8922-b151705b5889"
+          ],
+          "source_span": [
+            "span-1956ef95-ecfa-4297-a0d7-1196d8dc0598",
+            "span-5d03a0f0-9e7d-4b11-a45d-d723e9e60e44",
+            "span-8bb85bab-37d1-4616-9aa0-04e0bfb038d8",
+            "span-67d8ea64-9f0d-4f55-aea0-a71d66f67254"
+          ]
+        },
+        "truncated": {
+          "author_context": false,
+          "character_alias": false,
+          "draft_body": true,
+          "draft_claim": true,
+          "foreshadow_record": false,
+          "issue": false,
+          "issue_evidence": false,
+          "memory_record": false,
+          "source_span": true
+        }
+      },
+      "status": "completed",
+      "analysis": {
+        "draft_coverage": {
+          "reasons": [
+            "draft_truncated"
+          ],
+          "source_ids": [
+            "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-1"
+          ],
+          "status": "partial"
+        },
+        "evidence_status": "partial",
+        "items": [
+          {
+            "section": "recent_source",
+            "sources": [
+              {
+                "excerpt": "林默在雾港核对潮汐表。",
+                "label": "当前草稿 · 句 1",
+                "source_id": "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-1",
+                "source_path": "/projects/prj-9c3be9ab-e254-4ca7-9f61-68f3194616a0/workspace#draft-source",
+                "source_type": "draft_claim"
+              }
+            ],
+            "text": "当前已保存草稿写道：林默在雾港核对潮汐表。"
+          },
+          {
+            "section": "recent_source",
+            "sources": [
+              {
+                "excerpt": "航图被固定在雾线水门外的锚柱上，右下角缺失了一块。",
+                "label": "第 7 章 · 地点状态",
+                "source_id": "span-1956ef95-ecfa-4297-a0d7-1196d8dc0598",
+                "source_path": "/projects/prj-9c3be9ab-e254-4ca7-9f61-68f3194616a0/sources#span-span-1956ef95-ecfa-4297-a0d7-1196d8dc0598",
+                "source_type": "source_span"
+              }
+            ],
+            "text": "航图被固定在雾线水门外的锚柱上，右下角缺失了一块。"
+          }
+        ],
+        "summary": "当前已保存草稿写道：林默在雾港核对潮汐表。 航图被固定在雾线水门外的锚柱上，右下角缺失了一块。",
+        "summary_sources": [
+          {
+            "excerpt": "林默在雾港核对潮汐表。",
+            "label": "当前草稿 · 句 1",
+            "source_id": "draft-claim-draft-9a97664a-a065-4322-8bfb-bb15f8b58bee-r2-1",
+            "source_path": "/projects/prj-9c3be9ab-e254-4ca7-9f61-68f3194616a0/workspace#draft-source",
+            "source_type": "draft_claim"
+          },
+          {
+            "excerpt": "航图被固定在雾线水门外的锚柱上，右下角缺失了一块。",
+            "label": "第 7 章 · 地点状态",
+            "source_id": "span-1956ef95-ecfa-4297-a0d7-1196d8dc0598",
+            "source_path": "/projects/prj-9c3be9ab-e254-4ca7-9f61-68f3194616a0/sources#span-span-1956ef95-ecfa-4297-a0d7-1196d8dc0598",
+            "source_type": "source_span"
+          }
+        ]
+      },
+      "foreign_draft_claim_rejected": true,
+      "old_result_stale_after_save": true,
+      "temporary_runtime": "C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\independent-g01-g02-7uuzh5sn"
+    }
+  ]
+}

@@ -1,0 +1,407 @@
+{
+  "schema_version": "v6-independent-scoring-role-review-v1",
+  "created_at": "2026-09-27T09:51:40.635766+00:00",
+  "phase": "pre-live; no V6 Provider output inspected",
+  "scope": "All eight inherited confirmed-conflict cases and both unique new confirmed-conflict cases, every minimum set and source read in full.",
+  "case_count": 10,
+  "minimum_set_count": 10,
+  "minimum_citation_count": 16,
+  "context_premise_count": 6,
+  "direct_fact_count": 10,
+  "fixed_rule": "Every relation is relative to main story-fact proposition P. Abstract applicability/identity/rule premises are context; the incompatible concrete fact is contradicts under all cited premises. A rule can itself be direct when P supplies its forbidden condition, as old01. Each minimum set is sufficient jointly, not each premise alone. No supports relabeling or post-hoc deletion.",
+  "old13_decision": "kinship_rule=context; twin_register=contradicts under that rule. Both belong to same issue. This updates only explicit V6 scoring policy; V5 score/gold/raw stay immutable.",
+  "coverage_conclusion": "Six joint-premise entries are required across the ten cases: old04 carrier_ready_rule, old13 kinship_rule, old16 launch_rule, old19 lens_index, new25 L1, new26 R1. No additional JOINT_PREMISES omission was found after complete review.",
+  "optional_context": "Optional roster/L4/R3 is never a minimum substitute. Optional citations remain selected and relevant with explicit role. Memory-known L3 remains unselected and invalid as extra citation.",
+  "scorer_alignment": "Independent role table fixed here. Stable scorer alignment is a separate receipt so this table will not be selected after model output.",
+  "rows": [
+    {
+      "ordinal": 1,
+      "case_id": "ccv3-north_glass-world_rule-conflict",
+      "P": "At 10点 on the same day, Mira opened the North Glass door while wearing only her red badge.",
+      "expected_nature": "confirmed_conflict",
+      "minimum_sets": [
+        [
+          "badge_rule"
+        ]
+      ],
+      "roles": [
+        {
+          "label": "badge_rule",
+          "span_id": "fixture-span-north_glass-1",
+          "chapter_id": "fixture-chapter-north_glass-1",
+          "source_body": "The North Glass door opens only for a wearer of a blue badge; a red badge cannot open it.",
+          "source_body_sha256_raw_utf8": "7fe32913a0d817f57f2a1927e8289cdfc3f4536b3cbcf44529a04e4c24178c96",
+          "relation_relative_to_P": "contradicts",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "The rule directly forbids opening with only a red badge. The draft itself supplies that forbidden red-only condition; no external identity or condition premise is missing."
+        }
+      ],
+      "effective_temporal_relations": [
+        "timeless_rule"
+      ],
+      "scope_judgment": "The selected badge_rule static_canon/rule Memory grounds the timeless mechanism; optional roster cannot establish opening or replace the rule."
+    },
+    {
+      "ordinal": 4,
+      "case_id": "ccv3-north_glass-object_state-conflict",
+      "P": "At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.",
+      "expected_nature": "confirmed_conflict",
+      "minimum_sets": [
+        [
+          "carrier_ready_rule",
+          "carrier_inspection"
+        ]
+      ],
+      "roles": [
+        {
+          "label": "carrier_ready_rule",
+          "span_id": "fixture-span-north_glass-4",
+          "chapter_id": "fixture-chapter-north_glass-4",
+          "source_body": "A North Glass pneumatic carrier is ready for dispatch only when its pressure gauge reads four bars and its valve cap is locked.",
+          "source_body_sha256_raw_utf8": "40d64e7f17ef1ad124e08aec132c2a0a7c8828bf44afd46922afcc657fdb16e2",
+          "relation_relative_to_P": "context",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "Defines readiness as requiring both four bars and locked cap; it does not report the present cap state."
+        },
+        {
+          "label": "carrier_inspection",
+          "span_id": "fixture-span-north_glass-5",
+          "chapter_id": "fixture-chapter-north_glass-5",
+          "source_body": "At 10点 on the same day, the North Glass pneumatic carrier gauge read four bars, but its valve cap remained loose and not locked throughout that minute.",
+          "source_body_sha256_raw_utf8": "b41b18852fc07123ca3aea7034717f7e71a13c10e1914d1f5d1fc899569c669f",
+          "relation_relative_to_P": "contradicts",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "At the draft same minute the cap remains unlocked, violating the readiness condition in the cited rule."
+        }
+      ],
+      "effective_temporal_relations": [
+        "explicit_overlap",
+        "timeless_rule"
+      ],
+      "scope_judgment": "P and inspection explicitly share 10; a timeless-rule basis additionally requires the cited carrier rule Memory. Neither basis permits ignoring the time of the mutable cap state."
+    },
+    {
+      "ordinal": 7,
+      "case_id": "ccv3-harbor_signal-timeline-conflict",
+      "P": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+      "expected_nature": "confirmed_conflict",
+      "minimum_sets": [
+        [
+          "gate_log"
+        ]
+      ],
+      "roles": [
+        {
+          "label": "gate_log",
+          "span_id": "fixture-span-harbor_signal-1",
+          "chapter_id": "fixture-chapter-harbor_signal-1",
+          "source_body": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "source_body_sha256_raw_utf8": "77d7377487559251053b9f3faa5dd0fbbafc3d49fafc4c15d44cc8891fb1a464",
+          "relation_relative_to_P": "contradicts",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "The log says first opening at 09, no earlier closing, and first closing only after opening at 10. This directly reverses the asserted first-event ordering."
+        }
+      ],
+      "effective_temporal_relations": [
+        "explicit_overlap"
+      ],
+      "scope_judgment": "Use the shared 09 anchor and the complete first-event ordering; chapter order is unnecessary."
+    },
+    {
+      "ordinal": 10,
+      "case_id": "ccv3-harbor_signal-character_knowledge-conflict",
+      "P": "At 11点 on the same day, Sera knew the telegram code.",
+      "expected_nature": "confirmed_conflict",
+      "minimum_sets": [
+        [
+          "telegram_seal"
+        ]
+      ],
+      "roles": [
+        {
+          "label": "telegram_seal",
+          "span_id": "fixture-span-harbor_signal-3",
+          "chapter_id": "fixture-chapter-harbor_signal-3",
+          "source_body": "At 11点 on the same day, Sera had not opened the sealed telegram and did not know its code.",
+          "source_body_sha256_raw_utf8": "cff23b54e18923c4325cacd7e9533edc360856e1e893d24fcf4507e7ee20af45",
+          "relation_relative_to_P": "contradicts",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "The source explicitly states Sera did not know this telegram code at the same 11 time when P says she knew it."
+        }
+      ],
+      "effective_temporal_relations": [
+        "explicit_overlap"
+      ],
+      "scope_judgment": "The 11 source suffices. Later 13 learning is unnecessary and must not be projected backwards."
+    },
+    {
+      "ordinal": 13,
+      "case_id": "ccv3-orchard_restoration-relationship-conflict",
+      "P": "Nera is Oren's mother.",
+      "expected_nature": "confirmed_conflict",
+      "minimum_sets": [
+        [
+          "kinship_rule",
+          "twin_register"
+        ]
+      ],
+      "roles": [
+        {
+          "label": "kinship_rule",
+          "span_id": "fixture-span-orchard_restoration-1",
+          "chapter_id": "fixture-chapter-orchard_restoration-1",
+          "source_body": "The Orchard Register's permanent kinship rule says that two people recorded as twins cannot be one another's parent.",
+          "source_body_sha256_raw_utf8": "df92a4dc5c1c210fd70f49c2397a49fcd7c04cc74a2b8c4675dab0c23423e444",
+          "relation_relative_to_P": "context",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "Generic permanent constraint: recorded twins cannot parent one another. It does not itself establish that the named pair are twins."
+        },
+        {
+          "label": "twin_register",
+          "span_id": "fixture-span-orchard_restoration-2",
+          "chapter_id": "fixture-chapter-orchard_restoration-2",
+          "source_body": "The birth register identifies Nera and Oren as twins, both children of Tala.",
+          "source_body_sha256_raw_utf8": "ee6b5877c1f31b10ca147ebf15e24e53dfa2b0db175b86646294ca2c3c18b847",
+          "relation_relative_to_P": "contradicts",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "Registers Nera/Oren as twins, activating the cited rule and excluding the asserted mother-child relation."
+        }
+      ],
+      "effective_temporal_relations": [
+        "timeless_rule"
+      ],
+      "scope_judgment": "P has no literal time anchor. The cited permanent kinship rule and its bound static_canon/rule Memory supply scope; the named twins fact must be cited in this same issue."
+    },
+    {
+      "ordinal": 16,
+      "case_id": "ccv3-orchard_restoration-event_status-conflict",
+      "P": "At 10点 on the same day, the restoration boat had completed its launch.",
+      "expected_nature": "confirmed_conflict",
+      "minimum_sets": [
+        [
+          "launch_rule",
+          "launch_log"
+        ]
+      ],
+      "roles": [
+        {
+          "label": "launch_rule",
+          "span_id": "fixture-span-orchard_restoration-4",
+          "chapter_id": "fixture-chapter-orchard_restoration-4",
+          "source_body": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "source_body_sha256_raw_utf8": "cad38e921e19a6040dd58382a11ff6afcbe3f3fd4c1448e905ece9adddb03337",
+          "relation_relative_to_P": "context",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "Defines completion as requiring both signed manifest and actual departure; it does not report the present launch state."
+        },
+        {
+          "label": "launch_log",
+          "span_id": "fixture-span-orchard_restoration-5",
+          "chapter_id": "fixture-chapter-orchard_restoration-5",
+          "source_body": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "source_body_sha256_raw_utf8": "41b63d972f6aa53ff35696c0989c799bb77bbe08b3192bdcd0089477ef9d5124",
+          "relation_relative_to_P": "contradicts",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "At the same 10 minute the manifest is unsigned and the boat never departs, violating both cited completion requirements."
+        }
+      ],
+      "effective_temporal_relations": [
+        "explicit_overlap",
+        "timeless_rule"
+      ],
+      "scope_judgment": "P and log share 10. A timeless-rule basis also needs the selected cited launch-rule Memory; the dated negative launch facts still control the scope."
+    },
+    {
+      "ordinal": 19,
+      "case_id": "ccv3-basalt_observatory-attribute-conflict",
+      "P": "At 18点 on the same day, lens R4 is amber glass.",
+      "expected_nature": "confirmed_conflict",
+      "minimum_sets": [
+        [
+          "lens_index",
+          "west_lens"
+        ]
+      ],
+      "roles": [
+        {
+          "label": "lens_index",
+          "span_id": "fixture-span-basalt_observatory-1",
+          "chapter_id": "fixture-chapter-basalt_observatory-1",
+          "source_body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+          "source_body_sha256_raw_utf8": "18f9afade86f2077bcffba6fe93ca5cfb6dcaf80e5d2b70aa4d9ac4ef738803e",
+          "relation_relative_to_P": "context",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "Binds R4 to the western aperture lens at 18; it says nothing about amber versus clear material."
+        },
+        {
+          "label": "west_lens",
+          "span_id": "fixture-span-basalt_observatory-2",
+          "chapter_id": "fixture-chapter-basalt_observatory-2",
+          "source_body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+          "source_body_sha256_raw_utf8": "6d076311a6e7a337c343d45286fb0ab882125356935f350ff805ba1aa4a5831f",
+          "relation_relative_to_P": "contradicts",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "States the bound western lens is clear and not amber at that same 18 time."
+        }
+      ],
+      "effective_temporal_relations": [
+        "explicit_overlap"
+      ],
+      "scope_judgment": "Both identity and property spans are required. Memory visibility alone does not substitute for citing the identity span."
+    },
+    {
+      "ordinal": 22,
+      "case_id": "ccv3-basalt_observatory-location_action-conflict",
+      "P": "At 18点 on the same day, Vela stood on the east pier.",
+      "expected_nature": "confirmed_conflict",
+      "minimum_sets": [
+        [
+          "watch_log"
+        ]
+      ],
+      "roles": [
+        {
+          "label": "watch_log",
+          "span_id": "fixture-span-basalt_observatory-5",
+          "chapter_id": "fixture-chapter-basalt_observatory-5",
+          "source_body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+          "source_body_sha256_raw_utf8": "654e3875884b6afaf5b5391c945b0ea4662e10cd0eaf1933c697c5e3a158ba39",
+          "relation_relative_to_P": "contradicts",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "Directly locates Vela on the west pier, not the east pier, at the same 18 time."
+        }
+      ],
+      "effective_temporal_relations": [
+        "explicit_overlap"
+      ],
+      "scope_judgment": "The source itself contains actor, place and time. Neither an extra gate-location premise nor the unselected 19 move is needed."
+    },
+    {
+      "ordinal": 25,
+      "case_id": "v6-v6s-01",
+      "P": "At 14:00 today, lens Q8 is amber glass.",
+      "expected_nature": "confirmed_conflict",
+      "minimum_sets": [
+        [
+          "L1",
+          "L2"
+        ]
+      ],
+      "roles": [
+        {
+          "label": "L1",
+          "span_id": "fixture-span-v6_lens-1",
+          "chapter_id": "fixture-chapter-v6_lens-1",
+          "source_body": "At 14:00 today, the index identifies lens Q8 as the installed east aperture lens.",
+          "source_body_sha256_raw_utf8": "0471c9076b183f4ce3c6f199ec4d474a01ad1ef6bdc0ec164a4ce641cb1d5fe4",
+          "relation_relative_to_P": "context",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "Binds Q8 to the east aperture lens at 14:00; it has no material assertion."
+        },
+        {
+          "label": "L2",
+          "span_id": "fixture-span-v6_lens-2",
+          "chapter_id": "fixture-chapter-v6_lens-2",
+          "source_body": "At 14:00 today, the east aperture lens is clear glass, not amber glass.",
+          "source_body_sha256_raw_utf8": "a49642c4d1f4064415bf07a0de875ff049027b74f5dc4129d32986f32b3f4751",
+          "relation_relative_to_P": "contradicts",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "The bound east lens is clear, explicitly not amber, at 14:00."
+        }
+      ],
+      "effective_temporal_relations": [
+        "explicit_overlap"
+      ],
+      "scope_judgment": "Both L1/L2 required. L4 can be explained optional cleaning context but cannot establish identity/material. L3 remains Memory-known but unselected."
+    },
+    {
+      "ordinal": 26,
+      "case_id": "v6-v6s-03",
+      "P": "At 10:00 today the courier capsule was ready for dispatch.",
+      "expected_nature": "confirmed_conflict",
+      "minimum_sets": [
+        [
+          "R1",
+          "R2"
+        ]
+      ],
+      "roles": [
+        {
+          "label": "R1",
+          "span_id": "fixture-span-v6_carrier-1",
+          "chapter_id": "fixture-chapter-v6_carrier-1",
+          "source_body": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+          "source_body_sha256_raw_utf8": "9a3f67cc7c0fa73f5ea55edc5da0e97a85cb85e7ad493f20985481913921dcfb",
+          "relation_relative_to_P": "context",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "Defines ready as requiring four bars and locked cap, without reporting the current cap state."
+        },
+        {
+          "label": "R2",
+          "span_id": "fixture-span-v6_carrier-2",
+          "chapter_id": "fixture-chapter-v6_carrier-2",
+          "source_body": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute.",
+          "source_body_sha256_raw_utf8": "48d5ca745339eae72ca7a661f3f3a261fd942d05f936f77cbff1aea841111366",
+          "relation_relative_to_P": "contradicts",
+          "sufficiency": "sufficient_for_local_role",
+          "reason": "At 10:00 the cap remains unlocked throughout the minute, violating the cited readiness condition."
+        }
+      ],
+      "effective_temporal_relations": [
+        "explicit_overlap"
+      ],
+      "scope_judgment": "Actual input-v2 R1 Memory is dynamic_state/status. Only explicit_overlap via R2 is deliverable; do not treat the source prose as a supplied static_canon/rule Memory."
+    }
+  ],
+  "read_files_sha256": {
+    "docs/flash-v6-independent-acceptance-evidence/semantics/criteria.md": "a09185a0cfcb9b9541140a296db8d63d609410dca48159944bf5ce0007715263",
+    "docs/flash-v6-independent-acceptance-evidence/semantics/control-matrix.json": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "evaluation/current_flash_v6/cases-v2.json": "ea6d521f625ed26319ddcbc8aa82456a2013ad9ff4ba441d99efa98c0204f391",
+    "evaluation/current_contract_compare_v3/cases.json": "99cf17ca8391be0438164eabecebf181f6e88b5f6a11cd20fb15f913854716f0",
+    "evaluation/current_contract_compare_v2/corpora/basalt_observatory.json": "c6dbb54519030c228c2a2a464cfaf99e94cefeb31a91948d271a992732e2674e",
+    "evaluation/current_contract_compare_v2/corpora/harbor_signal.json": "b73e9e6764c8b3dad8e7d77367998d8f4c9254da26734bd5ce13d355222798a7",
+    "evaluation/current_contract_compare_v2/corpora/north_glass.json": "57aea727f02bfd27534783756a5e254e678695d6bdfeea2182959862afcb9510",
+    "evaluation/current_contract_compare_v2/corpora/orchard_restoration.json": "b65e422642a029d5e4fbdb5a04b89e2482ead83aed82ce9e1eed6618438f5614",
+    "evaluation/current_flash_v6/INPUT-ADAPTATION.md": "eaaceb74f501bd6158d6f2f3d28a28e9d8a21beaf1e6c80788fd2bd132eb6cbe",
+    "evaluation/current_flash_v6/SCORING-ADDENDUM.md": "51d5fb0a83dbeebd43eea20f04a2bbcf73d83cbba8d435d193dbf6f72dc0bbf8",
+    "evaluation/current_flash_v6/SCORING-ADDENDUM-02.md": "4531e56ede716ecd400c5683b6cd0654327f3e4ac1bd170d0e852453b41c5d5c",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/01/requests/01.json": "57feb188feb89941cc836f0c70232e21a0e686374b7c74caf170c983323eacfa",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/04/requests/01.json": "43f042e5d0f6124b162af4299f643b60da8230b199e18a3e43d2ee664b40e2fd",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/07/requests/01.json": "00db44f4f8eb9d13443bd79b6a16ac2ffb49df3858899d84b7fb0307431143fb",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/10/requests/01.json": "eecb334f6340178072027046b1eec53d08859d4ef99428fd0af09a64c334b8a0",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/13/requests/01.json": "69934109da9342a246ab44353939a18fbbc92c20896be8bd26e0e6b6eb00139f",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/16/requests/01.json": "7212be34aeed15b162e9d41006e168b3223b2a23853a456d74ccceb92139caf2",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/19/requests/01.json": "31a57aca66ee74e1cf5661cfa6f1d991560a92c753de51a341b122bb7c8b44af",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/22/requests/01.json": "7427ce9f05c9e393af81369d89ae7dda4dfd5b526059c95559a0a69b496aea71",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/25/requests/01.json": "96063b8873a269603270ebbc05e344ed282f4f78590301812e9d22a89a714fd2",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/26/requests/01.json": "2685e853771af17a7d2e0dcf5f43fac2450a58dd01b4e657d4a321229566c93c"
+  },
+  "read_files_sha256_after": {
+    "docs/flash-v6-independent-acceptance-evidence/semantics/criteria.md": "a09185a0cfcb9b9541140a296db8d63d609410dca48159944bf5ce0007715263",
+    "docs/flash-v6-independent-acceptance-evidence/semantics/control-matrix.json": "99412a8b8d602c1084d3ab4a0aa0e96f437fc1fdfbea7829f419634b70eadb6d",
+    "evaluation/current_flash_v6/cases-v2.json": "ea6d521f625ed26319ddcbc8aa82456a2013ad9ff4ba441d99efa98c0204f391",
+    "evaluation/current_contract_compare_v3/cases.json": "99cf17ca8391be0438164eabecebf181f6e88b5f6a11cd20fb15f913854716f0",
+    "evaluation/current_contract_compare_v2/corpora/basalt_observatory.json": "c6dbb54519030c228c2a2a464cfaf99e94cefeb31a91948d271a992732e2674e",
+    "evaluation/current_contract_compare_v2/corpora/harbor_signal.json": "b73e9e6764c8b3dad8e7d77367998d8f4c9254da26734bd5ce13d355222798a7",
+    "evaluation/current_contract_compare_v2/corpora/north_glass.json": "57aea727f02bfd27534783756a5e254e678695d6bdfeea2182959862afcb9510",
+    "evaluation/current_contract_compare_v2/corpora/orchard_restoration.json": "b65e422642a029d5e4fbdb5a04b89e2482ead83aed82ce9e1eed6618438f5614",
+    "evaluation/current_flash_v6/INPUT-ADAPTATION.md": "eaaceb74f501bd6158d6f2f3d28a28e9d8a21beaf1e6c80788fd2bd132eb6cbe",
+    "evaluation/current_flash_v6/SCORING-ADDENDUM.md": "51d5fb0a83dbeebd43eea20f04a2bbcf73d83cbba8d435d193dbf6f72dc0bbf8",
+    "evaluation/current_flash_v6/SCORING-ADDENDUM-02.md": "4531e56ede716ecd400c5683b6cd0654327f3e4ac1bd170d0e852453b41c5d5c",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/01/requests/01.json": "57feb188feb89941cc836f0c70232e21a0e686374b7c74caf170c983323eacfa",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/04/requests/01.json": "43f042e5d0f6124b162af4299f643b60da8230b199e18a3e43d2ee664b40e2fd",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/07/requests/01.json": "00db44f4f8eb9d13443bd79b6a16ac2ffb49df3858899d84b7fb0307431143fb",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/10/requests/01.json": "eecb334f6340178072027046b1eec53d08859d4ef99428fd0af09a64c334b8a0",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/13/requests/01.json": "69934109da9342a246ab44353939a18fbbc92c20896be8bd26e0e6b6eb00139f",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/16/requests/01.json": "7212be34aeed15b162e9d41006e168b3223b2a23853a456d74ccceb92139caf2",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/19/requests/01.json": "31a57aca66ee74e1cf5661cfa6f1d991560a92c753de51a341b122bb7c8b44af",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/22/requests/01.json": "7427ce9f05c9e393af81369d89ae7dda4dfd5b526059c95559a0a69b496aea71",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/25/requests/01.json": "96063b8873a269603270ebbc05e344ed282f4f78590301812e9d22a89a714fd2",
+    "evaluation/current_flash_v6/runs/prep-v6-02/cases/26/requests/01.json": "2685e853771af17a7d2e0dcf5f43fac2450a58dd01b4e657d4a321229566c93c"
+  },
+  "read_file_count": 21,
+  "hash_stable": true,
+  "provider_calls": 0,
+  "database_connections": 0,
+  "product_or_scorer_execution": false
+}

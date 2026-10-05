@@ -1,0 +1,159 @@
+{"started_at": "2026-09-27T10:44:46.415948+00:00", "suites": ["backend.tests.test_v6_continuity_contract", "backend.tests.test_v140_real_ai_contract_repairs", "backend.tests.test_provider_narrative_scope", "backend.tests.test_v7_continuity_contract"], "source_hashes_before": {"backend/app/engine.py": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd", "backend/app/provider.py": "942d772662b5e44cca5de7b40d7a10c25210a8cadaef6faee11808ef07ba6f24", "backend/tests/test_v6_continuity_contract.py": "7f1a9325e01e0ce2f31177566313acf0905b7a72cb3a02cec034780bc4fbc57f", "backend/tests/test_v140_real_ai_contract_repairs.py": "cc5ecccd0a576af680c6c0874e752a50dae9db20e8c5273c29df557ccbcf981e", "backend/tests/test_provider_narrative_scope.py": "cd8da2b6f06686ebf5293b1b910e6ae22323d5b53d6f4f285d423acf84cd578f", "backend/tests/test_v7_continuity_contract.py": "f2201f94992ccc70132e0337ee4dac844ed433f2cebb7a3dbcc2fed15e9c1183"}, "default_app_disabled": true, "bytecode_disabled": true}
+test_all_supports_cannot_be_confirmed_conflict (backend.tests.test_v6_continuity_contract.V6ContinuityContractTests.test_all_supports_cannot_be_confirmed_conflict) ... ok
+test_cross_source_memory_association_remains_valid (backend.tests.test_v6_continuity_contract.V6ContinuityContractTests.test_cross_source_memory_association_remains_valid) ... ok
+test_explained_empty_and_state_change_are_distinct (backend.tests.test_v6_continuity_contract.V6ContinuityContractTests.test_explained_empty_and_state_change_are_distinct) ... ok
+test_malformed_memory_id_is_a_controlled_binding_error (backend.tests.test_v6_continuity_contract.V6ContinuityContractTests.test_malformed_memory_id_is_a_controlled_binding_error) ... ok
+test_malformed_verdict_enums_use_bounded_repair (backend.tests.test_v6_continuity_contract.V6ContinuityContractTests.test_malformed_verdict_enums_use_bounded_repair) ... ok
+test_per_batch_coverage_rejects_missing_duplicate_foreign_and_unhashable_ids (backend.tests.test_v6_continuity_contract.V6ContinuityContractTests.test_per_batch_coverage_rejects_missing_duplicate_foreign_and_unhashable_ids) ... ok
+test_repair_cannot_silently_drop_an_issue (backend.tests.test_v6_continuity_contract.V6ContinuityContractTests.test_repair_cannot_silently_drop_an_issue) ... ok
+test_rule_premise_and_direct_fact_keep_distinct_relations (backend.tests.test_v6_continuity_contract.V6ContinuityContractTests.test_rule_premise_and_direct_fact_keep_distinct_relations) ... ok
+test_timeless_rule_requires_rule_source_cited_by_same_issue (backend.tests.test_v6_continuity_contract.V6ContinuityContractTests.test_timeless_rule_requires_rule_source_cited_by_same_issue) ... ok
+test_unknown_time_does_not_upgrade_to_confirmed (backend.tests.test_v6_continuity_contract.V6ContinuityContractTests.test_unknown_time_does_not_upgrade_to_confirmed) ... ok
+test_unselected_span_and_bad_chapter_still_fail (backend.tests.test_v6_continuity_contract.V6ContinuityContractTests.test_unselected_span_and_bad_chapter_still_fail) ... ok
+test_chinese_draft_allows_exact_english_dialogue_in_suggested_revision (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_chinese_draft_allows_exact_english_dialogue_in_suggested_revision) ... ok
+test_context_brief_accepts_equivalent_independent_sources_for_summary_and_item (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_context_brief_accepts_equivalent_independent_sources_for_summary_and_item) ... ok
+test_context_brief_accepts_legal_recent_prior_chapter_source_span_when_claims_exist (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_context_brief_accepts_legal_recent_prior_chapter_source_span_when_claims_exist) ... ok
+test_context_brief_contract_declares_counts_and_accepts_current_draft_claim (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_context_brief_contract_declares_counts_and_accepts_current_draft_claim) ... ok
+test_context_brief_discloses_cyclic_draft_citation_mismatch (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_context_brief_discloses_cyclic_draft_citation_mismatch) ... ok
+test_context_brief_uses_nonfactual_fallback_when_one_legal_item_needs_four_sources (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_context_brief_uses_nonfactual_fallback_when_one_legal_item_needs_four_sources) ... ok
+test_continuity_contract_rejects_two_different_explicit_clock_times (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_continuity_contract_rejects_two_different_explicit_clock_times) ... ok
+test_continuity_contract_rejects_unproven_time_overlap_and_repairs_once (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_continuity_contract_rejects_unproven_time_overlap_and_repairs_once) ... ok
+test_continuity_prompt_forbids_invented_same_time_and_requires_draft_language (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_continuity_prompt_forbids_invented_same_time_and_requires_draft_language) ... ok
+test_continuity_repair_diagnostics_tolerate_null_evidence (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_continuity_repair_diagnostics_tolerate_null_evidence) ... ok
+test_current_continuity_run_repairs_legacy_shape_instead_of_accepting_it (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_current_continuity_run_repairs_legacy_shape_instead_of_accepting_it) ... ok
+test_foreshadow_planted_background_span_never_becomes_planted_location (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_foreshadow_planted_background_span_never_becomes_planted_location) ... ok
+test_foreshadow_prompt_requires_draft_language_and_conservative_developing (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_foreshadow_prompt_requires_draft_language_and_conservative_developing) ... ok
+test_foreshadow_typed_background_without_memory_downgrades_but_mixed_specific_clue_remains_developing (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_foreshadow_typed_background_without_memory_downgrades_but_mixed_specific_clue_remains_developing) ... ok
+test_foreshadow_world_rule_cannot_establish_developing_status (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_foreshadow_world_rule_cannot_establish_developing_status) ... ok
+test_full_statement_scope_blocks_short_anchor_bypass_but_allows_same_time_control (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_full_statement_scope_blocks_short_anchor_bypass_but_allows_same_time_control) ... ok
+test_memory_prompt_separates_memory_type_from_predicate_in_normal_and_repair_calls (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_memory_prompt_separates_memory_type_from_predicate_in_normal_and_repair_calls) ... ok
+test_new_synthetic_knowledge_cases_keep_time_and_attribution_boundaries (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_new_synthetic_knowledge_cases_keep_time_and_attribution_boundaries) ... ok
+test_plan_alignment_prompt_requires_the_planned_event_not_entity_overlap (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_plan_alignment_prompt_requires_the_planned_event_not_entity_overlap) ... ok
+test_provider_value_error_before_result_does_not_mask_as_unbound_local (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_provider_value_error_before_result_does_not_mask_as_unbound_local) ... ok
+test_schema_failure_preserves_real_provider_usage (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_schema_failure_preserves_real_provider_usage) ... ok
+test_second_unproven_temporal_response_becomes_conservative_insufficient_evidence (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_second_unproven_temporal_response_becomes_conservative_insufficient_evidence) ... ok
+test_temporal_qualification_is_persisted_in_run_metrics (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_temporal_qualification_is_persisted_in_run_metrics) ... FAIL
+test_timeless_rule_conflict_keeps_issue_but_suppresses_unverified_auto_rewrite (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_timeless_rule_conflict_keeps_issue_but_suppresses_unverified_auto_rewrite) ... ok
+test_adjacent_claim_anchor_is_still_rejected (backend.tests.test_provider_narrative_scope.NarrativeScopeContractTests.test_adjacent_claim_anchor_is_still_rejected) ... ok
+test_conflict_with_supporting_evidence_stays_rejected (backend.tests.test_provider_narrative_scope.NarrativeScopeContractTests.test_conflict_with_supporting_evidence_stays_rejected) ... ok
+test_impact_keeps_absence_and_each_item_within_cited_scope (backend.tests.test_provider_narrative_scope.NarrativeScopeContractTests.test_impact_keeps_absence_and_each_item_within_cited_scope) ... ok
+test_prompt_identifies_new_contract_without_fixture_answers (backend.tests.test_provider_narrative_scope.NarrativeScopeContractTests.test_prompt_identifies_new_contract_without_fixture_answers) ... ok
+test_true_same_time_conflict_stays_actionable (backend.tests.test_provider_narrative_scope.NarrativeScopeContractTests.test_true_same_time_conflict_stays_actionable) ... ok
+test_uncertainty_still_requires_missing_link_and_no_actions (backend.tests.test_provider_narrative_scope.NarrativeScopeContractTests.test_uncertainty_still_requires_missing_link_and_no_actions) ... ok
+test_unseen_recollection_testimony_and_alias_texts_are_preserved (backend.tests.test_provider_narrative_scope.NarrativeScopeContractTests.test_unseen_recollection_testimony_and_alias_texts_are_preserved) ... ok
+test_basis_limit_is_visible_and_exactly_400_characters_are_allowed (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_basis_limit_is_visible_and_exactly_400_characters_are_allowed) ... ok
+test_citation_identity_and_chapter_guards_are_not_relaxed (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_citation_identity_and_chapter_guards_are_not_relaxed) ... ok
+test_compatible_no_issue_and_reviewed_state_change_remain_valid (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_compatible_no_issue_and_reviewed_state_change_remain_valid) ... ok
+test_complete_multi_claim_decisions_pass_in_one_batch (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_complete_multi_claim_decisions_pass_in_one_batch) ... ok
+test_different_minutes_hours_dates_or_missing_shared_day_are_not_overlap (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_different_minutes_hours_dates_or_missing_shared_day_are_not_overlap) ... ok
+test_length_and_missing_issue_for_one_claim_are_reported_together (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_length_and_missing_issue_for_one_claim_are_reported_together) ... ok
+test_near_budget_repair_keeps_feedback_complete_and_does_not_dispatch (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_near_budget_repair_keeps_feedback_complete_and_does_not_dispatch) ... ok
+test_quoted_and_recalled_time_does_not_assert_current_world_state (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_quoted_and_recalled_time_does_not_assert_current_world_state) ... ok
+test_repair_carries_complete_original_ledger_and_diagnostics_into_prompt (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_repair_carries_complete_original_ledger_and_diagnostics_into_prompt) ... ok
+test_repair_diagnostics_cover_distinct_bad_claims_in_the_same_batch (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_repair_diagnostics_cover_distinct_bad_claims_in_the_same_batch) ... ok
+test_repeated_ledger_failure_still_stops_after_one_repair (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_repeated_ledger_failure_still_stops_after_one_repair) ... ok
+test_same_day_hhmm_chinese_and_am_pm_positive_controls (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_same_day_hhmm_chinese_and_am_pm_positive_controls) ... ok
+test_saved_03_missing_issue_diagnostic_locates_the_ledger_decision (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_saved_03_missing_issue_diagnostic_locates_the_ledger_decision) ... ok
+test_saved_17_overlong_basis_has_precise_diagnostic (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_saved_17_overlong_basis_has_precise_diagnostic) ... ok
+test_saved_22_invalid_citation_remains_a_binding_rejection (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_saved_22_invalid_citation_remains_a_binding_rejection) ... ok
+test_saved_26_same_day_hhmm_conflict_passes_without_repair (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_saved_26_same_day_hhmm_conflict_passes_without_repair) ... ok
+test_time_in_only_context_cannot_qualify_the_contradicting_span (backend.tests.test_v7_continuity_contract.V7ContinuityContractTests.test_time_in_only_context_cannot_qualify_the_contradicting_span) ... ok
+
+======================================================================
+FAIL: test_temporal_qualification_is_persisted_in_run_metrics (backend.tests.test_v140_real_ai_contract_repairs.RealAiContractRepairTests.test_temporal_qualification_is_persisted_in_run_metrics)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\backend\tests\test_v140_real_ai_contract_repairs.py", line 426, in test_temporal_qualification_is_persisted_in_run_metrics
+    registered = client.post("/api/auth/register", headers=headers, json={"account_name": "qualificationmetrics", "display_name": "Qualification", "password": "valid-password-99", "recovery_email": "qualificationmetrics@example.test"}).json()["data"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\starlette\testclient.py", line 593, in post
+    return super().post(
+           ^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\httpx\_client.py", line 1144, in post
+    return self.request(
+           ^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\starlette\testclient.py", line 484, in request
+    return super().request(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\httpx\_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\httpx\_client.py", line 914, in send
+    response = self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\httpx\_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\httpx\_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\httpx\_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\starlette\testclient.py", line 377, in handle_request
+    raise exc
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\starlette\testclient.py", line 372, in handle_request
+    with self.portal_factory() as portal:
+         ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\starlette\testclient.py", line 445, in _portal_factory
+    with anyio.from_thread.start_blocking_portal(**self.async_backend) as portal:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\anyio\from_thread.py", line 554, in start_blocking_portal
+    portal = future.result()
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\anyio\from_thread.py", line 538, in run_blocking_portal
+    run_eventloop(
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\anyio\_core\_eventloop.py", line 83, in run
+    return async_backend.run(func, args, {}, backend_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\Documents\ChatGPT\Agent 搭建\Story-Continuity-Copilot\产出\交付物\story-continuity-legacy-gap-repair\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2547, in run
+    with Runner(debug=debug, loop_factory=loop_factory) as runner:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py", line 58, in __enter__
+    self._lazy_init()
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py", line 137, in _lazy_init
+    self._loop = events.new_event_loop()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\events.py", line 823, in new_event_loop
+    return get_event_loop_policy().new_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\events.py", line 720, in new_event_loop
+    return self._loop_factory()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\windows_events.py", line 316, in __init__
+    super().__init__(proactor)
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\proactor_events.py", line 640, in __init__
+    self._make_self_pipe()
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\proactor_events.py", line 787, in _make_self_pipe
+    self._ssock, self._csock = socket.socketpair()
+                               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\socket.py", line 623, in _fallback_socketpair
+    csock.connect((addr, port))
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\赵晨阳\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1204, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "<stdin>", line 22, in network_block
+AssertionError: Real network forbidden
+
+----------------------------------------------------------------------
+Ran 59 tests in 0.984s
+
+FAILED (failures=1)
+{"tests_run": 59, "failures": 1, "errors": 0, "source_hashes_after": {"backend/app/engine.py": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd", "backend/app/provider.py": "942d772662b5e44cca5de7b40d7a10c25210a8cadaef6faee11808ef07ba6f24", "backend/tests/test_v6_continuity_contract.py": "7f1a9325e01e0ce2f31177566313acf0905b7a72cb3a02cec034780bc4fbc57f", "backend/tests/test_v140_real_ai_contract_repairs.py": "cc5ecccd0a576af680c6c0874e752a50dae9db20e8c5273c29df557ccbcf981e", "backend/tests/test_provider_narrative_scope.py": "cd8da2b6f06686ebf5293b1b910e6ae22323d5b53d6f4f285d423acf84cd578f", "backend/tests/test_v7_continuity_contract.py": "f2201f94992ccc70132e0337ee4dac844ed433f2cebb7a3dbcc2fed15e9c1183"}, "source_hashes_unchanged": true, "guards": {"blocked_network_attempts": 1, "blocked_real_provider_constructors": 0, "temporary_sqlite_connections": 2, "blocked_other_sqlite": 0}, "temporary_roots": ["C:\\Users\\赵晨阳\\AppData\\Local\\Temp\\v140-qualification-metrics-d_f13yvu"]}

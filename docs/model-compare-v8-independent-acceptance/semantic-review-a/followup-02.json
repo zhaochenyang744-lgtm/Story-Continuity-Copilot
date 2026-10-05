@@ -1,0 +1,154 @@
+{
+  "schema_version": "v8-blinded-case-followup-review-v1",
+  "case_alias": "case-02",
+  "reviewer": "semantic-review-a",
+  "stage": "followup",
+  "criteria_reference": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+  "criteria_sha256": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-02",
+      "response_alias": "answer-caa6c0",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "继承已锁首答的针对性无冲突理由，final合法空结果保持该结论。",
+          "visible_quote": "completed",
+          "evidence_pointer": "responses[answer-caa6c0].final; semantic-review-a/first-02.json"
+        }
+      ],
+      "passed_dimensions_note": "适用final合同S/D通过；没有Issue时C/E/T字段N/A，未新增API持久化要求。",
+      "attribution_tags": [],
+      "overall_reason": "无repair，final completed且issues=[]，与已锁首答一致。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-02.json",
+      "normalization_count": 0
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-02",
+      "response_alias": "answer-35dcfa",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "继承已锁首答的针对性无冲突理由，final合法空结果保持该结论。",
+          "visible_quote": "completed",
+          "evidence_pointer": "responses[answer-35dcfa].final; semantic-review-a/first-02.json"
+        }
+      ],
+      "passed_dimensions_note": "适用final合同S/D通过；没有Issue时C/E/T字段N/A，未新增API持久化要求。",
+      "attribution_tags": [],
+      "overall_reason": "无repair，final completed且issues=[]，与已锁首答一致。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-02.json",
+      "normalization_count": 0
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-02",
+      "response_alias": "answer-b82249",
+      "stage": "final",
+      "reviewer": "semantic-review-a",
+      "condition_visibility": "hidden",
+      "output_availability": "experimental_engine_final_available",
+      "expected_policy_reference": "ccv3-north_glass-world_rule-no_conflict",
+      "ratings": {
+        "F": "pass",
+        "C": "not_applicable",
+        "E_roles": "not_applicable",
+        "E_set": "not_applicable",
+        "E_binding": "not_applicable",
+        "S": "pass",
+        "D": "pass",
+        "T": "not_applicable",
+        "strict_composite": "pass"
+      },
+      "observed_decision": "no_issue",
+      "actual_issue_count": 0,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "继承已锁首答的针对性无冲突理由，final合法空结果保持该结论。",
+          "visible_quote": "completed",
+          "evidence_pointer": "responses[answer-b82249].final; semantic-review-a/first-02.json"
+        }
+      ],
+      "passed_dimensions_note": "适用final合同S/D通过；没有Issue时C/E/T字段N/A，未新增API持久化要求。",
+      "attribution_tags": [],
+      "overall_reason": "无repair，final completed且issues=[]，与已锁首答一致。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "source_first_review": "semantic-review-a/first-02.json",
+      "normalization_count": 0
+    }
+  ],
+  "comparison": {
+    "repair_count": 0,
+    "repair_strict_pass": 0,
+    "final_strict_pass": 3,
+    "final_count": 3,
+    "first_scores_unchanged": true
+  },
+  "integrity": {
+    "packet_path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/02.json",
+    "sha256_before": "fe05b997540f8fa2d5063f0cd6b18f580c47a6224679e24cdafbb6185e1f4709",
+    "sha256_after_review": "fe05b997540f8fa2d5063f0cd6b18f580c47a6224679e24cdafbb6185e1f4709",
+    "unchanged": true,
+    "repair_business_unchanged_except_contract_repair": true,
+    "repair_visible_equals_parsed": true
+  },
+  "lock": {
+    "first_locked_before_followup": true,
+    "locked_before_condition_reveal": true,
+    "condition_mapping_read": false,
+    "machine_scores_read": false,
+    "identity_inferred": false
+  },
+  "reviewer_activity": {
+    "provider_calls": 0,
+    "database_access": 0,
+    "product_function_or_test_execution": 0
+  }
+}

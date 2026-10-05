@@ -1,0 +1,655 @@
+{
+  "case_alias": "case-20",
+  "stage": "first",
+  "expected_policy_reference": "ccv3-basalt_observatory-attribute-no_conflict",
+  "policy": {
+    "allowed_outcomes": [
+      "no_issue"
+    ],
+    "minimum": [
+      [
+        "fixture-span-basalt_observatory-1",
+        "fixture-span-basalt_observatory-2"
+      ]
+    ],
+    "optional": [],
+    "premises": [
+      "fixture-span-basalt_observatory-1"
+    ],
+    "category": "attribute",
+    "category_candidates": [
+      "attribute"
+    ],
+    "manual_variant": false,
+    "temporal_relations": []
+  },
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-basalt-observatory",
+      "revision": 2,
+      "body": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday."
+    },
+    "claims": [
+      {
+        "id": "claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1",
+        "text": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-basalt_observatory-2",
+            "chapter_id": "fixture-chapter-basalt_observatory-2",
+            "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+            "label": "west_lens",
+            "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-1",
+            "chapter_id": "fixture-chapter-basalt_observatory-1",
+            "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+            "label": "lens_index",
+            "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+          },
+          {
+            "id": "fixture-span-basalt_observatory-5",
+            "chapter_id": "fixture-chapter-basalt_observatory-5",
+            "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+            "label": "watch_log",
+            "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-basalt_observatory-1",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "identity",
+        "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+        "source_span_id": "fixture-span-basalt_observatory-1"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-2",
+        "memory_type": "dynamic_state",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+        "source_span_id": "fixture-span-basalt_observatory-2"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-3",
+        "memory_type": "open_thread",
+        "subject": "lens R4",
+        "predicate": "status",
+        "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+        "source_span_id": "fixture-span-basalt_observatory-3"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-4",
+        "memory_type": "static_canon",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-4"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-5",
+        "memory_type": "dynamic_state",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+        "source_span_id": "fixture-span-basalt_observatory-5"
+      },
+      {
+        "id": "fixture-memory-basalt_observatory-6",
+        "memory_type": "event_timeline",
+        "subject": "Vela",
+        "predicate": "location",
+        "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+        "source_span_id": "fixture-span-basalt_observatory-6"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  },
+  "review_instruction": "Read each response independently; conditions, scores and usage are hidden. Record visible reasoning, never infer hidden thinking.",
+  "responses": [
+    {
+      "response_alias": "answer-9c385f",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-basalt-observatory",
+            "revision": 2,
+            "body": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday."
+          },
+          "claims": [
+            {
+              "id": "claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1",
+              "text": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-basalt_observatory-2",
+                  "chapter_id": "fixture-chapter-basalt_observatory-2",
+                  "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+                  "label": "west_lens",
+                  "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-1",
+                  "chapter_id": "fixture-chapter-basalt_observatory-1",
+                  "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                  "label": "lens_index",
+                  "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-5",
+                  "chapter_id": "fixture-chapter-basalt_observatory-5",
+                  "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                  "label": "watch_log",
+                  "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-basalt_observatory-1",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "identity",
+              "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+              "source_span_id": "fixture-span-basalt_observatory-1"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-2",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+              "source_span_id": "fixture-span-basalt_observatory-2"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-3",
+              "memory_type": "open_thread",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+              "source_span_id": "fixture-span-basalt_observatory-3"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-4",
+              "memory_type": "static_canon",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-4"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-5",
+              "memory_type": "dynamic_state",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-5"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-6",
+              "memory_type": "event_timeline",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+              "source_span_id": "fixture-span-basalt_observatory-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1\",\"verdict\":\"no_issue\",\"basis\":\"The claim's present state (lens R4 clear glass at 18点) matches the cited evidence, and Vela's recollection of amber yesterday is a bounded earlier state that can coexist with the later clear-glass state; no contradiction remains.\"}]}",
+        "parsed_business_json": {
+          "issues": [],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1",
+              "verdict": "no_issue",
+              "basis": "The claim's present state (lens R4 clear glass at 18点) matches the cited evidence, and Vela's recollection of amber yesterday is a bounded earlier state that can coexist with the later clear-glass state; no contradiction remains."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-4595d0",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-basalt-observatory",
+            "revision": 2,
+            "body": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday."
+          },
+          "claims": [
+            {
+              "id": "claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1",
+              "text": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-basalt_observatory-2",
+                  "chapter_id": "fixture-chapter-basalt_observatory-2",
+                  "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+                  "label": "west_lens",
+                  "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-1",
+                  "chapter_id": "fixture-chapter-basalt_observatory-1",
+                  "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                  "label": "lens_index",
+                  "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-5",
+                  "chapter_id": "fixture-chapter-basalt_observatory-5",
+                  "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                  "label": "watch_log",
+                  "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-basalt_observatory-1",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "identity",
+              "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+              "source_span_id": "fixture-span-basalt_observatory-1"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-2",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+              "source_span_id": "fixture-span-basalt_observatory-2"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-3",
+              "memory_type": "open_thread",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+              "source_span_id": "fixture-span-basalt_observatory-3"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-4",
+              "memory_type": "static_canon",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-4"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-5",
+              "memory_type": "dynamic_state",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-5"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-6",
+              "memory_type": "event_timeline",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+              "source_span_id": "fixture-span-basalt_observatory-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\"issues\":[],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1\",\"verdict\":\"no_issue\",\"basis\":\"The cited spans agree with the draft: lens R4 is identified as the installed western aperture lens, and that lens is clear glass at 18点, matching the draft's current state. The remaining clause is Vela's recollection of the earlier day (amber), which does not assert a present state and so can coexist with the clear-glass state at 18点. No contradiction, missing handoff, or reviewable tension remains.\"}]}",
+        "parsed_business_json": {
+          "issues": [],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1",
+              "verdict": "no_issue",
+              "basis": "The cited spans agree with the draft: lens R4 is identified as the installed western aperture lens, and that lens is clear glass at 18点, matching the draft's current state. The remaining clause is Vela's recollection of the earlier day (amber), which does not assert a present state and so can coexist with the clear-glass state at 18点. No contradiction, missing handoff, or reviewable tension remains."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    },
+    {
+      "response_alias": "answer-f33594",
+      "first": {
+        "business_request": {
+          "draft": {
+            "id": "fixture-draft-basalt-observatory",
+            "revision": 2,
+            "body": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday."
+          },
+          "claims": [
+            {
+              "id": "claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1",
+              "text": "At 18点 lens R4 is clear glass; Vela recalls that it looked amber yesterday.",
+              "allowed_evidence": [
+                {
+                  "id": "fixture-span-basalt_observatory-2",
+                  "chapter_id": "fixture-chapter-basalt_observatory-2",
+                  "body": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+                  "label": "west_lens",
+                  "prompt_excerpt": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-1",
+                  "chapter_id": "fixture-chapter-basalt_observatory-1",
+                  "body": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+                  "label": "lens_index",
+                  "prompt_excerpt": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens."
+                },
+                {
+                  "id": "fixture-span-basalt_observatory-5",
+                  "chapter_id": "fixture-chapter-basalt_observatory-5",
+                  "body": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+                  "label": "watch_log",
+                  "prompt_excerpt": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier."
+                }
+              ]
+            }
+          ],
+          "memory": [
+            {
+              "id": "fixture-memory-basalt_observatory-1",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "identity",
+              "value": "At 18点 on the same day, the observatory index identifies lens R4 as the installed western aperture lens.",
+              "source_span_id": "fixture-span-basalt_observatory-1"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-2",
+              "memory_type": "dynamic_state",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "At 18点 on the same day, the western aperture lens is clear glass, not amber glass.",
+              "source_span_id": "fixture-span-basalt_observatory-2"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-3",
+              "memory_type": "open_thread",
+              "subject": "lens R4",
+              "predicate": "status",
+              "value": "The western lens R4 maintenance sheet leaves the glass grinder's name blank.",
+              "source_span_id": "fixture-span-basalt_observatory-3"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-4",
+              "memory_type": "static_canon",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "Observatory Gate Four stands on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-4"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-5",
+              "memory_type": "dynamic_state",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 18点 on the same day, Vela stood at Observatory Gate Four on the west pier, not the east pier.",
+              "source_span_id": "fixture-span-basalt_observatory-5"
+            },
+            {
+              "id": "fixture-memory-basalt_observatory-6",
+              "memory_type": "event_timeline",
+              "subject": "Vela",
+              "predicate": "location",
+              "value": "At 19点 Vela moved from Gate Four on the west pier to the east pier; the watch record leaves her companion unnamed.",
+              "source_span_id": "fixture-span-basalt_observatory-6"
+            }
+          ],
+          "output_schema": {
+            "claim_verdicts": [
+              {
+                "claim_span_id": "every supplied current claim id exactly once",
+                "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+                "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+              }
+            ],
+            "issues": [
+              {
+                "claim_span_id": "current claim id",
+                "status": "conflict|insufficient_evidence",
+                "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+                "category": "allowed category",
+                "severity": "low|medium|high",
+                "explanation": "short backwards-compatible summary",
+                "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+                "temporal_basis": {
+                  "claim_anchor": "exact claim substring or null",
+                  "evidence_anchor": "exact cited evidence substring or null",
+                  "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+                },
+                "evidence": [
+                  {
+                    "chapter_id": "allowed chapter id",
+                    "span_id": "allowed span id",
+                    "relation": "supports|contradicts|context",
+                    "sufficiency": "sufficient|insufficient",
+                    "related_memory_ids": [
+                      "known memory id"
+                    ]
+                  }
+                ],
+                "evidence_chain": [
+                  {
+                    "span_id": "one cited evidence span id",
+                    "role": "prior_state|current_context|missing_link"
+                  }
+                ],
+                "suggested_revision": {
+                  "before": "exact text occurring once in the bound draft",
+                  "after": "specific replacement text"
+                },
+                "available_actions": [
+                  "edit|apply_suggestion|keep_intentional|false_positive"
+                ],
+                "proposed_memory_change": {
+                  "operation": "add|replace",
+                  "memory_type": "allowed memory type",
+                  "subject": "string",
+                  "predicate": "string",
+                  "value": "string",
+                  "affected_memory_id": "required for replace only"
+                }
+              }
+            ]
+          }
+        },
+        "visible_content": "{\n  \"issues\": [],\n  \"claim_verdicts\": [\n    {\n      \"claim_span_id\": \"claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1\",\n      \"verdict\": \"no_issue\",\n      \"basis\": \"The cited evidence supports the current clear-glass state and identity of lens R4; the recollection of amber yesterday is a compatible earlier state and does not conflict with the later clear condition.\"\n    }\n  ]\n}",
+        "parsed_business_json": {
+          "issues": [],
+          "claim_verdicts": [
+            {
+              "claim_span_id": "claim-run-72a4d80b-6fe9-44cd-95ab-e573e1a8c8cb-1",
+              "verdict": "no_issue",
+              "basis": "The cited evidence supports the current clear-glass state and identity of lens R4; the recollection of amber yesterday is a compatible earlier state and does not conflict with the later clear condition."
+            }
+          ]
+        },
+        "finish_reason": "stop",
+        "output_availability": "visible_and_parsed"
+      }
+    }
+  ]
+}

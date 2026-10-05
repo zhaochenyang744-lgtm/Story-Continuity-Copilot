@@ -1,0 +1,24 @@
+{
+  "case_id": "ccv3-north_glass-object_state-conflict",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T10:47:29.329286+00:00",
+  "latency_ms": 2658,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 3468,
+      "completion_tokens": 567,
+      "total_tokens": 4035
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"issues\":[{\"claim_span_id\":\"claim-run-fb524bd6-a098-422b-bd6c-392c591b3d5f-1\",\"status\":\"conflict\",\"nature\":\"confirmed_conflict\",\"category\":\"object_state\",\"severity\":\"high\",\"explanation\":\"同一时刻，North Glass 气动载具的阀门盖未锁紧，因此它不可能处于可发运状态。\",\"reasoning\":\"证据 span-5 明确记载同一 10点 该载具压力表读数为四巴，但阀门盖整分钟保持松开且未锁紧；记忆 north_glass-4 的静态规则规定，载具只有在压力表四巴且阀门盖锁紧时才可发运。当前草稿却断言同一 10点 该载具已可发运。两条前提与当前断言在同一对象、同一时刻下无法共存，构成直接矛盾。\",\"temporal_basis\":{\"claim_anchor\":\"At 10点 on the same day\",\"evidence_anchor\":\"At 10点 on the same day\",\"relation\":\"explicit_overlap\"},\"evidence\":[{\"chapter_id\":\"fixture-chapter-north_glass-5\",\"span_id\":\"fixture-span-north_glass-5\",\"relation\":\"contradicts\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-5\"]},{\"chapter_id\":\"fixture-chapter-north_glass-4\",\"span_id\":\"fixture-span-north_glass-4\",\"relation\":\"context\",\"sufficiency\":\"sufficient\",\"related_memory_ids\":[\"fixture-memory-north_glass-4\"]}],\"evidence_chain\":[{\"span_id\":\"fixture-span-north_glass-5\",\"role\":\"prior_state\"},{\"span_id\":\"fixture-span-north_glass-4\",\"role\":\"current_context\"}],\"suggested_revision\":{\"before\":\"At 10点 on the same day, the North Glass pneumatic carrier was ready for dispatch.\",\"after\":\"At 10点 on the same day, the North Glass pneumatic carrier was not ready for dispatch: its gauge read four bars, but its valve cap remained loose and not locked.\"},\"available_actions\":[\"edit\",\"apply_suggestion\",\"keep_intentional\",\"false_positive\"]}],\"claim_verdicts\":[{\"claim_span_id\":\"claim-run-fb524bd6-a098-422b-bd6c-392c591b3d5f-1\",\"verdict\":\"reviewed_issue\",\"basis\":\"同一 10点 的载具状态与静态发运规则共同证明：阀门盖未锁紧时载具不可发运，与草稿断言直接冲突。\"}]}",
+  "message_content_sha256": "c91d9f1e9bfb0ae04f4dbbf07b87617bd010f0b1d6f56e40b8afda87f9f66e6a",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

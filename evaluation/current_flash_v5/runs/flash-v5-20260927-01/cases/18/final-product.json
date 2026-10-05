@@ -1,0 +1,209 @@
+{
+  "run_id": "run-0014865a-3b89-4cea-8710-50b3c124abb9",
+  "project_id": "fixture-project-orchard-restoration",
+  "run_type": "continuity",
+  "status": "completed",
+  "stage": "completed",
+  "source_revision": 2,
+  "draft_revision": null,
+  "source_memory_version": 1,
+  "author_context_version": 0,
+  "author_context_version_status": "recorded",
+  "author_context_resolvable": true,
+  "author_context_snapshot_digest": "4dd96473e0c0674dceb1dd5ccd73902d871d93c8cdab8f45614f64535cd434b0",
+  "alias_version": null,
+  "alias_snapshot_digest": null,
+  "source_change_set_id": null,
+  "source_span_ids": [],
+  "incremental_batch_id": null,
+  "current_revision": 2,
+  "is_stale": false,
+  "superseded": false,
+  "lineage_status": "current",
+  "result_origin": "provider",
+  "result_origin_label": "Provider 检查结果",
+  "error_code": null,
+  "retryable": false,
+  "created_at": "2026-09-27T08:20:44.940606+00:00",
+  "started_at": "2026-09-27T08:20:44.968873+00:00",
+  "completed_at": "2026-09-27T08:20:47.285239+00:00",
+  "cancel_requested_at": null,
+  "duration_ms": 2316,
+  "retry_of_run_id": null,
+  "root_run_id": "run-0014865a-3b89-4cea-8710-50b3c124abb9",
+  "attempt_number": 1,
+  "transitions": [
+    {
+      "sequence": 1,
+      "status": "queued",
+      "stage": "queued",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:44.940606+00:00"
+    },
+    {
+      "sequence": 2,
+      "status": "running",
+      "stage": "preparing_draft",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:44.968873+00:00"
+    },
+    {
+      "sequence": 3,
+      "status": "running",
+      "stage": "retrieving_confirmed_facts",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:44.981730+00:00"
+    },
+    {
+      "sequence": 4,
+      "status": "running",
+      "stage": "comparing_evidence",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:45.010161+00:00"
+    },
+    {
+      "sequence": 5,
+      "status": "running",
+      "stage": "assembling_reviewable_results",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:47.271388+00:00"
+    },
+    {
+      "sequence": 6,
+      "status": "completed",
+      "stage": "completed",
+      "error_code": null,
+      "created_at": "2026-09-27T08:20:47.285239+00:00"
+    }
+  ],
+  "provenance": {
+    "provider_label": "deepseek",
+    "model_label": "deepseek-flash",
+    "prompt_version": "continuity-review-v15-knowledge-time",
+    "schema_version": "continuity-issue-v5-temporal-basis",
+    "retrieval_method_version": "bounded-lexical-v4-longform",
+    "source_memory_version": 1
+  },
+  "provider_metrics": {
+    "latency_ms": 2234,
+    "input_tokens": 3075,
+    "output_tokens": 446,
+    "cost_cny": null,
+    "cost_available": false
+  },
+  "issues": [
+    {
+      "id": "issue-d86243e9-1c78-4105-8c83-5d1da570ad0e",
+      "claim_span_id": "claim-run-0014865a-3b89-4cea-8710-50b3c124abb9-1",
+      "claim_text": "Tala caused the restoration boat's delay, according to the launch and delay logs.",
+      "status": "open",
+      "classification": "insufficient_evidence",
+      "category": "event_status",
+      "severity": "medium",
+      "evidence_status": "insufficient",
+      "explanation": "The draft asserts that Tala caused the restoration boat's delay, but the supplied evidence does not establish any causal link between Tala and the delay.",
+      "decision": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The cited spans establish the launch-completion rule, the unsigned manifest and undeparted boat at 10点, and that the delay's cause is unrecorded. None of these supplies a handoff, action, or record tying Tala to the delay, so the causal claim cannot be judged as either confirmed or contradicted.",
+      "evidence_chain": [
+        {
+          "evidence_id": "evidence-beb9b5c9-ce36-400a-8b11-7b89ded1dd05",
+          "role": "missing_link"
+        },
+        {
+          "evidence_id": "evidence-a59dc297-5782-4db8-b621-b41d472aa591",
+          "role": "missing_link"
+        },
+        {
+          "evidence_id": "evidence-8a59ea41-dee7-4fea-ab8d-988ab0eef906",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": [],
+      "reuse_policy": null,
+      "reused_decision": null,
+      "evidence": [
+        {
+          "id": "evidence-8a59ea41-dee7-4fea-ab8d-988ab0eef906",
+          "chapter_id": "fixture-chapter-orchard_restoration-4",
+          "chapter_number": 4,
+          "chapter_title": "Launch Rule",
+          "span_id": "fixture-span-orchard_restoration-4",
+          "source_revision": 2,
+          "excerpt": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "excerpt_context": "The restoration boat's launch is complete only after both its manifest is signed and the boat departs the orchard quay.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-4"
+          ],
+          "source_path": "/projects/fixture-project-orchard-restoration/sources#span-fixture-span-orchard_restoration-4"
+        },
+        {
+          "id": "evidence-a59dc297-5782-4db8-b621-b41d472aa591",
+          "chapter_id": "fixture-chapter-orchard_restoration-5",
+          "chapter_number": 5,
+          "chapter_title": "Launch Log",
+          "span_id": "fixture-span-orchard_restoration-5",
+          "source_revision": 2,
+          "excerpt": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "excerpt_context": "At 10点 on the same day, the restoration boat manifest remained unsigned and the boat remained at the orchard quay throughout that minute without departing.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-5"
+          ],
+          "source_path": "/projects/fixture-project-orchard-restoration/sources#span-fixture-span-orchard_restoration-5"
+        },
+        {
+          "id": "evidence-beb9b5c9-ce36-400a-8b11-7b89ded1dd05",
+          "chapter_id": "fixture-chapter-orchard_restoration-6",
+          "chapter_number": 6,
+          "chapter_title": "Delay Cause",
+          "span_id": "fixture-span-orchard_restoration-6",
+          "source_revision": 2,
+          "excerpt": "The restoration log leaves the cause of the boat's delay unrecorded.",
+          "excerpt_context": "The restoration log leaves the cause of the boat's delay unrecorded.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-orchard_restoration-6"
+          ],
+          "source_path": "/projects/fixture-project-orchard-restoration/sources#span-fixture-span-orchard_restoration-6"
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "latency_ms": 2234,
+    "input_tokens": 3075,
+    "output_tokens": 446,
+    "cost_cny": null,
+    "cost_available": false,
+    "contract_normalization_count": 0,
+    "contract_normalizations": [],
+    "provenance": {
+      "provider_label": "deepseek",
+      "model_label": "deepseek-flash",
+      "prompt_version": "continuity-review-v15-knowledge-time",
+      "schema_version": "continuity-issue-v5-temporal-basis",
+      "retrieval_method_version": "bounded-lexical-v4-longform",
+      "source_memory_version": 1
+    },
+    "retrieval": [
+      {
+        "claim_ordinal": 1,
+        "returned_span_ids": [
+          "fixture-span-orchard_restoration-4",
+          "fixture-span-orchard_restoration-6",
+          "fixture-span-orchard_restoration-5",
+          "fixture-span-orchard_restoration-1",
+          "fixture-span-orchard_restoration-2"
+        ],
+        "method_version": "bounded-lexical-v4-longform"
+      }
+    ]
+  }
+}

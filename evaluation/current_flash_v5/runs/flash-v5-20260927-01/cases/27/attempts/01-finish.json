@@ -1,0 +1,24 @@
+{
+  "case_id": "g02-body-limit",
+  "http_ordinal_in_case": 1,
+  "finished_at": "2026-09-27T08:21:24.294208+00:00",
+  "latency_ms": 3904,
+  "status": 200,
+  "error_type": null,
+  "usage": {
+    "status": "complete",
+    "values": {
+      "prompt_tokens": 4591,
+      "completion_tokens": 1063,
+      "total_tokens": 5654
+    },
+    "invalid_fields": []
+  },
+  "response_model": "deepseek-flash",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop",
+  "message_content": "{\"summary\":\"当前草稿为第十一章《未归的航标》，已写内容显示林默在雾港核对潮汐表。已确认记忆中，航图位于雾线水门外锚柱，黄铜罗盘由温岚持有，低室电台在第6章21:05收到三次求救码，异常雾钟与白色渡船仍为未解线索。\",\"summary_sources\":[{\"source_type\":\"draft_claim\",\"source_id\":\"draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-1\"},{\"source_type\":\"memory_record\",\"source_id\":\"mem-3e33a17c-cf1a-46ec-8c43-c434928bd39f\"},{\"source_type\":\"memory_record\",\"source_id\":\"mem-b6a3c6d3-2d0a-430a-86d6-71b1d8ea0d68\"}],\"items\":[{\"section\":\"recent_source\",\"text\":\"当前草稿第十一章《未归的航标》已写内容为：林默在雾港核对潮汐表。\",\"sources\":[{\"source_type\":\"draft_claim\",\"source_id\":\"draft-claim-draft-25bff7e4-8311-49b7-83ff-e35d55b6b4f8-r2-1\"}]},{\"section\":\"confirmed_fact\",\"text\":\"已确认：航图位于雾线水门外锚柱。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-3e33a17c-cf1a-46ec-8c43-c434928bd39f\"}]},{\"section\":\"confirmed_fact\",\"text\":\"已确认：黄铜罗盘由温岚持有。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-b6a3c6d3-2d0a-430a-86d6-71b1d8ea0d68\"}]},{\"section\":\"confirmed_fact\",\"text\":\"已确认：低室电台在第6章21:05收到三次求救码。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-ca32f291-3015-498f-834a-5eb097ec2908\"}]},{\"section\":\"confirmed_fact\",\"text\":\"已确认：西航道退潮时间为第3章19:20。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-918f3d79-776c-4ec7-acc9-8f8f512be894\"}]},{\"section\":\"world_rule\",\"text\":\"已确认规则：灰港雾钟只在北潮闸完全关闭后敲响一次。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-41790fbb-5bb3-454a-bd38-fe633b26bae4\"}]},{\"section\":\"open_thread\",\"text\":\"未解线索：异常雾钟在北潮闸未关闭时响起，原因未解。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-cfb987d8-9bf8-488a-a210-1073d9db5048\"}]},{\"section\":\"open_thread\",\"text\":\"未解线索：白色渡船没有靠岸，来源未明。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-3c35a467-72aa-4680-a224-359dcadc9954\"}]},{\"section\":\"character_state\",\"text\":\"温岚不知道廊桥钥匙的含义。\",\"sources\":[{\"source_type\":\"memory_record\",\"source_id\":\"mem-eaf25836-9bff-4567-8817-b1ee36b3b1ec\"}]},{\"section\":\"recent_source\",\"text\":\"第7章《潮线之外》中，航图被固定在雾线水门外的锚柱上，右下角缺失了一块。\",\"sources\":[{\"source_type\":\"source_span\",\"source_id\":\"span-21258d7d-d874-474d-85e8-001d3010e852\"}]},{\"section\":\"recent_source\",\"text\":\"第6章《低室电台》中，电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。\",\"sources\":[{\"source_type\":\"source_span\",\"source_id\":\"span-33cc02cf-af60-4d82-aa03-034c3146dc2c\"}]},{\"section\":\"recent_source\",\"text\":\"第10章《回声坐标》中，北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。\",\"sources\":[{\"source_type\":\"source_span\",\"source_id\":\"span-e754f1a3-1d84-4240-a9de-c5fac568eb39\"}]}]}",
+  "message_content_sha256": "4190df4af82a842ae58ce7831fc5c6fbcb03389da69f9ea737f8571ec375b959",
+  "response_body_sha256": null,
+  "response_json_status": "parsed"
+}

@@ -1,0 +1,779 @@
+{
+  "version": "eval-set-v9-authoring-1",
+  "author": "Codex — original case authoring, 2026-09-28",
+  "corpora": [
+    {
+      "key": "bailu_foundry",
+      "title": "白榆铸坊的听雨钟",
+      "language": "zh",
+      "chapters": [
+        {
+          "label": "plate_register",
+          "title": "试音板登记",
+          "is_rule": false,
+          "body": "雨历八年四月十二日9点，登记员把案上那块编号为工件四三的试音板命名为“青雨”。铸坊当日的名册中，“青雨”只指工件四三，没有别的物件使用这个名称。"
+        },
+        {
+          "label": "engraving_scene",
+          "title": "灯下刻铭",
+          "is_rule": false,
+          "body": "雨历八年四月十二日10点，给听雨钟刻上最后一笔铭文的是雕刻师郁篆。学徒花弥一直在旁边托住照明灯，没有参与刻字。落刀之后，郁篆用袖口擦去了钟沿的铜屑。"
+        },
+        {
+          "label": "packing_receipt",
+          "title": "寄往蓼湾的木匣",
+          "is_rule": false,
+          "body": "雨历八年四月十二日13点，花弥取来三片软木垫，逐片装进寄往蓼湾的木匣。收件地址已经写好，他在装箱单上画了三个小圆圈，随后合上匣盖。"
+        },
+        {
+          "label": "plate_measure",
+          "title": "截面检验",
+          "is_rule": false,
+          "body": "雨历八年四月十二日9点，检验师完成了工件四三的材质检验：板体全厚度均为青铜，没有铁芯，也没有其他材质的夹层。检验师把取样处打磨平整，将记录压在秤砣下。"
+        },
+        {
+          "label": "visitor_talk",
+          "title": "来客问路",
+          "is_rule": false,
+          "body": "雨历八年四月十二日15点，郁篆对来客谎称：“我从没进过蓼湾。”他前年曾在蓼湾工坊住过整整一个月，只是不愿让来客认出自己。说完，他把那家工坊发的通行牌藏进袖中。"
+        },
+        {
+          "label": "message_book",
+          "title": "送信簿",
+          "is_rule": false,
+          "body": "送信簿记着：雨历八年四月十二日16点，花弥把写有“试音改到18点”的纸条交给信童，请他送到焦圃手中。信童收好纸条便出了院门。簿页的这一条到“已交信童”处结束，没有签收栏的填写内容。"
+        },
+        {
+          "label": "cover_acceptance",
+          "title": "钟罩验收页",
+          "is_rule": false,
+          "body": "钟罩修补验收页写着：雨历八年四月十二日19点，钟罩北侧裂缝修补完好，验收人为花弥。表格详细绘出裂缝位置，却把施工者姓名一栏留空；页面上没有其他署名。"
+        },
+        {
+          "label": "courtyard_note",
+          "title": "院中的雨声",
+          "is_rule": false,
+          "body": "入夜后，白榆铸坊院里的积水没过了石缝。守门人把一排空竹筒搬到檐下，听雨滴在不同深浅的筒中敲出声响。街上最后一个卖饼人收起布旗，沿着坡道离开。"
+        }
+      ]
+    },
+    {
+      "key": "liting_paper_whale",
+      "title": "砾汀剧院的纸鲸",
+      "language": "zh",
+      "chapters": [
+        {
+          "label": "stage_bell",
+          "title": "候场铃",
+          "is_rule": false,
+          "body": "雾历三年六月九日19点40分，舞台助手余苇亲手拉响了候场铃。铃响三次后，他把拉绳挂回墙钩，向等在帘后的演员举起了两根手指。"
+        },
+        {
+          "label": "case_watch",
+          "title": "道具间值守页",
+          "is_rule": false,
+          "body": "雾历三年六月九日20点05分，值守员检查了箱号P六：箱盖完全合拢，搭扣扣住，挂锁仍然锁着。他在该分钟的值守页上签名，随后转身清点墙边的竹撑杆。"
+        },
+        {
+          "label": "program_name",
+          "title": "本季演出手册",
+          "is_rule": false,
+          "body": "本季演出手册的人名页写明：演奏者朴绒使用的艺名是“玻雀”；朴绒与玻雀是同一个人。手册还列出她本季负责的两种乐器：木笛和小鼓。"
+        },
+        {
+          "label": "curtain_message",
+          "title": "幕布的位置",
+          "is_rule": false,
+          "body": "雾历三年六月九日20点20分，舞监柯沫已经知道备用幕布藏在西侧地窖。她刚听完保管员的说明，准确复述了“西侧地窖”，又在自己的工作本上写下这个地点。"
+        },
+        {
+          "label": "case_register",
+          "title": "箱名登记",
+          "is_rule": false,
+          "body": "雾历三年六月九日20点05分，道具管理员核对箱名登记：“折星匣”对应箱号P六。剧院没有第二只使用“折星匣”这个名称的箱子，P六也只有这一只。"
+        },
+        {
+          "label": "gate_slip",
+          "title": "门岗便笺",
+          "is_rule": false,
+          "body": "门岗便笺写着：雾历三年六月九日19点50分，一个戴银扣帽的人把月票放上窗台后离开。对方没有报姓名，门岗也没有认出他。便笺只画了一顶帽子，没有其他身份记录。"
+        },
+        {
+          "label": "fan_trial",
+          "title": "风机试转日志",
+          "is_rule": false,
+          "body": "风机试转日志的验收栏要求：持续保持规定压力三分钟，才能记为通过。雾历三年六月九日21点10分开始加压；21点12分压力仍在上升。日志到此结束，后面的纸页被雨水泡烂，验收栏没有留下可辨文字。"
+        },
+        {
+          "label": "paper_whale_scene",
+          "title": "纸鲸的背影",
+          "is_rule": false,
+          "body": "第二幕使用一条纸糊的鲸鱼。观众只能看见它的背影横过薄帘，舞台地板上则落着鱼鳍投下的淡影。负责记账的蒋屏坐在楼上小室，把当晚售出的座位票按排号分开。"
+        }
+      ]
+    },
+    {
+      "key": "shuangze_bridge",
+      "title": "霜泽浮桥的潮表",
+      "language": "zh",
+      "chapters": [
+        {
+          "label": "pier_trial",
+          "title": "南四墩检测页",
+          "is_rule": false,
+          "body": "霜历十一年二月六日12点，南四墩承压试验仍在进行，尚未完成。检测员刚装上第二组砝码，第三组还放在推车里。这一状态由当班检测员写入12点的检测页。"
+        },
+        {
+          "label": "sluice_archive",
+          "title": "闸房归档记录",
+          "is_rule": false,
+          "body": "霜历十一年二月六日早晨，东闸在8点10分完全升到位；这是本日早晨唯一一次东闸升起。操作员在刻度尺旁盖上当班印章，把完成时刻记入闸房记录。"
+        },
+        {
+          "label": "red_cord",
+          "title": "桥头的红绳",
+          "is_rule": false,
+          "body": "霜历十一年二月六日10点，秦缃把一根红绳系在南桥头的铜铃上。她打了两个结，再沿桥栏慢慢走回值班棚，鞋底在湿木板上留下了一串暗印。"
+        },
+        {
+          "label": "grease_receipt",
+          "title": "材料领用收条",
+          "is_rule": false,
+          "body": "材料领用收条记录：霜历十一年二月五日，仓库向秦缃发出六桶防水脂，秦缃签字领走。收条只设品名、数量、领用人和日期四栏，没有填写施工地点或实际消耗量的位置。"
+        },
+        {
+          "label": "mooring_archive",
+          "title": "系泊簿归档记录",
+          "is_rule": false,
+          "body": "霜历十一年二月六日早晨，浮桥在8点25分才开始解缆；这是本日早晨唯一一次解缆，在此之前各条缆绳一直系牢。解缆人把用过的扳手留在北端木桩旁。"
+        },
+        {
+          "label": "lunch_note",
+          "title": "青篷棚午饭",
+          "is_rule": false,
+          "body": "霜历十一年二月六日13点，炊事员给青篷棚送来三碗热汤，每碗都放了一片姜。秦缃把最靠近棚口的一碗递给值班记录员，另外两碗仍放在桌上。"
+        },
+        {
+          "label": "flag_drill",
+          "title": "二格水位演练",
+          "is_rule": false,
+          "body": "演练札记记载：霜历十一年二月三日，水位计指在二格时，守桥人升起双蓝旗，随后允许货车通行。这一页的标题是“二格水位演练”，正文只叙述了这次演练中的操作经过。"
+        },
+        {
+          "label": "reeds_evening",
+          "title": "暮色中的芦苇",
+          "is_rule": false,
+          "body": "黄昏时，浮桥下游的芦苇随水流缓缓偏向一边。卖灯纸的小贩坐在岸边补伞，偶尔抬头看桥上的人影。他等到山后最后一线光消失，才把伞和纸卷背走。"
+        }
+      ]
+    },
+    {
+      "key": "merrow_sound",
+      "title": "An Evening in Merrow Sound",
+      "language": "en",
+      "chapters": [
+        {
+          "label": "sound_and_shores",
+          "title": "Between the Islands",
+          "is_rule": true,
+          "body": "Throughout Merrow Sound, no spoken word can travel from one island to another by any means. This permanent law admits no exceptions, regardless of distance, weather, equipment or magic."
+        },
+        {
+          "label": "crew_register",
+          "title": "Morning Roster",
+          "is_rule": false,
+          "body": "At 10:00 on 14 June, Aven Rill used the call sign Kite. The crew register confirms that nobody else used Kite at that time."
+        },
+        {
+          "label": "jetty_log",
+          "title": "The Signal Hut",
+          "is_rule": false,
+          "body": "At 10:00 on 14 June, Kite was inside the West Jetty signal hut, a fixed building on land. The observer entered the call sign, rather than the person's name, in the log."
+        },
+        {
+          "label": "parcel_desk",
+          "title": "A Saffron Packet",
+          "is_rule": false,
+          "body": "At noon on 14 June, Edda Voss placed a packet of saffron under the parcel desk's blue tray. She then took an empty basket back to the market."
+        },
+        {
+          "label": "supper_room",
+          "title": "A Shape Offshore",
+          "is_rule": false,
+          "body": "At supper on 14 June, Brin Tal believed the eastern reef was a whale. He was mistaken: the narrator identifies the shape as an ordinary reef. His companions had not yet corrected him."
+        },
+        {
+          "label": "locker_entry",
+          "title": "The Sealed Note",
+          "is_rule": false,
+          "body": "A sealed note naming tomorrow's landing place was left in Aven Rill's locker at 16:00 on 14 June. The locker entry records delivery but says nothing about Aven opening or reading the note."
+        },
+        {
+          "label": "moorings_sheet",
+          "title": "East Pier",
+          "is_rule": false,
+          "body": "The mooring sheet records that one ferry was tied up at East Pier at 18:00 on 14 June. It gives neither the vessel's name nor a hull number."
+        },
+        {
+          "label": "fleet_note",
+          "title": "The Two Ferries",
+          "is_rule": false,
+          "body": "Larkspur and Thistledown were the only ferries serving Merrow Sound that week. Each called at East Pier on a different evening. The fleet note does not give the dates of those calls."
+        }
+      ]
+    },
+    {
+      "key": "winter_market_workshop",
+      "title": "A Loom for the Winter Market",
+      "language": "en",
+      "chapters": [
+        {
+          "label": "badge_list",
+          "title": "Names at the Door",
+          "is_rule": false,
+          "body": "At 15:20 on 9 October, Iona Tern alone wore the badge Cedar. Pell Dace alone wore the badge Flax. The workshop's badge list records both assignments."
+        },
+        {
+          "label": "workbench_entry",
+          "title": "The Red Bolt",
+          "is_rule": false,
+          "body": "At 15:20 on 9 October, Cedar alone cut the ceremonial ribbon from the red bolt. Flax did not participate in that cut. The workbench entry identifies the workers only by their badges."
+        },
+        {
+          "label": "inspection_card",
+          "title": "The Sable Bowl",
+          "is_rule": false,
+          "body": "At 16:00 on 9 October, the Sable bowl measured exactly 28 cm across its rim. The inspector measured it twice and entered the same diameter on both lines of the inspection card."
+        },
+        {
+          "label": "rehearsal_notes",
+          "title": "The Last Verse",
+          "is_rule": false,
+          "body": "At 17:00 on 9 October, Orel Moss completed the market's opening-song rehearsal. The musicians packed their instruments after the final verse."
+        },
+        {
+          "label": "folding_table",
+          "title": "Three Cranes",
+          "is_rule": false,
+          "body": "At 18:00 on 9 October, the paper cranes numbered P1, P2 and P3 were all green. Their small number tags were attached beneath their wings."
+        },
+        {
+          "label": "window_label",
+          "title": "The Display Window",
+          "is_rule": false,
+          "body": "At 18:00 on 9 October, the display window held exactly three paper cranes: P1, P2 and P3. There were no other paper cranes in the window."
+        },
+        {
+          "label": "dispatch_slip",
+          "title": "Bound for Rowan Hall",
+          "is_rule": false,
+          "body": "At 18:30 on 9 October, a dispatch slip recorded that the wall hanging had been sent to Rowan Hall. The recipient signature box was blank; the slip contained no arrival time or acknowledgement."
+        },
+        {
+          "label": "closing_book",
+          "title": "Before Closing",
+          "is_rule": false,
+          "body": "The closing book for 9 October says the cash tin was counted and the south shutter was lowered before 20:00. It gives neither an individual time for either task nor their order."
+        }
+      ]
+    },
+    {
+      "key": "frost_marker_observatory",
+      "title": "Morning above Frost Marker Ridge",
+      "language": "en",
+      "chapters": [
+        {
+          "label": "ascent_handbook",
+          "title": "The Ascent Register",
+          "is_rule": true,
+          "body": "At Frost Marker Observatory, an ascent is complete only when its balloon has landed and its data capsule has been recovered. A landed balloon with an unrecovered capsule is still an incomplete ascent. This definition always applies."
+        },
+        {
+          "label": "recovery_log",
+          "title": "R-8 at Daybreak",
+          "is_rule": false,
+          "body": "At 06:40 on 22 April, the balloon for ascent R-8 had landed. Its data capsule remained unrecovered on the eastern slope. The recovery team had reached only the foot of that slope."
+        },
+        {
+          "label": "storage_log",
+          "title": "The Copperleaf Case",
+          "is_rule": false,
+          "body": "At 07:10 on 22 April, the instrument case called Copperleaf was in Nessa Quill's possession alone. Orin Slate had no possession of it at that time."
+        },
+        {
+          "label": "breakfast_note",
+          "title": "News over Breakfast",
+          "is_rule": false,
+          "body": "At 08:00 on 22 April, Suri Bex knew that the northern trail was flooded. Cartographer Tovan Mer had told her five minutes earlier, and she had understood his warning."
+        },
+        {
+          "label": "ridge_sketch",
+          "title": "Beside the Marker",
+          "is_rule": false,
+          "body": "At 08:20 on 22 April, Orin Slate stood beside the frost marker on Juniper Ridge. He sketched the valley from that spot while the observatory windows caught the sun."
+        },
+        {
+          "label": "meeting_draft",
+          "title": "Plans for Noon",
+          "is_rule": false,
+          "body": "The meeting draft for 22 April records Nessa Quill's proposal for a second ascent at noon. Its approval field is empty. It records no decision by chief Ada Wren and is explicitly an unfinished draft."
+        },
+        {
+          "label": "return_receipt",
+          "title": "A Parcel in the Foyer",
+          "is_rule": false,
+          "body": "At 09:10 on 22 April, a courier left the sealed return parcel CR-4 in the observatory foyer. The receipt lists its parcel number and weight, but not its contents. No one opened it during the recorded handover."
+        },
+        {
+          "label": "packing_list",
+          "title": "The Spare Vane",
+          "is_rule": false,
+          "body": "The packing list for CR-4 calls for a spare wind vane. It is a plan prepared before dispatch and contains no confirmation that the vane was actually packed."
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "hv9-001",
+      "corpus": "bailu_foundry",
+      "draft": "雨历八年四月十二日9点，青雨试音板的材质是纯铁。",
+      "expected_class": "conflict",
+      "category": "attribute",
+      "evidence": [
+        "plate_register",
+        "plate_measure"
+      ],
+      "designated_regression": true,
+      "note": "登记把青雨唯一对应到工件四三；同日9点的检验明确工件四三全厚度为青铜。两段共同确定同一物件及同一时刻的材质矛盾，缺任一段都不能完成对应。"
+    },
+    {
+      "id": "hv9-002",
+      "corpus": "bailu_foundry",
+      "draft": "雨历八年四月十二日13点，花弥将三片软木垫装进了寄往蓼湾的木匣。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "packing_receipt"
+      ],
+      "designated_regression": false,
+      "note": "原文直接记载同一时间、装箱者、物品数量和目的地。"
+    },
+    {
+      "id": "hv9-003",
+      "corpus": "bailu_foundry",
+      "draft": "送信簿证明，焦圃在雨历八年四月十二日17点前已经知道试音改到18点。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "message_book"
+      ],
+      "designated_regression": false,
+      "note": "送信簿只记16点把纸条交给信童，缺焦圃在17点前收到并获知内容的环节；不能从未填签收推出他一定不知道。"
+    },
+    {
+      "id": "hv9-004",
+      "corpus": "bailu_foundry",
+      "draft": "雨历八年四月十二日10点，是花弥给听雨钟刻上了最后一笔铭文。",
+      "expected_class": "conflict",
+      "category": "relationship",
+      "evidence": [
+        "engraving_scene"
+      ],
+      "designated_regression": true,
+      "note": "同日10点最后一笔铭文的实施者明确为郁篆，花弥只托灯且未参与刻字；矛盾在行为实施者。"
+    },
+    {
+      "id": "hv9-005",
+      "corpus": "bailu_foundry",
+      "draft": "雨历八年四月十二日15点，郁篆对来客说自己从未进过蓼湾，这是一句谎话。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "visitor_talk"
+      ],
+      "designated_regression": false,
+      "note": "原文直接记录这句人物话语并明确称其为谎言，草稿保留了说话者和谎言性质。"
+    },
+    {
+      "id": "hv9-006",
+      "corpus": "bailu_foundry",
+      "draft": "钟罩验收页证明，雨历八年四月十二日19点验收的钟罩北侧裂缝是郁篆补好的。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "cover_acceptance"
+      ],
+      "designated_regression": false,
+      "note": "验收页确认修补结果和验收者，却没有施工者身份，不能把施工归给郁篆，也不能把验收者直接当作施工者。"
+    },
+    {
+      "id": "hv9-007",
+      "corpus": "liting_paper_whale",
+      "draft": "雾历三年六月九日20点05分，折星匣的箱盖敞开着。",
+      "expected_class": "conflict",
+      "category": "object_state",
+      "evidence": [
+        "case_watch",
+        "case_register"
+      ],
+      "designated_regression": false,
+      "note": "箱名登记将折星匣唯一对应到P六；同日20点05分的值守页记P六箱盖合拢并上锁。身份段与状态段均为必要来源。"
+    },
+    {
+      "id": "hv9-008",
+      "corpus": "liting_paper_whale",
+      "draft": "雾历三年六月九日19点40分，余苇亲手拉响了候场铃。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "stage_bell"
+      ],
+      "designated_regression": false,
+      "note": "原文直接记载该时刻拉铃的实施者为余苇。"
+    },
+    {
+      "id": "hv9-009",
+      "corpus": "liting_paper_whale",
+      "draft": "门岗便笺证明，雾历三年六月九日19点50分把月票放上窗台的人是会计蒋屏。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "gate_slip"
+      ],
+      "designated_regression": false,
+      "note": "便笺只描述银扣帽和放票动作，缺匿名访客与蒋屏的身份链接；帽子的描述不能独自确定人物身份。"
+    },
+    {
+      "id": "hv9-010",
+      "corpus": "liting_paper_whale",
+      "draft": "雾历三年六月九日20点20分，柯沫还不知道备用幕布藏在西侧地窖。",
+      "expected_class": "conflict",
+      "category": "character_knowledge",
+      "evidence": [
+        "curtain_message"
+      ],
+      "designated_regression": false,
+      "note": "原文直接断言同日20点20分柯沫已经知道该地点，并记录她的准确复述，与草稿的尚不知情互斥。"
+    },
+    {
+      "id": "hv9-011",
+      "corpus": "liting_paper_whale",
+      "draft": "本季演出手册中的玻雀与朴绒是同一个演奏者。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "program_name"
+      ],
+      "designated_regression": false,
+      "note": "手册明示艺名与本名的同一身份，无需凭相似名字推断。"
+    },
+    {
+      "id": "hv9-012",
+      "corpus": "liting_paper_whale",
+      "draft": "风机试转日志证明，这台风机在雾历三年六月九日21点15分已经通过试转验收。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "fan_trial"
+      ],
+      "designated_regression": false,
+      "note": "日志给出了验收标准和21点12分前的升压过程，缺其后达到并维持规定压力三分钟的结果；残缺日志不能证明通过，也不能证明失败。"
+    },
+    {
+      "id": "hv9-013",
+      "corpus": "shuangze_bridge",
+      "draft": "霜历十一年二月六日早晨，浮桥解缆发生在东闸升起之前。",
+      "expected_class": "conflict",
+      "category": "timeline",
+      "evidence": [
+        "sluice_archive",
+        "mooring_archive"
+      ],
+      "designated_regression": false,
+      "note": "两段都明确限定在霜历十一年二月六日早晨：唯一一次东闸升起于8点10分完成，唯一一次浮桥解缆于8点25分才开始，联合确定先升闸后解缆。共同时间锚点是事件所在的同一天早晨，不是归档时刻；两段均为必要来源。"
+    },
+    {
+      "id": "hv9-014",
+      "corpus": "shuangze_bridge",
+      "draft": "霜历十一年二月六日10点，秦缃把红绳系在南桥头的铜铃上。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "red_cord"
+      ],
+      "designated_regression": false,
+      "note": "原文直接支持该时间、人物、动作和绳子的系放对象。"
+    },
+    {
+      "id": "hv9-015",
+      "corpus": "shuangze_bridge",
+      "draft": "材料领用收条证明，秦缃在霜历十一年二月五日领走的六桶防水脂后来全部用在了南四墩。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "grease_receipt"
+      ],
+      "designated_regression": false,
+      "note": "领用收条只证明领取，缺将这批材料与南四墩实际施工用量对应的使用记录，不能由领走推出全部用于该处。"
+    },
+    {
+      "id": "hv9-016",
+      "corpus": "shuangze_bridge",
+      "draft": "霜历十一年二月六日12点，南四墩承压试验已经完成。",
+      "expected_class": "conflict",
+      "category": "event_status",
+      "evidence": [
+        "pier_trial"
+      ],
+      "designated_regression": false,
+      "note": "同日12点的检测页明确同一具名试验仍在进行且尚未完成，与已完成的状态互斥。"
+    },
+    {
+      "id": "hv9-017",
+      "corpus": "shuangze_bridge",
+      "draft": "霜历十一年二月六日13点，炊事员送到青篷棚的三碗热汤每碗都有一片姜。",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "lunch_note"
+      ],
+      "designated_regression": false,
+      "note": "原文直接给出送达时间、三碗数量和每碗一片姜的内容。"
+    },
+    {
+      "id": "hv9-018",
+      "corpus": "shuangze_bridge",
+      "draft": "这页演练札记足以证明，升起双蓝旗在任何水位下都能使浮桥准许货车通行。",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "flag_drill"
+      ],
+      "designated_regression": false,
+      "note": "札记只叙述二格水位的一次演练，缺把双蓝旗的通行效力推广到任何水位的全局规则；既不能据此确立无条件规则，也不能推断其他水位一定禁行。"
+    },
+    {
+      "id": "hv9-019",
+      "corpus": "merrow_sound",
+      "draft": "At dawn, a spoken word carried by the sea wind traveled from one island of Merrow Sound to another.",
+      "expected_class": "conflict",
+      "category": "world_rule",
+      "evidence": [
+        "sound_and_shores"
+      ],
+      "designated_regression": true,
+      "note": "The permanent, exceptionless law forbids spoken words from crossing between islands by any means. That global mechanism alone contradicts the claimed crossing."
+    },
+    {
+      "id": "hv9-020",
+      "corpus": "merrow_sound",
+      "draft": "At noon on 14 June, Edda Voss placed a packet of saffron under the parcel desk's blue tray.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "parcel_desk"
+      ],
+      "designated_regression": false,
+      "note": "The parcel record directly states this action, place and time."
+    },
+    {
+      "id": "hv9-021",
+      "corpus": "merrow_sound",
+      "draft": "The locker entry establishes that Aven Rill knew tomorrow's landing place at 16:00 on 14 June.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "locker_entry"
+      ],
+      "designated_regression": false,
+      "note": "Delivery of a sealed note does not establish that Aven read it or otherwise learned its contents. The entry leaves that knowledge link unresolved."
+    },
+    {
+      "id": "hv9-022",
+      "corpus": "merrow_sound",
+      "draft": "At 10:00 on 14 June, Aven Rill was aboard the offshore ferry.",
+      "expected_class": "conflict",
+      "category": "location_action",
+      "evidence": [
+        "crew_register",
+        "jetty_log"
+      ],
+      "designated_regression": false,
+      "note": "The roster uniquely links Aven to Kite at the shared time; the log locates Kite inside a fixed hut on land at that time. Both sources are necessary to contradict Aven's claimed offshore location."
+    },
+    {
+      "id": "hv9-023",
+      "corpus": "merrow_sound",
+      "draft": "At supper on 14 June, Brin Tal believed the eastern reef was a whale.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "supper_room"
+      ],
+      "designated_regression": false,
+      "note": "The narration directly states Brin's mistaken belief at supper. The claim concerns his belief, not the reef's actual identity."
+    },
+    {
+      "id": "hv9-024",
+      "corpus": "merrow_sound",
+      "draft": "The mooring sheet and fleet note identify the ferry tied up at East Pier at 18:00 on 14 June as Larkspur.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "moorings_sheet",
+        "fleet_note"
+      ],
+      "designated_regression": false,
+      "note": "The sheet supplies a dated anonymous ferry, and the fleet note supplies two possible names without dates. Neither links Larkspur to the recorded call."
+    },
+    {
+      "id": "hv9-025",
+      "corpus": "winter_market_workshop",
+      "draft": "At 15:20 on 9 October, Pell Dace cut the ceremonial ribbon from the red bolt.",
+      "expected_class": "conflict",
+      "category": "relationship",
+      "evidence": [
+        "badge_list",
+        "workbench_entry"
+      ],
+      "designated_regression": false,
+      "note": "The badge list identifies Pell as Flax and Iona as Cedar at the shared time. The workbench entry assigns the cut solely to Cedar and excludes Flax. Both sources are necessary to resolve the actor."
+    },
+    {
+      "id": "hv9-026",
+      "corpus": "winter_market_workshop",
+      "draft": "At 17:00 on 9 October, Orel Moss completed the market's opening-song rehearsal.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "rehearsal_notes"
+      ],
+      "designated_regression": false,
+      "note": "The rehearsal notes directly record completion of this rehearsal at the stated time."
+    },
+    {
+      "id": "hv9-027",
+      "corpus": "winter_market_workshop",
+      "draft": "The dispatch slip confirms that the wall hanging had arrived at Rowan Hall by 18:30 on 9 October.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "dispatch_slip"
+      ],
+      "designated_regression": false,
+      "note": "The slip records dispatch, not arrival. A receipt or other confirmation of the delivery result is missing; the blank field does not prove delivery failed."
+    },
+    {
+      "id": "hv9-028",
+      "corpus": "winter_market_workshop",
+      "draft": "At 16:00 on 9 October, the Sable bowl measured exactly 18 cm across its rim.",
+      "expected_class": "conflict",
+      "category": "attribute",
+      "evidence": [
+        "inspection_card"
+      ],
+      "designated_regression": false,
+      "note": "The same bowl's rim diameter at the identical date and time is recorded as exactly 28 cm, which contradicts 18 cm. The disputed fact is a measured attribute."
+    },
+    {
+      "id": "hv9-029",
+      "corpus": "winter_market_workshop",
+      "draft": "At 18:00 on 9 October, every paper crane in the display window was green.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "folding_table",
+        "window_label"
+      ],
+      "designated_regression": false,
+      "note": "The window record exhaustively identifies P1, P2 and P3 as its cranes; the folding-table record states that all three were green at the same time. The two explicit records directly support the scoped claim."
+    },
+    {
+      "id": "hv9-030",
+      "corpus": "winter_market_workshop",
+      "draft": "The closing book establishes that the cash tin was counted before the south shutter was lowered on 9 October.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "closing_book"
+      ],
+      "designated_regression": false,
+      "note": "Both tasks occurred before 20:00, but their order is absent. Their order in a sentence does not establish the order of the events."
+    },
+    {
+      "id": "hv9-031",
+      "corpus": "frost_marker_observatory",
+      "draft": "At 07:10 on 22 April, the instrument case called Copperleaf was in Orin Slate's possession.",
+      "expected_class": "conflict",
+      "category": "object_state",
+      "evidence": [
+        "storage_log"
+      ],
+      "designated_regression": false,
+      "note": "The log assigns sole possession of the named case to Nessa and explicitly excludes Orin at the identical date and time. The disputed fact is the object's current holder."
+    },
+    {
+      "id": "hv9-032",
+      "corpus": "frost_marker_observatory",
+      "draft": "At 08:00 on 22 April, Suri Bex knew that the northern trail was flooded.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "breakfast_note"
+      ],
+      "designated_regression": false,
+      "note": "The breakfast note directly states Suri's knowledge and supplies a completed, understood warning as its source."
+    },
+    {
+      "id": "hv9-033",
+      "corpus": "frost_marker_observatory",
+      "draft": "The meeting draft establishes that chief Ada Wren authorized the proposed second ascent for noon on 22 April.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "meeting_draft"
+      ],
+      "designated_regression": false,
+      "note": "The unfinished draft records Nessa's proposal but no decision by Ada. Authorization is the missing link; an empty field is not evidence of either approval or rejection."
+    },
+    {
+      "id": "hv9-034",
+      "corpus": "frost_marker_observatory",
+      "draft": "At 06:40 on 22 April, ascent R-8 was complete.",
+      "expected_class": "conflict",
+      "category": "event_status",
+      "evidence": [
+        "ascent_handbook",
+        "recovery_log"
+      ],
+      "designated_regression": false,
+      "note": "The handbook defines completion as landing plus capsule recovery. The log records an unrecovered capsule at the exact target time. Both are necessary to establish that this ascent was incomplete; the disputed fact is event completion."
+    },
+    {
+      "id": "hv9-035",
+      "corpus": "frost_marker_observatory",
+      "draft": "At 08:20 on 22 April, Orin Slate stood beside the frost marker on Juniper Ridge.",
+      "expected_class": "no_conflict",
+      "category": null,
+      "evidence": [
+        "ridge_sketch"
+      ],
+      "designated_regression": false,
+      "note": "The ridge account directly records Orin's location at this date and time."
+    },
+    {
+      "id": "hv9-036",
+      "corpus": "frost_marker_observatory",
+      "draft": "The return receipt and packing list establish that a spare wind vane was inside CR-4 when it arrived at 09:10 on 22 April.",
+      "expected_class": "insufficient_evidence",
+      "category": null,
+      "evidence": [
+        "return_receipt",
+        "packing_list"
+      ],
+      "designated_regression": false,
+      "note": "The list records intended contents, while the receipt confirms only the sealed parcel's arrival. Actual packing or inspection of its contents is missing, so the vane's presence is unresolved."
+    }
+  ]
+}

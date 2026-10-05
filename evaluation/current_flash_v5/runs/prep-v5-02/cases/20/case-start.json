@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-02",
+  "ordinal": 20,
+  "case_id": "ccv3-basalt_observatory-attribute-no_conflict",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:04:09.308153+00:00",
+  "case_input_sha256": "1de6400d500582b4083694151c39d8eb216afb0c715e75c215d4d107c5483ac5",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

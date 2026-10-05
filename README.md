@@ -1,0 +1,316 @@
+# Story Continuity Copilot v1.6.0
+
+The current product is **Story Continuity Copilot v1.6.0**, the long-text release: screened checking built for real chapters, checking chosen written chapters, character-based quotas, a chapter timeline, checkable imports including Word files, and author-facing polish (see [v1.6.0](#v160)). Until it is deployed the online release stays v1.5.2. v1.5.2 was a patch on v1.5.0: when the supplied material leaves a point open, a check now says so as insufficient evidence and names the missing link instead of staying silent, and a batch whose answer runs out of output is retried claim by claim instead of failing the check (see [v1.5.2](#v152) and [v1.5.1](#v151)). v1.5.0 brings together everything shipped since v1.4.0 (2026-09-08): saved-work exports, reversible author-decision reuse, full-chapter revision with fact review, operations tools, faster long-chapter checks, the new interface, and the fixes listed under [v1.5.0](#v150). v1.4.0 added canonical author materials and comparisons, unified planning and authoring pages, rich-text and immersive writing, and stricter AI evidence contracts. The author owns the prose and every canon decision.
+
+The active online release is `v152-1cfee10-20261004`, deployed on 2026-10-04 from Git tag `v1.5.2` (commit `1cfee10`; see the [2026-10-04 deployment record](docs/deployment-2026-10-04.md), which also covers the v1.5.1 rollback). The previous releases `v150-b9f4b0f-20261003`, `v151-c2589a9-20261003` (rolled back), `ui-26ae621-20261002`, `ui-cbfa536-20260930`, `longform-aac1517-20260930`, `longform-bd090fe-20260930` and `maint-e2d141c23d0c-20260913` remain on the server as rollback targets; the [maintenance deployment record](docs/maintenance-deployment.md) and the [2026-09-08 deployment record](docs/v1.4.0-deployment.md) remain historical evidence. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
+
+The canonical product description is [current product and verification scope](docs/current-product.md). The [maintenance acceptance record](docs/maintenance-acceptance.md) separates local verification from the bounded production checks. The September maintenance update adds saved-work exports, reversible author-decision reuse, full-chapter revision with fact review, and independent operations tools. The [v1.3.0 product contract](docs/v1.3.0-product.md), writing-analysis, [character-alias and change-impact](docs/v1.3.0-character-alias-impact.md), [bounded revision plan](docs/v1.3.0-revision-plan.md), and Memory-delta documents remain historical or focused technical appendices. Current source packaging uses the [maintenance release manifest](docs/maintenance-release-manifest.json); the [v1.3 allowlist](docs/v1.3.0-release-allowlist.json) records its historical release scope. Current documentation was updated after the deployed source package was frozen; it does not change that archive or image identity.
+
+The signed Stage 14 public-production baseline remains **Story Continuity Copilot v1.0 Public Release** as a historical evidence baseline. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility.
+
+## v1.6.0
+
+v1.6.0 is the long-text release: checks are built for real chapters of about 2,500 characters instead of one-to-three-sentence drafts. It also brings the author-facing polish found in the October product review. Database schema stays at 146; startup adds two tables (character usage and sample-work seed state) and no existing table changes shape.
+
+- **Screened checking.** A cheap non-thinking screen reads the whole chapter and flags the sentences worth a careful look; a scored triage ranks the rest; only flagged sentences get a thinking review, one sentence per request, against passages of earlier chapters (passage index with a fact route). Key sentences the first review passes get one independent second review that watches for missing links. Per chapter at most 5 key reviews, 2 second reviews and 3 escalations. Review prompt `continuity-review-v25g-screened-presupposed-links-bounded-knowledge-rule-category` with `continuity-screen-v1` and `continuity-triage-v3-presupposed-links`. Short drafts use the same review rules.
+- **Formal long-text gate passed.** One run on a fresh 26-chapter formal set (`lf2-formal`, written in a separate session, never read during development) met every pre-registered bar: conflict recall 1.00, insufficient-evidence recall 0.83, category accuracy 1.00, designated regressions 3/3, trap false positives 0, clean chapters without a card 78%, per chapter median 40 s / p90 76 s, mean ¥0.21 / max ¥0.46 at DeepSeek billed rates. The first formal run (`lf1-formal` plus the short-text set V13) failed on insufficient-evidence recall and maximum cost; both sets were retired and the gate change is recorded in `evaluation/longform/PLAN.md`.
+- **Check chosen chapters.** On the chapter-management page an author ticks up to eight written chapters and checks them together; each chapter is judged against earlier chapters only, and the report is grouped by chapter. The estimate (characters and expected cost) is shown before anything is spent. Visitors see a labelled sample report instead. Whole-book checks are not offered yet (about ¥25–30 for a 300,000-character book).
+- **Character quotas.** Registered authors check up to 60,000 characters and run one whole-book import per rolling 24 hours; visitors check one chapter of up to 3,000 characters at a time. The workspace shows what a check will spend and what is left. Provider-dispatch counts remain only as a runaway backstop.
+- **One chapter timeline.** Written chapters and the current draft are listed in order with their check status: checked, not checked, edited after its check, or basis changed (an earlier chapter was revised after the check).
+- **Imports are checkable at once.** With the screened pipeline the written text is the evidence, so an imported work can be checked before its fact base is built or reviewed; confirmed facts make retrieval sharper. Word (`.docx`) files import by their Heading 1 / Heading 2 styles.
+- **Author-facing polish.** Plain wording instead of version, snapshot and commit jargon; "高影响 / 中等影响 / 低影响" everywhere; genres matching the samples; an empty draft cannot be checked; the "更多" menu closes on Escape and keeps reset apart; written material opens before empty plans; finished checks shrink to a one-line record; an honest tutorial-complete page; a narrow-screen note on the home and works pages.
+- **Sample works stay current.** Sample chapters now carry short bodies, and a startup step brings every account's untouched sample works up to the current seed; works the author changed are left as they are.
+- Verification: backend 553/553; browser E2E `npm run test:e2e` 127/127 in 8 groups; evaluation 77/77. A copy of the production database was upgraded locally: integrity and foreign keys intact, all nine untouched sample works refreshed, tutorial works byte-identical, a second start changes nothing, and v1.5.2 opens the upgraded database (rollback needs no restore).
+
+## v1.5.2
+
+- v1.5.1 went live on 2026-10-03 and was rolled back the same day. Two checks in a row of the 灰港回声 demo draft (four short claims in one batch) failed as output_truncated: thinking filled its 16,000-token cap at high and at medium effort, and the final non-thinking answer (2,000 tokens) overflowed as well, because the draft's missing link is now reported as an insufficient-evidence issue. The V11/V12 cases are one to three sentences, so the held-out run never packed a reported gap with three other verdicts.
+- A batch that still ends on a length stop is now retried one claim at a time. A single claim that still overflows is reported as undecided, and the rest of the check completes; a check where every claim is undecided still fails. The truncated dispatch stays in the usage totals.
+- Verification: the same demo draft with the real model completed four checks out of four (58–150 s; one of the four missed the insufficient-evidence issue), and once more on the public site after deployment (204 s); a V11 regression run gave conflict recall 1.0, insufficient-evidence recall 0.917 and no false positives; backend 471/471; browser E2E 124/124. The V12 result for the review prompt still applies, since the prompt is unchanged.
+- Still slow: thinking on this short draft often fills the cap before stepping down, so the check takes about 2.5 minutes. Leveled thinking is planned with the long-text work.
+
+## v1.5.1
+
+- Insufficient evidence is reported, never answered with silence. A claim that settles a point the supplied material leaves open (only a combined total, only some items checked, a request without its outcome, a stated unknown) now returns an insufficient-evidence issue that names the missing link. A new event the draft itself narrates still needs no older warrant, and a contradiction proved by combining supplied facts stays a conflict. Review prompt `continuity-review-v24c-explicit-missing-link`.
+- Evidence selection keeps the passages that match a claim's own words best. Passages linked to a fact-library record are weighted higher, and because the library holds only a few facts per work, the decisive passage could be crowded out; two of the three evidence slots now go to the best direct text matches.
+- The review prompt's fixed size stays within 2.4% of v1.5.0, so chapters are batched as before.
+- Verification: pre-registered procedure in `evaluation/ie_fix_v24/PLAN.md`. Three tuning attempts on the spent V11 set; the third met the stop condition. The single V12 held-out run then passed every pre-registered threshold: macro F1 0.972, insufficient-evidence recall 1.0 (v1.5.0 scored 0.67–0.75 on V11), conflict recall 0.917, no false positives, category accuracy 1.0, designated regressions 3/3. Backend 468/468; browser E2E `npm run test:e2e` 124/124.
+
+## v1.5.0
+
+v1.5.0 is the product version for the work released after v1.4.0. Its parts shipped as separate releases, recorded below: the 2026-09-13 maintenance update, the 2026-09-30 long-chapter and interface releases, and the 2026-10-02 interface completion. No database schema change since the 2026-09-13 maintenance release (schema 146).
+
+Added on 2026-10-03 (found while bringing the browser E2E suites up to date):
+- Immersive writing font sizes match the menu again (17 / 19 / 21 px).
+- The source coverage audit shows "已全部覆盖，事实库已更新 / 未变" instead of "尚未提供".
+- Desktop windows down to 320 px no longer scroll sideways (stable 10 px scrollbar gutter).
+- An insufficient-evidence issue no longer hides "审阅事实变化": the button and the pending count follow the same rule as the backend, counting only issues that allow a decision.
+- Contrast meets WCAG AA: white text on violet uses `#8150e8` (hover `#7845df`), and decided issue rows no longer fade their impact labels. The Q&A and revision-plan panels keep the native `details` role.
+- Starting a new check clears the issue drawer and controlled edit that belonged to the previous check; a controlled save no longer pairs a new run with an old issue (which failed with a non-retryable 422).
+- In the tutorial, "查看完整证据" keeps keyboard focus inside the evidence drawer.
+- The backend keeps idle connections for 75 s, longer than the Next.js proxy's 5 s, so parallel page loads no longer fail with a reset connection.
+- Quiet micro-interactions using the existing motion timing: buttons settle 1 px when pressed, centred dialogs and messages fade in, save and check status labels fade between states, and a new issue list rises in a few rows at a time. All of it is off when the system asks for reduced motion.
+
+Verification: all current browser E2E groups run through one command, `npm run test:e2e`; two consecutive full runs passed 124/124 (see [Test](#test)).
+
+## 2026-10-02 update
+
+`ui-26ae621-20261002` finishes the interface pass started on 2026-09-30 and carries two backend changes. No database schema change.
+
+- Interface: the remaining technical wording, raw keys and English decoration are gone from author screens; dialogs share one button order with a danger style for reset; the 更多 menu closes after a choice; the relation in fact reviews is picked from a list; the import preview explains the chapter split in one sentence and folds the hash away; the writing page side card stays as tall as the editor and scrolls long issue lists; archived-only accounts can still reach their works.
+- Backend: model prose in every writing analysis is cleaned of internal record ids before it is stored, and the story Q&A prompt (`story-qa-v3-no-prose-ids`) asks for names instead of ids; brief and analysis source labels are generated in Chinese.
+- Verification: backend 462/462, evaluation 51/51, lint/typecheck/build; `test:v130` fails the same 10 tests as `cbfa536`; `test:v140` 14/14; real-model screenshots at 1440 px and 390 px; 20 real story Q&A runs had 1 `evidence_unresolvable` failure and no ids in prose. See the [deployment record](docs/deployment-2026-10-02.md).
+
+## 2026-09-30 update
+
+The late-September releases are each built from a Git commit with the maintenance source packager and deployed with `deployment/release.sh`. None changes the database schema.
+
+**Long chapters (`longform-bd090fe`, then `longform-aac1517`)**
+- Continuity review uses `deepseek-flash` with high thinking. A check's review batches are dispatched in parallel (4 at a time in production, 1 locally for reproducibility), with at most four claims per batch.
+- Each evidence span is sent once per request and referenced by ID; a request over the input budget is split in half instead of failing.
+- One undecidable claim no longer discards the rest of the chapter. On production, a 37-claim chapter that previously failed after 240 s completed in 72.5 s ([record](evaluation/results/prod-longform-after-bd090fe-20260930.json)).
+- Quota: a check the remaining provider quota cannot cover is refused before any call (HTTP 429, `provider_attempt_quota_insufficient`, with the claim count and roughly how many claims still fit). If the quota runs out mid-chapter, claims already judged are kept and the rest are reported as undecided.
+
+**Interface (`ui-cbfa536`)**
+- Quota messages speak in credits ("点数不足") instead of model calls or provider attempts.
+- New outlined logo (a single continuous line of text) and favicon; three type faces only (UI, manuscript serif, identifiers); one line-icon set, including arrows and external links.
+- Internal wording and debug counters are gone from author screens: Story Memory versions read "事实库第 N 版", run ids, byte counts and empty `V0` counters are not shown, and "Reset" reads "重置当前作品".
+- Layout fixes: the writing page has one title and one save status, and the editor fills its card beside the issue pane; the overview export panel, Story Memory table columns, immersive issue list, planning empty states and evidence-drawer actions were corrected; the sources page groups spans under their chapter; the edit-project dialog matches the other dialogs.
+- A missing project or unknown address shows a "找不到" page with a way back. Phone form fields stay at 16 px so iOS does not zoom on focus; scrolling tab rails fade the edge that hides more items.
+
+Verification for `ui-cbfa536`: backend 456/456, evaluation 51/51, lint, typecheck and build passed locally on Windows; results that need a model (briefs, plan alignment, checks in progress or failed, imports, Memory review) were opened with the real provider and screenshotted at 1440 px and 390 px. The public site was checked by hand after deployment. Browser E2E suites were not green at that point; they were brought up to date for v1.5.0 (124/124).
+
+## v1.3.0 workflow foundation (included in v1.4.0)
+
+- Author Context stores editable future plans for story structure, characters, and world rules; it never proves that prose was written.
+- Character aliases are author-confirmed, versioned identity records; change-impact analysis binds them with draft, source, Memory, and Author Context state and never auto-writes a proposal.
+- Saved drafts and SourceSpans store written material. Story Memory stores only author-confirmed facts. AI output stays in analysis Runs and candidates until the author decides.
+- Writing adds a bounded chapter brief and saved-draft plan-alignment check. Story Memory adds new, changed, and invalidated fact review with resolvable Evidence.
+- Authors can select current continuity Issues, generate one bounded Evidence-backed revision suggestion per Issue, accept or edit suggestions into persistent tasks, manually revise and save the same draft, then explicitly recheck. Task progress never resolves Issues or changes canon.
+- Accepted Memory decisions create one immutable Memory version and one auditable ChangeSet atomically. Rejected or empty reviews close source coverage without version growth.
+- The desktop global rail can collapse persistently, wide operational surfaces use the available canvas, and the author profile prioritises real works, chapter and word totals, and continue-writing access before secondary display-name and bundled-avatar settings.
+- Desktop supports authoring and review. A 390 px viewport remains browse-only with the reason shown, sources available, and no horizontal overflow.
+- Writing and Checking includes a desktop immersive manuscript overlay with shared unsaved draft state, explicit save only, adjustable typography and column width, and a collapsible continuity-issue rail.
+
+The repository is designed for local reproduction. It contains the application source, migration and seed logic, tests, sanitised V4–V8 evaluation result records, and a small set of production-workflow screenshots. It does not include runtime databases, environment files, provider credentials, raw provider responses, recorded runtime prompt bodies, chain-of-thought, or protected evaluation assets. Full V5–V8 post-run database-hash validation therefore also requires the separately retained local evaluation workspaces; the committed result files alone do not recreate those SQLite artifacts.
+
+## v1.2.0 update
+
+- New registered accounts receive one isolated tutorial sample instead of three preset real works. The sample is excluded from real-work counts, search, recent works, and pending-issue summaries; completing or skipping the tutorial returns the account to an empty real workspace.
+- The tutorial is a five-step author workflow covering Story Memory sources, continuity issues, Evidence, and an explicit Author Decision. Business progress is stored on the backend with version binding, CSRF protection, idempotency, monotonic revisions, and cross-login restoration; transient hints and focus effects remain client-only.
+- The non-login workspace uses a wider, responsive authoring layout, a compact mobile read-only mode, clearer page actions and empty states, reduced nested framing, and three locally bundled WebP narrative assets instead of large illustrative SVG compositions.
+- Independent local acceptance passed the backend suite (156/156), the v1.2 browser workflow (1/1), the frozen v1.1 regression (5/5), frontend contracts (27/27), lint, typecheck, and the production build.
+
+## Public deployment
+
+- Active origin: [https://43-160-207-57.sslip.io](https://43-160-207-57.sslip.io)
+- Active version: **Story Continuity Copilot v1.5.2**
+- Production release ID: `v152-1cfee10-20261004` (Git tag `v1.5.2`, commit `1cfee10e273398eff55c62ac0367bf7020170315`)
+- Source inventory SHA256: `659bd4146f00261fa660e5b63345c903fadae3fe5dc3e674dbd6f02ebbe5dce6` (100 files)
+- Deployment date: 2026-10-04; rollback target `v150-b9f4b0f-20261003`
+- The notes below describe the 2026-09-13 maintenance release (`maint-e2d141c23d0c-20260913`, inventory `e2d141c23d0ccab25ccf1fd24b7f0ea0821493a6f892c7b784680f7f492b0402`), whose schema and operations setup the later releases keep.
+- Isolated migration rehearsal and live comparison before browser acceptance preserved all 67 preexisting business tables and 661 rows. Schema is 146; integrity and foreign-key checks passed. Pre-deployment and post-deployment backups were manually downloaded to the operator workstation and independently hashed.
+- Public browser acceptance passed seven checks, including actual TXT/Markdown/ZIP downloads, maintenance-page chapter content, a revision guard rejecting changes, mobile read-only layout, and fresh JS/CSS loads. It did not rerun successful revision commits, decision reuse, or external AI calls online; those retain their separate local evidence.
+- Three operations timers are enabled; first-run checks and a subsequent monitor cycle were observed. The user has deferred automated off-instance replication and external alert delivery as optional follow-up work; the missing-copy warning remains visible. Old images are retained, but targets without the schema146 workflow contract are rejected; no actual rollback was performed. See the [deployment scope and limitations](docs/maintenance-deployment.md).
+
+## Product overview
+
+The author workflow is:
+
+1. Sign in locally, create or import a project, and select a project workspace.
+2. Review outline, characters, world rules, chapters, and versioned Story Memory.
+3. Submit the current draft for a continuity check.
+4. Inspect each finding together with resolvable Evidence from the current project.
+5. Accept, reject, or edit proposed Memory changes. A ChangeSet records the decision; only accepted changes update canon.
+6. Use "重置当前作品" (project Reset) to restore the seeded review path when a fresh demonstration is needed.
+
+Visitor demo spaces retain three independently seeded projects: **Grey Harbor Echoes**, **Paper Moon Archive**, and **Midnight Garden**. New registered accounts instead receive the isolated **Grey Harbor Echoes** tutorial sample described above. Project data, Memory, drafts, and review state remain isolated per account and per project.
+
+## Product and safety boundaries
+
+- The FastAPI backend covers registered and visitor authentication, recovery-email verification and password reset, projects, story context, imports, drafts, checks, Evidence, decisions, ChangeSets, Reset, quotas, and visitor cleanup.
+- Every project resource is checked against the current session and project ownership. Cross-account access returns a not-found response without disclosing the resource.
+- Evidence must resolve to a SourceSpan owned by the active project. Unresolvable Evidence fails closed.
+- Continuity, revision-plan, and Memory Delta work use an observable Agent Run lifecycle: `queued`, `running`, `completed`, `timed_out`, `failed`, or `cancelled`. Retry and Cancel preserve lineage, and non-completed runs do not create partial Issues, revision tasks, Decisions, or Memory updates.
+- Public-mode configuration fails closed. Provider and SMTP credentials remain server-only; visitors receive isolated, time-limited spaces with server-enforced workflow, provider-attempt, text-length, and budget limits.
+- An explicitly configured `DeepSeekProvider` supports real local checks. When no production provider is configured, a check returns `503 provider_unavailable`; it does not create a Run or substitute a static result.
+- Reset is project-scoped, confirmed, idempotent, and constrained to this demo's runtime database.
+
+## Evaluation and verification
+
+The public product story is organised around the milestones below. Historical Stage identifiers remain available as technical evidence references rather than the primary product narrative.
+
+| Product milestone | Verified outcome | Technical evidence |
+| --- | --- | --- |
+| MVP Build & Web Demo | Local end-to-end author review workflow, project isolation, Reset, and reproducible browser evidence | Stages 4–7 |
+| Author Workflow & Model Evaluation | Author-controlled Memory decisions and frozen V4–V8 evaluation records | Stages 8–10 |
+| Long-form Workflow Validation | Real 100k- and 300k-character workflow validation with bounded retrieval and resolvable Evidence | Stage 11 |
+| Agent Reliability | Six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero partial business writes on non-completion | Stage 12 |
+| Web App Readiness | Visitor isolation, quotas, cleanup, recovery contracts, reproducible packaging, and browser/security verification | Stage 13 |
+| Public Release v1.0 | Historical signed baseline after the frozen Required Gates A–G passed at the public origin | Stage 14 |
+| Product Iteration v1.2.0 | Isolated first-run tutorial, durable progress, responsive authoring UI, bitmap narrative assets, local regression acceptance, and historical public deployment | v1.2.0 tests and production smoke acceptance |
+| Product Iteration v1.4–v1.5 | Author materials, exports, decision reuse, chapter revision with fact review, parallel long-chapter checks, the new interface, explicit insufficient-evidence reporting; V10 and V12 held-out gates passed | Held-out results below; backend 471/471; browser E2E 124/124 |
+
+The published repository baseline is the frozen **V4** set: 15 original, balanced three-class cases across three isolated corpora, plus 6 stability reruns. All 21 runs completed.
+
+| Measure | V4 result |
+| --- | ---: |
+| Accuracy / macro F1 | 1.0000 / 1.0000 |
+| Conflict recall / insufficient-evidence recall | 1.0000 / 1.0000 |
+| No-conflict false-positive rate | 0.0000 |
+| Hit@5 / cited Evidence precision / Evidence resolvability | 1.0000 / 1.0000 / 1.0000 |
+| Schema validity / fail-closed safety | 1.0000 / 1.0000 |
+| Latency p50 / p95 | 2593 ms / 4104 ms |
+| Tokens, input / output | 16037 / 2183 |
+| Cost | unavailable |
+
+Across the three stability cases, decision stability and category/severity stability were 3/3; Evidence-ID-set stability was 2/3 and exact-explanation-hash stability was 1/3. Two cases retained a correct class with a category mismatch: `timeline → event_status` and `world_rule → event_status`.
+
+The frozen CLI PoC has a separate historical held-out result (F1 0.9412) under a different protocol. It is not the V4 Web Demo evaluation and is not rerun by this repository.
+
+V5–V8 each retain one immutable first-valid formal result bundle with `gate_failed`; later work does not overwrite or rerun them. In V8, all 30 calls completed and all core classification and Evidence measures were 1.0000, but the designated category regression was 2/3 because one `location_action` case was classified as `event_status`. This single category deviation is retained as a portfolio-level known limitation, while the Model Evaluation Gate recorded under Stage 10 remains failed.
+
+Since V9, model changes are judged on held-out sets: 36 cases per set (12 conflict, 12 no-conflict, 12 insufficient evidence; Chinese and English works), thresholds registered before the set is authored, and one formal run that decides. Each set is spent once it has been run.
+
+| Held-out set | Configuration | Result |
+| --- | --- | --- |
+| V10 (2026-09-29) | `deepseek-flash`, high thinking, prompt v21 | Passed 13/13 checks: macro F1 0.972, conflict recall 0.917, insufficient-evidence recall 1.0, no false positives ([record](docs/eval-v10-first-formal-result.md)) |
+| V11 (2026-09-30) | prompt v22 | Failed twice on insufficient-evidence recall (0.75, 0.67; bar 0.8): drafts that settled a point the source left open got no issue at all |
+| V12 (2026-10-03) | prompt v24c, shipped in v1.5.1/v1.5.2 | Passed every registered threshold: macro F1 0.972, insufficient-evidence recall 1.0, conflict recall 0.917, no false positives, designated regressions 3/3 ([procedure](evaluation/ie_fix_v24/PLAN.md), [result](evaluation/results/eval-v12-v24c-first-formal.json)) |
+
+These sets use chapters of at most 300 characters and drafts of one to three sentences. Real chapters are about ten times longer; a long-text evaluation set and pipeline are in progress (see [Known limitations](#known-limitations)).
+
+Long-form Workflow Validation, recorded under Stage 11, verified the author-controlled workflow on a real 100k-character prefix and a 300k-character prefix. The accepted 300k V2 result completed initialization plus two append/review/decision/commit rounds with bounded RAG, valid Evidence lineage, no automatic canon writes, and a 4,820,992-byte final SQLite database. The first 300k V1 capacity failure remains immutable alongside the V2 pass. The optional 1M-character Stage 11N pressure test has not been run.
+
+Agent Reliability, recorded under Stage 12, independently passed the six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero-partial-write Gates in V2; its V1 Provider-boundary incident remains `gate_failed`. Web App Readiness, recorded under Stage 13, independently passed its local product Gate in V4 after preserving the V2/V3 deployment-artifact failures: server-only integration boundaries, visitor isolation, limits and cleanup, real recovery contracts, two reproducible standalone builds, relocation, and the full browser matrix were verified without external Provider HTTP or SMTP. The historical v1.0 Public Release passed HTTPS/security, real SMTP/password recovery, restart persistence, backup/same-release redeploy, a real-provider two-round author workflow, visitor and registered-account isolation, quota separation, visitor cleanup, and public Cancel/Timeout/Retry atomicity checks. The previous v1.2.0 deployment acceptance covered health/readiness, rollback state, desktop/mobile rendering, new-account tutorial isolation and persistence, and the empty real-workspace result without rerunning the external Provider workflow.
+
+Read [the verification record](docs/verification-and-limitations.md) for evidence scope and limitations, and [the product decisions record](docs/product-decisions-and-validation.md) for the rationale behind the workflow.
+
+## Technology
+
+- Backend: Python, FastAPI, Uvicorn, SQLite, `httpx`
+- Frontend: Next.js App Router, React, TypeScript
+- Verification: `unittest`, Playwright, axe-core, ESLint, TypeScript
+- Provider integration: DeepSeek-compatible HTTP API, configured only through process environment variables
+
+## Repository layout
+
+```text
+backend/       API, SQLite schema/migration, seed data, and contract tests
+frontend/      Next.js workspace and browser E2E tests
+evaluation/    frozen V4–V12 case sets, held-out runner and thresholds, validators, tests, and sanitised results
+docs/          local setup, demo guide, product decisions, and verification record
+artifacts/     a small, curated set of production-workflow screenshots
+```
+
+## Run locally on Windows
+
+From the repository root in PowerShell:
+
+```powershell
+python -m venv .venv
+& .venv\Scripts\python.exe -m pip install -r backend\requirements.txt
+
+Set-Location frontend
+npm ci
+Set-Location ..
+```
+
+Start the backend in one terminal:
+
+```powershell
+Set-Location backend
+$env:PUBLIC_APP_MODE = '0'
+$env:PUBLIC_BASE_URL = 'http://127.0.0.1:3000'
+$env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
+$env:TRUSTED_HOSTS = '127.0.0.1:8000'
+$env:TRUSTED_ORIGINS = 'http://127.0.0.1:3000'
+& ..\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Start the frontend in a second terminal:
+
+```powershell
+Set-Location frontend
+$env:PUBLIC_APP_MODE = '0'
+$env:PUBLIC_BASE_URL = 'http://127.0.0.1:3000'
+$env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
+npm run dev
+```
+
+Open `http://127.0.0.1:3000`. The frontend rewrites same-origin `/api` requests to `http://127.0.0.1:8000` by default. See [local setup and reproduction](docs/local-setup.md) for health checks, isolated E2E startup, and provider configuration boundaries.
+
+## Test
+
+```powershell
+# Backend contract and regression suite
+Set-Location backend
+$env:PUBLIC_APP_MODE = '0'
+$env:PUBLIC_BASE_URL = 'http://127.0.0.1:3000'
+$env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
+$env:TRUSTED_HOSTS = '127.0.0.1:8000,testserver'
+$env:TRUSTED_ORIGINS = 'http://127.0.0.1:3000,http://testserver'
+& ..\.venv\Scripts\python.exe -m unittest discover -s tests -v
+
+# Public evaluation package checks; no provider calls
+Set-Location ..
+$env:PYTHONPATH = '.;backend'
+& .venv\Scripts\python.exe -m evaluation.validate_eval_set_v2
+& .venv\Scripts\python.exe -m evaluation.validate_eval_set_v3
+& .venv\Scripts\python.exe -m evaluation.validate_eval_set_v4
+& .venv\Scripts\python.exe -m evaluation.validate_release_bundle
+& .venv\Scripts\python.exe -m unittest discover -s evaluation\tests -v
+
+# Frontend static gates
+Set-Location frontend
+$env:PUBLIC_APP_MODE = '0'
+$env:PUBLIC_BASE_URL = 'http://127.0.0.1:3000'
+$env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
+npm run lint
+npm run typecheck
+npm run build
+
+# All current browser E2E groups; no manually started servers are needed
+Get-ChildItem Env:CONTINUITY_* | Remove-Item
+npm run test:e2e
+
+# Run selected groups, or filter test titles within regular
+npm run test:e2e -- --group v130
+npm run test:e2e -- --group stage12,regular,stage13
+npm run test:e2e -- --group regular --grep "review entry"
+```
+
+`npm run test:e2e` runs eight isolated production browser groups in sequence: `v130` (15 author-workflow tests), `v140-frontend` (13 interface tests), `v140-visual` (those 13 plus one visual test), `regular` (54 authentication, writing, import, fact-review, v1.1/v1.2 and helper tests), `stage12` (8 Agent Run lifecycle tests), `stage13` (4 visitor, recovery and isolation tests using the impl profile), `maintenance` (13 interface plus 2 maintenance tests), and `legacy-rich-suggestion` (1 staged rich-text suggestion test). The total is 124 executions; the 13 v140 frontend cases run in three groups. `--group` accepts a comma-separated list; `--grep` is supported only for `regular`. Use `npm run test:e2e -- --help` for the available groups and ports.
+
+The runner clears model and SMTP configuration, builds temporary source copies without environment files, starts test-only FastAPI/Next.js services on dedicated ports, and cleans its sources, builds, databases and service processes. It prints `E2E_REPORT_ROOT` and `E2E_SUMMARY` for per-group results, logs and browser attachments retained in system temp. No local demo database, real model or external SMTP service is used. Keep the fixed ports and temporary build drives free, and run only one E2E command at a time; see [the port table and reproduction guide](docs/local-setup.md#isolated-browser-e2e).
+
+Five historical acceptance records (`legacy-gap-independent`, `legacy-gap-independent-round2`, `legacy-gap-round3-brief`, `g02-controller`, and `g02-controller-post-v4`) remain as evidence and are excluded from daily runs. `test:e2e:raw` retains the direct Playwright entry and requires a matching manually supplied isolated environment. The standalone `test:v130`, `test:v140:frontend`, and `test:v140:visual` commands remain available; the unified entry is the daily all-group command.
+
+The backend suite includes the Agent Reliability lifecycle and Web App Readiness security contracts, recorded under Stages 12 and 13. The release-bundle validator checks that the published V4 results, frozen assets, recorded workspace metadata, documentation, and screenshots are self-consistent; it does not claim to reopen unpublished SQLite workspaces. The browser E2E runner manages the isolated services described in [the local setup guide](docs/local-setup.md).
+
+## Core author workflow
+
+The [3–5 minute demo guide](docs/demo-guide.md) walks through project selection, a completed continuity review, Evidence, author confirmation, and Reset. The guide does not require provider calls.
+
+## Known limitations
+
+- The signed Stage 14 production baseline remains `Story Continuity Copilot v1.0 Public Release` as historical evidence. The active public deployment is v1.5.2 (`v152-1cfee10-20261004`); its deployment and acceptance scope are recorded in the [2026-10-04 deployment record](docs/deployment-2026-10-04.md). Local acceptance does not re-sign Stage 14, constitute a commercial SLA, or claim that the retained Stage 10 `gate_failed` evaluation was later passed.
+- Real SMTP delivery, email verification, password reset, old-session revocation, new-password login, and used-link replay rejection have been accepted at the public origin. Email credentials and addresses remain server-only.
+- V4 is a small, frozen product evaluation; it supports the stated evaluation claims only and is not a general benchmark.
+- Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.
+- The provider returns no cost in the retained V4 results.
+- The system supports continuity review and author-controlled canon updates; it does not directly continue the novel.
+- Current browser E2E suites run through `npm run test:e2e` with isolated production services and test-only providers. Historical acceptance records are excluded from daily runs; browser checks do not evaluate real model quality or external SMTP delivery. See the [isolated E2E instructions](docs/local-setup.md#isolated-browser-e2e).
+- `test:build-origin` has one known failure ("canonical HTTPS proxy exposes public health…").
+- A ~2,500-character chapter takes about 40 s (p90 76 s) and ¥0.21 on average with the screened pipeline. Insufficient-evidence recall (0.83 on the formal set) and the share of clean chapters without any card (78%) are close to their bars and vary from run to run; prompt changes need a regression run.
+- Whole-book checks are not offered to authors yet; checking chosen chapters is limited to eight at a time.
+- With the real model, some Story Memory change-set reviews for long appended chapters fail backend validation (`candidate_count_invalid`, `memory_type_invalid`), and a long check can occasionally fail with unresolvable evidence. Both are model-output issues, not interface faults.
+- Writing and checking are desktop-only; below 1024 px the workspace is browse-only.
+
+## Further reading
+
+- [Local setup and reproduction](docs/local-setup.md)
+- [3–5 minute demo guide](docs/demo-guide.md)
+- [Product decisions and evidence](docs/product-decisions-and-validation.md)
+- [Validation evidence and known limitations](docs/verification-and-limitations.md)
+- [Curated verification artifacts](artifacts/README.md)

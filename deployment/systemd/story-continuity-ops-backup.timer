@@ -1,0 +1,11 @@
+[Unit]
+Description=Story Continuity verified online backup every six hours
+
+[Timer]
+OnCalendar=*-*-* 00,06,12,18:10:00
+RandomizedDelaySec=120
+Persistent=true
+Unit=story-continuity-ops@backup.service
+
+[Install]
+WantedBy=timers.target

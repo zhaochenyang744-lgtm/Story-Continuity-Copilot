@@ -1,0 +1,152 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "merrow_sound",
+  "title": "An Evening in Merrow Sound",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "generation": {
+    "method": "user_authored_held_out",
+    "generator_version": "v9-authoring-1",
+    "source_inputs": []
+  },
+  "lineage": {
+    "work_title": "An Evening in Merrow Sound",
+    "language": "en",
+    "characters": [],
+    "locations": [],
+    "core_design": "user-authored held-out corpus"
+  },
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "title": "Between the Islands",
+      "source_label": "sound_and_shores",
+      "body": "Throughout Merrow Sound, no spoken word can travel from one island to another by any means. This permanent law admits no exceptions, regardless of distance, weather, equipment or magic."
+    },
+    {
+      "chapter_number": 2,
+      "title": "Morning Roster",
+      "source_label": "crew_register",
+      "body": "At 10:00 on 14 June, Aven Rill used the call sign Kite. The crew register confirms that nobody else used Kite at that time."
+    },
+    {
+      "chapter_number": 3,
+      "title": "The Signal Hut",
+      "source_label": "jetty_log",
+      "body": "At 10:00 on 14 June, Kite was inside the West Jetty signal hut, a fixed building on land. The observer entered the call sign, rather than the person's name, in the log."
+    },
+    {
+      "chapter_number": 4,
+      "title": "A Saffron Packet",
+      "source_label": "parcel_desk",
+      "body": "At noon on 14 June, Edda Voss placed a packet of saffron under the parcel desk's blue tray. She then took an empty basket back to the market."
+    },
+    {
+      "chapter_number": 5,
+      "title": "A Shape Offshore",
+      "source_label": "supper_room",
+      "body": "At supper on 14 June, Brin Tal believed the eastern reef was a whale. He was mistaken: the narrator identifies the shape as an ordinary reef. His companions had not yet corrected him."
+    },
+    {
+      "chapter_number": 6,
+      "title": "The Sealed Note",
+      "source_label": "locker_entry",
+      "body": "A sealed note naming tomorrow's landing place was left in Aven Rill's locker at 16:00 on 14 June. The locker entry records delivery but says nothing about Aven opening or reading the note."
+    },
+    {
+      "chapter_number": 7,
+      "title": "East Pier",
+      "source_label": "moorings_sheet",
+      "body": "The mooring sheet records that one ferry was tied up at East Pier at 18:00 on 14 June. It gives neither the vessel's name nor a hull number."
+    },
+    {
+      "chapter_number": 8,
+      "title": "The Two Ferries",
+      "source_label": "fleet_note",
+      "body": "Larkspur and Thistledown were the only ferries serving Merrow Sound that week. Each called at East Pier on a different evening. The fleet note does not give the dates of those calls."
+    }
+  ],
+  "memory": [
+    {
+      "memory_type": "static_canon",
+      "subject": "An Evening in Merrow Sound",
+      "predicate": "rule",
+      "value": "Throughout Merrow Sound, no spoken word can travel from one island to another by any means. This permanent law admits no exceptions, regardless of distance, weather, equipment or magic.",
+      "source": {
+        "chapter_number": 1,
+        "source_label": "sound_and_shores"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "An Evening in Merrow Sound",
+      "predicate": "status",
+      "value": "At 10:00 on 14 June, Aven Rill used the call sign Kite. The crew register confirms that nobody else used Kite at that time.",
+      "source": {
+        "chapter_number": 2,
+        "source_label": "crew_register"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "An Evening in Merrow Sound",
+      "predicate": "status",
+      "value": "At 10:00 on 14 June, Kite was inside the West Jetty signal hut, a fixed building on land. The observer entered the call sign, rather than the person's name, in the log.",
+      "source": {
+        "chapter_number": 3,
+        "source_label": "jetty_log"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "An Evening in Merrow Sound",
+      "predicate": "status",
+      "value": "At noon on 14 June, Edda Voss placed a packet of saffron under the parcel desk's blue tray. She then took an empty basket back to the market.",
+      "source": {
+        "chapter_number": 4,
+        "source_label": "parcel_desk"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "An Evening in Merrow Sound",
+      "predicate": "status",
+      "value": "At supper on 14 June, Brin Tal believed the eastern reef was a whale. He was mistaken: the narrator identifies the shape as an ordinary reef. His companions had not yet corrected him.",
+      "source": {
+        "chapter_number": 5,
+        "source_label": "supper_room"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "An Evening in Merrow Sound",
+      "predicate": "status",
+      "value": "A sealed note naming tomorrow's landing place was left in Aven Rill's locker at 16:00 on 14 June. The locker entry records delivery but says nothing about Aven opening or reading the note.",
+      "source": {
+        "chapter_number": 6,
+        "source_label": "locker_entry"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "An Evening in Merrow Sound",
+      "predicate": "status",
+      "value": "The mooring sheet records that one ferry was tied up at East Pier at 18:00 on 14 June. It gives neither the vessel's name nor a hull number.",
+      "source": {
+        "chapter_number": 7,
+        "source_label": "moorings_sheet"
+      }
+    },
+    {
+      "memory_type": "dynamic_state",
+      "subject": "An Evening in Merrow Sound",
+      "predicate": "status",
+      "value": "Larkspur and Thistledown were the only ferries serving Merrow Sound that week. Each called at East Pier on a different evening. The fleet note does not give the dates of those calls.",
+      "source": {
+        "chapter_number": 8,
+        "source_label": "fleet_note"
+      }
+    }
+  ]
+}

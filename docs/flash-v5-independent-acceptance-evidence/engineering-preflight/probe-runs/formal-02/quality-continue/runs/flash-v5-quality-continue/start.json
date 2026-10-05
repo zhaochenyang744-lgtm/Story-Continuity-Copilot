@@ -1,0 +1,11 @@
+{
+  "run_id": "flash-v5-quality-continue",
+  "mode": "live",
+  "started_at": "2026-09-27T08:16:23.361319+00:00",
+  "git_base": "7d811cc9a3fb76f3cfbe60492399d6c0fc9e07b2",
+  "case_count": 3,
+  "frozen_manifest_sha256": "d91e31911ef8f543ccf0d75d6e130ba25ebaaa1b6a9785fe474b928de2659c25",
+  "max_generation_post": 108,
+  "max_models_get": 1,
+  "provider": "deepseek-flash"
+}

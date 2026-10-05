@@ -1,0 +1,63 @@
+{
+  "format": "longform-eval/1",
+  "set_id": "lf-template",
+  "kind": "dev",
+  "language": "zh",
+  "authoring": {"model": "示例（Claude 手写）", "date": "2026-10-04", "notes": "格式示例：只通过 --structure-only，章节长度与数量远小于正式要求。"},
+  "works": [
+    {"key": "qingyan_lamps", "title": "青檐镇的守灯人", "file": "works/qingyan_lamps.md", "origin": "original", "source_note": null}
+  ],
+  "targets": [
+    {
+      "id": "tpl-t01",
+      "work": "qingyan_lamps",
+      "chapter": "第三章 河岸的夜",
+      "smoke": true,
+      "items": [
+        {
+          "id": "tpl-001",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": ["她看见杂货铺的掌柜正踮着脚给桥头的铜灯添油"],
+          "evidence": [{"chapter": "第一章 守灯人的规矩", "quote": "灯油只能由守灯人分发，任何人都不得私自给铜灯添油"}],
+          "designated_regression": true,
+          "designated_basis": {"type": "timeless_rule", "anchor": "任何人都不得私自给铜灯添油"},
+          "explanation": "第一章的规矩禁止任何人私自添油，掌柜不是守灯人却在添油。"
+        },
+        {
+          "id": "tpl-002",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": ["掌柜笑着说这是柏绍托他做的，可柏绍从来没提过这件事。"],
+          "evidence": [{"chapter": "第二章 借走的油壶", "quote": "他把备用的锡油壶借给了徒弟苗禾"}],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "原文只写了柏绍把油壶借给苗禾，没有任何地方写他委托过掌柜，缺少授权这一环。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "tpl-p01",
+          "kind": "state_change",
+          "quotes": ["苗禾提着锡油壶沿河岸往西走"],
+          "evidence": [{"chapter": "第二章 借走的油壶", "quote": "他把备用的锡油壶借给了徒弟苗禾"}],
+          "explanation": "油壶原属柏绍，第二章已写明借给苗禾，她提着油壶不矛盾。"
+        }
+      ]
+    },
+    {
+      "id": "tpl-t02",
+      "work": "qingyan_lamps",
+      "chapter": "第四章 雾散以后",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    }
+  ],
+  "selections": [
+    {"id": "tpl-s01", "work": "qingyan_lamps", "chapters": ["第三章 河岸的夜", "第四章 雾散以后"]}
+  ],
+  "subsets": {}
+}

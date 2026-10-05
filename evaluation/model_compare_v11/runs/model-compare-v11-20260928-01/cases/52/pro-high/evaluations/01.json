@@ -1,0 +1,98 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "776ebe9b99c7e5fb39ac8f6f12207cb7aad6e61e613fcc00406a16731b5cd9e6",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc18-kinship-zh",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "relationship",
+        "severity": "high",
+        "explanation": "宗谱证据直接否定韩素与韩青的姑侄关系。",
+        "reasoning": "Q1提供了身份前提：韩素与韩青是同父同母的亲姐妹。Q2提供了宗谱规则：同父同母的亲姐妹彼此只是姐妹，不能互为姑侄。二者合并证明当前‘韩素是韩青的姑姑’这一关系不可能成立，构成确认冲突。",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": "同父同母的亲姐妹彼此只是姐妹，不能互为姑侄",
+          "relation": "timeless_rule"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc18-kinship-zh-Q1",
+            "span_id": "cc-span-cc18-kinship-zh-Q1",
+            "relation": "context",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc18-kinship-zh-Q1"
+            ]
+          },
+          {
+            "chapter_id": "cc-chapter-cc18-kinship-zh-Q2",
+            "span_id": "cc-span-cc18-kinship-zh-Q2",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "cc-memory-cc18-kinship-zh-Q2"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc18-kinship-zh-Q1",
+            "role": "prior_state"
+          },
+          {
+            "span_id": "cc-span-cc18-kinship-zh-Q2",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "韩素是韩青的姑姑。",
+          "after": "韩素是韩青的姐妹。"
+        },
+        "available_actions": [
+          "apply_suggestion"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc18-kinship-zh",
+        "verdict": "reviewed_issue",
+        "basis": "宗谱记载二人是同父同母亲姐妹，并规定亲姐妹不能互为姑侄；当前姑姑关系与该静态规则冲突。"
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3231,
+      "completion_tokens": 3075,
+      "total_tokens": 6306,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2484
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 799
+    },
+    "status": "complete",
+    "prompt_tokens": 3231,
+    "completion_tokens": 3075,
+    "total_tokens": 6306,
+    "reasoning_tokens": 2484,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

@@ -1,0 +1,14 @@
+{
+  "created_at_utc": "2026-09-27T09:56:40.847012+00:00",
+  "manifest_sha256": "f0e2cb3d5c44a1a92000f703423a0d26ea1fab5aef750b7a3393102ea98ed696",
+  "source_files_checked": 876,
+  "mismatches": [],
+  "planned_run_id": "flash-v6-20260927-01",
+  "identity_unused": true,
+  "logical_cases": 34,
+  "generation_post_cap": 136,
+  "models_get_cap": 1,
+  "provider_calls": 0,
+  "database_connections": 0,
+  "decision": "root file integrity passed; awaiting independent engineering guard check before live dispatch"
+}

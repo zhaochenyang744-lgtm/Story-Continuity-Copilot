@@ -1,0 +1,76 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1",
+      "status": "conflict",
+      "category": "object_state",
+      "severity": "high",
+      "evidence_status": "sufficient",
+      "explanation": "At 10:00 today the capsule was not ready because its valve cap was unlocked, contradicting the stated readiness.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-v6_carrier-1",
+          "span_id": "fixture-span-v6_carrier-1",
+          "excerpt": "The courier capsule is ready only when its pressure is four bars and its valve cap is locked.",
+          "relation": "context",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-v6_carrier-1"
+          ]
+        },
+        {
+          "chapter_id": "fixture-chapter-v6_carrier-2",
+          "span_id": "fixture-span-v6_carrier-2",
+          "excerpt": "At 10:00 today the courier capsule pressure is four bars, but its cap remains loose and unlocked throughout that minute.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": []
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "Span 1 defines the only readiness condition: pressure four bars and valve cap locked. Span 2 supplies the same-minute state at 10:00 today: pressure four bars but cap loose and unlocked throughout that minute. The rule's locked-cap requirement is contradicted by the unlocked cap, so the draft's 'ready' claim cannot coexist.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-v6_carrier-1",
+          "role": "current_context"
+        },
+        {
+          "span_id": "fixture-span-v6_carrier-2",
+          "role": "current_context"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 10:00 today the courier capsule was ready for dispatch.",
+        "after": "At 10:00 today the courier capsule was not ready for dispatch."
+      },
+      "available_actions": [
+        "apply_suggestion"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-84ff1028-190f-4fcb-9147-8c3ac7338666-1",
+      "returned_span_ids": [
+        "fixture-span-v6_carrier-1",
+        "fixture-span-v6_carrier-2",
+        "fixture-span-v6_carrier-3"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3235,
+  "output_tokens": 3307,
+  "latency_ms": 45010,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

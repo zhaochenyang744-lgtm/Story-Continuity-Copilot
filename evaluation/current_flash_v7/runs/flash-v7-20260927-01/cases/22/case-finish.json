@@ -1,0 +1,9 @@
+{
+  "case_id": "ccv3-basalt_observatory-location_action-conflict",
+  "status": "failed",
+  "error_code": "evidence_unresolvable",
+  "post_attempt_start_records": 1,
+  "evaluation_count": 1,
+  "score_status": "terminal_failure",
+  "finished_at": "2026-09-27T10:48:33.431118+00:00"
+}

@@ -1,0 +1,9 @@
+{
+  "run_id": "prep-v5-03",
+  "ordinal": 15,
+  "case_id": "ccv3-orchard_restoration-relationship-insufficient_evidence",
+  "family": "comparison",
+  "started_at": "2026-09-27T08:07:50.935138+00:00",
+  "case_input_sha256": "8c5d4b6c65b17c2816cedea765e9cbfa611452df12dde24855642832b34cc299",
+  "source_ref": "evaluation/current_contract_compare_v3/cases.json"
+}

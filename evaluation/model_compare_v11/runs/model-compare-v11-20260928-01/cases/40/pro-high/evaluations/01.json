@@ -1,0 +1,80 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "bfe431be40f89edd438f072c1112d860ff6746c499af750603e4ede34c581dc6",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "cc-claim-cc6-outcome-unknown-en",
+        "status": "insufficient_evidence",
+        "nature": "insufficient_evidence",
+        "category": "event_status",
+        "severity": "medium",
+        "explanation": "The survey log only records that Doran began mapping; it does not state whether the mapping was finished, so the claim that the log establishes completion is unsupported.",
+        "reasoning": "The cited span states Doran began mapping the south ridge on the third day and that the survey log does not say whether the mapping was ever finished. The first sentence supplies prior state, but the decisive detail—whether mapping finished—is absent from the log. Because the claim asserts the log establishes completion, that attribution lacks a source warrant; P remains unknown. No contradiction with a different completed state is asserted, so insufficient evidence rather than conflict.",
+        "temporal_basis": {
+          "claim_anchor": null,
+          "evidence_anchor": null,
+          "relation": "unknown"
+        },
+        "evidence": [
+          {
+            "chapter_id": "cc-chapter-cc6-outcome-unknown-en-S1",
+            "span_id": "cc-span-cc6-outcome-unknown-en-S1",
+            "relation": "context",
+            "sufficiency": "insufficient",
+            "related_memory_ids": [
+              "cc-memory-cc6-outcome-unknown-en-S1"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "cc-span-cc6-outcome-unknown-en-S1",
+            "role": "missing_link"
+          }
+        ],
+        "suggested_revision": null,
+        "available_actions": []
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "cc-claim-cc6-outcome-unknown-en",
+        "verdict": "insufficient_evidence",
+        "basis": "The cited evidence says the survey log does not say whether the mapping was ever finished, so the draft's assertion that the log establishes completion has no source warrant."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3136,
+      "completion_tokens": 4229,
+      "total_tokens": 7365,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3760
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 704
+    },
+    "status": "complete",
+    "prompt_tokens": 3136,
+    "completion_tokens": 4229,
+    "total_tokens": 7365,
+    "reasoning_tokens": 3760,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

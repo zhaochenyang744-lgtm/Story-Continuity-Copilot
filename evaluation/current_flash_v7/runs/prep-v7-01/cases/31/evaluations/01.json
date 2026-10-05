@@ -1,0 +1,24 @@
+{
+  "case_id": "v6-v6s-09",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "047129c4a85190a0cad268495c2cc33bcd5b355cee6bfba6e6f3f61746014754",
+  "finished_at": "2026-09-27T10:41:23.108379+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "issues": [],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-e82f463d-95d3-4d75-bb7b-895521f42088-1",
+        "verdict": "no_issue",
+        "basis": "Offline input-capture stub, not a model decision."
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

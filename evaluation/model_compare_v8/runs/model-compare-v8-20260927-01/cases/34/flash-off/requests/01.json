@@ -1,0 +1,101 @@
+{
+  "evaluation": 1,
+  "stage": "first",
+  "business_request_sha256": "e95b4140d0f11c467c2f12f0386470a5dfd9280f905251e6cf09578d39d50b95",
+  "business_request": {
+    "draft": {
+      "id": "fixture-draft-v6-knowledge-transition",
+      "revision": 2,
+      "body": "At 12:00 today Siva learned the password after not knowing it at 09:00."
+    },
+    "claims": [
+      {
+        "id": "claim-run-ccc7ae64-39ad-4a3e-a38f-0e88a58e1d33-1",
+        "text": "At 12:00 today Siva learned the password after not knowing it at 09:00.",
+        "allowed_evidence": [
+          {
+            "id": "fixture-span-v6_knowledge_transition-1",
+            "chapter_id": "fixture-chapter-v6_knowledge_transition-1",
+            "body": "At 09:00 today, Siva had not opened the letter and did not know the password.",
+            "label": "K1",
+            "prompt_excerpt": "At 09:00 today, Siva had not opened the letter and did not know the password."
+          },
+          {
+            "id": "fixture-span-v6_knowledge_transition-2",
+            "chapter_id": "fixture-chapter-v6_knowledge_transition-2",
+            "body": "At 12:00 today, Siva opened the letter and learned the password from it.",
+            "label": "K2",
+            "prompt_excerpt": "At 12:00 today, Siva opened the letter and learned the password from it."
+          }
+        ]
+      }
+    ],
+    "memory": [
+      {
+        "id": "fixture-memory-v6_knowledge_transition-1",
+        "memory_type": "dynamic_state",
+        "subject": "knowledge_transition",
+        "predicate": "status",
+        "value": "At 09:00 today, Siva had not opened the letter and did not know the password.",
+        "source_span_id": "fixture-span-v6_knowledge_transition-1"
+      }
+    ],
+    "output_schema": {
+      "claim_verdicts": [
+        {
+          "claim_span_id": "every supplied current claim id exactly once",
+          "verdict": "reviewed_issue|insufficient_evidence|no_issue",
+          "basis": "non-empty string, at most 400 Unicode code points; concise decision reason, not a reasoning transcript"
+        }
+      ],
+      "issues": [
+        {
+          "claim_span_id": "current claim id",
+          "status": "conflict|insufficient_evidence",
+          "nature": "confirmed_conflict|possible_conflict|state_change|insufficient_evidence",
+          "category": "allowed category",
+          "severity": "low|medium|high",
+          "explanation": "short backwards-compatible summary",
+          "reasoning": "why the cited evidence supports this nature, or exactly what evidence is missing",
+          "temporal_basis": {
+            "claim_anchor": "exact claim substring or null",
+            "evidence_anchor": "exact cited evidence substring or null",
+            "relation": "explicit_overlap|timeless_rule|explicit_later_transition|unknown"
+          },
+          "evidence": [
+            {
+              "chapter_id": "allowed chapter id",
+              "span_id": "allowed span id",
+              "relation": "supports|contradicts|context",
+              "sufficiency": "sufficient|insufficient",
+              "related_memory_ids": [
+                "known memory id"
+              ]
+            }
+          ],
+          "evidence_chain": [
+            {
+              "span_id": "one cited evidence span id",
+              "role": "prior_state|current_context|missing_link"
+            }
+          ],
+          "suggested_revision": {
+            "before": "exact text occurring once in the bound draft",
+            "after": "specific replacement text"
+          },
+          "available_actions": [
+            "edit|apply_suggestion|keep_intentional|false_positive"
+          ],
+          "proposed_memory_change": {
+            "operation": "add|replace",
+            "memory_type": "allowed memory type",
+            "subject": "string",
+            "predicate": "string",
+            "value": "string",
+            "affected_memory_id": "required for replace only"
+          }
+        }
+      ]
+    }
+  }
+}

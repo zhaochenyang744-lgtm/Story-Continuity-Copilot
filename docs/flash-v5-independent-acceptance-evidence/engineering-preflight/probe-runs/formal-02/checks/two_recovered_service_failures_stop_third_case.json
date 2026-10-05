@@ -1,0 +1,13 @@
+{
+  "name": "two_recovered_service_failures_stop_third_case",
+  "passed": true,
+  "details": {
+    "scope": "runner_control_simulation_with_mock_fixture_and_no_transport",
+    "visited_ordinals": [
+      1,
+      2
+    ],
+    "logical_cases_finished": 2,
+    "service_stop": true
+  }
+}

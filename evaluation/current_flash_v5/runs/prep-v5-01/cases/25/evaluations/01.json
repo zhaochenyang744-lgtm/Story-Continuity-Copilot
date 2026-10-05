@@ -1,0 +1,35 @@
+{
+  "case_id": "g02-three-sentences",
+  "evaluation_ordinal": 1,
+  "business_request_sha256": "c2b9461771ce2bd8bc925ab82202b70d3dcfb3fe97c995300072c8e21f3ae63a",
+  "finished_at": "2026-09-27T07:58:51.281911+00:00",
+  "outcome": "parsed",
+  "error_type": null,
+  "parsed_business_json": {
+    "summary": "林默走进北门。",
+    "summary_sources": [
+      {
+        "source_type": "draft_claim",
+        "source_id": "draft-claim-draft-68b0bbb3-8d9d-4bb7-950f-c87dd032dfb8-r2-1"
+      }
+    ],
+    "items": [
+      {
+        "section": "recent_source",
+        "text": "林默走进北门。",
+        "sources": [
+          {
+            "source_type": "draft_claim",
+            "source_id": "draft-claim-draft-68b0bbb3-8d9d-4bb7-950f-c87dd032dfb8-r2-1"
+          }
+        ]
+      }
+    ]
+  },
+  "reported_usage": {
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "observed_response_input_tokens": null,
+    "observed_response_output_tokens": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "status": "failed",
+  "error_code": "conflict_evidence_not_direct",
+  "retryable": true,
+  "input_tokens": 7057,
+  "output_tokens": 1174,
+  "latency_ms": 5039,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

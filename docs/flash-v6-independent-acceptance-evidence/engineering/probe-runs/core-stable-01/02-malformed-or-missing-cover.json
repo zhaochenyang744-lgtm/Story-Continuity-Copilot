@@ -1,0 +1,15 @@
+{
+  "detail": {
+    "array": "claim_verdicts_invalid",
+    "blank_basis": "claim_verdicts_invalid",
+    "duplicate": "claim_verdicts_invalid",
+    "foreign": "claim_verdicts_invalid",
+    "missing": "claim_verdicts_incomplete",
+    "missing_ledger": "claim_verdicts_required",
+    "null": "claim_verdicts_invalid",
+    "number": "claim_verdicts_invalid",
+    "object": "claim_verdicts_invalid"
+  },
+  "name": "malformed-or-missing-cover",
+  "status": "pass"
+}

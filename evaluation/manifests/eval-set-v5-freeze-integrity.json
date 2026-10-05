@@ -1,0 +1,18 @@
+{
+  "schema_version": "scc-eval-v5-freeze-integrity-v1",
+  "status": "frozen_data_assets",
+  "formal_run_executed": false,
+  "provider_calls": 0,
+  "case_canonical_sha256": "6eae96104b3aea7040eca1c2d927c4d7cc3ce9315a51c45045bfc10711ceb519",
+  "corpus_canonical_sha256": "48124a6eab2b65a4ab2339bf5f645d732fcbec5dbf36a3c5d25fdfc79d74795a",
+  "frozen_files": {
+    "evaluation/case_sets/eval-set-v5.json": "c79b61842f2fe1d2ff37a25cd40ce24310bf7270ec9528ab29b3e91d4fb76b30",
+    "evaluation/manifests/eval-set-v5-manifest.json": "914eb8697a7df668934cf0d9da69279523b1c3446ea96a5251ddb3bc062d6bd0",
+    "evaluation/v5-semantic-review.json": "cd5f0518016cff39980ef6c275f62ce9e29568db875335d1b6701ea7eeb1771f",
+    "evaluation/fixtures/eval-v5-corpus-manifest.json": "6c4f45022834f78b634ded5fc554d7437f7f1e14078b6b46abc8cb81dd3dd07b",
+    "evaluation/fixtures/eval-v5-ember-observatory.json": "beb4b30ae4613c06f5c95ac82a06ef14a6c546faf32efab4fe15aaec8cfb61c8",
+    "evaluation/fixtures/eval-v5-reed-foundry.json": "12cfac0f67fee346483f6e878064ca6a6e9869653fbe6e66fc2adfa737700c3b",
+    "evaluation/fixtures/eval-v5-glass-marsh.json": "c8a913c2573f03dddb65dd74402f1f37e01d7db243aa85afc973604ec098063a",
+    "evaluation/fixtures/eval-v5-copper-orchard.json": "79cecdcb51016812ba9d02d2fb67e60d10ae9da77d5d05b5078fddf52d667473"
+  }
+}

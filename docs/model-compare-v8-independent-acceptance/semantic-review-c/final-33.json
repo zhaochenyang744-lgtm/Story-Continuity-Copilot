@@ -1,0 +1,144 @@
+{
+ "schema_version": "v8-blinded-case-review-v1",
+ "case_alias": "case-33",
+ "stage": "final",
+ "reviewer": "reviewer-c",
+ "condition_visibility": "hidden",
+ "locked_at_utc": "2026-09-27T12:01:36.161979+00:00",
+ "packet_sha256": "029ba64c39bb98f31f24c0c48c88a15008f6988553528d3d66a8b2d01398f548",
+ "prior_review_hashes": {
+  "first-33.json": "a23dc7482d1eea61ad559f184ae2fa7344f055cc72f526ea0eff6abe96beb1ed"
+ },
+ "exposure_note": "Only other cases01/02 engineering traces exposed labels; this case remained hidden; not strict double blind.",
+ "repair_attempted": 0,
+ "comparisons": {
+  "answer-bd1d9a": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "first"
+  },
+  "answer-f8dcfe": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "first"
+  },
+  "answer-34a4cf": {
+   "completed": true,
+   "full_issue_fields_equal": true,
+   "normalization_count": 0,
+   "accepted_stage": "first"
+  }
+ },
+ "records": [
+  {
+   "case_alias": "case-33",
+   "response_alias": "answer-bd1d9a",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "v6-v6s-11",
+   "ratings": {
+    "F": "pass",
+    "C": "not_applicable",
+    "E_roles": "not_applicable",
+    "E_set": "not_applicable",
+    "E_binding": "not_applicable",
+    "S": "pass",
+    "D": "pass",
+    "T": "not_applicable",
+    "strict_composite": "pass"
+   },
+   "observed_decision": "no_issue",
+   "actual_issue_count": 0,
+   "findings": [
+    {
+     "dimension": "F",
+     "reason": "正确区分明确标为谎言的角色台词与叙述事实；双胞胎事实及规则与说谎事件相容。",
+     "visible_quote": "not narrator-asserted canon",
+     "evidence_pointer": "accepted answer-bd1d9a.first.parsed_business_json.claim_verdicts[0].basis"
+    }
+   ],
+   "attribution_tags": [],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "inherited_from": "first-33.json#answer-bd1d9a"
+  },
+  {
+   "case_alias": "case-33",
+   "response_alias": "answer-f8dcfe",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "v6-v6s-11",
+   "ratings": {
+    "F": "pass",
+    "C": "not_applicable",
+    "E_roles": "not_applicable",
+    "E_set": "not_applicable",
+    "E_binding": "not_applicable",
+    "S": "pass",
+    "D": "pass",
+    "T": "not_applicable",
+    "strict_composite": "pass"
+   },
+   "observed_decision": "no_issue",
+   "actual_issue_count": 0,
+   "findings": [
+    {
+     "dimension": "F",
+     "reason": "正确区分明确标为谎言的角色台词与叙述事实；双胞胎事实及规则与说谎事件相容。",
+     "visible_quote": "an attributed false utterance, not narrator-asserted canon",
+     "evidence_pointer": "accepted answer-f8dcfe.first.parsed_business_json.claim_verdicts[0].basis"
+    }
+   ],
+   "attribution_tags": [],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "inherited_from": "first-33.json#answer-f8dcfe"
+  },
+  {
+   "case_alias": "case-33",
+   "response_alias": "answer-34a4cf",
+   "stage": "final",
+   "reviewer": "reviewer-c",
+   "condition_visibility": "hidden",
+   "output_availability": "visible_and_parsed",
+   "expected_policy_reference": "v6-v6s-11",
+   "ratings": {
+    "F": "pass",
+    "C": "not_applicable",
+    "E_roles": "not_applicable",
+    "E_set": "not_applicable",
+    "E_binding": "not_applicable",
+    "S": "pass",
+    "D": "pass",
+    "T": "not_applicable",
+    "strict_composite": "pass"
+   },
+   "observed_decision": "no_issue",
+   "actual_issue_count": 0,
+   "findings": [
+    {
+     "dimension": "F",
+     "reason": "正确区分明确标为谎言的角色台词与叙述事实；双胞胎事实及规则与说谎事件相容。",
+     "visible_quote": "explicitly marks Aster's statement as a lie",
+     "evidence_pointer": "accepted answer-34a4cf.first.parsed_business_json.claim_verdicts[0].basis"
+    }
+   ],
+   "attribution_tags": [],
+   "overall_reason": "Final completed; all issue fields equal accepted output under declared engine projection. Ratings inherited; normalization=0.",
+   "locked_before_condition_reveal": true,
+   "adjudication": null,
+   "inherited_from": "first-33.json#answer-34a4cf"
+  }
+ ],
+ "locked_before_condition_reveal": true,
+ "provider_calls": 0,
+ "database_connections": 0
+}

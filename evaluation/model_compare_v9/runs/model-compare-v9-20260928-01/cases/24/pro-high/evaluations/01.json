@@ -1,0 +1,85 @@
+{
+  "evaluation": 1,
+  "business_request_sha256": "6bc2a19856964b2623b8b55cac6926b2b087584ac1cf29aec698dbde5ee1daaf",
+  "outcome": "parsed",
+  "parsed_business_json": {
+    "issues": [
+      {
+        "claim_span_id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+        "status": "conflict",
+        "nature": "confirmed_conflict",
+        "category": "event_status",
+        "severity": "high",
+        "explanation": "The 19点 watch record explicitly leaves Vela's companion unnamed, so it cannot establish that Sora accompanied her.",
+        "reasoning": "Span 6 states that at 19点 Vela moved from Gate Four on the west pier to the east pier and that the watch record leaves her companion unnamed. The current claim asserts this same 19点 record establishes Sora as the companion. The unnamed companion directly contradicts the asserted established identity at the overlapping time, proving the record cannot establish Sora's accompaniment.",
+        "temporal_basis": {
+          "claim_anchor": "19点",
+          "evidence_anchor": "At 19点",
+          "relation": "explicit_overlap"
+        },
+        "evidence": [
+          {
+            "chapter_id": "fixture-chapter-basalt_observatory-6",
+            "span_id": "fixture-span-basalt_observatory-6",
+            "relation": "contradicts",
+            "sufficiency": "sufficient",
+            "related_memory_ids": [
+              "fixture-memory-basalt_observatory-6"
+            ]
+          }
+        ],
+        "evidence_chain": [
+          {
+            "span_id": "fixture-span-basalt_observatory-6",
+            "role": "current_context"
+          }
+        ],
+        "suggested_revision": {
+          "before": "The 19点 watch record establishes that Sora accompanied Vela to the east pier.",
+          "after": "The 19点 watch record does not establish Sora as Vela's companion; it leaves her companion unnamed as she moved to the east pier."
+        },
+        "available_actions": [
+          "apply_suggestion"
+        ]
+      }
+    ],
+    "claim_verdicts": [
+      {
+        "claim_span_id": "claim-run-c9146962-1c47-4b13-b0fa-2546ea199933-1",
+        "verdict": "reviewed_issue",
+        "basis": "The source says the 19点 watch record leaves Vela's companion unnamed, so it cannot establish Sora as the companion."
+      }
+    ]
+  },
+  "error_type": null,
+  "finish_reason": "stop",
+  "usage": {
+    "raw_usage": {
+      "prompt_tokens": 3610,
+      "completion_tokens": 3959,
+      "total_tokens": 7569,
+      "prompt_tokens_details": {
+        "cached_tokens": 2432
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3428
+      },
+      "prompt_cache_hit_tokens": 2432,
+      "prompt_cache_miss_tokens": 1178
+    },
+    "status": "complete",
+    "prompt_tokens": 3610,
+    "completion_tokens": 3959,
+    "total_tokens": 7569,
+    "reasoning_tokens": 3428,
+    "reasoning_tokens_status": "reported",
+    "reasoning_tokens_invalid_reason": null,
+    "completion_includes_reasoning_do_not_add_again": true,
+    "original_8000_compatible": true,
+    "experimental_40000_compatible": true,
+    "cost_cny_reported": null,
+    "cost_status": "unknown_unless_explicitly_reported"
+  },
+  "engine_budget": 40000,
+  "usage_isolation_or_substitution": false
+}

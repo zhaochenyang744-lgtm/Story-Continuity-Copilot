@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+      "status": "insufficient_evidence",
+      "category": "object_state",
+      "severity": "low",
+      "evidence_status": "insufficient",
+      "explanation": "The 11点 holder field of the spare blue badge register is blank, so the claim that two badge registers establish Mira as the holder at 11点 lacks record support and the holder remains unknown.",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-north_glass-3",
+          "span_id": "fixture-span-north_glass-3",
+          "excerpt": "The spare blue badge register leaves its 11点 holder field blank.",
+          "relation": "context",
+          "sufficiency": "insufficient",
+          "related_memory_ids": [
+            "fixture-memory-north_glass-3"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "insufficient_evidence",
+      "reasoning": "The claim asserts Mira held the spare blue badge at 11点 and attributes this to two badge registers. The only cited register leaves the 11点 holder field blank, so it neither confirms Mira as holder nor contradicts holding; it merely fails to support the claimed registration. There is no supplied handoff, second register entry, or other record that establishes the 11点 holder. Because the decisive record detail is missing, the assertion that the registers establish this fact is unsupported, not disproved.",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-north_glass-3",
+          "role": "missing_link"
+        }
+      ],
+      "suggested_revision": null,
+      "available_actions": []
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-cf45d93d-8987-43bd-ac20-2957ba1bd718-1",
+      "returned_span_ids": [
+        "fixture-span-north_glass-2",
+        "fixture-span-north_glass-3",
+        "fixture-span-north_glass-5"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3598,
+  "output_tokens": 5876,
+  "latency_ms": 94689,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

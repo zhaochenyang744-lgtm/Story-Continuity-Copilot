@@ -1,0 +1,51 @@
+{
+  "schema_version": "scc-eval-v8-first-formal-plan-v1",
+  "status": "gate_failed",
+  "controller_candidate_gate_passed": true,
+  "formal_inputs_frozen": true,
+  "real_provider_authorization_received": true,
+  "formal_run_executed": true,
+  "provider_calls": 30,
+  "runtime_contract": {
+    "model_label": "deepseek-v4-pro",
+    "prompt_version": "continuity-review-v6"
+  },
+  "planned_input_paths": {
+    "case_set": "evaluation/case_sets/eval-set-v8.json",
+    "manifest": "evaluation/manifests/eval-set-v8-manifest.json",
+    "corpus_manifest": "evaluation/fixtures/eval-v8-corpus-manifest.json"
+  },
+  "planned_output_paths": {
+    "checkpoint": "evaluation/results/eval-v8-first-formal-checkpoint.json",
+    "results": "evaluation/results/eval-v8-first-formal-results.json",
+    "report": "evaluation/results/eval-v8-first-formal-report.md",
+    "bad_cases": "evaluation/results/eval-v8-first-formal-bad-cases.json",
+    "stability": "evaluation/results/eval-v8-first-formal-stability.json",
+    "run_manifest": "evaluation/results/eval-v8-first-formal-run-manifest.json",
+    "api_scan": "evaluation/results/eval-v8-first-formal-api-corpus-scan.json",
+    "post_run_integrity": "evaluation/results/v8-first-formal-post-run-integrity.json"
+  },
+  "provider_execution": {
+    "formal_cases": 24,
+    "stability_representative_cases": 3,
+    "additional_stability_calls": 6,
+    "planned_provider_calls": 30
+  },
+  "stability_protocol": {
+    "representative_case_ids": [
+      "v8-dusk-viaduct-conflict-relationship",
+      "v8-sable-tideglass-control-5",
+      "v8-opal-nursery-insufficient-7"
+    ],
+    "independent_runs_per_case": 3,
+    "first_formal_runs_included_per_case": 1,
+    "additional_calls_after_formal": 6,
+    "execution_status": "gate_failed",
+    "terminal_failure_quality_stability": false
+  },
+  "bad_case_protocol": {
+    "category_expected_and_predicted_retained": true,
+    "raw_provider_body_retained": false,
+    "chain_of_thought_retained": false
+  }
+}

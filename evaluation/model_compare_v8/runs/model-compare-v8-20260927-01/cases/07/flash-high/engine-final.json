@@ -1,0 +1,67 @@
+{
+  "status": "completed",
+  "issues": [
+    {
+      "claim_span_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+      "status": "conflict",
+      "category": "object_state",
+      "severity": "medium",
+      "evidence_status": "sufficient",
+      "explanation": "同一对象在同一时刻的状态互斥：草稿称港信闸在09点先关闭后首次开启，而既定时序记录称它在09点首次开启、此前从未关闭，首次关闭发生在10点。",
+      "evidence": [
+        {
+          "chapter_id": "fixture-chapter-harbor_signal-1",
+          "span_id": "fixture-span-harbor_signal-1",
+          "excerpt": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then. At 10点 on that day, it first closed after opening.",
+          "relation": "contradicts",
+          "sufficiency": "sufficient",
+          "related_memory_ids": [
+            "fixture-memory-harbor_signal-1"
+          ]
+        }
+      ],
+      "proposed_memory_change": null,
+      "review_contract_version": "trustworthy_review_v1",
+      "nature": "confirmed_conflict",
+      "reasoning": "两处文本都锁定同一日期同一时刻（“At 09点 on the same day”）和同一对象（harbor signal gate），时间与范围完全重叠，无法同时成立。引用的既定时序记录同时给出该时刻的状态（首次开启、此前从未关闭）与随后状态（10点首次关闭），因此草稿所述“09点先关闭再首次开启”被直接否定；该证据足以完整支撑这一矛盾判定，无需其他配套前提。",
+      "evidence_chain": [
+        {
+          "span_id": "fixture-span-harbor_signal-1",
+          "role": "prior_state"
+        }
+      ],
+      "suggested_revision": {
+        "before": "At 09点 on the same day, the harbor signal gate first closed before it first opened.",
+        "after": "At 09点 on the same day, the harbor signal gate first opened and had never closed before then; at 10点 on that day, it first closed after opening."
+      },
+      "available_actions": [
+        "edit",
+        "apply_suggestion",
+        "keep_intentional",
+        "false_positive"
+      ]
+    }
+  ],
+  "retrieval_traces": [
+    {
+      "claim_id": "claim-run-0c89b6fa-d3d0-44b8-a29f-ecea8a83c3e6-1",
+      "returned_span_ids": [
+        "fixture-span-harbor_signal-1",
+        "fixture-span-harbor_signal-2",
+        "fixture-span-harbor_signal-3"
+      ]
+    }
+  ],
+  "retrieval_method_version": "bounded-lexical-v4-longform",
+  "contract_normalization_count": 0,
+  "contract_normalizations": [],
+  "input_tokens": 3372,
+  "output_tokens": 1627,
+  "latency_ms": 7172,
+  "cost_cny": null,
+  "experiment_only": true,
+  "output_layer": "engine_not_api_or_database",
+  "effective_engine_budget": 40000,
+  "original_engine_budget": 8000,
+  "usage_substituted": false
+}

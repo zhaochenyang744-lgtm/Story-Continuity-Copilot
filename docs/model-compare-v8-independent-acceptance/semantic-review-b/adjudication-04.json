@@ -1,0 +1,78 @@
+{
+  "schema_version": "v8-blinded-semantic-adjudication-v1",
+  "case_alias": "case-04",
+  "response_alias": "answer-113e51",
+  "stage": "first",
+  "reviewer": "reviewer-b",
+  "condition_visibility": "hidden",
+  "locked_before_condition_reveal": true,
+  "adjudicated_at": "2026-09-27T11:45:15.074911+00:00",
+  "original_record_path": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-04.json",
+  "original_record_sha256": "73266de055eea564ac232e1f0e641810589de086b0fba27a766c791e5da14816",
+  "original_ratings": {
+    "F": "pass",
+    "C": "pass",
+    "E_roles": "pass",
+    "E_set": "pass",
+    "E_binding": "pass",
+    "S": "pass",
+    "D": "pass",
+    "T": "pass",
+    "strict_composite": "pass"
+  },
+  "revised_ratings": {
+    "F": "pass",
+    "C": "pass",
+    "E_roles": "pass",
+    "E_set": "pass",
+    "E_binding": "pass",
+    "S": "fail",
+    "D": "pass",
+    "T": "pass",
+    "strict_composite": "fail"
+  },
+  "reason": "冻结原 validator 要求 reasoning.strip() 最多800 Unicode字符，本答案881；因此首答S/strict应fail，F与证据/建议等原判保持pass。初判只按packet列明字段审阅而漏核既有隐藏长度约束，现透明更正，绝不覆写首答文件。",
+  "visible_quote": "len(reasoning.strip())>800:raise ValueError(\"schema_invalid\")",
+  "evidence_pointer": "backend/app/engine.py:499; first/04.json response answer-113e51 issues[0].reasoning",
+  "attribution_tags": [
+    "schema_error",
+    "undisclosed_existing_reasoning_length_limit"
+  ],
+  "contract_communication_gap": "packet output_schema与冻结 prompt 未明示800 reasoning限制（root技术核查）；本轮不改合同或代码，不将结构失败当事实推理失败。",
+  "observed_reasoning_codepoints": 881,
+  "existing_contract_limit": 800,
+  "corrected_case_first_summary": {
+    "F_pass": 3,
+    "strict_pass": 2
+  },
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/04.json",
+      "sha256_observed": "6bb18ce4f243c69e24f9c85a4966c8006902c0a0894a2473d89bb4a7af506989",
+      "sha256_after_review": "6bb18ce4f243c69e24f9c85a4966c8006902c0a0894a2473d89bb4a7af506989"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-04.json",
+      "sha256_observed": "73266de055eea564ac232e1f0e641810589de086b0fba27a766c791e5da14816",
+      "sha256_after_review": "73266de055eea564ac232e1f0e641810589de086b0fba27a766c791e5da14816"
+    },
+    {
+      "path": "backend/app/engine.py",
+      "sha256_observed": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd",
+      "sha256_after_review": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    }
+  ],
+  "read_hashes_stable": true,
+  "provider_calls": 0,
+  "database_connections": 0
+}

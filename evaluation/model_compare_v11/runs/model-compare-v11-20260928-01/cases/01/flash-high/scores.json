@@ -1,0 +1,72 @@
+{
+  "first": {
+    "machine_result": "fail",
+    "semantic_result": "pending_independent_review",
+    "score_layer": "raw_first_or_repair_v6",
+    "errors": [
+      "category_mismatch",
+      "product_validator:temporal_overlap_unproven",
+      "temporal_policy_mismatch"
+    ],
+    "layers": {
+      "decision": [],
+      "category": [
+        "category_mismatch"
+      ],
+      "citation": [],
+      "structure": [],
+      "temporal": [
+        "product_validator:temporal_overlap_unproven",
+        "temporal_policy_mismatch"
+      ],
+      "generation": []
+    },
+    "complete_answer": true,
+    "scoring_policy": "unchanged_v7"
+  },
+  "repair": [
+    {
+      "machine_result": "fail",
+      "semantic_result": "pending_independent_review",
+      "score_layer": "raw_first_or_repair_v6",
+      "errors": [
+        "category_mismatch",
+        "product_validator:reasoning_too_long"
+      ],
+      "layers": {
+        "decision": [],
+        "category": [
+          "category_mismatch"
+        ],
+        "citation": [],
+        "structure": [
+          "product_validator:reasoning_too_long"
+        ],
+        "temporal": [],
+        "generation": []
+      },
+      "complete_answer": true,
+      "scoring_policy": "unchanged_v7"
+    }
+  ],
+  "final": {
+    "machine_result": "terminal_failure",
+    "errors": [
+      "reasoning_too_long"
+    ],
+    "layers": {
+      "decision": [],
+      "category": [],
+      "citation": [],
+      "structure": [
+        "reasoning_too_long"
+      ],
+      "temporal": [],
+      "generation": []
+    },
+    "semantic_result": "not_delivered",
+    "output_layer": "experiment_engine_not_api_persistence"
+  },
+  "manual_semantic_review": "pending",
+  "historical_v7_not_rescored_as_new_result": true
+}

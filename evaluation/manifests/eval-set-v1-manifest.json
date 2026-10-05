@@ -1,0 +1,9 @@
+{
+  "manifest_version": "scc-eval-manifest-v1",
+  "status": "frozen_before_first_formal_provider_score",
+  "case_set": {"path": "evaluation/case_sets/eval-set-v1.json", "canonical_sha256": "2279efed11632d8f610698c3bdf6ebd45963e649fc1adbca474be06263c8972f", "case_count": 15, "split": {"conflict": 5, "no_conflict": 5, "insufficient_evidence": 5}},
+  "stability_protocol": {"representative_case_ids": ["eval-v1-gh-conflict-attribute", "eval-v1-gh-no-conflict-object", "eval-v1-gh-insufficient-boat-captain"], "independent_runs_per_case": 3, "additional_calls_after_formal": 6},
+  "scoring": {"prediction_rule": "target claim has conflict Issue => conflict; else target claim has insufficient_evidence Issue => insufficient_evidence; else no_conflict", "retrieval": "expected evidence semantic target appears in the target claim retrieval top 5", "cited_evidence_precision": "all cited Evidence rows resolve to current-project SourceSpan and match expected evidence for the evaluated target claim", "cost": "unavailable when Provider does not return cost; never estimate"},
+  "required_thresholds": {"macro_f1_min": 0.8, "conflict_recall_min": 0.8, "insufficient_evidence_recall_min": 0.8, "no_conflict_false_positive_rate_max": 0.2, "retrieval_expected_evidence_hit_at_5_min": 0.8, "cited_evidence_precision": 1.0, "schema_validity": 1.0, "evidence_resolvability_grounding": 1.0, "fail_closed_safety_paths": 1.0},
+  "boundaries": {"provider_path": "production 24 API with the configured DeepSeekProvider only", "seeds": "three original Web Demo seeds only", "protected_poc_golden_heldout": "not read, copied, run, or modified", "deployment": false, "ui_change": false}
+}

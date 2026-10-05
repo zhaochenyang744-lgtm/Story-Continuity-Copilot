@@ -1,0 +1,288 @@
+{
+  "schema_version": "v8-blinded-semantic-review-batch-v1",
+  "case_alias": "case-28",
+  "stage": "followup",
+  "reviewer": "reviewer-b",
+  "locked_at": "2026-09-27T12:02:44.168730+00:00",
+  "locked_before_condition_reveal": true,
+  "records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-28",
+      "response_alias": "answer-bda742",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-06",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "保留来源没有命名责任人/同伴这一具体缺口，并正确不把未记录等同不存在；新增不足Issue与正确basis一致。",
+          "visible_quote": "the actor remains unknown",
+          "evidence_pointer": "responses[response_alias=answer-bda742].repair.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "本例具名行为责任gold是relationship，实际character_knowledge不符合；不能把记录不知道谁视为角色知识状态。",
+          "visible_quote": "character_knowledge",
+          "evidence_pointer": "responses[response_alias=answer-bda742].repair.parsed_business_json.issues[0].category; policy"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "从空issues补为一条不足Issue，最小来源、context/insufficient+missing_link、绑定、空建议/actions均正确；纯validator通过，S/D恢复但strict未恢复。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[response_alias=answer-bda742].repair.parsed_business_json.issues[0]"
+        }
+      ],
+      "other_dimensions_checked": "修复请求与原业务输入完全相同，只追加真实拒绝答案与诊断；raw/parsed一致、basis≤400，新增Issue来源与Memory精确绑定，无操作升级。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "final与实际接受答案所有实质字段一致，新增excerpt绑定正确；completed且normalization=0。事实判断首答已正确；repair补足Issue和结构，但选错character_knowledge，strict仍失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": true,
+        "strict_transition": "fail_to_fail",
+        "normalization_count": 0,
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-28.json",
+        "F_basis": "final保留reasoning；空结果沿实际接受首答basis，不宣称final重发ledger。"
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-28",
+      "response_alias": "answer-319456",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-06",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确区分已知松盖状态与未知具名行为责任；来源未载actor不等于Ina没有松盖，三条均正确停在来源担保不足。",
+          "visible_quote": "the log neither confirms nor contradicts Ina as the actor",
+          "evidence_pointer": "responses[response_alias=answer-319456].first.parsed_business_json.claim_verdicts[0].basis / issues[0].reasoning; fixture-span-v6_actor_blank-1"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "具名行为责任的冻结类别是relationship；实际event_status，类别不符合。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "responses[response_alias=answer-319456].first.parsed_business_json.issues[0].category; policy.category"
+        }
+      ],
+      "other_dimensions_checked": "basis 257≤400且claim精确；有Issue的两条纯validator通过，A1最小集合、context/insufficient+missing_link及chapter/Memory绑定正确，unknown与空建议/actions安全。空Issue回答未升级任何操作。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "final与实际接受答案所有实质字段一致，新增excerpt绑定正确；completed且normalization=0。不足Issue实际交付且证据绑定正确，但责任归属类别错，strict失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "strict_transition": "fail_to_fail",
+        "normalization_count": 0,
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-28.json",
+        "F_basis": "final保留reasoning；空结果沿实际接受首答basis，不宣称final重发ledger。"
+      }
+    },
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-28",
+      "response_alias": "answer-e98884",
+      "stage": "final",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-06",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "明确区分已知松盖状态与未知具名行为责任；来源未载actor不等于Ina没有松盖，三条均正确停在来源担保不足。",
+          "visible_quote": "the attribution remains unknown",
+          "evidence_pointer": "responses[response_alias=answer-e98884].first.parsed_business_json.claim_verdicts[0].basis / issues[0].reasoning; fixture-span-v6_actor_blank-1"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "具名行为责任的冻结类别是relationship；实际event_status，类别不符合。",
+          "visible_quote": "event_status",
+          "evidence_pointer": "responses[response_alias=answer-e98884].first.parsed_business_json.issues[0].category; policy.category"
+        }
+      ],
+      "other_dimensions_checked": "basis 156≤400且claim精确；有Issue的两条纯validator通过，A1最小集合、context/insufficient+missing_link及chapter/Memory绑定正确，unknown与空建议/actions安全。空Issue回答未升级任何操作。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "final与实际接受答案所有实质字段一致，新增excerpt绑定正确；completed且normalization=0。不足Issue实际交付且证据绑定正确，但责任归属类别错，strict失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "repair_attempted": false,
+        "strict_transition": "fail_to_fail",
+        "normalization_count": 0,
+        "first_record": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-28.json",
+        "F_basis": "final保留reasoning；空结果沿实际接受首答basis，不宣称final重发ledger。"
+      }
+    }
+  ],
+  "repair_records": [
+    {
+      "schema_version": "v8-blinded-semantic-review-record-v1",
+      "case_alias": "case-28",
+      "response_alias": "answer-bda742",
+      "stage": "repair",
+      "reviewer": "reviewer-b",
+      "condition_visibility": "hidden",
+      "output_availability": "visible_and_parsed",
+      "expected_policy_reference": "v6-v6s-06",
+      "ratings": {
+        "F": "pass",
+        "C": "fail",
+        "E_roles": "pass",
+        "E_set": "pass",
+        "E_binding": "pass",
+        "S": "pass",
+        "D": "pass",
+        "T": "pass",
+        "strict_composite": "fail"
+      },
+      "observed_decision": "insufficient_evidence",
+      "actual_issue_count": 1,
+      "findings": [
+        {
+          "dimension": "F",
+          "verdict": "pass",
+          "reason": "保留来源没有命名责任人/同伴这一具体缺口，并正确不把未记录等同不存在；新增不足Issue与正确basis一致。",
+          "visible_quote": "the actor remains unknown",
+          "evidence_pointer": "responses[response_alias=answer-bda742].repair.parsed_business_json.issues[0].reasoning"
+        },
+        {
+          "dimension": "C",
+          "verdict": "fail",
+          "reason": "本例具名行为责任gold是relationship，实际character_knowledge不符合；不能把记录不知道谁视为角色知识状态。",
+          "visible_quote": "character_knowledge",
+          "evidence_pointer": "responses[response_alias=answer-bda742].repair.parsed_business_json.issues[0].category; policy"
+        },
+        {
+          "dimension": "D",
+          "verdict": "pass",
+          "reason": "从空issues补为一条不足Issue，最小来源、context/insufficient+missing_link、绑定、空建议/actions均正确；纯validator通过，S/D恢复但strict未恢复。",
+          "visible_quote": "insufficient_evidence",
+          "evidence_pointer": "responses[response_alias=answer-bda742].repair.parsed_business_json.issues[0]"
+        }
+      ],
+      "other_dimensions_checked": "修复请求与原业务输入完全相同，只追加真实拒绝答案与诊断；raw/parsed一致、basis≤400，新增Issue来源与Memory精确绑定，无操作升级。",
+      "attribution_tags": [
+        "category_mismatch"
+      ],
+      "overall_reason": "事实判断首答已正确；repair补足Issue和结构，但选错character_knowledge，strict仍失败。",
+      "locked_before_condition_reveal": true,
+      "adjudication": null,
+      "comparison_to_locked_first": {
+        "F_transition": "pass_to_pass",
+        "S_transition": "fail_to_pass",
+        "D_transition": "fail_to_pass",
+        "C_transition": "not_delivered_to_fail",
+        "strict_transition": "fail_to_fail"
+      }
+    }
+  ],
+  "summary": {
+    "responses": 3,
+    "repair_attempted": 1,
+    "repair_F_pass": 1,
+    "repair_strict_pass": 0,
+    "structure_recoveries": 1,
+    "delivery_recoveries": 1,
+    "F_recoveries": 0,
+    "strict_recoveries": 0,
+    "final_F_pass": 3,
+    "final_F_unassessable": 0,
+    "final_strict_pass": 0,
+    "terminal_failures": 0,
+    "normalization_contribution": 0
+  },
+  "provider_calls": 0,
+  "database_connections": 0,
+  "read_hashes": [
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/followup/28.json",
+      "sha256_observed": "3a57d8ada92693117ae875903c8372e2abc9670505b17e4d78a76a1653746d10",
+      "sha256_after_review": "3a57d8ada92693117ae875903c8372e2abc9670505b17e4d78a76a1653746d10"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/semantic-review-b/first-28.json",
+      "sha256_observed": "d28f07aab754b5a638a9895daa3cd5d3454348f9b92cad22e90e37ac3e1e5f45",
+      "sha256_after_review": "d28f07aab754b5a638a9895daa3cd5d3454348f9b92cad22e90e37ac3e1e5f45"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/blind-review/model-compare-v8-20260927-01/first/28.json",
+      "sha256_observed": "16dcd4d9c96daaca53b1fecfaf394118f5a134e47252ccaddbb334172ab711fa",
+      "sha256_after_review": "16dcd4d9c96daaca53b1fecfaf394118f5a134e47252ccaddbb334172ab711fa"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.md",
+      "sha256_observed": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593",
+      "sha256_after_review": "2a92201c007bf7c4d68139006158c82ee207a8e875058a7c3a072aafda455593"
+    },
+    {
+      "path": "docs/model-compare-v8-independent-acceptance/SEMANTIC-CRITERIA.json",
+      "sha256_observed": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157",
+      "sha256_after_review": "57afb2de28ac196cfee74bfb2baafc128417addc7a315ed9e427b34a2df94157"
+    },
+    {
+      "path": "backend/app/engine.py",
+      "sha256_observed": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd",
+      "sha256_after_review": "82c0bbff17df78e038803ab0c79dbe94b981b2dceedc56518693c4667ed3ddfd"
+    }
+  ],
+  "read_hashes_stable": true
+}

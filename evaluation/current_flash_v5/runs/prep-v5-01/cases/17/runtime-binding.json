@@ -1,0 +1,57 @@
+{
+  "project_id": "fixture-project-orchard-restoration",
+  "draft_id": "fixture-draft-orchard-restoration",
+  "draft_revision": 2,
+  "source_revision": 1,
+  "memory_version": 1,
+  "chapters": [
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-1",
+      "chapter_number": 1,
+      "source_revision": 1,
+      "chapter_body_sha256": "df92a4dc5c1c210fd70f49c2397a49fcd7c04cc74a2b8c4675dab0c23423e444",
+      "span_id": "fixture-span-orchard_restoration-1",
+      "span_body_sha256": "df92a4dc5c1c210fd70f49c2397a49fcd7c04cc74a2b8c4675dab0c23423e444"
+    },
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-2",
+      "chapter_number": 2,
+      "source_revision": 1,
+      "chapter_body_sha256": "ee6b5877c1f31b10ca147ebf15e24e53dfa2b0db175b86646294ca2c3c18b847",
+      "span_id": "fixture-span-orchard_restoration-2",
+      "span_body_sha256": "ee6b5877c1f31b10ca147ebf15e24e53dfa2b0db175b86646294ca2c3c18b847"
+    },
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-3",
+      "chapter_number": 3,
+      "source_revision": 1,
+      "chapter_body_sha256": "ed93d0de5cdb5ada73d6d2d3e0c83f26c312af10fb31b7588fa2dc5b7d726f48",
+      "span_id": "fixture-span-orchard_restoration-3",
+      "span_body_sha256": "ed93d0de5cdb5ada73d6d2d3e0c83f26c312af10fb31b7588fa2dc5b7d726f48"
+    },
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-4",
+      "chapter_number": 4,
+      "source_revision": 1,
+      "chapter_body_sha256": "cad38e921e19a6040dd58382a11ff6afcbe3f3fd4c1448e905ece9adddb03337",
+      "span_id": "fixture-span-orchard_restoration-4",
+      "span_body_sha256": "cad38e921e19a6040dd58382a11ff6afcbe3f3fd4c1448e905ece9adddb03337"
+    },
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-5",
+      "chapter_number": 5,
+      "source_revision": 1,
+      "chapter_body_sha256": "41b63d972f6aa53ff35696c0989c799bb77bbe08b3192bdcd0089477ef9d5124",
+      "span_id": "fixture-span-orchard_restoration-5",
+      "span_body_sha256": "41b63d972f6aa53ff35696c0989c799bb77bbe08b3192bdcd0089477ef9d5124"
+    },
+    {
+      "chapter_id": "fixture-chapter-orchard_restoration-6",
+      "chapter_number": 6,
+      "source_revision": 1,
+      "chapter_body_sha256": "7ae83ffc418e2d3e6495440c90d1c765ac41532440123d10b76398fa43cb0565",
+      "span_id": "fixture-span-orchard_restoration-6",
+      "span_body_sha256": "7ae83ffc418e2d3e6495440c90d1c765ac41532440123d10b76398fa43cb0565"
+    }
+  ]
+}

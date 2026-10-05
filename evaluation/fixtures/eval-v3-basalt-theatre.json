@@ -1,0 +1,24 @@
+{
+  "schema_version": "scc-evaluation-only-corpus-v1",
+  "corpus_key": "basalt_theatre",
+  "title": "岩隙剧场",
+  "evaluation_only": true,
+  "production_seed": false,
+  "protected_asset_source": false,
+  "chapters": [
+    {"chapter_number": 1, "title": "银铃转台", "source_label": "转台准则", "body": "岩隙剧场的转台只会在银铃敲响后旋转，穿堂风不会带动它。"},
+    {"chapter_number": 2, "title": "合还钥匙", "source_label": "钥匙约定", "body": "林照与冉棠约定，导演钥匙须由两人一同归还给道具间。"},
+    {"chapter_number": 3, "title": "未署名便笺", "source_label": "寄件知识", "body": "林照尚未得知那张未署名便笺由谁送入剧场。"},
+    {"chapter_number": 4, "title": "高柜面具", "source_label": "面具状态", "body": "琥珀面具仍放在高柜第二层，防尘罩没有掀开。"},
+    {"chapter_number": 5, "title": "第三次排演", "source_label": "排演状态", "body": "第三次排演因石阶积水取消，演员没有登台。"},
+    {"chapter_number": 6, "title": "侧门足迹", "source_label": "离场缺口", "body": "便笺送达后从哪一扇侧门离场，门房日志没有记载。"},
+    {"chapter_number": 7, "title": "钥匙刻纹", "source_label": "刻纹缺口", "body": "导演钥匙的刻纹编号尚未抄录进道具册。"}
+  ],
+  "memory": [
+    {"memory_type": "static_canon", "subject": "岩隙剧场转台", "predicate": "rotation_rule", "value": "银铃敲响后才旋转", "source": {"chapter_number": 1, "source_label": "转台准则"}},
+    {"memory_type": "relationship", "subject": "林照与冉棠", "predicate": "director_key", "value": "两人一同归还", "source": {"chapter_number": 2, "source_label": "钥匙约定"}},
+    {"memory_type": "character_knowledge", "subject": "林照", "predicate": "does_not_know", "value": "未署名便笺的送达者", "source": {"chapter_number": 3, "source_label": "寄件知识"}},
+    {"memory_type": "dynamic_state", "subject": "琥珀面具", "predicate": "location", "value": "高柜第二层且防尘罩未掀开", "source": {"chapter_number": 4, "source_label": "面具状态"}},
+    {"memory_type": "event_timeline", "subject": "第三次排演", "predicate": "status", "value": "因石阶积水取消", "source": {"chapter_number": 5, "source_label": "排演状态"}}
+  ]
+}
