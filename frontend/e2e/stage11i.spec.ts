@@ -78,6 +78,10 @@ test("all core rejected remains in_review and Check fails closed", async ({ page
   const coverage = await page.evaluate(async (id) => (await fetch(`/api/projects/${id}/memory/coverage`)).json(), projectId);
   expect(coverage.data).toMatchObject({ status: "in_review", counts: { confirmed_core: 0, pending_canon_count: 0 } });
   await page.getByRole("button", { name: "写作与检查", exact: true }).click();
+  // An empty draft cannot be checked at all; give it text so the server's fail-closed rule is what stops the check.
+  await setDraftBody(page, "林默把银钥匙交给守塔人。");
+  await page.getByRole("button", { name: "保存草稿" }).click();
+  await expect(page.locator(".workspace-save-summary strong")).toHaveText("已保存");
   await page.getByRole("button", { name: "运行连续性检查" }).click();
   await expect(page.getByText("事实库尚待初始化", { exact: false })).toBeVisible();
   expect(failedChecks).toEqual([422]);

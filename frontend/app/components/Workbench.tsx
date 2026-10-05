@@ -4309,7 +4309,7 @@ function RunLifecycle({ run, blocked, cancelRun, retryRun, actions = true }: { r
   return (
     <section className={`run-lifecycle status-${run.status}${run.status === "completed" ? " compact" : ""}`} aria-label={`${run.run_type === "memory_delta" ? "事实变化" : "连续性"}检查进度`} aria-live="polite">
       {/* A finished check is already summarised beside the draft; here it shrinks to a one-line record. */}
-      {run.status === "completed" ? <p className="run-compact"><span>{run.run_type === "memory_delta" ? "事实库检查" : "连续性检查"}</span> · {stage(run.status)} · {timestampLabel(run.completed_at)}</p> : <header>
+      {run.status === "completed" ? <p className="run-compact"><span>{run.run_type === "memory_delta" ? "事实库检查" : "连续性检查"}</span> · {stage(run.status)}{(run.attempt_number ?? 1) > 1 ? ` · 第 ${run.attempt_number} 次尝试` : ""} · {timestampLabel(run.completed_at)}</p> : <header>
         <div>
           <p className="eyebrow">{run.run_type === "memory_delta" ? "事实库检查" : "连续性检查"}</p>
           <h2>{stage(run.stage)}</h2>

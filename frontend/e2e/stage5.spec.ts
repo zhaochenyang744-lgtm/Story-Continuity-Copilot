@@ -349,6 +349,10 @@ test.describe.serial("Stage 5 real local workflow", () => {
       await register(page, account("stagefiveresponsive"));
       await createProject(page, "响应式操作作品");
       await projectNavButton(page, "写作与检查").click();
+      await expect(page.getByRole("button", { name: "运行连续性检查" })).toBeDisabled();
+      await setDraftBody(page, "雨停后，她把灯放回窗台。");
+      await page.getByRole("button", { name: "保存草稿" }).click();
+      await expect(page.locator(".workspace-save-summary strong")).toHaveText("已保存");
       await expect(page.getByRole("button", { name: "运行连续性检查" })).toBeEnabled();
       await expect(page.locator("body")).toHaveCSS("scroll-behavior", "auto");
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.getBoundingClientRect().width)).toBe(true);
@@ -471,7 +475,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.getByRole("dialog", { name: "恢复作品", exact: true }).getByRole("button", { name: "恢复作品", exact: true }).click();
     await expect(page.getByText("作品信息已更新")).toBeVisible();
     await projectNavButton(page, "写作与检查").click();
-    await expect(page.getByRole("button", { name: "运行连续性检查" })).toBeEnabled();
+    await expect(page.getByRole("button", { name: "运行连续性检查" })).toBeVisible(); // restored and writable; the draft is still empty, so the check stays disabled
     await page.screenshot({ path: path.join(shots, "1440-restored-workspace.png"), fullPage: true });
   });
 

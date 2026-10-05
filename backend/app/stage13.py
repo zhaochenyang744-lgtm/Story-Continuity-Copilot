@@ -826,6 +826,8 @@ class Stage13Service:
                         "v2_author_character_plans", "v2_author_world_plans",
                     ):
                         c.execute(f"DELETE FROM {table} WHERE project_id=?", (project_id,))
+                    if "v2_demo_seed_state" in existing_tables:
+                        c.execute("DELETE FROM v2_demo_seed_state WHERE project_id=?", (project_id,))
                     c.execute("DELETE FROM v2_projects WHERE id=?", (project_id,))
                 reservation_ids = [row[0] for row in c.execute("SELECT id FROM v2_usage_reservations WHERE user_id=?", (user_id,)).fetchall()]
                 for reservation_id in reservation_ids:

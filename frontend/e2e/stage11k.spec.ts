@@ -8,7 +8,7 @@ async function api(page: import("@playwright/test").Page, path: string) {
 async function readyForDelta(page: import("@playwright/test").Page) {
   await registerAccount(page, { prefix: "stage11k" });
   await importMarkdown(page, "stage9-mist-harbor.md", "11K 增量作品");
-  await page.getByRole("button",{name:"初始化事实库"}).click(); await page.getByRole("button",{name:"审核候选与原文依据"}).click(); const init=page.getByRole("form",{name:"事实库初始化审核"}); const core=init.locator("article.memory-init-candidate").filter({hasText:"核心候选（必须决定）"}); await core.getByLabel("接受（写入第 1 版事实库）").check(); await init.getByRole("button",{name:"确认核心审核并建立第 1 版事实库"}).click(); await expect(init.getByText("已建立部分事实库",{exact:true})).toBeVisible();
+  await page.getByRole("button",{name:"初始化事实库"}).click(); await page.getByRole("button",{name:"审核候选与原文依据"}).click(); const init=page.getByRole("form",{name:"事实库初始化审核"}); const core=init.locator("article.memory-init-candidate").filter({hasText:"重要事实（需要决定）"}); await core.getByLabel("接受（写入第 1 版事实库）").check(); await init.getByRole("button",{name:"确认核心审核并建立第 1 版事实库"}).click(); await expect(init.getByText("已建立部分事实库",{exact:true})).toBeVisible();
   const id=new URL(page.url()).pathname.split("/")[2]; await page.goto(`/projects/${id}/sources`); await page.getByLabel("章节正文").fill("# 增量章节\n林默将银钥匙交给守塔人。"); const preview=page.waitForResponse((r)=>r.url().includes("source-change-sets/preview")&&r.request().method()==="POST"); await page.getByRole("button",{name:"预览追加"}).click(); expect((await preview).status()).toBe(201); const commit=page.waitForResponse((r)=>/source-change-sets\/.+\/commit/.test(r.url())&&r.request().method()==="POST"); await page.getByRole("button",{name:"确认追加并创建下一章草稿"}).click(); expect((await commit).status()).toBe(200); return id;
 }
 

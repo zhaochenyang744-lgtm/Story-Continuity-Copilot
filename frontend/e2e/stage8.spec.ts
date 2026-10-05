@@ -76,7 +76,7 @@ test("fresh account restores login and visitor completes the preset Grey Harbor 
   await drawer.getByRole("button", { name: "查看来源", exact: true }).click();
   const source = page.getByRole("dialog", { name: /的章节来源$/ });
   await expect(source.getByRole("heading", { name: /第 \d+ 章《.+》/ })).toBeVisible();
-  await expect(source.locator(".source-drawer-header p")).not.toBeEmpty();
+  await expect(source.locator(".source-drawer-header p:not(.eyebrow)")).not.toBeEmpty();
   await expect(source.locator(".source-excerpt blockquote")).not.toBeEmpty();
   await source.locator("summary").click();
   await expect(source.locator(".source-technical")).toContainText(new URL(page.url()).pathname.replace(/workspace$/, "sources#span-"));
