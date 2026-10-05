@@ -547,6 +547,9 @@ class ContinuityEngine:
             added=screening.attribute_contacts([claim for claim in claims if claim["id"] not in flags],data["memory"],chapters)
             flags.update({claim_id:{"kind":"check","facts":[]} for claim_id in added})
             summary["safety_net"]=len(added)
+            capped=screening.capped_key_claims(claims,{claim_id:flag["kind"] for claim_id,flag in flags.items()})
+            flags.update({claim_id:{**flags[claim_id],"kind":"check"} for claim_id in capped})
+            summary["key_capped"]=len(capped)
         else:
             # A short draft is reviewed whole, every sentence with thinking.
             flags={claim["id"]:{"kind":"unscreened","facts":[]} for claim in claims}
@@ -681,7 +684,8 @@ class ContinuityEngine:
         """
         suffix=screening.SECOND_PASS_SUFFIX
         decided={issue["claim_span_id"] for issue in result["issues"]}|{row["claim_span_id"] for row in result["undecided_claims"]}
-        again=[{**claim,"id":claim["id"]+suffix} for claim in deep if flags[claim["id"]]["kind"] in screening.DEEP_KINDS and claim["id"] not in decided]
+        passed=[claim for claim in deep if claim["id"] not in decided]
+        again=[{**claim,"id":claim["id"]+suffix} for claim in screening.second_look_claims(passed,{claim["id"]:flags[claim["id"]]["kind"] for claim in passed})]
         summary.update(second_look=len(again),second_look_found=0)
         if not again:return result
         second=self._execute({**base,"claims":again,"max_claims_per_batch":1,"settled_by_screen":True,"second_review":True},prior_results=result["_results"],keep_results=True,pool=pool)

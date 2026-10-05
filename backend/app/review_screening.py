@@ -55,6 +55,13 @@ SECOND_LOOK = True
 TRIAGE_MAX_CLAIMS = 8
 TRIAGE_ESCALATION_MIN_SCORE = 2
 TRIAGE_ESCALATION_CAP = 4
+# Per-chapter caps on thinking reviews. On the lf1 formal set (2026-10-05) one chapter's screen saw
+# 11 key sentences; with their second looks and the escalations it cost 1.07 CNY against a 0.60 bar,
+# while no other chapter had more than 5. Key sentences beyond KEY_MAX_CLAIMS go to the triage
+# instead (conflicts are kept before gaps, then reading order), and only SECOND_LOOK_MAX_CLAIMS of
+# them get a second look, so a chapter has at most 5 + 3 + TRIAGE_ESCALATION_CAP thinking reviews.
+KEY_MAX_CLAIMS = 5
+SECOND_LOOK_MAX_CLAIMS = 3
 # The triage only scores, so each sentence brings its three best passages.
 TRIAGE_PASSAGES_PER_CLAIM = 3
 # One evaluation of a screened review may send its larger input up to three times (high, medium and
@@ -249,6 +256,27 @@ def parse_triage(payload: Any, sentence_ids: dict[str, str]) -> dict[str, int]:
     if len(scores) != len(sentence_ids):
         raise ScreenContractError("triage_sentence_missing")
     return scores
+
+
+def _key_order(claims: list[dict[str, Any]], kinds: dict[str, str]) -> dict[Any, list[str]]:
+    """Key claim ids per context: conflicts before gaps, then reading order."""
+    by_context: dict[Any, list[tuple[int, int, str]]] = {}
+    for position, claim in enumerate(claims):
+        kind = kinds.get(claim["id"])
+        if kind in DEEP_KINDS:
+            by_context.setdefault(claim.get("context"), []).append((DEEP_KINDS.index(kind), position, claim["id"]))
+    return {context: [claim_id for _, _, claim_id in sorted(rows)] for context, rows in by_context.items()}
+
+
+def capped_key_claims(claims: list[dict[str, Any]], kinds: dict[str, str]) -> set[str]:
+    """Key claim ids beyond KEY_MAX_CLAIMS per context, which the caller sends to the triage instead."""
+    return {claim_id for ids in _key_order(claims, kinds).values() for claim_id in ids[KEY_MAX_CLAIMS:]}
+
+
+def second_look_claims(claims: list[dict[str, Any]], kinds: dict[str, str]) -> list[dict[str, Any]]:
+    """The key claims given a second look: at most SECOND_LOOK_MAX_CLAIMS per context, in reading order."""
+    chosen = {claim_id for ids in _key_order(claims, kinds).values() for claim_id in ids[:SECOND_LOOK_MAX_CLAIMS]}
+    return [claim for claim in claims if claim["id"] in chosen]
 
 
 def triage_escalations(claims: list[dict[str, Any]], scores: dict[str, int]) -> set[str]:

@@ -115,9 +115,9 @@ CONTINUITY_PROMPT_VERSION = "continuity-review-v24c-explicit-missing-link"
 # The screened pipeline (long-text phase 4): a cheap non-thinking screen picks the sentences worth a
 # careful look, and only those are reviewed, against passages of earlier chapters instead of whole
 # spans. The review keeps every v24c rule and adds SCREENED_REVIEW_RULES.
-CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25e-screened-passages-second-review-missing-link"
+CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25f-screened-presupposed-links-bounded-knowledge"
 CONTINUITY_SCREEN_PROMPT_VERSION = "continuity-screen-v1"
-CONTINUITY_TRIAGE_PROMPT_VERSION = "continuity-triage-v2-scores"
+CONTINUITY_TRIAGE_PROMPT_VERSION = "continuity-triage-v3-presupposed-links"
 SCREEN_KINDS = ("conflict", "gap", "check")
 SCREEN_MAX_FACTS_PER_FLAG = 3
 
@@ -166,6 +166,8 @@ CONTINUITY_DECISION_EXAMPLES = (
 SCREENED_REVIEW_RULES = (
     "draft.body is the current chapter, or the part of it around the current claims. Judge only current_claims. The other draft sentences are context: they may narrate a transition, or tell who a pronoun or role refers to, and are never reported themselves.",
     "Each evidence span is one passage of an earlier chapter, not the whole chapter. A passage that does not mention a point neither supports nor contradicts it. When a claim treats such a point as already established earlier (an outcome, a handoff, what someone learned, what a record says), and the supplied passages leave it open, that missing link is insufficient_evidence, not no_issue.",
+    "A claim also asserts what it presupposes. A modifier or attribution such as 'the box that A entrusted to her', 'the official procedure', 'the change caused by X', or 'concluded that the crop survived' asserts that handoff, source, cause or outcome; check it against the passages like a direct statement. When the passages give a different route (a request made to someone else, a second-hand or informal report, a state recorded before the deciding event, two things merely observed together) and nothing supplies the presupposed link, report insufficient_evidence naming it.",
+    "A bounded ignorance and a claim about the same moment overlap. When a passage says someone did not yet know something at a stated time (their first day, a named meal or visit), and the claim says they already knew it at that same time or earlier (the same occasion, 'before arriving', 'from the start'), report a conflict-status issue; a later learning event cannot reconcile them. Likewise a lifelong or innate condition (born without a sense, never, always) holds at every later time: a claim that contradicts it is a conflict-status issue, not a missing learning event.",
 )
 
 # The triage is a second, evidence-backed screen for sentences the first screen only marked worth a
@@ -176,7 +178,7 @@ SCREENED_REVIEW_RULES = (
 CONTINUITY_TRIAGE_RULES = (
     "You compare draft sentences with passages of earlier chapters, before a careful continuity review that can only look at a few of them. Score every listed sentence once.",
     "3: a supplied passage states something that cannot be true together with the sentence (a different attribute, name, age, origin, holder, condition, place at the same time, count, date, relationship, knowledge or outcome, or an action a stated rule forbids), or the sentence asserts as settled something a passage states is unknown, unfinished or only planned.",
-    "2: a passage seems to disagree with the sentence but the match is not certain, or the sentence states a specific fact about something the passages describe without supporting that fact, or relies on a handoff, learning, record or authority they do not provide.",
+    "2: a passage seems to disagree with the sentence but the match is not certain, or the sentence states a specific fact about something the passages describe without supporting that fact, or relies on a handoff, learning, record, authority, cause, outcome or source they do not provide, including one built into a phrase (whose object it is, who gave it, where a method came from, what caused a change, how something turned out).",
     "1: passages describe the same people or things and agree with the sentence. 0: the passages do not bear on the sentence, or the sentence only narrates new action, speech or feeling in the current scene.",
     "A change the current chapter itself narrates before the sentence is not a disagreement; the chapter text is context for that. Judge only the listed sentences.",
     "Return exactly one JSON object with exactly one key, scores: one entry per listed sentence id with an integer score 0-3. Do not use Markdown.",

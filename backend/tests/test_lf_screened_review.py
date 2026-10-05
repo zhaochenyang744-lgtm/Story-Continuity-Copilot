@@ -111,7 +111,7 @@ class ScreenedReviewTests(unittest.TestCase):
         reviewed = [claim["id"] for request in provider.reviews() for claim in request["claims"]]
         self.assertEqual(reviewed, ["claim-5"])
         self.assertEqual(result["screening"], {"claims": 9, "screened": True, "parts": 1, "fallback_parts": 0, "flagged": 1, "reviewed": 1,
-                                               "triaged": 0, "triage_fallback_batches": 0, "escalated": 0, "deep_reviewed": 1, "safety_net": 0,
+                                               "triaged": 0, "triage_fallback_batches": 0, "escalated": 0, "deep_reviewed": 1, "safety_net": 0, "key_capped": 0,
                                                "double_reviewed": 0, "second_look": 0, "second_look_found": 0})
         self.assertEqual(result["retrieval_method_version"], screening.SCREENED_RETRIEVAL_METHOD_VERSION)
         states = {row["claim_id"]: row["screen"] for row in result["retrieval_traces"]}
@@ -255,6 +255,22 @@ class ScreenedReviewTests(unittest.TestCase):
         self.assertEqual((result["screening"]["double_reviewed"], result["screening"]["double_found"]), (2, 1))
         # The missing-link second look is off while key sentences are reviewed twice.
         self.assertFalse([r for r in provider.reviews() if r.get("second_look")])
+
+    def test_key_sentences_beyond_the_cap_go_to_the_triage_and_second_looks_are_capped(self):
+        # Seven gaps and two conflicts: the conflicts are kept first, then gaps in reading order.
+        kinds = ["gap"] * 4 + ["conflict"] + ["gap"] * 3 + ["conflict"]
+        provider = Fake(flag=lambda request: [{"id": s["id"], "kind": kind, "facts": []} for s, kind in zip(request["sentences"], kinds)])
+        result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
+        first = sorted(r["claims"][0]["id"] for r in provider.reviews() if not r["claims"][0]["id"].endswith("#pass2"))
+        key = ["claim-1", "claim-2", "claim-3", "claim-5", "claim-9"]
+        self.assertEqual(result["screening"]["key_capped"], 9 - screening.KEY_MAX_CLAIMS)
+        triaged = [s["id"] for r in provider.requests if r.get("task") == "continuity_triage" for s in r["sentences"]]
+        self.assertEqual((len(triaged), result["screening"]["triaged"]), (4, 4))
+        self.assertEqual(first, sorted(key))
+        # claim-5 was found by its first review; of the four passed key sentences, conflicts first.
+        second = sorted(r["claims"][0]["id"] for r in provider.reviews() if r["claims"][0]["id"].endswith("#pass2"))
+        self.assertEqual(second, ["claim-1#pass2", "claim-2#pass2", "claim-9#pass2"])
+        self.assertEqual(result["screening"]["second_look"], screening.SECOND_LOOK_MAX_CLAIMS)
 
     def test_deep_reviews_carry_one_claim_each(self):
         provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "conflict", "facts": []} for s in request["sentences"]])
@@ -438,6 +454,13 @@ class PureHelperTests(unittest.TestCase):
         self.assertTrue({"c0", "c9"} <= escalated)
         self.assertFalse({"c7", "c8"} & escalated)
         self.assertEqual(escalated - {"c0", "c9"}, {f"c{i}" for i in range(1, screening.TRIAGE_ESCALATION_CAP - 1)})
+
+    def test_key_caps_are_per_context(self):
+        claims = [{"id": f"{context}{i}", "context": context} for context in ("a", "b") for i in range(7)]
+        kinds = {claim["id"]: "gap" for claim in claims}
+        self.assertEqual(screening.capped_key_claims(claims, kinds), {"a5", "a6", "b5", "b6"})
+        self.assertEqual([c["id"] for c in screening.second_look_claims(claims, kinds)], ["a0", "a1", "a2", "b0", "b1", "b2"])
+        self.assertEqual(screening.capped_key_claims(claims, {"a0": "check"}), set())
 
     def test_parse_triage_requires_a_score_for_every_sentence(self):
         ids = {"s1": "claim-1", "s2": "claim-2"}
