@@ -54,14 +54,16 @@ SECOND_PASS_SUFFIX = "#pass2"
 SECOND_LOOK = True
 TRIAGE_MAX_CLAIMS = 8
 TRIAGE_ESCALATION_MIN_SCORE = 2
-TRIAGE_ESCALATION_CAP = 4
+TRIAGE_ESCALATION_CAP = 3
 # Per-chapter caps on thinking reviews. On the lf1 formal set (2026-10-05) one chapter's screen saw
 # 11 key sentences; with their second looks and the escalations it cost 1.07 CNY against a 0.60 bar,
 # while no other chapter had more than 5. Key sentences beyond KEY_MAX_CLAIMS go to the triage
 # instead (conflicts are kept before gaps, then reading order), and only SECOND_LOOK_MAX_CLAIMS of
-# them get a second look, so a chapter has at most 5 + 3 + TRIAGE_ESCALATION_CAP thinking reviews.
+# them get a second look, so a chapter has at most 5 + 2 + TRIAGE_ESCALATION_CAP thinking reviews.
+# With 3 second looks and 4 escalations the lf1 dev set still went over the bars on its heaviest
+# chapters (p4-v25f-1: p90 106 s, max 0.6015 CNY), so both were lowered by one.
 KEY_MAX_CLAIMS = 5
-SECOND_LOOK_MAX_CLAIMS = 3
+SECOND_LOOK_MAX_CLAIMS = 2
 # The triage only scores, so each sentence brings its three best passages.
 TRIAGE_PASSAGES_PER_CLAIM = 3
 # One evaluation of a screened review may send its larger input up to three times (high, medium and

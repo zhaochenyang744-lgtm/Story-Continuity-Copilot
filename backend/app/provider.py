@@ -115,7 +115,7 @@ CONTINUITY_PROMPT_VERSION = "continuity-review-v24c-explicit-missing-link"
 # The screened pipeline (long-text phase 4): a cheap non-thinking screen picks the sentences worth a
 # careful look, and only those are reviewed, against passages of earlier chapters instead of whole
 # spans. The review keeps every v24c rule and adds SCREENED_REVIEW_RULES.
-CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25f-screened-presupposed-links-bounded-knowledge"
+CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25g-screened-presupposed-links-bounded-knowledge-rule-category"
 CONTINUITY_SCREEN_PROMPT_VERSION = "continuity-screen-v1"
 CONTINUITY_TRIAGE_PROMPT_VERSION = "continuity-triage-v3-presupposed-links"
 SCREEN_KINDS = ("conflict", "gap", "check")
@@ -168,6 +168,7 @@ SCREENED_REVIEW_RULES = (
     "Each evidence span is one passage of an earlier chapter, not the whole chapter. A passage that does not mention a point neither supports nor contradicts it. When a claim treats such a point as already established earlier (an outcome, a handoff, what someone learned, what a record says), and the supplied passages leave it open, that missing link is insufficient_evidence, not no_issue.",
     "A claim also asserts what it presupposes. A modifier or attribution such as 'the box that A entrusted to her', 'the official procedure', 'the change caused by X', or 'concluded that the crop survived' asserts that handoff, source, cause or outcome; check it against the passages like a direct statement. When the passages give a different route (a request made to someone else, a second-hand or informal report, a state recorded before the deciding event, two things merely observed together) and nothing supplies the presupposed link, report insufficient_evidence naming it.",
     "A bounded ignorance and a claim about the same moment overlap. When a passage says someone did not yet know something at a stated time (their first day, a named meal or visit), and the claim says they already knew it at that same time or earlier (the same occasion, 'before arriving', 'from the start'), report a conflict-status issue; a later learning event cannot reconcile them. Likewise a lifelong or innate condition (born without a sense, never, always) holds at every later time: a claim that contradicts it is a conflict-status issue, not a missing learning event.",
+    "When a stated prohibition or requirement (never, must not, under no circumstances, always must) by itself contradicts the claimed action, the category is world_rule, even when the action moves, places or uses an object; object_state is for a contradiction with where an object is or what condition it is in.",
 )
 
 # The triage is a second, evidence-backed screen for sentences the first screen only marked worth a

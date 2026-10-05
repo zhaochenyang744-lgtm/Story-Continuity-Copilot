@@ -223,7 +223,8 @@ class ScreenedReviewTests(unittest.TestCase):
             gap["evidence_chain"][0]["role"] = "missing_link"
             return ProviderResult({"issues": [gap], "claim_verdicts": verdict("insufficient_evidence")}, input_tokens=100, output_tokens=10)
         provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "gap", "facts": []} for s in request["sentences"][3:6]], review=review)
-        result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
+        with mock.patch.object(screening, "SECOND_LOOK_MAX_CLAIMS", 3):
+            result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
         second = sorted(r["claims"][0]["id"] for r in provider.reviews() if r["claims"][0]["id"].endswith("#pass2"))
         self.assertEqual(second, ["claim-4#pass2", "claim-5#pass2", "claim-6#pass2"])
         # Second reviews are marked, so the prompt asks them to watch for missing links.
@@ -269,7 +270,7 @@ class ScreenedReviewTests(unittest.TestCase):
         self.assertEqual(first, sorted(key))
         # claim-5 was found by its first review; of the four passed key sentences, conflicts first.
         second = sorted(r["claims"][0]["id"] for r in provider.reviews() if r["claims"][0]["id"].endswith("#pass2"))
-        self.assertEqual(second, ["claim-1#pass2", "claim-2#pass2", "claim-9#pass2"])
+        self.assertEqual(second, ["claim-1#pass2", "claim-9#pass2"])
         self.assertEqual(result["screening"]["second_look"], screening.SECOND_LOOK_MAX_CLAIMS)
 
     def test_deep_reviews_carry_one_claim_each(self):
@@ -459,7 +460,7 @@ class PureHelperTests(unittest.TestCase):
         claims = [{"id": f"{context}{i}", "context": context} for context in ("a", "b") for i in range(7)]
         kinds = {claim["id"]: "gap" for claim in claims}
         self.assertEqual(screening.capped_key_claims(claims, kinds), {"a5", "a6", "b5", "b6"})
-        self.assertEqual([c["id"] for c in screening.second_look_claims(claims, kinds)], ["a0", "a1", "a2", "b0", "b1", "b2"])
+        self.assertEqual([c["id"] for c in screening.second_look_claims(claims, kinds)], ["a0", "a1", "b0", "b1"])
         self.assertEqual(screening.capped_key_claims(claims, {"a0": "check"}), set())
 
     def test_parse_triage_requires_a_score_for_every_sentence(self):
