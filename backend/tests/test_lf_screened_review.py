@@ -112,7 +112,7 @@ class ScreenedReviewTests(unittest.TestCase):
         self.assertEqual(reviewed, ["claim-5"])
         self.assertEqual(result["screening"], {"claims": 9, "screened": True, "parts": 1, "fallback_parts": 0, "flagged": 1, "reviewed": 1,
                                                "triaged": 0, "triage_fallback_batches": 0, "escalated": 0, "deep_reviewed": 1, "safety_net": 0,
-                                               "second_look": 0, "second_look_found": 0})
+                                               "double_reviewed": 0, "second_look": 0, "second_look_found": 0})
         self.assertEqual(result["retrieval_method_version"], screening.SCREENED_RETRIEVAL_METHOD_VERSION)
         states = {row["claim_id"]: row["screen"] for row in result["retrieval_traces"]}
         self.assertEqual(states["claim-5"], "flagged")
@@ -120,6 +120,7 @@ class ScreenedReviewTests(unittest.TestCase):
         self.assertTrue(all(not row["returned_span_ids"] for row in result["retrieval_traces"] if row["screen"] == "passed"))
         # Screen and review usage are both counted.
         self.assertEqual((result["input_tokens"], result["output_tokens"]), (110, 22))
+        self.assertEqual([item["claim_span_id"] for item in result["issues"]], ["claim-5"])
 
     def test_check_flags_are_triaged_and_only_what_the_triage_flags_gets_a_thinking_review(self):
         provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "check", "facts": []} for s in request["sentences"]])
@@ -193,12 +194,29 @@ class ScreenedReviewTests(unittest.TestCase):
             # A conflict from the second look is not taken.
             return ProviderResult({"issues": [issue(claim, span)], "claim_verdicts": verdict("reviewed_issue")}, input_tokens=100, output_tokens=10)
         provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "gap", "facts": []} for s in request["sentences"][3:5]], review=review)
-        result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
+        with mock.patch.object(screening, "SECOND_LOOK", True):
+            result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
         second = [r for r in provider.reviews() if r.get("second_look")]
         self.assertEqual(sorted(r["claims"][0]["id"] for r in second), ["claim-4", "claim-5"])
         self.assertEqual([(i["claim_span_id"], i["nature"]) for i in result["issues"]], [("claim-5", "insufficient_evidence")])
         self.assertEqual((result["screening"]["second_look"], result["screening"]["second_look_found"]), (2, 1))
         self.assertEqual(result["input_tokens"], 10 + 4 * 100)
+
+    def test_a_finding_from_either_review_of_a_key_sentence_counts(self):
+        def review(request):
+            claim = request["claims"][0]
+            span = claim["allowed_evidence"][0]
+            verdict = lambda kind: [{"claim_span_id": claim["id"], "verdict": kind, "basis": "见引用。"}]
+            if claim["id"].endswith("#pass2") and "手指" in claim["text"]:
+                return ProviderResult({"issues": [issue(claim, span)], "claim_verdicts": verdict("reviewed_issue")}, input_tokens=1, output_tokens=1)
+            return ProviderResult({"issues": [], "claim_verdicts": verdict("no_issue")}, input_tokens=1, output_tokens=1)
+        provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "conflict", "facts": []} for s in request["sentences"][3:5]], review=review)
+        with mock.patch.object(screening, "DOUBLE_REVIEW", True):
+            result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
+        self.assertEqual([(i["claim_span_id"], i["nature"]) for i in result["issues"]], [("claim-5", "possible_conflict")])
+        self.assertEqual((result["screening"]["double_reviewed"], result["screening"]["double_found"]), (2, 1))
+        # The missing-link second look is off while key sentences are reviewed twice.
+        self.assertFalse([r for r in provider.reviews() if r.get("second_look")])
 
     def test_deep_reviews_carry_one_claim_each(self):
         provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "conflict", "facts": []} for s in request["sentences"]])
@@ -264,13 +282,17 @@ class ScreenedReviewTests(unittest.TestCase):
         calls = []
         def review(request):
             calls.append([claim["id"] for claim in request["claims"]])
-            if any(claim["id"] == "claim-5" for claim in request["claims"]):
+            if any(claim["id"].startswith(bad) for claim in request["claims"] for bad in ("claim-5", "claim-6#")):
                 raise ProviderInvalidJson(1, 1, None, 1, "stop")
             return ProviderResult({"issues": [], "claim_verdicts": [{"claim_span_id": c["id"], "verdict": "no_issue", "basis": "见引用。"} for c in request["claims"]]}, input_tokens=1, output_tokens=1)
         provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "conflict", "facts": []} for s in request["sentences"][3:6]], review=review)
         result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
         self.assertEqual(result["status"], "completed")
         self.assertEqual(result["undecided_claims"], [{"claim_span_id": "claim-5", "error_code": "invalid_json"}])
+        with mock.patch.object(screening, "DOUBLE_REVIEW", True):
+            doubled = ContinuityEngine(Fake(flag=provider.flag, review=review)).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
+        # Reviewed twice: both reviews of claim-5 failed, so it is undecided; only claim-6's second failed, so it is decided.
+        self.assertEqual(doubled["undecided_claims"], [{"claim_span_id": "claim-5", "error_code": "invalid_json"}])
 
     def test_a_screen_timeout_fails_the_run_as_timed_out(self):
         provider = Fake(screen_answers=[ProviderTimeout()])

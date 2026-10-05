@@ -42,6 +42,15 @@ VERIFY_PASSAGE_CHARS = 2500
 VERIFY_MAX_PASSAGES = 8
 DEEP_KINDS = ("conflict", "gap")
 DEEP_MAX_CLAIMS = 1
+# DOUBLE_REVIEW: a sentence the screen saw a conflict or gap in gets two independent thinking reviews,
+# sent together as the sentence and a shadow copy with SECOND_PASS_SUFFIX on its id; a finding from
+# either counts. It steadied recall on the lf1 dev set (2026-10-05) but runaway thinking doubled with
+# it and the check went over its cost and time bars (p4-v18, p4-v19: 0.33-0.34 CNY mean, 102-115 s
+# p90), so it is off. SECOND_LOOK: the missing-link second look (engine._second_look) of a key
+# sentence the first review passed; on unless DOUBLE_REVIEW is.
+DOUBLE_REVIEW = False
+SECOND_PASS_SUFFIX = "#pass2"
+SECOND_LOOK = True
 TRIAGE_MAX_CLAIMS = 8
 TRIAGE_ESCALATION_MIN_SCORE = 2
 TRIAGE_ESCALATION_CAP = 4

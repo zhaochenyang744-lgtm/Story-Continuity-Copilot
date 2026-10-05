@@ -559,8 +559,14 @@ class ContinuityEngine:
         summary["deep_reviewed"]=len(deep)
         # A short draft keeps the per-sentence batching (and the quota preflight's arithmetic) of before.
         limit=screening.DEEP_MAX_CLAIMS if summary["screened"] else CONTINUITY_MAX_CLAIMS_PER_BATCH
-        result=self._execute({**base,"claims":deep,"max_claims_per_batch":limit,"settled_by_screen":summary["screened"]},prior_results=results,keep_results=True)
-        if summary["screened"] and result["status"]=="completed":
+        # Key sentences (a conflict or gap at the screen) are reviewed twice, in the same parallel run.
+        passes=[{**claim,"id":claim["id"]+screening.SECOND_PASS_SUFFIX} for claim in deep if flags[claim["id"]]["kind"] in screening.DEEP_KINDS] if summary["screened"] and screening.DOUBLE_REVIEW else []
+        summary["double_reviewed"]=len(passes)
+        result=self._execute({**base,"claims":deep+passes,"max_claims_per_batch":limit,"settled_by_screen":summary["screened"]},prior_results=results,keep_results=True)
+        if passes and result["status"]=="completed":
+            result=self._merge_passes(result,{claim["id"] for claim in deep if claim["id"]+screening.SECOND_PASS_SUFFIX in {p["id"] for p in passes}},
+                                      {claim["id"]:index for index,claim in enumerate(claims)},summary)
+        if screening.SECOND_LOOK and not passes and summary["screened"] and result["status"]=="completed":
             result=self._second_look(result,deep,flags,base,summary)
         result={key:value for key,value in result.items() if key!="_results"}
         paths={claim["id"]:("escalated" if claim["id"] in escalated else "deep") for claim in deep}
@@ -568,6 +574,31 @@ class ContinuityEngine:
         result={**result,"retrieval_traces":screening.retrieval_traces(claims,{claim["id"]:claim["allowed_evidence"] for claim in reviewed},flags,summary["screened"],paths),
                 "retrieval_method_version":SCREENED_RETRIEVAL_METHOD_VERSION,"screening":summary}
         return result
+
+    def _merge_passes(self,result:dict[str,Any],doubled:set[str],order:dict[str,int],summary:dict[str,Any])->dict[str,Any]:
+        """Fold the second reviews back onto their sentences: a finding from either review counts.
+
+        A conflict outranks a missing link, a confirmed conflict a possible one, and both outrank a
+        state_change, which is never a card. A sentence reviewed twice is undecided only if both were.
+        """
+        suffix=screening.SECOND_PASS_SUFFIX
+        base_id=lambda claim_id:claim_id[:-len(suffix)] if claim_id.endswith(suffix) else claim_id
+        rank=lambda issue:{"confirmed_conflict":3,"possible_conflict":2,"insufficient_evidence":1}.get(issue.get("nature"),0)
+        chosen:dict[str,dict[str,Any]]={}; found_first=set()
+        for issue in result["issues"]:
+            claim_id=base_id(issue["claim_span_id"])
+            if claim_id==issue["claim_span_id"]:found_first.add(claim_id)
+            issue={**issue,"claim_span_id":claim_id}
+            if claim_id not in chosen or rank(issue)>rank(chosen[claim_id]):chosen[claim_id]=issue
+        summary["double_found"]=sum(1 for claim_id in chosen if claim_id in doubled and claim_id not in found_first)
+        rows:dict[str,list[dict[str,Any]]]={}
+        for row in result["undecided_claims"]:rows.setdefault(base_id(row["claim_span_id"]),[]).append(row)
+        kept=[{**found[0],"claim_span_id":claim_id} for claim_id,found in rows.items() if claim_id not in chosen and (claim_id not in doubled or len(found)==2)]
+        normalizations=list({(base_id(row["claim_span_id"]),row["reason_code"]):{**row,"claim_span_id":base_id(row["claim_span_id"])}
+                             for row in result["contract_normalizations"] if base_id(row["claim_span_id"]) in chosen}.values())
+        issues=sorted(chosen.values(),key=lambda issue:order[issue["claim_span_id"]])
+        return {**result,"issues":issues,"undecided_claims":sorted(kept,key=lambda row:order[row["claim_span_id"]]),"undecided_claim_count":len(kept),
+                "contract_normalizations":normalizations,"contract_normalization_count":len(normalizations)}
 
     def _second_look(self,result:dict[str,Any],deep:list[dict[str,Any]],flags:dict[str,Any],base:dict[str,Any],summary:dict[str,Any])->dict[str,Any]:
         """A missing-link second look at sentences the screen saw a conflict or gap in but the first review passed.
