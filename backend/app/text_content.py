@@ -13,6 +13,11 @@ import re
 DRAFT_BODY_FORMATS = {"plain_text", "markdown"}
 
 
+def written_chars(text: str) -> int:
+    """Characters as the author counts them: whitespace and line breaks are not counted."""
+    return len(re.sub(r"\s+", "", text))
+
+
 def visible_draft_text(body: str, body_format: str) -> str:
     """Return reader-visible text for the Markdown subset emitted by Tiptap.
 

@@ -21,7 +21,7 @@ from .brief_citations import split_draft_claims
 from .database import DomainError, digest
 from .memory_contract import is_controlled_candidate, normalize_memory_value, normalized_predicate
 from .seed_data import CHAPTER_BODIES, CHAPTERS, DEMO_REVIEW_ISSUES, DEMO_SEED_VERSION, DRAFT, MEMORY_RECORDS
-from .text_content import DRAFT_BODY_FORMATS, visible_draft_text
+from .text_content import DRAFT_BODY_FORMATS, visible_draft_text, written_chars
 from . import long_term_workflow as workflow
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION, VERIFY_MAX_PASSAGES as SCREENED_MAX_TRACE_SPANS
 
@@ -3506,6 +3506,20 @@ class V2Database:
             row=c.execute("SELECT r.body,r.revision FROM v2_draft_revisions r JOIN v2_drafts d ON d.id=r.draft_id WHERE r.draft_id=? AND r.revision=? AND d.project_id=?",(draft_id,revision,project_id)).fetchone()
             if not row:return 0
             return len(split_continuity_claims(visible_draft_text(row["body"],self._draft_body_format(c,draft_id,revision))))
+
+    def draft_check_chars(self,user_id:str,project_id:str,draft_id:str,revision:int)->int:
+        """Characters a check of this saved draft revision spends from the author's quota."""
+        with self.connection() as c:
+            self._project(c,user_id,project_id)
+            row=c.execute("SELECT r.body FROM v2_draft_revisions r JOIN v2_drafts d ON d.id=r.draft_id WHERE r.draft_id=? AND r.revision=? AND d.project_id=?",(draft_id,revision,project_id)).fetchone()
+            return written_chars(visible_draft_text(row["body"],self._draft_body_format(c,draft_id,revision))) if row else 0
+
+    def incremental_review_chars(self,project_id:str,batch_id:str)->int:
+        """Characters an incremental review of the newly added chapters spends from the author's quota."""
+        with self.connection() as c:
+            batch=c.execute("SELECT source_revision FROM v2_memory_delta_batches WHERE id=? AND project_id=?",(batch_id,project_id)).fetchone()
+            if not batch: return 0
+            return sum(written_chars(source["body"]) for source in self._delta_sources(c,project_id,batch["source_revision"]))
 
     def run_claim_count(self,user_id:str,project_id:str,run_id:str)->int:
         """Claims a retry of this continuity run will review: the same draft revision it was bound to."""

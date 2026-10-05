@@ -105,6 +105,7 @@ export const labelError = (cause: unknown) => {
     workflow_quota_exceeded: "点数不足：今天的点数已经用完了。这次没有开始，也没有扣点数，请过几个小时再来。",
     provider_attempt_quota_exceeded: "点数不足：今天的点数已经用完了，这次没有做完。请过几个小时再来。",
     server_budget_exceeded: "服务器今天的用量已到上限，这次没有调用模型，请稍后再试。",
+    import_quota_exceeded: "每天只能导入并建立一本书的事实库，今天的次数已经用过了。这次没有开始，明天再来。",
     budget_rates_unavailable: "服务器预算费率未配置，AI 功能已安全关闭。",
     import_too_large: "文件超过当前身份的服务器导入上限，未写入任何内容。",
     draft_too_large: "单次草稿最多 30,000 个 Unicode 字符。",
@@ -208,6 +209,16 @@ export const labelError = (cause: unknown) => {
     profile_revision_conflict: "个人信息已在其他窗口更新，已载入最新版本；请确认后重试。",
     profile_update_not_allowed: "当前身份不支持修改个人信息。",
   };
+  if (code === "character_quota_exceeded") {
+    const { characters, remaining } = ((cause as ApiFailure)?.details ?? {}) as Record<string, unknown>;
+    if (typeof characters === "number" && typeof remaining === "number")
+      return `今天的检查字数不够：这次要检查约 ${characters.toLocaleString()} 字，今天还剩 ${remaining.toLocaleString()} 字。这次没有开始检查，也没有扣字数。可以只检查一部分，或者明天再来。`;
+    return "今天的检查字数已经用完了。这次没有开始检查，也没有扣字数，明天再来。";
+  }
+  if (code === "visitor_check_too_long") {
+    const { limit } = ((cause as ApiFailure)?.details ?? {}) as Record<string, unknown>;
+    return `访客每次最多检查 ${typeof limit === "number" ? limit.toLocaleString() : "3,000"} 字。这次没有开始检查；注册账号后可以检查更长的章节。`;
+  }
   if (code === "provider_attempt_quota_insufficient") {
     const details = (cause as ApiFailure)?.details ?? {};
     const { claims, max_claims: maxClaims } = details as Record<string, unknown>;

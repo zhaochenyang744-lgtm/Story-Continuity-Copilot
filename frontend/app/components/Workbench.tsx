@@ -769,6 +769,28 @@ function TutorialCompleteVisual() {
     />
   );
 }
+type CheckUsage =
+  | { account_type: "registered"; check_chars_limit: number; check_chars_used: number; check_chars_remaining: number; imports_limit: number; imports_remaining: number }
+  | { account_type: "visitor"; check_chars_per_check: number; checks_limit: number; checks_remaining: number };
+const writtenChars = (text: string) => text.replace(/\s+/g, "").length;
+
+/** What this check will spend and what is left today, shown before the author starts a check. */
+function CheckAllowance({ draftChars, refreshKey }: { draftChars: number; refreshKey: string }) {
+  const [usage, setUsage] = useState<CheckUsage | null>(null);
+  useEffect(() => {
+    let live = true;
+    request<CheckUsage>("/account/usage").then((next) => { if (live) setUsage(next); }).catch(() => { if (live) setUsage(null); });
+    return () => { live = false; };
+  }, [refreshKey]);
+  if (!usage) return null;
+  if (usage.account_type === "visitor") {
+    const tooLong = draftChars > usage.check_chars_per_check;
+    return <p className={`check-allowance${tooLong ? " over" : ""}`} role="note">本次约 {draftChars.toLocaleString()} 字 · 访客每次最多 {usage.check_chars_per_check.toLocaleString()} 字，今天还可检查 {usage.checks_remaining} 次</p>;
+  }
+  const over = draftChars > usage.check_chars_remaining;
+  return <p className={`check-allowance${over ? " over" : ""}`} role="note">本次约 {draftChars.toLocaleString()} 字 · 今天还可检查 {usage.check_chars_remaining.toLocaleString()} 字（每天 {usage.check_chars_limit.toLocaleString()} 字）</p>;
+}
+
 function MoreMenu({ children, danger }: { children: ReactNode; danger?: ReactNode }) {
   const menu = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
@@ -5278,6 +5300,7 @@ function ProjectPage(p: {
           <p className="breadcrumb">项目 / {p.project.title} / 写作与检查</p>
           <h1>写作与检查</h1>
           <p className={`workspace-save-summary ${saveState}`}><strong key={saveLabel}>{saveLabel}</strong><span>{saveDetail}</span>{p.draft && <span className="workspace-draft-meta">第 {p.draft.chapter_number ?? "—"} 章 · 第 {p.draft.revision ?? "—"} 次保存</span>}</p>
+          {!p.readOnly && !emptyDraft && <CheckAllowance draftChars={writtenChars(p.saved?.body ?? p.draft?.body ?? "")} refreshKey={`${p.saved?.revision ?? 0}:${p.run?.run_id ?? ""}:${p.run?.status ?? ""}`} />}
         </div>
         {!p.readOnly && (
           <div className="actions">

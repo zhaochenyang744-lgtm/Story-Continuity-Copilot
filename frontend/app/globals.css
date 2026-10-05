@@ -1825,6 +1825,8 @@ body { font-size: 14px; }
   box-shadow: var(--elev-2);
 }
 .more-menu > div button { width: 100%; justify-content: flex-start; border-color: transparent; white-space: nowrap; }
+.check-allowance { margin: 6px 0 0; color: var(--faint); font-size: 13px; }
+.check-allowance.over { color: var(--medium); }
 .more-menu-danger { display: grid; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line); }
 .more-menu-danger button { color: var(--high); }
 .project-rows .actions { display: grid; width: 176px; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }

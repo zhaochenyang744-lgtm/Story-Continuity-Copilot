@@ -31,6 +31,7 @@ from .stage13 import (
     provider_usage,
 )
 from .v2_database import V2Database
+from .text_content import written_chars
 from .project_export import register_project_export_routes
 from .long_term_workflow import register_long_term_routes
 
@@ -496,6 +497,8 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.post('/api/auth/password-reset/confirm')
     def password_reset_confirm(payload:PasswordResetConfirm,request:Request):
         csrf(request); return ok(request,stage13.confirm_password_reset(payload.token,payload.password,client_ip(request)))
+    @app.get('/api/account/usage')
+    def account_usage(request:Request):return ok(request,stage13.character_usage(user(request)['id']))
     @app.get('/api/home')
     def home(request:Request):return ok(request,db.home(user(request)['id']))
     @app.get('/api/onboarding')
@@ -678,7 +681,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             current=db.memory_initialization(actor['id'],project_id)
             initialization=current if view=='full' else {field:current.get(field) for field in ('id','project_id','status','source_revision','created_at','completed_at')}
             return ok(request,{"initialization":initialization})
-        reservation_id=stage13.reserve_workflow(actor['id'],project_id,'memory_initialization')
+        reservation_id=stage13.reserve_workflow(actor['id'],project_id,'memory_initialization',characters=sum(written_chars(source.get('body') or '') for source in input_data['sources']),character_kind='import')
         with provider_usage(actor['id'],reservation_id): result=memory_engine.execute(input_data)
         if result['status']!='completed':
             status=429 if result.get('error_code') in {'provider_attempt_quota_exceeded','workflow_quota_exceeded','server_budget_exceeded'} else 503
@@ -718,7 +721,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         if not engine.provider.available: raise HTTPException(503,'provider_unavailable')
         data,status,created=db.create_incremental_runs(actor['id'],project_id,payload.model_dump(),key(idempotency_key),engine.provenance(),delta_engine.provenance())
         if created:
-            try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'incremental_review',data['continuity_run_id'])
+            try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'incremental_review',data['continuity_run_id'],characters=db.incremental_review_chars(project_id,data['batch_id']),character_kind='check')
             except DomainError as error:
                 failed={'status':'failed','error_code':error.code,'retryable':True}
                 db.finish_incremental_runs(project_id,data['batch_id'],failed,failed); raise
@@ -761,7 +764,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             shortfall=provider_attempt_shortfall(actor['id'],db.draft_claim_count(actor['id'],project_id,payload.draft_id,payload.draft_revision))
             if shortfall:
                 db.finish_run(project_id,data['run_id'],{'status':'failed','error_code':shortfall.code,'retryable':True}); raise shortfall
-            try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'continuity',data['run_id'])
+            try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'continuity',data['run_id'],characters=db.draft_check_chars(actor['id'],project_id,payload.draft_id,payload.draft_revision),character_kind='check')
             except DomainError as error:
                 db.finish_run(project_id,data['run_id'],{'status':'failed','error_code':error.code,'retryable':True}); raise
             if executor:executor(execute,project_id,data['run_id'],actor['id'],reservation_id)
