@@ -771,7 +771,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.post('/api/projects/{project_id}/checks',status_code=202)
     def checks(project_id:str,payload:Check,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request); operation(request,'check_create_failed')
-        actor=user(request); db.check_preflight(actor['id'],project_id,payload.draft_id,payload.draft_revision)
+        actor=user(request); db.check_preflight(actor['id'],project_id,payload.draft_id,payload.draft_revision,screened=engine.pipeline()=='screened')
         if not engine.provider.available:raise HTTPException(503,'provider_unavailable')
         data,status,created=db.create_run(actor['id'],project_id,payload.model_dump(exclude_none=True),key(idempotency_key),engine.provenance())
         if created:

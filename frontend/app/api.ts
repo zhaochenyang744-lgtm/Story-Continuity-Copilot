@@ -140,7 +140,7 @@ export const labelError = (cause: unknown) => {
     lineage_invalid_requires_recheck:
       "草稿已经更新，请基于最新保存的版本重新检查。",
     insufficient_project_context:
-      "事实库尚待初始化；此作品暂不能运行连续性检查。",
+      "这部作品还没有可以对照的正文，暂时不能检查。先写下或导入至少一章。",
     invalid_candidate_decision: "请为每个候选选择接受、拒绝或编辑后接受。",
     memory_candidate_not_decided: "此候选当前已是待审核状态，无需再次重新评估。",
     memory_candidate_review_conflict: "此候选的审核状态已在其他窗口变化；请刷新后再操作。",

@@ -5171,7 +5171,7 @@ function ProjectPage(p: {
               ? "导入的原文已由作者确认，并建立了第 1 版事实库。"
               : p.initialization?.status === "draft"
                 ? "事实库候选正在等待逐项作者审核；候选不会自动写入事实库。"
-                : "导入作品尚待作者确认事实库；完成初始化前不会启动连续性检查。"}
+                : "导入的原文已经可以拿来检查；建立并确认事实库后，检查会更准。"}
             {p.initialization?.status === "required" && (
               <Button className="primary" disabled={blocked} onClick={() => void p.startMemoryInitialization()}>
                 初始化事实库
@@ -5281,7 +5281,7 @@ function ProjectPage(p: {
             <strong>第 1 版事实库为空</strong>
             <p>
               {p.project.memory_initialization_status === "required"
-                ? "导入作品尚待作者确认的事实库；完成初始化前不会启动连续性检查。"
+                ? "这部导入作品还没有建立事实库。不建也能检查，系统会直接对照原文；建立并确认后检查更准。"
                 : "新作品没有已确认事实。"}
             </p>
           </div>
@@ -5353,8 +5353,8 @@ function ProjectPage(p: {
       )}
       {p.project.data_origin === "user_import" && p.project.memory_initialization_status !== "completed" && (
         <p className="warning">
-          <I>!</I>先在事实库中完成初始化审核；事实库为空时不会启动连续性检查。
-          <Button className="quiet" onClick={() => p.go(`/projects/${p.project.id}/memory`)}>前往审核</Button>
+          <I>!</I>这部导入作品还没确认事实库。现在就能检查，系统会直接对照原文；确认事实库后检查更准。
+          <Button className="quiet" onClick={() => p.go(`/projects/${p.project.id}/memory`)}>去确认事实库</Button>
         </p>
       )}
       {p.coverage?.status === "update_pending" && (
@@ -5790,7 +5790,7 @@ function MemoryInitializationReview({
         </div>
       )}
       {coverage?.status === "in_review" && coverage.counts.core_pending === 0 && coverage.counts.confirmed_core === 0 && (
-        <div className="notice error" role="alert">核心候选均未被确认；尚不能开始连续性检查。请在某个核心候选上选择“重新评估此候选”后重新决定；系统不会自动接受事实。</div>
+        <div className="notice error" role="alert">核心候选均未被确认，事实库还是空的；检查仍会直接对照原文进行。请在某个核心候选上选择“重新评估此候选”后重新决定；系统不会自动接受事实。</div>
       )}
     </form>
   );

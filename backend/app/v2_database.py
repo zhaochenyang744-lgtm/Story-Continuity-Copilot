@@ -2941,7 +2941,26 @@ class V2Database:
             return self._idem(c,user_id,"update_project:"+project_id,key,payload,update)
 
     # --- draft/revision and continuity persistence ---
-    def check_preflight(self, user_id: str, project_id: str, draft_id: str, draft_revision: int) -> None:
+    def _has_written_text(self, c: sqlite3.Connection, project_id: str) -> bool:
+        return any((span["body"] or "").strip() for span in self._current_spans(c, project_id))
+
+    def _require_check_context(self, c: sqlite3.Connection, project: sqlite3.Row, screened: bool) -> None:
+        """What a check needs before it may start.
+
+        The screened pipeline finds its evidence in passages of the written chapters, so written text is
+        enough; confirmed facts only sharpen retrieval, and an author may review them later (v1.6.0).
+        The legacy pipeline compares against confirmed facts and still needs a reviewed fact base.
+        """
+        if screened:
+            if not self._has_written_text(c, project["id"]): raise DomainError("insufficient_project_context",422)
+            return
+        coverage=self._memory_coverage(c,project["id"])
+        if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["confirmed_core"] < 1:
+            raise DomainError("insufficient_project_context",422)
+        context=c.execute("SELECT COUNT(*) FROM v2_memory_records WHERE project_id=? AND version=?",(project["id"],project["current_memory_version"])).fetchone()[0]
+        if not context: raise DomainError("insufficient_project_context",422)
+
+    def check_preflight(self, user_id: str, project_id: str, draft_id: str, draft_revision: int, screened: bool = False) -> None:
         """Validate a check request before inspecting provider availability.
 
         Empty user-created projects have neither confirmed memory nor usable
@@ -2954,11 +2973,7 @@ class V2Database:
             if not draft: raise DomainError("resource_not_found",404)
             if draft["revision"]!=draft_revision: raise DomainError("draft_revision_not_current",409)
             workflow.require_review_complete(c, project_id)
-            coverage=self._memory_coverage(c,project_id)
-            if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["confirmed_core"] < 1:
-                raise DomainError("insufficient_project_context",422)
-            context=c.execute("SELECT COUNT(*) FROM v2_memory_records WHERE project_id=? AND version=?",(project_id,project["current_memory_version"])).fetchone()[0]
-            if not context: raise DomainError("insufficient_project_context",422)
+            self._require_check_context(c, project, screened)
             if not draft["body"].strip(): raise DomainError("draft_invalid",422)
 
     def patch_draft(self, user_id: str, project_id: str, draft_id: str, payload: dict[str, Any], key: str):
@@ -2999,11 +3014,7 @@ class V2Database:
                 if not draft: raise DomainError("resource_not_found",404)
                 if draft["revision"]!=payload["draft_revision"]: raise DomainError("draft_revision_not_current",409)
                 if not draft["body"].strip(): raise DomainError("draft_invalid",422)
-                coverage=self._memory_coverage(c,project_id)
-                if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["confirmed_core"] < 1:
-                    raise DomainError("insufficient_project_context",422)
-                context=c.execute("SELECT COUNT(*) FROM v2_memory_records WHERE project_id=? AND version=?",(project_id,project["current_memory_version"])).fetchone()[0]
-                if not context: raise DomainError("insufficient_project_context",422)
+                self._require_check_context(c, project, provenance.get("retrieval_method_version")==SCREENED_RETRIEVAL_METHOD_VERSION)
                 running=c.execute("SELECT id FROM v2_runs WHERE project_id=? AND draft_id=? AND source_revision=? AND run_type='continuity' AND status IN ('queued','running')",(project_id,draft["id"],draft["revision"])).fetchone()
                 if running: raise DomainError("run_already_active",409,False,{"run_id":running["id"]})
                 run_id,stamp=new_id("run"),utcnow()
@@ -3418,8 +3429,12 @@ class V2Database:
             if not run: raise DomainError("resource_not_found",404)
             if run["status"] not in RUN_ACTIVE_STATUSES or run["cancel_requested_at"]: raise DomainError("run_cancelled",409)
             if not workflow.binding_is_current(c,run): raise DomainError("run_basis_changed",409)
-            coverage=self._memory_coverage(c,project_id)
-            if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["pending_canon_count"] != 0:
+            screened=run["retrieval_method_version"]==SCREENED_RETRIEVAL_METHOD_VERSION
+            if not screened:
+                coverage=self._memory_coverage(c,project_id)
+                if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["pending_canon_count"] != 0:
+                    raise DomainError("insufficient_project_context",422)
+            elif not self._has_written_text(c,project_id):
                 raise DomainError("insufficient_project_context",422)
             revision=c.execute("SELECT * FROM v2_draft_revisions WHERE draft_id=? AND revision=?",(run["draft_id"],run["source_revision"])).fetchone()
             body_format=self._draft_body_format(c,revision["draft_id"],revision["revision"])
@@ -3430,8 +3445,8 @@ class V2Database:
                 c.execute("INSERT OR IGNORE INTO v2_run_claims VALUES(?,?,?,?)",(claim_id,run_id,ordinal+1,text))
             source_memory_version=run["source_memory_version"]
             memory=[dict(x) for x in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id",(project_id,source_memory_version,source_memory_version,source_memory_version)).fetchall()]
-            if not memory: raise DomainError("insufficient_project_context",422)
-            if run["retrieval_method_version"]==SCREENED_RETRIEVAL_METHOD_VERSION:
+            if not memory and not screened: raise DomainError("insufficient_project_context",422)
+            if screened:
                 # The screened pipeline retrieves passages itself, after the screen; traces are written
                 # with the result. The draft comes after every chapter, so all of them are earlier text.
                 for claim in claims: claim["context"]="draft"

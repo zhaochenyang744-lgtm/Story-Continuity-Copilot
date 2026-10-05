@@ -147,3 +147,33 @@ class ChapterCheckTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ImportedTextIsEnoughContextTests(unittest.TestCase):
+    """v1.6.0: an imported work can be checked before its fact base is built or reviewed."""
+
+    def setUp(self):
+        from tests.test_stage9_memory_initialization import Stage9MemoryInitializationTests
+        self.stage9 = Stage9MemoryInitializationTests("test_import_initialize_decide_commit_v1_then_first_check")
+        self.stage9.setUp()
+        self.addCleanup(self.stage9.tearDown)
+
+    def test_the_screened_pipeline_needs_only_written_text(self):
+        db = self.stage9.app.state.database
+        project_id = self.stage9.imported_project()
+        user_id = self.stage9.client.get("/api/auth/session").json()["data"]["user"]["id"]
+        draft = self.stage9.client.get(f"/api/projects/{project_id}").json()["data"]["current_draft"]
+        saved = self.stage9.client.patch(f"/api/projects/{project_id}/drafts/{draft['id']}", headers={"Idempotency-Key": str(uuid.uuid4())},
+                                         json={"title": "新章", "body": "林默推开港务局的门。", "base_revision": draft["revision"]}).json()["data"]
+        coverage = self.stage9.client.get(f"/api/projects/{project_id}/memory/coverage").json()["data"]
+        self.assertEqual(coverage["status"], "required")
+        db.check_preflight(user_id, project_id, saved["id"], saved["revision"], screened=True)
+        with self.assertRaises(Exception) as caught:
+            db.check_preflight(user_id, project_id, saved["id"], saved["revision"], screened=False)
+        self.assertEqual(getattr(caught.exception, "code", None), "insufficient_project_context")
+        # A work with no written text at all still has nothing to check against.
+        with db.connection() as c:
+            c.execute("UPDATE v2_source_spans SET body='' WHERE project_id=?", (project_id,))
+        with self.assertRaises(Exception) as empty:
+            db.check_preflight(user_id, project_id, saved["id"], saved["revision"], screened=True)
+        self.assertEqual(getattr(empty.exception, "code", None), "insufficient_project_context")

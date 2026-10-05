@@ -81,7 +81,9 @@ class Stage9MemoryInitializationTests(unittest.TestCase):
         project = self.client.get(f"/api/projects/{project_id}").json()["data"]
         before_runs = self.app.state.database.counts()["v2_runs"]
         unavailable_context = self.client.post(f"/api/projects/{project_id}/checks", json={"draft_id":project["current_draft"]["id"],"draft_revision":1}, headers=idem())
-        self.assertEqual((unavailable_context.status_code, unavailable_context.json()["error"]["code"]), (422,"insufficient_project_context"))
+        # v1.6.0: imported text is enough context for the screened pipeline, so the fact base no longer
+        # gates the check; the still-empty draft is what stops this one.
+        self.assertEqual((unavailable_context.status_code, unavailable_context.json()["error"]["code"]), (422,"draft_invalid"))
         self.assertEqual((self.provider.calls, self.app.state.database.counts()["v2_runs"]), (0,before_runs))
         start_key = str(uuid.uuid4())
         started = self.start(project_id,start_key)

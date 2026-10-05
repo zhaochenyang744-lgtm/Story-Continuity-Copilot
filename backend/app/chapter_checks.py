@@ -61,9 +61,6 @@ def create(db: Any, user_id: str, project_id: str, chapter_ids: list[str], key: 
             known = {row["id"] for row in c.execute("SELECT id FROM v2_chapters WHERE project_id=?", (project_id,)).fetchall()}
             if any(chapter_id not in known for chapter_id in chapter_ids):
                 raise DomainError("chapter_selection_invalid", 422)
-            coverage = db._memory_coverage(c, project_id)
-            if coverage["status"] not in {"ready_partial", "ready_current"} or coverage["counts"]["pending_canon_count"] != 0:
-                raise DomainError("insufficient_project_context", 422)
             spans = _selected_spans(db, c, project_id, chapter_ids)
             if not spans:
                 raise DomainError("chapter_selection_empty", 422)

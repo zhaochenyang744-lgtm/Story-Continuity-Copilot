@@ -530,10 +530,10 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.getByRole("button", { name: "保存草稿" }).click();
     await expect(page.locator(".workspace-save-summary strong")).toHaveText("已保存");
     await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(page.getByText("事实库尚待初始化", { exact: false })).toBeVisible();
+    await expect(page.getByText("这部作品还没有可以对照的正文", { exact: false })).toBeVisible();
   });
 
-  test("imported project check also fails closed before Memory initialization", async ({ page }) => {
+  test("an imported project can be checked before its fact base is built", async ({ page }) => {
     await register(page, account("stagefiveimportcontext"));
     await globalNavButton(page, "作品管理").click();
     await page.getByRole("button", { name: "导入作品" }).click();
@@ -543,11 +543,11 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.locator('input[name="title"]').fill("导入空上下文");
     await page.getByRole("button", { name: "确认导入" }).click();
     await projectNavButton(page, "写作与检查").click();
+    await expect(page.getByText("现在就能检查，系统会直接对照原文", { exact: false })).toBeVisible();
     await setDraftBody(page, "海雾里，钟楼又响了一次。");
     await page.getByRole("button", { name: "保存草稿" }).click();
     await expect(page.locator(".workspace-save-summary strong")).toHaveText("已保存");
-    await page.getByRole("button", { name: "运行连续性检查" }).click();
-    await expect(page.getByText("事实库尚待初始化", { exact: false })).toBeVisible();
+    await runCheckAndWait(page);
   });
 
   test("cancelling an import preview creates no project and a later preview can commit", async ({ page }) => {
