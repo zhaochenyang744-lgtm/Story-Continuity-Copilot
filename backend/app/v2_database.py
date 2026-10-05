@@ -992,6 +992,8 @@ class V2Database:
             "INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,completed_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,source_span_ids_json,root_run_id,attempt_number) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             (run_id, project_id, draft_id, 1, "completed", "completed", "not_called", stamp, stamp, "not_applicable", "demo-preset-v1", "demo-chapter-check-v1",
              "demo-preset-v1", 4, "demo_preset", "chapter_check", json.dumps([spans[chapter_id]["id"] for chapter_id in chosen]), run_id, 1))
+        c.execute("INSERT INTO v2_run_stages(run_id,stage,created_at) VALUES(?,?,?)", (run_id, "completed", stamp))
+        c.execute("INSERT INTO v2_run_events(run_id,sequence,status,stage,error_code,created_at) VALUES(?,?,?,?,?,?)", (run_id, 1, "completed", "completed", None, stamp))
         c.execute("INSERT INTO v2_analysis_results VALUES(?,?,?,?,?)", (run_id, project_id, "chapter_check", json.dumps(report, ensure_ascii=False, sort_keys=True), stamp))
 
     def _seed_grey_harbor_review(self, c: sqlite3.Connection, project_id: str, draft_id: str, span_ids: dict[str, str], memory_ids: dict[str, str]) -> None:
