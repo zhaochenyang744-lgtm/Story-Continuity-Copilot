@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 # Raised whenever the sample works change; untouched sample works in existing accounts are then
-# re-created from the new seed (v2_database._migrate_v160_demo_refresh). 2: chapter bodies (v1.6.0).
-DEMO_SEED_VERSION = 2
+# re-created from the new seed (v2_database._migrate_v160_demo_refresh). 2: chapter bodies; 3: preset chapter check (v1.6.0).
+DEMO_SEED_VERSION = 3
 
 SEED_ORIGIN = {
     "origin": "original_demo_specific_web_demo_stage1",
@@ -45,6 +45,22 @@ CHAPTER_BODIES = {
     "ghe-ch-08": "温岚从旧档案里找到一页值守记录，证明苏岑的父亲曾在北堤守过灯。温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
     "ghe-ch-09": "仓道入口很窄，只容一个人侧身通过。进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。随后她独自走进封闭仓道，温岚留在入口等候。",
     "ghe-ch-10": "夜里雾更浓了，港口的灯一盏接一盏熄灭。北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。苏岑从仓道里出来，三人一起望向港外。",
+}
+# A preset chapter check of the sample work, so a visitor can see what checking written chapters gives
+# without running one. Authored fixture data, labelled as a sample on the page; never Provider output.
+DEMO_CHAPTER_CHECK = {
+    "chapters": ["ghe-ch-09", "ghe-ch-10"],
+    "issues": [
+        {
+            "chapter": "ghe-ch-10",
+            "sentence": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+            "nature": "possible_conflict",
+            "category": "world_rule",
+            "severity": "medium",
+            "explanation": "第 1 章写明雾钟只在北潮闸完全关闭后才会响；本章写北潮闸没关，雾钟却响了。如果这是有意埋下的谜团，可以保留原意。",
+            "evidence_span": "ghe-ch01-s01",
+        },
+    ],
 }
 DRAFT = {
     "id": "draft-ghe-ch11",

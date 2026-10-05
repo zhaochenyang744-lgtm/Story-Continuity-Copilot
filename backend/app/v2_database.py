@@ -20,7 +20,7 @@ from .config import AppPaths
 from .brief_citations import split_draft_claims
 from .database import DomainError, digest
 from .memory_contract import is_controlled_candidate, normalize_memory_value, normalized_predicate
-from .seed_data import CHAPTER_BODIES, CHAPTERS, DEMO_REVIEW_ISSUES, DEMO_SEED_VERSION, DRAFT, MEMORY_RECORDS
+from .seed_data import CHAPTER_BODIES, CHAPTERS, DEMO_CHAPTER_CHECK, DEMO_REVIEW_ISSUES, DEMO_SEED_VERSION, DRAFT, MEMORY_RECORDS
 from .text_content import DRAFT_BODY_FORMATS, visible_draft_text, written_chars
 from . import long_term_workflow as workflow
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION, VERIFY_MAX_PASSAGES as SCREENED_MAX_TRACE_SPANS
@@ -316,9 +316,12 @@ class V2Database:
             return False
         if count("SELECT COUNT(*) FROM v2_runs WHERE project_id=? AND COALESCE(result_origin,'')!='demo_preset'"):
             return False
-        for table in ("v2_decisions","v2_chapter_revision_history","v2_analysis_results","v2_character_aliases"):
+        for table in ("v2_decisions","v2_chapter_revision_history","v2_character_aliases"):
             if count(f"SELECT COUNT(*) FROM {table} WHERE project_id=?"):
                 return False
+        # The seed's own preset chapter check is not an author's analysis.
+        if count("SELECT COUNT(*) FROM v2_analysis_results a JOIN v2_runs r ON r.id=a.run_id WHERE a.project_id=? AND r.result_origin!='demo_preset'"):
+            return False
         return True
 
     def _migrate_stage13_identity(self, c: sqlite3.Connection) -> None:
@@ -964,6 +967,32 @@ class V2Database:
         c.execute("INSERT INTO v2_characters VALUES(?,?,?,?,?,?,?,?,?,?)", (new_id("char"),project_id,"温岚","ally","灰港档案员","核对潮表","保管罗盘","不知道廊桥钥匙的含义","[]","[]"))
         c.execute("INSERT INTO v2_world_entries VALUES(?,?,?,?,?,?,?)", (new_id("world"),project_id,"location","灰港","雾钟与北潮闸所在的港口","[]","[]"))
         self._seed_grey_harbor_review(c, project_id, draft_id, old_span_to_new, old_memory_to_new)
+        self._seed_grey_harbor_chapter_check(c, project_id, draft_id, old_span_to_new, old_chapter_to_new)
+
+    def _seed_grey_harbor_chapter_check(self, c: sqlite3.Connection, project_id: str, draft_id: str, span_ids: dict[str, str], chapter_ids: dict[str, str]) -> None:
+        """A preset chapter-check report for the sample work, without executing or impersonating a Provider."""
+        stamp = utcnow()
+        run_id = scoped_seed_id("run", project_id, "grey-harbor-chapter-check-v1")
+        spans = {row["chapter_id"]: dict(row) for row in c.execute("SELECT s.id,s.chapter_id,s.body,ch.chapter_number,ch.title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id WHERE s.project_id=?", (project_id,))}
+        chosen = [chapter_ids[old] for old in DEMO_CHAPTER_CHECK["chapters"]]
+        chapters = []
+        for chapter_id in chosen:
+            span = spans[chapter_id]
+            issues = []
+            for fixture in DEMO_CHAPTER_CHECK["issues"]:
+                if chapter_ids[fixture["chapter"]] != chapter_id:
+                    continue
+                evidence = c.execute("SELECT s.body,ch.chapter_number,ch.title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id WHERE s.id=?", (span_ids[fixture["evidence_span"]],)).fetchone()
+                issues.append({"sentence": fixture["sentence"], "nature": fixture["nature"], "category": fixture["category"], "severity": fixture["severity"],
+                               "explanation": fixture["explanation"], "evidence": [{"chapter_number": evidence["chapter_number"], "chapter_title": evidence["title"], "excerpt": evidence["body"][:160]}]})
+            chapters.append({"chapter_id": chapter_id, "chapter_number": span["chapter_number"], "chapter_title": span["title"],
+                             "sentences": len(split_continuity_claims(span["body"])), "issues": issues, "undecided": 0})
+        report = {"chapters": chapters, "issue_count": sum(len(row["issues"]) for row in chapters), "undecided_count": 0}
+        c.execute(
+            "INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,completed_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,source_span_ids_json,root_run_id,attempt_number) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            (run_id, project_id, draft_id, 1, "completed", "completed", "not_called", stamp, stamp, "not_applicable", "demo-preset-v1", "demo-chapter-check-v1",
+             "demo-preset-v1", 4, "demo_preset", "chapter_check", json.dumps([spans[chapter_id]["id"] for chapter_id in chosen]), run_id, 1))
+        c.execute("INSERT INTO v2_analysis_results VALUES(?,?,?,?,?)", (run_id, project_id, "chapter_check", json.dumps(report, ensure_ascii=False, sort_keys=True), stamp))
 
     def _seed_grey_harbor_review(self, c: sqlite3.Connection, project_id: str, draft_id: str, span_ids: dict[str, str], memory_ids: dict[str, str]) -> None:
         """Create a reviewable preset without executing or impersonating a Provider."""

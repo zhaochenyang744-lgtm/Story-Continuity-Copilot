@@ -149,11 +149,11 @@ def recent(db: Any, user_id: str, project_id: str, limit: int = 5) -> list[dict[
     with db.connection() as c:
         db._project(c, user_id, project_id)
         rows = c.execute(
-            "SELECT r.id,r.status,r.stage,r.error_code,r.created_at,r.completed_at,r.source_span_ids_json,a.result_json FROM v2_runs r "
+            "SELECT r.id,r.status,r.stage,r.error_code,r.created_at,r.completed_at,r.result_origin,r.source_span_ids_json,a.result_json FROM v2_runs r "
             "LEFT JOIN v2_analysis_results a ON a.run_id=r.id WHERE r.project_id=? AND r.run_type=? ORDER BY r.created_at DESC,r.rowid DESC LIMIT ?",
             (project_id, RUN_TYPE, max(1, min(limit, 20)))).fetchall()
     return [{"run_id": row["id"], "status": row["status"], "stage": row["stage"], "error_code": row["error_code"],
-             "created_at": row["created_at"], "completed_at": row["completed_at"],
+             "created_at": row["created_at"], "completed_at": row["completed_at"], "sample": row["result_origin"] == "demo_preset",
              "report": json.loads(row["result_json"]) if row["result_json"] else None} for row in rows]
 
 

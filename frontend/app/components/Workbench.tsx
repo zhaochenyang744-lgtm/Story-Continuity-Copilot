@@ -5797,7 +5797,7 @@ function MemoryInitializationReview({
 }
 type ChapterCheckIssue = { sentence: string; nature?: string; category?: string; severity?: Issue["severity"]; explanation: string; evidence: { chapter_number: number; chapter_title: string; excerpt: string }[] };
 type ChapterCheckReport = { chapters: { chapter_id: string; chapter_number: number; chapter_title: string; sentences: number; issues: ChapterCheckIssue[]; undecided: number }[]; issue_count: number; undecided_count: number };
-type ChapterCheckRun = { run_id: string; status: string; stage: string; error_code?: string | null; created_at: string; completed_at?: string | null; report: ChapterCheckReport | null };
+type ChapterCheckRun = { run_id: string; status: string; stage: string; error_code?: string | null; created_at: string; completed_at?: string | null; sample?: boolean; report: ChapterCheckReport | null };
 const CHAPTER_CHECK_MAX = 8;
 type TimelineRow = { chapter_id: string | null; chapter_number: number; title: string; draft: boolean; status: "checked" | "basis_changed" | "edited_unchecked" | "unchecked" | "empty"; checked_at: string | null };
 const timelineStatusLabel: Record<TimelineRow["status"], string> = { checked: "已检查", basis_changed: "依据已变化", edited_unchecked: "改动后未检查", unchecked: "未检查", empty: "还没写" };
@@ -5844,7 +5844,7 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
     return () => { live = false; };
   }, [projectId, selected]);
   if (usage?.account_type === "visitor") {
-    return <section className="project-section chapter-check-panel" aria-label="全部章节"><h2>全部章节</h2><p className="muted">访客只能检查当前草稿；注册账号后可以一次勾选最多 {CHAPTER_CHECK_MAX} 章一起检查。</p></section>;
+    return <section className="project-section chapter-check-panel" aria-label="全部章节"><h2>全部章节</h2><p className="muted">访客只能检查当前草稿；注册账号后可以一次勾选最多 {CHAPTER_CHECK_MAX} 章一起检查。下面是一份示例结果，展示多章检查会得到什么。</p>{runs.find((run) => run.sample) && <ChapterCheckResult run={runs.find((run) => run.sample)!} />}</section>;
   }
   const toggle = (id: string) => setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length >= CHAPTER_CHECK_MAX ? current : [...current, id]);
   const over = Boolean(estimate && usage?.account_type === "registered" && estimate.characters > usage.check_chars_remaining);
@@ -5899,30 +5899,36 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
         </>
       )}
       {error && <div className="notice error" role="alert">{error}</div>}
-      {latest && (
-        <div className="chapter-check-result" aria-live="polite">
-          <p className="chapter-check-status">
-            <strong>{latest.status === "completed" ? "最近一次检查" : stage(latest.status)}</strong>
-            <span>{timestampLabel(latest.completed_at ?? latest.created_at)}</span>
-            {latest.status === "completed" && latest.report && <span>共 {latest.report.chapters.length} 章 · {latest.report.issue_count ? `${latest.report.issue_count} 条问题` : "没有发现问题"}</span>}
-          </p>
-          {["failed", "timed_out", "cancelled"].includes(latest.status) && <p className="inline-error">{labelError({ code: latest.error_code })}</p>}
-          {latest.report?.chapters.map((chapter) => (
-            <article key={chapter.chapter_id} className="chapter-check-chapter">
-              <header><strong>第 {chapter.chapter_number} 章《{chapter.chapter_title || "未命名"}》</strong><span>{chapter.issues.length ? `${chapter.issues.length} 条问题` : "没有发现问题"}{chapter.undecided ? ` · ${chapter.undecided} 句未能判断` : ""}</span></header>
-              {chapter.issues.map((issue, index) => (
-                <div key={index} className="chapter-check-issue">
-                  <p className="chapter-check-issue-kind">{issueNatureLabel(issue.nature)}{issue.severity ? ` · ${impactLabel(issue.severity)}` : ""}{issue.category ? ` · ${categoryLabel(issue.category)}` : ""}</p>
-                  <blockquote>{issue.sentence}</blockquote>
-                  {issue.explanation && <p>{issue.explanation}</p>}
-                  {issue.evidence.map((item, at) => <p key={at} className="muted">出处：第 {item.chapter_number} 章《{item.chapter_title || "未命名"}》：{item.excerpt}</p>)}
-                </div>
-              ))}
-            </article>
-          ))}
-        </div>
-      )}
+      {latest && <ChapterCheckResult run={latest} />}
     </section>
+  );
+}
+
+/** One chapter check's report, grouped by chapter. A preset sample is labelled as such. */
+function ChapterCheckResult({ run }: { run: ChapterCheckRun }) {
+  return (
+    <div className="chapter-check-result" aria-live="polite">
+      <p className="chapter-check-status">
+        <strong>{run.sample ? "示例结果" : run.status === "completed" ? "最近一次检查" : stage(run.status)}</strong>
+        {run.sample && <span>预置示例，没有调用模型</span>}
+        <span>{timestampLabel(run.completed_at ?? run.created_at)}</span>
+        {run.status === "completed" && run.report && <span>共 {run.report.chapters.length} 章 · {run.report.issue_count ? `${run.report.issue_count} 条问题` : "没有发现问题"}</span>}
+      </p>
+      {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelError({ code: run.error_code })}</p>}
+      {run.report?.chapters.map((chapter) => (
+        <article key={chapter.chapter_id} className="chapter-check-chapter">
+          <header><strong>第 {chapter.chapter_number} 章《{chapter.chapter_title || "未命名"}》</strong><span>{chapter.issues.length ? `${chapter.issues.length} 条问题` : "没有发现问题"}{chapter.undecided ? ` · ${chapter.undecided} 句未能判断` : ""}</span></header>
+          {chapter.issues.map((issue, index) => (
+            <div key={index} className="chapter-check-issue">
+              <p className="chapter-check-issue-kind">{issueNatureLabel(issue.nature)}{issue.severity ? ` · ${impactLabel(issue.severity)}` : ""}{issue.category ? ` · ${categoryLabel(issue.category)}` : ""}</p>
+              <blockquote>{issue.sentence}</blockquote>
+              {issue.explanation && <p>{issue.explanation}</p>}
+              {issue.evidence.map((item, at) => <p key={at} className="muted">出处：第 {item.chapter_number} 章《{item.chapter_title || "未命名"}》：{item.excerpt}</p>)}
+            </div>
+          ))}
+        </article>
+      ))}
+    </div>
   );
 }
 

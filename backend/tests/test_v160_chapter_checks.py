@@ -143,6 +143,14 @@ class ChapterCheckTests(unittest.TestCase):
         response = guest.post(f"/api/projects/{project_id}/chapter-checks", headers=self.idem(), json={"chapter_ids": [chapter_id]})
         self.assertEqual(response.status_code, 403, response.text)
         self.assertEqual(response.json()["error"]["code"], "visitor_chapter_check_unavailable")
+        # They see a labelled sample instead: the open fog-bell mystery, against chapter 1's rule.
+        runs = guest.get(f"/api/projects/{project_id}/chapter-checks").json()["data"]["runs"]
+        sample = [run for run in runs if run["sample"]]
+        self.assertEqual(len(sample), 1)
+        report = sample[0]["report"]
+        self.assertEqual([row["chapter_number"] for row in report["chapters"]], [9, 10])
+        issue = report["chapters"][1]["issues"][0]
+        self.assertEqual((issue["nature"], issue["category"], issue["evidence"][0]["chapter_number"]), ("possible_conflict", "world_rule", 1))
 
 
 if __name__ == "__main__":

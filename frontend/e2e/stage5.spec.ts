@@ -676,7 +676,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.getByRole("button", { name: "继续确认" }).click();
     await page.locator('.form-panel input[name="title"]').fill("潮汐档案");
     await page.getByRole("button", { name: "确认导入" }).click();
-    await expect(page.getByText("导入作品尚待作者确认", { exact: false })).toBeVisible();
+    await expect(page.getByText("导入的原文已经可以拿来检查", { exact: false })).toBeVisible();
     await page.screenshot({ path: path.join(shots, "stage5-import-empty.png"), fullPage: true });
     expect(errors).toEqual([]);
     expect(network.length).toBeGreaterThan(8);
