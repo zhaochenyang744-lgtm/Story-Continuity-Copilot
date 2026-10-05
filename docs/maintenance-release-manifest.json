@@ -494,6 +494,7 @@
     "backend/tests/test_v140_import_structure.py",
     "backend/tests/test_v140_real_ai_contract_repairs.py",
     "backend/tests/test_v140_rich_editor_compatibility.py",
+    "backend/tests/test_v160_demo_refresh.py",
     "backend/tests/test_v17_parallel_review_batches.py",
     "backend/tests/test_v17_partial_review_results.py",
     "backend/tests/test_v17_provider_quota.py",
