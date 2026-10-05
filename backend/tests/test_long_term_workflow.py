@@ -345,6 +345,9 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual(next(row for row in self.state()["chapters"] if row["id"] == self.chapter_id), chapter_before)
 
     def test_fragment_only_legacy_chapter_is_visible_and_cannot_be_revised(self):
+        # Sample chapters carry bodies now; a migrated legacy chapter may have only its fragments.
+        with self.db.connection() as c:
+            c.execute("UPDATE v2_chapters SET body='' WHERE project_id=?", (self.tutorial_project,))
         state = review_state(self.db, self.user, self.tutorial_project)
         chapter = state["chapters"][0]
         self.assertEqual(chapter["body_origin"], "source_fragments")
