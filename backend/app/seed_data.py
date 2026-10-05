@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+# Raised whenever the sample works change; untouched sample works in existing accounts are then
+# re-created from the new seed (v2_database._migrate_v160_demo_refresh). 2: chapter bodies (v1.6.0).
+DEMO_SEED_VERSION = 2
+
 SEED_ORIGIN = {
     "origin": "original_demo_specific_web_demo_stage1",
     "created_on": "2026-08-25",
