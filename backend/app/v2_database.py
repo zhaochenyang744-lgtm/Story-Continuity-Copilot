@@ -20,7 +20,7 @@ from .config import AppPaths
 from .brief_citations import split_draft_claims
 from .database import DomainError, digest
 from .memory_contract import is_controlled_candidate, normalize_memory_value, normalized_predicate
-from .seed_data import CHAPTERS, DEMO_REVIEW_ISSUES, DRAFT, MEMORY_RECORDS
+from .seed_data import CHAPTER_BODIES, CHAPTERS, DEMO_REVIEW_ISSUES, DRAFT, MEMORY_RECORDS
 from .text_content import DRAFT_BODY_FORMATS, visible_draft_text
 from . import long_term_workflow as workflow
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION, VERIFY_MAX_PASSAGES as SCREENED_MAX_TRACE_SPANS
@@ -905,7 +905,7 @@ class V2Database:
         for chapter_old, number, title, summary, source_items in CHAPTERS:
             chapter_id = new_id("ch")
             old_chapter_to_new[chapter_old] = chapter_id
-            c.execute("INSERT INTO v2_chapters VALUES(?,?,?,?,?,?,?)", (chapter_id,project_id,number,title,summary,"",1))
+            c.execute("INSERT INTO v2_chapters VALUES(?,?,?,?,?,?,?)", (chapter_id,project_id,number,title,summary,CHAPTER_BODIES[chapter_old],1))
             c.execute("INSERT INTO v2_outline_nodes VALUES(?,?,?,?,?,?)", (new_id("outline"),project_id,number,title,summary,"complete"))
             for old_span_id, label, body in source_items:
                 span_id = new_id("span")

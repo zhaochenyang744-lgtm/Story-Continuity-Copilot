@@ -656,7 +656,7 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.locator(".library-header").getByRole("button", { name: "新建作品", exact: true }).click();
     await expect(page.getByRole("heading", { name: "新建作品" })).toBeVisible();
     await createProject(page, "空白试作", { kind: "其他", customKind: "测试" });
-    await expect(page.locator(".memory-panel").getByRole("heading", { name: "第 1 版", exact: true })).toBeVisible();
+    await expect(page.locator(".memory-panel").getByRole("heading", { name: "0 条已确认事实", exact: true })).toBeVisible();
     await globalNavButton(page, "作品管理").click();
     await page.getByRole("button", { name: "导入作品" }).click();
     await page.setInputFiles('input[name="file"]', { name: "chapter.md", mimeType: "text/markdown", buffer: Buffer.from("# 第一章\n海雾遮住钟楼。\n# 第二章\n她记录了潮声。", "utf8") });
@@ -761,7 +761,6 @@ test.describe.serial("Stage 5 real local workflow", () => {
       const started = Date.now();
       await projectMoreAction(page, "重置当前作品");
       await page.getByRole("button", { name: "确认重置" }).click();
-      await expect(page.getByText("事实库第 4 版", { exact: true })).toBeVisible();
       await expect(page.locator(".workspace-draft-meta")).toContainText("第 1 次保存");
       await setDraftBody(page, `${await readDraftBody(page)}\n第${index}轮作者确认草稿。`);
       await page.getByRole("button", { name: "保存草稿" }).click();

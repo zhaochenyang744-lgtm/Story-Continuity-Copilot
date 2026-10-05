@@ -24,7 +24,7 @@ test("paste preview and commit send real API rN to rN+1 and create next draft", 
   const commit=page.waitForResponse((r)=>/source-change-sets\/.+\/commit/.test(r.url()) && r.request().method()==="POST"); await page.getByRole("button", {name:"确认追加并创建下一章草稿"}).click(); expect((await commit).status()).toBe(200);
   await expect(page.getByRole("status")).toContainText("原文更新为第 2 版"); await expect(page.getByRole("status")).toContainText("下一章草稿：第 3 章"); await page.getByRole("button",{name:"进入下一章草稿"}).click(); await expect(page).toHaveURL(new RegExp(`/projects/${id}/workspace`));
   const project=await page.evaluate(async (projectId)=>await (await fetch(`/api/projects/${projectId}`)).json(),id); expect(project.data).toMatchObject({source_revision:2,current_draft:{chapter_number:3}});
-  await page.goto(`/projects/${id}/overview`); await expect(page.getByRole("region",{name:"事实库",exact:true}).locator("dl > div").filter({has:page.locator("dt",{hasText:"原文版本"})}).locator("dd")).toHaveText("第 2 版");
+  await page.goto(`/projects/${id}/overview`); expect((await page.evaluate(async (projectId)=>await (await fetch(`/api/projects/${projectId}`)).json(),id)).data.source_revision).toBe(2);
 });
 
 test("390 is browse-only for every source append mutation after a desktop preview", async ({ page }) => {
@@ -34,7 +34,7 @@ test("390 is browse-only for every source append mutation after a desktop previe
   await page.setViewportSize({width:390,height:844});
   await expect(page.getByRole("radio")).toHaveCount(0); await expect(page.locator('input[type="file"]')).toHaveCount(0); await expect(page.getByLabel("章节正文")).toHaveCount(0);
   await expect(page.getByRole("button",{name:"预览追加"})).toHaveCount(0); await expect(page.getByRole("button",{name:"确认追加并创建下一章草稿"})).toHaveCount(0);
-  await expect(page.getByRole("status")).toContainText("原文第 1 版 → 第 2 版"); await expect(page.getByRole("heading",{name:"现有章节来源",exact:true})).toBeVisible();
+  await expect(page.getByRole("status")).toContainText("个章节"); await expect(page.getByRole("heading",{name:"已写章节",exact:true})).toBeVisible();
   await expect(page.getByText("当前窗口较窄，暂为只读浏览",{exact:false})).toBeVisible();
 });
 

@@ -2854,6 +2854,9 @@ export function Workbench() {
             </Button>
           </div>
         )}
+        {small && !projectId && (pathname === "/" || pathname === "/projects") && (
+          <p className="readonly narrow-screen-note" role="note"><I>◉</I>当前窗口较窄：可以浏览作品和检查结果；写作和运行检查需要电脑或更宽的窗口。</p>
+        )}
         {body}
       </main>
       {sourceRecord && project && (
@@ -3545,7 +3548,7 @@ function AccountProfile({ user, projects, updateUser, go }: { user: User; projec
                 {projectRows.slice(0, 5).map((item) => (
                   <li key={item.id}>
                     <button type="button" onClick={() => go(`/projects/${item.id}/${item.current_draft && item.status !== "archived" ? "workspace" : "overview"}`)}>
-                      <span className="author-work-copy"><strong>{item.title}</strong><small>{item.genre || "未填写类型"} · {item.chapter_count ?? 0} 章 · {formatWritingCount(item.word_count ?? 0)} 字</small></span>
+                      <span className="author-work-copy"><strong>{item.title}</strong><small>{item.genre || "未填写题材"} · {item.chapter_count ?? 0} 章 · {formatWritingCount(item.word_count ?? 0)} 字</small></span>
                       <span className={`status-pill ${item.status}`}>{statusLabel(item.status)}</span>
                       <span className="author-work-action">{item.status === "archived" ? "查看" : "继续"}<Icon name="arrow-right" inline /></span>
                     </button>
@@ -3637,18 +3640,28 @@ function TutorialCompletePage({ go }: { go: (href: string) => void }) {
     "作出作者决定",
     "完成一次检查",
   ];
+  // Opened directly by URL, the page must not claim a tutorial the author never finished.
+  const [status, setStatus] = useState<Onboarding["status"] | null>(null);
+  const [tutorialId, setTutorialId] = useState<string | null>(null);
+  useEffect(() => {
+    let live = true;
+    request<Onboarding>("/onboarding").then((next) => { if (live) { setStatus(next.status); setTutorialId(next.tutorial?.project_id ?? null); } }).catch(() => { if (live) setStatus("completed"); });
+    return () => { live = false; };
+  }, []);
+  const finished = status === null || status === "completed";
   return (
     <section className="tutorial-complete-page">
       <header className="home-heading"><p className="breadcrumb">全局 / 首页</p><h1>继续你的故事</h1></header>
-      <section className="tutorial-complete-panel" aria-labelledby="tutorial-complete-title">
+      <section className="tutorial-complete-panel" aria-labelledby="tutorial-complete-title" aria-busy={status === null}>
         <TutorialCompleteVisual />
         <div className="tutorial-complete-copy">
-          <p className="eyebrow">隔离教学 · 已结束</p>
-          <h2 id="tutorial-complete-title">教学已完成</h2>
-          <p>你已经走完一次连续性检查流程。</p>
+          <p className="eyebrow">{finished ? "隔离教学 · 已结束" : status === "skipped" ? "隔离教学 · 已跳过" : "隔离教学 · 进行中"}</p>
+          <h2 id="tutorial-complete-title">{finished ? "教学已完成" : status === "skipped" ? "你跳过了教学" : "教学还没走完"}</h2>
+          <p>{finished ? "你已经走完一次连续性检查流程。" : "教学会带你走一遍下面的流程，大约几分钟。"}</p>
           <ol>{steps.map((step, index) => <li key={step}><span>{index + 1}</span>{step}</li>)}</ol>
           <div className="tutorial-complete-actions">
-            <Button className="primary" onClick={() => go("/projects/import")}>导入自己的作品</Button>
+            {!finished && status === "active" && tutorialId && <Button className="primary" onClick={() => go(`/projects/${tutorialId}/overview`)}>继续教学</Button>}
+            <Button className={finished || status !== "active" || !tutorialId ? "primary" : "secondary"} onClick={() => go("/projects/import")}>导入自己的作品</Button>
             <Button onClick={() => go("/projects/new")}>创建空白作品</Button>
             <Button className="quiet" onClick={() => go("/")}>返回首页</Button>
           </div>
@@ -4300,7 +4313,7 @@ function RunLifecycle({ run, blocked, cancelRun, retryRun, actions = true }: { r
         <div>
           <p className="eyebrow">{run.run_type === "memory_delta" ? "事实库检查" : "连续性检查"}</p>
           <h2>{stage(run.stage)}</h2>
-          <p>{(run.attempt_number ?? 1) > 1 ? `第 ${run.attempt_number} 次尝试 · ` : ""}{run.status === "completed" ? "结果已准备好，可继续审阅。" : "保留当前页面即可查看状态变化。"}</p>
+          <p>{(run.attempt_number ?? 1) > 1 ? `第 ${run.attempt_number} 次尝试 · ` : ""}保留当前页面即可查看状态变化。</p>
         </div>
         <div className="run-actions">
           <span className={`run-state state-${run.status}`}>{stage(run.status)}</span>
@@ -5076,7 +5089,6 @@ function ProjectPage(p: {
             <p>第 {p.project.current_draft.revision} 次保存 · {p.project.status === "archived" ? "作品已归档，恢复后可继续写作。" : "当前可继续写作与审阅。"}</p>
             <div className="overview-meta">
               <span>已写 {p.project.chapter_count} 章</span>
-              {p.project.current_draft.status === "saved" && <span>已保存</span>}
             </div>
             <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/sources`)}>管理章节</Button>
           </section>
@@ -5777,7 +5789,7 @@ function SourceAppend({ project, draft, chapters, readOnly, context }: { project
     try { const data = await json<{ source_change_set: SourceChangeSet; next_draft: Draft }>(`/projects/${project.id}/source-change-sets/${preview.id}/commit`, "POST", { confirm: true, content_sha256: preview.content_sha256 }); setPreview(data.source_change_set); setNextDraft(data.next_draft); }
     catch (cause) { setError(labelError(cause)); } finally { setBusy(""); }
   };
-  return <section className="project-page read-page"><header className="page-header"><div><p className="breadcrumb">项目 / {project.title} / 章节管理</p><h1>章节管理</h1><p>在这里追加新章节、把当前草稿定为正式章节，或在下方修订已写好的章节。修订后旧版本仍会保留，以前的检查依旧能找到出处。</p></div></header>{context}
+  return <section className="project-page read-page"><header className="page-header"><div><p className="breadcrumb">项目 / {project.title} / 章节管理</p><h1>章节管理</h1><p>目标作品：{project.title}。在这里追加新章节、把当前草稿定为正式章节，或在下方修订已写好的章节。修订后旧版本仍会保留，以前的检查依旧能找到出处。</p></div></header>{context}
     {!readOnly && <section className="project-section"><h2>追加章节</h2><fieldset className="source-method" disabled={Boolean(busy)}><legend>追加方式</legend>{(["draft_complete", "paste", "file"] as const).map((value) => <label key={value} className="source-method-option"><input className="sr-only" type="radio" name="source-method" checked={method === value} onChange={() => setMethod(value)} />{value === "draft_complete" ? "完成当前章节" : value === "paste" ? "粘贴追加" : "追加文件"}</label>)}</fieldset>
     {method === "draft_complete" ? <p>将完成当前草稿《{draft?.title ?? "—"}》并追加为新章节。</p> : <><label>章节正文<textarea value={content} onChange={(event) => setContent(event.target.value)} disabled={readOnly || Boolean(busy)} /></label>{method === "file" && <label>追加文件<input type="file" accept=".md,.txt,text/markdown,text/plain" disabled={readOnly || Boolean(busy)} onChange={async (event) => { const file = event.currentTarget.files?.[0]; if (!file) return; setFilename(file.name); setContent(await file.text()); }} /><small>{filename || "仅支持 UTF-8 .md / .txt"}</small></label>}</>}
     <Button className="primary" disabled={Boolean(busy) || (method !== "draft_complete" && !content.trim())} onClick={() => void makePreview()}>{busy || "预览追加"}</Button></section>}
@@ -6024,7 +6036,7 @@ function AuthorPlanningPage({
           <p>{copy.description}</p>
         </div>
         <div className="author-planning-status">
-          <span>{activeRecords.length ? `${activeRecords.length} 条规划` : "尚无规划"}</span>
+          <span data-author-context-version={authorContext?.author_context_version ?? 0}>{activeRecords.length ? `${activeRecords.length} 条规划` : "尚无规划"}</span>
           <ContextButton kind={kind} />
           {mode === "planning" && !readOnly && (
             <Button className="primary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>

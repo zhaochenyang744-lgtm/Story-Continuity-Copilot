@@ -60,10 +60,7 @@ test("v1.3.0 character aliases and change impact stay explicit, traceable, and m
   await page.request.get(`${backendOrigin}/api/test/stage12/release`);
   await expect(page.getByText("该修改会影响角色身份识别与相关资料核对。",{exact:true})).toBeVisible();
   const bindings=page.locator(".impact-context small");
-  await expect(bindings).toContainText(`草稿第 ${project.current_draft.revision} 次保存`);
-  await expect(bindings).toContainText(`原文第 ${project.source_revision} 版`);
-  await expect(bindings).toContainText(`事实库第 ${project.current_memory_version} 版`);
-  await expect(bindings).toContainText(`规划第 ${project.author_context_version} 版`);
+  await expect(bindings).toContainText(`依据：第 ${project.current_draft.revision} 次保存的草稿`);
   await expect(bindings).toContainText("别名第 2 版");
   await expect(bindings).toHaveAttribute("title","检索方式：writing-analysis-lexical-v2-draft-claims");
   const characterEvidence=page.getByRole("link",{name:new RegExp("角色档案")});

@@ -92,7 +92,7 @@ test("作者下载完整资料、修订历史章节、逐项复核并保留历�
   await page.getByRole("button", { name: "修订历史章节与复核事实", exact: true }).click();
   const maintenance = page.getByRole("region", { name: "修订历史章节与复核事实" });
   await expect(maintenance).toBeVisible();
-  await maintenance.getByText("已入库章节", { exact: false }).first().click();
+  await maintenance.getByText("已写章节", { exact: false }).first().click();
   await maintenance.getByRole("button", { name: "修订本章" }).first().click();
   const title = maintenance.getByRole("textbox", { name: "修订章节标题", exact: true });
   // A nested textarea's initial text also appears in its label's textContent;

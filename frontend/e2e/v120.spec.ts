@@ -311,8 +311,8 @@ test("v1.2.0 author workspace covers the eleven non-login visual targets", async
   const memoryNav = page.getByRole("navigation", { name: "事实分类" });
   expect(await memoryNav.evaluate((node) => getComputedStyle(node).scrollbarWidth)).toBe("none");
   expect(await memoryNav.getByRole("button", { name: "全部事实", exact: true }).evaluate((node) => Number.parseFloat(getComputedStyle(node).minHeight))).toBeGreaterThanOrEqual(44);
-  await memoryNav.getByRole("button", { name: "待确认", exact: true }).click();
-  const activeFilterGeometry = await memoryNav.getByRole("button", { name: "待确认", exact: true }).evaluate((node) => {
+  await memoryNav.getByRole("button", { name: "未解线索", exact: true }).click();
+  const activeFilterGeometry = await memoryNav.getByRole("button", { name: "未解线索", exact: true }).evaluate((node) => {
     const button = node.getBoundingClientRect();
     const nav = node.parentElement?.getBoundingClientRect();
     return { buttonLeft: button.left, buttonRight: button.right, navLeft: nav?.left ?? 0, navRight: nav?.right ?? 0 };

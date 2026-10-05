@@ -9,7 +9,7 @@ test("shared helpers register, create, persist both editors and import an absolu
   expect(credentials.account).toBeTruthy();
   expect(credentials.password.length).toBeGreaterThanOrEqual(10);
   const tutorialId = await tutorialProjectId(page);
-  const id = await createProject(page, "共享辅助函数冒烟作品", { kind: "短篇", summary: "验证隔离浏览器环境。" });
+  const id = await createProject(page, "共享辅助函数冒烟作品", { kind: "奇幻", summary: "验证隔离浏览器环境。" });
   expect(id).not.toBe(tutorialId);
   await page.getByRole("button", { name: "写作与检查", exact: true }).click();
   const body = "第一段：清晨的潮汐门。\n\n第二段：银钥匙由守塔人保管。\n";
