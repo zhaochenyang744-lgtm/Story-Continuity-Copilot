@@ -60,7 +60,7 @@ test("v1.4 visual candidate covers the complete product language", async ({ page
   await capture(page, "07-new-work-1707");
   await page.getByLabel("作品名称").fill("潮汐之后");
   await page.getByRole("radio", { name: "其他", exact: true }).check();
-  await page.getByLabel("其他作品类型", { exact: true }).fill("近未来悬疑");
+  await page.getByLabel("其他题材", { exact: true }).fill("近未来悬疑");
   await page.getByLabel("简介").fill("一座沿海城市在退潮后显露出被遗忘的证据。");
   await page.getByRole("button", { name: "创建并进入作品", exact: true }).click();
   await expect(page.getByRole("heading", { name: "潮汐之后", exact: true })).toBeVisible();

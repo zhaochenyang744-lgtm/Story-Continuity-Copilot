@@ -20,7 +20,7 @@ from .config import AppPaths
 from .brief_citations import split_draft_claims
 from .database import DomainError, digest
 from .memory_contract import is_controlled_candidate, normalize_memory_value, normalized_predicate
-from .seed_data import CHAPTERS, DEMO_REVIEW_ISSUES, DRAFT, MEMORY_RECORDS
+from .seed_data import CHAPTER_BODIES, CHAPTERS, DEMO_REVIEW_ISSUES, DEMO_SEED_VERSION, DRAFT, MEMORY_RECORDS
 from .text_content import DRAFT_BODY_FORMATS, visible_draft_text
 from . import long_term_workflow as workflow
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION, VERIFY_MAX_PASSAGES as SCREENED_MAX_TRACE_SPANS
@@ -275,6 +275,7 @@ class V2Database:
             self._migrate_v130_revision_plans(c)
             self._migrate_v140_author_materials(c)
             self._migrate_v140_rich_draft_formats(c)
+            self._migrate_v160_demo_refresh(c)
             c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(146,?)", (utcnow(),))
 
     def readiness_probe(self) -> bool:
@@ -283,6 +284,42 @@ class V2Database:
             row = c.execute("SELECT COUNT(*) AS count FROM schema_migrations").fetchone()
             check = c.execute("PRAGMA quick_check").fetchone()
             return bool(row and row["count"] >= 1 and check and check[0] == "ok")
+
+    def _migrate_v160_demo_refresh(self, c: sqlite3.Connection) -> None:
+        """Bring every account's untouched sample works up to the current seed.
+
+        A sample work the author never changed is re-created from the current seed, so improvements to
+        the samples reach accounts created before them. One the author changed is left exactly as it
+        is. Either way its seed version is recorded, so each work is considered once per seed version.
+        """
+        c.execute("CREATE TABLE IF NOT EXISTS v2_demo_seed_state(project_id TEXT PRIMARY KEY REFERENCES v2_projects(id),seed_version INTEGER NOT NULL,updated_at TEXT NOT NULL)")
+        rows=c.execute("SELECT p.* FROM v2_projects p LEFT JOIN v2_demo_seed_state s ON s.project_id=p.id WHERE p.data_origin='demo_seed' AND p.seed_key IS NOT NULL AND COALESCE(s.seed_version,1)<?",(DEMO_SEED_VERSION,)).fetchall()
+        for project in rows:
+            if self._demo_untouched(c,project):
+                stamp=utcnow()
+                self._reset_project_contents(c,project,stamp)
+                c.execute("DELETE FROM v2_idempotency WHERE scope=? AND operation LIKE ?",(project["user_id"],"%"+project["id"]+"%"))
+            c.execute("INSERT OR REPLACE INTO v2_demo_seed_state VALUES(?,?,?)",(project["id"],DEMO_SEED_VERSION,utcnow()))
+
+    @staticmethod
+    def _demo_untouched(c: sqlite3.Connection, project: sqlite3.Row) -> bool:
+        """True when nothing in a sample work differs from how it was seeded: no saved edit, decision, run, fact change, plan or revision."""
+        pid=project["id"]
+        count=lambda sql:c.execute(sql,(pid,)).fetchone()[0]
+        if project["metadata_revision"]!=1 or project["source_revision"]!=1 or project["author_context_version"]!=0:
+            return False
+        if any(project[key] for key in ("alias_version","revision_task_version","foreshadow_version") if key in project.keys()):
+            return False
+        if count("SELECT COUNT(*) FROM v2_draft_revisions WHERE draft_id IN (SELECT id FROM v2_drafts WHERE project_id=?)")>1:
+            return False
+        if count("SELECT COUNT(*) FROM v2_memory_versions WHERE project_id=?")>1:
+            return False
+        if count("SELECT COUNT(*) FROM v2_runs WHERE project_id=? AND COALESCE(result_origin,'')!='demo_preset'"):
+            return False
+        for table in ("v2_decisions","v2_chapter_revision_history","v2_analysis_results","v2_character_aliases"):
+            if count(f"SELECT COUNT(*) FROM {table} WHERE project_id=?"):
+                return False
+        return True
 
     def _migrate_stage13_identity(self, c: sqlite3.Connection) -> None:
         columns = {row["name"] for row in c.execute("PRAGMA table_info(v2_users)")}
@@ -888,6 +925,9 @@ class V2Database:
         version = 4 if seed_key == "grey_harbor" else 1
         c.execute("INSERT INTO v2_projects(id,user_id,title,genre,summary,status,metadata_revision,data_origin,seed_key,created_at,updated_at,current_memory_version,source_revision,author_context_version) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (project_id,user_id,title,genre,summary,"active",1,origin,seed_key,stamp,stamp,version,1,0))
         self._insert_empty_author_context_zero(c,project_id,stamp)
+        if seed_key in {"grey_harbor", "paper_moon", "zero_garden"}:
+            c.execute("CREATE TABLE IF NOT EXISTS v2_demo_seed_state(project_id TEXT PRIMARY KEY REFERENCES v2_projects(id),seed_version INTEGER NOT NULL,updated_at TEXT NOT NULL)")
+            c.execute("INSERT OR REPLACE INTO v2_demo_seed_state VALUES(?,?,?)",(project_id,DEMO_SEED_VERSION,stamp))
         if seed_key == "grey_harbor":
             self._seed_grey_harbor(c, project_id)
         elif seed_key in {"paper_moon", "zero_garden"}:
@@ -905,7 +945,7 @@ class V2Database:
         for chapter_old, number, title, summary, source_items in CHAPTERS:
             chapter_id = new_id("ch")
             old_chapter_to_new[chapter_old] = chapter_id
-            c.execute("INSERT INTO v2_chapters VALUES(?,?,?,?,?,?,?)", (chapter_id,project_id,number,title,summary,"",1))
+            c.execute("INSERT INTO v2_chapters VALUES(?,?,?,?,?,?,?)", (chapter_id,project_id,number,title,summary,CHAPTER_BODIES[chapter_old],1))
             c.execute("INSERT INTO v2_outline_nodes VALUES(?,?,?,?,?,?)", (new_id("outline"),project_id,number,title,summary,"complete"))
             for old_span_id, label, body in source_items:
                 span_id = new_id("span")
@@ -3809,6 +3849,74 @@ class V2Database:
             return self._idem(c,user_id,"commit:"+project_id+":"+change_set_id,key,payload,commit)
 
     # --- reset and imports ---
+    def _reset_project_contents(self, c: sqlite3.Connection, project: sqlite3.Row, stamp: str) -> tuple[int, dict[str, Any]]:
+        """Delete a project's working state and re-create its starting state; returns (memory version, empty author context)."""
+        project_id=project["id"]
+        # dependent children first. The set is deliberately project-scoped.
+        for table in ("v2_decision_reuse_events","v2_decision_reuse","v2_workflow_run_bindings","v2_source_revision_reviews"):
+            c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
+        for table in ("v2_author_story_plan_versions","v2_author_character_plan_versions","v2_author_world_plan_versions"):
+            c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_author_context_versions WHERE project_id=?",(project_id,))
+        for table in ("v2_author_story_plans","v2_author_character_plans","v2_author_world_plans"):
+            c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
+        c.execute("UPDATE v2_projects SET author_context_version=0,updated_at=? WHERE id=?",(stamp,project_id))
+        zero=self._insert_empty_author_context_zero(c,project_id,stamp)
+        c.execute("DELETE FROM v2_memory_candidate_review_events WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_candidate_decisions WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_candidates WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_initializations WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_delta_decisions WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_delta_candidates WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_source_coverage_audits WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_delta_batches WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_commit_audits WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_change_set_items WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_change_sets WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_revision_candidate_decisions WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_revision_task_versions WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_revision_tasks WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_revision_plan_candidates WHERE project_id=?",(project_id,))
+        c.execute("UPDATE v2_projects SET revision_task_version=0 WHERE id=?",(project_id,))
+        c.execute("DELETE FROM v2_decisions WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_evidence WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_issues WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_retrieval_traces WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
+        c.execute("DELETE FROM v2_analysis_results WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_analysis_inputs WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_character_aliases WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_character_alias_state WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_run_claims WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
+        c.execute("DELETE FROM v2_run_events WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
+        c.execute("DELETE FROM v2_run_stages WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
+        c.execute("DELETE FROM v2_runs WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_draft_revisions WHERE draft_id IN (SELECT id FROM v2_drafts WHERE project_id=?)",(project_id,))
+        c.execute("DELETE FROM v2_drafts WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_records WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_versions WHERE project_id=?",(project_id,))
+        if project["data_origin"] in {"demo_seed", "tutorial_seed"}:
+            c.execute("DELETE FROM v2_chapter_revision_history WHERE project_id=?",(project_id,))
+            c.execute("DELETE FROM v2_chapter_content_formats WHERE chapter_id IN (SELECT id FROM v2_chapters WHERE project_id=?)",(project_id,))
+            c.execute("DELETE FROM v2_characters WHERE project_id=?",(project_id,))
+            c.execute("DELETE FROM v2_world_entries WHERE project_id=?",(project_id,))
+            c.execute("DELETE FROM v2_outline_nodes WHERE project_id=?",(project_id,))
+            c.execute("DELETE FROM v2_source_spans WHERE project_id=?",(project_id,))
+            c.execute("DELETE FROM v2_chapters WHERE project_id=?",(project_id,))
+            if project["seed_key"]=="grey_harbor":
+                self._seed_grey_harbor(c,project_id); version=4
+            else:
+                self._seed_other(c,project_id,project["seed_key"]); version=1
+        elif project["data_origin"]=="user_import":
+            # Import preserves confirmed chapters/spans but never reparses original text.
+            c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,1,"current",None,utcnow()))
+            number=c.execute("SELECT COALESCE(MAX(chapter_number),0)+1 FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0]
+            self._draft(c,project_id,number); version=1
+        else:
+            c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,1,"current",None,utcnow()))
+            self._draft(c,project_id,1); version=1
+        c.execute("UPDATE v2_projects SET current_memory_version=?,author_context_version=0,alias_version=0,updated_at=? WHERE id=?",(version,utcnow(),project_id))
+        return version,zero
+
     def reset(self, user_id: str, project_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
             def reset() -> dict[str, Any]:
@@ -3816,69 +3924,7 @@ class V2Database:
                 if payload.get("confirm") is not True: raise DomainError("confirmation_required",400)
                 if payload.get("reason") not in {"fresh_start","demo_recovery"}: raise DomainError("invalid_request",400)
                 stamp=utcnow()
-                # dependent children first. The set is deliberately project-scoped.
-                for table in ("v2_decision_reuse_events","v2_decision_reuse","v2_workflow_run_bindings","v2_source_revision_reviews"):
-                    c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
-                for table in ("v2_author_story_plan_versions","v2_author_character_plan_versions","v2_author_world_plan_versions"):
-                    c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_author_context_versions WHERE project_id=?",(project_id,))
-                for table in ("v2_author_story_plans","v2_author_character_plans","v2_author_world_plans"):
-                    c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
-                c.execute("UPDATE v2_projects SET author_context_version=0,updated_at=? WHERE id=?",(stamp,project_id))
-                zero=self._insert_empty_author_context_zero(c,project_id,stamp)
-                c.execute("DELETE FROM v2_memory_candidate_review_events WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_candidate_decisions WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_candidates WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_initializations WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_delta_decisions WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_delta_candidates WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_source_coverage_audits WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_delta_batches WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_commit_audits WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_change_set_items WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_change_sets WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_revision_candidate_decisions WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_revision_task_versions WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_revision_tasks WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_revision_plan_candidates WHERE project_id=?",(project_id,))
-                c.execute("UPDATE v2_projects SET revision_task_version=0 WHERE id=?",(project_id,))
-                c.execute("DELETE FROM v2_decisions WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_evidence WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_issues WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_retrieval_traces WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
-                c.execute("DELETE FROM v2_analysis_results WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_analysis_inputs WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_character_aliases WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_character_alias_state WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_run_claims WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
-                c.execute("DELETE FROM v2_run_events WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
-                c.execute("DELETE FROM v2_run_stages WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
-                c.execute("DELETE FROM v2_runs WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_draft_revisions WHERE draft_id IN (SELECT id FROM v2_drafts WHERE project_id=?)",(project_id,))
-                c.execute("DELETE FROM v2_drafts WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_records WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_versions WHERE project_id=?",(project_id,))
-                if project["data_origin"] in {"demo_seed", "tutorial_seed"}:
-                    c.execute("DELETE FROM v2_chapter_revision_history WHERE project_id=?",(project_id,))
-                    c.execute("DELETE FROM v2_chapter_content_formats WHERE chapter_id IN (SELECT id FROM v2_chapters WHERE project_id=?)",(project_id,))
-                    c.execute("DELETE FROM v2_characters WHERE project_id=?",(project_id,))
-                    c.execute("DELETE FROM v2_world_entries WHERE project_id=?",(project_id,))
-                    c.execute("DELETE FROM v2_outline_nodes WHERE project_id=?",(project_id,))
-                    c.execute("DELETE FROM v2_source_spans WHERE project_id=?",(project_id,))
-                    c.execute("DELETE FROM v2_chapters WHERE project_id=?",(project_id,))
-                    if project["seed_key"]=="grey_harbor":
-                        self._seed_grey_harbor(c,project_id); version=4
-                    else:
-                        self._seed_other(c,project_id,project["seed_key"]); version=1
-                elif project["data_origin"]=="user_import":
-                    # Import preserves confirmed chapters/spans but never reparses original text.
-                    c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,1,"current",None,utcnow()))
-                    number=c.execute("SELECT COALESCE(MAX(chapter_number),0)+1 FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0]
-                    self._draft(c,project_id,number); version=1
-                else:
-                    c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,1,"current",None,utcnow()))
-                    self._draft(c,project_id,1); version=1
-                c.execute("UPDATE v2_projects SET current_memory_version=?,author_context_version=0,alias_version=0,updated_at=? WHERE id=?",(version,utcnow(),project_id))
+                version,zero=self._reset_project_contents(c,project,stamp)
                 # A project reset invalidates replay records that reference
                 # deleted drafts/runs, but retains this reset's own replay.
                 c.execute("DELETE FROM v2_idempotency WHERE scope=? AND operation LIKE ? AND operation!=?",(user_id,"%"+project_id+"%","reset:"+project_id))

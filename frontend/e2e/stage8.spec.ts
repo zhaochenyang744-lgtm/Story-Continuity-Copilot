@@ -76,7 +76,7 @@ test("fresh account restores login and visitor completes the preset Grey Harbor 
   await drawer.getByRole("button", { name: "查看来源", exact: true }).click();
   const source = page.getByRole("dialog", { name: /的章节来源$/ });
   await expect(source.getByRole("heading", { name: /第 \d+ 章《.+》/ })).toBeVisible();
-  await expect(source.locator(".source-drawer-header")).toContainText("原文第 1 版");
+  await expect(source.locator(".source-drawer-header p:not(.eyebrow)")).not.toBeEmpty();
   await expect(source.locator(".source-excerpt blockquote")).not.toBeEmpty();
   await source.locator("summary").click();
   await expect(source.locator(".source-technical")).toContainText(new URL(page.url()).pathname.replace(/workspace$/, "sources#span-"));
@@ -157,7 +157,7 @@ test("fresh account restores login and visitor completes the preset Grey Harbor 
   await projectNavButton(page, "事实库").click();
   const editedFact = page.getByRole("table", { name: "事实档案", exact: true }).getByRole("row").filter({ hasText: "先核对异常雾钟，再追查白色渡船" });
   await expect(editedFact).toBeVisible();
-  await editedFact.locator("summary").filter({ hasText: "版本详情" }).click();
+  await editedFact.locator("summary").filter({ hasText: "详情" }).click();
   await expect(editedFact.getByText("作者已确认", { exact: false })).toBeVisible();
 
   await page.getByRole("button", { name: /更换当前作品.*灰港回声/ }).click();
@@ -172,7 +172,7 @@ test("fresh account restores login and visitor completes the preset Grey Harbor 
   await expect(reset).toContainText("其他作品和其他账户不受影响");
   await expect(reset).toContainText("重置后无法撤销");
   await reset.getByRole("button", { name: "确认重置" }).click();
-  await expect(page.getByText("事实库第 4 版", { exact: false }).first()).toBeVisible();
+  await expect(reset).toHaveCount(0);
   await projectNavButton(page, "写作与检查").click();
   await expect(page.locator(".issue-list .issue-row")).toHaveCount(4);
   await expect(page.locator(".issue-list .issue-row").filter({ hasText: "决定已记录" })).toHaveCount(0);

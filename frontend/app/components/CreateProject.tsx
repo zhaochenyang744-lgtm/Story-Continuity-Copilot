@@ -13,15 +13,18 @@ export function CreateProject({
   error: unknown;
   submit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
 }) {
-  const [kind, setKind] = useState("小说");
+  const [kind, setKind] = useState("");
   const [custom, setCustom] = useState("");
   const [summary, setSummary] = useState("");
+  // Genres, matching the sample works (悬疑, 奇幻, 科幻); the tool checks prose fiction chapters.
   const kinds = [
-    { value: "小说", icon: "book" },
-    { value: "短篇", icon: "file" },
-    { value: "剧本", icon: "film" },
-    { value: "散文", icon: "feather" },
-    { value: "其他", icon: "more" },
+    { value: "悬疑" },
+    { value: "奇幻" },
+    { value: "科幻" },
+    { value: "言情" },
+    { value: "历史" },
+    { value: "现实" },
+    { value: "其他" },
   ] as const;
   return (
     <section className="approved-create">
@@ -70,9 +73,9 @@ export function CreateProject({
           </div>
           <fieldset className="design-field">
             <legend>
-              类型 <span className="design-badge">可选</span>
+              题材 <span className="design-badge">可选</span>
             </legend>
-            <p className="design-help">选择作品的主要形式，便于分类与管理。</p>
+            <p className="design-help">选择作品的题材，便于分类与管理。</p>
             <div className="design-type-options">
               {kinds.map((item) => (
                 <label className="design-type-choice" key={item.value}>
@@ -99,9 +102,9 @@ export function CreateProject({
             {kind === "其他" && (
               <input
                 className="design-custom-type"
-                aria-label="其他作品类型"
+                aria-label="其他题材"
                 maxLength={80}
-                placeholder="填写其他类型（可选）"
+                placeholder="填写其他题材（可选）"
                 value={custom}
                 onChange={(event) => setCustom(event.target.value)}
                 disabled={Boolean(busy)}

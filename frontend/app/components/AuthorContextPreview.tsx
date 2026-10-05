@@ -1320,13 +1320,8 @@ function ContextDialog({
                           <h3>{m.subject}</h3>
                           <p>{m.value}</p>
                           <small>
-                            原记录状态：{m.review_status} ·{" "}
-                            {m.valid_from === null
-                              ? "起始事实库版本未标明"
-                              : `事实库第 ${m.valid_from} 版起`}
-                            {m.valid_to === null
-                              ? ""
-                              : `，至第 ${m.valid_to} 版`}
+                            {({ author_confirmed: "作者已确认", pending: "待确认", rejected: "已拒绝" } as Record<string, string>)[m.review_status] ?? "待确认"} ·{" "}
+                            {m.valid_to === null ? "目前仍然有效" : "已被后来的内容取代"}
                           </small>
                           {m.source ? (
                             <>

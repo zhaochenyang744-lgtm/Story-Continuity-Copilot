@@ -45,7 +45,7 @@ function ProjectExportPanel({ projectId, disabled }: { projectId: string; disabl
         if (response.status === 401) throw new Error("登录已过期，请重新登录后导出。");
         if (response.status === 404) throw new Error("暂时无法访问这部作品，请刷新后重试。");
         if (response.status === 413) throw new Error("资料包较大，请先单独导出 TXT 或 Markdown 正文。");
-        if (response.status === 409) throw new Error("草稿和入库章节编号重叠，请先关闭“包含草稿”导出正文。");
+        if (response.status === 409) throw new Error("草稿和已写章节的章节号重复，请先取消“包含草稿”再导出正文。");
         throw new Error("暂时没能导出，请稍后重试。");
       }
       const blob = await response.blob();
@@ -84,7 +84,7 @@ function ProjectExportPanel({ projectId, disabled }: { projectId: string; disabl
       </select>
       <label className={styles.draft}>
         <input type="checkbox" checked={includeDraft} onChange={event => setIncludeDraft(event.target.checked)} disabled={busy || disabled} />
-        包含当前已保存草稿（单独标注为未入库）
+        包含当前已保存的草稿（会标注为草稿）
       </label>
       <p className="muted">如需导出正在编辑的内容，请先保存草稿。资料包会保留归档资料和原始正文格式。</p>
       <button type="button" className={styles.download} disabled={busy || disabled} onClick={() => void download()}>

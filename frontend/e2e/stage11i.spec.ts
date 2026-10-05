@@ -11,8 +11,8 @@ async function importAndOpenReview(page: import("@playwright/test").Page, title:
 
 test("all core final plus a confirmed core keeps supporting pending outside canon and starts Check", async ({ page }) => {
   const review = await importAndOpenReview(page, "11I 部分确认");
-  const core = review.locator("article.memory-init-candidate").filter({ hasText: "核心候选（必须决定）" });
-  const supporting = review.locator("article.memory-init-candidate").filter({ hasText: "辅助候选（可继续待审）" });
+  const core = review.locator("article.memory-init-candidate").filter({ hasText: "重要事实（需要决定）" });
+  const supporting = review.locator("article.memory-init-candidate").filter({ hasText: "次要事实（可以稍后再看）" });
   await expect(core).toHaveCount(1);
   await expect(supporting).toHaveCount(2);
   await core.getByLabel("接受（写入第 1 版事实库）").check();
@@ -42,8 +42,8 @@ test("all final decisions reaches ready_current", async ({ page }) => {
       decisions.push((request.postDataJSON() as { decision: string }).decision);
   });
   const review = await importAndOpenReview(page, "11I 全部处理");
-  const core = review.locator("article.memory-init-candidate").filter({ hasText: "核心候选（必须决定）" });
-  const supporting = review.locator("article.memory-init-candidate").filter({ hasText: "辅助候选（可继续待审）" });
+  const core = review.locator("article.memory-init-candidate").filter({ hasText: "重要事实（需要决定）" });
+  const supporting = review.locator("article.memory-init-candidate").filter({ hasText: "次要事实（可以稍后再看）" });
   await expect(core).toHaveCount(1);
   await expect(supporting).toHaveCount(2);
   for (const candidate of await supporting.all()) {
@@ -69,7 +69,7 @@ test("all core rejected remains in_review and Check fails closed", async ({ page
     if (new URL(response.url()).pathname.endsWith("/checks") && response.request().method() === "POST") failedChecks.push(response.status());
   });
   const review = await importAndOpenReview(page, "11I 核心全拒绝");
-  const core = review.locator("article.memory-init-candidate").filter({ hasText: "核心候选（必须决定）" });
+  const core = review.locator("article.memory-init-candidate").filter({ hasText: "重要事实（需要决定）" });
   await expect(core).toHaveCount(1);
   await core.getByLabel("拒绝（不写入）").check();
   await review.getByRole("button", { name: "确认核心审核并建立第 1 版事实库" }).click();
@@ -78,6 +78,10 @@ test("all core rejected remains in_review and Check fails closed", async ({ page
   const coverage = await page.evaluate(async (id) => (await fetch(`/api/projects/${id}/memory/coverage`)).json(), projectId);
   expect(coverage.data).toMatchObject({ status: "in_review", counts: { confirmed_core: 0, pending_canon_count: 0 } });
   await page.getByRole("button", { name: "写作与检查", exact: true }).click();
+  // An empty draft cannot be checked at all; give it text so the server's fail-closed rule is what stops the check.
+  await setDraftBody(page, "林默把银钥匙交给守塔人。");
+  await page.getByRole("button", { name: "保存草稿" }).click();
+  await expect(page.locator(".workspace-save-summary strong")).toHaveText("已保存");
   await page.getByRole("button", { name: "运行连续性检查" }).click();
   await expect(page.getByText("事实库尚待初始化", { exact: false })).toBeVisible();
   expect(failedChecks).toEqual([422]);
