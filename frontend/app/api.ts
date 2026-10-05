@@ -204,7 +204,7 @@ export const labelError = (cause: unknown) => {
     source_hash_mismatch: "预览内容校验不一致；没有追加章节，请重新预览。",
     source_change_set_expired: "追加预览已过期；没有追加章节，请重新预览。",
     empty_source: "追加内容为空，无法创建章节。",
-    unsupported_format: "文件仅支持 UTF-8 的 .md 或 .txt。",
+    unsupported_format: "文件格式不支持：请使用 Word（.docx），或 UTF-8 编码的 .md / .txt。",
     tutorial_progress_unavailable: "教学进度暂时不可用，已保留当前界面并重新同步。",
     tutorial_progress_conflict: "教学进度已在其他窗口更新，已重新同步服务器记录。",
     tutorial_progress_target_invalid: "当前作品不是该账号的教学样例，未记录进度。",
