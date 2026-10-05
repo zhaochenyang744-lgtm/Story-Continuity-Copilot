@@ -14,6 +14,12 @@ from app.config import AppPaths
 os.environ["SCC_DISABLE_DEFAULT_APP"] = "1"
 from app.main import create_app
 from app.provider import ProviderInvalidJson, ProviderResult, ProviderTimeout
+from app import review_screening
+
+# The browser stub marks every sentence of a chapter as key, and stage5's "extreme issues" page test
+# needs twenty issues on one chapter. The per-chapter review caps are product behaviour covered by the
+# backend tests; here they are lifted so the page can be tested with many issues.
+review_screening.KEY_MAX_CLAIMS = 64
 
 
 class BrowserTestProvider:

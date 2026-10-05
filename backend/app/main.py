@@ -32,6 +32,7 @@ from .stage13 import (
 )
 from .v2_database import V2Database
 from .text_content import written_chars
+from . import chapter_checks
 from .project_export import register_project_export_routes
 from .long_term_workflow import register_long_term_routes
 
@@ -100,6 +101,7 @@ class DraftPatch(Strict):
     body_format:Literal['plain_text','markdown']|None=None
     edit_context:EditContext|None=None
 class Check(Strict): draft_id:str; draft_revision:int=Field(ge=1); client_request_id:str|None=None
+class ChapterCheck(Strict): chapter_ids:list[str]=Field(min_length=1,max_length=chapter_checks.CHAPTER_CHECK_MAX)
 class ChangeImpactProposal(Strict):
     target_type:Literal['chapter','character','world','memory','plan','general']
     target_id:str|None=None
@@ -342,6 +344,18 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             if result['status']=='completed' and not db.advance_run(project_id,run_id,'assembling_reviewable_results'):return
             db.finish_run(project_id,run_id,result)
         except Exception: db.finish_run(project_id,run_id,{'status':'failed','error_code':'internal_run_error','retryable':True})
+    def execute_chapter_check(project_id:str,run_id:str,user_id:str,reservation_id:str):
+        try:
+            if db.session_budget_exhausted(project_id):db.finish_analysis_run(project_id,run_id,{'status':'failed','error_code':'budget_guard_exceeded','retryable':True});return
+            if not db.advance_run(project_id,run_id,'retrieving_confirmed_facts'):return
+            data=chapter_checks.run_input(db,project_id,run_id)
+            if not db.advance_run(project_id,run_id,'comparing_evidence'):return
+            with provider_usage(user_id,reservation_id):result=engine.execute(data)
+            if result['status']=='completed':
+                if not db.advance_run(project_id,run_id,'assembling_reviewable_results'):return
+                result={**result,'analysis':chapter_checks.report(data,result)}
+            db.finish_analysis_run(project_id,run_id,result)
+        except Exception:db.finish_analysis_run(project_id,run_id,{'status':'failed','error_code':'internal_run_error','retryable':True})
     def execute_analysis(project_id:str,run_id:str,user_id:str,reservation_id:str):
         try:
             if db.session_budget_exhausted(project_id):db.finish_analysis_run(project_id,run_id,{'status':'failed','error_code':'budget_guard_exceeded','retryable':True});return
@@ -770,6 +784,22 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             if executor:executor(execute,project_id,data['run_id'],actor['id'],reservation_id)
             else:background_tasks.add_task(execute,project_id,data['run_id'],actor['id'],reservation_id)
         return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/chapter-checks',status_code=202)
+    def chapter_check(project_id:str,payload:ChapterCheck,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'chapter_check_failed');actor=user(request)
+        if stage13.account(actor['id'])['account_type']=='visitor':raise DomainError('visitor_chapter_check_unavailable',403)
+        if not engine.provider.available:raise HTTPException(503,'provider_unavailable')
+        characters=chapter_checks.selection_characters(db,actor['id'],project_id,payload.chapter_ids)
+        data,status,created=chapter_checks.create(db,actor['id'],project_id,payload.chapter_ids,key(idempotency_key),engine.provenance())
+        if created:
+            try:reservation_id=stage13.reserve_workflow(actor['id'],project_id,'chapter_check',data['run_id'],characters=characters,character_kind='check')
+            except DomainError as error:
+                db.finish_analysis_run(project_id,data['run_id'],{'status':'failed','error_code':error.code,'retryable':True});raise
+            if executor:executor(execute_chapter_check,project_id,data['run_id'],actor['id'],reservation_id)
+            else:background_tasks.add_task(execute_chapter_check,project_id,data['run_id'],actor['id'],reservation_id)
+        return ok(request,data,status)
+    @app.get('/api/projects/{project_id}/chapter-checks')
+    def chapter_check_list(project_id:str,request:Request,limit:int=5):return ok(request,{'runs':chapter_checks.recent(db,user(request)['id'],project_id,limit)})
     @app.post('/api/projects/{project_id}/analyses',status_code=202)
     def analyses(project_id:str,payload:WritingAnalysis,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'analysis_create_failed');actor=user(request)
