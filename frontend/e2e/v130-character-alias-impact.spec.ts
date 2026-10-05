@@ -60,11 +60,8 @@ test("v1.3.0 character aliases and change impact stay explicit, traceable, and m
   await page.request.get(`${backendOrigin}/api/test/stage12/release`);
   await expect(page.getByText("该修改会影响角色身份识别与相关资料核对。",{exact:true})).toBeVisible();
   const bindings=page.locator(".impact-context small");
-  await expect(bindings).toContainText(`草稿第 ${project.current_draft.revision} 次保存`);
-  await expect(bindings).toContainText(`原文第 ${project.source_revision} 版`);
-  await expect(bindings).toContainText(`事实库第 ${project.current_memory_version} 版`);
-  await expect(bindings).toContainText(`规划第 ${project.author_context_version} 版`);
-  await expect(bindings).toContainText("别名第 2 版");
+  await expect(bindings).toContainText(`依据：第 ${project.current_draft.revision} 次保存的草稿`);
+  await expect(bindings).toContainText("当时的别名表");
   await expect(bindings).toHaveAttribute("title","检索方式：writing-analysis-lexical-v2-draft-claims");
   const characterEvidence=page.getByRole("link",{name:new RegExp("角色档案")});
   const aliasEvidence=page.getByRole("link",{name:new RegExp("角色别名")});
@@ -101,7 +98,7 @@ test("v1.3.0 character aliases and change impact stay explicit, traceable, and m
   await page.getByLabel("档案员岚 别名").fill("新档案员岚");await page.getByRole("button",{name:"保存",exact:true}).click();
   await page.reload();
   await expect(page.locator(".change-impact-panel .run-state")).toHaveText("依据已变化");
-  await expect(page.locator(".impact-context small")).toContainText("别名第 2 版");
+  await expect(page.locator(".impact-context small")).toContainText("当时的别名表");
   await page.setViewportSize({width:390,height:844});
   await expect(page.getByRole("heading",{name:"角色别名",exact:true})).toBeVisible();
   await expect(page.getByPlaceholder("添加作者确认的别名")).toHaveCount(0);

@@ -1,0 +1,676 @@
+{
+  "format": "longform-eval/1",
+  "set_id": "lf1-dev",
+  "kind": "dev",
+  "language": "zh",
+  "authoring": {
+    "model": "Codex GPT-6",
+    "date": "2026-10-04",
+    "notes": "第二轮重新逐章撰写原创正文；程序仅核对文本、引文、重复和哈希。仅开发集，工作记录位于仓库外桌面。 2026-10-04 Claude 修订：17 个问题点的问题句或依据改为换一种说法表达、不再直接宣布缺口或自带否定答案；《砂海的误差》《给夜班的厨房》第一至六章各补一段不含考点的日常描写。"
+  },
+  "works": [
+    {
+      "key": "chaochi_letters",
+      "title": "潮尺巷的拆信日",
+      "file": "works/chaochi_letters.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "shahai_error",
+      "title": "砂海的误差",
+      "file": "works/shahai_error.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "yechu_orders",
+      "title": "给夜班的厨房",
+      "file": "works/yechu_orders.md",
+      "origin": "original",
+      "source_note": null
+    }
+  ],
+  "targets": [
+    {
+      "id": "lf1d-t01",
+      "work": "chaochi_letters",
+      "chapter": "第三章 一张不肯贴平的地图",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1d-p01",
+          "kind": "state_change",
+          "quotes": [
+            "周陌已经把暂借的青布袋摊在柜台上，取出里面的木格栅试放底座。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 裁缝店里的赤匣",
+              "quote": "他把青布袋连同格栅交给周陌，登记为暂借，供展台试装。"
+            }
+          ],
+          "explanation": "青布袋及格栅已经暂借给周陌；当前使用有明确交接，不能因原属许砚舟而报归属矛盾。"
+        },
+        {
+          "id": "lf1d-p02",
+          "kind": "similar_name",
+          "quotes": [
+            "方和来取改好的大衣，他把取衣条交给邵芹，在店门外试着抬了抬胳膊。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 裁缝店里的赤匣",
+              "quote": "她叫方禾，周陌确认订单时看到她的姓名；邵芹接着提起另一位常客方和"
+            }
+          ],
+          "explanation": "方和与送货姑娘方禾是不同的人。前文已说明姓名和不同服装需求，取大衣与送布套不是同一个人身份变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf1d-t02",
+      "work": "chaochi_letters",
+      "chapter": "第四章 没有声音的戏票",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1d-p03",
+          "kind": "reported_belief",
+          "quotes": [
+            "“桑堤夜场那回，我可是唱到最后一折的。”"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 裁缝店里的赤匣",
+              "quote": "那场五月十二日的桑堤夜场临时取消了"
+            }
+          ],
+          "explanation": "许砚舟即兴吹嘘表演，邵芹随即指出这是拿取消夜场编段子，后续也明确不收入真实经历。叙述没有断言夜场举行。"
+        }
+      ]
+    },
+    {
+      "id": "lf1d-t03",
+      "work": "chaochi_letters",
+      "chapter": "第五章 来看信的人",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1d-p04",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "许砚舟试听时，把单边耳机戴在右耳，手指在屏幕上找回放的位置。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 退回的包裹",
+              "quote": "他的左耳自幼完全失聪，听话时总把右侧让给来人。"
+            }
+          ],
+          "explanation": "第一次描写单边耳机，但右耳可听与左耳失聪兼容；不能因左耳听觉受损误报不能试听。"
+        }
+      ]
+    },
+    {
+      "id": "lf1d-t04",
+      "work": "chaochi_letters",
+      "chapter": "第六章 印泥干掉以前",
+      "smoke": true,
+      "items": [
+        {
+          "id": "lf1d-i01",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "许砚舟让周陌把椅子挪到他左手边，说这边耳朵听得清些"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 退回的包裹",
+              "quote": "他的左耳自幼完全失聪，听话时总把右侧让给来人。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "许砚舟左耳自幼失聪，这里却说左边那只耳朵听得清，让人坐到左侧念字。"
+        },
+        {
+          "id": "lf1d-i02",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "他从盒里取出那枚松纹日戳，蘸了印泥往草稿右下角一按，松枝和一圈字都印得清清楚楚。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 退回的包裹",
+              "quote": "松纹日戳的铜面早已回炉，熔成了一块看不出字的铜饼"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "松纹日戳的铜面已回炉熔成无字铜饼，这里却还能盖出清楚的松枝和字圈；前文没有复制件或重刻。"
+        },
+        {
+          "id": "lf1d-i03",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "回顾里写着，许砚舟是看完纸船展开幕、又在窗口守了三天，才去办的退休手续。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 退回的包裹",
+              "quote": "那次春季纸船展的开幕日是四月十九日，许砚舟的退休手续在四月十七日办结"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "退休手续在四月十七日办结，早于四月十九日纸船展开幕；这里却说看完开幕三天后才办退休。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1d-t05",
+      "work": "chaochi_letters",
+      "chapter": "第七章 匣子开到一半",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1d-i04",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "邵芹说他们这对亲姐弟打小就跟着爹妈搬过三回家"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 退回的包裹",
+              "quote": "邵芹是许砚舟的表姐，两人的母亲是亲姐妹。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "邵芹是许砚舟的表姐（两人的母亲是亲姐妹），这里却说两人是跟着同一对爹妈长大的亲姐弟。"
+        },
+        {
+          "id": "lf1d-i05",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "头一回在裁缝店清点退信那天，邵芹拨密码时周陌就把四个数字默记了下来"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 裁缝店里的赤匣",
+              "quote": "那天一直忙到收工，周陌也没看清她拨的是哪四个数字"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "第一次在裁缝店整理时邵芹挡住密码盘，周陌直到收工都没看清数字；这里却说他当天就默记了密码。"
+        },
+        {
+          "id": "lf1d-i06",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "许砚舟从口袋取出海棠书签，在赤匣的侧壁上比了一下宽度，将它作为祖父旧物放进展示格。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 裁缝店里的赤匣",
+              "quote": "里面有许砚舟祖父留下的海棠书签，但信封当场又被她收回锁进抽屉，等完成登记后再决定交给谁。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "祖父旧物身份已明确，但最后写出的保管者是邵芹。后文直接从许砚舟口袋取出，没有登记后的交接环节；并非断言物件永久不能转交。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1d-t06",
+      "work": "chaochi_letters",
+      "chapter": "第八章 一条展签的边界",
+      "smoke": true,
+      "items": [
+        {
+          "id": "lf1d-i07",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "周陌把那位收件人的十八位证件号一个数字不落地排在姓名后面"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 裁缝店里的赤匣",
+              "quote": "任何情况下，潮尺巷退信展都不得公开收件人的身份证号码。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "timeless_rule",
+            "anchor": "任何情况下"
+          },
+          "explanation": "退信展任何情况下都不得公开收件人的身份证号码，这里却把完整证件号排在展板上。"
+        },
+        {
+          "id": "lf1d-i08",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "周陌以社区正式授权的拆信人身份接过裁纸刀，将残存信封放到垫板上准备开封。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 裁缝店里的赤匣",
+              "quote": "翻出社区发来的邮件，同意他们借用门口的橱窗布展"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有社区同意借用橱窗布展的邮件，从未写过社区授权拆开私人信件，这里却以正式授权的拆信人身份开封。"
+        },
+        {
+          "id": "lf1d-i09",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "outcome",
+          "issue_quotes": [
+            "他在登记表的结果栏写上成功：头一回塞进去的那两包吸湿剂，已经把邮袋内衬吸得干干的。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 退回的包裹",
+              "quote": "周陌记下他们往潮痕邮袋里塞了两包吸湿剂，想让受潮的内衬慢慢干透"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只写了放入吸湿剂、希望内衬慢慢干透，没有写第一次处理的效果；这里直接登记为已经彻底干燥、处理成功。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1d-t07",
+      "work": "chaochi_letters",
+      "chapter": "第九章 谁在票根上留了座位",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1d-i10",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "他把五月中旬桑堤礼堂那场夜戏归进了已演出一栏，还注明许砚舟坐在第七排，一直听到散场。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 裁缝店里的赤匣",
+              "quote": "那场五月十二日的桑堤夜场临时取消了"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "五月十二日的桑堤夜场已经临时取消，这里却把那场夜戏归为已演出，并说许砚舟听到散场。"
+        },
+        {
+          "id": "lf1d-i11",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "关于黑帆名册的这段记载抄自市档案馆保存的原册，周陌在展签末尾注明了这一出处。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 裁缝店里的赤匣",
+              "quote": "她说这个名字是小时候听街坊讲的，周陌一边听一边把她讲的内容记在纸上"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "黑帆名册的内容来自邵芹凭小时候听来的口述，从未写过调阅或抄录档案馆原册，这里却注明抄自馆藏原册。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1d-t08",
+      "work": "chaochi_letters",
+      "chapter": "第十章 门仍向巷子开着",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1d-i12",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "六月三日十六时，许砚舟正蹲在潮尺巷邮务所的柜台底下掏旧挂号单，直到天黑才直起腰"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 退回的包裹",
+              "quote": "六月三日十六时，许砚舟一直在区邮务处参加退休档案核对，现场签到了十七时才离开。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "六月三日十六时"
+          },
+          "explanation": "同一明确时点，一直在区邮务处核对档案被写为一直在邮务所且没有到区邮务处，不存在省略时间导致的兼容移动。"
+        },
+        {
+          "id": "lf1d-i13",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "周陌照着第一次清点那天实地量出来的二百一十七米，给绿石桥那一段画上了比例尺。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 退回的包裹",
+              "quote": "从绿石桥走到邮务所大概两百来米，周陌把这个数抄在便条背面"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "第一次清点时只有街坊顺口估的\"两百来米\"，从未写过实地丈量；这里却说那天实测是二百一十七米。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1d-t09",
+      "work": "shahai_error",
+      "chapter": "第七章 红牌朝外",
+      "smoke": true,
+      "items": [
+        {
+          "id": "lf1d-i14",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "九月十四日二十二时，陶铎还坐在南凹站值班室里，就着热水泡开一盒面"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 夜里的北砾坡",
+              "quote": "九月十四日二十二时，陶铎始终在北砾坡驾驶救援车，车载定位连续记录了这一时段的位置。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "九月十四日二十二时"
+          },
+          "explanation": "九月十四日二十二时陶铎在北砾坡驾驶救援车（有车载定位），这里却说同一时刻他坐在南凹站值班室泡面。"
+        },
+        {
+          "id": "lf1d-i15",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "穆循提起洗车用的那只桶，把里面的咸水顺着加液口灌进阵列的冷却槽，补到刻线才拧紧盖子。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 塑料绳结",
+              "quote": "任何情况下都不得把盐水注入鸣砂阵列冷却槽。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "timeless_rule",
+            "anchor": "任何情况下都不得"
+          },
+          "explanation": "任何情况下都不得把盐水注入鸣砂阵列冷却槽，这里却把洗车桶里的咸水灌进冷却槽。"
+        },
+        {
+          "id": "lf1d-i16",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "identity",
+          "issue_quotes": [
+            "电台呼号“灰领”的检修员就是登记表上的顾衡，穆循据此将两份记录合并为同一人的工作经历。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 塑料绳结",
+              "quote": "另一条信息来自电台里一个自称“灰领”的临时检修员"
+            },
+            {
+              "chapter": "第二章 塑料绳结",
+              "quote": "此前清单里负责电池更换的人是顾衡"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "\"灰领\"只是电台里的呼号，顾衡是清单上的名字，前文没有任何把两者对应起来的核验，这里却直接合并为同一人。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1d-p05",
+          "kind": "time_passed",
+          "quotes": [
+            "九月二十日上午，乔筱在值班室找到那个测温杯，杯中已经只剩液态水，清晨留冰的样子不复存在。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 塑料绳结",
+              "quote": "九月十五日清晨，测温杯中仍是一整块冰，乔筱给它拍照后将杯子移进持续供暖的值班室，室内温度保持二十摄氏度。"
+            }
+          ],
+          "explanation": "隔了五天且杯子置于二十摄氏度供暖室，冰融为水是自然的时间变化，不是同一时点冰状态矛盾。"
+        },
+        {
+          "id": "lf1d-p06",
+          "kind": "rule_exception",
+          "quotes": [
+            "乔筱佩着紧急检修证，将红色紧急检修牌挂到门外，在风暴期间进入观测平台处理传感器故障。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 塑料绳结",
+              "quote": "风暴期间不得上观测平台，但挂紧急检修牌的持证维修员可以为抢修进入。"
+            },
+            {
+              "chapter": "第一章 夜里的北砾坡",
+              "quote": "她的紧急检修证挂在胸前，穆循检查撤离人员名单时核对过证件编号，记录她可以担任持证检修员。"
+            }
+          ],
+          "explanation": "前文明文允许持证挂牌维修员为抢修进入，乔筱资格与动作满足完整例外；不能与冷却槽无例外盐水禁令混用。"
+        }
+      ]
+    },
+    {
+      "id": "lf1d-t10",
+      "work": "shahai_error",
+      "chapter": "第八章 后视镜里的灯",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1d-i17",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "穆循把那只旧赤铝转盘装回底座，整整转了一圈，借它把运输箱的倾角一点点调平。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 夜里的北砾坡",
+              "quote": "旧赤铝转盘裂了缝，已经被切成四块，分别封进了报废袋"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "旧赤铝转盘已经切成四块封进报废袋，这里却把它装回底座完整转了一圈。"
+        },
+        {
+          "id": "lf1d-i18",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "witness",
+          "issue_quotes": [
+            "陶铎向调度员描述断口方向时说得很肯定：横梁从支架上折下来的那一刻，他就站在渠边看着。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 塑料绳结",
+              "quote": "中午，陶铎收到电台口述，说东沟渠的一段横梁被风吹断"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "陶铎是从电台口述得知横梁断裂的，前文没有写他到过现场，这里却说他亲眼看着横梁折下。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1d-p07",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "乔筱将尺寸样板展开，在先前留出的插头位置旁添了一条红线，标出插头朝向。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 沙下的轴印",
+              "quote": "乔筱回来帮他做纸质尺寸样板，一端画弯，另一端留出插头位置。"
+            }
+          ],
+          "explanation": "新添红线是已有尺寸样板的方向说明，未改变尺寸或插头位置，前文也没规定不能添标记。"
+        }
+      ]
+    },
+    {
+      "id": "lf1d-t11",
+      "work": "yechu_orders",
+      "chapter": "第七章 填在原因栏里的手",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1d-i19",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "邢素用左手无名指轻按电子秤的去皮键，随后把盛粥碗放到秤面中央。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 晚饭过后的订单",
+              "quote": "她的左手无名指少年时已经截去，左手一直只有四根手指"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "问题句让邢素使用前文已截去的左手无名指，没有假指或复原设定；正常左手握柄并不矛盾。"
+        },
+        {
+          "id": "lf1d-i20",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "causation",
+          "issue_quotes": [
+            "我在事故表的原因栏里写下：是我那晚挪动十七号盒子，把排风机给碰停了。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 十七号盒子",
+              "quote": "我洗好后把盒子移到后门的架子，正想拿第二个盖，排风机突然停了"
+            },
+            {
+              "chapter": "第三章 修好的风不一样",
+              "quote": "维修人员次日来检查，发现排风机接线处松动，重新固定后进行了运转测试"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只写了挪盒子和排风机停转同时发生，维修发现的是接线松动，从未建立挪盒子导致停转的联系；这里却直接写成是挪盒子碰停了排风机。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1d-t12",
+      "work": "yechu_orders",
+      "chapter": "第八章 给明天留一只碗",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1d-p08",
+          "kind": "state_change",
+          "quotes": [
+            "两只深蓝碗放在夜班筐里，我拿出一只装员工粥，另一只留给试菜，按正式夜班用具使用。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 十七号盒子",
+              "quote": "南舒给我的两只深蓝碗改成正式夜班用具，前厅负责人当面签了调拨单，碗从借用架移到夜班筐。"
+            }
+          ],
+          "explanation": "前文已经正式调拨，不再是最初限期借用。夜班使用与调拨后的归属一致，不应按第一章的暂借期限误报。"
+        }
+      ]
+    }
+  ],
+  "selections": [
+    {
+      "id": "lf1d-s01",
+      "work": "chaochi_letters",
+      "chapters": [
+        "第六章 印泥干掉以前",
+        "第七章 匣子开到一半",
+        "第八章 一条展签的边界",
+        "第九章 谁在票根上留了座位",
+        "第十章 门仍向巷子开着"
+      ]
+    },
+    {
+      "id": "lf1d-s02",
+      "work": "chaochi_letters",
+      "chapters": [
+        "第三章 一张不肯贴平的地图",
+        "第四章 没有声音的戏票",
+        "第五章 来看信的人",
+        "第六章 印泥干掉以前",
+        "第七章 匣子开到一半",
+        "第八章 一条展签的边界",
+        "第九章 谁在票根上留了座位",
+        "第十章 门仍向巷子开着"
+      ]
+    }
+  ],
+  "subsets": {
+    "smoke": [
+      "lf1d-t04",
+      "lf1d-t06",
+      "lf1d-t09"
+    ]
+  }
+}

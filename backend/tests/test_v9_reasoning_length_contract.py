@@ -125,7 +125,7 @@ class ReasoningLengthContractTests(unittest.TestCase):
     def test_limit_is_disclosed_in_rules_and_output_schema(self):
         request, _ = captured_v8_04()
         engine = ContinuityEngine(OfflineProvider())
-        current = engine._request(request["claims"], request["memory"], request["draft"])
+        current = engine._request(request["claims"], request)
         self.assertIn(str(MAX_ISSUE_REASONING_CODEPOINTS), current["output_schema"]["issues"][0]["reasoning"])
         prompt = json.loads(continuity_prompt(current))
         self.assertEqual(prompt["prompt_version"], CONTINUITY_PROMPT_VERSION)

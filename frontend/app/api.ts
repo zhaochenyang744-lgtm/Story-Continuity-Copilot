@@ -105,6 +105,11 @@ export const labelError = (cause: unknown) => {
     workflow_quota_exceeded: "点数不足：今天的点数已经用完了。这次没有开始，也没有扣点数，请过几个小时再来。",
     provider_attempt_quota_exceeded: "点数不足：今天的点数已经用完了，这次没有做完。请过几个小时再来。",
     server_budget_exceeded: "服务器今天的用量已到上限，这次没有调用模型，请稍后再试。",
+    chapter_selection_invalid: "选中的章节不属于这部作品，请刷新后重新选择。",
+    chapter_selection_too_large: "一次最多检查 8 章，请少选几章。",
+    chapter_selection_empty: "选中的章节还没有正文，无法检查。",
+    visitor_chapter_check_unavailable: "访客不能一次检查多章；注册账号后即可使用。",
+    import_quota_exceeded: "每天只能导入并建立一本书的事实库，今天的次数已经用过了。这次没有开始，明天再来。",
     budget_rates_unavailable: "服务器预算费率未配置，AI 功能已安全关闭。",
     import_too_large: "文件超过当前身份的服务器导入上限，未写入任何内容。",
     draft_too_large: "单次草稿最多 30,000 个 Unicode 字符。",
@@ -135,7 +140,7 @@ export const labelError = (cause: unknown) => {
     lineage_invalid_requires_recheck:
       "草稿已经更新，请基于最新保存的版本重新检查。",
     insufficient_project_context:
-      "事实库尚待初始化；此作品暂不能运行连续性检查。",
+      "这部作品还没有可以对照的正文，暂时不能检查。先写下或导入至少一章。",
     invalid_candidate_decision: "请为每个候选选择接受、拒绝或编辑后接受。",
     memory_candidate_not_decided: "此候选当前已是待审核状态，无需再次重新评估。",
     memory_candidate_review_conflict: "此候选的审核状态已在其他窗口变化；请刷新后再操作。",
@@ -199,7 +204,7 @@ export const labelError = (cause: unknown) => {
     source_hash_mismatch: "预览内容校验不一致；没有追加章节，请重新预览。",
     source_change_set_expired: "追加预览已过期；没有追加章节，请重新预览。",
     empty_source: "追加内容为空，无法创建章节。",
-    unsupported_format: "文件仅支持 UTF-8 的 .md 或 .txt。",
+    unsupported_format: "文件格式不支持：请使用 Word（.docx），或 UTF-8 编码的 .md / .txt。",
     tutorial_progress_unavailable: "教学进度暂时不可用，已保留当前界面并重新同步。",
     tutorial_progress_conflict: "教学进度已在其他窗口更新，已重新同步服务器记录。",
     tutorial_progress_target_invalid: "当前作品不是该账号的教学样例，未记录进度。",
@@ -208,6 +213,16 @@ export const labelError = (cause: unknown) => {
     profile_revision_conflict: "个人信息已在其他窗口更新，已载入最新版本；请确认后重试。",
     profile_update_not_allowed: "当前身份不支持修改个人信息。",
   };
+  if (code === "character_quota_exceeded") {
+    const { characters, remaining } = ((cause as ApiFailure)?.details ?? {}) as Record<string, unknown>;
+    if (typeof characters === "number" && typeof remaining === "number")
+      return `今天的检查字数不够：这次要检查约 ${characters.toLocaleString()} 字，今天还剩 ${remaining.toLocaleString()} 字。这次没有开始检查，也没有扣字数。可以只检查一部分，或者明天再来。`;
+    return "今天的检查字数已经用完了。这次没有开始检查，也没有扣字数，明天再来。";
+  }
+  if (code === "visitor_check_too_long") {
+    const { limit } = ((cause as ApiFailure)?.details ?? {}) as Record<string, unknown>;
+    return `访客每次最多检查 ${typeof limit === "number" ? limit.toLocaleString() : "3,000"} 字。这次没有开始检查；注册账号后可以检查更长的章节。`;
+  }
   if (code === "provider_attempt_quota_insufficient") {
     const details = (cause as ApiFailure)?.details ?? {};
     const { claims, max_claims: maxClaims } = details as Record<string, unknown>;

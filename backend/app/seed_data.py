@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+# Raised whenever the sample works change; untouched sample works in existing accounts are then
+# re-created from the new seed (v2_database._migrate_v160_demo_refresh). 2: chapter bodies; 3: preset chapter check (v1.6.0).
+DEMO_SEED_VERSION = 3
+
 SEED_ORIGIN = {
     "origin": "original_demo_specific_web_demo_stage1",
     "created_on": "2026-08-25",
@@ -27,6 +31,37 @@ CHAPTERS = [
     ("ghe-ch-09", 9, "换手", "苏岑将罗盘交给温岚，自己进入封闭仓道。", [("ghe-ch09-s01", "动态状态", "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。")]),
     ("ghe-ch-10", 10, "回声坐标", "雾钟再响，白色渡船的回声从港外传来。", [("ghe-ch10-s01", "未解问题", "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。")]),
 ]
+# Short chapter bodies for the sample work, so it reads (and counts) as written chapters rather than
+# ten empty ones. Each contains its chapter's SourceSpan text verbatim, so the preset review's
+# evidence is unchanged.
+CHAPTER_BODIES = {
+    "ghe-ch-01": "苏岑在黄昏时抵达灰港，码头上的人都在收网。灰港的雾钟只在北潮闸完全关闭后敲响一次，别的潮声不会让它响。那天夜里，她听见钟声从港口另一头传来，便在旅店的窗边记下了时间。",
+    "ghe-ch-02": "苏岑爬上测绘塔，在父亲留下的工具箱里找到一枚旧罗盘。黄铜罗盘的镜面有一道月牙裂纹，此刻由苏岑放在外套内袋。她试着校准方向，指针晃了很久才停下。",
+    "ghe-ch-03": "黎舟带苏岑穿过风栈码头，一边走一边看怀表。十九点二十，西航道先退潮，最后一班渡船在十九点四十才离开风栈码头。黎舟把这两个时刻抄在潮汐簿上，说往年从没晚过这么久。",
+    "ghe-ch-04": "档案员温岚在旧柜底层翻出一张没有标题的潮表，纸边已经发黄。温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。她把潮表夹进档案册，打算第二天再查。",
+    "ghe-ch-05": "旧灯塔下的信箱里多了一张折起的纸条。纸条只写着‘白色渡船没有靠岸’，署名和日期都被盐雾抹去了。三人商量之后，决定去旧灯塔看看。",
+    "ghe-ch-06": "黎舟花了一下午修好低室里那台老电台。电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。温岚把求救码记在本子上，苏岑则盯着地图上的水门。",
+    "ghe-ch-07": "第二天清早，苏岑和温岚沿着潮线走到雾线水门外。航图被固定在雾线水门外的锚柱上，右下角缺失了一块。两人没有动它，只把锚柱的位置画进了笔记。",
+    "ghe-ch-08": "温岚从旧档案里找到一页值守记录，证明苏岑的父亲曾在北堤守过灯。温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+    "ghe-ch-09": "仓道入口很窄，只容一个人侧身通过。进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。随后她独自走进封闭仓道，温岚留在入口等候。",
+    "ghe-ch-10": "夜里雾更浓了，港口的灯一盏接一盏熄灭。北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。苏岑从仓道里出来，三人一起望向港外。",
+}
+# A preset chapter check of the sample work, so a visitor can see what checking written chapters gives
+# without running one. Authored fixture data, labelled as a sample on the page; never Provider output.
+DEMO_CHAPTER_CHECK = {
+    "chapters": ["ghe-ch-09", "ghe-ch-10"],
+    "issues": [
+        {
+            "chapter": "ghe-ch-10",
+            "sentence": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+            "nature": "possible_conflict",
+            "category": "world_rule",
+            "severity": "medium",
+            "explanation": "第 1 章写明雾钟只在北潮闸完全关闭后才会响；本章写北潮闸没关，雾钟却响了。如果这是有意埋下的谜团，可以保留原意。",
+            "evidence_span": "ghe-ch01-s01",
+        },
+    ],
+}
 DRAFT = {
     "id": "draft-ghe-ch11",
     "chapter_number": 11,

@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import path from "node:path";
 
 type DraftOptions = { immersive?: boolean };
-type ProjectOptions = { kind?: "小说" | "短篇" | "剧本" | "散文" | "其他"; customKind?: string; summary?: string };
+type ProjectOptions = { kind?: "悬疑" | "奇幻" | "科幻" | "言情" | "历史" | "现实" | "其他"; customKind?: string; summary?: string };
 
 // Register a unique author through the current registration form.
 export async function registerAccount(page: Page, { prefix }: { prefix: string }) {
@@ -41,9 +41,9 @@ async function createdProjectId(page: Page): Promise<string> {
 export async function createProject(page: Page, title: string, opts: ProjectOptions = {}) {
   await page.goto("/projects/new");
   await page.getByRole("textbox", { name: /作品名称/ }).fill(title);
-  await page.getByRole("radio", { name: opts.kind ?? "小说", exact: true }).check();
+  await page.getByRole("radio", { name: opts.kind ?? "悬疑", exact: true }).check();
   if (opts.kind === "其他" && opts.customKind !== undefined) {
-    await page.getByRole("textbox", { name: "其他作品类型", exact: true }).fill(opts.customKind);
+    await page.getByRole("textbox", { name: "其他题材", exact: true }).fill(opts.customKind);
   }
   if (opts.summary !== undefined) await page.getByRole("textbox", { name: /简介/ }).fill(opts.summary);
   await page.locator("button.design-create-button").click();

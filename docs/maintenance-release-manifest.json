@@ -16,6 +16,10 @@
       "target": "backend/app/brief_citations.py"
     },
     {
+      "source": "backend/app/chapter_checks.py",
+      "target": "backend/app/chapter_checks.py"
+    },
+    {
       "source": "backend/app/config.py",
       "target": "backend/app/config.py"
     },
@@ -26,6 +30,10 @@
     {
       "source": "backend/app/deployment.py",
       "target": "backend/app/deployment.py"
+    },
+    {
+      "source": "backend/app/docx_import.py",
+      "target": "backend/app/docx_import.py"
     },
     {
       "source": "backend/app/engine.py",
@@ -56,12 +64,20 @@
       "target": "backend/app/operations.py"
     },
     {
+      "source": "backend/app/passages.py",
+      "target": "backend/app/passages.py"
+    },
+    {
       "source": "backend/app/project_export.py",
       "target": "backend/app/project_export.py"
     },
     {
       "source": "backend/app/provider.py",
       "target": "backend/app/provider.py"
+    },
+    {
+      "source": "backend/app/review_screening.py",
+      "target": "backend/app/review_screening.py"
     },
     {
       "source": "backend/app/seed_data.py",
@@ -446,6 +462,11 @@
     "backend/tests/stage13_app.py",
     "backend/tests/stage13_harness.py",
     "backend/tests/test_internal_ids.py",
+    "backend/tests/test_lf_bulk_memory_review.py",
+    "backend/tests/test_lf_memory_as_of_chapter.py",
+    "backend/tests/test_lf_passages.py",
+    "backend/tests/test_lf_screened_review.py",
+    "backend/tests/test_lf_whole_chapter_memory.py",
     "backend/tests/test_long_term_independent.py",
     "backend/tests/test_long_term_workflow.py",
     "backend/tests/test_maintenance_package.py",
@@ -481,6 +502,10 @@
     "backend/tests/test_v140_import_structure.py",
     "backend/tests/test_v140_real_ai_contract_repairs.py",
     "backend/tests/test_v140_rich_editor_compatibility.py",
+    "backend/tests/test_v160_demo_refresh.py",
+    "backend/tests/test_v160_character_quota.py",
+    "backend/tests/test_v160_chapter_checks.py",
+    "backend/tests/test_v160_docx_import.py",
     "backend/tests/test_v17_parallel_review_batches.py",
     "backend/tests/test_v17_partial_review_results.py",
     "backend/tests/test_v17_provider_quota.py",

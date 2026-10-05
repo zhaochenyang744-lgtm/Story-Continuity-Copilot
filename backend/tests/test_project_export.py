@@ -148,7 +148,8 @@ class ProjectExportTests(unittest.TestCase):
     def test_fragment_only_chapters_keep_raw_body_and_order_with_explicit_incomplete_labels(self):
         with self.db.connection() as c:
             chapter = c.execute("SELECT * FROM v2_chapters WHERE project_id=? ORDER BY chapter_number LIMIT 1", (self.project_id,)).fetchone()
-            self.assertEqual(chapter["body"], "")
+            # Sample chapters carry bodies now; a migrated legacy chapter may have only its fragments.
+            c.execute("UPDATE v2_chapters SET body='' WHERE id=?", (chapter["id"],))
             c.execute("UPDATE v2_source_spans SET source_revision=999 WHERE chapter_id=?", (chapter["id"],))
             for span_id, marker in [("z-export-first-fragment", "FIRST_FRAGMENT_ONLY"),
                                     ("a-export-second-fragment", "SECOND_FRAGMENT_ONLY")]:
@@ -175,7 +176,7 @@ class ProjectExportTests(unittest.TestCase):
     def test_missing_and_complete_body_statuses_are_distinct(self):
         with self.db.connection() as c:
             chapter = c.execute("SELECT * FROM v2_chapters WHERE project_id=? ORDER BY chapter_number LIMIT 1", (self.project_id,)).fetchone()
-            c.execute("UPDATE v2_chapters SET source_revision=999 WHERE id=?", (chapter["id"],))
+            c.execute("UPDATE v2_chapters SET body='',source_revision=999 WHERE id=?", (chapter["id"],))
         _, archive, snapshot = self.bundle()
         self.assertEqual(snapshot["chapters"][0]["body_origin"], "unavailable")
         self.assertEqual(snapshot["completeness"]["missing_body_chapters"], 1)

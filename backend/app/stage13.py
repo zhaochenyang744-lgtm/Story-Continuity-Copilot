@@ -92,6 +92,10 @@ class Stage13Settings:
     smtp_from: str | None = None
     require_recovery_email: bool = False
     test_mode: bool = False
+    # Character quotas (v1.6.0): what an author can understand and predict, unlike dispatch counts.
+    registered_check_chars: int = 60_000
+    visitor_check_chars: int = 3_000
+    registered_imports: int = 1
 
     @classmethod
     def from_env(cls) -> "Stage13Settings":
@@ -226,9 +230,13 @@ class Stage13Settings:
             visitor_ttl_hours=_positive_int(os.environ.get("VISITOR_TTL_HOURS"), 24, minimum=1, maximum=168),
             cleanup_interval_seconds=_positive_int(os.environ.get("VISITOR_CLEANUP_INTERVAL_SECONDS"), 900, minimum=60, maximum=900),
             visitor_workflows=_positive_int(os.environ.get("VISITOR_WORKFLOWS_24H"), 3, minimum=1, maximum=1000),
-            registered_workflows=_positive_int(os.environ.get("REGISTERED_WORKFLOWS_24H"), 20, minimum=1, maximum=10000),
-            visitor_provider_attempts=_positive_int(os.environ.get("VISITOR_PROVIDER_ATTEMPTS_24H"), 30, minimum=1, maximum=10000),
-            registered_provider_attempts=_positive_int(os.environ.get("REGISTERED_PROVIDER_ATTEMPTS_24H"), 120, minimum=1, maximum=100000),
+            registered_workflows=_positive_int(os.environ.get("REGISTERED_WORKFLOWS_24H"), 120, minimum=1, maximum=10000),
+            # Dispatch counts stay as a runaway backstop; the character quotas below are what authors meet.
+            visitor_provider_attempts=_positive_int(os.environ.get("VISITOR_PROVIDER_ATTEMPTS_24H"), 60, minimum=1, maximum=10000),
+            registered_provider_attempts=_positive_int(os.environ.get("REGISTERED_PROVIDER_ATTEMPTS_24H"), 3000, minimum=1, maximum=100000),
+            registered_check_chars=_positive_int(os.environ.get("REGISTERED_CHECK_CHARS_24H"), 60_000, minimum=1_000, maximum=10_000_000),
+            visitor_check_chars=_positive_int(os.environ.get("VISITOR_CHECK_CHARS"), 3_000, minimum=500, maximum=100_000),
+            registered_imports=_positive_int(os.environ.get("REGISTERED_IMPORTS_24H"), 1, minimum=1, maximum=100),
             visitor_budget_cny=visitor_budget,
             registered_budget_cny=registered_budget,
             input_cny_per_million=0.0 if input_rate is None and not public else input_rate,
@@ -367,6 +375,11 @@ CREATE TABLE IF NOT EXISTS v2_provider_attempts(
   id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),reservation_id TEXT NOT NULL REFERENCES v2_usage_reservations(id),created_at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS v2_provider_attempts_by_user ON v2_provider_attempts(user_id,created_at);
+CREATE TABLE IF NOT EXISTS v2_character_usage(
+  id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES v2_users(id),project_id TEXT,run_id TEXT,
+  kind TEXT NOT NULL CHECK(kind IN ('check','import')),characters INTEGER NOT NULL CHECK(characters>=0),created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS v2_character_usage_by_user ON v2_character_usage(user_id,kind,created_at);
 CREATE TABLE IF NOT EXISTS v2_visitor_cleanup_audits(
   id TEXT PRIMARY KEY,cleaned_at TEXT NOT NULL,visitor_count INTEGER NOT NULL,visitor_hashes_json TEXT NOT NULL
 );
@@ -702,7 +715,9 @@ class Stage13Service:
             )
             return {"reset": True, "session_revoked": True}
 
-    def reserve_workflow(self, user_id: str, project_id: str | None, workflow_kind: str, run_id: str | None = None) -> str:
+    def reserve_workflow(self, user_id: str, project_id: str | None, workflow_kind: str, run_id: str | None = None,
+                         characters: int = 0, character_kind: str | None = None) -> str:
+        """Reserve one workflow; a check or an import also spends characters from the author's quota, in the same transaction."""
         reservation = self.settings.reservation_microunits()
         with self.database.connection() as c:
             c.execute("BEGIN IMMEDIATE")
@@ -723,12 +738,47 @@ class Stage13Service:
                 raise DomainError("workflow_quota_exceeded", 429, True)
             if used + reservation > int(round(budget_limit * 1_000_000)):
                 raise DomainError("server_budget_exceeded", 429, True)
+            if character_kind is not None:
+                self._spend_characters(c, user_id, project_id, run_id, visitor, character_kind, characters, cutoff)
             reservation_id = _new_id("usage")
             c.execute(
                 "INSERT INTO v2_usage_reservations VALUES(?,?,?,?,?,?,?)",
                 (reservation_id, user_id, project_id, run_id, workflow_kind, reservation, _now()),
             )
             return reservation_id
+
+    def _spend_characters(self, c: Any, user_id: str, project_id: str | None, run_id: str | None, visitor: bool,
+                          kind: str, characters: int, cutoff: str) -> None:
+        if kind not in {"check", "import"} or characters < 0:
+            raise DomainError("usage_context_invalid", 503, True)
+        if kind == "check" and visitor and characters > self.settings.visitor_check_chars:
+            raise DomainError("visitor_check_too_long", 422, False, {"characters": characters, "limit": self.settings.visitor_check_chars})
+        if kind == "check" and not visitor:
+            used = c.execute("SELECT COALESCE(SUM(characters),0) FROM v2_character_usage WHERE user_id=? AND kind='check' AND created_at>?", (user_id, cutoff)).fetchone()[0]
+            if used + characters > self.settings.registered_check_chars:
+                raise DomainError("character_quota_exceeded", 429, True, {"characters": characters, "remaining": max(0, self.settings.registered_check_chars - used), "limit": self.settings.registered_check_chars})
+        if kind == "import" and not visitor:
+            count = c.execute("SELECT COUNT(*) FROM v2_character_usage WHERE user_id=? AND kind='import' AND created_at>?", (user_id, cutoff)).fetchone()[0]
+            if count >= self.settings.registered_imports:
+                raise DomainError("import_quota_exceeded", 429, True, {"limit": self.settings.registered_imports})
+        c.execute("INSERT INTO v2_character_usage VALUES(?,?,?,?,?,?,?)", (_new_id("chars"), user_id, project_id, run_id, kind, characters, _now()))
+
+    def character_usage(self, user_id: str) -> dict[str, Any]:
+        """What this author can still check and import in the rolling 24 hours, for the page to show before a check."""
+        with self.database.connection() as c:
+            actor = c.execute("SELECT account_type FROM v2_users WHERE id=?", (user_id,)).fetchone()
+            if not actor:
+                raise DomainError("authentication_required", 401)
+            cutoff = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
+            if actor["account_type"] == "visitor":
+                checks = c.execute("SELECT COUNT(*) FROM v2_usage_reservations WHERE user_id=? AND created_at>?", (user_id, cutoff)).fetchone()[0]
+                return {"account_type": "visitor", "check_chars_per_check": self.settings.visitor_check_chars,
+                        "checks_limit": self.settings.visitor_workflows, "checks_remaining": max(0, self.settings.visitor_workflows - checks)}
+            used = c.execute("SELECT COALESCE(SUM(characters),0) FROM v2_character_usage WHERE user_id=? AND kind='check' AND created_at>?", (user_id, cutoff)).fetchone()[0]
+            imports = c.execute("SELECT COUNT(*) FROM v2_character_usage WHERE user_id=? AND kind='import' AND created_at>?", (user_id, cutoff)).fetchone()[0]
+            return {"account_type": "registered", "check_chars_limit": self.settings.registered_check_chars, "check_chars_used": used,
+                    "check_chars_remaining": max(0, self.settings.registered_check_chars - used),
+                    "imports_limit": self.settings.registered_imports, "imports_remaining": max(0, self.settings.registered_imports - imports)}
 
     def remaining_provider_attempts(self, user_id: str) -> int:
         """Provider dispatches this user may still make in the rolling 24 hours reserve_provider_attempt enforces."""
@@ -758,7 +808,7 @@ class Stage13Service:
     def text_limits(self, user_id: str) -> dict[str, int]:
         visitor = self.account(user_id)["account_type"] == "visitor"
         return {
-            "import_chars": 50_000 if visitor else 350_000,
+            "import_chars": 10_000 if visitor else 350_000,
             "import_bytes": 1 * 1024 * 1024 if visitor else 5 * 1024 * 1024,
             "draft_chars": 30_000,
         }
@@ -826,11 +876,14 @@ class Stage13Service:
                         "v2_author_character_plans", "v2_author_world_plans",
                     ):
                         c.execute(f"DELETE FROM {table} WHERE project_id=?", (project_id,))
+                    if "v2_demo_seed_state" in existing_tables:
+                        c.execute("DELETE FROM v2_demo_seed_state WHERE project_id=?", (project_id,))
                     c.execute("DELETE FROM v2_projects WHERE id=?", (project_id,))
                 reservation_ids = [row[0] for row in c.execute("SELECT id FROM v2_usage_reservations WHERE user_id=?", (user_id,)).fetchall()]
                 for reservation_id in reservation_ids:
                     c.execute("DELETE FROM v2_provider_attempts WHERE reservation_id=?", (reservation_id,))
                 c.execute("DELETE FROM v2_usage_reservations WHERE user_id=?", (user_id,))
+                c.execute("DELETE FROM v2_character_usage WHERE user_id=?", (user_id,))
                 c.execute("DELETE FROM v2_recovery_tokens WHERE user_id=?", (user_id,))
                 c.execute("DELETE FROM v2_import_drafts WHERE user_id=?", (user_id,))
                 c.execute("DELETE FROM v2_sessions WHERE user_id=?", (user_id,))

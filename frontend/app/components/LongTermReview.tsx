@@ -140,14 +140,14 @@ export function LongTermReview({ projectId, userId, readOnly, onChanged }: { pro
     {readOnly && <p className="muted">当前为阅读模式，可查看修订资料；请在桌面打开可编辑的作品以提交修改。</p>}
     {snapshot && <>
       <details className="maintenance-details" open={Boolean(editing)}>
-        <summary>已入库章节 <span>{snapshot.chapters.length} 章</span></summary>
+        <summary>已写章节 <span>{snapshot.chapters.length} 章</span></summary>
         {!editing ? <ul className="maintenance-chapters">{snapshot.chapters.map((chapter) => <li key={chapter.id}>
           <span>第 {chapter.number} 章 · {chapter.title}{chapter.body_notice && <small className="muted"> · {chapter.body_notice}</small>}</span>
           <button type="button" disabled={readOnly || chapter.revision_editable === false || Boolean(busy) || pending.length > 0} onClick={() => startEdit(chapter)}>修订本章</button>
         </li>)}</ul> : <form onSubmit={(event) => void makePreview(event)} className="chapter-revision-form">
           <label>修订章节标题<input value={title} maxLength={120} required disabled={readOnly || Boolean(busy)} onChange={(event) => { setTitle(event.target.value); setPreview(null); }} /></label>
           <label>修订章节正文<textarea value={body} required rows={14} disabled={readOnly || Boolean(busy)} onChange={(event) => { setBody(event.target.value); setPreview(null); }} /></label>
-          <p className="muted">{editing.body_format === "markdown" ? "本章使用 Markdown，格式标记会随正文保存。" : "本章按纯文本保存。"} 未提交修订会保留在当前设备，恢复后仍需预览并明确提交。</p>
+          <p className="muted">{editing.body_format === "markdown" ? "本章使用 Markdown，格式标记会随正文保存。" : "本章按纯文本保存。"} 还没确认的修改会先留在当前设备；恢复后需要再预览并确认一次。</p>
           <div className="actions"><button type="submit" disabled={readOnly || Boolean(busy) || !dirty}>预览修订影响</button><button type="button" disabled={readOnly || Boolean(busy)} onClick={() => { discardRecovery(); setEditing(null); setPreview(null); }}>放弃本次编辑</button></div>
         </form>}
         {preview && <section className="revision-preview" aria-label="章节修订预览">

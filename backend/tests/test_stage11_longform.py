@@ -1,7 +1,8 @@
 import json
-import pathlib, tempfile, unittest, uuid
+import os, pathlib, tempfile, unittest, uuid
+from unittest import mock
 
-from app.engine import ContinuityEngine, MemoryDeltaEngine, MemoryInitializationEngine
+from app.engine import REVIEW_PIPELINE_ENV, ContinuityEngine, MemoryDeltaEngine, MemoryInitializationEngine
 from app.memory_contract import CONTROLLED_PREDICATES, is_controlled_candidate
 from app.provider import DeepSeekProvider, InputBudgetExceeded, ProviderFailure, ProviderInvalidJson, ProviderResult, ProviderTimeout, memory_initialization_prompt, request_prompt_and_budget
 from app.v2_database import V2Database
@@ -166,7 +167,7 @@ class Stage11BoundedContextTests(unittest.TestCase):
         request = engine._request([source(1, 20)], 1)
         prompt = memory_initialization_prompt(request)
         payload = json.loads(prompt)
-        self.assertIn('"max_candidates":4', prompt)
+        self.assertIn('"max_candidates":8', prompt)
         self.assertIn('"subject_max_chars":80', prompt)
         self.assertIn('"predicate_max_chars":80', prompt)
         self.assertIn('"value_max_chars":240', prompt)
@@ -176,14 +177,14 @@ class Stage11BoundedContextTests(unittest.TestCase):
         self.assertFalse(is_controlled_candidate("open_thread", "status", allow_legacy_alias=False))
         self.assertFalse(is_controlled_candidate("static_canon", "knows", allow_legacy_alias=False))
         self.assertTrue(is_controlled_candidate("static_canon", "knows"))
-        self.assertEqual(engine.provenance()["prompt_version"], "memory-initialization-v9-field-contract")
+        self.assertEqual(engine.provenance()["prompt_version"], "memory-initialization-v10-whole-chapter-rules")
 
     def test_memory_v5_validation_rejects_unbounded_candidate_count_and_fields(self):
         source_item = source(1, 20)
         engine = MemoryInitializationEngine(BatchProvider())
         candidate = {"memory_type": "static_canon", "subject": "s" * 80, "predicate": "p" * 80, "value": "v" * 240, "chapter_id": source_item["chapter_id"], "source_span_id": source_item["id"]}
         self.assertEqual(engine.validate({"candidates": [candidate]}, {"sources": [source_item]}), [candidate])
-        with self.assertRaises(ValueError): engine.validate({"candidates": [candidate] * 5}, {"sources": [source_item]})
+        with self.assertRaises(ValueError): engine.validate({"candidates": [candidate] * 9}, {"sources": [source_item]})
         with self.assertRaises(ValueError): engine.validate({"candidates": [{**candidate, "value": "v" * 241}]}, {"sources": [source_item]})
 
     def test_memory_v7_validation_reports_field_subcodes_and_only_normalizes_format(self):
@@ -225,7 +226,7 @@ class Stage11BoundedContextTests(unittest.TestCase):
         request=delta._request({"source_revision":2,"sources":[source(99,100)],"memory":memory})
         self.assertEqual(len(request["memory"]),20)
         self.assertLessEqual(request_prompt_and_budget(request)[1],6000)
-        self.assertEqual(delta.provenance()["prompt_version"],"memory-delta-v4-stated-length-limits")
+        self.assertEqual(delta.provenance()["prompt_version"],"memory-delta-v5-whole-chapter")
 
     def test_provider_uses_2000_output_cap_and_invalid_json_keeps_only_metadata(self):
         posted = []
@@ -513,7 +514,10 @@ class Stage11BoundedContextTests(unittest.TestCase):
         draft = db.project(user, project)["current_draft"]
         body = "甲" * 600 + "。" + "乙" * 600 + "。" + "丙" * 600 + "。"
         patched, _ = db.patch_draft(user, project, draft["id"], {"title": "Stage 11 bounded", "body": body, "base_revision": draft["revision"]}, str(uuid.uuid4()))
-        run, _, _ = db.create_run(user, project, {"draft_id": draft["id"], "draft_revision": patched["revision"]}, str(uuid.uuid4()), ContinuityEngine(BatchProvider()).provenance())
+        # Per-sentence batching is the legacy pipeline; the run records it, so run_input serves it.
+        with mock.patch.dict(os.environ, {REVIEW_PIPELINE_ENV: "legacy"}):
+            provenance = ContinuityEngine(BatchProvider()).provenance()
+        run, _, _ = db.create_run(user, project, {"draft_id": draft["id"], "draft_revision": patched["revision"]}, str(uuid.uuid4()), provenance)
         input_data = db.run_input(project, run["run_id"])
         with db.connection() as connection:
             span = dict(connection.execute("SELECT id,chapter_id,body FROM v2_source_spans WHERE project_id=? ORDER BY id LIMIT 1", (project,)).fetchone())

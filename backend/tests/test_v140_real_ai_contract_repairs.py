@@ -432,8 +432,11 @@ class RealAiContractRepairTests(unittest.TestCase):
         draft = client.get(f"/api/projects/{project_id}").json()["data"]["current_draft"]
         run_id = client.post(f"/api/projects/{project_id}/checks", headers={"Idempotency-Key": str(uuid.uuid4())}, json={"draft_id": draft["id"], "draft_revision": draft["revision"]}).json()["data"]["run_id"]
         result = client.get(f"/api/projects/{project_id}/checks/{run_id}?include=issues,evidence,metrics").json()["data"]
-        self.assertEqual((result["status"], result["issues"][0]["nature"]), ("completed", "insufficient_evidence"))
+        # The screened pipeline settles an unproved shared time as possible_conflict, as the review rules
+        # prescribe; the legacy pipeline's second attempt settled it as insufficient_evidence.
+        self.assertEqual((result["status"], result["issues"][0]["nature"]), ("completed", "possible_conflict"))
         self.assertEqual(result["metrics"]["contract_normalization_count"], 1)
+        self.assertEqual(result["metrics"]["contract_normalizations"][0]["outcome"], "possible_conflict")
         self.assertEqual(result["metrics"]["contract_normalizations"][0]["reason_code"], "temporal_overlap_unproven")
 
     def test_current_continuity_run_repairs_legacy_shape_instead_of_accepting_it(self):

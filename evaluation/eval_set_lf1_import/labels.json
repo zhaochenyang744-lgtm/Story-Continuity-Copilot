@@ -1,0 +1,770 @@
+{
+  "format": "longform-eval/1",
+  "set_id": "lf1-import",
+  "kind": "import",
+  "language": "zh",
+  "authoring": {
+    "model": "Claude (claude-opus-5-5)",
+    "date": "2026-10-04",
+    "notes": "Source: 睡半夜怎麼三更《末日收尾人》, CC BY 4.0, converted to Simplified Chinese with OpenCC tw2sp, prologue plus original chapters 1-74 split into 121 chapters; 19 passages modified to plant 18 labelled points (see authoring/modifications.json)."
+  },
+  "works": [
+    {
+      "key": "moriri_cleaner",
+      "title": "末日收尾人（节选）",
+      "file": "works/moriri_cleaner.md",
+      "origin": "open_license",
+      "source_note": "CC BY 4.0 授权作品：睡半夜怎麼三更《末日收尾人》（Hugging Face 数据集 asd567557275/Traditional_Chinese_noval_authors_upload）。改动：繁转简（OpenCC tw2sp），截取序幕至原第七十四章并重新分为 121 章，为埋入问题点改写 19 处文字（见 authoring/modifications.json）。"
+    }
+  ],
+  "targets": [
+    {
+      "id": "lf1i-t010",
+      "work": "moriri_cleaner",
+      "chapter": "第10章 原第五章（上）",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i01",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "我的小破公司四个人的排名全都在二十万名开外"
+          ],
+          "evidence": [
+            {
+              "chapter": "第8章 原第四章（上）",
+              "quote": "二十一万五千一百二十六哦"
+            },
+            {
+              "chapter": "第8章 原第四章（上）",
+              "quote": "我是四十万零一千二十"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只给出殷明德和朝日两人的排名，陈鸢仪和周爱怜的排名从未出现，不能断定四个人全在二十万名以外。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1i-p01",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "哈勇是他上到高中后第一个交到的朋友"
+          ],
+          "evidence": [
+            {
+              "chapter": "第3章 原第一章（下）",
+              "quote": "只有一个人例外，那便是住在附近的陈鸢仪"
+            }
+          ],
+          "explanation": "前文说的是年幼时只有陈鸢仪愿意和他相处；上高中后交到第一个新朋友与此不矛盾。"
+        }
+      ]
+    },
+    {
+      "id": "lf1i-t011",
+      "work": "moriri_cleaner",
+      "chapter": "第11章 原第五章（下）",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i02",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "他想起昨晚警方连笔录都没让他们做，在大楼门口就放众人各自回家"
+          ],
+          "evidence": [
+            {
+              "chapter": "第7章 原第三章（下）",
+              "quote": "少年等人只是被扣在警局作了笔录后就得以自行返回住家"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前一章写明他们被带到警局做完笔录才回家，这里却说没做笔录、在大楼门口就被放走。"
+        },
+        {
+          "id": "lf1i-i03",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "顺手从自己的书包里掏出印鉴，准备在委托书上盖章"
+          ],
+          "evidence": [
+            {
+              "chapter": "第3章 原第一章（下）",
+              "quote": "早知道就不把自己的印鉴给对方保管"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "陈鸢仪的印鉴已经交给殷明德保管，原文没有任何归还的情节，她却从自己书包里拿出印鉴。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1i-p02",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "这份委托要求三名收尾人，就我们三个负责吧"
+          ],
+          "evidence": [
+            {
+              "chapter": "第2章 原第一章（上）",
+              "quote": "法令规定收尾人公司的下限最低是四人"
+            }
+          ],
+          "explanation": "四人下限是对公司人数的规定，一份委托只需要三人出勤并不违反。"
+        },
+        {
+          "id": "lf1i-p03",
+          "kind": "similar_name",
+          "quotes": [
+            "这可是广寒集团的大小姐"
+          ],
+          "evidence": [
+            {
+              "chapter": "第9章 原第四章（下）",
+              "quote": "广寒财团的『随时贷』"
+            }
+          ],
+          "explanation": "广寒财团与广寒集团是同一家企业的两种称呼，不是两个不同的组织。"
+        }
+      ]
+    },
+    {
+      "id": "lf1i-t014",
+      "work": "moriri_cleaner",
+      "chapter": "第14章 原第八章（上）",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1i-p04",
+          "kind": "state_change",
+          "quotes": [
+            "如今获得了一柄无敌神剑"
+          ],
+          "evidence": [
+            {
+              "chapter": "第7章 原第三章（下）",
+              "quote": "减缓冲击力的代价是他手中的魔导武装如玻璃般骤然的裂断"
+            },
+            {
+              "chapter": "第13章 原第七章",
+              "quote": "那么，契约成立。"
+            }
+          ],
+          "explanation": "原来的长剑已经断了，上一章他与至理编织缔约，如今手里是一把新剑。"
+        }
+      ]
+    },
+    {
+      "id": "lf1i-t017",
+      "work": "moriri_cleaner",
+      "chapter": "第17章 原第十章（上）",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t023",
+      "work": "moriri_cleaner",
+      "chapter": "第23章 原第十四章（上）",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t026",
+      "work": "moriri_cleaner",
+      "chapter": "第26章 原第十六章（上）",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1i-p05",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "我曾经是国防军士兵，在出现实稳定锚作战时被亲体的污染液体碰到了鼻子"
+          ],
+          "evidence": [
+            {
+              "chapter": "第7章 原第三章（下）",
+              "quote": "我是快速反应警察长吴常春"
+            }
+          ],
+          "explanation": "吴常春现在是警长，过去当过国防军士兵是新补充的经历，与前文不矛盾。"
+        }
+      ]
+    },
+    {
+      "id": "lf1i-t030",
+      "work": "moriri_cleaner",
+      "chapter": "第30章 原第十八章（上）",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t038",
+      "work": "moriri_cleaner",
+      "chapter": "第38章 原第二十二章（下）",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i04",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "又会再重现「新年惨案」那样三万人丧命的悲剧"
+          ],
+          "evidence": [
+            {
+              "chapter": "第3章 原第一章（下）",
+              "quote": "那场悲剧造成了五万人死亡"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文写明新年惨案造成五万人死亡，这里写成三万人。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1i-p06",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "十五岁已经成年的我最讨厌被管了"
+          ],
+          "evidence": [
+            {
+              "chapter": "第3章 原第一章（下）",
+              "quote": "十五岁在法律意义上已经代表了成年"
+            }
+          ],
+          "explanation": "蓬莱法律规定十五岁即成年，他这样说符合设定。"
+        }
+      ]
+    },
+    {
+      "id": "lf1i-t040",
+      "work": "moriri_cleaner",
+      "chapter": "第40章 原第二十三章（下）",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i05",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "毕竟广寒集团早就把至理编织正式转到了他的名下"
+          ],
+          "evidence": [
+            {
+              "chapter": "第13章 原第七章",
+              "quote": "我是广寒集团的魔导兵器，『至理编织』"
+            },
+            {
+              "chapter": "第15章 原第八章（下）",
+              "quote": "这把武器是广寒集团制造的，那么收件者是国防部"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只写到他在护送途中与这把广寒集团制造、原本要送往国防部的武器缔约，从未写过广寒集团把所有权转给他。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t042",
+      "work": "moriri_cleaner",
+      "chapter": "第42章 原第二十四章（下）",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i06",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "对了，鸢仪的生日是下个月吧"
+          ],
+          "evidence": [
+            {
+              "chapter": "第9章 原第四章（下）",
+              "quote": "她的生日居然还和妳同一天耶，鸢仪"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文写明陈鸢仪与赤霄院同一天生日，而本章当天正是赤霄院的生日宴会，她的生日不可能在下个月。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1i-p07",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "赤霄院陛下从来没有在镜头前露过面吧"
+          ],
+          "evidence": [
+            {
+              "chapter": "第9章 原第四章（下）",
+              "quote": "赤霄院已经证实会第一次公开露面"
+            }
+          ],
+          "explanation": "新闻说她将在生日宴会上第一次公开露面，在此之前从未露面与此一致。"
+        }
+      ]
+    },
+    {
+      "id": "lf1i-t044",
+      "work": "moriri_cleaner",
+      "chapter": "第44章 原第二十六章 任务（上）",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t047",
+      "work": "moriri_cleaner",
+      "chapter": "第47章 原第二十八章（上）",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t050",
+      "work": "moriri_cleaner",
+      "chapter": "第50章 原第三十章",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i07",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "比他们低一个年级的学妹周爱怜露出嘲讽的脸庞窃笑着"
+          ],
+          "evidence": [
+            {
+              "chapter": "第4章 原第二章（上）",
+              "quote": "「周爱怜学姊。」"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "周爱怜一直是他们的学姊（高一个年级），这里却写成低一个年级的学妹。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t056",
+      "work": "moriri_cleaner",
+      "chapter": "第56章 原第三十四章 参访农场（上）",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t062",
+      "work": "moriri_cleaner",
+      "chapter": "第62章 原第三十八章（上）",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t065",
+      "work": "moriri_cleaner",
+      "chapter": "第65章 原第四十章",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t069",
+      "work": "moriri_cleaner",
+      "chapter": "第69章 原第四十四章 节目参访（上）",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t071",
+      "work": "moriri_cleaner",
+      "chapter": "第71章 原第四十五章 大力扶持",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i08",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "上次收尾人自由执法权的议案在公投中顺利通过"
+          ],
+          "evidence": [
+            {
+              "chapter": "第65章 原第四十章",
+              "quote": "由于收尾人自由执法权的议案被公投否决"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文写明自由执法权议案在公投中被否决，这里却说顺利通过。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t072",
+      "work": "moriri_cleaner",
+      "chapter": "第72章 原第四十六章 恢复名誉（上）",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i09",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "我只听说过守望寰宇，其他三个连名字都没听过"
+          ],
+          "evidence": [
+            {
+              "chapter": "第8章 原第四章（上）",
+              "quote": "这组织名叫『物竞天择』"
+            },
+            {
+              "chapter": "第9章 原第四章（下）",
+              "quote": "其中两个组织的名字分别是「出走计划」和「末日新生」"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "学姊早就向他介绍过物竞天择，他自己也查到过出走计划和末日新生的名字，不可能三个都没听过。"
+        },
+        {
+          "id": "lf1i-i10",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "墨匠军械那边说过随时可以退货退款"
+          ],
+          "evidence": [
+            {
+              "chapter": "第3章 原第一章（下）",
+              "quote": "墨匠军械一向是出售即不退款"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "墨匠军械的规矩一向是售出不退款，这里却说随时可以退货退款。"
+        },
+        {
+          "id": "lf1i-i11",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "other",
+          "issue_quotes": [
+            "如今帝雉公司四个人都已经配上了眷体级以上的魔导武装"
+          ],
+          "evidence": [
+            {
+              "chapter": "第44章 原第二十六章 任务（上）",
+              "quote": "她们此时持有的是眷体等级的魔导武装"
+            },
+            {
+              "chapter": "第5章 原第二章（下）",
+              "quote": "虽然比不上魔导武装，但也能用于战斗中"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只交代了殷明德、朝日和陈鸢仪的武装，周爱怜一直用的是比不上魔导武装的相机，从未写她换装，不能断定四个人都有。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1i-p08",
+          "kind": "state_change",
+          "quotes": [
+            "亲爱的为我买的手套，我可是每天都好好珍藏的带在身上呢"
+          ],
+          "evidence": [
+            {
+              "chapter": "第44章 原第二十六章 任务（上）",
+              "quote": "朝日穿戴的是墨匠军械的流银手套"
+            }
+          ],
+          "explanation": "公司起初缺手套，后来朝日已经配上墨匠军械的流银手套，状态变化前文有交代。"
+        },
+        {
+          "id": "lf1i-p09",
+          "kind": "reported_belief",
+          "quotes": [
+            "根据统计人群里总是有5%的蠢蛋"
+          ],
+          "evidence": [
+            {
+              "chapter": "第71章 原第四十五章 大力扶持",
+              "quote": "只有5%的人拒绝给予保护"
+            }
+          ],
+          "explanation": "学生引用的5%来自上一章的民意调查，是人物的说法，与前文数字一致。"
+        }
+      ]
+    },
+    {
+      "id": "lf1i-t078",
+      "work": "moriri_cleaner",
+      "chapter": "第78章 原第五十章 结局（上）",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i12",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "走来的是一名紫发碧眼的萝莉"
+          ],
+          "evidence": [
+            {
+              "chapter": "第4章 原第二章（上）",
+              "quote": "赤色的眼眸古井无波"
+            },
+            {
+              "chapter": "第11章 原第五章（下）",
+              "quote": "赤红的眼瞳看着几人"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "周爱怜是赤红色的眼睛，这里写成碧眼。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t083",
+      "work": "moriri_cleaner",
+      "chapter": "第83章 原第五十四章（上）",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i13",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "只有五级魔力的他能赢下那一战确实侥幸"
+          ],
+          "evidence": [
+            {
+              "chapter": "第2章 原第一章（上）",
+              "quote": "像少年一样拥有七级魔力的人是十分罕见的"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "殷明德拥有七级魔力，这里写成五级。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1i-p10",
+          "kind": "reported_belief",
+          "quotes": [
+            "能回想起来的最早记忆就是上高中的时候呢"
+          ],
+          "evidence": [
+            {
+              "chapter": "第4章 原第二章（上）",
+              "quote": "据说她小时候住在关东安全区"
+            }
+          ],
+          "explanation": "前文只是\"据说\"她小时候住在关东，她自己不记得童年与此不矛盾。"
+        }
+      ]
+    },
+    {
+      "id": "lf1i-t086",
+      "work": "moriri_cleaner",
+      "chapter": "第86章 原第五十五章（下）",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i14",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "witness",
+          "issue_quotes": [
+            "朝日的义父当年可是排名前一百的收尾人"
+          ],
+          "evidence": [
+            {
+              "chapter": "第8章 原第四章（上）",
+              "quote": "据说她的义父曾经是强力的收尾人"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文只有\"据说曾经是强力的收尾人\"这样的传闻，从未给出排名，不能断定是前一百名。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t089",
+      "work": "moriri_cleaner",
+      "chapter": "第89章 原第五十七章（上）",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i15",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "他自己和陈鸢仪还没满十八岁，在法律上同样算未成年"
+          ],
+          "evidence": [
+            {
+              "chapter": "第3章 原第一章（下）",
+              "quote": "十五岁在法律意义上已经代表了成年"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "蓬莱法律规定十五岁即成年，这里却说未满十八岁算未成年。"
+        },
+        {
+          "id": "lf1i-i16",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "这位从德国来的波旁小姐不适合再与你们住在一起"
+          ],
+          "evidence": [
+            {
+              "chapter": "第71章 原第四十五章 大力扶持",
+              "quote": "选择的国家当然是我的祖国法兰西啰"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "德莉莎自称祖国是法兰西，这里写成从德国来。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1i-p11",
+          "kind": "time_passed",
+          "quotes": [
+            "包含寄住在叔叔家内的事"
+          ],
+          "evidence": [
+            {
+              "chapter": "第17章 原第十章（上）",
+              "quote": "只是跟随着亲戚们与妹妹到了叔叔的家中"
+            }
+          ],
+          "explanation": "他九岁父母去世后寄住在叔叔家，后来才住进现在的楼，两者是不同时期。"
+        }
+      ]
+    },
+    {
+      "id": "lf1i-t092",
+      "work": "moriri_cleaner",
+      "chapter": "第92章 原第五十八章 打响内战（下）",
+      "smoke": false,
+      "items": [],
+      "traps": []
+    },
+    {
+      "id": "lf1i-t096",
+      "work": "moriri_cleaner",
+      "chapter": "第96章 原第六十章（下）",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1i-i17",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "不要忘记两年前新年惨案的伤痛"
+          ],
+          "evidence": [
+            {
+              "chapter": "第1章 原序幕",
+              "quote": "在新年惨案发生的四年后"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "故事开始时新年惨案已经过去四年，这里却说是两年前。"
+        },
+        {
+          "id": "lf1i-i18",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "少年看向埋头吃饭、一头乌黑短发的妹妹"
+          ],
+          "evidence": [
+            {
+              "chapter": "第9章 原第四章（下）",
+              "quote": "那是个红发如瀑的小女孩"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "殷初曦是一头红发，这里写成乌黑短发。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1i-p12",
+          "kind": "state_change",
+          "quotes": [
+            "走上公寓的第五楼"
+          ],
+          "evidence": [
+            {
+              "chapter": "第89章 原第五十七章（上）",
+              "quote": "这公寓的四五层被划分给少年"
+            }
+          ],
+          "explanation": "他们已经搬到北方的新公寓，住在四五层，不再是原来公司的四楼。"
+        }
+      ]
+    }
+  ],
+  "selections": [],
+  "subsets": {
+    "quick_first_20": [
+      "lf1i-t010",
+      "lf1i-t011",
+      "lf1i-t014",
+      "lf1i-t017"
+    ]
+  }
+}

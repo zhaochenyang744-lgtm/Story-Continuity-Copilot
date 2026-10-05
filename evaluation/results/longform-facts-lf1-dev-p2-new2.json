@@ -1,0 +1,1810 @@
+{
+  "kind": "longform_fact_coverage",
+  "set_id": "lf1-dev",
+  "run_id": "p2-new2",
+  "memory_prompt_version": "memory-initialization-v10-whole-chapter-rules",
+  "chapter_limit": null,
+  "meter": {
+    "prices_cny_per_million": {
+      "input_miss": 2.0,
+      "input_hit": 2.0,
+      "output": 8.0
+    },
+    "discount_prices_cny_per_million": null,
+    "budget_cny": 1.0,
+    "replay": "record",
+    "stop_reason": null,
+    "spent_cny": 0.229694,
+    "system_fingerprints": [
+      "aeb56401ca74e127821c4f9126dcb669"
+    ]
+  },
+  "cost": {
+    "dispatches": 19,
+    "replayed_dispatches": 0,
+    "unknown_usage_dispatches": 0,
+    "tokens": {
+      "input_miss": 37023,
+      "input_hit": 12160,
+      "reasoning": 0,
+      "visible_output": 16416
+    },
+    "cost_cny": {
+      "input_miss": 0.074046,
+      "input_hit": 0.02432,
+      "reasoning": 0.0,
+      "visible_output": 0.131328,
+      "unknown_usage_reserve": 0,
+      "total": 0.229694
+    },
+    "discount_estimate_cny": null,
+    "by_purpose": {
+      "memory_initialization": {
+        "dispatches": 19,
+        "cost_cny": 0.229694
+      }
+    },
+    "cache_hit_share": 0.24723989996543522,
+    "efforts": {
+      "disabled": 19
+    }
+  },
+  "works": {
+    "chaochi_letters": {
+      "status": "completed",
+      "chapters": 10,
+      "fact_count": 71,
+      "facts_per_chapter": {
+        "2": 4,
+        "1": 4,
+        "3": 8,
+        "4": 7,
+        "5": 8,
+        "6": 8,
+        "7": 8,
+        "8": 8,
+        "9": 8,
+        "10": 8
+      }
+    },
+    "shahai_error": {
+      "status": "completed",
+      "chapters": 8,
+      "fact_count": 40,
+      "facts_per_chapter": {
+        "2": 5,
+        "1": 3,
+        "3": 5,
+        "4": 3,
+        "6": 5,
+        "5": 3,
+        "7": 8,
+        "8": 8
+      }
+    },
+    "yechu_orders": {
+      "status": "completed",
+      "chapters": 8,
+      "fact_count": 40,
+      "facts_per_chapter": {
+        "1": 4,
+        "2": 4,
+        "3": 3,
+        "4": 5,
+        "5": 4,
+        "6": 4,
+        "7": 8,
+        "8": 8
+      }
+    }
+  },
+  "coverage": {
+    "evidence_quotes": 31,
+    "item_evidence_covered": 0.8182,
+    "trap_evidence_covered": 0.7778,
+    "rule_evidence_covered_by_static_canon": 1.0,
+    "rows": [
+      {
+        "point": "lf1d-p01",
+        "label": "trap",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "dynamic_state",
+          "subject": "旧青布袋连同拆下的木格栅",
+          "predicate": "possession",
+          "value": "许砚舟把青布袋连同格栅交给周陌，登记为暂借，供展台试装。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 21
+      },
+      {
+        "point": "lf1d-p02",
+        "label": "trap",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "dynamic_state",
+          "subject": "许砚舟的祖父留下的海棠书签",
+          "predicate": "possession",
+          "value": "邵芹给周陌一个小信封，里面有许砚舟祖父留下的海棠书签，但信封当场又被她收回锁进抽屉，等完成登记后再决定交给谁。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 2
+      },
+      {
+        "point": "lf1d-p03",
+        "label": "trap",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "event_timeline",
+          "subject": "桑堤礼堂五月十二日夜场",
+          "predicate": "event_occurred",
+          "value": "那场五月十二日的桑堤夜场临时取消了，退票名单和取消告示都还夹在票后。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 30
+      },
+      {
+        "point": "lf1d-p04",
+        "label": "trap",
+        "evidence_chapter": 1,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "static_canon",
+          "subject": "许砚舟",
+          "predicate": "status",
+          "value": "左耳自幼完全失聪，听话时总把右侧让给来人。",
+          "review_priority": "core",
+          "chapter_index": 1
+        },
+        "shared_bigrams": 18
+      },
+      {
+        "point": "lf1d-i01",
+        "label": "conflict",
+        "evidence_chapter": 1,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "static_canon",
+          "subject": "许砚舟",
+          "predicate": "status",
+          "value": "左耳自幼完全失聪，听话时总把右侧让给来人。",
+          "review_priority": "core",
+          "chapter_index": 1
+        },
+        "shared_bigrams": 18
+      },
+      {
+        "point": "lf1d-i02",
+        "label": "conflict",
+        "evidence_chapter": 1,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "event_timeline",
+          "subject": "许砚舟",
+          "predicate": "event_occurred",
+          "value": "六月三日十六时，许砚舟一直在区邮务处参加退休档案核对，现场签到了十七时才离开。",
+          "review_priority": "core",
+          "chapter_index": 1
+        },
+        "shared_bigrams": 3
+      },
+      {
+        "point": "lf1d-i03",
+        "label": "conflict",
+        "evidence_chapter": 1,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "event_timeline",
+          "subject": "许砚舟",
+          "predicate": "event_occurred",
+          "value": "六月三日十六时，许砚舟一直在区邮务处参加退休档案核对，现场签到了十七时才离开。",
+          "review_priority": "core",
+          "chapter_index": 1
+        },
+        "shared_bigrams": 4
+      },
+      {
+        "point": "lf1d-i04",
+        "label": "conflict",
+        "evidence_chapter": 1,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "static_canon",
+          "subject": "邵芹与许砚舟",
+          "predicate": "relationship",
+          "value": "邵芹是许砚舟的表姐，两人的母亲是亲姐妹。",
+          "review_priority": "core",
+          "chapter_index": 1
+        },
+        "shared_bigrams": 17
+      },
+      {
+        "point": "lf1d-i05",
+        "label": "conflict",
+        "evidence_chapter": 2,
+        "covered": false,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": null,
+        "shared_bigrams": 1
+      },
+      {
+        "point": "lf1d-i06",
+        "label": "insufficient_evidence",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "dynamic_state",
+          "subject": "许砚舟的祖父留下的海棠书签",
+          "predicate": "possession",
+          "value": "邵芹给周陌一个小信封，里面有许砚舟祖父留下的海棠书签，但信封当场又被她收回锁进抽屉，等完成登记后再决定交给谁。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 44
+      },
+      {
+        "point": "lf1d-i07",
+        "label": "conflict",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": true,
+        "rule_covered": true,
+        "best_fact": {
+          "memory_type": "static_canon",
+          "subject": "潮尺巷退信展",
+          "predicate": "rule",
+          "value": "任何情况下，潮尺巷退信展都不得公开收件人的身份证号码。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 24
+      },
+      {
+        "point": "lf1d-i08",
+        "label": "insufficient_evidence",
+        "evidence_chapter": 2,
+        "covered": false,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": null,
+        "shared_bigrams": 1
+      },
+      {
+        "point": "lf1d-i09",
+        "label": "insufficient_evidence",
+        "evidence_chapter": 1,
+        "covered": false,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": null,
+        "shared_bigrams": 0
+      },
+      {
+        "point": "lf1d-i10",
+        "label": "conflict",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "event_timeline",
+          "subject": "桑堤礼堂五月十二日夜场",
+          "predicate": "event_occurred",
+          "value": "那场五月十二日的桑堤夜场临时取消了，退票名单和取消告示都还夹在票后。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 30
+      },
+      {
+        "point": "lf1d-i11",
+        "label": "insufficient_evidence",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "dynamic_state",
+          "subject": "许砚舟的祖父留下的海棠书签",
+          "predicate": "possession",
+          "value": "邵芹给周陌一个小信封，里面有许砚舟祖父留下的海棠书签，但信封当场又被她收回锁进抽屉，等完成登记后再决定交给谁。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 2
+      },
+      {
+        "point": "lf1d-i12",
+        "label": "conflict",
+        "evidence_chapter": 1,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "event_timeline",
+          "subject": "许砚舟",
+          "predicate": "event_occurred",
+          "value": "六月三日十六时，许砚舟一直在区邮务处参加退休档案核对，现场签到了十七时才离开。",
+          "review_priority": "core",
+          "chapter_index": 1
+        },
+        "shared_bigrams": 35
+      },
+      {
+        "point": "lf1d-i13",
+        "label": "insufficient_evidence",
+        "evidence_chapter": 1,
+        "covered": false,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": null,
+        "shared_bigrams": 1
+      },
+      {
+        "point": "lf1d-i14",
+        "label": "conflict",
+        "evidence_chapter": 1,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "dynamic_state",
+          "subject": "陶铎",
+          "predicate": "location",
+          "value": "九月十四日二十二时，陶铎始终在北砾坡驾驶救援车，车载定位连续记录了这一时段的位置。",
+          "review_priority": "core",
+          "chapter_index": 1
+        },
+        "shared_bigrams": 37
+      },
+      {
+        "point": "lf1d-i15",
+        "label": "conflict",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": true,
+        "rule_covered": true,
+        "best_fact": {
+          "memory_type": "static_canon",
+          "subject": "鸣砂阵列冷却槽",
+          "predicate": "rule",
+          "value": "任何情况下都不得把盐水注入鸣砂阵列冷却槽；这条规程没有紧急例外，含盐液体会腐蚀内部连接座；撤离包里备的是去离子水。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 19
+      },
+      {
+        "point": "lf1d-i16",
+        "label": "insufficient_evidence",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "open_thread",
+          "subject": "自称“灰领”的临时检修员",
+          "predicate": "identity",
+          "value": "电台里一个自称“灰领”的临时检修员报告了电池型号；值守员答应稍后去找正式人员名册，其真实身份尚未确认。",
+          "review_priority": "supporting",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 13
+      },
+      {
+        "point": "lf1d-i16",
+        "label": "insufficient_evidence",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "character_knowledge",
+          "subject": "穆循",
+          "predicate": "knowledge",
+          "value": "穆循只确认“灰领”说的电池型号适配，不替这个声音认领一个姓名；此前清单里负责电池更换的人是顾衡。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 15
+      },
+      {
+        "point": "lf1d-p05",
+        "label": "trap",
+        "evidence_chapter": 2,
+        "covered": false,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": null,
+        "shared_bigrams": 0
+      },
+      {
+        "point": "lf1d-p06",
+        "label": "trap",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "static_canon",
+          "subject": "观测平台",
+          "predicate": "rule",
+          "value": "风暴期间不得上观测平台，但挂紧急检修牌的持证维修员可以为抢修进入。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 29
+      },
+      {
+        "point": "lf1d-p06",
+        "label": "trap",
+        "evidence_chapter": 1,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "dynamic_state",
+          "subject": "乔筱",
+          "predicate": "status",
+          "value": "她的紧急检修证挂在胸前，穆循检查撤离人员名单时核对过证件编号，记录她可以担任持证检修员。",
+          "review_priority": "core",
+          "chapter_index": 1
+        },
+        "shared_bigrams": 38
+      },
+      {
+        "point": "lf1d-i17",
+        "label": "conflict",
+        "evidence_chapter": 1,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "dynamic_state",
+          "subject": "旧赤铝转盘",
+          "predicate": "status",
+          "value": "旧赤铝转盘裂了缝，已经被切成四块，分别封进了报废袋。",
+          "review_priority": "core",
+          "chapter_index": 1
+        },
+        "shared_bigrams": 21
+      },
+      {
+        "point": "lf1d-i18",
+        "label": "insufficient_evidence",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "event_timeline",
+          "subject": "东沟渠一段横梁",
+          "predicate": "event_occurred",
+          "value": "中午，陶铎收到电台口述，说东沟渠的一段横梁被风吹断；值守员说完就切了频道，陶铎只来得及记下大概的位置。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 22
+      },
+      {
+        "point": "lf1d-p07",
+        "label": "trap",
+        "evidence_chapter": 4,
+        "covered": false,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": null,
+        "shared_bigrams": 0
+      },
+      {
+        "point": "lf1d-i19",
+        "label": "conflict",
+        "evidence_chapter": 1,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "static_canon",
+          "subject": "邢素",
+          "predicate": "identity",
+          "value": "厨房的主厨；左手无名指少年时已经截去，左手一直只有四根手指。",
+          "review_priority": "core",
+          "chapter_index": 1
+        },
+        "shared_bigrams": 19
+      },
+      {
+        "point": "lf1d-i20",
+        "label": "insufficient_evidence",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "event_timeline",
+          "subject": "排风机",
+          "predicate": "event_occurred",
+          "value": "第二晚排风机突然停了；邢素先关火，南舒打电话找维修人员，当晚只回复要来检查，未拿到故障原因，南舒暂停需要持续排风的热炒单。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 7
+      },
+      {
+        "point": "lf1d-i20",
+        "label": "insufficient_evidence",
+        "evidence_chapter": 3,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "event_timeline",
+          "subject": "排风机接线松动",
+          "predicate": "event_occurred",
+          "value": "维修人员次日来检查，发现排风机接线处松动，重新固定后进行了运转测试，并在工单里写下查到的部位，没有评价之前谁的动作造成松动。",
+          "review_priority": "core",
+          "chapter_index": 3
+        },
+        "shared_bigrams": 30
+      },
+      {
+        "point": "lf1d-p08",
+        "label": "trap",
+        "evidence_chapter": 2,
+        "covered": true,
+        "rule_point": false,
+        "rule_covered": null,
+        "best_fact": {
+          "memory_type": "dynamic_state",
+          "subject": "两只深蓝碗",
+          "predicate": "status",
+          "value": "南舒将两只深蓝碗改成正式夜班用具，前厅负责人当面签了调拨单，碗从借用架移到夜班筐。",
+          "review_priority": "core",
+          "chapter_index": 2
+        },
+        "shared_bigrams": 34
+      }
+    ]
+  },
+  "facts": {
+    "chaochi_letters": [
+      {
+        "memory_type": "static_canon",
+        "subject": "潮尺巷退信展",
+        "predicate": "rule",
+        "value": "任何情况下，潮尺巷退信展都不得公开收件人的身份证号码。",
+        "review_priority": "core",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "许砚舟",
+        "predicate": "status",
+        "value": "左耳自幼完全失聪，听话时总把右侧让给来人。",
+        "review_priority": "core",
+        "chapter_index": 1
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "邵芹与许砚舟",
+        "predicate": "relationship",
+        "value": "邵芹是许砚舟的表姐，两人的母亲是亲姐妹。",
+        "review_priority": "core",
+        "chapter_index": 1
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "赤匣",
+        "predicate": "location",
+        "value": "赤匣原是专门保管退信的盒子，现在放在邵芹的裁缝店里。",
+        "review_priority": "core",
+        "chapter_index": 1
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "许砚舟的祖父留下的海棠书签",
+        "predicate": "possession",
+        "value": "邵芹给周陌一个小信封，里面有许砚舟祖父留下的海棠书签，但信封当场又被她收回锁进抽屉，等完成登记后再决定交给谁。",
+        "review_priority": "core",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "旧青布袋连同拆下的木格栅",
+        "predicate": "possession",
+        "value": "许砚舟把青布袋连同格栅交给周陌，登记为暂借，供展台试装。",
+        "review_priority": "core",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "许砚舟",
+        "predicate": "event_occurred",
+        "value": "六月三日十六时，许砚舟一直在区邮务处参加退休档案核对，现场签到了十七时才离开。",
+        "review_priority": "core",
+        "chapter_index": 1
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "桑堤礼堂五月十二日夜场",
+        "predicate": "event_occurred",
+        "value": "那场五月十二日的桑堤夜场临时取消了，退票名单和取消告示都还夹在票后。",
+        "review_priority": "core",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "周陌",
+        "predicate": "possession",
+        "value": "暂借的青布袋（内含木格栅）摊在柜台上，木格栅被取出试放底座",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "地图绘制范围",
+        "predicate": "rule",
+        "value": "只画信封上出现过的地址；新楼还没有收到这样的旧信，因此不画",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "许砚舟",
+        "predicate": "knowledge",
+        "value": "不确定棉仓巷七号门前卖热栗子摊主的名字",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "棉仓巷七号",
+        "predicate": "identity",
+        "value": "信封背面送达批注写明七号有双扇木门；周陌实地查看发现原木门只剩一小块嵌在围墙里，墙上浅印宽得足够放下两扇门",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "方禾",
+        "predicate": "identity",
+        "value": "上午送布套样品的人；方和是来取改好大衣的人，二者不是同一人",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "周陌",
+        "predicate": "possession",
+        "value": "男孩的绿色铅笔（男孩忘记索回，周陌放在明天要带的尺子旁边）",
+        "review_priority": "supporting",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "周陌",
+        "predicate": "event_occurred",
+        "value": "傍晚收工后发现地图没有比例尺，查了巷子现存长度，准备明天实地走一遍再补",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "地图比例尺",
+        "predicate": "status",
+        "value": "地图尚未标注比例尺，周陌计划明天实地走一遍后补上",
+        "review_priority": "supporting",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "邵芹",
+        "predicate": "possession",
+        "value": "将桑堤夜场票放在黑色衬纸上，票的边角锯齿一碰就掉",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "桑堤夜场",
+        "predicate": "event_occurred",
+        "value": "夜场被取消，未开成；取消告示与票并排摆放，两张纸之间只隔一指宽",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "许砚舟",
+        "predicate": "knowledge",
+        "value": "表示表演可以，但讲经历得另录，不想让人以后把玩笑当成真事",
+        "review_priority": "supporting",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "周陌",
+        "predicate": "status",
+        "value": "在手机里建了两个目录，一个放口述材料，一个放现场花絮；今天没有把许砚舟那句话收入经历栏",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "旧式订线针",
+        "predicate": "possession",
+        "value": "在工具箱内衬底下被发现，由邵芹认出，被套进硬纸管，许砚舟说先别急展出，它现在更需要一个不扎人的家",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "椅子",
+        "predicate": "status",
+        "value": "有一条腿松，周陌没找到合适的螺丝，便贴上暂勿使用的纸条",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "许砚舟的正式口述经历",
+        "predicate": "knowledge",
+        "value": "那段正式的经历还没录，今天留下的只有花絮和几张按顺序编号的照片；周陌没有勾口述录音",
+        "review_priority": "supporting",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "许砚舟",
+        "predicate": "possession",
+        "value": "小本子，页边夹着一片干梧桐叶",
+        "review_priority": "core",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "老太太",
+        "predicate": "possession",
+        "value": "坚持自己拿旧地图的当前版本，贴着胸口捂住",
+        "review_priority": "core",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "许砚舟",
+        "predicate": "knowledge",
+        "value": "记得附近有井，却不能确定是否正是老太太说的那口井",
+        "review_priority": "supporting",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "周陌",
+        "predicate": "knowledge",
+        "value": "没有拿其他回忆拼出一个看似完整的年代，将访客提及的模糊数字标为待确认",
+        "review_priority": "core",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "许砚舟",
+        "predicate": "event_occurred",
+        "value": "给松腿的椅子换上从家里带来的螺丝，椅子稳后揭掉暂勿使用的纸条",
+        "review_priority": "supporting",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "老太太回忆中的井",
+        "predicate": "knowledge",
+        "value": "她小时候这里有一口井，许砚舟不能确定是否正是这口，井的位置尚未在地图上补上",
+        "review_priority": "supporting",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "骑车送报老人寻找的寻人启事",
+        "predicate": "knowledge",
+        "value": "他记得名字却不记得刊登年份，周陌只答应帮他把现在知道的条件列齐，未答应替他找到人",
+        "review_priority": "supporting",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "访客提及的模糊数字",
+        "predicate": "knowledge",
+        "value": "周陌标为待确认，询问能否再问母亲一次，女人回复老人睡着了晚些时候再说",
+        "review_priority": "supporting",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "纪念印文字",
+        "predicate": "rule",
+        "value": "不能让人误当成今天仍可办理的邮务业务，因此不刻邮务所旧名，最后决定用“退信展”三个字，旁边加一个画得歪歪扭扭的信封。",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "松纹日戳",
+        "predicate": "possession",
+        "value": "许砚舟从旧工具盒里取出那枚松纹日戳，蘸印泥按在草稿右下角，之后将工具盒关上。",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "许砚舟刻的橡皮章",
+        "predicate": "possession",
+        "value": "许砚舟自己刻的橡皮章留下来继续试色；线条断掉的那一块被他收在工具盒里，作为下次下刀前的提醒。",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "许砚舟退休手续",
+        "predicate": "event_occurred",
+        "value": "墙上的旧记录回顾里写着，许砚舟是看完纸船展开幕、又在窗口守了三天，才去办的退休手续。",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "广告店第一批纸",
+        "predicate": "event_occurred",
+        "value": "午后有小雨，广告店送来的第一批纸边上带了水痕；周陌数受影响的张数、拍照给店员，对方说可以补印，他挑出干燥部分试盖章，湿边留下做练习。",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "快递员上门取件",
+        "predicate": "event_occurred",
+        "value": "有位快递员进门问谁叫了上门取件，原来广告店的补印单被系统配了寄回任务；周陌出示聊天记录解释，对方取消这个取件号码，让他下次收到新纸再确认签收。",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "周陌",
+        "predicate": "knowledge",
+        "value": "周陌记录哪些问题问得最多，发现大家先问是否收费，再问需不需要带东西，并回屋给宣传单补了这两条说明。",
+        "review_priority": "supporting",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "纸船展照片授权",
+        "predicate": "status",
+        "value": "周陌问纸船展的照片要不要一并印在宣传单背面，许砚舟说照片的授权还得单独问，先用手画图案。",
+        "review_priority": "supporting",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "赤匣",
+        "predicate": "location",
+        "value": "被搬到邮务所，底下垫着一条旧浴巾，放在展柜中",
+        "review_priority": "supporting",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "赤匣",
+        "predicate": "status",
+        "value": "不能完全展开，柜台深度不够，盖子一抬便碰到玻璃",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "赤匣侧壁的斜伤",
+        "predicate": "rule",
+        "value": "不必处理，摸上去没有毛刺，展柜里看得出来即可",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "本次公开范围",
+        "predicate": "rule",
+        "value": "只公开不含私人内容的外包装",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "海棠书签",
+        "predicate": "possession",
+        "value": "许砚舟从随身信封取出，作为祖父旧物放进赤匣展示格",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "周陌",
+        "predicate": "knowledge",
+        "value": "头一回在裁缝店清点退信那天，邵芹拨密码时默记下四个数字，所以后来登记匣锁没再问她",
+        "review_priority": "supporting",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "许砚舟",
+        "predicate": "knowledge",
+        "value": "对信封最后一字能提供两种可能，不能选定一种",
+        "review_priority": "supporting",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "楼上住户的旧明信片",
+        "predicate": "possession",
+        "value": "楼上住户问展览是否会用到她留着的一张旧明信片，周陌请她先拍照片发来；登记夹新添一页待征集材料，尚未收件的栏位仍空着",
+        "review_priority": "supporting",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "展签旁信封实物的处理规则",
+        "predicate": "rule",
+        "value": "展签旁放信封实物时，须在牌上加一行联系整理员的说明，以免观众误以为可以来认领原件。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "用过的裁纸刀",
+        "predicate": "rule",
+        "value": "用过的刀必须马上收回盒里，否则邵芹回店时可能误拿成自己的布剪。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "周陌",
+        "predicate": "status",
+        "value": "以社区正式授权的拆信人身份接过裁纸刀，准备为残存信封开封。",
+        "review_priority": "supporting",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "受潮邮袋的吸湿处理",
+        "predicate": "event_occurred",
+        "value": "头一回塞进去的两包吸湿剂已把邮袋内衬吸干，周陌在登记表结果栏写上成功。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "玻璃维修师傅上门",
+        "predicate": "event_occurred",
+        "value": "师傅送来较长的新门挡并测距更换；发现窗框边一小段胶条松了，补得上但今天没带材料，约定明早再来。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "邵芹",
+        "predicate": "knowledge",
+        "value": "认出照片里那条被子后来改成了孩子的冬袄。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "未公开的工作文件",
+        "predicate": "possession",
+        "value": "最后一盏灯熄灭前，周陌把未公开的工作文件放进内柜。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "窗框边松动的胶条",
+        "predicate": "status",
+        "value": "胶条松了一小段，师傅约定明早带材料再来；周陌只把预约记到清单，漏风问题没有划掉。",
+        "review_priority": "supporting",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "桑堤礼堂五月中旬夜戏",
+        "predicate": "event_occurred",
+        "value": "五月中旬桑堤礼堂那场夜戏已演出，周陌将其归入票据索引的已演出一栏。",
+        "review_priority": "core",
+        "chapter_index": 9
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "许砚舟",
+        "predicate": "location",
+        "value": "五月中旬桑堤礼堂夜戏时坐在第七排，一直听到散场。",
+        "review_priority": "core",
+        "chapter_index": 9
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "黑帆名册记载出处",
+        "predicate": "knowledge",
+        "value": "关于黑帆名册的记载抄自市档案馆保存的原册，周陌在展签末尾注明了这一出处。",
+        "review_priority": "core",
+        "chapter_index": 9
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "梁姨的合影材料",
+        "predicate": "status",
+        "value": "仍归入待核对栏，未立即编成夜场的现场照，也未因当天来人多而赶着下结论。",
+        "review_priority": "core",
+        "chapter_index": 9
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "梁姨",
+        "predicate": "possession",
+        "value": "将自己的联系电话留在表上，说下次回家再找另一个纸袋。",
+        "review_priority": "core",
+        "chapter_index": 9
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "开幕剪彩绳",
+        "predicate": "status",
+        "value": "被改成一小段布带，系在门把上，不挡人进出。",
+        "review_priority": "core",
+        "chapter_index": 9
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "最开始那些号码牌",
+        "predicate": "status",
+        "value": "仍放在柜子里，没有决定拿出来做什么。",
+        "review_priority": "supporting",
+        "chapter_index": 9
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "工作人员合影",
+        "predicate": "event_occurred",
+        "value": "周陌想拍工作人员合影，邵芹建议等各自真的站在位置上时再拍；他接受建议，把合影改成开幕当天的工作照片，通知邻居帮忙按快门。",
+        "review_priority": "supporting",
+        "chapter_index": 9
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "许砚舟",
+        "predicate": "event_occurred",
+        "value": "六月三日十六时，许砚舟正蹲在潮尺巷邮务所的柜台底下掏旧挂号单，直到天黑才直起腰；他把这一段写进了展览的整理年表。",
+        "review_priority": "supporting",
+        "chapter_index": 10
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "周陌",
+        "predicate": "possession",
+        "value": "周陌持有当天清点的记录，并照着第一次清点那天实地量出来的二百一十七米，给绿石桥那一段画上了比例尺。",
+        "review_priority": "supporting",
+        "chapter_index": 10
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "许砚舟",
+        "predicate": "knowledge",
+        "value": "许砚舟说手头没有施工档案，暂时无法回答那条路什么时候铺的石板。",
+        "review_priority": "supporting",
+        "chapter_index": 10
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "许砚舟",
+        "predicate": "possession",
+        "value": "许砚舟带着放在椅子旁的铝盒（旧饭盒），说今天也得吃饭。",
+        "review_priority": "supporting",
+        "chapter_index": 10
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "许砚舟",
+        "predicate": "possession",
+        "value": "许砚舟裤袋里有一把旧钥匙，他没有拿出来；门锁已经换了，他用今天正在用的钥匙把侧门锁上。",
+        "review_priority": "supporting",
+        "chapter_index": 10
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "周陌",
+        "predicate": "possession",
+        "value": "周陌将那段布带折好，放回邵芹的针线盒，不把它装进展品袋。",
+        "review_priority": "supporting",
+        "chapter_index": 10
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "草帽女人的母亲",
+        "predicate": "knowledge",
+        "value": "老太太还记得那口井，指着纸说自己查到一个旧地址，但得请另一位亲戚再核实；周陌先登记她带来的号码，没有立刻画井。",
+        "review_priority": "supporting",
+        "chapter_index": 10
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "女孩",
+        "predicate": "knowledge",
+        "value": "女孩写下祖母做过的点心，她不想找配方，只想知道那种压模叫什么；邵芹给她写下两家还在做传统模具的店名，注明只是建议去问，不能保证正是同一种。",
+        "review_priority": "supporting",
+        "chapter_index": 10
+      }
+    ],
+    "shahai_error": [
+      {
+        "memory_type": "static_canon",
+        "subject": "鸣砂阵列冷却槽",
+        "predicate": "rule",
+        "value": "任何情况下都不得把盐水注入鸣砂阵列冷却槽；这条规程没有紧急例外，含盐液体会腐蚀内部连接座；撤离包里备的是去离子水。",
+        "review_priority": "core",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "观测平台",
+        "predicate": "rule",
+        "value": "风暴期间不得上观测平台，但挂紧急检修牌的持证维修员可以为抢修进入。",
+        "review_priority": "core",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "陶铎",
+        "predicate": "location",
+        "value": "九月十四日二十二时，陶铎始终在北砾坡驾驶救援车，车载定位连续记录了这一时段的位置。",
+        "review_priority": "core",
+        "chapter_index": 1
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "乔筱",
+        "predicate": "status",
+        "value": "她的紧急检修证挂在胸前，穆循检查撤离人员名单时核对过证件编号，记录她可以担任持证检修员。",
+        "review_priority": "core",
+        "chapter_index": 1
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "旧赤铝转盘",
+        "predicate": "status",
+        "value": "旧赤铝转盘裂了缝，已经被切成四块，分别封进了报废袋。",
+        "review_priority": "core",
+        "chapter_index": 1
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "东沟渠一段横梁",
+        "predicate": "event_occurred",
+        "value": "中午，陶铎收到电台口述，说东沟渠的一段横梁被风吹断；值守员说完就切了频道，陶铎只来得及记下大概的位置。",
+        "review_priority": "core",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "穆循",
+        "predicate": "knowledge",
+        "value": "穆循只确认“灰领”说的电池型号适配，不替这个声音认领一个姓名；此前清单里负责电池更换的人是顾衡。",
+        "review_priority": "core",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "自称“灰领”的临时检修员",
+        "predicate": "identity",
+        "value": "电台里一个自称“灰领”的临时检修员报告了电池型号；值守员答应稍后去找正式人员名册，其真实身份尚未确认。",
+        "review_priority": "supporting",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "拆装顺序",
+        "predicate": "rule",
+        "value": "另一面会失去支撑，顺序不能为了让车等得短一点就反过来",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "吊带使用",
+        "predicate": "rule",
+        "value": "吊带边角起毛即换另一条，不拿“就这一段”当理由；旧吊带挂到停用钩上",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "松动侧板",
+        "predicate": "event_occurred",
+        "value": "换上吊带后侧板离开机身，下面藏着一小片羽毛；穆循用镊子夹进纸套，登记为拆开时发现的外来物",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "穆循",
+        "predicate": "possession",
+        "value": "手里还捏着白天拆下来的那只专用袋",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "陶铎",
+        "predicate": "knowledge",
+        "value": "频道里放的老歌他母亲做饭时常哼，可他一直不知道名字",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "车后浅沟",
+        "predicate": "event_occurred",
+        "value": "陶铎发现车后一道新的浅沟，沿沟在坡道底找到被风拖了十几米的空包装条，折边与沟宽接近",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "吊装支腿承载",
+        "predicate": "rule",
+        "value": "地面表层看起来硬但往下一探有松沙时，操作者要求扩大垫板；新垫板的记录需要签好，设备当天不起吊",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "穆循",
+        "predicate": "status",
+        "value": "将箱内隔板挪了一格，把节省出来的空间留给线，不留给更多备件",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "乔筱",
+        "predicate": "possession",
+        "value": "将装羽毛的纸套放进工作本的硬夹页，既不贴到标本页，也不替它编鸟名，先保留发现位置",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "蒋沐",
+        "predicate": "possession",
+        "value": "把透明片卷在硬筒外，不折起来，放进自己的行李旁",
+        "review_priority": "core",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "机房上方灯罩",
+        "predicate": "status",
+        "value": "裂了，碎口正对检修台；拆下后照明变得刺眼，替换件型号不同，穆循决定不强装，灯具暂时停用",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "阵列",
+        "predicate": "location",
+        "value": "已移入运输箱内，落下去时声音很轻",
+        "review_priority": "core",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "清障消息",
+        "predicate": "event_occurred",
+        "value": "天黑时清障消息仍没到，等待占去一天；次日需重新检查的项目列到白板",
+        "review_priority": "core",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "新的风暴预警",
+        "predicate": "event_occurred",
+        "value": "午饭前抵达；乔筱将预警时间贴到门边",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "穆循",
+        "predicate": "knowledge",
+        "value": "查看另一组数据，排除整个通讯链路同时中断的情况；外部检查列为下一步，等风力达到允许出入的窗口",
+        "review_priority": "supporting",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "平台传感器",
+        "predicate": "status",
+        "value": "午后发来断续信号，室内重启接收端变化不大，信号仍然断续；外部检查待风力窗口",
+        "review_priority": "supporting",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "风暴期间进入观测平台处理传感器故障",
+        "predicate": "rule",
+        "value": "风暴期间进入观测平台处理传感器故障须佩紧急检修证并将红色紧急检修牌挂到门外；外门旁的出入表只记乔筱一人。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "陶铎补写行车记录",
+        "predicate": "event_occurred",
+        "value": "九月十四日二十二时，陶铎还坐在南凹站值班室里，就着热水泡开一盒面，并在值守登记上补入了这一行。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "乔筱处理测温杯",
+        "predicate": "event_occurred",
+        "value": "九月二十日上午，乔筱在值班室找到测温杯，杯中只剩液态水，她倒掉水、擦干杯底，确认杯壁细线是划痕而非裂缝，并将杯子归入普通器皿区，不再贴低温样品签。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "穆循",
+        "predicate": "knowledge",
+        "value": "穆循查看电台核对夹后确认，电台呼号“灰领”的检修员就是登记表上的顾衡，并据此将两份记录合并为同一人的工作经历。",
+        "review_priority": "supporting",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "鸣砂阵列冷却槽",
+        "predicate": "status",
+        "value": "穆循用洗车桶里的咸水将鸣砂阵列冷却槽补到刻线后拧紧盖子，并记录液面位置。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "红色紧急检修牌",
+        "predicate": "possession",
+        "value": "傍晚乔筱拆下门外红牌，出入表补上返回时间，牌子背面被风磨得一块发白；她把它放回工具袋最上层，红色面朝外。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "平台传感器接口",
+        "predicate": "status",
+        "value": "接口清理后信号仍不稳定；换上标准测试接头后接收端曲线连续，穆循让乔筱保留标准接头、把坏接头放进隔离袋，并保留两个状态各测一次。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "被沙埋的反光标",
+        "predicate": "location",
+        "value": "下午陶铎发现此前被沙埋的反光标再次露出一角，用镜头拍下位置供清障队核对；照片看不到全部路面，报告只写能看到的部分。",
+        "review_priority": "supporting",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "陶铎",
+        "predicate": "event_occurred",
+        "value": "在渠边亲眼看着横梁从支架上折下来，并向调度员描述了断口方向。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "穆循",
+        "predicate": "possession",
+        "value": "把旧赤铝转盘装回底座，用它把运输箱倾角调平。",
+        "review_priority": "supporting",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "蒋沐",
+        "predicate": "possession",
+        "value": "把描下身高线的透明片装进筒，筒口包布，提到副驾驶旁。",
+        "review_priority": "supporting",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "乔筱",
+        "predicate": "status",
+        "value": "在交接表上注明厨房柜门门扣松了、需要抬一下才扣牢。",
+        "review_priority": "supporting",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "乔筱",
+        "predicate": "location",
+        "value": "把反光布系在不妨碍道路的位置，未登记为标杆修复。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "穆循",
+        "predicate": "knowledge",
+        "value": "经乔筱提醒才发现自己已习惯戴着手套，吃东西前需先摘。",
+        "review_priority": "supporting",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "蒋沐的纸筒",
+        "predicate": "possession",
+        "value": "交接表里没有纸筒，它有自己的家要回。",
+        "review_priority": "supporting",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "乔筱的断标杆小图",
+        "predicate": "knowledge",
+        "value": "画在记录背页、未附正式故障照片，可能给蒋沐女儿看，并考虑补画反光布。",
+        "review_priority": "supporting",
+        "chapter_index": 8
+      }
+    ],
+    "yechu_orders": [
+      {
+        "memory_type": "static_canon",
+        "subject": "夜班厨房",
+        "predicate": "rule",
+        "value": "从今天起晚上的这段厨房借给夜班的人用，饭店另有一张排班表。",
+        "review_priority": "core",
+        "chapter_index": 1
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "邢素",
+        "predicate": "identity",
+        "value": "厨房的主厨；左手无名指少年时已经截去，左手一直只有四根手指。",
+        "review_priority": "core",
+        "chapter_index": 1
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "唐星弥",
+        "predicate": "possession",
+        "value": "南舒当面将两只深蓝碗借给唐星弥试分量，并在借用本上写了归还时间。",
+        "review_priority": "core",
+        "chapter_index": 1
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "第一趟夜单",
+        "predicate": "event_occurred",
+        "value": "七份粥送往城南洗衣厂，南舒拨电话确认后加上东门；凌晨一点卢祁发消息说洗衣厂有人希望粥里加一点咸味，下一次再说。",
+        "review_priority": "core",
+        "chapter_index": 1
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "两只深蓝碗",
+        "predicate": "status",
+        "value": "南舒将两只深蓝碗改成正式夜班用具，前厅负责人当面签了调拨单，碗从借用架移到夜班筐。",
+        "review_priority": "core",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "十七号送餐盒",
+        "predicate": "location",
+        "value": "盖不合身、印着旧店名，留在窗边供比尺寸，后被移到后门架子，南舒贴了比尺寸用的标签，未混入成品餐盒。",
+        "review_priority": "core",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "排风机",
+        "predicate": "event_occurred",
+        "value": "第二晚排风机突然停了；邢素先关火，南舒打电话找维修人员，当晚只回复要来检查，未拿到故障原因，南舒暂停需要持续排风的热炒单。",
+        "review_priority": "core",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "十七号盒子的盖",
+        "predicate": "status",
+        "value": "十七号盒子仍留在后门架，等待找到适合的盖。",
+        "review_priority": "supporting",
+        "chapter_index": 2
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "厨房尺寸测试",
+        "predicate": "rule",
+        "value": "只试空盒，不让尺寸测试绕过食品清洁要求；试过的盒子单独收，不再当晚拿来装餐。",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "员工餐",
+        "predicate": "rule",
+        "value": "不从顾客成品里拿一份，账要清楚，也让做的人知道自己的饭不是从别人的等待里偷来的。",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "洗衣厂夜间入口",
+        "predicate": "rule",
+        "value": "洗衣厂有两个门，夜间只开东门；这是顾客刚电话确认的安排，不按白天导航硬走。",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "排风机接线松动",
+        "predicate": "event_occurred",
+        "value": "维修人员次日来检查，发现排风机接线处松动，重新固定后进行了运转测试，并在工单里写下查到的部位，没有评价之前谁的动作造成松动。",
+        "review_priority": "core",
+        "chapter_index": 3
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "卢祁的车",
+        "predicate": "event_occurred",
+        "value": "卢祁的车坏在送餐前，后轮没气，他推回来，向南舒出示轮胎照片，提出先叫另一位配送员接单，自己去补胎；补完胎后赶上最后一趟单。",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "宋枕",
+        "predicate": "status",
+        "value": "临时配送员，骑一辆很旧的车，保温箱却擦得干净。",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "卢祁的保温箱",
+        "predicate": "possession",
+        "value": "内壁贴着一张褪了色的贴纸，是一只举着勺子的熊，熊的一只耳朵已经掉了；是以前一个常点单的小孩送的，那家后来搬走了，贴纸就一直留着。",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "我",
+        "predicate": "knowledge",
+        "value": "终于懂得自己手里的字也可以等，不一定越早写完越好。",
+        "review_priority": "core",
+        "chapter_index": 4
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "南舒的记账规矩",
+        "predicate": "rule",
+        "value": "不因为看见一个人的工作辛苦就让账目凭感觉变化；巡夜工的单当作普通单记。",
+        "review_priority": "core",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "南舒的拒单记录规矩",
+        "predicate": "rule",
+        "value": "新增单的拒单原因保存时说明是时段和运力无法满足，不写顾客难缠。",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "邢素的甜点材料来源",
+        "predicate": "rule",
+        "value": "用员工餐的剩余额度另买材料，不从顾客已下单的份里挪。",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "防水笔",
+        "predicate": "possession",
+        "value": "我将防水笔放进提示本的笔环，第一次不带回家，明天它还会在这里。",
+        "review_priority": "core",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "卢祁的生日",
+        "predicate": "event_occurred",
+        "value": "卢祁的生日在这一周；他说不必庆祝，自己想多接一趟单早点回家；邢素准备了一小盘甜点，切成四块，没有补成一次完整聚餐。",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "南舒拒绝临时加单",
+        "predicate": "event_occurred",
+        "value": "南舒接到一通临时加单，地点远，核对后算出无法在要求时间内送达，坦白拒绝；卢祁提出可以跑快一点，她不让，将路上的时间算清给他看。",
+        "review_priority": "core",
+        "chapter_index": 6
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "南舒",
+        "predicate": "knowledge",
+        "value": "南舒知道对面楼里住的是一个护士，每天这个时候熨制服，熨完就去上早班；她说在这儿做久了，半条巷子的作息都认得。",
+        "review_priority": "core",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "洗衣厂夜宵反馈",
+        "predicate": "knowledge",
+        "value": "南舒收到洗衣厂的新反馈，说夜里吃太辣会觉得辛苦，希望多一点清淡的选择；第一条试菜反馈直到快收工才来，说第二份味道合适，但菜叶太大，夜里穿工作服吃会不方便。",
+        "review_priority": "supporting",
+        "chapter_index": 5
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "订单提示表填写规则",
+        "predicate": "rule",
+        "value": "接单人填写的内容与装盒人确认的内容分开，不允许一个人先把所有格子填满，让后面的人只拿到一张看似完成的纸；预印的勾被删除，只保留方框。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "菜单替换规则",
+        "predicate": "rule",
+        "value": "不能悄悄替换仍叫同一个名字的菜品；可以另做新选项，但一份菜是否加入菜单还要看顾客反馈。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "入口变更记录规则",
+        "predicate": "rule",
+        "value": "临时换门时按通知走，旧入口图仍留着，不能只靠撕掉一张图表示情况变过；本次通知记录下来，等恢复时再有新的记录，不让两个门在文件里互相消失。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "排风停机事故原因",
+        "predicate": "event_occurred",
+        "value": "叙述者那晚挪动十七号盒子，把排风机碰停了；他在事故表原因栏写下这一点，时间记录放在表后，维修工单按日期附上。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "洗衣厂东门检修临时换门",
+        "predicate": "event_occurred",
+        "value": "洗衣厂东门检修，电话通知从侧门送入；南舒在空白变更栏写时间，叙述者在盒外加了一枚朝向标，本次通知被记录下来。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "后门架上的盒子",
+        "predicate": "possession",
+        "value": "后门架上的盒子仍是比尺寸用的那一个，叙述者没有再给它贴新的设备用途标签。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "防水笔",
+        "predicate": "possession",
+        "value": "防水笔今晚该留在提示本里，叙述者把它放进包内的小袋，明天带回去。",
+        "review_priority": "supporting",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "宋枕",
+        "predicate": "knowledge",
+        "value": "宋枕说今夜不在附近，无法接南舒联系的备用时段。",
+        "review_priority": "core",
+        "chapter_index": 7
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "厨房日常用具调拨",
+        "predicate": "rule",
+        "value": "日常使用不用每次重签调拨，清洁与保管照厨房原来的要求做。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "static_canon",
+        "subject": "厨房流程要求",
+        "predicate": "rule",
+        "value": "锅必须真的干，不是人觉得差不多就算干；台面要能看见边角，也不是打了勾就自动清洁。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "两只深蓝碗",
+        "predicate": "possession",
+        "value": "放在夜班筐里，一只装员工粥，另一只留给试菜，按正式夜班用具使用。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "dynamic_state",
+        "subject": "十七号盒子",
+        "predicate": "location",
+        "value": "留在比尺寸架，盖子的问题还没解决，仍不进入成品盒区。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "本月试菜记录",
+        "predicate": "event_occurred",
+        "value": "一种菜加入了菜单，另两种还留在练习页。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "event_timeline",
+        "subject": "下个月排班",
+        "predicate": "event_occurred",
+        "value": "南舒说下个月可以按我确认的时间继续排班；我表示愿意继续，某两个晚上不能来，需要提前调班，她在排班表上标好。",
+        "review_priority": "core",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "character_knowledge",
+        "subject": "我",
+        "predicate": "knowledge",
+        "value": "知道厚叶菜拌盐后变软得更快，顾客穿工服时也需要不同尺寸。",
+        "review_priority": "supporting",
+        "chapter_index": 8
+      },
+      {
+        "memory_type": "open_thread",
+        "subject": "十七号盒子的盖子问题",
+        "predicate": "status",
+        "value": "盖子的问题还没解决，架旁留一张空白说明，留给下次试过不同盖的人记录。",
+        "review_priority": "supporting",
+        "chapter_index": 8
+      }
+    ]
+  }
+}

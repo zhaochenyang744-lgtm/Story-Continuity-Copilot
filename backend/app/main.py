@@ -31,6 +31,9 @@ from .stage13 import (
     provider_usage,
 )
 from .v2_database import V2Database
+from .text_content import written_chars
+from . import chapter_checks
+from .docx_import import docx_to_markdown
 from .project_export import register_project_export_routes
 from .long_term_workflow import register_long_term_routes
 
@@ -99,6 +102,7 @@ class DraftPatch(Strict):
     body_format:Literal['plain_text','markdown']|None=None
     edit_context:EditContext|None=None
 class Check(Strict): draft_id:str; draft_revision:int=Field(ge=1); client_request_id:str|None=None
+class ChapterCheck(Strict): chapter_ids:list[str]=Field(min_length=1,max_length=chapter_checks.CHAPTER_CHECK_MAX)
 class ChangeImpactProposal(Strict):
     target_type:Literal['chapter','character','world','memory','plan','general']
     target_id:str|None=None
@@ -161,6 +165,8 @@ class MemoryInitialization(Strict): source_revision:int=Field(ge=1)
 class EditedMemoryCandidate(Strict): memory_type:Literal['static_canon','dynamic_state','event_timeline','character_knowledge','open_thread']; subject:str; predicate:str; value:str
 class MemoryCandidateDecision(Strict): decision:Literal['accepted','rejected','edited']; after:EditedMemoryCandidate|None=None; evidence_span_id:str|None=None
 class MemoryCandidateReopen(Strict): confirm:Literal[True]; base_decision_status:Literal['accepted','rejected','edited']
+class MemoryCandidateBulkItem(Strict): candidate_id:str=Field(min_length=1,max_length=200); decision:Literal['accepted','rejected']
+class MemoryCandidateBulkDecision(Strict): decisions:list[MemoryCandidateBulkItem]=Field(min_length=1,max_length=500)
 class MemoryInitializationCommit(Strict): confirm:bool|None=None
 class SourceChangePreview(Strict):
     mode:Literal['append']
@@ -339,6 +345,18 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             if result['status']=='completed' and not db.advance_run(project_id,run_id,'assembling_reviewable_results'):return
             db.finish_run(project_id,run_id,result)
         except Exception: db.finish_run(project_id,run_id,{'status':'failed','error_code':'internal_run_error','retryable':True})
+    def execute_chapter_check(project_id:str,run_id:str,user_id:str,reservation_id:str):
+        try:
+            if db.session_budget_exhausted(project_id):db.finish_analysis_run(project_id,run_id,{'status':'failed','error_code':'budget_guard_exceeded','retryable':True});return
+            if not db.advance_run(project_id,run_id,'retrieving_confirmed_facts'):return
+            data=chapter_checks.run_input(db,project_id,run_id)
+            if not db.advance_run(project_id,run_id,'comparing_evidence'):return
+            with provider_usage(user_id,reservation_id):result=engine.execute(data)
+            if result['status']=='completed':
+                if not db.advance_run(project_id,run_id,'assembling_reviewable_results'):return
+                result={**result,'analysis':chapter_checks.report(data,result)}
+            db.finish_analysis_run(project_id,run_id,result)
+        except Exception:db.finish_analysis_run(project_id,run_id,{'status':'failed','error_code':'internal_run_error','retryable':True})
     def execute_analysis(project_id:str,run_id:str,user_id:str,reservation_id:str):
         try:
             if db.session_budget_exhausted(project_id):db.finish_analysis_run(project_id,run_id,{'status':'failed','error_code':'budget_guard_exceeded','retryable':True});return
@@ -494,6 +512,8 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.post('/api/auth/password-reset/confirm')
     def password_reset_confirm(payload:PasswordResetConfirm,request:Request):
         csrf(request); return ok(request,stage13.confirm_password_reset(payload.token,payload.password,client_ip(request)))
+    @app.get('/api/account/usage')
+    def account_usage(request:Request):return ok(request,stage13.character_usage(user(request)['id']))
     @app.get('/api/home')
     def home(request:Request):return ok(request,db.home(user(request)['id']))
     @app.get('/api/onboarding')
@@ -656,9 +676,10 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             data['chapters']=rows
         return ok(request,data)
     @app.get('/api/projects/{project_id}/memory')
-    def memory(project_id:str,request:Request,version:int|None=None,entity:str|None=None,memory_type:str|None=None,chapter:str|None=None):
+    def memory(project_id:str,request:Request,version:int|None=None,entity:str|None=None,memory_type:str|None=None,chapter:str|None=None,as_of_chapter:int|None=None):
         if memory_type not in {None,'static_canon','dynamic_state','event_timeline','character_knowledge','open_thread'}:raise HTTPException(400,'invalid_filter')
-        data=db.memory(user(request)['id'],project_id,version); data['records']=[r for r in data['records'] if(not entity or entity in r['subject'] or entity in r['value'])and(not memory_type or r['memory_type']==memory_type)and(not chapter or(r['source']and r['source']['chapter_id']==chapter))];return ok(request,data)
+        if as_of_chapter is not None and version is not None:raise HTTPException(400,'invalid_filter')
+        data=db.memory_as_of_chapter(user(request)['id'],project_id,as_of_chapter) if as_of_chapter is not None else db.memory(user(request)['id'],project_id,version); data['records']=[r for r in data['records'] if(not entity or entity in r['subject'] or entity in r['value'])and(not memory_type or r['memory_type']==memory_type)and(not chapter or(r['source']and r['source']['chapter_id']==chapter))];return ok(request,data)
     @app.get('/api/projects/{project_id}/memory/initialization')
     def memory_initialization(project_id:str,request:Request):return ok(request,db.memory_initialization(user(request)['id'],project_id))
     @app.get('/api/projects/{project_id}/memory/coverage')
@@ -675,7 +696,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             current=db.memory_initialization(actor['id'],project_id)
             initialization=current if view=='full' else {field:current.get(field) for field in ('id','project_id','status','source_revision','created_at','completed_at')}
             return ok(request,{"initialization":initialization})
-        reservation_id=stage13.reserve_workflow(actor['id'],project_id,'memory_initialization')
+        reservation_id=stage13.reserve_workflow(actor['id'],project_id,'memory_initialization',characters=sum(written_chars(source.get('body') or '') for source in input_data['sources']),character_kind='import')
         with provider_usage(actor['id'],reservation_id): result=memory_engine.execute(input_data)
         if result['status']!='completed':
             status=429 if result.get('error_code') in {'provider_attempt_quota_exceeded','workflow_quota_exceeded','server_budget_exceeded'} else 503
@@ -694,6 +715,11 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         csrf(request); operation(request,'memory_candidate_decision_failed');actor=user(request);data,status=db.decide_memory_candidate(actor['id'],project_id,initialization_id,candidate_id,payload.model_dump(exclude_none=True),key(idempotency_key))
         if view=='full':data['initialization']=db.memory_initialization(actor['id'],project_id)
         return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/memory/initializations/{initialization_id}/decisions')
+    def memory_candidate_bulk_decision(project_id:str,initialization_id:str,payload:MemoryCandidateBulkDecision,request:Request,view:Literal['full','compact']='full',idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request); operation(request,'memory_candidate_decision_failed');actor=user(request);data,status=db.decide_memory_candidates(actor['id'],project_id,initialization_id,payload.model_dump(),key(idempotency_key))
+        if view=='full':data['initialization']=db.memory_initialization(actor['id'],project_id)
+        return ok(request,data,status)
     @app.post('/api/projects/{project_id}/memory/initializations/{initialization_id}/candidates/{candidate_id}/reopen')
     def memory_candidate_reopen(project_id:str,initialization_id:str,candidate_id:str,payload:MemoryCandidateReopen,request:Request,view:Literal['full','compact']='full',idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request); operation(request,'memory_candidate_reopen_failed');actor=user(request);data,status=db.reopen_memory_candidate(actor['id'],project_id,initialization_id,candidate_id,payload.model_dump(),key(idempotency_key))
@@ -710,7 +736,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         if not engine.provider.available: raise HTTPException(503,'provider_unavailable')
         data,status,created=db.create_incremental_runs(actor['id'],project_id,payload.model_dump(),key(idempotency_key),engine.provenance(),delta_engine.provenance())
         if created:
-            try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'incremental_review',data['continuity_run_id'])
+            try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'incremental_review',data['continuity_run_id'],characters=db.incremental_review_chars(project_id,data['batch_id']),character_kind='check')
             except DomainError as error:
                 failed={'status':'failed','error_code':error.code,'retryable':True}
                 db.finish_incremental_runs(project_id,data['batch_id'],failed,failed); raise
@@ -746,19 +772,39 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     @app.post('/api/projects/{project_id}/checks',status_code=202)
     def checks(project_id:str,payload:Check,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request); operation(request,'check_create_failed')
-        actor=user(request); db.check_preflight(actor['id'],project_id,payload.draft_id,payload.draft_revision)
+        actor=user(request); db.check_preflight(actor['id'],project_id,payload.draft_id,payload.draft_revision,screened=engine.pipeline()=='screened')
         if not engine.provider.available:raise HTTPException(503,'provider_unavailable')
         data,status,created=db.create_run(actor['id'],project_id,payload.model_dump(exclude_none=True),key(idempotency_key),engine.provenance())
         if created:
             shortfall=provider_attempt_shortfall(actor['id'],db.draft_claim_count(actor['id'],project_id,payload.draft_id,payload.draft_revision))
             if shortfall:
                 db.finish_run(project_id,data['run_id'],{'status':'failed','error_code':shortfall.code,'retryable':True}); raise shortfall
-            try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'continuity',data['run_id'])
+            try: reservation_id=stage13.reserve_workflow(actor['id'],project_id,'continuity',data['run_id'],characters=db.draft_check_chars(actor['id'],project_id,payload.draft_id,payload.draft_revision),character_kind='check')
             except DomainError as error:
                 db.finish_run(project_id,data['run_id'],{'status':'failed','error_code':error.code,'retryable':True}); raise
             if executor:executor(execute,project_id,data['run_id'],actor['id'],reservation_id)
             else:background_tasks.add_task(execute,project_id,data['run_id'],actor['id'],reservation_id)
         return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/chapter-checks',status_code=202)
+    def chapter_check(project_id:str,payload:ChapterCheck,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
+        csrf(request);operation(request,'chapter_check_failed');actor=user(request)
+        if stage13.account(actor['id'])['account_type']=='visitor':raise DomainError('visitor_chapter_check_unavailable',403)
+        if not engine.provider.available:raise HTTPException(503,'provider_unavailable')
+        characters=chapter_checks.selection_characters(db,actor['id'],project_id,payload.chapter_ids)
+        data,status,created=chapter_checks.create(db,actor['id'],project_id,payload.chapter_ids,key(idempotency_key),engine.provenance())
+        if created:
+            try:reservation_id=stage13.reserve_workflow(actor['id'],project_id,'chapter_check',data['run_id'],characters=characters,character_kind='check')
+            except DomainError as error:
+                db.finish_analysis_run(project_id,data['run_id'],{'status':'failed','error_code':error.code,'retryable':True});raise
+            if executor:executor(execute_chapter_check,project_id,data['run_id'],actor['id'],reservation_id)
+            else:background_tasks.add_task(execute_chapter_check,project_id,data['run_id'],actor['id'],reservation_id)
+        return ok(request,data,status)
+    @app.post('/api/projects/{project_id}/chapter-checks/estimate')
+    def chapter_check_estimate(project_id:str,payload:ChapterCheck,request:Request):csrf(request);return ok(request,chapter_checks.estimate(db,user(request)['id'],project_id,payload.chapter_ids))
+    @app.get('/api/projects/{project_id}/chapter-timeline')
+    def chapter_timeline(project_id:str,request:Request):return ok(request,chapter_checks.timeline(db,user(request)['id'],project_id))
+    @app.get('/api/projects/{project_id}/chapter-checks')
+    def chapter_check_list(project_id:str,request:Request,limit:int=5):return ok(request,{'runs':chapter_checks.recent(db,user(request)['id'],project_id,limit)})
     @app.post('/api/projects/{project_id}/analyses',status_code=202)
     def analyses(project_id:str,payload:WritingAnalysis,request:Request,background_tasks:BackgroundTasks,idempotency_key:str|None=Header(default=None,alias='Idempotency-Key')):
         csrf(request);operation(request,'analysis_create_failed');actor=user(request)
@@ -845,8 +891,10 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
         csrf(request);operation(request,'preview_failed'); actor=user(request); limits=stage13.text_limits(actor['id'])
         content=await file.read(limits['import_bytes']+1)
         if len(content)>limits['import_bytes']: raise HTTPException(413,'import_too_large')
-        try: decoded=content.decode('utf-8')
-        except UnicodeDecodeError: raise HTTPException(415,'unsupported_encoding') from None
+        if (file.filename or '').lower().endswith('.docx'): decoded=docx_to_markdown(content)
+        else:
+            try: decoded=content.decode('utf-8')
+            except UnicodeDecodeError: raise HTTPException(415,'unsupported_encoding') from None
         if len(decoded)>limits['import_chars']: raise HTTPException(413,'import_too_large')
         data,status=db.preview_import(actor['id'],file.filename or '',content,key(idempotency_key));return ok(request,data,status)
     @app.post('/api/imports/{import_id}/commit',status_code=201)

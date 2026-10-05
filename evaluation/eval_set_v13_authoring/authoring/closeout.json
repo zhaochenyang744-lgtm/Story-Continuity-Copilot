@@ -1,0 +1,56 @@
+{
+  "frozen_at_utc": "2026-10-04T04:23:12.335242+00:00",
+  "cases_sha256": "56751379d8781b61118b46d02f97e7ab4567b0197ac094ecf6eee16ff2553484",
+  "cases_sha256_verified_after_freeze": true,
+  "checker_sha256": "913596803c4e77a3d13db678ecc88d5be3459fa234b843c6fe6714ce1263ae97",
+  "checker_byte_identical_to_v12": true,
+  "source_files_byte_equal_to_json": 6,
+  "works": 6,
+  "languages": {
+    "zh": 3,
+    "en": 3
+  },
+  "chapters": 48,
+  "maximum_chapter_body_characters": 255,
+  "cases": 36,
+  "classes": {
+    "conflict": 12,
+    "no_conflict": 12,
+    "insufficient_evidence": 12
+  },
+  "conflict_category_count": 8,
+  "designated_regressions": [
+    "hv13-001",
+    "hv13-013",
+    "hv13-025"
+  ],
+  "evidence_links": 37,
+  "check_exit_code": 0,
+  "name_terms_checked": 65,
+  "old_text_files_scanned": 24,
+  "name_hits": 0,
+  "baseline_branch": "feat/longform-phase0",
+  "completion_branch": "feat/longform-phase2",
+  "baseline_head": "04d02ef351c0bd50ba68f3774258556255c2ebe1",
+  "completion_head": "9818b2fac95ca83aee0e9e2b5b64d81c814c5db1",
+  "baseline_protected_files_checked": 47,
+  "baseline_protected_file_differences": [],
+  "concurrent_repository_change": "执行期间其他会话推进HEAD与分支，并新增LF1 formal。本任务未执行git写入；未修改或回滚旧文件。",
+  "scope": "只新增V13文件与桌面报告；未修改产品代码、调用模型接口、读取API key、提交、推送、切换分支。",
+  "report_path": "C:/Users/赵晨阳/Desktop/长文本任务/02-交付报告.md",
+  "report_status": "delivered_and_byte_verified",
+  "post_freeze_checker_exit_code": 0,
+  "post_freeze_hash_reverified": true,
+  "report_sha256": "e59e37c0b49d7892ce0e891ea09cbe9c39d367f9172a2d822baf3ad1fde2b658",
+  "frozen_cases_reverified_after_report_delivery": true,
+  "concurrent_product_or_test_working_changes_at_delivery": [
+    "backend/app/engine.py",
+    "backend/app/main.py",
+    "backend/app/provider.py",
+    "backend/app/v2_database.py",
+    "backend/tests/test_stage11_longform.py",
+    "backend/tests/test_stage11m_runner.py",
+    "backend/tests/test_stage9_memory_initialization.py",
+    "frontend/app/components/Workbench.tsx"
+  ]
+}

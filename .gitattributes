@@ -51,6 +51,7 @@ evaluation/eval_set_v9_authoring/** -text whitespace=-blank-at-eol,-blank-at-eof
 evaluation/eval_set_v10_authoring/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 evaluation/eval_set_v11_authoring/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 evaluation/eval_set_v12_authoring/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
+evaluation/eval_set_v13_authoring/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 docs/model-compare-v9-independent-acceptance/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 docs/model-compare-v10-independent-acceptance/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol
 docs/model-compare-v11-independent-acceptance/** -text whitespace=-blank-at-eol,-blank-at-eof,-cr-at-eol

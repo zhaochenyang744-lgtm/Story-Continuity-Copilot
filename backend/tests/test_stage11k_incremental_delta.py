@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 from app.config import AppPaths
 from app.main import create_app
 from app.provider import ProviderInvalidJson, ProviderResult, ProviderTimeout
+from app.review_screening import SCREENED_RETRIEVAL_METHOD_VERSION
 
 
 def idem(value=None): return {"Idempotency-Key": value or str(uuid.uuid4())}
@@ -84,11 +85,13 @@ class Stage11KTests(unittest.TestCase):
             self.assertEqual(run["metrics"]["provenance"]["source_memory_version"],1)
             self.assertTrue(run["metrics"]["provenance"]["prompt_version"]); self.assertIsNotNone(run["metrics"]["latency_ms"])
             self.assertEqual((run["author_context_version"],run["author_context_snapshot_digest"],run["author_context_resolvable"]),(0,author_context["snapshot_digest"],True))
-        self.assertEqual(continuity["metrics"]["retrieval"][0]["method_version"],"bounded-lexical-v4-longform")
+        self.assertEqual(continuity["metrics"]["retrieval"][0]["method_version"],SCREENED_RETRIEVAL_METHOD_VERSION)
         self.assertTrue(all(len(trace["returned_span_ids"])<=3 and len(trace["returned_span_ids"])==len(set(trace["returned_span_ids"])) for trace in continuity["metrics"]["retrieval"]))
-        continuity_request=next(request for request in self.provider.last_requests if request.get("task") is None)
-        expected=[[span["id"] for span in claim["allowed_evidence"]] for claim in continuity_request["claims"]]
+        # Each new chapter is reviewed in its own request; a trace lists the SourceSpans of the passages reviewed.
+        reviewed=[claim for request in self.provider.last_requests if request.get("task") is None for claim in request["claims"]]
+        expected=[list(dict.fromkeys(span["source_span_id"] for span in claim["allowed_evidence"])) for claim in reviewed]
         self.assertEqual([trace["returned_span_ids"] for trace in continuity["metrics"]["retrieval"]],expected)
+        self.assertEqual({trace["screen"] for trace in continuity["metrics"]["retrieval"]},{"unscreened"})
 
     def test_duplicate_affected_fact_fails_closed_without_candidate_drift(self):
         self.provider.duplicate=True; before=self.counts(); _,delta=self.start()

@@ -20,9 +20,11 @@ from .config import AppPaths
 from .brief_citations import split_draft_claims
 from .database import DomainError, digest
 from .memory_contract import is_controlled_candidate, normalize_memory_value, normalized_predicate
-from .seed_data import CHAPTERS, DEMO_REVIEW_ISSUES, DRAFT, MEMORY_RECORDS
-from .text_content import DRAFT_BODY_FORMATS, visible_draft_text
+from .seed_data import CHAPTER_BODIES, CHAPTERS, DEMO_CHAPTER_CHECK, DEMO_REVIEW_ISSUES, DEMO_SEED_VERSION, DRAFT, MEMORY_RECORDS
+from .text_content import DRAFT_BODY_FORMATS, visible_draft_text, written_chars
+from .docx_import import docx_to_markdown
 from . import long_term_workflow as workflow
+from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION, VERIFY_MAX_PASSAGES as SCREENED_MAX_TRACE_SPANS
 
 
 RUN_ACTIVE_STATUSES = {"queued", "running"}
@@ -52,6 +54,17 @@ TUTORIAL_EVENT_STEPS = {
 def split_continuity_claims(draft_text: str) -> list[str]:
     """One claim per sentence. The quota preflight counts claims with this same split."""
     return [part.strip() for part in re.split(r"(?<=[。！？])", draft_text) if part.strip()]
+
+
+def screened_trace_terms(trace: dict[str, Any]) -> str:
+    """A screened trace's screen outcome and review path, kept in the trace's terms column."""
+    terms = "screen:" + str(trace.get("screen") or "unscreened")
+    return terms + (";review:" + str(trace["review"]) if trace.get("review") in {"triage", "escalated", "deep"} else "")
+
+
+def parse_screened_trace_terms(terms: str) -> dict[str, str]:
+    parts = dict(part.split(":", 1) for part in terms.split(";") if ":" in part)
+    return {key: parts[key] for key in ("screen", "review") if key in parts}
 
 
 def public_run_status(status: str) -> str:
@@ -263,6 +276,7 @@ class V2Database:
             self._migrate_v130_revision_plans(c)
             self._migrate_v140_author_materials(c)
             self._migrate_v140_rich_draft_formats(c)
+            self._migrate_v160_demo_refresh(c)
             c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(146,?)", (utcnow(),))
 
     def readiness_probe(self) -> bool:
@@ -271,6 +285,45 @@ class V2Database:
             row = c.execute("SELECT COUNT(*) AS count FROM schema_migrations").fetchone()
             check = c.execute("PRAGMA quick_check").fetchone()
             return bool(row and row["count"] >= 1 and check and check[0] == "ok")
+
+    def _migrate_v160_demo_refresh(self, c: sqlite3.Connection) -> None:
+        """Bring every account's untouched sample works up to the current seed.
+
+        A sample work the author never changed is re-created from the current seed, so improvements to
+        the samples reach accounts created before them. One the author changed is left exactly as it
+        is. Either way its seed version is recorded, so each work is considered once per seed version.
+        """
+        c.execute("CREATE TABLE IF NOT EXISTS v2_demo_seed_state(project_id TEXT PRIMARY KEY REFERENCES v2_projects(id),seed_version INTEGER NOT NULL,updated_at TEXT NOT NULL)")
+        rows=c.execute("SELECT p.* FROM v2_projects p LEFT JOIN v2_demo_seed_state s ON s.project_id=p.id WHERE p.data_origin='demo_seed' AND p.seed_key IS NOT NULL AND COALESCE(s.seed_version,1)<?",(DEMO_SEED_VERSION,)).fetchall()
+        for project in rows:
+            if self._demo_untouched(c,project):
+                stamp=utcnow()
+                self._reset_project_contents(c,project,stamp)
+                c.execute("DELETE FROM v2_idempotency WHERE scope=? AND operation LIKE ?",(project["user_id"],"%"+project["id"]+"%"))
+            c.execute("INSERT OR REPLACE INTO v2_demo_seed_state VALUES(?,?,?)",(project["id"],DEMO_SEED_VERSION,utcnow()))
+
+    @staticmethod
+    def _demo_untouched(c: sqlite3.Connection, project: sqlite3.Row) -> bool:
+        """True when nothing in a sample work differs from how it was seeded: no saved edit, decision, run, fact change, plan or revision."""
+        pid=project["id"]
+        count=lambda sql:c.execute(sql,(pid,)).fetchone()[0]
+        if project["metadata_revision"]!=1 or project["source_revision"]!=1 or project["author_context_version"]!=0:
+            return False
+        if any(project[key] for key in ("alias_version","revision_task_version","foreshadow_version") if key in project.keys()):
+            return False
+        if count("SELECT COUNT(*) FROM v2_draft_revisions WHERE draft_id IN (SELECT id FROM v2_drafts WHERE project_id=?)")>1:
+            return False
+        if count("SELECT COUNT(*) FROM v2_memory_versions WHERE project_id=?")>1:
+            return False
+        if count("SELECT COUNT(*) FROM v2_runs WHERE project_id=? AND COALESCE(result_origin,'')!='demo_preset'"):
+            return False
+        for table in ("v2_decisions","v2_chapter_revision_history","v2_character_aliases"):
+            if count(f"SELECT COUNT(*) FROM {table} WHERE project_id=?"):
+                return False
+        # The seed's own preset chapter check is not an author's analysis.
+        if count("SELECT COUNT(*) FROM v2_analysis_results a JOIN v2_runs r ON r.id=a.run_id WHERE a.project_id=? AND r.result_origin!='demo_preset'"):
+            return False
+        return True
 
     def _migrate_stage13_identity(self, c: sqlite3.Connection) -> None:
         columns = {row["name"] for row in c.execute("PRAGMA table_info(v2_users)")}
@@ -876,6 +929,9 @@ class V2Database:
         version = 4 if seed_key == "grey_harbor" else 1
         c.execute("INSERT INTO v2_projects(id,user_id,title,genre,summary,status,metadata_revision,data_origin,seed_key,created_at,updated_at,current_memory_version,source_revision,author_context_version) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (project_id,user_id,title,genre,summary,"active",1,origin,seed_key,stamp,stamp,version,1,0))
         self._insert_empty_author_context_zero(c,project_id,stamp)
+        if seed_key in {"grey_harbor", "paper_moon", "zero_garden"}:
+            c.execute("CREATE TABLE IF NOT EXISTS v2_demo_seed_state(project_id TEXT PRIMARY KEY REFERENCES v2_projects(id),seed_version INTEGER NOT NULL,updated_at TEXT NOT NULL)")
+            c.execute("INSERT OR REPLACE INTO v2_demo_seed_state VALUES(?,?,?)",(project_id,DEMO_SEED_VERSION,stamp))
         if seed_key == "grey_harbor":
             self._seed_grey_harbor(c, project_id)
         elif seed_key in {"paper_moon", "zero_garden"}:
@@ -893,7 +949,7 @@ class V2Database:
         for chapter_old, number, title, summary, source_items in CHAPTERS:
             chapter_id = new_id("ch")
             old_chapter_to_new[chapter_old] = chapter_id
-            c.execute("INSERT INTO v2_chapters VALUES(?,?,?,?,?,?,?)", (chapter_id,project_id,number,title,summary,"",1))
+            c.execute("INSERT INTO v2_chapters VALUES(?,?,?,?,?,?,?)", (chapter_id,project_id,number,title,summary,CHAPTER_BODIES[chapter_old],1))
             c.execute("INSERT INTO v2_outline_nodes VALUES(?,?,?,?,?,?)", (new_id("outline"),project_id,number,title,summary,"complete"))
             for old_span_id, label, body in source_items:
                 span_id = new_id("span")
@@ -912,6 +968,34 @@ class V2Database:
         c.execute("INSERT INTO v2_characters VALUES(?,?,?,?,?,?,?,?,?,?)", (new_id("char"),project_id,"温岚","ally","灰港档案员","核对潮表","保管罗盘","不知道廊桥钥匙的含义","[]","[]"))
         c.execute("INSERT INTO v2_world_entries VALUES(?,?,?,?,?,?,?)", (new_id("world"),project_id,"location","灰港","雾钟与北潮闸所在的港口","[]","[]"))
         self._seed_grey_harbor_review(c, project_id, draft_id, old_span_to_new, old_memory_to_new)
+        self._seed_grey_harbor_chapter_check(c, project_id, draft_id, old_span_to_new, old_chapter_to_new)
+
+    def _seed_grey_harbor_chapter_check(self, c: sqlite3.Connection, project_id: str, draft_id: str, span_ids: dict[str, str], chapter_ids: dict[str, str]) -> None:
+        """A preset chapter-check report for the sample work, without executing or impersonating a Provider."""
+        stamp = utcnow()
+        run_id = scoped_seed_id("run", project_id, "grey-harbor-chapter-check-v1")
+        spans = {row["chapter_id"]: dict(row) for row in c.execute("SELECT s.id,s.chapter_id,s.body,ch.chapter_number,ch.title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id WHERE s.project_id=?", (project_id,))}
+        chosen = [chapter_ids[old] for old in DEMO_CHAPTER_CHECK["chapters"]]
+        chapters = []
+        for chapter_id in chosen:
+            span = spans[chapter_id]
+            issues = []
+            for fixture in DEMO_CHAPTER_CHECK["issues"]:
+                if chapter_ids[fixture["chapter"]] != chapter_id:
+                    continue
+                evidence = c.execute("SELECT s.body,ch.chapter_number,ch.title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id WHERE s.id=?", (span_ids[fixture["evidence_span"]],)).fetchone()
+                issues.append({"sentence": fixture["sentence"], "nature": fixture["nature"], "category": fixture["category"], "severity": fixture["severity"],
+                               "explanation": fixture["explanation"], "evidence": [{"chapter_number": evidence["chapter_number"], "chapter_title": evidence["title"], "excerpt": evidence["body"][:160]}]})
+            chapters.append({"chapter_id": chapter_id, "chapter_number": span["chapter_number"], "chapter_title": span["title"],
+                             "sentences": len(split_continuity_claims(span["body"])), "issues": issues, "undecided": 0})
+        report = {"chapters": chapters, "issue_count": sum(len(row["issues"]) for row in chapters), "undecided_count": 0}
+        c.execute(
+            "INSERT INTO v2_runs(id,project_id,draft_id,source_revision,status,stage,provider_label,created_at,completed_at,model_label,prompt_version,schema_version,retrieval_method_version,source_memory_version,result_origin,run_type,source_span_ids_json,root_run_id,attempt_number) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            (run_id, project_id, draft_id, 1, "completed", "completed", "not_called", stamp, stamp, "not_applicable", "demo-preset-v1", "demo-chapter-check-v1",
+             "demo-preset-v1", 4, "demo_preset", "chapter_check", json.dumps([spans[chapter_id]["id"] for chapter_id in chosen]), run_id, 1))
+        c.execute("INSERT INTO v2_run_stages(run_id,stage,created_at) VALUES(?,?,?)", (run_id, "completed", stamp))
+        c.execute("INSERT INTO v2_run_events(run_id,sequence,status,stage,error_code,created_at) VALUES(?,?,?,?,?,?)", (run_id, 1, "completed", "completed", None, stamp))
+        c.execute("INSERT INTO v2_analysis_results VALUES(?,?,?,?,?)", (run_id, project_id, "chapter_check", json.dumps(report, ensure_ascii=False, sort_keys=True), stamp))
 
     def _seed_grey_harbor_review(self, c: sqlite3.Connection, project_id: str, draft_id: str, span_ids: dict[str, str], memory_ids: dict[str, str]) -> None:
         """Create a reviewable preset without executing or impersonating a Provider."""
@@ -2207,8 +2291,46 @@ class V2Database:
             rows=c.execute("SELECT m.*,s.chapter_id,s.id span_id,s.body excerpt,ch.chapter_number,ch.title chapter_title FROM v2_memory_records m LEFT JOIN v2_source_spans s ON s.id=m.source_span_id AND s.project_id=m.project_id LEFT JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=m.project_id WHERE m.project_id=? AND m.version=?",(project_id,version)).fetchall()
             for row in rows:
                 if row["source_span_id"] and not row["span_id"]: raise DomainError("source_unavailable",422)
-                records.append({**workflow.memory_review_flags(c,row,project["current_memory_version"]),"id":row["id"],"memory_type":row["memory_type"],"subject":row["subject"],"predicate":row["predicate"],"value":row["value"],"valid_from":row["valid_from"],"valid_to":row["valid_to"],"review_status":row["review_status"],"source":({"chapter_id":row["chapter_id"],"chapter_number":row["chapter_number"],"chapter_title":row["chapter_title"],"span_id":row["span_id"],"excerpt":row["excerpt"][:500],"source_path":f"/projects/{project_id}/sources#span-{row['span_id']}"} if row["span_id"] else None)})
+                records.append({**workflow.memory_review_flags(c,row,project["current_memory_version"]),"id":row["id"],"memory_type":row["memory_type"],"subject":row["subject"],"predicate":row["predicate"],"value":row["value"],"from_chapter":row["chapter_number"],"valid_from":row["valid_from"],"valid_to":row["valid_to"],"review_status":row["review_status"],"source":({"chapter_id":row["chapter_id"],"chapter_number":row["chapter_number"],"chapter_title":row["chapter_title"],"span_id":row["span_id"],"excerpt":row["excerpt"][:500],"source_path":f"/projects/{project_id}/sources#span-{row['span_id']}"} if row["span_id"] else None)})
             return {"project_id":project_id,"memory_version":version,"records":records}
+
+    def memory_as_of_chapter(self, user_id: str, project_id: str, chapter_number: int) -> dict[str, Any]:
+        """The confirmed facts an author could rely on when chapter N was written (chapters 1..N-1)."""
+        if not isinstance(chapter_number,int) or isinstance(chapter_number,bool) or chapter_number<1:raise DomainError("invalid_filter",400)
+        with self.connection() as c:
+            project=self._project(c,user_id,project_id)
+            rows=self._memory_as_of_chapter(c,project_id,chapter_number)
+            records=[{"id":row["id"],"memory_type":row["memory_type"],"subject":row["subject"],"predicate":row["predicate"],"value":row["value"],"from_chapter":row["from_chapter"],"valid_from":row["valid_from"],"valid_to":row["valid_to"],"review_status":row["review_status"],"source":({"chapter_id":row["chapter_id"],"chapter_number":row["from_chapter"],"chapter_title":row["chapter_title"],"span_id":row["source_span_id"],"excerpt":row["excerpt"][:500],"source_path":f"/projects/{project_id}/sources#span-{row['source_span_id']}"} if row["chapter_id"] else None)} for row in rows]
+            return {"project_id":project_id,"memory_version":project["current_memory_version"],"as_of_chapter":chapter_number,"records":records}
+
+    @staticmethod
+    def _memory_as_of_chapter(c: sqlite3.Connection, project_id: str, chapter_number: int) -> list[sqlite3.Row]:
+        """Facts in force before chapter N, each in the state chapters 1..N-1 left it.
+
+        Every Memory version copies each record forward as id+'-v<version>', so one fact's history is a
+        lineage of rows. A row whose source is chapter N or later gives way to the same fact's newest
+        earlier row (a changed state falls back to the state it replaced); a fact created from chapter
+        N or later is left out; a fact retired by evidence from chapter N or later is still in force.
+        A retirement whose evidence cannot be traced to a chapter is treated as already in effect.
+        """
+        current=c.execute("SELECT current_memory_version FROM v2_projects WHERE id=?",(project_id,)).fetchone()["current_memory_version"]
+        rows=c.execute("SELECT m.*,s.chapter_id,s.body excerpt,ch.chapter_number from_chapter,ch.title chapter_title FROM v2_memory_records m LEFT JOIN v2_source_spans s ON s.id=m.source_span_id AND s.project_id=m.project_id LEFT JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=m.project_id WHERE m.project_id=? AND m.version<=? AND m.review_status='author_confirmed'",(project_id,current)).fetchall()
+        retired={row["affected_memory_id"]:row["chapter_number"] for row in c.execute("SELECT d.affected_memory_id,ch.chapter_number FROM v2_memory_delta_candidates d JOIN v2_source_spans s ON s.id=d.source_span_id AND s.project_id=d.project_id JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=d.project_id WHERE d.project_id=? AND d.change_kind='invalidated_fact' AND d.decision_status IN ('accepted','edited')",(project_id,)).fetchall()}
+        lineage: dict[str,dict[int,sqlite3.Row]]={}
+        for row in rows:lineage.setdefault(re.sub(r"(?:-v\d+)+$","",row["id"]),{})[row["version"]]=row
+        effective=[]
+        for history in lineage.values():
+            if current not in history:continue
+            for version in sorted(history,reverse=True):
+                row=history[version]
+                if row["valid_to"] is not None and row["valid_to"]<version:
+                    base=history.get(row["valid_to"])
+                    retired_in=retired.get(base["id"]) if base else None
+                    if retired_in is None or retired_in<chapter_number:break
+                    continue
+                if row["from_chapter"] is None or row["from_chapter"]<chapter_number:
+                    effective.append(row);break
+        return sorted(effective,key=lambda row:(row["from_chapter"] or 0,row["id"]))
 
     # --- imported-source Story Memory initialization ---
     def _import_sources(self, c: sqlite3.Connection, project_id: str) -> list[dict[str, Any]]:
@@ -2349,40 +2471,72 @@ class V2Database:
     def decide_memory_candidate(self, user_id: str, project_id: str, initialization_id: str, candidate_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
             def decide():
-                project=self._project(c,user_id,project_id,True)
+                self._project(c,user_id,project_id,True)
                 initialization=c.execute("SELECT * FROM v2_memory_initializations WHERE id=? AND project_id=?",(initialization_id,project_id)).fetchone()
                 candidate=c.execute("SELECT * FROM v2_memory_candidates WHERE id=? AND initialization_id=? AND project_id=?",(candidate_id,initialization_id,project_id)).fetchone()
                 if not initialization or not candidate: raise DomainError("resource_not_found",404)
                 if initialization["status"]!="draft": raise DomainError("memory_initialization_closed",409)
                 self._assert_initialization_sources_current(c,project_id,initialization)
-                if candidate["decision_status"]!="pending":
-                    saved=json.loads(candidate["decision_json"])
-                    same_decision=saved.get("decision")==payload.get("decision")
-                    same_edit=(saved.get("decision")!="edited" and payload.get("after") is None and payload.get("evidence_span_id") is None) or (saved.get("decision")=="edited" and digest(saved.get("after"))==digest(payload.get("after")) and saved.get("evidence_span_id")==payload.get("evidence_span_id"))
-                    if same_decision and same_edit:return {"candidate_id":candidate_id,"decision_status":candidate["decision_status"]}
-                    raise DomainError("candidate_already_decided",409)
-                decision=payload.get("decision")
-                if decision not in {"accepted","rejected","edited"}: raise DomainError("invalid_candidate_decision",422)
-                base={field:candidate[field] for field in ("memory_type","subject","predicate","value")}
-                after=base
-                evidence_span_id=None
-                if decision=="edited":
-                    edited=payload.get("after")
-                    if not isinstance(edited,dict): raise DomainError("invalid_item_edit",422)
-                    after={field:str(edited.get(field," ")).strip() for field in base}
-                    if after["memory_type"] not in {"static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"} or not all(after.values()) or len(after["subject"])>200 or len(after["predicate"])>200 or len(after["value"])>1000: raise DomainError("invalid_item_edit",422)
-                    evidence_span_id=payload.get("evidence_span_id")
-                    if not isinstance(evidence_span_id,str) or evidence_span_id!=candidate["source_span_id"]: raise DomainError("evidence_unresolvable",422)
-                    evidence=c.execute("SELECT 1 FROM v2_source_spans WHERE id=? AND project_id=? AND chapter_id=?",(evidence_span_id,project_id,candidate["chapter_id"])).fetchone()
-                    if not evidence or candidate["source_revision"]!=initialization["source_revision"]: raise DomainError("evidence_unresolvable",422)
-                elif payload.get("after") is not None or payload.get("evidence_span_id") is not None: raise DomainError("invalid_candidate_decision",422)
-                saved={"decision":decision,"after":after if decision!="rejected" else None,"evidence_span_id":evidence_span_id}
-                stamp=utcnow()
-                c.execute("UPDATE v2_memory_candidates SET decision_status=?,decision_json=?,decided_at=? WHERE id=? AND project_id=?",(decision,json.dumps(saved,ensure_ascii=False),stamp,candidate_id,project_id))
-                c.execute("INSERT INTO v2_memory_candidate_decisions(id,project_id,initialization_id,candidate_id,decision,after_json,evidence_span_id,source_revision,created_at) VALUES(?,?,?,?,?,?,?,?,?)",(new_id("memorydecision"),project_id,initialization_id,candidate_id,decision,json.dumps(saved["after"],ensure_ascii=False) if saved["after"] else None,evidence_span_id,initialization["source_revision"],stamp))
-                c.execute("INSERT INTO v2_memory_candidate_review_events(id,project_id,initialization_id,candidate_id,event,decision,decision_json,actor_user_id,source_revision,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)",(new_id("memoryreviewevent"),project_id,initialization_id,candidate_id,"decided",decision,json.dumps(saved,ensure_ascii=False),user_id,initialization["source_revision"],stamp))
-                return {"candidate_id":candidate_id,"decision_status":decision}
+                return self._decide_memory_candidate(c,user_id,project_id,initialization,candidate,payload)
             return self._idem(c,user_id,"memory_candidate_decision:"+project_id+":"+candidate_id,key,payload,decide)
+
+    MAX_BULK_MEMORY_DECISIONS=500
+
+    def decide_memory_candidates(self, user_id: str, project_id: str, initialization_id: str, payload: dict[str, Any], key: str):
+        """Accept or reject many initialization candidates in one transaction (long imports).
+
+        Each decision goes through the same rules as a single decision; edits stay one at a time
+        because they need the author to confirm the evidence. Any invalid item rejects the whole call.
+        """
+        with self.connection() as c:
+            def decide():
+                self._project(c,user_id,project_id,True)
+                initialization=c.execute("SELECT * FROM v2_memory_initializations WHERE id=? AND project_id=?",(initialization_id,project_id)).fetchone()
+                if not initialization: raise DomainError("resource_not_found",404)
+                if initialization["status"]!="draft": raise DomainError("memory_initialization_closed",409)
+                decisions=payload.get("decisions")
+                if not isinstance(decisions,list) or not 1<=len(decisions)<=self.MAX_BULK_MEMORY_DECISIONS: raise DomainError("invalid_candidate_decision",422)
+                ids=[item.get("candidate_id") for item in decisions if isinstance(item,dict)]
+                if len(ids)!=len(decisions) or len(set(ids))!=len(ids): raise DomainError("invalid_candidate_decision",422)
+                self._assert_initialization_sources_current(c,project_id,initialization)
+                results=[]
+                for item in decisions:
+                    if item.get("decision") not in {"accepted","rejected"} or set(item)!={"candidate_id","decision"}: raise DomainError("invalid_candidate_decision",422)
+                    candidate=c.execute("SELECT * FROM v2_memory_candidates WHERE id=? AND initialization_id=? AND project_id=?",(item["candidate_id"],initialization_id,project_id)).fetchone()
+                    if not candidate: raise DomainError("resource_not_found",404)
+                    results.append(self._decide_memory_candidate(c,user_id,project_id,initialization,candidate,{"decision":item["decision"]}))
+                return {"initialization_id":initialization_id,"decided":results}
+            return self._idem(c,user_id,"memory_candidate_bulk_decision:"+project_id+":"+initialization_id,key,payload,decide)
+
+    def _decide_memory_candidate(self, c: sqlite3.Connection, user_id: str, project_id: str, initialization: sqlite3.Row, candidate: sqlite3.Row, payload: dict[str, Any]) -> dict[str, Any]:
+        initialization_id,candidate_id=initialization["id"],candidate["id"]
+        if candidate["decision_status"]!="pending":
+            saved=json.loads(candidate["decision_json"])
+            same_decision=saved.get("decision")==payload.get("decision")
+            same_edit=(saved.get("decision")!="edited" and payload.get("after") is None and payload.get("evidence_span_id") is None) or (saved.get("decision")=="edited" and digest(saved.get("after"))==digest(payload.get("after")) and saved.get("evidence_span_id")==payload.get("evidence_span_id"))
+            if same_decision and same_edit:return {"candidate_id":candidate_id,"decision_status":candidate["decision_status"]}
+            raise DomainError("candidate_already_decided",409)
+        decision=payload.get("decision")
+        if decision not in {"accepted","rejected","edited"}: raise DomainError("invalid_candidate_decision",422)
+        base={field:candidate[field] for field in ("memory_type","subject","predicate","value")}
+        after=base
+        evidence_span_id=None
+        if decision=="edited":
+            edited=payload.get("after")
+            if not isinstance(edited,dict): raise DomainError("invalid_item_edit",422)
+            after={field:str(edited.get(field," ")).strip() for field in base}
+            if after["memory_type"] not in {"static_canon","dynamic_state","event_timeline","character_knowledge","open_thread"} or not all(after.values()) or len(after["subject"])>200 or len(after["predicate"])>200 or len(after["value"])>1000: raise DomainError("invalid_item_edit",422)
+            evidence_span_id=payload.get("evidence_span_id")
+            if not isinstance(evidence_span_id,str) or evidence_span_id!=candidate["source_span_id"]: raise DomainError("evidence_unresolvable",422)
+            evidence=c.execute("SELECT 1 FROM v2_source_spans WHERE id=? AND project_id=? AND chapter_id=?",(evidence_span_id,project_id,candidate["chapter_id"])).fetchone()
+            if not evidence or candidate["source_revision"]!=initialization["source_revision"]: raise DomainError("evidence_unresolvable",422)
+        elif payload.get("after") is not None or payload.get("evidence_span_id") is not None: raise DomainError("invalid_candidate_decision",422)
+        saved={"decision":decision,"after":after if decision!="rejected" else None,"evidence_span_id":evidence_span_id}
+        stamp=utcnow()
+        c.execute("UPDATE v2_memory_candidates SET decision_status=?,decision_json=?,decided_at=? WHERE id=? AND project_id=?",(decision,json.dumps(saved,ensure_ascii=False),stamp,candidate_id,project_id))
+        c.execute("INSERT INTO v2_memory_candidate_decisions(id,project_id,initialization_id,candidate_id,decision,after_json,evidence_span_id,source_revision,created_at) VALUES(?,?,?,?,?,?,?,?,?)",(new_id("memorydecision"),project_id,initialization_id,candidate_id,decision,json.dumps(saved["after"],ensure_ascii=False) if saved["after"] else None,evidence_span_id,initialization["source_revision"],stamp))
+        c.execute("INSERT INTO v2_memory_candidate_review_events(id,project_id,initialization_id,candidate_id,event,decision,decision_json,actor_user_id,source_revision,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)",(new_id("memoryreviewevent"),project_id,initialization_id,candidate_id,"decided",decision,json.dumps(saved,ensure_ascii=False),user_id,initialization["source_revision"],stamp))
+        return {"candidate_id":candidate_id,"decision_status":decision}
 
     def reopen_memory_candidate(self, user_id: str, project_id: str, initialization_id: str, candidate_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
@@ -2574,12 +2728,20 @@ class V2Database:
             sources=self._delta_sources(c,project_id,batch["source_revision"]); memory=self._confirmed_memory(c,project_id,batch["base_memory_version"])
             historical={row["id"]:dict(row) for row in c.execute("SELECT s.id,s.chapter_id,s.label,s.body,ch.chapter_number,ch.title chapter_title FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id WHERE s.project_id=? AND s.id IN (SELECT source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND source_span_id IS NOT NULL AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?))",(project_id,project_id,batch["base_memory_version"],batch["base_memory_version"],batch["base_memory_version"])).fetchall()}
             claims=[]; allowed=sorted(historical.values(),key=lambda row:(row["chapter_number"],row["id"]))
+            run=c.execute("SELECT retrieval_method_version FROM v2_runs WHERE id=?",(batch["continuity_run_id"],)).fetchone()
+            screened=bool(run) and run["retrieval_method_version"]==SCREENED_RETRIEVAL_METHOD_VERSION
             for source in sources:
                 for text in (part.strip() for part in re.split(r"(?<=[。！？])",source["body"])):
-                    if text: claims.append({"id":f"claim-{batch['continuity_run_id']}-{len(claims)+1}","text":text,"allowed_evidence":allowed})
+                    if not text:continue
+                    claim={"id":f"claim-{batch['continuity_run_id']}-{len(claims)+1}","text":text}
+                    # Screened: each new chapter is checked against the chapters before it, its own
+                    # text as context; legacy: against every span that holds confirmed Memory.
+                    claims.append({**claim,"chapter_number":source["chapter_number"],"context":source["id"]} if screened else {**claim,"allowed_evidence":allowed})
             revision_change=c.execute("SELECT mode FROM v2_source_change_sets WHERE project_id=? AND target_source_revision=? AND status='committed'",(project_id,batch["source_revision"])).fetchone()
             if not claims or (not memory and (not revision_change or revision_change["mode"]!="revise")): raise DomainError("insufficient_project_context",422)
-            return {"claims":claims,"memory":memory,"draft":{"id":batch["continuity_run_id"],"revision":batch["source_revision"],"body":"\n".join(x["text"] for x in claims)}},{"source_revision":batch["source_revision"],"sources":sources,"memory":memory}
+            continuity={"claims":claims,"memory":memory,"draft":{"id":batch["continuity_run_id"],"revision":batch["source_revision"],"body":"\n".join(x["text"] for x in claims)}}
+            if screened:continuity.update(pipeline="screened",sources=self._current_spans(c,project_id),contexts={source["id"]:source["body"] for source in sources})
+            return continuity,{"source_revision":batch["source_revision"],"sources":sources,"memory":memory}
 
     def advance_incremental_runs(self,project_id,batch_id,stage):
         with self.connection() as c:
@@ -2677,11 +2839,15 @@ class V2Database:
             inputs,sources,priorities=prepared
             trace_rows=continuity.get("retrieval_traces",[]); trace_by_claim={row.get("claim_id"):row.get("returned_span_ids") for row in trace_rows if isinstance(row,dict)}
             method=continuity.get("retrieval_method_version")
-            if method!="bounded-lexical-v4-longform":raise DomainError("retrieval_trace_invalid",422)
+            screened=inputs.get("pipeline")=="screened"
+            if method!=(SCREENED_RETRIEVAL_METHOD_VERSION if screened else "bounded-lexical-v4-longform"):raise DomainError("retrieval_trace_invalid",422)
             for ordinal,claim in enumerate(inputs["claims"],1):
-                returned=trace_by_claim.get(claim["id"]); allowed_ids={item["id"] for item in claim["allowed_evidence"]}
-                if not isinstance(returned,list) or len(returned)!=len(set(returned)) or len(returned)>3 or not set(returned)<=allowed_ids:raise DomainError("retrieval_trace_invalid",422)
-                c.execute("INSERT INTO v2_run_claims VALUES(?,?,?,?)",(claim["id"],batch["continuity_run_id"],ordinal,claim["text"])); c.execute("INSERT INTO v2_retrieval_traces VALUES(?,?,?,?,?)",(batch["continuity_run_id"],claim["id"],"bounded_lexical",json.dumps(returned),method))
+                returned=trace_by_claim.get(claim["id"])
+                allowed_ids={item["id"] for item in inputs["sources"]} if screened else {item["id"] for item in claim["allowed_evidence"]}
+                limit=SCREENED_MAX_TRACE_SPANS if screened else 3
+                if not isinstance(returned,list) or len(returned)!=len(set(returned)) or len(returned)>limit or not set(returned)<=allowed_ids:raise DomainError("retrieval_trace_invalid",422)
+                terms=screened_trace_terms(next((row for row in trace_rows if isinstance(row,dict) and row.get("claim_id")==claim["id"]),{})) if screened else "bounded_lexical"
+                c.execute("INSERT INTO v2_run_claims VALUES(?,?,?,?)",(claim["id"],batch["continuity_run_id"],ordinal,claim["text"])); c.execute("INSERT INTO v2_retrieval_traces VALUES(?,?,?,?,?)",(batch["continuity_run_id"],claim["id"],terms,json.dumps(returned),method))
             for issue in continuity.get("issues",[]):
                 self._persist_review_issue(c,project_id,batch["continuity_run_id"],batch["source_revision"],issue)
             for ordinal,(item,source,priority) in enumerate(zip(delta["candidates"],sources,priorities),1):
@@ -2807,7 +2973,26 @@ class V2Database:
             return self._idem(c,user_id,"update_project:"+project_id,key,payload,update)
 
     # --- draft/revision and continuity persistence ---
-    def check_preflight(self, user_id: str, project_id: str, draft_id: str, draft_revision: int) -> None:
+    def _has_written_text(self, c: sqlite3.Connection, project_id: str) -> bool:
+        return any((span["body"] or "").strip() for span in self._current_spans(c, project_id))
+
+    def _require_check_context(self, c: sqlite3.Connection, project: sqlite3.Row, screened: bool) -> None:
+        """What a check needs before it may start.
+
+        The screened pipeline finds its evidence in passages of the written chapters, so written text is
+        enough; confirmed facts only sharpen retrieval, and an author may review them later (v1.6.0).
+        The legacy pipeline compares against confirmed facts and still needs a reviewed fact base.
+        """
+        if screened:
+            if not self._has_written_text(c, project["id"]): raise DomainError("insufficient_project_context",422)
+            return
+        coverage=self._memory_coverage(c,project["id"])
+        if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["confirmed_core"] < 1:
+            raise DomainError("insufficient_project_context",422)
+        context=c.execute("SELECT COUNT(*) FROM v2_memory_records WHERE project_id=? AND version=?",(project["id"],project["current_memory_version"])).fetchone()[0]
+        if not context: raise DomainError("insufficient_project_context",422)
+
+    def check_preflight(self, user_id: str, project_id: str, draft_id: str, draft_revision: int, screened: bool = False) -> None:
         """Validate a check request before inspecting provider availability.
 
         Empty user-created projects have neither confirmed memory nor usable
@@ -2820,11 +3005,7 @@ class V2Database:
             if not draft: raise DomainError("resource_not_found",404)
             if draft["revision"]!=draft_revision: raise DomainError("draft_revision_not_current",409)
             workflow.require_review_complete(c, project_id)
-            coverage=self._memory_coverage(c,project_id)
-            if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["confirmed_core"] < 1:
-                raise DomainError("insufficient_project_context",422)
-            context=c.execute("SELECT COUNT(*) FROM v2_memory_records WHERE project_id=? AND version=?",(project_id,project["current_memory_version"])).fetchone()[0]
-            if not context: raise DomainError("insufficient_project_context",422)
+            self._require_check_context(c, project, screened)
             if not draft["body"].strip(): raise DomainError("draft_invalid",422)
 
     def patch_draft(self, user_id: str, project_id: str, draft_id: str, payload: dict[str, Any], key: str):
@@ -2865,11 +3046,7 @@ class V2Database:
                 if not draft: raise DomainError("resource_not_found",404)
                 if draft["revision"]!=payload["draft_revision"]: raise DomainError("draft_revision_not_current",409)
                 if not draft["body"].strip(): raise DomainError("draft_invalid",422)
-                coverage=self._memory_coverage(c,project_id)
-                if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["confirmed_core"] < 1:
-                    raise DomainError("insufficient_project_context",422)
-                context=c.execute("SELECT COUNT(*) FROM v2_memory_records WHERE project_id=? AND version=?",(project_id,project["current_memory_version"])).fetchone()[0]
-                if not context: raise DomainError("insufficient_project_context",422)
+                self._require_check_context(c, project, provenance.get("retrieval_method_version")==SCREENED_RETRIEVAL_METHOD_VERSION)
                 running=c.execute("SELECT id FROM v2_runs WHERE project_id=? AND draft_id=? AND source_revision=? AND run_type='continuity' AND status IN ('queued','running')",(project_id,draft["id"],draft["revision"])).fetchone()
                 if running: raise DomainError("run_already_active",409,False,{"run_id":running["id"]})
                 run_id,stamp=new_id("run"),utcnow()
@@ -3073,7 +3250,7 @@ class V2Database:
                 status,terminal,error=self._normalized_terminal(result);retryable=bool(result.get("retryable")) or status in {"timed_out","cancelled"}
             duration=elapsed_ms(run["started_at"] or run["created_at"],stamp)
             normalizations=result.get("contract_normalizations") if isinstance(result.get("contract_normalizations"),list) else []
-            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome")=="insufficient_evidence" and item.get("provider_attempt")==2]
+            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome") in {"insufficient_evidence","possible_conflict"} and item.get("provider_attempt") in {1,2}]
             # A claim the review could not decide after its own bounded repair. Ids and codes only.
             undecided=result.get("undecided_claims") if isinstance(result.get("undecided_claims"),list) else []
             safe_undecided=[item for item in undecided if isinstance(item,dict) and set(item)=={"claim_span_id","error_code"} and isinstance(item.get("claim_span_id"),str) and isinstance(item.get("error_code"),str)]
@@ -3266,14 +3443,30 @@ class V2Database:
         excerpt = body[start:start + limit]
         return ("…" if start else "") + excerpt + ("…" if start + limit < len(body) else "")
 
+    def _current_spans(self, c: sqlite3.Connection, project_id: str) -> list[dict[str, Any]]:
+        """Every SourceSpan of the current manuscript, with its chapter number, in reading order."""
+        return [dict(x) for x in c.execute("SELECT s.id,s.chapter_id,s.body,s.label,ch.chapter_number FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id AND ch.source_revision=s.source_revision WHERE s.project_id=? ORDER BY ch.chapter_number,s.id",(project_id,)).fetchall()]
+
+    def _write_screened_traces(self, c: sqlite3.Connection, run_id: str, result: dict[str, Any], claim_ids: set[str]) -> None:
+        """The screened pipeline's per-claim traces: whether the screen flagged it and the spans reviewed."""
+        for trace in result.get("retrieval_traces") or []:
+            if not isinstance(trace,dict) or trace.get("claim_id") not in claim_ids:raise DomainError("retrieval_trace_invalid",422)
+            returned=trace.get("returned_span_ids")
+            if not isinstance(returned,list) or len(returned)!=len(set(returned)) or len(returned)>SCREENED_MAX_TRACE_SPANS or not all(isinstance(item,str) for item in returned):raise DomainError("retrieval_trace_invalid",422)
+            c.execute("INSERT OR REPLACE INTO v2_retrieval_traces VALUES(?,?,?,?,?)",(run_id,trace["claim_id"],screened_trace_terms(trace),json.dumps(returned),SCREENED_RETRIEVAL_METHOD_VERSION))
+
     def run_input(self, project_id: str, run_id: str) -> dict[str, Any]:
         with self.connection() as c:
             run=c.execute("SELECT * FROM v2_runs WHERE id=? AND project_id=?",(run_id,project_id)).fetchone()
             if not run: raise DomainError("resource_not_found",404)
             if run["status"] not in RUN_ACTIVE_STATUSES or run["cancel_requested_at"]: raise DomainError("run_cancelled",409)
             if not workflow.binding_is_current(c,run): raise DomainError("run_basis_changed",409)
-            coverage=self._memory_coverage(c,project_id)
-            if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["pending_canon_count"] != 0:
+            screened=run["retrieval_method_version"]==SCREENED_RETRIEVAL_METHOD_VERSION
+            if not screened:
+                coverage=self._memory_coverage(c,project_id)
+                if coverage["status"] not in {"ready_partial","ready_current"} or coverage["counts"]["pending_canon_count"] != 0:
+                    raise DomainError("insufficient_project_context",422)
+            elif not self._has_written_text(c,project_id):
                 raise DomainError("insufficient_project_context",422)
             revision=c.execute("SELECT * FROM v2_draft_revisions WHERE draft_id=? AND revision=?",(run["draft_id"],run["source_revision"])).fetchone()
             body_format=self._draft_body_format(c,revision["draft_id"],revision["revision"])
@@ -3284,7 +3477,13 @@ class V2Database:
                 c.execute("INSERT OR IGNORE INTO v2_run_claims VALUES(?,?,?,?)",(claim_id,run_id,ordinal+1,text))
             source_memory_version=run["source_memory_version"]
             memory=[dict(x) for x in c.execute("SELECT id,memory_type,subject,predicate,value,source_span_id FROM v2_memory_records WHERE project_id=? AND version=? AND review_status='author_confirmed' AND (valid_from IS NULL OR valid_from<=?) AND (valid_to IS NULL OR valid_to>=?) ORDER BY id",(project_id,source_memory_version,source_memory_version,source_memory_version)).fetchall()]
-            if not memory: raise DomainError("insufficient_project_context",422)
+            if not memory and not screened: raise DomainError("insufficient_project_context",422)
+            if screened:
+                # The screened pipeline retrieves passages itself, after the screen; traces are written
+                # with the result. The draft comes after every chapter, so all of them are earlier text.
+                for claim in claims: claim["context"]="draft"
+                return {"run":dict(run),"pipeline":"screened","draft":{"id":revision["draft_id"],"revision":revision["revision"],"body":draft_text,"body_format":body_format},
+                        "claims":claims,"memory":memory,"sources":self._current_spans(c,project_id),"contexts":{"draft":draft_text}}
             spans=[dict(x) for x in c.execute("SELECT s.id,s.chapter_id,s.body,s.label FROM v2_source_spans s JOIN v2_chapters ch ON ch.id=s.chapter_id AND ch.project_id=s.project_id AND ch.source_revision=s.source_revision WHERE s.project_id=?",(project_id,)).fetchall()]
             for claim in claims:
                 characters="".join(re.findall(r"[\u4e00-\u9fffA-Za-z0-9]",claim["text"])); terms={characters[index:index+2] for index in range(max(0,len(characters)-1))}; scored=[]
@@ -3312,7 +3511,7 @@ class V2Database:
                 retryable=bool(result.get("retryable")) or status in {"timed_out","cancelled"}
             duration=elapsed_ms(run["started_at"] or (run["created_at"] if run["status"]=="queued" else None),stamp)
             normalizations=result.get("contract_normalizations") if isinstance(result.get("contract_normalizations"),list) else []
-            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome")=="insufficient_evidence" and item.get("provider_attempt")==2]
+            safe_normalizations=[item for item in normalizations if isinstance(item,dict) and set(item)=={"claim_span_id","reason_code","outcome","provider_attempt"} and isinstance(item.get("claim_span_id"),str) and item.get("reason_code") in {"temporal_overlap_unproven","timeless_rule_unproven"} and item.get("outcome") in {"insufficient_evidence","possible_conflict"} and item.get("provider_attempt") in {1,2}]
             # A claim the review could not decide after its own bounded repair. Ids and codes only.
             undecided=result.get("undecided_claims") if isinstance(result.get("undecided_claims"),list) else []
             safe_undecided=[item for item in undecided if isinstance(item,dict) and set(item)=={"claim_span_id","error_code"} and isinstance(item.get("claim_span_id"),str) and isinstance(item.get("error_code"),str)]
@@ -3320,6 +3519,8 @@ class V2Database:
             if not changed:return False
             self._append_run_event(c,run_id,status,terminal,error,stamp)
             if status!="completed": return True
+            if run["retrieval_method_version"]==SCREENED_RETRIEVAL_METHOD_VERSION:
+                self._write_screened_traces(c,run_id,result,{row["id"] for row in c.execute("SELECT id FROM v2_run_claims WHERE run_id=?",(run_id,)).fetchall()})
             for issue in result.get("issues",[]):
                 self._persist_review_issue(c,project_id,run_id,run["source_revision"],issue)
             return True
@@ -3352,6 +3553,20 @@ class V2Database:
             row=c.execute("SELECT r.body,r.revision FROM v2_draft_revisions r JOIN v2_drafts d ON d.id=r.draft_id WHERE r.draft_id=? AND r.revision=? AND d.project_id=?",(draft_id,revision,project_id)).fetchone()
             if not row:return 0
             return len(split_continuity_claims(visible_draft_text(row["body"],self._draft_body_format(c,draft_id,revision))))
+
+    def draft_check_chars(self,user_id:str,project_id:str,draft_id:str,revision:int)->int:
+        """Characters a check of this saved draft revision spends from the author's quota."""
+        with self.connection() as c:
+            self._project(c,user_id,project_id)
+            row=c.execute("SELECT r.body FROM v2_draft_revisions r JOIN v2_drafts d ON d.id=r.draft_id WHERE r.draft_id=? AND r.revision=? AND d.project_id=?",(draft_id,revision,project_id)).fetchone()
+            return written_chars(visible_draft_text(row["body"],self._draft_body_format(c,draft_id,revision))) if row else 0
+
+    def incremental_review_chars(self,project_id:str,batch_id:str)->int:
+        """Characters an incremental review of the newly added chapters spends from the author's quota."""
+        with self.connection() as c:
+            batch=c.execute("SELECT source_revision FROM v2_memory_delta_batches WHERE id=? AND project_id=?",(batch_id,project_id)).fetchone()
+            if not batch: return 0
+            return sum(written_chars(source["body"]) for source in self._delta_sources(c,project_id,batch["source_revision"]))
 
     def run_claim_count(self,user_id:str,project_id:str,run_id:str)->int:
         """Claims a retry of this continuity run will review: the same draft revision it was bound to."""
@@ -3534,9 +3749,11 @@ class V2Database:
                 result["issues"]=issues
             if "metrics" in include:
                 traces=[]
-                for trace in c.execute("SELECT claim_id,returned_span_ids_json,method_version FROM v2_retrieval_traces WHERE run_id=? ORDER BY claim_id",(run_id,)).fetchall():
+                for trace in c.execute("SELECT claim_id,terms,returned_span_ids_json,method_version FROM v2_retrieval_traces WHERE run_id=? ORDER BY claim_id",(run_id,)).fetchall():
                     claim=c.execute("SELECT ordinal FROM v2_run_claims WHERE id=? AND run_id=?",(trace["claim_id"],run_id)).fetchone()
-                    traces.append({"claim_ordinal":claim["ordinal"] if claim else None,"returned_span_ids":json.loads(trace["returned_span_ids_json"]),"method_version":trace["method_version"]})
+                    row={"claim_ordinal":claim["ordinal"] if claim else None,"returned_span_ids":json.loads(trace["returned_span_ids_json"]),"method_version":trace["method_version"]}
+                    if trace["method_version"]==SCREENED_RETRIEVAL_METHOD_VERSION:row.update(parse_screened_trace_terms(str(trace["terms"])))
+                    traces.append(row)
                 result["metrics"]={**metrics,"retrieval":traces}
             return result
 
@@ -3693,6 +3910,74 @@ class V2Database:
             return self._idem(c,user_id,"commit:"+project_id+":"+change_set_id,key,payload,commit)
 
     # --- reset and imports ---
+    def _reset_project_contents(self, c: sqlite3.Connection, project: sqlite3.Row, stamp: str) -> tuple[int, dict[str, Any]]:
+        """Delete a project's working state and re-create its starting state; returns (memory version, empty author context)."""
+        project_id=project["id"]
+        # dependent children first. The set is deliberately project-scoped.
+        for table in ("v2_decision_reuse_events","v2_decision_reuse","v2_workflow_run_bindings","v2_source_revision_reviews"):
+            c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
+        for table in ("v2_author_story_plan_versions","v2_author_character_plan_versions","v2_author_world_plan_versions"):
+            c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_author_context_versions WHERE project_id=?",(project_id,))
+        for table in ("v2_author_story_plans","v2_author_character_plans","v2_author_world_plans"):
+            c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
+        c.execute("UPDATE v2_projects SET author_context_version=0,updated_at=? WHERE id=?",(stamp,project_id))
+        zero=self._insert_empty_author_context_zero(c,project_id,stamp)
+        c.execute("DELETE FROM v2_memory_candidate_review_events WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_candidate_decisions WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_candidates WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_initializations WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_delta_decisions WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_delta_candidates WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_source_coverage_audits WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_delta_batches WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_commit_audits WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_change_set_items WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_change_sets WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_revision_candidate_decisions WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_revision_task_versions WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_revision_tasks WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_revision_plan_candidates WHERE project_id=?",(project_id,))
+        c.execute("UPDATE v2_projects SET revision_task_version=0 WHERE id=?",(project_id,))
+        c.execute("DELETE FROM v2_decisions WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_evidence WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_issues WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_retrieval_traces WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
+        c.execute("DELETE FROM v2_analysis_results WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_analysis_inputs WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_character_aliases WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_character_alias_state WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_run_claims WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
+        c.execute("DELETE FROM v2_run_events WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
+        c.execute("DELETE FROM v2_run_stages WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
+        c.execute("DELETE FROM v2_runs WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_draft_revisions WHERE draft_id IN (SELECT id FROM v2_drafts WHERE project_id=?)",(project_id,))
+        c.execute("DELETE FROM v2_drafts WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_records WHERE project_id=?",(project_id,))
+        c.execute("DELETE FROM v2_memory_versions WHERE project_id=?",(project_id,))
+        if project["data_origin"] in {"demo_seed", "tutorial_seed"}:
+            c.execute("DELETE FROM v2_chapter_revision_history WHERE project_id=?",(project_id,))
+            c.execute("DELETE FROM v2_chapter_content_formats WHERE chapter_id IN (SELECT id FROM v2_chapters WHERE project_id=?)",(project_id,))
+            c.execute("DELETE FROM v2_characters WHERE project_id=?",(project_id,))
+            c.execute("DELETE FROM v2_world_entries WHERE project_id=?",(project_id,))
+            c.execute("DELETE FROM v2_outline_nodes WHERE project_id=?",(project_id,))
+            c.execute("DELETE FROM v2_source_spans WHERE project_id=?",(project_id,))
+            c.execute("DELETE FROM v2_chapters WHERE project_id=?",(project_id,))
+            if project["seed_key"]=="grey_harbor":
+                self._seed_grey_harbor(c,project_id); version=4
+            else:
+                self._seed_other(c,project_id,project["seed_key"]); version=1
+        elif project["data_origin"]=="user_import":
+            # Import preserves confirmed chapters/spans but never reparses original text.
+            c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,1,"current",None,utcnow()))
+            number=c.execute("SELECT COALESCE(MAX(chapter_number),0)+1 FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0]
+            self._draft(c,project_id,number); version=1
+        else:
+            c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,1,"current",None,utcnow()))
+            self._draft(c,project_id,1); version=1
+        c.execute("UPDATE v2_projects SET current_memory_version=?,author_context_version=0,alias_version=0,updated_at=? WHERE id=?",(version,utcnow(),project_id))
+        return version,zero
+
     def reset(self, user_id: str, project_id: str, payload: dict[str, Any], key: str):
         with self.connection() as c:
             def reset() -> dict[str, Any]:
@@ -3700,69 +3985,7 @@ class V2Database:
                 if payload.get("confirm") is not True: raise DomainError("confirmation_required",400)
                 if payload.get("reason") not in {"fresh_start","demo_recovery"}: raise DomainError("invalid_request",400)
                 stamp=utcnow()
-                # dependent children first. The set is deliberately project-scoped.
-                for table in ("v2_decision_reuse_events","v2_decision_reuse","v2_workflow_run_bindings","v2_source_revision_reviews"):
-                    c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
-                for table in ("v2_author_story_plan_versions","v2_author_character_plan_versions","v2_author_world_plan_versions"):
-                    c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_author_context_versions WHERE project_id=?",(project_id,))
-                for table in ("v2_author_story_plans","v2_author_character_plans","v2_author_world_plans"):
-                    c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
-                c.execute("UPDATE v2_projects SET author_context_version=0,updated_at=? WHERE id=?",(stamp,project_id))
-                zero=self._insert_empty_author_context_zero(c,project_id,stamp)
-                c.execute("DELETE FROM v2_memory_candidate_review_events WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_candidate_decisions WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_candidates WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_initializations WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_delta_decisions WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_delta_candidates WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_source_coverage_audits WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_delta_batches WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_commit_audits WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_change_set_items WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_change_sets WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_revision_candidate_decisions WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_revision_task_versions WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_revision_tasks WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_revision_plan_candidates WHERE project_id=?",(project_id,))
-                c.execute("UPDATE v2_projects SET revision_task_version=0 WHERE id=?",(project_id,))
-                c.execute("DELETE FROM v2_decisions WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_evidence WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_issues WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_retrieval_traces WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
-                c.execute("DELETE FROM v2_analysis_results WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_analysis_inputs WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_character_aliases WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_character_alias_state WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_run_claims WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
-                c.execute("DELETE FROM v2_run_events WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
-                c.execute("DELETE FROM v2_run_stages WHERE run_id IN (SELECT id FROM v2_runs WHERE project_id=?)",(project_id,))
-                c.execute("DELETE FROM v2_runs WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_draft_revisions WHERE draft_id IN (SELECT id FROM v2_drafts WHERE project_id=?)",(project_id,))
-                c.execute("DELETE FROM v2_drafts WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_records WHERE project_id=?",(project_id,))
-                c.execute("DELETE FROM v2_memory_versions WHERE project_id=?",(project_id,))
-                if project["data_origin"] in {"demo_seed", "tutorial_seed"}:
-                    c.execute("DELETE FROM v2_chapter_revision_history WHERE project_id=?",(project_id,))
-                    c.execute("DELETE FROM v2_chapter_content_formats WHERE chapter_id IN (SELECT id FROM v2_chapters WHERE project_id=?)",(project_id,))
-                    c.execute("DELETE FROM v2_characters WHERE project_id=?",(project_id,))
-                    c.execute("DELETE FROM v2_world_entries WHERE project_id=?",(project_id,))
-                    c.execute("DELETE FROM v2_outline_nodes WHERE project_id=?",(project_id,))
-                    c.execute("DELETE FROM v2_source_spans WHERE project_id=?",(project_id,))
-                    c.execute("DELETE FROM v2_chapters WHERE project_id=?",(project_id,))
-                    if project["seed_key"]=="grey_harbor":
-                        self._seed_grey_harbor(c,project_id); version=4
-                    else:
-                        self._seed_other(c,project_id,project["seed_key"]); version=1
-                elif project["data_origin"]=="user_import":
-                    # Import preserves confirmed chapters/spans but never reparses original text.
-                    c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,1,"current",None,utcnow()))
-                    number=c.execute("SELECT COALESCE(MAX(chapter_number),0)+1 FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0]
-                    self._draft(c,project_id,number); version=1
-                else:
-                    c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,1,"current",None,utcnow()))
-                    self._draft(c,project_id,1); version=1
-                c.execute("UPDATE v2_projects SET current_memory_version=?,author_context_version=0,alias_version=0,updated_at=? WHERE id=?",(version,utcnow(),project_id))
+                version,zero=self._reset_project_contents(c,project,stamp)
                 # A project reset invalidates replay records that reference
                 # deleted drafts/runs, but retains this reset's own replay.
                 c.execute("DELETE FROM v2_idempotency WHERE scope=? AND operation LIKE ? AND operation!=?",(user_id,"%"+project_id+"%","reset:"+project_id))
@@ -3897,11 +4120,13 @@ class V2Database:
         return chapters,strategy,warnings,audit
 
     def preview_import(self, user_id: str, filename: str, content: bytes, key: str):
-        if not filename.lower().endswith((".txt",".md")): raise DomainError("unsupported_format",415)
+        if not filename.lower().endswith((".txt",".md",".docx")): raise DomainError("unsupported_format",415)
         if not content: raise DomainError("empty_file",400)
         if len(content)>5*1024*1024: raise DomainError("import_too_large",413)
-        try: text=content.decode("utf-8")
-        except UnicodeDecodeError: raise DomainError("unsupported_encoding",415)
+        if filename.lower().endswith(".docx"): text=docx_to_markdown(content)
+        else:
+            try: text=content.decode("utf-8")
+            except UnicodeDecodeError: raise DomainError("unsupported_encoding",415)
         with self.connection() as c:
             payload={"filename":filename,"sha256":hashlib.sha256(content).hexdigest()}
             def preview() -> dict[str, Any]:

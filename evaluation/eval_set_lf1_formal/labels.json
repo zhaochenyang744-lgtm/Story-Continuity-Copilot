@@ -1,0 +1,1216 @@
+{
+  "format": "longform-eval/1",
+  "set_id": "lf1-formal",
+  "kind": "formal",
+  "language": "zh",
+  "authoring": {
+    "model": "Codex (GPT-6)",
+    "date": "2026-10-04",
+    "notes": "四部作品逐章原创；程序仅核对正文长度、引文、重复与冻结，不生成正文。"
+  },
+  "works": [
+    {
+      "key": "moss_cape",
+      "title": "苔岬站的慢刻度",
+      "file": "works/moss_cape.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "clay_theatre",
+      "title": "泥偶借春",
+      "file": "works/clay_theatre.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "canal_records",
+      "title": "石渠分水簿",
+      "file": "works/canal_records.md",
+      "origin": "original",
+      "source_note": null
+    },
+    {
+      "key": "orbital_orchard",
+      "title": "菜叶离开重力以后",
+      "file": "works/orbital_orchard.md",
+      "origin": "original",
+      "source_note": null
+    }
+  ],
+  "targets": [
+    {
+      "id": "lf1f-a-t03",
+      "work": "moss_cape",
+      "chapter": "第三章 听见的屋顶",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-a-i01",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "孟尺让一枚宽戒指越过右手无名指的第二节指关节，推到指根。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 箱子的底面",
+              "quote": "孟尺过来帮忙，手套的线头搭在箱钉上。脱下手套以后，他的右手露出来，右手无名指在小时候的锯木事故中被截去了。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "孟尺右手无名指已在童年被截去，本章却让戒指经过该指第二节关节并套到指根，动作要求该手指仍完整存在。"
+        },
+        {
+          "id": "lf1f-a-i02",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "许洵打开自己的工具卷，取出白环取样匙，将匙柄搭在两根手指之间试了试。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 箱子的底面",
+              "quote": "佟稷吃完迟来的午饭，提起第二天的取样船。他把装着白环取样匙的短木匣推到自己铺位的枕边，对许洵说：“你明天开工时用这个，舱口窄，长柄匙进去要磕边。”"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文写佟稷把取样匙留在自己的铺位并请许洵使用，尚未建立实际递交、领取或装入许洵工具卷的过程，本章将许洵已经持有写成定论，缺交接。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1f-a-t04",
+      "work": "moss_cape",
+      "chapter": "第四章 折起来的目录",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-a-i03",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "佟稷是许洵的亲哥哥，两人小时候轮流把同一只旧书包背去学校。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 岩坡上的细绳",
+              "quote": "佟稷和许洵是姨表兄弟，许洵的母亲比佟稷的母亲年长六岁。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "姨表兄弟分别是两位姐妹的孩子；本章改写成同母家庭里的亲哥哥，人物关系相互冲突。"
+        },
+        {
+          "id": "lf1f-a-i04",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "谈弥请季芮整理目录的委托，使她取得了处置寄样封存物的权限。她据此剪开两包待寄的封条，把瓶子按新的顺序重装，纸条上的站位朝向箱盖。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 箱子的底面",
+              "quote": "晚饭前季芮的平板亮了一下，是站务主管谈弥发来的消息，请她整理本月寄回大陆的藻样目录。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文委托的是整理目录。本章据此断定季芮获准处置已封存的寄样物，缺少扩大委托范围至开封和处置的授权环节。后续开封动作是这一断言的行动延续。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1f-a-t05",
+      "work": "moss_cape",
+      "chapter": "第五章 碎贝滩的三角",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-a-i05",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "上周许洵捞起青脊压力表时，表针仍能随着他的指尖拨动绕轴转圈。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 箱子的底面",
+              "quote": "下午他们拆下了青脊压力表。这只表上周落进清洗池，许洵将它捞出水面时，表针和轴座已经锈结，孟尺便卸掉玻璃，剪断表针，把零件分放进废金属盒。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一次上周落池后捞起的青脊压力表，前文表针和轴座锈结，本章表针却可绕轴转动；并非后来维修后的新状态。"
+        },
+        {
+          "id": "lf1f-a-i06",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "佟稷手里的潮线图是海岸测绘署颁行的定本，图中三角对应的正是测绘署设下的永久基点。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 岩坡上的细绳",
+              "quote": "晚间佟稷从渔具柜里拿出一张折过的潮线图，说是一名顺船来借扳手的旅客给他的。图上的浅湾被涂成褐色，几处礁石旁边有细小的三角，佟稷把它压在饭盒下，准备周末沿岸看看。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文确立旅客赠图及图上三角等外观，未建立官方制图或基点标识的出处核验。本章直接判定为测绘署定本，缺来源认证；三角用途为同一出处断言的附带说明。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1f-a-p01",
+          "kind": "state_change",
+          "quotes": [
+            "孟尺塞进一张完整的运单，打印机把两侧的小字一并印到了纸上。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 折起来的目录",
+              "quote": "午饭后打印机终于肯吃整页纸，季芮却继续把目录折成两半，说折过以后能立在瓶箱的缝里。"
+            }
+          ],
+          "explanation": "打印机起初只能进窄纸，第四章已清理滚筒并恢复整页进纸，本章完整印出运单符合修复后的状态。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-a-t06",
+      "work": "moss_cape",
+      "chapter": "第六章 吸音板的一面",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-a-i07",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "在许洵去年到达苔岬站两个月以后，妹妹许汀才穿上婚纱在枣树下办了喜宴。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 岩坡上的细绳",
+              "quote": "许洵去年十月才抵达苔岬站，那时他的妹妹许汀已经在五月办完了婚礼。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "妹妹婚礼在去年五月，许洵十月到站；本章把同一婚礼改成到站两个月之后，颠倒前后顺序并改变时间。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1f-a-p02",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "季芮的刀柄底端藏着一枚圆形的小磁铁，收工时可以把掉在桌脚附近的钉子吸回来。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 箱子的底面",
+              "quote": "季芮把册子移到窗边，压在裁毡板下，免得风从门缝里进来把纸卷走。她正在做一批新的仪器套，缝线被盐吃过以后就容易断，旧套子常常看起来完好，一提却散了。"
+            }
+          ],
+          "explanation": "季芮一直裁毡和制作仪器套；此处增加工具刀柄带磁铁的细节，前文未限定刀柄结构，与已有活动和人物身份相容。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-a-t07",
+      "work": "moss_cape",
+      "chapter": "第七章 盐袋里的小岛",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-a-i08",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "七月十九日二十一时，佟稷坐在南湾礁顶，把钓到的鱼逐条放进脚边的竹篓。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 岩坡上的细绳",
+              "quote": "七月十九日二十一时，佟稷在苔岬站东侧的冰库盘点鲜鱼，孟尺和他一起逐箱称重。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "明确同一时刻，佟稷在站内冰库与孟尺称鱼，本章却在南湾礁顶钓鱼装篓，地点和动作冲突。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1f-a-t08",
+      "work": "moss_cape",
+      "chapter": "第八章 暖柜旁边",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-a-i09",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "季芮把铜汞温压计搁到烘衣柜的网架上，转动柜门边的温控旋钮，让暖风吹过仪器的铜壳。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 箱子的底面",
+              "quote": "操作册的第一页写着：任何情况下都不得把铜汞温压计放入烘衣柜。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "timeless_rule",
+            "anchor": "任何情况下都不得"
+          },
+          "explanation": "永久规则禁止铜汞温压计进入烘衣柜；本章季芮实际将其置于柜内网架并开启暖风，违反该禁止，没有规则例外。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1f-a-t09",
+      "work": "moss_cape",
+      "chapter": "第九章 来人要喝温水",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1f-a-p03",
+          "kind": "reported_belief",
+          "quotes": [
+            "就说：“你就是谈弥吧，我一直以为主管会先问我登记表。”"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 箱子的底面",
+              "quote": "晚饭前季芮的平板亮了一下，是站务主管谈弥发来的消息，请她整理本月寄回大陆的藻样目录。"
+            }
+          ],
+          "explanation": "林尚刚到站，把季芮错认成谈弥，是角色说出的误认；同段季芮递给他自己的名字纠正，叙述并未将两人当作同一人。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-a-t10",
+      "work": "moss_cape",
+      "chapter": "第十章 灯下的木签",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1f-a-p04",
+          "kind": "rule_exception",
+          "quotes": [
+            "孟尺趁夜拆下冒烟灯泡外的照明罩，把烫热的固定圈放进空铁盘。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 岩坡上的细绳",
+              "quote": "照明罩的日常拆装安排在白班；遇到照明灯具冒烟，值守者可以在夜间卸罩断电。"
+            }
+          ],
+          "explanation": "前文对冒烟故障明确允许夜间卸罩断电；本章灯罩内冒烟并已切断支路，孟尺拆罩符合例外，不与白班日常拆装安排冲突。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-b-t03",
+      "work": "clay_theatre",
+      "chapter": "第三章 借来的凳子有主意",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-b-i-attribute",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "蔺芽看了一眼竹盘里的红绿颜色，认出红色那团，抽出来绕上木梭。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 一脸泥巴的县令",
+              "quote": "蔺芽天生分不清红和绿，母亲便教她在红线头绑蝉壳，在绿线头绑蚕茧。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "蔺芽有先天的红绿辨色障碍；此处叙述她看盘里两团红绿颜色便认出红线，是视觉辨色动作，和既定人物属性冲突。"
+        },
+        {
+          "id": "lf1f-b-i-measurement",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "measurement",
+          "issue_quotes": [
+            "上次钟满生留下的实测结果表明青柄棚净高七尺，蔺芽指着相应的一格，让尤荞先填这一项。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 一脸泥巴的县令",
+              "quote": "钟满生站在青柄棚门口，抬手比了比横梁，说凭眼看大约离地七尺。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文仅叙述钟满生目测横梁高度，未确立实际量尺或核对结果；本章将上次的估量升级成实测数据，缺测量环节。"
+        },
+        {
+          "id": "lf1f-b-i-outcome",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "outcome",
+          "issue_quotes": [
+            "鸦背儿昨天那次修补彻底治好了裂口，她把这笔成果也写进钟满生的工钱账，顺手给他加了一个茶钱。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 锣还没响，饭先凉了",
+              "quote": "钟满生用稠米浆拌细泥，填进鸦背儿头上的裂口，又拿两片竹篾夹着它晾在檐下。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文描述填缝及晾置的操作，未叙述干燥后的检查或修复结果；本章把同次操作的彻底成功作为工钱依据，缺结果确认。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1f-b-tr-belief",
+          "kind": "reported_belief",
+          "quotes": [
+            "泥县令冲着台下夸口：“俺管着三个县，连风刮哪边都得来盖印！”"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 一脸泥巴的县令",
+              "quote": "这个戏里，泥县令见谁都要讲自己掌管三县，禾姑只管问他借一把晾谷的竹耙。"
+            }
+          ],
+          "explanation": "这是戏中泥县令的夸口台词，前文已明确其角色习惯；并非叙述将熊二澄或村里任何人定为辖三县的官员。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-b-t04",
+      "work": "clay_theatre",
+      "chapter": "第四章 茶摊后面的半堂课",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-b-i-event",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "尤荞翻箱找桌布，把今年归田会斗戏赢来的彩绸展开，铺在给先生写字的桌上。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 锣还没响，饭先凉了",
+              "quote": "尤荞接过去，念给大家听：今年归田会的斗戏取消了，原定那块场地改作蔬菜集市。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文明确今年归田会斗戏已取消；本章将彩绸作为该届斗戏获胜所得，要求已经举行并产生胜者，和事件状态相冲突。"
+        },
+        {
+          "id": "lf1f-b-i-knowledge",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "罗烛刚来戏班吃落鼓饭时，一见那个谷叶冠，便叫出了禾姑的名字。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 锣还没响，饭先凉了",
+              "quote": "罗烛来学敲锣的第一天，还不知道《晒谷仙》压轴的那个角色名叫禾姑。吃落鼓饭时，他指着戴谷叶冠的偶人问名字，熊二澄夹着一根豆角替它作揖，蔺芽笑得把汤洒到了自己的鞋上。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "两处对应初来戏班的同一顿落鼓饭。前文罗烛不知道角色名并询问，本章却说他一见谷叶冠就准确叫出禾姑；并非后来学会名字后的行动。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1f-b-tr-detail",
+          "kind": "compatible_new_detail",
+          "quotes": [
+            "她摸到蝉壳后，将那束红线绕到左边的小轴，带蚕茧的绿线则另放一格。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 一脸泥巴的县令",
+              "quote": "蔺芽天生分不清红和绿，母亲便教她在红线头绑蝉壳，在绿线头绑蚕茧。"
+            }
+          ],
+          "explanation": "蔺芽依靠两种线头的触觉记号归置红绿线；左右放线的新细节兼容既有辨色障碍，没有声称凭颜色识别。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-b-t05",
+      "work": "clay_theatre",
+      "chapter": "第五章 把请帖装进瓜篮",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-b-i-timeline",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "那张油纸订亲帖交到袁迎笛手里以后，钟满生才头一回住进窑棚。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 一脸泥巴的县令",
+              "quote": "钟满生是在住进窑棚后的第四天，才和袁迎笛交换了油纸订亲帖。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文顺序是钟满生先住进窑棚，四天后交换订亲帖；本章回溯同一张帖子却写交换在先、初住窑棚在后，颠倒既定先后。"
+        },
+        {
+          "id": "lf1f-b-i-witness",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "witness",
+          "issue_quotes": [
+            "尤荞按自己在芦笼边亲眼瞧见的样子，把那条偷糖糕的卷尾黑狗画在大纸上。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 锣还没响，饭先凉了",
+              "quote": "尤荞听韩婆说，前夜有条卷尾黑狗叼走了她放在芦笼上的糖糕。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文确立的是尤荞听韩婆转述黑狗偷糕。本章把同一件事写成尤荞在芦笼边亲眼看到，缺亲见环节；前文未给尤荞安排互斥地点，因此不是时间地点矛盾。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1f-b-t06",
+      "work": "clay_theatre",
+      "chapter": "第六章 后台开了一朵茶花",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-b-i-location",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "六月初九酉初钟响的那一刻，熊二澄坐在青柄棚后间给泥县令缝袍边，针脚一路绕过了那块荷叶般的补片。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 锣还没响，饭先凉了",
+              "quote": "六月初九酉初钟响的那一刻，熊二澄在沟东磨坊替韩婆推磨，手边的两只黄布口袋装着新磨的豆粉。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "六月初九酉初钟响的那一刻"
+          },
+          "explanation": "共同时间明确到酉初钟响这一瞬间；前文熊二澄在沟东磨坊推磨，本章同时在青柄棚后间缝袍，两处地点及行动互斥，不能用酉时内先后移动解释。"
+        },
+        {
+          "id": "lf1f-b-i-rule",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "为看清茶花的影子，熊二澄在青柄棚演台的纸花旁点起一盏油灯，让亮着的灯芯贴近花架。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 一脸泥巴的县令",
+              "quote": "青柄棚的演台无论排练还是开演，任何情况下都不得使用明火。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "既定公约对青柄棚演台上的明火作无例外禁令，涵盖排练。本章熊二澄在该演台点燃油灯并让灯芯照花，直接违反规则。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1f-b-t07",
+      "work": "clay_theatre",
+      "chapter": "第七章 县令坐在牛车上",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1f-b-tr-change",
+          "kind": "state_change",
+          "quotes": [
+            "晨风吹过戚桐新剪的短发，她把耳边的碎发抿进去，不必再用手往背后收拢长辫。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第六章 后台开了一朵茶花",
+              "quote": "袁迎笛把戚桐的长辫齐根剪下，又修掉两侧散发，最后给她留了耳下齐齐的一圈短发。"
+            }
+          ],
+          "explanation": "此前曾有腰长辫子的戚桐已经在上一章剪发，出门时的短发有完整变化过程，人物外貌没有矛盾。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-b-t08",
+      "work": "clay_theatre",
+      "chapter": "第八章 一碗茶也有去处",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1f-b-tr-name",
+          "kind": "similar_name",
+          "quotes": [
+            "戚童把伞架支在铺外，收妥两个买客的伞钱后，才进来找妹妹戚桐借纸胶。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 一脸泥巴的县令",
+              "quote": "村里卖伞的戚童从后墙探头，叫妹妹戚桐替他找纸胶。戚桐在戏班学上色，蹲在瓦堆旁正用竹签刮泥。"
+            }
+          ],
+          "explanation": "卖伞的戚童是戏班上色学徒戚桐的哥哥，两个近似名字对应不同人；哥哥收伞钱、妹妹修谷叶冠与前文身份吻合。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-c-t03",
+      "work": "canal_records",
+      "chapter": "第三章 芦沟里的三道影",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-c-i01",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "她便把鹿角陶印按在落款上，纸角显出完整的鹿身和两枝短角。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盐泥和鞋印",
+              "quote": "她急忙护住翻起的账纸，鹿角陶印从指间滑落，在石面上摔成三瓣。"
+            },
+            {
+              "chapter": "第二章 盐泥和鞋印",
+              "quote": "回来经过烧石灰的窑口，倪含章把掌中的两瓣陶片投进热灰，窑工递来一条湿布，她接过来擦净手上的细粉。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "父亲所留鹿角陶印已摔成三瓣，一瓣落水，另两瓣投入热灰；此处又以同一印盖出完整鹿身与双角，与已经确立的物件状态冲突。"
+        },
+        {
+          "id": "lf1f-c-i02",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "岑缄扫过鸢脚刻符，指着相交的短线说，这是让下游在第三更接水的记号。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盐泥和鞋印",
+              "quote": "九井堰匠人的鸢脚刻符，岑缄从来不懂其中含义；他平常辨水位用的是筹上的深浅刻线。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前章明确岑缄不懂九井堰的鸢脚刻符，熟悉的是另一套水位筹线；本章在学习或传授发生前直接解出刻符所示的接水时刻，违反其知识状态。"
+        },
+        {
+          "id": "lf1f-c-i03",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "identity",
+          "issue_quotes": [
+            "她凭那顶朱漆斗笠，认定昨夜的渡客就是陆蒲生，并在送状人的名册上填了他的全名。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盐泥和鞋印",
+              "quote": "一个戴朱漆斗笠的渡客走下船，把包在蒲叶里的门条交给撑篙人，说转送到水会西厢，自己便沿石阶去了盐货行。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "此前只叙述渡客的帽子、递门条及去向；朱漆斗笠不是唯一身份标识，缺少将该渡客确认为陆蒲生的身份环节，却已用其全名登记。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1f-c-r01",
+          "kind": "state_change",
+          "quotes": [
+            "换过套环的独轮车载着四只沙袋穿过院子，轮沿一路压下整齐的湿痕。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盐泥和鞋印",
+              "quote": "前几日坏的是车轴上的套环，他照着木匠教的法子换了新环，又在轴孔里擦了猪油。"
+            }
+          ],
+          "explanation": "独轮车先前损坏的套环已被换新并上油，还经闵仲禾压袋试推；恢复载物是前文写明修理后的状态变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-c-t04",
+      "work": "canal_records",
+      "chapter": "第四章 六只粗陶碗",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-c-i04",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "母亲当年生下陶令穗与闵仲禾这对姐弟，家里的田还只有如今一半，她记得母亲总把好穿的旧衣先改给弟弟。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 槐影落在账页上",
+              "quote": "闵仲禾是陶令穗的表弟，两家的母亲是姐妹。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文两人的母亲为姐妹，两人是表姐弟；这里把两人写成同一个母亲所生的一对姐弟，改变了已经确立的亲属关系。"
+        },
+        {
+          "id": "lf1f-c-i05",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "causation",
+          "issue_quotes": [
+            "她把试沟后来水清螺少的变化归于闵仲禾撒下的苇灰，写进防害条目，列为来年各村照行的办法。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盐泥和鞋印",
+              "quote": "午后，闵仲禾把一把苇灰撒进试沟，说灰细，容易看出水往哪里拐。"
+            },
+            {
+              "chapter": "第二章 盐泥和鞋印",
+              "quote": "傍晚众人收橛回来，倪含章见试沟水色比午间清了，石边原来聚着的螺也少了，便把两样变化记在勘田页上。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文记录的是撒灰与后来水清、螺少两项先后观察，撒灰本为观察流向；尚未建立苇灰造成这些变化的因果关系，却作为普遍防害办法登记推广。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1f-c-r02",
+          "kind": "similar_name",
+          "quotes": [
+            "倪含章跟着出去透气，看见东埝桥上有四个挑盐的脚夫，扁担在斜阳里一上一下，步子走得安稳。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盐泥和鞋印",
+              "quote": "东碾桥在上旬被冲断了，一截桥梁横在浅滩里，像伏着的枯牛；下游的东埝桥仍牢固，挑夫挑盐袋从它上面走过。"
+            }
+          ],
+          "explanation": "冲断的是东碾桥，此处通行的是下游仍牢固的东埝桥；桥名近似，但为两座不同的桥。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-c-t05",
+      "work": "canal_records",
+      "chapter": "第五章 谁家的柳根",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-c-i06",
+          "class": "conflict",
+          "category": "timeline",
+          "missing_link": null,
+          "issue_quotes": [
+            "读罢父亲的丧信，倪含章便收拾行李赶往槐汀埠，岑缄是在那以后结识的。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 槐影落在账页上",
+              "quote": "九月十三，岑缄在杂货铺门前迎住她，替她把书箱搬进水会的西厢，还从自家抱来一床荞壳褥子。九月十六，父亲的丧信才送到她手里。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文倪含章九月十三已抵槐汀埠并与岑缄相识，九月十六才收到丧信；此处把丧信放在启程和结识岑缄之前，颠倒了已明确的先后顺序。"
+        },
+        {
+          "id": "lf1f-c-i07",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "今年秋分赴槐汀分水会时，陶令穗在祠前众人的注视下抽得了这枚头签。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盐泥和鞋印",
+              "quote": "告示说今年的槐汀分水会停办了，本应在秋分敲响的会鼓留在东厢，各户田额由里正逐家送达。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "今年秋分的槐汀分水会已经停办，并改为逐家送达田额；本句却叙述陶令穗赴该会并公开抽得头签，将未举行的事件写成已举行。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1f-c-t06",
+      "work": "canal_records",
+      "chapter": "第六章 水退后的鞋",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-c-i08",
+          "class": "conflict",
+          "category": "world_rule",
+          "missing_link": null,
+          "issue_quotes": [
+            "岑缄将沉沙井的底闸吊起半尺，用长钩探向井底，把绞在铁栓上的草团拨开。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 槐影落在账页上",
+              "quote": "槐汀水约规定，无论遇上旱涝还是祭祀，任何人都不得开启沉沙井底闸。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "水约对沉沙井底闸是任何人、旱涝与祭祀情况下均不得开启的禁令；岑缄吊起该闸半尺清草，不符合世界中已确立的无例外规则。"
+        },
+        {
+          "id": "lf1f-c-i09",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "subsequent_state",
+          "issue_quotes": [
+            "她依着陶令穗初七画下的田图，在今日的呈单上定下磨盘田试种稻安然度过漫堤、月底仍可收割的结论。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 盐泥和鞋印",
+              "quote": "九月初七，磨盘田里那小块试种的稻已经抽穗，陶令穗摸过穗梗，觉得硬实，便在图边画了三颗谷粒。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "田图记录的是九月初七稻已抽穗、穗梗硬实的状态；本章十月大潮之后，却仅依旧图确认其安然度灾并可按期收割，缺少漫堤后植株状态这一环。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1f-c-t07",
+      "work": "canal_records",
+      "chapter": "第七章 绳结里的一点灯",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1f-c-r03",
+          "kind": "rule_exception",
+          "quotes": [
+            "船户周芥带来两捆救生绳，由堤长桑有年领进了夜里的堤仓。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 槐影落在账页上",
+              "quote": "夜间进堤仓须凭县帖，但运送救生绳的船户可由堤长领入。"
+            }
+          ],
+          "explanation": "夜间堤仓准入规则本身允许运送救生绳的船户由堤长领入；周芥的物资及领入者均满足此项明确例外。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-c-t08",
+      "work": "canal_records",
+      "chapter": "第八章 新斗照见旧碗",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1f-c-r04",
+          "kind": "reported_belief",
+          "quotes": [
+            "丁柏在茶摊向同桌的人吹嘘：“沉沙井已是倪含章的私产，往后喝水也要给她数铜钱。”"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 槐影落在账页上",
+              "quote": "那口井在石渠分岔处，青砖砌得深，六村合资修成，井身和进水的短渠都属于六村公用。"
+            }
+          ],
+          "explanation": "井为六村公产；本句明确是在转述丁柏的吹嘘，旁人并未接受、叙述也未把私产说法确认为事实，应识别为人物不实言论。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-d-t03",
+      "work": "orbital_orchard",
+      "chapter": "第三章 一箱种子的行政旅行",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-d-i03a",
+          "class": "conflict",
+          "category": "relationship",
+          "missing_link": null,
+          "issue_quotes": [
+            "身为容弦的亲哥哥，乌简总觉得她提着计算器比抱着货箱更辛苦，便把她手里的登记板也接过来。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 预算可以吃吗",
+              "quote": "容弦是乌简的姑母，两人来自地面上的桑岬城，家里的亲戚常把采购清单寄给他们当家书。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文确立容弦与乌简为姑侄，此处把乌简叙述为容弦的亲哥哥，亲属关系相冲突。"
+        },
+        {
+          "id": "lf1f-d-i03b",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "handoff",
+          "issue_quotes": [
+            "聂藻从贴身收纳袋里拿出邱颉托给她的砧蓝种盒，放在容弦的软垫上。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 预算可以吃吗",
+              "quote": "容弦请他去南栈替自己取砧蓝种盒，嘱咐包装外的保温棉也一并带回来，棉还能做抽屉衬垫。邱颉把这件事记进腕屏，随即被一段管路告警叫走。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文是容弦安排邱颉取种盒、邱颉记下任务，尚未确立他取回后将种盒托给聂藻的交接。此处将那次交接当成既成事实。"
+        },
+        {
+          "id": "lf1f-d-i03c",
+          "class": "conflict",
+          "category": "character_knowledge",
+          "missing_link": null,
+          "issue_quotes": [
+            "聂藻凭自己入站前便背熟的菱舱暗码，直接在门盘上敲下一串数字。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把菜根拴好",
+              "quote": "入站第一天的聂藻还不知道菱舱的开门码，便在门边等邱颉输入数字。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文说聂藻入站第一天仍不知道菱舱开门码，此处把掌握密码追溯至入站前，知识获得的先后相矛盾。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1f-d-t04",
+      "work": "orbital_orchard",
+      "chapter": "第四章 借来的太阳",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-d-i04a",
+          "class": "conflict",
+          "category": "object_state",
+          "missing_link": null,
+          "issue_quotes": [
+            "她从工具抽屉取出那枚曾照过首批番茄的青栉灯芯，接入夹座，那只绿色光管照亮了她的账页。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把菜根拴好",
+              "quote": "青栉灯芯的石英管已经裂开，容弦把它投入热解炉，淡绿的细丝和透明管壁一起熔进赤亮的料池。"
+            },
+            {
+              "chapter": "第一章 把菜根拴好",
+              "quote": "“这只原来照过什么？”聂藻问。容弦说，第一批番茄。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "青栉灯芯已在前文连同管壁熔入料池，且前文交代它照过第一批番茄。此处由使用来历确认同一旧灯芯，却从抽屉取出并点亮，物件状态冲突。"
+        },
+        {
+          "id": "lf1f-d-i04b",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "authorization",
+          "issue_quotes": [
+            "乌简凭容弦给他的最终审批权，当场批准送料路线改走北侧生活廊。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 预算可以吃吗",
+              "quote": "容弦请乌简把送料线路改造的想法整理出来，拿去给下一次班组会讨论。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "安排乌简整理方案并提交班组讨论，不能确立容弦把最终审批权交给了他。此处所依赖的授权缺乏前文依据。"
+        }
+      ],
+      "traps": [
+        {
+          "id": "lf1f-d-r04",
+          "kind": "state_change",
+          "quotes": [
+            "闵泷把新修好的翼片伞固定在中圈扶手上，第三片铝翼完整地张着，把侧灯的亮处送到苗床。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 一箱种子的行政旅行",
+              "quote": "闵泷把第三片拆下来，用储物箱的薄铝盖重新剪出一片，再换好转轴和拉线。"
+            }
+          ],
+          "explanation": "第二章的伞翼破裂已在第三章经过更换修理，此处正常使用完整的铝翼符合已叙述的状态变化。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-d-t05",
+      "work": "orbital_orchard",
+      "chapter": "第五章 一勺藻渣的远见",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-d-i05a",
+          "class": "conflict",
+          "category": "attribute",
+          "missing_link": null,
+          "issue_quotes": [
+            "聂藻蹲到袋口前吸了一口气，凭那股酸甜气味认出深色藻渣已经发酵过头。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第一章 把菜根拴好",
+              "quote": "聂藻先天没有嗅觉，辨认肥液只能看标签和颜色，因此把瓶盖的凸纹也记在了笔记里。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "聂藻先天没有嗅觉，此处直接凭闻到的酸甜气味判断藻渣发酵状态，与已确立的感官属性相冲突。"
+        },
+        {
+          "id": "lf1f-d-i05b",
+          "class": "insufficient_evidence",
+          "category": null,
+          "missing_link": "provenance",
+          "issue_quotes": [
+            "容弦用的是地面苗源署正式试验规程中的海榫配方，把地面小槽用量换算了一遍。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 预算可以吃吗",
+              "quote": "饭后，乌简把班车广播里听来的海榫配方念给容弦，内容是一种用海藻残渣补充钾的办法。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "前文海榫配方经班车广播由乌简转述，未确立其来源为地面苗源署正式试验规程。此处将特定权威出处当成定论。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1f-d-t06",
+      "work": "orbital_orchard",
+      "chapter": "第六章 一克的权利",
+      "smoke": false,
+      "items": [
+        {
+          "id": "lf1f-d-i06a",
+          "class": "conflict",
+          "category": "event_status",
+          "missing_link": null,
+          "issue_quotes": [
+            "她在本季跃芽赛的决赛中取得最高分，颁奖时还拿这个挂框装过奖状。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 预算可以吃吗",
+              "quote": "本季跃芽赛因为燃料配额缩减，被站长取消了。原本准备参加的人将演示用的盆架退回器材柜，邱颉把自己养的参赛苋菜端进食堂，说冠军现在接受油盐考验。"
+            }
+          ],
+          "designated_regression": false,
+          "designated_basis": null,
+          "explanation": "同一季跃芽赛已取消且参赛准备已撤回，此处叙述容弦实际参加决赛并获颁奖状，赛事发生状态冲突。"
+        },
+        {
+          "id": "lf1f-d-i06b",
+          "class": "conflict",
+          "category": "location_action",
+          "missing_link": null,
+          "issue_quotes": [
+            "站历五月十六日十四时，闵泷坐在西缘餐厅的长桌前，教新厨工把同类胶涂在餐盘垫的边缘。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第四章 借来的太阳",
+              "quote": "站历五月十六日十四时，闵泷在东轴升降井更换制动线圈，聂藻通过作业通话听她逐项核报拆下的零件。"
+            }
+          ],
+          "designated_regression": true,
+          "designated_basis": {
+            "type": "shared_time",
+            "anchor": "站历五月十六日十四时"
+          },
+          "explanation": "共同明确时间为站历五月十六日十四时，前文闵泷在东轴升降井维修，此处她在西缘餐厅教厨工制作垫子，地点与动作相冲突。"
+        }
+      ],
+      "traps": []
+    },
+    {
+      "id": "lf1f-d-t07",
+      "work": "orbital_orchard",
+      "chapter": "第七章 门开的时候",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1f-d-r07a",
+          "kind": "rule_exception",
+          "quotes": [
+            "到了禾隔舱外，值班护士启动橙色旁路，乌简推着伤员从敞开的门进入。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 预算可以吃吗",
+              "quote": "禾隔舱平日凭防疫牌进入；医疗急救时，可以由当班医护启用橙色旁路，让搬运人员进出。"
+            }
+          ],
+          "explanation": "伤员正需眼部急救，橙色旁路由值班护士启用，乌简搬运伤员进门符合规则中已经明示的医疗例外。"
+        },
+        {
+          "id": "lf1f-d-r07b",
+          "kind": "similar_name",
+          "quotes": [
+            "邱颉正守着调液台，藤琪的桨片在透明桶里拌开营养胶，他每隔一会儿就调整一次转速。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第二章 预算可以吃吗",
+              "quote": "名叫藤七的是送餐用的低矮轮车，藤琪则固定在调液台上，靠搅拌桨工作。"
+            }
+          ],
+          "explanation": "藤琪是调液设备，藤七才是送餐轮车。相近名称指不同设备，藤琪使用桨片搅拌符合前文属性。"
+        }
+      ]
+    },
+    {
+      "id": "lf1f-d-t08",
+      "work": "orbital_orchard",
+      "chapter": "第八章 给叶子一个观众",
+      "smoke": false,
+      "items": [],
+      "traps": [
+        {
+          "id": "lf1f-d-r08",
+          "kind": "reported_belief",
+          "quotes": [
+            "“月球来的土一浇水，根能蹿到平常的三倍。”乌简对参观员说，嘴角藏着笑。"
+          ],
+          "evidence": [
+            {
+              "chapter": "第三章 一箱种子的行政旅行",
+              "quote": "他告诉聂藻，月球土能让根在一夜间长出三倍长度，这是他准备拿来骗新来的参观员的台词。"
+            }
+          ],
+          "explanation": "前文明确这是乌简为逗骗参观员准备的说辞，当前是他的发言，随后的承认也说明叙述未把它当成植物事实。"
+        }
+      ]
+    }
+  ],
+  "selections": [
+    {
+      "id": "lf1f-s01",
+      "work": "moss_cape",
+      "chapters": [
+        "第三章 听见的屋顶",
+        "第四章 折起来的目录",
+        "第五章 碎贝滩的三角",
+        "第六章 吸音板的一面",
+        "第七章 盐袋里的小岛"
+      ]
+    },
+    {
+      "id": "lf1f-s02",
+      "work": "clay_theatre",
+      "chapters": [
+        "第三章 借来的凳子有主意",
+        "第四章 茶摊后面的半堂课",
+        "第五章 把请帖装进瓜篮",
+        "第六章 后台开了一朵茶花",
+        "第七章 县令坐在牛车上"
+      ]
+    },
+    {
+      "id": "lf1f-s03",
+      "work": "moss_cape",
+      "chapters": [
+        "第三章 听见的屋顶",
+        "第四章 折起来的目录",
+        "第五章 碎贝滩的三角",
+        "第六章 吸音板的一面",
+        "第七章 盐袋里的小岛",
+        "第八章 暖柜旁边",
+        "第九章 来人要喝温水",
+        "第十章 灯下的木签"
+      ]
+    }
+  ],
+  "subsets": {}
+}

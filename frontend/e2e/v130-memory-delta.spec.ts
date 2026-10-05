@@ -111,8 +111,7 @@ test("desktop reviews new changed and invalidated facts and preserves choices ac
   await page.unroute(/\/api\/projects\/[^/]+\/memory\/deltas\/[^/]+\/commit$/);
   await review.getByRole("button", { name: "确认提交并更新事实库" }).click();
   const audit = page.getByLabel("增量来源覆盖审计");
-  await expect(audit).toContainText("已保存变更记录");
-  await expect(audit).toContainText("事实库第 1 版 → 第 2 版");
+  await expect(audit).toContainText("已保存更新记录");
   await expect(page.getByRole("cell", { name: /编辑后抵达北堤/ })).toBeVisible();
   await expect(page.getByRole("cell", { name: "已失效", exact: true })).toBeVisible();
   const stats = await (await page.request.get("/api/test/stage12/stats")).json();

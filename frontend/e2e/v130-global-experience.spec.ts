@@ -144,9 +144,9 @@ test("overview hierarchy expands and centers at wide sizes while remaining reada
   await expect(page.locator(".overview-primary-card")).toHaveCount(2);
   await expect(page.locator(".overview-reference-card")).toHaveCount(3);
   await expect(page.locator(".latest-run-card")).toHaveCount(1);
-  await expect(page.locator(".current-draft-panel")).toContainText("0 个章节");
+  await expect(page.locator(".current-draft-panel")).toContainText("已写 0 章");
   await expect(page.locator(".current-draft-panel .draft-progress")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "打开当前草稿", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "管理章节", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "查看事实库", exact: true })).toBeVisible();
   await screenshot(page, "global-03-overview-1440.png");
 

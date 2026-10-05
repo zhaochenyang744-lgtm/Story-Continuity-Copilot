@@ -98,7 +98,7 @@ class Stage11LFailureObservabilityTests(unittest.TestCase):
         root=pathlib.Path(tempfile.mkdtemp(prefix="scc-11l-v6-runner-"))/"isolated"
         result=formal_run("# 第一章\n基准人物已建立基准。",root,Provider())
         self.assertEqual((result["status"],result["source_revisions"],result["memory_versions"],result["pending_canon_count"]),("completed_pending_independent_gate",[1,2,3],[1,2,3],0))
-        self.assertTrue(all(row["retrieval_method_versions"]=={"continuity":"bounded-lexical-v4-longform","memory_delta":"bounded-lexical-v4-longform"} and row["retrieval_trace_count"]>=1 for row in result["incremental_rounds"]))
+        self.assertTrue(all(row["retrieval_method_versions"]=={"continuity":"passage-v1-bm25-entity-facts","memory_delta":"bounded-lexical-v4-longform"} and row["retrieval_trace_count"]>=1 for row in result["incremental_rounds"]))
 
     def test_v6_formal_runner_rejects_non_pro_before_provider_call(self):
         class Provider:

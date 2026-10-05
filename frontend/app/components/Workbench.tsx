@@ -76,6 +76,11 @@ let sessionBootstrap: Promise<User | null> | null = null;
 let rememberedGlobalNavCollapsed: boolean | undefined;
 const globalNavStorageKey = "story-continuity:global-nav-collapsed";
 const experienceSimulation = process.env.NEXT_PUBLIC_EXPERIENCE_SIMULATION === "1";
+// A long import yields hundreds of initialization candidates. Above this many, the review groups
+// them by chapter range, lets the author decide a whole group at once, and submits in batches.
+const BULK_REVIEW_THRESHOLD = 12;
+const BULK_DECISION_BATCH = 200;
+const REVIEW_GROUP_CHAPTERS = 10;
 const publicAuthPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm", "/verify-email"];
 const isPublicAuthPath = (value: string) => publicAuthPaths.includes(value);
 
@@ -218,6 +223,7 @@ const tabs = [
   ["world", "世界观"],
   ["memory", "事实库"],
   ["workspace", "写作与检查"],
+  ["sources", "章节管理"],
 ] as const;
 const stage = (s: string): string =>
   (
@@ -252,9 +258,9 @@ const timestampLabel = (value?: string | null) => value ? new Date(value).toLoca
 const statusLabel = (s?: string): string =>
   (
     ({
-      high: "高风险",
-      medium: "中风险",
-      low: "低风险",
+      high: "高影响",
+      medium: "中等影响",
+      low: "低影响",
       active: "进行中",
       archived: "已归档",
       paused: "已暂停",
@@ -283,7 +289,7 @@ const reviewStatusLabel = (value: string) =>
 const evidenceStatusLabel = (value: string) =>
   ({ sufficient: "证据充分", insufficient: "证据不足", unavailable: "证据不可用" })[value] ?? "证据状态未知";
 const coverageStatusLabel = (value?: string) =>
-  ({ required: "待初始化", in_review: "审核中", ready_partial: "部分就绪", ready_current: "当前版本就绪", update_pending: "待审核更新", covered_with_memory_change: "已全部覆盖，事实库已更新", covered_without_memory_change: "已全部覆盖，事实库未变" } as Record<string, string>)[value ?? ""] ?? "尚未提供";
+  ({ required: "事实库尚未建立", in_review: "有事实等你确认", ready_partial: "可以检查（部分事实待补）", ready_current: "可以检查", update_pending: "有事实更新等你确认", covered_with_memory_change: "已全部确认，事实库已更新", covered_without_memory_change: "已全部确认，事实库没有变化" } as Record<string, string>)[value ?? ""] ?? "尚未提供";
 const memoryDeltaStatusLabel = (value?: string) =>
   ({ queued: "排队中", running: "检查中", in_review: "待审阅", covered: "已完成", cancelled: "已取消", failed: "检查失败", timed_out: "已超时" } as Record<string, string>)[value ?? ""] ?? "处理中";
 const categoryLabel = (value: string) =>
@@ -763,12 +769,52 @@ function TutorialCompleteVisual() {
     />
   );
 }
-function MoreMenu({ children }: { children: ReactNode }) {
+type CheckUsage =
+  | { account_type: "registered"; check_chars_limit: number; check_chars_used: number; check_chars_remaining: number; imports_limit: number; imports_remaining: number }
+  | { account_type: "visitor"; check_chars_per_check: number; checks_limit: number; checks_remaining: number };
+const writtenChars = (text: string) => text.replace(/\s+/g, "").length;
+
+/** What this check will spend and what is left today, shown before the author starts a check. */
+function CheckAllowance({ draftChars, refreshKey }: { draftChars: number; refreshKey: string }) {
+  const [usage, setUsage] = useState<CheckUsage | null>(null);
+  useEffect(() => {
+    let live = true;
+    request<CheckUsage>("/account/usage").then((next) => { if (live) setUsage(next); }).catch(() => { if (live) setUsage(null); });
+    return () => { live = false; };
+  }, [refreshKey]);
+  if (!usage) return null;
+  if (usage.account_type === "visitor") {
+    const tooLong = draftChars > usage.check_chars_per_check;
+    return <p className={`check-allowance${tooLong ? " over" : ""}`} role="note">本次约 {draftChars.toLocaleString()} 字 · 访客每次最多 {usage.check_chars_per_check.toLocaleString()} 字，今天还可检查 {usage.checks_remaining} 次</p>;
+  }
+  const over = draftChars > usage.check_chars_remaining;
+  return <p className={`check-allowance${over ? " over" : ""}`} role="note">本次约 {draftChars.toLocaleString()} 字 · 今天还可检查 {usage.check_chars_remaining.toLocaleString()} 字（每天 {usage.check_chars_limit.toLocaleString()} 字）</p>;
+}
+
+function MoreMenu({ children, danger }: { children: ReactNode; danger?: ReactNode }) {
+  const menu = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    const details = menu.current;
+    if (!details) return;
+    const close = (focusSummary: boolean) => {
+      if (!details.open) return;
+      details.removeAttribute("open");
+      if (focusSummary) details.querySelector("summary")?.focus();
+    };
+    const onKey = (event: KeyboardEvent) => { if (event.key === "Escape" && details.open) { event.stopPropagation(); close(true); } };
+    const onPointer = (event: PointerEvent) => { if (!details.contains(event.target as Node)) close(false); };
+    details.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => { details.removeEventListener("keydown", onKey); document.removeEventListener("pointerdown", onPointer); };
+  }, []);
   return (
-    <details className="more-menu">
+    <details className="more-menu" ref={menu}>
       <summary>更多<Chevron className="more-chevron" /></summary>
       {/* Choosing an item closes the menu so it does not stay open behind the dialog it opens. */}
-      <div role="menu" aria-label="更多操作" onClick={(event) => { if ((event.target as HTMLElement).closest("button")) event.currentTarget.closest("details")?.removeAttribute("open"); }}>{children}</div>
+      <div role="menu" aria-label="更多操作" onClick={(event) => { if ((event.target as HTMLElement).closest("button")) event.currentTarget.closest("details")?.removeAttribute("open"); }}>
+        {children}
+        {danger && <div className="more-menu-danger" role="group" aria-label="危险操作">{danger}</div>}
+      </div>
     </details>
   );
 }
@@ -2229,7 +2275,7 @@ export function Workbench() {
     }
     setBusy("正在记录审核结果并建立第 1 版事实库");
     try {
-      for (const candidate of undecided.filter((candidate) => selectedDecisions.has(candidate.id))) {
+      const decideOne = async (candidate: MemoryInitialization["candidates"][number]) => {
         const decision = selectedDecisions.get(candidate.id)!;
         const after =
           decision === "edited"
@@ -2245,6 +2291,21 @@ export function Workbench() {
           "POST",
           { decision, ...(after ? { after, evidence_span_id: candidate.source.span_id } : {}) },
         );
+      };
+      const decided = undecided.filter((candidate) => selectedDecisions.has(candidate.id));
+      if (initialization.candidates.length > BULK_REVIEW_THRESHOLD) {
+        // A long import: plain accept/reject go in batches; edits still need one request each.
+        const plain = decided.filter((candidate) => selectedDecisions.get(candidate.id) !== "edited");
+        for (let start = 0; start < plain.length; start += BULK_DECISION_BATCH) {
+          await json<{ decided: { candidate_id: string; decision_status: string }[] }>(
+            `/projects/${projectId}/memory/initializations/${initialization.id}/decisions?view=compact`,
+            "POST",
+            { decisions: plain.slice(start, start + BULK_DECISION_BATCH).map((candidate) => ({ candidate_id: candidate.id, decision: selectedDecisions.get(candidate.id)! })) },
+          );
+        }
+        for (const candidate of decided.filter((candidate) => selectedDecisions.get(candidate.id) === "edited")) await decideOne(candidate);
+      } else {
+        for (const candidate of decided) await decideOne(candidate);
       }
       const reviewedInitialization = await request<MemoryInitialization>(`/projects/${projectId}/memory/initialization`);
       setInitialization(reviewedInitialization);
@@ -2319,7 +2380,7 @@ export function Workbench() {
       }
       const committed = await json<{ delta: MemoryDelta; memory_version:number }>(`/projects/${projectId}/memory/deltas/${memoryDelta.id}/commit`, "POST", { confirm:true });
       setMemoryDelta(committed.delta); setCoverage(committed.delta.coverage ?? null); setMemories((await request<{records:Memory[]}>(`/projects/${projectId}/memory`)).records); setProject((current) => current ? {...current,current_memory_version:committed.memory_version} : current);
-      setNotice(committed.memory_version > (memoryDelta.base_memory_version ?? 0) ? `事实库第 ${committed.memory_version} 版已建立，变更记录已保存。` : memoryDelta.candidates.length ? "事实变化均未被接受；已核对全部来源，事实库版本未变。" : "本次没有事实变化候选；已核对全部来源，事实库版本未变。");
+      setNotice(committed.memory_version > (memoryDelta.base_memory_version ?? 0) ? "事实库已更新，更新记录已保存。" : memoryDelta.candidates.length ? "没有接受任何事实变化；已核对全部出处，事实库保持不变。" : "这一章没有新的事实变化；已核对全部出处，事实库保持不变。");
     } catch (cause) { fail(cause); } finally { setBusy(""); }
   };
   const reset = async () => {
@@ -2770,7 +2831,6 @@ export function Workbench() {
               <span aria-hidden="true">●</span>
               {statusLabel(project.status)}
             </span>
-            <span>事实库第 {project.current_memory_version} 版</span>
           </div>
           <nav ref={projectModuleNav} aria-label="项目导航">
             {tabs.map(([id, label]) => (
@@ -2789,6 +2849,7 @@ export function Workbench() {
                       world: "world",
                       memory: "memory",
                       workspace: "pen",
+                      sources: "library",
                     } as const)[id]
                   }
                 />
@@ -2814,6 +2875,9 @@ export function Workbench() {
               关闭
             </Button>
           </div>
+        )}
+        {small && !projectId && (pathname === "/" || pathname === "/projects") && (
+          <p className="readonly narrow-screen-note" role="note"><I>◉</I>当前窗口较窄：可以浏览作品和检查结果；写作和运行检查需要电脑或更宽的窗口。</p>
         )}
         {body}
       </main>
@@ -3506,7 +3570,7 @@ function AccountProfile({ user, projects, updateUser, go }: { user: User; projec
                 {projectRows.slice(0, 5).map((item) => (
                   <li key={item.id}>
                     <button type="button" onClick={() => go(`/projects/${item.id}/${item.current_draft && item.status !== "archived" ? "workspace" : "overview"}`)}>
-                      <span className="author-work-copy"><strong>{item.title}</strong><small>{item.genre || "未填写类型"} · {item.chapter_count ?? 0} 章 · {formatWritingCount(item.word_count ?? 0)} 字</small></span>
+                      <span className="author-work-copy"><strong>{item.title}</strong><small>{item.genre || "未填写题材"} · {item.chapter_count ?? 0} 章 · {formatWritingCount(item.word_count ?? 0)} 字</small></span>
                       <span className={`status-pill ${item.status}`}>{statusLabel(item.status)}</span>
                       <span className="author-work-action">{item.status === "archived" ? "查看" : "继续"}<Icon name="arrow-right" inline /></span>
                     </button>
@@ -3598,18 +3662,28 @@ function TutorialCompletePage({ go }: { go: (href: string) => void }) {
     "作出作者决定",
     "完成一次检查",
   ];
+  // Opened directly by URL, the page must not claim a tutorial the author never finished.
+  const [status, setStatus] = useState<Onboarding["status"] | null>(null);
+  const [tutorialId, setTutorialId] = useState<string | null>(null);
+  useEffect(() => {
+    let live = true;
+    request<Onboarding>("/onboarding").then((next) => { if (live) { setStatus(next.status); setTutorialId(next.tutorial?.project_id ?? null); } }).catch(() => { if (live) setStatus("completed"); });
+    return () => { live = false; };
+  }, []);
+  const finished = status === null || status === "completed";
   return (
     <section className="tutorial-complete-page">
       <header className="home-heading"><p className="breadcrumb">全局 / 首页</p><h1>继续你的故事</h1></header>
-      <section className="tutorial-complete-panel" aria-labelledby="tutorial-complete-title">
+      <section className="tutorial-complete-panel" aria-labelledby="tutorial-complete-title" aria-busy={status === null}>
         <TutorialCompleteVisual />
         <div className="tutorial-complete-copy">
-          <p className="eyebrow">隔离教学 · 已结束</p>
-          <h2 id="tutorial-complete-title">教学已完成</h2>
-          <p>你已经走完一次连续性检查流程。</p>
+          <p className="eyebrow">{finished ? "隔离教学 · 已结束" : status === "skipped" ? "隔离教学 · 已跳过" : "隔离教学 · 进行中"}</p>
+          <h2 id="tutorial-complete-title">{finished ? "教学已完成" : status === "skipped" ? "你跳过了教学" : "教学还没走完"}</h2>
+          <p>{finished ? "你已经走完一次连续性检查流程。" : "教学会带你走一遍下面的流程，大约几分钟。"}</p>
           <ol>{steps.map((step, index) => <li key={step}><span>{index + 1}</span>{step}</li>)}</ol>
           <div className="tutorial-complete-actions">
-            <Button className="primary" onClick={() => go("/projects/import")}>导入自己的作品</Button>
+            {!finished && status === "active" && tutorialId && <Button className="primary" onClick={() => go(`/projects/${tutorialId}/overview`)}>继续教学</Button>}
+            <Button className={finished || status !== "active" || !tutorialId ? "primary" : "secondary"} onClick={() => go("/projects/import")}>导入自己的作品</Button>
             <Button onClick={() => go("/projects/new")}>创建空白作品</Button>
             <Button className="quiet" onClick={() => go("/")}>返回首页</Button>
           </div>
@@ -3680,7 +3754,7 @@ function HomePage({
           <div className="empty-workspace-copy home-entry-copy">
             <p className="eyebrow">真实作品空间 · 尚未建立</p>
             <h2>从第一章开始建立连续性档案</h2>
-            <p>导入 TXT / Markdown，或从空白作品开始。</p>
+            <p>导入 Word、TXT 或 Markdown，或从空白作品开始。</p>
           </div>
           <div className="actions home-entry-actions">
             <Button className="primary" onClick={() => go("/projects/import")}>导入已有作品</Button>
@@ -3741,7 +3815,7 @@ function HomePage({
           ) : (
             <div className="home-empty-state compact-empty">
               <span className="home-empty-mark" aria-hidden="true"><DesignAsset name="bulb" /></span>
-              <p>运行第一次连续性检查后，问题会按风险显示在这里。</p><small>让潜在的问题，在创作中被提前发现。</small>
+              <p>运行第一次连续性检查后，问题会按影响程度显示在这里。</p><small>让潜在的问题，在创作中被提前发现。</small>
             </div>
           )}
         </section>
@@ -4041,7 +4115,7 @@ function Import({
   const beginPreview = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!selectedFile) {
-      setLocalError("请先选择一个 UTF-8 TXT 或 Markdown 文件。");
+      setLocalError("请先选择一个 Word（.docx）、TXT 或 Markdown 文件。");
       return;
     }
     if (await previewFile(selectedFile)) {
@@ -4087,7 +4161,7 @@ function Import({
             className="sr-only"
             name="file"
             type="file"
-            accept=".txt,.md,.markdown,text/plain,text/markdown"
+            accept=".docx,.txt,.md,.markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown"
             tabIndex={-1}
             onChange={(event) => selectFile(event.currentTarget.files?.[0])}
             disabled={disabled || Boolean(busy)}
@@ -4112,7 +4186,7 @@ function Import({
             </Button>
           </div>
           <ul className="import-guidance">
-            <li><div><strong>TXT / Markdown</strong><span>UTF-8 编码，文件不超过 5 MB。</span></div></li>
+            <li><div><strong>Word / TXT / Markdown</strong><span>Word 按「标题 1 / 标题 2」分章；TXT 和 Markdown 用 UTF-8 编码。文件不超过 5 MB。</span></div></li>
             <li><div><strong>点击预览才发送</strong><span>文件会发送到当前应用服务进行预览。</span></div></li>
             <li><div><strong>确认前可随时取消</strong><span>预览只展示章节片段，不会创建作品或事实库。</span></div></li>
           </ul>
@@ -4138,7 +4212,7 @@ function Import({
             <div>
               <dt>文件</dt>
               <dd>
-                {preview.file.name} · {preview.file.size.toLocaleString()} 字节 · {({ md: "Markdown", markdown: "Markdown", txt: "纯文本" } as Record<string, string>)[preview.file.format] ?? preview.file.format}
+                {preview.file.name} · {preview.file.size.toLocaleString()} 字节 · {({ md: "Markdown", markdown: "Markdown", txt: "纯文本", docx: "Word 文档" } as Record<string, string>)[preview.file.format] ?? preview.file.format}
               </dd>
             </div>
             <div>
@@ -4255,21 +4329,22 @@ function RunLifecycle({ run, blocked, cancelRun, retryRun, actions = true }: { r
   const provenance = run.provenance ?? run.metrics?.provenance;
   const unfinished = run.status !== "completed" && !activeRun(run);
   return (
-    <section className={`run-lifecycle status-${run.status}`} aria-label={`${run.run_type === "memory_delta" ? "事实变化" : "连续性"}检查进度`} aria-live="polite">
-      <header>
+    <section className={`run-lifecycle status-${run.status}${run.status === "completed" ? " compact" : ""}`} aria-label={`${run.run_type === "memory_delta" ? "事实变化" : "连续性"}检查进度`} aria-live="polite">
+      {/* A finished check is already summarised beside the draft; here it shrinks to a one-line record. */}
+      {run.status === "completed" ? <p className="run-compact"><span>{run.run_type === "memory_delta" ? "事实库检查" : "连续性检查"}</span> · {stage(run.status)}{(run.attempt_number ?? 1) > 1 ? ` · 第 ${run.attempt_number} 次尝试` : ""} · {timestampLabel(run.completed_at)}</p> : <header>
         <div>
           <p className="eyebrow">{run.run_type === "memory_delta" ? "事实库检查" : "连续性检查"}</p>
           <h2>{stage(run.stage)}</h2>
-          <p>{(run.attempt_number ?? 1) > 1 ? `第 ${run.attempt_number} 次尝试 · ` : ""}{run.status === "completed" ? "结果已准备好，可继续审阅。" : "保留当前页面即可查看状态变化。"}</p>
+          <p>{(run.attempt_number ?? 1) > 1 ? `第 ${run.attempt_number} 次尝试 · ` : ""}保留当前页面即可查看状态变化。</p>
         </div>
         <div className="run-actions">
           <span className={`run-state state-${run.status}`}>{stage(run.status)}</span>
           {actions && activeRun(run) && <Button disabled={blocked} onClick={() => void cancelRun()}>{run.stage === "cancelling" ? "正在取消" : "取消检查"}</Button>}
           {actions && retryableRun(run) && <Button className="primary" disabled={blocked} onClick={() => void retryRun()}>重新检查</Button>}
         </div>
-      </header>
+      </header>}
       {unfinished && <p className="run-safety" role="alert">{labelError({ code: run.error_code })}</p>}
-      {run.stage === "cancelling" && <p className="run-safety" role="status">正在等待当前模型服务返回；迟到结果将被丢弃，不会进入业务表。</p>}
+      {run.stage === "cancelling" && <p className="run-safety" role="status">正在等待当前模型服务返回；之后才返回的结果会被丢弃，不会保存。</p>}
       <details className="run-technical">
         <summary>技术详情</summary>
         <dl className="run-facts">
@@ -4288,7 +4363,7 @@ function RunLifecycle({ run, blocked, cancelRun, retryRun, actions = true }: { r
 /** Author-facing name for an evidence source kind; ids stay out of the UI. */
 const sourceKindLabel=(type?:string)=>({draft_claim:"当前草稿",author_context:"作者规划",author_material:"作者资料",source_span:"已写原文",memory_record:"事实库",character_record:"角色档案",character_alias:"角色别名",world_record:"世界设定",issue_evidence:"检查证据"} as Record<string,string>)[type??""]??"资料";
 /** What an analysis was based on, in author terms. Retrieval method stays in the tooltip for support. */
-const runBinding=(run:{draft_revision?:number|null;source_revision?:number|null;source_memory_version?:number|null;author_context_version?:number|null;foreshadow_version?:number|null;alias_version?:number|null},extra:{foreshadow?:boolean;alias?:boolean}={})=>["依据：草稿第 "+(run.draft_revision??"—")+" 次保存","原文第 "+(run.source_revision??"—")+" 版","事实库第 "+(run.source_memory_version??"—")+" 版","规划第 "+(run.author_context_version??0)+" 版",...(extra.foreshadow?["伏笔记录第 "+(run.foreshadow_version??0)+" 版"]:[]),...(extra.alias?["别名第 "+(run.alias_version??0)+" 版"]:[])].join(" · ");
+const runBinding=(run:{draft_revision?:number|null;source_revision?:number|null;source_memory_version?:number|null;author_context_version?:number|null;foreshadow_version?:number|null;alias_version?:number|null},extra:{foreshadow?:boolean;alias?:boolean}={})=>["依据：第 "+(run.draft_revision??"—")+" 次保存的草稿",...(extra.foreshadow?["当时的伏笔记录"]:[]),...(extra.alias?["当时的别名表"]:[])].join(" · ");
 const briefSectionLabel: Record<string,string>={related_plan:"相关计划",confirmed_fact:"已确认事实",character_state:"角色状态",world_rule:"世界规则",open_thread:"未解事项",recent_source:"近期正文"};
 const alignmentStatusLabel: Record<string,string>={planned_covered:"已覆盖",planned_missing:"计划缺失",planned_early:"提前发生",planned_changed:"发生变化",insufficient_evidence:"证据不足"};
 
@@ -4334,7 +4409,12 @@ function EvidenceLinks({sources,navigate}:{sources:{source_id:string;source_type
 }
 
 function ForeshadowReferenceSelect({label,value,setValue,chapters,disabled}:{label:string;value:string;setValue:(value:string)=>void;chapters:Chapter[];disabled:boolean}){
-  return <label>{label}<select value={value} disabled={disabled} onChange={(event)=>setValue(event.target.value)}><option value="">不关联</option>{chapters.flatMap((chapter)=>[<option key={`chapter:${chapter.id}`} value={`${chapter.id}|`}>第 {chapter.number} 章《{chapter.title}》</option>,...(chapter.source_spans??[]).map((span)=><option key={span.span_id} value={`${chapter.id}|${span.span_id}`}>第 {chapter.number} 章 · {span.label === "chapter_revision" ? "修订正文" : span.label}</option>)])}</select></label>;
+  // A chapter with a single passage is listed once; only chapters with several passages get a group.
+  return <label>{label}<select value={value} disabled={disabled} onChange={(event)=>setValue(event.target.value)}><option value="">不关联</option>{chapters.map((chapter)=>{
+    const spans=chapter.source_spans??[],name=`第 ${chapter.number} 章《${chapter.title}》`;
+    if(spans.length<=1){const only=spans[0]&&value===`${chapter.id}|${spans[0].span_id}`?value:`${chapter.id}|`;return <option key={`chapter:${chapter.id}`} value={only}>{name}</option>;}
+    return <optgroup key={`chapter:${chapter.id}`} label={name}><option value={`${chapter.id}|`}>整章</option>{spans.map((span)=><option key={span.span_id} value={`${chapter.id}|${span.span_id}`}>{span.label === "chapter_revision" ? "修订正文" : span.label}{span.is_current === false ? "（已修订）" : ""}</option>)}</optgroup>;
+  })}</select></label>;
 }
 
 function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go}:{project:Project;draft:Draft|null;chapters:Chapter[];readOnly:boolean;dirty:boolean;go:(href:string)=>void}){
@@ -4443,7 +4523,7 @@ function RevisionPlanTools({project,draft,run,readOnly,dirty,busy,recheck,go}:{p
   const returnToDraft=()=>{const editor=document.getElementById("draft-body");editor?.scrollIntoView({behavior:"smooth",block:"center"});window.setTimeout(()=>editor?.focus(),250);};
   const activeRun=runs.find(activeAnalysis);
   return <details className="bounded-story-tools revision-plan-tools" aria-label="修订计划与任务">
-    <summary className="bounded-tools-header"><div><p className="eyebrow">修订</p><h2>修订计划与任务</h2><p>从当前连续性问题生成有界行动建议；确认后仅创建任务，不会改写正文或事实。</p></div>{(snapshot?.tasks.some((task)=>task.status!=="completed")||runs.length>0)?<small>进行中任务 {snapshot?.tasks.filter((task)=>task.status!=="completed").length??0} 项 · 历史计划 {runs.length} 个</small>:null}</summary>
+    <summary className="bounded-tools-header"><div><p className="eyebrow">修订</p><h2>修订计划与任务</h2><p>根据当前的连续性问题生成修改建议；确认后只创建任务，不会改动正文或事实。</p></div>{(snapshot?.tasks.some((task)=>task.status!=="completed")||runs.length>0)?<small>进行中任务 {snapshot?.tasks.filter((task)=>task.status!=="completed").length??0} 项 · 历史计划 {runs.length} 个</small>:null}</summary>
     <div className="bounded-tools-intro">先选择当前检查中的问题，再逐条决定候选。接受任务后回到同一草稿手动修改并保存，需要时再重新检查。</div>
     {notice&&<p className="notice" role="status">{notice}</p>}
     {conflict&&<div className="bounded-conflict" role="alert"><p>服务器上的修订任务版本已变化；候选编辑内容仍保留。请载入最新版本、核对状态后再主动重试。</p><Button className="secondary" disabled={Boolean(localBusy)} onClick={()=>void loadLatest()}>载入最新任务</Button></div>}
@@ -4975,6 +5055,7 @@ function ProjectPage(p: {
       (p.draft.title !== p.saved.title || p.draft.body !== p.saved.body || p.draft.body_format !== p.saved.body_format),
     ),
     editingLocked = p.readOnly || p.draftRecoveryConflict || p.pendingControlledDecision,
+    emptyDraft = !(p.saved?.body ?? p.draft?.body ?? "").trim(),
     blocked = editingLocked || Boolean(p.busy),
     saving = p.busy === "保存草稿" || p.busy === "保存受控修订" || p.busy === "正在重试记录决定",
     saveState = saving ? "saving" : p.saveFailed ? "failed" : dirty ? "unsaved" : "saved",
@@ -5015,10 +5096,9 @@ function ProjectPage(p: {
             </Button>
             {p.canRestore && <Button onClick={p.archive} disabled={Boolean(p.busy)}>恢复作品</Button>}
             {!p.readOnly && (
-              <MoreMenu>
-                <Button onClick={p.reset}>重置当前作品</Button>
-                {!p.project.is_tutorial && <Button onClick={p.archive}>{p.project.status === "archived" ? "恢复作品" : "归档作品"}</Button>}
+              <MoreMenu danger={<Button onClick={p.reset}>重置当前作品</Button>}>
                 {!p.project.is_tutorial && <Button onClick={p.meta}>编辑作品信息</Button>}
+                {!p.project.is_tutorial && <Button onClick={p.archive}>{p.project.status === "archived" ? "恢复作品" : "归档作品"}</Button>}
               </MoreMenu>
             )}
           </div>
@@ -5030,18 +5110,16 @@ function ProjectPage(p: {
             <h2>第 {p.project.current_draft.chapter_number} 章</h2>
             <p>第 {p.project.current_draft.revision} 次保存 · {p.project.status === "archived" ? "作品已归档，恢复后可继续写作。" : "当前可继续写作与审阅。"}</p>
             <div className="overview-meta">
-              <span>{p.project.chapter_count} 个章节</span>
-              <span>已保存</span>
+              <span>已写 {p.project.chapter_count} 章</span>
             </div>
-            <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>打开当前草稿</Button>
+            <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/sources`)}>管理章节</Button>
           </section>
           <section className="overview-panel overview-primary-card memory-panel" aria-label="事实库">
             <p className="eyebrow">事实库</p>
-            <h2>第 {p.project.current_memory_version} 版</h2>
-            <p className="term-help">事实库是作者确认、供后续连续性检查使用的事实集合；版本号代表一次明确提交后的完整快照。</p>
+            <h2>{p.coverage?.counts.confirmed ?? p.memories.filter((record) => record.valid_to == null && record.review_status === "author_confirmed").length} 条已确认事实</h2>
+            <p className="term-help">事实库记着已经写进故事、由你确认过的设定和状态；检查新章节时用它来对照。</p>
             <dl className="overview-kv">
-              <div><dt>原文版本</dt><dd>{p.project.source_revision == null ? "尚未提供" : `第 ${p.project.source_revision} 版`}</dd></div>
-              <div><dt>事实覆盖</dt><dd>{coverageStatusLabel(p.coverage?.status)}</dd></div>
+              <div><dt>能否检查</dt><dd>{coverageStatusLabel(p.coverage?.status)}</dd></div>
               <div><dt>检查状态</dt><dd>{p.project.continuity_status === "unchecked" ? "尚未检查" : p.project.continuity_status === "checked_clear" ? "已检查 · 0 项待处理" : `${p.project.open_issue_count ?? 0} 项待处理`}</dd></div>
               <div><dt>最近检查</dt><dd>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚无"}</dd></div>
             </dl>
@@ -5093,7 +5171,7 @@ function ProjectPage(p: {
               ? "导入的原文已由作者确认，并建立了第 1 版事实库。"
               : p.initialization?.status === "draft"
                 ? "事实库候选正在等待逐项作者审核；候选不会自动写入事实库。"
-                : "导入作品尚待作者确认事实库；完成初始化前不会启动连续性检查。"}
+                : "导入的原文已经可以拿来检查；建立并确认事实库后，检查会更准。"}
             {p.initialization?.status === "required" && (
               <Button className="primary" disabled={blocked} onClick={() => void p.startMemoryInitialization()}>
                 初始化事实库
@@ -5124,6 +5202,7 @@ function ProjectPage(p: {
         busy={p.authorBusy}
         mutate={p.mutateAuthorContext}
         context={contextNotices}
+        hasReference={(p.outline?.chapter_nodes ?? []).length > 0}
         reference={<OutlineReference chapters={p.outline?.chapter_nodes ?? []} />}
       />
     );
@@ -5140,6 +5219,7 @@ function ProjectPage(p: {
         busy={p.authorBusy}
         mutate={p.mutateAuthorContext}
         context={contextNotices}
+        hasReference={p.characters.length > 0}
         reference={<CharacterArchive projectId={p.project.id} characters={p.characters} draft={p.draft} readOnly={p.readOnly} />}
       />
     );
@@ -5156,6 +5236,7 @@ function ProjectPage(p: {
         busy={p.authorBusy}
         mutate={p.mutateAuthorContext}
         context={contextNotices}
+        hasReference={p.world.length > 0}
         reference={<WorldArchive entries={p.world} />}
       />
     );
@@ -5166,16 +5247,16 @@ function ProjectPage(p: {
           <div>
             <p className="breadcrumb">项目 / {p.project.title} / 事实库</p>
             <h1>事实库</h1>
-            <p>当前为第 {p.project.current_memory_version} 版 · 每个版本都是作者明确提交后的完整事实快照。</p>
+            <p>这里记着已经写进故事、由你确认过的设定和状态，检查新章节时用来对照；每条都能查到出自哪一章。</p>
           </div>
         </header>
         {contextNotices}
         <ContextInline memory />
         {p.memoryDelta?.coverage_audit && (
           <section className="notice" aria-label="增量来源覆盖审计">
-            <strong>原文覆盖：{coverageStatusLabel(p.memoryDelta.coverage_audit.status)}</strong>
-            <p>原文第 {p.memoryDelta.coverage_audit.source_revision} 版 · {p.memoryDelta.coverage_audit.details.candidate_ids?.length ?? 0} 个候选的决定和原文依据都已保留。</p>
-            {p.memoryDelta.change_set && <p>已保存变更记录 · 事实库第 {p.memoryDelta.change_set.base_memory_version} 版 → 第 {p.memoryDelta.change_set.target_memory_version} 版 · {p.memoryDelta.change_set.items.length} 条记录。</p>}
+            <strong>本章事实：{coverageStatusLabel(p.memoryDelta.coverage_audit.status)}</strong>
+            <p>{p.memoryDelta.coverage_audit.details.candidate_ids?.length ?? 0} 条事实变化的决定和出处都已保留。</p>
+            {p.memoryDelta.change_set && <p>已保存更新记录 · 共 {p.memoryDelta.change_set.items.length} 条。</p>}
           </section>
         )}
         {p.memoryDelta && p.memoryDelta.status !== "not_started" && p.memoryDelta.status !== "covered" ? (
@@ -5200,7 +5281,7 @@ function ProjectPage(p: {
             <strong>第 1 版事实库为空</strong>
             <p>
               {p.project.memory_initialization_status === "required"
-                ? "导入作品尚待作者确认的事实库；完成初始化前不会启动连续性检查。"
+                ? "这部导入作品还没有建立事实库。不建也能检查，系统会直接对照原文；建立并确认后检查更准。"
                 : "新作品没有已确认事实。"}
             </p>
           </div>
@@ -5210,6 +5291,7 @@ function ProjectPage(p: {
   if (p.tab === "sources")
     return (
       <><SourceAppend project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} context={contextNotices} />
+      <ChapterCheckPanel projectId={p.project.id} chapters={p.chapters} readOnly={p.readOnly} />
       <LongTermReview key={`${p.actorId}:${p.project.id}`} userId={p.actorId} projectId={p.project.id} readOnly={p.readOnly} onChanged={p.refreshReferences} /></>
     );
   return (
@@ -5219,6 +5301,7 @@ function ProjectPage(p: {
           <p className="breadcrumb">项目 / {p.project.title} / 写作与检查</p>
           <h1>写作与检查</h1>
           <p className={`workspace-save-summary ${saveState}`}><strong key={saveLabel}>{saveLabel}</strong><span>{saveDetail}</span>{p.draft && <span className="workspace-draft-meta">第 {p.draft.chapter_number ?? "—"} 章 · 第 {p.draft.revision ?? "—"} 次保存</span>}</p>
+          {!p.readOnly && !emptyDraft && <CheckAllowance draftChars={writtenChars(p.saved?.body ?? p.draft?.body ?? "")} refreshKey={`${p.saved?.revision ?? 0}:${p.run?.run_id ?? ""}:${p.run?.status ?? ""}`} />}
         </div>
         {!p.readOnly && (
           <div className="actions">
@@ -5236,7 +5319,7 @@ function ProjectPage(p: {
                 {p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存受控修订" : "保存草稿"}
               </Button>
             ) : (p.run && !activeRun(p.run) && !retryableRun(p.run)) ? (
-              <Button className="primary" disabled={blocked || !p.draft} onClick={() => void p.check()}>
+              <Button className="primary" disabled={blocked || !p.draft || emptyDraft} title={emptyDraft ? "先写下正文并保存，再运行检查" : undefined} onClick={() => void p.check()}>
                 <Icon name="play" />
                 运行连续性检查
               </Button>
@@ -5246,9 +5329,8 @@ function ProjectPage(p: {
                 重新检查
               </Button>
             ) : null}
-            <MoreMenu>
-              <Button disabled={blocked} onClick={p.reset}>重置当前作品</Button>
-              <Button disabled={blocked || !p.draft || dirty} onClick={() => p.go(`/projects/${p.project.id}/sources`)}>完成当前章节</Button>
+            <MoreMenu danger={<Button disabled={blocked} onClick={p.reset}>重置当前作品</Button>}>
+              <Button disabled={blocked || !p.draft || dirty || emptyDraft} onClick={() => p.go(`/projects/${p.project.id}/sources#complete-draft`)}>完成当前章节</Button>
             </MoreMenu>
           </div>
         )}
@@ -5271,8 +5353,8 @@ function ProjectPage(p: {
       )}
       {p.project.data_origin === "user_import" && p.project.memory_initialization_status !== "completed" && (
         <p className="warning">
-          <I>!</I>先在事实库中完成初始化审核；事实库为空时不会启动连续性检查。
-          <Button className="quiet" onClick={() => p.go(`/projects/${p.project.id}/memory`)}>前往审核</Button>
+          <I>!</I>这部导入作品还没确认事实库。现在就能检查，系统会直接对照原文；确认事实库后检查更准。
+          <Button className="quiet" onClick={() => p.go(`/projects/${p.project.id}/memory`)}>去确认事实库</Button>
         </p>
       )}
       {p.coverage?.status === "update_pending" && (
@@ -5398,8 +5480,8 @@ function ProjectPage(p: {
             <div className="empty issues-empty">
               <DesignAsset name="paper" />
               <h3>检查结果会显示在这里</h3>
-              <p>系统会按风险列出与历史事实可能冲突的内容，并提供可追溯证据。</p>
-              {!p.readOnly && <Button className="primary" disabled={blocked || !p.draft || dirty} onClick={() => void p.check()}>运行连续性检查</Button>}
+              <p>{emptyDraft ? "先写下正文并保存，再运行连续性检查。" : "系统会按影响程度列出与已写章节可能冲突的内容，并附上出处。"}</p>
+              {!p.readOnly && <Button className="primary" disabled={blocked || !p.draft || dirty || emptyDraft} onClick={() => void p.check()}>运行连续性检查</Button>}
             </div>
           )}
           <section className="writing-tips-card"><header><DesignAsset name="bulb" /><h3>写作小贴士</h3></header><ul><li>留意角色的行动与当时的认知。</li><li>核对时间顺序和场景之间的距离。</li><li>为重要转折留下一条可回溯的线索。</li></ul></section>
@@ -5452,7 +5534,7 @@ function ProjectPage(p: {
               <p className="eyebrow">事实库</p>
               <h2>事实变化审阅</h2>
               <p>
-                事实库第 {p.changeSet.base_memory_version} 版 → 第 {p.changeSet.target_memory_version} 版；候选不会自动写入。逐项接受、拒绝或编辑，并由作者明确提交后，才会原子创建新版本。
+                这些变化不会自动写进事实库。逐条接受、拒绝或修改，全部确认后才会一次性更新事实库。
               </p>
             </div>
           </header>
@@ -5512,9 +5594,9 @@ function MemoryDeltaReview({ delta, blocked, submit, openSource }: { delta: Memo
     <form className="review memory-init-review memory-delta-review" aria-label="事实变化审阅" onSubmit={(event) => void submit(event)}>
       <header>
         <div>
-          <p className="eyebrow">事实库 · 原文第 {delta.source_revision} 版</p>
+          <p className="eyebrow">事实库</p>
           <h2>核对事实变化</h2>
-          <p>每条变化都对应当前原文和事实库第 {delta.base_memory_version} 版。核心变化必须全部决定；辅助建议只有明确决定后才会提交。当前覆盖：{coverageStatusLabel(delta.coverage?.status)}。</p>
+          <p>每条变化都附有出处。重要变化需要逐条决定；次要建议只有你明确接受后才会写入。当前：{coverageStatusLabel(delta.coverage?.status)}。</p>
         </div>
       </header>
       {!delta.candidates.length && <div className="empty"><strong>没有发现事实变化候选</strong><p>仍需确认本次来源已完成覆盖审计；确认后不会创建新的事实库版本。</p></div>}
@@ -5529,7 +5611,7 @@ function MemoryDeltaReview({ delta, blocked, submit, openSource }: { delta: Memo
             <div className="delta-fact-flow">
               <section className="delta-fact before-fact">
                 <strong>当前已确认事实</strong>
-                {candidate.before ? <><p>{memoryTypeLabel(candidate.before.memory_type)} · {candidate.before.subject} · {predicateLabel(candidate.before.predicate)}：{candidate.before.value}</p><small>事实库第 {delta.base_memory_version} 版</small>{candidate.before.source && <Button type="button" className="link-button" onClick={(event) => void openSource(candidate.before as Memory, event.currentTarget)}>查看原事实来源</Button>}</> : <p className="muted">当前事实库中没有对应事实。</p>}
+                {candidate.before ? <><p>{memoryTypeLabel(candidate.before.memory_type)} · {candidate.before.subject} · {predicateLabel(candidate.before.predicate)}：{candidate.before.value}</p><small>事实库中的原记录</small>{candidate.before.source && <Button type="button" className="link-button" onClick={(event) => void openSource(candidate.before as Memory, event.currentTarget)}>查看原事实来源</Button>}</> : <p className="muted">当前事实库中没有对应事实。</p>}
               </section>
               <span className="delta-arrow" aria-hidden="true">→</span>
               <section className="delta-fact proposed-fact">
@@ -5540,7 +5622,7 @@ function MemoryDeltaReview({ delta, blocked, submit, openSource }: { delta: Memo
             <section className="candidate-source delta-evidence">
               <strong>修订后的原文 · 第 {candidate.source.chapter_number} 章《{candidate.source.chapter_title}》</strong>
               <blockquote>{candidate.source.excerpt}</blockquote>
-              <small>原文第 {candidate.source_revision} 版</small>
+              <small>出自当前正文</small>
               <Button type="button" className="link-button" onClick={(event) => void openSource(sourceMemory(candidate), event.currentTarget)}>查看新修订来源</Button>
             </section>
             {candidate.decision_status === "pending" ? <>
@@ -5599,17 +5681,27 @@ function MemoryInitializationReview({
         <p>所有候选均被作者拒绝。连续性检查仍会安全返回上下文不足；可重置导入的作品后重新开始。</p>
       </div>
     );
-  return (
-    <form className="review memory-init-review" aria-label="事实库初始化审核" onSubmit={(event) => void submit(event)}>
-      <header>
-        <div>
-          <p className="eyebrow">导入原文 · 第 {initialization.source_revision} 版</p>
-          <h2>初始化候选审核</h2>
-          <p>核心候选必须全部决定；辅助候选可以暂不决定，它们不会写入事实库，也不会用于之后的检查。{coverage ? ` 当前覆盖：${coverageStatusLabel(coverage.status)}；核心待审 ${coverage.counts.core_pending}，辅助待审 ${coverage.counts.supporting_pending}。` : ""}</p>
-        </div>
-      </header>
-      {experienceSimulation && <div className="notice simulation-notice" role="note"><strong>隔离模拟环境</strong><p>以下候选来自固定示例数据；本环境不会调用真实模型。仅使用 v140-simulation-sample.md 验证交互与审计流程。</p></div>}
-      {initialization.candidates.map((candidate) => (
+  const grouped = initialization.candidates.length > BULK_REVIEW_THRESHOLD;
+  const groups: { from: number; to: number; items: MemoryInitialization["candidates"] }[] = [];
+  if (grouped) {
+    for (const candidate of [...initialization.candidates].sort((a, b) => a.source.chapter_number - b.source.chapter_number)) {
+      const from = Math.floor((candidate.source.chapter_number - 1) / REVIEW_GROUP_CHAPTERS) * REVIEW_GROUP_CHAPTERS + 1;
+      let group = groups.at(-1);
+      if (group?.from !== from) {
+        group = { from, to: from + REVIEW_GROUP_CHAPTERS - 1, items: [] };
+        groups.push(group);
+      }
+      group.items.push(candidate);
+    }
+  }
+  // Only pending candidates have radios, so a group action never touches a decided one.
+  const selectGroup = (event: ReactMouseEvent<HTMLButtonElement>, value: "accepted" | "rejected" | "clear") => {
+    event.currentTarget.closest("details")?.querySelectorAll<HTMLInputElement>('input[type="radio"][data-memory-candidate-id]').forEach((input) => {
+      if (value === "clear") input.checked = false;
+      else if (input.value === value) input.checked = true;
+    });
+  };
+  const candidateCard = (candidate: MemoryInitialization["candidates"][number]) => (
         <article key={candidate.id} className="diff memory-init-candidate">
           <div className="candidate-source">
             <strong>原文依据</strong>
@@ -5621,7 +5713,7 @@ function MemoryInitializationReview({
           <div>
             <strong>候选事实</strong>
             <p>{memoryTypeLabel(candidate.memory_type)} · {candidate.subject} · {predicateLabel(candidate.predicate)}：{candidate.value}</p>
-            <small>原文第 {candidate.source_revision} 版 · {candidate.review_priority === "core" ? "核心候选（必须决定）" : "辅助候选（可继续待审）"} · 尚未写入事实库</small>
+            <small>{candidate.review_priority === "core" ? "重要事实（需要决定）" : "次要事实（可以稍后再看）"} · 尚未写入事实库</small>
           </div>
           {candidate.decision_status === "pending" ? (
             <>
@@ -5656,7 +5748,37 @@ function MemoryInitializationReview({
           )}
           {candidate.review_history.length > 0 && <small className="candidate-history">审核记录 {candidate.review_history.length} 条 · 最近：{candidate.review_history.at(-1)?.event === "reopened" ? "重新打开" : candidate.review_history.at(-1)?.decision === "rejected" ? "拒绝" : candidate.review_history.at(-1)?.decision === "edited" ? "编辑后接受" : "接受"}</small>}
         </article>
-      ))}
+  );
+  return (
+    <form className="review memory-init-review" aria-label="事实库初始化审核" onSubmit={(event) => void submit(event)}>
+      <header>
+        <div>
+          <p className="eyebrow">导入原文 · 第 {initialization.source_revision} 版</p>
+          <h2>初始化候选审核</h2>
+          <p>核心候选必须全部决定；辅助候选可以暂不决定，它们不会写入事实库，也不会用于之后的检查。{coverage ? ` 当前覆盖：${coverageStatusLabel(coverage.status)}；核心待审 ${coverage.counts.core_pending}，辅助待审 ${coverage.counts.supporting_pending}。` : ""}</p>
+          {grouped && <p className="memory-init-group-hint">候选较多，已按每 {REVIEW_GROUP_CHAPTERS} 章分组。可以先把一组待定候选全部选为接受或拒绝，再逐条改动个别候选，最后统一确认。</p>}
+        </div>
+      </header>
+      {experienceSimulation && <div className="notice simulation-notice" role="note"><strong>隔离模拟环境</strong><p>以下候选来自固定示例数据；本环境不会调用真实模型。仅使用 v140-simulation-sample.md 验证交互与审计流程。</p></div>}
+      {grouped
+        ? groups.map((group, index) => {
+            const pending = group.items.filter((candidate) => candidate.decision_status === "pending");
+            const corePending = pending.filter((candidate) => candidate.review_priority === "core").length;
+            return (
+              <details key={group.from} className="memory-init-group" open={index === 0}>
+                <summary>第 {group.from}–{group.to} 章 · {group.items.length} 条候选{pending.length ? `，待定 ${pending.length} 条（核心 ${corePending} 条）` : "，已全部决定"}</summary>
+                {pending.length > 0 && initialization.status === "draft" && (
+                  <div className="memory-init-group-actions">
+                    <Button type="button" className="quiet" disabled={blocked} onClick={(event) => selectGroup(event, "accepted")}>本组待定全部选为接受</Button>
+                    <Button type="button" className="quiet" disabled={blocked} onClick={(event) => selectGroup(event, "rejected")}>本组待定全部选为拒绝</Button>
+                    <Button type="button" className="quiet" disabled={blocked} onClick={(event) => selectGroup(event, "clear")}>清除本组选择</Button>
+                  </div>
+                )}
+                {group.items.map(candidateCard)}
+              </details>
+            );
+          })
+        : initialization.candidates.map(candidateCard)}
       {initialization.status === "draft" && (
         <Button className="primary" disabled={blocked} type="submit">确认核心审核并建立第 1 版事实库</Button>
       )}
@@ -5668,15 +5790,154 @@ function MemoryInitializationReview({
         </div>
       )}
       {coverage?.status === "in_review" && coverage.counts.core_pending === 0 && coverage.counts.confirmed_core === 0 && (
-        <div className="notice error" role="alert">核心候选均未被确认；尚不能开始连续性检查。请在某个核心候选上选择“重新评估此候选”后重新决定；系统不会自动接受事实。</div>
+        <div className="notice error" role="alert">核心候选均未被确认，事实库还是空的；检查仍会直接对照原文进行。请在某个核心候选上选择“重新评估此候选”后重新决定；系统不会自动接受事实。</div>
       )}
     </form>
   );
 }
+type ChapterCheckIssue = { sentence: string; nature?: string; category?: string; severity?: Issue["severity"]; explanation: string; evidence: { chapter_number: number; chapter_title: string; excerpt: string }[] };
+type ChapterCheckReport = { chapters: { chapter_id: string; chapter_number: number; chapter_title: string; sentences: number; issues: ChapterCheckIssue[]; undecided: number }[]; issue_count: number; undecided_count: number };
+type ChapterCheckRun = { run_id: string; status: string; stage: string; error_code?: string | null; created_at: string; completed_at?: string | null; sample?: boolean; report: ChapterCheckReport | null };
+const CHAPTER_CHECK_MAX = 8;
+type TimelineRow = { chapter_id: string | null; chapter_number: number; title: string; draft: boolean; status: "checked" | "basis_changed" | "edited_unchecked" | "unchecked" | "empty"; checked_at: string | null };
+const timelineStatusLabel: Record<TimelineRow["status"], string> = { checked: "已检查", basis_changed: "依据已变化", edited_unchecked: "改动后未检查", unchecked: "未检查", empty: "还没写" };
+const timelineStatusHint: Record<TimelineRow["status"], string> = {
+  checked: "检查覆盖了这一章现在的正文。",
+  basis_changed: "检查之后，前面的章节被修订过，建议重新检查。",
+  edited_unchecked: "这一章检查之后又改过，新的正文还没检查。",
+  unchecked: "这一章还没有检查过。",
+  empty: "草稿还是空的。",
+};
+
+/** Tick up to eight written chapters and check them, each against earlier chapters only; results per chapter. */
+function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: string; chapters: Chapter[]; readOnly: boolean }) {
+  const [selected, setSelected] = useState<string[]>([]);
+  const [estimate, setEstimate] = useState<{ characters: number; estimated_cny: number } | null>(null);
+  const [usage, setUsage] = useState<CheckUsage | null>(null);
+  const [runs, setRuns] = useState<ChapterCheckRun[]>([]);
+  const [timeline, setTimeline] = useState<TimelineRow[] | null>(null);
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const load = useCallback(async () => {
+    try {
+      const [list, nextUsage, nextTimeline] = await Promise.all([
+        request<{ runs: ChapterCheckRun[] }>(`/projects/${projectId}/chapter-checks?limit=3`),
+        request<CheckUsage>("/account/usage"),
+        request<{ chapters: TimelineRow[] }>(`/projects/${projectId}/chapter-timeline`),
+      ]);
+      setRuns(list.runs); setUsage(nextUsage); setTimeline(nextTimeline.chapters);
+    } catch { /* the panel stays usable; a later action shows the error */ }
+  }, [projectId]);
+  useEffect(() => { void load(); }, [load]);
+  const active = runs.some((run) => ["queued", "running"].includes(run.status));
+  useEffect(() => {
+    if (!active) return;
+    const timer = window.setTimeout(() => void load(), 3000);
+    return () => window.clearTimeout(timer);
+  }, [active, runs, load]);
+  useEffect(() => {
+    if (!selected.length) { setEstimate(null); return; }
+    let live = true;
+    json<{ characters: number; estimated_cny: number }>(`/projects/${projectId}/chapter-checks/estimate`, "POST", { chapter_ids: selected })
+      .then((next) => { if (live) setEstimate(next); }).catch(() => { if (live) setEstimate(null); });
+    return () => { live = false; };
+  }, [projectId, selected]);
+  if (usage?.account_type === "visitor") {
+    return <section className="project-section chapter-check-panel" aria-label="全部章节"><h2>全部章节</h2><p className="muted">访客只能检查当前草稿；注册账号后可以一次勾选最多 {CHAPTER_CHECK_MAX} 章一起检查。下面是一份示例结果，展示多章检查会得到什么。</p>{runs.find((run) => run.sample) && <ChapterCheckResult run={runs.find((run) => run.sample)!} />}</section>;
+  }
+  const toggle = (id: string) => setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length >= CHAPTER_CHECK_MAX ? current : [...current, id]);
+  const over = Boolean(estimate && usage?.account_type === "registered" && estimate.characters > usage.check_chars_remaining);
+  const start = async () => {
+    setBusy(true); setError("");
+    try {
+      await json(`/projects/${projectId}/chapter-checks`, "POST", { chapter_ids: selected });
+      setSelected([]);
+      await load();
+    } catch (cause) { setError(labelError(cause)); } finally { setBusy(false); }
+  };
+  const latest = runs[0];
+  // The timeline lists written chapters with their check status and the draft last; until it loads, the chapter list stands in.
+  const rows: TimelineRow[] = timeline ?? [...chapters].sort((a, b) => a.number - b.number).map((chapter) => ({ chapter_id: chapter.id, chapter_number: chapter.number, title: chapter.title, draft: false, status: "unchecked", checked_at: null }));
+  return (
+    <section className="project-section chapter-check-panel" aria-label="全部章节">
+      <h2>全部章节</h2>
+      <p className="muted">已写章节和正在写的草稿按顺序排在一起。勾选最多 {CHAPTER_CHECK_MAX} 章一起检查，每一章只拿它前面的章节作依据；要改哪一章，在下方「修订历史章节」里改。</p>
+      {rows.length > 0 && (
+        <>
+          <fieldset className="chapter-check-picker" disabled={readOnly || busy || active}>
+            <legend className="sr-only">选择要检查的章节</legend>
+            {rows.map((row) => {
+              if (row.draft || !row.chapter_id) {
+                return (
+                  <div key="draft" className="chapter-row draft">
+                    <span>第 {row.chapter_number} 章《{row.title || "未命名"}》<small>草稿</small></span>
+                    <span className={`chapter-status status-${row.status}`} title={timelineStatusHint[row.status]}>{timelineStatusLabel[row.status]}</span>
+                    <Button className="quiet" onClick={() => router.push(`/projects/${projectId}/workspace`)}>去写作</Button>
+                  </div>
+                );
+              }
+              const id = row.chapter_id;
+              const checked = selected.includes(id);
+              return (
+                <label key={id} className={`chapter-row${checked ? " checked" : ""}`}>
+                  <input type="checkbox" checked={checked} disabled={!checked && selected.length >= CHAPTER_CHECK_MAX} onChange={() => toggle(id)} />
+                  <span>第 {row.chapter_number} 章《{row.title || "未命名"}》</span>
+                  <span className={`chapter-status status-${row.status}`} title={timelineStatusHint[row.status]}>{timelineStatusLabel[row.status]}</span>
+                </label>
+              );
+            })}
+          </fieldset>
+          <div className="chapter-check-actions">
+            <p className={over ? "check-allowance over" : "check-allowance"} aria-live="polite">
+              已选 {selected.length}/{CHAPTER_CHECK_MAX} 章
+              {estimate && <> · 约 {estimate.characters.toLocaleString()} 字 · 预计{estimate.estimated_cny >= 0.01 ? `约 ¥${estimate.estimated_cny.toFixed(2)}` : "不到 ¥0.01"}</>}
+              {usage?.account_type === "registered" && <> · 今天还可检查 {usage.check_chars_remaining.toLocaleString()} 字</>}
+            </p>
+            {!readOnly && <Button className="primary" disabled={busy || active || !selected.length || over} onClick={() => void start()}>{active ? "正在检查" : "检查选中的章节"}</Button>}
+          </div>
+        </>
+      )}
+      {error && <div className="notice error" role="alert">{error}</div>}
+      {latest && <ChapterCheckResult run={latest} />}
+    </section>
+  );
+}
+
+/** One chapter check's report, grouped by chapter. A preset sample is labelled as such. */
+function ChapterCheckResult({ run }: { run: ChapterCheckRun }) {
+  return (
+    <div className="chapter-check-result" aria-live="polite">
+      <p className="chapter-check-status">
+        <strong>{run.sample ? "示例结果" : run.status === "completed" ? "最近一次检查" : stage(run.status)}</strong>
+        {run.sample && <span>预置示例，没有调用模型</span>}
+        <span>{timestampLabel(run.completed_at ?? run.created_at)}</span>
+        {run.status === "completed" && run.report && <span>共 {run.report.chapters.length} 章 · {run.report.issue_count ? `${run.report.issue_count} 条问题` : "没有发现问题"}</span>}
+      </p>
+      {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelError({ code: run.error_code })}</p>}
+      {run.report?.chapters.map((chapter) => (
+        <article key={chapter.chapter_id} className="chapter-check-chapter">
+          <header><strong>第 {chapter.chapter_number} 章《{chapter.chapter_title || "未命名"}》</strong><span>{chapter.issues.length ? `${chapter.issues.length} 条问题` : "没有发现问题"}{chapter.undecided ? ` · ${chapter.undecided} 句未能判断` : ""}</span></header>
+          {chapter.issues.map((issue, index) => (
+            <div key={index} className="chapter-check-issue">
+              <p className="chapter-check-issue-kind">{issueNatureLabel(issue.nature)}{issue.severity ? ` · ${impactLabel(issue.severity)}` : ""}{issue.category ? ` · ${categoryLabel(issue.category)}` : ""}</p>
+              <blockquote>{issue.sentence}</blockquote>
+              {issue.explanation && <p>{issue.explanation}</p>}
+              {issue.evidence.map((item, at) => <p key={at} className="muted">出处：第 {item.chapter_number} 章《{item.chapter_title || "未命名"}》：{item.excerpt}</p>)}
+            </div>
+          ))}
+        </article>
+      ))}
+    </div>
+  );
+}
+
 function SourceAppend({ project, draft, chapters, readOnly, context }: { project: Project; draft: Draft | null; chapters: Chapter[]; readOnly: boolean; context?: ReactNode }) {
   const router=useRouter();
   const [method, setMethod] = useState<"draft_complete" | "paste" | "file">("paste"), [content, setContent] = useState(""), [filename, setFilename] = useState(""), [preview, setPreview] = useState<SourceChangeSet | null>(null), [nextDraft, setNextDraft] = useState<Draft | null>(null), [busy, setBusy] = useState(""), [error, setError] = useState("");
   const base = project.source_revision ?? 1;
+  // "完成当前章节" in the workspace menu links here with #complete-draft.
+  useEffect(() => { if (window.location.hash === "#complete-draft" && draft) setMethod("draft_complete"); }, [draft]);
   const makePreview = async () => {
     setBusy("正在生成追加预览"); setError("");
     try {
@@ -5685,17 +5946,17 @@ function SourceAppend({ project, draft, chapters, readOnly, context }: { project
     } catch (cause) { setError(labelError(cause)); } finally { setBusy(""); }
   };
   const commit = async () => {
-    if (!preview) return; setBusy("正在原子追加章节"); setError("");
+    if (!preview) return; setBusy("正在追加章节"); setError("");
     try { const data = await json<{ source_change_set: SourceChangeSet; next_draft: Draft }>(`/projects/${project.id}/source-change-sets/${preview.id}/commit`, "POST", { confirm: true, content_sha256: preview.content_sha256 }); setPreview(data.source_change_set); setNextDraft(data.next_draft); }
     catch (cause) { setError(labelError(cause)); } finally { setBusy(""); }
   };
-  return <section className="project-page read-page"><header className="page-header"><div><p className="breadcrumb">项目 / {project.title} / 章节来源</p><h1>追加章节</h1><p>目标作品：{project.title}。在此追加新章节，或在下方修订已有完整正文。提交后保留历史来源与审阅记录。</p></div></header>{context}
-    {!readOnly && <section className="project-section"><h2>新增来源</h2><fieldset className="source-method" disabled={Boolean(busy)}><legend>追加方式</legend>{(["draft_complete", "paste", "file"] as const).map((value) => <label key={value} className="source-method-option"><input className="sr-only" type="radio" name="source-method" checked={method === value} onChange={() => setMethod(value)} />{value === "draft_complete" ? "完成当前章节" : value === "paste" ? "粘贴追加" : "追加文件"}</label>)}</fieldset>
+  return <section className="project-page read-page"><header className="page-header"><div><p className="breadcrumb">项目 / {project.title} / 章节管理</p><h1>章节管理</h1><p>目标作品：{project.title}。在这里追加新章节、把当前草稿定为正式章节，或在下方修订已写好的章节。修订后旧版本仍会保留，以前的检查依旧能找到出处。</p></div></header>{context}
+    {!readOnly && <section className="project-section"><h2>追加章节</h2><fieldset className="source-method" disabled={Boolean(busy)}><legend>追加方式</legend>{(["draft_complete", "paste", "file"] as const).map((value) => <label key={value} className="source-method-option"><input className="sr-only" type="radio" name="source-method" checked={method === value} onChange={() => setMethod(value)} />{value === "draft_complete" ? "完成当前章节" : value === "paste" ? "粘贴追加" : "追加文件"}</label>)}</fieldset>
     {method === "draft_complete" ? <p>将完成当前草稿《{draft?.title ?? "—"}》并追加为新章节。</p> : <><label>章节正文<textarea value={content} onChange={(event) => setContent(event.target.value)} disabled={readOnly || Boolean(busy)} /></label>{method === "file" && <label>追加文件<input type="file" accept=".md,.txt,text/markdown,text/plain" disabled={readOnly || Boolean(busy)} onChange={async (event) => { const file = event.currentTarget.files?.[0]; if (!file) return; setFilename(file.name); setContent(await file.text()); }} /><small>{filename || "仅支持 UTF-8 .md / .txt"}</small></label>}</>}
     <Button className="primary" disabled={Boolean(busy) || (method !== "draft_complete" && !content.trim())} onClick={() => void makePreview()}>{busy || "预览追加"}</Button></section>}
     {error && <div className="notice error" role="alert">{error} 请保留当前内容，刷新页面读取最新章节后重试。</div>}
-    {preview && <section className="notice success" role="status"><strong>{preview.status === "previewed" ? "追加预览" : "已追加"}</strong><p>{preview.chapter_count} 个章节 · 原文第 {preview.base_source_revision} 版 → 第 {preview.target_source_revision} 版</p><small>预览于 {timestampLabel(preview.previewed_at)}；确认后才会写入作品。</small><ul>{preview.chapters.map((chapter) => <li key={chapter.preview_id}>第 {chapter.order} 个追加章节《{chapter.title}》· {chapter.character_count} 字</li>)}</ul>{!readOnly && (preview.status === "previewed" ? <Button className="primary" disabled={Boolean(busy)} onClick={() => void commit()}>确认追加并创建下一章草稿</Button> : <><p>已追加，原文更新为第 {preview.target_source_revision} 版。</p>{nextDraft && <p>下一章草稿：第 {nextDraft.chapter_number} 章《{nextDraft.title}》</p>}<Button className="primary" onClick={() => router.push(`/projects/${project.id}/workspace`)}>进入下一章草稿</Button></>)}</section>}
-    <Read nested title="现有章节来源" breadcrumb="证据可回溯到原文" note="每章下面是检查时可以引用的原文片段；修订过的旧片段会保留，历史证据仍指向当时的原文。" items={chapters.flatMap((chapter) => [<li key={`chapter-${chapter.id}`} id={`chapter-${chapter.id}`} className="source-chapter-anchor"><strong>第 {chapter.number} 章《{chapter.title}》</strong><span>{chapter.summary||"本章来源"}</span></li>,...(chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`} className="source-span-item"><strong><span className="sr-only">第 {chapter.number} 章《{chapter.title}》 · </span>{span.label === "chapter_revision" ? "修订正文" : span.label}{span.is_current === false ? " · 历史来源（已修订）" : ""}</strong><span>{span.text_excerpt}</span></li>)])} empty="此作品还没有可回源的章节片段。" />
+    {preview && <section className="notice success" role="status"><strong>{preview.status === "previewed" ? "追加预览" : "已追加"}</strong><p>共 {preview.chapter_count} 个章节</p><small>预览于 {timestampLabel(preview.previewed_at)}；确认后才会写入作品。</small><ul>{preview.chapters.map((chapter) => <li key={chapter.preview_id}>第 {chapter.order} 个追加章节《{chapter.title}》· {chapter.character_count} 字</li>)}</ul>{!readOnly && (preview.status === "previewed" ? <Button className="primary" disabled={Boolean(busy)} onClick={() => void commit()}>确认追加并创建下一章草稿</Button> : <><p>已追加到作品。</p>{nextDraft && <p>下一章草稿：第 {nextDraft.chapter_number} 章《{nextDraft.title}》</p>}<Button className="primary" onClick={() => router.push(`/projects/${project.id}/workspace`)}>进入下一章草稿</Button></>)}</section>}
+    <Read nested title="已写章节" breadcrumb="检查时引用的原文片段" note="每章下面是检查时可以引用的原文片段；修订过的旧片段会保留，以前的检查仍指向当时的原文。" items={chapters.flatMap((chapter) => [<li key={`chapter-${chapter.id}`} id={`chapter-${chapter.id}`} className="source-chapter-anchor"><strong>第 {chapter.number} 章《{chapter.title}》</strong><span>{chapter.summary||"本章来源"}</span></li>,...(chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`} className="source-span-item"><strong><span className="sr-only">第 {chapter.number} 章《{chapter.title}》 · </span>{span.label === "chapter_revision" ? "修订正文" : span.label}{span.is_current === false ? " · 历史来源（已修订）" : ""}</strong><span>{span.text_excerpt}</span></li>)])} empty="此作品还没有可回源的章节片段。" />
   </section>;
 }
 
@@ -5800,6 +6061,7 @@ function AuthorPlanningPage({
   mutate,
   context,
   reference,
+  hasReference,
 }: {
   kind: AuthorPlanKind;
   projectId: string;
@@ -5811,14 +6073,20 @@ function AuthorPlanningPage({
   mutate: AuthorMutation;
   context?: ReactNode;
   reference: ReactNode;
+  hasReference: boolean;
 }) {
   const copy = authorPlanCopy[kind];
   const canonicalMaterialIds = useCanonicalMaterialIds();
+  // What is already written comes first; plans open first only when nothing is written yet or a plan link was followed.
   const [mode, setMode] = useState<"planning" | "reference">(() =>
     typeof window !== "undefined" && window.location.hash.startsWith("#plan-")
       ? "planning"
-      : projectIsTutorial ? "reference" : "planning",
+      : projectIsTutorial || hasReference ? "reference" : "planning",
   );
+  const modeChosen = useRef(false);
+  const chooseMode = (next: "planning" | "reference") => { modeChosen.current = true; setMode(next); };
+  // Written material can arrive after the first render; switch to it unless the author already picked a mode.
+  useEffect(() => { if (hasReference && !modeChosen.current && !window.location.hash.startsWith("#plan-")) setMode("reference"); }, [hasReference]);
   const [showArchived, setShowArchived] = useState(false);
   const [dialog, setDialog] = useState<AuthorPlanDialogState | null>(null);
   const [archiveTarget, setArchiveTarget] = useState<AuthorPlanSelection | null>(null);
@@ -5929,7 +6197,7 @@ function AuthorPlanningPage({
           <p>{copy.description}</p>
         </div>
         <div className="author-planning-status">
-          <span>{authorContext?.author_context_version ? `规划第 ${authorContext.author_context_version} 版` : "尚无规划版本"}</span>
+          <span data-author-context-version={authorContext?.author_context_version ?? 0}>{activeRecords.length ? `${activeRecords.length} 条规划` : "尚无规划"}</span>
           <ContextButton kind={kind} />
           {mode === "planning" && !readOnly && (
             <Button className="primary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>
@@ -5940,8 +6208,8 @@ function AuthorPlanningPage({
       </header>
       {context}
       <nav className="author-mode-switch" aria-label={`${copy.title}资料模式`}>
-        <Button className={mode === "planning" ? "current" : "quiet"} ariaPressed={mode === "planning"} onClick={() => setMode("planning")}>{copy.planning}</Button>
-        <Button className={mode === "reference" ? "current" : "quiet"} ariaPressed={mode === "reference"} onClick={() => setMode("reference")}>{copy.reference}</Button>
+        <Button className={mode === "reference" ? "current" : "quiet"} ariaPressed={mode === "reference"} onClick={() => chooseMode("reference")}>{copy.reference}</Button>
+        <Button className={mode === "planning" ? "current" : "quiet"} ariaPressed={mode === "planning"} onClick={() => chooseMode("planning")}>{copy.planning}</Button>
       </nav>
       {mode === "reference" ? (
         <div className="author-reference-pane" aria-label={copy.reference}>{reference}</div>
@@ -6442,11 +6710,11 @@ function MemoryRecords({ records, openSource }: { records: Memory[]; openSource:
   useScrollFade(filterNav);
   const filters = [
     ["all", "全部事实"],
-    ["character_knowledge", "角色知识"],
-    ["event_timeline", "时间线"],
-    ["dynamic_state", "当前状态"],
-    ["static_canon", "世界规则"],
-    ["open_thread", "待确认"],
+    ["character_knowledge", memoryTypeLabel("character_knowledge")],
+    ["event_timeline", memoryTypeLabel("event_timeline")],
+    ["dynamic_state", memoryTypeLabel("dynamic_state")],
+    ["static_canon", memoryTypeLabel("static_canon")],
+    ["open_thread", memoryTypeLabel("open_thread")],
   ];
   const visible = records.filter((record) =>
     (filter === "all" || record.memory_type === filter) &&
@@ -6474,7 +6742,7 @@ function MemoryRecords({ records, openSource }: { records: Memory[]; openSource:
               <span role="cell" className="memory-field memory-value" data-label="事实内容"><small>{predicateLabel(record.predicate)}</small>{record.value}</span>
               <Button className="quiet memory-source" ariaLabel={record.source ? `查看 ${record.subject} 的来源` : `${record.subject} 暂无来源`} disabled={!record.source} onClick={(event) => openSource(record, event.currentTarget)}>{record.source ? <>第 {record.source.chapter_number} 章《{record.source.chapter_title || "未命名"}》<Icon name="external" inline /></> : "来源不可用"}</Button>
               <span role="cell" data-label="当前状态" className={`memory-status ${record.valid_to != null ? "retired" : record.requires_source_review ? "pending" : record.review_status === "author_confirmed" ? "confirmed" : "pending"}`}><I>{record.valid_to != null ? "—" : record.requires_source_review ? "○" : "✓"}</I>{record.valid_to != null ? "已失效" : record.requires_source_review ? "来源待复核" : "当前有效"}</span>
-              <details role="cell" className="memory-version-details"><summary>版本详情</summary><p>有效版本：{record.valid_from == null ? "未提供" : `第 ${record.valid_from} 版`}起{record.valid_to == null ? "，至今" : `，至第 ${record.valid_to} 版`}</p><p>故事时间：未提供</p><p>{reviewStatusLabel(record.review_status)} · {memoryTypeLabel(record.memory_type)}</p></details>
+              <details role="cell" className="memory-version-details"><summary>详情</summary><p>{record.source ? `出自第 ${record.source.chapter_number} 章《${record.source.chapter_title || "未命名"}》` : "暂未找到出处"}</p><p>{record.valid_to == null ? "目前仍然有效" : "已被后来的内容取代"}</p><p>{reviewStatusLabel(record.review_status)} · {memoryTypeLabel(record.memory_type)}</p></details>
               <small className="memory-kind">{memoryTypeLabel(record.memory_type)}</small>
             </div>
           ))}
@@ -6565,8 +6833,7 @@ function SourceDrawer({
           <p className="eyebrow">章节来源</p>
           <h2>第 {record.chapterNumber} 章《{record.chapterTitle || "标题未提供"}》</h2>
           <p>
-            {matchingSpan?.source_revision == null && record.sourceRevision == null ? "来源修订未提供" : `原文第 ${matchingSpan?.source_revision ?? record.sourceRevision} 版`}
-            {matchingSpan?.label ? ` · ${matchingSpan.label}` : ""}
+            {matchingSpan?.label ?? "原文片段"}
           </p>
         </header>
         <section className="evidence-section source-excerpt">
@@ -6803,7 +7070,7 @@ function Evidence({
             <div><dt>证据状态</dt><dd>{evidenceStatusLabel(issue.evidence_status)}</dd></div>
           </dl>
         </details>}
-        {!tutorialEvidenceGate && <footer className="drawer-assurance"><Icon name="security" />问题决定不会直接写入事实库；事实候选仍需单独审阅和明确提交。</footer>}
+        {!tutorialEvidenceGate && <footer className="drawer-assurance"><Icon name="security" />处理问题不会改动事实库；事实变化需要你另外确认。</footer>}
       </aside>
     </div>
   );

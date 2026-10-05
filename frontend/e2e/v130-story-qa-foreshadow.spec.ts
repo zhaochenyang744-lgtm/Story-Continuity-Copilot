@@ -101,11 +101,8 @@ test("v1.3.0 bounded Q&A and foreshadows keep author records primary, evidence r
   await expect(qa.getByText("根据当前 Story Memory，这个问题已有可核对的答案。",{exact:true})).toBeVisible();
   const qaRun=qa.locator(".bounded-run").first();
   const savedProject=await data<{current_draft:{revision:number}}>(await page.request.get(`${backendOrigin}/api/projects/${projectId}`));
-  await expect(qaRun).toContainText(`草稿第 ${savedProject.current_draft.revision} 次保存`);
-  await expect(qaRun).toContainText(`原文第 ${project.source_revision} 版`);
-  await expect(qaRun).toContainText(`事实库第 ${project.current_memory_version} 版`);
-  await expect(qaRun).toContainText(`规划第 ${project.author_context_version} 版`);
-  await expect(qaRun).toContainText("伏笔记录第 4 版");
+  await expect(qaRun).toContainText(`依据：第 ${savedProject.current_draft.revision} 次保存的草稿`);
+  await expect(qaRun).toContainText("当时的伏笔记录");
   await expect(qaRun.locator("footer small")).toHaveAttribute("title","检索方式：writing-analysis-lexical-v2-draft-claims");
   await setDraftBody(page, `${await readDraftBody(page)} 保存后旧问答必须立即过期。`);
   await expect(qa.getByRole("button",{name:"提交问题",exact:true})).toBeDisabled();

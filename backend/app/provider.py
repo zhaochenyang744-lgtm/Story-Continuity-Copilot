@@ -112,6 +112,14 @@ class ProviderResult:
 MAX_CLAIM_BASIS_CODEPOINTS = 400
 MAX_ISSUE_REASONING_CODEPOINTS = 800
 CONTINUITY_PROMPT_VERSION = "continuity-review-v24c-explicit-missing-link"
+# The screened pipeline (long-text phase 4): a cheap non-thinking screen picks the sentences worth a
+# careful look, and only those are reviewed, against passages of earlier chapters instead of whole
+# spans. The review keeps every v24c rule and adds SCREENED_REVIEW_RULES.
+CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25g-screened-presupposed-links-bounded-knowledge-rule-category"
+CONTINUITY_SCREEN_PROMPT_VERSION = "continuity-screen-v1"
+CONTINUITY_TRIAGE_PROMPT_VERSION = "continuity-triage-v3-presupposed-links"
+SCREEN_KINDS = ("conflict", "gap", "check")
+SCREEN_MAX_FACTS_PER_FLAG = 3
 
 CONTINUITY_REVIEW_RULES = (
     "Write every author-facing explanation, reasoning, and suggested revision in the dominant language of the bound draft. Preserve proper nouns from the source.",
@@ -155,15 +163,55 @@ CONTINUITY_DECISION_EXAMPLES = (
     {"situation": "A source says a legal name and a pen name are the same writer; source and draft give that writer the same manuscript under different names.", "decision": "Same identity and compatible possession: emit no issue."},
 )
 
+SCREENED_REVIEW_RULES = (
+    "draft.body is the current chapter, or the part of it around the current claims. Judge only current_claims. The other draft sentences are context: they may narrate a transition, or tell who a pronoun or role refers to, and are never reported themselves.",
+    "Each evidence span is one passage of an earlier chapter, not the whole chapter. A passage that does not mention a point neither supports nor contradicts it. When a claim treats such a point as already established earlier (an outcome, a handoff, what someone learned, what a record says), and the supplied passages leave it open, that missing link is insufficient_evidence, not no_issue.",
+    "A claim also asserts what it presupposes. A modifier or attribution such as 'the box that A entrusted to her', 'the official procedure', 'the change caused by X', or 'concluded that the crop survived' asserts that handoff, source, cause or outcome; check it against the passages like a direct statement. When the passages give a different route (a request made to someone else, a second-hand or informal report, a state recorded before the deciding event, two things merely observed together) and nothing supplies the presupposed link, report insufficient_evidence naming it.",
+    "A bounded ignorance and a claim about the same moment overlap. When a passage says someone did not yet know something at a stated time (their first day, a named meal or visit), and the claim says they already knew it at that same time or earlier (the same occasion, 'before arriving', 'from the start'), report a conflict-status issue; a later learning event cannot reconcile them. Likewise a lifelong or innate condition (born without a sense, never, always) holds at every later time: a claim that contradicts it is a conflict-status issue, not a missing learning event.",
+    "When a stated prohibition or requirement (never, must not, under no circumstances, always must) by itself contradicts the claimed action, the category is world_rule, even when the action moves, places or uses an object; object_state is for a contradiction with where an object is or what condition it is in.",
+)
+
+# The triage is a second, evidence-backed screen for sentences the first screen only marked worth a
+# check. It scores each sentence instead of applying the full review contract. On the lf1 dev set
+# (2026-10-04) a non-thinking model given the whole contract escalated 1 sentence in 12 chapters and
+# passed 3 of 12 conflicts, while a yes/no "flag when unsure" triage flagged nine in ten. The engine
+# sends the highest scores, a bounded number per chapter, on to a thinking review.
+CONTINUITY_TRIAGE_RULES = (
+    "You compare draft sentences with passages of earlier chapters, before a careful continuity review that can only look at a few of them. Score every listed sentence once.",
+    "3: a supplied passage states something that cannot be true together with the sentence (a different attribute, name, age, origin, holder, condition, place at the same time, count, date, relationship, knowledge or outcome, or an action a stated rule forbids), or the sentence asserts as settled something a passage states is unknown, unfinished or only planned.",
+    "2: a passage seems to disagree with the sentence but the match is not certain, or the sentence states a specific fact about something the passages describe without supporting that fact, or relies on a handoff, learning, record, authority, cause, outcome or source they do not provide, including one built into a phrase (whose object it is, who gave it, where a method came from, what caused a change, how something turned out).",
+    "1: passages describe the same people or things and agree with the sentence. 0: the passages do not bear on the sentence, or the sentence only narrates new action, speech or feeling in the current scene.",
+    "A change the current chapter itself narrates before the sentence is not a disagreement; the chapter text is context for that. Judge only the listed sentences.",
+    "Return exactly one JSON object with exactly one key, scores: one entry per listed sentence id with an integer score 0-3. Do not use Markdown.",
+)
+
+# A second review is an independent re-review of a key sentence the first review passed. Missing links
+# were the pipeline's weakest point (lf1 dev set, 2026-10-05: insufficient-evidence recall 0.63-0.75),
+# so it is asked to watch for them in particular; conflicts it finds count as well.
+SECOND_REVIEW_RULES = (
+    "Pay particular attention to missing links: does the claim treat as already established an outcome, a handoff, what someone learned or witnessed, an exact measurement, an identity, an authority, or what a record says, that the supplied passages leave open, only estimate, only report second-hand, or describe as planned, requested or attempted? Report that as insufficient_evidence, naming the missing link. Report a conflict when the evidence contradicts the claim. Return no issue only when the passages support the claim or it only narrates something new in the current scene.",
+)
+
+CONTINUITY_SCREEN_RULES = (
+    "You screen a draft chapter before a careful continuity review. The reviewer checks only the sentences you flag, against the full text of earlier chapters; an unflagged sentence is never checked. Missing a problem is far worse than flagging a sentence that turns out fine.",
+    "Flag a sentence when it states or presupposes something about the story world that earlier chapters could already have settled: a character's identity, name, age, appearance, origin or other attribute; kinship, role, rank or relationship; who holds, owns or keeps an object and its condition; where someone is or was at a stated time; what a character knows, learned, saw or was told, and from whom; whether, when, by whom and with what outcome an earlier event happened; counts, dates, durations, distances, prices or ranks; what a record, letter or report says; an action that a world rule permits, forbids or conditions.",
+    "kind conflict: a supplied fact contradicts the sentence, or seems to. kind gap: the sentence settles a point that the facts leave open, unknown, partial or only planned, requested or attempted, or it asserts a handoff, learning or authority that no fact provides. kind check: a specific assertion about an earlier-established person, object, place, event, number or rule that no supplied fact covers. The facts are a partial summary of earlier chapters, not their full text, so such a sentence may still contradict earlier text: flag it.",
+    "Do not flag a sentence that only narrates new action, dialogue, feeling, thought or scenery in the current scene without asserting an earlier-settled fact, a change this chapter itself narrates in an earlier sentence, or a generic remark.",
+    f"In facts list the ids of the supplied facts the sentence relates to, at most {SCREEN_MAX_FACTS_PER_FLAG}, most relevant first; use [] when none applies.",
+    "Return exactly one JSON object with exactly one key, flags. Flag each sentence at most once and use only supplied sentence ids. Return an empty flags array when nothing needs a careful look. Do not use Markdown.",
+)
+
 MEMORY_INITIALIZATION_RULES = (
     "Candidates are suggestions for an author, never canon. Do not claim facts that are not directly stated in the supplied source spans.",
     "Every candidate must contain memory_type, subject, predicate, value, chapter_id, and source_span_id. Copy memory_type exactly from this closed enum: static_canon, dynamic_state, event_timeline, character_knowledge, open_thread. Never put a predicate such as possession, rule, status, relationship, location, identity, affiliation, event_occurred, or knowledge into memory_type.",
     "Use exactly one supplied SourceSpan for each candidate. Do not invent chapter IDs or SourceSpan IDs. Keep subject concise and value directly grounded in its SourceSpan.",
     "predicate is a separate field from memory_type. Copy predicate exactly from controlled_predicates: identity, relationship, affiliation, location, status, rule, possession, event_occurred, or knowledge. For open_thread, still select the closest controlled predicate; open_thread remains an author-review supporting suggestion, not a core candidate.",
     "Use this general mapping: durable canon or world rule -> memory_type static_canon; current possession/location/status -> dynamic_state; an event that occurred -> event_timeline; what a character knows -> character_knowledge; unresolved setup -> open_thread. The corresponding predicate still goes in predicate, never in memory_type.",
-    "Emit at most 4 candidates in this batch. Keep subject, predicate, and value within target lengths of 80, 80, and 240 Unicode characters respectively.",
+    "Emit at most 8 candidates in this batch. Keep subject, predicate, and value within target lengths of 80, 80, and 240 Unicode characters respectively.",
     "Chunk metadata is prompt-only provenance. Never emit chunk_id; source_span_id must always be the supplied original SourceSpan ID.",
-    "Prefer a small, non-duplicative set of durable facts. Omit uncertain inferences.",
+    "Prefer a small, non-duplicative set of durable facts that a later chapter could contradict: identities, relationships, physical attributes, who holds or keeps an object, where someone was at a stated time, events and their dates or outcomes, and what a character does or does not know. Skip mood, scenery, and one-off actions. Omit uncertain inferences.",
+    "Every explicitly stated world rule, law, prohibition, or standing policy (\"anyone\", \"never\", \"must\", \"under no circumstances\") is a static_canon candidate with predicate rule; extract it before lower-priority facts, quoting its condition and any stated exception in value.",
+    "Read the whole of every supplied span, including its last paragraphs; a fact near the end counts as much as one near the start.",
 )
 
 MEMORY_DELTA_RULES = (
@@ -174,6 +222,7 @@ MEMORY_DELTA_RULES = (
     "For invalidated_fact, affected_memory_id must be exactly one supplied confirmed_memory id; memory_type, subject, predicate, and value must repeat that affected fact exactly; invalidation_reason must explain what current manuscript evidence makes it no longer valid. Do not invent an opposite fact.",
     "predicate must be exactly one value from controlled_predicates. Choose the closest semantic value; open_thread is still supporting and never a core candidate.",
     "Do not emit unsupported inferences, previous-source IDs, Author Context, author plans, alignment analysis, or a priority. Do not emit duplicate candidates or multiple candidates for one affected Memory record. The service decides core versus supporting.",
+    "Emit at most 8 candidates. Prefer facts a later chapter could contradict (identities, relationships, attributes, possession, location at a stated time, events and outcomes, knowledge) and every explicitly stated world rule or prohibition as static_canon with predicate rule. Read every supplied span to its end; a span may be one part of a longer chapter.",
 )
 
 ANALYSIS_LAYER_RULES = (
@@ -190,8 +239,16 @@ MAX_TOTAL_BUDGET_UNITS = 8000
 MAX_INPUT_BUDGET_UNITS = 6000
 MAX_OUTPUT_BUDGET_UNITS = 2000
 MEMORY_BATCH_TARGET_BUDGET_UNITS = 5800
-MAX_MEMORY_CANDIDATES_PER_BATCH = 4
+MAX_MEMORY_CANDIDATES_PER_BATCH = 8
 INPUT_BUDGET_ALGORITHM = "mixed-char-estimator-v1"
+# A screen carries a whole chapter part plus its related facts, and a screened review carries the
+# chapter as context plus passages for each claim. Input is cheap next to thinking output, so these
+# requests get a larger estimate allowance than the original 6,000 units.
+SCREEN_INPUT_BUDGET_UNITS = 16000
+SCREEN_MAX_OUTPUT_TOKENS = 4000
+SCREENED_REVIEW_INPUT_BUDGET_UNITS = 20000
+SCREENED_REVIEW_REPAIR_INPUT_BUDGET_UNITS = 24000
+TRIAGE_INPUT_BUDGET_UNITS = 20000
 
 
 def estimate_prompt_budget_units(prompt: str) -> int:
@@ -237,11 +294,42 @@ def memory_initialization_prompt(request: dict[str, Any]) -> str:
     return json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
 
 
+def continuity_screen_prompt(request: dict[str, Any]) -> str:
+    return json.dumps({
+        "task": "Screen the draft sentences for a careful continuity review. Return exactly one JSON object with exactly one top-level key, flags.",
+        "prompt_version": CONTINUITY_SCREEN_PROMPT_VERSION,
+        "rules": list(CONTINUITY_SCREEN_RULES),
+        "facts": request["facts"],
+        "sentences": request["sentences"],
+        "output_schema": {"flags": [{"id": "supplied sentence id", "kind": "|".join(SCREEN_KINDS), "facts": ["supplied fact id"]}]},
+        **({"screen_repair": {"reason_code": request["screen_repair"].get("reason_code"),
+                              "instruction": "The previous response was rejected by the local validator. Screen the same sentences again and return flags exactly in output_schema, using only supplied sentence and fact ids."}}
+           if isinstance(request.get("screen_repair"), dict) else {}),
+    }, ensure_ascii=False, separators=(",", ":"))
+
+
+def continuity_triage_prompt(request: dict[str, Any]) -> str:
+    return json.dumps({
+        "task": "Score the draft sentences against the passages. Return exactly one JSON object with exactly one top-level key, scores.",
+        "prompt_version": CONTINUITY_TRIAGE_PROMPT_VERSION,
+        "rules": list(CONTINUITY_TRIAGE_RULES),
+        "chapter": request["chapter"],
+        "passages": request["passages"],
+        "sentences": request["sentences"],
+        "output_schema": {"scores": [{"id": "supplied sentence id", "score": "integer 0-3"}]},
+        **({"triage_repair": {"reason_code": request["triage_repair"].get("reason_code"),
+                              "instruction": "The previous response was rejected by the local validator. Score the same sentences again, one integer 0-3 for every supplied sentence id, exactly in output_schema."}}
+           if isinstance(request.get("triage_repair"), dict) else {}),
+    }, ensure_ascii=False, separators=(",", ":"))
+
+
 def continuity_prompt(request: dict[str, Any]) -> str:
+    screened = request.get("pipeline") == "screened"
     payload = {
             "task": "Review continuity only. Return exactly one JSON object with exactly two top-level keys, issues and claim_verdicts. Do not use Markdown or include any other top-level key.",
-            "prompt_version": CONTINUITY_PROMPT_VERSION,
-            "rules": list(CONTINUITY_REVIEW_RULES), "decision_examples": list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
+            "prompt_version": CONTINUITY_SCREENED_PROMPT_VERSION if screened else CONTINUITY_PROMPT_VERSION,
+            "rules": list(CONTINUITY_REVIEW_RULES) + (list(SCREENED_REVIEW_RULES) if screened else []) + (list(SECOND_REVIEW_RULES) if request.get("second_review") else []),
+            "decision_examples": list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
             # Each span appears once per request; a claim lists the ids it may cite. Repeating the
             # excerpt under every claim put 10 distinct spans into 113 slots on one real chapter.
             "evidence_spans": list({
@@ -314,8 +402,21 @@ def author_material_comparison_prompt(request: dict[str, Any]) -> str:
 
 def request_prompt_and_budget(request: dict[str, Any]) -> tuple[str, int]:
     task=request.get("task")
-    prompt = memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else context_brief_prompt(request) if task == "context_brief" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else story_qa_prompt(request) if task == "story_qa" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else revision_plan_prompt(request) if task == "revision_plan" else author_material_comparison_prompt(request) if task == "author_material_comparison" else continuity_prompt(request)
+    prompt = continuity_screen_prompt(request) if task == "continuity_screen" else continuity_triage_prompt(request) if task == "continuity_triage" else memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else context_brief_prompt(request) if task == "context_brief" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else story_qa_prompt(request) if task == "story_qa" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else revision_plan_prompt(request) if task == "revision_plan" else author_material_comparison_prompt(request) if task == "author_material_comparison" else continuity_prompt(request)
     return prompt, estimate_prompt_budget_units(prompt)
+
+
+def input_budget_units_for(request: dict[str, Any], repair_budget_units: int | None = None) -> int:
+    """The estimate allowance of one request: screens and screened reviews get larger ones."""
+    if request.get("task") == "continuity_screen":
+        return SCREEN_INPUT_BUDGET_UNITS
+    if request.get("task") == "continuity_triage":
+        return TRIAGE_INPUT_BUDGET_UNITS
+    if request.get("task") is None and request.get("pipeline") == "screened":
+        return SCREENED_REVIEW_REPAIR_INPUT_BUDGET_UNITS if "contract_repair" in request else SCREENED_REVIEW_INPUT_BUDGET_UNITS
+    if request.get("task") is None and "contract_repair" in request and repair_budget_units:
+        return repair_budget_units
+    return MAX_INPUT_BUDGET_UNITS
 
 
 def parse_json_content(content: Any) -> Any:
@@ -356,6 +457,12 @@ REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS = 9000
 REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT = "medium"
 REVIEW_THINKING_EFFORTS = ("high", REVIEW_THINKING_TRUNCATION_FALLBACK_EFFORT, "disabled")
 REVIEW_THINKING_RUN_TOKEN_BUDGET = 50000
+# A screened (long-text) thinking review carries one sentence. On the lf1 dev set (2026-10-04) most
+# single-sentence answers that finished thought for under 8,000 tokens, a runaway at high effort usually
+# ran away again at medium, and runaways were about a third of the check's cost. So it is capped lower,
+# falls back straight to a non-thinking answer, and does not lower the effort of the run's other reviews.
+SCREENED_REVIEW_MAX_OUTPUT_TOKENS = 8000
+SCREENED_REVIEW_EFFORTS = ("high", "disabled")
 REVIEW_THINKING_TIMEOUT_SECONDS = 90
 # Review batches of one check may be dispatched in parallel. Off (1) unless the deployment sets it, so
 # dev and eval harnesses keep their sequential, reproducible dispatch order.
@@ -428,17 +535,16 @@ class DeepSeekProvider:
         return REVIEW_THINKING_REPAIR_INPUT_BUDGET_UNITS if self.review_thinking == "high" else None
 
     def input_budget_for(self, request: dict[str, Any]) -> int:
-        if request.get("task") is None and "contract_repair" in request and self.continuity_repair_input_budget_units:
-            return self.continuity_repair_input_budget_units
-        return MAX_INPUT_BUDGET_UNITS
+        return input_budget_units_for(request, self.continuity_repair_input_budget_units)
 
     def request_body(self, request: dict[str, Any], prompt: str) -> dict[str, Any]:
         body = {"model": self.model, "messages": [{"role": "user", "content": prompt}],
                 "response_format": {"type": "json_object"}}
         if request.get("task") is None and self.review_thinking == "high":
-            return {**body, "thinking": {"type": "enabled"}, "reasoning_effort": "high",
-                    "max_tokens": REVIEW_THINKING_MAX_OUTPUT_TOKENS}
-        return {**body, "thinking": {"type": "disabled"}, "temperature": 0, "max_tokens": self.max_output_tokens}
+            cap = SCREENED_REVIEW_MAX_OUTPUT_TOKENS if request.get("pipeline") == "screened" else REVIEW_THINKING_MAX_OUTPUT_TOKENS
+            return {**body, "thinking": {"type": "enabled"}, "reasoning_effort": "high", "max_tokens": cap}
+        max_tokens = SCREEN_MAX_OUTPUT_TOKENS if request.get("task") in ("continuity_screen", "continuity_triage") else self.max_output_tokens
+        return {**body, "thinking": {"type": "disabled"}, "temperature": 0, "max_tokens": max_tokens}
 
     def _memory_initialization_prompt(self, request: dict[str, Any]) -> str:
         return memory_initialization_prompt(request)
@@ -459,16 +565,18 @@ class DeepSeekProvider:
         # Runaway thinking can fill the whole output cap. Step down one effort per length stop, down to
         # a non-thinking answer, and report the combined usage of every dispatch. Within one review run
         # the stepped-down effort sticks (see review_effort_scope).
-        run_effort = _review_effort.get()
+        screened = request.get("pipeline") == "screened"
+        efforts = SCREENED_REVIEW_EFFORTS if screened else REVIEW_THINKING_EFFORTS
+        run_effort = None if screened else _review_effort.get()
         effort = (run_effort or {}).get("effort", "high")
         truncated: list[ProviderInvalidJson] = []
         while True:
             try:
                 result = self._send(self._review_body(body, effort))
             except ProviderInvalidJson as error:
-                if error.finish_reason == "length" and effort != REVIEW_THINKING_EFFORTS[-1]:
+                if error.finish_reason == "length" and effort != efforts[-1]:
                     truncated.append(error)
-                    effort = REVIEW_THINKING_EFFORTS[REVIEW_THINKING_EFFORTS.index(effort) + 1]
+                    effort = efforts[efforts.index(effort) + 1]
                     if run_effort is not None:
                         run_effort["effort"] = effort
                     continue

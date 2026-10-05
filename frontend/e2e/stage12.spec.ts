@@ -62,7 +62,7 @@ async function prepareIncrementalProject(page: Page, marker = "") {
   const initialization = page.getByRole("form", { name: "事实库初始化审核" });
   await initialization
     .locator("article.memory-init-candidate")
-    .filter({ hasText: "核心候选（必须决定）" })
+    .filter({ hasText: "重要事实（需要决定）" })
     .getByLabel("接受（写入第 1 版事实库）")
     .check();
   const initializationCommitted = page.waitForResponse(

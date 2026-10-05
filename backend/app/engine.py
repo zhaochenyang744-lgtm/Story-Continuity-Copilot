@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import contextvars
+import os
 import re
+import threading
 from concurrent.futures import FIRST_COMPLETED, Future, ThreadPoolExecutor, wait
 from typing import Any
 
@@ -11,6 +13,9 @@ from .memory_contract import CONTROLLED_PREDICATES, predicate_label
 from .provider import MAX_CLAIM_BASIS_CODEPOINTS, MAX_ISSUE_REASONING_CODEPOINTS
 from .provider import ProviderDispatchDenied
 from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget, review_effort_scope
+from .provider import CONTINUITY_SCREENED_PROMPT_VERSION, CONTINUITY_SCREEN_PROMPT_VERSION, CONTINUITY_TRIAGE_PROMPT_VERSION, input_budget_units_for
+from . import review_screening as screening
+from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION
 
 ALLOWED_STATUS={"conflict","insufficient_evidence"}
 ALLOWED_CATEGORY={"attribute","location_action","timeline","character_knowledge","object_state","relationship","world_rule","event_status"}
@@ -21,7 +26,11 @@ REVIEW_ACTIONS={"edit","apply_suggestion","keep_intentional","false_positive"}
 EVIDENCE_CHAIN_ROLES={"prior_state","current_context","missing_link"}
 MAX_RUN_TOKENS=8000
 PROMPT_VERSION=CONTINUITY_PROMPT_VERSION
-MEMORY_PROMPT_VERSION="memory-initialization-v9-field-contract"
+# The screened pipeline (review_screening.py) is the default. CONTINUITY_REVIEW_PIPELINE=legacy is the
+# temporary rollback to per-sentence review; a run keeps the pipeline recorded when it was created.
+REVIEW_PIPELINE_ENV="CONTINUITY_REVIEW_PIPELINE"
+SCREENED_PROMPT_VERSION=f"{CONTINUITY_SCREENED_PROMPT_VERSION}+{CONTINUITY_SCREEN_PROMPT_VERSION}+{CONTINUITY_TRIAGE_PROMPT_VERSION}"
+MEMORY_PROMPT_VERSION="memory-initialization-v10-whole-chapter-rules"
 RETRIEVAL_METHOD_VERSION="bounded-lexical-v4-longform"
 RELATED_MEMORY_LIMIT=15
 CONTINUITY_EVIDENCE_LIMIT=3
@@ -41,9 +50,15 @@ PROVIDER_ATTEMPT_QUOTA_EXCEEDED="provider_attempt_quota_exceeded"
 # A single claim whose full evidence and Memory do not fit the input budget (the v21 rules left the
 # long-form worst case at 6,324 of 6,000 units) is sent with these tighter bounds instead of failing.
 SINGLE_CLAIM_FALLBACK_BOUNDS=((CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS,RELATED_MEMORY_LIMIT),(400,12),(300,10),(200,8))
+# The screened equivalent: fewer passages, then fewer Memory rows.
+# A screened review sees passages of the source text itself, so it carries fewer Memory rows.
+SCREENED_RELATED_MEMORY_LIMIT=10
+SCREENED_SINGLE_CLAIM_FALLBACK_BOUNDS=((screening.VERIFY_MAX_PASSAGES,SCREENED_RELATED_MEMORY_LIMIT),(4,8),(2,6),(1,5))
 MEMORY_DELTA_RELATED_MEMORY_LIMIT=20
-MEMORY_DELTA_SOURCE_LIMIT=12
-MEMORY_DELTA_SOURCE_EXCERPT_CODEPOINTS=1600
+# A batch may return MAX_MEMORY_CANDIDATES_PER_BATCH facts, so batches are also capped by source text
+# (about one ordinary chapter): packing several chapters into one request let the first crowd out the
+# rest (lf1 dev set, 2026-10-04: chapter 2 kept 3 facts after chapter 1 took 5 of the 8).
+MEMORY_BATCH_TARGET_SOURCE_CHARS=2600
 SOURCE_CHUNK_METHOD_VERSION="source-chunk-v4-5800"
 MAX_CHUNK_OVERLAP_CODEPOINTS=200
 MEMORY_SCHEMA_REPAIR_MAX_ATTEMPTS=5
@@ -230,10 +245,19 @@ def _full_temporal_scope_supports_conflict(claim_text: str, evidence_text: str, 
     claim_days,evidence_days=days(claim_scope),days(evidence_scope)
     if len(claim_days)>1 or len(evidence_days)>1 or (claim_days or evidence_days) and claim_days!=evidence_days:return False
     if not _explicit_temporal_overlap(claim_scope,evidence_scope):return False
-    clock=r"(?:\d{1,2}|[一二三四五六七八九十两]+)\s*(?:点|时)|\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b|(?<![\d:])\d{1,2}:\d{2}(?![\d:])"
+    # 时 followed by 段/间/候/期/刻 is a word ("这一时段", "一时间"), not a clock.
+    clock=r"(?:\d{1,2}|[一二三四五六七八九十两]+)\s*(?:点|时(?![段间候期刻]))|\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b|(?<![\d:])\d{1,2}:\d{2}(?![\d:])"
     def clock_values(value:str)->set[str]:
         return {match.group().replace(" ","").translate(str.maketrans("一二三四五六七八九", "123456789")) for match in re.finditer(clock,value,re.IGNORECASE)}
-    if len(clock_values(claim_scope))>1 or len(clock_values(evidence_scope))>1:return False
+    claim_clocks=clock_values(claim_scope)
+    if len(claim_clocks)>1:return False
+    # An evidence sentence may state a span ("十六时……签到了十七时才离开"); it still qualifies when its
+    # anchor is the sentence's opening clock and that is the claim's own clock (lf1 dev set, 2026-10-04).
+    # A later clock in the sentence ("直到十九点才获知") marks a transition and never qualifies.
+    if len(clock_values(evidence_scope))>1:
+        first=re.search(clock,evidence_scope,re.IGNORECASE)
+        opening=clock_values(first.group()) if first else set()
+        if not (claim_clocks and claim_clocks==opening and opening<=clock_values(evidence_anchor)):return False
     calendar=r"(?:\d{1,4}|[一二三四五六七八九十百零两]+)\s*(?:年|月|日|号)"
     shared_scope=r"同一(?:天|夜|晚|时刻|时间)|与此同时|同时|\b(?:same\s+(?:day|night|time|moment)|simultaneously)\b"
     if re.search(clock,claim_anchor,re.IGNORECASE) and re.search(clock,evidence_anchor,re.IGNORECASE) and not claim_days:
@@ -261,7 +285,8 @@ def _confirmed_temporal_failure(raw: dict[str, Any], claim_text: str, evidence: 
     if temporal.get("relation") == "timeless_rule":
         related_ids = {memory_id for item in evidence for memory_id in item.get("related_memory_ids", [])
                        if isinstance(memory_id, str) and memory_id in memory}
-        cited_ids = {item["span_id"] for item in evidence}
+        # A screened review cites passages; the rule's SourceSpan is the one each passage was cut from.
+        cited_ids = {item.get("source_span_id", item["span_id"]) for item in evidence}
         # static_canon is by definition durable canon or a world rule. Authors and legacy seeds use
         # free-form predicates (e.g. entry_rule), so the predicate is not required to be "rule";
         # requiring it sent every such conflict into an unsatisfiable repair.
@@ -295,6 +320,10 @@ def _memory_delta_schema() -> dict[str, Any]:
     return {"candidates":[{"change_kind":"new_fact|changed_fact|invalidated_fact","affected_memory_id":"null for new_fact; supplied confirmed Memory id for changed_fact or invalidated_fact","memory_type":"allowed memory type","subject":"string, at most 80 characters","predicate":"controlled predicate","value":"new/changed fact value, at most 240 characters; exact current value for invalidated_fact","invalidation_reason":"null for new_fact/changed_fact; non-empty reason for invalidated_fact, at most 240 characters","chapter_id":"source chapter id","source_span_id":"supplied current-revision SourceSpan id"}]}
 
 
+def _source_chars(sources: list[dict[str, Any]]) -> int:
+    return sum(len(str(source.get("body",""))) for source in sources)
+
+
 def _aggregate(results: list[Any]) -> dict[str, Any]:
     def total(field: str):
         values=[getattr(result,field) for result in results]
@@ -307,6 +336,14 @@ def _aggregate_attempt_failure(results: list[Any], error: Exception) -> dict[str
     if getattr(error,"usage_unknown",False):
         return {field:None for field in metrics}
     return metrics
+
+
+def _aggregate_or_unknown(spent: list[Any], failed: dict[str, Any]) -> dict[str, Any]:
+    """Usage of a check whose stage failed: everything spent, unknown if the failed stage's usage was."""
+    totals = _aggregate(spent)
+    if failed.get("_results") and any(failed.get(field) is None for field in ("input_tokens", "output_tokens")):
+        return {field: None for field in totals}
+    return totals
 
 
 def _invalid_json_aggregate(results: list[Any], error: ProviderInvalidJson) -> dict[str, Any]:
@@ -366,8 +403,12 @@ def _share_batch_excerpts(claims:list[dict[str,Any]])->list[dict[str,Any]]:
 
 class ContinuityEngine:
     def __init__(self,provider:ProviderPort): self.provider=provider
+    @staticmethod
+    def pipeline()->str:
+        return "legacy" if os.environ.get(REVIEW_PIPELINE_ENV,"").strip().lower()=="legacy" else "screened"
     def provenance(self)->dict[str,str]:
-        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":PROMPT_VERSION,"schema_version":"continuity-issue-v7-repair-diagnostics","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
+        screened=self.pipeline()=="screened"
+        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":SCREENED_PROMPT_VERSION if screened else PROMPT_VERSION,"schema_version":"continuity-issue-v7-repair-diagnostics","retrieval_method_version":SCREENED_RETRIEVAL_METHOD_VERSION if screened else RETRIEVAL_METHOD_VERSION}
 
     def _selected_evidence(self,claim:dict[str,Any],memory:list[dict[str,Any]],excerpt_limit:int=CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS)->list[dict[str,Any]]:
         unique={span["id"]:span for span in claim["allowed_evidence"]}
@@ -391,38 +432,62 @@ class ContinuityEngine:
         return selected
 
     def _related_memory(self, claim: dict[str, Any], memory: list[dict[str, Any]], limit: int = RELATED_MEMORY_LIMIT) -> list[dict[str, Any]]:
-        terms=_claim_terms(claim["text"]); evidence_ids={span["id"] for span in claim["allowed_evidence"]}; ranked=[]
+        terms=_claim_terms(claim["text"]); evidence_ids={span.get("source_span_id",span["id"]) for span in claim["allowed_evidence"]}; ranked=[]
+        cited=claim.get("screen_facts") or []
         for item in memory:
             text=" ".join(str(item.get(key,"")) for key in ("subject","predicate","value"))
-            score=10*int(item.get("source_span_id") in evidence_ids)+_relevance_score(terms,text)
+            # Facts the screen tied to this claim come first.
+            score=100*int(item["id"] in cited)+10*int(item.get("source_span_id") in evidence_ids)+_relevance_score(terms,text)
             if score:ranked.append((score,item))
         return [item for _,item in sorted(ranked,key=lambda row:(-row[0],_memory_sort_key(row[1])))[:limit]]
 
-    def _request(self, claims: list[dict[str, Any]], memory: list[dict[str, Any]], draft: dict[str, Any],
-                 bounds: tuple[int, int] = (CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS, RELATED_MEMORY_LIMIT)) -> dict[str, Any]:
-        excerpt_limit,memory_limit=bounds
+    def _request(self, claims: list[dict[str, Any]], data: dict[str, Any],
+                 bounds: tuple[int, int] | None = None) -> dict[str, Any]:
+        if data.get("pipeline")=="screened":return self._screened_request(claims,data,bounds or SCREENED_SINGLE_CLAIM_FALLBACK_BOUNDS[0])
+        memory,draft=data["memory"],data["draft"]
+        excerpt_limit,memory_limit=bounds or (CONTINUITY_EVIDENCE_EXCERPT_CODEPOINTS, RELATED_MEMORY_LIMIT)
         selected_claims=_share_batch_excerpts([{**claim,"allowed_evidence":self._selected_evidence(claim,memory,excerpt_limit)} for claim in claims])
         used={item["id"]:item for claim in selected_claims for item in self._related_memory(claim,memory,memory_limit)}
         return {"draft":{"id":draft["id"],"revision":draft["revision"],"body":"\n".join(claim["text"] for claim in selected_claims)},"claims":selected_claims,"memory":[used[key] for key in sorted(used)],"output_schema":_continuity_schema()}
 
+    def _screened_request(self, claims: list[dict[str, Any]], data: dict[str, Any], bounds: tuple[int, int]) -> dict[str, Any]:
+        """Flagged claims of one context with their passages; the context itself is the draft text shown."""
+        passage_limit,memory_limit=bounds
+        before=min(screening.before_chapter(claim) for claim in claims)
+        chapters=data["memory_chapters"]
+        # Facts from the checked chapter or later never reach the review.
+        memory=[item for item in data["memory"] if chapters.get(item["id"],0)<before]
+        selected=[{**claim,"allowed_evidence":claim["allowed_evidence"][:passage_limit]} for claim in claims]
+        used={item["id"]:item for claim in selected for item in self._related_memory(claim,memory,memory_limit)}
+        full=data["contexts"][claims[0]["context"]]
+        body=screening.context_window(full,[claim["text"] for claim in claims])
+        return {"pipeline":"screened",**({"second_review":True} if data.get("second_review") else {}),"draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":selected,
+                "memory":[{**used[key],"chapter_number":chapters.get(key)} for key in sorted(used,key=lambda key:_memory_sort_key(used[key]))],"output_schema":_continuity_schema(),"full_draft_body":full}
+
+    def _fits(self,request:dict[str,Any])->bool:
+        return request_prompt_and_budget(request)[1] <= input_budget_units_for(request)
+
     def _single_claim_batch(self,claim:dict[str,Any],data:dict[str,Any])->dict[str,Any]:
         """One claim alone, with tighter excerpts and fewer Memory rows only when the full bounds do not fit."""
-        for bounds in SINGLE_CLAIM_FALLBACK_BOUNDS:
-            request=self._request([claim],data["memory"],data["draft"],bounds)
-            if request_prompt_and_budget(request)[1] <= MAX_INPUT_BUDGET_UNITS:return request
+        for bounds in (SCREENED_SINGLE_CLAIM_FALLBACK_BOUNDS if data.get("pipeline")=="screened" else SINGLE_CLAIM_FALLBACK_BOUNDS):
+            request=self._request([claim],data,bounds)
+            if self._fits(request):return request
         raise InputBudgetExceeded()
 
     def _batches(self,data:dict[str,Any])->list[dict[str,Any]]:
         batches=[]; current=[]
         for claim in data["claims"]:
-            candidate=current+[claim]; request=self._request(candidate,data["memory"],data["draft"])
-            if len(candidate)<=CONTINUITY_MAX_CLAIMS_PER_BATCH and request_prompt_and_budget(request)[1] <= MAX_INPUT_BUDGET_UNITS:
+            # A screened batch shows one context, so claims of different chapters never share one.
+            if current and current[-1].get("context")!=claim.get("context"):
+                batches.append(self._request(current,data)); current=[]
+            candidate=current+[claim]; request=self._request(candidate,data)
+            if len(candidate)<=(data.get("max_claims_per_batch") or CONTINUITY_MAX_CLAIMS_PER_BATCH) and self._fits(request):
                 current=candidate; continue
             if current:
-                batches.append(self._request(current,data["memory"],data["draft"])); current=[claim]
-                if request_prompt_and_budget(self._request(current,data["memory"],data["draft"]))[1] <= MAX_INPUT_BUDGET_UNITS:continue
+                batches.append(self._request(current,data)); current=[claim]
+                if self._fits(self._request(current,data)):continue
             batches.append(self._single_claim_batch(claim,data)); current=[]
-        if current:batches.append(self._request(current,data["memory"],data["draft"]))
+        if current:batches.append(self._request(current,data))
         return batches
 
     def _repair_diagnostics(self,payload:Any,data:dict[str,Any])->list[dict[str,Any]]:
@@ -449,11 +514,12 @@ class ContinuityEngine:
             for item in raw_evidence:
                 if isinstance(item,dict) and isinstance(item.get("span_id"),str) and item["span_id"] in allowed:
                     span=allowed[item["span_id"]]
-                    bound_evidence.append({**item,"excerpt":span.get("prompt_excerpt",span["body"]),
+                    bound_evidence.append({**item,"excerpt":span.get("prompt_excerpt",span["body"]),"source_span_id":span.get("source_span_id",span["id"]),
                                            "related_memory_ids":item.get("related_memory_ids") if isinstance(item.get("related_memory_ids"),list) else []})
             temporal_failure=_confirmed_temporal_failure(raw,claim["text"],bound_evidence,mem)
-            # Missing/unresolvable evidence is a binding failure, not a proved time mismatch.
-            if temporal_failure and bound_evidence:codes.append(temporal_failure)
+            # Missing/unresolvable evidence is a binding failure, not a proved time mismatch. The screened
+            # pipeline settles an unproved time or rule locally (see validate), never by a repair.
+            if temporal_failure and bound_evidence and data.get("pipeline")!="screened":codes.append(temporal_failure)
             if codes:
                 evidence_excerpts=[]
                 for evidence in raw_evidence:
@@ -465,15 +531,275 @@ class ContinuityEngine:
 
     def execute(self,data:dict[str,Any])->dict[str,Any]:
         # Every dispatch of this review run, including repairs, shares one stepped-down thinking effort.
-        with review_effort_scope():return self._execute(data)
+        with review_effort_scope():
+            return self._execute_screened(data) if data.get("pipeline")=="screened" else self._execute(data)
 
-    def _execute(self,data:dict[str,Any])->dict[str,Any]:
+    def _execute_screened(self,data:dict[str,Any])->dict[str,Any]:
+        """Screen the claims, then review only the flagged ones against passages of earlier chapters."""
         if not self.provider.available:return {"status":"failed","error_code":"provider_unavailable","retryable":True}
+        claims=data["claims"]; index=screening.build_index(data["sources"],data["memory"])
+        chapters=screening.memory_chapters(data["sources"],data["memory"])
+        summary={"claims":len(claims),"screened":len(claims)>screening.SCREEN_MIN_CLAIMS,"parts":0,"fallback_parts":0,"flagged":0,"reviewed":0}
+        screen_results:list[Any]=[]
+        if summary["screened"]:
+            flags=self._screen(claims,index,data["memory"],chapters,screen_results,summary)
+            if "error" in flags:return self._failure(flags["error"],screen_results)
+            added=screening.attribute_contacts([claim for claim in claims if claim["id"] not in flags],data["memory"],chapters)
+            flags.update({claim_id:{"kind":"check","facts":[]} for claim_id in added})
+            summary["safety_net"]=len(added)
+            capped=screening.capped_key_claims(claims,{claim_id:flag["kind"] for claim_id,flag in flags.items()})
+            flags.update({claim_id:{**flags[claim_id],"kind":"check"} for claim_id in capped})
+            summary["key_capped"]=len(capped)
+        else:
+            # A short draft is reviewed whole, every sentence with thinking.
+            flags={claim["id"]:{"kind":"unscreened","facts":[]} for claim in claims}
+        summary["flagged"]=len(flags)
+        evidence={claim["id"]:screening.claim_evidence(claim,index,flags[claim["id"]]["facts"]) for claim in claims if claim["id"] in flags}
+        # A flagged sentence with no earlier passage at all has nothing to be reviewed against.
+        reviewed=[{**claim,"allowed_evidence":evidence[claim["id"]],"screen_facts":flags[claim["id"]]["facts"]} for claim in claims if evidence.get(claim["id"])]
+        summary["reviewed"]=len(reviewed)
+        base={**data,"memory_chapters":chapters}
+        triaged=[claim for claim in reviewed if flags[claim["id"]]["kind"]=="check"]
+        results=list(screen_results); escalated:set[str]=set()
+        summary.update(triaged=len(triaged),triage_fallback_batches=0,escalated=0,deep_reviewed=0)
+        if summary["screened"] and not screening.DOUBLE_REVIEW:
+            result,escalated=self._review_overlapped(reviewed,triaged,flags,base,results,summary)
+            deep=[claim for claim in reviewed if flags[claim["id"]]["kind"]!="check" or claim["id"] in escalated]
+            paths={claim["id"]:("escalated" if claim["id"] in escalated else "deep") for claim in deep}
+            paths.update({claim["id"]:"triage" for claim in triaged if claim["id"] not in escalated})
+            return {**result,"retrieval_traces":screening.retrieval_traces(claims,{claim["id"]:claim["allowed_evidence"] for claim in reviewed},flags,True,paths),
+                    "retrieval_method_version":SCREENED_RETRIEVAL_METHOD_VERSION,"screening":summary}
+        if triaged:
+            # What the triage flags gets a thinking review; what it passes is settled.
+            escalated=self._triage(triaged,data["contexts"],results,summary)
+            if isinstance(escalated,dict):return self._failure(escalated["error"],results)
+            summary["escalated"]=len(escalated)
+        deep=[claim for claim in reviewed if flags[claim["id"]]["kind"]!="check" or claim["id"] in escalated]
+        summary["deep_reviewed"]=len(deep)
+        # A short draft keeps the per-sentence batching (and the quota preflight's arithmetic) of before.
+        limit=screening.DEEP_MAX_CLAIMS if summary["screened"] else CONTINUITY_MAX_CLAIMS_PER_BATCH
+        # Key sentences (a conflict or gap at the screen) are reviewed twice, in the same parallel run.
+        passes=[{**claim,"id":claim["id"]+screening.SECOND_PASS_SUFFIX} for claim in deep if flags[claim["id"]]["kind"] in screening.DEEP_KINDS] if summary["screened"] and screening.DOUBLE_REVIEW else []
+        summary["double_reviewed"]=len(passes)
+        result=self._execute({**base,"claims":deep+passes,"max_claims_per_batch":limit,"settled_by_screen":summary["screened"]},prior_results=results,keep_results=True)
+        if passes and result["status"]=="completed":
+            result=self._merge_passes(result,{claim["id"] for claim in deep if claim["id"]+screening.SECOND_PASS_SUFFIX in {p["id"] for p in passes}},
+                                      {claim["id"]:index for index,claim in enumerate(claims)},summary)
+        if screening.SECOND_LOOK and not passes and summary["screened"] and result["status"]=="completed":
+            result=self._second_look(result,deep,flags,base,summary)
+        result={key:value for key,value in result.items() if key!="_results"}
+        paths={claim["id"]:("escalated" if claim["id"] in escalated else "deep") for claim in deep}
+        paths.update({claim["id"]:"triage" for claim in triaged if claim["id"] not in escalated})
+        result={**result,"retrieval_traces":screening.retrieval_traces(claims,{claim["id"]:claim["allowed_evidence"] for claim in reviewed},flags,summary["screened"],paths),
+                "retrieval_method_version":SCREENED_RETRIEVAL_METHOD_VERSION,"screening":summary}
+        return result
+
+    def _review_overlapped(self,reviewed:list[dict[str,Any]],triaged:list[dict[str,Any]],flags:dict[str,Any],base:dict[str,Any],
+                           results:list[Any],summary:dict[str,Any])->tuple[dict[str,Any],set[str]]:
+        """Key sentences' reviews (and second reviews) run while the triage runs, in one shared pool.
+
+        Waiting for the triage before any thinking review, and for every first review before any second
+        review, put two or three slow stages end to end on the slowest chapters (lf1 dev set, 2026-10-05:
+        p90 up to 115 s). The key-sentence stage runs in its own thread; the triage and then the
+        escalated sentences' reviews run here; every dispatch goes through the same pool, so a check
+        never has more requests in flight than its concurrency.
+        """
+        key=[claim for claim in reviewed if flags[claim["id"]]["kind"]!="check"]
+        concurrency=getattr(self.provider,"continuity_batch_concurrency",None)
+        concurrency=concurrency if isinstance(concurrency,int) and not isinstance(concurrency,bool) and concurrency>1 else 1
+        pool=ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-review") if concurrency>1 else None
+        stage:dict[str,Any]={}
+        def key_stage()->None:
+            outcome=self._execute({**base,"claims":key,"max_claims_per_batch":screening.DEEP_MAX_CLAIMS,"settled_by_screen":True},keep_results=True,pool=pool)
+            if screening.SECOND_LOOK and outcome["status"]=="completed":
+                outcome=self._second_look(outcome,key,flags,base,summary,pool=pool)
+            stage["key"]=outcome
+        escalated:set[str]=set(); triage_error=None
+        try:
+            worker=threading.Thread(target=contextvars.copy_context().run,args=(key_stage,),name="continuity-key-stage")
+            worker.start()
+            try:
+                if triaged:
+                    found=self._triage(triaged,base["contexts"],results,summary,pool=pool)
+                    if isinstance(found,dict):triage_error=found["error"]
+                    else:escalated=found; summary["escalated"]=len(escalated)
+                if triage_error is None and escalated:
+                    stage["escalated"]=self._execute({**base,"claims":[claim for claim in triaged if claim["id"] in escalated],"max_claims_per_batch":screening.DEEP_MAX_CLAIMS,"settled_by_screen":True},keep_results=True,pool=pool)
+            finally:
+                worker.join()
+        finally:
+            if pool is not None:pool.shutdown(wait=True)
+        summary.update(deep_reviewed=len(key)+len(escalated),double_reviewed=0)
+        outcomes=[stage[name] for name in ("key","escalated") if name in stage]
+        spent=results+[item for outcome in outcomes for item in outcome.get("_results",[])]
+        if triage_error is not None:return self._failure(triage_error,spent),escalated
+        failed=next((outcome for outcome in outcomes if outcome["status"]!="completed"),None)
+        if failed is not None:
+            # Usage of the other stages is added to the failed stage's own (which never includes the screen).
+            return {**{key:value for key,value in failed.items() if key!="_results"},**_aggregate_or_unknown(spent,failed)},escalated
+        order={claim["id"]:index for index,claim in enumerate(base["claims"])}
+        merged=lambda field:sorted((row for outcome in outcomes for row in outcome[field]),key=lambda row:order[row["claim_span_id"]])
+        normalizations=[row for outcome in outcomes for row in outcome["contract_normalizations"]]
+        totals=_aggregate(spent)
+        # A stage that dispatched but reports no usage had a timed-out dispatch: the check's usage is unknown.
+        if any(outcome.get("_results") and outcome.get(field) is None for outcome in outcomes for field in ("input_tokens","output_tokens")):
+            totals={field:None for field in totals}
+        undecided=merged("undecided_claims")
+        return {"status":"completed","issues":merged("issues"),"contract_normalization_count":len(normalizations),"contract_normalizations":normalizations,
+                "undecided_claim_count":len(undecided),"undecided_claims":undecided,**totals},escalated
+
+    def _merge_passes(self,result:dict[str,Any],doubled:set[str],order:dict[str,int],summary:dict[str,Any])->dict[str,Any]:
+        """Fold the second reviews back onto their sentences: a finding from either review counts.
+
+        A conflict outranks a missing link, a confirmed conflict a possible one, and both outrank a
+        state_change, which is never a card. A sentence reviewed twice is undecided only if both were.
+        """
+        suffix=screening.SECOND_PASS_SUFFIX
+        base_id=lambda claim_id:claim_id[:-len(suffix)] if claim_id.endswith(suffix) else claim_id
+        rank=lambda issue:{"confirmed_conflict":3,"possible_conflict":2,"insufficient_evidence":1}.get(issue.get("nature"),0)
+        chosen:dict[str,dict[str,Any]]={}; found_first=set()
+        for issue in result["issues"]:
+            claim_id=base_id(issue["claim_span_id"])
+            if claim_id==issue["claim_span_id"]:found_first.add(claim_id)
+            issue={**issue,"claim_span_id":claim_id}
+            if claim_id not in chosen or rank(issue)>rank(chosen[claim_id]):chosen[claim_id]=issue
+        summary["double_found"]=sum(1 for claim_id in chosen if claim_id in doubled and claim_id not in found_first)
+        rows:dict[str,list[dict[str,Any]]]={}
+        for row in result["undecided_claims"]:rows.setdefault(base_id(row["claim_span_id"]),[]).append(row)
+        kept=[{**found[0],"claim_span_id":claim_id} for claim_id,found in rows.items() if claim_id not in chosen and (claim_id not in doubled or len(found)==2)]
+        normalizations=list({(base_id(row["claim_span_id"]),row["reason_code"]):{**row,"claim_span_id":base_id(row["claim_span_id"])}
+                             for row in result["contract_normalizations"] if base_id(row["claim_span_id"]) in chosen}.values())
+        issues=sorted(chosen.values(),key=lambda issue:order[issue["claim_span_id"]])
+        return {**result,"issues":issues,"undecided_claims":sorted(kept,key=lambda row:order[row["claim_span_id"]]),"undecided_claim_count":len(kept),
+                "contract_normalizations":normalizations,"contract_normalization_count":len(normalizations)}
+
+    def _second_look(self,result:dict[str,Any],deep:list[dict[str,Any]],flags:dict[str,Any],base:dict[str,Any],summary:dict[str,Any],pool:ThreadPoolExecutor|None=None)->dict[str,Any]:
+        """A second, independent thinking review of key sentences the first review passed.
+
+        Key sentences are those the screen saw a conflict or gap in. The verdict on a borderline one
+        varied from run to run (lf1 dev set, 2026-10-05), and reviewing every key sentence twice cost
+        too much, so only those passed by the first review are reviewed again, as shadow claims with
+        SECOND_PASS_SUFFIX on their id. A conflict or missing link it finds counts; a failed or
+        undecided second review leaves the first outcome as it was, with the usage of both counted.
+        """
+        suffix=screening.SECOND_PASS_SUFFIX
+        decided={issue["claim_span_id"] for issue in result["issues"]}|{row["claim_span_id"] for row in result["undecided_claims"]}
+        passed=[claim for claim in deep if claim["id"] not in decided]
+        again=[{**claim,"id":claim["id"]+suffix} for claim in screening.second_look_claims(passed,{claim["id"]:flags[claim["id"]]["kind"] for claim in passed})]
+        summary.update(second_look=len(again),second_look_found=0)
+        if not again:return result
+        second=self._execute({**base,"claims":again,"max_claims_per_batch":1,"settled_by_screen":True,"second_review":True},prior_results=result["_results"],keep_results=True,pool=pool)
+        totals={key:second.get(key) for key in ("input_tokens","output_tokens","latency_ms","cost_cny")}
+        if second["status"]!="completed":return {**result,**totals,"_results":second.get("_results",result["_results"])}
+        strip=lambda row:{**row,"claim_span_id":row["claim_span_id"][:-len(suffix)]}
+        found=[strip(issue) for issue in second["issues"] if issue.get("nature") in {"confirmed_conflict","possible_conflict","insufficient_evidence"}]
+        found_ids={issue["claim_span_id"] for issue in found}
+        normalizations=[strip(row) for row in second["contract_normalizations"] if row["claim_span_id"][:-len(suffix)] in found_ids]
+        order={claim["id"]:index for index,claim in enumerate(base["claims"])}
+        summary["second_look_found"]=len(found)
+        return {**result,**totals,"_results":second["_results"],"issues":sorted(result["issues"]+found,key=lambda item:order[item["claim_span_id"]]),
+                "contract_normalizations":result["contract_normalizations"]+normalizations,"contract_normalization_count":result["contract_normalization_count"]+len(normalizations)}
+
+    def _triage(self,claims:list[dict[str,Any]],contexts:dict[str,str],results:list[Any],summary:dict[str,Any],pool:ThreadPoolExecutor|None=None)->set[str]|dict[str,Any]:
+        """Claim ids to escalate by triage score; {"error": exception} when a dispatch fails.
+
+        Batches run in parallel like review batches. An answer the validator rejects is retried once as
+        a repair; a batch that still fails scores all its claims 2, so they compete for escalation.
+        """
+        batches=screening.triage_batches(claims,contexts)
+        def one(batch:tuple[dict[str,Any],dict[str,str]])->tuple[dict[str,int]|None,list[Any],Exception|None]:
+            request,sentence_ids=batch; spent=[]; code="triage_invalid"
+            try:
+                for attempt in range(2):
+                    sent=request if attempt==0 else {**request,"triage_repair":{"reason_code":code}}
+                    try:result=self.provider.evaluate(sent)
+                    except ProviderInvalidJson as error:
+                        spent.append(error); code="triage_invalid_json"; continue
+                    spent.append(result)
+                    try:return screening.parse_triage(result.payload,sentence_ids),spent,None
+                    except screening.ScreenContractError as error:code=str(error)
+            except (ProviderDispatchDenied,InputBudgetExceeded,ProviderUnavailable,ProviderTimeout,ProviderFailure) as error:
+                return None,spent,error
+            return None,spent,None
+        concurrency=getattr(self.provider,"continuity_batch_concurrency",None)
+        concurrency=concurrency if isinstance(concurrency,int) and not isinstance(concurrency,bool) and concurrency>1 else 1
+        if (pool is not None or concurrency>1) and len(batches)>1:
+            # Each dispatch carries the caller's context (usage reservation, dispatch guard), copied here
+            # in the calling thread, as review batches do.
+            copies=[contextvars.copy_context() for _ in batches]
+            if pool is not None:
+                outcomes=list(pool.map(lambda pair:pair[0].run(one,pair[1]),zip(copies,batches)))
+            else:
+                with ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-triage") as own:
+                    outcomes=list(own.map(lambda pair:pair[0].run(one,pair[1]),zip(copies,batches)))
+        else:
+            outcomes=[one(batch) for batch in batches]
+        scores:dict[str,int]={}; failure=None
+        for (request,sentence_ids),(found,spent,error) in zip(batches,outcomes):
+            results.extend(spent)
+            if error is not None:
+                failure=failure or error; continue
+            if found is None:
+                summary["triage_fallback_batches"]+=1; found={claim_id:screening.TRIAGE_ESCALATION_MIN_SCORE for claim_id in sentence_ids.values()}
+            scores.update(found)
+        if failure is not None:return {"error":failure}
+        summary["triage_scores"]={str(score):sum(1 for value in scores.values() if value==score) for score in range(4)}
+        return screening.triage_escalations(claims,scores)
+
+    def _screen(self,claims:list[dict[str,Any]],index:Any,memory:list[dict[str,Any]],chapters:dict[str,int],
+                results:list[Any],summary:dict[str,Any])->dict[str,Any]:
+        """Flagged claim id -> {kind, facts}; {"error": exception} when a dispatch fails.
+
+        A screen answer the validator rejects is retried once as a repair. A part that still fails is
+        reviewed whole: costlier, never a silent miss.
+        """
+        flags:dict[str,Any]={}
+        for part in screening.screen_parts(claims):
+            summary["parts"]+=1
+            request,sentence_ids,fact_ids=screening.screen_request(part,index,memory,chapters)
+            parsed=None
+            try:
+                for attempt in range(2):
+                    sent=request if attempt==0 else {**request,"screen_repair":{"reason_code":code}}
+                    try:
+                        result=self.provider.evaluate(sent)
+                    except ProviderInvalidJson as error:
+                        results.append(error); code="screen_invalid_json"; continue
+                    results.append(result)
+                    try:
+                        parsed=screening.parse_screen(result.payload,sentence_ids,fact_ids); break
+                    except screening.ScreenContractError as error:
+                        code=str(error)
+            except (ProviderDispatchDenied,InputBudgetExceeded,ProviderUnavailable,ProviderTimeout,ProviderFailure) as error:
+                return {"error":error}
+            if parsed is None:
+                summary["fallback_parts"]+=1
+                parsed={claim["id"]:{"kind":"check","facts":[]} for claim in part}
+            flags.update(parsed)
+        return flags
+
+    def _failure(self,error:Exception,results:list[Any])->dict[str,Any]:
+        """The terminal result of a run stopped by `error`, keeping the usage already spent."""
+        if isinstance(error,ProviderDispatchDenied):return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate_attempt_failure(results,error)}
+        if isinstance(error,InputBudgetExceeded):return {"status":"failed","error_code":"input_budget_exceeded","retryable":True,**_aggregate(results)}
+        if isinstance(error,ProviderUnavailable):return {"status":"failed","error_code":"provider_unavailable","retryable":True,**_aggregate(results)}
+        if isinstance(error,ProviderTimeout):return {"status":"timed_out","error_code":"provider_timeout","retryable":True,**_aggregate_attempt_failure(results,error)}
+        if isinstance(error,ProviderInvalidJson):
+            # A length stop cut the answer off; name it instead of calling it a JSON contract failure.
+            code="output_truncated" if error.finish_reason=="length" else "invalid_json"
+            return {"status":"failed","error_code":code,"retryable":True,**_invalid_json_aggregate(results,error)}
+        if isinstance(error,ProviderFailure):return {"status":"failed","error_code":"provider_error","retryable":True,**_aggregate_attempt_failure(results,error)}
+        return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate_attempt_failure(results,error)}
+
+    def _execute(self,data:dict[str,Any],prior_results:list[Any]|None=None,keep_results:bool=False,pool:ThreadPoolExecutor|None=None)->dict[str,Any]:
+        if not self.provider.available:return {"status":"failed","error_code":"provider_unavailable","retryable":True}
+        prior_results=list(prior_results or [])
         try:batches=self._batches(data)
-        except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True}
+        except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True,**(_aggregate(prior_results) if prior_results else {})}
         retrieval_traces=[{"claim_id":claim["id"],"returned_span_ids":[span["id"] for span in claim["allowed_evidence"]]} for batch in batches for claim in batch["claims"]]
         # A thinking-review provider declares its own larger budget; everything else keeps MAX_RUN_TOKENS.
         run_budget=getattr(self.provider,"continuity_run_token_budget",None) or MAX_RUN_TOKENS
+        if data.get("pipeline")=="screened":run_budget=max(run_budget,screening.SCREENED_RUN_TOKEN_BUDGET)
         # Batches are independent, so a provider that declares a concurrency above one gets that many
         # in flight; the rest keep the old sequential order. An 816-character chapter is 36 claims
         # and ran its batches one after another for four minutes.
@@ -481,7 +807,10 @@ class ContinuityEngine:
         concurrency=concurrency if isinstance(concurrency,int) and not isinstance(concurrency,bool) and concurrency>1 else 1
         order={claim["id"]:index for index,claim in enumerate(data["claims"])}
         pending=list(batches); outcomes=[]; stop=None; exhausted=False
-        pool=ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-batch") if concurrency>1 else None
+        # A shared pool (screened chapters) bounds the whole check's requests in flight; it is not ours to shut down.
+        shared=pool is not None
+        if shared:concurrency=max(concurrency,pool._max_workers)
+        pool=pool if shared else ThreadPoolExecutor(max_workers=concurrency,thread_name_prefix="continuity-batch") if concurrency>1 else None
         def submit(batch:dict[str,Any])->Future:
             if pool is None:
                 future=Future(); future.set_result(self._review_batch(batch,data,run_budget)); return future
@@ -505,24 +834,15 @@ class ContinuityEngine:
                         stop=stop or outcome
                     elif outcome.get("split"):
                         # Split, so one claim's self-contradicting answer or oversized repair cannot cost the others.
-                        pending[:0]=[self._request(group,data["memory"],data["draft"]) for group in outcome["split"]]
+                        pending[:0]=[self._request(group,data) for group in outcome["split"]]
         finally:
-            if pool is not None:pool.shutdown(wait=True)
+            if pool is not None and not shared:pool.shutdown(wait=True)
         if exhausted and stop is None:
             outcomes.extend({"first_claim_id":batch["claims"][0]["id"],"results":[],"undecided":[{"claim_span_id":claim["id"],"error_code":PROVIDER_ATTEMPT_QUOTA_EXCEEDED} for claim in batch["claims"]]} for batch in pending)
-        results=[result for outcome in outcomes for result in outcome["results"]]
+        results=prior_results+[result for outcome in outcomes for result in outcome["results"]]
         if stop is not None:
             if stop.get("budget_paused"):return {"status":"budget_paused","error_code":"budget_paused","retryable":True,**_aggregate(results)}
-            error=stop["error"]
-            if isinstance(error,InputBudgetExceeded):return {"status":"failed","error_code":"input_budget_exceeded","retryable":True,**_aggregate(results)}
-            if isinstance(error,ProviderUnavailable):return {"status":"failed","error_code":"provider_unavailable","retryable":True,**_aggregate(results)}
-            if isinstance(error,ProviderTimeout):return {"status":"timed_out","error_code":"provider_timeout","retryable":True,**_aggregate_attempt_failure(results,error)}
-            if isinstance(error,ProviderInvalidJson):
-                # A length stop cut the answer off; name it instead of calling it a JSON contract failure.
-                code="output_truncated" if error.finish_reason=="length" else "invalid_json"
-                return {"status":"failed","error_code":code,"retryable":True,**_invalid_json_aggregate(results,error)}
-            if isinstance(error,ProviderFailure):return {"status":"failed","error_code":"provider_error","retryable":True,**_aggregate_attempt_failure(results,error)}
-            return {"status":"failed","error_code":str(error),"retryable":True,**_aggregate_attempt_failure(results,error)}
+            return self._failure(stop["error"],results)
         # Completion order varies with concurrency; everything reported follows claim order instead.
         outcomes.sort(key=lambda outcome:order[outcome["first_claim_id"]])
         issues=[issue for outcome in outcomes for issue in outcome.get("issues",[])]
@@ -532,8 +852,9 @@ class ContinuityEngine:
         if any(outcome.get("usage_unknown") for outcome in outcomes):totals={field:None for field in totals}
         if len({issue["claim_span_id"] for issue in issues}) != len(issues): return {"status":"failed","error_code":"schema_invalid","retryable":True,**totals}
         # Nothing survived, so there is no partial result worth showing: keep the old failure.
-        if undecided and len(undecided)==len(data["claims"]): return {"status":"failed","error_code":undecided[0]["error_code"],"retryable":True,**totals}
-        return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,"undecided_claim_count":len(undecided),"undecided_claims":undecided,**totals}
+        # After a screen most sentences are already settled, so undecided ones are reported, never the run's failure.
+        if undecided and len(undecided)==len(data["claims"]) and not data.get("settled_by_screen"): return {"status":"failed","error_code":undecided[0]["error_code"],"retryable":True,**totals}
+        return {"status":"completed","issues":sorted(issues,key=lambda item:order[item["claim_span_id"]]),"retrieval_traces":retrieval_traces,"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"contract_normalization_count":len(contract_normalizations),"contract_normalizations":contract_normalizations,"undecided_claim_count":len(undecided),"undecided_claims":undecided,**totals,**({"_results":results} if keep_results else {})}
 
     def _review_batch(self,batch:dict[str,Any],data:dict[str,Any],run_budget:int)->dict[str,Any]:
         """One batch through its first answer and at most one contract repair.
@@ -551,7 +872,7 @@ class ContinuityEngine:
             for contract_attempt in range(2):
                 request=batch if contract_attempt==0 else {**batch,"contract_repair":{"attempt":contract_attempt+1,"reason_code":repair_code,"diagnostics":repair_diagnostics,"rejected_issues":rejected_issues,"rejected_claim_verdicts":rejected_claim_verdicts}}
                 # Check the complete feedback as sent; never truncate rejected output to fit.
-                input_limit=(getattr(self.provider,"continuity_repair_input_budget_units",None) or MAX_INPUT_BUDGET_UNITS) if contract_attempt else MAX_INPUT_BUDGET_UNITS
+                input_limit=input_budget_units_for(request,getattr(self.provider,"continuity_repair_input_budget_units",None))
                 if request_prompt_and_budget(request)[1]>input_limit:
                     if not contract_attempt:raise InputBudgetExceeded()
                     # A repair carries every rejected issue: a packed 21-claim batch is about 7,200 units
@@ -572,20 +893,31 @@ class ContinuityEngine:
                     continue
                 try:
                     validated=self.validate(result.payload,batch,allow_conservative_temporal_normalization=contract_attempt==1,normalization_sink=normalizations)
-                except ContinuityContractValidationError as error:
+                except ValueError as error:
+                    # In the screened pipeline every contract failure is repairable and, failing that,
+                    # costs only its own claims; the legacy pipeline keeps failing the run on a plain one.
+                    if not isinstance(error,ContinuityContractValidationError) and batch.get("pipeline")!="screened":raise
                     if contract_attempt==0:
                         repair_code=str(error)
                         claim_id=batch["claims"][0]["id"] if len(batch["claims"])==1 else None
-                        repair_diagnostics=error.diagnostics or [_contract_diagnostic(batch,repair_code,claim_id)]
+                        repair_diagnostics=getattr(error,"diagnostics",None) or [_contract_diagnostic(batch,repair_code,claim_id)]
                         continue
                     if len(batch["claims"])>1:return {**outcome,"split":[[claim] for claim in batch["claims"]]}
                     return {**outcome,"undecided":[{"claim_span_id":batch["claims"][0]["id"],"error_code":str(error)}]}
+                if batch.get("pipeline")=="screened":validated=screening.bind_passage_evidence(validated,batch["claims"])
                 return {**outcome,"issues":validated}
         except ProviderDispatchDenied as error:
             if str(error)!=PROVIDER_ATTEMPT_QUOTA_EXCEEDED:return {**outcome,"error":error}
             # A refusal after a timed-out dispatch leaves that dispatch's billing unknown.
             return {**outcome,"quota_exhausted":True,"usage_unknown":bool(getattr(error,"usage_unknown",False)),"undecided":[{"claim_span_id":claim["id"],"error_code":PROVIDER_ATTEMPT_QUOTA_EXCEEDED} for claim in batch["claims"]]}
         except ProviderInvalidJson as error:
+            if error.finish_reason!="length" and batch.get("pipeline")=="screened":
+                # One malformed answer costs only its own claims: they are sent again one at a time, and a
+                # lone claim that comes back malformed is undecided (lf1 dev set: one bad JSON failed a chapter).
+                results.append(error)
+                claims=batch["claims"]
+                if len(claims)>1:return {**outcome,"split":[[claim] for claim in claims]}
+                return {**outcome,"undecided":[{"claim_span_id":claims[0]["id"],"error_code":"invalid_json"}]}
             if error.finish_reason!="length":return {**outcome,"error":error}
             # Every effort ran out of output, down to the non-thinking answer and its 2,000 tokens. On a
             # multi-claim batch that last answer is what overflows: four verdicts plus one reported gap
@@ -691,7 +1023,8 @@ class ContinuityEngine:
                     if not trustworthy:raise ValueError(code)
                     raise ContinuityContractValidationError(code,diagnostics=[_contract_diagnostic(data,code,raw["claim_span_id"],invalid_field="evidence.sufficiency",
                         requirement="An insufficient_evidence issue cites only context marked sufficiency insufficient; otherwise reclassify the issue.")])
-                cleaned.append({"chapter_id":s["chapter_id"],"span_id":s["id"],"excerpt":s.get("prompt_excerpt",s["body"]),"relation":ev["relation"],"sufficiency":ev["sufficiency"],"related_memory_ids":ev.get("related_memory_ids",[])})
+                cleaned.append({"chapter_id":s["chapter_id"],"span_id":s["id"],"excerpt":s.get("prompt_excerpt",s["body"]),"relation":ev["relation"],"sufficiency":ev["sufficiency"],"related_memory_ids":ev.get("related_memory_ids",[]),
+                                **({"source_span_id":s["source_span_id"]} if "source_span_id" in s else {})})
             change=raw.get("proposed_memory_change")
             if change is not None:
                 required={"memory_type","subject","predicate","value","operation"}
@@ -715,6 +1048,12 @@ class ContinuityEngine:
                 if nature=="confirmed_conflict" and (not any(ev["relation"]=="contradicts" and ev["sufficiency"]=="sufficient" for ev in cleaned) or any(ev["relation"]=="supports" or ev["sufficiency"]!="sufficient" for ev in cleaned)):
                     raise ContinuityContractValidationError("conflict_evidence_not_direct")
                 temporal_failure=_confirmed_temporal_failure(raw,claim_text,cleaned,mem)
+                if temporal_failure and data.get("pipeline")=="screened":
+                    # A contradiction whose shared time or governing rule is not proved is, by the review
+                    # rules themselves, a possible_conflict. Settled here instead of by a repair that thinks
+                    # the whole batch through again (lf1 dev set: 12k-29k reasoning tokens per such repair).
+                    if normalization_sink is not None:normalization_sink.append({"claim_span_id":raw["claim_span_id"],"reason_code":temporal_failure,"outcome":"possible_conflict","provider_attempt":2 if allow_conservative_temporal_normalization else 1})
+                    nature="possible_conflict"; temporal_failure=None
                 if temporal_failure and not allow_conservative_temporal_normalization:
                     raise ContinuityContractValidationError(temporal_failure)
                 if nature in {"possible_conflict","state_change"} and any(ev["sufficiency"]!="sufficient" for ev in cleaned):
@@ -733,7 +1072,7 @@ class ContinuityEngine:
                 if nature=="insufficient_evidence" and actions:raise ValueError("schema_invalid")
                 if suggestion is not None:
                     if not isinstance(suggestion,dict) or set(suggestion)!={"before","after"} or any(not isinstance(suggestion.get(field),str) or not suggestion[field].strip() for field in ("before","after")) or suggestion["before"]==suggestion["after"]:raise ValueError("schema_invalid")
-                    if data["draft"]["body"].count(suggestion["before"])!=1 or "apply_suggestion" not in actions:raise ValueError("suggested_revision_unresolvable")
+                    if data.get("full_draft_body",data["draft"]["body"]).count(suggestion["before"])!=1 or "apply_suggestion" not in actions:raise ValueError("suggested_revision_unresolvable")
                 elif "apply_suggestion" in actions:raise ValueError("suggested_revision_unresolvable")
                 if temporal_failure and allow_conservative_temporal_normalization:
                     chinese=_requires_cjk(data["draft"]["body"])
@@ -1084,7 +1423,7 @@ class MemoryInitializationEngine:
         batches=[]; current=[]
         for source in self.chunk_plan(data):
             candidate=current+[source]; request=self._request(candidate,data["source_revision"])
-            if request_prompt_and_budget(request)[1] <= MEMORY_BATCH_TARGET_BUDGET_UNITS:
+            if request_prompt_and_budget(request)[1] <= MEMORY_BATCH_TARGET_BUDGET_UNITS and (not current or _source_chars(candidate)<=MEMORY_BATCH_TARGET_SOURCE_CHARS):
                 current=candidate; continue
             if not current: raise InputBudgetExceeded()
             batches.append(self._request(current,data["source_revision"])); current=[source]
@@ -1198,7 +1537,7 @@ class MemoryInitializationEngine:
 class MemoryDeltaEngine(MemoryInitializationEngine):
     """A separate provider contract for one append-only source revision."""
     def provenance(self)->dict[str,str]:
-        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":"memory-delta-v4-stated-length-limits","schema_version":"memory-delta-candidate-v2","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
+        return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":"memory-delta-v5-whole-chapter","schema_version":"memory-delta-candidate-v2","retrieval_method_version":RETRIEVAL_METHOD_VERSION}
 
     def _related_memory(self,data:dict[str,Any])->list[dict[str,Any]]:
         terms=_claim_terms("\n".join(str(source.get("body","")) for source in data["sources"])); ranked=[]
@@ -1207,13 +1546,48 @@ class MemoryDeltaEngine(MemoryInitializationEngine):
             ranked.append((_relevance_score(terms,text),item))
         return [item for _,item in sorted(ranked,key=lambda row:(-row[0],_memory_sort_key(row[1])))[:MEMORY_DELTA_RELATED_MEMORY_LIMIT]]
 
-    def _bounded_sources(self,data:dict[str,Any])->list[dict[str,Any]]:
-        ordered=sorted(data["sources"],key=lambda source:(int(source.get("chapter_number",0)),str(source.get("id",""))))
-        return [{**source,"body":str(source.get("body",""))[:MEMORY_DELTA_SOURCE_EXCERPT_CODEPOINTS]} for source in ordered[:MEMORY_DELTA_SOURCE_LIMIT]]
-
     def _request(self, data:dict[str,Any])->dict[str,Any]:
-        sources=self._bounded_sources(data)
+        """One request for exactly the given sources; _batches decides which sources go together."""
+        sources=list(data["sources"])
         return {"task":"memory_delta","source_revision":data["source_revision"],"sources":sources,"memory":self._related_memory({**data,"sources":sources}),"controlled_predicates":list(CONTROLLED_PREDICATES),"output_schema":_memory_delta_schema()}
+
+    def _fits(self,data:dict[str,Any],sources:list[dict[str,Any]])->bool:
+        return request_prompt_and_budget(self._request({**data,"sources":sources}))[1]<=MAX_INPUT_BUDGET_UNITS
+
+    def _source_pieces(self,data:dict[str,Any],source:dict[str,Any])->list[dict[str,Any]]:
+        """The whole chapter, split at sentence ends into overlapping pieces only when it does not fit.
+
+        Each piece keeps the original SourceSpan id, so a candidate from any piece cites the chapter.
+        """
+        body=str(source.get("body",""))
+        if self._fits(data,[source]):return [source]
+        pieces=[]; start=0; previous_end=None
+        while start<len(body):
+            low,high,best=start+1,len(body),None
+            while low<=high:
+                middle=(low+high)//2
+                if self._fits(data,[{**source,"body":body[start:middle]}]):best=middle; low=middle+1
+                else:high=middle-1
+            if best is None:raise InputBudgetExceeded()
+            end=self._preferred_end(body,start,best,previous_end)
+            if end<=start or (previous_end is not None and end<=previous_end):raise InputBudgetExceeded()
+            pieces.append({**source,"body":body[start:end]})
+            if end==len(body):break
+            overlap=min(MAX_CHUNK_OVERLAP_CODEPOINTS,end-start-1)
+            previous_end=end; start=end-overlap
+        return pieces
+
+    def _batches(self,data:dict[str,Any])->list[dict[str,Any]]:
+        """Every source in chapter order, whole, packed into as few requests as the input budget allows."""
+        ordered=sorted(data["sources"],key=lambda source:(int(source.get("chapter_number",0)),str(source.get("id",""))))
+        batches=[]; current=[]
+        for source in ordered:
+            for piece in self._source_pieces(data,source):
+                if current and _source_chars(current+[piece])<=MEMORY_BATCH_TARGET_SOURCE_CHARS and self._fits(data,current+[piece]):current.append(piece); continue
+                if current:batches.append(self._request({**data,"sources":current}))
+                current=[piece]
+        if current:batches.append(self._request({**data,"sources":current}))
+        return batches
 
     def validate(self,payload:Any,data:dict[str,Any])->list[dict[str,Any]]:
         if not isinstance(payload,dict) or set(payload)!={"candidates"} or not isinstance(payload["candidates"],list):raise ValueError("schema_invalid")
@@ -1266,17 +1640,40 @@ class MemoryDeltaEngine(MemoryInitializationEngine):
         return candidates
 
     def execute(self,data:dict[str,Any])->dict[str,Any]:
+        """Read every new source in full, one request per batch, and merge the candidates.
+
+        Before 2026-10 this sent at most 12 spans cut to their first 1,600 characters and kept at most
+        4 candidates, so the second half of a long chapter never reached the fact library.
+        """
         if not self.provider.available:return {"status":"failed","error_code":"provider_unavailable","retryable":True}
-        request=self._request(data)
-        if request_prompt_and_budget(request)[1] > MAX_INPUT_BUDGET_UNITS:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True}
+        try:batches=self._batches(data) or [self._request(data)]
+        except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True}
+        if any(request_prompt_and_budget(batch)[1]>MAX_INPUT_BUDGET_UNITS for batch in batches):return {"status":"failed","error_code":"input_budget_exceeded","retryable":True}
+        results=[]; candidates=[]; affected_seen=set(); new_keys=set(); identities=set()
+        usage=lambda:(_aggregate(results) if results else {})
         try:
-            result=self.provider.evaluate(request)
-            if (result.input_tokens or 0)+(result.output_tokens or 0)>MAX_RUN_TOKENS:return {"status":"failed","error_code":"budget_paused","retryable":True,**_aggregate([result])}
-            candidates=self.validate(result.payload,{"sources":request["sources"],"memory":request["memory"]})
-            retrieval={"method_version":RETRIEVAL_METHOD_VERSION,"selected_source_span_ids":[item["id"] for item in request["sources"]],"selected_memory_ids":[item["id"] for item in request["memory"]],"counts":{"source_spans":{"available":len(data["sources"]),"selected":len(request["sources"])},"confirmed_memory":{"available":len(data["memory"]),"selected":len(request["memory"])}},"truncated":{"source_spans":len(request["sources"])<len(data["sources"]),"confirmed_memory":len(request["memory"])<len(data["memory"])}}
-            return {"status":"completed","candidates":candidates,"retrieved_memory_count":len(request["memory"]),"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"retrieval":retrieval,**_aggregate([result])}
-        except ProviderUnavailable:return {"status":"failed","error_code":"provider_unavailable","retryable":True}
-        except ProviderTimeout:return {"status":"timed_out","error_code":"provider_timeout","retryable":True}
-        except ProviderInvalidJson as error:return {"status":"failed","error_code":"invalid_json","retryable":True,**_invalid_json_aggregate([],error)}
-        except ProviderFailure:return {"status":"failed","error_code":"provider_error","retryable":True}
-        except ValueError as error:return {"status":"failed","error_code":str(error),"retryable":True}
+            for batch in batches:
+                result=self.provider.evaluate(batch)
+                results.append(result)
+                if (result.input_tokens or 0)+(result.output_tokens or 0)>MAX_RUN_TOKENS:return {"status":"failed","error_code":"budget_paused","retryable":True,**usage()}
+                for item in self.validate(result.payload,{"sources":batch["sources"],"memory":batch["memory"]}):
+                    # Overlapping pieces of one chapter can surface the same fact twice; keep the first.
+                    if item["affected_memory_id"] is not None:
+                        if item["affected_memory_id"] in affected_seen:continue
+                        affected_seen.add(item["affected_memory_id"])
+                    else:
+                        key=(item["memory_type"],item["subject"],item["predicate"])
+                        if key in new_keys:continue
+                        new_keys.add(key)
+                    identity=(item["change_kind"],item["affected_memory_id"],item["memory_type"],item["subject"],item["predicate"],item["value"],item["source_span_id"])
+                    if identity in identities:continue
+                    identities.add(identity); candidates.append(item)
+        except ProviderUnavailable:return {"status":"failed","error_code":"provider_unavailable","retryable":True,**usage()}
+        except ProviderTimeout:return {"status":"timed_out","error_code":"provider_timeout","retryable":True,**usage()}
+        except ProviderInvalidJson as error:return {"status":"failed","error_code":"invalid_json","retryable":True,**_invalid_json_aggregate(results,error)}
+        except ProviderFailure:return {"status":"failed","error_code":"provider_error","retryable":True,**usage()}
+        except ValueError as error:return {"status":"failed","error_code":str(error),"retryable":True,**usage()}
+        source_ids=list(dict.fromkeys(item["id"] for batch in batches for item in batch["sources"]))
+        memory_ids=list(dict.fromkeys(item["id"] for batch in batches for item in batch["memory"]))
+        retrieval={"method_version":RETRIEVAL_METHOD_VERSION,"selected_source_span_ids":source_ids,"selected_memory_ids":memory_ids,"batches":len(batches),"counts":{"source_spans":{"available":len(data["sources"]),"selected":len(source_ids)},"confirmed_memory":{"available":len(data["memory"]),"selected":len(memory_ids)}},"truncated":{"source_spans":len(source_ids)<len(data["sources"]),"confirmed_memory":len(memory_ids)<len(data["memory"])}}
+        return {"status":"completed","candidates":candidates,"retrieved_memory_count":len(memory_ids),"retrieval_method_version":RETRIEVAL_METHOD_VERSION,"retrieval":retrieval,**_aggregate(results)}

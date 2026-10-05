@@ -81,7 +81,9 @@ class Stage9MemoryInitializationTests(unittest.TestCase):
         project = self.client.get(f"/api/projects/{project_id}").json()["data"]
         before_runs = self.app.state.database.counts()["v2_runs"]
         unavailable_context = self.client.post(f"/api/projects/{project_id}/checks", json={"draft_id":project["current_draft"]["id"],"draft_revision":1}, headers=idem())
-        self.assertEqual((unavailable_context.status_code, unavailable_context.json()["error"]["code"]), (422,"insufficient_project_context"))
+        # v1.6.0: imported text is enough context for the screened pipeline, so the fact base no longer
+        # gates the check; the still-empty draft is what stops this one.
+        self.assertEqual((unavailable_context.status_code, unavailable_context.json()["error"]["code"]), (422,"draft_invalid"))
         self.assertEqual((self.provider.calls, self.app.state.database.counts()["v2_runs"]), (0,before_runs))
         start_key = str(uuid.uuid4())
         started = self.start(project_id,start_key)
@@ -91,7 +93,7 @@ class Stage9MemoryInitializationTests(unittest.TestCase):
         metrics=started.json()["data"]["initialization_metrics"]
         self.assertEqual((metrics["total_batches"],metrics["schema_repair_attempts"],metrics["cost_available"]),(1,0,False))
         provenance=started.json()["data"]["initialization_provenance"]
-        self.assertEqual((provenance["prompt_version"],provenance["chunking_method_version"]),("memory-initialization-v9-field-contract","source-chunk-v4-5800"))
+        self.assertEqual((provenance["prompt_version"],provenance["chunking_method_version"]),("memory-initialization-v10-whole-chapter-rules","source-chunk-v4-5800"))
         self.assertEqual((initialization["status"],initialization["source_revision"],len(initialization["candidates"])), ("draft",1,3))
         self.assertEqual(self.provider.calls,1)
         self.assertTrue(all(item["decision_status"]=="pending" and item["source"]["text"] for item in initialization["candidates"]))

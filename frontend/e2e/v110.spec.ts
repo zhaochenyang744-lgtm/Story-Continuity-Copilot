@@ -248,7 +248,7 @@ test("first-run tutorial is isolated, resumable, and mobile read-only actions ar
   await expect(page.getByRole("heading", { name: "教学已完成", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "返回首页", exact: true }).click();
   await expect(page.getByText("从第一章开始建立连续性档案", { exact: true })).toBeVisible();
-  await expect(page.getByText("导入 TXT / Markdown，或从空白作品开始。", { exact: true })).toBeVisible();
+  await expect(page.getByText("导入 Word、TXT 或 Markdown，或从空白作品开始。", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "导入已有作品", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "从空白开始", exact: true })).toBeVisible();
   await expectHomeSectionHeaderAlignment(page);
