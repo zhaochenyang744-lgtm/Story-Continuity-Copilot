@@ -5094,7 +5094,7 @@ function ProjectPage(p: {
           </section>
           <section className="overview-panel overview-primary-card memory-panel" aria-label="事实库">
             <p className="eyebrow">事实库</p>
-            <h2>{p.coverage ? `${p.coverage.counts.confirmed} 条已确认事实` : "已确认的设定"}</h2>
+            <h2>{p.coverage?.counts.confirmed ?? p.memories.filter((record) => record.valid_to == null && record.review_status === "author_confirmed").length} 条已确认事实</h2>
             <p className="term-help">事实库记着已经写进故事、由你确认过的设定和状态；检查新章节时用它来对照。</p>
             <dl className="overview-kv">
               <div><dt>能否检查</dt><dd>{coverageStatusLabel(p.coverage?.status)}</dd></div>
