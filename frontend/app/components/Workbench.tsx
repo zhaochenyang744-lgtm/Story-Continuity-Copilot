@@ -3835,7 +3835,7 @@ function Rows({
       Partial<
         Pick<
           ProjectSummary,
-          "genre" | "summary" | "current_memory_version" | "open_issue_count" | "continuity_status"
+          "genre" | "summary" | "current_memory_version" | "open_issue_count" | "continuity_status" | "chapter_count" | "word_count"
         >
       > &
       Partial<Pick<ProjectSummary, "id">> & { project_id?: string }
@@ -3859,7 +3859,7 @@ function Rows({
         <span>作品</span>
         <span>简介</span>
         <span>状态</span>
-        <span>事实库版本</span>
+        <span>篇幅</span>
         <span>待处理</span>
         <span>操作</span>
       </div>
@@ -3886,7 +3886,7 @@ function Rows({
             </div>
             <small className="project-summary">{p.summary || "—"}</small>
             <span className={`status-pill ${p.status}`}><I>●</I>{statusLabel(p.status)}</span>
-            <span className="project-memory">第 {p.current_memory_version ?? "—"} 版</span>
+            <span className="project-memory">{p.chapter_count ?? 0} 章 · {formatWritingCount(p.word_count ?? 0)} 字</span>
             <span className={`issue-count ${issueTone}`}>
               <I>
                 {issueTone === "high"
@@ -5119,7 +5119,7 @@ function ProjectPage(p: {
             <h2>{p.coverage?.counts.confirmed ?? p.memories.filter((record) => record.valid_to == null && record.review_status === "author_confirmed").length} 条已确认事实</h2>
             <p className="term-help">事实库记着已经写进故事、由你确认过的设定和状态；检查新章节时用它来对照。</p>
             <dl className="overview-kv">
-              <div><dt>能否检查</dt><dd>{coverageStatusLabel(p.coverage?.status)}</dd></div>
+              <div><dt>能否检查</dt><dd>{p.coverage ? coverageStatusLabel(p.coverage.status) : p.project.chapter_count ? "可以检查" : "写下或导入一章后即可检查"}</dd></div>
               <div><dt>检查状态</dt><dd>{p.project.continuity_status === "unchecked" ? "尚未检查" : p.project.continuity_status === "checked_clear" ? "已检查 · 0 项待处理" : `${p.project.open_issue_count ?? 0} 项待处理`}</dd></div>
               <div><dt>最近检查</dt><dd>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚无"}</dd></div>
             </dl>
