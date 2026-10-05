@@ -178,29 +178,34 @@ class ScreenedReviewTests(unittest.TestCase):
         deep = provider.request_body({"pipeline": "screened"}, "{}")
         self.assertEqual((deep["thinking"], deep["reasoning_effort"], deep["max_tokens"]), ({"type": "enabled"}, "high", 8000))
 
-    def test_a_passed_conflict_or_gap_flag_gets_a_missing_link_second_look(self):
+    def test_a_key_sentence_the_first_review_passed_gets_a_second_independent_review(self):
         def review(request):
             claim = request["claims"][0]
             span = claim["allowed_evidence"][0]
             verdict = lambda kind: [{"claim_span_id": claim["id"], "verdict": kind, "basis": "见引用。"}]
-            if not request.get("second_look"):
+            if not claim["id"].endswith("#pass2"):
                 return ProviderResult({"issues": [], "claim_verdicts": verdict("no_issue")}, input_tokens=100, output_tokens=10)
             if "手指" in claim["text"]:
-                gap = issue(claim, span)
-                gap.update(status="insufficient_evidence", nature="insufficient_evidence", available_actions=[])
-                gap["evidence"][0].update(relation="context", sufficiency="insufficient")
-                gap["evidence_chain"][0]["role"] = "missing_link"
-                return ProviderResult({"issues": [gap], "claim_verdicts": verdict("insufficient_evidence")}, input_tokens=100, output_tokens=10)
-            # A conflict from the second look is not taken.
-            return ProviderResult({"issues": [issue(claim, span)], "claim_verdicts": verdict("reviewed_issue")}, input_tokens=100, output_tokens=10)
-        provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "gap", "facts": []} for s in request["sentences"][3:5]], review=review)
-        with mock.patch.object(screening, "SECOND_LOOK", True):
-            result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
-        second = [r for r in provider.reviews() if r.get("second_look")]
-        self.assertEqual(sorted(r["claims"][0]["id"] for r in second), ["claim-4", "claim-5"])
-        self.assertEqual([(i["claim_span_id"], i["nature"]) for i in result["issues"]], [("claim-5", "insufficient_evidence")])
-        self.assertEqual((result["screening"]["second_look"], result["screening"]["second_look_found"]), (2, 1))
-        self.assertEqual(result["input_tokens"], 10 + 4 * 100)
+                return ProviderResult({"issues": [issue(claim, span)], "claim_verdicts": verdict("reviewed_issue")}, input_tokens=100, output_tokens=10)
+            gap = issue(claim, span)
+            gap.update(status="insufficient_evidence", nature="insufficient_evidence", available_actions=[])
+            gap["evidence"][0].update(relation="context", sufficiency="insufficient")
+            gap["evidence_chain"][0]["role"] = "missing_link"
+            return ProviderResult({"issues": [gap], "claim_verdicts": verdict("insufficient_evidence")}, input_tokens=100, output_tokens=10)
+        provider = Fake(flag=lambda request: [{"id": s["id"], "kind": "gap", "facts": []} for s in request["sentences"][3:6]], review=review)
+        result = ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
+        second = sorted(r["claims"][0]["id"] for r in provider.reviews() if r["claims"][0]["id"].endswith("#pass2"))
+        self.assertEqual(second, ["claim-4#pass2", "claim-5#pass2", "claim-6#pass2"])
+        # Conflicts and missing links found by the second review both count, on the original sentence.
+        self.assertEqual([(i["claim_span_id"], i["nature"]) for i in result["issues"]],
+                         [("claim-4", "insufficient_evidence"), ("claim-5", "possible_conflict"), ("claim-6", "insufficient_evidence")])
+        self.assertEqual((result["screening"]["second_look"], result["screening"]["second_look_found"]), (3, 3))
+        self.assertEqual(result["input_tokens"], 10 + 6 * 100)
+
+    def test_a_sentence_found_by_its_first_review_is_not_reviewed_again(self):
+        provider = Fake(flag=flag_hand)
+        ContinuityEngine(provider).execute(draft_data(NEUTRAL[:4] + [HAND] + NEUTRAL[4:]))
+        self.assertEqual([claim["id"] for r in provider.reviews() for claim in r["claims"]], ["claim-5"])
 
     def test_a_finding_from_either_review_of_a_key_sentence_counts(self):
         def review(request):

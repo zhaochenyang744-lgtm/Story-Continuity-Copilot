@@ -452,7 +452,7 @@ class ContinuityEngine:
         used={item["id"]:item for claim in selected for item in self._related_memory(claim,memory,memory_limit)}
         full=data["contexts"][claims[0]["context"]]
         body=screening.context_window(full,[claim["text"] for claim in claims])
-        return {"pipeline":"screened",**({"second_look":True} if data.get("second_look") else {}),"draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":selected,
+        return {"pipeline":"screened","draft":{"id":data["draft"]["id"],"revision":data["draft"]["revision"],"body":body},"claims":selected,
                 "memory":[{**used[key],"chapter_number":chapters.get(key)} for key in sorted(used,key=lambda key:_memory_sort_key(used[key]))],"output_schema":_continuity_schema(),"full_draft_body":full}
 
     def _fits(self,request:dict[str,Any])->bool:
@@ -601,24 +601,30 @@ class ContinuityEngine:
                 "contract_normalizations":normalizations,"contract_normalization_count":len(normalizations)}
 
     def _second_look(self,result:dict[str,Any],deep:list[dict[str,Any]],flags:dict[str,Any],base:dict[str,Any],summary:dict[str,Any])->dict[str,Any]:
-        """A missing-link second look at sentences the screen saw a conflict or gap in but the first review passed.
+        """A second, independent thinking review of key sentences the first review passed.
 
-        Only insufficient_evidence findings are taken from it; a failed or undecided second look leaves
-        the first review's outcome as it was, with the usage of both counted.
+        Key sentences are those the screen saw a conflict or gap in. The verdict on a borderline one
+        varied from run to run (lf1 dev set, 2026-10-05), and reviewing every key sentence twice cost
+        too much, so only those passed by the first review are reviewed again, as shadow claims with
+        SECOND_PASS_SUFFIX on their id. A conflict or missing link it finds counts; a failed or
+        undecided second review leaves the first outcome as it was, with the usage of both counted.
         """
+        suffix=screening.SECOND_PASS_SUFFIX
         decided={issue["claim_span_id"] for issue in result["issues"]}|{row["claim_span_id"] for row in result["undecided_claims"]}
-        again=[claim for claim in deep if flags[claim["id"]]["kind"] in screening.DEEP_KINDS and claim["id"] not in decided]
+        again=[{**claim,"id":claim["id"]+suffix} for claim in deep if flags[claim["id"]]["kind"] in screening.DEEP_KINDS and claim["id"] not in decided]
         summary.update(second_look=len(again),second_look_found=0)
         if not again:return result
-        second=self._execute({**base,"claims":again,"max_claims_per_batch":1,"settled_by_screen":True,"second_look":True},prior_results=result["_results"],keep_results=True)
+        second=self._execute({**base,"claims":again,"max_claims_per_batch":1,"settled_by_screen":True},prior_results=result["_results"],keep_results=True)
         totals={key:second.get(key) for key in ("input_tokens","output_tokens","latency_ms","cost_cny")}
         if second["status"]!="completed":return {**result,**totals,"_results":second.get("_results",result["_results"])}
+        strip=lambda row:{**row,"claim_span_id":row["claim_span_id"][:-len(suffix)]}
+        found=[strip(issue) for issue in second["issues"] if issue.get("nature") in {"confirmed_conflict","possible_conflict","insufficient_evidence"}]
+        found_ids={issue["claim_span_id"] for issue in found}
+        normalizations=[strip(row) for row in second["contract_normalizations"] if row["claim_span_id"][:-len(suffix)] in found_ids]
         order={claim["id"]:index for index,claim in enumerate(base["claims"])}
-        found=[issue for issue in second["issues"] if issue.get("nature")=="insufficient_evidence"]
         summary["second_look_found"]=len(found)
         return {**result,**totals,"_results":second["_results"],"issues":sorted(result["issues"]+found,key=lambda item:order[item["claim_span_id"]]),
-                "contract_normalizations":result["contract_normalizations"]+[row for row in second["contract_normalizations"] if row["claim_span_id"] in {issue["claim_span_id"] for issue in found}],
-                "contract_normalization_count":result["contract_normalization_count"]+sum(1 for row in second["contract_normalizations"] if row["claim_span_id"] in {issue["claim_span_id"] for issue in found})}
+                "contract_normalizations":result["contract_normalizations"]+normalizations,"contract_normalization_count":result["contract_normalization_count"]+len(normalizations)}
 
     def _triage(self,claims:list[dict[str,Any]],contexts:dict[str,str],results:list[Any],summary:dict[str,Any])->set[str]|dict[str,Any]:
         """Claim ids to escalate by triage score; {"error": exception} when a dispatch fails.

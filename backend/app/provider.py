@@ -115,7 +115,7 @@ CONTINUITY_PROMPT_VERSION = "continuity-review-v24c-explicit-missing-link"
 # The screened pipeline (long-text phase 4): a cheap non-thinking screen picks the sentences worth a
 # careful look, and only those are reviewed, against passages of earlier chapters instead of whole
 # spans. The review keeps every v24c rule and adds SCREENED_REVIEW_RULES.
-CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25c-screened-passages-second-look"
+CONTINUITY_SCREENED_PROMPT_VERSION = "continuity-review-v25d-screened-passages-second-review"
 CONTINUITY_SCREEN_PROMPT_VERSION = "continuity-screen-v1"
 CONTINUITY_TRIAGE_PROMPT_VERSION = "continuity-triage-v2-scores"
 SCREEN_KINDS = ("conflict", "gap", "check")
@@ -180,13 +180,6 @@ CONTINUITY_TRIAGE_RULES = (
     "1: passages describe the same people or things and agree with the sentence. 0: the passages do not bear on the sentence, or the sentence only narrates new action, speech or feeling in the current scene.",
     "A change the current chapter itself narrates before the sentence is not a disagreement; the chapter text is context for that. Judge only the listed sentences.",
     "Return exactly one JSON object with exactly one key, scores: one entry per listed sentence id with an integer score 0-3. Do not use Markdown.",
-)
-
-# A second look is a second thinking review of a sentence the screen saw a conflict or gap in but the
-# first review passed. Missing links were the pipeline's weak point (lf1 dev set, 2026-10-04: missing
-# links judged no_issue in one run and found in the next), so it looks only for a missing link.
-SECOND_LOOK_RULES = (
-    "A first review found no issue in this claim. Look again only for a missing link: does the claim treat as already established an outcome, handoff, learning event, identity, authority, or what a record says, that the supplied passages leave open, unknown, partial, or only planned, requested or attempted? If so, report insufficient_evidence citing the passages that leave it open. If the passages support the claim, or it only narrates something new in the current scene, return no issue.",
 )
 
 CONTINUITY_SCREEN_RULES = (
@@ -325,7 +318,7 @@ def continuity_prompt(request: dict[str, Any]) -> str:
     payload = {
             "task": "Review continuity only. Return exactly one JSON object with exactly two top-level keys, issues and claim_verdicts. Do not use Markdown or include any other top-level key.",
             "prompt_version": CONTINUITY_SCREENED_PROMPT_VERSION if screened else CONTINUITY_PROMPT_VERSION,
-            "rules": list(CONTINUITY_REVIEW_RULES) + (list(SCREENED_REVIEW_RULES) if screened else []) + (list(SECOND_LOOK_RULES) if request.get("second_look") else []),
+            "rules": list(CONTINUITY_REVIEW_RULES) + (list(SCREENED_REVIEW_RULES) if screened else []),
             "decision_examples": list(CONTINUITY_DECISION_EXAMPLES), "draft": request["draft"],
             # Each span appears once per request; a claim lists the ids it may cite. Repeating the
             # excerpt under every claim put 10 distinct spans into 113 slots on one real chapter.
