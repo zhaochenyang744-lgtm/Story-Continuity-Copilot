@@ -526,6 +526,9 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await register(page, account("stagefiveempty"));
     await createProject(page, "空上下文作品");
     await projectNavButton(page, "写作与检查").click();
+    await setDraftBody(page, "海雾里，钟楼又响了一次。");
+    await page.getByRole("button", { name: "保存草稿" }).click();
+    await expect(page.locator(".workspace-save-summary strong")).toHaveText("已保存");
     await page.getByRole("button", { name: "运行连续性检查" }).click();
     await expect(page.getByText("事实库尚待初始化", { exact: false })).toBeVisible();
   });
@@ -540,6 +543,9 @@ test.describe.serial("Stage 5 real local workflow", () => {
     await page.locator('input[name="title"]').fill("导入空上下文");
     await page.getByRole("button", { name: "确认导入" }).click();
     await projectNavButton(page, "写作与检查").click();
+    await setDraftBody(page, "海雾里，钟楼又响了一次。");
+    await page.getByRole("button", { name: "保存草稿" }).click();
+    await expect(page.locator(".workspace-save-summary strong")).toHaveText("已保存");
     await page.getByRole("button", { name: "运行连续性检查" }).click();
     await expect(page.getByText("事实库尚待初始化", { exact: false })).toBeVisible();
   });
