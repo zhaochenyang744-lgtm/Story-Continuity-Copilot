@@ -5865,7 +5865,7 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
             })}
           </fieldset>
           <div className="chapter-check-actions">
-            <p className={over ? "check-allowance over" : "check-allowance"} role="status">
+            <p className={over ? "check-allowance over" : "check-allowance"} aria-live="polite">
               已选 {selected.length}/{CHAPTER_CHECK_MAX} 章
               {estimate && <> · 约 {estimate.characters.toLocaleString()} 字 · 预计{estimate.estimated_cny >= 0.01 ? `约 ¥${estimate.estimated_cny.toFixed(2)}` : "不到 ¥0.01"}</>}
               {usage?.account_type === "registered" && <> · 今天还可检查 {usage.check_chars_remaining.toLocaleString()} 字</>}

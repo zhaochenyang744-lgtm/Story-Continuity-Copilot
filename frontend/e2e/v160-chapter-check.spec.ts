@@ -15,9 +15,9 @@ test("an author ticks written chapters, sees the estimate, and gets results per 
   await expect(start).toBeDisabled();
   await panel.getByRole("checkbox", { name: /第 2 章/ }).check();
   await panel.getByRole("checkbox", { name: /第 9 章/ }).check();
-  await expect(panel.getByRole("status")).toContainText("已选 2/8 章");
-  await expect(panel.getByRole("status")).toContainText("字 · 预计");
-  await expect(panel.getByRole("status")).toContainText("今天还可检查");
+  await expect(panel.locator(".check-allowance")).toContainText("已选 2/8 章");
+  await expect(panel.locator(".check-allowance")).toContainText("字 · 预计");
+  await expect(panel.locator(".check-allowance")).toContainText("今天还可检查");
   await start.click();
   await expect(panel.locator(".chapter-check-chapter")).toHaveCount(2, { timeout: 20_000 });
   await expect(panel.locator(".chapter-check-chapter").first()).toContainText("第 2 章");
@@ -34,7 +34,7 @@ test("at most eight chapters can be ticked", async ({ page }) => {
   await expect(boxes).toHaveCount(10);
   for (let index = 0; index < 8; index++) await boxes.nth(index).check();
   await expect(boxes.nth(8)).toBeDisabled();
-  await expect(panel.getByRole("status")).toContainText("已选 8/8 章");
+  await expect(panel.locator(".check-allowance")).toContainText("已选 8/8 章");
 });
 
 test("visitors are told multi-chapter checks need an account", async ({ page }) => {
