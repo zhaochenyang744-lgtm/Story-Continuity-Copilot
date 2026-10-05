@@ -63,7 +63,7 @@ PROMPT_VERSION = SCREENED_PROMPT_VERSION if ContinuityEngine.pipeline() == "scre
 # Repinned 2026-10-05 from continuity-review-v24c-explicit-missing-link (V12, spent) to the long-text
 # phase-4 screened pipeline, which V13 gates as the short-text regression check.
 RUNTIME_CONTRACT = {"model": "deepseek-flash", "review_thinking": "high",
-                    "prompt_version": "continuity-review-v25e-screened-passages-second-review-missing-link+continuity-screen-v1+continuity-triage-v2-scores"}
+                    "prompt_version": "continuity-review-v25g-screened-presupposed-links-bounded-knowledge-rule-category+continuity-screen-v1+continuity-triage-v3-presupposed-links"}
 
 
 def load_case_set(set_dir: pathlib.Path) -> dict:
