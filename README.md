@@ -101,26 +101,20 @@ The public product story is organised around the milestones below. Historical St
 | Product Iteration v1.4–v1.5 | Author materials, exports, decision reuse, chapter revision with fact review, parallel long-chapter checks, the new interface, explicit insufficient-evidence reporting; V10 and V12 held-out gates passed | Held-out results below; backend 471/471; browser E2E 124/124 |
 | Long-text release v1.6 | Screened checking of real ~2,500-character chapters, chosen-chapter checks, character quotas, chapter timeline, Word import, server-side draft autosave; long-text formal gate passed on `lf2-formal` | Long-text results below; v1.6.1: backend 554/554, browser E2E 129/129, evaluation 77/77 |
 
-The published repository baseline is the frozen **V4** set: 15 original, balanced three-class cases across three isolated corpora, plus 6 stability reruns. All 21 runs completed.
+Every model change is decided by one formal run on a set written in a separate session and never read during development, with thresholds registered before the set was authored; a set is spent once it has been run.
 
-| Measure | V4 result |
-| --- | ---: |
-| Accuracy / macro F1 | 1.0000 / 1.0000 |
-| Conflict recall / insufficient-evidence recall | 1.0000 / 1.0000 |
-| No-conflict false-positive rate | 0.0000 |
-| Hit@5 / cited Evidence precision / Evidence resolvability | 1.0000 / 1.0000 / 1.0000 |
-| Schema validity / fail-closed safety | 1.0000 / 1.0000 |
-| Latency p50 / p95 | 2593 ms / 4104 ms |
-| Tokens, input / output | 16037 / 2183 |
-| Cost | unavailable |
+### Long-text gate (current)
 
-Across the three stability cases, decision stability and category/severity stability were 3/3; Evidence-ID-set stability was 2/3 and exact-explanation-hash stability was 1/3. Two cases retained a correct class with a category mismatch: `timeline → event_status` and `world_rule → event_status`.
+The current product (v1.6) is judged on long-text formal sets, because real chapters are about ten times longer than the short-draft sets below: real-length chapters checked against earlier chapters, with thresholds for recall, false positives, time and cost registered before the set was written ([plan](evaluation/longform/PLAN.md)).
 
-The frozen CLI PoC has a separate historical held-out result (F1 0.9412) under a different protocol. It is not the V4 Web Demo evaluation and is not rerun by this repository.
+| Long-text formal set | Configuration | Result |
+| --- | --- | --- |
+| `lf1-formal` + short-text V13 (2026-10-05) | screened pipeline, first caps | Failed on insufficient-evidence recall and maximum cost; both sets retired |
+| `lf2-formal` (2026-10-05, 26 chapters) | prompt v25g, caps 5/2/3, shipped in v1.6.0/v1.6.1 | Passed every registered threshold: conflict recall 1.00, insufficient-evidence recall 0.83, category accuracy 1.00, designated regressions 3/3, trap false positives 0, clean chapters without a card 78%, median 40 s / p90 76 s, mean ¥0.21 / max ¥0.46 |
 
-V5–V8 each retain one immutable first-valid formal result bundle with `gate_failed`; later work does not overwrite or rerun them. In V8, all 30 calls completed and all core classification and Evidence measures were 1.0000, but the designated category regression was 2/3 because one `location_action` case was classified as `event_status`. This single category deviation is retained as a portfolio-level known limitation, while the Model Evaluation Gate recorded under Stage 10 remains failed.
+### Short-draft held-out sets
 
-Since V9, model changes are judged on held-out sets: 36 cases per set (12 conflict, 12 no-conflict, 12 insufficient evidence; Chinese and English works), thresholds registered before the set is authored, and one formal run that decides. Each set is spent once it has been run.
+From V9 to V12, model changes were judged on short-draft held-out sets: 36 cases per set (12 conflict, 12 no-conflict, 12 insufficient evidence; Chinese and English works), thresholds registered before the set is authored, and one formal run that decides. Each set is spent once it has been run.
 
 | Held-out set | Configuration | Result |
 | --- | --- | --- |
@@ -128,18 +122,11 @@ Since V9, model changes are judged on held-out sets: 36 cases per set (12 confli
 | V11 (2026-09-30) | prompt v22 | Failed twice on insufficient-evidence recall (0.75, 0.67; bar 0.8): drafts that settled a point the source left open got no issue at all |
 | V12 (2026-10-03) | prompt v24c, shipped in v1.5.1/v1.5.2 | Passed every registered threshold: macro F1 0.972, insufficient-evidence recall 1.0, conflict recall 0.917, no false positives, designated regressions 3/3 ([procedure](evaluation/ie_fix_v24/PLAN.md), [result](evaluation/results/eval-v12-v24c-first-formal.json)) |
 
-These sets use chapters of at most 300 characters and drafts of one to three sentences. Real chapters are about ten times longer, so v1.6.0 is judged on long-text formal sets: real-length chapters checked against earlier chapters, with thresholds for recall, false positives, time and cost registered before the set was written ([plan](evaluation/longform/PLAN.md)).
+These sets use chapters of at most 300 characters and drafts of one to three sentences.
 
-| Long-text formal set | Configuration | Result |
-| --- | --- | --- |
-| `lf1-formal` + short-text V13 (2026-10-05) | screened pipeline, first caps | Failed on insufficient-evidence recall and maximum cost; both sets retired |
-| `lf2-formal` (2026-10-05, 26 chapters) | prompt v25g, caps 5/2/3, shipped in v1.6.0/v1.6.1 | Passed every registered threshold: conflict recall 1.00, insufficient-evidence recall 0.83, category accuracy 1.00, designated regressions 3/3, trap false positives 0, clean chapters without a card 78%, median 40 s / p90 76 s, mean ¥0.21 / max ¥0.46 |
+### Earlier evidence
 
-Long-form Workflow Validation, recorded under Stage 11, verified the author-controlled workflow on a real 100k-character prefix and a 300k-character prefix. The accepted 300k V2 result completed initialization plus two append/review/decision/commit rounds with bounded RAG, valid Evidence lineage, no automatic canon writes, and a 4,820,992-byte final SQLite database. The first 300k V1 capacity failure remains immutable alongside the V2 pass. The optional 1M-character Stage 11N pressure test has not been run.
-
-Agent Reliability, recorded under Stage 12, independently passed the six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero-partial-write Gates in V2; its V1 Provider-boundary incident remains `gate_failed`. Web App Readiness, recorded under Stage 13, independently passed its local product Gate in V4 after preserving the V2/V3 deployment-artifact failures: server-only integration boundaries, visitor isolation, limits and cleanup, real recovery contracts, two reproducible standalone builds, relocation, and the full browser matrix were verified without external Provider HTTP or SMTP. The historical v1.0 Public Release passed HTTPS/security, real SMTP/password recovery, restart persistence, backup/same-release redeploy, a real-provider two-round author workflow, visitor and registered-account isolation, quota separation, visitor cleanup, and public Cancel/Timeout/Retry atomicity checks. The previous v1.2.0 deployment acceptance covered health/readiness, rollback state, desktop/mobile rendering, new-account tutorial isolation and persistence, and the empty real-workspace result without rerunning the external Provider workflow.
-
-Read [the verification record](docs/verification-and-limitations.md) for evidence scope and limitations, and [the product decisions record](docs/product-decisions-and-validation.md) for the rationale behind the workflow.
+The frozen V4 set (15 balanced cases plus 6 stability reruns) scored 1.0 on every classification and Evidence measure and remains the packaged release-bundle baseline. V5–V8 each keep one immutable `gate_failed` formal bundle (in V8 the designated category regression was 2/3), so the Model Evaluation Gate recorded under Stage 10 stays failed. Stage 11 validated the author workflow on real 100k- and 300k-character prefixes, Stage 12 passed the Agent Run lifecycle Gates, and Stage 13 passed the web-app readiness Gate. The CLI PoC's held-out F1 0.9412 used a different protocol. See [the verification record](docs/verification-and-limitations.md) for these results and their limits, and [the product decisions record](docs/product-decisions-and-validation.md) for the rationale behind the workflow.
 
 ## Technology
 
