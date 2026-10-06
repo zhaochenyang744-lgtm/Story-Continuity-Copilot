@@ -769,6 +769,10 @@ function TutorialCompleteVisual() {
     />
   );
 }
+type AutosaveState = "idle" | "saving" | "saved" | "failed" | "conflict";
+const AUTOSAVE_IDLE_MS = 5_000;
+const AUTOSAVE_MIN_INTERVAL_MS = 30_000;
+
 type CheckUsage =
   | { account_type: "registered"; check_chars_limit: number; check_chars_used: number; check_chars_remaining: number; imports_limit: number; imports_remaining: number }
   | { account_type: "visitor"; check_chars_per_check: number; checks_limit: number; checks_remaining: number };
@@ -934,6 +938,7 @@ export function Workbench() {
     [switchSaving, setSwitchSaving] = useState(false),
     [switchSaveFailed, setSwitchSaveFailed] = useState(false),
     [saveFailed, setSaveFailed] = useState(false),
+    [autosaveRecord, setAutosaveRecord] = useState<{ key: string; state: AutosaveState }>({ key: "", state: "idle" }),
     [draftRecoveryPrompt, setDraftRecoveryPrompt] = useState<DraftRecoveryPrompt | null>(null),
     [draftRecoveryConflict, setDraftRecoveryConflict] = useState<DraftRecoveryPrompt | null>(null),
     [draftRecoveryUnavailable, setDraftRecoveryUnavailable] = useState(""),
@@ -1952,6 +1957,63 @@ export function Workbench() {
       setBusy("");
     }
   };
+  // Autosave (v1.6.1): saves the draft to the server in the background a few seconds after typing
+  // stops, at most every AUTOSAVE_MIN_INTERVAL_MS, without locking the editor. Text typed while a save
+  // is in flight is kept. Flows that must record an author decision with their save (a controlled
+  // edit, a pending decision, a recovery conflict) keep the explicit save button; a newer revision
+  // saved elsewhere stops autosave instead of overwriting it.
+  const autosaveInFlight = useRef(false);
+  const lastAutosaveAt = useRef(0);
+  // The state belongs to one draft; another draft or project starts from idle.
+  const autosaveKey = `${projectId ?? ""}:${draft?.id ?? ""}`;
+  const autosaveState: AutosaveState = autosaveRecord.key === autosaveKey ? autosaveRecord.state : "idle";
+  const setAutosaveState = (state: AutosaveState) => setAutosaveRecord({ key: autosaveKey, state });
+  const autosaveBlocked = !projectId || !draft || !saved || readOnly || Boolean(busy) || Boolean(controlled)
+    || Boolean(pendingControlledDecision) || draftRecoveryConflict || Boolean(draftRecoveryPrompt) || autosaveState === "conflict";
+  const draftDirty = Boolean(draft && saved && (draft.title !== saved.title || draft.body !== saved.body || draft.body_format !== saved.body_format));
+  const autosave = async () => {
+    if (autosaveBlocked || !draftDirty || autosaveInFlight.current || !draft || !saved || !projectId) return;
+    const requestEpoch = epoch.current;
+    const requestProjectId = projectId;
+    const requestDraft = { ...draft };
+    autosaveInFlight.current = true;
+    setAutosaveState("saving");
+    try {
+      const result = await json<{ revision: number; saved_at: string }>(`/projects/${requestProjectId}/drafts/${requestDraft.id}`, "PATCH", {
+        base_revision: saved.revision,
+        title: requestDraft.title,
+        body: requestDraft.body,
+        body_format: requestDraft.body_format,
+      });
+      lastAutosaveAt.current = Date.now();
+      if (requestEpoch !== epoch.current) return;
+      setSaved({ ...requestDraft, revision: result.revision, saved_at: result.saved_at });
+      setDraft((current) => current && current.id === requestDraft.id ? { ...current, revision: result.revision, saved_at: result.saved_at } : current);
+      setContextBrief((current)=>current&&current.draft_revision!==result.revision?{...current,is_stale:true,lineage_status:"bound_state_changed"}:current);
+      setPlanAlignment((current)=>current&&current.draft_revision!==result.revision?{...current,is_stale:true,lineage_status:"bound_state_changed"}:current);
+      setRun((current) => current && current.source_revision !== result.revision ? { ...current, current_revision: result.revision, is_stale: true, lineage_status: "stale" } : current);
+      setPairedRun((current) => current && current.source_revision !== result.revision ? { ...current, current_revision: result.revision, is_stale: true, lineage_status: "stale" } : current);
+      setSaveFailed(false);
+      setAutosaveState("saved");
+    } catch (cause) {
+      lastAutosaveAt.current = Date.now();
+      if (requestEpoch !== epoch.current) return;
+      if ((cause as ApiFailure).code === "revision_conflict") {
+        setAutosaveState("conflict");
+        setNotice("这一章已在别处保存了更新的版本，自动保存已暂停，避免覆盖。你的文字仍保留在本机；请刷新载入最新版本后再比较。");
+      } else setAutosaveState("failed");
+    } finally {
+      autosaveInFlight.current = false;
+    }
+  };
+  const autosaveRef = useRef(autosave);
+  useEffect(() => { autosaveRef.current = autosave; });
+  useEffect(() => {
+    if (autosaveBlocked || !draftDirty) return;
+    const wait = Math.max(AUTOSAVE_IDLE_MS, AUTOSAVE_MIN_INTERVAL_MS - (Date.now() - lastAutosaveAt.current));
+    const timer = window.setTimeout(() => void autosaveRef.current(), wait);
+    return () => window.clearTimeout(timer);
+  }, [draft, saved, autosaveBlocked, draftDirty]);
   useEffect(() => {
     if (!user || !project || !draft || !saved || draftRecoveryPrompt || draftRecoveryConflict) return;
     const identity = { userId: user.id, projectId: project.id, draftId: draft.id };
@@ -2656,6 +2718,7 @@ export function Workbench() {
         busy={busy}
         error={error}
         saveFailed={saveFailed}
+        autosaveState={autosaveState}
         draftRecoveryUnavailable={draftRecoveryUnavailable}
         draftRecoveryConflict={Boolean(draftRecoveryConflict)}
         openDraftRecoveryConflict={() => draftRecoveryConflict && setDraftRecoveryPrompt(draftRecoveryConflict)}
@@ -3835,7 +3898,7 @@ function Rows({
       Partial<
         Pick<
           ProjectSummary,
-          "genre" | "summary" | "current_memory_version" | "open_issue_count" | "continuity_status"
+          "genre" | "summary" | "current_memory_version" | "open_issue_count" | "continuity_status" | "chapter_count" | "word_count"
         >
       > &
       Partial<Pick<ProjectSummary, "id">> & { project_id?: string }
@@ -3859,7 +3922,7 @@ function Rows({
         <span>作品</span>
         <span>简介</span>
         <span>状态</span>
-        <span>事实库版本</span>
+        <span>篇幅</span>
         <span>待处理</span>
         <span>操作</span>
       </div>
@@ -3886,7 +3949,7 @@ function Rows({
             </div>
             <small className="project-summary">{p.summary || "—"}</small>
             <span className={`status-pill ${p.status}`}><I>●</I>{statusLabel(p.status)}</span>
-            <span className="project-memory">第 {p.current_memory_version ?? "—"} 版</span>
+            <span className="project-memory">{p.chapter_count ?? 0} 章 · {formatWritingCount(p.word_count ?? 0)} 字</span>
             <span className={`issue-count ${issueTone}`}>
               <I>
                 {issueTone === "high"
@@ -4968,6 +5031,7 @@ function ProjectPage(p: {
   busy: string;
   error: unknown;
   saveFailed: boolean;
+  autosaveState: AutosaveState;
   draftRecoveryUnavailable: string;
   draftRecoveryConflict: boolean;
   openDraftRecoveryConflict: () => void;
@@ -5059,11 +5123,11 @@ function ProjectPage(p: {
     blocked = editingLocked || Boolean(p.busy),
     saving = p.busy === "保存草稿" || p.busy === "保存受控修订" || p.busy === "正在重试记录决定",
     saveState = saving ? "saving" : p.saveFailed ? "failed" : dirty ? "unsaved" : "saved",
-    saveLabel = saving ? "保存中" : p.saveFailed ? "保存失败" : dirty ? "未保存" : "已保存",
+    saveLabel = saving || p.autosaveState === "saving" ? "保存中" : p.saveFailed ? "保存失败" : p.autosaveState === "conflict" && dirty ? "自动保存已暂停" : dirty ? (p.autosaveState === "failed" ? "自动保存失败" : "未保存") : "已保存",
     saveDetail = p.saveFailed
       ? "正文仍保留在当前设备，可重试保存。"
       : dirty
-        ? p.draftRecoveryUnavailable || "已留在当前设备，尚未写入服务器。"
+        ? p.draftRecoveryUnavailable || (p.autosaveState === "conflict" ? "别处有更新的版本；文字留在当前设备，请刷新后比较。" : p.autosaveState === "failed" ? "暂时没能存到服务器，文字留在当前设备，稍后会再试。" : "停笔几秒后会自动保存到服务器。")
         : p.saved?.saved_at
           ? timestampLabel(p.saved.saved_at)
           : "尚无保存时间",
@@ -5119,7 +5183,7 @@ function ProjectPage(p: {
             <h2>{p.coverage?.counts.confirmed ?? p.memories.filter((record) => record.valid_to == null && record.review_status === "author_confirmed").length} 条已确认事实</h2>
             <p className="term-help">事实库记着已经写进故事、由你确认过的设定和状态；检查新章节时用它来对照。</p>
             <dl className="overview-kv">
-              <div><dt>能否检查</dt><dd>{coverageStatusLabel(p.coverage?.status)}</dd></div>
+              <div><dt>能否检查</dt><dd>{p.coverage ? coverageStatusLabel(p.coverage.status) : p.project.chapter_count ? "可以检查" : "写下或导入一章后即可检查"}</dd></div>
               <div><dt>检查状态</dt><dd>{p.project.continuity_status === "unchecked" ? "尚未检查" : p.project.continuity_status === "checked_clear" ? "已检查 · 0 项待处理" : `${p.project.open_issue_count ?? 0} 项待处理`}</dd></div>
               <div><dt>最近检查</dt><dd>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚无"}</dd></div>
             </dl>
@@ -5819,17 +5883,22 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const fetchPanel = useCallback(() => Promise.all([
+    request<{ runs: ChapterCheckRun[] }>(`/projects/${projectId}/chapter-checks?limit=3`),
+    request<CheckUsage>("/account/usage"),
+    request<{ chapters: TimelineRow[] }>(`/projects/${projectId}/chapter-timeline`),
+  ]), [projectId]);
   const load = useCallback(async () => {
     try {
-      const [list, nextUsage, nextTimeline] = await Promise.all([
-        request<{ runs: ChapterCheckRun[] }>(`/projects/${projectId}/chapter-checks?limit=3`),
-        request<CheckUsage>("/account/usage"),
-        request<{ chapters: TimelineRow[] }>(`/projects/${projectId}/chapter-timeline`),
-      ]);
+      const [list, nextUsage, nextTimeline] = await fetchPanel();
       setRuns(list.runs); setUsage(nextUsage); setTimeline(nextTimeline.chapters);
     } catch { /* the panel stays usable; a later action shows the error */ }
-  }, [projectId]);
-  useEffect(() => { void load(); }, [load]);
+  }, [fetchPanel]);
+  useEffect(() => {
+    let live = true;
+    fetchPanel().then(([list, nextUsage, nextTimeline]) => { if (live) { setRuns(list.runs); setUsage(nextUsage); setTimeline(nextTimeline.chapters); } }).catch(() => undefined);
+    return () => { live = false; };
+  }, [fetchPanel]);
   const active = runs.some((run) => ["queued", "running"].includes(run.status));
   useEffect(() => {
     if (!active) return;
@@ -5837,7 +5906,7 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
     return () => window.clearTimeout(timer);
   }, [active, runs, load]);
   useEffect(() => {
-    if (!selected.length) { setEstimate(null); return; }
+    if (!selected.length) return;
     let live = true;
     json<{ characters: number; estimated_cny: number }>(`/projects/${projectId}/chapter-checks/estimate`, "POST", { chapter_ids: selected })
       .then((next) => { if (live) setEstimate(next); }).catch(() => { if (live) setEstimate(null); });
@@ -5847,7 +5916,8 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
     return <section className="project-section chapter-check-panel" aria-label="全部章节"><h2>全部章节</h2><p className="muted">访客只能检查当前草稿；注册账号后可以一次勾选最多 {CHAPTER_CHECK_MAX} 章一起检查。下面是一份示例结果，展示多章检查会得到什么。</p>{runs.find((run) => run.sample) && <ChapterCheckResult run={runs.find((run) => run.sample)!} />}</section>;
   }
   const toggle = (id: string) => setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length >= CHAPTER_CHECK_MAX ? current : [...current, id]);
-  const over = Boolean(estimate && usage?.account_type === "registered" && estimate.characters > usage.check_chars_remaining);
+  const shownEstimate = selected.length ? estimate : null;
+  const over = Boolean(shownEstimate && usage?.account_type === "registered" && shownEstimate.characters > usage.check_chars_remaining);
   const start = async () => {
     setBusy(true); setError("");
     try {
@@ -5891,7 +5961,7 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
           <div className="chapter-check-actions">
             <p className={over ? "check-allowance over" : "check-allowance"} aria-live="polite">
               已选 {selected.length}/{CHAPTER_CHECK_MAX} 章
-              {estimate && <> · 约 {estimate.characters.toLocaleString()} 字 · 预计{estimate.estimated_cny >= 0.01 ? `约 ¥${estimate.estimated_cny.toFixed(2)}` : "不到 ¥0.01"}</>}
+              {shownEstimate && <> · 约 {shownEstimate.characters.toLocaleString()} 字 · 预计{shownEstimate.estimated_cny >= 0.01 ? `约 ¥${shownEstimate.estimated_cny.toFixed(2)}` : "不到 ¥0.01"}</>}
               {usage?.account_type === "registered" && <> · 今天还可检查 {usage.check_chars_remaining.toLocaleString()} 字</>}
             </p>
             {!readOnly && <Button className="primary" disabled={busy || active || !selected.length || over} onClick={() => void start()}>{active ? "正在检查" : "检查选中的章节"}</Button>}
@@ -5934,10 +6004,9 @@ function ChapterCheckResult({ run }: { run: ChapterCheckRun }) {
 
 function SourceAppend({ project, draft, chapters, readOnly, context }: { project: Project; draft: Draft | null; chapters: Chapter[]; readOnly: boolean; context?: ReactNode }) {
   const router=useRouter();
-  const [method, setMethod] = useState<"draft_complete" | "paste" | "file">("paste"), [content, setContent] = useState(""), [filename, setFilename] = useState(""), [preview, setPreview] = useState<SourceChangeSet | null>(null), [nextDraft, setNextDraft] = useState<Draft | null>(null), [busy, setBusy] = useState(""), [error, setError] = useState("");
-  const base = project.source_revision ?? 1;
   // "完成当前章节" in the workspace menu links here with #complete-draft.
-  useEffect(() => { if (window.location.hash === "#complete-draft" && draft) setMethod("draft_complete"); }, [draft]);
+  const [method, setMethod] = useState<"draft_complete" | "paste" | "file">(() => typeof window !== "undefined" && window.location.hash === "#complete-draft" && draft ? "draft_complete" : "paste"), [content, setContent] = useState(""), [filename, setFilename] = useState(""), [preview, setPreview] = useState<SourceChangeSet | null>(null), [nextDraft, setNextDraft] = useState<Draft | null>(null), [busy, setBusy] = useState(""), [error, setError] = useState("");
+  const base = project.source_revision ?? 1;
   const makePreview = async () => {
     setBusy("正在生成追加预览"); setError("");
     try {
