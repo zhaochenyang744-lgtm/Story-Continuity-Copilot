@@ -223,8 +223,9 @@ const tabs = [
   ["memory", "资料"],
   ["plan", "计划"],
 ] as const;
-// Addresses from before v1.7.0 keep working: the three planning pages now live under 计划.
-const legacyPlanTabs = new Set(["outline", "characters", "world"]);
+// Addresses from before v1.7.0 keep working: the outline opens 计划; the character and world
+// archives (written material) open 资料 on the matching view.
+const legacyTabs: Record<string, string> = { outline: "plan", characters: "memory", world: "memory" };
 const stage = (s: string): string =>
   (
     ({
@@ -984,7 +985,7 @@ export function Workbench() {
       ? parts[1]
       : null;
   const rawTab = parts[2] ?? "overview";
-  const tab = legacyPlanTabs.has(rawTab) ? "plan" : rawTab;
+  const tab = legacyTabs[rawTab] ?? rawTab;
   const [issueRunId, setIssueRunId] = useState(run?.run_id);
   if (issueRunId !== run?.run_id) {
     setIssueRunId(run?.run_id);
@@ -2692,6 +2693,7 @@ export function Workbench() {
       <AuthorContextPreviewProvider key={`${user?.id}:${project.id}`} project={project} userId={user?.id ?? ""} chapters={chapters} memories={memories} authorContext={authorContext} go={go}>
       <ProjectPage
         tab={tab}
+        rawTab={rawTab}
         actorId={user.id}
         refreshReferences={async () => {
           const id = project.id;
@@ -4446,7 +4448,7 @@ function ForeshadowReferenceSelect({label,value,setValue,chapters,disabled}:{lab
   })}</select></label>;
 }
 
-function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go}:{project:Project;draft:Draft|null;chapters:Chapter[];readOnly:boolean;dirty:boolean;go:(href:string)=>void}){
+function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go,only}:{project:Project;draft:Draft|null;chapters:Chapter[];readOnly:boolean;dirty:boolean;go:(href:string)=>void;only?:"qa"|"foreshadow"}){
   const [snapshot,setSnapshot]=useState<ForeshadowSnapshot|null>(null);
   const [qaRuns,setQaRuns]=useState<WritingAnalysisRun[]>([]),[scanRuns,setScanRuns]=useState<WritingAnalysisRun[]>([]);
   const [question,setQuestion]=useState(""),[scope,setScope]=useState<("confirmed"|"written"|"planned")[]>(["confirmed","written","planned"]);
@@ -4485,26 +4487,33 @@ function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go}:{project:P
   const changeCandidate=(candidate:ForeshadowCandidate,patch:Partial<ForeshadowEditor>)=>setCandidateEdits((current)=>({...current,[candidate.id]:{...(current[candidate.id]??candidateEditor(candidate)),...patch}}));
   const toggleScope=(value:"confirmed"|"written"|"planned")=>setScope((current)=>current.includes(value)?(current.length===1?current:current.filter((item)=>item!==value)):[...current,value]);
   const renderRunActions=(run:WritingAnalysisRun)=>!readOnly&&<div className="analysis-result-actions">{activeAnalysis(run)&&<Button disabled={Boolean(busy)} onClick={()=>void runAction(run,"cancel")}>取消</Button>}{retryableAnalysis(run)&&<Button disabled={Boolean(busy)||run.is_stale} onClick={()=>void runAction(run,"retry")}>重试</Button>}</div>;
-  return <details className="bounded-story-tools" aria-label="作品问答与伏笔">
-    <summary className="bounded-tools-header"><div><p className="eyebrow">写作辅助</p><h2>作品问答与伏笔</h2><p>需要时再展开；已有回答与伏笔记录也在这里。</p></div>{(snapshot?.foreshadow_version??project.foreshadow_version??0)>0||qaRuns.length>0||scanRuns.length>0?<small>伏笔记录第 {snapshot?.foreshadow_version??project.foreshadow_version??0} 版 · 回答 {qaRuns.length} 条 · 扫描 {scanRuns.length} 次</small>:null}</summary>
-    <div className="bounded-tools-intro"><DesignAsset name="bulb" /><p>回答会说明依据来自哪里。扫描发现的伏笔先供你参考，是否记入作品由你决定。</p></div>
+  const notices=<>
     {notice&&<p className="notice" role="status">{notice}</p>}
     {conflict&&<div className="bounded-conflict" role="alert"><p>服务器上的伏笔版本已变化；你的标题、说明与引用选择仍保留。载入最新版本后检查差异，再主动重试保存。</p><Button className="secondary" disabled={Boolean(busy)} onClick={()=>void loadLatest()}>载入最新版本</Button></div>}
     {dirty&&!readOnly&&<p className="bounded-dirty-note" role="note">当前草稿有未保存修改。已有结果仍可浏览；提问与扫描会保持禁用，保存后会自动刷新并标记旧结果。</p>}
-    <div className="bounded-tools-grid">
+  </>;
+  const qaTool=(
       <section className="bounded-tool" aria-label="作品问答">
-        <header><div className="tool-title-block"><DesignAsset name="bulb" /><div><p className="eyebrow">当前作品问题</p><h3>作品问答</h3><p className="tool-description">关于人物、情节或设定的疑问，都可以从这里开始。</p></div></div>{activeQa&&<span className="run-state state-running">{stage(activeQa.status)}</span>}</header>
+        <header><div className="tool-title-block"><DesignAsset name="bulb" /><div><h3>问一问</h3><p className="tool-description">关于人物、情节或设定的疑问，回答会说明依据出自哪里。</p></div></div>{activeQa&&<span className="run-state state-running">{stage(activeQa.status)}</span>}</header>
         {!readOnly&&<form className="qa-form" onSubmit={(event)=>{event.preventDefault();void start("story_qa");}}><label>你的问题<textarea value={question} maxLength={1000} onChange={(event)=>setQuestion(event.target.value)} placeholder="例如：林默目前是否知道北门会提前开启？" /></label><fieldset><legend>限定依据</legend>{(["confirmed","written","planned"] as const).map((value)=><label key={value}><input type="checkbox" checked={scope.includes(value)} onChange={()=>toggleScope(value)} />{qaLayerLabel[value]}</label>)}</fieldset><Button className="secondary" type="submit" disabled={Boolean(busy)||Boolean(activeQa)||!question.trim()||!draft||dirty}>提交问题</Button><small className="form-gentle-note">问题越具体，越容易找到相关依据。</small></form>}
         {readOnly&&!qaRuns.length&&<p className="muted">窄窗口仅浏览已有回答；请在宽屏窗口提问。</p>}
         <div className="bounded-run-list">{qaRuns.map((run)=><article key={run.run_id} className={`bounded-run status-${run.status}${run.is_stale?" stale":""}`}><header><strong>{run.question||"历史问题"}</strong><span>{run.is_stale?"依据已变化":qaStatusLabel[run.analysis?.answer_status??""]??stage(run.status)}</span></header>{activeAnalysis(run)&&<p className="analysis-pending">{stage(run.stage)}；不会展示中间推理。</p>}{["failed","timed_out","cancelled"].includes(run.status)&&<p className="inline-error">{labelError({code:run.error_code})}</p>}{run.analysis&&<><p className="qa-answer">{run.analysis.answer}</p>{run.analysis.findings?.map((finding,index)=><section className={`qa-finding stance-${finding.stance}`} key={`${finding.layer}:${index}`}><header><span>{qaLayerLabel[finding.layer]}</span><em>{qaStanceLabel[finding.stance]}</em></header><p>{finding.text}</p><EvidenceLinks sources={finding.evidence} navigate={go}/></section>)}</>}<footer><small title={run.retrieval?.method_version?`检索方式：${run.retrieval.method_version}`:undefined}>{runBinding(run,{foreshadow:true})}</small>{renderRunActions(run)}</footer></article>)}</div>
       </section>
+  );
+  const foreshadowTool=(
       <section className="bounded-tool" aria-label="伏笔管理">
-        <header><div className="tool-title-block"><DesignAsset name="paper" /><div><p className="eyebrow">由你记录与确认</p><h3>伏笔记录</h3><p className="tool-description">记下线索、埋设位置，以及准备回收的时机。</p></div></div>{!readOnly&&<Button className="secondary" disabled={Boolean(busy)||Boolean(activeScan)||!draft||dirty} onClick={()=>void start("foreshadow_scan")}>{activeScan?"扫描中":"扫描已写正文"}</Button>}</header>
+        <header><div className="tool-title-block"><DesignAsset name="paper" /><div><h3>伏笔</h3><p className="tool-description">已经埋进正文的线索、埋在哪里、准备何时回收。扫描找到的候选由你决定是否记下。</p></div></div>{!readOnly&&<Button className="secondary" disabled={Boolean(busy)||Boolean(activeScan)||!draft||dirty} onClick={()=>void start("foreshadow_scan")}>{activeScan?"扫描中":"扫描已写正文"}</Button>}</header>
         {!readOnly&&<form className="foreshadow-form" onSubmit={saveRecord}><label>标题<input placeholder="给这条伏笔起一个简短的标题" value={editor.title} maxLength={120} onChange={(event)=>setEditor({...editor,title:event.target.value})} /></label><label>说明<textarea placeholder="记录线索的含义，以及后续准备怎样展开……" value={editor.description} maxLength={1200} onChange={(event)=>setEditor({...editor,description:event.target.value})} /></label><label>状态<select value={editor.status} onChange={(event)=>setEditor({...editor,status:event.target.value as ForeshadowRecord["status"]})}>{Object.entries(foreshadowStatusLabel).map(([value,label])=><option key={value} value={value}>{label}</option>)}</select></label><ForeshadowReferenceSelect label="埋设章节 / 来源" value={editor.planted_reference} setValue={(value)=>setEditor({...editor,planted_reference:value})} chapters={chapters} disabled={Boolean(busy)}/><ForeshadowReferenceSelect label="回收章节 / 来源" value={editor.resolved_reference} setValue={(value)=>setEditor({...editor,resolved_reference:value})} chapters={chapters} disabled={Boolean(busy)}/><div className="form-actions"><Button className="primary" type="submit" disabled={Boolean(busy)||!editor.title.trim()||!editor.description.trim()||(Boolean(editingId)&&editingBaseVersion===null)}>{editingId?"保存修改":"新建作者记录"}</Button>{editingId&&<Button type="button" onClick={()=>{setEditingId(null);setEditingBaseVersion(null);setEditor(emptyForeshadowEditor);}}>取消编辑</Button>}</div></form>}
         <div className="foreshadow-records">{snapshot?.records.map((record)=><article key={record.id} id={`foreshadow-${record.id}`} className={record.archived_at?"archived":""}><header><div><strong>{record.title}</strong><small>作者记录 · V{record.version}</small></div><span>{record.archived_at?"已归档":foreshadowStatusLabel[record.status]}</span></header><p>{record.description}</p><div className="foreshadow-links">{record.planted&&<a href={record.planted.source_path} onClick={(event)=>protectSourceNavigation(event,record.planted?.source_path,go)}>埋设：第 {record.planted.chapter_number} 章{record.planted.source_label?` · ${record.planted.source_label}`:""}</a>}{record.resolved&&<a href={record.resolved.source_path} onClick={(event)=>protectSourceNavigation(event,record.resolved?.source_path,go)}>回收：第 {record.resolved.chapter_number} 章{record.resolved.source_label?` · ${record.resolved.source_label}`:""}</a>}</div>{!readOnly&&!record.archived_at&&<footer><Button className="quiet" disabled={Boolean(busy)} onClick={()=>{setEditingId(record.id);setEditingBaseVersion(record.version);setEditor(recordEditor(record));}}>编辑</Button><Button className="quiet" disabled={Boolean(busy)} onClick={()=>void archiveRecord(record)}>归档</Button></footer>}</article>)}{snapshot&&!snapshot.records.length&&<p className="muted">还没有作者伏笔记录；AI 候选不会自动出现在这里。</p>}</div>
         {scanRuns.map((run)=><article key={run.run_id} className={`foreshadow-scan bounded-run status-${run.status}${run.is_stale?" stale":""}`}><header><div><strong>AI 伏笔候选</strong><small>{timestampLabel(run.created_at)}</small></div><span>{run.is_stale?"依据已变化":stage(run.status)}</span></header>{activeAnalysis(run)&&<p className="analysis-pending">{stage(run.stage)}；扫描只读取已绑定内容。</p>}{["failed","timed_out","cancelled"].includes(run.status)&&<p className="inline-error">{labelError({code:run.error_code})}</p>}{run.analysis&&<><p>{run.analysis.summary}</p>{(run.analysis.candidates as ForeshadowCandidate[]|undefined)?.map((candidate)=><section className="foreshadow-candidate" key={candidate.id} id={`foreshadow-candidate-${candidate.id}`}><header><div><strong>{candidate.title}</strong><small>AI 候选 · {foreshadowStatusLabel[candidate.suggested_status]}</small></div><span>{candidate.decision_status==="pending"?"待作者决定":candidate.decision_status==="rejected"?"作者已拒绝":candidate.decision_status==="edited"?"编辑后接受":"作者已接受"}</span></header><p>{candidate.description}</p><EvidenceLinks sources={candidate.evidence} navigate={go}/>{!readOnly&&candidate.decision_status==="pending"&&!run.is_stale&&<div className="candidate-review"><details><summary>编辑后接受</summary>{(()=>{const value=candidateEdits[candidate.id]??candidateEditor(candidate);return <div className="candidate-edit-fields"><label>标题<input value={value.title} maxLength={120} onChange={(event)=>changeCandidate(candidate,{title:event.target.value})} /></label><label>说明<textarea value={value.description} maxLength={1200} onChange={(event)=>changeCandidate(candidate,{description:event.target.value})} /></label><label>状态<select value={value.status} onChange={(event)=>changeCandidate(candidate,{status:event.target.value as ForeshadowRecord["status"]})}>{Object.entries(foreshadowStatusLabel).map(([option,label])=><option key={option} value={option}>{label}</option>)}</select></label><ForeshadowReferenceSelect label="埋设章节 / 来源" value={value.planted_reference} setValue={(next)=>changeCandidate(candidate,{planted_reference:next})} chapters={chapters} disabled={Boolean(busy)}/><ForeshadowReferenceSelect label="回收章节 / 来源" value={value.resolved_reference} setValue={(next)=>changeCandidate(candidate,{resolved_reference:next})} chapters={chapters} disabled={Boolean(busy)}/><Button className="primary" disabled={Boolean(busy)||!value.title.trim()||!value.description.trim()} onClick={()=>void decide(run,candidate,"edited")}>保存为作者记录</Button></div>;})()}</details><div className="form-actions"><Button className="secondary" disabled={Boolean(busy)} onClick={()=>void decide(run,candidate,"accepted")}>接受</Button><Button className="quiet" disabled={Boolean(busy)} onClick={()=>void decide(run,candidate,"rejected")}>拒绝</Button></div></div>}</section>)}</>}<footer><small title={run.retrieval?.method_version?`检索方式：${run.retrieval.method_version}`:undefined}>{runBinding(run,{foreshadow:true})}</small>{renderRunActions(run)}</footer></article>)}
       </section>
-    </div>
+  );
+  if(only)return <section className="materials-tool" aria-label={only==="qa"?"问一问":"伏笔"}>{notices}{only==="qa"?qaTool:foreshadowTool}</section>;
+  return <details className="bounded-story-tools" aria-label="作品问答与伏笔">
+    <summary className="bounded-tools-header"><div><p className="eyebrow">写作辅助</p><h2>作品问答与伏笔</h2><p>需要时再展开；已有回答与伏笔记录也在这里。</p></div>{(snapshot?.foreshadow_version??project.foreshadow_version??0)>0||qaRuns.length>0||scanRuns.length>0?<small>伏笔记录第 {snapshot?.foreshadow_version??project.foreshadow_version??0} 版 · 回答 {qaRuns.length} 条 · 扫描 {scanRuns.length} 次</small>:null}</summary>
+    <div className="bounded-tools-intro"><DesignAsset name="bulb" /><p>回答会说明依据来自哪里。扫描发现的伏笔先供你参考，是否记入作品由你决定。</p></div>
+    {notices}
+    <div className="bounded-tools-grid">{qaTool}{foreshadowTool}</div>
   </details>;
 }
 
@@ -4952,6 +4961,7 @@ function ImmersiveEditor({
 
 function ProjectPage(p: {
   tab: string;
+  rawTab: string;
   actorId: string;
   refreshReferences: () => Promise<void>;
   project: Project;
@@ -5255,50 +5265,57 @@ function ProjectPage(p: {
     );
   if (p.tab === "memory")
     return (
-      <section className="project-page">
-        <header className="page-header">
-          <div>
-            <h1>资料</h1>
-            <p>这里记着已经写进故事、由你确认过的设定和状态，检查新章节时用来对照；每条都能查到出自哪一章。</p>
-          </div>
-        </header>
-        {contextNotices}
-        {p.memoryDelta?.coverage_audit && (
-          <section className="notice" aria-label="增量来源覆盖审计">
-            <strong>本章事实：{coverageStatusLabel(p.memoryDelta.coverage_audit.status)}</strong>
-            <p>{p.memoryDelta.coverage_audit.details.candidate_ids?.length ?? 0} 条事实变化的决定和出处都已保留。</p>
-            {p.memoryDelta.change_set && <p>已保存更新记录 · 共 {p.memoryDelta.change_set.items.length} 条。</p>}
-          </section>
-        )}
-        {p.memoryDelta && p.memoryDelta.status !== "not_started" && p.memoryDelta.status !== "covered" ? (
-          <MemoryDeltaReview delta={p.memoryDelta} blocked={blocked} submit={p.submitMemoryDelta} openSource={p.openMemorySource} />
-        ) : p.project.data_origin === "user_import" && p.initialization && (!p.memories.length || p.coverage?.status === "ready_partial") ? (
-          <MemoryInitializationReview
-            initialization={p.initialization}
-            coverage={p.coverage}
-            blocked={blocked}
-            start={p.startMemoryInitialization}
-            submit={p.submitMemoryInitialization}
-            reopen={p.reopenMemoryCandidate}
-            goToCheck={() => p.go(`/projects/${p.project.id}/workspace`)}
-          />
-        ) : p.memories.length ? (
-          <MemoryRecords
-            records={p.memories}
-            openSource={p.openMemorySource}
-          />
-        ) : (
-          <div className="empty">
-            <strong>事实库还是空的</strong>
-            <p>
-              {p.project.memory_initialization_status === "required"
-                ? "这部导入作品还没有建立事实库。不建也能检查，系统会直接对照原文；建立并确认后检查更准。"
-                : "新作品没有已确认事实。"}
-            </p>
-          </div>
-        )}
-        <BoundedStoryTools key={p.project.id} project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} dirty={dirty} go={p.go} />
-      </section>
+      <MaterialsPage
+        key={`${p.project.id}:${p.rawTab}`}
+        initialView={p.rawTab === "characters" ? "people" : p.rawTab === "world" ? "places" : null}
+        project={p.project}
+        factCount={p.memories.filter((record) => record.valid_to == null && record.review_status === "author_confirmed").length}
+        peopleCount={p.characters.length}
+        placeCount={p.world.length}
+        context={contextNotices}
+        facts={
+          <>
+            {p.memoryDelta?.coverage_audit && (
+              <section className="notice" aria-label="增量来源覆盖审计">
+                <strong>本章事实：{coverageStatusLabel(p.memoryDelta.coverage_audit.status)}</strong>
+                <p>{p.memoryDelta.coverage_audit.details.candidate_ids?.length ?? 0} 条事实变化的决定和出处都已保留。</p>
+                {p.memoryDelta.change_set && <p>已保存更新记录 · 共 {p.memoryDelta.change_set.items.length} 条。</p>}
+              </section>
+            )}
+            {p.memoryDelta && p.memoryDelta.status !== "not_started" && p.memoryDelta.status !== "covered" ? (
+              <MemoryDeltaReview delta={p.memoryDelta} blocked={blocked} submit={p.submitMemoryDelta} openSource={p.openMemorySource} />
+            ) : p.project.data_origin === "user_import" && p.initialization && (!p.memories.length || p.coverage?.status === "ready_partial") ? (
+              <MemoryInitializationReview
+                initialization={p.initialization}
+                coverage={p.coverage}
+                blocked={blocked}
+                start={p.startMemoryInitialization}
+                submit={p.submitMemoryInitialization}
+                reopen={p.reopenMemoryCandidate}
+                goToCheck={() => p.go(`/projects/${p.project.id}/workspace`)}
+              />
+            ) : p.memories.length ? (
+              <MemoryRecords
+                records={p.memories}
+                openSource={p.openMemorySource}
+              />
+            ) : (
+              <div className="empty">
+                <strong>事实库还是空的</strong>
+                <p>
+                  {p.project.memory_initialization_status === "required"
+                    ? "这部导入作品还没有建立事实库。不建也能检查，系统会直接对照原文；建立并确认后检查更准。"
+                    : "新作品没有已确认事实。"}
+                </p>
+              </div>
+            )}
+          </>
+        }
+        people={<CharacterArchive projectId={p.project.id} characters={p.characters} draft={p.draft} readOnly={p.readOnly} memories={p.memories} openSource={p.openMemorySource} />}
+        places={<WorldArchive entries={p.world} memories={p.memories} openSource={p.openMemorySource} />}
+        foreshadow={<BoundedStoryTools key={`foreshadow:${p.project.id}`} only="foreshadow" project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} dirty={dirty} go={p.go} />}
+        ask={<BoundedStoryTools key={`qa:${p.project.id}`} only="qa" project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} dirty={dirty} go={p.go} />}
+      />
     );
   if (p.tab === "sources")
     return (
@@ -5585,6 +5602,81 @@ function ProjectPage(p: {
           </Button>
         </form>
       )}
+    </section>
+  );
+}
+type MaterialsView = "facts" | "people" | "places" | "foreshadow" | "ask";
+const materialsViews: [MaterialsView, string][] = [["facts", "事实"], ["people", "人物"], ["places", "地点与设定"], ["foreshadow", "伏笔"], ["ask", "问一问"]];
+/** 资料: only what is already written into the story. Plans that are not written yet live under 计划. */
+function MaterialsPage({ initialView, project, factCount, peopleCount, placeCount, context, facts, people, places, foreshadow, ask }: {
+  initialView: MaterialsView | null;
+  project: Project;
+  factCount: number;
+  peopleCount: number;
+  placeCount: number;
+  context: ReactNode;
+  facts: ReactNode;
+  people: ReactNode;
+  places: ReactNode;
+  foreshadow: ReactNode;
+  ask: ReactNode;
+}) {
+  const [view, setView] = useState<MaterialsView>(() => {
+    if (initialView) return initialView;
+    if (typeof window === "undefined") return "facts";
+    const requested = new URLSearchParams(window.location.search).get("view");
+    return materialsViews.some(([id]) => id === requested) ? (requested as MaterialsView) : "facts";
+  });
+  const choose = (next: MaterialsView) => {
+    setView(next);
+    try {
+      window.history.replaceState(window.history.state, "", `/projects/${project.id}/memory${next === "facts" ? "" : `?view=${next}`}`);
+    } catch {
+      // The view still switches when the address cannot be updated.
+    }
+  };
+  const counts: Partial<Record<MaterialsView, number>> = { facts: factCount, people: peopleCount, places: placeCount };
+  return (
+    <section className="project-page materials-page">
+      <header className="page-header">
+        <div>
+          <h1>资料</h1>
+          <p>这里只放已经写进正文的内容，每条都能查到出自哪一章。还没写的打算放在「计划」。</p>
+        </div>
+      </header>
+      {context}
+      <nav className="materials-tabs" aria-label="资料分类">
+        {materialsViews.map(([id, label]) => (
+          <button key={id} type="button" className={id === view ? "current" : ""} aria-current={id === view ? "page" : undefined} onClick={() => choose(id)}>
+            {label}{counts[id] !== undefined && <span className="materials-count">{counts[id]}</span>}
+          </button>
+        ))}
+      </nav>
+      {view === "facts" && facts}
+      {view === "people" && people}
+      {view === "places" && places}
+      {view === "foreshadow" && foreshadow}
+      {view === "ask" && ask}
+    </section>
+  );
+}
+/** Confirmed facts whose subject names this person or place (or one of its aliases). */
+function RelatedFacts({ names, memories, openSource }: { names: string[]; memories: Memory[]; openSource: (memory: Memory, element: HTMLButtonElement) => Promise<void> | void }) {
+  const wanted = names.map((name) => name.trim()).filter(Boolean);
+  const facts = memories.filter((record) => record.valid_to == null && record.review_status === "author_confirmed" && wanted.some((name) => record.subject.includes(name) || name.includes(record.subject)));
+  return (
+    <section className="related-facts" aria-label="写进正文的事实">
+      <h3>写进正文的事实</h3>
+      {facts.length ? (
+        <ul>
+          {facts.map((record) => (
+            <li key={record.id}>
+              <span>{record.subject} · {predicateLabel(record.predicate)}：{record.value}</span>
+              <button type="button" className="cite-button" onClick={(event) => void openSource(record, event.currentTarget)}>出处</button>
+            </li>
+          ))}
+        </ul>
+      ) : <p className="muted">事实库里还没有关于它的已确认事实。</p>}
     </section>
   );
 }
@@ -6596,11 +6688,15 @@ function CharacterArchive({
   characters,
   draft,
   readOnly,
+  memories,
+  openSource,
 }: {
   projectId: string;
   characters: { id: string; name: string; role_type: string; identity: string; goal: string; current_state: string; knowledge_boundary: string }[];
   draft: Draft | null;
   readOnly: boolean;
+  memories?: Memory[];
+  openSource?: (memory: Memory, element: HTMLButtonElement) => Promise<void> | void;
 }) {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(() => {
@@ -6688,6 +6784,7 @@ function CharacterArchive({
               <div><dt><Icon name="pen" />当前状态</dt><dd>{selected.current_state || "尚未记录"}</dd></div>
               <div><dt><Icon name="memory" />知识边界</dt><dd>{selected.knowledge_boundary || "尚未记录"}</dd></div>
             </dl>
+            {memories && openSource && <RelatedFacts names={[selected.name, ...(currentAliasSnapshot?.aliases.filter((item) => item.status === "active").map((item) => item.alias) ?? [])]} memories={memories} openSource={openSource} />}
             <section className="character-alias-panel" aria-label="角色别名资料">
               <header><div><p className="eyebrow">作者确认</p><h3>角色别名</h3></div>{(currentAliasSnapshot?.version??0)>0&&<span className="version-chip">第 {currentAliasSnapshot?.version} 版</span>}</header>
               <p className="muted">主名：{selected.name}。这里只记录作者确认的称呼，AI 不会把猜测写成别名。</p>
@@ -6698,7 +6795,7 @@ function CharacterArchive({
               {!readOnly&&<div className="alias-create"><input value={aliasInput} maxLength={80} onChange={(event)=>setAliasInput(event.target.value)} placeholder="添加作者确认的别名"/><Button className="secondary" disabled={aliasBusy||!aliasInput.trim()||(currentAliasSnapshot?.aliases.filter((item)=>item.status==="active").length??0)>=20} onClick={()=>void addAlias()}>添加别名</Button></div>}
             </section>
             <section className="change-impact-panel" aria-label="修改影响分析">
-              <header><div><p className="eyebrow">写作辅助 · 只分析不修改</p><h3>修改影响分析</h3></div>{impactRun&&<span className={`run-state state-${impactRun.status}`}>{impactRun.is_stale?"依据已变化":stage(impactRun.status)}</span>}</header>
+              <header><div><p className="eyebrow">只分析，不修改</p><h3>改这个人物会影响哪些地方</h3></div>{impactRun&&<span className={`run-state state-${impactRun.status}`}>{impactRun.is_stale?"依据已变化":stage(impactRun.status)}</span>}</header>
               <p className="muted">明确写下拟修改内容；结果只指出受影响资料并给出证据，不生成替换正文，也不自动保存。</p>
               {!readOnly&&<div className="impact-create"><textarea value={impactInput} maxLength={4000} onChange={(event)=>setImpactInput(event.target.value)} placeholder={`例如：把“${selected.name}”的公开身份改为港务调查员`} /><Button className="secondary" disabled={impactBusy||Boolean(activeImpactRun)||!draft||!impactInput.trim()} onClick={()=>void startImpact()}>分析影响</Button></div>}
               {activeImpactRun&&activeImpactRun.run_id!==impactRun?.run_id&&<p className="analysis-pending">“{targetName(activeImpactRun)}”的影响分析正在{stage(activeImpactRun.status)}；完成或取消前不能创建另一项分析。</p>}
@@ -6724,8 +6821,12 @@ function AliasRow({item,readOnly,busy,save,archive}:{item:CharacterAliasSnapshot
 
 function WorldArchive({
   entries,
+  memories,
+  openSource,
 }: {
   entries: { id: string; entry_type: string; name: string; summary: string }[];
+  memories?: Memory[];
+  openSource?: (memory: Memory, element: HTMLButtonElement) => Promise<void> | void;
 }) {
   const categories = ["location", "rule", "organization", "object", "term"];
   const requestedWorld=typeof window!=="undefined"?new URLSearchParams(window.location.search).get("world"):null;
@@ -6744,7 +6845,7 @@ function WorldArchive({
       {selected ? (
         <div className="archive-split world-split">
           <section className="world-index"><h2>{worldTypeLabel(category)}</h2><ul>{visible.map((entry) => <li key={entry.id}><button type="button" className={entry.id === selected.id ? "current" : ""} onClick={() => setSelectedId(entry.id)}>{entry.name}</button></li>)}</ul></section>
-          <article id={`world-${selected.id}`} className="archive-detail world-detail"><h2>{selected.name}</h2><dl><div><dt>类型</dt><dd>{worldTypeLabel(selected.entry_type)}</dd></div><div><dt>设定摘要</dt><dd>{selected.summary || "尚未记录摘要"}</dd></div><div><dt>关联</dt><dd>暂未建立关联</dd></div></dl></article>
+          <article id={`world-${selected.id}`} className="archive-detail world-detail"><h2>{selected.name}</h2><dl><div><dt>类型</dt><dd>{worldTypeLabel(selected.entry_type)}</dd></div><div><dt>设定摘要</dt><dd>{selected.summary || "尚未记录摘要"}</dd></div></dl>{memories && openSource && <RelatedFacts names={[selected.name]} memories={memories} openSource={openSource} />}</article>
         </div>
       ) : <div className="empty archive-empty">{entries.length ? `“${worldTypeLabel(category)}”分类暂无匹配条目。` : "此作品还没有世界观记录。"}</div>}
     </section>

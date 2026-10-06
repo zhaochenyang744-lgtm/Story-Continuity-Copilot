@@ -158,3 +158,17 @@
 .timeline-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0; padding: 0; list-style: none; color: var(--c-muted); font-size: 13px; }
 .timeline-legend li { display: inline-flex; align-items: center; gap: 6px; }
 .timeline-key { display: inline-block; width: 8px; height: 8px; border-radius: 2px; }
+
+/* 资料 (v1.7.0) */
+.materials-tabs { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; margin: 4px 0 20px; border-radius: 10px; background: color-mix(in srgb, var(--c-line) 70%, var(--c-bg)); max-width: 100%; }
+.materials-tabs button { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: transparent; color: var(--c-muted); font-size: 14px; box-shadow: none; }
+.materials-tabs button:hover { color: var(--c-text); background: transparent; }
+.materials-tabs button.current { background: var(--c-surface); color: var(--c-text); font-weight: 500; box-shadow: 0 0 0 1px var(--c-line); }
+.materials-count { font-size: 12px; color: var(--c-faint); font-variant-numeric: tabular-nums; }
+.related-facts { display: grid; gap: 8px; margin: 18px 0; }
+.related-facts h3 { margin: 0; font-size: 13px; letter-spacing: .08em; color: var(--c-muted); font-weight: 500; }
+.related-facts ul { margin: 0; padding: 0; list-style: none; }
+.related-facts li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 10px 0; border-top: 1px solid var(--c-line); font-size: 15px; line-height: 1.7; }
+.related-facts .cite-button { flex: none; min-height: 26px; padding: 0 8px; border: 0; border-radius: 4px; background: var(--c-accent-tint); color: var(--c-accent-text); font-size: 12px; box-shadow: none; }
+.materials-tool { display: grid; gap: 16px; }
+.materials-tool .bounded-tool { max-width: 920px; }
