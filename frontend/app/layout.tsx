@@ -7,6 +7,7 @@ import "./maintenance.css";
 import "./polish.css";
 import "./motion.css";
 import "./theme.css";
+import "./shell.css";
 
 export const metadata: Metadata = {
   title: "Story Continuity Copilot",
@@ -18,11 +19,17 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const themeBootScript = `try{document.documentElement.dataset.theme=localStorage.getItem("story-continuity:theme")==="night"?"night":"day"}catch(e){}`;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" suppressHydrationWarning>
+      <head>
+        {/* Apply the remembered day/night choice before the first paint. */}
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body>{children}</body>
     </html>
   );

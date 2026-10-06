@@ -73,8 +73,8 @@ import type {
 // ordinary in-app navigation does not turn into another authentication check.
 let bootstrappedUser: User | null | undefined;
 let sessionBootstrap: Promise<User | null> | null = null;
-let rememberedGlobalNavCollapsed: boolean | undefined;
-const globalNavStorageKey = "story-continuity:global-nav-collapsed";
+let rememberedTheme: "day" | "night" | undefined;
+const themeStorageKey = "story-continuity:theme";
 const experienceSimulation = process.env.NEXT_PUBLIC_EXPERIENCE_SIMULATION === "1";
 // A long import yields hundreds of initialization candidates. Above this many, the review groups
 // them by chapter range, lets the author decide a whole group at once, and submits in batches.
@@ -217,14 +217,14 @@ function useDocumentScrollLock() {
 }
 
 const tabs = [
-  ["overview", "项目概览"],
-  ["outline", "大纲"],
-  ["characters", "角色库"],
-  ["world", "世界观"],
-  ["memory", "事实库"],
-  ["workspace", "写作与检查"],
-  ["sources", "章节管理"],
+  ["overview", "概览"],
+  ["workspace", "写作"],
+  ["sources", "章节"],
+  ["memory", "资料"],
+  ["plan", "计划"],
 ] as const;
+// Addresses from before v1.7.0 keep working: the three planning pages now live under 计划.
+const legacyPlanTabs = new Set(["outline", "characters", "world"]);
 const stage = (s: string): string =>
   (
     ({
@@ -703,8 +703,11 @@ function TutorialGuidance({
 function BrandMark() {
   return (
     <span className="brand-asset">
-      <Image className="brand-lockup" src="/assets/brand/story-continuity-lockup.svg" alt="Story Continuity" width={196} height={48} priority />
-      <Image className="brand-symbol" src="/assets/brand/story-continuity-mark.svg" alt="Story Continuity" width={48} height={48} priority />
+      <svg className="brand-symbol-inline" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <path d="M5 4h9a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        <circle cx="17" cy="16" r="2.2" className="brand-dot" />
+      </svg>
+      <span className="brand-wordmark">Story Continuity</span>
     </span>
   );
 }
@@ -884,7 +887,7 @@ export function Workbench() {
     [onboarding, setOnboarding] = useState<Onboarding | null>(null),
     [projects, setProjects] = useState<ProjectSummary[]>([]),
     [authorProjects, setAuthorProjects] = useState<ProjectSummary[] | null>(null);
-  const [globalNavCollapsed, setGlobalNavCollapsed] = useState(() => rememberedGlobalNavCollapsed ?? false);
+  const [theme, setTheme] = useState<"day" | "night">(() => rememberedTheme ?? "day");
   const [missingProjectId, setMissingProjectId] = useState(""),
     [project, setProject] = useState<Project | null>(null),
     [chapters, setChapters] = useState<Chapter[]>([]),
@@ -975,7 +978,8 @@ export function Workbench() {
     parts[0] === "projects" && parts[1] && !["new", "import"].includes(parts[1])
       ? parts[1]
       : null;
-  const tab = parts[2] ?? "overview";
+  const rawTab = parts[2] ?? "overview";
+  const tab = legacyPlanTabs.has(rawTab) ? "plan" : rawTab;
   const [issueRunId, setIssueRunId] = useState(run?.run_id);
   if (issueRunId !== run?.run_id) {
     setIssueRunId(run?.run_id);
@@ -991,13 +995,13 @@ export function Workbench() {
     }
   }
   useEffect(() => {
-    if (rememberedGlobalNavCollapsed !== undefined) return;
+    if (rememberedTheme !== undefined) return;
     const timer = window.setTimeout(() => {
       try {
-        rememberedGlobalNavCollapsed = window.localStorage.getItem(globalNavStorageKey) === "true";
-        setGlobalNavCollapsed(rememberedGlobalNavCollapsed);
+        rememberedTheme = window.localStorage.getItem(themeStorageKey) === "night" ? "night" : "day";
+        setTheme(rememberedTheme);
       } catch {
-        rememberedGlobalNavCollapsed = false;
+        rememberedTheme = "day";
       }
     }, 0);
     return () => window.clearTimeout(timer);
@@ -1175,19 +1179,22 @@ export function Workbench() {
     }
     else router.push(href);
   };
-  const toggleGlobalNav = useCallback(() => {
-    setUserMenuOpen(false);
-    setGlobalNavCollapsed((current) => {
-      const next = !current;
-      rememberedGlobalNavCollapsed = next;
+  // Day is the default; the choice is remembered on this device and applied before paint by layout.tsx.
+  const toggleTheme = useCallback(() => {
+    setTheme((current) => {
+      const next = current === "night" ? "day" : "night";
+      rememberedTheme = next;
       try {
-        window.localStorage.setItem(globalNavStorageKey, String(next));
+        window.localStorage.setItem(themeStorageKey, next);
       } catch {
-        // Layout remains usable when browser storage is unavailable.
+        // The theme still switches for this visit when browser storage is unavailable.
       }
       return next;
     });
   }, []);
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
   const loadProjects = useCallback(async (criteria?: {
     q: string;
     filter: string;
@@ -2793,136 +2800,90 @@ export function Workbench() {
       missingProjectId === projectId ? <NotFoundPage kind="project" go={go} /> : <div className="boot">{busy || "正在读取当前作品…"}</div>
     );
   return (
-    <div className={`workbench${user ? "" : " auth-shell"}${user && globalNavCollapsed ? " global-nav-collapsed" : ""}`}>
+    <div className={`workbench has-topbar${user ? "" : " auth-shell"}`}>
       <a className="skip" href="#main">
         跳到主要内容
       </a>
       {user && (
-        <aside className="global-nav" aria-label="全局工作台" data-collapsed={globalNavCollapsed ? "true" : "false"}>
-          <div className="global-nav-head">
-            <div className="brand">
+        <header className="topbar">
+          <div className="topbar-start">
+            <button type="button" className="topbar-brand" aria-label="首页" onClick={() => go("/")}>
               <BrandMark />
-            </div>
-
-          </div>
-          <p className="nav-kicker">作者工作台</p>
-          <nav aria-label="全局导航">
-            <Button
-              className={pathname === "/" ? "nav current" : "nav"}
-              ariaLabel="首页"
-              title={globalNavCollapsed ? "首页" : undefined}
-              onClick={() => go("/")}
-            >
-              <Icon name="home" />
-              <span className="nav-label">首页</span>
-            </Button>
-            <Button
-              className={
-                pathname.startsWith("/projects") ? "nav current" : "nav"
-              }
-              ariaLabel="作品管理"
-              title={globalNavCollapsed ? "作品管理" : undefined}
-              onClick={() => go("/projects")}
-            >
-              <Icon name="library" />
-              <span className="nav-label">作品管理</span>
-            </Button>
-          </nav>
-          <button
-              type="button"
-              className="global-nav-toggle global-nav-toggle-edge"
-              aria-label={globalNavCollapsed ? "展开全局侧栏" : "收起全局侧栏"}
-              title={globalNavCollapsed ? "展开全局侧栏" : "收起全局侧栏"}
-              aria-expanded={!globalNavCollapsed}
-              onClick={toggleGlobalNav}
-            >
-              <span className="sidebar-edge-chevron" aria-hidden="true" />
             </button>
-          <div className="account">
-            <button
-              ref={userMenuTrigger}
-              type="button"
-              className="account-trigger"
-              aria-label="用户菜单"
-              aria-haspopup="menu"
-              aria-expanded={userMenuOpen}
-              onClick={() => setUserMenuOpen((open) => !open)}
-            >
-              <ProfileAvatar user={user} className="account-avatar" />
-              <span className="account-copy">
-                <span className="account-name">{user.display_name}</span>
-                <span className="account-helper">{user.account_type === "visitor" ? "访客空间" : "个人账号"}</span>
-              </span>
-              <Chevron className="account-caret" />
-            </button>
-            {userMenuOpen && (
-              <div className="user-menu" role="menu" aria-label="用户菜单">
-                {user.account_type === "visitor" && <p className="visitor-expiry">访客空间有效至 <time>{timestampLabel(user.visitor_expires_at)}</time></p>}
-                {user.account_type !== "visitor" && (
-                  <button type="button" role="menuitem" onClick={() => go("/account/profile")}><Icon name="profile" />个人信息</button>
-                )}
-                {user.account_type !== "visitor" && (
-                  <button type="button" role="menuitem" onClick={() => go("/account/security")}><Icon name="security" />账号安全</button>
-                )}
-                {user.account_type !== "visitor" && (
-                  <button type="button" role="menuitem" onClick={() => void reopenTutorial()}><Icon name="tutorial" />重新打开教学</button>
-                )}
-                <button
-                  type="button"
-                  className="danger"
-                  role="menuitem"
-                  onClick={() => void logout()}
-                >
-                  <Icon name="logout" />退出登录
-                </button>
-              </div>
+            {projectId && project && (
+              <Button className="topbar-work" title={project.title} ariaLabel={`更换当前作品：${project.title}`} onClick={() => go("/projects")}>
+                <strong>{project.title}</strong>
+                <Chevron className="topbar-work-mark" />
+              </Button>
             )}
           </div>
-        </aside>
-      )}
-      {projectId && project && (
-        <aside className="project-nav" aria-label="当前作品">
-          <Button className="project-switch" title={project.title} ariaLabel={`更换当前作品：${project.title}`} onClick={() => go("/projects")}>
-            <span>
-              <small>更换当前作品</small>
-              <strong>{project.title}</strong>
-            </span>
-            <Chevron className="project-switch-mark" />
-          </Button>
-          <div className="project-context">
-            <span className={`status-pill ${project.status}`}>
-              <span aria-hidden="true">●</span>
-              {statusLabel(project.status)}
-            </span>
-          </div>
-          <nav ref={projectModuleNav} aria-label="项目导航">
-            {tabs.map(([id, label]) => (
-              <Button
-                key={id}
-                className={id === tab ? "nav current" : "nav"}
-                ariaCurrent={id === tab ? "page" : undefined}
-                onClick={() => go(`/projects/${project.id}/${id}`)}
-              >
-                <Icon
-                  name={
-                    ({
-                      overview: "overview",
-                      outline: "outline",
-                      characters: "users",
-                      world: "world",
-                      memory: "memory",
-                      workspace: "pen",
-                      sources: "library",
-                    } as const)[id]
-                  }
-                />
-                {label}
-              </Button>
-            ))}
+          <nav ref={projectModuleNav} className="topbar-tabs" aria-label={projectId ? "项目导航" : "全局导航"}>
+            {projectId ? (
+              project && tabs.map(([id, label]) => (
+                <Button
+                  key={id}
+                  className={id === tab ? "topbar-tab current" : "topbar-tab"}
+                  ariaCurrent={id === tab ? "page" : undefined}
+                  onClick={() => go(`/projects/${project.id}/${id}`)}
+                >
+                  {label}
+                </Button>
+              ))
+            ) : (
+              <>
+                <Button className={pathname === "/" ? "topbar-tab current" : "topbar-tab"} ariaCurrent={pathname === "/" ? "page" : undefined} onClick={() => go("/")}>首页</Button>
+                <Button className={pathname.startsWith("/projects") ? "topbar-tab current" : "topbar-tab"} ariaCurrent={pathname.startsWith("/projects") ? "page" : undefined} onClick={() => go("/projects")}>作品</Button>
+              </>
+            )}
           </nav>
-        </aside>
+          <div className="topbar-end">
+            <button type="button" className="topbar-theme" aria-pressed={theme === "night"} onClick={toggleTheme}>
+              {theme === "night" ? "日间" : "夜间"}
+            </button>
+              <div className="account">
+                <button
+                  ref={userMenuTrigger}
+                  type="button"
+                  className="account-trigger"
+                  aria-label="用户菜单"
+                  aria-haspopup="menu"
+                  aria-expanded={userMenuOpen}
+                  onClick={() => setUserMenuOpen((open) => !open)}
+                >
+                  <ProfileAvatar user={user} className="account-avatar" />
+                  <span className="account-copy">
+                    <span className="account-name">{user.display_name}</span>
+                    <span className="account-helper">{user.account_type === "visitor" ? "访客空间" : "个人账号"}</span>
+                  </span>
+                  <Chevron className="account-caret" />
+                </button>
+                {userMenuOpen && (
+                  <div className="user-menu" role="menu" aria-label="用户菜单">
+                    {user.account_type === "visitor" && <p className="visitor-expiry">访客空间有效至 <time>{timestampLabel(user.visitor_expires_at)}</time></p>}
+                    {user.account_type !== "visitor" && (
+                      <button type="button" role="menuitem" onClick={() => go("/account/profile")}><Icon name="profile" />个人信息</button>
+                    )}
+                    {user.account_type !== "visitor" && (
+                      <button type="button" role="menuitem" onClick={() => go("/account/security")}><Icon name="security" />账号安全</button>
+                    )}
+                    {user.account_type !== "visitor" && (
+                      <button type="button" role="menuitem" onClick={() => void reopenTutorial()}><Icon name="tutorial" />重新打开教学</button>
+                    )}
+                    <button
+                      type="button"
+                      className="danger"
+                      role="menuitem"
+                      onClick={() => void logout()}
+                    >
+                      <Icon name="logout" />退出登录
+                    </button>
+                  </div>
+                )}
+              </div>
+          </div>
+        </header>
       )}
-      <main id="main">
+      <main id="main" className={projectId ? "project-main" : "global-main"}>
         {(!isPublicAuthPath(pathname) && (notice || Boolean(error))) && (
           <div
             className={error ? "feedback error" : "feedback"}
@@ -5252,6 +5213,28 @@ function ProjectPage(p: {
           </section>
         )}
       </section>
+    );
+  if (p.tab === "plan")
+    // Interim 计划 page (v1.7.0 step 1a): the three planning pages one after another until the merged page lands.
+    return (
+      <div className="plan-page-interim">
+        {(["story", "character", "world"] as const).map((kind) => (
+          <AuthorPlanningPage
+            key={`${kind}-planning`}
+            kind={kind}
+            projectId={p.project.id}
+            projectTitle={p.project.title}
+            projectIsTutorial={Boolean(p.project.is_tutorial)}
+            authorContext={p.authorContext}
+            readOnly={p.readOnly}
+            busy={p.authorBusy}
+            mutate={p.mutateAuthorContext}
+            context={kind === "story" ? contextNotices : null}
+            hasReference={kind === "story" ? (p.outline?.chapter_nodes ?? []).length > 0 : kind === "character" ? p.characters.length > 0 : p.world.length > 0}
+            reference={kind === "story" ? <OutlineReference chapters={p.outline?.chapter_nodes ?? []} /> : kind === "character" ? <CharacterArchive projectId={p.project.id} characters={p.characters} draft={p.draft} readOnly={p.readOnly} /> : <WorldArchive entries={p.world} />}
+          />
+        ))}
+      </div>
     );
   if (p.tab === "outline")
     return (

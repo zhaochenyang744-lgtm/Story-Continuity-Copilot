@@ -1,0 +1,140 @@
+/* v1.7.0 shell: one top bar (brand, current work, tabs, day/night, account) instead of the two left
+   rails. Loaded after theme.css. */
+.workbench.has-topbar {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  grid-template-columns: none;
+}
+.workbench.has-topbar > main,
+.workbench.has-topbar > main.project-main,
+.workbench.has-topbar > main.global-main {
+  grid-column: auto;
+  grid-row: auto;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.workbench.has-topbar > main.global-main {
+  padding: 0 max(24px, 7.4vw) 48px;
+}
+.workbench.has-topbar > main.global-main > section {
+  width: 100%;
+  max-width: 1210px;
+  margin-inline: auto;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: 56px;
+  padding: 0 24px;
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-line);
+}
+.topbar-start,
+.topbar-end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.topbar .topbar-brand {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 4px;
+  border-radius: 6px;
+  color: var(--c-text);
+  cursor: pointer;
+}
+.topbar .topbar-brand:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+.topbar .brand-asset { display: inline-flex; align-items: center; gap: 8px; width: auto; }
+.topbar .brand-dot { fill: var(--c-danger); }
+.topbar .brand-wordmark { font-size: 14px; font-weight: 600; letter-spacing: .01em; white-space: nowrap; }
+.topbar .topbar-work {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  max-width: 240px;
+  padding: 0 8px;
+  border: 0;
+  border-left: 1px solid var(--c-line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--c-text);
+  box-shadow: none;
+}
+.topbar .topbar-work strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; font-size: 15px; }
+.topbar .topbar-work:hover { background: var(--c-raised); }
+.topbar .topbar-work-mark { width: 14px; height: 14px; transform: rotate(90deg); color: var(--c-faint); }
+
+.topbar-tabs {
+  display: flex;
+  align-self: stretch;
+  gap: 24px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.topbar-tabs::-webkit-scrollbar { display: none; }
+.topbar .topbar-tab {
+  flex: none;
+  height: 100%;
+  min-height: 0;
+  padding: 0 4px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--c-muted);
+  font-size: 15px;
+  font-weight: 400;
+}
+.topbar .topbar-tab:hover:not(:disabled) { color: var(--c-text); background: transparent; border-color: transparent; border-bottom-color: var(--c-line-strong); }
+.topbar .topbar-tab.current,
+.topbar .topbar-tab.current:hover { color: var(--c-text); font-weight: 500; border-bottom-color: var(--c-text); }
+
+.topbar .topbar-theme {
+  min-height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--c-muted);
+  font-size: 13px;
+  box-shadow: none;
+}
+.topbar .topbar-theme:hover { background: var(--c-raised); color: var(--c-text); }
+.topbar .account { position: relative; margin: 0; padding: 0; border: 0; }
+.topbar .account-trigger {
+  width: auto;
+  min-height: 40px;
+  padding: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: none;
+}
+.topbar .account-trigger:hover { background: var(--c-raised); }
+.topbar .account-copy,
+.topbar .account-caret { display: none; }
+.topbar .account-avatar { width: 30px; height: 30px; }
+.topbar .user-menu { position: absolute; top: calc(100% + 8px); right: 0; bottom: auto; left: auto; min-width: 200px; z-index: 50; }
+
+@media (max-width: 720px) {
+  .topbar { flex-wrap: wrap; height: auto; gap: 8px 12px; padding: 6px 16px 0; }
+  .topbar .brand-wordmark { display: none; }
+  .topbar-start { flex: 1; }
+  .topbar-tabs { order: 3; flex-basis: 100%; height: 44px; gap: 20px; }
+  .workbench.has-topbar > main.global-main { padding: 0 16px 40px; }
+}

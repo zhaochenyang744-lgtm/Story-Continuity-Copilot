@@ -1,4 +1,3 @@
-import Image from "next/image";
 import type { ReactNode } from "react";
 
 export function DesignIcon({
@@ -62,8 +61,10 @@ export function DesignIcon({
   );
 }
 
+// The v1.4 raster icons do not fit the 朱批 theme; callers keep their layout and the slot stays empty.
 export function DesignAsset({ name }: { name: "paper" | "bulb" }) {
-  return <Image className={`design-raster design-raster-${name}`} src={name === "bulb" ? "/assets/v140/creative-bulb.png" : "/assets/v140/manuscript-glass.png"} alt="" aria-hidden="true" width={80} height={80} unoptimized />;
+  void name;
+  return null;
 }
 
 export function CreativeTips({ importing = false }: { importing?: boolean }) {
