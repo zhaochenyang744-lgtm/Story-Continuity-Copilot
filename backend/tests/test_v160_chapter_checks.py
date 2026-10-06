@@ -112,6 +112,29 @@ class ChapterCheckTests(unittest.TestCase):
         revised = self.timeline()
         self.assertEqual((revised[(2, False)], revised[(9, False)]), ("basis_changed", "edited_unchecked"))
 
+    def test_a_checked_draft_and_the_chapter_it_becomes_count_as_checked(self):
+        draft = self.client.get(f"/api/projects/{self.project_id}").json()["data"]["current_draft"]
+        saved = self.client.patch(f"/api/projects/{self.project_id}/drafts/{draft['id']}", headers=self.idem(),
+                                  json={"title": "第十一章", "body": "温岚把黄铜罗盘放进档案室的抽屉。", "base_revision": draft["revision"]}).json()["data"]
+        self.assertEqual(self.timeline()[(11, True)], "unchecked")
+        check = self.client.post(f"/api/projects/{self.project_id}/checks", headers=self.idem(), json={"draft_id": saved["id"], "draft_revision": saved["revision"]})
+        self.assertEqual(check.status_code, 202, check.text)
+        self.assertEqual(self.timeline()[(11, True)], "checked")
+        # Completing the checked revision into chapter 11 carries the check over to the chapter.
+        project = self.client.get(f"/api/projects/{self.project_id}").json()["data"]
+        preview = self.client.post(f"/api/projects/{self.project_id}/source-change-sets/preview", headers=self.idem(), json={
+            "mode": "append", "input_method": "draft_complete", "base_source_revision": project["source_revision"], "draft_id": saved["id"]})
+        self.assertEqual(preview.status_code, 201, preview.text)
+        change = preview.json()["data"]["source_change_set"]
+        committed = self.client.post(f"/api/projects/{self.project_id}/source-change-sets/{change['id']}/commit", headers=self.idem(),
+                                     json={"confirm": True, "content_sha256": change["content_sha256"]})
+        self.assertEqual(committed.status_code, 200, committed.text)
+        after = self.timeline()
+        self.assertEqual((after[(11, False)], after[(12, True)]), ("checked", "empty"))
+        # Saving a new revision of a checked draft makes it edited since its check.
+        next_draft = self.client.get(f"/api/projects/{self.project_id}").json()["data"]["current_draft"]
+        self.assertEqual(next_draft["chapter_number"], 12)
+
     def test_an_estimate_spends_nothing(self):
         response = self.client.post(f"/api/projects/{self.project_id}/chapter-checks/estimate", headers=self.idem(),
                                     json={"chapter_ids": [self.chapters[2], self.chapters[9]]})

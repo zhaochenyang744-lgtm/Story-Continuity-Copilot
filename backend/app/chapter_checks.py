@@ -170,7 +170,8 @@ def timeline(db: Any, user_id: str, project_id: str) -> dict[str, Any]:
         db._project(c, user_id, project_id)
         chapters = [dict(row) for row in c.execute("SELECT id,chapter_number,title,source_revision FROM v2_chapters WHERE project_id=? ORDER BY chapter_number", (project_id,))]
         spans = c.execute("SELECT id,chapter_id,source_revision FROM v2_source_spans WHERE project_id=?", (project_id,)).fetchall()
-        runs = c.execute("SELECT run_type,draft_id,draft_revision,source_span_ids_json,completed_at FROM v2_runs WHERE project_id=? AND status='completed' "
+        # A draft check keeps the draft revision it checked in source_revision (draft_revision stays empty).
+        runs = c.execute("SELECT run_type,draft_id,COALESCE(draft_revision,source_revision) AS checked_revision,incremental_batch_id,source_span_ids_json,completed_at FROM v2_runs WHERE project_id=? AND status='completed' "
                          "AND run_type IN ('continuity','chapter_check') AND result_origin='provider'", (project_id,)).fetchall()
         completions = {row["target_source_revision"]: (row["draft_id"], row["draft_revision"]) for row in c.execute(
             "SELECT target_source_revision,draft_id,draft_revision FROM v2_source_change_sets WHERE project_id=? AND status='committed' AND input_method='draft_complete'", (project_id,))}
@@ -183,8 +184,8 @@ def timeline(db: Any, user_id: str, project_id: str) -> dict[str, Any]:
         at = run["completed_at"] or ""
         for span_id in json.loads(run["source_span_ids_json"] or "[]"):
             span_checked[span_id] = max(at, span_checked.get(span_id, ""))
-        if run["run_type"] == "continuity" and run["draft_revision"] is not None:
-            key = (run["draft_id"], run["draft_revision"])
+        if run["run_type"] == "continuity" and run["incremental_batch_id"] is None:
+            key = (run["draft_id"], run["checked_revision"])
             draft_checked[key] = max(at, draft_checked.get(key, ""))
     by_chapter: dict[str, list[Any]] = {}
     for span in spans:
