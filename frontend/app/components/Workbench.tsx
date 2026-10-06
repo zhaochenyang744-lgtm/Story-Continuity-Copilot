@@ -780,6 +780,11 @@ type CheckUsage =
   | { account_type: "registered"; check_chars_limit: number; check_chars_used: number; check_chars_remaining: number; imports_limit: number; imports_remaining: number }
   | { account_type: "visitor"; check_chars_per_check: number; checks_limit: number; checks_remaining: number };
 const writtenChars = (text: string) => text.replace(/\s+/g, "").length;
+/** The last few lines of a draft, without Markdown marks, for the 继续写 card. */
+const draftExcerpt = (body: string) => {
+  const text = body.replace(/[#>*_`~\-]+/g, "").replace(/\s+/g, " ").trim();
+  return text.length > 72 ? text.slice(-72) : text;
+};
 
 /** What this check will spend and what is left today, shown before the author starts a check. */
 function CheckAllowance({ draftChars, refreshKey }: { draftChars: number; refreshKey: string }) {
@@ -5039,6 +5044,7 @@ function ProjectPage(p: {
   const [immersiveColumnWidth, setImmersiveColumnWidth] = useState<ImmersiveColumnWidth>("medium");
   const [immersiveIssuesOpen, setImmersiveIssuesOpen] = useState(true);
   const [mobilePane, setMobilePane] = useState<"draft" | "issues" | "resources">("draft");
+  const [exportOpen, setExportOpen] = useState(false);
   const immersiveTrigger = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     const hash=window.location.hash.slice(1);
@@ -5080,6 +5086,7 @@ function ProjectPage(p: {
       (p.draft.title !== p.saved.title || p.draft.body !== p.saved.body || p.draft.body_format !== p.saved.body_format),
     ),
     editingLocked = p.readOnly || p.draftRecoveryConflict || p.pendingControlledDecision,
+    hasPlans = Boolean(p.authorContext && (p.authorContext.story_plans.length + p.authorContext.character_plans.length + p.authorContext.world_plans.length) > 0),
     emptyDraft = !(p.saved?.body ?? p.draft?.body ?? "").trim(),
     blocked = editingLocked || Boolean(p.busy),
     saving = p.busy === "保存草稿" || p.busy === "保存受控修订" || p.busy === "正在重试记录决定",
@@ -5109,86 +5116,39 @@ function ProjectPage(p: {
   if (p.tab === "overview")
     return (
       <section className="project-page overview-page">
-        <header className="page-header project-page-header">
+        <header className="page-header project-page-header overview-head">
           <div>
-            <p className="breadcrumb">项目 / {p.project.title} / 项目概览</p>
-            <h1>{p.project.title}</h1>
-            <p>{p.project.summary || "此作品尚未填写说明。"}</p>
+            <h1 className="overview-title">{p.project.title}</h1>
+            <p className="overview-meta-line">{[p.project.genre, `${p.project.chapter_count} 章`, `${formatWritingCount(p.project.word_count ?? 0)} 字`].filter(Boolean).join(" · ")}</p>
+            {p.project.summary && <p className="overview-summary">{p.project.summary}</p>}
           </div>
           <div className="actions">
             <Button className="primary" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>
-              <Icon name="pen" />{p.readOnly ? "查看草稿" : "继续草稿"}
+              {p.readOnly ? "查看草稿" : `继续写第 ${p.project.current_draft.chapter_number} 章`}
             </Button>
             {p.canRestore && <Button onClick={p.archive} disabled={Boolean(p.busy)}>恢复作品</Button>}
-            {!p.readOnly && (
-              <MoreMenu danger={<Button onClick={p.reset}>重置当前作品</Button>}>
-                {!p.project.is_tutorial && <Button onClick={p.meta}>编辑作品信息</Button>}
-                {!p.project.is_tutorial && <Button onClick={p.archive}>{p.project.status === "archived" ? "恢复作品" : "归档作品"}</Button>}
-              </MoreMenu>
-            )}
+            <MoreMenu danger={!p.readOnly ? <Button onClick={p.reset}>重置当前作品</Button> : undefined}>
+              <Button onClick={() => setExportOpen(true)}>导出作品</Button>
+              {!p.readOnly && !p.project.is_tutorial && <Button onClick={p.meta}>编辑作品信息</Button>}
+              {!p.readOnly && !p.project.is_tutorial && <Button onClick={p.archive}>{p.project.status === "archived" ? "恢复作品" : "归档作品"}</Button>}
+            </MoreMenu>
           </div>
         </header>
         {contextNotices}
         <div className="overview-grid overview-primary-grid">
-          <section className="overview-panel overview-primary-card current-draft-panel">
-            <p className="eyebrow">当前草稿</p>
-            <h2>第 {p.project.current_draft.chapter_number} 章</h2>
-            <p>第 {p.project.current_draft.revision} 次保存 · {p.project.status === "archived" ? "作品已归档，恢复后可继续写作。" : "当前可继续写作与审阅。"}</p>
-            <div className="overview-meta">
-              <span>已写 {p.project.chapter_count} 章</span>
-            </div>
-            <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/sources`)}>管理章节</Button>
+          <section className="overview-panel overview-primary-card continue-card" aria-label="继续写">
+            <p className="eyebrow">继续写</p>
+            <p className="continue-meta">第 {p.project.current_draft.chapter_number} 章{p.draft?.title ? ` · ${p.draft.title}` : ""} · {writtenChars(p.draft?.body ?? "").toLocaleString()} 字</p>
+            {draftExcerpt(p.draft?.body ?? "") ? <p className="continue-excerpt">……{draftExcerpt(p.draft?.body ?? "")}</p> : <p className="continue-excerpt muted">这一章还没有开始写。</p>}
+            <Button className="primary overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>{p.readOnly ? "查看草稿" : "继续写"}</Button>
           </section>
-          <section className="overview-panel overview-primary-card memory-panel" aria-label="事实库">
-            <p className="eyebrow">事实库</p>
-            <h2>{p.coverage?.counts.confirmed ?? p.memories.filter((record) => record.valid_to == null && record.review_status === "author_confirmed").length} 条已确认事实</h2>
-            <p className="term-help">事实库记着已经写进故事、由你确认过的设定和状态；检查新章节时用它来对照。</p>
-            <dl className="overview-kv">
-              <div><dt>能否检查</dt><dd>{p.coverage ? coverageStatusLabel(p.coverage.status) : p.project.chapter_count ? "可以检查" : "写下或导入一章后即可检查"}</dd></div>
-              <div><dt>检查状态</dt><dd>{p.project.continuity_status === "unchecked" ? "尚未检查" : p.project.continuity_status === "checked_clear" ? "已检查 · 0 项待处理" : `${p.project.open_issue_count ?? 0} 项待处理`}</dd></div>
-              <div><dt>最近检查</dt><dd>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚无"}</dd></div>
-            </dl>
-            <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/memory`)}>查看事实库</Button>
+          <section className="overview-panel overview-primary-card check-card" aria-label="检查情况">
+            <div className="card-head"><p className="eyebrow">检查情况</p><Button className="quiet" onClick={() => p.go(`/projects/${p.project.id}/sources`)}>去章节</Button></div>
+            <OverviewTimeline key={`${p.project.id}:${p.project.source_revision ?? 0}:${p.project.latest_run?.run_id ?? ""}`} projectId={p.project.id} />
+            <p className="check-card-note">{p.project.continuity_status === "unchecked" ? "还没有检查过" : p.project.continuity_status === "checked_clear" ? "最近一次检查没有待处理的问题" : `${p.project.open_issue_count ?? 0} 个问题待处理`}</p>
+            {p.project.open_issue_count ? <Button className="secondary overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>打开待处理的问题</Button> : null}
           </section>
         </div>
-        <ContextOverview />
-        <section className="project-section overview-export" aria-label="作品导出与历史修订">
-          <ProjectExport projectId={p.project.id} />
-          <div className="overview-export-footer">
-            <span>需要回头修改已写好的章节，或复核已确认的事实？</span>
-            <Button onClick={() => p.go(`/projects/${p.project.id}/sources#long-term-review`)}>修订历史章节与复核事实</Button>
-          </div>
-        </section>
-        <section className="project-section">
-          <h2>资料摘要</h2>
-          <div className="overview-grid overview-reference-grid">
-            <section className="overview-panel overview-reference-card">
-              <h3>大纲</h3>
-              <p>{p.project.chapter_count ? `${p.project.chapter_count} 个已写章节` : "尚无已写章节"} · {p.authorContext?.story_plans.length ?? 0} 条创作规划</p>
-              <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/outline`)}>查看大纲</Button>
-            </section>
-            <section className="overview-panel overview-reference-card">
-              <h3>角色</h3>
-              <p>{p.characters.length} 条正文档案 · {p.authorContext?.character_plans.length ?? 0} 条角色规划</p>
-              <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/characters`)}>查看角色库</Button>
-            </section>
-            <section className="overview-panel overview-reference-card">
-              <h3>世界观</h3>
-              <p>{p.world.length} 条正文资料 · {p.authorContext?.world_plans.length ?? 0} 条设定规划</p>
-              <Button className="quiet overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/world`)}>查看世界观</Button>
-            </section>
-          </div>
-        </section>
-        <section className="project-section latest-run-section">
-          <h2>最近检查</h2>
-          <div className={`latest-run-row latest-run-card ${p.project.continuity_status ?? "unchecked"}`}>
-            <div>
-              <strong>{p.project.latest_run ? stage(p.project.latest_run.status) : "尚未检查"}</strong>
-              <span>{p.project.latest_run ? (p.project.latest_run.result_origin === "demo_preset" ? "示例作品的预置检查结果" : "打开审阅可查看问题与证据。") : "保存草稿后可运行连续性检查。"}</span>
-            </div>
-            <Button className="secondary" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>打开审阅</Button>
-          </div>
-        </section>
         {p.project.data_origin === "user_import" && (
           <section className="warning import-context">
             <I>!</I>
@@ -5212,12 +5172,18 @@ function ProjectPage(p: {
             )}
           </section>
         )}
+        {exportOpen && (
+          <Dialog title="导出作品" close={() => setExportOpen(false)}>
+            <ProjectExport projectId={p.project.id} />
+          </Dialog>
+        )}
       </section>
     );
   if (p.tab === "plan")
     // Interim 计划 page (v1.7.0 step 1a): the three planning pages one after another until the merged page lands.
     return (
       <div className="plan-page-interim">
+        <ContextOverview />
         {(["story", "character", "world"] as const).map((kind) => (
           <AuthorPlanningPage
             key={`${kind}-planning`}
@@ -5292,13 +5258,11 @@ function ProjectPage(p: {
       <section className="project-page">
         <header className="page-header">
           <div>
-            <p className="breadcrumb">项目 / {p.project.title} / 事实库</p>
-            <h1>事实库</h1>
+            <h1>资料</h1>
             <p>这里记着已经写进故事、由你确认过的设定和状态，检查新章节时用来对照；每条都能查到出自哪一章。</p>
           </div>
         </header>
         {contextNotices}
-        <ContextInline memory />
         {p.memoryDelta?.coverage_audit && (
           <section className="notice" aria-label="增量来源覆盖审计">
             <strong>本章事实：{coverageStatusLabel(p.memoryDelta.coverage_audit.status)}</strong>
@@ -5325,7 +5289,7 @@ function ProjectPage(p: {
           />
         ) : (
           <div className="empty">
-            <strong>第 1 版事实库为空</strong>
+            <strong>事实库还是空的</strong>
             <p>
               {p.project.memory_initialization_status === "required"
                 ? "这部导入作品还没有建立事实库。不建也能检查，系统会直接对照原文；建立并确认后检查更准。"
@@ -5333,6 +5297,7 @@ function ProjectPage(p: {
             </p>
           </div>
         )}
+        <BoundedStoryTools key={p.project.id} project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} dirty={dirty} go={p.go} />
       </section>
     );
   if (p.tab === "sources")
@@ -5345,13 +5310,15 @@ function ProjectPage(p: {
     <section className="project-page workspace-page" data-mobile-pane={mobilePane}>
       <header className="page-header project-page-header workspace-page-header">
         <div>
-          <p className="breadcrumb">项目 / {p.project.title} / 写作与检查</p>
-          <h1>写作与检查</h1>
+          <h1>写作</h1>
           <p className={`workspace-save-summary ${saveState}`}><strong key={saveLabel}>{saveLabel}</strong><span>{saveDetail}</span>{p.draft && <span className="workspace-draft-meta">第 {p.draft.chapter_number ?? "—"} 章 · 第 {p.draft.revision ?? "—"} 次保存</span>}</p>
           {!p.readOnly && !emptyDraft && <CheckAllowance draftChars={writtenChars(p.saved?.body ?? p.draft?.body ?? "")} refreshKey={`${p.saved?.revision ?? 0}:${p.run?.run_id ?? ""}:${p.run?.status ?? ""}`} />}
         </div>
         {!p.readOnly && (
           <div className="actions">
+            <Button disabled={Boolean(p.analysisBusy) || !p.draft || dirty} onClick={() => void p.startAnalysis("context_brief")}>
+              {p.analysisBusy === "context_brief" ? "正在回顾" : "写前回顾"}
+            </Button>
             <Button
               buttonRef={immersiveTrigger}
               ariaLabel="进入沉浸写作"
@@ -5378,19 +5345,19 @@ function ProjectPage(p: {
             ) : null}
             <MoreMenu danger={<Button disabled={blocked} onClick={p.reset}>重置当前作品</Button>}>
               <Button disabled={blocked || !p.draft || dirty || emptyDraft} onClick={() => p.go(`/projects/${p.project.id}/sources#complete-draft`)}>完成当前章节</Button>
+              {hasPlans && <Button disabled={Boolean(p.analysisBusy) || !p.draft || dirty || emptyDraft} onClick={() => void p.startAnalysis("plan_alignment")}>{p.analysisBusy === "plan_alignment" ? "正在对照计划" : "对照计划"}</Button>}
             </MoreMenu>
           </div>
         )}
       </header>
       {contextNotices}
-      <ContextInline />
       {(p.controlled || p.pendingControlledDecision) && (
         <div className={`warning ${p.pendingDecisionConflict ? "pending-decision-conflict-notice" : ""}`}>
           <span><I>!</I>{p.pendingDecisionConflict
             ? `${p.pendingDecisionConflict}${p.pendingDecisionStorageUnavailable ? ` ${p.pendingDecisionStorageUnavailable}` : ""}`
             : p.pendingControlledDecision
             ? `正文已经保存，当前编辑暂时锁定。请重试记录作者决定；此操作不会再次保存正文。${p.pendingDecisionStorageUnavailable ? ` ${p.pendingDecisionStorageUnavailable}` : ""}`
-            : <>受控编辑：只接受资料版本第 {p.run?.source_revision ?? "?"} 版 → 第 {(p.run?.source_revision ?? 0) + 1} 版。保存正文后，系统再单独记录这次修改决定。</>}</span>
+            : "正在按选中的问题修改正文。保存后，会再单独记下你对这个问题的决定。"}</span>
           {p.pendingDecisionConflict && (
             <Button className="quiet" disabled={Boolean(p.busy)} onClick={() => void p.stopConflictedPendingDecision()}>
               停止追补并读取最新正文
@@ -5531,19 +5498,19 @@ function ProjectPage(p: {
               {!p.readOnly && <Button className="primary" disabled={blocked || !p.draft || dirty || emptyDraft} onClick={() => void p.check()}>运行连续性检查</Button>}
             </div>
           )}
-          <section className="writing-tips-card"><header><DesignAsset name="bulb" /><h3>写作小贴士</h3></header><ul><li>留意角色的行动与当时的认知。</li><li>核对时间顺序和场景之间的距离。</li><li>为重要转折留下一条可回溯的线索。</li></ul></section>
         </aside>
       </div>
       <section className="workspace-resources" aria-label="写作资料与分析">
-        <section className="writing-assist" aria-label="AI 写作辅助">
-          <header><div><p className="eyebrow">写作辅助</p><h2>写作分析</h2><p>写作准备和计划对照只读取已保存正文，不会修改正文或事实库。</p></div>{!p.readOnly&&<div className="writing-assist-actions"><Button className="primary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty} onClick={()=>void p.startAnalysis("context_brief")}>{p.analysisBusy==="context_brief"?"正在生成":"生成章节简报"}</Button><Button className="secondary" disabled={Boolean(p.analysisBusy)||!p.draft||dirty||!p.draft.body.trim()} onClick={()=>void p.startAnalysis("plan_alignment")}>{p.analysisBusy==="plan_alignment"?"正在检查":"检查计划偏离"}</Button></div>}</header>
-          {p.readOnly&&!p.contextBrief&&!p.planAlignment&&<p className="muted">这里可以浏览已有分析；编辑和重新分析请使用桌面宽度。</p>}
-          <div className="writing-analysis-grid">{p.contextBrief ? <WritingAnalysisPanel run={p.contextBrief} readOnly={p.readOnly} busy={Boolean(p.analysisBusy)} cancel={p.cancelAnalysis} retry={p.retryAnalysis}/> : <section className="analysis-empty-card"><DesignAsset name="paper" /><h3>落笔前，先理清这一章</h3><p>生成章节简报，回顾相关情节、角色状态和需要留意的设定。</p></section>} {p.planAlignment ? <WritingAnalysisPanel run={p.planAlignment} readOnly={p.readOnly} busy={Boolean(p.analysisBusy)} cancel={p.cancelAnalysis} retry={p.retryAnalysis}/> : <section className="analysis-empty-card"><DesignAsset name="bulb" /><h3>写好后，再对照你的安排</h3><p>保存正文后，可以检查它与创作规划的差异，再决定是否调整。</p></section>}</div>
-        </section>
+        {(p.contextBrief || (hasPlans && p.planAlignment)) && (
+          <section className="writing-assist" aria-label="写前回顾与计划对照">
+            <div className="writing-analysis-grid">
+              {p.contextBrief && <WritingAnalysisPanel run={p.contextBrief} readOnly={p.readOnly} busy={Boolean(p.analysisBusy)} cancel={p.cancelAnalysis} retry={p.retryAnalysis} />}
+              {hasPlans && p.planAlignment && <WritingAnalysisPanel run={p.planAlignment} readOnly={p.readOnly} busy={Boolean(p.analysisBusy)} cancel={p.cancelAnalysis} retry={p.retryAnalysis} />}
+            </div>
+          </section>
+        )}
         {p.run && <RunLifecycle run={p.run} blocked={blocked} cancelRun={p.cancelRun} retryRun={p.retryRun} actions={!p.readOnly} />}
         {p.pairedRun && <RunLifecycle run={p.pairedRun} blocked={blocked} cancelRun={p.cancelRun} retryRun={p.retryRun} actions={false} />}
-        <BoundedStoryTools key={p.project.id} project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} dirty={dirty} go={p.go} />
-        <RevisionPlanTools key={`revision:${p.project.id}`} project={p.project} draft={p.draft} run={p.run} readOnly={p.readOnly} dirty={dirty} busy={Boolean(p.busy)} recheck={p.check} go={p.go} />
       </section>
       {immersiveOpen && !editingLocked && (
         <ImmersiveEditor
@@ -5846,6 +5813,35 @@ type ChapterCheckIssue = { sentence: string; nature?: string; category?: string;
 type ChapterCheckReport = { chapters: { chapter_id: string; chapter_number: number; chapter_title: string; sentences: number; issues: ChapterCheckIssue[]; undecided: number }[]; issue_count: number; undecided_count: number };
 type ChapterCheckRun = { run_id: string; status: string; stage: string; error_code?: string | null; created_at: string; completed_at?: string | null; sample?: boolean; report: ChapterCheckReport | null };
 const CHAPTER_CHECK_MAX = 8;
+function OverviewTimeline({ projectId }: { projectId: string }) {
+  const [rows, setRows] = useState<TimelineRow[] | null>(null);
+  useEffect(() => {
+    let live = true;
+    request<{ chapters: TimelineRow[] }>(`/projects/${projectId}/chapter-timeline`).then((result) => { if (live) setRows(result.chapters); }).catch(() => undefined);
+    return () => { live = false; };
+  }, [projectId]);
+  if (!rows) return <p className="check-card-note">正在读取各章的检查情况…</p>;
+  const counts = { checked: 0, changed: 0, unchecked: 0 };
+  for (const row of rows) {
+    if (row.draft) continue;
+    if (row.status === "checked") counts.checked += 1;
+    else if (row.status === "basis_changed" || row.status === "edited_unchecked") counts.changed += 1;
+    else counts.unchecked += 1;
+  }
+  return (
+    <div className="overview-timeline">
+      <div className="timeline-bars" role="img" aria-label={`已检查 ${counts.checked} 章，改过或依据已变 ${counts.changed} 章，未检查 ${counts.unchecked} 章`}>
+        {rows.map((row) => <span key={row.chapter_id ?? `draft-${row.chapter_number}`} className={`timeline-bar status-${row.draft ? "draft" : row.status}`} title={`第 ${row.chapter_number} 章${row.draft ? "（草稿）" : ""} · ${timelineStatusLabel[row.status]}`} />)}
+      </div>
+      <ul className="timeline-legend">
+        <li><span className="timeline-key status-checked" />已检查 {counts.checked}</li>
+        <li><span className="timeline-key status-edited_unchecked" />改过或依据已变 {counts.changed}</li>
+        <li><span className="timeline-key status-unchecked" />未检查 {counts.unchecked}</li>
+        <li><span className="timeline-key status-draft" />草稿</li>
+      </ul>
+    </div>
+  );
+}
 type TimelineRow = { chapter_id: string | null; chapter_number: number; title: string; draft: boolean; status: "checked" | "basis_changed" | "edited_unchecked" | "unchecked" | "empty"; checked_at: string | null };
 const timelineStatusLabel: Record<TimelineRow["status"], string> = { checked: "已检查", basis_changed: "依据已变化", edited_unchecked: "改动后未检查", unchecked: "未检查", empty: "还没写" };
 const timelineStatusHint: Record<TimelineRow["status"], string> = {

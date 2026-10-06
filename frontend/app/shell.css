@@ -138,3 +138,23 @@
   .topbar-tabs { order: 3; flex-basis: 100%; height: 44px; gap: 20px; }
   .workbench.has-topbar > main.global-main { padding: 0 16px 40px; }
 }
+
+/* 概览 (v1.7.0) */
+.overview-head .overview-title { font-family: var(--font-serif); font-size: 34px; font-weight: 600; letter-spacing: .04em; margin: 0 0 6px; }
+.overview-head .overview-meta-line { margin: 0; color: var(--c-muted); font-size: 14px; }
+.overview-head .overview-summary { margin: 8px 0 0; max-width: 60ch; color: var(--c-muted); }
+.overview-panel .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.continue-card { background: var(--c-paper); }
+.continue-card .continue-meta { margin: 0; color: var(--c-muted); font-size: 13px; }
+.continue-card .continue-excerpt { margin: 0; font-family: var(--font-serif); font-size: 17px; line-height: 1.95; color: var(--c-text); }
+.check-card .check-card-note { margin: 0; color: var(--c-muted); font-size: 13px; }
+.overview-timeline { display: grid; gap: 12px; }
+.timeline-bars { display: flex; gap: 4px; }
+.timeline-bar { flex: 1; min-width: 6px; height: 36px; border-radius: 4px; background: var(--c-line); }
+.timeline-bar.status-checked, .timeline-key.status-checked { background: var(--c-ok); }
+.timeline-bar.status-edited_unchecked, .timeline-bar.status-basis_changed, .timeline-key.status-edited_unchecked { background: color-mix(in srgb, var(--c-warn) 70%, var(--c-surface)); }
+.timeline-bar.status-unchecked, .timeline-bar.status-empty, .timeline-key.status-unchecked { background: var(--c-line); }
+.timeline-bar.status-draft, .timeline-key.status-draft { background: var(--c-surface); border: 1px dashed var(--c-line-strong); box-sizing: border-box; }
+.timeline-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0; padding: 0; list-style: none; color: var(--c-muted); font-size: 13px; }
+.timeline-legend li { display: inline-flex; align-items: center; gap: 6px; }
+.timeline-key { display: inline-block; width: 8px; height: 8px; border-radius: 2px; }

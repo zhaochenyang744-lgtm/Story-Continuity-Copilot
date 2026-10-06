@@ -1490,11 +1490,8 @@ class V2Database:
             result = []
             for project in c.execute(sql, values).fetchall():
                 draft = c.execute("SELECT id,chapter_number,revision,status,body FROM v2_drafts WHERE project_id=? ORDER BY saved_at DESC LIMIT 1", (project["id"],)).fetchone()
-                chapters = c.execute("SELECT chapter_number,body FROM v2_chapters WHERE project_id=? ORDER BY chapter_number", (project["id"],)).fetchall()
-                writing_by_chapter = {int(chapter["chapter_number"]): str(chapter["body"] or "") for chapter in chapters}
-                if draft and str(draft["body"] or "").strip():
-                    writing_by_chapter[int(draft["chapter_number"])] = str(draft["body"])
-                word_count = sum(len(re.sub(r"\s+", "", body)) for body in writing_by_chapter.values())
+                chapters = c.execute("SELECT chapter_number FROM v2_chapters WHERE project_id=?", (project["id"],)).fetchall()
+                word_count = self._project_word_count(c, project["id"])
                 open_count = workflow.open_issue_count(c,project["id"])
                 completed_check = c.execute("SELECT 1 FROM v2_runs WHERE project_id=? AND run_type IN ('continuity','memory_delta') AND status='completed' LIMIT 1", (project["id"],)).fetchone()
                 if has_open_issues is not None and bool(open_count) != has_open_issues:
@@ -1521,7 +1518,7 @@ class V2Database:
             draft = c.execute("SELECT id,chapter_number,revision,status FROM v2_drafts WHERE project_id=? AND status IN ('draft','saved') ORDER BY saved_at DESC LIMIT 1", (project_id,)).fetchone()
             run = c.execute("SELECT id,status,created_at,result_origin FROM v2_runs WHERE project_id=? AND run_type IN ('continuity','memory_delta') ORDER BY created_at DESC,rowid DESC LIMIT 1", (project_id,)).fetchone()
             open_count=workflow.open_issue_count(c,project_id)
-            return {"id":project["id"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"author_context_version":project["author_context_version"],"foreshadow_version":project["foreshadow_version"],"chapter_count":c.execute("SELECT COUNT(*) FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0],"outline_progress":0,"current_memory_version":project["current_memory_version"],"source_revision":project["source_revision"],"current_draft":dict(draft) if draft else None,"latest_run":({"run_id":run["id"],"status":run["status"],"created_at":run["created_at"],"result_origin":run["result_origin"]} if run else None),"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if run and run["status"]=="completed" else "unchecked"),"updated_at":project["updated_at"],"data_origin":project["data_origin"],"is_tutorial":project["data_origin"]=="tutorial_seed","memory_initialization_status":self._memory_initialization_status(c,project_id,project["data_origin"]) }
+            return {"id":project["id"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"author_context_version":project["author_context_version"],"foreshadow_version":project["foreshadow_version"],"chapter_count":c.execute("SELECT COUNT(*) FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0],"word_count":self._project_word_count(c,project_id),"outline_progress":0,"current_memory_version":project["current_memory_version"],"source_revision":project["source_revision"],"current_draft":dict(draft) if draft else None,"latest_run":({"run_id":run["id"],"status":run["status"],"created_at":run["created_at"],"result_origin":run["result_origin"]} if run else None),"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if run and run["status"]=="completed" else "unchecked"),"updated_at":project["updated_at"],"data_origin":project["data_origin"],"is_tutorial":project["data_origin"]=="tutorial_seed","memory_initialization_status":self._memory_initialization_status(c,project_id,project["data_origin"]) }
 
     # --- v1.3 author intent: independent from confirmed Story Memory ---
     _AUTHOR_INTENT = {
@@ -2341,6 +2338,14 @@ class V2Database:
 
     def _source_snapshot_digest(self, sources: list[dict[str, Any]]) -> str:
         return digest([{key:item[key] for key in ("id","chapter_id","chapter_number","chapter_title","label","body")} for item in sources])
+
+    def _project_word_count(self, c: Any, project_id: str) -> int:
+        """Characters written: every chapter, with a non-empty current draft counted in place of its chapter."""
+        writing_by_chapter = {int(row["chapter_number"]): str(row["body"] or "") for row in c.execute("SELECT chapter_number,body FROM v2_chapters WHERE project_id=?", (project_id,))}
+        draft = c.execute("SELECT chapter_number,body FROM v2_drafts WHERE project_id=? ORDER BY saved_at DESC LIMIT 1", (project_id,)).fetchone()
+        if draft and str(draft["body"] or "").strip():
+            writing_by_chapter[int(draft["chapter_number"])] = str(draft["body"])
+        return sum(len(re.sub(r"\s+", "", body)) for body in writing_by_chapter.values())
 
     def _memory_initialization_status(self, c: sqlite3.Connection, project_id: str, origin: str | None = None) -> str:
         if origin is not None and origin != "user_import": return "not_required"

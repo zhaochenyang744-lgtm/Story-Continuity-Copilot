@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import "./visual-system.css";
 import "./author-context-preview.css";
@@ -26,11 +27,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <head>
-        {/* Apply the remembered day/night choice before the first paint. */}
-        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
-      </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Apply the remembered day/night choice before the app hydrates. */}
+        <Script id="theme-boot" strategy="beforeInteractive">{themeBootScript}</Script>
+      </body>
     </html>
   );
 }

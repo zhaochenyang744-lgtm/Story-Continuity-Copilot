@@ -28,7 +28,8 @@
   --c-veil: #1b1d21;
 
   --font-sans: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
-  --font-serif: "Songti SC", STSong, "Noto Serif CJK SC", "Source Han Serif SC", SimSun, serif;
+  /* Windows ships no good screen serif (SimSun is a bitmap-era face), so prose falls back to YaHei there. */
+  --font-serif: "Songti SC", STSong, "Noto Serif CJK SC", "Source Han Serif SC", "Source Han Serif CN", "Microsoft YaHei", serif;
 
   --bg: var(--c-bg);
   --ink-950: var(--c-bg);
