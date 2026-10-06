@@ -1,10 +1,10 @@
 # Story Continuity Copilot v1.6.1
 
-The current product is **Story Continuity Copilot v1.6.1**, a patch on the v1.6.0 long-text release that adds server-side draft autosave and three fixes (see [v1.6.1](#v161)). v1.6.0 brought screened checking built for real chapters, checking chosen written chapters, character-based quotas, a chapter timeline, checkable imports including Word files, and author-facing polish (see [v1.6.0](#v160)). v1.5.2 was a patch on v1.5.0: when the supplied material leaves a point open, a check now says so as insufficient evidence and names the missing link instead of staying silent, and a batch whose answer runs out of output is retried claim by claim instead of failing the check (see [v1.5.2](#v152) and [v1.5.1](#v151)). v1.5.0 brings together everything shipped since v1.4.0 (2026-09-08): saved-work exports, reversible author-decision reuse, full-chapter revision with fact review, operations tools, faster long-chapter checks, the new interface, and the fixes listed under [v1.5.0](#v150). v1.4.0 added canonical author materials and comparisons, unified planning and authoring pages, rich-text and immersive writing, and stricter AI evidence contracts. The author owns the prose and every canon decision.
+The current product is **Story Continuity Copilot v1.6.1**, a patch on the v1.6.0 long-text release that adds server-side draft autosave and three fixes (see [v1.6.1](#v161)). v1.6.0 brought screened checking built for real chapters, checking chosen written chapters, character-based quotas, a chapter timeline, checkable imports including Word files, and author-facing polish (see [v1.6.0](#v160)). v1.5.2 made a check report insufficient evidence and name the missing link instead of staying silent, and retry an over-long answer claim by claim instead of failing (see [v1.5.2](#v152)). Only the three latest versions are described here; earlier releases are kept in the Git tags and the records under `docs/`. The author owns the prose and every canon decision.
 
-The active online release is `v161-edd821a-20261006`, deployed on 2026-10-06 from Git tag `v1.6.1` (commit `edd821a`; see the [v1.6.1 deployment record](docs/deployment-2026-10-06-v161.md)). The previous releases `v160-ef7341e-20261006` (see the [2026-10-06 v1.6.0 deployment record](docs/deployment-2026-10-06.md)), `v152-1cfee10-20261004` (see the [2026-10-04 deployment record](docs/deployment-2026-10-04.md), which also covers the v1.5.1 rollback), `v150-b9f4b0f-20261003`, `v151-c2589a9-20261003` (rolled back), `ui-26ae621-20261002`, `ui-cbfa536-20260930`, `longform-aac1517-20260930`, `longform-bd090fe-20260930` and `maint-e2d141c23d0c-20260913` remain on the server as rollback targets; the [maintenance deployment record](docs/maintenance-deployment.md) and the [2026-09-08 deployment record](docs/v1.4.0-deployment.md) remain historical evidence. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
+The active online release is `v161-edd821a-20261006`, deployed on 2026-10-06 from Git tag `v1.6.1` (commit `edd821a`; see the [v1.6.1 deployment record](docs/deployment-2026-10-06-v161.md)). `v160-ef7341e-20261006` ([record](docs/deployment-2026-10-06.md)) and `v152-1cfee10-20261004` ([record](docs/deployment-2026-10-04.md)) remain on the server as rollback targets. The npm package keeps the technical version `0.1.0`; product version and package version are intentionally separate.
 
-The canonical product description is [current product and verification scope](docs/current-product.md). The [maintenance acceptance record](docs/maintenance-acceptance.md) separates local verification from the bounded production checks. The September maintenance update adds saved-work exports, reversible author-decision reuse, full-chapter revision with fact review, and independent operations tools. The [v1.3.0 product contract](docs/v1.3.0-product.md), writing-analysis, [character-alias and change-impact](docs/v1.3.0-character-alias-impact.md), [bounded revision plan](docs/v1.3.0-revision-plan.md), and Memory-delta documents remain historical or focused technical appendices. Current source packaging uses the [maintenance release manifest](docs/maintenance-release-manifest.json); the [v1.3 allowlist](docs/v1.3.0-release-allowlist.json) records its historical release scope. Current documentation was updated after the deployed source package was frozen; it does not change that archive or image identity.
+The canonical product description is [current product and verification scope](docs/current-product.md). Versioned contracts and acceptance records for earlier releases remain under `docs/` as historical appendices. Current source packaging uses the [maintenance release manifest](docs/maintenance-release-manifest.json).
 
 The signed Stage 14 public-production baseline remains **Story Continuity Copilot v1.0 Public Release** as a historical evidence baseline. Historical Stage numbers, release IDs, the technical package name `story-continuity-app`, component API versions, and the compact in-product wordmark `Story Continuity` remain unchanged for evidence traceability and runtime compatibility.
 
@@ -35,82 +35,10 @@ v1.6.0 is the long-text release: checks are built for real chapters of about 2,5
 
 ## v1.5.2
 
+- Insufficient evidence is reported, never answered with silence: a claim that settles a point the supplied material leaves open returns an insufficient-evidence issue that names the missing link (review prompt `continuity-review-v24c-explicit-missing-link`). Evidence selection gives two of the three slots to the passages that match a claim's own words best. The single V12 held-out run passed every pre-registered threshold: macro F1 0.972, insufficient-evidence recall 1.0, conflict recall 0.917, no false positives, designated regressions 3/3 (`evaluation/ie_fix_v24/PLAN.md`).
 - v1.5.1 went live on 2026-10-03 and was rolled back the same day. Two checks in a row of the 灰港回声 demo draft (four short claims in one batch) failed as output_truncated: thinking filled its 16,000-token cap at high and at medium effort, and the final non-thinking answer (2,000 tokens) overflowed as well, because the draft's missing link is now reported as an insufficient-evidence issue. The V11/V12 cases are one to three sentences, so the held-out run never packed a reported gap with three other verdicts.
 - A batch that still ends on a length stop is now retried one claim at a time. A single claim that still overflows is reported as undecided, and the rest of the check completes; a check where every claim is undecided still fails. The truncated dispatch stays in the usage totals.
 - Verification: the same demo draft with the real model completed four checks out of four (58–150 s; one of the four missed the insufficient-evidence issue), and once more on the public site after deployment (204 s); a V11 regression run gave conflict recall 1.0, insufficient-evidence recall 0.917 and no false positives; backend 471/471; browser E2E 124/124. The V12 result for the review prompt still applies, since the prompt is unchanged.
-- Still slow: thinking on this short draft often fills the cap before stepping down, so the check takes about 2.5 minutes. Leveled thinking is planned with the long-text work.
-
-## v1.5.1
-
-- Insufficient evidence is reported, never answered with silence. A claim that settles a point the supplied material leaves open (only a combined total, only some items checked, a request without its outcome, a stated unknown) now returns an insufficient-evidence issue that names the missing link. A new event the draft itself narrates still needs no older warrant, and a contradiction proved by combining supplied facts stays a conflict. Review prompt `continuity-review-v24c-explicit-missing-link`.
-- Evidence selection keeps the passages that match a claim's own words best. Passages linked to a fact-library record are weighted higher, and because the library holds only a few facts per work, the decisive passage could be crowded out; two of the three evidence slots now go to the best direct text matches.
-- The review prompt's fixed size stays within 2.4% of v1.5.0, so chapters are batched as before.
-- Verification: pre-registered procedure in `evaluation/ie_fix_v24/PLAN.md`. Three tuning attempts on the spent V11 set; the third met the stop condition. The single V12 held-out run then passed every pre-registered threshold: macro F1 0.972, insufficient-evidence recall 1.0 (v1.5.0 scored 0.67–0.75 on V11), conflict recall 0.917, no false positives, category accuracy 1.0, designated regressions 3/3. Backend 468/468; browser E2E `npm run test:e2e` 124/124.
-
-## v1.5.0
-
-v1.5.0 is the product version for the work released after v1.4.0. Its parts shipped as separate releases, recorded below: the 2026-09-13 maintenance update, the 2026-09-30 long-chapter and interface releases, and the 2026-10-02 interface completion. No database schema change since the 2026-09-13 maintenance release (schema 146).
-
-Added on 2026-10-03 (found while bringing the browser E2E suites up to date):
-- Immersive writing font sizes match the menu again (17 / 19 / 21 px).
-- The source coverage audit shows "已全部覆盖，事实库已更新 / 未变" instead of "尚未提供".
-- Desktop windows down to 320 px no longer scroll sideways (stable 10 px scrollbar gutter).
-- An insufficient-evidence issue no longer hides "审阅事实变化": the button and the pending count follow the same rule as the backend, counting only issues that allow a decision.
-- Contrast meets WCAG AA: white text on violet uses `#8150e8` (hover `#7845df`), and decided issue rows no longer fade their impact labels. The Q&A and revision-plan panels keep the native `details` role.
-- Starting a new check clears the issue drawer and controlled edit that belonged to the previous check; a controlled save no longer pairs a new run with an old issue (which failed with a non-retryable 422).
-- In the tutorial, "查看完整证据" keeps keyboard focus inside the evidence drawer.
-- The backend keeps idle connections for 75 s, longer than the Next.js proxy's 5 s, so parallel page loads no longer fail with a reset connection.
-- Quiet micro-interactions using the existing motion timing: buttons settle 1 px when pressed, centred dialogs and messages fade in, save and check status labels fade between states, and a new issue list rises in a few rows at a time. All of it is off when the system asks for reduced motion.
-
-Verification: all current browser E2E groups run through one command, `npm run test:e2e`; two consecutive full runs passed 124/124 (see [Test](#test)).
-
-## 2026-10-02 update
-
-`ui-26ae621-20261002` finishes the interface pass started on 2026-09-30 and carries two backend changes. No database schema change.
-
-- Interface: the remaining technical wording, raw keys and English decoration are gone from author screens; dialogs share one button order with a danger style for reset; the 更多 menu closes after a choice; the relation in fact reviews is picked from a list; the import preview explains the chapter split in one sentence and folds the hash away; the writing page side card stays as tall as the editor and scrolls long issue lists; archived-only accounts can still reach their works.
-- Backend: model prose in every writing analysis is cleaned of internal record ids before it is stored, and the story Q&A prompt (`story-qa-v3-no-prose-ids`) asks for names instead of ids; brief and analysis source labels are generated in Chinese.
-- Verification: backend 462/462, evaluation 51/51, lint/typecheck/build; `test:v130` fails the same 10 tests as `cbfa536`; `test:v140` 14/14; real-model screenshots at 1440 px and 390 px; 20 real story Q&A runs had 1 `evidence_unresolvable` failure and no ids in prose. See the [deployment record](docs/deployment-2026-10-02.md).
-
-## 2026-09-30 update
-
-The late-September releases are each built from a Git commit with the maintenance source packager and deployed with `deployment/release.sh`. None changes the database schema.
-
-**Long chapters (`longform-bd090fe`, then `longform-aac1517`)**
-- Continuity review uses `deepseek-flash` with high thinking. A check's review batches are dispatched in parallel (4 at a time in production, 1 locally for reproducibility), with at most four claims per batch.
-- Each evidence span is sent once per request and referenced by ID; a request over the input budget is split in half instead of failing.
-- One undecidable claim no longer discards the rest of the chapter. On production, a 37-claim chapter that previously failed after 240 s completed in 72.5 s ([record](evaluation/results/prod-longform-after-bd090fe-20260930.json)).
-- Quota: a check the remaining provider quota cannot cover is refused before any call (HTTP 429, `provider_attempt_quota_insufficient`, with the claim count and roughly how many claims still fit). If the quota runs out mid-chapter, claims already judged are kept and the rest are reported as undecided.
-
-**Interface (`ui-cbfa536`)**
-- Quota messages speak in credits ("点数不足") instead of model calls or provider attempts.
-- New outlined logo (a single continuous line of text) and favicon; three type faces only (UI, manuscript serif, identifiers); one line-icon set, including arrows and external links.
-- Internal wording and debug counters are gone from author screens: Story Memory versions read "事实库第 N 版", run ids, byte counts and empty `V0` counters are not shown, and "Reset" reads "重置当前作品".
-- Layout fixes: the writing page has one title and one save status, and the editor fills its card beside the issue pane; the overview export panel, Story Memory table columns, immersive issue list, planning empty states and evidence-drawer actions were corrected; the sources page groups spans under their chapter; the edit-project dialog matches the other dialogs.
-- A missing project or unknown address shows a "找不到" page with a way back. Phone form fields stay at 16 px so iOS does not zoom on focus; scrolling tab rails fade the edge that hides more items.
-
-Verification for `ui-cbfa536`: backend 456/456, evaluation 51/51, lint, typecheck and build passed locally on Windows; results that need a model (briefs, plan alignment, checks in progress or failed, imports, Memory review) were opened with the real provider and screenshotted at 1440 px and 390 px. The public site was checked by hand after deployment. Browser E2E suites were not green at that point; they were brought up to date for v1.5.0 (124/124).
-
-## v1.3.0 workflow foundation (included in v1.4.0)
-
-- Author Context stores editable future plans for story structure, characters, and world rules; it never proves that prose was written.
-- Character aliases are author-confirmed, versioned identity records; change-impact analysis binds them with draft, source, Memory, and Author Context state and never auto-writes a proposal.
-- Saved drafts and SourceSpans store written material. Story Memory stores only author-confirmed facts. AI output stays in analysis Runs and candidates until the author decides.
-- Writing adds a bounded chapter brief and saved-draft plan-alignment check. Story Memory adds new, changed, and invalidated fact review with resolvable Evidence.
-- Authors can select current continuity Issues, generate one bounded Evidence-backed revision suggestion per Issue, accept or edit suggestions into persistent tasks, manually revise and save the same draft, then explicitly recheck. Task progress never resolves Issues or changes canon.
-- Accepted Memory decisions create one immutable Memory version and one auditable ChangeSet atomically. Rejected or empty reviews close source coverage without version growth.
-- The desktop global rail can collapse persistently, wide operational surfaces use the available canvas, and the author profile prioritises real works, chapter and word totals, and continue-writing access before secondary display-name and bundled-avatar settings.
-- Desktop supports authoring and review. A 390 px viewport remains browse-only with the reason shown, sources available, and no horizontal overflow.
-- Writing and Checking includes a desktop immersive manuscript overlay with shared draft state, adjustable typography and column width, and a collapsible continuity-issue rail. Since v1.6.1 the draft saves to the server a few seconds after typing stops; the device's recovery copy remains the offline fallback.
-
-The repository is designed for local reproduction. It contains the application source, migration and seed logic, tests, sanitised V4–V8 evaluation result records, and a small set of production-workflow screenshots. It does not include runtime databases, environment files, provider credentials, raw provider responses, recorded runtime prompt bodies, chain-of-thought, or protected evaluation assets. Full V5–V8 post-run database-hash validation therefore also requires the separately retained local evaluation workspaces; the committed result files alone do not recreate those SQLite artifacts.
-
-## v1.2.0 update
-
-- New registered accounts receive one isolated tutorial sample instead of three preset real works. The sample is excluded from real-work counts, search, recent works, and pending-issue summaries; completing or skipping the tutorial returns the account to an empty real workspace.
-- The tutorial is a five-step author workflow covering Story Memory sources, continuity issues, Evidence, and an explicit Author Decision. Business progress is stored on the backend with version binding, CSRF protection, idempotency, monotonic revisions, and cross-login restoration; transient hints and focus effects remain client-only.
-- The non-login workspace uses a wider, responsive authoring layout, a compact mobile read-only mode, clearer page actions and empty states, reduced nested framing, and three locally bundled WebP narrative assets instead of large illustrative SVG compositions.
-- Independent local acceptance passed the backend suite (156/156), the v1.2 browser workflow (1/1), the frozen v1.1 regression (5/5), frontend contracts (27/27), lint, typecheck, and the production build.
 
 ## Public deployment
 
@@ -119,9 +47,6 @@ The repository is designed for local reproduction. It contains the application s
 - Production release ID: `v161-edd821a-20261006` (Git tag `v1.6.1`, commit `edd821a2be934da93a71fffa71b8798feef8f505`)
 - Source inventory SHA256: `113b6880a3d53c3d61d84a4c013d8d6a8645e53bc30fa70216704837493d11c8` (105 files)
 - Deployment date: 2026-10-06; rollback target `v160-ef7341e-20261006`; record: [v1.6.1 deployment](docs/deployment-2026-10-06-v161.md)
-- The notes below describe the 2026-09-13 maintenance release (`maint-e2d141c23d0c-20260913`, inventory `e2d141c23d0ccab25ccf1fd24b7f0ea0821493a6f892c7b784680f7f492b0402`), whose schema and operations setup the later releases keep.
-- Isolated migration rehearsal and live comparison before browser acceptance preserved all 67 preexisting business tables and 661 rows. Schema is 146; integrity and foreign-key checks passed. Pre-deployment and post-deployment backups were manually downloaded to the operator workstation and independently hashed.
-- Public browser acceptance passed seven checks, including actual TXT/Markdown/ZIP downloads, maintenance-page chapter content, a revision guard rejecting changes, mobile read-only layout, and fresh JS/CSS loads. It did not rerun successful revision commits, decision reuse, or external AI calls online; those retain their separate local evidence.
 - Three operations timers are enabled; first-run checks and a subsequent monitor cycle were observed. The user has deferred automated off-instance replication and external alert delivery as optional follow-up work; the missing-copy warning remains visible. Old images are retained, but targets without the schema146 workflow contract are rejected; no actual rollback was performed. See the [deployment scope and limitations](docs/maintenance-deployment.md).
 
 ## Product overview
@@ -135,7 +60,21 @@ The author workflow is:
 5. Accept, reject, or edit proposed Memory changes. A ChangeSet records the decision; only accepted changes update canon.
 6. Use "重置当前作品" (project Reset) to restore the seeded review path when a fresh demonstration is needed.
 
-Visitor demo spaces retain three independently seeded projects: **Grey Harbor Echoes**, **Paper Moon Archive**, and **Midnight Garden**. New registered accounts instead receive the isolated **Grey Harbor Echoes** tutorial sample described above. Project data, Memory, drafts, and review state remain isolated per account and per project.
+Visitor demo spaces retain three independently seeded projects: **Grey Harbor Echoes**, **Paper Moon Archive**, and **Midnight Garden**. New registered accounts instead receive an isolated **Grey Harbor Echoes** tutorial sample: a five-step guided workflow, excluded from real-work counts, whose progress is stored on the backend. Project data, Memory, drafts, and review state remain isolated per account and per project.
+
+## Product capabilities
+
+- Author Context stores editable future plans for story structure, characters, and world rules; it never proves that prose was written.
+- Character aliases are author-confirmed, versioned identity records; change-impact analysis binds them with draft, source, Memory, and Author Context state and never auto-writes a proposal.
+- Saved drafts and SourceSpans store written material. Story Memory stores only author-confirmed facts. AI output stays in analysis Runs and candidates until the author decides.
+- Writing adds a bounded chapter brief and saved-draft plan-alignment check. Story Memory adds new, changed, and invalidated fact review with resolvable Evidence.
+- Authors can select current continuity Issues, generate one bounded Evidence-backed revision suggestion per Issue, accept or edit suggestions into persistent tasks, manually revise and save the same draft, then explicitly recheck. Task progress never resolves Issues or changes canon.
+- Accepted Memory decisions create one immutable Memory version and one auditable ChangeSet atomically. Rejected or empty reviews close source coverage without version growth.
+- The desktop global rail can collapse persistently, wide operational surfaces use the available canvas, and the author profile prioritises real works, chapter and word totals, and continue-writing access before secondary display-name and bundled-avatar settings.
+- Desktop supports authoring and review. A 390 px viewport remains browse-only with the reason shown, sources available, and no horizontal overflow.
+- Writing and Checking includes a desktop immersive manuscript overlay with shared draft state, adjustable typography and column width, and a collapsible continuity-issue rail. Since v1.6.1 the draft saves to the server a few seconds after typing stops; the device's recovery copy remains the offline fallback.
+
+The repository is designed for local reproduction. It contains the application source, migration and seed logic, tests, sanitised V4–V8 evaluation result records, and a small set of production-workflow screenshots. It does not include runtime databases, environment files, provider credentials, raw provider responses, recorded runtime prompt bodies, chain-of-thought, or protected evaluation assets. Full V5–V8 post-run database-hash validation therefore also requires the separately retained local evaluation workspaces; the committed result files alone do not recreate those SQLite artifacts.
 
 ## Product and safety boundaries
 
@@ -159,7 +98,6 @@ The public product story is organised around the milestones below. Historical St
 | Agent Reliability | Six-state Agent Run lifecycle, provenance, Retry/Cancel, and zero partial business writes on non-completion | Stage 12 |
 | Web App Readiness | Visitor isolation, quotas, cleanup, recovery contracts, reproducible packaging, and browser/security verification | Stage 13 |
 | Public Release v1.0 | Historical signed baseline after the frozen Required Gates A–G passed at the public origin | Stage 14 |
-| Product Iteration v1.2.0 | Isolated first-run tutorial, durable progress, responsive authoring UI, bitmap narrative assets, local regression acceptance, and historical public deployment | v1.2.0 tests and production smoke acceptance |
 | Product Iteration v1.4–v1.5 | Author materials, exports, decision reuse, chapter revision with fact review, parallel long-chapter checks, the new interface, explicit insufficient-evidence reporting; V10 and V12 held-out gates passed | Held-out results below; backend 471/471; browser E2E 124/124 |
 | Long-text release v1.6 | Screened checking of real ~2,500-character chapters, chosen-chapter checks, character quotas, chapter timeline, Word import, server-side draft autosave; long-text formal gate passed on `lf2-formal` | Long-text results below; v1.6.1: backend 554/554, browser E2E 129/129, evaluation 77/77 |
 
