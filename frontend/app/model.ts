@@ -210,6 +210,8 @@ export type Issue = {
   claim_span_id: string;
   claim_text?: string;
   reused_decision?: { decision: string; status: string; source_issue_id: string; review_path: string; requires_new_decision: boolean } | null;
+  /** v1.7.0 「待修改」: the author noted that the prose still needs a change for this finding. */
+  to_revise?: boolean;
   decision?: { decision: string; resulting_revision: number | null } | null;
   evidence?: {
     id: string;

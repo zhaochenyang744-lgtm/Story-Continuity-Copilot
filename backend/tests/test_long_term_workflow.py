@@ -13,7 +13,7 @@ from fastapi.testclient import TestClient
 from app.config import AppPaths
 from app.database import DomainError
 from app.engine import ContinuityEngine, MemoryDeltaEngine
-from app.long_term_workflow import commit_revision, preview_revision, resolve_review, review_state, set_reuse
+from app.long_term_workflow import commit_revision, preview_revision, resolve_review, review_state, set_issue_mark, set_reuse
 from app.main import create_app
 from app.provider import ProviderResult
 from app.v2_database import V2Database
@@ -125,9 +125,9 @@ class WorkflowTests(unittest.TestCase):
     def test_repeat_run_preserves_visible_evidence_and_does_not_write_canon(self):
         _, issue_id = self.decided()
         eligible = next(row for row in self.state()["reusable_decisions"] if row["issue_id"] == issue_id)
-        self.assertEqual((eligible["revision"], eligible["is_current"]), (0, True))
+        # A keep/false-positive decision enables reuse by default (v1.7.0).
+        self.assertEqual((eligible["revision"], eligible["enabled"], eligible["is_current"]), (1, True, True))
         before_memory = self.db.memory(self.user, self.project, None)
-        set_reuse(self.db, self.user, self.project, issue_id, {"enabled": True, "base_policy_revision": 0}, key())
         second = self.check()
         issue = second["issues"][0]
         self.assertEqual(issue["reused_decision"]["source_issue_id"], issue_id)
@@ -137,9 +137,19 @@ class WorkflowTests(unittest.TestCase):
         with self.db.connection() as c:
             self.assertEqual(c.execute("SELECT COUNT(*) FROM v2_decisions WHERE run_id=?", (second["run_id"],)).fetchone()[0], 0)
 
+    def test_to_revise_mark_is_an_author_note_and_never_a_decision(self):
+        run, issue_id = self.decided()
+        run_id = run["run_id"]
+        set_issue_mark(self.db, self.user, self.project, issue_id, {"to_revise": True}, key())
+        issue = next(item for item in self.db.run_view(self.user, self.project, run_id, {"issues"})["issues"] if item["id"] == issue_id)
+        self.assertTrue(issue["to_revise"])
+        set_issue_mark(self.db, self.user, self.project, issue_id, {"to_revise": False}, key())
+        issue = next(item for item in self.db.run_view(self.user, self.project, run_id, {"issues"})["issues"] if item["id"] == issue_id)
+        self.assertFalse(issue["to_revise"])
+        self.assert_error_zero_writes("resource_not_found", lambda: set_issue_mark(self.db, "outsider", self.project, issue_id, {"to_revise": True}, key()))
+
     def test_disable_and_explicit_reenable_restore_review_state(self):
         _, issue_id = self.decided("false_positive")
-        set_reuse(self.db, self.user, self.project, issue_id, {"enabled": True, "base_policy_revision": 0}, key())
         second = self.check()
         set_reuse(self.db, self.user, self.project, issue_id, {"enabled": False, "base_policy_revision": 1}, key())
         view = self.db.run_view(self.user, self.project, second["run_id"], {"issues", "evidence"})
@@ -150,14 +160,12 @@ class WorkflowTests(unittest.TestCase):
 
     def test_new_evidence_never_reuses_previous_author_decision(self):
         _, issue_id = self.decided()
-        set_reuse(self.db, self.user, self.project, issue_id, {"enabled": True, "base_policy_revision": 0}, key())
         second = self.check(different_evidence=True)
         self.assertIsNone(second["issues"][0]["reused_decision"])
         self.assertEqual(second["issues"][0]["status"], "open")
 
     def test_draft_edit_invalidates_policy_even_when_text_is_restored(self):
         _, issue_id = self.decided()
-        set_reuse(self.db, self.user, self.project, issue_id, {"enabled": True, "base_policy_revision": 0}, key())
         self.db.patch_draft(self.user, self.project, self.draft["id"], {"base_revision": self.draft["revision"], "body": self.draft["body"] + "修改。"}, key())
         self.db.patch_draft(self.user, self.project, self.draft["id"], {"base_revision": self.draft["revision"] + 1, "body": self.draft["body"]}, key())
         policy = next(row for row in self.state()["reusable_decisions"] if row["issue_id"] == issue_id)
@@ -167,7 +175,6 @@ class WorkflowTests(unittest.TestCase):
 
     def test_source_revision_and_memory_version_invalidate_reuse(self):
         _, issue_id = self.decided()
-        set_reuse(self.db, self.user, self.project, issue_id, {"enabled": True, "base_policy_revision": 0}, key())
         result = self.commit(self.preview())
         policy = next(row for row in self.state()["reusable_decisions"] if row["issue_id"] == issue_id)
         self.assertFalse(policy["is_current"])
@@ -178,11 +185,12 @@ class WorkflowTests(unittest.TestCase):
 
     def test_reuse_auth_idempotency_and_revision_conflicts(self):
         _, issue_id = self.decided()
-        payload = {"enabled": True, "base_policy_revision": 0}
+        # The decision already enabled reuse (revision 1); turning it off is the author's change.
+        payload = {"enabled": False, "base_policy_revision": 1}
         idem_key = key()
         first = set_reuse(self.db, self.user, self.project, issue_id, payload, idem_key)
         self.assertEqual(set_reuse(self.db, self.user, self.project, issue_id, payload, idem_key), first)
-        self.assert_error_zero_writes("idempotency_conflict", lambda: set_reuse(self.db, self.user, self.project, issue_id, {"enabled": False, "base_policy_revision": 1}, idem_key))
+        self.assert_error_zero_writes("idempotency_conflict", lambda: set_reuse(self.db, self.user, self.project, issue_id, {"enabled": True, "base_policy_revision": 2}, idem_key))
         self.assert_error_zero_writes("decision_reuse_revision_conflict", lambda: set_reuse(self.db, self.user, self.project, issue_id, payload, key()))
         self.assert_error_zero_writes("resource_not_found", lambda: set_reuse(self.db, "outsider", self.project, issue_id, payload, key()))
 
@@ -277,7 +285,6 @@ class WorkflowTests(unittest.TestCase):
 
     def test_migration_restart_preserves_workflow_and_integrity(self):
         _, issue_id = self.decided()
-        set_reuse(self.db, self.user, self.project, issue_id, {"enabled": True, "base_policy_revision": 0}, key())
         result = self.commit(self.preview(body="**修订章节**\n作者保存 Markdown。", body_format="markdown"))
         before = self.state()
         restarted = V2Database(self.paths)
@@ -370,7 +377,6 @@ class WorkflowTests(unittest.TestCase):
 
     def test_expired_visitor_cleanup_handles_workflow_foreign_keys(self):
         _, issue_id = self.decided()
-        set_reuse(self.db, self.user, self.project, issue_id, {"enabled": True, "base_policy_revision": 0}, key())
         self.commit(self.preview())
         class NoProvider:
             available = False

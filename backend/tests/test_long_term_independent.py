@@ -50,7 +50,6 @@ class IndependentLongTermTests(unittest.TestCase):
             c.execute("UPDATE v2_projects SET data_origin='user_created' WHERE id=?", (f.project,))
         _, issue_id = f.decided()
         baseline = f.db.project(f.user, f.project)["open_issue_count"]
-        set_reuse(f.db, f.user, f.project, issue_id, {"enabled": True, "base_policy_revision": 0}, fixtures.key())
         second = f.check()
         self.assertIsNotNone(second["issues"][0]["reused_decision"])
         project = f.db.project(f.user, f.project)
@@ -125,7 +124,6 @@ class IndependentLongTermTests(unittest.TestCase):
     def test_changed_author_context_never_reuses_prior_decision(self):
         f = self.f
         _, issue_id = f.decided()
-        set_reuse(f.db, f.user, f.project, issue_id, {"enabled": True, "base_policy_revision": 0}, fixtures.key())
         with f.db.connection() as c:
             c.execute("UPDATE v2_projects SET author_context_version=author_context_version+1 WHERE id=?", (f.project,))
         policy = next(item for item in f.state()["reusable_decisions"] if item["issue_id"] == issue_id)
@@ -156,7 +154,6 @@ class IndependentLongTermTests(unittest.TestCase):
     def test_different_proposed_fact_is_not_hidden_by_previous_reuse(self):
         f = self.f
         _, issue_id = f.decided("false_positive")
-        set_reuse(f.db, f.user, f.project, issue_id, {"enabled": True, "base_policy_revision": 0}, fixtures.key())
         run = f.check()
         with f.db.connection() as c:
             # A second provider issue cites the same passage but proposes a

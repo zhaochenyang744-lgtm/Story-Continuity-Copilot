@@ -190,3 +190,28 @@
 .plan-weighing { display: grid; gap: 10px; }
 .plan-weighing > .muted { margin: 0 0 4px; font-size: 13px; }
 .plan-columns.single { grid-template-columns: minmax(0, 1fr); max-width: 920px; }
+
+/* 章节 (v1.7.0) */
+.chapters-page .chapter-check-picker { display: grid; gap: 0; margin: 0 0 16px; padding: 0; border: 1px solid var(--c-line); border-radius: 12px; background: var(--c-surface); overflow: hidden; }
+.chapters-page .chapter-row-wrap + .chapter-row-wrap,
+.chapters-page .chapter-row-wrap + .chapter-row,
+.chapters-page .chapter-row-wrap + .chapter-row.draft { border-top: 1px solid var(--c-line); }
+.chapters-page .chapter-row { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto auto; gap: 14px; align-items: center; min-height: 52px; padding: 8px 20px; border: 0; border-radius: 0; background: transparent; }
+.chapters-page .chapter-row.draft { background: var(--c-paper); border-top: 1px solid var(--c-line); }
+.chapters-page .chapter-row-wrap.checked { background: color-mix(in srgb, var(--c-accent-tint) 60%, var(--c-surface)); }
+.chapters-page .chapter-row-pick { width: 18px; height: 18px; accent-color: var(--c-accent-strong); }
+.chapters-page .chapter-row-title { font-family: var(--font-serif); font-size: 16px; }
+.chapters-page .chapter-row-title small { margin-left: 8px; font-family: var(--font-sans); font-size: 12px; color: var(--c-muted); }
+.chapters-page .chapter-passages { padding: 0 20px 10px 62px; }
+.chapters-page .chapter-passages > summary { cursor: pointer; width: max-content; font-size: 13px; color: var(--c-accent-text); }
+.chapters-page .chapter-passages ul { display: grid; gap: 8px; margin: 10px 0 4px; padding: 0; list-style: none; }
+.chapters-page .chapter-passages li { display: grid; gap: 2px; font-size: 14px; line-height: 1.75; }
+.chapters-page .chapter-passages li strong { font-size: 12px; font-weight: 500; color: var(--c-muted); }
+.chapters-page .chapter-passages li span { font-family: var(--font-serif); color: var(--c-text); }
+.chapters-page .chapter-passages li.historical span { color: var(--c-muted); }
+.chapters-page .chapter-check-actions { position: sticky; bottom: 12px; z-index: 5; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 12px 12px 20px; border-radius: 12px; background: var(--c-text); color: var(--c-bg); }
+.chapters-page .chapter-check-actions .check-allowance { margin: 0; color: var(--c-bg); }
+.chapters-page .chapter-check-actions .check-allowance.over { color: color-mix(in srgb, var(--c-danger) 60%, var(--c-bg)); }
+.source-append > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; cursor: pointer; list-style: none; }
+.source-append > summary h2 { margin: 0; font-size: 18px; }
+.source-append[open] > summary { margin-bottom: 16px; }

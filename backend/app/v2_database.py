@@ -3745,7 +3745,7 @@ class V2Database:
                     claim=c.execute("SELECT text FROM v2_run_claims WHERE id=? AND run_id=?",(issue["claim_span_id"],run_id)).fetchone()
                     if not claim: raise DomainError("evidence_unresolvable",422)
                     decision=c.execute("SELECT decision,resulting_revision FROM v2_decisions WHERE project_id=? AND issue_id=? AND source_revision=?",(project_id,issue["id"],run["source_revision"])).fetchone()
-                    item={"id":issue["id"],"claim_span_id":issue["claim_span_id"],"claim_text":claim["text"],"status":issue["status"],"classification":issue["classification"],"category":issue["category"],"severity":issue["severity"],"evidence_status":issue["evidence_status"],"explanation":issue["explanation"],"decision":dict(decision) if decision else None,**self._review_issue_contract(c,project_id,issue,run),**workflow.issue_reuse(c,issue,run)}
+                    item={"id":issue["id"],"claim_span_id":issue["claim_span_id"],"claim_text":claim["text"],"status":issue["status"],"classification":issue["classification"],"category":issue["category"],"severity":issue["severity"],"evidence_status":issue["evidence_status"],"explanation":issue["explanation"],"decision":dict(decision) if decision else None,**self._review_issue_contract(c,project_id,issue,run),**workflow.issue_reuse(c,issue,run),"to_revise":workflow.issue_to_revise(c,issue["id"])}
                     if not decision and item["reused_decision"]:
                         item.update(raw_issue_status=issue["status"],status="decided",decision={"decision":item["reused_decision"]["decision"],"resulting_revision":None,"reused":True})
                     if "evidence" in include:
@@ -3792,6 +3792,7 @@ class V2Database:
                 decision_id=new_id("decision")
                 c.execute("INSERT INTO v2_decisions VALUES(?,?,?,?,?,?,?,?,?,?)",(decision_id,project_id,issue_id,run["id"],decision,payload.get("note"),run["source_revision"],resulting,lineage,utcnow()))
                 c.execute("UPDATE v2_issues SET status='decided' WHERE id=?",(issue_id,))
+                workflow.auto_enable_reuse(c,user_id,issue,run,decision_id,decision)
                 return {"id":decision_id,"project_id":project_id,"issue_id":issue_id,"run_id":run["id"],"decision":decision,"source_revision":run["source_revision"],"resulting_revision":resulting,"lineage_status":lineage,"issue_status":"decided"}
             return self._idem(c,user_id,"decision:"+project_id+":"+issue_id,key,payload,decide)
 
@@ -3919,7 +3920,7 @@ class V2Database:
         """Delete a project's working state and re-create its starting state; returns (memory version, empty author context)."""
         project_id=project["id"]
         # dependent children first. The set is deliberately project-scoped.
-        for table in ("v2_decision_reuse_events","v2_decision_reuse","v2_workflow_run_bindings","v2_source_revision_reviews"):
+        for table in ("v2_issue_marks","v2_decision_reuse_events","v2_decision_reuse","v2_workflow_run_bindings","v2_source_revision_reviews"):
             c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
         for table in ("v2_author_story_plan_versions","v2_author_character_plan_versions","v2_author_world_plan_versions"):
             c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))

@@ -2967,6 +2967,7 @@ export function Workbench() {
         <Evidence
           issue={selected}
           run={run}
+          onMarked={(issueId, toRevise) => setRun((current) => current ? { ...current, issues: current.issues?.map((item) => item.id === issueId ? { ...item, to_revise: toRevise } : item) } : current)}
           readOnly={readOnly}
           tutorial={Boolean(project?.is_tutorial)}
           tutorialStep={activeTutorialStep}
@@ -5310,9 +5311,18 @@ function ProjectPage(p: {
     );
   if (p.tab === "sources")
     return (
-      <><SourceAppend project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} context={contextNotices} />
-      <ChapterCheckPanel projectId={p.project.id} chapters={p.chapters} readOnly={p.readOnly} />
-      <LongTermReview key={`${p.actorId}:${p.project.id}`} userId={p.actorId} projectId={p.project.id} readOnly={p.readOnly} onChanged={p.refreshReferences} /></>
+      <section className="project-page chapters-page">
+        <header className="page-header">
+          <div>
+            <h1>章节</h1>
+            <p>已写的章节和正在写的草稿按顺序排在一起。勾选几章一起检查；展开一章能看到检查时引用的段落。修订后旧版本仍会保留，以前的检查依旧能找到出处。</p>
+          </div>
+        </header>
+        {contextNotices}
+        <ChapterCheckPanel projectId={p.project.id} chapters={p.chapters} readOnly={p.readOnly} />
+        <SourceAppend project={p.project} draft={p.draft} readOnly={p.readOnly} />
+        <LongTermReview key={`${p.actorId}:${p.project.id}`} userId={p.actorId} projectId={p.project.id} readOnly={p.readOnly} onChanged={p.refreshReferences} />
+      </section>
     );
   return (
     <section className="project-page workspace-page" data-mobile-pane={mobilePane}>
@@ -5471,7 +5481,7 @@ function ProjectPage(p: {
                         <strong>{issueNatureLabel(x.nature)}</strong>
                       </span>
                       <span className="issue-claim">{x.claim_text || x.explanation}</span>
-                      <small className="issue-action-label" key={x.reused_decision ? "reused" : x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "decided" : "open"}>{x.reused_decision ? "沿用作者此前判断" : x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "决定已记录" : `涉及：${categoryLabel(x.category)} · 查看证据`}</small>
+                      <small className="issue-action-label" key={x.reused_decision ? "reused" : x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "decided" : "open"}>{x.reused_decision ? "沿用作者此前判断" : x.decision || p.locallyResolvedIssueIds.includes(x.id) ? "决定已记录" : `${x.to_revise ? "待修改 · " : ""}涉及：${categoryLabel(x.category)} · 查看证据`}</small>
                       <span className="issue-arrow" aria-hidden="true"><Icon name="chevron-right" inline /></span>
                     </Button>
                     </li>)}
@@ -6078,9 +6088,7 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
       .then((next) => { if (live) setEstimate(next); }).catch(() => { if (live) setEstimate(null); });
     return () => { live = false; };
   }, [projectId, selected]);
-  if (usage?.account_type === "visitor") {
-    return <section className="project-section chapter-check-panel" aria-label="全部章节"><h2>全部章节</h2><p className="muted">访客只能检查当前草稿；注册账号后可以一次勾选最多 {CHAPTER_CHECK_MAX} 章一起检查。下面是一份示例结果，展示多章检查会得到什么。</p>{runs.find((run) => run.sample) && <ChapterCheckResult run={runs.find((run) => run.sample)!} />}</section>;
-  }
+  const visitor = usage?.account_type === "visitor";
   const toggle = (id: string) => setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length >= CHAPTER_CHECK_MAX ? current : [...current, id]);
   const shownEstimate = selected.length ? estimate : null;
   const over = Boolean(shownEstimate && usage?.account_type === "registered" && shownEstimate.characters > usage.check_chars_remaining);
@@ -6092,14 +6100,14 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
       await load();
     } catch (cause) { setError(labelError(cause)); } finally { setBusy(false); }
   };
-  const latest = runs[0];
+  const latest = visitor ? runs.find((run) => run.sample) : runs[0];
+  const spansFor = (chapterId: string) => chapters.find((chapter) => chapter.id === chapterId)?.source_spans ?? [];
   // The timeline lists written chapters with their check status and the draft last; until it loads, the chapter list stands in.
   const rows: TimelineRow[] = timeline ?? [...chapters].sort((a, b) => a.number - b.number).map((chapter) => ({ chapter_id: chapter.id, chapter_number: chapter.number, title: chapter.title, draft: false, status: "unchecked", checked_at: null }));
   return (
     <section className="project-section chapter-check-panel" aria-label="全部章节">
-      <h2>全部章节</h2>
-      <p className="muted">已写章节和正在写的草稿按顺序排在一起。勾选最多 {CHAPTER_CHECK_MAX} 章一起检查，每一章只拿它前面的章节作依据；要改哪一章，在下方「修订历史章节」里改。</p>
-      {rows.length > 0 && (
+      {visitor && <p className="muted">访客只能检查当前草稿；注册账号后可以一次勾选最多 {CHAPTER_CHECK_MAX} 章一起检查。最下面是一份示例结果，展示多章检查会得到什么。</p>}
+      {rows.length > 0 ? (
         <>
           <fieldset className="chapter-check-picker" disabled={readOnly || busy || active}>
             <legend className="sr-only">选择要检查的章节</legend>
@@ -6107,7 +6115,8 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
               if (row.draft || !row.chapter_id) {
                 return (
                   <div key="draft" className="chapter-row draft">
-                    <span>第 {row.chapter_number} 章《{row.title || "未命名"}》<small>草稿</small></span>
+                    <span className="chapter-row-pick" aria-hidden="true" />
+                    <span className="chapter-row-title">第 {row.chapter_number} 章《{row.title || "未命名"}》<small>草稿</small></span>
                     <span className={`chapter-status status-${row.status}`} title={timelineStatusHint[row.status]}>{timelineStatusLabel[row.status]}</span>
                     <Button className="quiet" onClick={() => router.push(`/projects/${projectId}/workspace`)}>去写作</Button>
                   </div>
@@ -6115,25 +6124,43 @@ function ChapterCheckPanel({ projectId, chapters, readOnly }: { projectId: strin
               }
               const id = row.chapter_id;
               const checked = selected.includes(id);
+              const spans = spansFor(id);
               return (
-                <label key={id} className={`chapter-row${checked ? " checked" : ""}`}>
-                  <input type="checkbox" checked={checked} disabled={!checked && selected.length >= CHAPTER_CHECK_MAX} onChange={() => toggle(id)} />
-                  <span>第 {row.chapter_number} 章《{row.title || "未命名"}》</span>
-                  <span className={`chapter-status status-${row.status}`} title={timelineStatusHint[row.status]}>{timelineStatusLabel[row.status]}</span>
-                </label>
+                <div key={id} className={`chapter-row-wrap${checked ? " checked" : ""}`}>
+                  <div className="chapter-row">
+                    {visitor ? <span className="chapter-row-pick" aria-hidden="true" /> : <input className="chapter-row-pick" type="checkbox" aria-label={`选择第 ${row.chapter_number} 章`} checked={checked} disabled={!checked && selected.length >= CHAPTER_CHECK_MAX} onChange={() => toggle(id)} />}
+                    <span className="chapter-row-title">第 {row.chapter_number} 章《{row.title || "未命名"}》</span>
+                    <span className={`chapter-status status-${row.status}`} title={timelineStatusHint[row.status]}>{timelineStatusLabel[row.status]}</span>
+                  </div>
+                  {spans.length > 0 && (
+                    <details className="chapter-passages">
+                      <summary>段落 {spans.filter((span) => span.is_current !== false).length}</summary>
+                      <ul id={`chapter-${id}`}>
+                        {spans.map((span) => (
+                          <li key={span.span_id} id={`span-${span.span_id}`} className={span.is_current === false ? "historical" : undefined}>
+                            <strong>{span.label === "chapter_revision" ? "修订正文" : span.label}{span.is_current === false ? " · 历史来源（已修订）" : ""}</strong>
+                            <span>{span.text_excerpt}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
+                </div>
               );
             })}
           </fieldset>
-          <div className="chapter-check-actions">
-            <p className={over ? "check-allowance over" : "check-allowance"} aria-live="polite">
-              已选 {selected.length}/{CHAPTER_CHECK_MAX} 章
-              {shownEstimate && <> · 约 {shownEstimate.characters.toLocaleString()} 字 · 预计{shownEstimate.estimated_cny >= 0.01 ? `约 ¥${shownEstimate.estimated_cny.toFixed(2)}` : "不到 ¥0.01"}</>}
-              {usage?.account_type === "registered" && <> · 今天还可检查 {usage.check_chars_remaining.toLocaleString()} 字</>}
-            </p>
-            {!readOnly && <Button className="primary" disabled={busy || active || !selected.length || over} onClick={() => void start()}>{active ? "正在检查" : "检查选中的章节"}</Button>}
-          </div>
+          {!visitor && (
+            <div className="chapter-check-actions">
+              <p className={over ? "check-allowance over" : "check-allowance"} aria-live="polite">
+                已选 {selected.length}/{CHAPTER_CHECK_MAX} 章
+                {shownEstimate && <> · 约 {shownEstimate.characters.toLocaleString()} 字 · 预计{shownEstimate.estimated_cny >= 0.01 ? `约 ¥${shownEstimate.estimated_cny.toFixed(2)}` : "不到 ¥0.01"}</>}
+                {usage?.account_type === "registered" && <> · 今天还可检查 {usage.check_chars_remaining.toLocaleString()} 字</>}
+              </p>
+              {!readOnly && <Button className="primary" disabled={busy || active || !selected.length || over} onClick={() => void start()}>{active ? "正在检查" : "检查选中的章节"}</Button>}
+            </div>
+          )}
         </>
-      )}
+      ) : <div className="empty">还没有已写章节。写完一章后在「写作」里完成它，或在下面追加章节。</div>}
       {error && <div className="notice error" role="alert">{error}</div>}
       {latest && <ChapterCheckResult run={latest} />}
     </section>
@@ -6168,7 +6195,7 @@ function ChapterCheckResult({ run }: { run: ChapterCheckRun }) {
   );
 }
 
-function SourceAppend({ project, draft, chapters, readOnly, context }: { project: Project; draft: Draft | null; chapters: Chapter[]; readOnly: boolean; context?: ReactNode }) {
+function SourceAppend({ project, draft, readOnly }: { project: Project; draft: Draft | null; readOnly: boolean }) {
   const router=useRouter();
   // "完成当前章节" in the workspace menu links here with #complete-draft.
   const [method, setMethod] = useState<"draft_complete" | "paste" | "file">(() => typeof window !== "undefined" && window.location.hash === "#complete-draft" && draft ? "draft_complete" : "paste"), [content, setContent] = useState(""), [filename, setFilename] = useState(""), [preview, setPreview] = useState<SourceChangeSet | null>(null), [nextDraft, setNextDraft] = useState<Draft | null>(null), [busy, setBusy] = useState(""), [error, setError] = useState("");
@@ -6185,14 +6212,15 @@ function SourceAppend({ project, draft, chapters, readOnly, context }: { project
     try { const data = await json<{ source_change_set: SourceChangeSet; next_draft: Draft }>(`/projects/${project.id}/source-change-sets/${preview.id}/commit`, "POST", { confirm: true, content_sha256: preview.content_sha256 }); setPreview(data.source_change_set); setNextDraft(data.next_draft); }
     catch (cause) { setError(labelError(cause)); } finally { setBusy(""); }
   };
-  return <section className="project-page read-page"><header className="page-header"><div><p className="breadcrumb">项目 / {project.title} / 章节管理</p><h1>章节管理</h1><p>目标作品：{project.title}。在这里追加新章节、把当前草稿定为正式章节，或在下方修订已写好的章节。修订后旧版本仍会保留，以前的检查依旧能找到出处。</p></div></header>{context}
-    {!readOnly && <section className="project-section"><h2>追加章节</h2><fieldset className="source-method" disabled={Boolean(busy)}><legend>追加方式</legend>{(["draft_complete", "paste", "file"] as const).map((value) => <label key={value} className="source-method-option"><input className="sr-only" type="radio" name="source-method" checked={method === value} onChange={() => setMethod(value)} />{value === "draft_complete" ? "完成当前章节" : value === "paste" ? "粘贴追加" : "追加文件"}</label>)}</fieldset>
+  if (readOnly && !preview) return null;
+  return <details className="project-section source-append" open={method === "draft_complete" || Boolean(preview)}>
+    <summary><h2>追加章节</h2><span className="muted">粘贴、上传文件，或把当前草稿定为正式章节</span></summary>
+    {!readOnly && <><fieldset className="source-method" disabled={Boolean(busy)}><legend>追加方式</legend>{(["draft_complete", "paste", "file"] as const).map((value) => <label key={value} className="source-method-option"><input className="sr-only" type="radio" name="source-method" checked={method === value} onChange={() => setMethod(value)} />{value === "draft_complete" ? "完成当前章节" : value === "paste" ? "粘贴追加" : "追加文件"}</label>)}</fieldset>
     {method === "draft_complete" ? <p>将完成当前草稿《{draft?.title ?? "—"}》并追加为新章节。</p> : <><label>章节正文<textarea value={content} onChange={(event) => setContent(event.target.value)} disabled={readOnly || Boolean(busy)} /></label>{method === "file" && <label>追加文件<input type="file" accept=".md,.txt,text/markdown,text/plain" disabled={readOnly || Boolean(busy)} onChange={async (event) => { const file = event.currentTarget.files?.[0]; if (!file) return; setFilename(file.name); setContent(await file.text()); }} /><small>{filename || "仅支持 UTF-8 .md / .txt"}</small></label>}</>}
-    <Button className="primary" disabled={Boolean(busy) || (method !== "draft_complete" && !content.trim())} onClick={() => void makePreview()}>{busy || "预览追加"}</Button></section>}
+    <Button className="primary" disabled={Boolean(busy) || (method !== "draft_complete" && !content.trim())} onClick={() => void makePreview()}>{busy || "预览追加"}</Button></>}
     {error && <div className="notice error" role="alert">{error} 请保留当前内容，刷新页面读取最新章节后重试。</div>}
     {preview && <section className="notice success" role="status"><strong>{preview.status === "previewed" ? "追加预览" : "已追加"}</strong><p>共 {preview.chapter_count} 个章节</p><small>预览于 {timestampLabel(preview.previewed_at)}；确认后才会写入作品。</small><ul>{preview.chapters.map((chapter) => <li key={chapter.preview_id}>第 {chapter.order} 个追加章节《{chapter.title}》· {chapter.character_count} 字</li>)}</ul>{!readOnly && (preview.status === "previewed" ? <Button className="primary" disabled={Boolean(busy)} onClick={() => void commit()}>确认追加并创建下一章草稿</Button> : <><p>已追加到作品。</p>{nextDraft && <p>下一章草稿：第 {nextDraft.chapter_number} 章《{nextDraft.title}》</p>}<Button className="primary" onClick={() => router.push(`/projects/${project.id}/workspace`)}>进入下一章草稿</Button></>)}</section>}
-    <Read nested title="已写章节" breadcrumb="检查时引用的原文片段" note="每章下面是检查时可以引用的原文片段；修订过的旧片段会保留，以前的检查仍指向当时的原文。" items={chapters.flatMap((chapter) => [<li key={`chapter-${chapter.id}`} id={`chapter-${chapter.id}`} className="source-chapter-anchor"><strong>第 {chapter.number} 章《{chapter.title}》</strong><span>{chapter.summary||"本章来源"}</span></li>,...(chapter.source_spans ?? []).map((span) => <li key={span.span_id} id={`span-${span.span_id}`} className="source-span-item"><strong><span className="sr-only">第 {chapter.number} 章《{chapter.title}》 · </span>{span.label === "chapter_revision" ? "修订正文" : span.label}{span.is_current === false ? " · 历史来源（已修订）" : ""}</strong><span>{span.text_excerpt}</span></li>)])} empty="此作品还没有可回源的章节片段。" />
-  </section>;
+  </details>;
 }
 
 function Read({
@@ -7148,6 +7176,7 @@ function Evidence({
   applySuggestion,
   decide,
   reviewDecision,
+  onMarked,
 }: {
   issue: Issue;
   run: Run | null;
@@ -7163,6 +7192,7 @@ function Evidence({
   applySuggestion: () => boolean;
   decide: (i: Issue, d: "keep_intentional" | "false_positive") => Promise<void>;
   reviewDecision: (i: Issue) => Promise<void>;
+  onMarked?: (issueId: string, toRevise: boolean) => void;
 }) {
   useDocumentScrollLock();
   const drawerRef = useRef<HTMLElement>(null);
@@ -7170,6 +7200,21 @@ function Evidence({
   const [leaving, setLeaving] = useState(false);
   const [suggestionPreview, setSuggestionPreview] = useState(false);
   const [suggestionError, setSuggestionError] = useState("");
+  const [toRevise, setToRevise] = useState(Boolean(issue.to_revise));
+  const [markBusy, setMarkBusy] = useState(false);
+  const toggleToRevise = async () => {
+    if (!run) return;
+    setMarkBusy(true);
+    try {
+      const next = await json<{ to_revise: boolean }>(`/projects/${run.project_id}/issues/${issue.id}/mark`, "POST", { to_revise: !toRevise });
+      setToRevise(next.to_revise);
+      onMarked?.(issue.id, next.to_revise);
+    } catch (cause) {
+      setSuggestionError(labelError(cause));
+    } finally {
+      setMarkBusy(false);
+    }
+  };
   useEffect(() => {
     closeRef.current?.focus();
   }, []);
@@ -7305,6 +7350,7 @@ function Evidence({
               {canApplySuggestion && <Button disabled={Boolean(busy) || !evidence.length || Boolean(issue.decision) || outdated || !decisionReady} onClick={() => { setSuggestionPreview(true); setSuggestionError(""); }}>预览修改建议</Button>}
               {canKeep && <Button disabled={Boolean(busy) || Boolean(issue.decision) || outdated || !decisionReady} onClick={() => void decide(issue, "keep_intentional")}>保留原意</Button>}
               {canMarkFalsePositive && <Button className="quiet false-positive-action" disabled={Boolean(busy) || Boolean(issue.decision) || outdated || !decisionReady} onClick={() => void decide(issue, "false_positive")}>标记误报</Button>}
+              {!readOnly && !issue.decision && <Button className="quiet to-revise-action" ariaPressed={toRevise} disabled={markBusy || !run} onClick={() => void toggleToRevise()}>{toRevise ? "取消「待修改」" : "记为待修改"}</Button>}
             </div>
             {!issue.decision && <ul className="decision-consequences"><li><strong>前往修改：</strong>只回到正文，不会自动改写或保存。</li><li><strong>保留原意 / 标记误报：</strong>只处理本条提示，不改正文、不提交事实。</li></ul>}
           </section>
