@@ -71,10 +71,10 @@ Visitor demo spaces retain three independently seeded projects: **Grey Harbor Ec
 - Authors can select current continuity Issues, generate one bounded Evidence-backed revision suggestion per Issue, accept or edit suggestions into persistent tasks, manually revise and save the same draft, then explicitly recheck. Task progress never resolves Issues or changes canon.
 - Accepted Memory decisions create one immutable Memory version and one auditable ChangeSet atomically. Rejected or empty reviews close source coverage without version growth.
 - The desktop global rail can collapse persistently, wide operational surfaces use the available canvas, and the author profile prioritises real works, chapter and word totals, and continue-writing access before secondary display-name and bundled-avatar settings.
-- Desktop supports authoring and review. A 390 px viewport remains browse-only with the reason shown, sources available, and no horizontal overflow.
+- Writing and review need a desktop width (1024 px or more). Narrower viewports are browse-only, with the reason shown, sources available, and no horizontal overflow.
 - Writing and Checking includes a desktop immersive manuscript overlay with shared draft state, adjustable typography and column width, and a collapsible continuity-issue rail. Since v1.6.1 the draft saves to the server a few seconds after typing stops; the device's recovery copy remains the offline fallback.
 
-The repository is designed for local reproduction. It contains the application source, migration and seed logic, tests, sanitised V4–V8 evaluation result records, and a small set of production-workflow screenshots. It does not include runtime databases, environment files, provider credentials, raw provider responses, recorded runtime prompt bodies, chain-of-thought, or protected evaluation assets. Full V5–V8 post-run database-hash validation therefore also requires the separately retained local evaluation workspaces; the committed result files alone do not recreate those SQLite artifacts.
+The repository is designed for local reproduction. It contains the application source, migration and seed logic, tests, sanitised evaluation result records (V4–V12 and the long-text gates), and a small set of production-workflow screenshots. It does not include runtime databases, environment files, provider credentials, raw provider responses, recorded runtime prompt bodies, chain-of-thought, or protected evaluation assets. Full V5–V8 post-run database-hash validation therefore also requires the separately retained local evaluation workspaces; the committed result files alone do not recreate those SQLite artifacts.
 
 ## Product and safety boundaries
 
@@ -238,9 +238,8 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 
 - The signed Stage 14 production baseline remains `Story Continuity Copilot v1.0 Public Release` as historical evidence. The active public deployment is v1.6.1 (`v161-edd821a-20261006`); its deployment and acceptance scope are recorded in the [v1.6.1 deployment record](docs/deployment-2026-10-06-v161.md). Local acceptance does not re-sign Stage 14, constitute a commercial SLA, or claim that the retained Stage 10 `gate_failed` evaluation was later passed.
 - Real SMTP delivery, email verification, password reset, old-session revocation, new-password login, and used-link replay rejection have been accepted at the public origin. Email credentials and addresses remain server-only.
-- V4 is a small, frozen product evaluation; it supports the stated evaluation claims only and is not a general benchmark.
+- The evaluation sets are small and frozen (V4: 15 cases; held-out sets: 36 cases each; `lf2-formal`: 26 chapters). They support the stated claims only and are not general benchmarks.
 - Real provider output can vary. The retained stability evidence shows variation in Evidence IDs and exact explanation hashes even where decision and category/severity were stable.
-- The provider returns no cost in the retained V4 results.
 - The system supports continuity review and author-controlled canon updates; it does not directly continue the novel.
 - Current browser E2E suites run through `npm run test:e2e` with isolated production services and test-only providers. Historical acceptance records are excluded from daily runs; browser checks do not evaluate real model quality or external SMTP delivery. See the [isolated E2E instructions](docs/local-setup.md#isolated-browser-e2e).
 - `test:build-origin` has one known failure ("canonical HTTPS proxy exposes public health…").

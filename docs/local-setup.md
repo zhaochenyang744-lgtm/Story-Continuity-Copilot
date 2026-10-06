@@ -1,8 +1,8 @@
-# Story Continuity Copilot v1.0 Public Release — local setup and reproduction
+# Story Continuity Copilot — local setup and reproduction
 
 ## Scope
 
-This guide reproduces the signed Story Continuity Copilot v1.0 Public Release source locally. Local reproduction is not a second public deployment and creates a runtime database only under `runtime/data/demo.sqlite3`; it does not read protected CLI PoC, Golden, held-out, or environment files.
+This guide runs the current source (v1.6.1) locally. Local reproduction is not a second public deployment and creates a runtime database only under `runtime/data/demo.sqlite3`; it does not read protected CLI PoC, Golden, held-out, or environment files.
 
 ## Prerequisites
 

@@ -1,5 +1,13 @@
 # Evaluation assets
 
+## Current gates (v1.6.1)
+
+- **Long-text formal gate** — `evaluation/longform/` (format, validator, scorer, metered runner, pre-registered thresholds in `thresholds.py` and [PLAN.md](longform/PLAN.md)). The first formal run (`lf1-formal` with the short-text set V13) failed on insufficient-evidence recall and maximum cost, and both sets were retired. The second run on the fresh 26-chapter set `lf2-formal` passed every registered threshold: conflict recall 1.00, insufficient-evidence recall 0.83, category accuracy 1.00, designated regressions 3/3, trap false positives 0, clean chapters without a card 78%, median 40 s / p90 76 s, mean ¥0.21 / max ¥0.46. This decides the review prompt `continuity-review-v25g-…` shipped in v1.6.0 and v1.6.1.
+- **Short-draft held-out sets** — V10 passed (prompt v21), V11 failed twice on insufficient-evidence recall, V12 passed (prompt v24c, shipped in v1.5.1/v1.5.2; procedure `ie_fix_v24/PLAN.md`). All are spent.
+- Every formal set is written in a separate session, never read during development, and run once against thresholds registered before it was authored.
+
+The sections below are earlier snapshots and keep their original wording.
+
 ## Maintenance entry point (2026-09-26)
 
 The evaluation sets are long-term project assets. Follow the [evaluation maintenance policy](../docs/evaluation-maintenance.md) for case intake, independent review, development/comparison/unseen splits, versioning, recurring inventory, and change-triggered regression. This policy documents the current inventory and open preparation work; it does not introduce a new runner, CI job, scheduled task, or live evaluation.

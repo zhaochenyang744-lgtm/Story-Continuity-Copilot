@@ -1,11 +1,11 @@
-# Story Continuity Copilot v1.0 Public Release — 3–5 minute demo guide
+# Story Continuity Copilot v1.6.1 — 3–5 minute demo guide
 
-This path demonstrates the local workflow using seeded data. It does not require a real provider call.
+This path demonstrates the workflow using seeded data, locally or on the public site. It does not require a real provider call.
 
 ## 1. Enter the workspace
 
-1. Open the local frontend and register or sign in.
-2. Select **Grey Harbor Echoes** from the projects view.
+1. Open the frontend and choose **访客体验 24 小时** (visitor mode). A visitor space holds three seeded works; a new registered account instead starts with a guided tutorial copy of Grey Harbor Echoes.
+2. Select **Grey Harbor Echoes** (灰港回声) from the projects view.
 3. Open the project overview to confirm that its outline, chapters, Story Memory, and current draft belong to the selected project.
 
 ## 2. Review a completed continuity check
@@ -15,6 +15,12 @@ This path demonstrates the local workflow using seeded data. It does not require
 3. Open the Evidence view and trace each cited item back to its chapter and SourceSpan.
 
 The review is useful only when its Evidence resolves inside the selected project. A missing or unresolvable citation is rejected by the API rather than shown as a grounded finding.
+
+## 2b. Look at a multi-chapter check
+
+1. Open **章节管理** for Grey Harbor Echoes.
+2. Read the chapter timeline: every written chapter and the current draft, in order, with its check status.
+3. Open the labelled sample report of a chapter check (chapters 9–10): findings are grouped by chapter and each one cites an earlier chapter. Registered authors can tick up to eight chapters and run such a check themselves; the estimate is shown before anything is spent.
 
 ## 3. Make the author decision
 
