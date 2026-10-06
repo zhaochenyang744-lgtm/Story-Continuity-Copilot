@@ -1,1 +1,1 @@
-"""Backend verification package for the isolated Web Demo."""
+"""Backend verification package for Story Continuity Copilot."""

@@ -230,7 +230,8 @@ allowed_prefixes = (
 if (
     system_temp not in TEST_ROOT.parents
     or not TEST_ROOT.name.startswith(allowed_prefixes)
-    or "story-continuity-web-demo" in str(TEST_ROOT).casefold()
+    # The repository folder (current and former name) must never hold test data.
+    or any(name in str(TEST_ROOT).casefold() for name in ("story-continuity-copilot", "story-continuity-web-demo"))
 ):
     raise RuntimeError(
         "E2E_TEST_ROOT must be an approved isolated browser-test system-temp directory"

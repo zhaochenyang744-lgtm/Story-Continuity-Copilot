@@ -15,6 +15,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, model_validator
 
+from . import __version__
 from .config import AppPaths, PATHS, ProtectedPathError
 from .database import DomainError
 from .engine import CONTINUITY_MAX_CLAIMS_PER_BATCH, ContinuityEngine, MemoryDeltaEngine, MemoryInitializationEngine, WritingAnalysisEngine
@@ -326,7 +327,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             try: await task
             except asyncio.CancelledError: pass
             recovery_executor.shutdown(wait=True,cancel_futures=False)
-    app=FastAPI(title='Story Continuity Copilot Web Demo',version='1.4.0',lifespan=lifespan)
+    app=FastAPI(title='Story Continuity Copilot',version=__version__,lifespan=lifespan)
     app.state.database=db; app.state.engine=engine; app.state.stage13=stage13; app.state.stage13_settings=settings; app.state.recovery_executor=recovery_executor
     def trusted_host(value:str)->bool:
         folded=value.casefold()

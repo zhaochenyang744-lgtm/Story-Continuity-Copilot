@@ -82,7 +82,7 @@ MEMORY_RECORDS = [
     ("mem-ghe-v4-008", "open_thread", "异常雾钟", "status", "北潮闸未关闭时响起，原因未解", "ghe-ch10-s01"),
 ]
 
-# Deterministic, Web-Demo-only review material. This is authored fixture data,
+# Deterministic sample-work review material. This is authored fixture data,
 # not stored or simulated Provider output. Identifiers are rebound to each new
 # account's project-local chapters, spans, Memory records, draft, and Run.
 DEMO_REVIEW_ISSUES = [

@@ -71,7 +71,8 @@ class Stage13Provider:
 
 harness = validate_stage13_harness()
 test_root = Path(harness["test_root"])
-if "story-continuity-web-demo" in str(test_root).casefold():
+# The repository folder (current and former name) must never hold test data.
+if any(name in str(test_root).casefold() for name in ("story-continuity-copilot", "story-continuity-web-demo")):
     raise RuntimeError("E2E_TEST_ROOT must not be inside the repository")
 test_root.mkdir(parents=True, exist_ok=True)
 paths = AppPaths.from_project_root(test_root, protected_poc_root=test_root / "protected-placeholder")

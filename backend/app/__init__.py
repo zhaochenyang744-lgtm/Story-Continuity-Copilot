@@ -1,1 +1,4 @@
-"""Isolated Story Continuity Copilot Web Demo backend."""
+"""Story Continuity Copilot backend."""
+
+# Product version, shown as the API version; bump it with each release.
+__version__ = "1.6.1"
