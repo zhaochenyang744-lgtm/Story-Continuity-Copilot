@@ -6,6 +6,7 @@ import "./reference-refresh.css";
 import "./maintenance.css";
 import "./polish.css";
 import "./motion.css";
+import "./theme.css";
 
 export const metadata: Metadata = {
   title: "Story Continuity Copilot",

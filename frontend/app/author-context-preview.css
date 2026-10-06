@@ -4,7 +4,7 @@
   margin: 22px 0;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: #ac82ff08;
+  background: color-mix(in srgb, var(--c-accent-text) 3.1%, transparent);
 }
 .ac-analysis-result {
   border-top: 1px solid var(--line);
@@ -124,7 +124,7 @@
   overscroll-behavior: contain;
 }
 .ac-dialog::backdrop {
-  background: #090713b5;
+  background: color-mix(in srgb, var(--c-bg-deep) 71%, transparent);
   backdrop-filter: blur(6px);
 }
 .ac-dialog > .close {
@@ -163,7 +163,7 @@
   font-size: 13px;
   color: var(--muted);
   border-left: 2px solid var(--violet-400);
-  background: #ac82ff08;
+  background: color-mix(in srgb, var(--c-accent-text) 3.1%, transparent);
   padding: 10px 14px;
   margin: 20px 0;
 }
@@ -212,8 +212,8 @@
   width: 36px;
   height: 36px;
   border-radius: 12px;
-  background: #b689ff16;
-  color: #d4b3ff;
+  background: color-mix(in srgb, var(--c-accent-text) 8.6%, transparent);
+  color: var(--c-accent-text);
   font-size: 12px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -222,7 +222,7 @@
   padding: 18px 20px;
   margin: 20px 0;
   border-radius: 12px;
-  background: #ac82ff08;
+  background: color-mix(in srgb, var(--c-accent-text) 3.1%, transparent);
   border: 1px solid var(--line);
 }
 .ac-coverage p {
@@ -335,8 +335,8 @@
   flex-wrap: wrap;
 }
 .ac-tags span {
-  color: #c8b5e5;
-  background: #ae86ee12;
+  color: var(--c-accent-text);
+  background: color-mix(in srgb, var(--c-accent-text) 7.1%, transparent);
   padding: 4px 8px;
   border-radius: 5px;
   font-size: 12px;
@@ -369,9 +369,9 @@
 .ac-dialog blockquote {
   margin: 12px 0;
   padding: 12px 16px;
-  background: #0d0b164d;
-  border-left: 2px solid #9172ba;
-  color: #d1c6e0;
+  background: color-mix(in srgb, var(--c-bg-deep) 30.2%, transparent);
+  border-left: 2px solid var(--c-accent);
+  color: var(--c-text);
   font-size: 14px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -450,8 +450,8 @@
   min-width: 0;
 }
 .ac-natures label:has(input:checked) {
-  border-color: #a681d6;
-  background: #9c72cd15;
+  border-color: var(--c-accent);
+  background: color-mix(in srgb, var(--c-accent) 8.2%, transparent);
 }
 .ac-natures input {
   margin-top: 3px !important;
@@ -542,8 +542,8 @@
   cursor: pointer;
 }
 .ac-resolutions label:has(input:checked) {
-  border-color: #a681d6;
-  background: #9c72cd15;
+  border-color: var(--c-accent);
+  background: color-mix(in srgb, var(--c-accent) 8.2%, transparent);
 }
 .ac-history-evidence {
   border-top: 1px solid var(--line);

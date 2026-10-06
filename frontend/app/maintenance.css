@@ -1,4 +1,4 @@
-.long-term-review { margin-top: 2rem; padding: clamp(1rem, 3vw, 2rem); background: var(--surface, #fff); border: 1px solid var(--line, #e4e1eb); border-radius: 16px; }
+.long-term-review { margin-top: 2rem; padding: clamp(1rem, 3vw, 2rem); background: var(--surface, var(--c-on-accent)); border: 1px solid var(--line, var(--c-text)); border-radius: 16px; }
 .maintenance-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
 .maintenance-heading h2 { margin: .4rem 0; }
 .maintenance-heading p { max-width: 65ch; }
@@ -14,7 +14,7 @@
 .revision-preview { padding: 1rem; border: 1px solid var(--line); border-radius: 10px; }
 .revision-comparison { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 1rem; }
 .revision-comparison section { min-width: 0; }
-.long-term-review pre { font: inherit; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 28rem; overflow-y: auto; color: var(--text); background: var(--ink-900, #14111f); padding: 1rem; border-radius: 8px; }
+.long-term-review pre { font: inherit; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 28rem; overflow-y: auto; color: var(--text); background: var(--ink-900, var(--c-bg)); padding: 1rem; border-radius: 8px; }
 .source-reviews { margin: 1rem 0; }
 .fact-source-review, .decision-policy { border-top: 1px solid var(--line); padding: 1rem 0; }
 .long-term-review button { cursor: pointer; }
