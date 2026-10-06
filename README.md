@@ -101,7 +101,7 @@ Verification for `ui-cbfa536`: backend 456/456, evaluation 51/51, lint, typechec
 - Accepted Memory decisions create one immutable Memory version and one auditable ChangeSet atomically. Rejected or empty reviews close source coverage without version growth.
 - The desktop global rail can collapse persistently, wide operational surfaces use the available canvas, and the author profile prioritises real works, chapter and word totals, and continue-writing access before secondary display-name and bundled-avatar settings.
 - Desktop supports authoring and review. A 390 px viewport remains browse-only with the reason shown, sources available, and no horizontal overflow.
-- Writing and Checking includes a desktop immersive manuscript overlay with shared unsaved draft state, explicit save only, adjustable typography and column width, and a collapsible continuity-issue rail.
+- Writing and Checking includes a desktop immersive manuscript overlay with shared draft state, adjustable typography and column width, and a collapsible continuity-issue rail. Since v1.6.1 the draft saves to the server a few seconds after typing stops; the device's recovery copy remains the offline fallback.
 
 The repository is designed for local reproduction. It contains the application source, migration and seed logic, tests, sanitised V4–V8 evaluation result records, and a small set of production-workflow screenshots. It does not include runtime databases, environment files, provider credentials, raw provider responses, recorded runtime prompt bodies, chain-of-thought, or protected evaluation assets. Full V5–V8 post-run database-hash validation therefore also requires the separately retained local evaluation workspaces; the committed result files alone do not recreate those SQLite artifacts.
 
@@ -115,10 +115,10 @@ The repository is designed for local reproduction. It contains the application s
 ## Public deployment
 
 - Active origin: [https://43-160-207-57.sslip.io](https://43-160-207-57.sslip.io)
-- Active version: **Story Continuity Copilot v1.5.2**
-- Production release ID: `v152-1cfee10-20261004` (Git tag `v1.5.2`, commit `1cfee10e273398eff55c62ac0367bf7020170315`)
-- Source inventory SHA256: `659bd4146f00261fa660e5b63345c903fadae3fe5dc3e674dbd6f02ebbe5dce6` (100 files)
-- Deployment date: 2026-10-04; rollback target `v150-b9f4b0f-20261003`
+- Active version: **Story Continuity Copilot v1.6.1**
+- Production release ID: `v161-edd821a-20261006` (Git tag `v1.6.1`, commit `edd821a2be934da93a71fffa71b8798feef8f505`)
+- Source inventory SHA256: `113b6880a3d53c3d61d84a4c013d8d6a8645e53bc30fa70216704837493d11c8` (105 files)
+- Deployment date: 2026-10-06; rollback target `v160-ef7341e-20261006`; record: [v1.6.1 deployment](docs/deployment-2026-10-06-v161.md)
 - The notes below describe the 2026-09-13 maintenance release (`maint-e2d141c23d0c-20260913`, inventory `e2d141c23d0ccab25ccf1fd24b7f0ea0821493a6f892c7b784680f7f492b0402`), whose schema and operations setup the later releases keep.
 - Isolated migration rehearsal and live comparison before browser acceptance preserved all 67 preexisting business tables and 661 rows. Schema is 146; integrity and foreign-key checks passed. Pre-deployment and post-deployment backups were manually downloaded to the operator workstation and independently hashed.
 - Public browser acceptance passed seven checks, including actual TXT/Markdown/ZIP downloads, maintenance-page chapter content, a revision guard rejecting changes, mobile read-only layout, and fresh JS/CSS loads. It did not rerun successful revision commits, decision reuse, or external AI calls online; those retain their separate local evidence.
@@ -130,7 +130,7 @@ The author workflow is:
 
 1. Sign in locally, create or import a project, and select a project workspace.
 2. Review outline, characters, world rules, chapters, and versioned Story Memory.
-3. Submit the current draft for a continuity check.
+3. Submit the current draft for a continuity check, or tick up to eight written chapters and check them together.
 4. Inspect each finding together with resolvable Evidence from the current project.
 5. Accept, reject, or edit proposed Memory changes. A ChangeSet records the decision; only accepted changes update canon.
 6. Use "重置当前作品" (project Reset) to restore the seeded review path when a fresh demonstration is needed.
@@ -161,6 +161,7 @@ The public product story is organised around the milestones below. Historical St
 | Public Release v1.0 | Historical signed baseline after the frozen Required Gates A–G passed at the public origin | Stage 14 |
 | Product Iteration v1.2.0 | Isolated first-run tutorial, durable progress, responsive authoring UI, bitmap narrative assets, local regression acceptance, and historical public deployment | v1.2.0 tests and production smoke acceptance |
 | Product Iteration v1.4–v1.5 | Author materials, exports, decision reuse, chapter revision with fact review, parallel long-chapter checks, the new interface, explicit insufficient-evidence reporting; V10 and V12 held-out gates passed | Held-out results below; backend 471/471; browser E2E 124/124 |
+| Long-text release v1.6 | Screened checking of real ~2,500-character chapters, chosen-chapter checks, character quotas, chapter timeline, Word import, server-side draft autosave; long-text formal gate passed on `lf2-formal` | Long-text results below; v1.6.1: backend 554/554, browser E2E 129/129, evaluation 77/77 |
 
 The published repository baseline is the frozen **V4** set: 15 original, balanced three-class cases across three isolated corpora, plus 6 stability reruns. All 21 runs completed.
 
@@ -189,7 +190,12 @@ Since V9, model changes are judged on held-out sets: 36 cases per set (12 confli
 | V11 (2026-09-30) | prompt v22 | Failed twice on insufficient-evidence recall (0.75, 0.67; bar 0.8): drafts that settled a point the source left open got no issue at all |
 | V12 (2026-10-03) | prompt v24c, shipped in v1.5.1/v1.5.2 | Passed every registered threshold: macro F1 0.972, insufficient-evidence recall 1.0, conflict recall 0.917, no false positives, designated regressions 3/3 ([procedure](evaluation/ie_fix_v24/PLAN.md), [result](evaluation/results/eval-v12-v24c-first-formal.json)) |
 
-These sets use chapters of at most 300 characters and drafts of one to three sentences. Real chapters are about ten times longer; a long-text evaluation set and pipeline are in progress (see [Known limitations](#known-limitations)).
+These sets use chapters of at most 300 characters and drafts of one to three sentences. Real chapters are about ten times longer, so v1.6.0 is judged on long-text formal sets: real-length chapters checked against earlier chapters, with thresholds for recall, false positives, time and cost registered before the set was written ([plan](evaluation/longform/PLAN.md)).
+
+| Long-text formal set | Configuration | Result |
+| --- | --- | --- |
+| `lf1-formal` + short-text V13 (2026-10-05) | screened pipeline, first caps | Failed on insufficient-evidence recall and maximum cost; both sets retired |
+| `lf2-formal` (2026-10-05, 26 chapters) | prompt v25g, caps 5/2/3, shipped in v1.6.0/v1.6.1 | Passed every registered threshold: conflict recall 1.00, insufficient-evidence recall 0.83, category accuracy 1.00, designated regressions 3/3, trap false positives 0, clean chapters without a card 78%, median 40 s / p90 76 s, mean ¥0.21 / max ¥0.46 |
 
 Long-form Workflow Validation, recorded under Stage 11, verified the author-controlled workflow on a real 100k-character prefix and a 300k-character prefix. The accepted 300k V2 result completed initialization plus two append/review/decision/commit rounds with bounded RAG, valid Evidence lineage, no automatic canon writes, and a 4,820,992-byte final SQLite database. The first 300k V1 capacity failure remains immutable alongside the V2 pass. The optional 1M-character Stage 11N pressure test has not been run.
 
@@ -209,7 +215,7 @@ Read [the verification record](docs/verification-and-limitations.md) for evidenc
 ```text
 backend/       API, SQLite schema/migration, seed data, and contract tests
 frontend/      Next.js workspace and browser E2E tests
-evaluation/    frozen V4–V12 case sets, held-out runner and thresholds, validators, tests, and sanitised results
+evaluation/    frozen V4–V12 case sets, long-text sets and runner (`evaluation/longform/`), held-out thresholds, validators, tests, and sanitised results
 docs/          local setup, demo guide, product decisions, and verification record
 artifacts/     a small, curated set of production-workflow screenshots
 ```
@@ -291,7 +297,7 @@ npm run test:e2e -- --group stage12,regular,stage13
 npm run test:e2e -- --group regular --grep "review entry"
 ```
 
-`npm run test:e2e` runs eight isolated production browser groups in sequence: `v130` (15 author-workflow tests), `v140-frontend` (13 interface tests), `v140-visual` (those 13 plus one visual test), `regular` (54 authentication, writing, import, fact-review, v1.1/v1.2 and helper tests), `stage12` (8 Agent Run lifecycle tests), `stage13` (4 visitor, recovery and isolation tests using the impl profile), `maintenance` (13 interface plus 2 maintenance tests), and `legacy-rich-suggestion` (1 staged rich-text suggestion test). The total is 124 executions; the 13 v140 frontend cases run in three groups. `--group` accepts a comma-separated list; `--grep` is supported only for `regular`. Use `npm run test:e2e -- --help` for the available groups and ports.
+`npm run test:e2e` runs eight isolated production browser groups in sequence: `v130` (15 author-workflow tests), `v140-frontend` (13 interface tests), `v140-visual` (those 13 plus one visual test), `regular` (59 authentication, writing, autosave, import, chapter-check, fact-review, v1.1/v1.2 and helper tests), `stage12` (8 Agent Run lifecycle tests), `stage13` (4 visitor, recovery and isolation tests using the impl profile), `maintenance` (13 interface plus 2 maintenance tests), and `legacy-rich-suggestion` (1 staged rich-text suggestion test). The total is 129 executions; the 13 v140 frontend cases run in three groups. `--group` accepts a comma-separated list; `--grep` is supported only for `regular`. Use `npm run test:e2e -- --help` for the available groups and ports.
 
 The runner clears model and SMTP configuration, builds temporary source copies without environment files, starts test-only FastAPI/Next.js services on dedicated ports, and cleans its sources, builds, databases and service processes. It prints `E2E_REPORT_ROOT` and `E2E_SUMMARY` for per-group results, logs and browser attachments retained in system temp. No local demo database, real model or external SMTP service is used. Keep the fixed ports and temporary build drives free, and run only one E2E command at a time; see [the port table and reproduction guide](docs/local-setup.md#isolated-browser-e2e).
 
@@ -315,6 +321,7 @@ The [3–5 minute demo guide](docs/demo-guide.md) walks through project selectio
 - `test:build-origin` has one known failure ("canonical HTTPS proxy exposes public health…").
 - A ~2,500-character chapter takes about 40 s (p90 76 s) and ¥0.21 on average with the screened pipeline. Insufficient-evidence recall (0.83 on the formal set) and the share of clean chapters without any card (78%) are close to their bars and vary from run to run; prompt changes need a regression run.
 - Whole-book checks are not offered to authors yet; checking chosen chapters is limited to eight at a time.
+- In about one check in nine, the 灰港回声 sample draft reports "决定先核对那声不该响起的雾钟" as a confirmed world-rule conflict; the formally validated review prompt is kept until a new gate justifies a change.
 - With the real model, some Story Memory change-set reviews for long appended chapters fail backend validation (`candidate_count_invalid`, `memory_type_invalid`), and a long check can occasionally fail with unresolvable evidence. Both are model-output issues, not interface faults.
 - Writing and checking are desktop-only; below 1024 px the workspace is browse-only.
 
