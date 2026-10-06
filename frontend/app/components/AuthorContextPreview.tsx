@@ -360,6 +360,12 @@ export function ContextInline({ memory = false }: { memory?: boolean }) {
     </div>
   );
 }
+/** The author's active reference materials (not archived), for the 计划 page's 已定 / 考虑中 columns. */
+export function useAuthorMaterials() {
+  const context = useContext(Context);
+  if (!context) return null;
+  return context.local.filter((d) => !d.archived && (!backendConnected || d.origin !== "legacy_author_intent"));
+}
 export function ContextDraftShelf({ kind }: { kind: Kind }) {
   const context = useContext(Context);
   if (!context) return null;

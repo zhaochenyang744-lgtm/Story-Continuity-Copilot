@@ -172,3 +172,21 @@
 .related-facts .cite-button { flex: none; min-height: 26px; padding: 0 8px; border: 0; border-radius: 4px; background: var(--c-accent-tint); color: var(--c-accent-text); font-size: 12px; box-shadow: none; }
 .materials-tool { display: grid; gap: 16px; }
 .materials-tool .bounded-tool { max-width: 920px; }
+
+/* 计划 (v1.7.0) */
+.plan-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; align-items: start; }
+.plan-column-stack { display: grid; gap: 20px; min-width: 0; }
+.plan-column { min-width: 0; }
+.plan-column-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+.plan-column-head h2 { margin: 0; font-size: 13px; font-weight: 500; letter-spacing: .1em; color: var(--c-muted); display: inline-flex; align-items: baseline; gap: 6px; }
+.plan-column-count { font-size: 12px; color: var(--c-faint); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.plan-materials { display: grid; gap: 10px; }
+.plan-materials h3 { margin: 0; font-size: 13px; font-weight: 500; color: var(--c-muted); }
+.plan-idea { display: grid; gap: 6px; padding: 14px 16px; border: 1px solid var(--c-line); border-radius: 12px; background: var(--c-surface); }
+.plan-idea strong { font-size: 15px; }
+.plan-idea p { margin: 0; font-family: var(--font-serif); font-size: 15px; line-height: 1.8; color: var(--c-text); white-space: pre-line; }
+.plan-idea.weighing { background: var(--c-paper); border-style: dashed; }
+.plan-idea-kind { font-size: 12px; color: var(--c-muted); }
+.plan-weighing { display: grid; gap: 10px; }
+.plan-weighing > .muted { margin: 0 0 4px; font-size: 13px; }
+.plan-columns.single { grid-template-columns: minmax(0, 1fr); max-width: 920px; }

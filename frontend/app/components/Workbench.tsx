@@ -18,7 +18,7 @@ import { CreateProject } from "./CreateProject";
 import { ProjectExport } from "./ProjectExport";
 import { LongTermReview } from "./LongTermReview";
 import { WritingTools, RichDraftEditor, DraftWordCount, replaceVisibleDraftText, useDraftText } from "./WritingTools";
-import { AuthorContextPreviewProvider, ContextButton, ContextOverview, ContextInline, ContextDraftShelf, useCanonicalMaterialIds } from "./AuthorContextPreview";
+import { AuthorContextPreviewProvider, ContextButton, ContextOverview, ContextDraftShelf, useAuthorMaterials, useCanonicalMaterialIds } from "./AuthorContextPreview";
 import { CreativeTips, DesignIcon, DesignAsset } from "./VisualPrimitives";
 import { usePathname, useRouter } from "next/navigation";
 import { json, jsonWithIdempotency, labelError, request, type ApiFailure } from "../api";
@@ -5190,27 +5190,18 @@ function ProjectPage(p: {
       </section>
     );
   if (p.tab === "plan")
-    // Interim 计划 page (v1.7.0 step 1a): the three planning pages one after another until the merged page lands.
     return (
-      <div className="plan-page-interim">
-        <ContextOverview />
-        {(["story", "character", "world"] as const).map((kind) => (
-          <AuthorPlanningPage
-            key={`${kind}-planning`}
-            kind={kind}
-            projectId={p.project.id}
-            projectTitle={p.project.title}
-            projectIsTutorial={Boolean(p.project.is_tutorial)}
-            authorContext={p.authorContext}
-            readOnly={p.readOnly}
-            busy={p.authorBusy}
-            mutate={p.mutateAuthorContext}
-            context={kind === "story" ? contextNotices : null}
-            hasReference={kind === "story" ? (p.outline?.chapter_nodes ?? []).length > 0 : kind === "character" ? p.characters.length > 0 : p.world.length > 0}
-            reference={kind === "story" ? <OutlineReference chapters={p.outline?.chapter_nodes ?? []} /> : kind === "character" ? <CharacterArchive projectId={p.project.id} characters={p.characters} draft={p.draft} readOnly={p.readOnly} /> : <WorldArchive entries={p.world} />}
-          />
-        ))}
-      </div>
+      <PlanPage
+        key={p.project.id}
+        project={p.project}
+        authorContext={p.authorContext}
+        readOnly={p.readOnly}
+        busy={p.authorBusy}
+        mutate={p.mutateAuthorContext}
+        context={contextNotices}
+        comparing={p.analysisBusy === "plan_alignment"}
+        compare={() => { void p.startAnalysis("plan_alignment").then(() => p.go(`/projects/${p.project.id}/workspace`)); }}
+      />
     );
   if (p.tab === "outline")
     return (
@@ -5602,6 +5593,110 @@ function ProjectPage(p: {
           </Button>
         </form>
       )}
+    </section>
+  );
+}
+const planKinds: [AuthorPlanKind, string][] = [["story", "情节"], ["character", "人物"], ["world", "设定"]];
+/** 计划: what is not written yet. Decided plans on the left, ideas still being weighed on the right. */
+function PlanPage({ project, authorContext, readOnly, busy, mutate, context, comparing, compare }: {
+  project: Project;
+  authorContext: AuthorContext | null;
+  readOnly: boolean;
+  busy: string;
+  mutate: AuthorMutation;
+  context: ReactNode;
+  comparing: boolean;
+  compare: () => void;
+}) {
+  const [kind, setKind] = useState<AuthorPlanKind>(() => {
+    if (typeof window === "undefined") return "story";
+    const requested = new URLSearchParams(window.location.search).get("kind");
+    return planKinds.some(([id]) => id === requested) ? (requested as AuthorPlanKind) : "story";
+  });
+  // Author materials (and their own comparison tool) are a build-time option; without them 计划 holds the plans alone.
+  const materialsEnabled = useAuthorMaterials() !== null;
+  const materials = useAuthorMaterials() ?? [];
+  const choose = (next: AuthorPlanKind) => {
+    setKind(next);
+    try {
+      window.history.replaceState(window.history.state, "", `/projects/${project.id}/plan${next === "story" ? "" : `?kind=${next}`}`);
+    } catch {
+      // The view still switches when the address cannot be updated.
+    }
+  };
+  const planCount = (value: AuthorPlanKind) => (value === "story" ? authorContext?.story_plans : value === "character" ? authorContext?.character_plans : authorContext?.world_plans)?.filter((item) => !item.archived).length ?? 0;
+  const decided = materials.filter((item) => item.kind === kind && item.nature !== "idea");
+  const weighing = materials.filter((item) => item.kind === kind && item.nature === "idea");
+  return (
+    <section className="project-page plan-page">
+      <header className="page-header">
+        <div>
+          <h1>计划</h1>
+          <p>还没写进正文的打算：情节安排、人物和设定的打算、你的笔记。检查时作参考，不当成事实。</p>
+        </div>
+        <div className="actions">
+          {materialsEnabled ? (
+            <>
+              <ContextButton view="guide" className="secondary">导入资料</ContextButton>
+              <ContextButton view="compare" className="primary">对照正文</ContextButton>
+            </>
+          ) : !readOnly && (
+            <Button className="primary" disabled={comparing || !planKinds.some(([id]) => planCount(id) > 0)} title="把已写的正文和你的计划对照，结果显示在写作页" onClick={compare}>{comparing ? "正在对照" : "对照正文"}</Button>
+          )}
+        </div>
+      </header>
+      {context}
+      <nav className="materials-tabs" aria-label="计划分类">
+        {planKinds.map(([id, label]) => (
+          <button key={id} type="button" className={id === kind ? "current" : ""} aria-current={id === kind ? "page" : undefined} onClick={() => choose(id)}>
+            {label}<span className="materials-count">{planCount(id) + materials.filter((item) => item.kind === id).length}</span>
+          </button>
+        ))}
+      </nav>
+      <div className={materialsEnabled ? "plan-columns" : "plan-columns single"}>
+        <div className="plan-column-stack">
+          <AuthorPlanningPage
+            key={`${kind}-planning`}
+            kind={kind}
+            projectId={project.id}
+            projectTitle={project.title}
+            projectIsTutorial={false}
+            authorContext={authorContext}
+            readOnly={readOnly}
+            busy={busy}
+            mutate={mutate}
+            reference={null}
+            hasReference={false}
+            embedded
+          />
+          {decided.length > 0 && (
+            <section className="plan-materials" aria-label="已定的作者资料">
+              <h3>作者资料 · 已定</h3>
+              {decided.map((item) => (
+                <article key={item.id} className="plan-idea">
+                  <span className="plan-idea-kind">{item.nature === "setting" ? "明确设定" : "故事安排"}</span>
+                  <strong>{item.title}</strong>
+                  <p>{item.content}</p>
+                </article>
+              ))}
+            </section>
+          )}
+        </div>
+        {materialsEnabled && <section className="plan-column plan-weighing" aria-label="考虑中">
+          <header className="plan-column-head">
+            <h2>考虑中<span className="plan-column-count">{weighing.length}</span></h2>
+            <ContextButton kind={kind} className="secondary">管理作者资料</ContextButton>
+          </header>
+          <p className="muted">还在犹豫的想法只作提醒，不参与检查，也不算冲突。</p>
+          {weighing.map((item) => (
+            <article key={item.id} className="plan-idea weighing">
+              <strong>{item.title}</strong>
+              <p>{item.content}</p>
+            </article>
+          ))}
+          {!weighing.length && <p className="empty-inline">没有待定的想法。用「管理作者资料」记下还没拿定主意的点子。</p>}
+        </section>}
+      </div>
     </section>
   );
 }
@@ -6202,6 +6297,7 @@ function AuthorPlanningPage({
   context,
   reference,
   hasReference,
+  embedded = false,
 }: {
   kind: AuthorPlanKind;
   projectId: string;
@@ -6214,6 +6310,7 @@ function AuthorPlanningPage({
   context?: ReactNode;
   reference: ReactNode;
   hasReference: boolean;
+  embedded?: boolean;
 }) {
   const copy = authorPlanCopy[kind];
   const canonicalMaterialIds = useCanonicalMaterialIds();
@@ -6329,33 +6426,42 @@ function AuthorPlanningPage({
   };
 
   return (
-    <section className={`project-page archive-page author-planning-page author-${kind}-page`} data-project-id={projectId}>
-      <header className="page-header author-planning-header">
-        <div>
-          <p className="breadcrumb">项目 / {projectTitle} / {copy.title}</p>
-          <h1>{copy.title}</h1>
-          <p>{copy.description}</p>
-        </div>
-        <div className="author-planning-status">
-          <span data-author-context-version={authorContext?.author_context_version ?? 0}>{activeRecords.length ? `${activeRecords.length} 条规划` : "尚无规划"}</span>
-          <ContextButton kind={kind} />
-          {mode === "planning" && !readOnly && (
-            <Button className="primary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>
-              {copy.newLabel}
-            </Button>
-          )}
-        </div>
-      </header>
-      {context}
-      <nav className="author-mode-switch" aria-label={`${copy.title}资料模式`}>
-        <Button className={mode === "reference" ? "current" : "quiet"} ariaPressed={mode === "reference"} onClick={() => chooseMode("reference")}>{copy.reference}</Button>
-        <Button className={mode === "planning" ? "current" : "quiet"} ariaPressed={mode === "planning"} onClick={() => chooseMode("planning")}>{copy.planning}</Button>
-      </nav>
-      {mode === "reference" ? (
+    <section className={`${embedded ? "plan-column" : "project-page archive-page"} author-planning-page author-${kind}-page`} data-project-id={projectId}>
+      {embedded ? (
+        <header className="plan-column-head">
+          <h2>已定<span className="plan-column-count">{activeRecords.length}</span></h2>
+          {!readOnly && <Button className="secondary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>{copy.newLabel}</Button>}
+        </header>
+      ) : (
+        <>
+          <header className="page-header author-planning-header">
+            <div>
+              <p className="breadcrumb">项目 / {projectTitle} / {copy.title}</p>
+              <h1>{copy.title}</h1>
+              <p>{copy.description}</p>
+            </div>
+            <div className="author-planning-status">
+              <span data-author-context-version={authorContext?.author_context_version ?? 0}>{activeRecords.length ? `${activeRecords.length} 条规划` : "尚无规划"}</span>
+              <ContextButton kind={kind} />
+              {mode === "planning" && !readOnly && (
+                <Button className="primary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>
+                  {copy.newLabel}
+                </Button>
+              )}
+            </div>
+          </header>
+          {context}
+          <nav className="author-mode-switch" aria-label={`${copy.title}资料模式`}>
+            <Button className={mode === "reference" ? "current" : "quiet"} ariaPressed={mode === "reference"} onClick={() => chooseMode("reference")}>{copy.reference}</Button>
+            <Button className={mode === "planning" ? "current" : "quiet"} ariaPressed={mode === "planning"} onClick={() => chooseMode("planning")}>{copy.planning}</Button>
+          </nav>
+        </>
+      )}
+      {mode === "reference" && !embedded ? (
         <div className="author-reference-pane" aria-label={copy.reference}>{reference}</div>
       ) : (
         <section className="author-planning-pane" aria-label={copy.planning} aria-busy={Boolean(busy)}>
-          <ContextDraftShelf kind={kind} />
+          {!embedded && <ContextDraftShelf kind={kind} />}
           {records.some(({item}) => canonicalMaterialIds.has(`${kind}:${item.id}`)) && <p className="ac-note">已转换的资料在上方「检查参考资料」中维护，下方对应的原始规划以只读方式留档。</p>}
           <div className="author-planning-toolbar">
             <DesignAsset name="paper" />
@@ -6402,7 +6508,7 @@ function AuthorPlanningPage({
           ) : (
             <div className="empty author-plan-empty">
               <strong>{showArchived ? "没有已归档规划" : copy.empty}</strong>
-              {!showArchived && mode === "planning" && !readOnly && (
+              {!showArchived && (mode === "planning" || embedded) && !readOnly && (
                 <Button className="primary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>添加第一条{copy.noun}</Button>
               )}
             </div>
