@@ -167,8 +167,8 @@
 .project-empty-state { margin-top: var(--s-2); }
 
 /* ── 新建 / 导入 ──────────────────────────────────────── */
-.design-creation-panel,
-.import-body { max-width: 720px; }
+/* Form pages are one centred column: heading and form share the same width. */
+.global-main > :is(.approved-create, .import-page, .account-security) { max-width: 720px; }
 .design-creation-panel form,
 .import-panel {
   display: grid;
@@ -347,7 +347,7 @@
 .account-security .page-heading h1 { font-family: var(--font-serif); font-size: var(--fs-30); font-weight: 600; }
 .account-security .page-heading p:not(.eyebrow) { margin-top: var(--s-2); color: var(--c-muted); }
 .security-status,
-.security-form { max-width: 640px; margin-bottom: var(--s-4); padding: var(--s-5) var(--s-6); border: 1px solid var(--c-line); border-radius: var(--r-xl); background: var(--c-surface); }
+.security-form { margin-bottom: var(--s-4); padding: var(--s-5) var(--s-6); border: 1px solid var(--c-line); border-radius: var(--r-xl); background: var(--c-surface); }
 .security-status h2 { margin-bottom: var(--s-2); font-size: var(--fs-15); }
 .security-form { display: grid; gap: var(--s-4); }
 
