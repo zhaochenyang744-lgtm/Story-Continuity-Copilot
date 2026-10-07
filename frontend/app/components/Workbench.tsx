@@ -5304,7 +5304,7 @@ function ProjectPage(p: {
           </>
         }
         people={<CharacterArchive projectId={p.project.id} characters={p.characters} draft={p.draft} readOnly={p.readOnly} memories={p.memories} openSource={p.openMemorySource} />}
-        places={<WorldArchive entries={p.world} memories={p.memories} openSource={p.openMemorySource} />}
+        places={<WorldArchive entries={p.world} memories={p.memories} openSource={p.openMemorySource} projectId={p.project.id} readOnly={p.readOnly} />}
         foreshadow={<BoundedStoryTools key={`foreshadow:${p.project.id}`} only="foreshadow" project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} dirty={dirty} go={p.go} />}
         ask={<BoundedStoryTools key={`qa:${p.project.id}`} only="qa" project={p.project} draft={p.draft} chapters={p.chapters} readOnly={p.readOnly} dirty={dirty} go={p.go} />}
       />
@@ -5634,6 +5634,30 @@ function PlanPage({ project, authorContext, readOnly, busy, mutate, context, com
       // The view still switches when the address cannot be updated.
     }
   };
+  const [considering, setConsidering] = useState<Set<string>>(() => new Set());
+  const [stateError, setStateError] = useState("");
+  useEffect(() => {
+    let live = true;
+    request<{ considering: { kind: AuthorPlanKind; plan_id: string }[] }>(`/projects/${project.id}/plan-states`)
+      .then((result) => { if (live) setConsidering(new Set(result.considering.map((item) => `${item.kind}:${item.plan_id}`))); })
+      .catch(() => undefined);
+    return () => { live = false; };
+  }, [project.id]);
+  const toggleConsidering = (planId: string, next: boolean) => {
+    setStateError("");
+    json<{ considering: boolean }>(`/projects/${project.id}/plan-states`, "POST", { kind, plan_id: planId, considering: next })
+      .then((result) => setConsidering((current) => {
+        const copy = new Set(current);
+        if (result.considering) copy.add(`${kind}:${planId}`); else copy.delete(`${kind}:${planId}`);
+        return copy;
+      }))
+      .catch((cause) => setStateError(labelError(cause)));
+  };
+  const decidedPlanCount = authorContext ? [
+    ...authorContext.story_plans.map((item) => ["story", item] as const),
+    ...authorContext.character_plans.map((item) => ["character", item] as const),
+    ...authorContext.world_plans.map((item) => ["world", item] as const),
+  ].filter(([planKind, item]) => !item.archived && !considering.has(`${planKind}:${item.id}`)).length : 0;
   const planCount = (value: AuthorPlanKind) => (value === "story" ? authorContext?.story_plans : value === "character" ? authorContext?.character_plans : authorContext?.world_plans)?.filter((item) => !item.archived).length ?? 0;
   const decided = materials.filter((item) => item.kind === kind && item.nature !== "idea");
   const weighing = materials.filter((item) => item.kind === kind && item.nature === "idea");
@@ -5651,7 +5675,7 @@ function PlanPage({ project, authorContext, readOnly, busy, mutate, context, com
               <ContextButton view="compare" className="primary">对照正文</ContextButton>
             </>
           ) : !readOnly && (
-            <Button className="primary" disabled={comparing || !planKinds.some(([id]) => planCount(id) > 0)} title="把已写的正文和你的计划对照，结果显示在写作页" onClick={compare}>{comparing ? "正在对照" : "对照正文"}</Button>
+            <Button className="primary" disabled={comparing || !decidedPlanCount} title={decidedPlanCount ? "把已写的正文和已定的计划对照，结果显示在写作页" : "还没有已定的计划；「考虑中」的计划不参与对照"} onClick={compare}>{comparing ? "正在对照" : "对照正文"}</Button>
           )}
         </div>
       </header>
@@ -5663,55 +5687,48 @@ function PlanPage({ project, authorContext, readOnly, busy, mutate, context, com
           </button>
         ))}
       </nav>
-      <div className={materialsEnabled ? "plan-columns" : "plan-columns single"}>
-        <div className="plan-column-stack">
-          <AuthorPlanningPage
-            key={`${kind}-planning`}
-            kind={kind}
-            projectId={project.id}
-            projectTitle={project.title}
-            projectIsTutorial={false}
-            authorContext={authorContext}
-            readOnly={readOnly}
-            busy={busy}
-            mutate={mutate}
-            reference={null}
-            hasReference={false}
-            embedded
-          />
-          {decided.length > 0 && (
-            <section className="plan-materials" aria-label="已定的作者资料">
-              <h3>作者资料 · 已定</h3>
-              {decided.map((item) => (
-                <article key={item.id} className="plan-idea">
-                  <span className="plan-idea-kind">{item.nature === "setting" ? "明确设定" : "故事安排"}</span>
-                  <strong>{item.title}</strong>
-                  <p>{item.content}</p>
-                </article>
-              ))}
-            </section>
-          )}
-        </div>
-        {materialsEnabled && <section className="plan-column plan-weighing" aria-label="考虑中">
-          <header className="plan-column-head">
-            <h2>考虑中<span className="plan-column-count">{weighing.length}</span></h2>
-            <ContextButton kind={kind} className="secondary">管理作者资料</ContextButton>
-          </header>
-          <p className="muted">还在犹豫的想法只作提醒，不参与检查，也不算冲突。</p>
-          {weighing.map((item) => (
-            <article key={item.id} className="plan-idea weighing">
-              <strong>{item.title}</strong>
-              <p>{item.content}</p>
-            </article>
-          ))}
-          {!weighing.length && <p className="empty-inline">没有待定的想法。用「管理作者资料」记下还没拿定主意的点子。</p>}
-        </section>}
+      {stateError && <p className="notice error" role="alert">{stateError}</p>}
+      <div className="plan-columns">
+        {(["decided", "considering"] as const).map((column) => (
+          <div key={column} className="plan-column-stack">
+            <AuthorPlanningPage
+              key={`${kind}-${column}`}
+              kind={kind}
+              projectId={project.id}
+              projectTitle={project.title}
+              projectIsTutorial={false}
+              authorContext={authorContext}
+              readOnly={readOnly}
+              busy={busy}
+              mutate={mutate}
+              reference={null}
+              hasReference={false}
+              embedded
+              column={column}
+              considering={considering}
+              toggleConsidering={toggleConsidering}
+            />
+            {materialsEnabled && (column === "decided" ? decided : weighing).length > 0 && (
+              <section className="plan-materials" aria-label={column === "decided" ? "已定的作者资料" : "待定的作者资料"}>
+                <h3>作者资料 · {column === "decided" ? "已定" : "待定想法"}</h3>
+                {(column === "decided" ? decided : weighing).map((item) => (
+                  <article key={item.id} className={column === "decided" ? "plan-idea" : "plan-idea weighing"}>
+                    <span className="plan-idea-kind">{item.nature === "setting" ? "明确设定" : item.nature === "plan" ? "故事安排" : "待定想法"}</span>
+                    <strong>{item.title}</strong>
+                    <p>{item.content}</p>
+                  </article>
+                ))}
+                <ContextButton kind={kind} className="secondary">管理作者资料</ContextButton>
+              </section>
+            )}
+          </div>
+        ))}
       </div>
     </section>
   );
 }
 type MaterialsView = "facts" | "people" | "places" | "foreshadow" | "ask";
-const materialsViews: [MaterialsView, string][] = [["facts", "事实"], ["people", "人物"], ["places", "地点与设定"], ["foreshadow", "伏笔"], ["ask", "问一问"]];
+const materialsViews: [MaterialsView, string][] = [["facts", "事实"], ["people", "人物"], ["places", "设定"], ["foreshadow", "伏笔"], ["ask", "问一问"]];
 /** 资料: only what is already written into the story. Plans that are not written yet live under 计划. */
 function MaterialsPage({ initialView, project, factCount, peopleCount, placeCount, context, facts, people, places, foreshadow, ask }: {
   initialView: MaterialsView | null;
@@ -6326,6 +6343,9 @@ function AuthorPlanningPage({
   reference,
   hasReference,
   embedded = false,
+  column,
+  considering,
+  toggleConsidering,
 }: {
   kind: AuthorPlanKind;
   projectId: string;
@@ -6339,6 +6359,10 @@ function AuthorPlanningPage({
   reference: ReactNode;
   hasReference: boolean;
   embedded?: boolean;
+  /** On the 计划 page each kind shows two columns of the same plans: 已定 and 考虑中. */
+  column?: "decided" | "considering";
+  considering?: Set<string>;
+  toggleConsidering?: (planId: string, next: boolean) => void;
 }) {
   const copy = authorPlanCopy[kind];
   const canonicalMaterialIds = useCanonicalMaterialIds();
@@ -6358,13 +6382,14 @@ function AuthorPlanningPage({
   const [pageError, setPageError] = useState("");
   const [feedback, setFeedback] = useState("");
   const returnFocus = useRef<HTMLButtonElement | null>(null);
-  const records: AuthorPlanSelection[] = !authorContext
+  const allRecords: AuthorPlanSelection[] = !authorContext
     ? []
     : kind === "story"
       ? authorContext.story_plans.map((item) => ({ kind, item }))
       : kind === "character"
         ? authorContext.character_plans.map((item) => ({ kind, item }))
         : authorContext.world_plans.map((item) => ({ kind, item }));
+  const records = column ? allRecords.filter(({ item }) => (column === "considering") === Boolean(considering?.has(`${kind}:${item.id}`))) : allRecords;
   const activeRecords = records.filter(({ item }) => !item.archived);
   const visibleRecords = showArchived ? records : activeRecords;
   const endpoint = kind === "story" ? "story-plans" : kind === "character" ? "character-plans" : "world-plans";
@@ -6457,8 +6482,8 @@ function AuthorPlanningPage({
     <section className={`${embedded ? "plan-column" : "project-page archive-page"} author-planning-page author-${kind}-page`} data-project-id={projectId}>
       {embedded ? (
         <header className="plan-column-head">
-          <h2>已定<span className="plan-column-count">{activeRecords.length}</span></h2>
-          {!readOnly && <Button className="secondary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>{copy.newLabel}</Button>}
+          <h2>{column === "considering" ? "考虑中" : "已定"}<span className="plan-column-count">{activeRecords.length}</span></h2>
+          {!readOnly && column !== "considering" && <Button className="secondary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>{copy.newLabel}</Button>}
         </header>
       ) : (
         <>
@@ -6491,7 +6516,8 @@ function AuthorPlanningPage({
         <section className="author-planning-pane" aria-label={copy.planning} aria-busy={Boolean(busy)}>
           {!embedded && <ContextDraftShelf kind={kind} />}
           {records.some(({item}) => canonicalMaterialIds.has(`${kind}:${item.id}`)) && <p className="ac-note">已转换的资料在上方「检查参考资料」中维护，下方对应的原始规划以只读方式留档。</p>}
-          <div className="author-planning-toolbar">
+          {column === "considering" && <p className="muted plan-column-note">还在犹豫的打算只作提醒：不参与检查，也不参与「对照正文」。</p>}
+          {!column && <div className="author-planning-toolbar">
             <DesignAsset name="paper" />
             <div>
               <strong>{copy.planning}</strong>
@@ -6502,7 +6528,7 @@ function AuthorPlanningPage({
                 {showArchived ? "隐藏已归档" : "查看已归档"}
               </Button>
             )}
-          </div>
+          </div>}
           {readOnly && <p className="author-mobile-note" role="note">移动端可以浏览作者规划；请在桌面端创建、编辑、排序或归档。</p>}
           {pageError && <p className="notice error author-plan-notice" role="alert">{pageError}</p>}
           {feedback && <p className="notice success author-plan-notice" role="status">{feedback}</p>}
@@ -6518,8 +6544,10 @@ function AuthorPlanningPage({
                     selection={selection}
                     readOnly={readOnly || canonicalMaterialIds.has(`${kind}:${selection.item.id}`)}
                     busy={Boolean(busy)}
-                    canMoveUp={!selection.item.archived && index > 0}
-                    canMoveDown={!selection.item.archived && index >= 0 && index < activeRecords.length - 1}
+                    canMoveUp={!column && !selection.item.archived && index > 0}
+                    canMoveDown={!column && !selection.item.archived && index >= 0 && index < activeRecords.length - 1}
+                    considering={column ? column === "considering" : undefined}
+                    toggleConsidering={column && toggleConsidering ? () => toggleConsidering(selection.item.id, column !== "considering") : undefined}
                     edit={(button) => openEdit(selection, button)}
                     moveUp={() => void move(selection, -1)}
                     moveDown={() => void move(selection, 1)}
@@ -6535,8 +6563,8 @@ function AuthorPlanningPage({
             </ol>
           ) : (
             <div className="empty author-plan-empty">
-              <strong>{showArchived ? "没有已归档规划" : copy.empty}</strong>
-              {!showArchived && (mode === "planning" || embedded) && !readOnly && (
+              <strong>{showArchived ? "没有已归档规划" : column === "considering" ? "没有考虑中的打算。拿不准的计划，可以在左边卡片上点「放到考虑中」。" : copy.empty}</strong>
+              {!showArchived && column !== "considering" && (mode === "planning" || embedded) && !readOnly && (
                 <Button className="primary" disabled={disabled} onClick={(event) => openCreate(event.currentTarget)}>添加第一条{copy.noun}</Button>
               )}
             </div>
@@ -6578,6 +6606,8 @@ function AuthorPlanRow({
   moveUp,
   moveDown,
   archive,
+  considering,
+  toggleConsidering,
 }: {
   selection: AuthorPlanSelection;
   readOnly: boolean;
@@ -6588,11 +6618,13 @@ function AuthorPlanRow({
   moveUp: () => void;
   moveDown: () => void;
   archive: (button: HTMLButtonElement) => void;
+  considering?: boolean;
+  toggleConsidering?: () => void;
 }) {
   const name = authorPlanName(selection);
   const item = selection.item;
   return (
-    <li id={`plan-${item.id}`} className={`planning-card planning-card-${selection.kind}${item.archived ? " archived" : ""}`} data-author-plan-id={item.id}>
+    <li id={`plan-${item.id}`} className={`planning-card planning-card-${selection.kind}${item.archived ? " archived" : ""}${considering ? " considering" : ""}`} data-author-plan-id={item.id}>
       <div className="author-plan-order" aria-hidden="true">{String(item.position).padStart(2, "0")}</div>
       <article>
         <header>
@@ -6624,6 +6656,7 @@ function AuthorPlanRow({
       {!readOnly && !item.archived && (
         <div className="author-plan-actions" aria-label={`${name} 操作`}>
           <Button className="quiet" disabled={busy} ariaLabel={`编辑 ${name}`} onClick={(event) => edit(event.currentTarget)}>编辑</Button>
+          {toggleConsidering && <Button className="quiet considering-action" disabled={busy} ariaLabel={`${considering ? "定下" : "放到考虑中"} ${name}`} onClick={toggleConsidering}>{considering ? "定下来" : "放到考虑中"}</Button>}
           <Button className="quiet order-action" disabled={busy || !canMoveUp} ariaLabel={`上移 ${name}`} onClick={moveUp}>↑<span>上移</span></Button>
           <Button className="quiet order-action" disabled={busy || !canMoveDown} ariaLabel={`下移 ${name}`} onClick={moveDown}>↓<span>下移</span></Button>
           <Button className="quiet archive-action" disabled={busy} ariaLabel={`归档 ${name}`} onClick={(event) => archive(event.currentTarget)}>归档</Button>
@@ -6953,35 +6986,113 @@ function AliasRow({item,readOnly,busy,save,archive}:{item:CharacterAliasSnapshot
   return <div id={`alias-${item.id}`} className={`alias-row ${item.status}`}><input aria-label={`${item.alias} 别名`} value={value} disabled={readOnly||busy||item.status==="archived"} onChange={(event)=>setValue(event.target.value)}/><span>{item.status==="active"?"使用中":"已归档"}</span>{!readOnly&&item.status==="active"&&<><Button className="quiet" disabled={busy||!value.trim()||value===item.alias} onClick={()=>void save(item.id,value)}>保存</Button><Button className="quiet danger" disabled={busy} onClick={()=>void archive(item.id)}>归档</Button></>}</div>;
 }
 
+type SettingCategory = { id: string | null; key: string; name: string; builtin: boolean; count: number };
+type SettingCategoryView = { categories: SettingCategory[]; membership: Record<string, string> };
+const builtinSettingKeys = ["location", "rule", "organization", "object", "term"];
+/** 资料 · 设定: the written setting entries, grouped by categories the author can rename, add or remove. */
 function WorldArchive({
   entries,
   memories,
   openSource,
+  projectId,
+  readOnly = true,
 }: {
   entries: { id: string; entry_type: string; name: string; summary: string }[];
   memories?: Memory[];
   openSource?: (memory: Memory, element: HTMLButtonElement) => Promise<void> | void;
+  projectId?: string;
+  readOnly?: boolean;
 }) {
-  const categories = ["location", "rule", "organization", "object", "term"];
-  const requestedWorld=typeof window!=="undefined"?new URLSearchParams(window.location.search).get("world"):null;
-  const requestedWorldEntry=entries.find((entry)=>entry.id===requestedWorld);
-  const [category, setCategory] = useState(requestedWorldEntry?.entry_type??entries[0]?.entry_type ?? "location");
+  const [view, setView] = useState<SettingCategoryView | null>(null);
+  const [managing, setManaging] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [names, setNames] = useState<Record<string, string>>({});
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    if (!projectId) return;
+    let live = true;
+    request<SettingCategoryView>(`/projects/${projectId}/setting-categories`).then((next) => { if (live) setView(next); }).catch(() => undefined);
+    return () => { live = false; };
+  }, [projectId]);
+  const categories: SettingCategory[] = view?.categories ?? builtinSettingKeys.map((key) => ({ id: null, key, name: worldTypeLabel(key), builtin: true, count: entries.filter((entry) => entry.entry_type === key).length }));
+  const membership: Record<string, string> = view?.membership ?? Object.fromEntries(entries.map((entry) => [entry.id, entry.entry_type]));
+  const requestedWorld = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("world") : null;
+  const requestedWorldEntry = entries.find((entry) => entry.id === requestedWorld);
+  const [category, setCategory] = useState(requestedWorldEntry?.entry_type ?? entries[0]?.entry_type ?? "location");
   const [query, setQuery] = useState("");
-  const [selectedId, setSelectedId] = useState(requestedWorldEntry?.id??entries[0]?.id ?? "");
-  const visible = entries.filter((entry) => entry.entry_type === category && `${entry.name} ${entry.summary}`.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
+  const [selectedId, setSelectedId] = useState(requestedWorldEntry?.id ?? entries[0]?.id ?? "");
+  const activeCategory = categories.some((item) => item.key === category) ? category : categories[0]?.key ?? "location";
+  const visible = entries.filter((entry) => membership[entry.id] === activeCategory && `${entry.name} ${entry.summary}`.toLocaleLowerCase().includes(query.toLocaleLowerCase()));
   const selected = visible.find((entry) => entry.id === selectedId) ?? visible[0];
+  const categoryName = (key: string) => categories.find((item) => item.key === key)?.name ?? worldTypeLabel(key);
+  const change = async (payload: Record<string, unknown>) => {
+    if (!projectId) return null;
+    setBusy(true); setError("");
+    try {
+      const next = await json<SettingCategoryView>(`/projects/${projectId}/setting-categories`, "POST", payload);
+      setView(next);
+      return next;
+    } catch (cause) {
+      setError(labelError(cause));
+      return null;
+    } finally {
+      setBusy(false);
+    }
+  };
+  const editable = Boolean(projectId) && !readOnly;
   return (
     <section className="world-page">
       <div className="world-controls">
-        <nav aria-label="世界观分类">{categories.map((value) => <button type="button" key={value} className={category === value ? "current" : ""} aria-current={category === value ? "page" : undefined} onClick={() => { setCategory(value); setSelectedId(""); }}>{worldTypeLabel(value)}</button>)}</nav>
-        <label><span className="sr-only">搜索世界设定</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索世界设定" /></label>
+        <nav aria-label="设定分类">
+          {categories.map((item) => (
+            <button type="button" key={item.key} className={activeCategory === item.key ? "current" : ""} aria-current={activeCategory === item.key ? "page" : undefined} onClick={() => { setCategory(item.key); setSelectedId(""); }}>
+              {item.name}<span className="materials-count">{item.count}</span>
+            </button>
+          ))}
+          {editable && <button type="button" className="category-manage" aria-expanded={managing} onClick={() => setManaging((current) => !current)}>{managing ? "完成" : "管理分类"}</button>}
+        </nav>
+        <label><span className="sr-only">搜索设定</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索设定" /></label>
       </div>
+      {error && <p className="notice error" role="alert">{error}</p>}
+      {managing && editable && (
+        <section className="category-editor" aria-label="管理设定分类">
+          <p className="muted">分类由你决定：可以改名、删除，也可以新建自己的分类。删除分类不会删除里面的设定，它们会回到原来的类别。</p>
+          <ul>
+            {categories.filter((item) => item.key !== "other").map((item) => (
+              <li key={item.key}>
+                <label><span className="sr-only">{item.name} 的名称</span><input value={names[item.key] ?? item.name} maxLength={20} disabled={busy} onChange={(event) => setNames((current) => ({ ...current, [item.key]: event.target.value }))} /></label>
+                <span className="materials-count">{item.count} 条</span>
+                <Button className="quiet" disabled={busy || !(names[item.key] ?? item.name).trim() || (names[item.key] ?? item.name) === item.name} onClick={() => void change({ action: "rename", category: item.key, name: names[item.key] })}>改名</Button>
+                <Button className="quiet" disabled={busy} onClick={() => void change({ action: "delete", category: item.key })}>删除</Button>
+              </li>
+            ))}
+          </ul>
+          <form className="category-create" onSubmit={(event) => { event.preventDefault(); void change({ action: "create", name: newName }).then((next) => { if (next) setNewName(""); }); }}>
+            <label><span className="sr-only">新分类名称</span><input value={newName} maxLength={20} placeholder="新分类，例如：功法、门派" disabled={busy} onChange={(event) => setNewName(event.target.value)} /></label>
+            <Button className="secondary" type="submit" disabled={busy || !newName.trim()}>新建分类</Button>
+          </form>
+        </section>
+      )}
       {selected ? (
         <div className="archive-split world-split">
-          <section className="world-index"><h2>{worldTypeLabel(category)}</h2><ul>{visible.map((entry) => <li key={entry.id}><button type="button" className={entry.id === selected.id ? "current" : ""} onClick={() => setSelectedId(entry.id)}>{entry.name}</button></li>)}</ul></section>
-          <article id={`world-${selected.id}`} className="archive-detail world-detail"><h2>{selected.name}</h2><dl><div><dt>类型</dt><dd>{worldTypeLabel(selected.entry_type)}</dd></div><div><dt>设定摘要</dt><dd>{selected.summary || "尚未记录摘要"}</dd></div></dl>{memories && openSource && <RelatedFacts names={[selected.name]} memories={memories} openSource={openSource} />}</article>
+          <section className="world-index"><h2>{categoryName(activeCategory)}</h2><ul>{visible.map((entry) => <li key={entry.id}><button type="button" className={entry.id === selected.id ? "current" : ""} onClick={() => setSelectedId(entry.id)}>{entry.name}</button></li>)}</ul></section>
+          <article id={`world-${selected.id}`} className="archive-detail world-detail">
+            <h2>{selected.name}</h2>
+            <dl>
+              <div><dt>分类</dt><dd>{editable ? (
+                <label className="category-select"><span className="sr-only">把 {selected.name} 放到分类</span>
+                  <select value={membership[selected.id] ?? selected.entry_type} disabled={busy} onChange={(event) => { const entryId = selected.id; void change({ action: "assign", entry_id: entryId, category: event.target.value === selected.entry_type && builtinSettingKeys.includes(event.target.value) ? null : event.target.value }).then((next) => { if (next) { setCategory(next.membership[entryId]); setSelectedId(entryId); } }); }}>
+                    {categories.filter((item) => item.key !== "other").map((item) => <option key={item.key} value={item.key}>{item.name}</option>)}
+                  </select>
+                </label>
+              ) : categoryName(membership[selected.id] ?? selected.entry_type)}</dd></div>
+              <div><dt>设定摘要</dt><dd>{selected.summary || "尚未记录摘要"}</dd></div>
+            </dl>
+            {memories && openSource && <RelatedFacts names={[selected.name]} memories={memories} openSource={openSource} />}
+          </article>
         </div>
-      ) : <div className="empty archive-empty">{entries.length ? `“${worldTypeLabel(category)}”分类暂无匹配条目。` : "此作品还没有世界观记录。"}</div>}
+      ) : <div className="empty archive-empty">{entries.length ? `「${categoryName(activeCategory)}」里还没有设定。${editable ? "可以在其他分类的设定里，把它移到这里。" : ""}` : "此作品还没有设定记录。"}</div>}
     </section>
   );
 }

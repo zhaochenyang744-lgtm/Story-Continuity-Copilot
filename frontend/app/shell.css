@@ -215,3 +215,16 @@
 .source-append > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; cursor: pointer; list-style: none; }
 .source-append > summary h2 { margin: 0; font-size: 18px; }
 .source-append[open] > summary { margin-bottom: 16px; }
+
+/* 计划 · 考虑中 and 资料 · 设定 categories (v1.7.0) */
+.plan-column-note { margin: -4px 0 12px; font-size: 13px; }
+.plan-page .author-plan-list .planning-card.considering { border-style: dashed; background: var(--c-paper); }
+.world-controls nav .materials-count { margin-left: 6px; }
+.world-controls nav .category-manage { color: var(--c-accent-text); }
+.category-editor { display: grid; gap: 12px; margin: 0 0 20px; padding: 16px 18px; border: 1px solid var(--c-line); border-radius: 12px; background: var(--c-surface); }
+.category-editor > p { margin: 0; font-size: 13px; }
+.category-editor ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.category-editor li { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.category-editor li input, .category-create input { min-height: 36px; width: 180px; max-width: 100%; }
+.category-create { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.category-select select { min-height: 36px; }
