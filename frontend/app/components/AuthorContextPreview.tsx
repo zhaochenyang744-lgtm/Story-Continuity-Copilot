@@ -12,7 +12,6 @@ import {
 } from "react";
 import { usePathname } from "next/navigation";
 import type { AuthorContext, Chapter, Memory, Project } from "../model";
-import { DesignAsset } from "./VisualPrimitives";
 import { backendConnected, createBackendStore } from "./author-context-api";
 import { AuthorContextAnalysis } from "./AuthorContextAnalysis";
 import {
@@ -306,7 +305,6 @@ export function ContextOverview() {
   return (
     <section className="project-section ac-overview" aria-label="准备检查依据">
       <div className="ac-heading">
-        <DesignAsset name="paper" />
         <div>
           <h2>把你的构思带进检查</h2>
           <p>补充已有的大纲与设定，对照正文，看看有没有需要调整的地方。</p>
@@ -878,7 +876,6 @@ function ContextDialog({
         ×
       </button>
       <header className="ac-heading">
-        <DesignAsset name="paper" />
         <div>
           <p className="eyebrow" title={project.title}>
             {project.title}

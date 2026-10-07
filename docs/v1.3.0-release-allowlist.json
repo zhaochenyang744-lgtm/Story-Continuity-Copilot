@@ -15,7 +15,7 @@
     "backend/app/v2_database.py",
     "frontend/app/api.ts",
     "frontend/app/components/Workbench.tsx",
-    "frontend/app/globals.css",
+    "frontend/app/styles/",
     "frontend/app/icon.svg",
     "frontend/app/model.ts",
     "frontend/public/assets/avatars/",

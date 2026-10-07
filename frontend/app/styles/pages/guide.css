@@ -1,0 +1,54 @@
+/* 导览: the five-step bar above a sample-work page, and the pointer hint the tour attaches to a target. */
+.tutorial-mode-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3) var(--s-5);
+  margin: 0 0 var(--s-5);
+  padding: var(--s-3) var(--s-4) var(--s-3) var(--s-5);
+  border: 1px solid color-mix(in srgb, var(--c-indigo) 30%, var(--c-line));
+  border-radius: var(--r-xl);
+  background: var(--c-indigo-tint);
+}
+.tutorial-progress { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-5); min-width: 0; flex: 1 1 420px; }
+.tutorial-step-count { display: flex; align-items: center; gap: var(--s-3); }
+.tutorial-step-count strong { color: var(--c-indigo-text); font-size: var(--fs-13); font-weight: 600; white-space: nowrap; }
+.tutorial-step-count ol { display: flex; gap: var(--s-1); }
+.tutorial-step-count li {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid color-mix(in srgb, var(--c-indigo) 35%, transparent);
+  border-radius: 50%;
+  color: var(--c-indigo-text);
+  font-size: var(--fs-12);
+  font-variant-numeric: tabular-nums;
+}
+.tutorial-step-count li.current { border-color: var(--c-indigo); background: var(--c-indigo); color: var(--c-on-indigo); }
+.tutorial-step-count li.complete { border-color: transparent; background: color-mix(in srgb, var(--c-indigo) 16%, transparent); }
+.tutorial-copy { display: grid; gap: 2px; min-width: 0; color: var(--c-ink); }
+.tutorial-copy strong { font-weight: 600; }
+.tutorial-copy span { color: var(--c-ink-2); font-size: var(--fs-13); }
+.tutorial-copy small { color: var(--c-muted); }
+.tutorial-restored { color: var(--c-indigo-text) !important; }
+.tutorial-mode-bar > .actions { flex: none; }
+.tutorial-mode-bar .quiet { color: var(--c-indigo-text); }
+.tutorial-mode-bar .quiet:hover:not(:disabled) { background: color-mix(in srgb, var(--c-indigo) 10%, transparent); }
+
+.tutorial-guidance-target { position: relative; z-index: 2; box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-indigo) 18%, transparent); border-radius: var(--r-md); }
+.tutorial-guidance-hint {
+  position: fixed;
+  z-index: 70;
+  max-width: calc(100vw - 32px);
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-md);
+  background: var(--c-ink);
+  box-shadow: var(--elev-2);
+  color: var(--c-ground);
+  font-size: var(--fs-13);
+  line-height: 1.55;
+  pointer-events: none;
+}
+.tutorial-guidance-hint.above { transform: translateY(-100%); }

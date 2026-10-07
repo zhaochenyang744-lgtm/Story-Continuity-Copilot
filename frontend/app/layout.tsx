@@ -1,14 +1,20 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import "./globals.css";
-import "./visual-system.css";
-import "./author-context-preview.css";
-import "./reference-refresh.css";
-import "./maintenance.css";
-import "./polish.css";
-import "./motion.css";
-import "./theme.css";
-import "./shell.css";
+// 朱批 stylesheets (v1.7.0): tokens first, then elements, the app frame, shared components, one file
+// per page area, and motion last.
+import "./styles/tokens.css";
+import "./styles/base.css";
+import "./styles/layout.css";
+import "./styles/components.css";
+import "./styles/pages/global.css";
+import "./styles/pages/overview.css";
+import "./styles/pages/workspace.css";
+import "./styles/pages/chapters.css";
+import "./styles/pages/materials.css";
+import "./styles/pages/plan.css";
+import "./styles/pages/guide.css";
+import "./styles/pages/author-context.css";
+import "./styles/motion.css";
 
 export const metadata: Metadata = {
   title: "Story Continuity Copilot",

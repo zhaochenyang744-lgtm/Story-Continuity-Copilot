@@ -1,13 +1,14 @@
-/* Scoped additions to the accepted eda3afd product. Shell and design tokens stay in the original stylesheets. */
+/* 作者资料 (author materials, behind NEXT_PUBLIC_AUTHOR_CONTEXT_BACKEND): the panel, its full-screen
+   dialog and the comparison views. Uses the 朱批 tokens only. */
 .ac-analysis {
   padding: 18px 20px;
   margin: 22px 0;
-  border: 1px solid var(--line);
+  border: 1px solid var(--c-line);
   border-radius: 12px;
-  background: color-mix(in srgb, var(--c-accent-text) 3.1%, transparent);
+  background: var(--c-indigo-tint);
 }
 .ac-analysis-result {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--c-line);
   padding-top: 14px;
 }
 .ac-analysis .ac-section-heading > button {
@@ -22,12 +23,6 @@
   gap: 16px;
   min-width: 0;
 }
-.ac-heading > .design-raster {
-  width: 54px;
-  height: 54px;
-  object-fit: contain;
-  flex: none;
-}
 .ac-heading > div {
   flex: 1;
   min-width: 0;
@@ -37,7 +32,7 @@
 }
 .ac-heading p {
   margin: 0;
-  color: var(--muted);
+  color: var(--c-muted);
   font-size: 14px;
   line-height: 1.7;
 }
@@ -49,18 +44,18 @@
   display: flex;
   gap: 28px;
   padding: 20px 0 14px;
-  color: var(--muted);
+  color: var(--c-muted);
   font-size: 12px;
   flex-wrap: wrap;
 }
 .ac-metrics b {
-  color: var(--text);
+  color: var(--c-ink);
   font-size: 18px;
   margin-right: 4px;
 }
 .ac-note {
   font-size: 13px;
-  color: var(--muted);
+  color: var(--c-muted);
   line-height: 1.8;
   margin: 12px 0;
 }
@@ -70,14 +65,14 @@
   justify-content: space-between;
   gap: 16px;
   padding: 16px 20px;
-  border: 1px solid var(--line);
-  background: var(--surface);
+  border: 1px solid var(--c-line);
+  background: var(--c-surface);
   border-radius: 12px;
   margin: 0 0 20px;
 }
 .ac-inline p {
   font-size: 13px;
-  color: var(--muted);
+  color: var(--c-muted);
   margin: 5px 0 0;
   line-height: 1.7;
 }
@@ -86,7 +81,7 @@
   white-space: nowrap;
 }
 .ac-draft-shelf {
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--c-line);
   padding-bottom: 20px;
   margin-bottom: 22px;
 }
@@ -96,7 +91,7 @@
   gap: 14px;
   justify-content: space-between;
   padding: 12px 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--c-line);
 }
 .ac-draft-row > div {
   min-width: 0;
@@ -108,7 +103,7 @@
 .ac-draft-row span,
 .ac-draft-shelf small {
   display: block;
-  color: var(--muted);
+  color: var(--c-muted);
   font-size: 12px;
   margin-top: 4px;
 }
@@ -120,11 +115,11 @@
   max-width: 980px;
   max-height: calc(100svh - 48px);
   margin: auto;
-  color: var(--text);
+  color: var(--c-ink);
   overscroll-behavior: contain;
 }
 .ac-dialog::backdrop {
-  background: color-mix(in srgb, var(--c-bg-deep) 71%, transparent);
+  background: var(--c-veil);
   backdrop-filter: blur(6px);
 }
 .ac-dialog > .close {
@@ -135,7 +130,7 @@
 }
 .ac-dialog .eyebrow {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--c-muted);
   letter-spacing: 0.08em;
   line-height: 1.8;
 }
@@ -156,14 +151,14 @@
   line-height: 1.85;
 }
 .ac-dialog small {
-  color: var(--muted);
+  color: var(--c-muted);
   line-height: 1.7;
 }
 .ac-preview-note {
   font-size: 13px;
-  color: var(--muted);
-  border-left: 2px solid var(--violet-400);
-  background: color-mix(in srgb, var(--c-accent-text) 3.1%, transparent);
+  color: var(--c-muted);
+  border-left: 2px solid var(--c-indigo);
+  background: var(--c-indigo-tint);
   padding: 10px 14px;
   margin: 20px 0;
 }
@@ -183,7 +178,7 @@
   font-size: 24px;
 }
 .ac-guide-intro p {
-  color: var(--muted);
+  color: var(--c-muted);
   margin-top: 6px;
 }
 .ac-guide-options {
@@ -193,9 +188,9 @@
 }
 .ac-guide-options > section {
   padding: 24px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--c-line);
   border-radius: 14px;
-  background: var(--surface);
+  background: var(--c-surface);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -203,7 +198,7 @@
 .ac-guide-options p {
   flex: 1;
   font-size: 14px;
-  color: var(--muted);
+  color: var(--c-muted);
   margin: 0 0 22px;
 }
 .ac-number {
@@ -212,8 +207,8 @@
   width: 36px;
   height: 36px;
   border-radius: 12px;
-  background: color-mix(in srgb, var(--c-accent-text) 8.6%, transparent);
-  color: var(--c-accent-text);
+  background: var(--c-indigo-tint);
+  color: var(--c-indigo-text);
   font-size: 12px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -222,12 +217,12 @@
   padding: 18px 20px;
   margin: 20px 0;
   border-radius: 12px;
-  background: color-mix(in srgb, var(--c-accent-text) 3.1%, transparent);
-  border: 1px solid var(--line);
+  background: var(--c-indigo-tint);
+  border: 1px solid var(--c-line);
 }
 .ac-coverage p {
   margin: 8px 0;
-  color: var(--muted);
+  color: var(--c-muted);
   font-size: 14px;
 }
 .ac-coverage > button {
@@ -235,7 +230,7 @@
 }
 .ac-footer {
   margin-top: 24px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--c-line);
   padding-top: 18px;
   display: flex;
   align-items: center;
@@ -244,7 +239,7 @@
 }
 .ac-footer > span {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--c-muted);
 }
 .ac-section-heading {
   display: flex;
@@ -259,7 +254,7 @@
 }
 .ac-section-heading p {
   margin: 6px 0 0;
-  color: var(--muted);
+  color: var(--c-muted);
   font-size: 13px;
 }
 .ac-section-heading > button,
@@ -303,13 +298,13 @@
   gap: 8px;
   white-space: nowrap;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--c-muted);
 }
 .ac-dialog input[type="checkbox"],
 .ac-dialog input[type="radio"] {
   width: 16px;
   height: 16px;
-  accent-color: var(--violet-500);
+  accent-color: var(--c-indigo);
   flex: none;
   margin: 0;
 }
@@ -318,14 +313,14 @@
   gap: 12px;
 }
 .ac-document {
-  border: 1px solid var(--line);
+  border: 1px solid var(--c-line);
   border-radius: 12px;
   padding: 18px 20px;
-  background: var(--surface);
+  background: var(--c-surface);
   min-width: 0;
 }
 .ac-version {
-  color: var(--muted);
+  color: var(--c-muted);
   font-size: 12px;
   flex: none;
 }
@@ -335,8 +330,8 @@
   flex-wrap: wrap;
 }
 .ac-tags span {
-  color: var(--c-accent-text);
-  background: color-mix(in srgb, var(--c-accent-text) 7.1%, transparent);
+  color: var(--c-indigo-text);
+  background: var(--c-indigo-tint);
   padding: 4px 8px;
   border-radius: 5px;
   font-size: 12px;
@@ -349,7 +344,7 @@
   overflow: hidden;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
-  color: var(--muted);
+  color: var(--c-muted);
   font-size: 14px;
 }
 .ac-origin {
@@ -369,9 +364,10 @@
 .ac-dialog blockquote {
   margin: 12px 0;
   padding: 12px 16px;
-  background: color-mix(in srgb, var(--c-bg-deep) 30.2%, transparent);
-  border-left: 2px solid var(--c-accent);
-  color: var(--c-text);
+  background: var(--c-paper);
+  font-family: var(--font-serif);
+  border-left: 2px solid var(--c-indigo);
+  color: var(--c-ink);
   font-size: 14px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -385,7 +381,7 @@
   margin-top: 18px;
 }
 .ac-pagination span {
-  color: var(--muted);
+  color: var(--c-muted);
   font-size: 12px;
 }
 .ac-form > label,
@@ -409,13 +405,13 @@
   align-items: center;
   padding: 9px 12px;
   border-radius: 8px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--c-line);
   white-space: nowrap;
   font-size: 12px;
   cursor: pointer;
 }
 .ac-file-button:focus-within {
-  outline: 2px solid var(--violet-400);
+  outline: 2px solid var(--c-indigo);
   outline-offset: 3px;
 }
 .ac-file-button input {
@@ -444,14 +440,14 @@
   gap: 9px;
   margin: 0;
   padding: 14px 12px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--c-line);
   border-radius: 10px;
   cursor: pointer;
   min-width: 0;
 }
 .ac-natures label:has(input:checked) {
-  border-color: var(--c-accent);
-  background: color-mix(in srgb, var(--c-accent) 8.2%, transparent);
+  border-color: var(--c-indigo);
+  background: color-mix(in srgb, var(--c-indigo) 8.2%, transparent);
 }
 .ac-natures input {
   margin-top: 3px !important;
@@ -466,14 +462,14 @@
   margin-top: 6px;
 }
 .ac-details {
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--c-line);
+  border-bottom: 1px solid var(--c-line);
   padding: 15px 0;
 }
 .ac-details summary {
   cursor: pointer;
   font-size: 14px;
-  color: var(--muted);
+  color: var(--c-muted);
 }
 .ac-details > label,
 .ac-details > .author-plan-form-row {
@@ -488,9 +484,9 @@
 .ac-comparison > section {
   min-width: 0;
   padding: 20px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--c-line);
   border-radius: 12px;
-  background: var(--surface);
+  background: var(--c-surface);
 }
 .ac-fulltext {
   white-space: pre-wrap;
@@ -504,9 +500,9 @@
 }
 .ac-knowledge {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--c-muted);
   padding-top: 12px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--c-line);
 }
 .ac-knowledge p {
   white-space: pre-wrap;
@@ -519,7 +515,7 @@
   margin-top: 22px;
 }
 .ac-decision > p {
-  color: var(--muted);
+  color: var(--c-muted);
   font-size: 14px;
 }
 .ac-resolutions {
@@ -535,18 +531,18 @@
   gap: 10px;
   align-items: center;
   font-size: 14px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--c-line);
   border-radius: 8px;
   padding: 12px;
   margin: 0;
   cursor: pointer;
 }
 .ac-resolutions label:has(input:checked) {
-  border-color: var(--c-accent);
-  background: color-mix(in srgb, var(--c-accent) 8.2%, transparent);
+  border-color: var(--c-indigo);
+  background: color-mix(in srgb, var(--c-indigo) 8.2%, transparent);
 }
 .ac-history-evidence {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--c-line);
   padding-top: 18px;
   margin-top: 16px;
   max-height: 420px;
@@ -557,7 +553,7 @@
 }
 .ac-discard {
   padding: 20px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--c-line);
   border-radius: 12px;
 }
 .ac-discard .actions {
@@ -579,11 +575,7 @@
     flex-wrap: wrap;
     gap: 12px;
   }
-  .ac-heading > .design-raster {
-    width: 42px;
-    height: 42px;
-  }
-  .ac-heading > button {
+    .ac-heading > button {
     margin-left: 54px;
   }
   .ac-toolbar {

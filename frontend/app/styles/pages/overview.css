@@ -1,0 +1,58 @@
+/* 概览: title block, then two cards — where the writing stands and how the chapters are checked. */
+.overview-title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); }
+.overview-title .sample-badge { height: 22px; font-size: var(--fs-12); }
+.overview-meta-line { color: var(--c-muted); font-variant-numeric: tabular-nums; }
+.page-header .overview-summary { max-width: 64ch; color: var(--c-ink-2); font-size: var(--fs-14); line-height: 1.8; }
+.overview-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: var(--s-5);
+  align-items: stretch;
+}
+.overview-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  min-width: 0;
+  padding: var(--s-6);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-xl);
+  background: var(--c-surface);
+}
+.overview-panel .card-head { margin-bottom: 0; }
+.overview-panel .card-head .eyebrow { margin: 0; }
+.overview-panel .card-head button { min-height: 28px; padding: 0 var(--s-2); color: var(--c-muted); font-size: var(--fs-13); font-weight: 400; }
+.continue-card { background: var(--c-paper); }
+.continue-meta { color: var(--c-muted); font-size: var(--fs-13); font-variant-numeric: tabular-nums; }
+.continue-excerpt {
+  flex: 1;
+  color: var(--c-ink);
+  font-family: var(--font-serif);
+  font-size: var(--fs-16);
+  line-height: 2;
+}
+.continue-excerpt.muted { color: var(--c-muted); }
+.overview-card-action { align-self: flex-start; margin-top: var(--s-2); }
+.check-card-note { color: var(--c-ink-2); }
+
+.overview-timeline { display: grid; gap: var(--s-3); }
+.timeline-bars { display: flex; gap: 3px; }
+.timeline-bar { flex: 1; min-width: 6px; height: 40px; border-radius: 3px; background: var(--c-line); }
+.timeline-bar.status-checked,
+.timeline-key.status-checked { background: var(--c-green); }
+.timeline-bar:is(.status-edited_unchecked, .status-basis_changed),
+.timeline-key.status-edited_unchecked { background: color-mix(in srgb, var(--c-amber) 70%, var(--c-surface)); }
+.timeline-bar:is(.status-unchecked, .status-empty),
+.timeline-key.status-unchecked { background: var(--c-line); }
+.timeline-bar.status-draft,
+.timeline-key.status-draft { background: transparent; border: 1px dashed var(--c-line-strong); }
+.timeline-legend { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-4); color: var(--c-muted); font-size: var(--fs-12); }
+.timeline-legend li { display: inline-flex; align-items: center; gap: 6px; }
+.timeline-key { display: inline-block; width: 8px; height: 8px; border-radius: 2px; }
+
+.import-context { flex-wrap: wrap; align-items: center; margin-top: var(--s-5); }
+.simulation-disclosure { flex-basis: 100%; font-size: var(--fs-12); }
+
+@media (max-width: 900px) {
+  .overview-grid { grid-template-columns: minmax(0, 1fr); }
+}

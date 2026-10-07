@@ -19,7 +19,6 @@ import { ProjectExport } from "./ProjectExport";
 import { LongTermReview } from "./LongTermReview";
 import { WritingTools, RichDraftEditor, DraftWordCount, replaceVisibleDraftText, useDraftText } from "./WritingTools";
 import { AuthorContextPreviewProvider, ContextButton, ContextOverview, ContextDraftShelf, useAuthorMaterials, useCanonicalMaterialIds } from "./AuthorContextPreview";
-import { CreativeTips, DesignIcon, DesignAsset } from "./VisualPrimitives";
 import { usePathname, useRouter } from "next/navigation";
 import { json, jsonWithIdempotency, labelError, request, type ApiFailure } from "../api";
 import {
@@ -3336,7 +3335,7 @@ function PasswordResetRequestPage({ go }: { go: (href: string) => void }) {
   return (
     <section className="auth-layout">
       <section className="auth recovery-panel">
-        <div className="auth-brand"><BrandMark />Story Continuity</div>
+        <div className="auth-brand"><BrandMark /></div>
         <div className="auth-heading"><h1>找回密码</h1><p className="auth-lede">输入已验证的恢复邮箱。无论账号是否存在，响应都保持一致。</p></div>
         <form onSubmit={(event) => void submit(event)}>
           <label>恢复邮箱<input name="recovery_email" type="email" autoComplete="email" required maxLength={254} /></label>
@@ -3388,7 +3387,7 @@ function PasswordResetConfirmPage({ go }: { go: (href: string) => void }) {
   return (
     <section className="auth-layout">
       <section className="auth recovery-panel">
-        <div className="auth-brand"><BrandMark />Story Continuity</div>
+        <div className="auth-brand"><BrandMark /></div>
         <div className="auth-heading"><h1>设置新密码</h1><p className="auth-lede">安全链接只能使用一次，并在 15 分钟后过期。</p></div>
         {state === "success" ? (
           <div className="auth-actions" aria-live="polite"><p className="inline-success" role="status">{message}</p><Button className="primary" onClick={() => go("/login")}>前往登录</Button></div>
@@ -3432,7 +3431,7 @@ function VerifyEmailPage({ go, refreshUser }: { go: (href: string) => void; refr
   }, [refreshUser]);
   return (
     <section className="auth-layout"><section className="auth recovery-panel">
-      <div className="auth-brand"><BrandMark />Story Continuity</div>
+      <div className="auth-brand"><BrandMark /></div>
       <div className="auth-heading"><h1>验证恢复邮箱</h1><p className={failed ? "inline-error" : "inline-success"} role={failed ? "alert" : "status"} aria-live="polite">{message}</p></div>
       <div className="auth-actions"><Button className="primary" onClick={() => go("/")}>返回工作台</Button></div>
     </section></section>
@@ -3541,7 +3540,6 @@ function AccountProfile({ user, projects, updateUser, go }: { user: User; projec
             <p className="eyebrow">作者中心</p>
             <h1>{user.display_name}</h1>
             <p>{user.account_type === "visitor" ? <span>访客空间</span> : <><span>@{user.account_name}</span><span>个人账号</span></>}</p>
-            <p className="design-author-tagline">用文字，延续想象的边界。</p>
           </div>
         </div>
         <div className="actions"><Button className="primary" onClick={() => setEditing(true)} disabled={editing}>编辑资料</Button><Button onClick={() => go("/")}>返回工作台</Button></div>
@@ -3551,10 +3549,10 @@ function AccountProfile({ user, projects, updateUser, go }: { user: User; projec
           <section className="author-summary" aria-labelledby="author-summary-title">
             <header className="section-heading"><div><p className="eyebrow">作品数据</p><h2 id="author-summary-title">创作概况</h2></div>{continueProject && <Button className="quiet" onClick={() => go(`/projects/${continueProject.id}/${continueProject.current_draft && continueProject.status !== "archived" ? "workspace" : "overview"}`)}>继续创作</Button>}</header>
             <dl className="author-stat-list">
-              <div><dt><DesignIcon name="file" />我的作品</dt><dd>{projects === null ? "—" : formatWritingCount(projectRows.length)}</dd></div>
-              <div><dt><DesignIcon name="book" />已写章节</dt><dd>{projects === null ? "—" : formatWritingCount(totalChapters)}</dd></div>
-              <div><dt><DesignIcon name="edit" />正文与草稿字数</dt><dd>{projects === null ? "—" : formatWritingCount(totalWords)}</dd></div>
-              <div><dt><DesignIcon name="grid" />创作状态</dt><dd>{projects === null ? "读取中" : `${activeProjects} 部进行中 · ${completedProjects} 部完成`}</dd></div>
+              <div><dt>我的作品</dt><dd>{projects === null ? "—" : formatWritingCount(projectRows.length)}</dd></div>
+              <div><dt>已写章节</dt><dd>{projects === null ? "—" : formatWritingCount(totalChapters)}</dd></div>
+              <div><dt>正文与草稿字数</dt><dd>{projects === null ? "—" : formatWritingCount(totalWords)}</dd></div>
+              <div><dt>创作状态</dt><dd>{projects === null ? "读取中" : `${activeProjects} 部进行中 · ${completedProjects} 部完成`}</dd></div>
             </dl>
             <p className="author-stat-note">字数按章节正文与当前草稿去除空白后统计；示例作品不计入。</p>
           </section>
@@ -4107,7 +4105,7 @@ function Import({
           );
         })}
       </ol>
-      <div className="design-import-layout design-creation-panel">
+      <div className="import-body">
       {step === "file" && (
         <form className="form-panel import-panel" onSubmit={(event) => void beginPreview(event)}>
           <header className="design-section-head"><div><h2>选择要导入的文件</h2><p>文件会发送到应用后端生成章节预览；确认后才创建作品，不会自动生成事实库。</p></div></header>
@@ -4133,7 +4131,6 @@ function Import({
               selectFile(event.dataTransfer.files[0]);
             }}
           >
-            <span className="import-file-mark" aria-hidden="true"><DesignAsset name="paper" /></span>
             <strong>把文件拖到这里，或者选择本地文件</strong>
             <span>{selectedFile ? `${selectedFile.name} · ${selectedFile.size.toLocaleString()} 字节` : "尚未选择文件"}</span>
             <Button type="button" onClick={() => fileInput.current?.click()} disabled={disabled || Boolean(busy)}>
@@ -4271,7 +4268,6 @@ function Import({
           </div>
         </form>
       )}
-      <CreativeTips importing />
       </div>
     </section>
   );
@@ -4328,7 +4324,7 @@ function AnalysisSources({sources}:{sources:{source_id:string;source_type:string
 function WritingAnalysisPanel({run,readOnly,busy,cancel,retry}:{run:WritingAnalysisRun;readOnly:boolean;busy:boolean;cancel:(run:WritingAnalysisRun)=>Promise<void>;retry:(run:WritingAnalysisRun)=>Promise<void>}) {
   const title=run.analysis_type==="context_brief"?"章节简报":"计划偏离";
   return <section className={`writing-analysis-result status-${run.status}${run.is_stale?" stale":""}`} aria-label={`${title}结果`}>
-    <div className="analysis-summary-card"><DesignAsset name="paper" /><div className="analysis-summary-content"><header><div><p className="eyebrow">AI 写作辅助 · {run.analysis_type==="context_brief"?"写作前":"保存后"}</p><h3>{title}</h3></div><span className={`run-state state-${run.status}`}>{run.is_stale?"依据已变化":stage(run.status)}</span></header>
+    <div className="analysis-summary-card"><div className="analysis-summary-content"><header><div><p className="eyebrow">AI 写作辅助 · {run.analysis_type==="context_brief"?"写作前":"保存后"}</p><h3>{title}</h3></div><span className={`run-state state-${run.status}`}>{run.is_stale?"依据已变化":stage(run.status)}</span></header>
     {activeAnalysis(run)&&<p className="analysis-pending">{stage(run.stage)}。编辑器仍可继续使用；本轮不会展示中间推理。</p>}
     {["failed","timed_out","cancelled"].includes(run.status)&&<p className="inline-error">{labelError({code:run.error_code})} 未写入、也不展示部分结果。</p>}
     {run.analysis&&<><p className="analysis-summary">{run.analysis.summary}</p>{run.analysis_type==="context_brief"&&run.analysis.draft_coverage&&<p className={run.analysis.draft_coverage.status==="partial"?"warning":"analysis-coverage"} role="status">当前已保存草稿：{run.analysis.draft_coverage.status==="covered"?"全部选入主张已引用":run.analysis.draft_coverage.status==="empty"?"无正文":"部分覆盖，请查看未覆盖范围"}{run.analysis.draft_coverage.reasons.includes("draft_claim_uncovered")?`；有 ${run.analysis.draft_coverage.uncovered_source_ids?.length??0} 条选入主张未被引用`:""}{run.analysis.draft_coverage.reasons.includes("draft_claim_unselected")?`；有 ${run.analysis.draft_coverage.unselected_count??0} 条主张未进入本轮输入`:""}{run.analysis.draft_coverage.reasons.includes("draft_claim_truncated")||run.analysis.draft_coverage.reasons.includes("draft_body_truncated")?"；正文或主张因长度限制被截断":""}{run.analysis.draft_coverage.reasons.includes("draft_citation_missing")?"；缺少可定位草稿引用":""}{run.analysis.draft_coverage.reasons.includes("draft_item_citation_mismatch")?`；有 ${run.analysis.draft_coverage.discarded_item_indices?.length??0} 条简报内容引用错配，已从结果移除`:""}。</p>}{run.analysis.summary_sources&&<AnalysisSources sources={run.analysis.summary_sources}/>}</>}</div></div>
@@ -4416,7 +4412,7 @@ function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go,only}:{proj
   </>;
   const qaTool=(
       <section className="bounded-tool" aria-label="作品问答">
-        <header><div className="tool-title-block"><DesignAsset name="bulb" /><div><h3>问一问</h3><p className="tool-description">关于人物、情节或设定的疑问，回答会说明依据出自哪里。</p></div></div>{activeQa&&<span className="run-state state-running">{stage(activeQa.status)}</span>}</header>
+        <header><div className="tool-title-block"><div><h3>问一问</h3><p className="tool-description">关于人物、情节或设定的疑问，回答会说明依据出自哪里。</p></div></div>{activeQa&&<span className="run-state state-running">{stage(activeQa.status)}</span>}</header>
         {!readOnly&&<form className="qa-form" onSubmit={(event)=>{event.preventDefault();void start("story_qa");}}><label>你的问题<textarea value={question} maxLength={1000} onChange={(event)=>setQuestion(event.target.value)} placeholder="例如：林默目前是否知道北门会提前开启？" /></label><fieldset><legend>限定依据</legend>{(["confirmed","written","planned"] as const).map((value)=><label key={value}><input type="checkbox" checked={scope.includes(value)} onChange={()=>toggleScope(value)} />{qaLayerLabel[value]}</label>)}</fieldset><Button className="secondary" type="submit" disabled={Boolean(busy)||Boolean(activeQa)||!question.trim()||!draft||dirty}>提交问题</Button><small className="form-gentle-note">问题越具体，越容易找到相关依据。</small></form>}
         {readOnly&&!qaRuns.length&&<p className="muted">窄窗口仅浏览已有回答；请在宽屏窗口提问。</p>}
         <div className="bounded-run-list">{qaRuns.map((run)=><article key={run.run_id} className={`bounded-run status-${run.status}${run.is_stale?" stale":""}`}><header><strong>{run.question||"历史问题"}</strong><span>{run.is_stale?"依据已变化":qaStatusLabel[run.analysis?.answer_status??""]??stage(run.status)}</span></header>{activeAnalysis(run)&&<p className="analysis-pending">{stage(run.stage)}；不会展示中间推理。</p>}{["failed","timed_out","cancelled"].includes(run.status)&&<p className="inline-error">{labelError({code:run.error_code})}</p>}{run.analysis&&<><p className="qa-answer">{run.analysis.answer}</p>{run.analysis.findings?.map((finding,index)=><section className={`qa-finding stance-${finding.stance}`} key={`${finding.layer}:${index}`}><header><span>{qaLayerLabel[finding.layer]}</span><em>{qaStanceLabel[finding.stance]}</em></header><p>{finding.text}</p><EvidenceLinks sources={finding.evidence} navigate={go}/></section>)}</>}<footer><small title={run.retrieval?.method_version?`检索方式：${run.retrieval.method_version}`:undefined}>{runBinding(run,{foreshadow:true})}</small>{renderRunActions(run)}</footer></article>)}</div>
@@ -4424,8 +4420,8 @@ function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go,only}:{proj
   );
   const foreshadowTool=(
       <section className="bounded-tool" aria-label="伏笔管理">
-        <header><div className="tool-title-block"><DesignAsset name="paper" /><div><h3>伏笔</h3><p className="tool-description">已经埋进正文的线索、埋在哪里、准备何时回收。扫描找到的候选由你决定是否记下。</p></div></div>{!readOnly&&<Button className="secondary" disabled={Boolean(busy)||Boolean(activeScan)||!draft||dirty} onClick={()=>void start("foreshadow_scan")}>{activeScan?"扫描中":"扫描已写正文"}</Button>}</header>
-        {!readOnly&&<form className="foreshadow-form" onSubmit={saveRecord}><label>标题<input placeholder="给这条伏笔起一个简短的标题" value={editor.title} maxLength={120} onChange={(event)=>setEditor({...editor,title:event.target.value})} /></label><label>说明<textarea placeholder="记录线索的含义，以及后续准备怎样展开……" value={editor.description} maxLength={1200} onChange={(event)=>setEditor({...editor,description:event.target.value})} /></label><label>状态<select value={editor.status} onChange={(event)=>setEditor({...editor,status:event.target.value as ForeshadowRecord["status"]})}>{Object.entries(foreshadowStatusLabel).map(([value,label])=><option key={value} value={value}>{label}</option>)}</select></label><ForeshadowReferenceSelect label="埋设章节 / 来源" value={editor.planted_reference} setValue={(value)=>setEditor({...editor,planted_reference:value})} chapters={chapters} disabled={Boolean(busy)}/><ForeshadowReferenceSelect label="回收章节 / 来源" value={editor.resolved_reference} setValue={(value)=>setEditor({...editor,resolved_reference:value})} chapters={chapters} disabled={Boolean(busy)}/><div className="form-actions"><Button className="primary" type="submit" disabled={Boolean(busy)||!editor.title.trim()||!editor.description.trim()||(Boolean(editingId)&&editingBaseVersion===null)}>{editingId?"保存修改":"新建作者记录"}</Button>{editingId&&<Button type="button" onClick={()=>{setEditingId(null);setEditingBaseVersion(null);setEditor(emptyForeshadowEditor);}}>取消编辑</Button>}</div></form>}
+        <header><div className="tool-title-block"><div><h3>伏笔</h3><p className="tool-description">已经埋进正文的线索、埋在哪里、准备何时回收。扫描找到的候选由你决定是否记下。</p></div></div>{!readOnly&&<Button className="secondary" disabled={Boolean(busy)||Boolean(activeScan)||!draft||dirty} onClick={()=>void start("foreshadow_scan")}>{activeScan?"扫描中":"扫描已写正文"}</Button>}</header>
+        {!readOnly&&<details className="foreshadow-new" open={Boolean(editingId)||undefined}><summary>{editingId?"编辑伏笔记录":"记下一条伏笔"}</summary><form className="foreshadow-form" onSubmit={saveRecord}><label>标题<input placeholder="给这条伏笔起一个简短的标题" value={editor.title} maxLength={120} onChange={(event)=>setEditor({...editor,title:event.target.value})} /></label><label>说明<textarea placeholder="记录线索的含义，以及后续准备怎样展开……" value={editor.description} maxLength={1200} onChange={(event)=>setEditor({...editor,description:event.target.value})} /></label><label>状态<select value={editor.status} onChange={(event)=>setEditor({...editor,status:event.target.value as ForeshadowRecord["status"]})}>{Object.entries(foreshadowStatusLabel).map(([value,label])=><option key={value} value={value}>{label}</option>)}</select></label><ForeshadowReferenceSelect label="埋设章节 / 来源" value={editor.planted_reference} setValue={(value)=>setEditor({...editor,planted_reference:value})} chapters={chapters} disabled={Boolean(busy)}/><ForeshadowReferenceSelect label="回收章节 / 来源" value={editor.resolved_reference} setValue={(value)=>setEditor({...editor,resolved_reference:value})} chapters={chapters} disabled={Boolean(busy)}/><div className="form-actions"><Button className="primary" type="submit" disabled={Boolean(busy)||!editor.title.trim()||!editor.description.trim()||(Boolean(editingId)&&editingBaseVersion===null)}>{editingId?"保存修改":"新建作者记录"}</Button>{editingId&&<Button type="button" onClick={()=>{setEditingId(null);setEditingBaseVersion(null);setEditor(emptyForeshadowEditor);}}>取消编辑</Button>}</div></form></details>}
         <div className="foreshadow-records">{snapshot?.records.map((record)=><article key={record.id} id={`foreshadow-${record.id}`} className={record.archived_at?"archived":""}><header><div><strong>{record.title}</strong><small>作者记录 · V{record.version}</small></div><span>{record.archived_at?"已归档":foreshadowStatusLabel[record.status]}</span></header><p>{record.description}</p><div className="foreshadow-links">{record.planted&&<a href={record.planted.source_path} onClick={(event)=>protectSourceNavigation(event,record.planted?.source_path,go)}>埋设：第 {record.planted.chapter_number} 章{record.planted.source_label?` · ${record.planted.source_label}`:""}</a>}{record.resolved&&<a href={record.resolved.source_path} onClick={(event)=>protectSourceNavigation(event,record.resolved?.source_path,go)}>回收：第 {record.resolved.chapter_number} 章{record.resolved.source_label?` · ${record.resolved.source_label}`:""}</a>}</div>{!readOnly&&!record.archived_at&&<footer><Button className="quiet" disabled={Boolean(busy)} onClick={()=>{setEditingId(record.id);setEditingBaseVersion(record.version);setEditor(recordEditor(record));}}>编辑</Button><Button className="quiet" disabled={Boolean(busy)} onClick={()=>void archiveRecord(record)}>归档</Button></footer>}</article>)}{snapshot&&!snapshot.records.length&&<p className="muted">还没有作者伏笔记录；AI 候选不会自动出现在这里。</p>}</div>
         {scanRuns.map((run)=><article key={run.run_id} className={`foreshadow-scan bounded-run status-${run.status}${run.is_stale?" stale":""}`}><header><div><strong>AI 伏笔候选</strong><small>{timestampLabel(run.created_at)}</small></div><span>{run.is_stale?"依据已变化":stage(run.status)}</span></header>{activeAnalysis(run)&&<p className="analysis-pending">{stage(run.stage)}；扫描只读取已绑定内容。</p>}{["failed","timed_out","cancelled"].includes(run.status)&&<p className="inline-error">{labelError({code:run.error_code})}</p>}{run.analysis&&<><p>{run.analysis.summary}</p>{(run.analysis.candidates as ForeshadowCandidate[]|undefined)?.map((candidate)=><section className="foreshadow-candidate" key={candidate.id} id={`foreshadow-candidate-${candidate.id}`}><header><div><strong>{candidate.title}</strong><small>AI 候选 · {foreshadowStatusLabel[candidate.suggested_status]}</small></div><span>{candidate.decision_status==="pending"?"待作者决定":candidate.decision_status==="rejected"?"作者已拒绝":candidate.decision_status==="edited"?"编辑后接受":"作者已接受"}</span></header><p>{candidate.description}</p><EvidenceLinks sources={candidate.evidence} navigate={go}/>{!readOnly&&candidate.decision_status==="pending"&&!run.is_stale&&<div className="candidate-review"><details><summary>编辑后接受</summary>{(()=>{const value=candidateEdits[candidate.id]??candidateEditor(candidate);return <div className="candidate-edit-fields"><label>标题<input value={value.title} maxLength={120} onChange={(event)=>changeCandidate(candidate,{title:event.target.value})} /></label><label>说明<textarea value={value.description} maxLength={1200} onChange={(event)=>changeCandidate(candidate,{description:event.target.value})} /></label><label>状态<select value={value.status} onChange={(event)=>changeCandidate(candidate,{status:event.target.value as ForeshadowRecord["status"]})}>{Object.entries(foreshadowStatusLabel).map(([option,label])=><option key={option} value={option}>{label}</option>)}</select></label><ForeshadowReferenceSelect label="埋设章节 / 来源" value={value.planted_reference} setValue={(next)=>changeCandidate(candidate,{planted_reference:next})} chapters={chapters} disabled={Boolean(busy)}/><ForeshadowReferenceSelect label="回收章节 / 来源" value={value.resolved_reference} setValue={(next)=>changeCandidate(candidate,{resolved_reference:next})} chapters={chapters} disabled={Boolean(busy)}/><Button className="primary" disabled={Boolean(busy)||!value.title.trim()||!value.description.trim()} onClick={()=>void decide(run,candidate,"edited")}>保存为作者记录</Button></div>;})()}</details><div className="form-actions"><Button className="secondary" disabled={Boolean(busy)} onClick={()=>void decide(run,candidate,"accepted")}>接受</Button><Button className="quiet" disabled={Boolean(busy)} onClick={()=>void decide(run,candidate,"rejected")}>拒绝</Button></div></div>}</section>)}</>}<footer><small title={run.retrieval?.method_version?`检索方式：${run.retrieval.method_version}`:undefined}>{runBinding(run,{foreshadow:true})}</small>{renderRunActions(run)}</footer></article>)}
       </section>
@@ -4433,7 +4429,7 @@ function BoundedStoryTools({project,draft,chapters,readOnly,dirty,go,only}:{proj
   if(only)return <section className="materials-tool" aria-label={only==="qa"?"问一问":"伏笔"}>{notices}{only==="qa"?qaTool:foreshadowTool}</section>;
   return <details className="bounded-story-tools" aria-label="作品问答与伏笔">
     <summary className="bounded-tools-header"><div><p className="eyebrow">写作辅助</p><h2>作品问答与伏笔</h2><p>需要时再展开；已有回答与伏笔记录也在这里。</p></div>{(snapshot?.foreshadow_version??project.foreshadow_version??0)>0||qaRuns.length>0||scanRuns.length>0?<small>伏笔记录第 {snapshot?.foreshadow_version??project.foreshadow_version??0} 版 · 回答 {qaRuns.length} 条 · 扫描 {scanRuns.length} 次</small>:null}</summary>
-    <div className="bounded-tools-intro"><DesignAsset name="bulb" /><p>回答会说明依据来自哪里。扫描发现的伏笔先供你参考，是否记入作品由你决定。</p></div>
+    <div className="bounded-tools-intro"><p>回答会说明依据来自哪里。扫描发现的伏笔先供你参考，是否记入作品由你决定。</p></div>
     {notices}
     <div className="bounded-tools-grid">{qaTool}{foreshadowTool}</div>
   </details>;
@@ -5326,7 +5322,7 @@ function ProjectPage(p: {
       <div className="workspace-grid">
         <section className="editor">
           <section className="manuscript-card" aria-label="章节编辑">
-          <div className="manuscript-heading"><DesignAsset name="paper" /><div>
+          <div className="manuscript-heading"><div>
           <label className="editor-title-input">
             <span className="sr-only">章节标题</span>
             <input
@@ -5337,7 +5333,7 @@ function ProjectPage(p: {
               }
             />
           </label>
-          <p className="draft-writing-hint">在这里编写这一章，保存后可对照已有情节。</p></div></div>
+          </div></div>
           <label id="draft-source" className="draft-field">
             <span className="sr-only">草稿正文</span>
             {p.readOnly ? (
@@ -5356,7 +5352,7 @@ function ProjectPage(p: {
         </section>
         <aside className="issues">
           <header className="issues-top">
-            <DesignAsset name="bulb" /><div><h2>待处理提示 <span key={pendingDecisionCount}>{pendingDecisionCount}</span></h2><p>问题性质与影响程度分开显示</p></div>
+            <div><h2>待处理提示 <span key={pendingDecisionCount}>{pendingDecisionCount}</span></h2></div>
           </header>
           {p.run ? (
             <>
@@ -5431,7 +5427,6 @@ function ProjectPage(p: {
             </>
           ) : (
             <div className="empty issues-empty">
-              <DesignAsset name="paper" />
               <h3>检查结果会显示在这里</h3>
               <p>{emptyDraft ? "先写下正文并保存，再运行连续性检查。" : "系统会按影响程度列出与已写章节可能冲突的内容，并附上出处。"}</p>
               {!p.readOnly && <Button className="primary" disabled={blocked || !p.draft || dirty || emptyDraft} onClick={() => void p.check()}>运行连续性检查</Button>}
@@ -6439,7 +6434,6 @@ function AuthorPlanningPage({
           {records.some(({item}) => canonicalMaterialIds.has(`${kind}:${item.id}`)) && <p className="ac-note">已转换的资料在上方「检查参考资料」中维护，下方对应的原始规划以只读方式留档。</p>}
           {column === "considering" && <p className="muted plan-column-note">还在犹豫的打算只作提醒：不参与检查，也不参与「对照正文」。</p>}
           {!column && <div className="author-planning-toolbar">
-            <DesignAsset name="paper" />
             <div>
               <strong>{copy.planning}</strong>
               <span>{activeRecords.length} 条进行中的规划{records.some(({ item }) => item.archived) ? ` · ${records.length - activeRecords.length} 条已归档` : ""}</span>
@@ -6669,7 +6663,7 @@ function AuthorPlanDialog({
     <div className="modal-layer author-plan-layer" role="presentation">
       <section ref={modalRef} className="dialog author-plan-dialog planning-edit-dialog" role="dialog" aria-modal="true" aria-label={`${editing ? "编辑" : "新建"}${copy.noun}`} onKeyDown={containFocus}>
         <button type="button" className="close" disabled={Boolean(busy)} onClick={close}><span aria-hidden="true">×</span><span className="sr-only">关闭</span></button>
-        <header><div className="planning-dialog-brand"><DesignAsset name="paper" /><span>作者规划<small>只用于安排后续创作</small></span></div><h2>{editing ? `编辑${copy.noun}` : `新建${copy.noun}`}</h2><p>这些内容用于安排未来创作，不会写入正文档案或事实库。</p></header>
+        <header><div className="planning-dialog-brand"><span>作者规划<small>只用于安排后续创作</small></span></div><h2>{editing ? `编辑${copy.noun}` : `新建${copy.noun}`}</h2><p>这些内容用于安排未来创作，不会写入正文档案或事实库。</p></header>
         <form onSubmit={(event) => void submit(event)}>
           {state.kind === "story" ? (
             <>
@@ -6867,10 +6861,10 @@ function CharacterArchive({
           <article id={`character-${selected.id}`} className="archive-detail character-detail">
             <header><span className="character-monogram large" aria-hidden="true">{selected.name.slice(0, 1)}</span><div><h2>{selected.name}</h2><p>{selected.identity || roleTypeLabel(selected.role_type)}</p></div></header>
             <dl className="detail-grid">
-              <div><dt><Icon name="users" />角色定位</dt><dd>{selected.identity || roleTypeLabel(selected.role_type)}</dd></div>
-              <div><dt><Icon name="overview" />当前目标</dt><dd>{selected.goal || "尚未记录"}</dd></div>
-              <div><dt><Icon name="pen" />当前状态</dt><dd>{selected.current_state || "尚未记录"}</dd></div>
-              <div><dt><Icon name="memory" />知识边界</dt><dd>{selected.knowledge_boundary || "尚未记录"}</dd></div>
+              <div><dt>角色定位</dt><dd>{selected.identity || roleTypeLabel(selected.role_type)}</dd></div>
+              <div><dt>当前目标</dt><dd>{selected.goal || "尚未记录"}</dd></div>
+              <div><dt>当前状态</dt><dd>{selected.current_state || "尚未记录"}</dd></div>
+              <div><dt>知识边界</dt><dd>{selected.knowledge_boundary || "尚未记录"}</dd></div>
             </dl>
             {memories && openSource && <RelatedFacts names={[selected.name, ...(currentAliasSnapshot?.aliases.filter((item) => item.status === "active").map((item) => item.alias) ?? [])]} memories={memories} openSource={openSource} />}
             <section className="character-alias-panel" aria-label="角色别名资料">

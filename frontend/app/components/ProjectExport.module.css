@@ -1,7 +1,7 @@
-/* Sits flat inside its overview .project-section card; the section supplies border and padding. */
+/* Sits inside the 导出作品 dialog; the dialog supplies the frame. */
 .panel {
   display: grid;
-  gap: 12px;
+  gap: var(--s-3);
 }
 
 .panel h2,
@@ -10,42 +10,33 @@
 }
 
 .panel p {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.65;
+  color: var(--c-muted);
+  font-size: var(--fs-13);
+  line-height: var(--lh-ui);
 }
 
 .panel select {
   width: min(100%, 360px);
-  min-height: 42px;
 }
 
 .panel > label {
-  color: var(--text);
-  font-size: 13px;
+  font-size: var(--fs-13);
 }
 
 .draft {
   display: flex;
   align-items: flex-start;
-  gap: 9px;
+  gap: var(--s-2);
   width: fit-content;
-  line-height: 1.6;
+  font-weight: 400;
 }
 
 .draft input {
-  flex: 0 0 auto;
-  width: 16px;
-  height: 16px;
-  min-height: 16px;
-  margin: 3px 0 0;
-  accent-color: var(--violet-400);
+  margin-top: 3px;
 }
 
 .download {
   justify-self: start;
-  min-height: 42px;
-  margin-top: 3px;
 }
 
 .panel p[role="status"]:empty {
@@ -53,6 +44,5 @@
 }
 
 .panel p[role="status"] {
-  color: var(--text);
+  color: var(--c-ink);
 }
-

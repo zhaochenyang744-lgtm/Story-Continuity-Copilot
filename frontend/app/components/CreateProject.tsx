@@ -2,7 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import { labelError } from "../api";
-import { CreativeTips } from "./VisualPrimitives";
 
 export function CreateProject({
   busy,
@@ -138,7 +137,6 @@ export function CreateProject({
             {busy || "创建并进入作品"}
           </button>
         </form>
-        <CreativeTips />
       </section>
     </section>
   );

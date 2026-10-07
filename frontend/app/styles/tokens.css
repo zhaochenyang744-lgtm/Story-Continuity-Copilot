@@ -1,0 +1,122 @@
+/* 朱批 design tokens (v1.7.0). The only place colours, type sizes, spacing, radii and timing are
+   defined; every other stylesheet uses these names. Day is the default; <html data-theme="night">
+   switches palettes. Indigo marks actions and the assistant, vermilion and ochre mark findings,
+   green marks a saved or clear state. Nothing else uses those hues. */
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --c-ground: #f1f1ee;        /* page background */
+  --c-surface: #ffffff;       /* panels, cards, top bar */
+  --c-paper: #fcfcfa;         /* manuscript, quiet insets */
+  --c-sunken: #ecebe6;        /* segmented controls, inputs at rest */
+  --c-line: #deddd7;          /* hairlines and borders */
+  --c-line-soft: #ecebe6;     /* dividers inside a panel */
+  --c-line-strong: #c9c8c1;   /* hover borders, dashed drafts */
+
+  /* Ink */
+  --c-ink: #1b1d21;
+  --c-ink-2: #454a52;
+  --c-muted: #686d76;
+  --c-faint: #8c9098;
+
+  /* Hues */
+  --c-indigo: #2b47a3;
+  --c-indigo-hover: #233b8a;
+  --c-on-indigo: #ffffff;
+  --c-indigo-text: #2b47a3;
+  --c-indigo-tint: #e9edf8;
+  --c-verm: #b3341d;
+  --c-verm-tint: #fbeae5;
+  --c-verm-mark: rgba(179, 52, 29, .10);
+  --c-amber: #8f5600;
+  --c-amber-tint: #f7edda;
+  --c-green: #3f8f5a;
+  --c-green-tint: #e6f1e9;
+  --c-veil: rgba(27, 29, 33, .42);
+  --c-shadow: rgba(27, 29, 33, .10);
+
+  /* Type */
+  --font-sans: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", system-ui, sans-serif;
+  /* Windows ships no good screen serif (SimSun is a bitmap-era face), so prose falls back to YaHei there. */
+  --font-serif: "Songti SC", STSong, "Noto Serif CJK SC", "Source Han Serif SC", "Source Han Serif CN", "Microsoft YaHei", serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;
+  --fs-15: 15px;
+  --fs-16: 16px;
+  --fs-18: 18px;
+  --fs-20: 20px;
+  --fs-24: 24px;
+  --fs-30: 30px;
+  --lh-tight: 1.35;
+  --lh-ui: 1.6;
+  --lh-prose: 2.05;
+
+  /* Space (4px grid) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-14: 56px;
+
+  /* Shape */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 10px;
+  --r-xl: 12px;
+  --r-pill: 999px;
+  --control-h: 40px;
+  --control-h-sm: 32px;
+  --topbar-h: 56px;
+  --page-max: 1120px;
+  --page-wide: 1280px;
+  --prose-max: 760px;
+  --elev-1: 0 1px 2px rgba(27, 29, 33, .06), 0 4px 12px rgba(27, 29, 33, .05);
+  --elev-2: 0 2px 6px rgba(27, 29, 33, .08), 0 18px 40px rgba(27, 29, 33, .12);
+
+  /* Motion */
+  --motion-fast: 120ms;
+  --motion-base: 180ms;
+  --motion-panel: 220ms;
+  --motion-exit: 140ms;
+  --ease-standard: cubic-bezier(.2, .72, .24, 1);
+}
+
+:root[data-theme="night"] {
+  color-scheme: dark;
+  --c-ground: #14161a;
+  --c-surface: #1b1e23;
+  --c-paper: #1f2228;
+  --c-sunken: #23262c;
+  --c-line: #30343b;
+  --c-line-soft: #272a30;
+  --c-line-strong: #454a52;
+  --c-ink: #e7e5df;
+  --c-ink-2: #c4c2bc;
+  --c-muted: #9a9ea6;
+  --c-faint: #7a7e86;
+  --c-indigo: #9db1f2;
+  --c-indigo-hover: #b4c3f5;
+  --c-on-indigo: #11131a;
+  --c-indigo-text: #a9b9f2;
+  --c-indigo-tint: #252c42;
+  --c-verm: #f09178;
+  --c-verm-tint: #3a2420;
+  --c-verm-mark: rgba(240, 145, 120, .14);
+  --c-amber: #e2b26a;
+  --c-amber-tint: #352c1d;
+  --c-green: #6fbf88;
+  --c-green-tint: #1f3326;
+  --c-veil: rgba(0, 0, 0, .55);
+  --c-shadow: rgba(0, 0, 0, .4);
+  --elev-1: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 12px rgba(0, 0, 0, .25);
+  --elev-2: 0 2px 6px rgba(0, 0, 0, .35), 0 18px 40px rgba(0, 0, 0, .45);
+}

@@ -256,10 +256,6 @@
       "target": "frontend-source/app/api.ts"
     },
     {
-      "source": "frontend/app/author-context-preview.css",
-      "target": "frontend-source/app/author-context-preview.css"
-    },
-    {
       "source": "frontend/app/components/AuthorContextAnalysis.tsx",
       "target": "frontend-source/app/components/AuthorContextAnalysis.tsx"
     },
@@ -284,10 +280,6 @@
       "target": "frontend-source/app/components/ProjectExport.tsx"
     },
     {
-      "source": "frontend/app/components/VisualPrimitives.tsx",
-      "target": "frontend-source/app/components/VisualPrimitives.tsx"
-    },
-    {
       "source": "frontend/app/components/Workbench.tsx",
       "target": "frontend-source/app/components/Workbench.tsx"
     },
@@ -308,10 +300,6 @@
       "target": "frontend-source/app/draft-recovery.ts"
     },
     {
-      "source": "frontend/app/globals.css",
-      "target": "frontend-source/app/globals.css"
-    },
-    {
       "source": "frontend/app/icon.svg",
       "target": "frontend-source/app/icon.svg"
     },
@@ -320,40 +308,64 @@
       "target": "frontend-source/app/layout.tsx"
     },
     {
-      "source": "frontend/app/maintenance.css",
-      "target": "frontend-source/app/maintenance.css"
+      "source": "frontend/app/styles/base.css",
+      "target": "frontend-source/app/styles/base.css"
     },
     {
-      "source": "frontend/app/polish.css",
-      "target": "frontend-source/app/polish.css"
+      "source": "frontend/app/styles/components.css",
+      "target": "frontend-source/app/styles/components.css"
+    },
+    {
+      "source": "frontend/app/styles/layout.css",
+      "target": "frontend-source/app/styles/layout.css"
+    },
+    {
+      "source": "frontend/app/styles/motion.css",
+      "target": "frontend-source/app/styles/motion.css"
+    },
+    {
+      "source": "frontend/app/styles/pages/author-context.css",
+      "target": "frontend-source/app/styles/pages/author-context.css"
+    },
+    {
+      "source": "frontend/app/styles/pages/chapters.css",
+      "target": "frontend-source/app/styles/pages/chapters.css"
+    },
+    {
+      "source": "frontend/app/styles/pages/global.css",
+      "target": "frontend-source/app/styles/pages/global.css"
+    },
+    {
+      "source": "frontend/app/styles/pages/guide.css",
+      "target": "frontend-source/app/styles/pages/guide.css"
+    },
+    {
+      "source": "frontend/app/styles/pages/materials.css",
+      "target": "frontend-source/app/styles/pages/materials.css"
+    },
+    {
+      "source": "frontend/app/styles/pages/overview.css",
+      "target": "frontend-source/app/styles/pages/overview.css"
+    },
+    {
+      "source": "frontend/app/styles/pages/plan.css",
+      "target": "frontend-source/app/styles/pages/plan.css"
+    },
+    {
+      "source": "frontend/app/styles/pages/workspace.css",
+      "target": "frontend-source/app/styles/pages/workspace.css"
+    },
+    {
+      "source": "frontend/app/styles/tokens.css",
+      "target": "frontend-source/app/styles/tokens.css"
     },
     {
       "source": "frontend/app/model.ts",
       "target": "frontend-source/app/model.ts"
     },
     {
-      "source": "frontend/app/motion.css",
-      "target": "frontend-source/app/motion.css"
-    },
-    {
       "source": "frontend/app/pending-decision.ts",
       "target": "frontend-source/app/pending-decision.ts"
-    },
-    {
-      "source": "frontend/app/reference-refresh.css",
-      "target": "frontend-source/app/reference-refresh.css"
-    },
-    {
-      "source": "frontend/app/shell.css",
-      "target": "frontend/app/shell.css"
-    },
-    {
-      "source": "frontend/app/theme.css",
-      "target": "frontend/app/theme.css"
-    },
-    {
-      "source": "frontend/app/visual-system.css",
-      "target": "frontend-source/app/visual-system.css"
     },
     {
       "source": "frontend/build-id.mjs",
