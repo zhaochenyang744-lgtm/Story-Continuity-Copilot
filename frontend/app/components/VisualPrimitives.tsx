@@ -109,9 +109,6 @@ export function CreativeTips({ importing = false }: { importing?: boolean }) {
       aria-label={importing ? "导入提示" : "创建提示"}
     >
       <header className="design-section-head">
-        <span className="design-icon-tile">
-          <DesignAsset name="bulb" />
-        </span>
         <div>
           <h2>{importing ? "导入小提示" : "创作小提示"}</h2>
           <p>
@@ -134,17 +131,6 @@ export function CreativeTips({ importing = false }: { importing?: boolean }) {
           </li>
         ))}
       </ol>
-      {(
-        <div className="design-closing">
-          <blockquote>
-            {importing ? "「 让已有的故事，" : "「 每一个故事，"}
-            <br />
-            <span>{importing ? "在这里继续生长。 」" : "都从一个想法开始。 」"}</span>
-          </blockquote>
-          <i />
-          <span>STORY CONTINUITY</span>
-        </div>
-      )}
     </aside>
   );
 }

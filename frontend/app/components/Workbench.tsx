@@ -737,42 +737,6 @@ function Chevron({ className = "" }: { className?: string }) {
     </svg>
   );
 }
-function EmptyManuscriptVisual() {
-  return (
-    <Image
-      className="empty-manuscript-visual"
-      src="/assets/v140/manuscript-glass.png"
-      alt="紫色半透明手稿"
-      width={1280}
-      height={1280}
-      sizes="(max-width: 1023px) 230px, 280px"
-    />
-  );
-}
-function EmptyLibraryVisual() {
-  return (
-    <Image
-      className="empty-library-visual"
-      src="/assets/v140/manuscript-glass.png"
-      alt="等待写下故事的紫色手稿"
-      width={1280}
-      height={1280}
-      sizes="(max-width: 1023px) 360px, 480px"
-    />
-  );
-}
-function TutorialCompleteVisual() {
-  return (
-    <Image
-      className="tutorial-complete-visual"
-      src="/assets/v120/tutorial-complete-alpha.webp"
-      alt="连续性线索已收束的完整手稿档案"
-      width={944}
-      height={1187}
-      sizes="(max-width: 1023px) 280px, 360px"
-    />
-  );
-}
 type AutosaveState = "idle" | "saving" | "saved" | "failed" | "conflict";
 const AUTOSAVE_IDLE_MS = 5_000;
 const AUTOSAVE_MIN_INTERVAL_MS = 30_000;
@@ -3611,7 +3575,7 @@ function AccountProfile({ user, projects, updateUser, go }: { user: User; projec
                 ))}
               </ul>
             ) : (
-              <div className="author-works-state empty"><EmptyManuscriptVisual /><strong>还没有作品</strong><p>从空白作品开始，或导入已有 TXT / Markdown。</p><div className="actions"><Button onClick={() => go("/projects/import")}>导入作品</Button><Button className="primary" onClick={() => go("/projects/new")}>新建作品</Button></div></div>
+              <div className="author-works-state empty"><strong>还没有作品</strong><p>从空白作品开始，或导入已有 TXT / Markdown。</p><div className="actions"><Button onClick={() => go("/projects/import")}>导入作品</Button><Button className="primary" onClick={() => go("/projects/new")}>新建作品</Button></div></div>
             )}
           </section>
         </div>
@@ -3656,7 +3620,7 @@ function AccountSecurity({ user, updateUser, go }: { user: User; updateUser: (us
   const recovery = user.recovery_email ?? { configured: false, verified: false, masked: null };
   return (
     <section className="content account-security">
-      <header className="page-heading"><div><p className="eyebrow">账号安全</p><h1>恢复邮箱</h1><p>邮箱只用于账户恢复和必要安全通知。</p></div><Button onClick={() => go("/")}>返回工作台</Button></header>
+      <header className="page-heading page-head"><div><p className="eyebrow">账号安全</p><h1>恢复邮箱</h1><p>邮箱只用于账户恢复和必要安全通知。</p></div><Button onClick={() => go("/")}>返回工作台</Button></header>
       <section className="security-status" aria-live="polite">
         <h2>当前状态</h2>
         <p>{recovery.configured ? recovery.masked : "尚未绑定"} · {recovery.verified ? "已验证" : "未验证"}</p>
@@ -3676,7 +3640,6 @@ function AccountSecurity({ user, updateUser, go }: { user: User; updateUser: (us
 function NotFoundPage({ kind, go }: { kind: "page" | "project"; go: (href: string) => void }) {
   return (
     <section className="page not-found-page" aria-labelledby="not-found-title">
-      <DesignAsset name="paper" />
       <h1 id="not-found-title">{kind === "project" ? "找不到这个作品" : "找不到这个页面"}</h1>
       <p>{kind === "project" ? "它可能已被删除，或者不属于当前账号。你的其他作品不受影响。" : "网址可能输错了，或者这个页面已经不存在。"}</p>
       <div className="actions">
@@ -3706,9 +3669,7 @@ function TutorialCompletePage({ go }: { go: (href: string) => void }) {
   const finished = status === null || status === "completed";
   return (
     <section className="tutorial-complete-page">
-      <header className="home-heading"><p className="breadcrumb">全局 / 首页</p><h1>继续你的故事</h1></header>
       <section className="tutorial-complete-panel" aria-labelledby="tutorial-complete-title" aria-busy={status === null}>
-        <TutorialCompleteVisual />
         <div className="tutorial-complete-copy">
           <p className="eyebrow">{finished ? "导览 · 已结束" : status === "skipped" ? "导览 · 已跳过" : "导览 · 进行中"}</p>
           <h2 id="tutorial-complete-title">{finished ? "导览已完成" : status === "skipped" ? "你跳过了导览" : "导览还没走完"}</h2>
@@ -3726,9 +3687,6 @@ function TutorialCompletePage({ go }: { go: (href: string) => void }) {
     </section>
   );
 }
-function HomeEntryArt() {
-  return <div className="home-entry-art" aria-hidden="true"><span className="home-art-note">让故事<br />拥有继续的力量。</span><EmptyManuscriptVisual /><span className="home-art-orbit" /></div>;
-}
 function HomePage({
   home,
   onboarding,
@@ -3744,52 +3702,45 @@ function HomePage({
   const pendingContinuity = home?.pending_continuity ?? [];
   return (
     <section className="home-page">
-      <header className="home-heading design-page-head">
-        <div className="design-page-heading">
-          <p className="breadcrumb">全局 / 首页</p>
+      <header className="home-heading page-head">
+        <div>
           <h1>继续你的故事</h1>
-          <p>让每一个灵感都有延续的可能。</p>
+          <p>从上次停下的地方接着写，问题和设定都在原处等你。</p>
         </div>
-        <div className="home-heading-quote" aria-hidden="true">在文字的宇宙里，<br />每个故事都会找到它的下一个章节。<span>STORY CONTINUITY</span></div>
       </header>
       {onboarding?.show_first_run && onboarding.tutorial && (
-        <section className="tutorial-entry home-entry-composition" aria-label="首次导览">
-          <HomeEntryArt />
-          <div className="home-entry-copy">
-            <p className="eyebrow">首次使用 · 示例作品</p>
+        <section className="tutorial-entry home-card" aria-label="首次导览">
+          <div className="home-card-copy">
+            <p className="kicker">首次使用 · 示例作品</p>
             <h2>先用示例作品熟悉连续性检查</h2>
             <p>示例作品不计入真实作品、搜索或待处理问题；完成后再导入自己的故事。</p>
           </div>
-          <div className="actions home-entry-actions">
-            <Button className="primary" onClick={() => open(onboarding.tutorial!.project_id)}><span className="home-play-mark" aria-hidden="true" />开始导览<Icon name="arrow-right" inline /></Button>
+          <div className="actions">
+            <Button className="primary" onClick={() => open(onboarding.tutorial!.project_id)}>开始导览<Icon name="arrow-right" inline /></Button>
             <Button onClick={() => go("/projects/import")}>导入已有作品</Button>
           </div>
         </section>
       )}
       {home?.continue_work ? (
-        <section className="home-continue home-entry-composition">
-          <HomeEntryArt />
-          <div className="home-entry-copy">
+        <section className="home-continue home-card">
+          <div className="home-card-copy">
             <p className="kicker">继续当前工作</p>
-            <h2>
-              《{home.continue_work.project_title}》 · {home.continue_work.draft_title}
-            </h2>
+            <h2>《{home.continue_work.project_title}》 · {home.continue_work.draft_title}</h2>
             <p>
               第 {home.continue_work.draft_revision} 次保存 · 下一步：
               {nextActionLabel(home.continue_work.next_action)}
             </p>
           </div>
-          <div className="actions home-entry-actions"><Button className="primary" onClick={() => open(home.continue_work!.project_id)}>继续工作<Icon name="arrow-right" inline /></Button><Button onClick={() => go("/projects")}>查看全部作品</Button></div>
+          <div className="actions"><Button className="primary" onClick={() => open(home.continue_work!.project_id)}>继续工作<Icon name="arrow-right" inline /></Button><Button onClick={() => go("/projects")}>查看全部作品</Button></div>
         </section>
       ) : !onboarding?.show_first_run ? (
-        <section className="empty-workspace home-entry-composition">
-          <HomeEntryArt />
-          <div className="empty-workspace-copy home-entry-copy">
-            <p className="eyebrow">真实作品空间 · 尚未建立</p>
+        <section className="empty-workspace home-card">
+          <div className="home-card-copy">
+            <p className="kicker">还没有真实作品</p>
             <h2>从第一章开始建立连续性档案</h2>
             <p>导入 Word、TXT 或 Markdown，或从空白作品开始。</p>
           </div>
-          <div className="actions home-entry-actions">
+          <div className="actions">
             <Button className="primary" onClick={() => go("/projects/import")}>导入已有作品</Button>
             <Button onClick={() => go("/projects/new")}>从空白开始</Button>
           </div>
@@ -3798,7 +3749,7 @@ function HomePage({
       <div className="home-section-grid">
         <section className="home-section">
           <header className="home-section-head">
-            <h2><span className="home-section-icon"><DesignAsset name="paper" /></span>最近作品</h2>
+            <h2>最近作品</h2>
             <Button className="quiet" onClick={() => go("/projects")}>查看全部 <Icon name="arrow-right" inline /></Button>
           </header>
           {recentProjects.length ? (
@@ -3814,15 +3765,12 @@ function HomePage({
               ))}
             </ul>
           ) : (
-            <div className="home-empty-state compact-empty">
-              <span className="home-empty-mark" aria-hidden="true"><DesignAsset name="paper" /></span>
-              <p>导入作品后，最近编辑的故事会显示在这里。</p><small>开始创作，让你的世界更完整。</small>
-            </div>
+            <p className="home-empty-note">导入作品后，最近编辑的故事会显示在这里。</p>
           )}
         </section>
         <section className="home-section home-issues-section">
           <header className="home-section-head">
-            <h2><span className="home-section-icon"><DesignAsset name="bulb" /></span>待处理问题</h2>
+            <h2>待处理问题</h2>
           </header>
           {pendingContinuity.length ? (
             <ul className="home-issue-list">
@@ -3846,10 +3794,7 @@ function HomePage({
               })}
             </ul>
           ) : (
-            <div className="home-empty-state compact-empty">
-              <span className="home-empty-mark" aria-hidden="true"><DesignAsset name="bulb" /></span>
-              <p>运行第一次连续性检查后，问题会按影响程度显示在这里。</p><small>让潜在的问题，在创作中被提前发现。</small>
-            </div>
+            <p className="home-empty-note">运行第一次连续性检查后，问题会按影响程度显示在这里。</p>
           )}
         </section>
       </div>
@@ -3983,29 +3928,26 @@ function Projects({
   // The default view hides archived works; an account whose works are all archived still needs the
   // toolbar to reach them instead of the first-run empty state.
   const hasWorks = rows.length > 0 || filtered || Boolean(allProjects?.length);
-  const statistics = [
-    { label: "作品总数", value: allProjects?.length, note: "全部真实作品，包含已归档作品" },
-    { label: "进行中", value: allProjects?.filter((item) => item.status === "active").length, note: "当前状态为进行中的真实作品" },
-    { label: "已检查作品", value: allProjects?.every((item) => item.continuity_status !== undefined) ? allProjects.filter((item) => item.continuity_status !== "unchecked").length : undefined, note: "已完成连续性检查的作品数量" },
-    { label: "累计字数", value: allProjects?.every((item) => item.word_count !== undefined) ? allProjects.reduce((sum, item) => sum + (item.word_count ?? 0), 0) : undefined, note: "全部真实作品的字数合计" },
-  ];
+  const totals = allProjects
+    ? [
+        `共 ${allProjects.length} 部作品`,
+        `进行中 ${allProjects.filter((item) => item.status === "active").length}`,
+        allProjects.every((item) => item.word_count !== undefined)
+          ? `累计 ${formatWritingCount(allProjects.reduce((sum, item) => sum + (item.word_count ?? 0), 0))} 字`
+          : null,
+      ].filter(Boolean).join(" · ")
+    : "";
   return (
     <section className="projects-page">
-      <header className="page-header library-header">
+      <header className="page-head library-header">
         <div className="library-heading">
-          <p className="breadcrumb">全局 / 作品管理</p>
           <h1>作品管理</h1>
-          <p className="library-subtitle">在这里统一管理你的作品，让故事的每一章都连贯、完整。</p>
+          <p className="library-subtitle">{hasWorks && totals ? totals : "导入已有作品，或从空白作品开始。"}</p>
         </div>
         <div className="actions library-header-actions">
           {hasWorks && <Button onClick={() => go("/projects/import")}>导入作品</Button>}
-          <Button className="primary" onClick={() => go("/projects/new")}>
-            <span className="library-plus" aria-hidden="true">+</span>新建作品
-          </Button>
+          <Button className="primary" onClick={() => go("/projects/new")}>新建作品</Button>
         </div>
-        <dl className="library-statistics" aria-label="真实作品统计">
-          {statistics.map((item, index) => <div key={item.label} title={item.note}><span className="library-stat-mark" aria-hidden="true"><Icon name={(["library", "pen", "check-circle", "text"] as const)[index]} /></span><dt>{item.label}</dt><dd>{item.value === undefined ? "—" : formatWritingCount(item.value)}</dd></div>)}
-        </dl>
       </header>
       {hasWorks && <div className="filters project-toolbar">
         <label className="project-search">
@@ -4052,21 +3994,13 @@ function Projects({
         </Button>
       </div>}
       {!hasWorks ? (
-        <section className="project-empty-state" aria-labelledby="project-empty-title">
-          <div className="library-hero-art" aria-hidden="true">
-            <span className="library-art-caption">从灵感<br />到篇章</span>
-            <span className="library-orbit" />
-            <EmptyLibraryVisual />
-          </div>
-          <div className="library-hero-copy">
-            <p className="eyebrow">作品库</p>
+        <section className="project-empty-state home-card" aria-labelledby="project-empty-title">
+          <div className="home-card-copy">
+            <p className="kicker">作品库</p>
             <h2 id="project-empty-title">还没有真实作品</h2>
-            <p>集中管理你的真实作品与连续性检查。</p>
-            <hr />
-            <p>导入已有 TXT / Markdown，或从空白作品开始。</p>
-            <div className="actions"><Button onClick={() => go("/projects/import")}>导入作品</Button><Button className="primary" onClick={() => go("/projects/new")}>新建作品</Button></div>
+            <p>导入已有 TXT / Markdown，或从空白作品开始。示例作品不计入这里。</p>
           </div>
-          <span className="library-art-signature" aria-hidden="true">写下明天的故事。</span>
+          <div className="actions"><Button className="primary" onClick={() => go("/projects/new")}>新建作品</Button><Button onClick={() => go("/projects/import")}>导入作品</Button></div>
         </section>
       ) : (
         <Rows
@@ -4077,15 +4011,6 @@ function Projects({
           emptyNote="没有未归档的作品。在“状态”里选择“已归档”可以查看已归档的作品。"
         />
       )}
-      {!rows.length && !filtered && <>
-        <div className="library-features" aria-label="作品管理功能">
-          <article><DesignAsset name="paper" /><div><h3>统一管理作品</h3><p>将所有作品集中在一个空间，<br />随时查看与管理。</p></div></article>
-          <article><DesignAsset name="bulb" /><div><h3>连续性检查</h3><p>检查情节、设定与细节，<br />发现故事中潜在的矛盾。</p></div></article>
-          <article><DesignAsset name="paper" /><div><h3>导入已有故事</h3><p>支持 TXT / Markdown，<br />让已有的创作继续生长。</p></div></article>
-          <article><Image src="/assets/v140/story-door.png" alt="" width={80} height={80} unoptimized /><div><h3>从空白开始创作</h3><p>写下一个新的想法，<br />开启你的下一个精彩故事。</p></div></article>
-        </div>
-        <p className="library-footer">让好的故事，延续下去</p>
-      </>}
     </section>
   );
 }
@@ -4159,14 +4084,11 @@ function Import({
 
   return (
     <section className="import-page">
-      <header className="design-page-head">
-        <div className="design-hero-art" aria-hidden="true" />
+      <header className="design-page-head page-head">
         <div className="design-page-heading">
-          <p className="breadcrumb">全局 / 作品管理 / 导入作品</p>
           <h1>导入已有作品</h1>
           <p>带上已有的文字，继续你的故事。</p>
         </div>
-        <div className="design-hero-quote" aria-hidden="true">记录想象，<br />让故事延续。<i /></div>
       </header>
       <ol className="import-steps" aria-label="导入步骤">
         {[
@@ -4188,7 +4110,7 @@ function Import({
       <div className="design-import-layout design-creation-panel">
       {step === "file" && (
         <form className="form-panel import-panel" onSubmit={(event) => void beginPreview(event)}>
-          <header className="design-section-head"><span className="design-icon-tile"><DesignAsset name="paper" /></span><div><h2>选择要导入的文件</h2><p>文件会发送到应用后端生成章节预览；确认后才创建作品，不会自动生成事实库。</p></div></header>
+          <header className="design-section-head"><div><h2>选择要导入的文件</h2><p>文件会发送到应用后端生成章节预览；确认后才创建作品，不会自动生成事实库。</p></div></header>
           <input
             ref={fileInput}
             className="sr-only"
@@ -4235,7 +4157,6 @@ function Import({
       {preview && step === "preview" && (
         <section className="form-panel import-panel" aria-labelledby="import-preview-heading">
           <header className="design-section-head">
-            <span className="design-icon-tile"><DesignAsset name="paper" /></span>
             <div>
             <h2 id="import-preview-heading">章节预览</h2>
             <p className="muted">确认截断片段与章节拆分后，再填写作品元数据。</p>
@@ -4315,7 +4236,6 @@ function Import({
       {preview && step === "confirm" && (
         <form className="form-panel import-panel" onSubmit={(e) => void commit(e)}>
           <header className="design-section-head">
-            <span className="design-icon-tile"><DesignAsset name="paper" /></span>
             <div>
             <h2>确认导入</h2>
             <p className="muted">将当前预览的 {preview.detected.chapter_count} 章创建为一部新作品。确认名称与简介后即可开始写作。</p>

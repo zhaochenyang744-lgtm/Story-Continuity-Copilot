@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { labelError } from "../api";
-import { CreativeTips, DesignAsset } from "./VisualPrimitives";
+import { CreativeTips } from "./VisualPrimitives";
 
 export function CreateProject({
   busy,
@@ -28,26 +28,15 @@ export function CreateProject({
   ] as const;
   return (
     <section className="approved-create">
-      <header className="design-page-head">
-        <div className="design-hero-art" aria-hidden="true" />
+      <header className="design-page-head page-head">
         <div className="design-page-heading">
-          <p className="breadcrumb">全局 / 作品管理 / 新建作品</p>
           <h1>新建作品</h1>
           <p>填写基础信息，开始你的全新创作。</p>
-        </div>
-        <div className="design-hero-quote" aria-hidden="true">
-          记录想象，
-          <br />
-          让故事延续。
-          <i />
         </div>
       </header>
       <section className="design-creation-panel" aria-label="新建作品表单">
         <form onSubmit={(event) => void submit(event)}>
           <header className="design-section-head">
-            <span className="design-icon-tile">
-              <DesignAsset name="paper" />
-            </span>
             <div>
               <h2>作品信息</h2>
               <p>完善以下信息，让你的作品拥有一个好的开始。</p>

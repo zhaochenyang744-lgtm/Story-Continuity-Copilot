@@ -130,11 +130,6 @@ main h1 { font-size: 28px; font-weight: 650; letter-spacing: -.01em; }
   background-image: none !important;
   box-shadow: none !important;
 }
-.home-continue {
-  background:
-    radial-gradient(90% 120% at 0% 0%, color-mix(in srgb, var(--c-accent) 14%, transparent), transparent 60%),
-    var(--surface) !important;
-}
 .run-lifecycle.status-failed { box-shadow: inset 3px 0 0 var(--high); }
 .analysis-empty-card { background: color-mix(in srgb, var(--c-veil) 2%, transparent); border-style: solid; }
 .issues-top { border: 0; background: transparent; }
@@ -368,14 +363,6 @@ main :is(strong, h3) { color: var(--text); }
 .overview-panel dd { color: var(--text); font-size: 16px; font-weight: 600; }
 .library-statistics dd { font-size: 28px; }
 
-/* The primary card of a page carries a faint violet wash so the eye lands there first. */
-.overview-primary-card.current-draft-panel,
-.workspace-grid .manuscript-card {
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--c-accent) 7%, transparent), transparent 140px),
-    var(--surface) !important;
-  border-color: color-mix(in srgb, var(--c-accent-text) 22%, transparent) !important;
-}
 
 /* Secondary panels sit one step back. */
 .writing-tips-card,

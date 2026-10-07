@@ -232,3 +232,169 @@
 /* 示例作品 marker (v1.7.0) */
 .sample-badge { display: inline-flex; align-items: center; height: 22px; margin-left: 10px; padding: 0 8px; border-radius: 6px; background: var(--c-accent-tint); color: var(--c-accent-text); font-family: var(--font-sans); font-size: 12px; font-weight: 500; letter-spacing: 0; vertical-align: middle; }
 .topbar .sample-badge { margin-left: 2px; height: 20px; }
+
+/* Global pages: 首页 and 作品管理 (v1.7.0). Plain surfaces; the old cosmos art and stat tiles are gone. */
+.workbench.has-topbar > main.global-main { background: var(--c-bg); }
+.has-topbar .global-main > section > .page-head {
+  position: static; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+  gap: 16px 24px; height: auto; min-height: 0; margin: 0 0 24px; padding: 40px 0 0; border: 0;
+}
+.has-topbar .global-main > section > .page-head > div:first-child { min-width: 0; }
+.has-topbar .global-main > section > .page-head h1 {
+  margin: 0 0 6px; font-family: var(--font-serif); font-size: 32px; font-weight: 600; line-height: 1.3; letter-spacing: .04em; color: var(--c-text);
+}
+.has-topbar .global-main > section > .page-head p { margin: 0; max-width: 60ch; color: var(--c-muted); font-size: 14px; line-height: 1.7; }
+.has-topbar .global-main > section > .page-head > .actions { position: static; display: flex; flex-wrap: wrap; gap: 10px; width: auto; margin: 0; }
+
+.has-topbar .home-card {
+  position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 20px 32px; min-height: 0; margin: 0 0 20px; padding: 26px 30px 26px 34px; overflow: hidden;
+  border: 1px solid var(--c-line); border-radius: 12px; background: var(--c-surface); box-shadow: none;
+}
+.has-topbar .home-card::before { content: ""; position: absolute; left: 0; top: 22px; bottom: 22px; width: 3px; border-radius: 0 3px 3px 0; background: var(--c-danger); }
+.has-topbar .home-card::after { content: none; }
+.has-topbar .home-card.home-continue::before { background: var(--c-accent-strong); }
+.has-topbar .home-card-copy { min-width: 0; max-width: 62ch; }
+.has-topbar .home-card-copy .kicker { display: block; margin: 0 0 8px; padding: 0; border: 0; background: none; color: var(--c-muted); font-size: 13px; letter-spacing: .08em; }
+.has-topbar .home-card-copy h2 { margin: 0 0 8px; font-family: var(--font-serif); font-size: 22px; font-weight: 600; line-height: 1.5; color: var(--c-text); overflow-wrap: anywhere; }
+.has-topbar .home-card-copy p:last-child { margin: 0; color: var(--c-muted); font-size: 14px; line-height: 1.75; }
+.has-topbar .home-card > .actions { display: flex; flex-wrap: wrap; gap: 10px; width: auto; margin: 0; }
+.has-topbar .home-card > .actions > button { min-height: 40px; height: auto; padding: 0 18px; border-radius: 8px; font-size: 14px; box-shadow: none; }
+
+.has-topbar .home-page .home-section-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin: 4px 0 0; }
+.has-topbar .home-page .home-section {
+  display: block; min-height: 0; margin: 0; padding: 18px 22px 10px;
+  border: 1px solid var(--c-line); border-radius: 12px; background: var(--c-surface); box-shadow: none;
+}
+.has-topbar .home-page .home-section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; margin: 0; padding: 0 0 12px; border-bottom: 1px solid var(--c-line); }
+.has-topbar .home-page .home-section-head h2 { margin: 0; padding: 0; font-size: 15px; font-weight: 600; letter-spacing: .04em; color: var(--c-text); }
+.has-topbar .home-page .home-section-head h2::before { content: none; }
+.has-topbar .home-page .home-section-head button { min-height: 32px; padding: 0 4px; border: 0; background: none; color: var(--c-muted); font-size: 13px; box-shadow: none; }
+.has-topbar .home-page .home-section-head button:hover { color: var(--c-accent-text); }
+.has-topbar .home-page :is(.home-work-list, .home-issue-list) { margin: 0; padding: 0; list-style: none; border: 0; }
+.has-topbar .home-page :is(.home-work-list, .home-issue-list) li + li { border-top: 1px solid var(--c-line); }
+.has-topbar .home-page :is(.home-work-list, .home-issue-list) button {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 56px;
+  padding: 10px 4px; border: 0; border-radius: 0; background: none; color: var(--c-text); text-align: left; box-shadow: none;
+}
+.has-topbar .home-page :is(.home-work-list, .home-issue-list) button:hover strong { color: var(--c-accent-text); }
+.has-topbar .home-page :is(.home-work-list, .home-issue-list) strong { font-family: var(--font-serif); font-size: 16px; font-weight: 600; }
+.has-topbar .home-page .home-issue-list button > span { display: grid; gap: 2px; min-width: 0; }
+.has-topbar .home-page .home-issue-list small { color: var(--c-muted); font-size: 12px; }
+.has-topbar .home-page .home-work-list i { margin-left: auto; color: var(--c-faint); }
+.has-topbar .home-empty-note { margin: 0; padding: 22px 4px 16px; color: var(--c-muted); font-size: 14px; line-height: 1.75; }
+
+.has-topbar .projects-page .library-header { display: flex; grid-template-columns: none; }
+.has-topbar .projects-page .library-heading { width: auto; }
+.has-topbar .projects-page .library-header .library-subtitle { font-variant-numeric: tabular-nums; }
+
+@media (max-width: 860px) {
+  .has-topbar .home-page .home-section-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 720px) {
+  .has-topbar .global-main > section > .page-head { padding-top: 24px; margin-bottom: 18px; }
+  .has-topbar .global-main > section > .page-head h1 { font-size: 26px; }
+  .has-topbar .home-card { padding: 20px 20px 20px 24px; }
+  .has-topbar .home-card > .actions { width: 100%; }
+  .has-topbar .home-card > .actions > button { flex: 1; }
+}
+
+/* Flatten the v1.4 glass panels on the remaining global pages (v1.7.0): one surface, one hairline,
+   no glows, no indigo frames, no decorative pseudo-elements. */
+.has-topbar :is(.design-creation-panel, .import-panel, .profile-settings, .author-center-header, .author-works-state.empty, .tutorial-complete-panel, .security-status, .security-form, .not-found-page) {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  box-shadow: none;
+}
+.has-topbar :is(.design-creation-panel, .import-panel, .author-center-header, .tutorial-complete-panel, .project-empty-state)::before,
+.has-topbar :is(.design-creation-panel, .import-panel, .author-center-header, .tutorial-complete-panel, .project-empty-state)::after,
+.has-topbar .import-page > .page-header::after { content: none; }
+.has-topbar :is(.design-hero-art, .design-hero-quote, .design-closing, .home-heading-quote) { display: none; }
+.has-topbar .design-creation-panel { padding: 28px 32px; gap: 32px; }
+.has-topbar .design-tips { border-left: 1px solid var(--c-line); }
+.has-topbar .design-tips li { background: var(--c-paper); border-radius: 10px; }
+.has-topbar .design-tip-icon { width: 32px; height: 32px; background: none; border: 1px solid var(--c-line-strong); color: var(--c-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.has-topbar .design-section-head h2 { font-size: 18px; }
+.has-topbar .import-dropzone { background: var(--c-paper); border-radius: 10px; }
+.has-topbar .import-dropzone .import-file-mark { display: none; }
+.has-topbar :is(.design-page-heading, .page-head > div) > p:last-child { color: var(--c-muted); font-size: 14px; }
+.has-topbar .page-head .eyebrow { display: block; margin: 0 0 6px; color: var(--c-muted); font-size: 13px; letter-spacing: .08em; }
+.has-topbar .design-badge { border-radius: 4px; }
+.has-topbar .design-badge.required { background: color-mix(in srgb, var(--c-danger) 10%, var(--c-surface)); color: var(--c-danger); border-color: transparent; }
+
+/* 导览结束 and 找不到 pages: centred copy, no illustration. */
+.has-topbar .tutorial-complete-page { padding-top: 40px; }
+.has-topbar .tutorial-complete-panel { display: block; max-width: 720px; min-height: 0; margin: 0 auto; padding: 36px 40px; }
+.has-topbar .tutorial-complete-copy h2 { font-family: var(--font-serif); font-size: 26px; font-weight: 600; margin: 0 0 8px; }
+.has-topbar .tutorial-complete-copy ol { display: grid; gap: 8px; margin: 20px 0 24px; padding: 0; list-style: none; }
+.has-topbar .tutorial-complete-copy li { display: flex; align-items: center; gap: 12px; font-size: 15px; }
+.has-topbar .tutorial-complete-copy li > span { display: grid; place-items: center; flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--c-accent-tint); color: var(--c-accent-text); font-size: 12px; font-variant-numeric: tabular-nums; }
+.has-topbar .tutorial-complete-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.has-topbar .tutorial-complete-copy small { display: block; margin-top: 16px; color: var(--c-faint); }
+.workbench.has-topbar > main.global-main > .not-found-page { max-width: 560px; min-height: 0; margin: 64px auto 0; padding: 40px; text-align: center; }
+.has-topbar .not-found-page h1 { margin: 0 0 10px; font-family: var(--font-serif); font-size: 26px; font-weight: 600; }
+.has-topbar .not-found-page p { margin: 0 0 24px; color: var(--c-muted); }
+.has-topbar .not-found-page .actions { justify-content: center; }
+
+/* 个人中心 / 账号安全 (v1.7.0) */
+.has-topbar .global-main > :is(.account-profile-page, .account-security) { padding-top: 40px; }
+.has-topbar .author-center-header { padding: 24px 28px; }
+.has-topbar .author-stat-list > div { align-items: flex-start; text-align: left; min-height: 88px; padding: 16px 18px; border-radius: 10px; background: var(--c-paper); box-shadow: none; }
+.has-topbar .author-stat-list dt { flex-direction: row; justify-content: flex-start; min-height: 0; color: var(--c-muted); font-size: 13px; }
+.has-topbar .author-stat-list dt svg { display: none; }
+.has-topbar .author-stat-list dd { justify-content: flex-start; font-size: 24px; font-weight: 600; }
+.has-topbar .author-stat-list > div:last-child dd { font-size: 15px; font-weight: 500; }
+.has-topbar .account-security > section { margin-top: 16px; padding: 20px 24px; }
+
+/* 登录 / 注册 / 找回密码 (v1.7.0): a single paper card on the plain page background. */
+.workbench.auth-shell { background: var(--c-bg); }
+.auth-shell .auth-layout { border: 1px solid var(--c-line); border-radius: 14px; background: var(--c-surface); box-shadow: var(--elev-1); }
+.auth-shell .auth { border: 0; background: transparent; box-shadow: none; }
+.auth-shell .auth::before { content: none; }
+.auth-shell .auth-brand .brand-asset { display: inline-flex; align-items: center; gap: 8px; width: auto; color: var(--c-text); }
+.auth-shell .auth-brand .brand-dot { fill: var(--c-danger); }
+.auth-shell .auth-brand .brand-wordmark { font-size: 15px; font-weight: 600; }
+.auth-shell .auth h1 { font-family: var(--font-serif); font-size: 28px; font-weight: 600; letter-spacing: .04em; }
+.auth-shell .auth-lede { color: var(--c-muted); }
+.auth-shell :is(.auth-reset, .auth-verify) { border: 1px solid var(--c-line); border-radius: 14px; background: var(--c-surface); box-shadow: var(--elev-1); }
+.auth-shell .auth-intro { border-color: var(--c-line); }
+.auth-shell .auth-intro h2 { font-family: var(--font-serif); font-weight: 600; }
+
+/* 计划 cards (v1.7.0): neutral hairline, quiet text actions; 考虑中 is a dashed draft on paper. */
+.plan-page .author-plan-list > li.planning-card { grid-template-columns: 32px minmax(0, 1fr) 112px; gap: 16px; padding: 20px 20px 20px 18px; border: 1px solid var(--c-line); border-radius: 12px; background: var(--c-surface); box-shadow: none; }
+.plan-page .author-plan-list > li.planning-card.considering { border: 1px dashed var(--c-line-strong); background: var(--c-paper); }
+.plan-page .author-plan-order { font-family: var(--font-serif); font-size: 20px; color: var(--c-faint); font-variant-numeric: tabular-nums; }
+.plan-page .author-plan-list h2 { font-family: var(--font-serif); font-size: 18px; font-weight: 600; }
+.plan-page .author-plan-list article > header > .planning-category { border-color: var(--c-line-strong); color: var(--c-muted); }
+.plan-page .author-plan-actions { display: grid; grid-template-columns: 1fr 1fr; align-content: start; gap: 2px 4px; padding-left: 14px; border-left: 1px solid var(--c-line); }
+.plan-page .author-plan-actions button { min-height: 32px; padding: 4px 6px; border: 0; border-radius: 6px; background: none; color: var(--c-muted); font-size: 13px; box-shadow: none; justify-content: flex-start; }
+.plan-page .author-plan-actions button:hover:not(:disabled) { background: var(--c-raised); color: var(--c-text); }
+.plan-page .author-plan-actions :is(button:first-child, .considering-action, .archive-action) { grid-column: 1 / -1; }
+.plan-page .author-plan-actions .considering-action { color: var(--c-accent-text); }
+.plan-page .author-plan-actions .archive-action { color: var(--c-danger); background: none; }
+.plan-page .author-plan-actions .order-action { font-family: var(--font-sans); }
+.plan-page .author-plan-actions .order-action span { margin-left: 2px; }
+@media (max-width: 720px) {
+  .plan-page .author-plan-list > li.planning-card { grid-template-columns: 26px minmax(0, 1fr); }
+  .plan-page .author-plan-actions { display: flex; flex-wrap: wrap; grid-column: 1 / -1; padding: 10px 0 0; border-left: 0; border-top: 1px solid var(--c-line); }
+}
+
+/* 资料 · 设定 category tabs (v1.7.0): underline tabs, a level below the segmented 资料 tabs. */
+.world-controls nav { gap: 2px; }
+.world-controls nav button { min-width: 0; min-height: 40px; padding: 0 12px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; color: var(--c-muted); font-size: 14px; box-shadow: none; }
+.world-controls nav button:hover { color: var(--c-text); background: none; }
+.world-controls nav button.current { border-bottom-color: var(--c-text); background: none; color: var(--c-text); font-weight: 500; }
+.world-controls nav .category-manage { margin-left: 8px; color: var(--c-accent-text); }
+
+/* Layering with the sticky top bar (z 40): full-screen surfaces and overlays must sit above it. */
+.immersive-editor { z-index: 55; }
+.modal-layer { z-index: 60; }
+.source-layer { z-index: 61; }
+.tutorial-guidance-hint { z-index: 70; }
+
+/* Dialogs (v1.7.0): one paper sheet over a dimmed page. */
+.modal-layer > .dialog,
+.modal-layer > .planning-edit-dialog { border: 1px solid var(--c-line); border-radius: 14px; background: var(--c-surface); box-shadow: var(--elev-2); }
+.planning-dialog-brand { color: var(--c-muted); }
+.dialog h2 { font-family: var(--font-serif); font-weight: 600; }
