@@ -228,3 +228,7 @@
 .category-editor li input, .category-create input { min-height: 36px; width: 180px; max-width: 100%; }
 .category-create { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .category-select select { min-height: 36px; }
+
+/* 示例作品 marker (v1.7.0) */
+.sample-badge { display: inline-flex; align-items: center; height: 22px; margin-left: 10px; padding: 0 8px; border-radius: 6px; background: var(--c-accent-tint); color: var(--c-accent-text); font-family: var(--font-sans); font-size: 12px; font-weight: 500; letter-spacing: 0; vertical-align: middle; }
+.topbar .sample-badge { margin-left: 2px; height: 20px; }

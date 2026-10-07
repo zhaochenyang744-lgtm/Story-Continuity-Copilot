@@ -225,7 +225,7 @@ class V120TutorialProgressTests(unittest.TestCase):
         self.assertEqual((reset["current_step"], reset["completed_events"]), (1, []))
         self.assertGreater(reset["revision"], advanced["revision"])
         tutorial = self.client.get(f"/api/projects/{project_id}").json()["data"]
-        self.assertEqual((tutorial["title"], tutorial["chapter_count"], tutorial["data_origin"]), ("教学模式 · 灰港回声", 10, "tutorial_seed"))
+        self.assertEqual((tutorial["title"], tutorial["chapter_count"], tutorial["data_origin"]), ("灰港回声", 10, "tutorial_seed"))
         completed = self.client.post("/api/onboarding/complete", headers=idem(), json={"confirm": True})
         self.assertEqual((completed.status_code, self.progress()), (200, None))
 

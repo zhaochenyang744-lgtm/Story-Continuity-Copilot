@@ -1,10 +1,16 @@
-"""Synthetic, public seed content for the Story Continuity application."""
+"""Synthetic, public seed content for the Story Continuity application.
+
+Since v1.7.0 every account has one sample work (示例作品). Its content lives in seed/sample_work.json, in
+the format the content authors write (see the v1.7.0 sample-work task); this module validates it once at
+import and exposes it under the names the database layer has always used.
+"""
 
 from __future__ import annotations
 
-# Raised whenever the sample works change; untouched sample works in existing accounts are then
-# re-created from the new seed (v2_database._migrate_v160_demo_refresh). 2: chapter bodies; 3: preset chapter check (v1.6.0).
-DEMO_SEED_VERSION = 3
+import json
+import os
+import pathlib
+from typing import Any
 
 SEED_ORIGIN = {
     "origin": "original_demo_specific_web_demo_stage1",
@@ -12,158 +18,125 @@ SEED_ORIGIN = {
     "restriction": "Synthetic public sample; no private author content or runtime account data is used.",
 }
 
+SAMPLE_WORK_PATH = pathlib.Path(__file__).with_name("seed") / "sample_work.json"
+# Tests pin the sample work to a fixture (STORY_SAMPLE_WORK_FILE) so behaviour tests do not depend on the
+# published sample text; production always reads the file above.
+_override = os.environ.get("STORY_SAMPLE_WORK_FILE")
+
+NATURE_CLASSIFICATION = {"confirmed_conflict": "conflict", "possible_conflict": "conflict", "state_change": "conflict", "insufficient_evidence": "insufficient_evidence"}
+NATURE_EVIDENCE = {
+    # nature: (relation, sufficiency, role)
+    "confirmed_conflict": ("contradicts", "sufficient", "prior_state"),
+    "possible_conflict": ("context", "sufficient", "current_context"),
+    "state_change": ("context", "sufficient", "prior_state"),
+    "insufficient_evidence": ("context", "insufficient", "missing_link"),
+}
+NATURE_ACTIONS = {
+    "confirmed_conflict": ["edit", "apply_suggestion", "keep_intentional", "false_positive"],
+    "possible_conflict": ["edit", "keep_intentional", "false_positive"],
+    "state_change": ["edit", "keep_intentional", "false_positive"],
+    "insufficient_evidence": [],
+}
+ROLE_TYPES = {"protagonist", "ally", "antagonist", "supporting", "other"}
+# Built-in setting categories, by their Chinese name; anything else becomes an author category.
+SETTING_TYPES = {"地点": "location", "规则": "rule", "组织": "organization", "物品": "object", "术语": "term"}
+
+
+def _load(path: pathlib.Path = SAMPLE_WORK_PATH) -> dict[str, Any]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    passages = {item["id"]: (chapter["id"], item["text"]) for chapter in data["chapters"] for item in chapter["passages"]}
+    for chapter in data["chapters"]:
+        for item in chapter["passages"]:
+            if item["text"] not in chapter["body"]:
+                raise ValueError(f"sample work: passage {item['id']} is not verbatim in chapter {chapter['number']}")
+    for issue in data["draft_issues"]:
+        # Verbatim sentences are checked by the authoring tool (check.py); the legacy fixture abbreviates one.
+        if issue["evidence_passage"] not in passages or issue["nature"] not in NATURE_CLASSIFICATION:
+            raise ValueError(f"sample work: draft issue is inconsistent: {issue['sentence'][:30]}")
+    for record in data["memory"]:
+        if record["passage"] not in passages:
+            raise ValueError(f"sample work: fact {record['subject']} cites an unknown passage")
+    return data
+
+
+SAMPLE_WORK = _load(pathlib.Path(_override) if _override else SAMPLE_WORK_PATH)
+
+# Raised whenever the sample work changes (v2_database migrations re-create sample works from it).
+DEMO_SEED_VERSION = int(SAMPLE_WORK.get("seed_version", 4))
+
 PROJECT = {
     "id": "project-grey-harbor-echo",
-    "title": "灰港回声",
-    "summary": "一名潮图修复师在雾港追查被改写的航线记录。",
+    "title": SAMPLE_WORK["project"]["title"],
+    "genre": SAMPLE_WORK["project"].get("genre", ""),
+    "summary": SAMPLE_WORK["project"]["summary"],
     "data_origin": "demo-specific-original",
 }
 
 CHAPTERS = [
-    ("ghe-ch-01", 1, "雾钟", "苏岑抵达灰港，听见北潮闸关闭时才会响一次的雾钟。", [("ghe-ch01-s01", "雾钟守则", "灰港的雾钟只在北潮闸完全关闭后敲响一次，别的潮声不会让它响。")]),
-    ("ghe-ch-02", 2, "裂纹罗盘", "苏岑从测绘塔取回父亲留下的罗盘。", [("ghe-ch02-s01", "罗盘状态", "黄铜罗盘的镜面有一道月牙裂纹，此刻由苏岑放在外套内袋。")]),
-    ("ghe-ch-03", 3, "迟到的渡船", "黎舟带苏岑穿过风栈码头，记录潮汐反常的时刻。", [("ghe-ch03-s01", "时间线", "十九点二十，西航道先退潮，最后一班渡船在十九点四十才离开风栈码头。")]),
-    ("ghe-ch-04", 4, "无字潮表", "档案员温岚找到一张加密潮表。", [("ghe-ch04-s01", "知识边界", "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。")]),
-    ("ghe-ch-05", 5, "盐雾信箱", "一张无人署名的纸条把三人引向旧灯塔。", [("ghe-ch05-s01", "开放线索", "纸条只写着‘白色渡船没有靠岸’，署名和日期都被盐雾抹去了。")]),
-    ("ghe-ch-06", 6, "低室电台", "黎舟修好低室电台，三人听到短促的求救码。", [("ghe-ch06-s01", "事件记录", "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。")]),
-    ("ghe-ch-07", 7, "潮线之外", "苏岑和温岚在雾线水门外找到被撕开的航图。", [("ghe-ch07-s01", "地点状态", "航图被固定在雾线水门外的锚柱上，右下角缺失了一块。")]),
-    ("ghe-ch-08", 8, "北堤灯火", "温岚用旧档案证明父亲曾守过北堤。", [("ghe-ch08-s01", "关系变化", "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。")]),
-    ("ghe-ch-09", 9, "换手", "苏岑将罗盘交给温岚，自己进入封闭仓道。", [("ghe-ch09-s01", "动态状态", "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。")]),
-    ("ghe-ch-10", 10, "回声坐标", "雾钟再响，白色渡船的回声从港外传来。", [("ghe-ch10-s01", "未解问题", "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。")]),
+    (chapter["id"], chapter["number"], chapter["title"], chapter["summary"], [(item["id"], item["label"], item["text"]) for item in chapter["passages"]])
+    for chapter in SAMPLE_WORK["chapters"]
 ]
-# Short chapter bodies for the sample work, so it reads (and counts) as written chapters rather than
-# ten empty ones. Each contains its chapter's SourceSpan text verbatim, so the preset review's
-# evidence is unchanged.
-CHAPTER_BODIES = {
-    "ghe-ch-01": "苏岑在黄昏时抵达灰港，码头上的人都在收网。灰港的雾钟只在北潮闸完全关闭后敲响一次，别的潮声不会让它响。那天夜里，她听见钟声从港口另一头传来，便在旅店的窗边记下了时间。",
-    "ghe-ch-02": "苏岑爬上测绘塔，在父亲留下的工具箱里找到一枚旧罗盘。黄铜罗盘的镜面有一道月牙裂纹，此刻由苏岑放在外套内袋。她试着校准方向，指针晃了很久才停下。",
-    "ghe-ch-03": "黎舟带苏岑穿过风栈码头，一边走一边看怀表。十九点二十，西航道先退潮，最后一班渡船在十九点四十才离开风栈码头。黎舟把这两个时刻抄在潮汐簿上，说往年从没晚过这么久。",
-    "ghe-ch-04": "档案员温岚在旧柜底层翻出一张没有标题的潮表，纸边已经发黄。温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。她把潮表夹进档案册，打算第二天再查。",
-    "ghe-ch-05": "旧灯塔下的信箱里多了一张折起的纸条。纸条只写着‘白色渡船没有靠岸’，署名和日期都被盐雾抹去了。三人商量之后，决定去旧灯塔看看。",
-    "ghe-ch-06": "黎舟花了一下午修好低室里那台老电台。电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。温岚把求救码记在本子上，苏岑则盯着地图上的水门。",
-    "ghe-ch-07": "第二天清早，苏岑和温岚沿着潮线走到雾线水门外。航图被固定在雾线水门外的锚柱上，右下角缺失了一块。两人没有动它，只把锚柱的位置画进了笔记。",
-    "ghe-ch-08": "温岚从旧档案里找到一页值守记录，证明苏岑的父亲曾在北堤守过灯。温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
-    "ghe-ch-09": "仓道入口很窄，只容一个人侧身通过。进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。随后她独自走进封闭仓道，温岚留在入口等候。",
-    "ghe-ch-10": "夜里雾更浓了，港口的灯一盏接一盏熄灭。北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。苏岑从仓道里出来，三人一起望向港外。",
-}
-# A preset chapter check of the sample work, so a visitor can see what checking written chapters gives
-# without running one. Authored fixture data, labelled as a sample on the page; never Provider output.
-DEMO_CHAPTER_CHECK = {
-    "chapters": ["ghe-ch-09", "ghe-ch-10"],
-    "issues": [
-        {
-            "chapter": "ghe-ch-10",
-            "sentence": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
-            "nature": "possible_conflict",
-            "category": "world_rule",
-            "severity": "medium",
-            "explanation": "第 1 章写明雾钟只在北潮闸完全关闭后才会响；本章写北潮闸没关，雾钟却响了。如果这是有意埋下的谜团，可以保留原意。",
-            "evidence_span": "ghe-ch01-s01",
-        },
-    ],
-}
+CHAPTER_BODIES = {chapter["id"]: chapter["body"] for chapter in SAMPLE_WORK["chapters"]}
+_chapter_by_number = {chapter["number"]: chapter["id"] for chapter in SAMPLE_WORK["chapters"]}
+
 DRAFT = {
-    "id": "draft-ghe-ch11",
-    "chapter_number": 11,
-    "title": "第十一章：未归的航标",
-    "body": "温岚仍握着黄铜罗盘；与此同时，黄铜罗盘也在苏岑的外套内袋。随后，温岚把罗盘放在潮汐档案室的桌上。苏岑沿着雾线水门的石阶回望灰港，决定先核对那声不该响起的雾钟。黎舟已经告诉苏岑‘廊桥钥匙’的含义。",
+    "id": "draft-sample-current",
+    "chapter_number": SAMPLE_WORK["draft"]["number"],
+    "title": SAMPLE_WORK["draft"]["title"],
+    "body": SAMPLE_WORK["draft"]["body"],
     "revision": 1,
     "status": "saved",
 }
 
 MEMORY_RECORDS = [
-    ("mem-ghe-v4-001", "static_canon", "灰港雾钟", "rule", "只在北潮闸完全关闭后敲响一次", "ghe-ch01-s01"),
-    ("mem-ghe-v4-002", "dynamic_state", "黄铜罗盘", "holder", "温岚", "ghe-ch09-s01"),
-    ("mem-ghe-v4-003", "event_timeline", "西航道退潮", "time", "第3章 19:20", "ghe-ch03-s01"),
-    ("mem-ghe-v4-004", "character_knowledge", "温岚", "does_not_know", "廊桥钥匙的含义", "ghe-ch04-s01"),
-    ("mem-ghe-v4-005", "open_thread", "白色渡船", "status", "没有靠岸，来源未明", "ghe-ch05-s01"),
-    ("mem-ghe-v4-006", "dynamic_state", "航图", "location", "雾线水门外锚柱", "ghe-ch07-s01"),
-    ("mem-ghe-v4-007", "event_timeline", "低室电台", "received", "第6章 21:05 收到三次求救码", "ghe-ch06-s01"),
-    ("mem-ghe-v4-008", "open_thread", "异常雾钟", "status", "北潮闸未关闭时响起，原因未解", "ghe-ch10-s01"),
+    (record.get("key") or f"sample-memory-{index}", record["type"], record["subject"], record["predicate"], record["value"], record["passage"])
+    for index, record in enumerate(SAMPLE_WORK["memory"], 1)
 ]
+_memory_by_passage = {}
+for _key, *_rest, _passage in MEMORY_RECORDS:
+    _memory_by_passage.setdefault(_passage, _key)
 
-# Deterministic sample-work review material. This is authored fixture data,
-# not stored or simulated Provider output. Identifiers are rebound to each new
-# account's project-local chapters, spans, Memory records, draft, and Run.
-DEMO_REVIEW_ISSUES = [
-    {
-        "claim_text": "温岚仍握着黄铜罗盘；与此同时，黄铜罗盘也在苏岑的外套内袋。",
-        "classification": "conflict",
-        "nature": "confirmed_conflict",
-        "category": "object_state",
-        "severity": "high",
-        "explanation": "同一时刻、同一枚黄铜罗盘被写成由两人分别持有，形成已确认冲突。",
-        "reasoning": "第 10 章在紧邻当前草稿的时间点明确写着温岚仍握着这枚罗盘；当前句又用“与此同时”把同一枚罗盘放进苏岑内袋，时间与对象范围一致，两个位置不能同时成立。",
-        "evidence_span_id": "ghe-ch10-s01",
-        "evidence_relation": "contradicts",
-        "evidence_sufficiency": "sufficient",
-        "evidence_role": "prior_state",
-        "suggested_revision": {"before": "温岚仍握着黄铜罗盘；与此同时，黄铜罗盘也在苏岑的外套内袋。", "after": "温岚仍握着黄铜罗盘。"},
-        "available_actions": ["edit", "apply_suggestion", "keep_intentional", "false_positive"],
-        "related_memory_id": "mem-ghe-v4-002",
-        "proposed_memory_change": {
-            "operation": "add", "memory_type": "open_thread", "subject": "黄铜罗盘临时离手",
-            "predicate": "status", "value": "持有人表述冲突，待作者澄清",
-        },
-    },
-    {
-        "claim_text": "随后，温岚把罗盘放在潮汐档案室的桌上。",
-        "classification": "conflict",
-        "nature": "state_change",
-        "category": "location_action",
-        "severity": "medium",
-        "explanation": "这是从“温岚手中”到“档案室桌上”的有先后关系的状态变化。",
-        "reasoning": "第 9 章先建立温岚接手保管罗盘的旧状态，当前草稿用“随后”写出她将罗盘放到桌上的后续动作；这是可追溯的前后变化，不应误报为同一时刻冲突。",
-        "evidence_span_id": "ghe-ch09-s01",
-        "evidence_relation": "context",
-        "evidence_sufficiency": "sufficient",
-        "evidence_role": "prior_state",
-        "suggested_revision": None,
-        "available_actions": ["edit", "keep_intentional", "false_positive"],
-        "related_memory_id": "mem-ghe-v4-002",
-        "proposed_memory_change": {
-            "operation": "replace", "memory_type": "dynamic_state", "subject": "黄铜罗盘",
-            "predicate": "holder", "value": "由温岚放在潮汐档案室桌上", "affected_memory_id": "mem-ghe-v4-002",
-        },
-    },
-    {
-        "claim_text": "苏岑决定先核对那声不该响起的雾钟。",
-        "classification": "conflict",
-        "nature": "possible_conflict",
-        "category": "event_status",
-        "severity": "medium",
-        "explanation": "雾钟规则与异常响钟之间存在疑点，但既有正文已把它标为未解线索。",
-        "reasoning": "第 1 章给出正常响钟规则，第 10 章则明确保留一次异常响钟；当前草稿只是继续调查这个开放线索，尚不足以确认世界规则已被无意违反。",
-        "evidence_span_id": "ghe-ch10-s01",
-        "evidence_relation": "context",
-        "evidence_sufficiency": "sufficient",
-        "evidence_role": "current_context",
-        "suggested_revision": None,
-        "available_actions": ["edit", "keep_intentional", "false_positive"],
-        "related_memory_id": "mem-ghe-v4-008",
-        "proposed_memory_change": {
-            "operation": "add",
-            "memory_type": "event_timeline",
-            "subject": "苏岑",
-            "predicate": "next_action",
-            "value": "优先核对异常雾钟",
-        },
-    },
-    {
-        "claim_text": "黎舟已经告诉苏岑‘廊桥钥匙’的含义。",
-        "classification": "insufficient_evidence",
-        "nature": "insufficient_evidence",
-        "category": "character_knowledge",
-        "severity": "low",
-        "explanation": "已写来源没有出现黎舟完成告知或苏岑获知该含义的事件。",
-        "reasoning": "第 4 章只证明温岚当时不知道代号含义；现有来源中缺少黎舟获知、转告以及苏岑接收信息的中间事件，因此在证据链缺口补齐前停止判断。",
-        "evidence_span_id": "ghe-ch04-s01",
-        "evidence_relation": "context",
-        "evidence_sufficiency": "insufficient",
-        "evidence_role": "missing_link",
-        "suggested_revision": None,
-        "available_actions": [],
-        "related_memory_id": "mem-ghe-v4-004",
-        "proposed_memory_change": None,
-    },
+
+def _review_issue(issue: dict[str, Any]) -> dict[str, Any]:
+    relation, sufficiency, role = NATURE_EVIDENCE[issue["nature"]]
+    return {
+        "claim_text": issue["sentence"],
+        "classification": NATURE_CLASSIFICATION[issue["nature"]],
+        "nature": issue["nature"],
+        "category": issue["category"],
+        "severity": issue["severity"],
+        "explanation": issue["explanation"],
+        "reasoning": issue["reasoning"],
+        "evidence_span_id": issue["evidence_passage"],
+        "evidence_relation": relation,
+        "evidence_sufficiency": sufficiency,
+        "evidence_role": role,
+        "suggested_revision": issue.get("suggested_revision"),
+        "available_actions": NATURE_ACTIONS[issue["nature"]],
+        "related_memory_id": issue.get("related_memory") or _memory_by_passage.get(issue["evidence_passage"]) or MEMORY_RECORDS[0][0],
+        "proposed_memory_change": issue.get("proposed_memory_change"),
+    }
+
+
+# Deterministic sample-work review material: authored fixture data, never stored or simulated Provider
+# output. Identifiers are rebound to each new account's project-local chapters, spans, facts, draft and run.
+DEMO_REVIEW_ISSUES = [_review_issue(issue) for issue in SAMPLE_WORK["draft_issues"]]
+
+# A preset chapter check of the sample work, so a visitor can see what checking written chapters gives
+# without running one. Labelled as a sample on the page.
+DEMO_CHAPTER_CHECK = {
+    "chapters": [_chapter_by_number[number] for number in SAMPLE_WORK["chapter_check_sample"]["chapters"]],
+    "issues": [
+        {"chapter": _chapter_by_number[issue["chapter"]], "sentence": issue["sentence"], "nature": issue["nature"], "category": issue["category"],
+         "severity": issue["severity"], "explanation": issue["explanation"], "evidence_span": issue["evidence_passage"]}
+        for issue in SAMPLE_WORK["chapter_check_sample"]["issues"]
+    ],
+}
+
+CHARACTERS = [
+    {**person, "role": person["role"] if person["role"] in ROLE_TYPES else "other", "aliases": list(person.get("aliases") or [])}
+    for person in SAMPLE_WORK.get("characters", [])
 ]
+SETTINGS = [{**item, "entry_type": SETTING_TYPES.get(item["category"])} for item in SAMPLE_WORK.get("settings", [])]
+FORESHADOWS = list(SAMPLE_WORK.get("foreshadows", []))
+PLANS = list(SAMPLE_WORK.get("plans", []))

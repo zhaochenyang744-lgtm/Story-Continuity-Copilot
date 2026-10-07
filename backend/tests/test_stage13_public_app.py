@@ -182,7 +182,8 @@ class Stage13PublicAppTests(unittest.TestCase):
         self.assertEqual(first.status_code, 201)
         first_user = first.json()["data"]["user"]
         self.assertEqual(first_user["account_type"], "visitor")
-        self.assertEqual(len(first.json()["data"]["seeded_projects"]), 3)
+        # Since v1.7.0 a visitor gets the one sample work.
+        self.assertEqual(len(first.json()["data"]["seeded_projects"]), 1)
         replay = self.visitor()
         self.assertEqual(replay.json()["data"]["user"]["id"], first_user["id"])
         other_client = TestClient(self.app)

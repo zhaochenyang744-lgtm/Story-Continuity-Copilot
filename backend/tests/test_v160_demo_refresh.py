@@ -38,7 +38,8 @@ class DemoRefreshTests(unittest.TestCase):
         self.assertIsNotNone(visitor, "visitor accounts seed the sample works")
         with self.db.connection() as c:
             self.projects = {row["seed_key"]: row["id"] for row in c.execute("SELECT id,seed_key FROM v2_projects WHERE data_origin='demo_seed'")}
-        self.assertEqual(set(self.projects), {"grey_harbor", "paper_moon", "zero_garden"})
+        # Since v1.7.0 a visitor has the one sample work.
+        self.assertEqual(set(self.projects), {"grey_harbor"})
 
     def tearDown(self):
         self.temp.cleanup()
@@ -95,7 +96,7 @@ class DemoRefreshTests(unittest.TestCase):
         self.assertEqual(self.version(project_id), DEMO_SEED_VERSION)
 
     def test_the_refresh_runs_once_per_seed_version(self):
-        project_id = self.projects["paper_moon"]
+        project_id = self.projects["grey_harbor"]
         self.age(project_id)
         self.restart()
         with self.db.connection() as c:

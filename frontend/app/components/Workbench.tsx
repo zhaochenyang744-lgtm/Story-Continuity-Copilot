@@ -514,7 +514,7 @@ function resolveTutorialGuidanceTarget({
             key: readOnly ? "mobile-decision-note" : "author-decision",
             message: readOnly
               ? "请在桌面端继续完成作者决定"
-              : "请选择一种处理方式，教学不会替你决定",
+              : "请选择一种处理方式，导览不会替你决定",
           }
         : null;
     }
@@ -529,7 +529,7 @@ function resolveTutorialGuidanceTarget({
     ? {
         element: primary,
         key: "tutorial-complete",
-        message: "完成教学后即可导入自己的作品",
+        message: "完成导览后即可导入自己的作品",
       }
     : null;
 }
@@ -1691,10 +1691,10 @@ export function Workbench() {
   };
   const finishTutorial = async (outcome: "complete" | "skip") => {
     if (pendingControlledDecision) {
-      setNotice("正文已保存，但作者决定仍待补记。请先完成补记，再结束或跳过教学。");
+      setNotice("正文已保存，但作者决定仍待补记。请先完成补记，再结束或跳过导览。");
       return;
     }
-    setBusy(outcome === "complete" ? "正在完成教学" : "正在跳过教学");
+    setBusy(outcome === "complete" ? "正在完成导览" : "正在跳过导览");
     try {
       await json(`/onboarding/${outcome}`, "POST", { confirm: true });
       setTutorialProgress(null);
@@ -1706,7 +1706,7 @@ export function Workbench() {
       } else {
         clear();
         router.replace("/");
-        setNotice("已跳过教学。现在可以导入第一部真实作品。");
+        setNotice("已跳过导览。现在可以导入第一部真实作品。");
       }
     } catch (cause) {
       fail(cause);
@@ -1718,10 +1718,10 @@ export function Workbench() {
     setUserMenuOpen(false);
     const tutorial = onboarding?.tutorial;
     if (!tutorial) {
-      setNotice("当前账号没有可重新开始的教学作品。");
+      setNotice("当前账号没有可重新开始的示例作品。");
       return;
     }
-    setBusy("正在重新开始教学");
+    setBusy("正在重新开始导览");
     try {
       const next = await json<Onboarding>("/onboarding/progress/restart", "POST", {
         tutorial_version: "1.2.0",
@@ -1731,7 +1731,7 @@ export function Workbench() {
       });
       applyOnboarding(next);
       setTutorialRestored(true);
-      setNotice("教学进度已回到第一步；正文、事实库与审阅记录均保持原样。");
+      setNotice("导览进度已回到第一步；正文、事实库与审阅记录均保持原样。");
       go(`/projects/${tutorial.project_id}/overview`);
     } catch (cause) {
       fail(cause);
@@ -2820,6 +2820,7 @@ export function Workbench() {
             {projectId && project && (
               <Button className="topbar-work" title={project.title} ariaLabel={`更换当前作品：${project.title}`} onClick={() => go("/projects")}>
                 <strong>{project.title}</strong>
+                {(project.is_tutorial || project.data_origin === "demo_seed") && <span className="sample-badge">示例</span>}
                 <Chevron className="topbar-work-mark" />
               </Button>
             )}
@@ -2874,7 +2875,7 @@ export function Workbench() {
                       <button type="button" role="menuitem" onClick={() => go("/account/security")}><Icon name="security" />账号安全</button>
                     )}
                     {user.account_type !== "visitor" && (
-                      <button type="button" role="menuitem" onClick={() => void reopenTutorial()}><Icon name="tutorial" />重新打开教学</button>
+                      <button type="button" role="menuitem" onClick={() => void reopenTutorial()}><Icon name="tutorial" />重新打开导览</button>
                     )}
                     <button
                       type="button"
@@ -3029,7 +3030,7 @@ export function Workbench() {
               run_id: run.run_id,
               issue_id: issue.id,
             });
-            setNotice("已复习这条既有作者决定；没有创建或改写决定，可以继续完成教学。");
+            setNotice("已复习这条既有作者决定；没有创建或改写决定，可以继续完成导览。");
           }}
         />
       )}
@@ -3591,7 +3592,7 @@ function AccountProfile({ user, projects, updateUser, go }: { user: User; projec
               <div><dt><DesignIcon name="edit" />正文与草稿字数</dt><dd>{projects === null ? "—" : formatWritingCount(totalWords)}</dd></div>
               <div><dt><DesignIcon name="grid" />创作状态</dt><dd>{projects === null ? "读取中" : `${activeProjects} 部进行中 · ${completedProjects} 部完成`}</dd></div>
             </dl>
-            <p className="author-stat-note">字数按章节正文与当前草稿去除空白后统计；教学作品不计入。</p>
+            <p className="author-stat-note">字数按章节正文与当前草稿去除空白后统计；示例作品不计入。</p>
           </section>
           <section className="author-works" aria-labelledby="author-works-title">
             <header className="section-heading"><div><p className="eyebrow">创作空间</p><h2 id="author-works-title">我的作品</h2></div><Button className="quiet" onClick={() => go("/projects")}>全部作品</Button></header>
@@ -3709,17 +3710,17 @@ function TutorialCompletePage({ go }: { go: (href: string) => void }) {
       <section className="tutorial-complete-panel" aria-labelledby="tutorial-complete-title" aria-busy={status === null}>
         <TutorialCompleteVisual />
         <div className="tutorial-complete-copy">
-          <p className="eyebrow">{finished ? "隔离教学 · 已结束" : status === "skipped" ? "隔离教学 · 已跳过" : "隔离教学 · 进行中"}</p>
-          <h2 id="tutorial-complete-title">{finished ? "教学已完成" : status === "skipped" ? "你跳过了教学" : "教学还没走完"}</h2>
-          <p>{finished ? "你已经走完一次连续性检查流程。" : "教学会带你走一遍下面的流程，大约几分钟。"}</p>
+          <p className="eyebrow">{finished ? "导览 · 已结束" : status === "skipped" ? "导览 · 已跳过" : "导览 · 进行中"}</p>
+          <h2 id="tutorial-complete-title">{finished ? "导览已完成" : status === "skipped" ? "你跳过了导览" : "导览还没走完"}</h2>
+          <p>{finished ? "你已经走完一次连续性检查流程。" : "导览会带你走一遍下面的流程，大约几分钟。"}</p>
           <ol>{steps.map((step, index) => <li key={step}><span>{index + 1}</span>{step}</li>)}</ol>
           <div className="tutorial-complete-actions">
-            {!finished && status === "active" && tutorialId && <Button className="primary" onClick={() => go(`/projects/${tutorialId}/overview`)}>继续教学</Button>}
+            {!finished && status === "active" && tutorialId && <Button className="primary" onClick={() => go(`/projects/${tutorialId}/overview`)}>继续导览</Button>}
             <Button className={finished || status !== "active" || !tutorialId ? "primary" : "secondary"} onClick={() => go("/projects/import")}>导入自己的作品</Button>
             <Button onClick={() => go("/projects/new")}>创建空白作品</Button>
             <Button className="quiet" onClick={() => go("/")}>返回首页</Button>
           </div>
-          <small>教学项目不计入真实作品。</small>
+          <small>示例作品不计入真实作品。</small>
         </div>
       </section>
     </section>
@@ -3752,15 +3753,15 @@ function HomePage({
         <div className="home-heading-quote" aria-hidden="true">在文字的宇宙里，<br />每个故事都会找到它的下一个章节。<span>STORY CONTINUITY</span></div>
       </header>
       {onboarding?.show_first_run && onboarding.tutorial && (
-        <section className="tutorial-entry home-entry-composition" aria-label="首次教学">
+        <section className="tutorial-entry home-entry-composition" aria-label="首次导览">
           <HomeEntryArt />
           <div className="home-entry-copy">
-            <p className="eyebrow">首次使用 · 教学模式</p>
+            <p className="eyebrow">首次使用 · 示例作品</p>
             <h2>先用示例作品熟悉连续性检查</h2>
-            <p>教学作品不计入真实作品、搜索或待处理问题；完成后再导入自己的故事。</p>
+            <p>示例作品不计入真实作品、搜索或待处理问题；完成后再导入自己的故事。</p>
           </div>
           <div className="actions home-entry-actions">
-            <Button className="primary" onClick={() => open(onboarding.tutorial!.project_id)}><span className="home-play-mark" aria-hidden="true" />开始教学<Icon name="arrow-right" inline /></Button>
+            <Button className="primary" onClick={() => open(onboarding.tutorial!.project_id)}><span className="home-play-mark" aria-hidden="true" />开始导览<Icon name="arrow-right" inline /></Button>
             <Button onClick={() => go("/projects/import")}>导入已有作品</Button>
           </div>
         </section>
@@ -4634,8 +4635,8 @@ function ProjectContextNotices({
     },
     5: {
       title: "作者决定已记录",
-      task: "作者决定已经记录。结束隔离教学后，你会回到没有真实作品的工作台。",
-      action: "完成教学",
+      task: "作者决定已经记录。结束导览后，你会回到没有真实作品的工作台。",
+      action: "完成导览",
     },
   }[tutorialStep];
   const requestAfterContextChange = (delay = 0) =>
@@ -4717,11 +4718,11 @@ function ProjectContextNotices({
   return (
     <>
       {project.is_tutorial && (
-        <section className={`${tutorialStep === 5 ? "tutorial-mode-bar tutorial-completion-bar" : "tutorial-mode-bar"}${tutorialExpanded ? " expanded" : " compact"}`} aria-label="教学模式">
-          <div className="tutorial-progress" aria-label="教学进度">
+        <section className={`${tutorialStep === 5 ? "tutorial-mode-bar tutorial-completion-bar" : "tutorial-mode-bar"}${tutorialExpanded ? " expanded" : " compact"}`} aria-label="导览">
+          <div className="tutorial-progress" aria-label="导览进度">
             <div className="tutorial-step-count">
-              <strong>教学 {tutorialStep} / 5</strong>
-              <ol aria-label="五步教学进度">
+              <strong>导览 {tutorialStep} / 5</strong>
+              <ol aria-label="五步导览进度">
                 {([1, 2, 3, 4, 5] as TutorialStep[]).map((step) => (
                   <li
                     key={step}
@@ -4744,7 +4745,7 @@ function ProjectContextNotices({
             <Button className="quiet tutorial-toggle" ariaExpanded={tutorialExpanded} onClick={() => setTutorialExpanded((value) => !value)}>{tutorialExpanded ? "收起说明" : "展开说明"}</Button>
             {tutorialStep === 5
               ? <Button className="quiet" disabled={Boolean(busy)} onClick={() => go("/")}>稍后完成</Button>
-              : <Button className="quiet" disabled={Boolean(busy)} onClick={() => void finishTutorial("skip")}>跳过教学</Button>}
+              : <Button className="quiet" disabled={Boolean(busy)} onClick={() => void finishTutorial("skip")}>跳过导览</Button>}
             <Button
               className="primary tutorial-primary-action"
               disabled={Boolean(busy)}
@@ -5129,7 +5130,7 @@ function ProjectPage(p: {
       <section className="project-page overview-page">
         <header className="page-header project-page-header overview-head">
           <div>
-            <h1 className="overview-title">{p.project.title}</h1>
+            <h1 className="overview-title">{p.project.title}{(p.project.is_tutorial || p.project.data_origin === "demo_seed") && <span className="sample-badge">示例作品</span>}</h1>
             <p className="overview-meta-line">{[p.project.genre, `${p.project.chapter_count} 章`, `${formatWritingCount(p.project.word_count ?? 0)} 字`].filter(Boolean).join(" · ")}</p>
             {p.project.summary && <p className="overview-summary">{p.project.summary}</p>}
           </div>
@@ -7410,7 +7411,7 @@ function Evidence({
         {tutorialEvidenceGate ? (
           <section className="evidence-section tutorial-evidence-gate">
             <h3>准备核对依据</h3>
-            <p>下一步会展开历史依据和判断理由；这里只推进教学，不会替你处理问题。</p>
+            <p>下一步会展开历史依据和判断理由；这里只推进导览，不会替你处理问题。</p>
             <Button className="primary" disabled={Boolean(busy)} onClick={() => void beginEvidence()}>查看完整证据</Button>
           </section>
         ) : evidence.length ? (
@@ -7441,8 +7442,8 @@ function Evidence({
             {issue.decision ? <p className="decision-feedback" role="status"><I>✓</I>决定已记录；此问题保留在列表中，便于后续追溯。</p> : <p>请选择如何处理此问题。</p>}
             {tutorial && tutorialStep === 4 && issue.decision && (
               <>
-                <p>这是一条既有作者决定。复习证据与结果后可以继续教学；此操作不会新增或改写决定。</p>
-                <Button className="primary tutorial-decision-review" disabled={Boolean(busy)} onClick={() => void reviewDecision(issue)}>我已复习这个决定，继续教学</Button>
+                <p>这是一条既有作者决定。复习证据与结果后可以继续导览；此操作不会新增或改写决定。</p>
+                <Button className="primary tutorial-decision-review" disabled={Boolean(busy)} onClick={() => void reviewDecision(issue)}>我已复习这个决定，继续导览</Button>
               </>
             )}
             {!issue.decision && explicitActions && !hasAnyAction && <p className="warning"><I>!</I>服务端未开放可提交操作；当前只能阅读证据。</p>}

@@ -20,7 +20,7 @@ from .config import AppPaths
 from .brief_citations import split_draft_claims
 from .database import DomainError, digest
 from .memory_contract import is_controlled_candidate, normalize_memory_value, normalized_predicate
-from .seed_data import CHAPTER_BODIES, CHAPTERS, DEMO_CHAPTER_CHECK, DEMO_REVIEW_ISSUES, DEMO_SEED_VERSION, DRAFT, MEMORY_RECORDS
+from .seed_data import CHAPTER_BODIES, CHAPTERS, CHARACTERS, DEMO_CHAPTER_CHECK, DEMO_REVIEW_ISSUES, DEMO_SEED_VERSION, DRAFT, FORESHADOWS, MEMORY_RECORDS, PLANS, PROJECT as SAMPLE_PROJECT, SETTINGS
 from .text_content import DRAFT_BODY_FORMATS, visible_draft_text, written_chars
 from .docx_import import docx_to_markdown
 from . import long_term_workflow as workflow
@@ -279,6 +279,7 @@ class V2Database:
             self._migrate_v140_author_materials(c)
             self._migrate_v140_rich_draft_formats(c)
             self._migrate_v160_demo_refresh(c)
+            self._migrate_v170_single_sample(c)
             c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(146,?)", (utcnow(),))
 
     def readiness_probe(self) -> bool:
@@ -287,6 +288,81 @@ class V2Database:
             row = c.execute("SELECT COUNT(*) AS count FROM schema_migrations").fetchone()
             check = c.execute("PRAGMA quick_check").fetchone()
             return bool(row and row["count"] >= 1 and check and check[0] == "ok")
+
+    @staticmethod
+    def purge_project(c: sqlite3.Connection, project_id: str) -> None:
+        """Remove a project and everything in it, children first (visitor cleanup and the sample-work migration)."""
+        existing = {row[0] for row in c.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+        for table in (
+            *organization.TABLES, "v2_issue_marks", "v2_decision_reuse_events", "v2_decision_reuse", "v2_workflow_run_bindings",
+            "v2_source_revision_reviews", "v2_chapter_revision_history",
+            "v2_author_comparison_decisions", "v2_author_comparisons", "v2_author_material_versions", "v2_author_materials",
+            "v2_foreshadow_candidate_decisions", "v2_foreshadow_candidates", "v2_foreshadow_versions", "v2_foreshadows",
+            "v2_character_aliases", "v2_character_alias_state", "v2_memory_candidate_review_events", "v2_tutorial_progress_restarts",
+        ):
+            if table in existing:
+                c.execute(f"DELETE FROM {table} WHERE project_id=?", (project_id,))
+        if "v2_chapter_content_formats" in existing:
+            c.execute("DELETE FROM v2_chapter_content_formats WHERE chapter_id IN (SELECT id FROM v2_chapters WHERE project_id=?)", (project_id,))
+        for run_id in [row[0] for row in c.execute("SELECT id FROM v2_runs WHERE project_id=?", (project_id,)).fetchall()]:
+            for table in ("v2_retrieval_traces", "v2_run_claims", "v2_run_events", "v2_run_stages"):
+                c.execute(f"DELETE FROM {table} WHERE run_id=?", (run_id,))
+        for change_id in [row[0] for row in c.execute("SELECT id FROM v2_change_sets WHERE project_id=?", (project_id,)).fetchall()]:
+            c.execute("DELETE FROM v2_change_set_items WHERE change_set_id=?", (change_id,))
+        for init_id in [row[0] for row in c.execute("SELECT id FROM v2_memory_initializations WHERE project_id=?", (project_id,)).fetchall()]:
+            c.execute("DELETE FROM v2_memory_candidate_decisions WHERE initialization_id=?", (init_id,))
+            c.execute("DELETE FROM v2_memory_candidates WHERE initialization_id=?", (init_id,))
+        for batch_id in [row[0] for row in c.execute("SELECT id FROM v2_memory_delta_batches WHERE project_id=?", (project_id,)).fetchall()]:
+            c.execute("DELETE FROM v2_memory_delta_decisions WHERE batch_id=?", (batch_id,))
+            c.execute("DELETE FROM v2_memory_delta_candidates WHERE batch_id=?", (batch_id,))
+        for source_change_id in [row[0] for row in c.execute("SELECT id FROM v2_source_change_sets WHERE project_id=?", (project_id,)).fetchall()]:
+            c.execute("DELETE FROM v2_source_change_set_audits WHERE change_set_id=?", (source_change_id,))
+        c.execute("DELETE FROM v2_draft_revisions WHERE draft_id IN (SELECT id FROM v2_drafts WHERE project_id=?)", (project_id,))
+        for table in (
+            "v2_revision_candidate_decisions", "v2_revision_task_versions", "v2_revision_tasks", "v2_revision_plan_candidates",
+            "v2_evidence", "v2_decisions", "v2_issues", "v2_commit_audits", "v2_change_set_items",
+            "v2_change_sets", "v2_reset_audits", "v2_source_coverage_audits", "v2_memory_delta_decisions",
+            "v2_memory_delta_candidates", "v2_memory_delta_batches", "v2_source_change_set_audits",
+            "v2_source_change_sets", "v2_memory_candidate_decisions", "v2_memory_candidates",
+            "v2_memory_initializations", "v2_analysis_results", "v2_analysis_inputs", "v2_runs", "v2_drafts", "v2_memory_records",
+            "v2_memory_versions", "v2_source_spans", "v2_chapters", "v2_world_entries", "v2_characters",
+            "v2_outline_nodes", "v2_author_story_plan_versions", "v2_author_character_plan_versions",
+            "v2_author_world_plan_versions", "v2_author_context_versions", "v2_author_story_plans",
+            "v2_author_character_plans", "v2_author_world_plans", "v2_demo_seed_state",
+        ):
+            if table in existing:
+                c.execute(f"DELETE FROM {table} WHERE project_id=?", (project_id,))
+        c.execute("DELETE FROM v2_projects WHERE id=?", (project_id,))
+
+    def _create_sample_work(self, c: sqlite3.Connection, user_id: str, origin: str) -> str:
+        """The one sample work (示例作品) an account has: a tutorial-origin copy for authors, a demo copy for visitors."""
+        return self._create_project(c, user_id, SAMPLE_PROJECT["title"], SAMPLE_PROJECT["genre"], SAMPLE_PROJECT["summary"], origin, "grey_harbor")
+
+    def _migrate_v170_single_sample(self, c: sqlite3.Connection) -> None:
+        """v1.7.0: every account keeps exactly one sample work, re-created from the current seed.
+
+        The tutorial work and the older demo works (纸月档案, 零点花园 and extra copies) are removed, edited or
+        not, as agreed for this release; authors keep one tutorial-origin sample work and their tour
+        progress pointer, visitors one demo copy. Runs once.
+        """
+        c.execute("CREATE TABLE IF NOT EXISTS v2_release_migrations(name TEXT PRIMARY KEY,applied_at TEXT NOT NULL)")
+        if c.execute("SELECT 1 FROM v2_release_migrations WHERE name='v170_single_sample'").fetchone():
+            return
+        for user in c.execute("SELECT id,account_type,onboarding_tutorial_project_id FROM v2_users").fetchall():
+            samples = [row["id"] for row in c.execute("SELECT id FROM v2_projects WHERE user_id=? AND data_origin IN ('demo_seed','tutorial_seed') ORDER BY created_at,id", (user["id"],)).fetchall()]
+            had_tutorial = any(c.execute("SELECT 1 FROM v2_projects WHERE id=? AND data_origin='tutorial_seed'", (project_id,)).fetchone() for project_id in samples)
+            for project_id in samples:
+                self.purge_project(c, project_id)
+                c.execute("DELETE FROM v2_idempotency WHERE scope=? AND operation LIKE ?", (user["id"], "%" + project_id + "%"))
+            if user["account_type"] == "visitor":
+                self._create_sample_work(c, user["id"], "demo_seed")
+            else:
+                new_id_ = self._create_sample_work(c, user["id"], "tutorial_seed")
+                c.execute("UPDATE v2_users SET onboarding_tutorial_project_id=? WHERE id=?", (new_id_, user["id"]))
+                if not had_tutorial and samples:
+                    # Accounts from before the tutorial existed had demo works only; the tour stays closed for them.
+                    c.execute("UPDATE v2_users SET onboarding_status=CASE WHEN onboarding_status='active' THEN 'skipped' ELSE onboarding_status END WHERE id=?", (user["id"],))
+        c.execute("INSERT INTO v2_release_migrations VALUES(?,?)", ("v170_single_sample", utcnow()))
 
     def _migrate_v160_demo_refresh(self, c: sqlite3.Connection) -> None:
         """Bring every account's untouched sample works up to the current seed.
@@ -967,10 +1043,67 @@ class V2Database:
             memory_id = new_id("mem")
             old_memory_to_new[old_memory_id] = memory_id
             c.execute("INSERT INTO v2_memory_records VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", (memory_id,project_id,4,memory_type,subject,predicate,value,old_span_to_new[old_span_id],"author_confirmed",1,None,None))
-        c.execute("INSERT INTO v2_characters VALUES(?,?,?,?,?,?,?,?,?,?)", (new_id("char"),project_id,"温岚","ally","灰港档案员","核对潮表","保管罗盘","不知道廊桥钥匙的含义","[]","[]"))
-        c.execute("INSERT INTO v2_world_entries VALUES(?,?,?,?,?,?,?)", (new_id("world"),project_id,"location","灰港","雾钟与北潮闸所在的港口","[]","[]"))
+        self._seed_sample_extras(c, project_id, old_span_to_new, old_chapter_to_new, stamp)
         self._seed_grey_harbor_review(c, project_id, draft_id, old_span_to_new, old_memory_to_new)
         self._seed_grey_harbor_chapter_check(c, project_id, draft_id, old_span_to_new, old_chapter_to_new)
+
+    def _seed_sample_extras(self, c: sqlite3.Connection, project_id: str, span_ids: dict[str, str], chapter_ids: dict[str, str], stamp: str) -> None:
+        """People (with aliases), setting entries (with author categories), foreshadowing and plans of the sample work."""
+        owner = c.execute("SELECT user_id FROM v2_projects WHERE id=?", (project_id,)).fetchone()["user_id"]
+        alias_total = 0
+        for person in CHARACTERS:
+            character_id = new_id("char")
+            c.execute("INSERT INTO v2_characters VALUES(?,?,?,?,?,?,?,?,?,?)", (character_id,project_id,person["name"],person["role"],person["identity"],person["goal"],person["current_state"],person["knowledge_boundary"],"[]","[]"))
+            aliases = [" ".join(str(alias).split()) for alias in person["aliases"] if str(alias).strip()]
+            for alias in aliases:
+                c.execute("INSERT INTO v2_character_aliases VALUES(?,?,?,?,?,?,?,?,?)", (new_id("alias"),project_id,character_id,alias,self._normalized_alias(alias),"active",stamp,stamp,None))
+            if aliases:
+                c.execute("INSERT INTO v2_character_alias_state(project_id,character_id,version,updated_at) VALUES(?,?,?,?)", (project_id,character_id,len(aliases),stamp))
+                alias_total += len(aliases)
+        custom_categories: dict[str, str] = {}
+        for item in SETTINGS:
+            entry_id = new_id("world")
+            c.execute("INSERT INTO v2_world_entries VALUES(?,?,?,?,?,?,?)", (entry_id,project_id,item["entry_type"] or "term",item["name"],item["summary"],"[]","[]"))
+            if not item["entry_type"]:
+                name = item["category"].strip()[:20]
+                if name not in custom_categories:
+                    custom_categories[name] = new_id("setcat")
+                    c.execute("INSERT INTO v2_setting_categories VALUES(?,?,?,?,?,?,?,?)", (custom_categories[name],project_id,None,name,10+len(custom_categories),0,stamp,stamp))
+                c.execute("INSERT INTO v2_setting_category_assignments VALUES(?,?,?,?)", (entry_id,project_id,custom_categories[name],stamp))
+        foreshadow_count = 0
+        for item in FORESHADOWS:
+            span_id = span_ids.get(item.get("planted_passage") or "")
+            chapter_id = c.execute("SELECT chapter_id FROM v2_source_spans WHERE id=?", (span_id,)).fetchone()["chapter_id"] if span_id else None
+            resolved_span = span_ids.get(item.get("resolved_passage") or "")
+            resolved_chapter = c.execute("SELECT chapter_id FROM v2_source_spans WHERE id=?", (resolved_span,)).fetchone()["chapter_id"] if resolved_span else None
+            status = item["status"] if item["status"] in FORESHADOW_STATUSES else "planted"
+            item_id = new_id("foreshadow")
+            c.execute("INSERT INTO v2_foreshadows VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (item_id,project_id,item["title"],self._normalized_foreshadow_title(item["title"]),item["description"],status,chapter_id,span_id,resolved_chapter,resolved_span,1,None,stamp,stamp))
+            self._record_foreshadow_version(c, c.execute("SELECT * FROM v2_foreshadows WHERE id=?", (item_id,)).fetchone(), "created", owner, stamp)
+            foreshadow_count += 1
+        positions = {"story": 0, "character": 0, "world": 0}
+        considering = []
+        for plan in PLANS:
+            kind = plan["kind"]
+            if kind not in positions:
+                continue
+            positions[kind] += 1
+            plan_id = new_id({"story": "storyplan", "character": "characterplan", "world": "worldplan"}[kind])
+            if kind == "story":
+                c.execute("INSERT INTO v2_author_story_plans(id,project_id,title,summary,goal,position,status,target_chapter_number,archived_at,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)", (plan_id,project_id,plan["title"],plan.get("summary",""),"",positions[kind],"planned",plan.get("target_chapter"),None,stamp,stamp))
+            elif kind == "character":
+                c.execute("INSERT INTO v2_author_character_plans(id,project_id,name,role_type,goal,planned_state,notes,position,archived_at,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)", (plan_id,project_id,plan["title"],"other","",plan.get("summary",""),"",positions[kind],None,stamp,stamp))
+            else:
+                c.execute("INSERT INTO v2_author_world_plans(id,project_id,name,category,description,notes,position,archived_at,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?)", (plan_id,project_id,plan["title"],"other",plan.get("summary") or plan["title"],"",positions[kind],None,stamp,stamp))
+            if plan.get("status") == "considering":
+                considering.append((kind, plan_id))
+        author_version = 0
+        if any(positions.values()):
+            self._write_author_context_snapshot(c, project_id, 1, 0, stamp)
+            author_version = 1
+            for kind, plan_id in considering:
+                c.execute("INSERT INTO v2_plan_states VALUES(?,?,?,?,?)", (kind,plan_id,project_id,"considering",stamp))
+        c.execute("UPDATE v2_projects SET alias_version=?,foreshadow_version=?,author_context_version=? WHERE id=?", (alias_total,foreshadow_count,author_version,project_id))
 
     def _seed_grey_harbor_chapter_check(self, c: sqlite3.Connection, project_id: str, draft_id: str, span_ids: dict[str, str], chapter_ids: dict[str, str]) -> None:
         """A preset chapter-check report for the sample work, without executing or impersonating a Provider."""
@@ -1113,15 +1246,7 @@ class V2Database:
                     "INSERT INTO v2_users(id,account_name,display_name,password_hash,created_at,recovery_email_hash,recovery_email_masked,onboarding_status,onboarding_tutorial_version,onboarding_current_step,onboarding_completed_events_json,onboarding_progress_revision,onboarding_progress_updated_at) VALUES(?,?,?,?,?,?,?,'active',?,1,'[]',1,?)",
                     (user_id,account_name,display_name,_password(password),stamp,payload.get("recovery_email_hash"),payload.get("recovery_email_masked"),TUTORIAL_VERSION,stamp),
                 )
-                tutorial_id = self._create_project(
-                    c,
-                    user_id,
-                    "教学模式 · 灰港回声",
-                    "悬疑 · 教学样例",
-                    "教学用的示例作品；不计入你的作品、搜索和待处理问题。",
-                    "tutorial_seed",
-                    "grey_harbor",
-                )
+                tutorial_id = self._create_sample_work(c, user_id, "tutorial_seed")
                 c.execute(
                     "UPDATE v2_users SET onboarding_tutorial_project_id=? WHERE id=?",
                     (tutorial_id, user_id),
@@ -1138,7 +1263,7 @@ class V2Database:
                     "onboarding":{
                         "status":"active",
                         "real_project_count":0,
-                        "tutorial":{"project_id":tutorial_id,"title":"教学模式 · 灰港回声","data_origin":"tutorial_seed"},
+                        "tutorial":{"project_id":tutorial_id,"title":SAMPLE_PROJECT["title"],"data_origin":"tutorial_seed"},
                         "progress":progress,
                     },
                 }
@@ -1406,19 +1531,11 @@ class V2Database:
                     (current_id, user_id),
                 ).fetchone()
                 if not exists:
-                    current_id = self._create_project(
-                        c,
-                        user_id,
-                        "教学模式 · 灰港回声",
-                        "悬疑 · 教学样例",
-                        "教学用的示例作品；不计入你的作品、搜索和待处理问题。",
-                        "tutorial_seed",
-                        "grey_harbor",
-                    )
+                    current_id = self._create_sample_work(c, user_id, "tutorial_seed")
                 else:
                     c.execute(
-                        "UPDATE v2_projects SET title='教学模式 · 灰港回声',genre='悬疑 · 教学样例',summary='教学用的示例作品；不计入你的作品、搜索和待处理问题。',status='active',metadata_revision=metadata_revision+1,updated_at=? WHERE id=?",
-                        (utcnow(), current_id),
+                        "UPDATE v2_projects SET title=?,genre=?,summary=?,status='active',metadata_revision=metadata_revision+1,updated_at=? WHERE id=?",
+                        (SAMPLE_PROJECT["title"], SAMPLE_PROJECT["genre"], SAMPLE_PROJECT["summary"], utcnow(), current_id),
                     )
                 c.execute(
                     "UPDATE v2_users SET onboarding_status='active',onboarding_tutorial_project_id=?,onboarding_completed_at=NULL,"
@@ -1427,7 +1544,7 @@ class V2Database:
                     (current_id, TUTORIAL_VERSION, previous_revision + 1, utcnow(), user_id),
                 )
                 refreshed = c.execute("SELECT * FROM v2_users WHERE id=?", (user_id,)).fetchone()
-                return {"status": "active", "tutorial": {"project_id": current_id, "title": "教学模式 · 灰港回声", "data_origin": "tutorial_seed"}, "progress": self._tutorial_progress(c, refreshed)}
+                return {"status": "active", "tutorial": {"project_id": current_id, "title": SAMPLE_PROJECT["title"], "data_origin": "tutorial_seed"}, "progress": self._tutorial_progress(c, refreshed)}
             return self._idem(c, user_id, "onboarding_reopen", key, payload, reopen, 200)
 
     def restart_tutorial_progress(self,user_id:str,payload:dict[str,Any],key:str):
@@ -3967,6 +4084,11 @@ class V2Database:
         c.execute("DELETE FROM v2_memory_versions WHERE project_id=?",(project_id,))
         if project["data_origin"] in {"demo_seed", "tutorial_seed"}:
             c.execute("DELETE FROM v2_chapter_revision_history WHERE project_id=?",(project_id,))
+            # The sample work brings its own foreshadowing; author materials mirror plans that are gone.
+            for table in ("v2_foreshadow_candidate_decisions","v2_foreshadow_candidates","v2_foreshadow_versions","v2_foreshadows","v2_author_comparison_decisions","v2_author_comparisons","v2_author_material_versions","v2_author_materials"):
+                if c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",(table,)).fetchone():
+                    c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
+            c.execute("UPDATE v2_projects SET foreshadow_version=0 WHERE id=?",(project_id,))
             c.execute("DELETE FROM v2_chapter_content_formats WHERE chapter_id IN (SELECT id FROM v2_chapters WHERE project_id=?)",(project_id,))
             c.execute("DELETE FROM v2_characters WHERE project_id=?",(project_id,))
             c.execute("DELETE FROM v2_world_entries WHERE project_id=?",(project_id,))
@@ -3985,7 +4107,13 @@ class V2Database:
         else:
             c.execute("INSERT INTO v2_memory_versions VALUES(?,?,?,?,?)",(project_id,1,"current",None,utcnow()))
             self._draft(c,project_id,1); version=1
-        c.execute("UPDATE v2_projects SET current_memory_version=?,author_context_version=0,alias_version=0,updated_at=? WHERE id=?",(version,utcnow(),project_id))
+        if project["data_origin"] in {"demo_seed", "tutorial_seed"}:
+            # The seed set its own alias, foreshadow and plan versions.
+            c.execute("UPDATE v2_projects SET current_memory_version=?,updated_at=? WHERE id=?",(version,utcnow(),project_id))
+            current=c.execute("SELECT author_context_version FROM v2_projects WHERE id=?",(project_id,)).fetchone()[0]
+            zero=c.execute("SELECT * FROM v2_author_context_versions WHERE project_id=? AND version=?",(project_id,current)).fetchone()
+        else:
+            c.execute("UPDATE v2_projects SET current_memory_version=?,author_context_version=0,alias_version=0,updated_at=? WHERE id=?",(version,utcnow(),project_id))
         return version,zero
 
     def reset(self, user_id: str, project_id: str, payload: dict[str, Any], key: str):
@@ -4000,7 +4128,7 @@ class V2Database:
                 # deleted drafts/runs, but retains this reset's own replay.
                 c.execute("DELETE FROM v2_idempotency WHERE scope=? AND operation LIKE ? AND operation!=?",(user_id,"%"+project_id+"%","reset:"+project_id))
                 reset_id=new_id("reset")
-                result={"reset_id":reset_id,"project_id":project_id,"current_memory_version":version,"author_context_version":0,"author_context_snapshot_digest":zero["snapshot_digest"],"draft_revision":1,"status":"completed","data_origin":project["data_origin"]}
+                result={"reset_id":reset_id,"project_id":project_id,"current_memory_version":version,"author_context_version":zero["version"],"author_context_snapshot_digest":zero["snapshot_digest"],"draft_revision":1,"status":"completed","data_origin":project["data_origin"]}
                 c.execute("INSERT INTO v2_reset_audits VALUES(?,?,?,?,?,?)",(reset_id,project_id,user_id,payload["reason"],utcnow(),json.dumps(result)))
                 return result
             return self._idem(c,user_id,"reset:"+project_id,key,payload,reset)

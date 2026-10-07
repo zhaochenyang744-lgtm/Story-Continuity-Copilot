@@ -67,7 +67,7 @@ class V110OnboardingTests(unittest.TestCase):
         self.assertEqual(projects, [])
         self.assertEqual((home["recent_projects"], home["pending_continuity"], home["continue_work"]), ([], [], None))
         self.assertEqual((onboarding["real_project_count"], onboarding["status"], onboarding["show_first_run"]), (0, "active", True))
-        self.assertEqual((tutorial["data_origin"], tutorial["is_tutorial"], tutorial["title"]), ("tutorial_seed", True, "教学模式 · 灰港回声"))
+        self.assertEqual((tutorial["data_origin"], tutorial["is_tutorial"], tutorial["title"]), ("tutorial_seed", True, "灰港回声"))
         with self.app.state.database.connection() as connection:
             counts = connection.execute(
                 "SELECT data_origin,COUNT(*) count FROM v2_projects WHERE user_id=? GROUP BY data_origin",
@@ -95,7 +95,7 @@ class V110OnboardingTests(unittest.TestCase):
         reopened = self.client.post("/api/onboarding/reopen", headers=idem(), json={"confirm": True})
         self.assertEqual((reopened.status_code, reopened.json()["data"]["tutorial"]["project_id"]), (200, tutorial_id))
         tutorial = self.client.get(f"/api/projects/{tutorial_id}").json()["data"]
-        self.assertEqual((tutorial["title"], tutorial["status"], tutorial["chapter_count"]), ("教学模式 · 灰港回声", "active", 10))
+        self.assertEqual((tutorial["title"], tutorial["status"], tutorial["chapter_count"]), ("灰港回声", "active", 10))
         completed = self.client.post("/api/onboarding/complete", headers=idem(), json={"confirm": True})
         self.assertEqual(completed.json()["data"]["status"], "completed")
         self.assertEqual(self.client.get("/api/projects").json()["data"]["projects"], [])
