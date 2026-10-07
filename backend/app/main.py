@@ -37,6 +37,7 @@ from . import chapter_checks
 from .docx_import import docx_to_markdown
 from .project_export import register_project_export_routes
 from .long_term_workflow import register_long_term_routes
+from . import author_organization
 
 COOKIE = "scc_local_session"
 MEMORY_INITIALIZATION_FAILURE_PHASES = {"provider_preflight","batch_planning","provider_request","post_response_decode","post_response_budget","post_response_validation","post_aggregation"}
@@ -434,6 +435,7 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
     def user(request:Request):return db.session_user(request.cookies.get(COOKIE))
     register_project_export_routes(app, db, user)
     register_long_term_routes(app, db, user, csrf, key, ok, operation)
+    author_organization.register_routes(app, db, user, csrf, key, ok, operation)
     def session_response(request:Request,data:dict,status:int):
         token=data.get('session',{}).pop('_token',None); response=ok(request,data,status)
         if token:

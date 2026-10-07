@@ -24,6 +24,7 @@ from .seed_data import CHAPTER_BODIES, CHAPTERS, DEMO_CHAPTER_CHECK, DEMO_REVIEW
 from .text_content import DRAFT_BODY_FORMATS, visible_draft_text, written_chars
 from .docx_import import docx_to_markdown
 from . import long_term_workflow as workflow
+from . import author_organization as organization
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION, VERIFY_MAX_PASSAGES as SCREENED_MAX_TRACE_SPANS
 
 
@@ -248,6 +249,7 @@ class V2Database:
         with self.connection() as c:
             c.executescript(SCHEMA)
             workflow.migrate(c)
+            organization.migrate(c)
             c.execute("CREATE TABLE IF NOT EXISTS schema_migrations(version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)")
             c.execute("INSERT OR IGNORE INTO schema_migrations VALUES(5,?)", (utcnow(),))
             self._migrate_run_provenance(c)
@@ -3137,8 +3139,10 @@ class V2Database:
                 foreshadow_version,foreshadow_digest,foreshadows=self._current_foreshadow_binding(c,project_id)
                 self._ensure_legacy_materials(c,project_id,user_id)
                 canonical=[]
+                considering=organization.considering_ids(c,project_id)
                 for row in c.execute("SELECT * FROM v2_author_materials WHERE project_id=? ORDER BY kind,created_at,id",(project_id,)).fetchall():
-                    if row["nature"]=="idea" or self._material_stale_reason(c,row,draft["chapter_number"]) is not None:continue
+                    # Ideas and plans marked 「考虑中」 are reminders for the author, never analysis input.
+                    if row["nature"]=="idea" or (row["legacy_item_id"] and (row["legacy_kind"],row["legacy_item_id"]) in considering) or self._material_stale_reason(c,row,draft["chapter_number"]) is not None:continue
                     canonical.append({**self._material_public(row),"_analysis_id":row["legacy_item_id"] or row["id"]})
                 story=[{"id":item["_analysis_id"],"title":item["title"],"summary":item["content"],"goal":"","position":position,"status":"planned","target_chapter_number":item["from"] if item["from"]==item["to"] else None,"archived_at":None,"created_at":item["created_at"],"updated_at":item["updated_at"],"nature":item["nature"],"disclosure":item["disclosure"],"knowledge":item["knowledge"]} for position,item in enumerate((item for item in canonical if item["kind"]=="story" and (analysis_type!="plan_alignment" or item["nature"]=="plan")),1)]
                 if analysis_type=="plan_alignment" and not story:raise DomainError("analysis_plan_unavailable",422)
@@ -3920,7 +3924,7 @@ class V2Database:
         """Delete a project's working state and re-create its starting state; returns (memory version, empty author context)."""
         project_id=project["id"]
         # dependent children first. The set is deliberately project-scoped.
-        for table in ("v2_issue_marks","v2_decision_reuse_events","v2_decision_reuse","v2_workflow_run_bindings","v2_source_revision_reviews"):
+        for table in (*organization.TABLES,"v2_issue_marks","v2_decision_reuse_events","v2_decision_reuse","v2_workflow_run_bindings","v2_source_revision_reviews"):
             c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))
         for table in ("v2_author_story_plan_versions","v2_author_character_plan_versions","v2_author_world_plan_versions"):
             c.execute(f"DELETE FROM {table} WHERE project_id=?",(project_id,))

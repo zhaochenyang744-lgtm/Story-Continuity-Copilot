@@ -827,6 +827,7 @@ class Stage13Service:
                     # candidates and chapters removed by the original cleanup below.
                     # Keep this explicit child-first order and tolerate older schemas.
                     for table in (
+                        "v2_setting_category_assignments", "v2_setting_categories", "v2_plan_states",
                         "v2_issue_marks", "v2_decision_reuse_events", "v2_decision_reuse", "v2_workflow_run_bindings",
                         "v2_source_revision_reviews", "v2_chapter_revision_history",
                         "v2_author_comparison_decisions", "v2_author_comparisons",
