@@ -25,6 +25,10 @@
     "test:v140:visual": "node scripts/run-v140-visual.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/archivo": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/noto-sans-sc": "5.3.0",
+    "@fontsource/noto-serif-sc": "5.3.0",
     "@tiptap/markdown": "3.31.3",
     "@tiptap/pm": "3.31.3",
     "@tiptap/react": "3.31.3",

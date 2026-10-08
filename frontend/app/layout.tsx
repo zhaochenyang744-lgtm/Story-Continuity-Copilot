@@ -1,11 +1,19 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-// 朱批 stylesheets (v1.7.0): tokens first, then elements, the app frame, shared components, one file
+// Self-hosted fonts, sliced by unicode-range so a page only fetches the characters it shows.
+import "@fontsource/noto-sans-sc/400.css";
+import "@fontsource/noto-sans-sc/700.css";
+import "@fontsource/noto-sans-sc/900.css";
+import "@fontsource/noto-serif-sc/400.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource-variable/archivo/wdth.css";
+// 版面 stylesheets (v1.7.0): tokens first, then elements, the app frame, shared components, one file
 // per page area, and motion last.
 import "./styles/tokens.css";
 import "./styles/base.css";
 import "./styles/layout.css";
 import "./styles/components.css";
+import "./styles/pages/home.css";
 import "./styles/pages/global.css";
 import "./styles/pages/overview.css";
 import "./styles/pages/workspace.css";

@@ -268,8 +268,16 @@
       "target": "frontend-source/app/components/CreateProject.tsx"
     },
     {
+      "source": "frontend/app/components/HomePage.tsx",
+      "target": "frontend-source/app/components/HomePage.tsx"
+    },
+    {
       "source": "frontend/app/components/LongTermReview.tsx",
       "target": "frontend-source/app/components/LongTermReview.tsx"
+    },
+    {
+      "source": "frontend/app/components/OverviewPage.tsx",
+      "target": "frontend-source/app/components/OverviewPage.tsx"
     },
     {
       "source": "frontend/app/components/ProjectExport.module.css",
@@ -278,6 +286,10 @@
     {
       "source": "frontend/app/components/ProjectExport.tsx",
       "target": "frontend-source/app/components/ProjectExport.tsx"
+    },
+    {
+      "source": "frontend/app/components/StoryRoute.tsx",
+      "target": "frontend-source/app/components/StoryRoute.tsx"
     },
     {
       "source": "frontend/app/components/Workbench.tsx",
@@ -294,6 +306,10 @@
     {
       "source": "frontend/app/components/author-context-model.ts",
       "target": "frontend-source/app/components/author-context-model.ts"
+    },
+    {
+      "source": "frontend/app/components/ui.tsx",
+      "target": "frontend-source/app/components/ui.tsx"
     },
     {
       "source": "frontend/app/draft-recovery.ts",
@@ -366,6 +382,10 @@
     {
       "source": "frontend/app/pending-decision.ts",
       "target": "frontend-source/app/pending-decision.ts"
+    },
+    {
+      "source": "frontend/app/styles/pages/home.css",
+      "target": "frontend-source/app/styles/pages/home.css"
     },
     {
       "source": "frontend/build-id.mjs",

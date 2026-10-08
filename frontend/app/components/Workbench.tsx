@@ -14,7 +14,10 @@ import {
   useState,
 } from "react";
 import Image from "next/image";
+import { Button, Chevron, Dialog, I, Icon, MoreMenu, pad2, usageShort, useCheckUsage } from "./ui";
 import { CreateProject } from "./CreateProject";
+import { HomePage, type Home } from "./HomePage";
+import { OverviewPage } from "./OverviewPage";
 import { ProjectExport } from "./ProjectExport";
 import { LongTermReview } from "./LongTermReview";
 import { WritingTools, RichDraftEditor, DraftWordCount, replaceVisibleDraftText, useDraftText } from "./WritingTools";
@@ -82,31 +85,6 @@ const BULK_DECISION_BATCH = 200;
 const REVIEW_GROUP_CHAPTERS = 10;
 const publicAuthPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm", "/verify-email"];
 const isPublicAuthPath = (value: string) => publicAuthPaths.includes(value);
-
-type Home = {
-  continue_work?: {
-    project_id: string;
-    project_title: string;
-    draft_id: string;
-    draft_title: string;
-    draft_revision: number;
-    next_action: string;
-  } | null;
-  recent_projects: {
-    project_id: string;
-    title: string;
-    status: ProjectSummary["status"];
-    updated_at: string;
-  }[];
-  pending_continuity: {
-    project_id: string;
-    title: string;
-    high: number;
-    medium: number;
-    low: number;
-    continuity_status: "unchecked" | "checked_clear" | "pending";
-  }[];
-};
 
 const issueAllows = (issue: Issue, action: NonNullable<Issue["available_actions"]>[number]) =>
   issue.available_actions === undefined || issue.available_actions.includes(action);
@@ -350,8 +328,6 @@ const worldTypeLabel = (value: string) =>
   ({ location: "地点", rule: "规则", organization: "组织", object: "物件", term: "术语" })[value] ?? "其他资料";
 const decisionStatusLabel = (value: string) =>
   ({ pending: "待决定", accepted: "已接受", rejected: "已拒绝", edited: "编辑后接受" })[value] ?? "决定状态未知";
-const nextActionLabel = (value: string) =>
-  ({ continue_draft: "继续写作", review_issues: "审阅问题", initialize_memory: "建立事实库" })[value] ?? "继续处理作品";
 const lineageStatusLabel = (value?: string | null) =>
   ({ current: "当前版本", stale: "已过期", pending_decision_validation: "等待决策校验" })[value ?? ""] ?? "谱系状态未知";
 const tutorialEvents: Record<TutorialStep, TutorialEvent | null> = {
@@ -361,52 +337,6 @@ const tutorialEvents: Record<TutorialStep, TutorialEvent | null> = {
   4: "evidence_opened",
   5: "author_decision_recorded",
 };
-function Button({
-  children,
-  className = "secondary",
-  disabled,
-  ariaPressed,
-  ariaCurrent,
-  ariaBusy,
-  ariaLabel,
-  ariaExpanded,
-  buttonRef,
-  title,
-  onClick,
-  type = "button",
-}: {
-  children: ReactNode;
-  className?: string;
-  disabled?: boolean;
-  ariaPressed?: boolean;
-  ariaCurrent?: "page";
-  ariaBusy?: boolean;
-  ariaLabel?: string;
-  ariaExpanded?: boolean;
-  buttonRef?: Ref<HTMLButtonElement>;
-  title?: string;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  type?: "button" | "submit";
-}) {
-  return (
-    <button
-      ref={buttonRef}
-      type={type}
-      className={className}
-      disabled={disabled}
-      aria-disabled={disabled || undefined}
-      aria-pressed={ariaPressed}
-      aria-current={ariaCurrent}
-      aria-busy={ariaBusy || undefined}
-      aria-label={ariaLabel}
-      aria-expanded={ariaExpanded}
-      title={title}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  );
-}
 
 type TutorialGuidanceTarget = {
   element: HTMLElement;
@@ -701,15 +631,7 @@ function TutorialGuidance({
   );
 }
 function BrandMark() {
-  return (
-    <span className="brand-asset">
-      <svg className="brand-symbol-inline" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-        <path d="M5 4h9a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-        <circle cx="17" cy="16" r="2.2" className="brand-dot" />
-      </svg>
-      <span className="brand-wordmark">Story Continuity</span>
-    </span>
-  );
+  return <span className="wordmark" aria-hidden="true">STORY<br />CONTINUITY</span>;
 }
 
 const avatarPresets: { id: User["avatar_preset"]; label: string; description: string; src: string }[] = [
@@ -729,13 +651,6 @@ function ProfileAvatar({ user, className = "" }: { user: User; className?: strin
     </span>
   );
 }
-function Chevron({ className = "" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 20 20" aria-hidden="true">
-      <path d="m5.5 7.5 4.5 4.5 4.5-4.5" />
-    </svg>
-  );
-}
 type AutosaveState = "idle" | "saving" | "saved" | "failed" | "conflict";
 const AUTOSAVE_IDLE_MS = 5_000;
 const AUTOSAVE_MIN_INTERVAL_MS = 30_000;
@@ -744,11 +659,6 @@ type CheckUsage =
   | { account_type: "registered"; check_chars_limit: number; check_chars_used: number; check_chars_remaining: number; imports_limit: number; imports_remaining: number }
   | { account_type: "visitor"; check_chars_per_check: number; checks_limit: number; checks_remaining: number };
 const writtenChars = (text: string) => text.replace(/\s+/g, "").length;
-/** The last few lines of a draft, without Markdown marks, for the 继续写 card. */
-const draftExcerpt = (body: string) => {
-  const text = body.replace(/[#>*_`~\-]+/g, "").replace(/\s+/g, " ").trim();
-  return text.length > 72 ? text.slice(-72) : text;
-};
 
 /** What this check will spend and what is left today, shown before the author starts a check. */
 function CheckAllowance({ draftChars, refreshKey }: { draftChars: number; refreshKey: string }) {
@@ -767,40 +677,6 @@ function CheckAllowance({ draftChars, refreshKey }: { draftChars: number; refres
   return <p className={`check-allowance${over ? " over" : ""}`} role="note">本次约 {draftChars.toLocaleString()} 字 · 今天还可检查 {usage.check_chars_remaining.toLocaleString()} 字（每天 {usage.check_chars_limit.toLocaleString()} 字）</p>;
 }
 
-function MoreMenu({ children, danger }: { children: ReactNode; danger?: ReactNode }) {
-  const menu = useRef<HTMLDetailsElement>(null);
-  useEffect(() => {
-    const details = menu.current;
-    if (!details) return;
-    const close = (focusSummary: boolean) => {
-      if (!details.open) return;
-      details.removeAttribute("open");
-      if (focusSummary) details.querySelector("summary")?.focus();
-    };
-    const onKey = (event: KeyboardEvent) => { if (event.key === "Escape" && details.open) { event.stopPropagation(); close(true); } };
-    const onPointer = (event: PointerEvent) => { if (!details.contains(event.target as Node)) close(false); };
-    details.addEventListener("keydown", onKey);
-    document.addEventListener("pointerdown", onPointer);
-    return () => { details.removeEventListener("keydown", onKey); document.removeEventListener("pointerdown", onPointer); };
-  }, []);
-  return (
-    <details className="more-menu" ref={menu}>
-      <summary>更多<Chevron className="more-chevron" /></summary>
-      {/* Choosing an item closes the menu so it does not stay open behind the dialog it opens. */}
-      <div role="menu" aria-label="更多操作" onClick={(event) => { if ((event.target as HTMLElement).closest("button")) event.currentTarget.closest("details")?.removeAttribute("open"); }}>
-        {children}
-        {danger && <div className="more-menu-danger" role="group" aria-label="危险操作">{danger}</div>}
-      </div>
-    </details>
-  );
-}
-function I({ children }: { children: string }) {
-  return (
-    <span className="icon" aria-hidden="true">
-      {children}
-    </span>
-  );
-}
 /** Marks a horizontally scrolling rail with which edges still hide items, so CSS can fade that edge. */
 function useScrollFade(ref: { current: HTMLElement | null }, key?: unknown) {
   useEffect(() => {
@@ -821,31 +697,6 @@ function useScrollFade(ref: { current: HTMLElement | null }, key?: unknown) {
   }, [ref, key]);
 }
 
-function Icon({ name, inline = false }: { name: "home" | "library" | "overview" | "outline" | "users" | "world" | "memory" | "pen" | "save" | "play" | "profile" | "security" | "tutorial" | "logout" | "arrow-right" | "external" | "chevron-left" | "chevron-right" | "check-circle" | "text"; inline?: boolean }) {
-  const paths: Record<string, ReactNode> = {
-    home: <><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z" /></>,
-    library: <><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 7h8M8 11h8M8 15h6" /></>,
-    overview: <><rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" /><rect x="4" y="14" width="6" height="6" rx="1" /><rect x="14" y="14" width="6" height="6" rx="1" /></>,
-    outline: <><path d="M8 6h12M8 12h12M8 18h12" /><path d="M4 6h.01M4 12h.01M4 18h.01" /></>,
-    users: <><circle cx="9" cy="8" r="3" /><path d="M3 20c.5-3 2.5-5 6-5s5.5 2 6 5M17 11c2.2 0 4 1.7 4 4M16.5 5.2a3 3 0 0 1 0 5.6" /></>,
-    world: <><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" /><path d="M3.5 12h17M12 3c2.5 2.5 2.5 13.5 0 18M12 3c-2.5 2.5-2.5 13.5 0 18" /></>,
-    memory: <><path d="M12 4a3 3 0 0 1 5.5 1.6A3.5 3.5 0 1 1 18 12c0 4-2.3 7-6 8-3.7-1-6-4-6-8a3.5 3.5 0 1 1 .5-6.4A3 3 0 0 1 12 4Z" /><path d="M9.5 12h5M12 9.5v5" /></>,
-    pen: <><path d="m4 20 4.2-1 10-10a2.8 2.8 0 0 0-4-4l-10 10Z" /><path d="m13 6 4 4M4 20l1-4" /></>,
-    save: <><path d="M5 3h12l3 3v15H4V4a1 1 0 0 1 1-1Z" /><path d="M8 3v6h8V3M8 21v-7h8v7" /></>,
-    play: <><path d="m8 5 11 7-11 7Z" /></>,
-    profile: <><circle cx="12" cy="8" r="4" /><path d="M4 21c.7-4.4 3.3-7 8-7s7.3 2.6 8 7" /></>,
-    security: <><path d="M12 3 5 6v5c0 4.7 2.8 8.1 7 10 4.2-1.9 7-5.3 7-10V6Z" /><path d="m9 12 2 2 4-4" /></>,
-    tutorial: <><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5ZM20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5Z" /></>,
-    logout: <><path d="M10 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5M14 8l4 4-4 4M8 12h10" /></>,
-    "arrow-right": <><path d="M5 12h14M13 6l6 6-6 6" /></>,
-    external: <><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></>,
-    "chevron-left": <><path d="m15 6-6 6 6 6" /></>,
-    "chevron-right": <><path d="m9 6 6 6-6 6" /></>,
-    "check-circle": <><circle cx="12" cy="12" r="8.5" /><path d="m8.5 12.2 2.4 2.4 4.6-5" /></>,
-    text: <><path d="M5 6h14M5 10h14M5 14h14M5 18h9" /></>,
-  };
-  return <svg className={inline ? "ui-icon ui-icon-inline" : "ui-icon"} viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>;
-}
 
 export function Workbench() {
   const router = useRouter(),
@@ -1058,6 +909,8 @@ export function Workbench() {
   }, [userMenuOpen]);
   // Keyed on the loaded project: the rail only renders once the project has arrived.
   useScrollFade(projectModuleNav, project?.id);
+  // The allowance in the top bar: re-read after every check and on every page change.
+  const usage = useCheckUsage(user ? `${user.id}:${pathname}:${run?.run_id ?? ""}:${run?.status ?? ""}` : "");
   useEffect(() => {
     if (!projectId || !projectModuleNav.current) return;
     const nav = projectModuleNav.current;
@@ -1479,7 +1332,7 @@ export function Workbench() {
     else {
       if (pathname === "/") void Promise.resolve().then(() => loadHome());
       if (pathname.startsWith("/projects")) void Promise.resolve().then(() => loadProjects());
-      if (pathname === "/account/profile" || pathname === "/projects") void Promise.resolve().then(() => loadAuthorProjects());
+      if (pathname === "/" || pathname === "/account/profile" || pathname === "/projects") void Promise.resolve().then(() => loadAuthorProjects());
     }
   }, [
     ready,
@@ -2643,10 +2496,14 @@ export function Workbench() {
         />
       ) : pathname === "/" ? (
         <HomePage
+          user={user}
           home={home}
           onboarding={onboarding}
-          open={(id) => go(`/projects/${id}/overview`)}
+          projects={authorProjects}
+          usage={usage}
+          open={(id, target = "overview") => go(`/projects/${id}/${target}`)}
           go={go}
+          reopenTutorial={() => void reopenTutorial()}
         />
       ) : (
         <NotFoundPage kind="page" go={go} />
@@ -2776,81 +2633,75 @@ export function Workbench() {
       </a>
       {user && (
         <header className="topbar">
-          <div className="topbar-start">
+          <div className="topbar-inner">
             <button type="button" className="topbar-brand" aria-label="首页" onClick={() => go("/")}>
               <BrandMark />
             </button>
             {projectId && project && (
               <Button className="topbar-work" title={project.title} ariaLabel={`更换当前作品：${project.title}`} onClick={() => go("/projects")}>
-                <strong>{project.title}</strong>
-                {(project.is_tutorial || project.data_origin === "demo_seed") && <span className="sample-badge">示例</span>}
+                {project.title}
                 <Chevron className="topbar-work-mark" />
               </Button>
             )}
-          </div>
-          <nav ref={projectModuleNav} className="topbar-tabs" aria-label={projectId ? "项目导航" : "全局导航"}>
-            {projectId ? (
-              project && tabs.map(([id, label]) => (
-                <Button
-                  key={id}
-                  className={id === tab ? "topbar-tab current" : "topbar-tab"}
-                  ariaCurrent={id === tab ? "page" : undefined}
-                  onClick={() => go(`/projects/${project.id}/${id}`)}
-                >
-                  {label}
-                </Button>
-              ))
-            ) : (
-              <>
-                <Button className={pathname === "/" ? "topbar-tab current" : "topbar-tab"} ariaCurrent={pathname === "/" ? "page" : undefined} onClick={() => go("/")}>首页</Button>
-                <Button className={pathname.startsWith("/projects") ? "topbar-tab current" : "topbar-tab"} ariaCurrent={pathname.startsWith("/projects") ? "page" : undefined} onClick={() => go("/projects")}>作品</Button>
-              </>
+            <nav ref={projectModuleNav} className={projectId ? "topbar-tabs" : "topbar-tabs global"} aria-label={projectId ? "项目导航" : "全局导航"}>
+              {projectId ? (
+                project && tabs.map(([id, label], index) => (
+                  <Button
+                    key={id}
+                    className={id === tab ? "topbar-tab current" : "topbar-tab"}
+                    ariaCurrent={id === tab ? "page" : undefined}
+                    onClick={() => go(`/projects/${project.id}/${id}`)}
+                  >
+                    <span className="topbar-tab-num" aria-hidden="true">{pad2(index + 1)}</span>{label}
+                  </Button>
+                ))
+              ) : (
+                <>
+                  <Button className={pathname === "/" ? "topbar-tab current" : "topbar-tab"} ariaCurrent={pathname === "/" ? "page" : undefined} onClick={() => go("/")}>首页</Button>
+                  <Button className={pathname.startsWith("/projects") ? "topbar-tab current" : "topbar-tab"} ariaCurrent={pathname.startsWith("/projects") ? "page" : undefined} onClick={() => go("/projects")}>作品管理</Button>
+                </>
+              )}
+            </nav>
+            {usageShort(usage) && <span className="topbar-quota">{usageShort(usage)}</span>}
+            {!projectId && pathname !== "/projects/new" && (
+              <Button className="topbar-new" onClick={() => go("/projects/new")}>新建作品</Button>
             )}
-          </nav>
-          <div className="topbar-end">
-            <button type="button" className="topbar-theme" aria-pressed={theme === "night"} onClick={toggleTheme}>
-              {theme === "night" ? "日间" : "夜间"}
-            </button>
-              <div className="account">
-                <button
-                  ref={userMenuTrigger}
-                  type="button"
-                  className="account-trigger"
-                  aria-label="用户菜单"
-                  aria-haspopup="menu"
-                  aria-expanded={userMenuOpen}
-                  onClick={() => setUserMenuOpen((open) => !open)}
-                >
-                  <ProfileAvatar user={user} className="account-avatar" />
-                  <span className="account-copy">
-                    <span className="account-name">{user.display_name}</span>
-                    <span className="account-helper">{user.account_type === "visitor" ? "访客空间" : "个人账号"}</span>
-                  </span>
-                  <Chevron className="account-caret" />
-                </button>
-                {userMenuOpen && (
-                  <div className="user-menu" role="menu" aria-label="用户菜单">
-                    {user.account_type === "visitor" && <p className="visitor-expiry">访客空间有效至 <time>{timestampLabel(user.visitor_expires_at)}</time></p>}
-                    {user.account_type !== "visitor" && (
-                      <button type="button" role="menuitem" onClick={() => go("/account/profile")}><Icon name="profile" />个人信息</button>
-                    )}
-                    {user.account_type !== "visitor" && (
-                      <button type="button" role="menuitem" onClick={() => go("/account/security")}><Icon name="security" />账号安全</button>
-                    )}
-                    {user.account_type !== "visitor" && (
-                      <button type="button" role="menuitem" onClick={() => void reopenTutorial()}><Icon name="tutorial" />重新打开导览</button>
-                    )}
-                    <button
-                      type="button"
-                      className="danger"
-                      role="menuitem"
-                      onClick={() => void logout()}
-                    >
-                      <Icon name="logout" />退出登录
-                    </button>
-                  </div>
-                )}
-              </div>
+            <div className="account">
+              <button
+                ref={userMenuTrigger}
+                type="button"
+                className="account-trigger"
+                aria-label={`用户菜单：${user.display_name}`}
+                aria-haspopup="menu"
+                aria-expanded={userMenuOpen}
+                onClick={() => setUserMenuOpen((open) => !open)}
+              >
+                <ProfileAvatar user={user} className="account-avatar" />
+              </button>
+              {userMenuOpen && (
+                <div className="user-menu" role="menu" aria-label="用户菜单">
+                  <p className="user-menu-head"><strong>{user.display_name}</strong><span>{user.account_type === "visitor" ? <>访客空间 · 有效至 <time>{timestampLabel(user.visitor_expires_at)}</time></> : "个人账号"}</span></p>
+                  {user.account_type !== "visitor" && (
+                    <button type="button" role="menuitem" onClick={() => go("/account/profile")}>个人信息</button>
+                  )}
+                  {user.account_type !== "visitor" && (
+                    <button type="button" role="menuitem" onClick={() => go("/account/security")}>账号安全</button>
+                  )}
+                  <button type="button" role="menuitemcheckbox" aria-checked={theme === "night"} onClick={toggleTheme}>夜间模式<span className="user-menu-state">{theme === "night" ? "开" : "关"}</span></button>
+                  {user.account_type !== "visitor" && (
+                    <button type="button" role="menuitem" onClick={() => void reopenTutorial()}>重新打开导览</button>
+                  )}
+                  <button
+                    type="button"
+                    className="danger"
+                    role="menuitem"
+                    onClick={() => void logout()}
+                  >
+                    退出登录
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </header>
       )}
@@ -3682,120 +3533,6 @@ function TutorialCompletePage({ go }: { go: (href: string) => void }) {
           <small>示例作品不计入真实作品。</small>
         </div>
       </section>
-    </section>
-  );
-}
-function HomePage({
-  home,
-  onboarding,
-  open,
-  go,
-}: {
-  home: Home | null;
-  onboarding: Onboarding | null;
-  open: (id: string) => void;
-  go: (h: string) => void;
-}) {
-  const recentProjects = home?.recent_projects ?? [];
-  const pendingContinuity = home?.pending_continuity ?? [];
-  return (
-    <section className="home-page">
-      <header className="home-heading page-head">
-        <div>
-          <h1>继续你的故事</h1>
-          <p>从上次停下的地方接着写，问题和设定都在原处等你。</p>
-        </div>
-      </header>
-      {onboarding?.show_first_run && onboarding.tutorial && (
-        <section className="tutorial-entry home-card" aria-label="首次导览">
-          <div className="home-card-copy">
-            <p className="kicker">首次使用 · 示例作品</p>
-            <h2>先用示例作品熟悉连续性检查</h2>
-            <p>示例作品不计入真实作品、搜索或待处理问题；完成后再导入自己的故事。</p>
-          </div>
-          <div className="actions">
-            <Button className="primary" onClick={() => open(onboarding.tutorial!.project_id)}>开始导览<Icon name="arrow-right" inline /></Button>
-            <Button onClick={() => go("/projects/import")}>导入已有作品</Button>
-          </div>
-        </section>
-      )}
-      {home?.continue_work ? (
-        <section className="home-continue home-card">
-          <div className="home-card-copy">
-            <p className="kicker">继续当前工作</p>
-            <h2>《{home.continue_work.project_title}》 · {home.continue_work.draft_title}</h2>
-            <p>
-              第 {home.continue_work.draft_revision} 次保存 · 下一步：
-              {nextActionLabel(home.continue_work.next_action)}
-            </p>
-          </div>
-          <div className="actions"><Button className="primary" onClick={() => open(home.continue_work!.project_id)}>继续工作<Icon name="arrow-right" inline /></Button><Button onClick={() => go("/projects")}>查看全部作品</Button></div>
-        </section>
-      ) : !onboarding?.show_first_run ? (
-        <section className="empty-workspace home-card">
-          <div className="home-card-copy">
-            <p className="kicker">还没有真实作品</p>
-            <h2>从第一章开始建立连续性档案</h2>
-            <p>导入 Word、TXT 或 Markdown，或从空白作品开始。</p>
-          </div>
-          <div className="actions">
-            <Button className="primary" onClick={() => go("/projects/import")}>导入已有作品</Button>
-            <Button onClick={() => go("/projects/new")}>从空白开始</Button>
-          </div>
-        </section>
-      ) : null}
-      <div className="home-section-grid">
-        <section className="home-section">
-          <header className="home-section-head">
-            <h2>最近作品</h2>
-            <Button className="quiet" onClick={() => go("/projects")}>查看全部 <Icon name="arrow-right" inline /></Button>
-          </header>
-          {recentProjects.length ? (
-            <ul className="home-work-list">
-              {recentProjects.map((item) => (
-                <li key={item.project_id}>
-                  <button onClick={() => open(item.project_id)}>
-                    <strong>《{item.title}》</strong>
-                    {item.status !== "active" && <span>{statusLabel(item.status)}</span>}
-                    <i aria-hidden="true"><Icon name="arrow-right" inline /></i>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="home-empty-note">导入作品后，最近编辑的故事会显示在这里。</p>
-          )}
-        </section>
-        <section className="home-section home-issues-section">
-          <header className="home-section-head">
-            <h2>待处理问题</h2>
-          </header>
-          {pendingContinuity.length ? (
-            <ul className="home-issue-list">
-              {pendingContinuity.map((x) => {
-                const total = x.high + x.medium + x.low;
-                const tone = x.continuity_status === "unchecked" ? "unchecked" : x.high ? "high" : x.medium ? "medium" : "low";
-                return (
-                  <li key={x.project_id}>
-                    <button onClick={() => open(x.project_id)}>
-                      <span>
-                        <strong>《{x.title}》</strong>
-                        {total > 0 && <small>高 {x.high} · 中 {x.medium} · 低 {x.low}</small>}
-                      </span>
-                      <b className={`risk ${tone}`}>
-                        <I>{tone === "high" ? "▲" : tone === "medium" ? "●" : tone === "unchecked" ? "○" : "✓"}</I>
-                        {x.continuity_status === "unchecked" ? "尚未检查" : x.continuity_status === "checked_clear" ? "已清" : `${total} 项`}
-                      </b>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <p className="home-empty-note">运行第一次连续性检查后，问题会按影响程度显示在这里。</p>
-          )}
-        </section>
-      </div>
     </section>
   );
 }
@@ -5043,69 +4780,56 @@ function ProjectPage(p: {
     );
   if (p.tab === "overview")
     return (
-      <section className="project-page overview-page">
-        <header className="page-header project-page-header overview-head">
-          <div>
-            <h1 className="overview-title">{p.project.title}{(p.project.is_tutorial || p.project.data_origin === "demo_seed") && <span className="sample-badge">示例作品</span>}</h1>
-            <p className="overview-meta-line">{[p.project.genre, `${p.project.chapter_count} 章`, `${formatWritingCount(p.project.word_count ?? 0)} 字`].filter(Boolean).join(" · ")}</p>
-            {p.project.summary && <p className="overview-summary">{p.project.summary}</p>}
-          </div>
-          <div className="actions">
-            <Button className="primary" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>
-              {p.readOnly ? "查看草稿" : `继续写第 ${p.project.current_draft.chapter_number} 章`}
-            </Button>
-            {p.canRestore && <Button onClick={p.archive} disabled={Boolean(p.busy)}>恢复作品</Button>}
+      <>
+        <OverviewPage
+          project={p.project}
+          draft={p.draft}
+          openIssues={(p.run?.issues ?? []).filter((issue) => !issue.decision && !issue.reused_decision && !p.locallyResolvedIssueIds.includes(issue.id))}
+          runOutdated={dirty || Boolean(p.run?.is_stale)}
+          authorContext={p.authorContext}
+          readOnly={p.readOnly}
+          go={p.go}
+          menu={
             <MoreMenu danger={!p.readOnly ? <Button onClick={p.reset}>重置当前作品</Button> : undefined}>
               <Button onClick={() => setExportOpen(true)}>导出作品</Button>
               {!p.readOnly && !p.project.is_tutorial && <Button onClick={p.meta}>编辑作品信息</Button>}
-              {!p.readOnly && !p.project.is_tutorial && <Button onClick={p.archive}>{p.project.status === "archived" ? "恢复作品" : "归档作品"}</Button>}
+              {(p.canRestore || (!p.readOnly && !p.project.is_tutorial)) && <Button onClick={p.archive}>{p.project.status === "archived" ? "恢复作品" : "归档作品"}</Button>}
             </MoreMenu>
-          </div>
-        </header>
-        {contextNotices}
-        <div className="overview-grid overview-primary-grid">
-          <section className="overview-panel overview-primary-card continue-card" aria-label="继续写">
-            <p className="eyebrow">继续写</p>
-            <p className="continue-meta">第 {p.project.current_draft.chapter_number} 章{p.draft?.title ? ` · ${p.draft.title}` : ""} · {writtenChars(p.draft?.body ?? "").toLocaleString()} 字</p>
-            {draftExcerpt(p.draft?.body ?? "") ? <p className="continue-excerpt">……{draftExcerpt(p.draft?.body ?? "")}</p> : <p className="continue-excerpt muted">这一章还没有开始写。</p>}
-            <Button className="primary overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>{p.readOnly ? "查看草稿" : "继续写"}</Button>
-          </section>
-          <section className="overview-panel overview-primary-card check-card" aria-label="检查情况">
-            <div className="card-head"><p className="eyebrow">检查情况</p><Button className="quiet" onClick={() => p.go(`/projects/${p.project.id}/sources`)}>去章节</Button></div>
-            <OverviewTimeline key={`${p.project.id}:${p.project.source_revision ?? 0}:${p.project.latest_run?.run_id ?? ""}`} projectId={p.project.id} />
-            <p className="check-card-note">{p.project.continuity_status === "unchecked" ? "还没有检查过" : p.project.continuity_status === "checked_clear" ? "最近一次检查没有待处理的问题" : `${p.project.open_issue_count ?? 0} 个问题待处理`}</p>
-            {p.project.open_issue_count ? <Button className="secondary overview-card-action" onClick={() => p.go(`/projects/${p.project.id}/workspace`)}>打开待处理的问题</Button> : null}
-          </section>
-        </div>
-        {p.project.data_origin === "user_import" && (
-          <section className="warning import-context">
-            <I>!</I>
-            {p.project.memory_initialization_status === "completed"
-              ? "导入的原文已由作者确认，并建立了第 1 版事实库。"
-              : p.initialization?.status === "draft"
-                ? "事实库候选正在等待逐项作者审核；候选不会自动写入事实库。"
-                : "导入的原文已经可以拿来检查；建立并确认事实库后，检查会更准。"}
-            {p.initialization?.status === "required" && (
-              <Button className="primary" disabled={blocked} onClick={() => void p.startMemoryInitialization()}>
-                初始化事实库
-              </Button>
-            )}
-            {p.initialization?.status === "draft" && (
-              <Button className="secondary" disabled={blocked} onClick={() => p.go(`/projects/${p.project.id}/memory`)}>
-                审核候选与原文依据
-              </Button>
-            )}
-            {experienceSimulation && p.project.memory_initialization_status !== "completed" && (
-              <p className="simulation-disclosure"><strong>隔离模拟环境：</strong>候选由固定示例数据生成，不代表对任意正文的真实分析。请在初始化前导入体验包中的 v140-simulation-sample.md；本环境不会调用真实模型。</p>
-            )}
-          </section>
-        )}
+          }
+          notices={
+            <>
+              {contextNotices}
+              {p.project.data_origin === "user_import" && p.project.memory_initialization_status !== "completed" && (
+                <section className="warning import-context">
+                  <span>
+                    {p.initialization?.status === "draft"
+                      ? "事实库候选正在等你逐条确认；没确认的不会写进资料。"
+                      : "导入的正文已经可以检查；建立并确认事实库后，检查会更准。"}
+                  </span>
+                  {p.initialization?.status === "required" && (
+                    <Button className="primary" disabled={blocked} onClick={() => void p.startMemoryInitialization()}>
+                      建立事实库
+                    </Button>
+                  )}
+                  {p.initialization?.status === "draft" && (
+                    <Button disabled={blocked} onClick={() => p.go(`/projects/${p.project.id}/memory`)}>
+                      去确认候选
+                    </Button>
+                  )}
+                  {experienceSimulation && (
+                    <p className="simulation-disclosure"><strong>隔离模拟环境：</strong>候选由固定示例数据生成，不代表对任意正文的真实分析。请在初始化前导入体验包中的 v140-simulation-sample.md；本环境不会调用真实模型。</p>
+                  )}
+                </section>
+              )}
+            </>
+          }
+        />
         {exportOpen && (
           <Dialog title="导出作品" close={() => setExportOpen(false)}>
             <ProjectExport projectId={p.project.id} />
           </Dialog>
         )}
-      </section>
+      </>
     );
   if (p.tab === "plan")
     return (
@@ -5943,35 +5667,6 @@ type ChapterCheckIssue = { sentence: string; nature?: string; category?: string;
 type ChapterCheckReport = { chapters: { chapter_id: string; chapter_number: number; chapter_title: string; sentences: number; issues: ChapterCheckIssue[]; undecided: number }[]; issue_count: number; undecided_count: number };
 type ChapterCheckRun = { run_id: string; status: string; stage: string; error_code?: string | null; created_at: string; completed_at?: string | null; sample?: boolean; report: ChapterCheckReport | null };
 const CHAPTER_CHECK_MAX = 8;
-function OverviewTimeline({ projectId }: { projectId: string }) {
-  const [rows, setRows] = useState<TimelineRow[] | null>(null);
-  useEffect(() => {
-    let live = true;
-    request<{ chapters: TimelineRow[] }>(`/projects/${projectId}/chapter-timeline`).then((result) => { if (live) setRows(result.chapters); }).catch(() => undefined);
-    return () => { live = false; };
-  }, [projectId]);
-  if (!rows) return <p className="check-card-note">正在读取各章的检查情况…</p>;
-  const counts = { checked: 0, changed: 0, unchecked: 0 };
-  for (const row of rows) {
-    if (row.draft) continue;
-    if (row.status === "checked") counts.checked += 1;
-    else if (row.status === "basis_changed" || row.status === "edited_unchecked") counts.changed += 1;
-    else counts.unchecked += 1;
-  }
-  return (
-    <div className="overview-timeline">
-      <div className="timeline-bars" role="img" aria-label={`已检查 ${counts.checked} 章，改过或依据已变 ${counts.changed} 章，未检查 ${counts.unchecked} 章`}>
-        {rows.map((row) => <span key={row.chapter_id ?? `draft-${row.chapter_number}`} className={`timeline-bar status-${row.draft ? "draft" : row.status}`} title={`第 ${row.chapter_number} 章${row.draft ? "（草稿）" : ""} · ${timelineStatusLabel[row.status]}`} />)}
-      </div>
-      <ul className="timeline-legend">
-        <li><span className="timeline-key status-checked" />已检查 {counts.checked}</li>
-        <li><span className="timeline-key status-edited_unchecked" />改过或依据已变 {counts.changed}</li>
-        <li><span className="timeline-key status-unchecked" />未检查 {counts.unchecked}</li>
-        <li><span className="timeline-key status-draft" />草稿</li>
-      </ul>
-    </div>
-  );
-}
 type TimelineRow = { chapter_id: string | null; chapter_number: number; title: string; draft: boolean; status: "checked" | "basis_changed" | "edited_unchecked" | "unchecked" | "empty"; checked_at: string | null };
 const timelineStatusLabel: Record<TimelineRow["status"], string> = { checked: "已检查", basis_changed: "依据已变化", edited_unchecked: "改动后未检查", unchecked: "未检查", empty: "还没写" };
 const timelineStatusHint: Record<TimelineRow["status"], string> = {
@@ -7433,43 +7128,5 @@ function DraftRecoveryDialog({
       </div>
       <p className="dialog-note">恢复副本只保存在当前浏览器，不包含事实库或检查结果。</p>
     </Dialog>
-  );
-}
-function Dialog({
-  title,
-  children,
-  close,
-  closeDisabled = false,
-}: {
-  title: string;
-  children: ReactNode;
-  close: () => void;
-  closeDisabled?: boolean;
-}) {
-  const ref = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    ref.current?.focus();
-    const listener = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && !closeDisabled) close();
-    };
-    window.addEventListener("keydown", listener);
-    return () => window.removeEventListener("keydown", listener);
-  }, [close, closeDisabled]);
-  return (
-    <div className="modal-layer" role="presentation">
-      <section
-        className="dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-label={title}
-      >
-        <Button className="close" disabled={closeDisabled} onClick={close}>
-          <span ref={ref}>×</span>
-          <span className="sr-only">关闭</span>
-        </Button>
-        <h2>{title}</h2>
-        {children}
-      </section>
-    </div>
   );
 }

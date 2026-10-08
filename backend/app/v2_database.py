@@ -1589,7 +1589,7 @@ class V2Database:
                 levels={level:workflow.open_issue_count(c,project["id"],level) for level in ("high","medium","low")}
                 pending.append({"project_id":project["id"],"title":project["title"],"open_count":issue_count,"continuity_status":continuity_status,**levels})
                 if continuation is None and draft:
-                    continuation = {"project_id":project["id"],"project_title":project["title"],"draft_id":draft["id"],"draft_title":draft["title"],"draft_revision":draft["revision"],"next_action":"continue_draft","updated_at":project["updated_at"]}
+                    continuation = {"project_id":project["id"],"project_title":project["title"],"draft_id":draft["id"],"draft_title":draft["title"],"draft_revision":draft["revision"],"chapter_number":draft["chapter_number"],"draft_chars":len("".join(str(draft["body"] or "").split())),"open_issue_count":issue_count,"next_action":"continue_draft","updated_at":project["updated_at"]}
             failed=c.execute("SELECT r.id,r.project_id,r.status,r.error_code,r.created_at FROM v2_runs r JOIN v2_projects p ON p.id=r.project_id WHERE p.user_id=? AND p.data_origin!='tutorial_seed' AND r.run_type IN ('continuity','memory_delta') AND r.status IN ('failed','timed_out') ORDER BY r.created_at DESC LIMIT 1",(user_id,)).fetchone()
             latest={"run_id":failed["id"],"project_id":failed["project_id"],"status":failed["status"],"error_code":failed["error_code"],"created_at":failed["created_at"]} if failed else None
             return {"continue_work":continuation,"recent_projects":recent,"pending_continuity":pending,"latest_failed_run":latest}
