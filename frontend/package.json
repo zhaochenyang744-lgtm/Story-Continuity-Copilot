@@ -17,12 +17,7 @@
     "verify:stage14-bundle": "node scripts/stage14-bundle-scan.mjs",
     "verify:v130-allowlist": "node scripts/v130-allowlist-consistency.mjs",
     "test:e2e": "node scripts/run-e2e-all.mjs",
-    "test:e2e:raw": "playwright test",
-    "test:v110": "playwright test --config playwright.v110.config.ts",
-    "test:v120": "playwright test --config playwright.v120.config.ts",
-    "test:v130": "node scripts/run-v130-local-rc.mjs",
-    "test:v140:frontend": "node scripts/run-v140-frontend.mjs",
-    "test:v140:visual": "node scripts/run-v140-visual.mjs"
+    "test:e2e:raw": "playwright test"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "5.3.0",
