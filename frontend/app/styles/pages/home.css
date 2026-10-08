@@ -13,7 +13,8 @@
 .home-sample-action { margin-top: 16px; }
 .home-sample .small-note { margin-top: 8px; }
 .quota { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 24px 64px; margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--c-rule); }
-.quota-figure { margin-top: 8px; }
+.quota-group { padding: 2px 0 0 20px; border-left: 1px solid var(--c-rule); }
+.quota-figure { margin: 0; }
 .quota-figure .num { font-size: 64px; }
 .quota-figure > span:last-child { color: var(--c-muted); font-family: var(--font-display); font-stretch: 125%; font-weight: 900; font-size: 24px; }
 .quota-bar { flex: 1 1 360px; min-width: 0; }

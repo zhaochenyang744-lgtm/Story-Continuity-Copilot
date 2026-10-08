@@ -20,10 +20,11 @@
 .works-empty { max-width: 720px; }
 
 /* ── 新建 / 导入 ── */
+/* 新建 and 导入 are one level: the same column and the same distance from the title. */
 .import .page-head,
 .import .steps,
-.import-step { width: min(100%, 880px); margin-left: auto; margin-right: auto; }
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 32px; border-bottom: 2px solid var(--c-rule); }
+.import-step { width: min(100%, var(--form-max)); margin-left: auto; margin-right: auto; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 40px; border-bottom: 2px solid var(--c-rule); }
 .steps li { display: flex; align-items: baseline; gap: 10px; padding: 12px 0; color: var(--c-muted); }
 .steps li .num { font-size: 22px; }
 .steps li[aria-current="step"] { color: var(--c-ink); font-weight: 700; box-shadow: inset 0 -6px 0 var(--c-ink); }

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { type FindingTone } from "../labels";
+import { reducedMotion } from "../motion";
 import { bareChapterTitle, pad2 } from "../ui";
 
 export type RouteChapter = {
@@ -20,6 +21,8 @@ const BLUE_TEXT = "var(--c-blue-text)";
 const MUTED = "var(--c-muted)";
 const LANE = 52;
 const MAX_LANES = 6;
+// Routes already drawn in this visit: the chart draws itself once, later visits show it at rest.
+const drawn = new Set<string>();
 
 /**
  * 故事航线: the written chapters as stations on one line (filled = checked), the draft in blue with
@@ -27,7 +30,9 @@ const MAX_LANES = 6;
  * the chapter that planted it and running on past the draft, and the plans for coming chapters as
  * diamonds in the shaded "接下来" stretch (solid = 已定, dashed = 考虑中).
  */
-export function StoryRoute({ chapters, draft, threads, plans }: {
+export function StoryRoute({ id, chapters, draft, threads, plans }: {
+  /** the work; the chart draws itself the first time it is shown for it in this visit */
+  id: string;
   chapters: RouteChapter[];
   draft: { number: number; title: string; findings: FindingTone[] } | null;
   threads: RouteThread[];
@@ -35,6 +40,14 @@ export function StoryRoute({ chapters, draft, threads, plans }: {
 }) {
   const scroller = useRef<HTMLDivElement>(null);
   const [available, setAvailable] = useState(1180);
+  const [drawing] = useState(() => !drawn.has(id) && !reducedMotion());
+  // Pointing at a chapter: which threads were already open by then.
+  const [at, setAt] = useState<number | null>(null);
+  useEffect(() => {
+    if (!drawing) return;
+    const timer = window.setTimeout(() => drawn.add(id), 1600);
+    return () => window.clearTimeout(timer);
+  }, [drawing, id]);
   useEffect(() => {
     const el = scroller.current;
     if (!el) return;
@@ -84,9 +97,15 @@ export function StoryRoute({ chapters, draft, threads, plans }: {
 
   return (
     <div className="route-scroll" ref={scroller}>
-      <svg className="route" viewBox={`0 0 ${width} ${height}`} width={width} height={height} role="img" aria-label={`故事航线：${summary}`}>
+      <svg className={`route${drawing ? " drawing" : ""}${at !== null ? " scrubbing" : ""}`} viewBox={`0 0 ${width} ${height}`} width={width} height={height} role="img" aria-label={`故事航线：${summary}`} onMouseLeave={() => setAt(null)}>
         <rect x={futureStart} y={10} width={Math.max(0, width - futureStart)} height={height - 20} fill="var(--c-blue-tint)" />
         <text x={futureStart + 12} y={34} className="route-mono" fill={BLUE_TEXT}>接下来</text>
+        {at !== null && (
+          <g className="route-cursor" aria-hidden="true">
+            <line x1={x(at)} y1={36} x2={x(at)} y2={baseline - 14} />
+            <text x={x(at) + 8} y={30} className="route-mono">第 {at} 章时 · {shown.filter((thread) => thread.planted <= at).length} 条伏笔悬着</text>
+          </g>
+        )}
 
         {shown.map((thread, index) => {
           const y = top + index * LANE;
@@ -97,11 +116,11 @@ export function StoryRoute({ chapters, draft, threads, plans }: {
           const bend = Math.min(rise * 0.8, (futureStart - xp) * 0.8);
           const passed = Math.max(0, draftNumber - thread.planted);
           return (
-            <g key={thread.id}>
+            <g key={thread.id} className={`route-thread-line${at !== null ? (thread.planted <= at ? " lit" : " dim") : ""}`} style={{ "--i": index } as CSSProperties}>
               <path d={`M ${xp} ${baseline - 8} C ${xp} ${y + rise / 3}, ${xp + bend * 0.37} ${y}, ${xp + bend} ${y} L ${futureStart} ${y}`} fill="none" stroke={INK} strokeWidth="2" />
-              <path d={`M ${futureStart} ${y} L ${end - 7} ${y}`} fill="none" stroke={INK} strokeWidth="2" strokeDasharray="5 6" />
+              <path className="route-flow" d={`M ${futureStart} ${y} L ${end - 7} ${y}`} fill="none" stroke={INK} strokeWidth="2" strokeDasharray="5 6" />
               <rect x={end - 7} y={y - 7} width="14" height="14" fill={GROUND} stroke={INK} strokeWidth="2" />
-              <text x={xp + bend + 8} y={y - 12} className="route-thread">
+              <text x={xp + bend + 8} y={y - 12} className="route-thread route-thread-label">
                 <tspan className="route-thread-title">{thread.title}</tspan>
                 <tspan dx="12" className="route-mono" fill={MUTED}>第 {thread.planted} 章埋下 · 已过 {passed} 章</tspan>
               </text>
@@ -161,6 +180,13 @@ export function StoryRoute({ chapters, draft, threads, plans }: {
               {sub && <text x={cx} y={baseline + 82} textAnchor="middle" className="route-mono small" fill={MUTED}>{sub}</text>}
             </g>
           );
+        })}
+        {/* Pointing areas, one per written chapter and the draft, above everything so a chapter is
+            easy to point at; each carries that chapter's tooltip. */}
+        {Array.from({ length: Math.max(0, draftNumber - firstNumber + 1) }, (_, i) => firstNumber + i).map((n) => {
+          const chapter = chapterByNumber.get(n);
+          const tip = chapter ? `第 ${n} 章 · ${bareChapterTitle(chapter.title)} · ${chapter.status === "checked" ? "已检查" : chapter.status === "unchecked" || chapter.status === "empty" ? "未检查" : "改过，未重新检查"}` : draft && n === draftNumber ? `第 ${n} 章草稿 · ${bareChapterTitle(draft.title)}` : "";
+          return <rect key={`hit-${n}`} className="route-hit" x={x(n) - step / 2} y={10} width={step} height={height - 20} onMouseEnter={() => setAt(n)}>{tip && <title>{tip}</title>}</rect>;
         })}
       </svg>
     </div>

@@ -1637,7 +1637,7 @@ class V2Database:
             draft = c.execute("SELECT id,chapter_number,revision,status FROM v2_drafts WHERE project_id=? AND status IN ('draft','saved') ORDER BY saved_at DESC LIMIT 1", (project_id,)).fetchone()
             run = c.execute("SELECT id,status,created_at,result_origin FROM v2_runs WHERE project_id=? AND run_type IN ('continuity','memory_delta') ORDER BY created_at DESC,rowid DESC LIMIT 1", (project_id,)).fetchone()
             open_count=workflow.open_issue_count(c,project_id)
-            return {"id":project["id"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"author_context_version":project["author_context_version"],"foreshadow_version":project["foreshadow_version"],"chapter_count":c.execute("SELECT COUNT(*) FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0],"word_count":self._project_word_count(c,project_id),"outline_progress":0,"current_memory_version":project["current_memory_version"],"source_revision":project["source_revision"],"current_draft":dict(draft) if draft else None,"latest_run":({"run_id":run["id"],"status":run["status"],"created_at":run["created_at"],"result_origin":run["result_origin"]} if run else None),"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if run and run["status"]=="completed" else "unchecked"),"updated_at":project["updated_at"],"data_origin":project["data_origin"],"is_tutorial":project["data_origin"]=="tutorial_seed","memory_initialization_status":self._memory_initialization_status(c,project_id,project["data_origin"]) }
+            return {"id":project["id"],"title":project["title"],"genre":project["genre"],"summary":project["summary"],"status":project["status"],"metadata_revision":project["metadata_revision"],"author_context_version":project["author_context_version"],"foreshadow_version":project["foreshadow_version"],"chapter_count":c.execute("SELECT COUNT(*) FROM v2_chapters WHERE project_id=?",(project_id,)).fetchone()[0],"word_count":self._project_word_count(c,project_id),"chapter_word_count":self._chapter_word_count(c,project_id),"outline_progress":0,"current_memory_version":project["current_memory_version"],"source_revision":project["source_revision"],"current_draft":dict(draft) if draft else None,"latest_run":({"run_id":run["id"],"status":run["status"],"created_at":run["created_at"],"result_origin":run["result_origin"]} if run else None),"open_issue_count":open_count,"continuity_status":("pending" if open_count else "checked_clear" if run and run["status"]=="completed" else "unchecked"),"updated_at":project["updated_at"],"data_origin":project["data_origin"],"is_tutorial":project["data_origin"]=="tutorial_seed","memory_initialization_status":self._memory_initialization_status(c,project_id,project["data_origin"]) }
 
     # --- v1.3 author intent: independent from confirmed Story Memory ---
     _AUTHOR_INTENT = {
@@ -2457,6 +2457,10 @@ class V2Database:
 
     def _source_snapshot_digest(self, sources: list[dict[str, Any]]) -> str:
         return digest([{key:item[key] for key in ("id","chapter_id","chapter_number","chapter_title","label","body")} for item in sources])
+
+    def _chapter_word_count(self, c: Any, project_id: str) -> int:
+        """Characters in the written chapters only (the draft not included), counted like _project_word_count."""
+        return sum(len(re.sub(r"\s+", "", str(row["body"] or ""))) for row in c.execute("SELECT body FROM v2_chapters WHERE project_id=?", (project_id,)))
 
     def _project_word_count(self, c: Any, project_id: str) -> int:
         """Characters written: every chapter, with a non-empty current draft counted in place of its chapter."""

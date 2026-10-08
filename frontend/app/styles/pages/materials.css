@@ -8,6 +8,7 @@
 .fact-list { margin-top: 16px; border-top: 1px solid var(--c-rule); }
 .fact-list li { display: grid; grid-template-columns: 72px minmax(0, 1fr) 120px; gap: 16px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--c-line); }
 .fact-list li.retired { opacity: .5; }
+.fact-list li > :last-child { justify-self: end; }
 .fact-chapter { padding: 0; border: 0; background: none; color: var(--c-ink); text-align: left; cursor: pointer; }
 .fact-chapter .num { font-size: 26px; }
 .fact-chapter:hover:not(:disabled) .num { color: var(--c-blue-text); text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 4px; }

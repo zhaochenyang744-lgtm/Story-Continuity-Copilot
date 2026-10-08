@@ -6,7 +6,27 @@
 
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
 @keyframes fade { from { opacity: 0; } }
+@keyframes fade-in { from { opacity: 0; } }
 @keyframes drop { from { opacity: 0; transform: translateY(-6px); } }
+@keyframes slide-in { from { opacity: 0; transform: translateX(24px); } }
+@keyframes pulse { 50% { outline-offset: 8px; outline-color: transparent; } }
+
+/* ── Floating layers: menus drop in; messages slide down from under the top bar. ── */
+.menu[open] > .menu-list,
+.account-menu { transform-origin: top right; animation: drop var(--dur-fast) var(--ease); }
+.feedback { animation: toast-in var(--dur-mid) var(--ease); }
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, -14px); } }
+
+/* ── The current tab's underline slides from the previous tab (positioned by app.tsx). ── */
+.topbar-tabs { position: relative; }
+.tab-mark { position: absolute; z-index: 1; height: 4px; background: var(--c-ink); opacity: 0; transform-origin: left center; pointer-events: none; }
+.topbar-tab[aria-current="page"] { border-bottom-color: transparent; }
+
+/* ── 日间 / 夜间: the new colours sweep in from the switch's side (right to left). ── */
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { animation: theme-sweep 620ms var(--ease); }
+@keyframes theme-sweep { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
 
 /* ── Page entry: the head first, then each block a beat later. Only "backwards" fill, so no
    transform is left on the page afterwards (fixed overlays inside it depend on that). ── */
@@ -29,6 +49,29 @@
 
 /* Expanded type that sets itself: from condensed to full width. */
 @keyframes stretch { from { opacity: 0; font-stretch: 62%; } 40% { opacity: 1; } }
+
+/* A counting figure: the final value reserves the width, the live value counts over it. */
+.count { display: inline-grid; }
+.count > .count-ghost,
+.count > .count-live { grid-area: 1 / 1; }
+.count > .count-ghost { visibility: hidden; }
+.count.run .count-live { animation: stretch 900ms var(--ease) backwards; }
+
+/* ── 故事航线: drawn left to right once, then the thread names; open threads keep flowing. ── */
+.route.drawing { animation: route-draw 1200ms var(--ease) backwards; }
+.route.drawing .route-thread-label { animation: fade var(--dur-mid) var(--ease) backwards; animation-delay: calc(900ms + var(--i, 0) * 80ms); }
+@keyframes route-draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.route-thread-line { transition: opacity var(--dur-fast) var(--ease); }
+.route-thread-line.dim { opacity: .18; }
+.route .route-flow { animation: flow 1400ms linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -11; } }
+.route-hit { fill: transparent; }
+.route-cursor line { stroke: var(--c-blue); stroke-width: 1.5; stroke-dasharray: 3 4; }
+.route-cursor text { fill: var(--c-blue-text); }
+.route.scrubbing .route-thread-line.lit path:first-child { stroke: var(--c-blue); }
+
+/* ── 章节: a chapter's passages unfold under its row. ── */
+.chapter-passages { animation: rise var(--dur-mid) var(--ease); }
 
 /* ── 写作: save dot ── */
 .save-state.saved i { animation: dot-pop var(--dur-mid) var(--ease); }

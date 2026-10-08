@@ -17,6 +17,7 @@
 .chapter-expand { min-height: 28px; padding: 0; border: 0; border-bottom: 1px solid var(--c-faint); background: none; color: var(--c-muted); font-size: 13px; cursor: pointer; }
 .chapter-expand:hover { color: var(--c-ink); border-bottom-color: var(--c-ink); }
 .chapter-status { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.chapter-result { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
 .status-mark { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--c-ink); }
 .status-mark.checked { background: var(--c-ink); }
 .status-mark.basis_changed,

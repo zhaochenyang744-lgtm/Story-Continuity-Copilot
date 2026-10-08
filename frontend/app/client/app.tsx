@@ -3,7 +3,8 @@
 // The whole client: session, routing by path, the top bar, page-level messages, and the guards that
 // stop an unsaved draft or an unrecorded decision from being lost on navigation or sign-out.
 import { usePathname, useRouter } from "next/navigation";
-import { startTransition, useCallback, useEffect, useRef, useState } from "react";
+import { startTransition, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { json, labelError, request, type ApiFailure } from "../api";
 import type { Onboarding, TutorialEvent, TutorialProgress, User } from "../model";
 import { AuthPage, PasswordResetConfirmPage, PasswordResetRequestPage, VerifyEmailPage } from "./pages/auth";
@@ -20,10 +21,12 @@ import { Avatar, Wordmark } from "./identity";
 import { Button, Chevron, Dialog, pad2, usageShort, useUsage } from "./ui";
 import { timeLabel } from "./labels";
 
-// The catch-all page remounts between route segments; keep the session check for the module's life.
+// Keep the session check for the module's life.
 let bootstrappedUser: User | null | undefined;
 let sessionBootstrap: Promise<User | null> | null = null;
 let rememberedTheme: "day" | "night" | undefined;
+// Where the current tab's underline was, so the next page can slide it across.
+let lastTabMark: { kind: string; left: number; width: number } | null = null;
 const themeKey = "story-continuity:theme";
 const publicAuthPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm", "/verify-email"];
 export const TUTORIAL_VERSION = "1.2.0";
@@ -101,22 +104,55 @@ export function App() {
   const p = useProject({ projectId, user, narrow, fail, notify, applyOnboarding, recordTutorialEvent });
   useEffect(() => { clearProject.current = p.clear; }, [p.clear]);
 
-  // Theme: day by default; the choice is remembered on this device and applied before paint by layout.tsx.
+  // Theme: layout.tsx applies it before paint — the choice remembered on this device, otherwise the
+  // system's light or dark setting.
   useEffect(() => {
     if (rememberedTheme !== undefined) return;
     const timer = window.setTimeout(() => {
-      try { rememberedTheme = window.localStorage.getItem(themeKey) === "night" ? "night" : "day"; setTheme(rememberedTheme); }
-      catch { rememberedTheme = "day"; }
+      rememberedTheme = document.documentElement.dataset.theme === "night" ? "night" : "day";
+      setTheme(rememberedTheme);
     }, 0);
     return () => window.clearTimeout(timer);
   }, []);
-  useEffect(() => { document.documentElement.dataset.theme = theme; }, [theme]);
-  const toggleTheme = () => setTheme((current) => {
-    const next = current === "night" ? "day" : "night";
+  // Switching sweeps the new colours across the page from the switch's side, like paper through a press.
+  const toggleTheme = () => {
+    const next = theme === "night" ? "day" : "night";
     rememberedTheme = next;
     try { window.localStorage.setItem(themeKey, next); } catch { /* switches for this visit only */ }
-    return next;
-  });
+    const apply = () => { document.documentElement.dataset.theme = next; flushSync(() => setTheme(next)); };
+    const sweep = (document as Document & { startViewTransition?: (update: () => void) => unknown }).startViewTransition;
+    if (sweep && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) sweep.call(document, apply);
+    else apply();
+  };
+  // A new address starts at the top (an #anchor is scrolled to by the page), without the last error.
+  const [shownPath, setShownPath] = useState(pathname);
+  if (shownPath !== pathname) { setShownPath(pathname); setError(null); }
+  useEffect(() => { if (!window.location.hash) window.scrollTo({ top: 0 }); }, [pathname]);
+  // Messages leave by themselves after a while; errors stay until closed.
+  useEffect(() => {
+    if (!notice) return;
+    const timer = window.setTimeout(() => setNotice(""), 6000);
+    return () => window.clearTimeout(timer);
+  }, [notice]);
+  // The current tab's underline slides over from where it was on the previous page.
+  const tabs = useRef<HTMLElement>(null);
+  const tabMark = useRef<HTMLSpanElement>(null);
+  const tabKind = projectId ? "project" : "global";
+  useLayoutEffect(() => {
+    const nav = tabs.current, mark = tabMark.current;
+    const current = nav?.querySelector<HTMLElement>(".topbar-tab[aria-current='page']");
+    if (!nav || !mark) return;
+    if (!current) { mark.style.opacity = "0"; return; }
+    const left = current.offsetLeft, width = current.offsetWidth;
+    Object.assign(mark.style, { opacity: "1", left: `${left}px`, top: `${current.offsetTop + current.offsetHeight - 4}px`, width: `${width}px`, transition: "none", transform: "none" });
+    const previous = lastTabMark;
+    lastTabMark = { kind: tabKind, left, width };
+    if (!previous || previous.kind !== tabKind || (previous.left === left && previous.width === width) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    mark.style.transform = `translateX(${previous.left - left}px) scaleX(${previous.width / width})`;
+    void mark.offsetWidth;
+    mark.style.transition = "transform var(--dur-mid) var(--ease)";
+    mark.style.transform = "none";
+  }, [tabKind, tab, pathname, p.project?.id, user]);
 
   useEffect(() => {
     const update = () => setNarrow(window.innerWidth < 1024);
@@ -162,9 +198,11 @@ export function App() {
   const updateUser = useCallback((next: User | null) => { bootstrappedUser = next; setUser(next); }, []);
   const go = (href: string) => {
     setMenuOpen(false);
-    // The catch-all page remounts on every route change and re-reads the work, so even switching tabs
-    // would drop unsaved text: always ask first.
-    if ((p.dirty || p.pendingControlledDecision) && href !== pathname) { setSwitchFailed(false); setSwitchTo(href); }
+    // Moving between the tabs of the open work keeps it (and any unsaved text) in memory; leaving the
+    // work drops it, so that asks first.
+    const target = href.split(/[?#]/)[0].split("/").filter(Boolean);
+    const sameWork = Boolean(projectId) && target[0] === "projects" && target[1] === projectId;
+    if ((p.dirty || p.pendingControlledDecision) && href !== pathname && !sameWork) { setSwitchFailed(false); setSwitchTo(href); }
     else if (hasUnsubmittedRevision() && href !== pathname) setRevisionLeave(href);
     else router.push(href);
   };
@@ -267,7 +305,7 @@ export function App() {
         : pathname === "/projects" ? <WorksPage fail={fail} go={go} />
           : pathname === "/" ? <HomePage user={user} onboarding={onboarding} usage={usage} fail={fail} go={go} reopenTutorial={() => void reopenTutorial()} />
             : <NotFoundPage kind="page" go={go} />;
-  else if (p.project) body = <ProjectFrame p={p} tab={tab} rawTab={rawTab} user={user} usage={usage} tutorialStep={tutorialStep} finishTutorial={finishTutorial} recordTutorialEvent={recordTutorialEvent} go={go} />;
+  else if (p.project) body = <ProjectFrame key={`${projectId}:${tab}`} p={p} tab={tab} rawTab={rawTab} user={user} usage={usage} tutorialStep={tutorialStep} finishTutorial={finishTutorial} recordTutorialEvent={recordTutorialEvent} go={go} />;
   else body = p.missingProjectId === projectId ? <NotFoundPage kind="project" go={go} /> : <div className="boot" role="status">{p.busy || "正在读取作品…"}</div>;
 
   const showFeedback = !publicAuthPaths.includes(pathname) && Boolean(user) && (notice || Boolean(error));
@@ -283,7 +321,8 @@ export function App() {
                 <span>{p.project.title}</span><Chevron />
               </button>
             )}
-            <nav className={projectId ? "topbar-tabs" : "topbar-tabs global"} aria-label={projectId ? "作品" : "全局"}>
+            <nav ref={tabs} className={projectId ? "topbar-tabs" : "topbar-tabs global"} aria-label={projectId ? "作品" : "全局"}>
+              <span ref={tabMark} className="tab-mark" aria-hidden="true" />
               {projectId
                 ? p.project && projectTabs.map(([id, label], index) => (
                     <button key={id} type="button" className="topbar-tab" aria-current={id === tab ? "page" : undefined} onClick={() => go(`/projects/${p.project!.id}/${id}`)}>
@@ -296,7 +335,8 @@ export function App() {
                   </>}
             </nav>
             {usageShort(usage) && <span className="topbar-quota">{usageShort(usage)}</span>}
-            {!projectId && pathname !== "/projects/new" && <Button kind="outline" className="topbar-new" onClick={() => go("/projects/new")}>新建作品</Button>}
+            {!projectId && pathname !== "/projects/new" && pathname !== "/projects/import" && <Button kind="outline" className="topbar-new" onClick={() => go("/projects/new")}>新建作品</Button>}
+            <ThemeSwitch theme={theme} toggle={toggleTheme} />
             <div className="account">
               <button ref={menuTrigger} type="button" className="account-trigger" aria-label={`账号菜单：${user.display_name}`} aria-haspopup="menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>
                 <Avatar user={user} />
@@ -306,7 +346,6 @@ export function App() {
                   <p className="account-menu-head"><strong>{user.display_name}</strong><span>{user.account_type === "visitor" ? <>访客空间 · 有效至 {timeLabel(user.visitor_expires_at)}</> : `@${user.account_name}`}</span></p>
                   {user.account_type !== "visitor" && <button type="button" role="menuitem" onClick={() => go("/account/profile")}>个人信息</button>}
                   {user.account_type !== "visitor" && <button type="button" role="menuitem" onClick={() => go("/account/security")}>账号安全</button>}
-                  <button type="button" role="menuitemcheckbox" aria-checked={theme === "night"} onClick={toggleTheme}>夜间模式<span className="account-menu-state">{theme === "night" ? "开" : "关"}</span></button>
                   {user.account_type !== "visitor" && <button type="button" role="menuitem" onClick={() => void reopenTutorial()}>重新看一遍导览</button>}
                   <button type="button" role="menuitem" className="danger" onClick={() => void logout()}>退出登录</button>
                 </div>
@@ -315,6 +354,7 @@ export function App() {
           </div>
         </header>
       )}
+      {!user && ready && <ThemeSwitch theme={theme} toggle={toggleTheme} floating />}
       <main id="main" className={user ? "main" : "main main-auth"}>
         {showFeedback && (
           <div className={error ? "feedback error" : "feedback"} role={error ? "alert" : "status"}>
@@ -376,5 +416,19 @@ export function App() {
         </Dialog>
       )}
     </div>
+  );
+}
+
+/** 日间 / 夜间: the moon switches to night, the sun back to day. */
+function ThemeSwitch({ theme, toggle, floating = false }: { theme: "day" | "night"; toggle: () => void; floating?: boolean }) {
+  const night = theme === "night";
+  return (
+    <button type="button" className={floating ? "theme-switch floating" : "theme-switch"} aria-label={night ? "切换到日间模式" : "切换到夜间模式"} title={night ? "日间模式" : "夜间模式"} onClick={toggle}>
+      {night ? (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="10" cy="10" r="4" /><path d="M10 1v2.5M10 16.5V19M1 10h2.5M16.5 10H19M3.6 3.6l1.8 1.8M14.6 14.6l1.8 1.8M3.6 16.4l1.8-1.8M14.6 5.4l1.8-1.8" /></svg>
+      ) : (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M16.5 12.6A7 7 0 0 1 7.4 3.5a7 7 0 1 0 9.1 9.1Z" /></svg>
+      )}
+    </button>
   );
 }

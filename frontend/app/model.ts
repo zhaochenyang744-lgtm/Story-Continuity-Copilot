@@ -22,6 +22,8 @@ export type ProjectSummary = {
   source_revision?: number;
   chapter_count?: number;
   word_count?: number;
+  /** Characters in the written chapters only (word_count also counts the draft). */
+  chapter_word_count?: number;
   open_issue_count?: number;
   continuity_status?: "unchecked" | "checked_clear" | "pending";
   updated_at: string;

@@ -5,6 +5,7 @@ import { request } from "../../api";
 import type { ProjectSummary } from "../../model";
 import { workStatusLabel } from "../labels";
 import { Arrow, Button, Chips, formatCount, Menu, Num, PageHead, pad2, Tag } from "../ui";
+import { CountUp } from "../motion";
 import { WorkCheckTag } from "./home";
 
 type StatusFilter = "" | "active" | "paused" | "completed" | "archived";
@@ -51,9 +52,9 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
           <div className="head-figures-actions">
             {hasWorks && (
               <dl className="figures">
-                <div><dt className="sr-only">作品</dt><dd><Num>{all!.length}</Num></dd><dd className="figure-label">部作品</dd></div>
-                <div><dt className="sr-only">进行中</dt><dd><Num>{active}</Num></dd><dd className="figure-label">进行中</dd></div>
-                <div><dt className="sr-only">字数</dt><dd><Num>{formatCount(totalWords)}</Num></dd><dd className="figure-label">字</dd></div>
+                <div><dt className="sr-only">作品</dt><dd><Num><CountUp id="works:count" value={all!.length} /></Num></dd><dd className="figure-label">部作品</dd></div>
+                <div><dt className="sr-only">进行中</dt><dd><Num><CountUp id="works:active" value={active} /></Num></dd><dd className="figure-label">进行中</dd></div>
+                <div><dt className="sr-only">字数</dt><dd><Num><CountUp id="works:words" value={totalWords} /></Num></dd><dd className="figure-label">字</dd></div>
               </dl>
             )}
             <div className="actions">

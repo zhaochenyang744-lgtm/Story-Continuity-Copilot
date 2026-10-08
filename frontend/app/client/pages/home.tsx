@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { request } from "../../api";
 import type { Onboarding, Project, ProjectSummary, User } from "../../model";
 import { Arrow, bareChapterTitle, Button, type CheckUsage, formatCount, Num, pad2, SectionHead, Tag } from "../ui";
+import { CountUp } from "../motion";
 
 type Home = {
   continue_work?: { project_id: string; project_title: string; draft_title: string; chapter_number?: number; draft_chars?: number; open_issue_count?: number } | null;
@@ -143,11 +144,11 @@ export function HomePage({ user, onboarding, usage, fail, go, reopenTutorial }: 
 
       {usage && (
         <section className="quota" aria-label="检查额度">
-          <div>
-            <p className="label">{usage.account_type === "visitor" ? "访客 · 24 小时内可检查" : "24 小时内可检查"}</p>
+          <div className="quota-group">
             {usage.account_type === "visitor"
-              ? <p className="quota-figure"><Num>{usage.checks_remaining}</Num><span> / {usage.checks_limit} 次</span></p>
-              : <p className="quota-figure"><Num>{formatCount(usage.check_chars_remaining)}</Num><span> / {formatCount(usage.check_chars_limit)} 字</span></p>}
+              ? <p className="quota-figure"><Num><CountUp id="home:quota" value={usage.checks_remaining} /></Num><span> / {usage.checks_limit} 次</span></p>
+              : <p className="quota-figure"><Num><CountUp id="home:quota" value={usage.check_chars_remaining} /></Num><span> / {formatCount(usage.check_chars_limit)} 字</span></p>}
+            <p className="figure-label">{usage.account_type === "visitor" ? "访客 · 24 小时内还可检查" : "24 小时内还可检查"}</p>
           </div>
           <div className="quota-bar">
             <div className="meter"><span style={{ width: `${usage.account_type === "visitor" ? (usage.checks_limit ? (usage.checks_remaining / usage.checks_limit) * 100 : 0) : usage.check_chars_limit ? (usage.check_chars_remaining / usage.check_chars_limit) * 100 : 0}%` }} /></div>

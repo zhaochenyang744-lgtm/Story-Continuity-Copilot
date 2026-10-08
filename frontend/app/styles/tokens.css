@@ -115,10 +115,12 @@
   --topbar-h: 64px;
   --page-max: 1360px;
   --page-gutter: 40px;
-  --form-max: 720px;
+  --form-max: 800px;
   --prose-max: 680px;
   --elev-1: none;
   --elev-2: 8px 8px 0 rgba(17, 17, 17, .14);
+  /* Floating layers (menus, messages): a soft lift instead of a frame. */
+  --elev-pop: 0 14px 36px rgba(17, 17, 17, .12), 0 2px 6px rgba(17, 17, 17, .08);
 
   /* Motion: three durations and one curve. Fast for hover and menus, mid for opening and switching,
      slow for drawing charts and the after-glow of a change. */
@@ -166,4 +168,5 @@
   --c-amber: #ffd45c;
   --c-veil: rgba(0, 0, 0, .62);
   --elev-2: 8px 8px 0 rgba(0, 0, 0, .5);
+  --elev-pop: 0 14px 36px rgba(0, 0, 0, .55), 0 2px 6px rgba(0, 0, 0, .4);
 }

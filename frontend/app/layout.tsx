@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { App } from "./client/app";
 // Self-hosted fonts, sliced by unicode-range so a page only fetches the characters it shows.
 import "@fontsource/noto-sans-sc/400.css";
 import "@fontsource/noto-sans-sc/500.css";
@@ -33,7 +34,8 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const themeBootScript = `try{document.documentElement.dataset.theme=localStorage.getItem("story-continuity:theme")==="night"?"night":"day"}catch(e){}`;
+// The remembered choice, otherwise the system setting.
+const themeBootScript = `try{var t=localStorage.getItem("story-continuity:theme");document.documentElement.dataset.theme=t==="night"||t==="day"?t:matchMedia("(prefers-color-scheme: dark)").matches?"night":"day"}catch(e){}`;
 
 export default function RootLayout({
   children,
@@ -42,6 +44,7 @@ export default function RootLayout({
     <html lang="zh-CN" suppressHydrationWarning>
       <body>
         {children}
+        <App />
         {/* Apply the remembered day/night choice before the app hydrates. */}
         <Script id="theme-boot" strategy="beforeInteractive">{themeBootScript}</Script>
       </body>

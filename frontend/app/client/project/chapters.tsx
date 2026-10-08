@@ -7,6 +7,7 @@ import { categoryLabel, dayLabel, timelineStatusHint, timelineStatusLabel, toneL
 import { bareChapterTitle, Button, formatCount, Num, PageHead, pad2, SectionHead, Tag } from "../ui";
 import type { PageProps } from "./frame";
 import type { ProjectState } from "./use-project";
+import { CountUp, Odometer } from "../motion";
 
 const MAX = 8;
 type TimelineRow = { chapter_id: string | null; chapter_number: number; title: string; draft: boolean; status: string };
@@ -89,11 +90,15 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
   const bodies = new Map((snapshot?.chapters ?? []).map((chapter) => [chapter.id, chapter]));
   const latest = visitor ? runs.find((run) => run.sample) : runs[0];
   const lastResult = new Map<number, CheckIssue[]>();
-  for (const run of runs) if (run.status === "completed" && run.report) for (const chapter of run.report.chapters) if (!lastResult.has(chapter.chapter_number)) lastResult.set(chapter.chapter_number, chapter.issues);
+  const sampleResult = new Set<number>();
+  for (const run of runs) if (run.status === "completed" && run.report) for (const chapter of run.report.chapters) if (!lastResult.has(chapter.chapter_number)) {
+    lastResult.set(chapter.chapter_number, chapter.issues);
+    if (run.sample) sampleResult.add(chapter.chapter_number);
+  }
   const rows = timeline ?? p.chapters.map((chapter) => ({ chapter_id: chapter.id, chapter_number: chapter.number, title: chapter.title, draft: false, status: "unchecked" }));
   const written = rows.filter((row) => !row.draft && row.chapter_id);
   const draftRow = rows.find((row) => row.draft);
-  const totalChars = (snapshot?.chapters ?? []).reduce((sum, chapter) => sum + chapter.body.replace(/\s+/g, "").length, 0) || (project.word_count ?? 0);
+  const totalChars = project.chapter_word_count ?? (snapshot?.chapters ?? []).reduce((sum, chapter) => sum + chapter.body.replace(/\s+/g, "").length, 0);
   const checkedCount = written.filter((row) => row.status === "checked").length;
   const shown = picked.length ? estimate : null;
   const over = Boolean(shown && usage?.account_type === "registered" && shown.characters > usage.check_chars_remaining);
@@ -111,9 +116,9 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
         aside={
           <div className="head-figures-actions">
             <dl className="figures">
-              <div><dt className="sr-only">章节</dt><dd><Num>{written.length}</Num></dd><dd className="figure-label">章</dd></div>
-              <div><dt className="sr-only">字数</dt><dd><Num>{formatCount(totalChars)}</Num></dd><dd className="figure-label">字</dd></div>
-              <div><dt className="sr-only">已检查</dt><dd><Num>{checkedCount}</Num></dd><dd className="figure-label">章已检查</dd></div>
+              <div><dt className="sr-only">章节</dt><dd><Num><CountUp id={`${project.id}:chapters`} value={written.length} /></Num></dd><dd className="figure-label">章</dd></div>
+              <div><dt className="sr-only">字数</dt><dd><Num><CountUp id={`${project.id}:words`} value={totalChars} /></Num></dd><dd className="figure-label">字</dd></div>
+              <div><dt className="sr-only">已检查</dt><dd><Num><CountUp id={`${project.id}:checked`} value={checkedCount} /></Num></dd><dd className="figure-label">章已检查</dd></div>
             </dl>
             {!p.readOnly && <Button size="lg" onClick={() => document.getElementById("append")?.scrollIntoView({ block: "start", behavior: "smooth" })}>追加章节</Button>}
           </div>
@@ -148,7 +153,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
                   </span>
                   <span role="cell" className="mono">{body ? formatCount(body.body.replace(/\s+/g, "").length) : "—"}</span>
                   <span role="cell" className="chapter-status" title={timelineStatusHint[row.status]}><i className={`status-mark ${row.status}`} aria-hidden="true" />{timelineStatusLabel[row.status] ?? "未检查"}</span>
-                  <span role="cell">{result ? result.length ? <Tag tone={result.some((issue) => tone(issue) === "high") ? "high" : "mid"}>{result.length} 处{result.length === 1 ? toneLabel[tone(result[0])] : ""}</Tag> : <span className="muted">无问题</span> : <span className="muted">—</span>}</span>
+                  <span role="cell" className="chapter-result">{sampleResult.has(row.chapter_number) && <span className="label" title="示例作品预先放好的结果，不算检查过">示例</span>}{result ? result.length ? <Tag tone={result.some((issue) => tone(issue) === "high") ? "high" : "mid"}>{result.length} 处{result.length === 1 ? toneLabel[tone(result[0])] : ""}</Tag> : <span className="muted">无问题</span> : <span className="muted">—</span>}</span>
                   <span role="cell"><button type="button" className="link" onClick={() => openChapter(row.chapter_number)}>{p.readOnly ? "打开" : "打开修改"}</button></span>
                 </div>
                 {isOpen && (
@@ -187,7 +192,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
 
       {canPick && written.length > 0 && (
         <div className="select-bar" aria-live="polite">
-          <span className="select-count"><Num>{picked.length}</Num><span> / {MAX} 章</span></span>
+          <span className="select-count"><Num><Odometer value={picked.length} /></Num><span> / {MAX} 章</span></span>
           <span className="select-summary">
             {picked.length
               ? <>约 {formatCount(shown?.characters ?? 0)} 字 · 预计{shown ? (shown.estimated_cny >= 0.01 ? `约 ¥${shown.estimated_cny.toFixed(2)}` : "不到 ¥0.01") : "…"}{usage?.account_type === "registered" && ` · 可检查 ${formatCount(usage.check_chars_remaining)} 字`}{over && " · 额度不够"}</>

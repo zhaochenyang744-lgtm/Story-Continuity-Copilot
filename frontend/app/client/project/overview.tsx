@@ -10,6 +10,7 @@ import { bareChapterTitle, Button, clip, formatCount, Menu, Num, pad2, SectionHe
 import type { PageProps } from "./frame";
 import { FindingTag, findingHeadline, openIssues } from "./findings";
 import { RouteLegend, StoryRoute, type RouteChapter } from "./story-route";
+import { CountUp } from "../motion";
 
 type TimelineRow = { chapter_id: string | null; chapter_number: number; title: string; draft: boolean; status: RouteChapter["status"] };
 type CheckRun = { status: string; sample?: boolean; report: { chapters: { chapter_number: number; issues: { nature?: string; severity?: string }[] }[] } | null };
@@ -79,17 +80,17 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
           <dl className="overview-figures">
             <div>
               <dt className="sr-only">已写章节</dt>
-              <dd><Num>{project.chapter_count}</Num></dd>
-              <dd className="figure-label">章已写{timeline ? ` · ${checked} 章已检查` : ""}</dd>
+              <dd><Num><CountUp id={`${project.id}:chapters`} value={project.chapter_count ?? 0} /></Num></dd>
+              <dd className="figure-label">章{timeline ? ` · 已检查 ${checked}` : ""}</dd>
             </div>
             <div>
               <dt className="sr-only">待看</dt>
-              <dd><Num className="blue">{issues.length}</Num></dd>
+              <dd><Num className="blue"><CountUp id={`${project.id}:open`} value={issues.length} /></Num></dd>
               <dd className="figure-label">处待看</dd>
             </div>
             <div className="wide">
               <dt className="sr-only">字数</dt>
-              <dd><Num>{formatCount(project.word_count ?? 0)}</Num></dd>
+              <dd><Num><CountUp id={`${project.id}:words`} value={project.chapter_word_count ?? Math.max(0, (project.word_count ?? 0) - draftChars)} /></Num></dd>
               <dd className="figure-label">字正文{draftChars ? ` · 另有草稿 ${formatCount(draftChars)} 字` : ""}</dd>
             </div>
           </dl>
@@ -119,6 +120,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
         <SectionHead id="route-title" title="故事航线" aside={<RouteLegend />} />
         {timeline === null ? <p className="loading">正在读取各章的情况…</p> : (
           <StoryRoute
+            id={project.id}
             chapters={written.map((row) => ({ number: row.chapter_number, title: row.title, status: row.status, findings: chapterFindings.get(row.chapter_number) ?? [] }))}
             draft={{ number: draftNumber, title: p.draft?.title ?? "", findings: issues.map(findingTone) }}
             threads={openThreads.map((record) => ({ id: record.id, title: record.title, planted: record.planted!.chapter_number }))}

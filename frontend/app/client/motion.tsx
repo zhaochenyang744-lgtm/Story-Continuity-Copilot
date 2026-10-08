@@ -3,7 +3,7 @@
 // Motion pieces that need a little script: the rolling counter, the thread from a finding to its
 // evidence chapter, and the reading line during a check. The look lives in
 // styles/motion.css; every piece here does nothing under prefers-reduced-motion.
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export const reducedMotion = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -132,3 +132,39 @@ export function useFirstShow(id: string | null, count: number) {
   }, [id, count]);
   return reveal === id;
 }
+
+// Figures already counted in this visit (survives page switches, which remount the page).
+const counted = new Set<string>();
+
+/** 排版: a figure that sets itself the first time it is shown in this visit — it counts up from
+    zero while its digits widen from condensed to full width. Later shows are still. */
+export function CountUp({ value, id }: { value: number; id: string }) {
+  const host = useRef<HTMLSpanElement>(null);
+  const live = useRef<HTMLSpanElement>(null);
+  const text = formatNumber(value);
+  useLayoutEffect(() => {
+    const node = live.current, wrap = host.current;
+    if (!node || !wrap) return;
+    if (counted.has(id) || reducedMotion() || value === 0) { node.textContent = text; return; }
+    let frame = 0;
+    const start = performance.now();
+    node.textContent = "0";
+    wrap.classList.add("run");
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / 900);
+      node.textContent = formatNumber(Math.round(value * (1 - Math.pow(1 - t, 3))));
+      if (t < 1) frame = requestAnimationFrame(tick);
+      else { counted.add(id); wrap.classList.remove("run"); }
+    };
+    frame = requestAnimationFrame(tick);
+    return () => { cancelAnimationFrame(frame); node.textContent = text; wrap.classList.remove("run"); };
+  }, [id, value, text]);
+  return (
+    <span ref={host} className="count">
+      <span className="count-ghost" aria-hidden="true">{text}</span>
+      <span ref={live} className="count-live" aria-hidden="true">{text}</span>
+      <span className="sr-only">{text}</span>
+    </span>
+  );
+}
+const formatNumber = (value: number) => value.toLocaleString("en-US");
