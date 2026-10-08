@@ -231,6 +231,8 @@ export type Issue = {
 export type Run = {
   run_id: string;
   project_id: string;
+  /** The draft the check was run on; absent on older backends. */
+  draft_id?: string | null;
   run_type: "continuity" | "memory_delta";
   status: "queued" | "running" | "completed" | "timed_out" | "failed" | "cancelled";
   stage: string;

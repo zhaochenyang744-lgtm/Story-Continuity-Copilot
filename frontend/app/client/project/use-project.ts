@@ -265,8 +265,11 @@ export function useProject({
           setPendingDecisionStorageUnavailable("这个浏览器读不到待补记的决定。如果之前保存正文后决定没确认，请不要认为它已经记下。");
         }
       }
-      setRun(primaryRun);
-      setPairedRun(siblingRun);
+      // The latest check may belong to a draft that has since been completed into a chapter; the
+      // current draft starts without findings. (Incremental source reviews are not tied to a draft.)
+      const forOtherDraft = (item: Run | null) => Boolean(item && !item.incremental_batch_id && item.draft_id && item.draft_id !== d.id);
+      setRun(forOtherDraft(primaryRun) ? null : primaryRun);
+      setPairedRun(forOtherDraft(primaryRun) ? null : siblingRun);
     } catch (cause) {
       if ((cause as ApiFailure).code === "resource_not_found" && n === epoch.current) setMissingProjectId(id);
       else if ((cause as Error).name !== "AbortError") fail(cause);

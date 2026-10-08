@@ -110,7 +110,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
         number={draftNumber}
         label={p.readOnly ? "草稿 · 只读" : "继续写 · 草稿"}
         title={bareChapterTitle(p.draft?.title ?? "") || "这一章还没有标题"}
-        meta={`${formatCount(draftChars)} 字 · ${project.latest_run ? `上次检查找到 ${p.run?.issues?.length ?? 0} 处${issues.length ? `，${issues.length} 处待看` : ""}` : "还没检查"}`}
+        meta={`${formatCount(draftChars)} 字 · ${p.run ? `上次检查找到 ${p.run?.issues?.length ?? 0} 处${issues.length ? `，${issues.length} 处待看` : ""}` : "还没检查"}`}
         action={p.readOnly ? "查看草稿" : "打开草稿"}
         onClick={() => go(`/projects/${project.id}/workspace`)}
       />
@@ -142,7 +142,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
                 </li>
               ))}
             </ol>
-          ) : <p className="empty">{project.latest_run ? "上次检查之后，草稿里没有待看的地方。" : "这一章还没检查。写完一段后，在写作页点「检查这一章」。"}</p>}
+          ) : <p className="empty">{p.run ? "上次检查之后，草稿里没有待看的地方。" : "这一章还没检查。写完一段后，在写作页点「检查这一章」。"}</p>}
           {issues.length > 0 && (p.dirty || p.run?.is_stale) && <p className="small-note">草稿在检查之后又改过，这些结果针对的是先前的正文。</p>}
           {issues.length > 6 && <p className="small-note">还有 {issues.length - 6} 处，在写作页查看。</p>}
         </section>
