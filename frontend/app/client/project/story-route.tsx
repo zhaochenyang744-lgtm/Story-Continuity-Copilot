@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Issue } from "../model";
-import { bareChapterTitle, pad2 } from "./ui";
+import { type FindingTone } from "../labels";
+import { bareChapterTitle, pad2 } from "../ui";
 
 export type RouteChapter = {
   number: number;
@@ -12,15 +12,6 @@ export type RouteChapter = {
 };
 export type RouteThread = { id: string; title: string; planted: number };
 export type RoutePlan = { id: string; title: string; chapter: number; considering: boolean };
-
-/** Which mark an open finding gets: red = confirmed, yellow = possible, dashed = not enough
-    evidence, blue outline = a state update the author should record. */
-export const findingTone = (issue: Pick<Issue, "nature" | "severity">): "high" | "mid" | "gap" | "state" =>
-  issue.nature === "confirmed_conflict" ? "high"
-    : issue.nature === "possible_conflict" ? "mid"
-      : issue.nature === "insufficient_evidence" ? "gap"
-        : issue.nature === "state_change" ? "state"
-          : issue.severity === "high" ? "high" : "mid";
 
 const INK = "var(--c-ink)";
 const GROUND = "var(--c-ground)";
@@ -38,7 +29,7 @@ const MAX_LANES = 6;
  */
 export function StoryRoute({ chapters, draft, threads, plans }: {
   chapters: RouteChapter[];
-  draft: { number: number; title: string; findings: ReturnType<typeof findingTone>[] } | null;
+  draft: { number: number; title: string; findings: FindingTone[] } | null;
   threads: RouteThread[];
   plans: RoutePlan[];
 }) {

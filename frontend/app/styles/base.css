@@ -1,21 +1,11 @@
-/* Elements and shared primitives. Plain element selectors only, so every component below starts
-   from the same defaults instead of undoing each other. */
+/* Elements, buttons, form controls and type roles. Values follow the approved 版面 preview. */
 *,
 *::before,
 *::after { box-sizing: border-box; }
 
-html {
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  scrollbar-gutter: stable;
-}
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scrollbar-gutter: stable; }
 html,
-body {
-  margin: 0;
-  min-height: 100%;
-  background: var(--c-ground);
-  color: var(--c-ink);
-}
+body { margin: 0; min-height: 100%; background: var(--c-ground); color: var(--c-ink); }
 body {
   font-family: var(--font-sans);
   font-size: var(--fs-15);
@@ -27,88 +17,99 @@ body {
 h1, h2, h3, h4 { margin: 0; color: var(--c-ink); font-weight: 900; line-height: var(--lh-tight); }
 h1 { font-size: 72px; line-height: 1; letter-spacing: -.03em; }
 h2 { font-size: var(--fs-28); }
-h3 { font-size: var(--fs-18); font-weight: 700; }
-h4 { font-size: var(--fs-15); font-weight: 700; }
+h3 { font-size: var(--fs-22); }
+h4 { font-size: var(--fs-17); font-weight: 700; }
 p { margin: 0; }
-p + p { margin-top: var(--s-2); }
 small { font-size: var(--fs-12); }
 strong, b { font-weight: 700; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 dl, dd { margin: 0; }
-hr { height: 1px; margin: var(--s-4) 0; border: 0; background: var(--c-line); }
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 a:hover { color: var(--c-blue-text); }
 code, kbd, pre { font-family: var(--font-mono); font-size: .92em; }
 pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 blockquote { margin: 0; }
-table { width: 100%; border-collapse: collapse; }
-th { font-weight: 400; text-align: left; color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-11); letter-spacing: var(--tracking-label); }
-mark { background: var(--c-red-tint); color: inherit; }
-del, s { color: var(--c-muted); text-decoration-color: var(--c-red); text-decoration-thickness: 2px; }
-ins { text-decoration: none; background: var(--c-blue-tint); padding: 0 2px; }
+fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+legend { padding: 0; }
+mark { background: var(--c-yellow-tint); color: inherit; }
+del { color: var(--c-muted); text-decoration-color: var(--c-red); text-decoration-thickness: 2px; }
+ins { text-decoration: none; }
 ::selection { background: var(--c-blue-mid); }
-
 :focus { outline: none; }
 :focus-visible { outline: 3px solid var(--c-blue); outline-offset: 2px; }
+details > summary { cursor: pointer; list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
 
-/* Buttons. Button() defaults to "secondary" (2px black outline); "primary" is the one blue action
-   of a view; "quiet" is an underlined text action; "danger" is destructive. */
-button,
-.button {
+/* ── Buttons ────────────────────────────────────────────
+   primary: blue fill · outline: 2px black frame · small: 1px frame, regular weight ·
+   text: underlined, no frame · danger: red · plain: no styling. */
+button { font: inherit; color: inherit; }
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--s-2);
   min-height: var(--control-h);
-  padding: 0 var(--s-4);
+  padding: 0 18px;
   border: 2px solid var(--c-rule);
   border-radius: 0;
   background: transparent;
   color: var(--c-ink);
-  font: inherit;
-  font-size: var(--fs-14);
+  font-size: var(--fs-15);
   font-weight: 700;
   line-height: 1.2;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard);
+  transition: background-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard);
 }
-button:hover:not(:disabled) { background: var(--c-ink); color: var(--c-ground); }
-button:disabled,
-button[aria-disabled="true"] { cursor: not-allowed; opacity: .45; }
-button.primary {
-  border-color: var(--c-blue);
-  background: var(--c-blue);
-  color: var(--c-on-blue);
-}
-button.primary:hover:not(:disabled) { border-color: var(--c-blue-hover); background: var(--c-blue-hover); color: var(--c-on-blue); }
-button.quiet,
-button.link {
+.btn:hover:not(:disabled) { background: var(--c-ink); color: var(--c-ground); }
+.btn:disabled { cursor: not-allowed; opacity: .4; }
+.btn[aria-busy="true"] { cursor: progress; }
+.btn-lg { min-height: var(--control-h-lg); padding: 0 22px; }
+.btn-primary { border-color: var(--c-blue); background: var(--c-blue); color: var(--c-on-blue); }
+.btn-primary:hover:not(:disabled) { border-color: var(--c-blue-hover); background: var(--c-blue-hover); color: var(--c-on-blue); }
+.btn-small { min-height: 40px; padding: 0 14px; border-width: 1px; font-size: var(--fs-14); font-weight: 400; }
+.btn-text {
   min-height: var(--control-h);
-  padding: 0 2px;
+  padding: 0 4px;
+  border: 0;
+  border-bottom: 1px solid var(--c-rule);
+  font-weight: 400;
+  min-height: 32px;
+  align-self: center;
+}
+.btn-text:hover:not(:disabled) { background: transparent; color: var(--c-blue-text); border-bottom-color: var(--c-blue-text); }
+.btn-text[aria-pressed="true"] { border-bottom-width: 3px; font-weight: 700; }
+.btn-danger { border-color: var(--c-red); background: var(--c-red); color: var(--c-on-finding); }
+.btn-danger:hover:not(:disabled) { border-color: var(--c-ink); background: var(--c-ink); color: var(--c-ground); }
+.btn-plain { min-height: 0; padding: 0; border: 0; font-weight: inherit; }
+.btn-plain:hover:not(:disabled) { background: transparent; color: var(--c-blue-text); }
+/* A text link that looks like the preview's underlined "作品管理". */
+.link {
+  display: inline;
+  min-height: 0;
+  padding: 0;
   border: 0;
   border-bottom: 1px solid currentColor;
-  background: transparent;
+  background: none;
   color: var(--c-ink);
-  font-weight: 400;
+  font-size: var(--fs-14);
+  line-height: 1.6;
+  cursor: pointer;
 }
-button.quiet:hover:not(:disabled),
-button.link:hover:not(:disabled) { background: transparent; color: var(--c-blue-text); }
-button.danger { border-color: var(--c-red-text); color: var(--c-red-text); }
-button.danger:hover:not(:disabled) { background: var(--c-red); border-color: var(--c-red); color: var(--c-on-finding); }
-button.primary.danger { border-color: var(--c-red); background: var(--c-red); color: var(--c-on-finding); }
-button[aria-pressed="true"]:not(.primary) { background: var(--c-ink); color: var(--c-ground); }
-button[aria-busy="true"] { cursor: progress; }
-button.lg { min-height: var(--control-h-lg); padding: 0 var(--s-5); font-size: var(--fs-15); }
+.link:hover:not(:disabled) { color: var(--c-blue-text); }
+.link:disabled { opacity: .45; cursor: not-allowed; }
+.link.blue { color: var(--c-blue-text); border-bottom-width: 2px; font-weight: 700; }
+.arrow, .chevron { flex: none; }
 
-/* Form controls */
+/* ── Form controls ──────────────────────────────────── */
 input,
 select,
 textarea {
   width: 100%;
   min-height: var(--control-h);
-  padding: 8px var(--s-3);
+  padding: 9px 12px;
   border: 2px solid var(--c-rule);
   border-radius: 0;
   background: var(--c-surface);
@@ -116,19 +117,17 @@ textarea {
   font: inherit;
   font-size: var(--fs-15);
   line-height: var(--lh-ui);
-  transition: border-color var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard);
 }
-textarea { min-height: 96px; resize: vertical; }
+textarea { min-height: 88px; resize: vertical; }
 input::placeholder,
 textarea::placeholder { color: var(--c-faint); }
 input:focus,
 select:focus,
-textarea:focus { border-color: var(--c-blue); box-shadow: 0 0 0 2px var(--c-blue-mid); outline: none; }
+textarea:focus { border-color: var(--c-blue); outline: none; box-shadow: 0 0 0 2px var(--c-blue-mid); }
 input:disabled,
 select:disabled,
 textarea:disabled { border-color: var(--c-line); background: var(--c-sunken); color: var(--c-muted); cursor: not-allowed; }
-input[aria-invalid="true"],
-textarea[aria-invalid="true"] { border-color: var(--c-red); }
+input[aria-invalid="true"] { border-color: var(--c-red); }
 select {
   appearance: none;
   padding-right: 34px;
@@ -138,82 +137,45 @@ select {
   background-repeat: no-repeat;
 }
 input[type="checkbox"],
-input[type="radio"] {
-  width: 20px;
-  height: 20px;
-  min-height: 0;
-  margin: 0;
-  padding: 0;
-  flex: none;
-  accent-color: var(--c-blue);
-  box-shadow: none;
-}
+input[type="radio"] { width: 20px; height: 20px; min-height: 0; margin: 0; padding: 0; flex: none; accent-color: var(--c-blue); box-shadow: none; }
 input[type="file"] { padding: 8px; }
-label { display: grid; gap: 6px; color: var(--c-ink); font-size: var(--fs-14); font-weight: 700; }
-label:has(> input[type="checkbox"]),
-label:has(> input[type="radio"]) { display: inline-flex; align-items: center; gap: var(--s-2); font-weight: 400; }
-fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
-legend { padding: 0; font-weight: 700; }
+input[type="number"] { font-family: var(--font-mono); }
 
-details > summary { cursor: pointer; list-style: none; }
-details > summary::-webkit-details-marker { display: none; }
-
-/* Shared primitives */
-.sr-only {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
-}
-.muted { color: var(--c-muted); }
-.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-4); }
-.icon { display: inline-flex; align-items: center; justify-content: center; font-size: .85em; line-height: 1; }
-.ui-icon { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: square; stroke-linejoin: miter; }
-.ui-icon-inline { display: inline-block; width: 15px; height: 15px; vertical-align: -2px; }
-
-/* Type roles */
-.label,
-.eyebrow,
-.kicker {
-  margin: 0;
-  color: var(--c-muted);
-  font-family: var(--font-mono);
-  font-size: var(--fs-12);
-  font-weight: 400;
-  letter-spacing: var(--tracking-label);
-}
-.num {
-  font-family: var(--font-display);
-  font-stretch: 125%;
-  font-weight: 900;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
+/* ── Type roles ─────────────────────────────────────── */
+.label { color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-12); font-weight: 400; letter-spacing: var(--tracking-label); }
 .mono { font-family: var(--font-mono); font-size: var(--fs-12); }
-.prose { font-family: var(--font-serif); }
+.num { font-family: var(--font-display); font-stretch: 125%; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+.num.blue,
+.blue .num { color: var(--c-blue-text); }
+.muted { color: var(--c-muted); }
+.small-note { color: var(--c-muted); font-size: var(--fs-13); }
+.sr-only { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.badge { display: inline-block; padding: 0 6px; background: var(--c-ink); color: var(--c-ground); font-family: var(--font-mono); font-size: var(--fs-12); letter-spacing: var(--tracking-label); line-height: 1.6; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) 18px; }
 
-/* Finding tags: filled red = confirmed, filled yellow = possible, dashed = not enough evidence,
-   blue outline = a state update, black = neutral marker. */
+/* ── Tags: red fill = confirmed conflict, yellow fill = possible, dashed = not enough evidence,
+      blue outline = state update, black fill = neutral/decided, dashed grey = considering. ── */
 .tag {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
   padding: 0 8px;
   border: 1px solid var(--c-rule);
   font-size: var(--fs-12);
   font-weight: 700;
   line-height: 1.7;
   white-space: nowrap;
+  justify-self: start;
 }
-.tag.high { border-color: var(--c-red); background: var(--c-red); color: var(--c-on-finding); }
-.tag.mid { border-color: var(--c-yellow); background: var(--c-yellow); color: var(--c-on-finding); }
-.tag.gap { border-style: dashed; }
-.tag.state { border-color: var(--c-blue-text); color: var(--c-blue-text); }
-.tag.solid { border-color: var(--c-ink); background: var(--c-ink); color: var(--c-ground); }
-.tag.blue { border-color: var(--c-blue); background: var(--c-blue); color: var(--c-on-blue); }
-.tag.considering { border: 2px dashed var(--c-muted); color: var(--c-muted); line-height: 1.5; }
+.tag-high { border-color: var(--c-red); background: var(--c-red); color: var(--c-on-finding); }
+.tag-mid { border-color: var(--c-yellow); background: var(--c-yellow); color: var(--c-on-finding); }
+.tag-gap { border-style: dashed; }
+.tag-state { border-color: var(--c-blue-text); color: var(--c-blue-text); }
+.tag-solid { border-color: var(--c-ink); background: var(--c-ink); color: var(--c-ground); }
+.tag-blue { border-color: var(--c-blue); background: var(--c-blue); color: var(--c-on-blue); }
+.tag-line { border-width: 2px; line-height: 1.5; }
+.tag-considering { border: 2px dashed var(--c-ink); line-height: 1.5; }
+
+/* ── Inline messages ────────────────────────────────── */
+.inline-error { margin-top: var(--s-2); padding-left: 10px; border-left: 4px solid var(--c-red); color: var(--c-ink); font-size: var(--fs-14); }
+.inline-ok { margin-top: var(--s-2); padding-left: 10px; border-left: 4px solid var(--c-blue); font-size: var(--fs-14); }
+.readonly { font-size: var(--fs-13); color: var(--c-muted); }

@@ -1,0 +1,349 @@
+"use client";
+
+// The whole client: session, routing by path, the top bar, page-level messages, and the guards that
+// stop an unsaved draft or an unrecorded decision from being lost on navigation or sign-out.
+import { usePathname, useRouter } from "next/navigation";
+import { startTransition, useCallback, useEffect, useRef, useState } from "react";
+import { json, labelError, request, type ApiFailure } from "../api";
+import type { Onboarding, TutorialEvent, TutorialProgress, User } from "../model";
+import { AuthPage, PasswordResetConfirmPage, PasswordResetRequestPage, VerifyEmailPage } from "./pages/auth";
+import { HomePage } from "./pages/home";
+import { WorksPage } from "./pages/works";
+import { NewWorkPage } from "./pages/new-work";
+import { ImportPage } from "./pages/import";
+import { ProfilePage, SecurityPage } from "./pages/account";
+import { NotFoundPage, TutorialCompletePage } from "./pages/misc";
+import { ProjectFrame } from "./project/frame";
+import { useProject } from "./project/use-project";
+import { Avatar, Wordmark } from "./identity";
+import { Button, Chevron, Dialog, pad2, usageShort, useUsage } from "./ui";
+import { timeLabel } from "./labels";
+
+// The catch-all page remounts between route segments; keep the session check for the module's life.
+let bootstrappedUser: User | null | undefined;
+let sessionBootstrap: Promise<User | null> | null = null;
+let rememberedTheme: "day" | "night" | undefined;
+const themeKey = "story-continuity:theme";
+const publicAuthPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm", "/verify-email"];
+export const TUTORIAL_VERSION = "1.2.0";
+
+export const projectTabs = [
+  ["overview", "概览"],
+  ["workspace", "写作"],
+  ["sources", "章节"],
+  ["memory", "资料"],
+  ["plan", "计划"],
+] as const;
+// Addresses from before v1.7.0 keep working.
+const legacyTabs: Record<string, string> = { outline: "plan", characters: "memory", world: "memory" };
+
+export function App() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [user, setUser] = useState<User | null>(() => bootstrappedUser ?? null);
+  const [ready, setReady] = useState(() => bootstrappedUser !== undefined);
+  const [theme, setTheme] = useState<"day" | "night">(() => rememberedTheme ?? "day");
+  const [narrow, setNarrow] = useState(false);
+  const [notice, setNotice] = useState("");
+  const [error, setError] = useState<unknown>(null);
+  const [busy, setBusy] = useState("");
+  const [onboarding, setOnboarding] = useState<Onboarding | null>(null);
+  const [tutorialProgress, setTutorialProgress] = useState<TutorialProgress | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [switchTo, setSwitchTo] = useState<string | null>(null);
+  const [switchSaving, setSwitchSaving] = useState(false);
+  const [switchFailed, setSwitchFailed] = useState(false);
+  const [confirmUnstoredLogout, setConfirmUnstoredLogout] = useState(false);
+  const menuTrigger = useRef<HTMLButtonElement>(null);
+  const switchPending = useRef(false);
+
+  const parts = pathname.split("/").filter(Boolean);
+  const projectId = parts[0] === "projects" && parts[1] && !["new", "import"].includes(parts[1]) ? parts[1] : null;
+  const rawTab = parts[2] ?? "overview";
+  const tab = legacyTabs[rawTab] ?? rawTab;
+
+  const notify = useCallback((message: string) => { setError(null); setNotice(message); }, []);
+  const fail = useCallback((cause: unknown) => {
+    setError(cause);
+    setNotice("");
+    if ((cause as ApiFailure).code === "authentication_required") {
+      bootstrappedUser = null;
+      setUser(null);
+      router.replace("/login");
+    }
+  }, [router]);
+  const applyOnboarding = useCallback((next: Onboarding) => {
+    setOnboarding(next);
+    setTutorialProgress((current) => {
+      if (!next.progress) return null;
+      if (current && current.tutorial_project_id === next.progress.tutorial_project_id && current.tutorial_version === next.progress.tutorial_version && current.current_step > next.progress.current_step) return current;
+      return next.progress;
+    });
+  }, []);
+  const recordTutorialEvent = useCallback(async (tutorialProjectId: string, event: TutorialEvent, context?: { run_id: string; issue_id: string }) => {
+    try {
+      const next = await json<TutorialProgress>("/onboarding/progress", "POST", { tutorial_version: TUTORIAL_VERSION, project_id: tutorialProjectId, event, ...context });
+      setTutorialProgress(next);
+      setOnboarding((current) => (current ? { ...current, progress: next } : current));
+      return next;
+    } catch (cause) {
+      try { applyOnboarding(await request<Onboarding>("/onboarding")); } catch { /* keep the first failure */ }
+      fail(cause);
+      throw cause;
+    }
+  }, [applyOnboarding, fail]);
+
+  const p = useProject({ projectId, user, narrow, fail, notify, applyOnboarding, recordTutorialEvent });
+
+  // Theme: day by default; the choice is remembered on this device and applied before paint by layout.tsx.
+  useEffect(() => {
+    if (rememberedTheme !== undefined) return;
+    const timer = window.setTimeout(() => {
+      try { rememberedTheme = window.localStorage.getItem(themeKey) === "night" ? "night" : "day"; setTheme(rememberedTheme); }
+      catch { rememberedTheme = "day"; }
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+  useEffect(() => { document.documentElement.dataset.theme = theme; }, [theme]);
+  const toggleTheme = () => setTheme((current) => {
+    const next = current === "night" ? "day" : "night";
+    rememberedTheme = next;
+    try { window.localStorage.setItem(themeKey, next); } catch { /* switches for this visit only */ }
+    return next;
+  });
+
+  useEffect(() => {
+    const update = () => setNarrow(window.innerWidth < 1024);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  useEffect(() => {
+    if (bootstrappedUser !== undefined) return;
+    const bootstrap = sessionBootstrap ?? (sessionBootstrap = request<{ user: User | null }>("/auth/session?optional=true")
+      .then((x) => { bootstrappedUser = x.user; return x.user; })
+      .catch((cause) => { if ((cause as ApiFailure).code === "authentication_required") { bootstrappedUser = null; return null; } throw cause; })
+      .finally(() => { sessionBootstrap = null; }));
+    bootstrap.then((next) => setUser(next)).catch(fail).finally(() => setReady(true));
+  }, [fail]);
+  useEffect(() => {
+    if (!ready) return;
+    const isPublic = publicAuthPaths.includes(pathname);
+    if (!user && !isPublic) { router.replace("/login"); return; }
+    if (user && ["/login", "/register", "/password-reset", "/password-reset/confirm"].includes(pathname)) { router.replace("/"); return; }
+    if (user && pathname === "/") request<Onboarding>("/onboarding").then(applyOnboarding).catch(fail);
+  }, [ready, user, pathname, router, applyOnboarding, fail]);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const close = (event: KeyboardEvent) => { if (event.key === "Escape") { setMenuOpen(false); requestAnimationFrame(() => menuTrigger.current?.focus()); } };
+    const outside = (event: PointerEvent) => { if (!(event.target as HTMLElement).closest(".account")) setMenuOpen(false); };
+    window.addEventListener("keydown", close);
+    document.addEventListener("pointerdown", outside);
+    return () => { window.removeEventListener("keydown", close); document.removeEventListener("pointerdown", outside); };
+  }, [menuOpen]);
+
+  const updateUser = useCallback((next: User | null) => { bootstrappedUser = next; setUser(next); }, []);
+  const go = (href: string) => {
+    setMenuOpen(false);
+    if ((p.dirty || p.pendingControlledDecision) && href !== pathname) { setSwitchFailed(false); setSwitchTo(href); }
+    else router.push(href);
+  };
+
+  // Leaving with unsaved text asks first; Ctrl/⌘+S saves.
+  useEffect(() => {
+    if (!p.dirty && !p.pendingControlledDecision) return;
+    const warn = (event: BeforeUnloadEvent) => event.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [p.dirty, p.pendingControlledDecision]);
+  useEffect(() => {
+    const shortcut = (event: KeyboardEvent) => {
+      if (!(event.ctrlKey || event.metaKey) || event.key.toLocaleLowerCase() !== "s") return;
+      event.preventDefault();
+      if ((!p.dirty && !p.pendingControlledDecision) || p.busy || p.readOnly || p.draftRecoveryConflict || p.pendingDecisionConflict) return;
+      void p.save();
+    };
+    window.addEventListener("keydown", shortcut);
+    return () => window.removeEventListener("keydown", shortcut);
+  });
+
+  const submitAuth = async (form: FormData, kind: "login" | "register") => {
+    setError(null); setNotice("");
+    setBusy(kind === "login" ? "正在登录" : "正在创建账号");
+    try {
+      const body = kind === "login"
+        ? { account_name: String(form.get("account_name")), password: String(form.get("password")) }
+        : { account_name: String(form.get("account_name")), display_name: String(form.get("display_name")), password: String(form.get("password")), recovery_email: String(form.get("recovery_email")) };
+      const data = await json<{ user: User }>(`/auth/${kind}`, "POST", body);
+      startTransition(() => { updateUser(data.user); router.replace("/"); });
+    } catch (cause) { fail(cause); } finally { setBusy(""); }
+  };
+  const enterVisitor = async () => {
+    setError(null); setNotice("");
+    setBusy("正在创建访客空间");
+    try {
+      const data = await request<{ user: User }>("/auth/visitor", { method: "POST" });
+      startTransition(() => { updateUser(data.user); router.replace("/"); });
+    } catch (cause) { fail(cause); } finally { setBusy(""); }
+  };
+  const performLogout = async () => {
+    try {
+      await request("/auth/logout", { method: "POST" });
+      startTransition(() => { p.clear(); setTutorialProgress(null); setOnboarding(null); updateUser(null); router.replace("/login"); });
+    } catch (cause) { fail(cause); }
+  };
+  const logout = async () => {
+    setMenuOpen(false);
+    if (p.pendingControlledDecision && !p.pendingDecisionConflict) {
+      notify(p.pendingDecisionStorageUnavailable ? "正文已保存，但待补记的决定存不进浏览器。请留在此页重试成功后再退出。" : "正文已保存，但这一条的决定还没记下。请先补记再退出；不会重复保存正文。");
+      return;
+    }
+    if (p.pendingControlledDecision && p.pendingDecisionConflict && !p.pendingDecisionPersisted) { setConfirmUnstoredLogout(true); return; }
+    await performLogout();
+  };
+  const finishTutorial = async (outcome: "complete" | "skip") => {
+    if (p.pendingControlledDecision) { notify("正文已保存，但这一条的决定还没记下。请先补记，再结束或跳过导览。"); return; }
+    setBusy(outcome === "complete" ? "正在完成导览" : "正在跳过导览");
+    try {
+      await json(`/onboarding/${outcome}`, "POST", { confirm: true });
+      setTutorialProgress(null);
+      setOnboarding(null);
+      p.clear();
+      if (outcome === "complete") { setNotice(""); router.replace("/onboarding/complete"); }
+      else { router.replace("/"); notify("已跳过导览。现在可以导入自己的作品。"); }
+    } catch (cause) { fail(cause); } finally { setBusy(""); }
+  };
+  const reopenTutorial = async () => {
+    setMenuOpen(false);
+    const tutorial = onboarding?.tutorial;
+    if (!tutorial) { notify("这个账号没有可以重新开始的示例作品。"); return; }
+    setBusy("正在重新开始导览");
+    try {
+      const next = await json<Onboarding>("/onboarding/progress/restart", "POST", {
+        tutorial_version: TUTORIAL_VERSION, project_id: tutorial.project_id, base_revision: tutorialProgress?.revision ?? onboarding?.progress?.revision ?? null, confirm: true,
+      });
+      applyOnboarding(next);
+      p.setTutorialRestored(true);
+      notify("导览回到了第一步；正文、资料和处理记录都没有变。");
+      go(`/projects/${tutorial.project_id}/overview`);
+    } catch (cause) { fail(cause); } finally { setBusy(""); }
+  };
+
+  const usage = useUsage(user ? `${user.id}:${pathname}:${p.run?.run_id ?? ""}:${p.run?.status ?? ""}` : "");
+  const tutorialStep = (p.project?.is_tutorial && tutorialProgress?.tutorial_project_id === p.project.id ? tutorialProgress.current_step : 1) as 1 | 2 | 3 | 4 | 5;
+
+  let body;
+  if (!ready) body = <div className="boot" role="status">正在载入…</div>;
+  else if (pathname === "/password-reset") body = <PasswordResetRequestPage go={(href) => router.push(href)} />;
+  else if (pathname === "/password-reset/confirm") body = <PasswordResetConfirmPage go={(href) => router.push(href)} />;
+  else if (pathname === "/verify-email") body = <VerifyEmailPage go={(href) => router.push(href)} refreshUser={updateUser} />;
+  else if (!user) body = <AuthPage register={pathname === "/register"} busy={busy} error={error} submit={submitAuth} visitor={enterVisitor} go={(href) => { setError(null); setNotice(""); router.push(href); }} />;
+  else if (pathname === "/account/profile") body = <ProfilePage user={user} updateUser={updateUser} go={go} />;
+  else if (pathname === "/account/security") body = <SecurityPage user={user} updateUser={updateUser} go={go} />;
+  else if (pathname === "/onboarding/complete") body = <TutorialCompletePage go={(href) => { p.clear(); window.scrollTo(0, 0); router.replace(href); }} />;
+  else if (!projectId)
+    body = pathname === "/projects/new" ? <NewWorkPage fail={fail} go={go} />
+      : pathname === "/projects/import" ? <ImportPage user={user} fail={fail} go={go} />
+        : pathname === "/projects" ? <WorksPage fail={fail} go={go} />
+          : pathname === "/" ? <HomePage user={user} onboarding={onboarding} usage={usage} fail={fail} go={go} reopenTutorial={() => void reopenTutorial()} />
+            : <NotFoundPage kind="page" go={go} />;
+  else if (p.project) body = <ProjectFrame p={p} tab={tab} rawTab={rawTab} user={user} usage={usage} tutorialStep={tutorialStep} finishTutorial={finishTutorial} recordTutorialEvent={recordTutorialEvent} go={go} />;
+  else body = p.missingProjectId === projectId ? <NotFoundPage kind="project" go={go} /> : <div className="boot" role="status">{p.busy || "正在读取作品…"}</div>;
+
+  const showFeedback = !publicAuthPaths.includes(pathname) && Boolean(user) && (notice || Boolean(error));
+  return (
+    <div className={`app${user ? "" : " app-auth"}`}>
+      <a className="skip" href="#main">跳到主要内容</a>
+      {user && (
+        <header className="topbar">
+          <div className="topbar-inner">
+            <button type="button" className="topbar-brand" aria-label="首页" onClick={() => go("/")}><Wordmark /></button>
+            {projectId && p.project && (
+              <button type="button" className="topbar-work" aria-label={`更换当前作品：${p.project.title}`} onClick={() => go("/projects")}>
+                <span>{p.project.title}</span><Chevron />
+              </button>
+            )}
+            <nav className={projectId ? "topbar-tabs" : "topbar-tabs global"} aria-label={projectId ? "作品" : "全局"}>
+              {projectId
+                ? p.project && projectTabs.map(([id, label], index) => (
+                    <button key={id} type="button" className="topbar-tab" aria-current={id === tab ? "page" : undefined} onClick={() => go(`/projects/${p.project!.id}/${id}`)}>
+                      <span className="topbar-tab-num" aria-hidden="true">{pad2(index + 1)}</span>{label}
+                    </button>
+                  ))
+                : <>
+                    <button type="button" className="topbar-tab" aria-current={pathname === "/" ? "page" : undefined} onClick={() => go("/")}>首页</button>
+                    <button type="button" className="topbar-tab" aria-current={pathname.startsWith("/projects") ? "page" : undefined} onClick={() => go("/projects")}>作品管理</button>
+                  </>}
+            </nav>
+            {usageShort(usage) && <span className="topbar-quota">{usageShort(usage)}</span>}
+            {!projectId && pathname !== "/projects/new" && <Button kind="outline" className="topbar-new" onClick={() => go("/projects/new")}>新建作品</Button>}
+            <div className="account">
+              <button ref={menuTrigger} type="button" className="account-trigger" aria-label={`账号菜单：${user.display_name}`} aria-haspopup="menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>
+                <Avatar user={user} />
+              </button>
+              {menuOpen && (
+                <div className="account-menu" role="menu" aria-label="账号菜单">
+                  <p className="account-menu-head"><strong>{user.display_name}</strong><span>{user.account_type === "visitor" ? <>访客空间 · 有效至 {timeLabel(user.visitor_expires_at)}</> : `@${user.account_name}`}</span></p>
+                  {user.account_type !== "visitor" && <button type="button" role="menuitem" onClick={() => go("/account/profile")}>个人信息</button>}
+                  {user.account_type !== "visitor" && <button type="button" role="menuitem" onClick={() => go("/account/security")}>账号安全</button>}
+                  <button type="button" role="menuitemcheckbox" aria-checked={theme === "night"} onClick={toggleTheme}>夜间模式<span className="account-menu-state">{theme === "night" ? "开" : "关"}</span></button>
+                  {user.account_type !== "visitor" && <button type="button" role="menuitem" onClick={() => void reopenTutorial()}>重新看一遍导览</button>}
+                  <button type="button" role="menuitem" className="danger" onClick={() => void logout()}>退出登录</button>
+                </div>
+              )}
+            </div>
+          </div>
+        </header>
+      )}
+      <main id="main" className={user ? "main" : "main main-auth"}>
+        {showFeedback && (
+          <div className={error ? "feedback error" : "feedback"} role={error ? "alert" : "status"}>
+            <span key={error ? "error" : notice}>{error ? labelError(error) : notice}</span>
+            <button type="button" className="feedback-close" aria-label="关闭提示" onClick={() => { setError(null); setNotice(""); }}>×</button>
+          </div>
+        )}
+        {busy && user && <p className="sr-only" role="status">{busy}</p>}
+        {body}
+      </main>
+      {switchTo && (
+        <Dialog title={p.pendingDecisionConflict ? "待补记的决定已失效" : p.pendingControlledDecision ? "决定还没记下" : "草稿还没保存"} closeDisabled={switchSaving} close={() => { if (!switchPending.current) setSwitchTo(null); }}>
+          <p>{p.pendingDecisionConflict
+            ? p.pendingDecisionPersisted ? "服务器状态已经变了，旧的决定不会再提交。可以保留这条本机记录离开，或者停止补记并读取服务器上的最新正文。" : "服务器状态已经变了，旧的决定不会再提交。这个浏览器没能保存这条记录；离开会丢失它。"
+            : p.pendingControlledDecision ? "正文已经保存，但这一条的决定还没记下。补记完成后才能安全离开；重试不会再次保存正文。"
+              : "离开会清空这个页面上没保存的草稿和检查状态。"}</p>
+          {switchFailed && Boolean(error) && <p className="inline-error" role="alert">没保存成功，还没离开。{labelError(error)} 标题和正文都还在。</p>}
+          <div className="dialog-actions">
+            {p.pendingDecisionConflict ? (
+              <>
+                <Button kind="primary" disabled={Boolean(p.busy) || switchSaving} onClick={() => { const target = switchTo; setSwitchTo(null); p.clear(); router.push(target); }}>{p.pendingDecisionPersisted ? "保留记录并离开" : "丢弃这条记录并离开"}</Button>
+                <Button disabled={Boolean(p.busy) || switchSaving} onClick={() => { setSwitchTo(null); void p.stopConflictedPendingDecision(); }}>停止补记并读取最新正文</Button>
+              </>
+            ) : (
+              <Button kind="primary" disabled={Boolean(p.busy) || switchSaving} onClick={async () => {
+                switchPending.current = true; setSwitchSaving(true); setSwitchFailed(false);
+                const ok = await p.save();
+                switchPending.current = false; setSwitchSaving(false);
+                if (!ok) { setSwitchFailed(true); return; }
+                const target = switchTo; setSwitchTo(null); router.push(target);
+              }}>{p.pendingControlledDecision ? "补记决定并离开" : "保存并离开"}</Button>
+            )}
+            {!p.pendingControlledDecision && !p.pendingDecisionConflict && (
+              <Button disabled={switchSaving} onClick={() => { if (switchPending.current) return; if (p.saved) p.setDraft(p.saved); const target = switchTo; setSwitchTo(null); router.push(target); }}>不保存，直接离开</Button>
+            )}
+            <Button kind="text" disabled={switchSaving} onClick={() => { if (!switchPending.current) setSwitchTo(null); }}>留在这里</Button>
+          </div>
+        </Dialog>
+      )}
+      {confirmUnstoredLogout && (
+        <Dialog title="退出会丢失这条记录" close={() => setConfirmUnstoredLogout(false)}>
+          <p>这个浏览器没能保存这条已失效的待补记记录。退出后它会丢失；服务器上的正文和决定不会改变。</p>
+          <div className="dialog-actions">
+            <Button kind="danger" onClick={() => { setConfirmUnstoredLogout(false); void performLogout(); }}>仍然退出</Button>
+            <Button kind="text" onClick={() => setConfirmUnstoredLogout(false)}>取消</Button>
+          </div>
+        </Dialog>
+      )}
+    </div>
+  );
+}

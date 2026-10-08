@@ -1,4 +1,4 @@
-import { Workbench } from "../components/Workbench";
+import { App } from "../client/app";
 export default function CatchAllPage() {
-  return <Workbench />;
+  return <App />;
 }

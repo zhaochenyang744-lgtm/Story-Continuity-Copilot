@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { RichDraftEditor, WritingTools, replaceVisibleDraftText } from "../../app/components/WritingTools";
+import { RichDraftEditor, WritingTools, replaceVisibleDraftText } from "../../app/client/editor";
 
 const cases = {
   bold: { body: "**旧句**", before: "旧句", after: "新句" },

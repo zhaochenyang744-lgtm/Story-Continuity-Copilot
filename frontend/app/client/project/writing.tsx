@@ -1,0 +1,488 @@
+"use client";
+
+import { useRef, useState } from "react";
+import { json, labelError } from "../../api";
+import type { Issue, Run, WritingAnalysisRun } from "../../model";
+import { DraftWordCount, RichDraftEditor, useDraftText, WritingTools, type FindingMark } from "../editor";
+import {
+  activeAnalysis,
+  activeRun,
+  alignmentStatusLabel,
+  briefSectionLabel,
+  clockLabel,
+  decisionLabel,
+  durationLabel,
+  findingTone,
+  memoryTypeLabel,
+  memoryTypes,
+  predicateLabel,
+  readableKeys,
+  retryableAnalysis,
+  retryableRun,
+  sourceKindLabel,
+  stageLabel,
+  timeLabel,
+} from "../labels";
+import { bareChapterTitle, Button, formatCount, Menu, Num, pad2, SectionHead, Tag, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
+import type { PageProps } from "./frame";
+import { FindingTag, findingHeadline } from "./findings";
+import { PredicateSelect } from "./materials";
+import { issueAllows, issueHasSufficientEvidence, issueNeedsDecision, type ProjectState } from "./use-project";
+
+/** 写作: a huge blue chapter number and the title, then the written chapters (read only), the draft
+    with each finding's sentence marked and numbered, and the findings as cards that open in place. */
+export function WritingPage({ p, usage, tutorialStep, open, go, notices }: PageProps) {
+  const project = p.project!;
+  const [mobilePane, setMobilePane] = useState<"draft" | "issues" | "resources">("draft");
+  const [focus, setFocus] = useState(false);
+  const focusTrigger = useRef<HTMLButtonElement>(null);
+  const issues = groupIssues(p.run?.issues ?? []);
+  const pending = issues.filter((issue) => issueNeedsDecision(issue, p.locallyResolvedIssueIds)).length;
+  const locked = p.readOnly || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingControlledDecision);
+  const blocked = locked || Boolean(p.busy);
+  const hasPlans = Boolean(p.authorContext && p.authorContext.story_plans.length + p.authorContext.character_plans.length + p.authorContext.world_plans.length > 0);
+  const empty = !(p.saved?.body ?? p.draft?.body ?? "").trim();
+  const chars = writtenChars(p.draft?.body ?? "");
+  const chapterNumber = p.draft?.chapter_number ?? project.current_draft.chapter_number;
+  const saving = ["保存草稿", "保存修改", "正在重试记录决定"].includes(p.busy);
+  const saveState = saving || p.autosaveState === "saving" ? "saving" : p.saveFailed ? "failed" : p.dirty ? "unsaved" : "saved";
+  const saveLabel = saveState === "saving" ? "保存中" : saveState === "failed" ? "没保存成功" : p.autosaveState === "conflict" && p.dirty ? "自动保存已暂停" : saveState === "unsaved" ? (p.autosaveState === "failed" ? "自动保存没成功" : "未保存") : `已保存 ${clockLabel(p.saved?.saved_at)}`;
+  const saveDetail = p.saveFailed ? "正文还在这台设备上，可以再保存一次。"
+    : p.dirty ? p.draftRecoveryUnavailable || (p.autosaveState === "conflict" ? "别处保存了更新的版本；文字留在这台设备上，请刷新后比较。" : p.autosaveState === "failed" ? "暂时没存到服务器，文字留在这台设备上，稍后会再试。" : "停笔几秒后会自动保存。")
+      : "";
+  const outdated = p.dirty || Boolean(p.run?.is_stale);
+  const marks: FindingMark[] = issues.map((issue, index) => ({ id: issue.id, text: issue.claim_text ?? "", tone: findingTone(issue), index: index + 1, active: p.selected?.id === issue.id }));
+  const pick = (id: string) => {
+    const issue = issues.find((item) => item.id === id);
+    const row = document.getElementById(`issue-${id}`);
+    if (!issue || !row) return;
+    if (p.selected?.id !== id) void p.select(issue, row);
+    setMobilePane("issues");
+    window.setTimeout(() => row.scrollIntoView({ block: "nearest", behavior: "smooth" }), 0);
+  };
+  const checking = activeRun(p.run);
+  const over = usage ? (usage.account_type === "visitor" ? chars > usage.check_chars_per_check : chars > usage.check_chars_remaining) : false;
+  const primary = p.dirty || p.controlled || p.pendingControlledDecision ? (
+    <Button kind="primary" size="lg" disabled={Boolean(p.busy) || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingDecisionConflict)} onClick={() => void p.save()}>{p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存修改" : "保存"}</Button>
+  ) : checking ? (
+    <Button kind="primary" size="lg" disabled busy>正在检查…</Button>
+  ) : p.run && retryableRun(p.run) ? (
+    <Button kind="primary" size="lg" disabled={blocked} onClick={() => void p.retryRun()}>重新检查</Button>
+  ) : (
+    <Button kind="primary" size="lg" disabled={blocked || !p.draft || empty} title={empty ? "先写下正文，再检查" : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
+  );
+
+  return (
+    <section className="page writing" data-mobile-pane={mobilePane}>
+      {notices}
+      <header className="draft-head">
+        <Num className="draft-head-num">{chapterNumber}</Num>
+        <div className="draft-head-main">
+          <p className="label draft-head-meta">
+            <span className="badge">草稿</span>
+            <span>{formatCount(chars)} 字</span>
+            <span className={`save-state ${saveState}`}><i aria-hidden="true" />{saveLabel}</span>
+          </p>
+          <label className="draft-title">
+            <span className="sr-only">章节标题</span>
+            <input value={p.draft?.title ?? ""} placeholder="这一章的标题" disabled={blocked} onChange={(event) => p.draft && p.setDraft({ ...p.draft, title: event.target.value })} />
+          </label>
+          {saveDetail && <p className="draft-save-detail">{saveDetail}</p>}
+        </div>
+        {!p.readOnly && (
+          <div className="draft-head-side">
+            <div className="draft-head-actions">
+              <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty} onClick={() => void p.startAnalysis("context_brief")}>{p.analysisBusy === "context_brief" ? "正在回顾" : "写前回顾"}</Button>
+              {hasPlans && <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty || empty} onClick={() => void p.startAnalysis("plan_alignment")}>{p.analysisBusy === "plan_alignment" ? "正在对照" : "对照计划"}</Button>}
+              <Menu buttonLabel="更多：专注写作、完成本章、重置" danger={<button type="button" role="menuitem" className="danger" disabled={blocked} onClick={() => open("reset")}>重置作品</button>}>
+                <button type="button" role="menuitem" ref={focusTrigger} disabled={!p.draft || locked || Boolean(p.busy)} onClick={() => setFocus(true)}>专注写作</button>
+                <button type="button" role="menuitem" disabled={blocked || !p.draft || p.dirty || empty} onClick={() => go(`/projects/${project.id}/sources#complete-draft`)}>完成本章，开始下一章</button>
+              </Menu>
+              {primary}
+            </div>
+            {!empty && usage && <p className={`label draft-head-allowance${over ? " over" : ""}`}>本次约 {formatCount(chars)} 字 · {usage.account_type === "visitor" ? `访客每次最多 ${formatCount(usage.check_chars_per_check)} 字，还可检查 ${usage.checks_remaining} 次` : usageShort(usage)}</p>}
+          </div>
+        )}
+      </header>
+
+      {(p.controlled || p.pendingControlledDecision) && (
+        <div className="note note-warn">
+          <span>{p.pendingDecisionConflict
+            ? `${p.pendingDecisionConflict}${p.pendingDecisionStorageUnavailable ? ` ${p.pendingDecisionStorageUnavailable}` : ""}`
+            : p.pendingControlledDecision ? `正文已经保存，编辑暂时锁定。请重试记录这一条的决定；不会再次保存正文。${p.pendingDecisionStorageUnavailable ? ` ${p.pendingDecisionStorageUnavailable}` : ""}`
+              : "正在按选中的那一条改正文。保存时会一并记下你的处理。"}</span>
+          {p.pendingDecisionConflict && <Button kind="text" disabled={Boolean(p.busy)} onClick={() => void p.stopConflictedPendingDecision()}>停止补记并读取最新正文</Button>}
+        </div>
+      )}
+      {project.data_origin === "user_import" && project.memory_initialization_status !== "completed" && (
+        <div className="note note-warn"><span>这部导入作品的事实还没整理。现在就能检查，系统会直接对照前文；整理并确认事实后，检查会更准。</span><Button kind="text" onClick={() => go(`/projects/${project.id}/memory`)}>去整理事实</Button></div>
+      )}
+      {p.coverage?.status === "update_pending" && (
+        <div className="note note-warn"><span>正文追加到了第 {project.source_revision} 版；只有新增的段落会和已确认的资料一起审阅。</span>{p.memoryDelta?.status === "failed" ? <span>上次没有完成，也没有写入任何结果，可以放心重试。</span> : <Button kind="primary" disabled={blocked} onClick={() => void p.startIncrementalReview()}>检查新增的章节</Button>}</div>
+      )}
+      {p.draftRecoveryConflict && (
+        <div className="note note-warn recovery-conflict-notice"><span>这里显示的是只读的本机副本，不能输入，也不会覆盖服务器上的新版本。可以复制文字，或比较后选服务器版本。</span><Button kind="text" onClick={p.openDraftRecoveryConflict}>比较两份正文</Button></div>
+      )}
+
+      <nav className="mobile-panes" aria-label="切换内容">
+        {(["draft", "issues", "resources"] as const).map((pane) => (
+          <button key={pane} type="button" aria-current={mobilePane === pane ? "page" : undefined} onClick={() => setMobilePane(pane)}>{pane === "draft" ? "正文" : pane === "issues" ? `检查结果 ${issues.length}` : "回顾与记录"}</button>
+        ))}
+      </nav>
+
+      <div className="draft-grid">
+        <nav className="draft-chapters" aria-label="已写章节">
+          <p className="label">章节 · 只读</p>
+          <ol>
+            {p.chapters.map((chapter) => (
+              <li key={chapter.id}><button type="button" onClick={() => go(`/projects/${project.id}/sources#chapter-${chapter.number}`)}><span className="mono">{pad2(chapter.number)}</span>{bareChapterTitle(chapter.title) || "未命名"}</button></li>
+            ))}
+            <li className="current" aria-current="page"><span className="mono">{pad2(chapterNumber)}</span>{bareChapterTitle(p.draft?.title ?? "") || "草稿"}</li>
+          </ol>
+        </nav>
+
+        <article className="draft" aria-label="草稿正文">
+          <div id="draft-source" className="draft-field">
+            {p.readOnly ? (
+              <RichDraftEditor id="draft-body" label="草稿正文（只读）" value={p.draft?.body ?? ""} format={p.draft?.body_format ?? "plain_text"} disabled onChange={() => undefined} marks={marks} onPickMark={pick} />
+            ) : p.draftRecoveryConflict || p.pendingControlledDecision ? (
+              <textarea id="draft-body" aria-label="草稿正文" value={p.draft?.body ?? ""} readOnly aria-readonly="true" />
+            ) : (
+              <RichDraftEditor id="draft-body" label="草稿正文" placeholder="开始写这一章……" value={p.draft?.body ?? ""} format={p.draft?.body_format ?? "plain_text"} disabled={Boolean(p.busy)} onChange={(body, body_format) => p.draft && p.setDraft({ ...p.draft, body, body_format })} marks={marks} onPickMark={pick} />
+            )}
+          </div>
+          <div className="draft-tools">{!locked && <WritingTools targetId="draft-body" disabled={Boolean(p.busy) || !p.draft} />}<span className="label"><DraftWordCount targetId="draft-body" body={p.draft?.body ?? ""} /></span></div>
+        </article>
+
+        <aside className="findings" aria-labelledby="findings-title">
+          <div className="findings-head">
+            <h2 id="findings-title">检查结果</h2>
+            {p.run && <span className="label">{issues.length} 处{pending ? ` · ${pending} 处待定` : ""}{p.run.completed_at || p.run.created_at ? ` · ${clockLabel(p.run.completed_at ?? p.run.created_at)}` : ""}</span>}
+          </div>
+          {p.run ? (
+            <>
+              {outdated && p.run.status === "completed" && <p className="findings-note">草稿在检查之后改过，下面的结果针对的是先前的正文。</p>}
+              {p.run.result_origin === "demo_preset" && <p className="findings-note"><strong>示例结果</strong> · 示例作品预先放好的结果，用来展示怎么处理；这次没有调用模型。</p>}
+              {["failed", "timed_out", "cancelled"].includes(p.run.status) && <p className="inline-error">这次检查没有完成，没有保存任何结果。原因和重新检查在页面下方的检查记录里。</p>}
+              {p.run.status === "completed" && (p.run.metrics?.undecided_claim_count ?? 0) > 0 && (
+                <p className="findings-note">{(p.run.metrics?.undecided_claims ?? []).some((row) => row.error_code === "provider_attempt_quota_exceeded") ? `额度用完，有 ${p.run.metrics?.undecided_claim_count} 句没检查，结果里不包括它们。` : `有 ${p.run.metrics?.undecided_claim_count} 句没能判断，结果里不包括它们。`}</p>
+              )}
+              {checking && <p className="findings-empty" role="status">正在检查这一章，完成后结果会出现在这里。</p>}
+              <ol className="finding-list">
+                {issues.map((issue, index) => {
+                  const isOpen = p.selected?.id === issue.id;
+                  const done = Boolean(issue.decision || issue.reused_decision || p.locallyResolvedIssueIds.includes(issue.id));
+                  return (
+                    <li key={issue.id} className={`finding${isOpen ? " open" : ""}${done ? " done" : ""}`}>
+                      <button id={`issue-${issue.id}`} type="button" className={`issue-row severity-${issue.severity}`} aria-expanded={isOpen} onClick={(event) => (isOpen ? p.deselect() : void p.select(issue, event.currentTarget))}>
+                        <Num className="finding-num">{index + 1}</Num>
+                        <span className="finding-head">
+                          <span className="finding-tags">
+                            <FindingTag issue={issue} />
+                            {done ? <span className="label">{issue.reused_decision ? "沿用之前的判断" : "已处理"}</span> : issue.to_revise ? <span className="label">待修改</span> : null}
+                          </span>
+                          <strong>{findingHeadline(issue)}</strong>
+                        </span>
+                      </button>
+                      {isOpen && p.selected && <FindingDetail key={issue.id} p={p} issue={p.selected} tutorialStep={tutorialStep} outdated={outdated} />}
+                    </li>
+                  );
+                })}
+              </ol>
+              {p.run.status === "completed" && !issues.length && <p className="findings-empty">这次检查没有发现要处理的地方。</p>}
+              {p.run.status === "completed" && issues.length > 0 && pending === 0 && !p.readOnly && (
+                <div className="findings-next">
+                  <p>都处理完了。最后确认哪些事实有变化，再记进资料。</p>
+                  <Button kind="primary" disabled={blocked || p.run.lineage_status === "superseded_unlinked"} onClick={() => void p.review()}>审阅事实变化</Button>
+                </div>
+              )}
+            </>
+          ) : <p className="findings-empty">{empty ? "先写下正文，再检查。" : "检查后，和前文冲突或说不通的地方会按顺序列在这里，每一处都附上前文出处。"}</p>}
+        </aside>
+      </div>
+
+      <section className="writing-records" aria-label="写前回顾、计划对照与检查记录">
+        {(p.contextBrief || (hasPlans && p.planAlignment)) && (
+          <div className="analysis-grid">
+            {p.contextBrief && <AnalysisPanel run={p.contextBrief} p={p} />}
+            {hasPlans && p.planAlignment && <AnalysisPanel run={p.planAlignment} p={p} />}
+          </div>
+        )}
+        {p.run && <RunRecord run={p.run} p={p} actions={!p.readOnly} />}
+        {p.pairedRun && <RunRecord run={p.pairedRun} p={p} actions={false} />}
+        {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
+          <div className="note note-info"><strong>新增章节的事实变化 · {p.memoryDelta.status === "in_review" ? "等你确认" : p.memoryDelta.status === "covered" ? "已完成" : stageLabel(p.memoryDelta.status)}</strong><span>没确认的不会进资料，也不会用于之后的检查。</span><Button kind="text" onClick={() => go(`/projects/${project.id}/memory`)}>去资料确认</Button></div>
+        )}
+      </section>
+
+      {p.changeSet && <FactReview p={p} />}
+
+      {focus && !locked && <FocusEditor p={p} close={() => { setFocus(false); window.setTimeout(() => focusTrigger.current?.focus(), 0); }} pick={(issue, element) => { setFocus(false); void p.select(issue, element); window.setTimeout(() => document.getElementById(`issue-${issue.id}`)?.scrollIntoView({ block: "center" }), 0); }} />}
+    </section>
+  );
+}
+
+/** Findings on the same sentence stay next to each other, in the order the run returned them. */
+function groupIssues(issues: Issue[]) {
+  const groups = new Map<string, Issue[]>();
+  for (const issue of issues) groups.set(issue.claim_span_id || issue.id, [...(groups.get(issue.claim_span_id || issue.id) ?? []), issue]);
+  return [...groups.values()].flat();
+}
+
+/** The open finding: why it was flagged, the earlier passages it rests on, the suggested change, and
+    what the author can do. Actions follow the finding's kind; the first one is blue. */
+function FindingDetail({ p, issue, tutorialStep, outdated }: { p: ProjectState; issue: Issue; tutorialStep: number; outdated: boolean }) {
+  const [toRevise, setToRevise] = useState(Boolean(issue.to_revise));
+  const [markBusy, setMarkBusy] = useState(false);
+  const [error, setError] = useState("");
+  const tutorial = Boolean(p.project?.is_tutorial);
+  const gate = tutorial && tutorialStep < 4;
+  const tone = findingTone(issue);
+  const evidence = issue.evidence ?? [];
+  const suggestion = issue.suggested_revision?.before && issue.suggested_revision.after ? issue.suggested_revision : null;
+  const ready = issueHasSufficientEvidence(issue);
+  const decided = Boolean(issue.decision);
+  const blockedDecision = Boolean(p.busy) || decided || outdated || !ready;
+  const canKeep = issueAllows(issue, "keep_intentional");
+  const canDismiss = issueAllows(issue, "false_positive");
+  const toggleMark = async () => {
+    if (!p.run) return;
+    setMarkBusy(true); setError("");
+    try {
+      const next = await json<{ to_revise: boolean }>(`/projects/${p.run.project_id}/issues/${issue.id}/mark`, "POST", { to_revise: !toRevise });
+      setToRevise(next.to_revise);
+      p.markToRevise(issue.id, next.to_revise);
+    } catch (cause) { setError(labelError(cause)); } finally { setMarkBusy(false); }
+  };
+  type Action = { key: string; label: string; run: () => void; disabled: boolean; pressed?: boolean };
+  const actions: Action[] = [];
+  if (!decided) {
+    if (suggestion && issueAllows(issue, "apply_suggestion")) actions.push({ key: "apply", label: "采用改法", disabled: blockedDecision, run: () => { if (!p.applySuggestion(issue)) setError("没能在草稿里准确找到这句话（可能已经改过）。正文没有变动，请手动修改。"); } });
+    if (tone === "state" && canKeep) actions.push({ key: "keep", label: "保留这个变化", disabled: blockedDecision, run: () => void p.decide(issue, "keep_intentional") });
+    if (tone === "mid" && canKeep) actions.push({ key: "keep", label: "是有意的", disabled: blockedDecision, run: () => void p.decide(issue, "keep_intentional") });
+    if (issueAllows(issue, "edit")) actions.push({ key: "edit", label: "改正文", disabled: Boolean(p.busy) || !evidence.length || outdated, run: () => p.startControlledEdit(issue) });
+    if (canKeep && tone !== "state" && tone !== "mid") actions.push({ key: "keep", label: "是有意的", disabled: blockedDecision, run: () => void p.decide(issue, "keep_intentional") });
+    if (canDismiss && tone !== "state") actions.push({ key: "dismiss", label: "不是问题", disabled: blockedDecision, run: () => void p.decide(issue, "false_positive") });
+    actions.push({ key: "mark", label: toRevise ? "取消待修改" : "标为待修改", disabled: markBusy || !p.run, pressed: toRevise, run: () => void toggleMark() });
+  }
+  return (
+    <div className="finding-detail">
+      <p className="finding-explain">{issue.explanation}</p>
+      {gate ? (
+        <div className="finding-gate">
+          <p>下一步会展开前文依据和判断理由；这里只推进导览，不会替你处理这一条。</p>
+          <Button kind="primary" className="tutorial-primary-action" disabled={Boolean(p.busy)} onClick={() => void p.beginEvidence()}>查看完整依据</Button>
+        </div>
+      ) : (
+        <>
+          <p className="label finding-label">依据</p>
+          {evidence.length ? (
+            <ul className="finding-evidence">
+              {evidence.map((item) => (
+                <li key={item.id}>
+                  <button type="button" onClick={(event) => p.openEvidenceSource(issue, item, event.currentTarget)}>
+                    <span className="finding-evidence-where">第 {item.chapter_number} 章{item.chapter_title ? ` · ${bareChapterTitle(item.chapter_title)}` : ""}</span>
+                    <span className="finding-evidence-text">{item.excerpt}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : <p className="finding-hint">找不到可以核对的前文，暂时不能对这一条作决定。</p>}
+          {issue.reasoning && issue.reasoning !== issue.explanation && <details className="finding-reasoning"><summary>为什么这样判断</summary><p>{issue.reasoning}</p></details>}
+          {suggestion && (
+            <>
+              <p className="label finding-label">改法</p>
+              <del className="finding-before">{suggestion.before}</del>
+              <ins className="finding-after">{suggestion.after}</ins>
+            </>
+          )}
+          {tone === "state" && !decided && <p className="finding-hint">这不是错误。保留后，全部处理完时点「审阅事实变化」，把新的状态记进资料。</p>}
+          {outdated && <p className="finding-hint warn">草稿在检查之后改过，这一条针对的是先前的正文。重新检查后再决定。</p>}
+          {!decided && !ready && <p className="finding-hint">依据不够充分，只能标为待修改，或者补写前文后重新检查。</p>}
+          {!p.readOnly ? (
+            <div className="author-decision">
+              {issue.reused_decision && <p className="finding-decided">沿用你之前对同一句的判断。<a href={issue.reused_decision.review_path}>管理沿用的判断</a></p>}
+              {decided && <p className="finding-decided"><Tag tone="solid">{decisionLabel(issue.decision?.decision)}</Tag>已记下，这一条留在列表里备查。</p>}
+              {tutorial && tutorialStep === 4 && decided && <Button kind="primary" className="tutorial-decision-review" disabled={Boolean(p.busy)} onClick={() => void p.reviewDecision(issue)}>复习过了，继续导览</Button>}
+              {actions.length > 0 && (
+                <div className="finding-actions">
+                  {actions.map((action, index) => <Button key={action.key} kind={index === 0 ? "primary" : "text"} className={action.key === "mark" ? "to-revise-action" : undefined} pressed={action.pressed} disabled={action.disabled} onClick={action.run}>{action.label}</Button>)}
+                </div>
+              )}
+              {error && <p className="inline-error" role="alert">{error}</p>}
+            </div>
+          ) : <p className={tutorial ? "readonly tutorial-mobile-decision-note" : "readonly"}>{tutorial ? "手机上可以浏览完整依据；请在电脑上继续作出决定。" : "只读，不能在这里处理。"}</p>}
+        </>
+      )}
+    </div>
+  );
+}
+
+function Sources({ sources }: { sources: { source_id: string; source_type: string; label: string; excerpt: string }[] }) {
+  if (!sources.length) return <p className="small-note">没有引用正文。</p>;
+  return (
+    <details className="sources">
+      <summary>出处 {sources.length}</summary>
+      <ul>{sources.map((source) => <li key={`${source.source_type}:${source.source_id}`}><strong>{readableKeys(source.label)}<span className="label"> · {sourceKindLabel(source.source_type)}</span></strong><p>{source.excerpt}</p></li>)}</ul>
+    </details>
+  );
+}
+
+/** 写前回顾 and 对照计划 results. */
+function AnalysisPanel({ run, p }: { run: WritingAnalysisRun; p: ProjectState }) {
+  const brief = run.analysis_type === "context_brief";
+  const coverage = run.analysis?.draft_coverage;
+  return (
+    <section className={`analysis${run.is_stale ? " stale" : ""}`} aria-label={brief ? "写前回顾" : "对照计划"}>
+      <SectionHead level={3} title={brief ? "写前回顾" : "对照计划"} aside={<span className="label">{run.is_stale ? "草稿改过，结果可能过时" : stageLabel(run.status)}</span>} />
+      {activeAnalysis(run) && <p className="small-note">{stageLabel(run.stage)}。编辑器照常可用。</p>}
+      {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelError({ code: run.error_code })} 没有保存部分结果。</p>}
+      {run.analysis && (
+        <>
+          <p className="analysis-summary">{run.analysis.summary}</p>
+          {brief && coverage && coverage.status !== "covered" && <p className="small-note">{coverage.status === "empty" ? "草稿还没有正文。" : "只覆盖了草稿的一部分（正文较长或部分句子没有引用）。"}</p>}
+          {run.analysis.summary_sources && <Sources sources={run.analysis.summary_sources} />}
+          <ol className="analysis-items">
+            {run.analysis.items.map((item, index) => "section" in item ? (
+              <li key={`${item.section}:${index}`}><span className="label">{briefSectionLabel[item.section]}</span><p>{readableKeys(item.text)}</p><Sources sources={item.sources} /></li>
+            ) : "story_plan_id" in item ? (
+              <li key={item.story_plan_id}><span className="analysis-item-head"><strong>{item.story_plan_title}</strong><Tag tone={item.status === "planned_covered" ? "solid" : item.status === "insufficient_evidence" ? "gap" : "mid"}>{alignmentStatusLabel[item.status]}</Tag></span><p>{item.explanation}</p><Sources sources={item.evidence} /></li>
+            ) : null)}
+          </ol>
+        </>
+      )}
+      <footer className="analysis-foot">
+        <span className="label">依据：第 {run.draft_revision ?? "—"} 次保存的草稿</span>
+        {!p.readOnly && (
+          <span className="actions">
+            {activeAnalysis(run) && <Button kind="small" disabled={Boolean(p.analysisBusy)} onClick={() => void p.analysisAction(run, "cancel")}>取消</Button>}
+            {retryableAnalysis(run) && <Button kind="small" disabled={Boolean(p.analysisBusy)} onClick={() => void p.analysisAction(run, "retry")}>重试</Button>}
+          </span>
+        )}
+      </footer>
+    </section>
+  );
+}
+
+/** One check's record: a single line once finished; while running, its stage and a cancel button. */
+function RunRecord({ run, p, actions }: { run: Run; p: ProjectState; actions: boolean }) {
+  const metrics = run.provider_metrics ?? run.metrics;
+  const provenance = run.provenance ?? run.metrics?.provenance;
+  const kind = run.run_type === "memory_delta" ? "事实变化" : "检查";
+  const blocked = Boolean(p.busy) || p.readOnly;
+  return (
+    <section className={`run-record status-${run.status}`} aria-label={`${kind}记录`} aria-live="polite">
+      <div className="run-record-line">
+        <span className="label">{kind}记录</span>
+        <strong>{run.status === "completed" ? "已完成" : stageLabel(run.stage)}</strong>
+        <span className="run-record-meta">{(run.attempt_number ?? 1) > 1 ? `第 ${run.attempt_number} 次 · ` : ""}{timeLabel(run.completed_at ?? run.created_at)}</span>
+        {actions && activeRun(run) && <Button kind="small" disabled={blocked} onClick={() => void p.cancelRun()}>{run.stage === "cancelling" ? "正在取消" : "取消检查"}</Button>}
+        {actions && retryableRun(run) && <Button kind="primary" disabled={blocked} onClick={() => void p.retryRun()}>重新检查</Button>}
+      </div>
+      {run.status !== "completed" && !activeRun(run) && <p className="inline-error">{labelError({ code: run.error_code })}</p>}
+      {run.stage === "cancelling" && <p className="small-note">正在等模型返回；之后返回的结果会被丢弃，不会保存。</p>}
+      <details className="tech">
+        <summary>技术详情</summary>
+        <dl className="tech-grid">
+          <div><dt>编号</dt><dd>{run.run_id}</dd></div>
+          <div><dt>耗时</dt><dd>检查 {durationLabel(run.duration_ms)} · 模型 {durationLabel(metrics?.latency_ms)}</dd></div>
+          <div><dt>用量</dt><dd>{metrics?.input_tokens == null ? "不可用" : `输入 ${metrics.input_tokens} / 输出 ${metrics.output_tokens ?? 0}`}{metrics?.cost_available ? ` · ¥${metrics.cost_cny}` : ""}</dd></div>
+          <div><dt>依据版本</dt><dd>正文第 {run.source_revision} 版 · 事实库第 {run.source_memory_version ?? provenance?.source_memory_version ?? "—"} 版</dd></div>
+          {provenance && <div><dt>模型</dt><dd>{provenance.provider_label} / {provenance.model_label} · {provenance.prompt_version}</dd></div>}
+        </dl>
+      </details>
+    </section>
+  );
+}
+
+/** After all findings are handled: which facts changed, each to accept, reject or edit. */
+function FactReview({ p }: { p: ProjectState }) {
+  const blocked = p.readOnly || Boolean(p.busy);
+  const changeSet = p.changeSet!;
+  return (
+    <form id="fact-review" className="fact-review" aria-label="审阅事实变化" onSubmit={(event) => void p.commit(event)}>
+      <SectionHead title="审阅事实变化" aside={<span className="label">{changeSet.items.length} 条</span>} />
+      <p className="lede">这些变化不会自动写进资料。逐条决定，全部确认后一次更新。</p>
+      {changeSet.items.map((item) => (
+        <article key={item.id} className="change">
+          <div className="change-flow">
+            <div><p className="label">之前</p><p className="change-text">{item.before ? `${String(item.before.subject)} · ${predicateLabel(item.before.predicate)}：${String(item.before.value)}` : "（资料里还没有）"}</p></div>
+            <span className="change-arrow" aria-hidden="true">→</span>
+            <div><p className="label">之后</p><p className="change-text">{memoryTypeLabel(String(item.after.memory_type))} · {String(item.after.subject)} · {predicateLabel(item.after.predicate)}：{String(item.after.value)}</p></div>
+          </div>
+          <fieldset className="radio-row">
+            <legend className="sr-only">处理这一条</legend>
+            <label><input type="radio" name={item.id} value="accepted" defaultChecked disabled={blocked} />记下</label>
+            <label><input type="radio" name={item.id} value="rejected" disabled={blocked} />不记</label>
+            <label><input type="radio" name={item.id} value="edited" disabled={blocked} />改一下再记</label>
+          </fieldset>
+          <div className="edit-fields">
+            <label className="field"><span className="field-label">类型</span><select name={`edit:${item.id}:memory_type`} defaultValue={String(item.after.memory_type)} disabled={blocked}>{memoryTypes.map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label>
+            <label className="field"><span className="field-label">对象</span><input name={`edit:${item.id}:subject`} defaultValue={String(item.after.subject)} disabled={blocked} /></label>
+            <label className="field"><span className="field-label">关系</span><PredicateSelect name={`edit:${item.id}:predicate`} value={String(item.after.predicate)} disabled={blocked} /></label>
+            <label className="field wide"><span className="field-label">内容</span><textarea name={`edit:${item.id}:value`} defaultValue={String(item.after.value)} disabled={blocked} rows={2} /></label>
+          </div>
+        </article>
+      ))}
+      <Button kind="primary" size="lg" type="submit" disabled={blocked}>确认并更新资料</Button>
+    </form>
+  );
+}
+
+type FocusSize = "small" | "medium" | "large";
+/** 专注写作: the draft alone on the page, with type settings and an optional list of findings. */
+function FocusEditor({ p, close, pick }: { p: ProjectState; close: () => void; pick: (issue: Issue, element: HTMLElement) => void }) {
+  useScrollLock();
+  const { ref, onKeyDown } = useFocusTrap<HTMLElement>(close);
+  const [size, setSize] = useState<FocusSize>("medium");
+  const [leading, setLeading] = useState<"compact" | "comfortable" | "airy">("comfortable");
+  const [width, setWidth] = useState<"narrow" | "medium" | "wide">("medium");
+  const [listOpen, setListOpen] = useState(false);
+  const text = useDraftText("focus-draft-body", p.draft?.body ?? "");
+  const saving = ["保存草稿", "保存修改", "正在重试记录决定"].includes(p.busy);
+  const issues = p.run?.issues ?? [];
+  return (
+    <section ref={ref} className="focus" role="dialog" aria-modal="true" aria-label="专注写作" data-size={size} data-leading={leading} data-width={width} data-list={listOpen ? "open" : "closed"} onKeyDown={onKeyDown}>
+      <header className="focus-head">
+        <span className="label">第 {p.draft?.chapter_number ?? "—"} 章 · {p.project?.title}</span>
+        <div className="focus-settings" aria-label="显示设置">
+          <WritingTools targetId="focus-draft-body" disabled={Boolean(p.busy) || Boolean(p.pendingControlledDecision) || !p.draft} />
+          <label>字号<select value={size} onChange={(event) => setSize(event.target.value as FocusSize)}><option value="small">17</option><option value="medium">19</option><option value="large">21</option></select></label>
+          <label>行距<select value={leading} onChange={(event) => setLeading(event.target.value as typeof leading)}><option value="compact">紧</option><option value="comfortable">中</option><option value="airy">松</option></select></label>
+          <label>栏宽<select value={width} onChange={(event) => setWidth(event.target.value as typeof width)}><option value="narrow">窄</option><option value="medium">中</option><option value="wide">宽</option></select></label>
+        </div>
+        <Button kind="small" expanded={listOpen} onClick={() => setListOpen((value) => !value)}>检查结果 {issues.length}</Button>
+        <Button kind="small" onClick={close} label="退出专注写作">退出</Button>
+      </header>
+      {p.controlled && <p className="focus-note">这次修改对应选中的那一条；保存时会一并记下你的处理。</p>}
+      <div className="focus-canvas">
+        <div className="focus-paper">
+          <div className="focus-column">
+            <label className="focus-title"><span className="sr-only">章节标题</span><input value={p.draft?.title ?? ""} disabled={Boolean(p.busy) || Boolean(p.pendingControlledDecision)} onChange={(event) => p.draft && p.setDraft({ ...p.draft, title: event.target.value })} /></label>
+            <RichDraftEditor id="focus-draft-body" label="草稿正文" value={p.draft?.body ?? ""} format={p.draft?.body_format ?? "plain_text"} disabled={Boolean(p.busy) || Boolean(p.pendingControlledDecision)} onChange={(body, body_format) => p.draft && p.setDraft({ ...p.draft, body, body_format })} />
+          </div>
+        </div>
+        <aside className="focus-list" aria-label="检查结果">
+          {p.run ? (
+            <ol>
+              {issues.map((issue, index) => (
+                <li key={issue.id}>
+                  <button type="button" onClick={(event) => pick(issue, event.currentTarget)}>
+                    <Num>{index + 1}</Num>
+                    <span><FindingTag issue={issue} /><span className="focus-claim">{issue.claim_text || issue.explanation}</span></span>
+                  </button>
+                </li>
+              ))}
+              {!issues.length && <li className="small-note">这次检查没有需要处理的地方。</li>}
+            </ol>
+          ) : <p className="small-note">还没检查。</p>}
+        </aside>
+      </div>
+      <footer className="focus-foot">
+        <span className="label">{formatCount(writtenChars(text))} 字</span>
+        <span className={`save-state ${saving ? "saving" : p.dirty ? "unsaved" : "saved"}`}><i aria-hidden="true" />{saving ? "保存中" : p.dirty ? "未保存 · 停笔几秒后自动保存" : "已保存"}</span>
+        <Button kind="primary" disabled={!p.draft || (!p.dirty && !p.pendingControlledDecision) || Boolean(p.busy)} busy={saving} onClick={() => void p.save()}>{saving ? "正在保存" : p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存修改" : "保存"}</Button>
+      </footer>
+    </section>
+  );
+}

@@ -256,6 +256,102 @@
       "target": "frontend-source/app/api.ts"
     },
     {
+      "source": "frontend/app/client/app.tsx",
+      "target": "frontend-source/app/client/app.tsx"
+    },
+    {
+      "source": "frontend/app/client/editor.tsx",
+      "target": "frontend-source/app/client/editor.tsx"
+    },
+    {
+      "source": "frontend/app/client/env.ts",
+      "target": "frontend-source/app/client/env.ts"
+    },
+    {
+      "source": "frontend/app/client/identity.tsx",
+      "target": "frontend-source/app/client/identity.tsx"
+    },
+    {
+      "source": "frontend/app/client/labels.ts",
+      "target": "frontend-source/app/client/labels.ts"
+    },
+    {
+      "source": "frontend/app/client/pages/account.tsx",
+      "target": "frontend-source/app/client/pages/account.tsx"
+    },
+    {
+      "source": "frontend/app/client/pages/auth.tsx",
+      "target": "frontend-source/app/client/pages/auth.tsx"
+    },
+    {
+      "source": "frontend/app/client/pages/home.tsx",
+      "target": "frontend-source/app/client/pages/home.tsx"
+    },
+    {
+      "source": "frontend/app/client/pages/import.tsx",
+      "target": "frontend-source/app/client/pages/import.tsx"
+    },
+    {
+      "source": "frontend/app/client/pages/misc.tsx",
+      "target": "frontend-source/app/client/pages/misc.tsx"
+    },
+    {
+      "source": "frontend/app/client/pages/new-work.tsx",
+      "target": "frontend-source/app/client/pages/new-work.tsx"
+    },
+    {
+      "source": "frontend/app/client/pages/works.tsx",
+      "target": "frontend-source/app/client/pages/works.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/chapters.tsx",
+      "target": "frontend-source/app/client/project/chapters.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/export.tsx",
+      "target": "frontend-source/app/client/project/export.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/findings.tsx",
+      "target": "frontend-source/app/client/project/findings.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/frame.tsx",
+      "target": "frontend-source/app/client/project/frame.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/materials.tsx",
+      "target": "frontend-source/app/client/project/materials.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/overview.tsx",
+      "target": "frontend-source/app/client/project/overview.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/plan.tsx",
+      "target": "frontend-source/app/client/project/plan.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/story-route.tsx",
+      "target": "frontend-source/app/client/project/story-route.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/tutorial.tsx",
+      "target": "frontend-source/app/client/project/tutorial.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/use-project.ts",
+      "target": "frontend-source/app/client/project/use-project.ts"
+    },
+    {
+      "source": "frontend/app/client/project/writing.tsx",
+      "target": "frontend-source/app/client/project/writing.tsx"
+    },
+    {
+      "source": "frontend/app/client/ui.tsx",
+      "target": "frontend-source/app/client/ui.tsx"
+    },
+    {
       "source": "frontend/app/components/AuthorContextAnalysis.tsx",
       "target": "frontend-source/app/components/AuthorContextAnalysis.tsx"
     },
@@ -264,52 +360,12 @@
       "target": "frontend-source/app/components/AuthorContextPreview.tsx"
     },
     {
-      "source": "frontend/app/components/CreateProject.tsx",
-      "target": "frontend-source/app/components/CreateProject.tsx"
-    },
-    {
-      "source": "frontend/app/components/HomePage.tsx",
-      "target": "frontend-source/app/components/HomePage.tsx"
-    },
-    {
-      "source": "frontend/app/components/LongTermReview.tsx",
-      "target": "frontend-source/app/components/LongTermReview.tsx"
-    },
-    {
-      "source": "frontend/app/components/OverviewPage.tsx",
-      "target": "frontend-source/app/components/OverviewPage.tsx"
-    },
-    {
-      "source": "frontend/app/components/ProjectExport.module.css",
-      "target": "frontend-source/app/components/ProjectExport.module.css"
-    },
-    {
-      "source": "frontend/app/components/ProjectExport.tsx",
-      "target": "frontend-source/app/components/ProjectExport.tsx"
-    },
-    {
-      "source": "frontend/app/components/StoryRoute.tsx",
-      "target": "frontend-source/app/components/StoryRoute.tsx"
-    },
-    {
-      "source": "frontend/app/components/Workbench.tsx",
-      "target": "frontend-source/app/components/Workbench.tsx"
-    },
-    {
-      "source": "frontend/app/components/WritingTools.tsx",
-      "target": "frontend-source/app/components/WritingTools.tsx"
-    },
-    {
       "source": "frontend/app/components/author-context-api.ts",
       "target": "frontend-source/app/components/author-context-api.ts"
     },
     {
       "source": "frontend/app/components/author-context-model.ts",
       "target": "frontend-source/app/components/author-context-model.ts"
-    },
-    {
-      "source": "frontend/app/components/ui.tsx",
-      "target": "frontend-source/app/components/ui.tsx"
     },
     {
       "source": "frontend/app/draft-recovery.ts",
@@ -328,18 +384,6 @@
       "target": "frontend-source/app/styles/base.css"
     },
     {
-      "source": "frontend/app/styles/components.css",
-      "target": "frontend-source/app/styles/components.css"
-    },
-    {
-      "source": "frontend/app/styles/layout.css",
-      "target": "frontend-source/app/styles/layout.css"
-    },
-    {
-      "source": "frontend/app/styles/motion.css",
-      "target": "frontend-source/app/styles/motion.css"
-    },
-    {
       "source": "frontend/app/styles/pages/author-context.css",
       "target": "frontend-source/app/styles/pages/author-context.css"
     },
@@ -350,10 +394,6 @@
     {
       "source": "frontend/app/styles/pages/global.css",
       "target": "frontend-source/app/styles/pages/global.css"
-    },
-    {
-      "source": "frontend/app/styles/pages/guide.css",
-      "target": "frontend-source/app/styles/pages/guide.css"
     },
     {
       "source": "frontend/app/styles/pages/materials.css",
@@ -368,10 +408,6 @@
       "target": "frontend-source/app/styles/pages/plan.css"
     },
     {
-      "source": "frontend/app/styles/pages/workspace.css",
-      "target": "frontend-source/app/styles/pages/workspace.css"
-    },
-    {
       "source": "frontend/app/styles/tokens.css",
       "target": "frontend-source/app/styles/tokens.css"
     },
@@ -384,8 +420,16 @@
       "target": "frontend-source/app/pending-decision.ts"
     },
     {
+      "source": "frontend/app/styles/frame.css",
+      "target": "frontend-source/app/styles/frame.css"
+    },
+    {
       "source": "frontend/app/styles/pages/home.css",
       "target": "frontend-source/app/styles/pages/home.css"
+    },
+    {
+      "source": "frontend/app/styles/pages/writing.css",
+      "target": "frontend-source/app/styles/pages/writing.css"
     },
     {
       "source": "frontend/build-id.mjs",

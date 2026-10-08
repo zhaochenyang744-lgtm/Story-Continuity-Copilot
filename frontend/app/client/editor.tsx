@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Editor, EditorContent, useEditor } from "@tiptap/react";
+import { Editor, EditorContent, Extension, useEditor } from "@tiptap/react";
+import { Plugin, PluginKey } from "@tiptap/pm/state";
+import { Decoration, DecorationSet } from "@tiptap/pm/view";
 import type { JSONContent } from "@tiptap/core";
 import { Mark } from "@tiptap/pm/model";
 import StarterKit from "@tiptap/starter-kit";
@@ -166,7 +168,74 @@ export function replaceVisibleDraftText(targetId: string, before: string, after:
   }).run();
 }
 
-export function RichDraftEditor({id, value, format, disabled, label, placeholder, onChange}: {
+/** A finding to show in the draft: the sentence it is about, its tone and its number in the list. */
+export type FindingMark = {id: string; text: string; tone: "high" | "mid" | "gap" | "state"; index: number; active: boolean};
+type FindingMarkState = {marks: FindingMark[]; pick: ((id: string) => void) | null};
+const findingMarkKey = new PluginKey<FindingMarkState>("findingMarks");
+
+function findingDecorations(doc: import("@tiptap/pm/model").Node, state: FindingMarkState) {
+  if (!state.marks.length) return DecorationSet.empty;
+  const decorations: Decoration[] = [];
+  const pending = new Map(state.marks.map((mark) => [mark.id, mark]));
+  doc.descendants((node, position) => {
+    if (!pending.size) return false;
+    if (!node.isTextblock) return true;
+    let visible = "";
+    const boundaries = [0];
+    node.forEach((child, offset) => {
+      if (child.isText) {
+        for (let index = 0; index < (child.text?.length ?? 0); index += 1) {
+          visible += child.text?.[index] ?? "";
+          boundaries.push(offset + index + 1);
+        }
+      } else {
+        visible += child.type.name === "hardBreak" ? "\n" : "￼";
+        boundaries.push(offset + child.nodeSize);
+      }
+    });
+    for (const mark of [...pending.values()]) {
+      const at = mark.text ? visible.indexOf(mark.text) : -1;
+      if (at < 0) continue;
+      pending.delete(mark.id);
+      const from = position + 1 + boundaries[at], to = position + 1 + boundaries[at + mark.text.length];
+      decorations.push(Decoration.inline(from, to, {class: `finding-mark tone-${mark.tone}${mark.active ? " active" : ""}`, "data-finding": mark.id}));
+      decorations.push(Decoration.widget(to, () => {
+        const badge = document.createElement("button");
+        badge.type = "button";
+        badge.className = `finding-badge${mark.active ? " active" : ""}`;
+        badge.textContent = String(mark.index);
+        badge.contentEditable = "false";
+        badge.setAttribute("aria-label", `第 ${mark.index} 处`);
+        badge.addEventListener("mousedown", (event) => { event.preventDefault(); state.pick?.(mark.id); });
+        badge.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); state.pick?.(mark.id); } });
+        return badge;
+      }, {side: 1, ignoreSelection: true, key: `finding-${mark.id}-${mark.index}-${mark.active ? 1 : 0}`}));
+    }
+    return false;
+  });
+  return DecorationSet.create(doc, decorations);
+}
+
+const FindingMarks = Extension.create({
+  name: "findingMarks",
+  addProseMirrorPlugins() {
+    return [new Plugin<FindingMarkState>({
+      key: findingMarkKey,
+      state: {
+        init: () => ({marks: [], pick: null}),
+        apply: (tr, value) => (tr.getMeta(findingMarkKey) as FindingMarkState | undefined) ?? value,
+      },
+      props: {
+        decorations: (editorState) => {
+          const state = findingMarkKey.getState(editorState);
+          return state ? findingDecorations(editorState.doc, state) : DecorationSet.empty;
+        },
+      },
+    })];
+  },
+});
+
+export function RichDraftEditor({id, value, format, disabled, label, placeholder, onChange, marks, onPickMark}: {
   id: string;
   value: string;
   format: DraftBodyFormat;
@@ -174,6 +243,9 @@ export function RichDraftEditor({id, value, format, disabled, label, placeholder
   label: string;
   placeholder?: string;
   onChange: (body: string, format: DraftBodyFormat) => void;
+  /** Sentences to highlight with a numbered badge; clicking a badge calls onPickMark. */
+  marks?: FindingMark[];
+  onPickMark?: (id: string) => void;
 }) {
   const lastValue = useRef(value);
   const lastFormat = useRef(format);
@@ -181,7 +253,7 @@ export function RichDraftEditor({id, value, format, disabled, label, placeholder
   const newlineRef = useRef(value.includes("\r\n") ? "\r\n" : "\n");
   const change = useRef(onChange);
   const editor = useEditor({
-    extensions: [supportedEditorKit, Markdown.configure({markedOptions: {breaks: true}})],
+    extensions: [supportedEditorKit, Markdown.configure({markedOptions: {breaks: true}}), FindingMarks],
     immediatelyRender: false,
     content: format === "markdown" ? value : plainDocument(value),
     contentType: format === "markdown" ? "markdown" : undefined,
@@ -202,6 +274,14 @@ export function RichDraftEditor({id, value, format, disabled, label, placeholder
     onTransaction: notify,
   });
   useEffect(() => {change.current = onChange;}, [onChange]);
+  const pickRef = useRef(onPickMark);
+  useEffect(() => {pickRef.current = onPickMark;}, [onPickMark]);
+  const markKey = JSON.stringify(marks ?? []);
+  useEffect(() => {
+    if (!editor || editor.isDestroyed) return;
+    const next: FindingMarkState = {marks: JSON.parse(markKey) as FindingMark[], pick: (markId) => pickRef.current?.(markId)};
+    editor.view.dispatch(editor.state.tr.setMeta(findingMarkKey, next).setMeta("addToHistory", false));
+  }, [editor, markKey]);
   useEffect(() => {
     if (!editor) return;
     const binding = {
