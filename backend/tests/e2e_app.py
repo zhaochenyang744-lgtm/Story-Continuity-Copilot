@@ -6,6 +6,8 @@ import tempfile
 import threading
 import uuid
 
+from fastapi import HTTPException
+
 from app.config import AppPaths
 
 # Importing app.main normally constructs the production ASGI app and therefore
@@ -20,6 +22,16 @@ from app import review_screening
 # needs twenty issues on one chapter. The per-chapter review caps are product behaviour covered by the
 # backend tests; here they are lifted so the page can be tested with many issues.
 review_screening.KEY_MAX_CLAIMS = 64
+
+
+class CaptureMailer:
+    """Keeps every security mail in memory; the browser tests read the links through /api/test/mail."""
+
+    def __init__(self):
+        self.messages: list[dict[str, str]] = []
+
+    def send(self, recipient: str, purpose: str, action_url: str) -> None:
+        self.messages.append({"recipient": recipient, "purpose": purpose, "action_url": action_url})
 
 
 class BrowserTestProvider:
@@ -226,6 +238,7 @@ allowed_prefixes = (
     "story-stage12-v2-impl-",
     "story-stage12-v2-pm3-",
     "story-v130-rc-",
+    "story-v170-e2e-",
 )
 if (
     system_temp not in TEST_ROOT.parents
@@ -242,7 +255,8 @@ TEST_PATHS = AppPaths.from_project_root(
     protected_poc_root=TEST_ROOT / "protected-poc-placeholder",
 )
 provider = BrowserTestProvider()
-app = create_app(paths=TEST_PATHS, provider=provider)
+mailer = CaptureMailer()
+app = create_app(paths=TEST_PATHS, provider=provider, mailer=mailer)
 
 
 @app.get("/api/test/stage12/release")
@@ -265,9 +279,19 @@ def stage12_provider_stats():
         "external_provider_http_enabled": False,
         "provider_calls": provider.calls,
         "provider_http_calls": 0,
+        "mailer_calls": len(mailer.messages),
         "blocked": provider.entered.is_set() and not provider.release.is_set(),
         "test_root": str(TEST_ROOT),
     }
+
+
+@app.get("/api/test/mail/{purpose}")
+def latest_test_mail(purpose: str):
+    """The newest captured mail for a purpose (verify_email, password_reset); 404 when none was sent."""
+    message = next((item for item in reversed(mailer.messages) if item["purpose"] == purpose), None)
+    if not message:
+        raise HTTPException(404, "no_mail_captured")
+    return {"recipient": message["recipient"], "action_url": message["action_url"]}
 
 
 @app.post("/api/test/v130/projects/{project_id}/characters")
