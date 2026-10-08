@@ -352,22 +352,6 @@
       "target": "frontend-source/app/client/ui.tsx"
     },
     {
-      "source": "frontend/app/components/AuthorContextAnalysis.tsx",
-      "target": "frontend-source/app/components/AuthorContextAnalysis.tsx"
-    },
-    {
-      "source": "frontend/app/components/AuthorContextPreview.tsx",
-      "target": "frontend-source/app/components/AuthorContextPreview.tsx"
-    },
-    {
-      "source": "frontend/app/components/author-context-api.ts",
-      "target": "frontend-source/app/components/author-context-api.ts"
-    },
-    {
-      "source": "frontend/app/components/author-context-model.ts",
-      "target": "frontend-source/app/components/author-context-model.ts"
-    },
-    {
       "source": "frontend/app/draft-recovery.ts",
       "target": "frontend-source/app/draft-recovery.ts"
     },
@@ -382,10 +366,6 @@
     {
       "source": "frontend/app/styles/base.css",
       "target": "frontend-source/app/styles/base.css"
-    },
-    {
-      "source": "frontend/app/styles/pages/author-context.css",
-      "target": "frontend-source/app/styles/pages/author-context.css"
     },
     {
       "source": "frontend/app/styles/pages/chapters.css",
