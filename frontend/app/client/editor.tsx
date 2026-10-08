@@ -168,17 +168,18 @@ export function replaceVisibleDraftText(targetId: string, before: string, after:
   }).run();
 }
 
-/** A finding to show in the draft: the sentence it is about, its tone and its number in the list. */
-export type FindingMark = {id: string; text: string; tone: "high" | "mid" | "gap" | "state"; index: number; active: boolean};
+/** A finding to show in the draft: the sentence it is about, its tone and its number in the list.
+    hovered: its card or sentence is being pointed at; done: already handled; reveal: draw it in. */
+export type FindingMark = {id: string; text: string; tone: "high" | "mid" | "gap" | "state"; index: number; active: boolean; hovered?: boolean; done?: boolean; reveal?: boolean};
 type FindingMarkState = {marks: FindingMark[]; pick: ((id: string) => void) | null};
 const findingMarkKey = new PluginKey<FindingMarkState>("findingMarks");
+type ProseNode = import("@tiptap/pm/model").Node;
 
-function findingDecorations(doc: import("@tiptap/pm/model").Node, state: FindingMarkState) {
-  if (!state.marks.length) return DecorationSet.empty;
-  const decorations: Decoration[] = [];
-  const pending = new Map(state.marks.map((mark) => [mark.id, mark]));
+/** Every textblock's visible characters and the document position after each one. */
+function eachTextblock(doc: ProseNode, visit: (visible: string, positionOf: (index: number) => number) => boolean | void) {
+  let stop = false;
   doc.descendants((node, position) => {
-    if (!pending.size) return false;
+    if (stop) return false;
     if (!node.isTextblock) return true;
     let visible = "";
     const boundaries = [0];
@@ -193,25 +194,51 @@ function findingDecorations(doc: import("@tiptap/pm/model").Node, state: Finding
         boundaries.push(offset + child.nodeSize);
       }
     });
+    if (visit(visible, (index) => position + 1 + boundaries[index]) === true) stop = true;
+    return false;
+  });
+}
+
+/** Where a piece of visible text sits in the document (its first occurrence inside one paragraph). */
+function findVisible(doc: ProseNode, text: string) {
+  let found: {from: number; to: number} | null = null;
+  if (!text) return found;
+  eachTextblock(doc, (visible, positionOf) => {
+    const at = visible.indexOf(text);
+    if (at < 0) return false;
+    found = {from: positionOf(at), to: positionOf(at + text.length)};
+    return true;
+  });
+  return found as {from: number; to: number} | null;
+}
+
+function findingDecorations(doc: ProseNode, state: FindingMarkState) {
+  if (!state.marks.length) return DecorationSet.empty;
+  const decorations: Decoration[] = [];
+  const pending = new Map(state.marks.map((mark) => [mark.id, mark]));
+  eachTextblock(doc, (visible, positionOf) => {
     for (const mark of [...pending.values()]) {
       const at = mark.text ? visible.indexOf(mark.text) : -1;
       if (at < 0) continue;
       pending.delete(mark.id);
-      const from = position + 1 + boundaries[at], to = position + 1 + boundaries[at + mark.text.length];
-      decorations.push(Decoration.inline(from, to, {class: `finding-mark tone-${mark.tone}${mark.active ? " active" : ""}`, "data-finding": mark.id}));
+      const from = positionOf(at), to = positionOf(at + mark.text.length);
+      const flags = `${mark.active ? " active" : ""}${mark.hovered ? " hovered" : ""}${mark.done ? " done" : ""}${mark.reveal ? " reveal" : ""}`;
+      decorations.push(Decoration.inline(from, to, {class: `finding-mark tone-${mark.tone}${flags}`, "data-finding": mark.id, ...(mark.reveal ? {style: `--i: ${mark.index - 1}`} : {})}));
       decorations.push(Decoration.widget(to, () => {
         const badge = document.createElement("button");
         badge.type = "button";
-        badge.className = `finding-badge${mark.active ? " active" : ""}`;
+        badge.className = `finding-badge${flags}`;
+        if (mark.reveal) badge.style.setProperty("--i", String(mark.index - 1));
+        badge.dataset.finding = mark.id;
         badge.textContent = String(mark.index);
         badge.contentEditable = "false";
-        badge.setAttribute("aria-label", `第 ${mark.index} 处`);
+        badge.setAttribute("aria-label", `第 ${mark.index} 处${mark.done ? "（已处理）" : ""}`);
         badge.addEventListener("mousedown", (event) => { event.preventDefault(); state.pick?.(mark.id); });
         badge.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); state.pick?.(mark.id); } });
         return badge;
-      }, {side: 1, ignoreSelection: true, key: `finding-${mark.id}-${mark.index}-${mark.active ? 1 : 0}`}));
+      }, {side: 1, ignoreSelection: true, key: `finding-${mark.id}-${mark.index}${flags}`}));
     }
-    return false;
+    return pending.size === 0;
   });
   return DecorationSet.create(doc, decorations);
 }
@@ -235,6 +262,67 @@ const FindingMarks = Extension.create({
   },
 });
 
+/** Short-lived highlights (a pulse, a strike-through, the glow of new words). They follow edits
+    and remove themselves; they never touch the text. */
+type FlashMeta = {add?: {from: number; to: number; className: string; key: string}; remove?: string};
+const flashKey = new PluginKey<DecorationSet>("flashes");
+const Flashes = Extension.create({
+  name: "flashes",
+  addProseMirrorPlugins() {
+    return [new Plugin<DecorationSet>({
+      key: flashKey,
+      state: {
+        init: () => DecorationSet.empty,
+        apply: (tr, set) => {
+          let next = set.map(tr.mapping, tr.doc);
+          const meta = tr.getMeta(flashKey) as FlashMeta | undefined;
+          if (meta?.remove) next = next.remove(next.find(undefined, undefined, (spec) => spec.key === meta.remove));
+          if (meta?.add) next = next.add(tr.doc, [Decoration.inline(meta.add.from, meta.add.to, {class: meta.add.className}, {key: meta.add.key})]);
+          return next;
+        },
+      },
+      props: {decorations: (state) => flashKey.getState(state)},
+    })];
+  },
+});
+
+const reduceMotion = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let flashCounter = 0;
+
+/** Highlight a piece of text in an editor for a moment with one of the motion classes. */
+export function flashText(targetId: string, text: string, className: string, ms: number) {
+  const editor = editors.get(targetId)?.editor;
+  if (!editor || editor.isDestroyed || reduceMotion()) return;
+  const range = findVisible(editor.state.doc, text);
+  if (!range) return;
+  const key = `flash-${(flashCounter += 1)}`;
+  editor.view.dispatch(editor.state.tr.setMeta(flashKey, {add: {...range, className, key}}).setMeta("addToHistory", false));
+  window.setTimeout(() => {
+    if (!editor.isDestroyed) editor.view.dispatch(editor.state.tr.setMeta(flashKey, {remove: key}).setMeta("addToHistory", false));
+  }, ms);
+}
+
+/** 改字: strike the old words through, then let `commit` replace them and make the new words glow.
+    `commit` does the real replacement and reports whether it worked. */
+export function rewriteDraftText(targetId: string, before: string, after: string, commit: () => boolean): Promise<boolean> {
+  const editor = editors.get(targetId)?.editor;
+  const range = editor && !editor.isDestroyed ? findVisible(editor.state.doc, before) : null;
+  const glow = () => window.setTimeout(() => flashText(targetId, after, "rewrite-fresh", 1800), 60);
+  if (!editor || !range || reduceMotion()) {
+    const ok = commit();
+    if (ok) glow();
+    return Promise.resolve(ok);
+  }
+  const key = `strike-${(flashCounter += 1)}`;
+  editor.view.dispatch(editor.state.tr.setMeta(flashKey, {add: {...range, className: "rewrite-strike", key}}).setMeta("addToHistory", false));
+  return new Promise((resolve) => window.setTimeout(() => {
+    if (!editor.isDestroyed) editor.view.dispatch(editor.state.tr.setMeta(flashKey, {remove: key}).setMeta("addToHistory", false));
+    const ok = commit();
+    if (ok) glow();
+    resolve(ok);
+  }, 560));
+}
+
 export function RichDraftEditor({id, value, format, disabled, label, placeholder, onChange, marks, onPickMark}: {
   id: string;
   value: string;
@@ -253,7 +341,7 @@ export function RichDraftEditor({id, value, format, disabled, label, placeholder
   const newlineRef = useRef(value.includes("\r\n") ? "\r\n" : "\n");
   const change = useRef(onChange);
   const editor = useEditor({
-    extensions: [supportedEditorKit, Markdown.configure({markedOptions: {breaks: true}}), FindingMarks],
+    extensions: [supportedEditorKit, Markdown.configure({markedOptions: {breaks: true}}), FindingMarks, Flashes],
     immediatelyRender: false,
     content: format === "markdown" ? value : plainDocument(value),
     contentType: format === "markdown" ? "markdown" : undefined,

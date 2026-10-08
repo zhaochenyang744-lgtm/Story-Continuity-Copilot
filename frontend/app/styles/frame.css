@@ -250,10 +250,6 @@
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
 @keyframes slide-in { from { transform: translateX(24px); opacity: 0; } }
 @keyframes pulse { 50% { outline-offset: 8px; outline-color: transparent; } }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-}
-
 /* ── Narrow screens ── */
 @media (max-width: 720px) {
   :root { --page-gutter: 16px; }

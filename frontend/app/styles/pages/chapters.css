@@ -1,7 +1,9 @@
 /* 章节 */
 .table-scroll { overflow-x: auto; }
 .chapter-table { min-width: 860px; margin-top: 8px; }
-.chapter-row { display: grid; grid-template-columns: 44px 72px minmax(0, 1fr) 90px 130px 170px; gap: 16px; align-items: center; min-height: 64px; }
+.chapter-row { display: grid; grid-template-columns: 44px 72px minmax(0, 1fr) 90px 130px 150px 80px; gap: 16px; align-items: center; min-height: 64px; }
+.no-pick .chapter-row { grid-template-columns: 72px minmax(0, 1fr) 90px 130px 150px 80px; }
+.no-pick .chapter-passages { margin-left: 88px; }
 .chapter-row-head { min-height: 0; padding: 10px 0; border-bottom: 1px solid var(--c-rule); color: var(--c-muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: var(--tracking-label); }
 .chapter-item { border-bottom: 1px solid var(--c-line); scroll-margin-top: calc(var(--topbar-h) + 40px); }
 .chapter-item.picked { background: var(--c-surface); }

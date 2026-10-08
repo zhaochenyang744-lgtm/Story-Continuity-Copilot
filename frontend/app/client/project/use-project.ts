@@ -709,11 +709,12 @@ export function useProject({
     window.setTimeout(() => selectTrigger.current?.focus(), 0);
   };
 
-  const decide = async (issue: Issue, decision: "keep_intentional" | "false_positive") => {
-    if (!projectId || !run || readOnly) return;
+  /** Records 保留原意 / 不是问题 for one finding; resolves true once it is recorded. */
+  const decide = async (issue: Issue, decision: "keep_intentional" | "false_positive"): Promise<boolean> => {
+    if (!projectId || !run || readOnly) return false;
     if (!issueAllows(issue, decision) || !issueHasSufficientEvidence(issue)) {
       notify("这一条依据不够充分，或者不能这样处理；现在只能查看依据。");
-      return;
+      return false;
     }
     setBusy("正在记录决定");
     try {
@@ -731,7 +732,8 @@ export function useProject({
       notify(decision === "keep_intentional"
         ? (refreshed.issues ?? []).some((item) => issueNeedsDecision(item, [...locallyResolvedIssueIds, issue.id])) ? "记下了：保留原意。继续处理其他的。" : "记下了：保留原意。全部处理完后，可以审阅事实变化。"
         : "记下了：这一条不是问题，不会写进资料。");
-    } catch (cause) { fail(cause); } finally { setBusy(""); }
+      return true;
+    } catch (cause) { fail(cause); return false; } finally { setBusy(""); }
   };
   const markToRevise = (issueId: string, toRevise: boolean) =>
     setRun((current) => (current ? { ...current, issues: current.issues?.map((item) => (item.id === issueId ? { ...item, to_revise: toRevise } : item)) } : current));
@@ -1003,7 +1005,7 @@ export function useProject({
     draftRecoveryConflict, draftRecoveryUnavailable, pendingDecisionStorageUnavailable, pendingDecisionConflict,
     pendingDecisionPersisted, sourceRecord, tutorialRestored, readOnly, dirty, narrow,
     // actions
-    clear, loadProject, refreshReferences, refreshSummary, adoptNextDraft, setDraft, save, check, cancelRun, retryRun, startAnalysis, analysisAction,
+    notify, clear, loadProject, refreshReferences, refreshSummary, adoptNextDraft, setDraft, save, check, cancelRun, retryRun, startAnalysis, analysisAction,
     select, deselect, decide, markToRevise, startControlledEdit, applySuggestion, reviewDecision, beginEvidence,
     review, commit, startMemoryInitialization, reopenMemoryCandidate, submitMemoryInitialization, startIncrementalReview,
     submitMemoryDelta, reset, updateProject, mutateAuthorContext, openMemorySource, openEvidenceSource, closeSource,

@@ -120,12 +120,18 @@
   --elev-1: none;
   --elev-2: 8px 8px 0 rgba(17, 17, 17, .14);
 
-  /* Motion */
-  --motion-fast: 120ms;
-  --motion-base: 180ms;
-  --motion-panel: 220ms;
-  --motion-exit: 140ms;
-  --ease-standard: cubic-bezier(.2, .72, .24, 1);
+  /* Motion: three durations and one curve. Fast for hover and menus, mid for opening and switching,
+     slow for drawing charts and the after-glow of a change. */
+  --dur-fast: 140ms;
+  --dur-mid: 280ms;
+  --dur-slow: 640ms;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --stagger: 60ms;
+  --motion-fast: var(--dur-fast);
+  --motion-base: var(--dur-fast);
+  --motion-panel: var(--dur-mid);
+  --motion-exit: var(--dur-fast);
+  --ease-standard: var(--ease);
 }
 
 :root[data-theme="night"] {

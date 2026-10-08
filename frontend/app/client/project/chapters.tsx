@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { json, labelError, request, type ApiFailure } from "../../api";
 import type { Draft, Issue, SourceChangeSet } from "../../model";
 import { categoryLabel, dayLabel, timelineStatusHint, timelineStatusLabel, toneLabel } from "../labels";
@@ -16,7 +16,6 @@ type ReviewChapter = { id: string; title: string; number: number; source_revisio
 type Policy = { issue_id: string; decision: string; note?: string; claim_text?: string; explanation?: string; enabled: boolean; revision: number; is_current: boolean };
 type SourceReview = { id: string; chapter_id: string; memory: { subject: string; predicate: string; value: string }; new_source_span_id: string; status: string; revision: number };
 type Snapshot = { source_revision: number; memory_version: number; reusable_decisions: Policy[]; eligible_decisions?: Policy[]; source_revision_reviews: SourceReview[]; chapters: ReviewChapter[] };
-type RevisionPreview = { id: string; content_sha256: string; before: { title: string; body: string }; after: { title: string; body: string }; impact: { affected_memory_count: number; affected_analysis_count: number } };
 
 const tone = (issue: Pick<CheckIssue, "nature" | "severity">) => (issue.nature === "confirmed_conflict" ? "high" : issue.nature === "insufficient_evidence" ? "gap" : issue.nature === "state_change" ? "state" : issue.severity === "high" ? "high" : "mid");
 const reviewErrors: Record<string, string> = {
@@ -49,17 +48,6 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [reviewError, setReviewError] = useState("");
-  const [revising, setRevising] = useState<{ chapter: ReviewChapter; title?: string; body?: string; conflict?: boolean } | null>(null);
-  const [recovery, setRecovery] = useState<{ chapter: ReviewChapter; title: string; body: string; base_source_revision: number } | null>(null);
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(recoveryKey(user.id, project.id));
-      if (!raw) return;
-      const saved = JSON.parse(raw);
-      if (saved.user_id === user.id && saved.project_id === project.id && typeof saved.title === "string" && typeof saved.body === "string" && typeof saved.chapter?.id === "string")
-        queueMicrotask(() => setRecovery(saved));
-    } catch { /* nothing to restore */ }
-  }, [user.id, project.id]);
   const load = useCallback(async () => {
     const base = `/projects/${project.id}`;
     const [list, rows, review] = await Promise.all([
@@ -112,6 +100,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
   const pendingReviews = snapshot?.source_revision_reviews.filter((item) => item.status === "pending") ?? [];
   const draftIssues = (p.run?.issues ?? []).filter((issue) => !issue.decision && !issue.reused_decision && !p.locallyResolvedIssueIds.includes(issue.id)).length;
   const canPick = !visitor && !p.readOnly;
+  const openChapter = (number: number) => go(`/projects/${project.id}/workspace?chapter=${number}`);
 
   return (
     <section className="page chapters">
@@ -132,25 +121,11 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
       />
       {pendingReviews.length > 0 && <div className="note note-warn"><span>有 {pendingReviews.length} 条事实因为章节修订需要复核。复核完之前不能运行检查。</span><Button kind="text" onClick={() => document.getElementById("source-reviews")?.scrollIntoView({ block: "start", behavior: "smooth" })}>去复核</Button></div>}
       {error && <div className="note note-error" role="alert">{error}</div>}
-      {reviewError && <div className="note note-warn" role="status"><span>章节正文和修订记录没读出来：{reviewError} 字数和「修订这一章」暂时不可用。</span><Button kind="text" onClick={() => void load().catch((cause) => setError(labelError(cause)))}>重新读取</Button></div>}
-      {recovery && !revising && !p.readOnly && (
-        <div className="note note-warn">
-          <span>这台设备上有第 {recovery.chapter.number} 章没提交的修订。</span>
-          <Button kind="text" disabled={!snapshot} onClick={() => {
-            const current = snapshot?.chapters.find((item) => item.id === recovery.chapter.id);
-            if (!current) { setError("这一章已经不在作品里了。本机副本仍然保留。"); return; }
-            if (current.revision_editable === false) { setError(reviewErrors.chapter_full_text_unavailable); return; }
-            setRevising({ chapter: current, title: recovery.title, body: recovery.body, conflict: current.source_revision !== recovery.chapter.source_revision || snapshot?.source_revision !== recovery.base_source_revision });
-            setRecovery(null);
-          }}>恢复修订</Button>
-          <Button kind="text" onClick={() => { try { localStorage.removeItem(recoveryKey(user.id, project.id)); } catch { /* fine */ } setRecovery(null); }}>删除副本</Button>
-        </div>
-      )}
-
+      {reviewError && <div className="note note-warn" role="status"><span>章节正文和修订记录没读出来：{reviewError} 字数暂时不可用。</span><Button kind="text" onClick={() => void load().catch((cause) => setError(labelError(cause)))}>重新读取</Button></div>}
       <div className="table-scroll">
-        <div className="chapter-table" role="table" aria-label="全部章节">
+        <div className={canPick ? "chapter-table" : "chapter-table no-pick"} role="table" aria-label="全部章节">
           <div className="chapter-row chapter-row-head" role="row">
-            <span role="columnheader">选</span><span role="columnheader">章</span><span role="columnheader">标题</span><span role="columnheader">字数</span><span role="columnheader">状态</span><span role="columnheader">上次结果</span>
+            {canPick && <span role="columnheader">选</span>}<span role="columnheader">章</span><span role="columnheader">标题</span><span role="columnheader">字数</span><span role="columnheader">状态</span><span role="columnheader">上次结果</span><span role="columnheader"><span className="sr-only">打开</span></span>
           </div>
           {written.map((row) => {
             const id = row.chapter_id!;
@@ -163,9 +138,9 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
             return (
               <div key={id} id={`chapter-${row.chapter_number}`} tabIndex={-1} className={`chapter-item${on ? " picked" : ""}`} role="rowgroup">
                 <div className="chapter-row" role="row">
-                  <span role="cell" className="chapter-pick">
-                    {canPick && <input type="checkbox" aria-label={`选择第 ${row.chapter_number} 章`} checked={on} disabled={(!on && picked.length >= MAX) || busy || active} onChange={() => setPicked((current) => (on ? current.filter((item) => item !== id) : [...current, id]))} />}
-                  </span>
+                  {canPick && <span role="cell" className="chapter-pick">
+                    <input type="checkbox" aria-label={`选择第 ${row.chapter_number} 章`} checked={on} disabled={(!on && picked.length >= MAX) || busy || active} onChange={() => setPicked((current) => (on ? current.filter((item) => item !== id) : [...current, id]))} />
+                  </span>}
                   <span role="cell"><Num className="chapter-num">{pad2(row.chapter_number)}</Num></span>
                   <span role="cell" className="chapter-title">
                     <strong>{bareChapterTitle(row.title) || "未命名"}</strong>
@@ -174,6 +149,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
                   <span role="cell" className="mono">{body ? formatCount(body.body.replace(/\s+/g, "").length) : "—"}</span>
                   <span role="cell" className="chapter-status" title={timelineStatusHint[row.status]}><i className={`status-mark ${row.status}`} aria-hidden="true" />{timelineStatusLabel[row.status] ?? "未检查"}</span>
                   <span role="cell">{result ? result.length ? <Tag tone={result.some((issue) => tone(issue) === "high") ? "high" : "mid"}>{result.length} 处{result.length === 1 ? toneLabel[tone(result[0])] : ""}</Tag> : <span className="muted">无问题</span> : <span className="muted">—</span>}</span>
+                  <span role="cell"><button type="button" className="link" onClick={() => openChapter(row.chapter_number)}>{p.readOnly ? "打开" : "打开修改"}</button></span>
                 </div>
                 {isOpen && (
                   <div className="chapter-passages">
@@ -185,9 +161,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
                         </li>
                       ))}
                     </ul>
-                    {!p.readOnly && body && (
-                      <Button kind="small" disabled={body.revision_editable === false || pendingReviews.length > 0 || Boolean(revising)} title={body.revision_editable === false ? reviewErrors.chapter_full_text_unavailable : undefined} onClick={() => { setRevising({ chapter: body }); window.setTimeout(() => document.getElementById("revise")?.scrollIntoView({ block: "start", behavior: "smooth" }), 0); }}>修订这一章</Button>
-                    )}
+                    <Button kind="small" onClick={() => openChapter(row.chapter_number)}>{p.readOnly ? "在写作页打开" : "在写作页打开修改"}</Button>
                     {body?.body_notice && <p className="small-note">{body.body_notice}</p>}
                   </div>
                 )}
@@ -197,12 +171,13 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
           {draftRow && (
             <div className="chapter-item draft" role="rowgroup">
               <div className="chapter-row" role="row">
-                <span role="cell" className="chapter-pick" />
+                {canPick && <span role="cell" className="chapter-pick" />}
                 <span role="cell"><Num className="chapter-num blue">{pad2(draftRow.chapter_number)}</Num></span>
                 <span role="cell" className="chapter-title"><strong>{bareChapterTitle(draftRow.title) || "未命名"}</strong><span className="badge">草稿</span></span>
                 <span role="cell" className="mono">{formatCount((p.draft?.body ?? "").replace(/\s+/g, "").length)}</span>
                 <span role="cell">在写作页检查</span>
                 <span role="cell"><button type="button" className="link blue" onClick={() => go(`/projects/${project.id}/workspace`)}>去写作{draftIssues ? ` · ${draftIssues} 处` : ""}</button></span>
+                <span role="cell" />
               </div>
             </div>
           )}
@@ -224,7 +199,6 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
 
       {latest && <LatestResult run={latest} />}
       <AppendSection p={p} go={go} reload={load} />
-      {revising && <ReviseSection key={revising.chapter.id} chapter={revising.chapter} initialTitle={revising.title} initialBody={revising.body} conflict={revising.conflict} snapshot={snapshot} projectId={project.id} userId={user.id} readOnly={p.readOnly} close={() => setRevising(null)} reload={async () => { await load(); await p.refreshReferences(); }} />}
       <SourceReviews snapshot={snapshot} projectId={project.id} readOnly={p.readOnly} reload={async () => { await load(); await p.refreshReferences(); }} />
       <ReusePolicies snapshot={snapshot} projectId={project.id} readOnly={p.readOnly} reload={load} />
     </section>
@@ -334,76 +308,6 @@ function AppendSection({ p, go, reload }: { p: ProjectState; go: (href: string) 
           ) : (
             <div className="form-actions">{nextDraft && <span>下一章草稿：第 {nextDraft.chapter_number} 章</span>}<Button kind="primary" onClick={() => go(`/projects/${project.id}/workspace`)}>去写下一章</Button></div>
           ))}
-        </div>
-      )}
-    </section>
-  );
-}
-
-const recoveryKey = (userId: string, projectId: string) => `story-continuity:chapter-revision:v1:${encodeURIComponent(userId)}:${encodeURIComponent(projectId)}`;
-/** 修订一章: edit a written chapter, preview what it affects, then commit; the old text is kept. */
-function ReviseSection({ chapter, initialTitle, initialBody, conflict, snapshot, projectId, userId, readOnly, close, reload }: { chapter: ReviewChapter; initialTitle?: string; initialBody?: string; conflict?: boolean; snapshot: Snapshot | null; projectId: string; userId: string; readOnly: boolean; close: () => void; reload: () => Promise<void> }) {
-  const [title, setTitle] = useState(initialTitle ?? chapter.title);
-  const [body, setBody] = useState(initialBody ?? chapter.body);
-  const [preview, setPreview] = useState<RevisionPreview | null>(null);
-  const [busy, setBusy] = useState("");
-  const [error, setError] = useState("");
-  const [storageWarning, setStorageWarning] = useState("");
-  const key = recoveryKey(userId, projectId);
-  const dirty = title !== chapter.title || body !== chapter.body;
-  const base = `/projects/${encodeURIComponent(projectId)}`;
-  useEffect(() => {
-    if (!dirty || !snapshot) return;
-    try { localStorage.setItem(key, JSON.stringify({ user_id: userId, project_id: projectId, chapter, title, body, base_source_revision: snapshot.source_revision })); }
-    catch { queueMicrotask(() => setStorageWarning("这台设备存不下修订副本，请提交后再离开。")); }
-  }, [dirty, snapshot, key, userId, projectId, chapter, title, body]);
-  useEffect(() => {
-    if (!dirty) return;
-    const warn = (event: BeforeUnloadEvent) => event.preventDefault();
-    window.addEventListener("beforeunload", warn);
-    return () => window.removeEventListener("beforeunload", warn);
-  }, [dirty]);
-  const discard = () => { try { localStorage.removeItem(key); } catch { /* nothing kept */ } close(); };
-  const makePreview = async (event: FormEvent) => {
-    event.preventDefault();
-    if (!snapshot) return;
-    setBusy("正在预览"); setError("");
-    try {
-      const result = await json<{ revision_preview: RevisionPreview }>(`${base}/chapters/${encodeURIComponent(chapter.id)}/revisions/preview`, "POST", { base_source_revision: snapshot.source_revision, base_chapter_revision: chapter.source_revision, title, body, body_format: chapter.body_format ?? "plain_text" });
-      setPreview(result.revision_preview);
-    } catch (cause) { setError(explain(cause)); } finally { setBusy(""); }
-  };
-  const commit = async () => {
-    if (!preview) return;
-    setBusy("正在提交"); setError("");
-    try {
-      await json(`${base}/chapter-revisions/${encodeURIComponent(preview.id)}/commit`, "POST", { confirm: true, content_sha256: preview.content_sha256 });
-      try { localStorage.removeItem(key); } catch { /* fine */ }
-      await reload();
-      close();
-    } catch (cause) { setError(explain(cause)); } finally { setBusy(""); }
-  };
-  return (
-    <section id="revise" className="revise" aria-labelledby="revise-title">
-      <SectionHead id="revise-title" title={`修订第 ${chapter.number} 章`} aside={<span className="label">旧版本会保留</span>} />
-      {storageWarning && <p className="note note-warn">{storageWarning}</p>}
-      {conflict && <p className="note note-warn">服务器上的这一章在副本之后更新过。下面是本机副本的内容；请先复制需要的文字、放弃这次修订，再对照最新正文重新修订，不能直接覆盖。</p>}
-      <form className="form-inner" onSubmit={(event) => void makePreview(event)}>
-        <label className="field"><span className="field-label">标题</span><input value={title} maxLength={120} required disabled={readOnly || Boolean(busy)} onChange={(event) => { setTitle(event.target.value); setPreview(null); }} /></label>
-        <label className="field"><span className="field-label">正文</span><textarea className="prose-input" value={body} rows={16} required disabled={readOnly || Boolean(busy)} onChange={(event) => { setBody(event.target.value); setPreview(null); }} /></label>
-        <p className="small-note">{chapter.body_format === "markdown" ? "这一章用 Markdown，格式标记会一起保存。" : "这一章按纯文本保存。"} 没提交的修改会先留在这台设备上。</p>
-        {error && <p className="inline-error" role="alert">{error}</p>}
-        <div className="form-actions"><Button kind="primary" type="submit" disabled={readOnly || Boolean(busy) || !dirty || conflict}>预览修订会影响什么</Button><Button kind="text" disabled={Boolean(busy)} onClick={discard}>放弃这次修订</Button></div>
-      </form>
-      {preview && (
-        <div className="revise-preview">
-          <p className="revise-impact"><Num>{preview.impact.affected_memory_count}</Num> 条已确认的事实需要复核，<Num>{preview.impact.affected_analysis_count}</Num> 条分析可能过时。</p>
-          <div className="compare">
-            <div><p className="label">修订前 · {preview.before.title}</p><pre className="prose-pre">{preview.before.body}</pre></div>
-            <div><p className="label">修订后 · {preview.after.title}</p><pre className="prose-pre">{preview.after.body}</pre></div>
-          </div>
-          <p className="small-note">提交后替换这一章的正文，旧版本保留。受影响的事实要你逐条确认后，才会用于新的检查。</p>
-          <Button kind="primary" disabled={Boolean(busy) || readOnly} onClick={() => void commit()}>{busy === "正在提交" ? "正在提交…" : "确认提交修订"}</Button>
         </div>
       )}
     </section>

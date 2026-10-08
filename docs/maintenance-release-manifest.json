@@ -276,6 +276,10 @@
       "target": "frontend-source/app/client/labels.ts"
     },
     {
+      "source": "frontend/app/client/motion.tsx",
+      "target": "frontend-source/app/client/motion.tsx"
+    },
+    {
       "source": "frontend/app/client/pages/account.tsx",
       "target": "frontend-source/app/client/pages/account.tsx"
     },
@@ -302,6 +306,10 @@
     {
       "source": "frontend/app/client/pages/works.tsx",
       "target": "frontend-source/app/client/pages/works.tsx"
+    },
+    {
+      "source": "frontend/app/client/project/chapter-desk.tsx",
+      "target": "frontend-source/app/client/project/chapter-desk.tsx"
     },
     {
       "source": "frontend/app/client/project/chapters.tsx",
@@ -402,6 +410,10 @@
     {
       "source": "frontend/app/styles/frame.css",
       "target": "frontend-source/app/styles/frame.css"
+    },
+    {
+      "source": "frontend/app/styles/motion.css",
+      "target": "frontend-source/app/styles/motion.css"
     },
     {
       "source": "frontend/app/styles/pages/home.css",

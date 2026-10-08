@@ -21,6 +21,7 @@ import "./styles/pages/writing.css";
 import "./styles/pages/chapters.css";
 import "./styles/pages/materials.css";
 import "./styles/pages/plan.css";
+import "./styles/motion.css";
 
 export const metadata: Metadata = {
   title: "Story Continuity Copilot",

@@ -1,0 +1,120 @@
+/* 动效 (v1.7.0). The base motion every page shares, then the writing page's own effects, built
+   on three ideas: 排版 (figures set into place), 牵线 (a thread from a finding to the chapter it
+   conflicts with), 校对 (marks drawn one by one, struck out and replaced like proofreading).
+   Motion only ever shows what happened; the resting state is always the real one. Nothing moves
+   while the author types, and everything is off under prefers-reduced-motion. */
+
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes drop { from { opacity: 0; transform: translateY(-6px); } }
+
+/* ── Page entry: the head first, then each block a beat later. Only "backwards" fill, so no
+   transform is left on the page afterwards (fixed overlays inside it depend on that). ── */
+.page > :not(.layer, .focus) { animation: rise var(--dur-mid) var(--ease) backwards; }
+.page > :nth-child(2) { animation-delay: calc(var(--stagger) * 1); }
+.page > :nth-child(3) { animation-delay: calc(var(--stagger) * 2); }
+.page > :nth-child(4) { animation-delay: calc(var(--stagger) * 3); }
+.page > :nth-child(5) { animation-delay: calc(var(--stagger) * 4); }
+.page > :nth-child(6) { animation-delay: calc(var(--stagger) * 5); }
+.page > :nth-child(n + 7) { animation-delay: calc(var(--stagger) * 6); }
+
+/* ── 排版: a figure's digits roll like a mechanical counter when the value changes. ── */
+/* Each digit sits in a 1em slot (pulled back to the numeral's tight line box) so the rolling
+   digits are clipped cleanly at the slot edges. */
+.odo { display: inline-flex; margin: -.11em 0; clip-path: inset(0 -.25em); }
+.odo-col { display: flex; flex-direction: column; }
+.odo-col > span { display: block; height: 1em; line-height: 1; }
+.odo-col.roll { animation: odo-roll var(--dur-slow) var(--ease) both; }
+@keyframes odo-roll { from { transform: translateY(0); } to { transform: translateY(-1em); } }
+
+/* Expanded type that sets itself: from condensed to full width. */
+@keyframes stretch { from { opacity: 0; font-stretch: 62%; } 40% { opacity: 1; } }
+
+/* ── 写作: save dot ── */
+.save-state.saved i { animation: dot-pop var(--dur-mid) var(--ease); }
+@keyframes dot-pop { 0% { transform: scale(.4); } 60% { transform: scale(1.5); } }
+
+/* ── 校对: finding marks. Each tone is a background layer so it can be drawn left to right. ── */
+.finding-mark {
+  --mark: transparent;
+  --mark-h: 100%;
+  padding: 2px 0;
+  background-image: linear-gradient(var(--mark), var(--mark));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% var(--mark-h);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: color var(--dur-fast) var(--ease), --mark var(--dur-fast) var(--ease);
+}
+.finding-mark.tone-high { --mark: var(--c-red-tint); }
+.finding-mark.tone-mid { --mark: var(--c-yellow-tint); }
+.finding-mark.tone-state { --mark: var(--c-blue); --mark-h: 2px; }
+.finding-mark.tone-gap { --mark: var(--c-ink); --mark-h: 2px; background-image: repeating-linear-gradient(90deg, var(--mark) 0 6px, transparent 6px 10px); }
+/* Pointing at a finding (its card or its sentence) deepens the mark; the open one is solid. */
+.finding-mark.tone-high.hovered { --mark: color-mix(in srgb, var(--c-red) 55%, var(--c-red-tint)); }
+.finding-mark.tone-mid.hovered { --mark: color-mix(in srgb, var(--c-yellow) 60%, var(--c-yellow-tint)); }
+.finding-mark.tone-state.hovered,
+.finding-mark.tone-gap.hovered { --mark-h: 4px; }
+.finding-mark.tone-high.active { --mark: var(--c-red); color: var(--c-on-finding); }
+.finding-mark.tone-mid.active { --mark: var(--c-yellow); color: var(--c-on-finding); }
+.finding-mark.tone-gap.active { --mark: var(--c-blue-mid); --mark-h: 100%; background-image: linear-gradient(var(--mark), var(--mark)); }
+.finding-mark.tone-state.active { --mark: var(--c-blue); --mark-h: 100%; color: var(--c-on-blue); }
+/* Handled: the mark fades to a quiet underline and the badge turns hollow. */
+.finding-mark.done:not(.active) { --mark: var(--c-line); --mark-h: 2px; background-image: linear-gradient(var(--mark), var(--mark)); }
+@property --mark { syntax: "<color>"; inherits: false; initial-value: transparent; }
+
+.finding-badge { transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
+.finding-badge.done:not(.active) { background: transparent; color: var(--c-ink); box-shadow: inset 0 0 0 1.5px var(--c-ink); }
+.finding-badge.hovered:not(.active) { background: var(--c-blue); color: var(--c-on-blue); }
+
+/* When a check's results are shown for the first time, the marks are drawn in order and each
+   number drops in after its line, like an editor marking up a page. */
+.finding-mark.reveal { animation: mark-draw var(--dur-slow) var(--ease) backwards; animation-delay: calc(var(--i, 0) * 280ms + 200ms); }
+.finding-badge.reveal { animation: badge-drop var(--dur-mid) var(--ease) backwards; animation-delay: calc(var(--i, 0) * 280ms + 640ms); }
+.finding-list.reveal > li { animation: rise var(--dur-mid) var(--ease) backwards; animation-delay: calc(var(--i, 0) * 280ms + 200ms); }
+@keyframes mark-draw { from { background-size: 0% var(--mark-h); } }
+@keyframes badge-drop { from { opacity: 0; transform: translateY(-10px); } }
+
+/* Picking a finding from the list: its sentence answers with a brief ring. */
+.mark-pulse { animation: mark-pulse 900ms var(--ease); }
+@keyframes mark-pulse { 0% { box-shadow: 0 0 0 0 var(--c-blue); } 30% { box-shadow: 0 0 0 5px var(--c-blue-mid); } 100% { box-shadow: 0 0 0 10px transparent; } }
+
+/* 改字: the old words are struck through in red, then the new ones appear in blue and settle. */
+.rewrite-strike { color: var(--c-muted); background-image: linear-gradient(var(--c-red), var(--c-red)); background-repeat: no-repeat; background-position: 0 58%; background-size: 100% 2px; animation: strike 420ms var(--ease) backwards; }
+@keyframes strike { from { background-size: 0% 2px; } }
+.rewrite-fresh { animation: fresh 1800ms var(--ease) both; }
+@keyframes fresh { 0% { background-color: var(--c-blue-mid); color: var(--c-blue-text); } 35% { background-color: var(--c-blue-tint); color: var(--c-blue-text); } 100% { background-color: transparent; color: inherit; } }
+
+/* A finding that has just been handled folds its card into a single line. */
+.collapse { display: grid; grid-template-rows: 1fr; animation: unfold var(--dur-mid) var(--ease); }
+.collapse > * { min-height: 0; overflow: hidden; }
+.collapse.closing { grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows var(--dur-mid) var(--ease), opacity var(--dur-mid) var(--ease); }
+@keyframes unfold { from { grid-template-rows: 0fr; opacity: 0; } }
+.just-done { animation: rise var(--dur-mid) var(--ease) backwards; }
+
+/* ── 牵线: a thread from a finding's sentence to the chapter its evidence comes from. ── */
+.thread-layer { position: fixed; inset: 0; z-index: 30; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.thread-layer path { fill: none; stroke: var(--c-blue); stroke-width: 1.5; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw-line 420ms var(--ease) forwards; }
+.thread-layer .thread-end { fill: var(--c-blue); animation: fade var(--dur-fast) var(--ease) 360ms backwards; }
+.thread-layer .thread-start { fill: var(--c-blue); }
+@keyframes draw-line { to { stroke-dashoffset: 0; } }
+
+/* ── Checking: a line reads down the draft one paragraph at a time; what it has passed dims. ── */
+.scan { position: absolute; inset: 0 -16px auto; z-index: 2; pointer-events: none; transition: height 600ms var(--ease); }
+.scan::before { content: ""; position: absolute; inset: 0; background: var(--c-ground); opacity: .45; }
+.scan::after { content: ""; position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: var(--c-blue); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-blue) 18%, transparent); }
+.scan-label { position: absolute; right: 0; bottom: 8px; padding: 2px 6px; background: var(--c-blue); color: var(--c-on-blue); font-family: var(--font-mono); font-size: 11px; }
+.finding-skeleton { display: grid; gap: 18px; padding: 18px 0; }
+.finding-skeleton span { display: block; height: 14px; background: linear-gradient(90deg, var(--c-sunken) 0 40%, var(--c-line-soft) 50%, var(--c-sunken) 60% 100%) 0 0 / 300% 100%; animation: shimmer 1600ms linear infinite; }
+.finding-skeleton span:nth-child(3n + 2) { width: 72%; }
+.finding-skeleton span:nth-child(3n) { width: 48%; }
+@keyframes shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+
+/* Every finding handled: a big zero that sets itself. */
+.findings-zero .num { animation: stretch 900ms var(--ease) backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .scan, .thread-layer { display: none; }
+}

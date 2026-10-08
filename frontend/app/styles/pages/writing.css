@@ -1,37 +1,45 @@
 /* 写作 */
-.draft-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 32px; padding: 40px 0 28px; border-bottom: 1px solid var(--c-rule); }
+/* Head: the big number, the title (wraps when long), the actions on the same row at the right. */
+.draft-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: end; gap: 16px 32px; padding: 40px 0 28px; border-bottom: 1px solid var(--c-rule); }
 .draft-head-num { color: var(--c-blue-text); font-size: clamp(96px, 12vw, 168px); line-height: .78; letter-spacing: -.03em; }
-.draft-head-main { flex: 1 1 560px; min-width: 0; }
+.draft-head-num.ink { color: var(--c-ink); }
+.draft-head-main { min-width: 0; }
 .draft-head-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; color: var(--c-ink); }
 .save-state { display: inline-flex; align-items: center; gap: 6px; }
-.save-state i { width: 8px; height: 8px; background: var(--c-blue); }
+.save-state i { display: inline-block; width: 8px; height: 8px; background: var(--c-blue); }
 .save-state.unsaved i { background: var(--c-yellow); }
 .save-state.saving i { animation: blink 900ms ease-in-out infinite alternate; }
 .save-state.failed { color: var(--c-red-text); }
 .save-state.failed i { background: var(--c-red); }
 @keyframes blink { to { opacity: .25; } }
 .draft-title { display: block; margin-top: 10px; }
-.draft-title input { min-height: 0; padding: 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--c-ink); font-size: clamp(36px, 4.2vw, 60px); font-weight: 900; line-height: 1.05; letter-spacing: -.02em; }
-.draft-title input:hover:not(:disabled) { border-bottom-color: var(--c-line); }
-.draft-title input:focus { border-bottom-color: var(--c-blue); box-shadow: none; }
-.draft-title input:disabled { background: transparent; color: var(--c-ink); }
+.draft-title textarea { display: block; width: 100%; min-height: 0; padding: 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--c-ink); font-size: clamp(36px, 4.2vw, 60px); font-weight: 900; line-height: 1.12; letter-spacing: -.02em; resize: none; overflow: hidden; field-sizing: content; transition: border-color var(--dur-fast) var(--ease); }
+.draft-title textarea:hover:not(:disabled) { border-bottom-color: var(--c-line); }
+.draft-title textarea:focus { border-bottom-color: var(--c-blue); box-shadow: none; }
+.draft-title textarea:disabled { background: transparent; color: var(--c-ink); opacity: 1; }
 .draft-save-detail { margin-top: 8px; color: var(--c-muted); font-size: 13px; }
-.draft-head-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; margin-left: auto; }
+.draft-head-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 .draft-head-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
 .draft-head-allowance.over { color: var(--c-red-text); }
 
-.draft-grid { display: grid; grid-template-columns: minmax(150px, 200px) minmax(0, 680px) minmax(340px, 1fr); gap: 40px 48px; padding-top: 40px; }
-.draft-chapters { min-width: 0; }
+/* Three columns; the chapters and the findings stay on screen while the draft scrolls. */
+.draft-grid { display: grid; grid-template-columns: minmax(150px, 200px) minmax(0, 680px) minmax(340px, 1fr); gap: 40px 48px; padding-top: 32px; }
+.draft-chapters,
+.findings { position: sticky; top: calc(var(--topbar-h) + 24px); align-self: start; max-height: calc(100vh - var(--topbar-h) - 48px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.draft-chapters { min-width: 0; padding-top: 8px; }
 .draft-chapters .label { margin-bottom: 8px; font-size: 11px; }
 .draft-chapters li { border-top: 1px solid var(--c-line); }
-.draft-chapters button,
-.draft-chapters li.current { display: flex; gap: 10px; width: 100%; padding: 7px 0; border: 0; background: none; color: var(--c-muted); font-size: 14px; text-align: left; cursor: pointer; }
+.draft-chapters button { display: flex; align-items: baseline; gap: 10px; width: 100%; padding: 7px 0; border: 0; background: none; color: var(--c-muted); font-size: 14px; text-align: left; cursor: pointer; transition: color var(--dur-fast) var(--ease); }
 .draft-chapters button:hover { color: var(--c-ink); }
 .draft-chapters .mono { flex: none; }
-.draft-chapters li.current { border-top: 2px solid var(--c-rule); color: var(--c-ink); font-weight: 700; cursor: default; }
-.draft-chapters li.current .mono { color: var(--c-blue-text); }
+.draft-chapters .badge { margin-left: auto; font-size: 10px; }
+.draft-chapters li.draft-row { border-top: 2px solid var(--c-rule); }
+.draft-chapters button[aria-current="page"] { color: var(--c-ink); font-weight: 700; cursor: default; }
+.draft-chapters .draft-row button[aria-current="page"] .mono { color: var(--c-blue-text); }
+.draft-chapters li.linked button { color: var(--c-blue-text); font-weight: 700; }
 
 .draft { min-width: 0; }
+.draft-field { position: relative; }
 .rich-draft-host { display: block; }
 .rich-draft-body { position: relative; min-height: 60vh; outline: none; color: var(--c-ink); font-family: var(--font-serif); font-size: 19px; line-height: 2.05; overflow-wrap: anywhere; }
 .rich-draft-body p { margin: 0 0 1.1em; text-indent: 2em; }
@@ -42,27 +50,21 @@
 .rich-draft-body:has(> p:only-child > br:only-child)::before { content: attr(data-placeholder); position: absolute; color: var(--c-faint); text-indent: 2em; pointer-events: none; }
 .draft-field > textarea { min-height: 60vh; padding: 0; border: 0; background: transparent; font-family: var(--font-serif); font-size: 19px; line-height: 2.05; }
 .draft-field > textarea:focus { box-shadow: none; }
-/* Findings marked in the draft. The open one is filled solid. */
-.finding-mark { padding: 2px 0; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-color .2s; }
-.finding-mark.tone-high { background: var(--c-red-tint); }
-.finding-mark.tone-mid { background: var(--c-yellow-tint); }
-.finding-mark.tone-gap { border-bottom: 2px dashed var(--c-ink); }
-.finding-mark.tone-state { box-shadow: inset 0 -2px 0 var(--c-blue); }
-.finding-mark.tone-high.active { background: var(--c-red); color: var(--c-on-finding); }
-.finding-mark.tone-mid.active { background: var(--c-yellow); color: var(--c-on-finding); }
-.finding-mark.tone-gap.active { background: var(--c-blue-mid); }
-.finding-mark.tone-state.active { background: var(--c-blue); color: var(--c-on-blue); }
+/* Findings marked in the draft: tones and motion live in motion.css. */
 .finding-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; margin-left: 3px; padding: 0 4px; border: 0; background: var(--c-ink); color: var(--c-ground); font-family: var(--font-display); font-stretch: 125%; font-size: 12px; font-weight: 900; line-height: 1; text-indent: 0; vertical-align: super; cursor: pointer; user-select: none; }
 .finding-badge:hover,
 .finding-badge.active { background: var(--c-blue); color: var(--c-on-blue); }
-.draft-tools { position: sticky; bottom: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 24px; padding: 8px 0; border-top: 1px solid var(--c-rule); background: var(--c-ground); }
-.writing-tools { display: flex; gap: 4px; }
-.writing-tool { width: 36px; height: 36px; border: 1px solid var(--c-line); background: none; font-weight: 700; cursor: pointer; }
-.writing-tool:hover:not(:disabled) { border-color: var(--c-ink); }
-.writing-tool[aria-pressed="true"] { border-color: var(--c-ink); background: var(--c-ink); color: var(--c-ground); }
+/* The formatting strip above the draft, held under the top bar while writing. */
+.draft-tools { position: sticky; top: var(--topbar-h); z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; padding: 4px 0; border-bottom: 1px solid var(--c-line); background: var(--c-ground); }
+.draft-tools-side { display: flex; align-items: center; gap: 20px; }
+.draft-tools-side .link { font-size: 13px; }
+.writing-tools { display: flex; gap: 2px; }
+.writing-tool { width: 34px; height: 34px; border: 0; background: none; color: var(--c-muted); font-weight: 700; cursor: pointer; box-shadow: inset 0 -2px 0 transparent; transition: color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
+.writing-tool:hover:not(:disabled) { color: var(--c-ink); }
+.writing-tool[aria-pressed="true"] { color: var(--c-blue-text); box-shadow: inset 0 -2px 0 var(--c-blue); }
 .writing-tool:disabled { opacity: .4; cursor: not-allowed; }
 
-.findings { min-width: 0; }
+.findings { min-width: 0; margin: 0 -16px; padding: 8px 16px 24px; }
 .findings-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--c-rule); }
 .findings-head h2 { font-size: 24px; }
 .findings-note { margin-top: 12px; color: var(--c-muted); font-size: 13px; }
@@ -70,7 +72,9 @@
 .finding { border-bottom: 1px solid var(--c-line); }
 .finding.open { margin: 0 -16px; padding: 0 16px; border-bottom: 2px solid var(--c-rule); background: var(--c-surface); }
 .issue-row { display: flex; align-items: flex-start; gap: 14px; width: 100%; min-height: 44px; padding: 16px 0; border: 0; background: none; color: var(--c-ink); text-align: left; cursor: pointer; }
-.issue-row:hover strong { color: var(--c-blue-text); }
+.issue-row strong { transition: color var(--dur-fast) var(--ease); }
+.issue-row:hover strong,
+.finding.linked .issue-row strong { color: var(--c-blue-text); }
 .finding-num { flex: none; width: 26px; font-size: 26px; }
 .finding.done .finding-num { color: var(--c-faint); }
 .finding-head { display: grid; flex: 1; gap: 6px; min-width: 0; }
@@ -98,10 +102,28 @@
 .finding-decided { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; }
 .finding-decided a { border-bottom: 1px solid currentColor; }
 .finding-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 8px; }
-.findings-next { display: grid; justify-items: start; gap: 12px; margin-top: 20px; padding: 16px; border: 2px solid var(--c-rule); }
+.findings-zero { display: grid; justify-items: start; gap: 12px; margin-top: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--c-line); }
+.findings-zero .num { color: var(--c-blue-text); font-size: 112px; line-height: .8; }
+.findings-zero p { font-size: 14px; }
+.findings-zero strong { display: block; font-size: 17px; }
+.run-status { display: grid; gap: 6px; margin-top: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--c-line); }
+.run-status-line { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
+.run-status .finding-actions { margin-top: 0; }
+
+/* A written chapter on the writing page */
+.panel-copy { margin-top: 14px; color: var(--c-ink-2); font-size: 14px; }
+.panel-note { display: grid; justify-items: start; gap: 6px; margin-top: 16px; padding: 10px 0 10px 12px; border-left: 4px solid var(--c-yellow); font-size: 14px; }
+.panel-note .actions { display: flex; gap: 16px; }
+.impact { display: grid; gap: 4px; margin-top: 16px; }
+.impact p { display: flex; align-items: baseline; gap: 12px; }
+.impact .num { min-width: .9em; font-size: 48px; }
+.dialog .compare .prose-pre { max-height: 60vh; white-space: pre-wrap; }
+.badge-line { background: transparent; color: var(--c-ink); box-shadow: inset 0 0 0 1px var(--c-ink); }
+.complete-line { display: flex; align-items: baseline; gap: 14px; margin-top: 16px; padding: 12px 0; border-top: 1px solid var(--c-line); border-bottom: 1px solid var(--c-line); }
+.complete-line .num { font-size: 40px; }
+.complete-line .label { margin-left: auto; }
 
 .writing-records { display: grid; gap: 32px; margin-top: 64px; }
-.writing-records:empty { display: none; }
 .analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 32px 48px; }
 .analysis { display: grid; gap: 12px; align-content: start; }
 .analysis.stale { opacity: .75; }
@@ -115,9 +137,6 @@
 .sources li { display: grid; gap: 2px; padding: 6px 0 6px 12px; border-left: 2px solid var(--c-rule); }
 .sources li strong { font-size: 12px; }
 .sources li p { font-family: var(--font-serif); font-size: 13px; }
-.run-record { padding-top: 14px; border-top: 1px solid var(--c-rule); }
-.run-record-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
-.run-record-meta { color: var(--c-muted); font-size: 13px; }
 
 .fact-review { display: grid; gap: 16px; margin-top: 64px; scroll-margin-top: calc(var(--topbar-h) + 24px); }
 .change { display: grid; gap: 12px; padding: 18px 0; border-bottom: 1px solid var(--c-line); }
@@ -158,11 +177,17 @@
   .draft-grid { grid-template-columns: minmax(0, 1fr) minmax(320px, 380px); }
   .draft-chapters { display: none; }
 }
+@media (max-width: 1100px) {
+  .draft-head { grid-template-columns: auto minmax(0, 1fr); }
+  .draft-head-side { grid-column: 1 / -1; align-items: flex-start; }
+  .draft-head-actions { justify-content: flex-start; }
+}
 @media (max-width: 960px) {
   .mobile-panes { display: flex; margin-top: 16px; border-bottom: 2px solid var(--c-rule); }
   .mobile-panes button { flex: 1; min-height: 44px; border: 0; background: none; color: var(--c-muted); cursor: pointer; }
   .mobile-panes button[aria-current="page"] { background: var(--c-ink); color: var(--c-ground); font-weight: 700; }
   .draft-grid { grid-template-columns: minmax(0, 1fr); padding-top: 24px; }
+  .findings { position: static; max-height: none; overflow: visible; }
   .writing[data-mobile-pane="draft"] :is(.findings, .writing-records),
   .writing[data-mobile-pane="issues"] :is(.draft, .writing-records),
   .writing[data-mobile-pane="resources"] .draft-grid { display: none; }

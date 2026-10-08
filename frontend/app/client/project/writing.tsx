@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { json, labelError } from "../../api";
-import type { Issue, Run, WritingAnalysisRun } from "../../model";
-import { DraftWordCount, RichDraftEditor, useDraftText, WritingTools, type FindingMark } from "../editor";
+import type { Draft, Issue, Run, SourceChangeSet, WritingAnalysisRun } from "../../model";
+import { DraftWordCount, flashText, rewriteDraftText, RichDraftEditor, useDraftText, WritingTools, type FindingMark } from "../editor";
+import { Odometer, reducedMotion, ScanLine, ThreadLayer, useFirstShow } from "../motion";
 import {
   activeAnalysis,
   activeRun,
@@ -23,20 +24,45 @@ import {
   stageLabel,
   timeLabel,
 } from "../labels";
-import { bareChapterTitle, Button, formatCount, Menu, Num, pad2, SectionHead, Tag, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
+import { bareChapterTitle, Button, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
+import { ChapterDesk, ChapterRail, TitleField } from "./chapter-desk";
 import type { PageProps } from "./frame";
 import { FindingTag, findingHeadline } from "./findings";
 import { PredicateSelect } from "./materials";
 import { issueAllows, issueHasSufficientEvidence, issueNeedsDecision, type ProjectState } from "./use-project";
 
-/** 写作: a huge blue chapter number and the title, then the written chapters (read only), the draft
-    with each finding's sentence marked and numbered, and the findings as cards that open in place. */
-export function WritingPage({ p, usage, tutorialStep, open, go, notices }: PageProps) {
+/** 写作: a huge blue chapter number and the title, the chapters on the left, the draft with each
+    finding's sentence marked and numbered, and the findings as cards that open in place. Both side
+    columns stay on screen while the draft scrolls. A written chapter opens here too (?chapter=N). */
+export function WritingPage(props: PageProps) {
+  const { p, user, go, notices } = props;
+  const [viewing, setViewing] = useState<number | null>(() => {
+    if (typeof window === "undefined") return null;
+    const requested = Number(new URLSearchParams(window.location.search).get("chapter"));
+    return Number.isInteger(requested) && requested > 0 ? requested : null;
+  });
+  const open = (number: number | null) => {
+    const known = number !== null && p.chapters.some((chapter) => chapter.number === number);
+    setViewing(known ? number : null);
+    window.history.replaceState(window.history.state, "", known ? `${window.location.pathname}?chapter=${number}` : window.location.pathname);
+    window.scrollTo({ top: 0 });
+  };
+  if (viewing !== null && p.chapters.some((chapter) => chapter.number === viewing))
+    return <ChapterDesk key={viewing} p={p} user={user} go={go} notices={notices} number={viewing} open={open} />;
+  return <DraftDesk {...props} openChapter={open} />;
+}
+
+function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, openChapter }: PageProps & { openChapter: (number: number | null) => void }) {
   const project = p.project!;
   const [mobilePane, setMobilePane] = useState<"draft" | "issues" | "resources">("draft");
   const [focus, setFocus] = useState(false);
+  const [completing, setCompleting] = useState(false);
+  const [tech, setTech] = useState(false);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [folding, setFolding] = useState<string | null>(null);
   const focusTrigger = useRef<HTMLButtonElement>(null);
   const issues = groupIssues(p.run?.issues ?? []);
+  const isDone = (issue: Issue) => Boolean(issue.decision || issue.reused_decision || p.locallyResolvedIssueIds.includes(issue.id));
   const pending = issues.filter((issue) => issueNeedsDecision(issue, p.locallyResolvedIssueIds)).length;
   const locked = p.readOnly || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingControlledDecision);
   const blocked = locked || Boolean(p.busy);
@@ -51,7 +77,15 @@ export function WritingPage({ p, usage, tutorialStep, open, go, notices }: PageP
     : p.dirty ? p.draftRecoveryUnavailable || (p.autosaveState === "conflict" ? "别处保存了更新的版本；文字留在这台设备上，请刷新后比较。" : p.autosaveState === "failed" ? "暂时没存到服务器，文字留在这台设备上，稍后会再试。" : "停笔几秒后会自动保存。")
       : "";
   const outdated = p.dirty || Boolean(p.run?.is_stale);
-  const marks: FindingMark[] = issues.map((issue, index) => ({ id: issue.id, text: issue.claim_text ?? "", tone: findingTone(issue), index: index + 1, active: p.selected?.id === issue.id }));
+  const checking = activeRun(p.run);
+  // 示例: ?demo=checking shows the reading line without a model (development builds only).
+  const demoChecking = process.env.NODE_ENV !== "production" && typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "checking";
+  const scanning = checking || demoChecking;
+  const reveal = useFirstShow(p.run?.status === "completed" ? p.run.run_id : null, issues.length);
+  const linkedId = hovered ?? p.selected?.id ?? null;
+  const linkedIssue = issues.find((issue) => issue.id === linkedId) ?? null;
+  const linkedChapters = [...new Set((linkedIssue?.evidence ?? []).map((item) => item.chapter_number))].slice(0, 3);
+  const marks: FindingMark[] = issues.map((issue, index) => ({ id: issue.id, text: issue.claim_text ?? "", tone: findingTone(issue), index: index + 1, active: p.selected?.id === issue.id, hovered: hovered === issue.id, done: isDone(issue), reveal }));
   const pick = (id: string) => {
     const issue = issues.find((item) => item.id === id);
     const row = document.getElementById(`issue-${id}`);
@@ -60,7 +94,25 @@ export function WritingPage({ p, usage, tutorialStep, open, go, notices }: PageP
     setMobilePane("issues");
     window.setTimeout(() => row.scrollIntoView({ block: "nearest", behavior: "smooth" }), 0);
   };
-  const checking = activeRun(p.run);
+  // Opening a card from the list brings its sentence into view and rings it once.
+  const openCard = (issue: Issue, trigger: HTMLElement) => {
+    void p.select(issue, trigger);
+    const mark = document.querySelector<HTMLElement>(`.finding-mark[data-finding="${CSS.escape(issue.id)}"]`);
+    if (!mark) return;
+    const box = mark.getBoundingClientRect();
+    if (box.top < 96 || box.bottom > window.innerHeight - 24) mark.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" });
+    if (issue.claim_text) flashText("draft-body", issue.claim_text, "mark-pulse", 900);
+  };
+  // A finding that has just been handled folds its card away.
+  const decided = (issueId: string) => {
+    if (reducedMotion()) { p.deselect(); return; }
+    setFolding(issueId);
+    window.setTimeout(() => { setFolding(null); p.deselect(); }, 1100);
+  };
+  const pointAt = (target: EventTarget | null) => {
+    const id = (target as HTMLElement | null)?.closest?.("[data-finding]")?.getAttribute("data-finding") ?? null;
+    if (id !== hovered) setHovered(id);
+  };
   const over = usage ? (usage.account_type === "visitor" ? chars > usage.check_chars_per_check : chars > usage.check_chars_remaining) : false;
   const primary = p.dirty || p.controlled || p.pendingControlledDecision ? (
     <Button kind="primary" size="lg" disabled={Boolean(p.busy) || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingDecisionConflict)} onClick={() => void p.save()}>{p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存修改" : "保存"}</Button>
@@ -71,22 +123,20 @@ export function WritingPage({ p, usage, tutorialStep, open, go, notices }: PageP
   ) : (
     <Button kind="primary" size="lg" disabled={blocked || !p.draft || empty} title={empty ? "先写下正文，再检查" : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
   );
+  const finished = p.run?.status === "completed" && !checking;
 
   return (
     <section className="page writing" data-mobile-pane={mobilePane}>
       {notices}
       <header className="draft-head">
-        <Num className="draft-head-num">{chapterNumber}</Num>
+        <Num className="draft-head-num"><Odometer value={chapterNumber} /></Num>
         <div className="draft-head-main">
           <p className="label draft-head-meta">
             <span className="badge">草稿</span>
             <span>{formatCount(chars)} 字</span>
-            <span className={`save-state ${saveState}`}><i aria-hidden="true" />{saveLabel}</span>
+            <span className={`save-state ${saveState}`}><i key={saveState === "saved" ? p.saved?.saved_at : saveState} aria-hidden="true" />{saveLabel}</span>
           </p>
-          <label className="draft-title">
-            <span className="sr-only">章节标题</span>
-            <input value={p.draft?.title ?? ""} placeholder="这一章的标题" disabled={blocked} onChange={(event) => p.draft && p.setDraft({ ...p.draft, title: event.target.value })} />
-          </label>
+          <TitleField value={p.draft?.title ?? ""} placeholder="这一章的标题" disabled={blocked} onChange={(title) => p.draft && p.setDraft({ ...p.draft, title })} />
           {saveDetail && <p className="draft-save-detail">{saveDetail}</p>}
         </div>
         {!p.readOnly && (
@@ -94,9 +144,9 @@ export function WritingPage({ p, usage, tutorialStep, open, go, notices }: PageP
             <div className="draft-head-actions">
               <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty} onClick={() => void p.startAnalysis("context_brief")}>{p.analysisBusy === "context_brief" ? "正在回顾" : "写前回顾"}</Button>
               {hasPlans && <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty || empty} onClick={() => void p.startAnalysis("plan_alignment")}>{p.analysisBusy === "plan_alignment" ? "正在对照" : "对照计划"}</Button>}
-              <Menu buttonLabel="更多：专注写作、完成本章、重置" danger={<button type="button" role="menuitem" className="danger" disabled={blocked} onClick={() => open("reset")}>重置作品</button>}>
-                <button type="button" role="menuitem" ref={focusTrigger} disabled={!p.draft || locked || Boolean(p.busy)} onClick={() => setFocus(true)}>专注写作</button>
-                <button type="button" role="menuitem" disabled={blocked || !p.draft || p.dirty || empty} onClick={() => go(`/projects/${project.id}/sources#complete-draft`)}>完成本章，开始下一章</button>
+              <Menu buttonLabel="更多：完成本章、技术详情、重置" danger={<button type="button" role="menuitem" className="danger" disabled={blocked} onClick={() => openDialog("reset")}>重置作品</button>}>
+                <button type="button" role="menuitem" disabled={blocked || !p.draft || p.dirty || empty} onClick={() => setCompleting(true)}>完成本章，开始下一章</button>
+                <button type="button" role="menuitem" disabled={!p.run} onClick={() => setTech(true)}>这次检查的技术详情</button>
               </Menu>
               {primary}
             </div>
@@ -131,18 +181,18 @@ export function WritingPage({ p, usage, tutorialStep, open, go, notices }: PageP
       </nav>
 
       <div className="draft-grid">
-        <nav className="draft-chapters" aria-label="已写章节">
-          <p className="label">章节 · 只读</p>
-          <ol>
-            {p.chapters.map((chapter) => (
-              <li key={chapter.id}><button type="button" onClick={() => go(`/projects/${project.id}/sources#chapter-${chapter.number}`)}><span className="mono">{pad2(chapter.number)}</span>{bareChapterTitle(chapter.title) || "未命名"}</button></li>
-            ))}
-            <li className="current" aria-current="page"><span className="mono">{pad2(chapterNumber)}</span>{bareChapterTitle(p.draft?.title ?? "") || "草稿"}</li>
-          </ol>
-        </nav>
+        <ChapterRail chapters={p.chapters} current={null} draftNumber={chapterNumber} draftTitle={p.draft?.title ?? ""} linked={linkedChapters} open={openChapter} />
 
         <article className="draft" aria-label="草稿正文">
-          <div id="draft-source" className="draft-field">
+          <div className="draft-tools">
+            {!locked ? <WritingTools targetId="draft-body" disabled={Boolean(p.busy) || !p.draft} /> : <span />}
+            <span className="draft-tools-side">
+              <span className="label"><DraftWordCount targetId="draft-body" body={p.draft?.body ?? ""} /></span>
+              {!locked && <button type="button" ref={focusTrigger} className="link" disabled={!p.draft || Boolean(p.busy)} onClick={() => setFocus(true)}>专注写作</button>}
+            </span>
+          </div>
+          <div id="draft-source" className="draft-field" onMouseOver={(event) => pointAt(event.target)} onMouseLeave={() => setHovered(null)}>
+            {scanning && <ScanLine container="#draft-body" />}
             {p.readOnly ? (
               <RichDraftEditor id="draft-body" label="草稿正文（只读）" value={p.draft?.body ?? ""} format={p.draft?.body_format ?? "plain_text"} disabled onChange={() => undefined} marks={marks} onPickMark={pick} />
             ) : p.draftRecoveryConflict || p.pendingControlledDecision ? (
@@ -151,7 +201,6 @@ export function WritingPage({ p, usage, tutorialStep, open, go, notices }: PageP
               <RichDraftEditor id="draft-body" label="草稿正文" placeholder="开始写这一章……" value={p.draft?.body ?? ""} format={p.draft?.body_format ?? "plain_text"} disabled={Boolean(p.busy)} onChange={(body, body_format) => p.draft && p.setDraft({ ...p.draft, body, body_format })} marks={marks} onPickMark={pick} />
             )}
           </div>
-          <div className="draft-tools">{!locked && <WritingTools targetId="draft-body" disabled={Boolean(p.busy) || !p.draft} />}<span className="label"><DraftWordCount targetId="draft-body" body={p.draft?.body ?? ""} /></span></div>
         </article>
 
         <aside className="findings" aria-labelledby="findings-title">
@@ -163,62 +212,117 @@ export function WritingPage({ p, usage, tutorialStep, open, go, notices }: PageP
             <>
               {outdated && p.run.status === "completed" && <p className="findings-note">草稿在检查之后改过，下面的结果针对的是先前的正文。</p>}
               {p.run.result_origin === "demo_preset" && <p className="findings-note"><strong>示例结果</strong> · 示例作品预先放好的结果，用来展示怎么处理；这次没有调用模型。</p>}
-              {["failed", "timed_out", "cancelled"].includes(p.run.status) && <p className="inline-error">这次检查没有完成，没有保存任何结果。原因和重新检查在页面下方的检查记录里。</p>}
               {p.run.status === "completed" && (p.run.metrics?.undecided_claim_count ?? 0) > 0 && (
                 <p className="findings-note">{(p.run.metrics?.undecided_claims ?? []).some((row) => row.error_code === "provider_attempt_quota_exceeded") ? `额度用完，有 ${p.run.metrics?.undecided_claim_count} 句没检查，结果里不包括它们。` : `有 ${p.run.metrics?.undecided_claim_count} 句没能判断，结果里不包括它们。`}</p>
               )}
-              {checking && <p className="findings-empty" role="status">正在检查这一章，完成后结果会出现在这里。</p>}
-              <ol className="finding-list">
+              {finished && pending === 0 && (
+                <div className="findings-zero">
+                  <Num>0</Num>
+                  <p><strong>这一章前后不打架。</strong>{issues.length ? "都处理完了。最后确认哪些事实有变化，再记进资料。" : "这次检查没有发现要处理的地方。"}</p>
+                  {issues.length > 0 && !p.readOnly && <Button kind="primary" disabled={blocked || p.run.lineage_status === "superseded_unlinked"} onClick={() => void p.review()}>审阅事实变化</Button>}
+                </div>
+              )}
+              <RunStatus run={p.run} p={p} actions={!p.readOnly} />
+              {p.pairedRun && <RunStatus run={p.pairedRun} p={p} actions={false} />}
+              {checking && <div className="finding-skeleton" role="status" aria-label="正在检查这一章"><span /><span /><span /><span /><span /><span /></div>}
+              <ol className={`finding-list${reveal ? " reveal" : ""}`}>
                 {issues.map((issue, index) => {
                   const isOpen = p.selected?.id === issue.id;
-                  const done = Boolean(issue.decision || issue.reused_decision || p.locallyResolvedIssueIds.includes(issue.id));
+                  const done = isDone(issue);
                   return (
-                    <li key={issue.id} className={`finding${isOpen ? " open" : ""}${done ? " done" : ""}`}>
-                      <button id={`issue-${issue.id}`} type="button" className={`issue-row severity-${issue.severity}`} aria-expanded={isOpen} onClick={(event) => (isOpen ? p.deselect() : void p.select(issue, event.currentTarget))}>
+                    <li key={issue.id} style={reveal ? { "--i": index } as CSSProperties : undefined} className={`finding${isOpen ? " open" : ""}${done ? " done" : ""}${hovered === issue.id && !isOpen ? " linked" : ""}`}
+                      onMouseEnter={() => setHovered(issue.id)} onMouseLeave={() => setHovered(null)}>
+                      <button id={`issue-${issue.id}`} type="button" className={`issue-row severity-${issue.severity}`} aria-expanded={isOpen}
+                        onFocus={() => setHovered(issue.id)} onBlur={() => setHovered(null)}
+                        onClick={(event) => (isOpen ? p.deselect() : openCard(issue, event.currentTarget))}>
                         <Num className="finding-num">{index + 1}</Num>
                         <span className="finding-head">
                           <span className="finding-tags">
                             <FindingTag issue={issue} long />
-                            {done ? <span className="label">{issue.reused_decision ? "沿用之前的判断" : "已处理"}</span> : issue.to_revise ? <span className="label">待修改</span> : null}
+                            {done ? <span className="label just-done">{issue.reused_decision ? "沿用之前的判断" : "已处理"}</span> : issue.to_revise ? <span className="label">待修改</span> : null}
                           </span>
                           <strong>{findingHeadline(issue)}</strong>
                         </span>
                       </button>
-                      {isOpen && p.selected && <FindingDetail key={issue.id} p={p} issue={p.selected} tutorialStep={tutorialStep} outdated={outdated} />}
+                      {isOpen && p.selected && (
+                        <div className={folding === issue.id ? "collapse closing" : "collapse"}>
+                          <div><FindingDetail key={issue.id} p={p} issue={p.selected} tutorialStep={tutorialStep} outdated={outdated} decided={decided} /></div>
+                        </div>
+                      )}
                     </li>
                   );
                 })}
               </ol>
-              {p.run.status === "completed" && !issues.length && <p className="findings-empty">这次检查没有发现要处理的地方。</p>}
-              {p.run.status === "completed" && issues.length > 0 && pending === 0 && !p.readOnly && (
-                <div className="findings-next">
-                  <p>都处理完了。最后确认哪些事实有变化，再记进资料。</p>
-                  <Button kind="primary" disabled={blocked || p.run.lineage_status === "superseded_unlinked"} onClick={() => void p.review()}>审阅事实变化</Button>
-                </div>
-              )}
             </>
+          ) : scanning ? (
+            <div className="finding-skeleton" role="status" aria-label="正在检查这一章"><span /><span /><span /><span /><span /><span /></div>
           ) : <p className="findings-empty">{empty ? "先写下正文，再检查。" : "检查后，和前文冲突或说不通的地方会按顺序列在这里，每一处都附上前文出处。"}</p>}
         </aside>
       </div>
 
-      <section className="writing-records" aria-label="写前回顾、计划对照与检查记录">
-        {(p.contextBrief || (hasPlans && p.planAlignment)) && (
-          <div className="analysis-grid">
-            {p.contextBrief && <AnalysisPanel run={p.contextBrief} p={p} />}
-            {hasPlans && p.planAlignment && <AnalysisPanel run={p.planAlignment} p={p} />}
-          </div>
-        )}
-        {p.run && <RunRecord run={p.run} p={p} actions={!p.readOnly} />}
-        {p.pairedRun && <RunRecord run={p.pairedRun} p={p} actions={false} />}
-        {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
-          <div className="note note-info"><strong>新增章节的事实变化 · {p.memoryDelta.status === "in_review" ? "等你确认" : p.memoryDelta.status === "covered" ? "已完成" : stageLabel(p.memoryDelta.status)}</strong><span>没确认的不会进资料，也不会用于之后的检查。</span><Button kind="text" onClick={() => go(`/projects/${project.id}/memory`)}>去资料确认</Button></div>
-        )}
-      </section>
+      {(p.contextBrief || (hasPlans && p.planAlignment) || (p.memoryDelta && p.memoryDelta.status !== "not_started")) && (
+        <section className="writing-records" aria-label="写前回顾与计划对照">
+          {(p.contextBrief || (hasPlans && p.planAlignment)) && (
+            <div className="analysis-grid">
+              {p.contextBrief && <AnalysisPanel run={p.contextBrief} p={p} />}
+              {hasPlans && p.planAlignment && <AnalysisPanel run={p.planAlignment} p={p} />}
+            </div>
+          )}
+          {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
+            <div className="note note-info"><strong>新增章节的事实变化 · {p.memoryDelta.status === "in_review" ? "等你确认" : p.memoryDelta.status === "covered" ? "已完成" : stageLabel(p.memoryDelta.status)}</strong><span>没确认的不会进资料，也不会用于之后的检查。</span><Button kind="text" onClick={() => go(`/projects/${project.id}/memory`)}>去资料确认</Button></div>
+          )}
+        </section>
+      )}
 
       {p.changeSet && <FactReview p={p} />}
 
-      {focus && !locked && <FocusEditor p={p} close={() => { setFocus(false); window.setTimeout(() => focusTrigger.current?.closest("details")?.querySelector("summary")?.focus(), 0); }} pick={(issue, element) => { setFocus(false); void p.select(issue, element); window.setTimeout(() => document.getElementById(`issue-${issue.id}`)?.scrollIntoView({ block: "center" }), 0); }} />}
+      <ThreadLayer from={linkedId && !reducedMotion() ? `.finding-mark[data-finding="${linkedId}"]` : null} to={linkedChapters.map((number) => `.draft-chapters li[data-chapter="${number}"] button`)} />
+      {completing && <CompleteDraft p={p} close={() => setCompleting(false)} />}
+      {tech && p.run && <TechDialog run={p.run} paired={p.pairedRun} close={() => setTech(false)} />}
+      {focus && !locked && <FocusEditor p={p} close={() => { setFocus(false); window.setTimeout(() => focusTrigger.current?.focus(), 0); }} pick={(issue, element) => { setFocus(false); void p.select(issue, element); window.setTimeout(() => document.getElementById(`issue-${issue.id}`)?.scrollIntoView({ block: "center" }), 0); }} />}
     </section>
+  );
+}
+
+/** 完成本章: the draft becomes a written chapter and the next draft begins; the big number rolls on. */
+function CompleteDraft({ p, close }: { p: ProjectState; close: () => void }) {
+  const project = p.project!;
+  const [preview, setPreview] = useState<SourceChangeSet | null>(null);
+  const [busy, setBusy] = useState("正在准备");
+  const [error, setError] = useState("");
+  useEffect(() => {
+    let live = true;
+    void Promise.resolve()
+      .then(() => json<{ source_change_set: SourceChangeSet }>(`/projects/${project.id}/source-change-sets/preview`, "POST", { mode: "append", input_method: "draft_complete", base_source_revision: project.source_revision ?? 1, draft_id: p.draft?.id }))
+      .then((data) => { if (live) setPreview(data.source_change_set); }, (cause) => { if (live) setError(labelError(cause)); })
+      .finally(() => { if (live) setBusy(""); });
+    return () => { live = false; };
+    // Prepared once, when the dialog opens.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const commit = async () => {
+    if (!preview) return;
+    setBusy("正在完成"); setError("");
+    try {
+      const data = await json<{ source_change_set: SourceChangeSet; next_draft: Draft }>(`/projects/${project.id}/source-change-sets/${preview.id}/commit`, "POST", { confirm: true, content_sha256: preview.content_sha256 });
+      close();
+      p.adoptNextDraft(data.next_draft);
+      window.scrollTo({ top: 0, behavior: reducedMotion() ? "auto" : "smooth" });
+      await Promise.all([p.refreshReferences(), p.refreshSummary()]);
+      p.notify(`第 ${p.draft?.chapter_number ?? ""} 章写完了。现在开始第 ${data.next_draft?.chapter_number ?? ""} 章。`);
+    } catch (cause) { setError(labelError(cause)); setBusy(""); }
+  };
+  const chapter = preview?.chapters[0];
+  return (
+    <Dialog title="完成本章，开始下一章" close={close} closeDisabled={busy === "正在完成"}>
+      <p>把草稿《{bareChapterTitle(p.draft?.title ?? "") || "未命名"}》定为第 {p.draft?.chapter_number ?? "—"} 章，然后开始下一章的草稿。写完的章节以后还能在写作页打开修改。</p>
+      {chapter && <p className="complete-line"><Num>{pad2(p.draft?.chapter_number ?? chapter.order)}</Num><strong>{bareChapterTitle(chapter.title) || "未命名"}</strong><span className="label">{formatCount(chapter.character_count)} 字</span></p>}
+      {error && <p className="inline-error" role="alert">{error}</p>}
+      <div className="dialog-actions">
+        <Button kind="primary" disabled={!preview || Boolean(busy)} busy={Boolean(busy)} onClick={() => void commit()}>{busy || "完成本章"}</Button>
+        <Button kind="text" disabled={busy === "正在完成"} onClick={close}>取消</Button>
+      </div>
+    </Dialog>
   );
 }
 
@@ -231,8 +335,9 @@ function groupIssues(issues: Issue[]) {
 
 /** The open finding: why it was flagged, the earlier passages it rests on, the suggested change, and
     what the author can do. Actions follow the finding's kind; the first one is blue. */
-function FindingDetail({ p, issue, tutorialStep, outdated }: { p: ProjectState; issue: Issue; tutorialStep: number; outdated: boolean }) {
+function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided }: { p: ProjectState; issue: Issue; tutorialStep: number; outdated: boolean; decided: (issueId: string) => void }) {
   const [toRevise, setToRevise] = useState(Boolean(issue.to_revise));
+  const [applying, setApplying] = useState(false);
   const [markBusy, setMarkBusy] = useState(false);
   const [error, setError] = useState("");
   const tutorial = Boolean(p.project?.is_tutorial);
@@ -242,7 +347,7 @@ function FindingDetail({ p, issue, tutorialStep, outdated }: { p: ProjectState; 
   const suggestion = issue.suggested_revision?.before && issue.suggested_revision.after ? issue.suggested_revision : null;
   const ready = issueHasSufficientEvidence(issue);
   const decided = Boolean(issue.decision);
-  const blockedDecision = Boolean(p.busy) || decided || outdated || !ready;
+  const blockedDecision = Boolean(p.busy) || decided || outdated || !ready || applying;
   const canKeep = issueAllows(issue, "keep_intentional");
   const canDismiss = issueAllows(issue, "false_positive");
   const toggleMark = async () => {
@@ -258,10 +363,21 @@ function FindingDetail({ p, issue, tutorialStep, outdated }: { p: ProjectState; 
   const actions: Action[] = [];
   if (!decided) {
     const all: Record<string, Action | null> = {
-      apply: suggestion && issueAllows(issue, "apply_suggestion") ? { key: "apply", label: "采用改法", disabled: blockedDecision, run: () => { if (!p.applySuggestion(issue)) setError("没能在草稿里准确找到这句话（可能已经改过）。正文没有变动，请手动修改。"); } } : null,
+      apply: suggestion && issueAllows(issue, "apply_suggestion") ? { key: "apply", label: "采用改法", disabled: blockedDecision, run: () => {
+        setApplying(true);
+        // Bring the sentence into view first, so the change is seen where it happens.
+        const mark = document.querySelector<HTMLElement>(`.finding-mark[data-finding="${issue.id}"]`);
+        const box = mark?.getBoundingClientRect();
+        const away = Boolean(mark && box && (box.top < 96 || box.bottom > window.innerHeight - 24));
+        if (away) mark!.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" });
+        window.setTimeout(() => void rewriteDraftText("draft-body", suggestion.before, suggestion.after, () => p.applySuggestion(issue)).then((ok) => {
+          setApplying(false);
+          if (!ok) setError("没能在草稿里准确找到这句话（可能已经改过）。正文没有变动，请手动修改。");
+        }), away && !reducedMotion() ? 520 : 0);
+      } } : null,
       mark: { key: "mark", label: toRevise ? "取消待修改" : "标为待修改", disabled: markBusy || !p.run, pressed: toRevise, run: () => void toggleMark() },
-      keep: canKeep ? { key: "keep", label: tone === "state" ? "保留这个变化" : "是有意的", disabled: blockedDecision, run: () => void p.decide(issue, "keep_intentional") } : null,
-      dismiss: canDismiss ? { key: "dismiss", label: "不是问题", disabled: blockedDecision, run: () => void p.decide(issue, "false_positive") } : null,
+      keep: canKeep ? { key: "keep", label: tone === "state" ? "保留这个变化" : "是有意的", disabled: blockedDecision, run: () => void p.decide(issue, "keep_intentional").then((ok) => { if (ok && !tutorial) onDecided(issue.id); }) } : null,
+      dismiss: canDismiss ? { key: "dismiss", label: "不是问题", disabled: blockedDecision, run: () => void p.decide(issue, "false_positive").then((ok) => { if (ok && !tutorial) onDecided(issue.id); }) } : null,
       edit: issueAllows(issue, "edit") ? { key: "edit", label: "改正文", disabled: Boolean(p.busy) || !evidence.length || outdated, run: () => p.startControlledEdit(issue) } : null,
     };
     // The preview's order: the action that fits the kind of finding first, then 标为待修改 / 是有意的 / 不是问题.
@@ -371,34 +487,50 @@ function AnalysisPanel({ run, p }: { run: WritingAnalysisRun; p: ProjectState })
   );
 }
 
-/** One check's record: a single line once finished; while running, its stage and a cancel button. */
-function RunRecord({ run, p, actions }: { run: Run; p: ProjectState; actions: boolean }) {
-  const metrics = run.provider_metrics ?? run.metrics;
-  const provenance = run.provenance ?? run.metrics?.provenance;
+/** A check that is running, or that stopped without finishing: its stage, and cancel or retry.
+    A finished check needs no line of its own; its time sits in the findings head. */
+function RunStatus({ run, p, actions }: { run: Run; p: ProjectState; actions: boolean }) {
+  if (run.status === "completed") return null;
   const kind = run.run_type === "memory_delta" ? "事实变化" : "检查";
   const blocked = Boolean(p.busy) || p.readOnly;
+  const running = activeRun(run);
   return (
-    <section className={`run-record status-${run.status}`} aria-label={`${kind}记录`} aria-live="polite">
-      <div className="run-record-line">
-        <span className="label">{kind}记录</span>
-        <strong>{run.status === "completed" ? "已完成" : stageLabel(run.stage)}</strong>
-        <span className="run-record-meta">{(run.attempt_number ?? 1) > 1 ? `第 ${run.attempt_number} 次 · ` : ""}{timeLabel(run.completed_at ?? run.created_at)}</span>
-        {actions && activeRun(run) && <Button kind="small" disabled={blocked} onClick={() => void p.cancelRun()}>{run.stage === "cancelling" ? "正在取消" : "取消检查"}</Button>}
-        {actions && retryableRun(run) && <Button kind="primary" disabled={blocked} onClick={() => void p.retryRun()}>重新检查</Button>}
-      </div>
-      {run.status !== "completed" && !activeRun(run) && <p className="inline-error">{labelError({ code: run.error_code })}</p>}
+    <div className={`run-status status-${run.status}`} aria-live="polite">
+      <p className="run-status-line">
+        <strong>{running ? stageLabel(run.stage) : `${kind}没有完成`}</strong>
+        <span className="label">{(run.attempt_number ?? 1) > 1 ? `第 ${run.attempt_number} 次 · ` : ""}{timeLabel(run.created_at)}</span>
+      </p>
+      {!running && <p className="inline-error">{labelError({ code: run.error_code })} 没有保存任何结果。</p>}
       {run.stage === "cancelling" && <p className="small-note">正在等模型返回；之后返回的结果会被丢弃，不会保存。</p>}
-      <details className="tech">
-        <summary>技术详情</summary>
-        <dl className="tech-grid">
-          <div><dt>编号</dt><dd>{run.run_id}</dd></div>
-          <div><dt>耗时</dt><dd>检查 {durationLabel(run.duration_ms)} · 模型 {durationLabel(metrics?.latency_ms)}</dd></div>
-          <div><dt>用量</dt><dd>{metrics?.input_tokens == null ? "不可用" : `输入 ${metrics.input_tokens} / 输出 ${metrics.output_tokens ?? 0}`}{metrics?.cost_available ? ` · ¥${metrics.cost_cny}` : ""}</dd></div>
-          <div><dt>依据版本</dt><dd>正文第 {run.source_revision} 版 · 事实库第 {run.source_memory_version ?? provenance?.source_memory_version ?? "—"} 版</dd></div>
-          {provenance && <div><dt>模型</dt><dd>{provenance.provider_label} / {provenance.model_label} · {provenance.prompt_version}</dd></div>}
-        </dl>
-      </details>
-    </section>
+      {actions && (running || retryableRun(run)) && (
+        <div className="finding-actions">
+          {running && <Button kind="small" disabled={blocked} onClick={() => void p.cancelRun()}>{run.stage === "cancelling" ? "正在取消" : "取消检查"}</Button>}
+          {retryableRun(run) && <Button kind="text" disabled={blocked} onClick={() => void p.retryRun()}>重新检查</Button>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** 更多 → 这次检查的技术详情. */
+function TechDialog({ run, paired, close }: { run: Run; paired: Run | null; close: () => void }) {
+  return (
+    <Dialog title="这次检查的技术详情" close={close}>
+      {[run, ...(paired ? [paired] : [])].map((item) => {
+        const metrics = item.provider_metrics ?? item.metrics;
+        const provenance = item.provenance ?? item.metrics?.provenance;
+        return (
+          <dl key={item.run_id} className="tech-grid">
+            <div><dt>{item.run_type === "memory_delta" ? "事实变化" : "检查"}</dt><dd>{item.status === "completed" ? "已完成" : stageLabel(item.stage)} · {timeLabel(item.completed_at ?? item.created_at)}</dd></div>
+            <div><dt>编号</dt><dd>{item.run_id}</dd></div>
+            <div><dt>耗时</dt><dd>检查 {durationLabel(item.duration_ms)} · 模型 {durationLabel(metrics?.latency_ms)}</dd></div>
+            <div><dt>用量</dt><dd>{metrics?.input_tokens == null ? "不可用" : `输入 ${metrics.input_tokens} / 输出 ${metrics.output_tokens ?? 0}`}{metrics?.cost_available ? ` · ¥${metrics.cost_cny}` : ""}</dd></div>
+            <div><dt>依据版本</dt><dd>正文第 {item.source_revision} 版 · 事实库第 {item.source_memory_version ?? provenance?.source_memory_version ?? "—"} 版</dd></div>
+            {provenance && <div><dt>模型</dt><dd>{provenance.provider_label} / {provenance.model_label} · {provenance.prompt_version}</dd></div>}
+          </dl>
+        );
+      })}
+    </Dialog>
   );
 }
 

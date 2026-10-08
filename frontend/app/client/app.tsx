@@ -14,6 +14,7 @@ import { ImportPage } from "./pages/import";
 import { ProfilePage, SecurityPage } from "./pages/account";
 import { NotFoundPage, TutorialCompletePage } from "./pages/misc";
 import { ProjectFrame } from "./project/frame";
+import { hasUnsubmittedRevision } from "./project/chapter-desk";
 import { useProject } from "./project/use-project";
 import { Avatar, Wordmark } from "./identity";
 import { Button, Chevron, Dialog, pad2, usageShort, useUsage } from "./ui";
@@ -51,6 +52,7 @@ export function App() {
   const [tutorialProgress, setTutorialProgress] = useState<TutorialProgress | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [switchTo, setSwitchTo] = useState<string | null>(null);
+  const [revisionLeave, setRevisionLeave] = useState<string | null>(null);
   const [switchSaving, setSwitchSaving] = useState(false);
   const [switchFailed, setSwitchFailed] = useState(false);
   const [confirmUnstoredLogout, setConfirmUnstoredLogout] = useState(false);
@@ -163,6 +165,7 @@ export function App() {
     // The catch-all page remounts on every route change and re-reads the work, so even switching tabs
     // would drop unsaved text: always ask first.
     if ((p.dirty || p.pendingControlledDecision) && href !== pathname) { setSwitchFailed(false); setSwitchTo(href); }
+    else if (hasUnsubmittedRevision() && href !== pathname) setRevisionLeave(href);
     else router.push(href);
   };
 
@@ -351,6 +354,15 @@ export function App() {
               <Button disabled={switchSaving} onClick={() => { if (switchPending.current) return; if (p.saved) p.setDraft(p.saved); const target = switchTo; setSwitchTo(null); router.push(target); }}>不保存，直接离开</Button>
             )}
             <Button kind="text" disabled={switchSaving} onClick={() => { if (!switchPending.current) setSwitchTo(null); }}>留在这里</Button>
+          </div>
+        </Dialog>
+      )}
+      {revisionLeave && (
+        <Dialog title="这一章的修改还没提交" close={() => setRevisionLeave(null)}>
+          <p>改动已经存在这台设备上，回到这一章可以接着改；不提交就不会替换正文。</p>
+          <div className="dialog-actions">
+            <Button kind="primary" onClick={() => { const target = revisionLeave; setRevisionLeave(null); router.push(target); }}>先离开</Button>
+            <Button kind="text" onClick={() => setRevisionLeave(null)}>留在这里</Button>
           </div>
         </Dialog>
       )}
