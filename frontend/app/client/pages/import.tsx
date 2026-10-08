@@ -142,7 +142,7 @@ export function ImportPage({ user, fail, go }: { user: User; fail: (cause: unkno
             </p>
           </div>
           {preview.warnings.length > 0 && <p className="note note-warn" role="note">{preview.warnings.map(importWarningLabel).join("；")}</p>}
-          <ol className="chapter-preview">
+          <ol className="chapter-preview" aria-label="分章预览">
             {preview.detected.chapters.slice((current - 1) * PAGE, current * PAGE).map((chapter) => (
               <li key={chapter.preview_id}>
                 <Num>{pad2(chapter.order)}</Num>
