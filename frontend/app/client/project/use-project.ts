@@ -134,6 +134,11 @@ export function useProject({
   const selectTrigger = useRef<HTMLElement | null>(null);
   const sourceTrigger = useRef<HTMLElement | null>(null);
 
+  // Recording any tour step ends the "已回到第 N 步" note.
+  const tutorialEvent = (id: string, event: TutorialEvent, context?: { run_id: string; issue_id: string }) => {
+    setTutorialRestored(false);
+    return recordTutorialEvent(id, event, context);
+  };
   const readOnly = narrow || project?.status === "archived";
   const dirty = draftChanged(draft, saved);
 
@@ -288,6 +293,30 @@ export function useProject({
     setProject(updated); setChapters(chapterData.chapters); setMemories(memoryData.records);
   }, [project]);
 
+  /** Re-read the work's summary (counts, latest check, source version) and, for an imported work,
+      its fact coverage — without touching the draft or anything being edited. */
+  const refreshSummary = useCallback(async () => {
+    if (!projectId) return;
+    const requestEpoch = epoch.current;
+    try {
+      const next = await request<Project>(`/projects/${projectId}`);
+      if (requestEpoch !== epoch.current) return;
+      setProject((current) => (current?.id === next.id ? { ...current, ...next } : current));
+      if (next.data_origin === "user_import") {
+        const nextCoverage = await request<MemoryCoverage>(`/projects/${projectId}/memory/coverage`);
+        if (requestEpoch === epoch.current) setCoverage(nextCoverage);
+      }
+    } catch { /* the page keeps what it has; the next action reports any error */ }
+  }, [projectId]);
+
+  /** After chapters are appended (or the draft is completed) the work continues with a new draft:
+      switch to it and drop everything that belonged to the old one. */
+  const adoptNextDraft = (next: Draft | null | undefined) => {
+    if (next) { setDraft(next); setSaved(next); }
+    setRun(null); setPairedRun(null); setSelected(null); setControlled(null); setChangeSet(null);
+    setLocallyResolvedIssueIds([]); setContextBrief(null); setPlanAlignment(null);
+  };
+
   // Poll an active check (and its paired fact run). One request at a time; a hidden tab polls when shown again.
   useEffect(() => {
     if (!run || !projectId || (!activeRun(run) && !activeRun(pairedRun))) return;
@@ -306,6 +335,7 @@ export function useProject({
             notify(next[0].status !== "completed" ? "" : quotaStopped
               ? `检查到一半额度用完了，有 ${undecided} 句还没检查，结果里不包括它们。已检查的部分可以先看。`
               : undecided > 0 ? `检查完成，有 ${undecided} 句没能判断，结果里不包括它们。` : "检查完成。");
+            void refreshSummary();
             if (next[0].incremental_batch_id)
               request<MemoryDelta>(`/projects/${projectId}/memory/delta`).then((delta) => { setMemoryDelta(delta); setCoverage(delta.coverage ?? null); }).catch(fail);
           }
@@ -317,7 +347,7 @@ export function useProject({
     const onVisible = () => { if (document.visibilityState === "visible") poll(); };
     document.addEventListener("visibilitychange", onVisible);
     return () => { stopped = true; window.clearInterval(timer); document.removeEventListener("visibilitychange", onVisible); };
-  }, [run, pairedRun, projectId, fail, notify]);
+  }, [run, pairedRun, projectId, fail, notify, refreshSummary]);
 
   useEffect(() => {
     if (!projectId || (!activeAnalysis(contextBrief) && !activeAnalysis(planAlignment))) return;
@@ -365,7 +395,7 @@ export function useProject({
     setControlled(null);
     setRun((current) => (current?.run_id === checkedRun.run_id ? checkedRun : current));
     if (project?.is_tutorial) {
-      try { await recordTutorialEvent(project.id, "author_decision_recorded"); } catch { /* The decision stands on its own. */ }
+      try { await tutorialEvent(project.id, "author_decision_recorded"); } catch { /* The decision stands on its own. */ }
     }
     notify(message);
     return true;
@@ -667,7 +697,7 @@ export function useProject({
   const select = async (issue: Issue, element: HTMLElement | null) => {
     selectTrigger.current = element;
     if (project?.is_tutorial) {
-      try { await recordTutorialEvent(project.id, "continuity_issue_located"); } catch { /* resynchronised by the caller */ }
+      try { await tutorialEvent(project.id, "continuity_issue_located"); } catch { /* resynchronised by the caller */ }
     }
     setSelected(issue);
   };
@@ -691,7 +721,7 @@ export function useProject({
         ...(run.current_revision !== run.source_revision ? { resulting_revision: run.current_revision } : {}),
       });
       setLocallyResolvedIssueIds((ids) => [...new Set([...ids, issue.id])]);
-      if (project?.is_tutorial) await recordTutorialEvent(project.id, "author_decision_recorded");
+      if (project?.is_tutorial) await tutorialEvent(project.id, "author_decision_recorded");
       const refreshed = await request<Run>(checkPath(projectId, run.run_id));
       setRun(refreshed);
       setSelected(refreshed.issues?.find((item) => item.id === issue.id) ?? { ...issue, decision: { decision: recorded.decision ?? decision, resulting_revision: recorded.resulting_revision ?? null } });
@@ -727,11 +757,11 @@ export function useProject({
   };
   const reviewDecision = async (issue: Issue) => {
     if (!project?.is_tutorial || !run) return;
-    await recordTutorialEvent(project.id, "author_decision_reviewed", { run_id: run.run_id, issue_id: issue.id });
+    await tutorialEvent(project.id, "author_decision_reviewed", { run_id: run.run_id, issue_id: issue.id });
     notify("复习过这条已有的决定了；没有新建或改写决定，可以继续导览。");
   };
   const beginEvidence = async () => {
-    if (project?.is_tutorial) await recordTutorialEvent(project.id, "evidence_opened");
+    if (project?.is_tutorial) await tutorialEvent(project.id, "evidence_opened");
   };
 
   const review = async () => {
@@ -946,7 +976,7 @@ export function useProject({
       memoryType: memory.memory_type, reviewStatus: memory.review_status, memoryValidFrom: memory.valid_from, memoryValidTo: memory.valid_to,
     });
     if (project?.is_tutorial) {
-      try { await recordTutorialEvent(project.id, "memory_source_opened"); } catch { /* the drawer stays open */ }
+      try { await tutorialEvent(project.id, "memory_source_opened"); } catch { /* the drawer stays open */ }
     }
   };
   const openEvidenceSource = (issue: Issue, evidence: EvidenceItem, element: HTMLElement) => {
@@ -968,9 +998,9 @@ export function useProject({
     initialization, memoryDelta, coverage, contextBrief, planAlignment, analysisBusy, busy, selected, controlled,
     pendingControlledDecision, locallyResolvedIssueIds, changeSet, saveFailed, autosaveState, draftRecoveryPrompt,
     draftRecoveryConflict, draftRecoveryUnavailable, pendingDecisionStorageUnavailable, pendingDecisionConflict,
-    pendingDecisionPersisted, sourceRecord, tutorialRestored, readOnly, dirty,
+    pendingDecisionPersisted, sourceRecord, tutorialRestored, readOnly, dirty, narrow,
     // actions
-    clear, loadProject, refreshReferences, setDraft, save, check, cancelRun, retryRun, startAnalysis, analysisAction,
+    clear, loadProject, refreshReferences, refreshSummary, adoptNextDraft, setDraft, save, check, cancelRun, retryRun, startAnalysis, analysisAction,
     select, deselect, decide, markToRevise, startControlledEdit, applySuggestion, reviewDecision, beginEvidence,
     review, commit, startMemoryInitialization, reopenMemoryCandidate, submitMemoryInitialization, startIncrementalReview,
     submitMemoryDelta, reset, updateProject, mutateAuthorContext, openMemorySource, openEvidenceSource, closeSource,

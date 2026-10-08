@@ -73,7 +73,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
             <Menu buttonLabel="更多：导出、编辑信息、归档" danger={!p.readOnly ? <button type="button" role="menuitem" className="danger" onClick={() => open("reset")}>重置作品</button> : undefined}>
               <button type="button" role="menuitem" onClick={() => open("export")}>导出作品</button>
               {!p.readOnly && !project.is_tutorial && <button type="button" role="menuitem" onClick={() => open("meta")}>编辑作品信息</button>}
-              {!project.is_tutorial && (!p.readOnly || project.status === "archived") && <button type="button" role="menuitem" onClick={() => open("archive")}>{project.status === "archived" ? "恢复作品" : "归档作品"}</button>}
+              {!project.is_tutorial && !p.narrow && <button type="button" role="menuitem" onClick={() => open("archive")}>{project.status === "archived" ? "恢复作品" : "归档作品"}</button>}
             </Menu>
           </div>
           <dl className="overview-figures">
@@ -110,7 +110,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
         number={draftNumber}
         label={p.readOnly ? "草稿 · 只读" : "继续写 · 草稿"}
         title={bareChapterTitle(p.draft?.title ?? "") || "这一章还没有标题"}
-        meta={`${formatCount(draftChars)} 字 · ${project.latest_run ? `上次检查找到 ${issues.length} 处` : "还没检查"}`}
+        meta={`${formatCount(draftChars)} 字 · ${project.latest_run ? `上次检查找到 ${p.run?.issues?.length ?? 0} 处${issues.length ? `，${issues.length} 处待看` : ""}` : "还没检查"}`}
         action={p.readOnly ? "查看草稿" : "打开草稿"}
         onClick={() => go(`/projects/${project.id}/workspace`)}
       />

@@ -63,12 +63,15 @@ export function App() {
   const tab = legacyTabs[rawTab] ?? rawTab;
 
   const notify = useCallback((message: string) => { setError(null); setNotice(message); }, []);
+  // Set once useProject exists below; an expired session drops the open work so nothing lingers.
+  const clearProject = useRef<() => void>(() => undefined);
   const fail = useCallback((cause: unknown) => {
     setError(cause);
     setNotice("");
     if ((cause as ApiFailure).code === "authentication_required") {
       bootstrappedUser = null;
       setUser(null);
+      clearProject.current();
       router.replace("/login");
     }
   }, [router]);
@@ -94,6 +97,7 @@ export function App() {
   }, [applyOnboarding, fail]);
 
   const p = useProject({ projectId, user, narrow, fail, notify, applyOnboarding, recordTutorialEvent });
+  useEffect(() => { clearProject.current = p.clear; }, [p.clear]);
 
   // Theme: day by default; the choice is remembered on this device and applied before paint by layout.tsx.
   useEffect(() => {
@@ -136,7 +140,17 @@ export function App() {
   }, [ready, user, pathname, router, applyOnboarding, fail]);
   useEffect(() => {
     if (!menuOpen) return;
-    const close = (event: KeyboardEvent) => { if (event.key === "Escape") { setMenuOpen(false); requestAnimationFrame(() => menuTrigger.current?.focus()); } };
+    const items = () => Array.from(document.querySelectorAll<HTMLElement>(".account-menu [role^='menuitem']"));
+    requestAnimationFrame(() => items()[0]?.focus());
+    const close = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { setMenuOpen(false); requestAnimationFrame(() => menuTrigger.current?.focus()); return; }
+      if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+      const list = items();
+      if (!list.length) return;
+      event.preventDefault();
+      const at = list.indexOf(document.activeElement as HTMLElement);
+      list[(at + (event.key === "ArrowDown" ? 1 : list.length - 1)) % list.length].focus();
+    };
     const outside = (event: PointerEvent) => { if (!(event.target as HTMLElement).closest(".account")) setMenuOpen(false); };
     window.addEventListener("keydown", close);
     document.addEventListener("pointerdown", outside);
@@ -146,6 +160,8 @@ export function App() {
   const updateUser = useCallback((next: User | null) => { bootstrappedUser = next; setUser(next); }, []);
   const go = (href: string) => {
     setMenuOpen(false);
+    // The catch-all page remounts on every route change and re-reads the work, so even switching tabs
+    // would drop unsaved text: always ask first.
     if ((p.dirty || p.pendingControlledDecision) && href !== pathname) { setSwitchFailed(false); setSwitchTo(href); }
     else router.push(href);
   };
@@ -304,6 +320,9 @@ export function App() {
           </div>
         )}
         {busy && user && <p className="sr-only" role="status">{busy}</p>}
+        {narrow && user && !projectId && (pathname === "/" || pathname === "/projects") && (
+          <p className="note note-info narrow-note" role="note">窗口较窄：可以浏览作品和检查结果；写作和检查需要电脑或更宽的窗口。</p>
+        )}
         {body}
       </main>
       {switchTo && (
@@ -311,7 +330,7 @@ export function App() {
           <p>{p.pendingDecisionConflict
             ? p.pendingDecisionPersisted ? "服务器状态已经变了，旧的决定不会再提交。可以保留这条本机记录离开，或者停止补记并读取服务器上的最新正文。" : "服务器状态已经变了，旧的决定不会再提交。这个浏览器没能保存这条记录；离开会丢失它。"
             : p.pendingControlledDecision ? "正文已经保存，但这一条的决定还没记下。补记完成后才能安全离开；重试不会再次保存正文。"
-              : "离开会清空这个页面上没保存的草稿和检查状态。"}</p>
+              : "草稿还有没保存的修改。换页前先保存，或者放弃这些修改。"}</p>
           {switchFailed && Boolean(error) && <p className="inline-error" role="alert">没保存成功，还没离开。{labelError(error)} 标题和正文都还在。</p>}
           <div className="dialog-actions">
             {p.pendingDecisionConflict ? (

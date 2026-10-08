@@ -11,9 +11,10 @@ export const findingHeadline = (issue: Pick<Issue, "explanation" | "claim_text">
   return first.length > 34 ? `${first.slice(0, 33)}…` : first;
 };
 
-export function FindingTag({ issue, level = true }: { issue: Pick<Issue, "nature" | "severity">; level?: boolean }) {
+/** 「确定矛盾 · 高」; with long, 「确定矛盾 · 高影响」 as on 写作. */
+export function FindingTag({ issue, level = true, long = false }: { issue: Pick<Issue, "nature" | "severity">; level?: boolean; long?: boolean }) {
   const tone = findingTone(issue);
-  return <Tag tone={tone}>{toneLabel[tone]}{level && tone !== "state" ? ` · ${severityShort[issue.severity]}` : ""}</Tag>;
+  return <Tag tone={tone}>{toneLabel[tone]}{level && tone !== "state" ? ` · ${severityShort[issue.severity]}${long ? "影响" : ""}` : ""}</Tag>;
 }
 
 export const openIssues = (issues: Issue[] | undefined, resolved: string[]) =>

@@ -187,6 +187,10 @@ function DeltaReview({ delta, blocked, submit, openSource }: { delta: MemoryDelt
 /** First facts for an imported work: candidates from the text, each accepted, rejected or edited. */
 function InitReview({ p, go }: { p: ProjectState; go: (href: string) => void }) {
   const init = p.initialization!;
+  // Which candidates are set to 「改一下再接受」, so their edit fields show. The radios stay uncontrolled:
+  // submit reads them from the form.
+  const [editing, setEditing] = useState<Set<string>>(() => new Set());
+  const choose = (id: string, value: string) => setEditing((current) => { const next = new Set(current); if (value === "edited") next.add(id); else next.delete(id); return next; });
   const blocked = p.readOnly || Boolean(p.busy);
   if (init.status === "required")
     return (
@@ -211,6 +215,8 @@ function InitReview({ p, go }: { p: ProjectState; go: (href: string) => void }) 
     event.currentTarget.closest("details")?.querySelectorAll<HTMLInputElement>('input[type="radio"][data-memory-candidate-id]').forEach((input) => {
       if (value === "clear") input.checked = false; else if (input.value === value) input.checked = true;
     });
+    const ids = Array.from(event.currentTarget.closest("details")?.querySelectorAll<HTMLInputElement>('input[type="radio"][data-memory-candidate-id]') ?? []).map((input) => input.dataset.memoryCandidateId!);
+    setEditing((current) => { const next = new Set(current); ids.forEach((id) => next.delete(id)); return next; });
   };
   const card = (candidate: MemoryInitialization["candidates"][number]) => (
     <article key={candidate.id} className="candidate">
@@ -221,12 +227,11 @@ function InitReview({ p, go }: { p: ProjectState; go: (href: string) => void }) 
         <>
           <fieldset className="radio-row">
             <legend className="sr-only">这一条怎么处理</legend>
-            <label><input type="radio" name={`memory-init:${candidate.id}`} value="accepted" data-memory-candidate-id={candidate.id} disabled={blocked} />接受</label>
-            <label><input type="radio" name={`memory-init:${candidate.id}`} value="rejected" data-memory-candidate-id={candidate.id} disabled={blocked} />不接受</label>
-            <label><input type="radio" name={`memory-init:${candidate.id}`} value="edited" data-memory-candidate-id={candidate.id} disabled={blocked} />改一下再接受</label>
+            {(["accepted", "rejected", "edited"] as const).map((value) => (
+              <label key={value}><input type="radio" name={`memory-init:${candidate.id}`} value={value} data-memory-candidate-id={candidate.id} disabled={blocked} onChange={() => choose(candidate.id, value)} />{value === "accepted" ? "接受" : value === "rejected" ? "不接受" : "改一下再接受"}</label>
+            ))}
           </fieldset>
-          <details className="edit-toggle">
-            <summary>改一下</summary>
+          {editing.has(candidate.id) && (
             <div className="edit-fields">
               <label className="field"><span className="field-label">类型</span><select name={`memory-init:${candidate.id}:memory_type`} defaultValue={candidate.memory_type} disabled={blocked}>{memoryTypes.map((type) => <option key={type} value={type}>{memoryTypeLabel(type)}</option>)}</select></label>
               <label className="field"><span className="field-label">对象</span><input name={`memory-init:${candidate.id}:subject`} defaultValue={candidate.subject} disabled={blocked} /></label>
@@ -234,7 +239,7 @@ function InitReview({ p, go }: { p: ProjectState; go: (href: string) => void }) 
               <label className="field wide"><span className="field-label">内容</span><textarea name={`memory-init:${candidate.id}:value`} defaultValue={candidate.value} rows={2} disabled={blocked} /></label>
               <label className="check wide"><input type="checkbox" name={`memory-init:${candidate.id}:evidence-confirmed`} value="confirmed" disabled={blocked} />改过的内容仍然有上面这段原文做依据</label>
             </div>
-          </details>
+          )}
         </>
       ) : (
         <div className="small-note">
@@ -718,7 +723,7 @@ function AskView({ p, go }: { p: ProjectState; go: (href: string) => void }) {
   const projectId = p.project!.id;
   const [runs, setRuns] = useState<WritingAnalysisRun[]>([]);
   const [question, setQuestion] = useState("");
-  const [scope, setScope] = useState<("confirmed" | "written" | "planned")[]>(["confirmed", "written"]);
+  const [scope, setScope] = useState<("confirmed" | "written" | "planned")[]>(["confirmed", "written", "planned"]);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const refresh = useCallback(async () => setRuns((await request<{ runs: WritingAnalysisRun[] }>(`/projects/${projectId}/analyses?analysis_type=story_qa&limit=20`)).runs ?? []), [projectId]);
@@ -734,6 +739,11 @@ function AskView({ p, go }: { p: ProjectState; go: (href: string) => void }) {
     if (p.dirty) { setNotice("先保存草稿；问一问只看已保存的版本。"); return; }
     setBusy(true); setNotice("");
     try { await json(`/projects/${projectId}/analyses`, "POST", { analysis_type: "story_qa", draft_id: p.draft.id, draft_revision: p.draft.revision, question: text, scope }); setQuestion(""); await refresh(); }
+    catch (cause) { setNotice(labelError(cause)); } finally { setBusy(false); }
+  };
+  const runAction = async (run: WritingAnalysisRun, action: "cancel" | "retry") => {
+    setBusy(true); setNotice("");
+    try { await json(`/projects/${projectId}/analyses/${run.run_id}/${action}`, "POST", { client_request_id: crypto.randomUUID() }); await refresh(); }
     catch (cause) { setNotice(labelError(cause)); } finally { setBusy(false); }
   };
   const toggle = (value: "confirmed" | "written" | "planned") => setScope((all) => (all.includes(value) ? (all.length === 1 ? all : all.filter((item) => item !== value)) : [...all, value]));
@@ -783,8 +793,8 @@ function AskView({ p, go }: { p: ProjectState; go: (href: string) => void }) {
           )}
           {!p.readOnly && (activeAnalysis(run) || retryableAnalysis(run)) && (
             <span className="actions">
-              {activeAnalysis(run) && <Button kind="small" onClick={() => void json(`/projects/${projectId}/analyses/${run.run_id}/cancel`, "POST", { client_request_id: crypto.randomUUID() }).then(refresh)}>取消</Button>}
-              {retryableAnalysis(run) && !run.is_stale && <Button kind="small" onClick={() => void json(`/projects/${projectId}/analyses/${run.run_id}/retry`, "POST", { client_request_id: crypto.randomUUID() }).then(refresh)}>重试</Button>}
+              {activeAnalysis(run) && <Button kind="small" disabled={busy} onClick={() => void runAction(run, "cancel")}>取消</Button>}
+              {retryableAnalysis(run) && !run.is_stale && <Button kind="small" disabled={busy} onClick={() => void runAction(run, "retry")}>重试</Button>}
             </span>
           )}
         </article>

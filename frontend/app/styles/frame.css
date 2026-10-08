@@ -214,8 +214,7 @@
 .source-context p { font-family: var(--font-serif); font-size: 14px; line-height: 1.8; color: var(--c-ink-2); }
 .menu { position: relative; }
 .menu > summary { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border: 1px solid var(--c-rule); font-size: 14px; }
-.draft-head-actions .menu > summary,
-.overview-menu .menu > summary { min-height: 48px; border-width: 2px; font-weight: 700; }
+.draft-head-actions .menu > summary { min-height: 48px; border-width: 2px; font-weight: 700; }
 .menu > summary:hover,
 .menu[open] > summary { background: var(--c-ink); color: var(--c-ground); }
 .menu-list { position: absolute; right: 0; top: calc(100% + 6px); z-index: 45; display: grid; min-width: 220px; border: 2px solid var(--c-rule); background: var(--c-surface); box-shadow: var(--elev-2); }

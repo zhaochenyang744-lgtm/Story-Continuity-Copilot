@@ -178,7 +178,7 @@ export function WritingPage({ p, usage, tutorialStep, open, go, notices }: PageP
                         <Num className="finding-num">{index + 1}</Num>
                         <span className="finding-head">
                           <span className="finding-tags">
-                            <FindingTag issue={issue} />
+                            <FindingTag issue={issue} long />
                             {done ? <span className="label">{issue.reused_decision ? "沿用之前的判断" : "已处理"}</span> : issue.to_revise ? <span className="label">待修改</span> : null}
                           </span>
                           <strong>{findingHeadline(issue)}</strong>
@@ -217,7 +217,7 @@ export function WritingPage({ p, usage, tutorialStep, open, go, notices }: PageP
 
       {p.changeSet && <FactReview p={p} />}
 
-      {focus && !locked && <FocusEditor p={p} close={() => { setFocus(false); window.setTimeout(() => focusTrigger.current?.focus(), 0); }} pick={(issue, element) => { setFocus(false); void p.select(issue, element); window.setTimeout(() => document.getElementById(`issue-${issue.id}`)?.scrollIntoView({ block: "center" }), 0); }} />}
+      {focus && !locked && <FocusEditor p={p} close={() => { setFocus(false); window.setTimeout(() => focusTrigger.current?.closest("details")?.querySelector("summary")?.focus(), 0); }} pick={(issue, element) => { setFocus(false); void p.select(issue, element); window.setTimeout(() => document.getElementById(`issue-${issue.id}`)?.scrollIntoView({ block: "center" }), 0); }} />}
     </section>
   );
 }
@@ -257,14 +257,21 @@ function FindingDetail({ p, issue, tutorialStep, outdated }: { p: ProjectState; 
   type Action = { key: string; label: string; run: () => void; disabled: boolean; pressed?: boolean };
   const actions: Action[] = [];
   if (!decided) {
-    if (suggestion && issueAllows(issue, "apply_suggestion")) actions.push({ key: "apply", label: "采用改法", disabled: blockedDecision, run: () => { if (!p.applySuggestion(issue)) setError("没能在草稿里准确找到这句话（可能已经改过）。正文没有变动，请手动修改。"); } });
-    if (tone === "state" && canKeep) actions.push({ key: "keep", label: "保留这个变化", disabled: blockedDecision, run: () => void p.decide(issue, "keep_intentional") });
-    if (tone === "mid" && canKeep) actions.push({ key: "keep", label: "是有意的", disabled: blockedDecision, run: () => void p.decide(issue, "keep_intentional") });
-    if (issueAllows(issue, "edit")) actions.push({ key: "edit", label: "改正文", disabled: Boolean(p.busy) || !evidence.length || outdated, run: () => p.startControlledEdit(issue) });
-    if (canKeep && tone !== "state" && tone !== "mid") actions.push({ key: "keep", label: "是有意的", disabled: blockedDecision, run: () => void p.decide(issue, "keep_intentional") });
-    if (canDismiss && tone !== "state") actions.push({ key: "dismiss", label: "不是问题", disabled: blockedDecision, run: () => void p.decide(issue, "false_positive") });
-    actions.push({ key: "mark", label: toRevise ? "取消待修改" : "标为待修改", disabled: markBusy || !p.run, pressed: toRevise, run: () => void toggleMark() });
+    const all: Record<string, Action | null> = {
+      apply: suggestion && issueAllows(issue, "apply_suggestion") ? { key: "apply", label: "采用改法", disabled: blockedDecision, run: () => { if (!p.applySuggestion(issue)) setError("没能在草稿里准确找到这句话（可能已经改过）。正文没有变动，请手动修改。"); } } : null,
+      mark: { key: "mark", label: toRevise ? "取消待修改" : "标为待修改", disabled: markBusy || !p.run, pressed: toRevise, run: () => void toggleMark() },
+      keep: canKeep ? { key: "keep", label: tone === "state" ? "保留这个变化" : "是有意的", disabled: blockedDecision, run: () => void p.decide(issue, "keep_intentional") } : null,
+      dismiss: canDismiss ? { key: "dismiss", label: "不是问题", disabled: blockedDecision, run: () => void p.decide(issue, "false_positive") } : null,
+      edit: issueAllows(issue, "edit") ? { key: "edit", label: "改正文", disabled: Boolean(p.busy) || !evidence.length || outdated, run: () => p.startControlledEdit(issue) } : null,
+    };
+    // The preview's order: the action that fits the kind of finding first, then 标为待修改 / 是有意的 / 不是问题.
+    const first = { high: ["apply", "edit", "mark"], mid: ["keep", "mark"], gap: ["mark"], state: ["keep", "dismiss"] }[tone].find((key) => all[key]);
+    for (const key of [first, "mark", "keep", "dismiss", "apply", "edit"]) {
+      const action = key ? all[key] : null;
+      if (action && !actions.includes(action)) actions.push(action);
+    }
   }
+
   return (
     <div className="finding-detail">
       <p className="finding-explain">{issue.explanation}</p>

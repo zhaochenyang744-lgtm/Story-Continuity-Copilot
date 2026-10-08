@@ -164,8 +164,11 @@ export function useScrollLock() {
 export function useFocusTrap<T extends HTMLElement>(close: () => void, closeDisabled = false) {
   const ref = useRef<T>(null);
   useEffect(() => {
+    // Return focus to whatever opened the dialog when it closes.
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const first = ref.current?.querySelector<HTMLElement>("[data-autofocus]") ?? ref.current?.querySelector<HTMLElement>('input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not([disabled])');
     first?.focus();
+    return () => { if (opener?.isConnected) window.setTimeout(() => opener.focus(), 0); };
   }, []);
   const onKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
     if (event.key === "Escape") {

@@ -48,6 +48,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
   const [estimate, setEstimate] = useState<{ characters: number; estimated_cny: number } | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [reviewError, setReviewError] = useState("");
   const [revising, setRevising] = useState<{ chapter: ReviewChapter; title?: string; body?: string; conflict?: boolean } | null>(null);
   const [recovery, setRecovery] = useState<{ chapter: ReviewChapter; title: string; body: string; base_source_revision: number } | null>(null);
   useEffect(() => {
@@ -64,9 +65,11 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
     const [list, rows, review] = await Promise.all([
       request<{ runs: CheckRun[] }>(`${base}/chapter-checks?limit=3`).catch(() => ({ runs: [] as CheckRun[] })),
       request<{ chapters: TimelineRow[] }>(`${base}/chapter-timeline`),
-      request<Snapshot>(`${base}/long-term-review`).catch(() => null),
+      request<Snapshot>(`${base}/long-term-review`).then((value) => ({ value, failure: "" }), (cause) => ({ value: null, failure: explain(cause) })),
     ]);
-    setRuns(list.runs); setTimeline(rows.chapters); if (review) setSnapshot(review);
+    setRuns(list.runs); setTimeline(rows.chapters);
+    if (review.value) setSnapshot(review.value);
+    setReviewError(review.failure);
   }, [project.id]);
   useEffect(() => {
     let live = true;
@@ -129,12 +132,14 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
       />
       {pendingReviews.length > 0 && <div className="note note-warn"><span>有 {pendingReviews.length} 条事实因为章节修订需要复核。复核完之前不能运行检查。</span><Button kind="text" onClick={() => document.getElementById("source-reviews")?.scrollIntoView({ block: "start", behavior: "smooth" })}>去复核</Button></div>}
       {error && <div className="note note-error" role="alert">{error}</div>}
+      {reviewError && <div className="note note-warn" role="status"><span>章节正文和修订记录没读出来：{reviewError} 字数和「修订这一章」暂时不可用。</span><Button kind="text" onClick={() => void load().catch((cause) => setError(labelError(cause)))}>重新读取</Button></div>}
       {recovery && !revising && !p.readOnly && (
         <div className="note note-warn">
           <span>这台设备上有第 {recovery.chapter.number} 章没提交的修订。</span>
-          <Button kind="text" onClick={() => {
+          <Button kind="text" disabled={!snapshot} onClick={() => {
             const current = snapshot?.chapters.find((item) => item.id === recovery.chapter.id);
             if (!current) { setError("这一章已经不在作品里了。本机副本仍然保留。"); return; }
+            if (current.revision_editable === false) { setError(reviewErrors.chapter_full_text_unavailable); return; }
             setRevising({ chapter: current, title: recovery.title, body: recovery.body, conflict: current.source_revision !== recovery.chapter.source_revision || snapshot?.source_revision !== recovery.base_source_revision });
             setRecovery(null);
           }}>恢复修订</Button>
@@ -161,7 +166,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
                   <span role="cell" className="chapter-pick">
                     {canPick && <input type="checkbox" aria-label={`选择第 ${row.chapter_number} 章`} checked={on} disabled={(!on && picked.length >= MAX) || busy || active} onChange={() => setPicked((current) => (on ? current.filter((item) => item !== id) : [...current, id]))} />}
                   </span>
-                  <Num className="chapter-num">{pad2(row.chapter_number)}</Num>
+                  <span role="cell"><Num className="chapter-num">{pad2(row.chapter_number)}</Num></span>
                   <span role="cell" className="chapter-title">
                     <strong>{bareChapterTitle(row.title) || "未命名"}</strong>
                     {(spans.length > 0 || body) && <button type="button" className="chapter-expand" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : id)}>{isOpen ? "收起" : `段落 ${spans.length}`}</button>}
@@ -193,7 +198,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
             <div className="chapter-item draft" role="rowgroup">
               <div className="chapter-row" role="row">
                 <span role="cell" className="chapter-pick" />
-                <Num className="chapter-num blue">{pad2(draftRow.chapter_number)}</Num>
+                <span role="cell"><Num className="chapter-num blue">{pad2(draftRow.chapter_number)}</Num></span>
                 <span role="cell" className="chapter-title"><strong>{bareChapterTitle(draftRow.title) || "未命名"}</strong><span className="badge">草稿</span></span>
                 <span role="cell" className="mono">{formatCount((p.draft?.body ?? "").replace(/\s+/g, "").length)}</span>
                 <span role="cell">在写作页检查</span>
@@ -218,7 +223,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
       )}
 
       {latest && <LatestResult run={latest} />}
-      <AppendSection p={p} go={go} />
+      <AppendSection p={p} go={go} reload={load} />
       {revising && <ReviseSection key={revising.chapter.id} chapter={revising.chapter} initialTitle={revising.title} initialBody={revising.body} conflict={revising.conflict} snapshot={snapshot} projectId={project.id} userId={user.id} readOnly={p.readOnly} close={() => setRevising(null)} reload={async () => { await load(); await p.refreshReferences(); }} />}
       <SourceReviews snapshot={snapshot} projectId={project.id} readOnly={p.readOnly} reload={async () => { await load(); await p.refreshReferences(); }} />
       <ReusePolicies snapshot={snapshot} projectId={project.id} readOnly={p.readOnly} reload={load} />
@@ -257,7 +262,7 @@ function LatestResult({ run }: { run: CheckRun }) {
 }
 
 /** 追加章节: paste, upload, or turn the current draft into a written chapter. */
-function AppendSection({ p, go }: { p: ProjectState; go: (href: string) => void }) {
+function AppendSection({ p, go, reload }: { p: ProjectState; go: (href: string) => void; reload: () => Promise<void> }) {
   const project = p.project!;
   const [method, setMethod] = useState<"draft_complete" | "paste" | "file">(() => (typeof window !== "undefined" && window.location.hash === "#complete-draft" && p.draft ? "draft_complete" : "paste"));
   const [content, setContent] = useState("");
@@ -284,6 +289,9 @@ function AppendSection({ p, go }: { p: ProjectState; go: (href: string) => void 
       const data = await json<{ source_change_set: SourceChangeSet; next_draft: Draft }>(`/projects/${project.id}/source-change-sets/${preview.id}/commit`, "POST", { confirm: true, content_sha256: preview.content_sha256 });
       setPreview(data.source_change_set);
       setNextDraft(data.next_draft);
+      // The work moves on to the next chapter's draft; refresh everything that depends on it.
+      p.adoptNextDraft(data.next_draft);
+      await Promise.all([p.refreshReferences(), p.refreshSummary(), reload()]);
     } catch (cause) { setError(labelError(cause)); } finally { setBusy(""); }
   };
   return (

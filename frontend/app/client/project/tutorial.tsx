@@ -101,6 +101,9 @@ function resolveTarget({ evidenceOpen, readOnly, sourceOpen, step, tab }: { evid
   if (step === 2) return primary ? { element: primary, key: "workspace-navigation", message: "下一步：去写作页" } : null;
   if (step === 3) {
     if (tab !== "workspace") return primary ? { element: primary, key: "workspace-return", message: "下一步：回到写作页" } : null;
+    // With a finding already open, the next click is its 「查看完整依据」, not the row (which would close it).
+    const gate = evidenceOpen ? document.querySelector<HTMLElement>(".finding-gate .tutorial-primary-action:not(:disabled)") : null;
+    if (gate) return { element: gate, key: "evidence-gate", message: "下一步：查看这一条的完整依据" };
     const issue = document.querySelector<HTMLElement>(".issue-row");
     if (issue && inView(issue)) return { element: issue, key: "reviewable-issue", message: "下一步：点开第一条检查结果" };
     return primary ? { element: primary, key: "issue-locate", message: "点这里找到下一步" } : null;
