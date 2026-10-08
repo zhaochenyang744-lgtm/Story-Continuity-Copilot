@@ -91,11 +91,14 @@ export function StoryRoute({ chapters, draft, threads, plans }: {
         {shown.map((thread, index) => {
           const y = top + index * LANE;
           const xp = x(thread.planted);
-          const bend = Math.min(90, (futureStart - xp) * 0.45);
+          // The preview's sweep: rise straight for the first third, then bend over a run of about
+          // 0.8× the height, arriving level on the lane (capped so it never reaches the future band).
+          const rise = baseline - 8 - y;
+          const bend = Math.min(rise * 0.8, (futureStart - xp) * 0.8);
           const passed = Math.max(0, draftNumber - thread.planted);
           return (
             <g key={thread.id}>
-              <path d={`M ${xp} ${baseline - 8} C ${xp} ${y + (baseline - y) * 0.4}, ${xp + bend * 0.35} ${y}, ${xp + bend} ${y} L ${futureStart} ${y}`} fill="none" stroke={INK} strokeWidth="2" />
+              <path d={`M ${xp} ${baseline - 8} C ${xp} ${y + rise / 3}, ${xp + bend * 0.37} ${y}, ${xp + bend} ${y} L ${futureStart} ${y}`} fill="none" stroke={INK} strokeWidth="2" />
               <path d={`M ${futureStart} ${y} L ${end - 7} ${y}`} fill="none" stroke={INK} strokeWidth="2" strokeDasharray="5 6" />
               <rect x={end - 7} y={y - 7} width="14" height="14" fill={GROUND} stroke={INK} strokeWidth="2" />
               <text x={xp + bend + 8} y={y - 12} className="route-thread">
