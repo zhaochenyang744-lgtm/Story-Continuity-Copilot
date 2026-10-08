@@ -1,6 +1,7 @@
 """Test-only ASGI app for browser E2E. Never imported by production startup."""
 
 from pathlib import Path
+from dataclasses import replace
 import os
 import tempfile
 import threading
@@ -16,6 +17,7 @@ from app.config import AppPaths
 os.environ["SCC_DISABLE_DEFAULT_APP"] = "1"
 from app.main import create_app
 from app.provider import ProviderInvalidJson, ProviderResult, ProviderTimeout
+from app.stage13 import Stage13Settings
 from app import review_screening
 
 # The browser stub marks every sentence of a chapter as key, and stage5's "extreme issues" page test
@@ -196,6 +198,22 @@ class BrowserTestProvider:
             if not evidence or not memory:
                 issues.append({"claim_span_id": claim["id"], "status": "insufficient_evidence", "category": category, "severity": "medium", "explanation": "可检索片段尚不足以支撑连续性结论，需要作者补充或确认来源。" * 4, "evidence": [], "proposed_memory_change": None})
                 continue
+            if "E2E_SUGGEST" in claim["text"] and body.count(claim["text"]) == 1:
+                issues.append({
+                    "claim_span_id": claim["id"], "status": "conflict",
+                    "category": "object_state", "severity": "high",
+                    "nature": "possible_conflict",
+                    "explanation": "这句物品状态与已确认的事实可能冲突，请核对后采用改法。",
+                    "reasoning": "引用前文提供物品的既有状态，但没有明确的同一时间依据。",
+                    "temporal_basis": {"claim_anchor": None, "evidence_anchor": None, "relation": "unknown"},
+                    "evidence": [{"chapter_id": evidence["chapter_id"], "span_id": evidence["id"],
+                                  "relation": "contradicts", "sufficiency": "sufficient", "related_memory_ids": [memory["id"]]}],
+                    "evidence_chain": [{"span_id": evidence["id"], "role": "prior_state"}],
+                    "suggested_revision": {"before": claim["text"], "after": claim["text"].replace("E2E_SUGGEST", "E2E_APPLIED")},
+                    "available_actions": ["apply_suggestion", "edit", "keep_intentional", "false_positive"],
+                    "proposed_memory_change": None,
+                })
+                continue
             change = {
                 "operation": "replace" if index else "add",
                 "memory_type": memory["memory_type"] if index else "open_thread",
@@ -256,7 +274,11 @@ TEST_PATHS = AppPaths.from_project_root(
 )
 provider = BrowserTestProvider()
 mailer = CaptureMailer()
-app = create_app(paths=TEST_PATHS, provider=provider, mailer=mailer)
+_frontend_url = os.environ.get("E2E_BASE_URL")
+if not _frontend_url:
+    raise RuntimeError("E2E_BASE_URL is required for captured mail links")
+app = create_app(paths=TEST_PATHS, provider=provider, mailer=mailer,
+                 settings=replace(Stage13Settings.from_env(), reset_base_url=_frontend_url))
 
 
 @app.get("/api/test/stage12/release")

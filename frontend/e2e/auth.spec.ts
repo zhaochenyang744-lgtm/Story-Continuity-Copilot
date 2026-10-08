@@ -1,4 +1,4 @@
-import { api, createWorkByApi, expect, listWorks, login, logout, MAIL_LINKS_REASON, MAIL_LINKS_UNAVAILABLE, mailLink, newPage, openAccountMenu, registerAccount, sampleWorkId, startVisitor, test } from "./support/app";
+import { api, createWorkByApi, expect, listWorks, login, logout, mailLink, newPage, openAccountMenu, registerAccount, sampleWorkId, startVisitor, test } from "./support/app";
 
 const loginButton = (page: import("@playwright/test").Page) => page.getByRole("button", { name: "登录", exact: true });
 const resetHint = "如果这个邮箱已经验证，我们发了一封重置邮件，15 分钟内有效。";
@@ -191,7 +191,6 @@ test("会话过期：清掉 cookie 后在应用里换页，回到登录页并说
 });
 
 test("验证恢复邮箱：从邮件里的链接验证，账号安全页显示已验证", async ({ page }) => {
-  test.fixme(MAIL_LINKS_UNAVAILABLE, MAIL_LINKS_REASON);
   const { email } = await registerAccount(page, "verify");
   expect((await api(page).get("/auth/session")).user.recovery_email.verified).toBe(false);
   await page.goto(await mailLink(page, "verify_email", email));
@@ -206,7 +205,6 @@ test("验证恢复邮箱：从邮件里的链接验证，账号安全页显示�
 });
 
 test("找回密码：回应不泄露邮箱是否存在，新密码能登录、旧密码不能，链接只能用一次", async ({ page }) => {
-  test.fixme(MAIL_LINKS_UNAVAILABLE, MAIL_LINKS_REASON);
   const { account, password, email } = await registerAccount(page, "reset");
   await page.goto(await mailLink(page, "verify_email", email));
   await expect(page.getByText("恢复邮箱验证好了，可以用来找回密码。", { exact: true })).toBeVisible();

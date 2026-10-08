@@ -1,4 +1,4 @@
-import { accountMenuButton, api, expect, MAIL_LINKS_REASON, MAIL_LINKS_UNAVAILABLE, mailerCalls, mailLink, openAccountMenu, registerAccount, shot, startVisitor, test } from "./support/app";
+import { accountMenuButton, api, expect, mailerCalls, mailLink, openAccountMenu, registerAccount, shot, startVisitor, test } from "./support/app";
 
 const profile = (page: import("@playwright/test").Page) => page.getByRole("region", { name: "个人信息", exact: true });
 
@@ -69,7 +69,6 @@ test("编辑时取消：名称恢复，后端没有变化", async ({ page }) => 
 });
 
 test("账号安全：当前恢复邮箱和状态，更换邮箱后变成未验证并收到新的验证邮件，可以重新发送", async ({ page }) => {
-  test.fixme(MAIL_LINKS_UNAVAILABLE, MAIL_LINKS_REASON);
   const { email } = await registerAccount(page, "security");
   await page.goto("/account/security");
   await expect(page.getByRole("heading", { level: 1, name: "账号安全", exact: true })).toBeVisible();

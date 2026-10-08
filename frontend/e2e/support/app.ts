@@ -52,14 +52,6 @@ export function api(page: Page) {
   };
 }
 
-/**
- * Verification and password-reset mails need a base address for their links, which the backend only reads
- * in public mode (PUBLIC_RESET_BASE_URL). The browser-test backend runs in non-public mode, so those
- * messages cannot be sent and the tests that open the links are fixme until that changes.
- */
-export const MAIL_LINKS_UNAVAILABLE = true;
-export const MAIL_LINKS_REASON = "非公开模式下后端没有重置链接的基础地址（PUBLIC_RESET_BASE_URL 只在公开模式生效），验证邮件和重置邮件发不出去";
-
 const homeHeading =/^(从第一章开始|继续你的故事)$/;
 
 /** Register a unique author through the registration form. Done once the home page is showing. */
@@ -189,6 +181,8 @@ export async function readDraftBody(page: Page) {
   await expect(editor).toBeVisible();
   return editor.evaluate((element) => {
     const text = (node: Node): string => {
+      // Tiptap's non-editable finding badges decorate the text; they are not draft content.
+      if (node instanceof HTMLElement && node.getAttribute("contenteditable") === "false") return "";
       if (node.nodeType === Node.TEXT_NODE) return node.textContent ?? "";
       if (node instanceof HTMLBRElement) return node.classList.contains("ProseMirror-trailingBreak") ? "" : "\n";
       return Array.from(node.childNodes).map(text).join("");

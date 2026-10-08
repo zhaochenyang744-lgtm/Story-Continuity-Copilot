@@ -128,7 +128,7 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
   return (
     <section className="page writing" data-mobile-pane={mobilePane}>
       {notices}
-      <header className="draft-head">
+      <header className="draft-head" aria-label={`草稿第 ${chapterNumber} 章`}>
         <Num className="draft-head-num"><Odometer value={chapterNumber} /></Num>
         <div className="draft-head-main">
           <p className="label draft-head-meta">
@@ -232,7 +232,7 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
                   return (
                     <li key={issue.id} style={reveal ? { "--i": index } as CSSProperties : undefined} className={`finding${isOpen ? " open" : ""}${done ? " done" : ""}${hovered === issue.id && !isOpen ? " linked" : ""}`}
                       onMouseEnter={() => setHovered(issue.id)} onMouseLeave={() => setHovered(null)}>
-                      <button id={`issue-${issue.id}`} type="button" className={`issue-row severity-${issue.severity}`} aria-expanded={isOpen}
+                      <button id={`issue-${issue.id}`} data-testid={`finding-${issue.id}`} type="button" className={`issue-row severity-${issue.severity}`} aria-expanded={isOpen}
                         onFocus={() => setHovered(issue.id)} onBlur={() => setHovered(null)}
                         onClick={(event) => (isOpen ? p.deselect() : openCard(issue, event.currentTarget))}>
                         <Num className="finding-num">{index + 1}</Num>
