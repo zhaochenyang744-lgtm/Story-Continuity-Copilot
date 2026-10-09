@@ -179,7 +179,10 @@ test("12 Q 焦点判据拒绝透明描边和阴影", () => {
 async function focusVisible(page: Page) {
   const focused = page.locator(":focus-visible");
   await expect(focused).toHaveCount(1);
-  return focused.evaluate(e => ({ element: e.outerHTML.slice(0, 500), outline: getComputedStyle(e).outlineStyle, width: getComputedStyle(e).outlineWidth, color: getComputedStyle(e).outlineColor, shadow: getComputedStyle(e).boxShadow }));
+  const read = () => focused.evaluate(e => ({ element: e.outerHTML.slice(0, 500), outline: getComputedStyle(e).outlineStyle, width: getComputedStyle(e).outlineWidth, color: getComputedStyle(e).outlineColor, shadow: getComputedStyle(e).boxShadow }));
+  // Focus shadows transition from transparent; require a visible colour before moving on.
+  await expect.poll(async () => hasVisibleFocus(await read())).toBe(true);
+  return read();
 }
 async function tabTo(page: Page, target: Locator, checks: Awaited<ReturnType<typeof focusVisible>>[]) {
   for (let i = 0; i < 160; i++) {
