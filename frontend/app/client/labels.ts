@@ -128,7 +128,6 @@ export const sourceKindLabel = (type?: string) =>
   ({
     draft_claim: "草稿",
     author_context: "计划",
-    author_material: "作者资料",
     source_span: "正文",
     memory_record: "事实",
     character_record: "人物",

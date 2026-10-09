@@ -1,4 +1,4 @@
-"""Read-only, account-scoped manuscript and author-material exports.
+"""Read-only, account-scoped manuscript, plan and material exports.
 
 All database reads share one SQLite snapshot. No paths, account records,
 provider payloads, historical drafts, or credentials enter the export.
@@ -19,6 +19,7 @@ from urllib.parse import quote
 from fastapi import FastAPI, Request
 from fastapi.responses import Response
 
+from . import author_organization as organization
 from .database import DomainError
 from .text_content import visible_draft_text
 from .v2_database import V2Database
@@ -117,17 +118,16 @@ def project_snapshot(db: V2Database, user_id: str, project_id: str, include_draf
                 draft = _select(row, "id chapter_number title body revision status saved_at")
                 draft["body_format"] = db._draft_body_format(c, row["id"], row["revision"])
                 drafts.append(draft)
-        materials = [
-            db._material_public(row)
-            for row in c.execute("SELECT * FROM v2_author_materials WHERE project_id=? ORDER BY kind,created_at,id", (project_id,))
-        ]
-        # Project legacy plans without triggering their lazy database migration.
-        known_material_ids = {row["id"] for row in materials}
+        # Plans as the author keeps them on the 计划 page: 已定 or 考虑中, archived ones included and marked.
+        considering = organization.considering_ids(c, project_id)
+        plan_fields = {"story": ("title", "summary", "goal", "status", "target_chapter_number"),
+                       "character": ("name", "role_type", "goal", "planned_state", "notes"),
+                       "world": ("name", "category", "description", "notes")}
+        plans = []
         for kind, spec in db._AUTHOR_INTENT.items():
             for row in c.execute(f"SELECT * FROM {spec['table']} WHERE project_id=? ORDER BY position,id", (project_id,)):
-                projected = db._legacy_material(kind, row)
-                if projected["id"] not in known_material_ids:
-                    materials.append(db._material_public(projected))
+                plans.append({"id": row["id"], "kind": kind, **{field: row[field] for field in plan_fields[kind]},
+                              "considering": (kind, row["id"]) in considering, "archived": row["archived_at"] is not None})
         confirmed_facts, facts_needing_review, inactive_facts = [], [], []
         for row in c.execute(
             """SELECT id,memory_type,subject,predicate,value,source_span_id,review_status,valid_from,valid_to
@@ -154,13 +154,13 @@ def project_snapshot(db: V2Database, user_id: str, project_id: str, include_draf
             ]
             characters.append(item)
         snapshot = {
-            "schema_version": "project-export-v1",
+            "schema_version": "project-export-v2",
             "scope": {
                 "manuscript": "current_committed_chapters",
                 "draft": "current_saved_nonempty_draft" if include_draft else "excluded",
                 "unsaved_browser_edits_included": False,
                 "historical_chapter_revisions_included": False,
-                "archived_materials_included": True,
+                "archived_plans_included": True,
                 "facts": "current_memory_version_author_confirmed_with_current_sources",
             },
             "completeness": completeness,
@@ -168,7 +168,7 @@ def project_snapshot(db: V2Database, user_id: str, project_id: str, include_draf
             "chapters": chapters,
             "drafts": drafts,
             "sources": current_sources,
-            "author_materials": materials,
+            "plans": plans,
             "outline": [dict(row) for row in c.execute(
                 "SELECT id,chapter_number,title,summary,status FROM v2_outline_nodes WHERE project_id=? ORDER BY chapter_number,id", (project_id,)
             )],
@@ -245,21 +245,36 @@ def manuscript(snapshot: dict, markdown: bool) -> bytes:
     return ("\n\n".join(parts) + "\n").encode("utf-8")
 
 
+PLAN_STATUS = {"planned": "待写", "in_progress": "在写", "paused": "暂停", "completed": "写完了"}
+ROLE_TYPE = {"protagonist": "主角", "antagonist": "对立角色", "ally": "同伴", "supporting": "配角", "other": "其他"}
+WORLD_CATEGORY = {"location": "地点", "rule": "规则", "organization": "组织", "object": "物品", "term": "术语", "other": "其他"}
+
+
+def _plan_markdown(item: dict) -> str:
+    state = ("考虑中" if item["considering"] else "已定") + ("；已归档" if item["archived"] else "")
+    if item["kind"] == "story":
+        lines = [f"进度：{PLAN_STATUS.get(item['status'], item['status'])}；写在：{'第 %d 章' % item['target_chapter_number'] if item['target_chapter_number'] else '不限'}",
+                 _markdown_literal(item["summary"]), f"想达到：{_markdown_literal(item['goal'])}" if item["goal"] else ""]
+        title = item["title"]
+    elif item["kind"] == "character":
+        lines = [f"角色：{ROLE_TYPE.get(item['role_type'], item['role_type'])}", f"想要：{_markdown_literal(item['goal'])}" if item["goal"] else "",
+                 f"接下来会怎样变化：{_markdown_literal(item['planned_state'])}" if item["planned_state"] else "", _markdown_literal(item["notes"])]
+        title = item["name"]
+    else:
+        lines = [f"类别：{WORLD_CATEGORY.get(item['category'], item['category'])}", _markdown_literal(item["description"]), _markdown_literal(item["notes"])]
+        title = item["name"]
+    return "\n\n".join([f"### {_heading(title)}", state, *(line for line in lines if line)])
+
+
 def materials_markdown(snapshot: dict) -> bytes:
     parts = [f"# {_heading(snapshot['project']['title'])} · 创作资料",
-             "作者规划与设定保留其原有性质；已确认事实和来源待复核记录分别列出。"]
-    names = {"story": "故事规划", "character": "人物资料", "world": "世界设定"}
-    natures = {"setting": "设定", "plan": "规划", "idea": "想法"}
-    for kind, label in names.items():
+             "计划是还没写进正文的打算；已确认事实和来源待复核记录分别列出。"]
+    for kind, label in (("story", "情节计划"), ("character", "人物计划"), ("world", "设定计划")):
         parts.append(f"## {label}")
-        items = [item for item in snapshot["author_materials"] if item["kind"] == kind]
-        for item in items:
-            state = "已归档" if item["archived"] else "当前"
-            parts.append(f"### {_heading(item['title'])}\n\n性质：{natures.get(item['nature'], item['nature'])}；{state}\n\n"
-                         f"{_markdown_literal(item['content'])}\n\n知情边界：{_markdown_literal(item['knowledge']) or '未填写'}\n\n"
-                         f"披露状态：{item['disclosure']}；适用章节：{item['from'] or '不限'} — {item['to'] or '不限'}")
+        items = [item for item in snapshot["plans"] if item["kind"] == kind]
+        parts.extend(_plan_markdown(item) for item in items)
         if not items:
-            parts.append("暂无资料。")
+            parts.append("暂无计划。")
     parts.append("## 已有角色卡")
     for item in snapshot["characters"]:
         parts.append(f"### {_heading(item['name'])}\n\n身份：{_markdown_literal(item['identity'])}\n\n"
@@ -300,7 +315,7 @@ def export_content(snapshot: dict, format: ExportFormat) -> tuple[bytes, str, st
                 "manuscript.md：当前已保存章节内容，保留富文本草稿的 Markdown 表达。\n"
                 "未保存完整正文的章节仅附当前来源片段或缺失标记，并明确标注非完整章节。\n"
                 "若勾选草稿，文件末尾附当前已保存、未入库的非空草稿，并单独标明。\n"
-                "materials.md：规划、人物、世界设定和已确认事实的阅读版。\n"
+                "materials.md：计划（情节、人物、设定）、人物卡、设定条目和已确认事实的阅读版。\n"
                 "snapshot.json：正文原始字符串、内容格式、章节版本及全部创作资料的精确快照。\n"
                 "snapshot_sha256：删除 exported_at 与 snapshot_sha256 后，以 UTF-8、ensure_ascii=False、"
                 "indent=2、sort_keys=True JSON 加末尾换行计算 SHA-256。\n"

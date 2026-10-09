@@ -75,7 +75,6 @@ CHANGE_IMPACT_PROMPT_VERSION="change-impact-v3-supplied-targets"
 STORY_QA_PROMPT_VERSION="story-qa-v3-no-prose-ids"
 FORESHADOW_SCAN_PROMPT_VERSION="foreshadow-scan-v7-clause-citations"
 REVISION_PLAN_PROMPT_VERSION="revision-plan-v2-clause-citations"
-AUTHOR_MATERIAL_COMPARISON_PROMPT_VERSION="author-material-comparison-v3-nature-assessments"
 CHANGE_IMPACT_INSUFFICIENT_SUMMARY="当前证据不足以支持影响结论。"
 STORY_QA_INSUFFICIENT_ANSWER="当前证据不足以回答这个问题。"
 FORESHADOW_INSUFFICIENT_SUMMARY="当前未发现有可采信已写证据的伏笔候选。"
@@ -1095,15 +1094,13 @@ class WritingAnalysisEngine:
     def __init__(self,provider:ProviderPort):self.provider=provider
 
     def provenance(self,analysis_type:str)->dict[str,str]:
-        prompt_version=CONTEXT_BRIEF_PROMPT_VERSION if analysis_type=="context_brief" else PLAN_ALIGNMENT_PROMPT_VERSION if analysis_type=="plan_alignment" else CHANGE_IMPACT_PROMPT_VERSION if analysis_type=="change_impact" else STORY_QA_PROMPT_VERSION if analysis_type=="story_qa" else FORESHADOW_SCAN_PROMPT_VERSION if analysis_type=="foreshadow_scan" else AUTHOR_MATERIAL_COMPARISON_PROMPT_VERSION if analysis_type=="author_material_comparison" else REVISION_PLAN_PROMPT_VERSION
+        prompt_version=CONTEXT_BRIEF_PROMPT_VERSION if analysis_type=="context_brief" else PLAN_ALIGNMENT_PROMPT_VERSION if analysis_type=="plan_alignment" else CHANGE_IMPACT_PROMPT_VERSION if analysis_type=="change_impact" else STORY_QA_PROMPT_VERSION if analysis_type=="story_qa" else FORESHADOW_SCAN_PROMPT_VERSION if analysis_type=="foreshadow_scan" else REVISION_PLAN_PROMPT_VERSION
         schema_version="writing-analysis-v2-foreshadow-evidence-kind" if analysis_type=="foreshadow_scan" else "writing-analysis-v1"
         retrieval_version=CONTEXT_BRIEF_RETRIEVAL_METHOD_VERSION if analysis_type=="context_brief" else ANALYSIS_RETRIEVAL_METHOD_VERSION
         return {"provider_label":self.provider.label,"model_label":getattr(self.provider,"model_label",self.provider.label),"prompt_version":prompt_version,"schema_version":schema_version,"retrieval_method_version":retrieval_version}
 
     @staticmethod
     def _schema(task:str)->dict[str,Any]:
-        if task=="author_material_comparison":
-            return {"assessment":"aligned|possible_tension|insufficient_evidence; plan_deviation only when comparison.material.nature is plan","explanation":"1-600 chars","evidence":[{"source_type":"author_material|source_span","source_id":"supplied id"}]}
         if task=="context_brief":
             return {"summary":"1-400 chars","summary_sources":[{"source_type":"author_context|memory_record|source_span|draft_claim","source_id":"supplied id"}],"items":[{"section":"related_plan|confirmed_fact|character_state|world_rule|open_thread|recent_source","text":"1-600 chars","sources":[{"source_type":"author_context|memory_record|source_span|draft_claim","source_id":"supplied id"}]}]}
         if task=="change_impact":
@@ -1138,7 +1135,7 @@ class WritingAnalysisEngine:
         written=data["layers"]["written"]
         identity=data["layers"].get("identity",{});reference=data["layers"].get("reference",{})
         issue_evidence={item["id"]:item for issue in data.get("selected_issues",[]) for item in issue.get("evidence",[])}
-        return {"author_context":author,"author_material":author,"memory_record":memory,"source_span":{item["id"]:item for item in written["source_spans"]},"draft_claim":{item["id"]:item for item in written["draft_claims"]},"character_record":{item["id"]:item for item in identity.get("characters",[])},"character_alias":{item["id"]:item for item in identity.get("aliases",[])},"world_record":{item["id"]:item for item in reference.get("world_entries",[])},"issue_evidence":issue_evidence}
+        return {"author_context":author,"memory_record":memory,"source_span":{item["id"]:item for item in written["source_spans"]},"draft_claim":{item["id"]:item for item in written["draft_claims"]},"character_record":{item["id"]:item for item in identity.get("characters",[])},"character_alias":{item["id"]:item for item in identity.get("aliases",[])},"world_record":{item["id"]:item for item in reference.get("world_entries",[])},"issue_evidence":issue_evidence}
 
     @classmethod
     def _clean_source(cls,raw:Any,maps:dict[str,dict[str,dict[str,Any]]],allowed:set[str],project_id:str)->dict[str,Any]:
@@ -1146,7 +1143,7 @@ class WritingAnalysisEngine:
         source_type=raw["source_type"];source_id=raw.get("source_id")
         if not isinstance(source_id,str) or source_id not in maps[source_type]:raise ValueError("evidence_unresolvable")
         item=maps[source_type][source_id]
-        if source_type in {"author_context","author_material"}:label=item.get("title") or item.get("name") or "作者规划";excerpt=item.get("content") or item.get("summary") or item.get("goal") or item.get("planned_state") or item.get("description") or ""
+        if source_type=="author_context":label=item.get("title") or item.get("name") or "作者规划";excerpt=item.get("content") or item.get("summary") or item.get("goal") or item.get("planned_state") or item.get("description") or ""
         elif source_type=="memory_record":label=f"{item['subject']} · {predicate_label(item['predicate'])}";excerpt=item["value"]
         elif source_type=="draft_claim":label=f"当前草稿 · 句 {item['ordinal']}";excerpt=item["text"]
         elif source_type=="character_record":label=item["name"];excerpt=" · ".join(filter(None,(item.get("identity"),item.get("current_state"),item.get("knowledge_boundary"))))
@@ -1154,7 +1151,7 @@ class WritingAnalysisEngine:
         elif source_type=="world_record":label=item["name"];excerpt=item["summary"]
         elif source_type=="issue_evidence":label=f"第 {item['chapter_number']} 章 · {item['chapter_title']}";excerpt=item["excerpt"]
         else:label=f"第 {item['chapter_number']} 章 · {item['label']}";excerpt=item["body"]
-        if source_type in {"author_context","author_material"}:source_path=f"/projects/{project_id}/{item['_source_route']}#plan-{source_id}"
+        if source_type=="author_context":source_path=f"/projects/{project_id}/{item['_source_route']}#plan-{source_id}"
         elif source_type=="memory_record":source_path=f"/projects/{project_id}/memory#memory-{source_id}"
         elif source_type=="draft_claim":source_path=f"/projects/{project_id}/workspace#draft-source"
         elif source_type=="character_record":source_path=f"/projects/{project_id}/characters?character={source_id}#character-{source_id}"
@@ -1166,18 +1163,6 @@ class WritingAnalysisEngine:
 
     def validate(self,payload:Any,data:dict[str,Any])->dict[str,Any]:
         maps=self._source_maps(data);task=data["task"];project_id=data["bindings"]["project_id"]
-        if task=="author_material_comparison":
-            if not isinstance(payload,dict) or set(payload)!={"assessment","explanation","evidence"} or payload.get("assessment") not in {"aligned","possible_tension","plan_deviation","insufficient_evidence"} or not isinstance(payload.get("evidence"),list):raise ValueError("schema_invalid")
-            material=data["comparison"]["material"]
-            # The prompt states that a contradicted setting is possible_tension; Flash still labels it
-            # plan_deviation about one time in three, so apply the stated rule instead of failing.
-            assessment="possible_tension" if payload["assessment"]=="plan_deviation" and material["nature"]!="plan" else payload["assessment"]
-            if assessment=="insufficient_evidence":
-                if len(payload["evidence"])>2:raise ValueError("evidence_unresolvable")
-            elif len(payload["evidence"])!=2:raise ValueError("evidence_unresolvable")
-            evidence=[self._clean_source(item,maps,{"author_material","source_span"},project_id) for item in payload["evidence"]]
-            if assessment!="insufficient_evidence" and {(item["source_type"],item["source_id"]) for item in evidence}!={("author_material",material["id"]),("source_span",data["comparison"]["passage"]["id"])}:raise ValueError("evidence_unresolvable")
-            return {"assessment":assessment,"explanation":self._text(payload["explanation"],600),"evidence":evidence,"comparison_id":data["bindings"]["comparison_id"],"decision_revision":data["bindings"]["decision_revision"]}
         if task=="context_brief":
             if not isinstance(payload,dict) or set(payload)!={"summary","summary_sources","items"} or not isinstance(payload["summary_sources"],list) or not isinstance(payload["items"],list) or not 1<=len(payload["summary_sources"])<=3 or not 1<=len(payload["items"])<=12:raise ValueError("schema_invalid")
             summary_sources=[self._clean_source(item,maps,{"author_context","memory_record","source_span","draft_claim"},project_id) for item in payload["summary_sources"]]

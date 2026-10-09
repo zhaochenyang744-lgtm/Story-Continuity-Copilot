@@ -45,7 +45,7 @@ class WritingAnalysisBudgetTests(unittest.TestCase):
     def test_the_allowances_are_separate_from_the_shared_ones(self):
         self.assertEqual((MAX_INPUT_BUDGET_UNITS, MAX_RUN_TOKENS), (6000, 8000))
         self.assertEqual((WRITING_ANALYSIS_INPUT_BUDGET_UNITS, MAX_WRITING_ANALYSIS_RUN_TOKENS), (12000, 16000))
-        for task in ("context_brief", "plan_alignment", "change_impact", "story_qa", "foreshadow_scan", "revision_plan", "author_material_comparison"):
+        for task in ("context_brief", "plan_alignment", "change_impact", "story_qa", "foreshadow_scan", "revision_plan"):
             self.assertEqual(input_budget_units_for({"task": task}), WRITING_ANALYSIS_INPUT_BUDGET_UNITS, task)
         for task in ("memory_initialization", "memory_delta"):
             self.assertEqual(input_budget_units_for({"task": task}), MAX_INPUT_BUDGET_UNITS, task)

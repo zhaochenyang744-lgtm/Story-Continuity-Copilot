@@ -240,7 +240,7 @@ MAX_INPUT_BUDGET_UNITS = 6000
 # Writing analyses carry the layered evidence on top of fixed prompt rules, so a typical work already sits near
 # 6,000 units; they get their own, larger allowance.
 WRITING_ANALYSIS_INPUT_BUDGET_UNITS = 12000
-WRITING_ANALYSIS_TASKS = frozenset({"context_brief", "plan_alignment", "change_impact", "story_qa", "foreshadow_scan", "revision_plan", "author_material_comparison"})
+WRITING_ANALYSIS_TASKS = frozenset({"context_brief", "plan_alignment", "change_impact", "story_qa", "foreshadow_scan", "revision_plan"})
 MAX_OUTPUT_BUDGET_UNITS = 2000
 MEMORY_BATCH_TARGET_BUDGET_UNITS = 5800
 MAX_MEMORY_CANDIDATES_PER_BATCH = 8
@@ -400,13 +400,10 @@ def foreshadow_scan_prompt(request: dict[str, Any]) -> str:
 def revision_plan_prompt(request: dict[str, Any]) -> str:
     return json.dumps({"task":"Create one bounded revision-task suggestion for every selected continuity issue. Return exactly summary and candidates.","rules":[*ANALYSIS_LAYER_RULES,"Each candidate must reference exactly one supplied issue_id and at least one evidence id supplied for that same issue.","Write a concise editing action, not replacement fiction prose. Suggestions never edit the manuscript, resolve an Issue, change canon, or create a task without author acceptance.","Return each selected issue exactly once. Do not merge issues, invent references, duplicate titles, or add unselected work."],"source_run_id":request["source_run_id"],"selected_issues":request["selected_issues"],"bindings":request["bindings"],"layers":request["layers"],"author_records":request["author_records"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
 
-def author_material_comparison_prompt(request: dict[str, Any]) -> str:
-    return json.dumps({"task":"Compare one author-authored material snapshot with one real manuscript SourceSpan. Return exactly assessment, explanation, and evidence.","rules":[*ANALYSIS_LAYER_RULES,"assessment must be aligned, possible_tension, plan_deviation, or insufficient_evidence.","plan_deviation applies only when the material nature is plan; a setting that the passage contradicts is possible_tension.","A plan deviation is not a factual contradiction. idea materials are not authoritative and are never supplied. hidden means not disclosed to readers; character knowledge is governed only by the separate knowledge field.","For every supported conclusion cite exactly the supplied author_material and source_span. Do not invent prose, edit records, or treat the conclusion as an author decision."],"comparison":request["comparison"],"bindings":request["bindings"],"layers":request["layers"],"retrieval":request["retrieval"],"output_schema":request["output_schema"]},ensure_ascii=False,separators=(",",":"))
-
 
 def request_prompt_and_budget(request: dict[str, Any]) -> tuple[str, int]:
     task=request.get("task")
-    prompt = continuity_screen_prompt(request) if task == "continuity_screen" else continuity_triage_prompt(request) if task == "continuity_triage" else memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else context_brief_prompt(request) if task == "context_brief" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else story_qa_prompt(request) if task == "story_qa" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else revision_plan_prompt(request) if task == "revision_plan" else author_material_comparison_prompt(request) if task == "author_material_comparison" else continuity_prompt(request)
+    prompt = continuity_screen_prompt(request) if task == "continuity_screen" else continuity_triage_prompt(request) if task == "continuity_triage" else memory_initialization_prompt(request) if task == "memory_initialization" else memory_delta_prompt(request) if task == "memory_delta" else context_brief_prompt(request) if task == "context_brief" else plan_alignment_prompt(request) if task == "plan_alignment" else change_impact_prompt(request) if task == "change_impact" else story_qa_prompt(request) if task == "story_qa" else foreshadow_scan_prompt(request) if task == "foreshadow_scan" else revision_plan_prompt(request) if task == "revision_plan" else continuity_prompt(request)
     return prompt, estimate_prompt_budget_units(prompt)
 
 

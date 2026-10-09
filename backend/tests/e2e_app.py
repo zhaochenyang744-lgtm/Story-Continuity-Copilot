@@ -60,14 +60,6 @@ class BrowserTestProvider:
         if request.get("task") == "continuity_triage":
             return ProviderResult({"scores": [{"id": sentence["id"], "score": 3} for sentence in request["sentences"]]},
                                   input_tokens=30, output_tokens=6, cost_cny=0.0003, latency_ms=10)
-        if request.get("task") == "author_material_comparison":
-            material=request["comparison"]["material"]
-            passage=request["comparison"]["passage"]
-            return ProviderResult({
-                "assessment":"plan_deviation" if material["nature"]=="plan" else "possible_tension",
-                "explanation":"浏览器验收桩只验证服务链路与绑定证据，不代表真实 AI 质量结论。",
-                "evidence":[{"source_type":"author_material","source_id":material["id"]},{"source_type":"source_span","source_id":passage["id"]}],
-            },input_tokens=12,output_tokens=18,latency_ms=20)
         if request.get("task") == "context_brief":
             written=request["layers"]["written"]
             if "E2E_G02_CITATION" in written["draft"]["excerpt"]:

@@ -2,8 +2,6 @@
 
 - change_impact failed 3/3 as evidence_unresolvable: one item named the current draft's id as a
   "chapter" target, and one unsupplied target rejected the whole analysis.
-- author_material_comparison failed as schema_invalid: plan_deviation was chosen for a setting
-  material, a rule the prompt never stated.
 """
 from __future__ import annotations
 
@@ -53,27 +51,9 @@ class FlashAnalysisContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "evidence_unresolvable"):
             engine.validate(non_string, impact_data())
 
-    def test_setting_material_labelled_plan_deviation_is_read_as_possible_tension(self):
-        def comparison(nature):
-            material = {"id": "material-1", "title": "林默设定", "content": "左手缺一根小指", "nature": nature}
-            return {"task": "author_material_comparison", "bindings": {"project_id": "synthetic", "comparison_id": "cmp-1", "decision_revision": 0},
-                    "comparison": {"material": material, "passage": {"id": "span-1"}},
-                    "layers": {"planned": {"story_plans": [material], "character_plans": [], "world_plans": []}, "confirmed": {"memory_records": []},
-                               "written": {"source_spans": [{"id": "span-1", "chapter_id": "chapter-3", "chapter_number": 3, "label": "钟声", "body": "林默用双手十指握住栏杆。"}],
-                                           "draft_claims": []},
-                               "identity": {"characters": [], "aliases": []}, "reference": {"chapters": [], "world_entries": []}}}
-        payload = {"assessment": "plan_deviation", "explanation": "设定与正文冲突。", "evidence": [
-            {"source_type": "author_material", "source_id": "material-1"}, {"source_type": "source_span", "source_id": "span-1"}]}
-        engine = WritingAnalysisEngine(Provider())
-        self.assertEqual(engine.validate(payload, comparison("setting"))["assessment"], "possible_tension")
-        self.assertEqual(engine.validate(payload, comparison("plan"))["assessment"], "plan_deviation")
-
-    def test_prompts_state_the_target_and_plan_deviation_rules(self):
+    def test_prompts_state_the_target_rule(self):
         impact_prompt = json.loads(request_prompt_and_budget({**impact_data(), "output_schema": {}})[0])
         self.assertTrue(any("The current draft is not a target" in rule for rule in impact_prompt["rules"]))
-        comparison = {"task": "author_material_comparison", "comparison": {}, "bindings": {}, "layers": {}, "retrieval": {}, "output_schema": {}}
-        comparison_prompt = json.loads(request_prompt_and_budget(comparison)[0])
-        self.assertTrue(any("plan_deviation applies only when the material nature is plan" in rule for rule in comparison_prompt["rules"]))
 
 
 if __name__ == "__main__":

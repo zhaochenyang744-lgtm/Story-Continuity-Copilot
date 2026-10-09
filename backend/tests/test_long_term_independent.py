@@ -135,10 +135,9 @@ class IndependentLongTermTests(unittest.TestCase):
     def test_pending_state_is_not_disclosed_to_other_accounts(self):
         f = self.f
         self.assertTrue(f.commit(f.preview())["source_revision_reviews"])
-        self.expect_rejected_without_writes(lambda: f.db.create_author_comparison_analysis(
-            "another-account", f.project, "any-comparison-id", {"base_decision_revision": 0},
-            fixtures.key(), fixtures.PROVENANCE,
-        ), {"resource_not_found"})
+        self.expect_rejected_without_writes(lambda: f.db.create_analysis_run("another-account", f.project, {
+            "analysis_type": "context_brief", "draft_id": f.draft["id"], "draft_revision": f.draft["revision"],
+        }, fixtures.key(), fixtures.PROVENANCE), {"resource_not_found"})
 
     def test_queued_analysis_cannot_send_old_sources_after_revision_review(self):
         f = self.f
