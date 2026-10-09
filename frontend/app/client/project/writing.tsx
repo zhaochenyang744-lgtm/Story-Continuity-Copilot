@@ -57,7 +57,8 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
   const project = p.project!;
   const [mobilePane, setMobilePane] = useState<"draft" | "issues">("draft");
   // What the right column shows: the check's findings, or a pre-writing review or plan comparison that has been started.
-  const [wantedSide, setWantedSide] = useState<SideItem>("findings");
+  // Coming from the plan page's 对照正文, whose comparison is running, the column opens on 对照计划.
+  const [wantedSide, setWantedSide] = useState<SideItem>(() => (p.analysisBusy === "plan_alignment" || activeAnalysis(p.planAlignment) ? "plan" : "findings"));
   const [revealSide, setRevealSide] = useState(0);
   const [focus, setFocus] = useState(false);
   const [completing, setCompleting] = useState(false);

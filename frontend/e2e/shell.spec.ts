@@ -116,6 +116,8 @@ test("跳到主要内容：第一次按 Tab 落在跳转链接上，回车后焦
   await registerAccount(page, "skiplink");
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "从第一章开始", exact: true })).toBeVisible();
+  // The home page fills in after it is first drawn; its controls are counted once it has.
+  await page.waitForLoadState("networkidle");
   await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
   await page.keyboard.press("Tab");
   const skip = page.getByRole("link", { name: "跳到主要内容", exact: true });
