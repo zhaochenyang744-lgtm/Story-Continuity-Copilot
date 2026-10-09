@@ -154,8 +154,8 @@ test("键盘聚焦：章标题的底线变蓝加粗，正文左边出现 3px 蓝
   expect(before.shadow).toBe("none");
   await title.focus();
   await expect(title).toBeFocused();
-  const withFocus = await read(title);
-  expect(withFocus.border).toBe(blue);
+  // The focus border also transitions; wait for its final colour just like the shadow.
+  await expect(title).toHaveCSS("border-bottom-color", blue);
   await expect.poll(async () => (await read(title)).shadow).toBe(`${blue} 0px 2px 0px 0px`);
   await body.focus();
   await expect(body).toBeFocused();
