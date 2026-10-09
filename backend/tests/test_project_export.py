@@ -78,6 +78,22 @@ class ProjectExportTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200, response.text)
 
+    def test_only_standalone_txt_has_utf8_bom(self):
+        for include_draft in (False, True):
+            with self.subTest(include_draft=include_draft):
+                _, archive, _ = self.bundle(include_draft)
+                params = {"include_draft": str(include_draft).lower()}
+                txt = self.client.get(self.url, params={**params, "format": "txt"})
+                md = self.client.get(self.url, params={**params, "format": "markdown"})
+                self.assertEqual(txt.status_code, 200)
+                self.assertEqual(md.status_code, 200)
+                self.assertTrue(txt.content.startswith(b"\xef\xbb\xbf"))
+                self.assertEqual(txt.content[3:], archive.read("manuscript.txt"))
+                self.assertEqual(md.content, archive.read("manuscript.md"))
+                self.assertFalse(md.content.startswith(b"\xef\xbb\xbf"))
+                for name in archive.namelist():
+                    self.assertFalse(archive.read(name).startswith(b"\xef\xbb\xbf"), name)
+
     def test_zip_manifest_hashes_scope_and_no_credentials(self):
         response, archive, snapshot = self.bundle()
         expected = {"README.txt", "manuscript.txt", "manuscript.md", "materials.md", "snapshot.json", "checksums.json"}

@@ -300,7 +300,7 @@ def materials_markdown(snapshot: dict) -> bytes:
 def export_content(snapshot: dict, format: ExportFormat) -> tuple[bytes, str, str]:
     """Render only detached values; ZIP members have fixed, safe names."""
     if format == "txt":
-        content, mime, extension = manuscript(snapshot, False), "text/plain", "txt"
+        content, mime, extension = b"\xef\xbb\xbf" + manuscript(snapshot, False), "text/plain", "txt"
     elif format == "markdown":
         content, mime, extension = manuscript(snapshot, True), "text/markdown", "md"
     elif format == "bundle":
