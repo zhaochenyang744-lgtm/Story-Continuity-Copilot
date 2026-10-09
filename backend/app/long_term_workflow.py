@@ -57,6 +57,21 @@ def current_binding(c, project_id, draft_id):
     return {"project_id": project_id, "draft_id": draft_id, "draft_revision": draft["revision"], "draft_checksum": draft["checksum"], "source_revision": project["source_revision"], "memory_version": project["current_memory_version"], "author_context_version": project["author_context_version"], "alias_version": project["alias_version"]}
 
 
+# A repeat decision is about one sentence and its evidence (the fingerprint). Editing other parts of the draft must
+# not undo it, so the draft's own revision and checksum are left out when asking whether a past decision still applies.
+REUSE_IGNORED_KEYS = ("draft_revision", "draft_checksum")
+
+
+def reuse_basis(binding):
+    """The binding without the whole-draft keys: what a past decision has to share with this check to be reused."""
+    return {key: value for key, value in binding.items() if key not in REUSE_IGNORED_KEYS}
+
+
+def reuse_basis_digest(binding_json):
+    binding = json.loads(binding_json) if isinstance(binding_json, (str, bytes)) else binding_json
+    return digest(reuse_basis(binding))
+
+
 def bind_run(c, run_id):
     run = c.execute("SELECT * FROM v2_runs WHERE id=?", (run_id,)).fetchone()
     if run:
@@ -123,7 +138,7 @@ def _policy_view(c, row):
     decision = c.execute("SELECT * FROM v2_decisions WHERE id=?", (row["decision_id"],)).fetchone()
     binding = json.loads(row["binding_json"])
     current = current_binding(c, row["project_id"], binding["draft_id"])
-    changed = next((key for key in binding if not current or current.get(key) != binding[key]), None)
+    changed = next((key for key in binding if key not in REUSE_IGNORED_KEYS and (not current or current.get(key) != binding[key])), None)
     return {"id": row["id"], "issue_id": row["issue_id"], "run_id": decision["run_id"], "decision": decision["decision"], "note": decision["note"], "enabled": bool(row["enabled"]), "revision": row["revision"], "is_current": changed is None, "invalidation_reason": (changed + "_changed") if changed else None, "scope": binding, "updated_at": row["updated_at"]}
 
 
@@ -132,14 +147,16 @@ def issue_reuse(c, issue, run):
     result = {"reuse_policy": _policy_view(c, own) if own else None, "reused_decision": None}
     if not binding_is_current(c, run):
         return result
-    bound = c.execute("SELECT binding_digest FROM v2_workflow_run_bindings WHERE run_id=?", (run["id"],)).fetchone()
+    bound = c.execute("SELECT binding_json FROM v2_workflow_run_bindings WHERE run_id=?", (run["id"],)).fetchone()
     if not bound:
         return result
     try:
         fingerprint = _issue_fingerprint(c, issue)
     except DomainError:
         return result
-    policy = c.execute("SELECT * FROM v2_decision_reuse WHERE project_id=? AND fingerprint=? AND binding_digest=? AND enabled=1 AND issue_id!=? ORDER BY updated_at DESC,id LIMIT 1", (issue["project_id"], fingerprint, bound["binding_digest"], issue["id"])).fetchone()
+    basis = reuse_basis_digest(bound["binding_json"])
+    candidates = c.execute("SELECT * FROM v2_decision_reuse WHERE project_id=? AND fingerprint=? AND enabled=1 AND issue_id!=? ORDER BY updated_at DESC,id", (issue["project_id"], fingerprint, issue["id"])).fetchall()
+    policy = next((row for row in candidates if reuse_basis_digest(row["binding_json"]) == basis), None)
     if policy:
         result["reused_decision"] = {**_policy_view(c, policy), "status": "previously_reviewed", "requires_new_decision": False, "source_issue_id": policy["issue_id"], "review_path": f"/projects/{issue['project_id']}/sources#long-term-review"}
     return result

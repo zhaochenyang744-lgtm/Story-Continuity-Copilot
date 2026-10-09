@@ -13,6 +13,7 @@ from fastapi.testclient import TestClient
 from app.config import AppPaths
 from app.database import DomainError
 from app.engine import ContinuityEngine, MemoryDeltaEngine
+from app import long_term_workflow as workflow
 from app.long_term_workflow import commit_revision, preview_revision, resolve_review, review_state, set_issue_mark, set_reuse
 from app.main import create_app
 from app.provider import ProviderResult
@@ -164,14 +165,87 @@ class WorkflowTests(unittest.TestCase):
         self.assertIsNone(second["issues"][0]["reused_decision"])
         self.assertEqual(second["issues"][0]["status"], "open")
 
-    def test_draft_edit_invalidates_policy_even_when_text_is_restored(self):
+    def edit_draft(self, body):
+        """Save a new body of the draft and keep the fixture's view of it current."""
+        self.db.patch_draft(self.user, self.project, self.draft["id"], {"base_revision": self.draft["revision"], "body": body}, key())
+        with self.db.connection() as c:
+            self.draft = dict(c.execute("SELECT * FROM v2_drafts WHERE id=?", (self.draft["id"],)).fetchone())
+
+    def test_editing_elsewhere_in_the_draft_keeps_the_decision_for_the_same_sentence(self):
+        # v1.7.0: a repeat decision is about the sentence and its evidence, not about the whole draft.
+        # (Replaces test_draft_edit_invalidates_policy_even_when_text_is_restored, which asserted the opposite.)
+        original = self.draft["body"]
         _, issue_id = self.decided()
-        self.db.patch_draft(self.user, self.project, self.draft["id"], {"base_revision": self.draft["revision"], "body": self.draft["body"] + "修改。"}, key())
-        self.db.patch_draft(self.user, self.project, self.draft["id"], {"base_revision": self.draft["revision"] + 1, "body": self.draft["body"]}, key())
+        self.edit_draft(original + "窗外停着一辆蓝色小车。")
+        self.edit_draft(original + "窗外停着一辆白色小车。")
         policy = next(row for row in self.state()["reusable_decisions"] if row["issue_id"] == issue_id)
-        self.assertFalse(policy["is_current"])
-        self.assertEqual(policy["invalidation_reason"], "draft_revision_changed")
+        self.assertEqual((policy["is_current"], policy["invalidation_reason"]), (True, None))
+        second = self.check()
+        issue = second["issues"][0]
+        self.assertEqual(issue["reused_decision"]["source_issue_id"], issue_id)
+        self.assertEqual((issue["status"], issue["decision"]["reused"]), ("decided", True))
+        with self.db.connection() as c:
+            self.assertEqual(workflow.open_issue_count(c, self.project), 0, "the reused finding is not counted as open")
+            self.assertEqual(self.db.project(self.user, self.project)["open_issue_count"], 0)
+
+    def test_changing_the_sentence_itself_is_not_reused(self):
+        original = self.draft["body"]
+        _, issue_id = self.decided()
+        self.edit_draft("全新的第一句，和之前判断过的不是同一句。" + original)
+        second = self.check()
+        self.assertNotEqual(second["issues"][0]["claim_text"], self.db.run_view(self.user, self.project, self.decided_run_id(issue_id), {"issues"})["issues"][0]["claim_text"])
+        self.assertIsNone(second["issues"][0]["reused_decision"])
+        self.assertEqual(second["issues"][0]["status"], "open")
+
+    def decided_run_id(self, issue_id):
+        with self.db.connection() as c:
+            return c.execute("SELECT run_id FROM v2_issues WHERE id=?", (issue_id,)).fetchone()[0]
+
+    def test_a_check_of_an_older_draft_is_still_not_the_current_one(self):
+        # Whether a check is about the current draft keeps its strict binding; only repeat decisions look at the sentence alone.
+        original = self.draft["body"]
+        _, issue_id = self.decided()
+        stale = self.check()
+        self.edit_draft(original + "窗外停着一辆蓝色小车。")
+        with self.db.connection() as c:
+            self.assertFalse(workflow.binding_is_current(c, c.execute("SELECT * FROM v2_runs WHERE id=?", (stale["run_id"],)).fetchone()))
+        self.assert_error_zero_writes("lineage_invalid_requires_recheck", lambda: self.db.decide(self.user, self.project, stale["issues"][0]["id"], {"run_id": stale["run_id"], "source_revision": stale["source_revision"], "decision": "false_positive"}, key()))
         self.assert_error_zero_writes("decision_reuse_stale", lambda: set_reuse(self.db, self.user, self.project, issue_id, {"enabled": True, "base_policy_revision": 1}, key()))
+
+    def test_reuse_basis_ignores_only_the_whole_draft_keys(self):
+        with self.db.connection() as c:
+            binding = workflow.current_binding(c, self.project, self.draft["id"])
+        self.assertIn("draft_revision", binding, "the binding itself still carries the whole-draft keys")
+        self.assertIn("draft_checksum", binding)
+        basis = workflow.reuse_basis_digest(json.dumps(binding))
+        self.assertEqual(workflow.reuse_basis_digest(json.dumps({**binding, "draft_revision": binding["draft_revision"] + 7, "draft_checksum": "other"})), basis)
+        for name in ("project_id", "draft_id", "source_revision", "memory_version", "author_context_version", "alias_version"):
+            self.assertNotEqual(workflow.reuse_basis_digest(json.dumps({**binding, name: f"{binding[name]}-changed"})), basis, name)
+
+    def test_only_the_listed_parts_of_the_basis_decide_reuse(self):
+        _, issue_id = self.decided()
+        second = self.check()
+
+        def stored(update=None):
+            with self.db.connection() as c:
+                row = c.execute("SELECT id,binding_json FROM v2_decision_reuse WHERE issue_id=?", (issue_id,)).fetchone()
+                original = row["binding_json"]
+                if update is not None:
+                    c.execute("UPDATE v2_decision_reuse SET binding_json=? WHERE id=?", (json.dumps({**json.loads(original), **update}, sort_keys=True), row["id"]))
+            return original
+
+        def reused():
+            return self.db.run_view(self.user, self.project, second["run_id"], {"issues"})["issues"][0]["reused_decision"]
+
+        original = json.loads(stored())
+        self.assertIsNotNone(reused())
+        stored({"draft_revision": original["draft_revision"] + 5, "draft_checksum": "an-older-whole-draft"})
+        self.assertIsNotNone(reused(), "the whole draft is not part of the basis")
+        for name in ("source_revision", "memory_version", "author_context_version", "alias_version"):
+            stored({name: original[name] + 1})
+            self.assertIsNone(reused(), f"{name} is part of the basis")
+            stored({name: original[name]})
+            self.assertIsNotNone(reused())
 
     def test_source_revision_and_memory_version_invalidate_reuse(self):
         _, issue_id = self.decided()

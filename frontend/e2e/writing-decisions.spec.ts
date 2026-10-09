@@ -168,7 +168,6 @@ test("没有要记进资料的变化：不给审阅入口", async ({ page }) => 
 });
 
 test("自动沿用之前的判断：只改无关句子", async ({ page }) => {
-  test.fixme(true, "自动沿用策略绑定 draft_revision 和 draft_checksum；保存无关句子后策略失效，原句的新检查 reused_decision 为 null");
   const id = await setup(page);
   await saveBody(page, id, "温岚握着黄铜罗盘。窗外停着一辆蓝色小车。");
   const first = await finishCheck(page, id, await beginCheck(page, id));
