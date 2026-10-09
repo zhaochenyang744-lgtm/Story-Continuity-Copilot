@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Locator, Page } from "@playwright/test";
-import { api, createWorkByApi, expect, openTab, registerAccount, sampleWorkId, shot, test } from "./support/app";
+import { api, createWorkByApi, expect, openAccountMenu, openTab, registerAccount, sampleWorkId, shot, test } from "./support/app";
 import { button, finding, run, setup } from "./support/writing";
 import { evidence, project, sample, theme, workMenu } from "./support/pages";
 
@@ -44,7 +44,10 @@ test("08 夜间反色色块：深蓝底、浅色字，蓝色按钮有描边；�
   await registerAccount(page, "inverse08");
   const id = await sampleWorkId(page);
   await createWorkByApi(page, { title: "夜间试验之书" });
-  await button(page, "开始导览").click();
+  // Creating a real work completes onboarding, so explicitly restart the tour to inspect its band.
+  await page.goto("/");
+  await openAccountMenu(page);
+  await page.getByRole("menuitem", { name: "重新看一遍导览", exact: true }).click();
   await expect(page.getByRole("region", { name: "导览", exact: true })).toContainText("导览 1 / 5");
   const look = (target: Locator) => target.evaluate(e => ({ shadow: getComputedStyle(e).boxShadow }));
   const colours = { day: { background: "rgb(17, 17, 17)", color: "rgb(244, 244, 241)" }, night: { background: "rgb(29, 33, 85)", color: "rgb(244, 244, 241)" } };
