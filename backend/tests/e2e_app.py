@@ -145,6 +145,10 @@ class BrowserTestProvider:
                 {"memory_type": "dynamic_state", "subject": "银钥匙", "predicate": "holder", "value": "林默保管"},
                 {"memory_type": "character_knowledge", "subject": "林默", "predicate": "knowledge", "value": "北堤门只在清晨开启"},
             ]
+            # Short batches still need a controlled fact to permit the author's v1 confirmation.
+            # The three-source fixture (including its legacy rule) keeps its original output.
+            if len(sources) < 3:
+                facts = facts[-len(sources):]
             return ProviderResult(
                 {
                     "candidates": [

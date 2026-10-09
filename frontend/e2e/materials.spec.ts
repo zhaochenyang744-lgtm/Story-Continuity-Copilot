@@ -25,6 +25,7 @@ test("12 M 长作品32章分批整理，失败提示和重试，确认第1版资
   await expect(form).toBeVisible();
   const init = await api(page).get(`/projects/${id}/memory/initialization`);
   expect(init.candidates.length).toBeGreaterThan(0);
+  expect(init.candidates.some((candidate: { review_priority: string }) => candidate.review_priority === "core")).toBe(true);
   await shot(page, "12-M-long-candidates-day", false);
   for (const expand of await form.getByText(/^\d{2}–\d{2}$/).all()) {
     if (!await expand.evaluate(e => e.closest("details")?.open)) await expand.click();
