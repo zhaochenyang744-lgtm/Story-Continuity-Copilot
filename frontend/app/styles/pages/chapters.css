@@ -34,7 +34,7 @@
 .select-count .num { font-size: 32px; }
 .select-count > span:last-child { color: var(--c-on-inverse-3); font-size: 16px; }
 .select-summary { flex: 1 1 320px; color: var(--c-on-inverse-2); font-size: 14px; }
-.select-go { min-height: 48px; padding: 0 22px; border: 0; background: var(--c-blue); color: var(--c-on-blue); font-weight: 700; cursor: pointer; }
+.select-go { min-height: 48px; padding: 0 22px; border: 0; background: var(--c-blue); box-shadow: var(--inverse-edge); color: var(--c-on-blue); font-weight: 700; cursor: pointer; }
 .select-go:hover:not(:disabled) { background: var(--c-blue-hover); }
 .select-go:disabled { background: var(--c-on-inverse-2); color: var(--c-on-inverse-3); opacity: .5; cursor: not-allowed; }
 

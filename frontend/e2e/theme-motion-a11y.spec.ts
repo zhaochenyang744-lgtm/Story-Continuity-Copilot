@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Locator, Page } from "@playwright/test";
-import { api, expect, openTab, registerAccount, sampleWorkId, shot, test } from "./support/app";
+import { api, createWorkByApi, expect, openTab, registerAccount, sampleWorkId, shot, test } from "./support/app";
 import { button, finding, run, setup } from "./support/writing";
 import { evidence, project, sample, theme, workMenu } from "./support/pages";
 
@@ -23,6 +23,53 @@ test("08 夜间开关：系统默认和本机持久化", async ({ page }) => {
   await button(page, "切换到日间模式").click();
   await expect(button(page, "切换到夜间模式")).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("story-continuity:theme"))).toBe("day");
+});
+
+test("08 夜间反色色块：深蓝底、浅色字，蓝色按钮有描边；日间不变", async ({ page }) => {
+  await registerAccount(page, "inverse08");
+  const id = await sampleWorkId(page);
+  await createWorkByApi(page, { title: "夜间试验之书" });
+  const look = (target: Locator) => target.evaluate(e => ({ shadow: getComputedStyle(e).boxShadow }));
+  const colours = { day: { background: "rgb(17, 17, 17)", color: "rgb(244, 244, 241)" }, night: { background: "rgb(29, 33, 85)", color: "rgb(244, 244, 241)" } };
+  const places: [string, () => Promise<{ band: Locator; control: Locator }>][] = [
+    ["night-tour", async () => {
+      await openTab(page, id, "workspace");
+      const band = page.getByRole("region", { name: "导览", exact: true });
+      return { band, control: band.getByRole("button", { name: "去资料", exact: true }) };
+    }],
+    ["night-overview-band", async () => {
+      await openTab(page, id, "overview");
+      const band = page.getByRole("button", { name: /继续写 · 草稿/ });
+      return { band, control: band.getByText("打开草稿", { exact: true }) };
+    }],
+    ["night-home-band", async () => {
+      await page.goto("/");
+      const band = page.getByRole("button", { name: /上次停在/ });
+      return { band, control: band.getByText("继续写", { exact: true }) };
+    }],
+    ["night-chapters-bar", async () => {
+      await openTab(page, id, "sources");
+      for (const n of [1, 2]) await page.getByRole("checkbox", { name: `选择第 ${n} 章`, exact: true }).check();
+      const band = page.getByTestId("chapter-selection");
+      await band.scrollIntoViewIfNeeded();
+      return { band, control: band.getByRole("button", { name: "检查选中的章节", exact: true }) };
+    }],
+  ];
+  for (const [name, reach] of places) {
+    await theme(page, "day");
+    const { band, control } = await reach();
+    await expect(band).toBeVisible();
+    // The colours settle a frame after the switch, so each is read with a retrying assertion.
+    for (const mode of ["day", "night"] as const) {
+      await theme(page, mode);
+      await expect(band, `${name}: ${mode}`).toHaveCSS("background-color", colours[mode].background);
+      await expect(band, `${name}: ${mode}`).toHaveCSS("color", colours[mode].color);
+      if (mode === "day") await expect(control, `${name}: no edge on the blue button by day`).toHaveCSS("box-shadow", "none");
+      else await expect.poll(() => look(control).then(item => item.shadow), { message: `${name}: the blue button has an edge at night` }).not.toBe("none");
+    }
+    await shot(page, name, false);
+  }
+  await theme(page, "day");
 });
 
 test("08 减少动态效果：直接最终值与正常计数采样", async ({ page }, info) => {

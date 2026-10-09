@@ -113,7 +113,7 @@
 .band-label { color: var(--c-on-inverse-3); font-family: var(--font-mono); font-size: 12px; letter-spacing: var(--tracking-label); }
 .band-title { font-size: 30px; font-weight: 900; line-height: 1.3; }
 .band-meta { color: var(--c-on-inverse-2); font-size: 14px; }
-.band-go { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 24px; background: var(--c-blue); color: var(--c-on-blue); font-weight: 700; transition: background-color var(--motion-fast) var(--ease-standard); }
+.band-go { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 24px; background: var(--c-blue); box-shadow: var(--inverse-edge); color: var(--c-on-blue); font-weight: 700; transition: background-color var(--motion-fast) var(--ease-standard); }
 .band:hover .band-go { background: var(--c-blue-hover); }
 
 /* ── Row lists: number, two lines, a tag (概览, 追加章节) ── */
@@ -238,7 +238,8 @@
 .tour-progress ol { display: flex; gap: 4px; }
 .tour-progress li { display: grid; place-items: center; width: 26px; height: 26px; border: 1px solid var(--c-on-inverse-3); font-family: var(--font-display); font-stretch: 125%; font-weight: 900; font-size: 12px; }
 .tour-progress li.done { border-color: var(--c-on-inverse); background: var(--c-on-inverse); color: var(--c-inverse); }
-.tour-progress li.current { border-color: var(--c-blue); background: var(--c-blue); color: var(--c-on-blue); }
+.tour-progress li.current { border-color: var(--c-blue); background: var(--c-blue); box-shadow: var(--inverse-edge); color: var(--c-on-blue); }
+.tour .btn-primary { box-shadow: var(--inverse-edge); }
 .tour-copy { display: grid; flex: 1 1 320px; gap: 2px; }
 .tour-copy span { color: var(--c-on-inverse-2); font-size: 13px; }
 .tour-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
