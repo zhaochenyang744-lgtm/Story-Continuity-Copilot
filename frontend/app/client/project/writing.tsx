@@ -671,7 +671,7 @@ function FocusEditor({ p, close, pick }: { p: ProjectState; close: () => void; p
       <div className="focus-canvas">
         <div className="focus-paper">
           <div className="focus-column">
-            <label className="focus-title"><span className="sr-only">章节标题</span><input value={p.draft?.title ?? ""} disabled={Boolean(p.busy) || Boolean(p.pendingControlledDecision)} onChange={(event) => p.draft && p.setDraft({ ...p.draft, title: event.target.value })} /></label>
+            <label className="focus-title"><span className="sr-only">章节标题</span><input data-writing-focus value={p.draft?.title ?? ""} disabled={Boolean(p.busy) || Boolean(p.pendingControlledDecision)} onChange={(event) => p.draft && p.setDraft({ ...p.draft, title: event.target.value })} /></label>
             <RichDraftEditor id="focus-draft-body" label="草稿正文" value={p.draft?.body ?? ""} format={p.draft?.body_format ?? "plain_text"} disabled={Boolean(p.busy) || Boolean(p.pendingControlledDecision)} onChange={(body, body_format) => p.draft && p.setDraft({ ...p.draft, body, body_format })} />
           </div>
         </div>

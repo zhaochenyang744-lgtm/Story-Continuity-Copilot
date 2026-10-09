@@ -165,9 +165,9 @@ test("08 axe 扫描：十个页面的日间和夜间", async ({ page }, info) =>
   expect(severe, JSON.stringify(severe, null, 2)).toEqual([]);
 });
 
-function hasVisibleFocus(s: { outline: string; width: string; color: string; shadow: string }) {
+function hasVisibleFocus(s: { outline: string; width: string; color: string; shadow: string; bar?: string }) {
   const nonTransparent = (color: string) => color.startsWith("rgb(") || (color.startsWith("rgba(") && Number(color.slice(5, -1).split(",").at(-1)) > 0);
-  return (s.outline !== "none" && s.width !== "0px" && nonTransparent(s.color))
+  return (Boolean(s.bar) && nonTransparent(s.bar!)) || (s.outline !== "none" && s.width !== "0px" && nonTransparent(s.color))
     || (s.shadow.match(/rgba?\([^)]*\)/g) ?? []).some(nonTransparent);
 }
 
@@ -179,7 +179,7 @@ test("12 Q 焦点判据拒绝透明描边和阴影", () => {
 async function focusVisible(page: Page) {
   const focused = page.locator(":focus-visible");
   await expect(focused).toHaveCount(1);
-  const read = () => focused.evaluate(e => ({ element: e.outerHTML.slice(0, 500), outline: getComputedStyle(e).outlineStyle, width: getComputedStyle(e).outlineWidth, color: getComputedStyle(e).outlineColor, shadow: getComputedStyle(e).boxShadow }));
+  const read = () => focused.evaluate(e => ({ element: e.outerHTML.slice(0, 500), outline: getComputedStyle(e).outlineStyle, width: getComputedStyle(e).outlineWidth, color: getComputedStyle(e).outlineColor, shadow: getComputedStyle(e).boxShadow, bar: e.getAttribute("data-focus-from") === "keyboard" && getComputedStyle(e, "::after").content !== "none" && getComputedStyle(e, "::after").width === "3px" ? getComputedStyle(e, "::after").backgroundColor : "" }));
   // Focus shadows transition from transparent; require a visible colour before moving on.
   await expect.poll(async () => hasVisibleFocus(await read())).toBe(true);
   return read();
@@ -204,7 +204,7 @@ test("08 键盘决定：焦点框与不是问题写入", async ({ page }, info) 
   await expect.poll(async () => (await run(page, id, before.run_id)).issues.find((i: any) => i.id === issue.id).decision?.decision).toBe("false_positive");
   await evidence(info, "keyboard-focus", checks);
   await shot(page, "keyboard-decision-day", false);
-  expect(checks.filter(s => !hasVisibleFocus(s)), "每个键盘焦点必须有不透明的 outline 或 box-shadow").toEqual([]);
+  expect(checks.filter(s => !hasVisibleFocus(s)), "每个键盘焦点必须有不透明的 outline、box-shadow 或正文焦点线").toEqual([]);
 });
 
 test("08 对话框焦点：初始焦点循环和 Esc 返回", async ({ page }, info) => {

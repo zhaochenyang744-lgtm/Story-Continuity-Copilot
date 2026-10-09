@@ -19,6 +19,7 @@ import { hasUnsubmittedRevision } from "./project/chapter-desk";
 import { useProject } from "./project/use-project";
 import { Avatar, Wordmark } from "./identity";
 import { Button, Chevron, Dialog, pad2, usageShort, useUsage } from "./ui";
+import { useWritingFocusOrigin } from "./editor";
 import { timeLabel } from "./labels";
 
 // Keep the session check for the module's life.
@@ -44,6 +45,7 @@ export const projectTabs = [
 const legacyTabs: Record<string, string> = { outline: "plan", characters: "memory", world: "memory" };
 
 export function App() {
+  useWritingFocusOrigin();
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>(() => bootstrappedUser ?? null);

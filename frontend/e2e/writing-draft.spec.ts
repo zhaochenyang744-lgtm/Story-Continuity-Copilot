@@ -144,26 +144,61 @@ test("写作页的一级标题：读屏能读到「第 N 章 · 标题」，看�
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(/^第 3 章 · /);
 });
 
-test("键盘聚焦：章标题的底线变蓝加粗，正文左边出现 3px 蓝线，没有整圈的框", async ({ page }) => {
-  await setup(page);
-  const title = page.getByRole("textbox", { name: "章节标题", exact: true });
-  const body = page.getByRole("textbox", { name: "草稿正文", exact: true });
-  const read = (target: import("@playwright/test").Locator) => target.evaluate(e => { const style = getComputedStyle(e); return { outline: style.outlineStyle, shadow: style.boxShadow, border: style.borderBottomColor }; });
-  const blue = "rgb(31, 43, 255)";
-  const before = await read(title);
-  expect(before.shadow).toBe("none");
-  await title.focus();
-  await expect(title).toBeFocused();
-  // The focus border also transitions; wait for its final colour just like the shadow.
-  await expect(title).toHaveCSS("border-bottom-color", blue);
-  await expect.poll(async () => (await read(title)).shadow).toBe(`${blue} 0px 2px 0px 0px`);
-  await body.focus();
-  await expect(body).toBeFocused();
-  // The shadow eases in over a moment, so it is read until it settles.
-  await expect.poll(async () => (await read(body)).shadow).toBe(`${blue} -3px 0px 0px 0px`);
-  expect((await read(body)).outline, "正文没有整圈的框").toBe("none");
-  // The bar is only a shadow: nothing moves.
-  const box = await body.boundingBox();
-  await title.focus();
-  expect(await body.boundingBox()).toEqual(box);
+for (const focused of [false, true]) test("13 T " + (focused ? "专注写作" : "普通写作") + "：Tab 显示焦点线，鼠标和输入清除", async ({ page }) => {
+  const id = await setup(page, false);
+  if (focused) await button(page, "专注写作").click();
+  const scope = focused ? page.getByRole("dialog", { name: "专注写作", exact: true }) : page;
+  const title = scope.getByRole("textbox", { name: "章节标题", exact: true });
+  const body = scope.getByRole("textbox", { name: "草稿正文", exact: true });
+  await body.fill("雨停以后，船靠岸了，值班员走向窗台查看潮水。".repeat(8) + "\n值班员收起缆绳。");
+  const cue = (target: import("@playwright/test").Locator, prose: boolean) => target.evaluate((e, p) => {
+    const s = getComputedStyle(e, p ? "::after" : null);
+    return p ? s.content !== "none" && parseFloat(s.width) === 3 && s.backgroundColor !== "rgba(0, 0, 0, 0)"
+      : s.boxShadow !== "none";
+  }, prose);
+  for (const [target, prose] of [[title, false], [body, true]] as const) {
+    await target.click();
+    await expect(target).not.toHaveAttribute("data-focus-from", "keyboard");
+    // A real backwards/forwards Tab cycle, not programmatic focus().
+    await page.keyboard.press("Shift+Tab");
+    await page.keyboard.press("Tab");
+    await expect(target).toBeFocused();
+    await expect(target).toHaveAttribute("data-focus-from", "keyboard");
+    if (prose) {
+      const metrics = await target.evaluate(e => {
+        const s = getComputedStyle(e, "::after"), box = e.getBoundingClientRect();
+        const walker = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
+        const text = walker.nextNode()!;
+        const range = document.createRange(); range.selectNodeContents(text);
+        return { color: s.backgroundColor, width: parseFloat(s.width), gap: Math.min(...Array.from(range.getClientRects(), r => r.left)) - (box.left + parseFloat(s.left) + parseFloat(s.width)), outline: getComputedStyle(e).outlineStyle };
+      });
+      expect(metrics.color).toBe("rgb(31, 43, 255)");
+      expect(metrics.width).toBe(3);
+      expect(metrics.gap).toBeGreaterThanOrEqual(10);
+      expect(metrics.outline).toBe("none");
+      const box = await target.boundingBox();
+      await target.click();
+      expect(await target.boundingBox()).toEqual(box);
+    } else {
+      await expect(target).toHaveCSS("box-shadow", "rgb(31, 43, 255) 0px 2px 0px 0px");
+      await target.click();
+    }
+    // Clicking the already focused field must clear the cue too.
+    await expect(target).not.toHaveAttribute("data-focus-from", "keyboard");
+    await expect.poll(() => cue(target, prose)).toBe(false);
+    await page.keyboard.press("Shift+Tab");
+    await page.keyboard.press("Tab");
+    await expect(target).toHaveAttribute("data-focus-from", "keyboard");
+    await page.keyboard.type(prose ? "潮" : "航");
+    await expect(target).not.toHaveAttribute("data-focus-from", "keyboard");
+    await expect.poll(() => cue(target, prose)).toBe(false);
+  }
+  const heading = await title.inputValue();
+  if (focused) await page.keyboard.press("Escape");
+  const text = await readDraftBody(page);
+  // Persist the typed values and confirm them at the API.
+  const save = button(page, "保存");
+  if (await save.count()) await save.click();
+  await expect.poll(async () => (await draft(page, id)).body).toBe(text);
+  expect((await draft(page, id)).title).toBe(focused ? heading : "第1章" + heading);
 });

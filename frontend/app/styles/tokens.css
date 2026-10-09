@@ -5,6 +5,8 @@
    square. Day is the default; <html data-theme="night"> switches palettes. */
 :root {
   color-scheme: light;
+  --writing-focus-width: 3px;
+  --writing-focus-gap: 12px;
 
   /* Surfaces */
   --c-ground: #f4f4f1;        /* page */

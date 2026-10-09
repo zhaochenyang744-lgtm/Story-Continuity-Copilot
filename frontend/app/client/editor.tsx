@@ -10,6 +10,37 @@ import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "@tiptap/markdown";
 import type { DraftBodyFormat } from "../model";
 
+/** Text editing keeps a cue only until typing starts, and only when Tab brought focus here. */
+export function useWritingFocusOrigin() {
+  useEffect(() => {
+    let keyboard = false;
+    const field = (target: EventTarget | null) =>
+      target instanceof HTMLElement && target.matches("[data-writing-focus]") ? target : null;
+    const clear = (target: EventTarget | null) => field(target)?.removeAttribute("data-focus-from");
+    const keydown = (event: KeyboardEvent) => { if (event.key === "Tab") keyboard = true; };
+    const pointerdown = () => { keyboard = false; clear(document.activeElement); };
+    const focus = (event: FocusEvent) => {
+      const target = field(event.target);
+      if (keyboard) target?.setAttribute("data-focus-from", "keyboard");
+      else clear(target);
+    };
+    const input = (event: Event) => clear(event.target);
+    const blur = (event: FocusEvent) => clear(event.target);
+    document.addEventListener("keydown", keydown, true);
+    document.addEventListener("pointerdown", pointerdown, true);
+    document.addEventListener("focus", focus, true);
+    document.addEventListener("input", input, true);
+    document.addEventListener("blur", blur, true);
+    return () => {
+      document.removeEventListener("keydown", keydown, true);
+      document.removeEventListener("pointerdown", pointerdown, true);
+      document.removeEventListener("focus", focus, true);
+      document.removeEventListener("input", input, true);
+      document.removeEventListener("blur", blur, true);
+    };
+  }, []);
+}
+
 type EditorBinding = {editor: Editor; promoteToMarkdown: () => void};
 const editors = new Map<string, EditorBinding>();
 const subscribers = new Set<() => void>();
@@ -346,7 +377,7 @@ export function RichDraftEditor({id, value, format, disabled, label, placeholder
     content: format === "markdown" ? value : plainDocument(value),
     contentType: format === "markdown" ? "markdown" : undefined,
     editable: !disabled,
-    editorProps: {attributes: {id, role: "textbox", "aria-label": label, "aria-multiline": "true", "aria-readonly": String(disabled), class: "rich-draft-body", tabindex: "0", spellcheck: "false", "data-placeholder": placeholder ?? "", "data-body-format": format}},
+    editorProps: {attributes: {id, role: "textbox", "aria-label": label, "aria-multiline": "true", "aria-readonly": String(disabled), class: "rich-draft-body", "data-writing-focus": "", tabindex: "0", spellcheck: "false", "data-placeholder": placeholder ?? "", "data-body-format": format}},
     onUpdate: ({editor: current}) => {
       if (formatRef.current === "plain_text" && hasRichStructure(current)) markAsMarkdown(current, formatRef);
       const nextFormat = formatRef.current;

@@ -47,7 +47,7 @@ export function TitleField({ value, onChange, disabled, placeholder }: { value: 
   return (
     <label className="draft-title">
       <span className="sr-only">章节标题</span>
-      <textarea rows={1} value={name} placeholder={placeholder} disabled={disabled} maxLength={120}
+      <textarea data-writing-focus rows={1} value={name} placeholder={placeholder} disabled={disabled} maxLength={120}
         onKeyDown={(event) => { if (event.key === "Enter") event.preventDefault(); }}
         onChange={(event) => onChange(`${prefix}${event.target.value.replace(/[\r\n]+/g, "")}`)} />
     </label>
