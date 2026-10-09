@@ -127,7 +127,7 @@ export function HomePage({ user, onboarding, usage, fail, go, reopenTutorial }: 
           <section className="home-sample" aria-labelledby="home-sample-title">
             <SectionHead id="home-sample-title" title="示例作品" />
             <button type="button" className="sample-card" onClick={() => go(`/projects/${sampleId}/overview`)}>
-              <span className="label">{sample ? [sample.genre, `${sample.chapter_count} 章`, `${formatCount(sample.word_count ?? 0)} 字`].filter(Boolean).join(" · ") : "示例"}</span>
+              <span className="label">{sample ? [sample.genre, `${sample.chapter_count} 章`, `${formatCount(sample.chapter_word_count ?? sample.word_count ?? 0)} 字`].filter(Boolean).join(" · ") : "示例"}</span>
               <span className="sample-card-title">{sample?.title ?? onboarding?.tutorial?.title ?? "示例作品"}</span>
               {sample?.summary && <span className="sample-card-summary">{sample.summary}</span>}
               {sample && <span className="sample-card-tags"><WorkCheckTag project={sample} /></span>}

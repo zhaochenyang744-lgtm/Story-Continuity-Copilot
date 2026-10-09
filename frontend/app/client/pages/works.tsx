@@ -39,8 +39,10 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
     return () => { live = false; };
   }, [query, status, sort, onlyOpen, fail]);
   const filtered = Boolean(query || status || onlyOpen);
-  const totalWords = (all ?? []).reduce((sum, item) => sum + (item.word_count ?? 0), 0);
-  const active = (all ?? []).filter((item) => item.status === "active").length;
+  const totalWords = (all ?? []).filter((item) => item.status !== "archived").reduce((sum, item) => sum + (item.word_count ?? 0), 0);
+  // Like the list's default view, the count leaves archived works out.
+  const kept = (all ?? []).filter((item) => item.status !== "archived");
+  const active = kept.filter((item) => item.status === "active").length;
   const hasWorks = Boolean(all?.length);
 
   return (
@@ -52,7 +54,7 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
           <div className="head-figures-actions">
             {hasWorks && (
               <dl className="figures">
-                <div><dt className="sr-only">作品</dt><dd><Num><CountUp id="works:count" value={all!.length} /></Num></dd><dd className="figure-label">部作品</dd></div>
+                <div><dt className="sr-only">作品</dt><dd><Num><CountUp id="works:count" value={kept.length} /></Num></dd><dd className="figure-label">部作品</dd></div>
                 <div><dt className="sr-only">进行中</dt><dd><Num><CountUp id="works:active" value={active} /></Num></dd><dd className="figure-label">进行中</dd></div>
                 <div><dt className="sr-only">字数</dt><dd><Num><CountUp id="works:words" value={totalWords} /></Num></dd><dd className="figure-label">字</dd></div>
               </dl>

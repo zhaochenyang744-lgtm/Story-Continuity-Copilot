@@ -23,6 +23,9 @@ test("新用户首页：示例作品卡片、空的「你的作品」、检查�
   await expect(samples.getByRole("heading", { name: "示例作品", exact: true })).toBeVisible();
   const card = samples.getByRole("button", { name: /灰港回声/ });
   await expect(card).toContainText("10 章");
+  // The card counts the written chapters only (the same figure as the overview's 正文), not the draft.
+  expect(sample.chapter_word_count).toBeLessThan(sample.word_count);
+  await expect(card).toContainText(`${count(sample.chapter_word_count)} 字`);
   await expect(samples.getByRole("button", { name: "开始导览", exact: true })).toBeVisible();
   await expect(samples.getByText("示例作品不占你的作品数，也不计入额度。", { exact: true })).toBeVisible();
 
@@ -53,9 +56,15 @@ test("新用户首页：示例作品卡片、空的「你的作品」、检查�
 test("访客首页：访客标题区和访客版额度", async ({ page }) => {
   await startVisitor(page);
   await expect(page.getByText("访客空间 · 24 小时", { exact: true })).toBeVisible();
-  // A visitor's sample work is an ordinary demo work to the server, so the page offers to continue its draft.
-  await expect(page.getByRole("heading", { level: 1, name: "继续你的故事", exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: /上次停在 · 《灰港回声》/ })).toBeVisible();
+  // The sample work is not the visitor's own work: nothing to continue, the page starts from chapter one,
+  // and the sample only appears in its own column.
+  expect((await api(page).get("/home")).continue_work).toBeNull();
+  await expect(page.getByRole("heading", { level: 1, name: "从第一章开始", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "继续你的故事", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /上次停在/ })).toHaveCount(0);
+  const mine = page.getByRole("region", { name: "你的作品" });
+  await expect(mine.getByText("还没有自己的作品。把写好的稿子导进来，或者从第一章开始。", { exact: true })).toBeVisible();
+  await expect(mine.getByText("灰港回声")).toHaveCount(0);
   const usage = await api(page).get("/account/usage");
   expect(usage.account_type).toBe("visitor");
   const quota = page.getByRole("region", { name: "检查额度" });
@@ -64,7 +73,10 @@ test("访客首页：访客标题区和访客版额度", async ({ page }) => {
   await expect(quota).toContainText(`每次最多 ${count(usage.check_chars_per_check)} 字`);
   await expect(quota).toContainText("注册后可以检查更长的章节");
   // The sample work is there; a visitor has no tour to restart.
-  await expect(page.getByRole("region", { name: "示例作品" }).getByRole("button", { name: /灰港回声/ })).toBeVisible();
+  const sample = await api(page).get(`/projects/${await sampleWorkId(page)}`);
+  const card = page.getByRole("region", { name: "示例作品" }).getByRole("button", { name: /灰港回声/ });
+  await expect(card).toBeVisible();
+  await expect(card).toContainText(`${count(sample.chapter_word_count)} 字`);
   await shot(page, "home-visitor");
 });
 
@@ -87,6 +99,8 @@ test("作品管理列表：搜索、状态筛选、排序", async ({ page }) => 
   await expect(rows(page)).toHaveText([/潮声之后/, /北堤旧事/]);
   await expect(rowOf(page, "北堤旧事")).toContainText("暂停");
   await expect(page.getByText("雾港来信")).toHaveCount(0);
+  // "N 部作品" counts what the list shows by default: the archived one is left out.
+  await expect(page.getByText("部作品", { exact: true }).locator("xpath=..")).toHaveText(/^作品2+部作品$/);
   await shot(page, "works-list");
 
   // Search by title.

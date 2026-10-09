@@ -223,6 +223,26 @@ class SingleSampleMigrationTests(unittest.TestCase):
             row = c.execute("SELECT data_origin,seed_key FROM v2_projects WHERE id=?", (visitor["seeded_projects"][0]["id"],)).fetchone()
         self.assertEqual((row["data_origin"], row["seed_key"]), ("demo_seed", "grey_harbor"))
 
+    def test_home_never_continues_a_sample_work_for_a_visitor_or_an_account(self):
+        visitor = self.app.state.stage13.create_visitor(None)
+        home = self.db.home(visitor["user"]["id"])
+        self.assertEqual((home["continue_work"], home["recent_projects"], home["pending_continuity"], home["latest_failed_run"]), (None, [], [], None))
+        author, tutorial = self.register()
+        self.assertIsNone(self.db.home(author)["continue_work"])
+        with self.db.connection() as c:
+            real = self.db._create_project(c, author, "我自己的书", "", "", "user_created")
+        home = self.db.home(author)
+        self.assertEqual(home["continue_work"]["project_id"], real)
+        self.assertEqual([row["project_id"] for row in home["recent_projects"]], [real])
+        self.assertNotIn(tutorial, [row["project_id"] for row in home["pending_continuity"]])
+
+    def test_the_sample_card_has_the_written_chapters_word_count(self):
+        author, tutorial = self.register()
+        project = self.db.project(author, tutorial)
+        with self.db.connection() as c:
+            written = sum(len("".join(row["body"].split())) for row in c.execute("SELECT body FROM v2_chapters WHERE project_id=?", (tutorial,)))
+        self.assertEqual(project["chapter_word_count"], written)
+        self.assertGreater(project["word_count"], written, "word_count also counts the draft")
 
 if __name__ == "__main__":
     unittest.main()
