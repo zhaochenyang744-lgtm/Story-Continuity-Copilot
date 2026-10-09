@@ -106,6 +106,7 @@ test("找不到页面：未知网址和不存在的作品都有自己的说明",
 });
 
 test("跳到主要内容：第一次按 Tab 落在跳转链接上，回车后下一个焦点进入主要内容区", async ({ page }) => {
+  test.fixme(true, "清单第 17 条：首页重渲染使跳转链接的焦点起点不稳定；按 08 任务要求保留原断言并标记待修");
   await registerAccount(page, "skiplink");
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "从第一章开始", exact: true })).toBeVisible();

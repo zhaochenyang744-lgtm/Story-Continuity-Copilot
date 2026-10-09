@@ -191,7 +191,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
       {!written.length && <p className="empty">还没有已写的章节。在写作页写完一章后点「完成本章」，或者在下面追加。</p>}
 
       {canPick && written.length > 0 && (
-        <div className="select-bar" aria-live="polite">
+        <div className="select-bar" aria-live="polite" data-testid="chapter-selection">
           <span className="select-count"><Num><Odometer value={picked.length} /></Num><span> / {MAX} 章</span></span>
           <span className="select-summary">
             {picked.length

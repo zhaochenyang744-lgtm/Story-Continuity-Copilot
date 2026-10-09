@@ -108,7 +108,7 @@ function FactsView({ p, go }: { p: ProjectState; go: (href: string) => void }) {
             <label className="search small"><span className="sr-only">搜索事实</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索" /></label>
           </div>
           {visible.length ? (
-            <ol className="fact-list">
+            <ol className="fact-list" aria-label="事实列表">
               {visible.map((record) => (
                 <li key={record.id} id={`memory-${record.id}`} className={record.valid_to != null ? "retired" : undefined}>
                   <button type="button" className="memory-source fact-chapter" disabled={!record.source} aria-label={record.source ? `看 ${record.subject} 出自哪一章` : `${record.subject} 没有出处`} onClick={(event) => void p.openMemorySource(record, event.currentTarget)}>

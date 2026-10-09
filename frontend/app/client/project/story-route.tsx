@@ -116,7 +116,7 @@ export function StoryRoute({ id, chapters, draft, threads, plans }: {
           const bend = Math.min(rise * 0.8, (futureStart - xp) * 0.8);
           const passed = Math.max(0, draftNumber - thread.planted);
           return (
-            <g key={thread.id} className={`route-thread-line${at !== null ? (thread.planted <= at ? " lit" : " dim") : ""}`} style={{ "--i": index } as CSSProperties}>
+            <g key={thread.id} data-testid={`route-thread-${thread.id}`} className={`route-thread-line${at !== null ? (thread.planted <= at ? " lit" : " dim") : ""}`} style={{ "--i": index } as CSSProperties}>
               <path d={`M ${xp} ${baseline - 8} C ${xp} ${y + rise / 3}, ${xp + bend * 0.37} ${y}, ${xp + bend} ${y} L ${futureStart} ${y}`} fill="none" stroke={INK} strokeWidth="2" />
               <path className="route-flow" d={`M ${futureStart} ${y} L ${end - 7} ${y}`} fill="none" stroke={INK} strokeWidth="2" strokeDasharray="5 6" />
               <rect x={end - 7} y={y - 7} width="14" height="14" fill={GROUND} stroke={INK} strokeWidth="2" />
@@ -186,7 +186,7 @@ export function StoryRoute({ id, chapters, draft, threads, plans }: {
         {Array.from({ length: Math.max(0, draftNumber - firstNumber + 1) }, (_, i) => firstNumber + i).map((n) => {
           const chapter = chapterByNumber.get(n);
           const tip = chapter ? `第 ${n} 章 · ${bareChapterTitle(chapter.title)} · ${chapter.status === "checked" ? "已检查" : chapter.status === "unchecked" || chapter.status === "empty" ? "未检查" : "改过，未重新检查"}` : draft && n === draftNumber ? `第 ${n} 章草稿 · ${bareChapterTitle(draft.title)}` : "";
-          return <rect key={`hit-${n}`} className="route-hit" x={x(n) - step / 2} y={10} width={step} height={height - 20} onMouseEnter={() => setAt(n)}>{tip && <title>{tip}</title>}</rect>;
+          return <rect key={`hit-${n}`} data-testid={`route-chapter-${n}`} className="route-hit" x={x(n) - step / 2} y={10} width={step} height={height - 20} onMouseEnter={() => setAt(n)}>{tip && <title>{tip}</title>}</rect>;
         })}
       </svg>
     </div>

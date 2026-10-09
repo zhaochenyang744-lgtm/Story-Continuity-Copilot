@@ -55,7 +55,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
   const imported = project.data_origin === "user_import" && project.memory_initialization_status !== "completed";
 
   return (
-    <section className="page overview">
+    <section className="page overview" data-testid="overview-page">
       {notices}
       <header className="overview-hero">
         <div className="overview-hero-main">
@@ -77,7 +77,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
               {!project.is_tutorial && !p.narrow && <button type="button" role="menuitem" onClick={() => open("archive")}>{project.status === "archived" ? "恢复作品" : "归档作品"}</button>}
             </Menu>
           </div>
-          <dl className="overview-figures">
+          <dl className="overview-figures" data-testid="overview-figures">
             <div>
               <dt className="sr-only">已写章节</dt>
               <dd><Num><CountUp id={`${project.id}:chapters`} value={project.chapter_count ?? 0} /></Num></dd>
@@ -88,7 +88,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
               <dd><Num className="blue"><CountUp id={`${project.id}:open`} value={issues.length} /></Num></dd>
               <dd className="figure-label">处待看</dd>
             </div>
-            <div className="wide">
+            <div className="wide" data-testid="overview-word-count">
               <dt className="sr-only">字数</dt>
               <dd><Num><CountUp id={`${project.id}:words`} value={project.chapter_word_count ?? Math.max(0, (project.word_count ?? 0) - draftChars)} /></Num></dd>
               <dd className="figure-label">字正文{draftChars ? ` · 另有草稿 ${formatCount(draftChars)} 字` : ""}</dd>

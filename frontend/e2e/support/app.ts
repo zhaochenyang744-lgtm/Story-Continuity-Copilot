@@ -235,23 +235,24 @@ export async function mailerCalls(page: Page): Promise<number> {
   return (await response.json()).mailer_calls;
 }
 
-/** Wait until the page is settled, then photograph the whole page into E2E_SCREENSHOTS_DIR/<name>.png. */
-export async function shot(page: Page, name: string) {
+/** Wait for layout/animations, then capture the whole page (legacy default) or the current viewport. */
+export async function shot(page: Page, name: string, fullPage = true) {
   const directory = process.env.E2E_SCREENSHOTS_DIR;
   if (!directory) throw new Error("E2E_SCREENSHOTS_DIR is required");
   await expect(page.getByText(/^正在(读取|载入)/)).toHaveCount(0);
-  await page.evaluate(async () => {
+  await page.evaluate(async (wholePage) => {
     await document.fonts.ready;
-    await Promise.all(document.getAnimations().filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity).map((animation) => animation.finished.catch(() => undefined)));
-  });
+    if (wholePage) await Promise.all(document.getAnimations().filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity).map((animation) => animation.finished.catch(() => undefined)));
+  }, fullPage);
+  if (!fullPage) await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === "running" && animation.effect?.getComputedTiming().iterations !== Infinity).length), { message: "viewport screenshot waits for running finite animations" }).toBe(0);
   await mkdir(directory, { recursive: true });
-  await page.screenshot({ path: path.join(directory, `${name}.png`), fullPage: true });
+  await page.screenshot({ path: path.join(directory, `${name}.png`), fullPage });
 }
 
-/** The page never needs sideways scrolling. */
-export async function expectNoHorizontalOverflow(page: Page) {
+/** Assert no sideways scrolling; soft mode keeps collecting evidence without hiding failures. */
+export async function expectNoHorizontalOverflow(page: Page, soft = false) {
   const overflow = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, inner: window.innerWidth }));
-  expect(overflow.scroll, `page is ${overflow.scroll}px wide in a ${overflow.inner}px window`).toBeLessThanOrEqual(overflow.inner);
+  (soft ? expect.soft : expect)(overflow.scroll, `page is ${overflow.scroll}px wide in a ${overflow.inner}px window`).toBeLessThanOrEqual(overflow.inner);
 }
 
 const tourEvents = ["memory_source_opened", "continuity_issue_located", "evidence_opened", "author_decision_recorded"] as const;

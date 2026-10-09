@@ -162,7 +162,7 @@ export function CountUp({ value, id }: { value: number; id: string }) {
   return (
     <span ref={host} className="count">
       <span className="count-ghost" aria-hidden="true">{text}</span>
-      <span ref={live} className="count-live" aria-hidden="true">{text}</span>
+      <span ref={live} className="count-live" aria-hidden="true" data-testid="count-live">{text}</span>
       <span className="sr-only">{text}</span>
     </span>
   );

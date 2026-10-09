@@ -192,7 +192,7 @@ export function Dialog({ title, children, close, closeDisabled = false, wide = f
   useScrollLock();
   const { ref, onKeyDown } = useFocusTrap<HTMLElement>(close, closeDisabled);
   return (
-    <div className="layer" role="presentation">
+    <div className="layer" role="presentation" data-testid="dialog-overlay">
       <section ref={ref} className={`dialog${wide ? " wide" : ""}`} role="dialog" aria-modal="true" aria-label={title} onKeyDown={onKeyDown}>
         <header className="dialog-head">
           <div>
