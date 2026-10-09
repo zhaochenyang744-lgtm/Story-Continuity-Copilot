@@ -22,7 +22,7 @@ from .database import DomainError, digest
 from .memory_contract import is_controlled_candidate, normalize_memory_value, normalized_predicate
 from .seed_data import CHAPTER_BODIES, CHAPTERS, CHARACTERS, DEMO_CHAPTER_CHECK, DEMO_REVIEW_ISSUES, DEMO_SEED_VERSION, DRAFT, FORESHADOWS, MEMORY_RECORDS, PLANS, PROJECT as SAMPLE_PROJECT, SETTINGS
 from .text_content import DRAFT_BODY_FORMATS, visible_draft_text, written_chars
-from .docx_import import docx_to_markdown
+from .docx_import import CHINESE_CHAPTER_HEADING, ENGLISH_CHAPTER_HEADING, docx_to_markdown
 from . import long_term_workflow as workflow
 from . import author_organization as organization
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION, VERIFY_MAX_PASSAGES as SCREENED_MAX_TRACE_SPANS
@@ -3898,8 +3898,6 @@ class V2Database:
             return total+current
 
         markdown=re.compile(r"^\s{0,3}#{1,6}\s+(.+?)\s*$")
-        chinese=re.compile(r"^\s*第\s*([0-9零〇一二两三四五六七八九十百]+)\s*([章节回卷])(?:\s*[:：、.\-]?\s*)(.*?)\s*$")
-        english=re.compile(r"^\s*chapter\s+([0-9]{1,4})(?:\s*[:：.\-]?\s*)(.*?)\s*$",re.I)
         directory_link=re.compile(r"^\s*(?:[0-9]{1,4}\s*\(\s*chapter[0-9]+\.html\s*\)|返回(?:总)?目录\s*\(\s*chapter[0-9]+\.html\s*\))\s*$",re.I)
         numeric=re.compile(r"^\s*([0-9]{1,4})\s*$")
 
@@ -3907,10 +3905,10 @@ class V2Database:
         for index,line in enumerate(plain_lines):
             if match:=markdown.match(line):
                 markdown_markers.append({"index":index,"number":None,"title":match.group(1).strip(),"kind":"markdown","suffix":match.group(1).strip(),"excluded":[]})
-            if match:=chinese.match(line):
+            if match:=CHINESE_CHAPTER_HEADING.match(line):
                 token,unit,suffix=match.groups()
                 explicit_markers.append({"index":index,"number":parsed_number(token),"title":suffix.strip() or f"第{token}{unit}","kind":"chinese","suffix":suffix.strip(),"marker_title":f"第{token}{unit}","excluded":[]})
-            elif match:=english.match(line):
+            elif match:=ENGLISH_CHAPTER_HEADING.match(line):
                 token,suffix=match.groups()
                 explicit_markers.append({"index":index,"number":int(token),"title":suffix.strip() or f"Chapter {token}","kind":"english","suffix":suffix.strip(),"marker_title":f"Chapter {token}","excluded":[]})
             if match:=numeric.match(line): numeric_markers.append({"index":index,"number":int(match.group(1)),"title":f"第{int(match.group(1))}节","kind":"numeric","suffix":"","excluded":[]})

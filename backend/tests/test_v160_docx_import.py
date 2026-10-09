@@ -15,6 +15,7 @@ from app.database import DomainError
 from app.docx_import import docx_to_markdown
 from app.main import create_app
 from app.stage13 import Stage13Settings
+from app.v2_database import V2Database
 
 NS = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"'
 STYLES = f'''<?xml version="1.0" encoding="UTF-8"?><w:styles {NS}>
@@ -49,6 +50,40 @@ BOOK = docx([
 
 
 class DocxToMarkdownTests(unittest.TestCase):
+    def chapters(self, paragraphs):
+        return V2Database._parse_import(None, docx_to_markdown(docx(paragraphs)))[0]
+
+    def test_mixed_styled_and_bold_plain_chapter_headings(self):
+        bold = '<w:p><w:r><w:rPr><w:b/></w:rPr><w:t>第三章 空舱</w:t></w:r></w:p>'
+        chapters = self.chapters([
+            paragraph("第一章 雨夜", "Heading1"), paragraph("雨落在码头。"),
+            paragraph("第二章 回声", "a3"), paragraph("船舱里传来声音。"),
+            bold, paragraph("舱里只剩一把木椅。"),
+        ])
+        self.assertEqual(len(chapters), 3)
+        self.assertEqual(chapters[2]["title"], "第三章 空舱")
+
+    def test_all_plain_chinese_and_english_headings_split(self):
+        for titles in (["第一章 雨夜", "第二章 空舱"], ["Chapter 1 Rain", "Chapter 2 Cabin"]):
+            with self.subTest(titles=titles):
+                chapters = self.chapters([paragraph(titles[0]), paragraph("雨落在码头。"),
+                                          paragraph(titles[1], "Normal"), paragraph("舱里只剩一把木椅。")])
+                self.assertEqual(len(chapters), 2)
+                self.assertEqual([c["title"] for c in chapters], titles)
+
+    def test_long_body_mentioning_chapter_is_not_promoted(self):
+        body = "第三章里提到的旧船一直停在码头边，值班员说等潮水退去以后再去检查船底的裂缝，在那之前谁也不能上船。"
+        self.assertGreater(len(body), 40)
+        paragraphs = [paragraph("第一章 雨夜", "Heading1"), paragraph(body)]
+        self.assertIn("\n" + body + "\n", docx_to_markdown(docx(paragraphs)))
+        self.assertEqual(len(self.chapters(paragraphs)), 1)
+
+    def test_short_heading_limit_includes_40_but_not_41_characters(self):
+        for length in (40, 41):
+            title = "第三章 " + "空" * (length - 4)
+            converted = docx_to_markdown(docx([paragraph(title)]))
+            self.assertEqual(converted.startswith("# "), length == 40)
+
     def test_headings_become_chapter_headings_and_paragraphs_lines(self):
         self.assertEqual(docx_to_markdown(BOOK).splitlines(),
                          ["# 第一章 雾钟", "苏岑在黄昏时抵达灰港。", "雾钟只在北潮闸关闭后敲响。", "# 第二章 裂纹罗盘", "她在测绘塔找到父亲的罗盘。"])

@@ -243,3 +243,51 @@ test("不支持的文件：错误留在第一步，不会进入预览", async ({
   await expect(page.getByRole("list", { name: "分章预览" })).toHaveCount(0);
   expect(await listWorks(page)).toEqual([]);
 });
+
+// Stored ZIP fixture generated with Node buffers; no additional package is needed.
+function mixedHeadingDocx(): Buffer {
+  const ns = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"';
+  const files: Record<string, string> = {
+    "[Content_Types].xml": '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>',
+    "_rels/.rels": '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>',
+    "word/_rels/document.xml.rels": '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>',
+    "word/styles.xml": '<w:styles ' + ns + '><w:style w:type="paragraph" w:styleId="1"><w:name w:val="heading 1"/></w:style></w:styles>',
+    "word/document.xml": '<w:document ' + ns + '><w:body>' + ["第一章 雨夜", "第二章 回声", "第三章 空舱"].map((title, i) => '<w:p>' + (i < 2 ? '<w:pPr><w:pStyle w:val="1"/></w:pPr>' : '') + '<w:r>' + (i === 2 ? '<w:rPr><w:b/></w:rPr>' : '') + '<w:t>' + title + '</w:t></w:r></w:p><w:p><w:r><w:t>值班员走进第' + (i + 1) + '间船舱，记下窗边的水迹。</w:t></w:r></w:p>').join("") + '</w:body></w:document>',
+  };
+  const local: Buffer[] = [], central: Buffer[] = [];
+  let offset = 0;
+  for (const [name, value] of Object.entries(files)) {
+    const filename = Buffer.from(name), data = Buffer.from(value);
+    let crc = 0xffffffff;
+    for (const byte of data) {
+      crc ^= byte;
+      for (let bit = 0; bit < 8; bit++) crc = (crc >>> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
+    }
+    crc = (crc ^ 0xffffffff) >>> 0;
+    const header = Buffer.alloc(30), entry = Buffer.alloc(46);
+    header.writeUInt32LE(0x04034b50); header.writeUInt16LE(20, 4);
+    header.writeUInt32LE(crc, 14); header.writeUInt32LE(data.length, 18); header.writeUInt32LE(data.length, 22); header.writeUInt16LE(filename.length, 26);
+    entry.writeUInt32LE(0x02014b50); entry.writeUInt16LE(20, 4); entry.writeUInt16LE(20, 6);
+    entry.writeUInt32LE(crc, 16); entry.writeUInt32LE(data.length, 20); entry.writeUInt32LE(data.length, 24); entry.writeUInt16LE(filename.length, 28); entry.writeUInt32LE(offset, 42);
+    local.push(header, filename, data); central.push(entry, filename);
+    offset += header.length + filename.length + data.length;
+  }
+  const directory = Buffer.concat(central), end = Buffer.alloc(22);
+  end.writeUInt32LE(0x06054b50); end.writeUInt16LE(central.length / 2, 8); end.writeUInt16LE(central.length / 2, 10);
+  end.writeUInt32LE(directory.length, 12); end.writeUInt32LE(offset, 16);
+  return Buffer.concat([...local, directory, end]);
+}
+
+test("13 R Word 混用标题样式和加粗正文标题：预览和导入均为三章", async ({ page }) => {
+  await registerAccount(page, "wordmixed");
+  await toPreview(page, await tempFile("mixed-headings.docx", mixedHeadingDocx()));
+  await expect(chapterRows(page)).toHaveCount(3);
+  await expect(chapterRows(page)).toHaveText([/第一章 雨夜/, /第二章 回声/, /第三章 空舱/]);
+  await shot(page, "13-R-word-preview-day", false);
+  await finishImport(page, "混合样式的航海笔记");
+  await page.getByRole("button", { name: "导入并创建作品", exact: true }).click();
+  await expect(page).toHaveURL(/\/projects\/[^/]+\/overview$/);
+  const { chapters } = await importedWork(page, "混合样式的航海笔记");
+  expect(chapters.map(c => c.title)).toEqual(["第一章 雨夜", "第二章 回声", "第三章 空舱"]);
+  for (const [i, chapter] of chapters.entries()) expect(JSON.stringify(chapter)).toContain("第" + (i + 1) + "间船舱");
+});
