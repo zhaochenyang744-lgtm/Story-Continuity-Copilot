@@ -101,12 +101,11 @@ export function App() {
       return next;
     } catch (cause) {
       try { applyOnboarding(await request<Onboarding>("/onboarding")); } catch { /* keep the first failure */ }
-      fail(cause);
-      throw cause;
+      console.warn("导览进度暂时没有记下，当前操作仍可继续。", cause);
     }
-  }, [applyOnboarding, fail]);
+  }, [applyOnboarding]);
 
-  const p = useProject({ projectId, user, narrow, fail, notify, applyOnboarding, recordTutorialEvent });
+  const p = useProject({ projectId, user, narrow, onboarding, tutorialProgress, fail, notify, applyOnboarding, recordTutorialEvent });
   useEffect(() => { clearProject.current = p.clear; }, [p.clear]);
 
   // Theme: layout.tsx applies it before paint — the choice remembered on this device, otherwise the

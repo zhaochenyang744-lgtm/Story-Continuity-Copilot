@@ -411,8 +411,9 @@ function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided }:
   const [applying, setApplying] = useState(false);
   const [markBusy, setMarkBusy] = useState(false);
   const [error, setError] = useState("");
-  const tutorial = Boolean(p.project?.is_tutorial);
-  const gate = tutorial && tutorialStep < 4;
+  const tutorial = p.tutorialActive;
+  const [evidenceRevealed, setEvidenceRevealed] = useState(false);
+  const gate = tutorial && tutorialStep < 4 && !evidenceRevealed;
   const tone = findingTone(issue);
   const evidence = issue.evidence ?? [];
   const suggestion = issue.suggested_revision?.before && issue.suggested_revision.after ? issue.suggested_revision : null;
@@ -465,7 +466,7 @@ function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided }:
       {gate ? (
         <div className="finding-gate">
           <p>下一步会展开前文依据和判断理由；这里只推进导览，不会替你处理这一条。</p>
-          <Button kind="primary" className="tutorial-primary-action" disabled={Boolean(p.busy)} onClick={() => void p.beginEvidence()}>查看完整依据</Button>
+          <Button kind="primary" className="tutorial-primary-action" disabled={Boolean(p.busy)} onClick={() => { setEvidenceRevealed(true); void p.beginEvidence(); }}>查看完整依据</Button>
         </div>
       ) : (
         <>

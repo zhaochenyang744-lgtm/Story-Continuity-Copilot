@@ -11,6 +11,52 @@ const startTour = async (page: Page) => {
   await expect(bar(page)).toContainText("导览 1 / 5");
 };
 
+for (const outcome of ["complete", "skip"] as const) {
+  test(`12 L ${outcome} 后从首页重进示例：无导览、可看依据和决定，再开始回到第一步`, async ({ page }) => {
+    await registerAccount(page, `l${outcome}`);
+    const id = await sampleWorkId(page);
+    if (outcome === "complete") await advanceTour(page, id, 5);
+    await api(page).post(`/onboarding/${outcome}`, { confirm: true });
+    await page.goto("/");
+    await page.getByRole("region", { name: "示例作品", exact: true }).getByRole("button", { name: /灰港回声/ }).click();
+    await page.getByRole("navigation", { name: "作品", exact: true }).getByRole("button", { name: "写作", exact: true }).click();
+    await expect(bar(page)).toHaveCount(0);
+    const before = await sampleCheck(page, id);
+    const issue = before.issues.find((item: { decision: unknown }) => !item.decision)!;
+    await page.getByTestId(`finding-${issue.id}`).click();
+    await expect(findings(page).getByText("依据", { exact: true })).toBeVisible();
+    await expect(findings(page).getByRole("button", { name: "查看完整依据", exact: true })).toHaveCount(0);
+    await findings(page).getByRole("button", { name: "不是问题", exact: true }).click();
+    await expect.poll(async () => (await sampleCheck(page, id)).issues.find((item: { id: string }) => item.id === issue.id)?.decision?.decision).toBe("false_positive");
+    await shot(page, `12-L-${outcome}-reentry-day`, false);
+    await page.goto("/");
+    await page.getByRole("button", { name: "重新看一遍导览", exact: true }).click();
+    await expect(bar(page)).toContainText("导览 1 / 5");
+    expect((await api(page).get("/onboarding")).status).toBe("active");
+  });
+}
+
+test("12 L 导览事件失败不阻断出处、完整依据和决定", async ({ page }) => {
+  await registerAccount(page, "levent");
+  const id = await sampleWorkId(page);
+  await advanceTour(page, id, 3);
+  await page.route("**/api/onboarding/progress", route => route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ error: { code: "service_unavailable" } }) }));
+  await openTab(page, id, "memory");
+  await page.getByRole("button", { name: /出自哪一章$/ }).first().click();
+  const source = page.getByRole("dialog", { name: /^第 \d+ 章/ });
+  await expect(source).toBeVisible();
+  await source.getByRole("button", { name: "关闭", exact: true }).click();
+  await openTab(page, id, "workspace");
+  const result = await sampleCheck(page, id);
+  await page.getByTestId(`finding-${result.issues[0].id}`).click();
+  await findings(page).getByRole("button", { name: "查看完整依据", exact: true }).click();
+  await expect(findings(page).getByText("依据", { exact: true })).toBeVisible();
+  await findings(page).getByRole("button", { name: "不是问题", exact: true }).click();
+  await expect(notice(page, "记下了：这一条不是问题，不会写进资料。")).toBeVisible();
+  expect((await sampleCheck(page, id)).issues[0].decision.decision).toBe("false_positive");
+  await expect(page.getByRole("alert").filter({ hasText: /请求|失败|无法|没有/ })).toHaveCount(0);
+});
+
 test("走完导览：看事实出处 → 找检查结果 → 看依据 → 作决定 → 完成", async ({ page }) => {
   await registerAccount(page, "tour");
   const workId = await sampleWorkId(page);

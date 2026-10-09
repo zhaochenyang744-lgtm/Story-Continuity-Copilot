@@ -55,7 +55,7 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
 
   const notices = (
     <>
-      {project.is_tutorial && (
+      {p.tutorialActive && (
         <TutorialBar
           projectId={project.id}
           tab={tab}
@@ -72,7 +72,7 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
         <p className="note note-info readonly" role="note">
           {project.status === "archived"
             ? "这部作品已归档，只能浏览。恢复后才能保存、检查和处理。"
-            : project.is_tutorial && tutorialStep === 4
+            : p.tutorialActive && tutorialStep === 4
               ? "手机上可以浏览完整依据；请在电脑上继续作出决定。"
               : "窗口较窄，现在只能浏览。把窗口放宽就能继续写作和检查。"}
         </p>
@@ -90,7 +90,7 @@ export function ProjectFrame({ p, tab, rawTab, user, usage, tutorialStep, finish
   return (
     <>
       {page}
-      {project.is_tutorial && (
+      {p.tutorialActive && (
         <TutorialGuidance projectId={project.id} step={tutorialStep} tab={tab} readOnly={p.readOnly} busy={Boolean(p.busy)} evidenceOpen={Boolean(p.selected)} sourceOpen={Boolean(p.sourceRecord)} requestId={guidanceRequest} />
       )}
       {dialog === "export" && <Dialog title="导出作品" close={() => setDialog(null)}><ExportPanel projectId={project.id} /></Dialog>}

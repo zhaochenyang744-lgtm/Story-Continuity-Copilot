@@ -28,6 +28,7 @@ import type {
   Project,
   Run,
   TutorialEvent,
+  TutorialProgress,
   User,
   WritingAnalysisRun,
 } from "../../model";
@@ -81,6 +82,8 @@ export function useProject({
   projectId,
   user,
   narrow,
+  onboarding,
+  tutorialProgress,
   fail,
   notify,
   applyOnboarding,
@@ -89,6 +92,8 @@ export function useProject({
   projectId: string | null;
   user: User | null;
   narrow: boolean;
+  onboarding: Onboarding | null;
+  tutorialProgress: TutorialProgress | null;
   fail: (cause: unknown) => void;
   notify: (message: string) => void;
   applyOnboarding: (next: Onboarding) => void;
@@ -136,8 +141,11 @@ export function useProject({
   const selectTrigger = useRef<HTMLElement | null>(null);
   const sourceTrigger = useRef<HTMLElement | null>(null);
 
+  const tutorialActive = Boolean(project?.is_tutorial && onboarding?.status === "active" && tutorialProgress?.tutorial_project_id === project.id);
+
   // Recording any tour step ends the "已回到第 N 步" note.
   const tutorialEvent = (id: string, event: TutorialEvent, context?: { run_id: string; issue_id: string }) => {
+    if (!tutorialActive) return Promise.resolve();
     tutorialRestarted.current = false;
     setTutorialRestored(false);
     return recordTutorialEvent(id, event, context);
@@ -402,7 +410,7 @@ export function useProject({
     setPendingDecisionConflict("");
     setControlled(null);
     setRun((current) => (current?.run_id === checkedRun.run_id ? checkedRun : current));
-    if (project?.is_tutorial) {
+    if (tutorialActive && project) {
       try { await tutorialEvent(project.id, "author_decision_recorded"); } catch { /* The decision stands on its own. */ }
     }
     notify(message);
@@ -691,7 +699,7 @@ export function useProject({
 
   const select = async (issue: Issue, element: HTMLElement | null) => {
     selectTrigger.current = element;
-    if (project?.is_tutorial) {
+    if (tutorialActive && project) {
       try { await tutorialEvent(project.id, "continuity_issue_located"); } catch { /* resynchronised by the caller */ }
     }
     setSelected(issue);
@@ -717,7 +725,7 @@ export function useProject({
         ...(run.current_revision !== run.source_revision ? { resulting_revision: run.current_revision } : {}),
       });
       setLocallyResolvedIssueIds((ids) => [...new Set([...ids, issue.id])]);
-      if (project?.is_tutorial) await tutorialEvent(project.id, "author_decision_recorded");
+      if (tutorialActive && project) await tutorialEvent(project.id, "author_decision_recorded");
       const refreshed = await request<Run>(checkPath(projectId, run.run_id));
       setRun(refreshed);
       setSelected(refreshed.issues?.find((item) => item.id === issue.id) ?? { ...issue, decision: { decision: recorded.decision ?? decision, resulting_revision: recorded.resulting_revision ?? null } });
@@ -753,12 +761,12 @@ export function useProject({
     return true;
   };
   const reviewDecision = async (issue: Issue) => {
-    if (!project?.is_tutorial || !run) return;
+    if (!tutorialActive || !project || !run) return;
     await tutorialEvent(project.id, "author_decision_reviewed", { run_id: run.run_id, issue_id: issue.id });
     notify("复习过这条已有的决定了；没有新建或改写决定，可以继续导览。");
   };
   const beginEvidence = async () => {
-    if (project?.is_tutorial) await tutorialEvent(project.id, "evidence_opened");
+    if (tutorialActive && project) await tutorialEvent(project.id, "evidence_opened");
   };
 
   const review = async () => {
@@ -975,7 +983,7 @@ export function useProject({
       chapterTitle: memory.source.chapter_title, spanId: memory.source.span_id, excerpt: memory.source.excerpt, sourcePath: memory.source.source_path,
       memoryType: memory.memory_type, reviewStatus: memory.review_status, memoryValidFrom: memory.valid_from, memoryValidTo: memory.valid_to,
     });
-    if (project?.is_tutorial) {
+    if (tutorialActive && project) {
       try { await tutorialEvent(project.id, "memory_source_opened"); } catch { /* the drawer stays open */ }
     }
   };
@@ -998,7 +1006,7 @@ export function useProject({
     initialization, memoryDelta, coverage, contextBrief, planAlignment, analysisBusy, busy, selected, controlled,
     pendingControlledDecision, locallyResolvedIssueIds, changeSet, saveFailed, autosaveState, draftRecoveryPrompt,
     draftRecoveryConflict, draftRecoveryUnavailable, pendingDecisionStorageUnavailable, pendingDecisionConflict,
-    pendingDecisionPersisted, sourceRecord, tutorialRestored, readOnly, dirty, narrow,
+    pendingDecisionPersisted, sourceRecord, tutorialRestored, tutorialActive, readOnly, dirty, narrow,
     // actions
     notify, clear, loadProject, refreshReferences, refreshSummary, adoptNextDraft, setDraft, save, check, cancelRun, retryRun, startAnalysis, analysisAction,
     select, deselect, decide, markToRevise, startControlledEdit, applySuggestion, reviewDecision, beginEvidence,
