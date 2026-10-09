@@ -120,8 +120,9 @@ test("正文存上了、决定没记下：只补记决定", async ({ page }) => 
 test("待补记的决定经得起刷新", async ({ page }) => { await pendingDecision(page, true); });
 
 test("全部处理完，审阅事实变化", async ({ page }) => {
-  test.fixme(true, "示例结果处理完显示审阅入口，但 POST memory/change-sets 返回 422 no_reviewable_changes，无法进入事实审阅");
   const id = await setup(page), result = await run(page, id), before = await api(page).get(`/projects/${id}`);
+  // Only the sample's state update comes with a proposed fact change.
+  expect(result.issues.filter((i: any) => i.has_memory_proposal).map((i: any) => i.nature)).toEqual(["state_change"]);
   for (const issue of result.issues) {
     await selectIssue(page, issue);
     if (issue.nature === "insufficient_evidence") {
@@ -130,25 +131,40 @@ test("全部处理完，审阅事实变化", async ({ page }) => {
     } else await decide(page, id, issue, issue.nature === "state_change" ? "保留这个变化" : "是有意的", "keep_intentional");
   }
   await expect(findings(page)).toContainText("都处理完了。最后确认哪些事实有变化，再记进资料。");
+  await expect(findings(page).getByText("这次没有要记进资料的变化。", { exact: true })).toHaveCount(0);
   const response = page.waitForResponse(r => r.request().method() === "POST" && r.url().endsWith("/memory/change-sets"));
   await button(page, "审阅事实变化").click();
   const res = await response;
   expect(res.ok(), await res.text()).toBe(true);
   const changes = (await res.json()).data.change_set;
-  expect(changes.items.length).toBeGreaterThanOrEqual(2);
+  expect(changes.items).toHaveLength(1);
+  expect(changes.items[0]).toMatchObject({ operation: "replace", after: { subject: "黄铜罗盘", value: "放在档案室的桌上" } });
   const form = page.getByRole("form", { name: "审阅事实变化", exact: true });
-  await form.getByRole("radio", { name: "不记", exact: true }).nth(1).check();
-  if (changes.items.length > 2) {
-    await form.getByRole("radio", { name: "改一下再记", exact: true }).nth(2).check();
-    await form.getByRole("textbox", { name: "内容", exact: true }).nth(2).fill("作者核对后的测试事实。");
-  }
-  await shot(page, "writing-fact-review");
+  await expect(form).toContainText("截至第10章末仍握在温岚手中");
+  await expect(form).toContainText("放在档案室的桌上");
+  await expect(form.getByRole("radio", { name: "记下", exact: true })).toBeChecked();
+  await form.scrollIntoViewIfNeeded();
+  await shot(page, "writing-fact-review", false);
   await button(page, "确认并更新资料").click();
   await expect.poll(async () => (await api(page).get(`/projects/${id}`)).current_memory_version).toBe(before.current_memory_version + 1);
   const records = (await api(page).get(`/projects/${id}/memory`)).records;
-  expect(records.some((m: any) => m.subject === changes.items[0].after.subject && m.value === changes.items[0].after.value)).toBe(true);
-  expect(records.some((m: any) => m.subject === changes.items[1].after.subject && m.predicate === changes.items[1].after.predicate && m.value === changes.items[1].after.value)).toBe(false);
-  if (changes.items.length > 2) expect(records.some((m: any) => m.value === "作者核对后的测试事实。")).toBe(true);
+  expect(records.some((m: any) => m.subject === "黄铜罗盘" && m.predicate === "holder_at_ch10_end" && m.value === "放在档案室的桌上")).toBe(true);
+  expect(records.some((m: any) => m.subject === "黄铜罗盘" && m.value.includes("截至第10章末仍握在温岚手中"))).toBe(false);
+  await expect(form).toHaveCount(0);
+});
+
+test("没有要记进资料的变化：不给审阅入口", async ({ page }) => {
+  const id = await setup(page);
+  await saveBody(page, id, "苏岑拿着黄铜罗盘，温岚的手中已经空了，E2E_SUGGEST。");
+  const result = await finishCheck(page, id, await beginCheck(page, id));
+  expect(result.issues.map((i: any) => i.has_memory_proposal)).toEqual([false]);
+  const issue = result.issues[0];
+  await decide(page, id, issue, "不是问题", "false_positive");
+  await expect(findings(page).getByText("这次没有要记进资料的变化。", { exact: true })).toBeVisible();
+  await expect(button(page, "审阅事实变化")).toHaveCount(0);
+  await shot(page, "writing-no-fact-changes", false);
+  const attempt = await api(page).raw("POST", `/projects/${id}/memory/change-sets`, { run_id: result.run_id, source_run_revision: result.source_revision, resolved_revision: result.current_revision });
+  expect([attempt.status, attempt.body.error.code]).toEqual([422, "no_reviewable_changes"]);
 });
 
 test("自动沿用之前的判断：只改无关句子", async ({ page }) => {

@@ -84,6 +84,84 @@ class PublishedSampleWorkTests(unittest.TestCase):
         self.assertEqual((after_reset["reset"], after_reset["foreshadows_after_reset"], after_reset["fk_after_reset"]), (200, len(published["foreshadows"]), True))
 
 
+class SampleFactReviewTests(unittest.TestCase):
+    """The sample check can be taken all the way: decide every finding, review the fact change, record it."""
+
+    def test_only_the_state_update_proposes_a_fact_change_and_it_points_at_the_compass_record(self):
+        data = seed_data._load(seed_data.SAMPLE_WORK_PATH)
+        proposals = [(issue["nature"], issue["proposed_memory_change"]) for issue in data["draft_issues"] if issue.get("proposed_memory_change")]
+        self.assertEqual([nature for nature, _ in proposals], ["state_change"])
+        change = proposals[0][1]
+        self.assertEqual(change["operation"], "replace")
+        records = [(f"sample-memory-{index}", record) for index, record in enumerate(data["memory"], 1)]
+        target = dict(records)[change["affected_memory_id"]]
+        self.assertEqual((change["memory_type"], change["subject"], change["predicate"]), (target["type"], target["subject"], target["predicate"]))
+        self.assertEqual(data["seed_version"], 5)
+
+    def test_deciding_the_sample_findings_leads_to_one_recordable_fact_change(self):
+        script = textwrap.dedent("""
+            import json, pathlib, tempfile, uuid
+            from fastapi.testclient import TestClient
+            from app.config import AppPaths
+            from app.main import create_app
+            root = pathlib.Path(tempfile.mkdtemp(prefix="v170-fact-review-"))
+            app = create_app(AppPaths.from_project_root(root, protected_poc_root=root / "protected"), executor=lambda fn, *args: fn(*args))
+            client = TestClient(app)
+            headers = lambda: {"Idempotency-Key": str(uuid.uuid4())}
+            data = client.post("/api/auth/register", headers=headers(), json={
+                "account_name": "f" + uuid.uuid4().hex[:8], "display_name": "F", "password": "valid-password-99",
+                "recovery_email": uuid.uuid4().hex[:8] + "@example.test"}).json()["data"]
+            pid = data["onboarding"]["tutorial"]["project_id"]
+            project = client.get(f"/api/projects/{pid}").json()["data"]
+            run = client.get(f"/api/projects/{pid}/checks/{project['latest_run']['run_id']}?include=issues,evidence").json()["data"]
+            out = {"flags": {issue["nature"]: issue["has_memory_proposal"] for issue in run["issues"]}}
+            def post(path, body):
+                response = client.post(f"/api/projects/{pid}{path}", headers=headers(), json=body)
+                return response.status_code, response.json()
+            # Before any decision there is nothing to review.
+            out["early"] = post("/memory/change-sets", {"run_id": run["run_id"], "source_run_revision": run["source_revision"], "resolved_revision": run["current_revision"]})[0]
+            # Keeping every finding on purpose except the one that carries the fact change is not enough ...
+            for issue in run["issues"]:
+                if issue["nature"] == "state_change" or "keep_intentional" not in (issue.get("available_actions") or []):
+                    continue
+                post(f"/issues/{issue['id']}/decision", {"run_id": run["run_id"], "source_revision": run["source_revision"], "decision": "false_positive"})
+            state = next(issue for issue in run["issues"] if issue["nature"] == "state_change")
+            post(f"/issues/{state['id']}/decision", {"run_id": run["run_id"], "source_revision": run["source_revision"], "decision": "keep_intentional"})
+            code, body = post("/memory/change-sets", {"run_id": run["run_id"], "source_run_revision": run["source_revision"], "resolved_revision": run["current_revision"]})
+            out["review"] = code
+            change_set = body["data"]["change_set"]
+            out["items"] = [{"operation": item["operation"], "value": item["after"]["value"], "before": item["before"]["subject"]} for item in change_set["items"]]
+            before_version = client.get(f"/api/projects/{pid}").json()["data"]["current_memory_version"]
+            code, body = post(f"/memory/change-sets/{change_set['id']}/commit", {"confirm": True, "accepted_item_ids": [item["id"] for item in change_set["items"]], "rejected_item_ids": []})
+            out["commit"] = code
+            out["version_step"] = client.get(f"/api/projects/{pid}").json()["data"]["current_memory_version"] - before_version
+            # ... and when the state update is not kept as a change, there is nothing to record at all.
+            second = client.post("/api/auth/register", headers=headers(), json={
+                "account_name": "g" + uuid.uuid4().hex[:8], "display_name": "G", "password": "valid-password-99",
+                "recovery_email": uuid.uuid4().hex[:8] + "@example.test"}).json()["data"]
+            pid = second["onboarding"]["tutorial"]["project_id"]
+            project = client.get(f"/api/projects/{pid}").json()["data"]
+            run = client.get(f"/api/projects/{pid}/checks/{project['latest_run']['run_id']}?include=issues,evidence").json()["data"]
+            for issue in run["issues"]:
+                if "false_positive" in (issue.get("available_actions") or []):
+                    post(f"/issues/{issue['id']}/decision", {"run_id": run["run_id"], "source_revision": run["source_revision"], "decision": "false_positive"})
+            code, body = post("/memory/change-sets", {"run_id": run["run_id"], "source_run_revision": run["source_revision"], "resolved_revision": run["current_revision"]})
+            out["none"] = [code, body["error"]["code"]]
+            print(json.dumps(out, ensure_ascii=False))
+        """)
+        env = {key: value for key, value in os.environ.items() if key != "STORY_SAMPLE_WORK_FILE"}
+        env.update({"PUBLIC_APP_MODE": "0", "PUBLIC_BASE_URL": "http://127.0.0.1:3000", "BACKEND_ORIGIN": "http://127.0.0.1:8000",
+                    "TRUSTED_HOSTS": "127.0.0.1:8000,testserver", "TRUSTED_ORIGINS": "http://127.0.0.1:3000,http://testserver", "PYTHONIOENCODING": "utf-8"})
+        result = subprocess.run([sys.executable, "-c", script], cwd=BACKEND, env=env, capture_output=True, text=True, encoding="utf-8", timeout=300)
+        self.assertEqual(result.returncode, 0, result.stderr[-3000:])
+        out = json.loads(result.stdout.strip().splitlines()[-1])
+        self.assertEqual(out["flags"], {"confirmed_conflict": False, "state_change": True, "possible_conflict": False, "insufficient_evidence": False})
+        self.assertEqual(out["early"], 409, "undecided findings still block the review")
+        self.assertEqual((out["review"], out["commit"], out["version_step"]), (201, 200, 1), out)
+        self.assertEqual(out["items"], [{"operation": "replace", "value": "放在档案室的桌上", "before": "黄铜罗盘"}])
+        self.assertEqual(out["none"], [422, "no_reviewable_changes"])
+
+
 class SingleSampleMigrationTests(unittest.TestCase):
     def setUp(self):
         self.env = patch.dict(os.environ, {

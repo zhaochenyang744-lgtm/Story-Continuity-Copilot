@@ -229,7 +229,15 @@
       "explanation": "这是温岚把保管中的罗盘从手里放到桌上的正常动作，有清楚的先后顺序。应更新位置记录，不应当作错误。",
       "reasoning": "第10章“罗盘仍由温岚保管”（ch10-p2）只确定章末罗盘在温岚手中。草稿的“随后”明确引入后续动作，手中到桌上的变化没有占用同一时刻。此句单独展示合理状态变化，不因前一句的刻意矛盾被判为另一处矛盾。",
       "evidence_passage": "ch10-p2",
-      "suggested_revision": null
+      "suggested_revision": null,
+      "proposed_memory_change": {
+        "operation": "replace",
+        "affected_memory_id": "sample-memory-12",
+        "memory_type": "dynamic_state",
+        "subject": "黄铜罗盘",
+        "predicate": "holder_at_ch10_end",
+        "value": "放在档案室的桌上"
+      }
     },
     {
       "sentence": "傍晚六点，北潮闸尚未关闭，雾钟又敲响了一次。",

@@ -32,7 +32,7 @@ import type {
   WritingAnalysisRun,
 } from "../../model";
 import { replaceVisibleDraftText } from "../editor";
-import { activeAnalysis, activeRun, categoryLabel, retryableAnalysis, retryableRun, timeLabel } from "../labels";
+import { NO_FACT_CHANGES, activeAnalysis, activeRun, categoryLabel, retryableAnalysis, retryableRun, timeLabel } from "../labels";
 
 export const BULK_REVIEW_THRESHOLD = 12;
 const BULK_DECISION_BATCH = 200;
@@ -776,7 +776,10 @@ export function useProject({
       const data = await json<{ change_set: ChangeSet }>(`/projects/${projectId}/memory/change-sets`, "POST", { run_id: run.run_id, source_run_revision: run.source_revision, resolved_revision: run.current_revision });
       setChangeSet(data.change_set);
       window.setTimeout(() => document.getElementById("fact-review")?.scrollIntoView({ block: "start", behavior: "smooth" }), 0);
-    } catch (cause) { fail(cause); } finally { setBusy(""); }
+    } catch (cause) {
+      if ((cause as ApiFailure).code === "no_reviewable_changes") notify(NO_FACT_CHANGES);
+      else fail(cause);
+    } finally { setBusy(""); }
   };
   const commit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

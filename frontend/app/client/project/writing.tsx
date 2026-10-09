@@ -16,6 +16,7 @@ import {
   findingTone,
   memoryTypeLabel,
   memoryTypes,
+  NO_FACT_CHANGES,
   predicateLabel,
   readableKeys,
   retryableAnalysis,
@@ -64,6 +65,8 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
   const issues = groupIssues(p.run?.issues ?? []);
   const isDone = (issue: Issue) => Boolean(issue.decision || issue.reused_decision || p.locallyResolvedIssueIds.includes(issue.id));
   const pending = issues.filter((issue) => issueNeedsDecision(issue, p.locallyResolvedIssueIds)).length;
+  // The backend only offers a fact review for findings the author kept on purpose and that came with a proposed fact change.
+  const hasFactChanges = issues.some((issue) => issue.has_memory_proposal && issue.decision?.decision === "keep_intentional" && !issue.decision.reused);
   const locked = p.readOnly || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingControlledDecision);
   const blocked = locked || Boolean(p.busy);
   const hasPlans = Boolean(p.authorContext && p.authorContext.story_plans.length + p.authorContext.character_plans.length + p.authorContext.world_plans.length > 0);
@@ -218,8 +221,9 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
               {finished && pending === 0 && (
                 <div className="findings-zero">
                   <Num>0</Num>
-                  <p><strong>这一章前后不打架。</strong>{issues.length ? "都处理完了。最后确认哪些事实有变化，再记进资料。" : "这次检查没有发现要处理的地方。"}</p>
-                  {issues.length > 0 && !p.readOnly && <Button kind="primary" disabled={blocked || p.run.lineage_status === "superseded_unlinked"} onClick={() => void p.review()}>审阅事实变化</Button>}
+                  <p><strong>这一章前后不打架。</strong>{issues.length ? (hasFactChanges ? "都处理完了。最后确认哪些事实有变化，再记进资料。" : "都处理完了。") : "这次检查没有发现要处理的地方。"}</p>
+                  {issues.length > 0 && !hasFactChanges && <p>{NO_FACT_CHANGES}</p>}
+                  {issues.length > 0 && hasFactChanges && !p.readOnly && <Button kind="primary" disabled={blocked || p.run.lineage_status === "superseded_unlinked"} onClick={() => void p.review()}>审阅事实变化</Button>}
                 </div>
               )}
               <RunStatus run={p.run} p={p} actions={!p.readOnly} />
@@ -419,7 +423,7 @@ function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided }:
               <ins className="finding-after">{suggestion.after}</ins>
             </>
           )}
-          {tone === "state" && !decided && <p className="finding-hint">这不是错误。保留后，全部处理完时点「审阅事实变化」，把新的状态记进资料。</p>}
+          {tone === "state" && !decided && issue.has_memory_proposal && <p className="finding-hint">这不是错误。保留后，全部处理完时点「审阅事实变化」，把新的状态记进资料。</p>}
           {outdated && <p className="finding-hint warn">草稿在检查之后改过，这一条针对的是先前的正文。重新检查后再决定。</p>}
           {!decided && !ready && <p className="finding-hint">依据不够充分，只能标为待修改，或者补写前文后重新检查。</p>}
           {!p.readOnly ? (

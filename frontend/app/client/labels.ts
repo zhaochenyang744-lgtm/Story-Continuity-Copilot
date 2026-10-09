@@ -172,3 +172,6 @@ export const timelineStatusHint: Record<string, string> = {
   unchecked: "这一章还没有检查过。",
   empty: "还没写。",
 };
+
+/** Shown when a finished check leaves nothing to record into the project facts. */
+export const NO_FACT_CHANGES = "这次没有要记进资料的变化。";
