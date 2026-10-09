@@ -164,7 +164,7 @@ export function App() {
   }, [tabKind, tab, pathname, p.project?.id, user]);
 
   useEffect(() => {
-    const update = () => setNarrow(window.innerWidth < 1024);
+    const update = () => setNarrow(window.innerWidth < 768);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);

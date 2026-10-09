@@ -77,7 +77,7 @@
 .reuse-text strong { font-family: var(--font-serif); font-weight: 400; }
 
 /* Narrow: each chapter is one block. Number and title on the first line; words, status, last result and the link on the second. */
-@media (max-width: 720px) {
+@media (max-width: 1023px) {
   .chapter-table { min-width: 0; }
   .chapter-row-head { display: none; }
   .chapter-row,

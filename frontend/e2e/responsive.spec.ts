@@ -1,6 +1,6 @@
-import { createWorkByApi, expect, expectNoHorizontalOverflow, logout, openTab, registerAccount, sampleWorkId, shot, tabOrder, test } from "./support/app";
-import { button, saveBody } from "./support/writing";
-import { evidence, noWriteControls, view } from "./support/pages";
+import { advanceTour, api, createWorkByApi, expect, expectNoHorizontalOverflow, logout, openTab, registerAccount, sampleWorkId, shot, tabOrder, test } from "./support/app";
+import { beginCheck, button, findings, finishCheck, run, saveBody, selectIssue } from "./support/writing";
+import { evidence, noWriteControls, pair, view } from "./support/pages";
 
 for (const width of [390, 1024, 1280]) test(`12 O ${width} 五页顶栏单行、标签没有滚动条`, async ({ page }, info) => {
   await registerAccount(page, `o${width}`);
@@ -108,4 +108,76 @@ test("08 窄屏顶栏：作品名很长时截断，不换行", async ({ page }) 
   const label = page.getByRole("button", { name: /^更换当前作品：/ }).locator("span");
   expect(await label.evaluate(e => e.scrollWidth > e.clientWidth), "作品名被截断（带省略号）").toBe(true);
   await expectNoHorizontalOverflow(page);
+});
+
+test("13 S 900 宽可写作保存检查决定、勾选章节、新建伏笔与计划", async ({ page }) => {
+  await registerAccount(page, "medium13");
+  const id = await sampleWorkId(page);
+  await advanceTour(page, id, 4);
+  await page.setViewportSize({ width: 900, height: 900 });
+  await openTab(page, id, "workspace");
+  await expect(page.getByText("窗口较窄，现在只能浏览。把窗口放宽就能继续写作和检查。", { exact: true })).toHaveCount(0);
+  await saveBody(page, id, "温岚把黄铜罗盘放在窗边。E2E_SUGGEST。");
+  const runId = await beginCheck(page, id);
+  await page.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: /^检查结果/ }).click();
+  const result = await finishCheck(page, id, runId);
+  expect(result.issues.length).toBeGreaterThan(0);
+  await selectIssue(page, result.issues[0]);
+  await findings(page).getByRole("button", { name: "不是问题", exact: true }).click();
+  await expect.poll(async () => (await run(page, id, runId)).issues[0].decision?.decision).toBe("false_positive");
+  await expectNoHorizontalOverflow(page);
+  await page.getByRole("navigation", { name: "切换内容", exact: true }).getByRole("button", { name: "正文", exact: true }).click();
+  await pair(page, "13-S-writing-900");
+
+  await openTab(page, id, "sources");
+  await page.getByRole("checkbox", { name: "选择第 1 章", exact: true }).check();
+  await expect(page.getByTestId("chapter-selection")).toContainText("1 / 8 章");
+  await expect(button(page, "检查选中的章节")).toBeEnabled();
+  await expectNoHorizontalOverflow(page);
+  await pair(page, "13-S-chapters-900");
+
+  await openTab(page, id, "memory");
+  await view(page, "伏笔", "threads");
+  await button(page, "记一条伏笔").click();
+  await page.getByRole("textbox", { name: "标题", exact: true }).fill("窄窗里的纸船");
+  await page.getByRole("textbox", { name: "说明", exact: true }).fill("值班员在窗台留下一只蓝色纸船。");
+  await expectNoHorizontalOverflow(page);
+  await button(page, "记下").click();
+  await expect(page.getByText("伏笔记下了。", { exact: true })).toBeVisible();
+  expect((await api(page).get("/projects/" + id + "/foreshadows?include_archived=true")).records.some((r: {title: string}) => r.title === "窄窗里的纸船")).toBe(true);
+  await expectNoHorizontalOverflow(page);
+  await pair(page, "13-S-materials-900");
+
+  await openTab(page, id, "plan");
+  await expect(button(page, "新建计划")).toBeEnabled();
+  await expectNoHorizontalOverflow(page);
+  await button(page, "新建计划").click();
+  const planDialog = page.getByRole("dialog", { name: "新建计划", exact: true });
+  await planDialog.getByRole("textbox", { name: "标题", exact: true }).fill("窗前的新航线");
+  await planDialog.getByRole("textbox", { name: "写什么", exact: true }).fill("值班员带着纸船走向码头。");
+  await expectNoHorizontalOverflow(page);
+  await planDialog.getByRole("button", { name: "保存", exact: true }).click();
+  await expect(planDialog).toHaveCount(0);
+  expect((await api(page).get("/projects/" + id + "/author-intent?include_archived=true")).story_plans.some((p: {title: string}) => p.title === "窗前的新航线")).toBe(true);
+  await pair(page, "13-S-plan-900");
+});
+
+test("13 S 768 可写、767 只读；1023 保留正文和检查结果切换", async ({ page }) => {
+  await registerAccount(page, "boundary13");
+  const id = await sampleWorkId(page);
+  await openTab(page, id, "workspace");
+  for (const width of [768, 767, 1023]) {
+    await page.setViewportSize({ width, height: 900 });
+    const readOnly = width < 768;
+    await expect(page.getByRole("textbox", { name: readOnly ? "草稿正文（只读）" : "草稿正文", exact: true })).toHaveAttribute("contenteditable", String(!readOnly));
+    await expect(page.getByText("窗口较窄，现在只能浏览。把窗口放宽就能继续写作和检查。", { exact: true })).toHaveCount(readOnly ? 1 : 0);
+    await expect(page.getByRole("navigation", { name: "切换内容", exact: true })).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  }
+  await advanceTour(page, id, 4);
+  await page.reload();
+  for (const width of [768, 767]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect(page.getByRole("note").filter({ hasText: "手机上可以浏览完整依据；请在电脑上继续作出决定。" })).toHaveCount(width < 768 ? 1 : 0);
+  }
 });

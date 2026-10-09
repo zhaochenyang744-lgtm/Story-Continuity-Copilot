@@ -195,7 +195,7 @@
   .draft-head-side { grid-column: 1 / -1; align-items: flex-start; }
   .draft-head-actions { justify-content: flex-start; }
 }
-@media (max-width: 960px) {
+@media (max-width: 1023px) {
   .mobile-panes { display: flex; margin-top: 16px; border-bottom: 2px solid var(--c-rule); }
   .mobile-panes button { flex: 1; min-height: 44px; border: 0; background: none; color: var(--c-muted); cursor: pointer; }
   .mobile-panes button[aria-current="page"] { background: var(--c-ink); color: var(--c-ground); font-weight: 700; }
