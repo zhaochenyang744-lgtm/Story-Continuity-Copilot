@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { request } from "../../api";
 import type { ProjectSummary } from "../../model";
 import { workStatusLabel } from "../labels";
-import { Arrow, Button, Chips, formatCount, Menu, Num, PageHead, pad2, Tag } from "../ui";
+import { Arrow, Button, Chips, fitVars, formatCount, Menu, Num, PageHead, pad2, Tag } from "../ui";
 import { CountUp } from "../motion";
 import { WorkCheckTag } from "./home";
 
@@ -53,7 +53,7 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
         aside={
           <div className="head-figures-actions">
             {hasWorks && (
-              <dl className="figures">
+              <dl className="figures" style={fitVars(formatCount(kept.length), formatCount(active), formatCount(totalWords))}>
                 <div><dt className="sr-only">作品</dt><dd><Num><CountUp id="works:count" value={kept.length} /></Num></dd><dd className="figure-label">部作品</dd></div>
                 <div><dt className="sr-only">进行中</dt><dd><Num><CountUp id="works:active" value={active} /></Num></dd><dd className="figure-label">进行中</dd></div>
                 <div><dt className="sr-only">字数</dt><dd><Num><CountUp id="works:words" value={totalWords} /></Num></dd><dd className="figure-label">字</dd></div>
@@ -76,7 +76,7 @@ export function WorksPage({ fail, go }: { fail: (cause: unknown) => void; go: (h
             label="作品状态"
             value={status}
             onChange={setStatus}
-            items={[{ id: "", label: "未归档" }, { id: "active", label: "进行中" }, { id: "paused", label: "暂停" }, { id: "completed", label: "已完成" }, { id: "archived", label: "已归档" }]}
+            items={[{ id: "", label: "未归档" }, { id: "active", label: "进行中" }, { id: "paused", label: "已暂停" }, { id: "completed", label: "已完成" }, { id: "archived", label: "已归档" }]}
           />
           <button type="button" className="chip" aria-pressed={onlyOpen} onClick={() => setOnlyOpen((value) => !value)}>只看有待看的</button>
           <label className="sort">

@@ -20,7 +20,7 @@ const planSummary = (plan: Plan) =>
   plan.kind === "story" ? plan.item.summary || plan.item.goal
     : plan.kind === "character" ? [plan.item.goal, plan.item.planned_state].filter(Boolean).join("；") || plan.item.notes
       : plan.item.description;
-const conflictMessage = (cause: unknown) => ((cause as ApiFailure).code === "author_context_version_conflict" ? "内容在别的窗口更新过，已载入最新版本，请确认后重试。" : labelError(cause));
+const conflictMessage = (cause: unknown) => labelError(cause);
 
 /** 计划: what is not written yet, grouped by the chapter it is meant for. Used as reference by checks, never as fact. */
 export function PlanPage({ p, go, notices }: PageProps) {

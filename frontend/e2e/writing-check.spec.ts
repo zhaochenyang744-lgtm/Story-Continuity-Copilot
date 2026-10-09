@@ -48,13 +48,23 @@ test("检查失败后重试：保留两次尝试且无半截结果", async ({ pa
   const failed = await finishCheck(page, id, first, "failed");
   expect(failed.attempt_number).toBe(1);
   expect(failed.issues).toBeUndefined();
-  await expect(findings(page)).toContainText("没有保存任何结果。");
+  // Plain words: it did not finish, nothing was kept, and a retry costs no more characters.
+  await expect(findings(page)).toContainText("这次检查没有完成，没有留下任何结果。重试不会再扣字数。");
+  await expect(findings(page)).not.toContainText(/结构|校验|写入|[Pp]rovider/);
   await expect(findings(page).getByTestId(/^finding-/)).toHaveCount(0);
+  // One name per state: the head button says 再检查一次 (the draft has been checked), the failed result's button says 重试.
+  await expect(button(page, "再检查一次")).toBeEnabled();
+  await expect(page.getByRole("button", { name: "重新检查", exact: true })).toHaveCount(0);
+  await expect(findings(page).getByRole("button", { name: "重试", exact: true })).toBeEnabled();
   await shot(page, "writing-check-failed");
+  const spent = (await api(page).get("/account/usage")).check_chars_used;
+  expect(spent).toBeGreaterThan(0);
   const second = await beginCheck(page, id, true);
   expect(second).not.toBe(first);
   expect((await finishCheck(page, id, second)).attempt_number).toBe(2);
   expect((await run(page, id, first)).status).toBe("failed");
+  // The retry spent no characters (it does not count the chapter again).
+  expect((await api(page).get("/account/usage")).check_chars_used).toBe(spent);
 });
 
 test("超时：可以重试且没有半截结果", async ({ page }) => {
@@ -63,9 +73,22 @@ test("超时：可以重试且没有半截结果", async ({ page }) => {
   const rid = await beginCheck(page, id);
   await expect.poll(async () => (await run(page, id, rid)).status).toMatch(/^(timed_out|failed)$/);
   expect((await run(page, id, rid)).issues).toBeUndefined();
-  await expect(findings(page)).toContainText("没有保存任何结果。");
-  await expect(findings(page).getByRole("button", { name: "重新检查", exact: true })).toBeEnabled();
+  await expect(findings(page)).toContainText("这次检查没有完成，没有留下任何结果。");
+  await expect(findings(page)).not.toContainText(/结构|校验|写入|[Pp]rovider/);
+  await expect(findings(page).getByRole("button", { name: "重试", exact: true })).toBeEnabled();
   await expect(findings(page).getByTestId(/^finding-/)).toHaveCount(0);
+});
+
+test("访客重试：说明会再用掉一次检查机会，次数确实少一次", async ({ page }) => {
+  await startVisitor(page);
+  const id = await sampleWorkId(page);
+  await openTab(page, id, "workspace");
+  await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_FAIL_ONCE。");
+  await finishCheck(page, id, await beginCheck(page, id), "failed");
+  await expect(findings(page)).toContainText("这次检查没有完成，没有留下任何结果。重试会再用掉一次检查机会。");
+  const before = (await api(page).get("/account/usage")).checks_remaining;
+  await finishCheck(page, id, await beginCheck(page, id, true));
+  expect((await api(page).get("/account/usage")).checks_remaining).toBe(before - 1);
 });
 
 test("检查后又改了草稿：旧结果不能作决定", async ({ page }) => {

@@ -17,6 +17,7 @@ test("新用户首页：示例作品卡片、空的「你的作品」、检查�
 
   await expect(page.getByRole("heading", { level: 1, name: "从第一章开始", exact: true })).toBeVisible();
   await expect(page.getByText("你好", { exact: true })).toBeVisible();
+  await expect(page.getByRole("banner").getByRole("button", { name: "新建作品", exact: true })).toBeVisible();
 
   // 示例作品
   const samples = page.getByRole("region", { name: "示例作品" });
@@ -91,6 +92,11 @@ test("作品管理列表：搜索、状态筛选、排序", async ({ page }) => 
   await archiveWorkByApi(page, fog);
 
   await worksPage(page);
+  // The page has its own 新建作品; the top bar does not repeat it here (it does on the home page).
+  await expect(page.getByRole("banner").getByRole("button", { name: "新建作品", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("main").getByRole("button", { name: "新建作品", exact: true })).toBeVisible();
+  // The filter chip and the row label say the same word.
+  await expect(page.getByRole("group", { name: "作品状态", exact: true }).getByRole("button", { name: "已暂停", exact: true })).toBeVisible();
   // No sample work in this list.
   await expect(page.getByText("灰港回声")).toHaveCount(0);
   const byUpdate = await titlesFromApi(page, "q=&sort=updated_desc");
@@ -128,7 +134,7 @@ test("作品管理列表：搜索、状态筛选、排序", async ({ page }) => 
   await expect(rows(page).first()).toContainText("雾港来信");
   await expect(rows(page).first()).toContainText("已归档");
   expect(await titlesFromApi(page, "q=&status=archived&sort=updated_desc")).toEqual(["雾港来信"]);
-  await statuses.getByRole("button", { name: "暂停", exact: true }).click();
+  await statuses.getByRole("button", { name: "已暂停", exact: true }).click();
   await expect(rows(page)).toHaveCount(1);
   await expect(rows(page).first()).toContainText("北堤旧事");
   await statuses.getByRole("button", { name: "未归档", exact: true }).click();

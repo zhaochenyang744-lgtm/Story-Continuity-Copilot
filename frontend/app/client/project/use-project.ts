@@ -257,12 +257,11 @@ export function useProject({
               setPendingControlledDecision(pending);
               setControlled(checkedIssue);
               setPendingDecisionConflict("");
-              notify("恢复了一条还没记下的决定。正文已经保存；重试只会记下这条决定，不会再次保存正文。");
+              // The yellow note on the writing page says this (正文已经保存，编辑暂时锁定…); no floating message repeats it.
             } else {
               setPendingControlledDecision(pending);
               setControlled(checkedIssue ?? null);
-              setPendingDecisionConflict("本机待补记的决定和服务器上的草稿或决定对不上；已停止自动重试，正文没有再次保存。");
-              notify("有一条待补记的决定没法自动确认。记录仍按当前账号、作品和草稿保留，请先核对服务器上的最新状态。");
+              setPendingDecisionConflict("本机待补记的决定和服务器上的草稿或决定对不上；已停止自动重试，正文没有再次保存。记录仍按当前账号、作品和草稿保留，请先核对服务器上的最新状态。");
             }
           }
         } catch {
@@ -416,8 +415,7 @@ export function useProject({
     try {
       stopPendingDecision(window.localStorage, pending, pendingDecisionConflict);
     } catch {
-      setPendingDecisionStorageUnavailable("没能把这条旧决定存进本机的冲突记录，所以还没停止补记，页面上的记录也没丢。");
-      notify("本机存储不可用：没有清理待补记的决定。现在离开的话，页面上这条没存下的记录会丢失。");
+      setPendingDecisionStorageUnavailable("没能把这条旧决定存进本机的冲突记录，所以还没停止补记，页面上的记录也没丢。现在离开的话，这条没存下的记录会丢失。");
       return;
     }
     setPendingDecisionPersisted(false);
@@ -437,10 +435,7 @@ export function useProject({
     }
     if (pendingControlledDecision) {
       const pending = pendingControlledDecision;
-      if (pendingDecisionConflict) {
-        notify("待补记的决定和服务器状态有冲突，已停止自动重试；不会再次保存正文。");
-        return false;
-      }
+      if (pendingDecisionConflict) return false;
       if (pending.userId !== (user?.id ?? "") || pending.projectId !== projectId || pending.draftId !== draft.id || pending.resultingRevision !== draft.revision) {
         notify("待记录的决定和当前草稿对不上，请重新打开作品后再处理。");
         return false;
@@ -456,8 +451,7 @@ export function useProject({
         const checkedRun = await readPendingRun(pending);
         if (requestEpoch !== epoch.current) return true;
         if (await finishPending(pending, checkedRun, `正文第 ${pending.resultingRevision} 次保存保持不变；决定已经补记。`)) return true;
-        setPendingDecisionConflict("服务器返回的决定和本机待补记的不一致；已停止重试，正文没有再次保存。");
-        notify("服务器上的决定不一样，不能把本机的操作当成成功。请留在此页，核对最新的检查结果。");
+        setPendingDecisionConflict("服务器返回的决定和本机待补记的不一致；已停止重试，正文没有再次保存。不能把本机的操作当成成功，请留在此页，核对最新的检查结果。");
         return false;
       } catch (cause) {
         if ((cause as ApiFailure).code === "already_decided") {
@@ -465,12 +459,10 @@ export function useProject({
             const checkedRun = await readPendingRun(pending);
             if (requestEpoch !== epoch.current) return true;
             if (await finishPending(pending, checkedRun, `服务器上已有同样的决定；正文第 ${pending.resultingRevision} 次保存不变，补记完成。`)) return true;
-            setPendingDecisionConflict("服务器上已有另一条决定；本机待补记的记录仍保留，正文没有重复保存。");
-            notify("服务器上的决定和本机待补记的不同，已停止自动重试，不能当作成功。");
+            setPendingDecisionConflict("服务器上已有另一条决定；本机待补记的记录仍保留，正文没有重复保存。已停止自动重试，不能当作成功。");
             return false;
           } catch { /* Keep the already_decided outcome when verification is unavailable. */ }
         }
-        if (requestEpoch === epoch.current) notify("正文已经保存；决定还没记下。再点一次只会重试记录决定，不会重复保存正文。");
         return false;
       } finally {
         if (requestEpoch === epoch.current) setBusy("");
@@ -517,13 +509,11 @@ export function useProject({
         };
         setPendingControlledDecision(pending);
         setPendingDecisionConflict("");
-        let stored = true;
         try {
           writePendingDecision(window.localStorage, pending);
           setPendingDecisionStorageUnavailable("");
           setPendingDecisionPersisted(true);
         } catch {
-          stored = false;
           setPendingDecisionPersisted(false);
           setPendingDecisionStorageUnavailable("这个浏览器存不下待补记的记录。请留在此页重试；刷新、退出或切换作品会失去重试入口。");
         }
@@ -532,18 +522,14 @@ export function useProject({
             run_id: requestRun.run_id, source_revision: requestRun.source_revision, decision: pending.decision, resulting_revision: result.revision,
           }, pending.idempotencyKey);
         } catch {
-          if (requestEpoch === epoch.current)
-            notify(!stored
-              ? "正文已保存，但决定还没确认；这个浏览器存不下重试记录。请留在此页重试，不要刷新或离开。"
-              : "正文已保存，但这一条的处理还没记下。再点一次只会重试记录决定，不会重复保存正文。");
+          // The note on the page says the text is saved and the decision still has to be recorded.
           return true;
         }
         if (requestEpoch !== epoch.current) return true;
         const checkedRun = await readPendingRun(pending);
         if (requestEpoch !== epoch.current) return true;
         if (!(await finishPending(pending, checkedRun, `修改已保存（第 ${result.revision} 次保存），这一条的处理也记下了。`))) {
-          setPendingDecisionConflict("服务器返回的决定和本机操作不一致；正文没有重复保存。");
-          notify("正文已保存，但没法确认服务器上的决定和本机操作一致；已停止自动完成。");
+          setPendingDecisionConflict("服务器返回的决定和本机操作不一致；正文没有重复保存。正文已保存，但没法确认服务器上的决定和本机操作一致，已停止自动完成。");
         }
       } else notify(`已保存 ${timeLabel(result.saved_at)}`);
       return true;

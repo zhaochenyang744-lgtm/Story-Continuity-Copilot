@@ -49,7 +49,7 @@
 .account-menu button.danger:not(:first-of-type) { margin-top: 6px; box-shadow: 0 -6px 0 var(--c-surface), 0 -7px 0 var(--c-line); }
 
 /* ── Page-level message ── */
-.feedback { position: fixed; top: calc(var(--topbar-h) + 12px); left: 50%; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px; width: min(calc(100% - 32px), 640px); padding: 10px 10px 10px 16px; border: 1px solid var(--c-rule); border-left: 6px solid var(--c-blue); background: var(--c-surface); box-shadow: var(--elev-pop); font-size: 14px; transform: translateX(-50%); }
+.feedback { position: fixed; bottom: var(--s-6); left: 50%; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px; width: min(calc(100% - 32px), 640px); padding: 10px 10px 10px 16px; border: 1px solid var(--c-rule); border-left: 6px solid var(--c-blue); background: var(--c-surface); box-shadow: var(--elev-pop); font-size: 14px; transform: translateX(-50%); }
 .feedback.error { border-left-color: var(--c-red); }
 .feedback-close { width: 32px; height: 32px; border: 0; background: none; font-size: 20px; line-height: 1; cursor: pointer; }
 .feedback-close:hover { background: var(--c-sunken); }

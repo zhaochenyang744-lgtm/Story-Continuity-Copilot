@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { json, labelError, request, type ApiFailure } from "../../api";
+import { json, labelError, labelRunFailure, request, type ApiFailure } from "../../api";
 import type { Draft, Issue, SourceChangeSet } from "../../model";
 import { categoryLabel, dayLabel, timelineStatusHint, timelineStatusLabel, toneLabel } from "../labels";
 import { bareChapterTitle, Button, fitVars, formatCount, Num, PageHead, pad2, SectionHead, Tag } from "../ui";
@@ -232,7 +232,7 @@ function LatestResult({ run }: { run: CheckRun }) {
     <section className="latest" aria-labelledby="latest-title">
       <SectionHead id="latest-title" title={run.sample ? "示例结果" : run.status === "completed" ? "最近一次检查" : "正在检查"} aside={<span className="label">{run.report ? `第 ${run.report.chapters.map((c) => c.chapter_number).join("、")} 章 · ${run.report.issue_count ? `${run.report.issue_count} 处` : "没有问题"} · ` : ""}{dayLabel(run.completed_at ?? run.created_at)}</span>} />
       {run.sample && <p className="small-note">示例作品预先放好的结果，展示多章检查会得到什么；没有调用模型。</p>}
-      {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelError({ code: run.error_code })}</p>}
+      {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelRunFailure(run.error_code)}</p>}
       {["queued", "running"].includes(run.status) && <p className="small-note" role="status">正在检查，完成后结果出现在这里。</p>}
       <div className="latest-grid">
         {run.report?.chapters.map((chapter) => (

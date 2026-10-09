@@ -100,7 +100,8 @@ test("分析失败后重试：写前回顾", async ({ page }) => {
   await saveBody(page, id, "温岚仍保管黄铜罗盘，E2E_ANALYSIS_FAIL_ONCE。");
   const first = await analysis(page, id, "写前回顾", "context_brief", "failed");
   const region = findings(page).getByRole("region", { name: "写前回顾", exact: true });
-  await expect(region).toContainText("没有保存部分结果。");
+  await expect(region).toContainText("这次回顾没有完成，没有留下任何结果。");
+  await expect(region).not.toContainText(/结构|校验|写入|[Pp]rovider/);
   const response = page.waitForResponse(r => r.request().method() === "POST" && r.url().endsWith(`/analyses/${first.run_id}/retry`));
   await region.getByRole("button", { name: "重试", exact: true }).click();
   const rid = (await (await response).json()).data.run.run_id;

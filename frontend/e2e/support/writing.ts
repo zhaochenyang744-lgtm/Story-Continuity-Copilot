@@ -32,7 +32,7 @@ export async function saveBody(page: Page, id: string, body: string) {
 }
 export async function beginCheck(page: Page, id: string, retry = false) {
   const response = page.waitForResponse(r => r.request().method() === "POST" && new URL(r.url()).pathname.startsWith(`/api/projects/${id}/checks`) && new URL(r.url()).pathname.match(retry ? /\/checks\/[^/]+\/retry$/ : /\/checks$/) !== null);
-  await (retry ? findings(page).getByRole("button", { name: "重新检查", exact: true }) : button(page, (await api(page).get(`/projects/${id}`)).latest_run ? "再检查一次" : "检查这一章")).click();
+  await (retry ? findings(page).getByRole("button", { name: "重试", exact: true }) : button(page, (await api(page).get(`/projects/${id}`)).latest_run ? "再检查一次" : "检查这一章")).click();
   const res = await response;
   expect(res.ok(), await res.text()).toBe(true);
   const data = (await res.json()).data;

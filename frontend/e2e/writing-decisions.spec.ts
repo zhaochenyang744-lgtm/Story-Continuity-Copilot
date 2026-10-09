@@ -101,6 +101,14 @@ async function pendingDecision(page: import("@playwright/test").Page, reload: bo
   await page.route(pattern, async route => { attempts++; await route.abort("failed"); });
   await selectIssue(page, issue);
   await button(page, "采用改法").click();
+  // The floating message sits clear of the page head's buttons.
+  const floating = page.getByText(/^改法已放进草稿/);
+  await expect(floating).toBeVisible();
+  const noticeBox = (await floating.boundingBox())!;
+  for (const control of await page.getByLabel(/^草稿第 \d+ 章$/).getByRole("button").all()) {
+    const box = await control.boundingBox();
+    if (box) expect(box.y + box.height <= noticeBox.y || box.y >= noticeBox.y + noticeBox.height || box.x + box.width <= noticeBox.x || box.x >= noticeBox.x + noticeBox.width, `浮动提示盖住了「${await control.innerText()}」`).toBe(true);
+  }
   await button(page, "保存修改").click();
   await expect(button(page, "重试记录决定")).toBeVisible();
   expect(attempts).toBe(1);
@@ -108,7 +116,10 @@ async function pendingDecision(page: import("@playwright/test").Page, reload: bo
   expect((await run(page, id)).issues.find((i: any) => i.id === issue.id).decision).toBeFalsy();
   if (reload) await reloadAcceptingUnload(page);
   await expect(page.getByText(/正文已经保存，编辑暂时锁定/)).toBeVisible();
-  if (!reload) await shot(page, "writing-pending-decision");
+  // The yellow note says it; no floating message repeats it.
+  await expect(page.getByText(/再点一次只会重试记录决定/)).toHaveCount(0);
+  await expect(page.getByText("恢复了一条还没记下的决定。正文已经保存；重试只会记下这条决定，不会再次保存正文。")).toHaveCount(0);
+  if (!reload) await shot(page, "writing-pending-decision", false);
   await page.unroute(pattern);
   await button(page, "重试记录决定").click();
   await expect.poll(async () => (await run(page, id)).issues.filter((i: any) => i.decision)).toHaveLength(1);

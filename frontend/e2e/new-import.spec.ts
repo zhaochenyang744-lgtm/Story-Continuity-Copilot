@@ -12,8 +12,8 @@ const markdownBook = (chapters: number) => Array.from({ length: chapters }, (_, 
 
 const chooseFile = async (page: Page, file: string) => {
   const chooser = page.waitForEvent("filechooser");
-  // Before a file is chosen the button says 选择文件; afterwards 换一个文件.
-  await page.getByTestId("import-dropzone").getByRole("button", { name: /^(选择文件|换一个文件)$/ }).click();
+  // Before a file is chosen the one button says 选择文件; afterwards the drop zone's says 换一个文件.
+  await page.getByRole("button", { name: /^(选择文件|换一个文件)$/ }).click();
   await (await chooser).setFiles(file);
   await expect(page.getByTestId("import-dropzone")).toContainText("已选择");
 };
@@ -102,8 +102,16 @@ test("导入 Markdown：选文件、检查分章、填书名，作品和章节�
   await page.goto("/projects/import");
   await expect(page.getByRole("heading", { level: 1, name: "导入作品", exact: true })).toBeVisible();
   await expectStep(page, 1);
-  // Nothing is chosen yet: the main button only opens the file picker.
-  await expect(page.getByRole("button", { name: "选择文件" })).toHaveCount(2);
+  // Nothing is chosen yet: one focusable 选择文件 button (it only opens the picker). The drop zone is no second
+  // button of that name and has nothing to focus; its own words are left out for screen readers.
+  await expect(page.getByRole("button", { name: "选择文件" })).toHaveCount(1);
+  const zone = page.getByTestId("import-dropzone");
+  await expect(zone.getByRole("button")).toHaveCount(0);
+  await expect(zone.locator("[tabindex], a, button, input")).toHaveCount(0);
+  // Clicking the zone opens the picker too.
+  const picker = page.waitForEvent("filechooser");
+  await zone.click();
+  await picker;
   await shot(page, "import-step1");
   await chooseFile(page, fixturePath("stage9-mist-harbor.md"));
   await expect(page.getByTestId("import-dropzone")).toContainText("stage9-mist-harbor.md");

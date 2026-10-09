@@ -1,7 +1,7 @@
 "use client";
 
 import { type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, useEffect, useRef, useState } from "react";
-import { json, labelError } from "../../api";
+import { json, labelError, labelRunFailure } from "../../api";
 import type { Draft, Issue, Run, SourceChangeSet, WritingAnalysisRun } from "../../model";
 import { DraftWordCount, flashText, rewriteDraftText, RichDraftEditor, useDraftText, WritingTools, type FindingMark } from "../editor";
 import { Odometer, reducedMotion, ScanLine, ThreadLayer, useFirstShow } from "../motion";
@@ -146,7 +146,7 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
   ) : checking ? (
     <Button kind="primary" size="lg" disabled busy>正在检查…</Button>
   ) : p.run && retryableRun(p.run) ? (
-    <Button kind="primary" size="lg" disabled={blocked} onClick={() => void p.retryRun()}>重新检查</Button>
+    <Button kind="primary" size="lg" disabled={blocked} onClick={() => void p.retryRun()}>再检查一次</Button>
   ) : (
     <Button kind="primary" size="lg" disabled={blocked || !p.draft || empty || visitorLimit !== null} title={empty ? "先写下正文，再检查" : visitorLimit !== null ? `访客每次最多检查 ${formatCount(visitorLimit)} 字` : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
   );
@@ -270,8 +270,8 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
                   {issues.length > 0 && hasFactChanges && !p.readOnly && <Button kind="primary" disabled={blocked || p.run.lineage_status === "superseded_unlinked"} onClick={() => void p.review()}>审阅事实变化</Button>}
                 </div>
               )}
-              <RunStatus run={p.run} p={p} actions={!p.readOnly} />
-              {p.pairedRun && <RunStatus run={p.pairedRun} p={p} actions={false} />}
+              <RunStatus run={p.run} p={p} actions={!p.readOnly} visitor={usage?.account_type === "visitor"} />
+              {p.pairedRun && <RunStatus run={p.pairedRun} p={p} actions={false} visitor={usage?.account_type === "visitor"} />}
               {checking && <div className="finding-skeleton" role="status" aria-label="正在检查这一章"><span /><span /><span /><span /><span /><span /></div>}
               <ol className={`finding-list${reveal ? " reveal" : ""}`}>
                 {issues.map((issue, index) => {
@@ -528,7 +528,7 @@ function AnalysisPanel({ run, p }: { run: WritingAnalysisRun; p: ProjectState })
     <section className={`analysis${run.is_stale ? " stale" : ""}`} aria-label={brief ? "写前回顾" : "对照计划"}>
       <SectionHead title={brief ? "写前回顾" : "对照计划"} aside={<span className="label">{run.is_stale ? "草稿改过，结果可能过时" : stageLabel(run.status)}</span>} />
       {activeAnalysis(run) && <p className="small-note">{stageLabel(run.stage)}。编辑器照常可用。</p>}
-      {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelError({ code: run.error_code })} 没有保存部分结果。</p>}
+      {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelRunFailure(run.error_code, brief ? "回顾" : "对照")}</p>}
       {run.analysis && (
         <>
           <p className="analysis-summary">{run.analysis.summary}</p>
@@ -558,7 +558,7 @@ function AnalysisPanel({ run, p }: { run: WritingAnalysisRun; p: ProjectState })
 
 /** A check that is running, or that stopped without finishing: its stage, and cancel or retry.
     A finished check needs no line of its own; its time sits in the findings head. */
-function RunStatus({ run, p, actions }: { run: Run; p: ProjectState; actions: boolean }) {
+function RunStatus({ run, p, actions, visitor }: { run: Run; p: ProjectState; actions: boolean; visitor: boolean }) {
   if (run.status === "completed") return null;
   const kind = run.run_type === "memory_delta" ? "事实变化" : "检查";
   const blocked = Boolean(p.busy) || p.readOnly;
@@ -569,12 +569,12 @@ function RunStatus({ run, p, actions }: { run: Run; p: ProjectState; actions: bo
         <strong>{running ? stageLabel(run.stage) : `${kind}没有完成`}</strong>
         <span className="label">{(run.attempt_number ?? 1) > 1 ? `第 ${run.attempt_number} 次 · ` : ""}{timeLabel(run.created_at)}</span>
       </p>
-      {!running && <p className="inline-error">{labelError({ code: run.error_code })} 没有保存任何结果。</p>}
+      {!running && <p className="inline-error">{labelRunFailure(run.error_code, run.run_type === "memory_delta" ? "事实整理" : "检查")}{actions && retryableRun(run) ? (visitor ? "重试会再用掉一次检查机会。" : "重试不会再扣字数。") : ""}</p>}
       {run.stage === "cancelling" && <p className="small-note">正在等模型返回；之后返回的结果会被丢弃，不会保存。</p>}
       {actions && (running || retryableRun(run)) && (
         <div className="finding-actions">
           {running && <Button kind="small" disabled={blocked} onClick={() => void p.cancelRun()}>{run.stage === "cancelling" ? "正在取消" : "取消检查"}</Button>}
-          {retryableRun(run) && <Button kind="text" disabled={blocked} onClick={() => void p.retryRun()}>重新检查</Button>}
+          {retryableRun(run) && <Button kind="text" disabled={blocked} onClick={() => void p.retryRun()}>重试</Button>}
         </div>
       )}
     </div>

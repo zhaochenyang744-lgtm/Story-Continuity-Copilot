@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { labelError, labelRunFailure } from "../app/api";
 import { api, createWorkByApi, expect, openTab, registerAccount, sampleWorkId, shot, tabLabels, tabOrder, test } from "./support/app";
 
 const workTabs = (page: import("@playwright/test").Page) => page.getByRole("navigation", { name: "作品", exact: true });
@@ -127,4 +128,39 @@ test("跳到主要内容：第一次按 Tab 落在跳转链接上，回车后下
   // control inside it, not back in the top bar.
   await page.keyboard.press("Tab");
   await expect.poll(() => page.evaluate(() => Boolean(document.getElementById("main")?.contains(document.activeElement)))).toBe(true);
+});
+
+test("错误文案：补齐的错误码一一对应，失败的检查和分析用平常的话，不出现技术词", async () => {
+  const conflict = "内容在别处更新过。已经载入最新版本，请确认后再试。";
+  const expected: Record<string, string> = {
+    base_version_changed: conflict, metadata_revision_conflict: conflict, author_context_version_conflict: conflict,
+    draft_revision_not_current: "草稿在别处更新过，请刷新后再试。",
+    run_basis_changed: "作品内容变了，这次检查的结果已经过期，请再检查一次。",
+    run_cancelled: "这次检查已经取消。",
+    already_decided: "这一条已经处理过了。",
+    idempotency_conflict: "这个操作刚刚已经提交过，请刷新看看结果。",
+    import_expired: "导入预览已经过期，请重新选择文件。",
+    source_too_large: "文件太大，超过了单次导入的上限。",
+    chapter_revision_empty: "章节正文不能为空。",
+    chapter_revision_unchanged: "正文和标题都没变，不用提交。",
+    setting_category_name_invalid: "分类名称不能为空，最多 20 个字。",
+    export_too_large: "资料包太大，请先单独导出 TXT 或 Markdown 正文。",
+  };
+  for (const [code, text] of Object.entries(expected)) expect(labelError({ code }), code).toBe(text);
+  // The export panel's own words for the same refusal are the same sentence.
+  expect(labelError({ code: "export_too_large" })).toBe("资料包太大，请先单独导出 TXT 或 Markdown 正文。");
+
+  expect(labelRunFailure("invalid_json")).toBe("这次检查没有完成，没有留下任何结果。");
+  expect(labelRunFailure("schema_invalid", "回顾")).toBe("这次回顾没有完成，没有留下任何结果。");
+  expect(labelRunFailure(null)).toBe("这次检查没有完成，没有留下任何结果。");
+  expect(labelRunFailure("no_such_error", "对照")).toBe("这次对照没有完成，没有留下任何结果。");
+  const technical = /结构|校验|写入|[Pp]rovider|token|schema/;
+  for (const code of ["invalid_json", "schema_invalid", "output_truncated", "provider_unavailable", "provider_timeout", "internal_run_error", "budget_guard_exceeded", "author_cancelled", "evidence_unresolvable", "review_contract_unresolvable", "suggested_revision_unresolvable", "candidate_fields_invalid", "change_kind_invalid", "affected_memory_invalid", "duplicate_candidate", "invalidation_reason_invalid", "provider_attempt_quota_exceeded", "analysis_input_invalid", "analysis_draft_empty", "run_basis_changed", "budget_paused"]) {
+    for (const what of ["检查", "回顾", "对照", "事实整理"]) {
+      const text = labelRunFailure(code, what);
+      expect(text, `${code} / ${what}`).not.toMatch(technical);
+      expect(text, `${code} / ${what}`).toContain("没有留下");
+    }
+    expect(labelError({ code }), code).not.toMatch(technical);
+  }
 });

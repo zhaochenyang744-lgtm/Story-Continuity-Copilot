@@ -345,7 +345,7 @@ export function App() {
                   </>}
             </nav>
             {usageShort(usage) && <span className="topbar-quota">{usageShort(usage)}</span>}
-            {!projectId && pathname !== "/projects/new" && pathname !== "/projects/import" && <Button kind="outline" className="topbar-new" onClick={() => go("/projects/new")}>新建作品</Button>}
+            {!projectId && !["/projects", "/projects/new", "/projects/import"].includes(pathname) && <Button kind="outline" className="topbar-new" onClick={() => go("/projects/new")}>新建作品</Button>}
             <ThemeSwitch theme={theme} toggle={toggleTheme} />
             <div className="account">
               <button ref={menuTrigger} type="button" className="account-trigger" aria-label={`账号菜单：${user.display_name}`} aria-haspopup="menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>

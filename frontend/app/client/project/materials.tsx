@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, MouseEvent as ReactMouseEvent, useCallback, useEffect, useRef, useState } from "react";
-import { json, labelError, request, type ApiFailure } from "../../api";
+import { json, labelError, labelRunFailure, request, type ApiFailure } from "../../api";
 import type { Chapter, CharacterAliasSnapshot, ForeshadowCandidate, ForeshadowRecord, ForeshadowSnapshot, Memory, MemoryDelta, MemoryInitialization, WritingAnalysisRun } from "../../model";
 import { experienceSimulation } from "../env";
 import {
@@ -136,7 +136,7 @@ function FactsView({ p, go }: { p: ProjectState; go: (href: string) => void }) {
 function DeltaReview({ delta, blocked, submit, openSource }: { delta: MemoryDelta; blocked: boolean; submit: (event: FormEvent<HTMLFormElement>) => Promise<void>; openSource: (memory: Memory, element: HTMLElement) => Promise<void> | void }) {
   const [choices, setChoices] = useState<Record<string, string>>({});
   if (["processing", "cancelling"].includes(delta.status)) return <div className="note note-info" role="status">正在检查新增的章节、整理事实变化；两项都完成后显示在这里。</div>;
-  if (["failed", "timed_out", "cancelled"].includes(delta.status)) return <div className="note note-error" role="alert">事实变化没有整理完：{labelError({ code: delta.error_code })} 没有写入任何结果，可以放心重试。</div>;
+  if (["failed", "timed_out", "cancelled"].includes(delta.status)) return <div className="note note-error" role="alert">事实变化没有整理完。{labelRunFailure(delta.error_code, "事实整理")} 可以放心重试。</div>;
   const kind = { new_fact: "新事实", changed_fact: "改变", invalidated_fact: "不再成立" } as const;
   const asMemory = (candidate: MemoryDelta["candidates"][number]): Memory => ({
     id: candidate.id, memory_type: candidate.memory_type, subject: candidate.subject, predicate: candidate.predicate, value: candidate.value, valid_from: null, valid_to: null, review_status: "pending",
@@ -706,7 +706,7 @@ function ThreadsView({ p, go }: { p: ProjectState; go: (href: string) => void })
           })}
         </section>
       )}
-      {scans.filter((run) => ["failed", "timed_out", "cancelled"].includes(run.status)).slice(0, 1).map((run) => <p key={run.run_id} className="small-note">上次扫描没有完成：{labelError({ code: run.error_code })}</p>)}
+      {scans.filter((run) => ["failed", "timed_out", "cancelled"].includes(run.status)).slice(0, 1).map((run) => <p key={run.run_id} className="small-note">上次扫描没有完成。{labelRunFailure(run.error_code, "扫描")}</p>)}
       {snapshot === null ? <p className="loading">正在读取…</p> : open.length ? <ol className="thread-list">{open.map(row)}</ol> : <p className="empty">没有未回收的伏笔。</p>}
       {closed.length > 0 && (
         <>
@@ -773,7 +773,7 @@ function AskView({ p, go }: { p: ProjectState; go: (href: string) => void }) {
         <article key={run.run_id} className={`answer${run.is_stale ? " stale" : ""}`}>
           <p className="answer-q">{run.question || "问题"}<span className="label"> · {run.is_stale ? "正文改过，回答可能过时" : qaStatusLabel[run.analysis?.answer_status ?? ""] ?? stageLabel(run.status)} · {timeLabel(run.created_at)}</span></p>
           {activeAnalysis(run) && <p className="small-note">{stageLabel(run.stage)}…</p>}
-          {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelError({ code: run.error_code })}</p>}
+          {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelRunFailure(run.error_code, "分析")}</p>}
           {run.analysis && (
             <>
               <p className="answer-text">{run.analysis.answer}</p>

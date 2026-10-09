@@ -33,6 +33,7 @@
 .dropzone { display: grid; justify-items: center; gap: 10px; padding: 56px 24px; border: 2px dashed var(--c-rule); background: var(--c-surface); text-align: center; }
 .dropzone.dragging { border-style: solid; border-color: var(--c-blue); background: var(--c-blue-tint); }
 .dropzone.chosen { border-style: solid; }
+.dropzone:not(.chosen) { cursor: pointer; }
 .dropzone-title { font-size: 28px; font-weight: 900; }
 .dropzone-name { font-size: 24px; font-weight: 900; overflow-wrap: anywhere; }
 .import-rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px 32px; }

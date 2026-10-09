@@ -41,7 +41,7 @@ export async function workMenu(page: Page, action: string) {
 export async function importBook(page: Page, file = fixturePath("stage9-mist-harbor.md"), title = "测试雾港") {
   await page.goto("/projects/import");
   const chooser = page.waitForEvent("filechooser");
-  await page.getByTestId("import-dropzone").getByRole("button", { name: "选择文件", exact: true }).click();
+  await page.getByRole("button", { name: "选择文件", exact: true }).click();
   await (await chooser).setFiles(file);
   await button(page, "下一步：检查分章").click();
   await button(page, "分章没问题，下一步").click();

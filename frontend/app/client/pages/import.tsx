@@ -96,6 +96,7 @@ export function ImportPage({ user, fail, go }: { user: User; fail: (cause: unkno
           <div
             className={`dropzone${dragging ? " dragging" : ""}${file ? " chosen" : ""}`}
             data-testid="import-dropzone"
+            onClick={(event) => { if (!file && !busy && !(event.target as HTMLElement).closest("button")) fileInput.current?.click(); }}
             onDragEnter={(event) => { event.preventDefault(); setDragging(true); }}
             onDragOver={(event) => event.preventDefault()}
             onDragLeave={() => setDragging(false)}
@@ -111,8 +112,8 @@ export function ImportPage({ user, fail, go }: { user: User; fail: (cause: unkno
             ) : (
               <>
                 <strong className="dropzone-title">把文件拖到这里</strong>
-                <span>或者</span>
-                <Button onClick={() => fileInput.current?.click()} disabled={Boolean(busy)}>选择文件</Button>
+                {/* The zone itself can be clicked; the one focusable "选择文件" button is the main one below. This is only its picture. */}
+                <span aria-hidden="true">或者点这里</span>
               </>
             )}
           </div>
