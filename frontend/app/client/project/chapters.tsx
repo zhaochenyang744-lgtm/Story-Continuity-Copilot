@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { json, labelError, request, type ApiFailure } from "../../api";
 import type { Draft, Issue, SourceChangeSet } from "../../model";
 import { categoryLabel, dayLabel, timelineStatusHint, timelineStatusLabel, toneLabel } from "../labels";
-import { bareChapterTitle, Button, formatCount, Num, PageHead, pad2, SectionHead, Tag } from "../ui";
+import { bareChapterTitle, Button, fitVars, formatCount, Num, PageHead, pad2, SectionHead, Tag } from "../ui";
 import type { PageProps } from "./frame";
 import type { ProjectState } from "./use-project";
 import { CountUp, Odometer } from "../motion";
@@ -127,7 +127,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
         lede={visitor ? "访客只能检查当前草稿；注册后可以一次勾选最多 8 章一起检查。" : "勾选最多 8 章一起检查。每一章只和它前面的章节对照。"}
         aside={
           <div className="head-figures-actions">
-            <dl className="figures">
+            <dl className="figures" style={fitVars(formatCount(written.length), formatCount(totalChars), formatCount(checkedCount))}>
               <div><dt className="sr-only">章节</dt><dd><Num><CountUp id={`${project.id}:chapters`} value={written.length} /></Num></dd><dd className="figure-label">章</dd></div>
               <div><dt className="sr-only">字数</dt><dd><Num><CountUp id={`${project.id}:words`} value={totalChars} /></Num></dd><dd className="figure-label">字</dd></div>
               <div><dt className="sr-only">已检查</dt><dd><Num><CountUp id={`${project.id}:checked`} value={checkedCount} /></Num></dd><dd className="figure-label">章已检查</dd></div>
@@ -163,10 +163,12 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
                     <strong>{bareChapterTitle(row.title) || "未命名"}</strong>
                     {(spans.length > 0 || body) && <button type="button" className="chapter-expand" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : id)}>{isOpen ? "收起" : `段落 ${spans.length}`}</button>}
                   </span>
-                  <span role="cell" className="mono">{body ? formatCount(body.body.replace(/\s+/g, "").length) : "—"}</span>
-                  <span role="cell" className="chapter-status" title={timelineStatusHint[row.status]}><i className={`status-mark ${row.status}`} aria-hidden="true" />{timelineStatusLabel[row.status] ?? "未检查"}</span>
-                  <span role="cell" className="chapter-result">{sampleResult.has(row.chapter_number) && <span className="label" title="示例作品预先放好的结果，不算检查过">示例</span>}{result ? result.length ? <Tag tone={result.some((issue) => tone(issue) === "high") ? "high" : "mid"}>{result.length} 处{result.length === 1 ? toneLabel[tone(result[0])] : ""}</Tag> : <span className="muted">无问题</span> : <span className="muted">—</span>}</span>
-                  <span role="cell"><button type="button" className="link" onClick={() => openChapter(row.chapter_number)}>{p.readOnly ? "打开" : "打开修改"}</button></span>
+                  <span className="chapter-meta" role="none">
+                    <span role="cell" className="mono">{body ? formatCount(body.body.replace(/\s+/g, "").length) : "—"}</span>
+                    <span role="cell" className="chapter-status" title={timelineStatusHint[row.status]}><i className={`status-mark ${row.status}`} aria-hidden="true" />{timelineStatusLabel[row.status] ?? "未检查"}</span>
+                    <span role="cell" className="chapter-result">{sampleResult.has(row.chapter_number) && <span className="label" title="示例作品预先放好的结果，不算检查过">示例</span>}{result ? result.length ? <Tag tone={result.some((issue) => tone(issue) === "high") ? "high" : "mid"}>{result.length} 处{result.length === 1 ? toneLabel[tone(result[0])] : ""}</Tag> : <span className="muted">无问题</span> : <span className="muted">—</span>}</span>
+                    <span role="cell"><button type="button" className="link" onClick={() => openChapter(row.chapter_number)}>{p.readOnly ? "打开" : "打开修改"}</button></span>
+                  </span>
                 </div>
                 {isOpen && (
                   <div className="chapter-passages">
@@ -191,10 +193,12 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
                 {canPick && <span role="cell" className="chapter-pick" />}
                 <span role="cell"><Num className="chapter-num blue">{pad2(draftRow.chapter_number)}</Num></span>
                 <span role="cell" className="chapter-title"><strong>{bareChapterTitle(draftRow.title) || "未命名"}</strong><span className="badge">草稿</span></span>
-                <span role="cell" className="mono">{formatCount((p.draft?.body ?? "").replace(/\s+/g, "").length)}</span>
-                <span role="cell">在写作页检查</span>
-                <span role="cell"><button type="button" className="link blue" onClick={() => go(`/projects/${project.id}/workspace`)}>去写作{draftIssues ? ` · ${draftIssues} 处` : ""}</button></span>
-                <span role="cell" />
+                <span className="chapter-meta" role="none">
+                  <span role="cell" className="mono">{formatCount((p.draft?.body ?? "").replace(/\s+/g, "").length)}</span>
+                  <span role="cell">在写作页检查</span>
+                  <span role="cell"><button type="button" className="link blue" onClick={() => go(`/projects/${project.id}/workspace`)}>去写作{draftIssues ? ` · ${draftIssues} 处` : ""}</button></span>
+                  <span role="cell" />
+                </span>
               </div>
             </div>
           )}

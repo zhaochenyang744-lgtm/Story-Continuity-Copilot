@@ -1,9 +1,8 @@
-import { expect, expectNoHorizontalOverflow, logout, openTab, registerAccount, sampleWorkId, shot, tabOrder, test } from "./support/app";
+import { createWorkByApi, expect, expectNoHorizontalOverflow, logout, openTab, registerAccount, sampleWorkId, shot, tabOrder, test } from "./support/app";
 import { button, saveBody } from "./support/writing";
 import { evidence, noWriteControls, view } from "./support/pages";
 
 test("08 窄屏作品五页：无横向溢出并且只读", async ({ page }, info) => {
-  test.fixme(true, "新发现：390px 窗口的章节页 scrollWidth=796；其他作品页及资料子视图为 375，只读断言均通过");
   await registerAccount(page, "narrow08");
   const id = await sampleWorkId(page);
   await page.setViewportSize({ width: 390, height: 844 });
@@ -12,6 +11,7 @@ test("08 窄屏作品五页：无横向溢出并且只读", async ({ page }, inf
   for (const tab of tabOrder) {
     await openTab(page, id, tab);
     await expect(page.getByText("窗口较窄，现在只能浏览。把窗口放宽就能继续写作和检查。", { exact: true })).toBeVisible();
+    await expectOneLineTopBar(page);
     await shot(page, `${names[tab]}-390`, false);
     widths.push({ page: tab, ...await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, inner: innerWidth })) });
     await expectNoHorizontalOverflow(page, true);
@@ -62,4 +62,31 @@ test("08 从窄变宽：不刷新恢复写作和检查", async ({ page }) => {
   await expect(button(page, "再检查一次")).toBeEnabled();
   await saveBody(page, id, "温岚保管黄铜罗盘。放宽窗口后继续写作。");
   expect(navigations).toBe(0);
+});
+
+/** Logo, work switch, theme switch and avatar share the first line; the five tabs sit on the line below. */
+async function expectOneLineTopBar(page: import("@playwright/test").Page) {
+  const boxes = await Promise.all([
+    page.getByRole("button", { name: "首页", exact: true }),
+    page.getByRole("button", { name: /^更换当前作品：/ }),
+    page.getByRole("button", { name: /^切换到(夜间|日间)模式$/ }),
+    page.getByRole("button", { name: /^账号菜单：/ }),
+  ].map(item => item.boundingBox()));
+  const tabs = await page.getByRole("navigation", { name: "作品", exact: true }).boundingBox();
+  expect(tabs).not.toBeNull();
+  const centres = boxes.map(box => box!.y + box!.height / 2);
+  expect(Math.max(...centres) - Math.min(...centres), "logo、作品、主题开关、头像在同一行").toBeLessThan(20);
+  expect(Math.max(...boxes.map(box => box!.y + box!.height)), "第一行在标签行上方").toBeLessThanOrEqual(tabs!.y + 1);
+  expect(boxes[3]!.x + boxes[3]!.width, "头像在窗口内").toBeLessThanOrEqual(390);
+}
+
+test("08 窄屏顶栏：作品名很长时截断，不换行", async ({ page }) => {
+  await registerAccount(page, "topbar390");
+  const id = await createWorkByApi(page, { title: "这是一部名字特别特别长的长篇小说，用来检查窄屏顶栏" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openTab(page, id, "overview");
+  await expectOneLineTopBar(page);
+  const label = page.getByRole("button", { name: /^更换当前作品：/ }).locator("span");
+  expect(await label.evaluate(e => e.scrollWidth > e.clientWidth), "作品名被截断（带省略号）").toBe(true);
+  await expectNoHorizontalOverflow(page);
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, useEffect, useRef, useState } from "react";
 import { json, labelError } from "../../api";
 import type { Draft, Issue, Run, SourceChangeSet, WritingAnalysisRun } from "../../model";
 import { DraftWordCount, flashText, rewriteDraftText, RichDraftEditor, useDraftText, WritingTools, type FindingMark } from "../editor";
@@ -55,7 +55,10 @@ export function WritingPage(props: PageProps) {
 
 function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, openChapter }: PageProps & { openChapter: (number: number | null) => void }) {
   const project = p.project!;
-  const [mobilePane, setMobilePane] = useState<"draft" | "issues" | "resources">("draft");
+  const [mobilePane, setMobilePane] = useState<"draft" | "issues">("draft");
+  // What the right column shows: the check's findings, or a pre-writing review or plan comparison that has been started.
+  const [wantedSide, setWantedSide] = useState<SideItem>("findings");
+  const [revealSide, setRevealSide] = useState(0);
   const [focus, setFocus] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [tech, setTech] = useState(false);
@@ -70,6 +73,9 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
   const locked = p.readOnly || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingControlledDecision);
   const blocked = locked || Boolean(p.busy);
   const hasPlans = Boolean(p.authorContext && p.authorContext.story_plans.length + p.authorContext.character_plans.length + p.authorContext.world_plans.length > 0);
+  const hasBrief = Boolean(p.contextBrief) || p.analysisBusy === "context_brief";
+  const hasAlignment = hasPlans && (Boolean(p.planAlignment) || p.analysisBusy === "plan_alignment");
+  const side: SideItem = wantedSide === "brief" && hasBrief ? "brief" : wantedSide === "plan" && hasAlignment ? "plan" : "findings";
   const empty = !(p.saved?.body ?? p.draft?.body ?? "").trim();
   const chars = writtenChars(p.draft?.body ?? "");
   const chapterNumber = p.draft?.chapter_number ?? project.current_draft.chapter_number;
@@ -85,6 +91,21 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
   const demoChecking = process.env.NODE_ENV !== "production" && typeof window !== "undefined" && new URLSearchParams(window.location.search).get("demo") === "checking";
   const scanning = checking || demoChecking;
   const reveal = useFirstShow(p.run?.status === "completed" ? p.run.run_id : null, issues.length);
+  // Opening a finding brings the findings back; starting a review or comparison scrolls to the column if it is out of view.
+  const selectedId = p.selected?.id ?? null;
+  const [seenSelected, setSeenSelected] = useState(selectedId);
+  if (seenSelected !== selectedId) {
+    setSeenSelected(selectedId);
+    if (selectedId) setWantedSide("findings");
+  }
+  useEffect(() => {
+    if (!revealSide) return;
+    const column = document.getElementById("writing-side");
+    if (!column) return;
+    const box = column.getBoundingClientRect();
+    const covered = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--topbar-h")) || 0;
+    if (box.top > window.innerHeight - covered || box.bottom < covered * 2) column.scrollIntoView({ block: "start", behavior: reducedMotion() ? "auto" : "smooth" });
+  }, [revealSide]);
   const linkedId = hovered ?? p.selected?.id ?? null;
   const linkedIssue = issues.find((issue) => issue.id === linkedId) ?? null;
   const linkedChapters = [...new Set((linkedIssue?.evidence ?? []).map((item) => item.chapter_number))].slice(0, 3);
@@ -94,6 +115,7 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
     const row = document.getElementById(`issue-${id}`);
     if (!issue || !row) return;
     if (p.selected?.id !== id) void p.select(issue, row);
+    setWantedSide("findings");
     setMobilePane("issues");
     window.setTimeout(() => row.scrollIntoView({ block: "nearest", behavior: "smooth" }), 0);
   };
@@ -129,6 +151,12 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
     <Button kind="primary" size="lg" disabled={blocked || !p.draft || empty || visitorLimit !== null} title={empty ? "先写下正文，再检查" : visitorLimit !== null ? `访客每次最多检查 ${formatCount(visitorLimit)} 字` : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
   );
   const finished = p.run?.status === "completed" && !checking;
+  const analyse = (kind: "context_brief" | "plan_alignment") => {
+    setWantedSide(kind === "context_brief" ? "brief" : "plan");
+    setMobilePane("issues");
+    setRevealSide((count) => count + 1);
+    void p.startAnalysis(kind);
+  };
 
   return (
     <section className="page writing" data-mobile-pane={mobilePane}>
@@ -147,8 +175,8 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
         {!p.readOnly && (
           <div className="draft-head-side">
             <div className="draft-head-actions">
-              <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty} onClick={() => void p.startAnalysis("context_brief")}>{p.analysisBusy === "context_brief" ? "正在回顾" : "写前回顾"}</Button>
-              {hasPlans && <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty || empty} onClick={() => void p.startAnalysis("plan_alignment")}>{p.analysisBusy === "plan_alignment" ? "正在对照" : "对照计划"}</Button>}
+              <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty} onClick={() => analyse("context_brief")}>{p.analysisBusy === "context_brief" ? "正在回顾" : "写前回顾"}</Button>
+              {hasPlans && <Button size="lg" disabled={Boolean(p.analysisBusy) || !p.draft || p.dirty || empty} onClick={() => analyse("plan_alignment")}>{p.analysisBusy === "plan_alignment" ? "正在对照" : "对照计划"}</Button>}
               <Menu buttonLabel="更多：完成本章、技术详情、重置" danger={<button type="button" role="menuitem" className="danger" disabled={blocked} onClick={() => openDialog("reset")}>重置作品</button>}>
                 <button type="button" role="menuitem" disabled={blocked || !p.draft || p.dirty || empty} onClick={() => setCompleting(true)}>完成本章，开始下一章</button>
                 <button type="button" role="menuitem" disabled={!p.run} onClick={() => setTech(true)}>这次检查的技术详情</button>
@@ -180,8 +208,8 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
       )}
 
       <nav className="mobile-panes" aria-label="切换内容">
-        {(["draft", "issues", "resources"] as const).map((pane) => (
-          <button key={pane} type="button" aria-current={mobilePane === pane ? "page" : undefined} onClick={() => setMobilePane(pane)}>{pane === "draft" ? "正文" : pane === "issues" ? `检查结果 ${issues.length}` : "回顾与记录"}</button>
+        {(["draft", "issues"] as const).map((pane) => (
+          <button key={pane} type="button" aria-current={mobilePane === pane ? "page" : undefined} onClick={() => setMobilePane(pane)}>{pane === "draft" ? "正文" : `检查结果 ${issues.length}`}</button>
         ))}
       </nav>
 
@@ -208,11 +236,25 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
           </div>
         </article>
 
-        <aside className="findings" aria-labelledby="findings-title">
-          <div className="findings-head">
-            <h2 id="findings-title">检查结果</h2>
-            {p.run && <span className="label">{issues.length} 处{pending ? ` · ${pending} 处待定` : ""}{p.run.completed_at || p.run.created_at ? ` · ${clockLabel(p.run.completed_at ?? p.run.created_at)}` : ""}</span>}
-          </div>
+        <aside id="writing-side" className="findings" aria-label="检查与回顾">
+          <SideTabs
+            value={side}
+            onChange={setWantedSide}
+            items={[
+              { id: "findings", label: "检查结果", count: issues.length },
+              ...(hasBrief ? [{ id: "brief" as const, label: "写前回顾" }] : []),
+              ...(hasAlignment ? [{ id: "plan" as const, label: "对照计划" }] : []),
+            ]}
+          />
+          <div role="tabpanel" id="side-panel-findings" aria-labelledby="side-tab-findings" hidden={side !== "findings"}>
+          {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
+            <div className="note note-info"><strong>新增章节的事实变化 · {p.memoryDelta.status === "in_review" ? "等你确认" : p.memoryDelta.status === "covered" ? "已完成" : stageLabel(p.memoryDelta.status)}</strong><span>没确认的不会进资料，也不会用于之后的检查。</span><Button kind="text" onClick={() => go(`/projects/${project.id}/memory`)}>去资料确认</Button></div>
+          )}
+          {p.run && (
+            <div className="findings-head">
+              <span className="label">{issues.length} 处{pending ? ` · ${pending} 处待定` : ""}{p.run.completed_at || p.run.created_at ? ` · ${clockLabel(p.run.completed_at ?? p.run.created_at)}` : ""}</span>
+            </div>
+          )}
           {p.run ? (
             <>
               {outdated && p.run.status === "completed" && <p className="findings-note">草稿在检查之后改过，下面的结果针对的是先前的正文。</p>}
@@ -263,22 +305,19 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
           ) : scanning ? (
             <div className="finding-skeleton" role="status" aria-label="正在检查这一章"><span /><span /><span /><span /><span /><span /></div>
           ) : <p className="findings-empty">{empty ? "先写下正文，再检查。" : "检查后，和前文冲突或说不通的地方会按顺序列在这里，每一处都附上前文出处。"}</p>}
-        </aside>
-      </div>
-
-      {(p.contextBrief || (hasPlans && p.planAlignment) || (p.memoryDelta && p.memoryDelta.status !== "not_started")) && (
-        <section className="writing-records" aria-label="写前回顾与计划对照">
-          {(p.contextBrief || (hasPlans && p.planAlignment)) && (
-            <div className="analysis-grid">
-              {p.contextBrief && <AnalysisPanel run={p.contextBrief} p={p} />}
-              {hasPlans && p.planAlignment && <AnalysisPanel run={p.planAlignment} p={p} />}
+          </div>
+          {hasBrief && (
+            <div role="tabpanel" id="side-panel-brief" aria-labelledby="side-tab-brief" hidden={side !== "brief"}>
+              {p.contextBrief ? <AnalysisPanel run={p.contextBrief} p={p} /> : <p className="findings-empty" role="status">正在开始写前回顾…</p>}
             </div>
           )}
-          {p.memoryDelta && p.memoryDelta.status !== "not_started" && (
-            <div className="note note-info"><strong>新增章节的事实变化 · {p.memoryDelta.status === "in_review" ? "等你确认" : p.memoryDelta.status === "covered" ? "已完成" : stageLabel(p.memoryDelta.status)}</strong><span>没确认的不会进资料，也不会用于之后的检查。</span><Button kind="text" onClick={() => go(`/projects/${project.id}/memory`)}>去资料确认</Button></div>
+          {hasAlignment && (
+            <div role="tabpanel" id="side-panel-plan" aria-labelledby="side-tab-plan" hidden={side !== "plan"}>
+              {p.planAlignment ? <AnalysisPanel run={p.planAlignment} p={p} /> : <p className="findings-empty" role="status">正在开始对照计划…</p>}
+            </div>
           )}
-        </section>
-      )}
+        </aside>
+      </div>
 
       {p.changeSet && <FactReview p={p} />}
 
@@ -287,6 +326,30 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
       {tech && p.run && <TechDialog run={p.run} paired={p.pairedRun} close={() => setTech(false)} />}
       {focus && !locked && <FocusEditor p={p} close={() => { setFocus(false); window.setTimeout(() => focusTrigger.current?.focus(), 0); }} pick={(issue, element) => { setFocus(false); void p.select(issue, element); window.setTimeout(() => document.getElementById(`issue-${issue.id}`)?.scrollIntoView({ block: "center" }), 0); }} />}
     </section>
+  );
+}
+
+type SideItem = "findings" | "brief" | "plan";
+/** The right column's switch: a tablist with one tab per item; the arrow keys, Home and End move between them. */
+function SideTabs({ items, value, onChange }: { items: { id: SideItem; label: string; count?: number }[]; value: SideItem; onChange: (next: SideItem) => void }) {
+  const onKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    // Counted from the tab that has focus, which is not always the chosen one.
+    const focused = (event.target as HTMLElement).closest<HTMLElement>('[role="tab"]')?.id.replace("side-tab-", "");
+    const at = Math.max(0, items.findIndex((item) => item.id === (focused ?? value)));
+    const next = event.key === "Home" ? 0 : event.key === "End" ? items.length - 1 : (at + (event.key === "ArrowRight" ? 1 : items.length - 1)) % items.length;
+    onChange(items[next].id);
+    document.getElementById(`side-tab-${items[next].id}`)?.focus();
+  };
+  return (
+    <div className="side-tabs" role="tablist" aria-label="右栏内容" onKeyDown={onKeyDown}>
+      {items.map((item) => (
+        <button key={item.id} type="button" role="tab" id={`side-tab-${item.id}`} className="side-tab" aria-selected={item.id === value} aria-controls={`side-panel-${item.id}`} tabIndex={item.id === value ? 0 : -1} onClick={() => onChange(item.id)}>
+          <span>{item.label}</span>{item.count !== undefined && <> <span className="num side-tab-count">{item.count}</span></>}
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -463,7 +526,7 @@ function AnalysisPanel({ run, p }: { run: WritingAnalysisRun; p: ProjectState })
   const coverage = run.analysis?.draft_coverage;
   return (
     <section className={`analysis${run.is_stale ? " stale" : ""}`} aria-label={brief ? "写前回顾" : "对照计划"}>
-      <SectionHead level={3} title={brief ? "写前回顾" : "对照计划"} aside={<span className="label">{run.is_stale ? "草稿改过，结果可能过时" : stageLabel(run.status)}</span>} />
+      <SectionHead title={brief ? "写前回顾" : "对照计划"} aside={<span className="label">{run.is_stale ? "草稿改过，结果可能过时" : stageLabel(run.status)}</span>} />
       {activeAnalysis(run) && <p className="small-note">{stageLabel(run.stage)}。编辑器照常可用。</p>}
       {["failed", "timed_out", "cancelled"].includes(run.status) && <p className="inline-error">{labelError({ code: run.error_code })} 没有保存部分结果。</p>}
       {run.analysis && (

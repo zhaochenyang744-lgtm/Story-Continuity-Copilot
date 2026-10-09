@@ -91,6 +91,12 @@ test("找不到页面：未知网址和不存在的作品都有自己的说明",
   await page.goto("/不存在的路径");
   await expect(page.getByRole("heading", { level: 1, name: "找不到这个页面", exact: true })).toBeVisible();
   await expect(page.getByText("网址可能输错了，或者这个页面已经不在了。", { exact: true })).toBeVisible();
+  // Its content starts at the page's left margin, like every other page.
+  const edge = await page.evaluate(() => {
+    const main = document.getElementById("main")!;
+    return { heading: document.querySelector("h1")!.getBoundingClientRect().left, margin: main.getBoundingClientRect().left + parseFloat(getComputedStyle(main).paddingLeft) };
+  });
+  expect(edge.heading).toBeCloseTo(edge.margin, 0);
   await shot(page, "not-found");
   await page.getByRole("button", { name: "回到首页", exact: true }).click();
   await expect(page).toHaveURL(/\/$/);

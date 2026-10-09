@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import { advanceTour, api, expect, openAccountMenu, openTab, registerAccount, sampleCheck, sampleWorkId, shot, test } from "./support/app";
 
 const bar = (page: Page) => page.getByRole("region", { name: "导览", exact: true });
-const findings = (page: Page) => page.getByRole("complementary", { name: "检查结果", exact: true });
+const findings = (page: Page) => page.getByRole("complementary", { name: "检查与回顾", exact: true });
 const notice = (page: Page, text: string) => page.getByRole("status").filter({ hasText: text });
 const progress = async (page: Page) => (await api(page).get("/onboarding")).progress as { current_step: number; completed_events: string[] };
 const startTour = async (page: Page) => {

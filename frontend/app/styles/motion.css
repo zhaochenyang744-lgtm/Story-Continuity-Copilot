@@ -65,7 +65,6 @@
 .route-thread-line.dim { opacity: .18; }
 .route .route-flow { animation: flow 1400ms linear infinite; }
 @keyframes flow { to { stroke-dashoffset: -11; } }
-.route-hit { fill: transparent; }
 .route-cursor line { stroke: var(--c-blue); stroke-width: 1.5; stroke-dasharray: 3 4; }
 .route-cursor text { fill: var(--c-blue-text); }
 .route.scrubbing .route-thread-line.lit path:first-child { stroke: var(--c-blue); }

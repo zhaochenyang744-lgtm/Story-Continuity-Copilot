@@ -1,4 +1,4 @@
-import { api, createWorkByApi, expect, expectNoHorizontalOverflow, openTab, registerAccount, sampleCheck, shot, tempFile, test } from "./support/app";
+import { api, createWorkByApi, expect, expectNoHorizontalOverflow, openTab, registerAccount, sampleCheck, sampleWorkId, shot, tempFile, test } from "./support/app";
 import { draft, button } from "./support/writing";
 import { evidence, importBook, intent, pair, project, sample } from "./support/pages";
 
@@ -17,7 +17,7 @@ test("08 故事航线：章节、伏笔和考虑中计划", async ({ page }) => 
   const id = await sample(page);
   const route = page.getByRole("region", { name: "故事航线", exact: true });
   await expect(route.getByTestId(/^route-chapter-/)).toHaveCount(11);
-  await expect(route.getByTestId("route-chapter-11")).toContainText("第 11 章草稿");
+  await expect(route.getByRole("button", { name: /^第 11 章 · / })).toHaveAttribute("title", /^第 11 章草稿 · /);
   const threads = (await api(page).get(`/projects/${id}/foreshadows`)).records.filter((r: any) => !r.archived_at && r.planted && ["planted", "developing"].includes(r.status));
   expect(threads.length).toBeGreaterThan(0);
   await expect(route.getByTestId(/^route-thread-/)).toHaveCount(Math.min(6, threads.filter((r: any) => r.planted.chapter_number < 11).length));
@@ -27,9 +27,31 @@ test("08 故事航线：章节、伏笔和考虑中计划", async ({ page }) => 
   expect(plans.story_plans.some((p: any) => !p.archived && p.target_chapter_number > 11)).toBe(true);
   await route.scrollIntoViewIfNeeded();
   await shot(page, "overview-route", false);
-  // The current SVG has hover targets, but no link or click handler.
-  await route.getByTestId("route-chapter-3").click();
-  await expect(page).toHaveURL(new RegExp(`/projects/${id}/overview$`));
+  // A written chapter opens in the writing page by its number; the draft's point opens the draft.
+  await route.getByRole("button", { name: /^第 3 章 · / }).click();
+  await expect(page).toHaveURL(new RegExp(`/projects/${id}/workspace\\?chapter=3$`));
+  await openTab(page, id, "overview");
+  await route.getByRole("button", { name: /^第 11 章 · / }).click();
+  await expect(page).toHaveURL(new RegExp(`/projects/${id}/workspace$`));
+});
+
+test("08 故事航线：键盘可以到达每个章节点，聚焦时和悬停一样高亮，回车打开", async ({ page }) => {
+  const id = await sample(page);
+  const route = page.getByRole("region", { name: "故事航线", exact: true });
+  const points = route.getByRole("button", { name: /^第 \d+ 章/ });
+  await expect(points).toHaveCount(11);
+  await points.nth(4).focus();
+  await expect(points.nth(4)).toBeFocused();
+  await expect(route.getByText(/^第 5 章时 · \d+ 条伏笔悬着$/)).toBeVisible();
+  await page.keyboard.press("Tab");
+  await expect(points.nth(5)).toBeFocused();
+  await expect(route.getByText(/^第 6 章时 · \d+ 条伏笔悬着$/)).toBeVisible();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(new RegExp(`/projects/${id}/workspace\\?chapter=6$`));
+  await openTab(page, id, "overview");
+  await points.nth(10).focus();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(new RegExp(`/projects/${id}/workspace$`));
 });
 
 test("08 草稿里待看：条数与写作入口", async ({ page }) => {
@@ -67,15 +89,19 @@ test("08 空作品概览：空状态与页面宽度", async ({ page }) => {
 });
 
 test("08 大数字不溢出：十万字正文", async ({ page }, info) => {
-  test.fixme(true, "清单第 5 条：十万字正文的数字右边缘 1456.65625 超出概览内容区 1352.5；保留几何断言");
   await registerAccount(page, "large08");
   const text = Array.from({ length: 30 }, (_, i) => `第${i + 1}章 测试航程\n\n${"风吹过空旷的码头，值班员把当天的水位记在本子上。".repeat(160)}\n`).join("\n");
   const id = await importBook(page, await tempFile("large-book.txt", text), "十万字测试航程");
   expect((await project(page, id)).chapter_word_count).toBeGreaterThan(100_000);
   await expect(page.getByTestId("overview-word-count").getByTestId("count-live")).toHaveText((await project(page, id)).chapter_word_count.toLocaleString("en-US"));
-  const measurements = { block: await page.getByTestId("overview-word-count").evaluate(e => e.getBoundingClientRect().toJSON()), number: await page.getByTestId("overview-word-count").getByTestId("count-live").evaluate(e => e.getBoundingClientRect().toJSON()), content: await page.getByTestId("overview-page").evaluate(e => e.getBoundingClientRect().toJSON()) };
+  const measurements = { size: parseFloat(await page.getByTestId("overview-word-count").getByTestId("count-live").evaluate(e => getComputedStyle(e).fontSize)), block: await page.getByTestId("overview-word-count").evaluate(e => e.getBoundingClientRect().toJSON()), number: await page.getByTestId("overview-word-count").getByTestId("count-live").evaluate(e => e.getBoundingClientRect().toJSON()), content: await page.getByTestId("overview-page").evaluate(e => e.getBoundingClientRect().toJSON()) };
   await evidence(info, "overview-large", measurements);
   await shot(page, "overview-large-day", false);
-  expect(measurements.block.right, "清单第 5 条：数字区不超出概览内容区").toBeLessThanOrEqual(measurements.content.right);
-  expect(measurements.number.right, "清单第 5 条：数字文本也不超出内容区").toBeLessThanOrEqual(measurements.content.right);
+  expect(measurements.block.right, "数字区不超出概览内容区").toBeLessThanOrEqual(measurements.content.right);
+  expect(measurements.number.right, "数字文本也不超出内容区").toBeLessThanOrEqual(measurements.content.right);
+  // Numbers that fit keep the full size (the example's chapter count); the six-digit one is smaller because it did not fit.
+  await openTab(page, await sampleWorkId(page), "overview");
+  const sizes = await page.getByTestId("overview-figures").getByTestId("count-live").evaluateAll(nodes => nodes.map(node => parseFloat(getComputedStyle(node).fontSize)));
+  expect(sizes[0], "放得下的数字保持最大字号").toBe(72);
+  expect(measurements.size, "十万字的数字放不下，缩小了").toBeLessThan(72);
 });

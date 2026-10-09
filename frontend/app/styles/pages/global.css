@@ -89,7 +89,8 @@
 .auth-visitor { display: grid; gap: 12px; margin-top: 16px; padding-top: 20px; border-top: 1px solid var(--c-rule); font-size: 14px; }
 
 /* ── 404 / 导览结束 ── */
-.not-found,
+/* 404 starts at the page's left margin like every other page; the finished-tour page keeps its centred column. */
+.not-found { width: min(100%, 880px); padding-top: 64px; }
 .tour-done { width: min(100%, 880px); margin: 0 auto; padding-top: 64px; }
 .not-found-num { display: block; color: var(--c-blue-text); font-size: clamp(96px, 16vw, 200px); }
 .not-found h1,

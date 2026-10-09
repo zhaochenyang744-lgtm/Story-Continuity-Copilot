@@ -3,7 +3,7 @@ import { advanceTour, api, createWorkByApi, expect, openTab, registerAccount, sa
 export { api, expect, readDraftBody, setDraftBody, shot, test } from "./app";
 
 export const button = (page: Page, name: string) => page.getByRole("button", { name, exact: true });
-export const findings = (page: Page) => page.getByRole("complementary", { name: "检查结果", exact: true });
+export const findings = (page: Page) => page.getByRole("complementary", { name: "检查与回顾", exact: true });
 export const finding = (page: Page, id: string) => page.getByTestId(`finding-${id}`);
 export async function setup(page: Page, sample = true) {
   await registerAccount(page, "writing");

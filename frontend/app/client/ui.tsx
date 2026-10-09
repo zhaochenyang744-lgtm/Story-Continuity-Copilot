@@ -1,7 +1,7 @@
 "use client";
 
 // The 版面 building blocks. Every page is assembled from these; nothing here knows about data.
-import { KeyboardEvent as ReactKeyboardEvent, MouseEventHandler, ReactNode, Ref, useEffect, useRef, useState } from "react";
+import { CSSProperties, KeyboardEvent as ReactKeyboardEvent, MouseEventHandler, ReactNode, Ref, useEffect, useRef, useState } from "react";
 import { request } from "../api";
 
 type ButtonKind = "primary" | "outline" | "text" | "small" | "danger" | "plain";
@@ -74,9 +74,16 @@ export function Chevron({ size = 12 }: { size?: number }) {
   );
 }
 
-/** Big Archivo numerals. */
-export function Num({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <span className={`num${className ? ` ${className}` : ""}`}>{children}</span>;
+/** How many digits and separators the numerals will show, for the stylesheet to size them to the room
+    they have (see --num-digit in tokens.css). Several texts add up: they share one row. */
+export function fitVars(...texts: string[]): CSSProperties {
+  const joined = texts.join("");
+  return { "--digits": joined.replace(/\D/g, "").length, "--commas": joined.replace(/\d/g, "").length } as CSSProperties;
+}
+
+/** Big Archivo numerals. `fit` is the number as it is shown: with it, a stylesheet may shrink the numerals to fit their box. */
+export function Num({ children, className = "", fit }: { children: ReactNode; className?: string; fit?: string }) {
+  return <span className={`num${className ? ` ${className}` : ""}`} style={fit === undefined ? undefined : fitVars(fit)}>{children}</span>;
 }
 
 export function Tag({ tone = "line", children }: { tone?: "high" | "mid" | "gap" | "state" | "solid" | "blue" | "line" | "considering"; children: ReactNode }) {

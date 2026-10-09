@@ -81,6 +81,16 @@
   --fs-28: 28px;
   --fs-30: 30px;
   --fs-36: 36px;
+  /* Large numerals: the sizes they are set at and the least they shrink to when their box is too narrow.
+     --num-digit / --num-comma are the width of a digit and of a separator in em (Archivo 125% at weight
+     900 measures .82 and .38); --figures-reserve is what a row of page-head figures spends on padding,
+     rules and labels. */
+  --fs-figure: 72px;
+  --fs-figure-md: 48px;
+  --fs-figure-min: 24px;
+  --num-digit: .83;
+  --num-comma: .4;
+  --figures-reserve: 200px;
   --lh-tight: 1.25;
   --lh-ui: 1.6;
   --lh-prose: 2.05;
@@ -169,4 +179,11 @@
   --c-veil: rgba(0, 0, 0, .62);
   --elev-2: 8px 8px 0 rgba(0, 0, 0, .5);
   --elev-pop: 0 14px 36px rgba(0, 0, 0, .55), 0 2px 6px rgba(0, 0, 0, .4);
+}
+
+@media (max-width: 720px) {
+  :root {
+    --fs-figure: 48px;
+    --fs-figure-md: 36px;
+  }
 }

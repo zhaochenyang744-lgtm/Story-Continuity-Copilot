@@ -3,7 +3,8 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scrollbar-gutter: stable; }
+/* No scrollbar-gutter here: a reserved gutter is an empty strip the top bar's rule and every overlay stop short of. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 html,
 body { margin: 0; min-height: 100%; background: var(--c-ground); color: var(--c-ink); }
 body {

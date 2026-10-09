@@ -53,6 +53,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
   const routePlans = plans.filter(({ plan }) => plan.target_chapter_number != null && plan.target_chapter_number >= draftNumber).map(({ plan, weighing }) => ({ id: plan.id, title: plan.title, chapter: plan.target_chapter_number!, considering: weighing }));
   const nextPlans = [...plans].sort((a, b) => (a.plan.target_chapter_number ?? 9_999) - (b.plan.target_chapter_number ?? 9_999) || a.plan.position - b.plan.position).slice(0, 5);
   const imported = project.data_origin === "user_import" && project.memory_initialization_status !== "completed";
+  const wordCount = project.chapter_word_count ?? Math.max(0, (project.word_count ?? 0) - draftChars);
 
   return (
     <section className="page overview" data-testid="overview-page">
@@ -80,17 +81,17 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
           <dl className="overview-figures" data-testid="overview-figures">
             <div>
               <dt className="sr-only">已写章节</dt>
-              <dd><Num><CountUp id={`${project.id}:chapters`} value={project.chapter_count ?? 0} /></Num></dd>
+              <dd><Num fit={formatCount(project.chapter_count ?? 0)}><CountUp id={`${project.id}:chapters`} value={project.chapter_count ?? 0} /></Num></dd>
               <dd className="figure-label">章{timeline ? ` · 已检查 ${checked}` : ""}</dd>
             </div>
             <div>
               <dt className="sr-only">待看</dt>
-              <dd><Num className="blue"><CountUp id={`${project.id}:open`} value={issues.length} /></Num></dd>
+              <dd><Num className="blue" fit={formatCount(issues.length)}><CountUp id={`${project.id}:open`} value={issues.length} /></Num></dd>
               <dd className="figure-label">处待看</dd>
             </div>
             <div className="wide" data-testid="overview-word-count">
               <dt className="sr-only">字数</dt>
-              <dd><Num><CountUp id={`${project.id}:words`} value={project.chapter_word_count ?? Math.max(0, (project.word_count ?? 0) - draftChars)} /></Num></dd>
+              <dd><Num fit={formatCount(wordCount)}><CountUp id={`${project.id}:words`} value={wordCount} /></Num></dd>
               <dd className="figure-label">字正文{draftChars ? ` · 另有草稿 ${formatCount(draftChars)} 字` : ""}</dd>
             </div>
           </dl>
@@ -125,6 +126,7 @@ export function OverviewPage({ p, open, go, notices }: PageProps) {
             draft={{ number: draftNumber, title: p.draft?.title ?? "", findings: issues.map(findingTone) }}
             threads={openThreads.map((record) => ({ id: record.id, title: record.title, planted: record.planted!.chapter_number }))}
             plans={routePlans}
+            onOpen={(number, isDraft) => go(isDraft ? `/projects/${project.id}/workspace` : `/projects/${project.id}/workspace?chapter=${number}`)}
           />
         )}
       </section>

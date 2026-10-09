@@ -30,13 +30,15 @@ const drawn = new Set<string>();
  * the chapter that planted it and running on past the draft, and the plans for coming chapters as
  * diamonds in the shaded "接下来" stretch (solid = 已定, dashed = 考虑中).
  */
-export function StoryRoute({ id, chapters, draft, threads, plans }: {
+export function StoryRoute({ id, chapters, draft, threads, plans, onOpen }: {
   /** the work; the chart draws itself the first time it is shown for it in this visit */
   id: string;
   chapters: RouteChapter[];
   draft: { number: number; title: string; findings: FindingTone[] } | null;
   threads: RouteThread[];
   plans: RoutePlan[];
+  /** a chapter's station was chosen (the draft's too, with `draft` true) */
+  onOpen: (number: number, draft: boolean) => void;
 }) {
   const scroller = useRef<HTMLDivElement>(null);
   const [available, setAvailable] = useState(1180);
@@ -97,7 +99,8 @@ export function StoryRoute({ id, chapters, draft, threads, plans }: {
 
   return (
     <div className="route-scroll" ref={scroller}>
-      <svg className={`route${drawing ? " drawing" : ""}${at !== null ? " scrubbing" : ""}`} viewBox={`0 0 ${width} ${height}`} width={width} height={height} role="img" aria-label={`故事航线：${summary}`} onMouseLeave={() => setAt(null)}>
+      <div className="route-frame" style={{ width, height }} onMouseLeave={() => setAt(null)}>
+      <svg className={`route${drawing ? " drawing" : ""}${at !== null ? " scrubbing" : ""}`} viewBox={`0 0 ${width} ${height}`} width={width} height={height} role="img" aria-label={`故事航线：${summary}`}>
         <rect x={futureStart} y={10} width={Math.max(0, width - futureStart)} height={height - 20} fill="var(--c-blue-tint)" />
         <text x={futureStart + 12} y={34} className="route-mono" fill={BLUE_TEXT}>接下来</text>
         {at !== null && (
@@ -181,14 +184,21 @@ export function StoryRoute({ id, chapters, draft, threads, plans }: {
             </g>
           );
         })}
-        {/* Pointing areas, one per written chapter and the draft, above everything so a chapter is
-            easy to point at; each carries that chapter's tooltip. */}
-        {Array.from({ length: Math.max(0, draftNumber - firstNumber + 1) }, (_, i) => firstNumber + i).map((n) => {
-          const chapter = chapterByNumber.get(n);
-          const tip = chapter ? `第 ${n} 章 · ${bareChapterTitle(chapter.title)} · ${chapter.status === "checked" ? "已检查" : chapter.status === "unchecked" || chapter.status === "empty" ? "未检查" : "改过，未重新检查"}` : draft && n === draftNumber ? `第 ${n} 章草稿 · ${bareChapterTitle(draft.title)}` : "";
-          return <rect key={`hit-${n}`} data-testid={`route-chapter-${n}`} className="route-hit" x={x(n) - step / 2} y={10} width={step} height={height - 20} onMouseEnter={() => setAt(n)}>{tip && <title>{tip}</title>}</rect>;
-        })}
       </svg>
+      {/* One button over each written chapter and the draft: pointing at it or focusing it shows which threads were open by then, choosing it opens that chapter. */}
+      {Array.from({ length: Math.max(0, draftNumber - firstNumber + 1) }, (_, i) => firstNumber + i).map((n) => {
+        const chapter = chapterByNumber.get(n);
+        const isDraft = Boolean(draft) && n === draftNumber;
+        if (!chapter && !isDraft) return null;
+        const title = bareChapterTitle(chapter ? chapter.title : draft!.title);
+        const tip = chapter ? `第 ${n} 章 · ${title} · ${chapter.status === "checked" ? "已检查" : chapter.status === "unchecked" || chapter.status === "empty" ? "未检查" : "改过，未重新检查"}` : `第 ${n} 章草稿 · ${title}`;
+        return (
+          <button key={`point-${n}`} type="button" data-testid={`route-chapter-${n}`} className="route-point" aria-label={title ? `第 ${n} 章 · ${title}` : `第 ${n} 章`} title={tip}
+            style={{ left: Math.max(0, x(n) - step / 2), width: step, top: 10, height: height - 20 }}
+            onMouseEnter={() => setAt(n)} onFocus={() => setAt(n)} onBlur={() => setAt(null)} onClick={() => onOpen(n, isDraft)} />
+        );
+      })}
+      </div>
     </div>
   );
 }

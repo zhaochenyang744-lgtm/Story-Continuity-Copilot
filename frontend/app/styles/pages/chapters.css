@@ -4,6 +4,7 @@
 .chapter-row { display: grid; grid-template-columns: 44px 72px minmax(0, 1fr) 90px 130px 150px 80px; gap: 16px; align-items: center; min-height: 64px; }
 .no-pick .chapter-row { grid-template-columns: 72px minmax(0, 1fr) 90px 130px 150px 80px; }
 .no-pick .chapter-passages { margin-left: 88px; }
+.chapter-meta { display: contents; }
 .chapter-row-head { min-height: 0; padding: 10px 0; border-bottom: 1px solid var(--c-rule); color: var(--c-muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: var(--tracking-label); }
 .chapter-item { border-bottom: 1px solid var(--c-line); scroll-margin-top: calc(var(--topbar-h) + 40px); }
 .chapter-item.picked { background: var(--c-surface); }
@@ -75,6 +76,15 @@
 .reuse-text { display: grid; flex: 1 1 320px; }
 .reuse-text strong { font-family: var(--font-serif); font-weight: 400; }
 
+/* Narrow: each chapter is one block. Number and title on the first line; words, status, last result and the link on the second. */
 @media (max-width: 720px) {
-  .chapter-passages { margin-left: 0; }
+  .chapter-table { min-width: 0; }
+  .chapter-row-head { display: none; }
+  .chapter-row,
+  .no-pick .chapter-row { grid-template-columns: auto auto minmax(0, 1fr); align-items: center; gap: var(--s-1) var(--s-3); min-height: 0; padding: var(--s-3) 0; }
+  .no-pick .chapter-row { grid-template-columns: auto minmax(0, 1fr); }
+  .chapter-meta { display: flex; flex-wrap: wrap; align-items: center; grid-column: 1 / -1; gap: var(--s-1) var(--s-4); }
+  .chapter-meta > :empty { display: none; }
+  .chapter-passages,
+  .no-pick .chapter-passages { margin-left: 0; }
 }

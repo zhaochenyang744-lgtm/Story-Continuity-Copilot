@@ -686,7 +686,7 @@ export function useProject({
       const created = await json<WritingAnalysisRun>(`/projects/${projectId}/analyses`, "POST", { analysis_type: analysisType, draft_id: draft.id, draft_revision: draft.revision, client_request_id: crypto.randomUUID() });
       const next = { ...created, is_stale: false, lineage_status: "current", error_code: null } as WritingAnalysisRun;
       if (analysisType === "context_brief") setContextBrief(next); else setPlanAlignment(next);
-      notify(analysisType === "context_brief" ? "写前回顾开始了，完成后显示在草稿下方。" : "对照计划开始了，完成后按计划逐条显示。");
+      notify(analysisType === "context_brief" ? "写前回顾开始了，完成后显示在右栏的「写前回顾」里。" : "对照计划开始了，完成后在右栏的「对照计划」里按计划逐条显示。");
     } catch (cause) { fail(cause); } finally { setAnalysisBusy(""); }
   };
   const analysisAction = async (target: WritingAnalysisRun, action: "cancel" | "retry") => {

@@ -65,8 +65,15 @@
 .writing-tool:disabled { opacity: .4; cursor: not-allowed; }
 
 .findings { min-width: 0; margin: 0 -16px; padding: 8px 16px 24px; }
-.findings-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--c-rule); }
-.findings-head h2 { font-size: 24px; }
+/* The right column's switch: findings, 写前回顾, 对照计划. It stays at the top while the column scrolls. */
+.findings { scroll-margin-top: calc(var(--topbar-h) + var(--s-6)); }
+.side-tabs { position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; gap: 0 var(--s-6); border-bottom: 2px solid var(--c-rule); background: var(--c-ground); }
+.side-tab { display: inline-flex; align-items: baseline; gap: var(--s-2); min-height: var(--control-h); padding: var(--s-2) 0 0; border: 0; border-bottom: var(--s-1) solid transparent; margin-bottom: -2px; background: none; color: var(--c-muted); font-size: var(--fs-15); cursor: pointer; }
+.side-tab:hover { color: var(--c-ink); }
+.side-tab[aria-selected="true"] { border-bottom-color: var(--c-ink); color: var(--c-ink); font-weight: 700; }
+.side-tab-count { font-size: var(--fs-20); }
+.findings-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); padding-top: var(--s-3); }
+.findings [role="tabpanel"] > .note:first-child { margin-top: var(--s-4); }
 .findings-note { margin-top: 12px; color: var(--c-muted); font-size: 13px; }
 .findings-empty { padding: 20px 0; color: var(--c-muted); }
 .finding { border-bottom: 1px solid var(--c-line); }
@@ -123,9 +130,7 @@
 .complete-line .num { font-size: 40px; }
 .complete-line .label { margin-left: auto; }
 
-.writing-records { display: grid; gap: 32px; margin-top: 64px; }
-.analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 32px 48px; }
-.analysis { display: grid; gap: 12px; align-content: start; }
+.analysis { display: grid; gap: 12px; align-content: start; padding-top: var(--s-4); }
 .analysis.stale { opacity: .75; }
 .analysis-summary { font-family: var(--font-serif); font-size: 16px; line-height: 1.9; }
 .analysis-items > li { display: grid; gap: 4px; padding: 12px 0; border-bottom: 1px solid var(--c-line); }
@@ -188,9 +193,8 @@
   .mobile-panes button[aria-current="page"] { background: var(--c-ink); color: var(--c-ground); font-weight: 700; }
   .draft-grid { grid-template-columns: minmax(0, 1fr); padding-top: 24px; }
   .findings { position: static; max-height: none; overflow: visible; }
-  .writing[data-mobile-pane="draft"] :is(.findings, .writing-records),
-  .writing[data-mobile-pane="issues"] :is(.draft, .writing-records),
-  .writing[data-mobile-pane="resources"] .draft-grid { display: none; }
+  .writing[data-mobile-pane="draft"] .findings,
+  .writing[data-mobile-pane="issues"] .draft { display: none; }
   .draft-head-side { align-items: flex-start; }
   .draft-head-actions { justify-content: flex-start; }
   .focus-list { position: absolute; top: var(--topbar-h); right: 0; bottom: 56px; background: var(--c-ground); box-shadow: var(--elev-2); }

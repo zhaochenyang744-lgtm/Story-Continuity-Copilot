@@ -55,7 +55,7 @@
 .feedback-close:hover { background: var(--c-sunken); }
 
 /* ── Page head: 72px title, a line of context, figures/actions on the right, 1px rule ── */
-.page-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 32px; padding: 48px 0 28px; border-bottom: 1px solid var(--c-rule); }
+.page-head { container-type: inline-size; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 32px; padding: 48px 0 28px; border-bottom: 1px solid var(--c-rule); }
 .page-head.no-rule { padding-bottom: 0; border-bottom: 0; }
 .page-head-main { flex: 999 1 420px; min-width: 0; }
 .page-head-lede { margin-top: 14px; max-width: 46em; font-size: 16px; }
@@ -63,10 +63,11 @@
 .head-figures-actions { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 32px; }
 .head-actions-stack { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
 .head-actions-stack .actions { gap: 10px; }
-.figures { display: flex; align-items: stretch; }
+.figures { display: flex; flex-wrap: wrap; align-items: stretch; max-width: 100%; }
 .figures > div { padding: 2px 28px 0 20px; border-left: 1px solid var(--c-rule); }
 .figures > div:last-child { padding-right: 0; }
-.figures .num { font-size: 48px; }
+/* Page-head figures share one row: they keep their size until the three together would not fit the head. */
+.figures .num { font-size: clamp(var(--fs-figure-min), calc((100cqi - var(--figures-reserve)) / (var(--digits, 3) * var(--num-digit) + var(--commas, 0) * var(--num-comma))), var(--fs-figure-md)); }
 .figure-label { margin-top: 6px; color: var(--c-ink-2); font-size: 14px; }
 
 /* ── Section head: 28px title on a 1px rule ── */
@@ -252,8 +253,13 @@
 /* ── Narrow screens ── */
 @media (max-width: 720px) {
   :root { --page-gutter: 16px; }
-  .topbar-inner { gap: 0 16px; padding-top: 8px; }
-  .topbar-work { max-width: 50vw; }
+  /* One line for logo, work, theme switch and avatar; a long work title is cut short, never wrapped. */
+  .topbar-inner { gap: 0 var(--s-3); padding-top: var(--s-2); }
+  .wordmark { font-size: var(--fs-13); }
+  .topbar-brand,
+  .theme-switch,
+  .account { flex: none; }
+  .topbar-work { flex: 1 1 0; min-width: 0; max-width: none; padding-left: var(--s-3); }
   .topbar-tabs { order: 3; flex-basis: 100%; flex-wrap: nowrap; gap: 4px 20px; overflow-x: auto; }
   .topbar-tabs.global { padding-left: 0; border-left: 0; }
   .topbar-quota { display: none; }
@@ -261,7 +267,6 @@
   .account { margin-left: auto; }
   h1 { font-size: 48px; }
   .page-head { padding: 32px 0 20px; }
-  .figures .num { font-size: 36px; }
   .figures > div { padding-right: 16px; padding-left: 12px; }
   .band { padding: 20px; }
   .band-title { font-size: 22px; }
