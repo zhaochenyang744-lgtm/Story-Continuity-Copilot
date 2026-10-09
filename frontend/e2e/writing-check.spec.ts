@@ -1,6 +1,43 @@
 import { api, beginCheck, button, draft, expect, findings, finishCheck, run, saveBody, selectIssue, setDraftBody, setup, shot, test } from "./support/writing";
 import { openTab, sampleWorkId, startVisitor } from "./support/app";
 
+test("12 N 取消后改稿保存，再检查创建新记录而非重试旧记录", async ({ page }) => {
+  const id = await setup(page);
+  await page.request.get("/api/test/stage12/reset");
+  await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_BLOCK。");
+  const old = await beginCheck(page, id);
+  try {
+    const cancelled = page.waitForResponse(r => r.request().method() === "POST" && r.url().endsWith(`/checks/${old}/cancel`));
+    await findings(page).getByRole("button", { name: "取消检查", exact: true }).click();
+    expect((await cancelled).ok()).toBe(true);
+    await page.request.get("/api/test/stage12/release");
+    await expect.poll(async () => (await run(page, id, old)).status).toBe("cancelled");
+    await saveBody(page, id, "温岚握着黄铜罗盘，雨停以后来到北门。");
+    await expect(findings(page).getByRole("button", { name: "重试", exact: true })).toHaveCount(0);
+    await expect(findings(page)).toContainText("草稿改过了，点『再检查一次』检查新的正文。");
+    const next = await beginCheck(page, id);
+    expect(next).not.toBe(old);
+    expect((await finishCheck(page, id, next)).attempt_number).toBe(1);
+    expect((await run(page, id, old)).status).toBe("cancelled");
+    await shot(page, "12-N-new-check-after-edit-day", false);
+  } finally { await page.request.get("/api/test/stage12/release"); }
+});
+
+test("12 N 重试被告知依据已变后，下次点击开始新检查", async ({ page }) => {
+  const id = await setup(page);
+  await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_FAIL_ONCE。");
+  const old = await beginCheck(page, id);
+  await finishCheck(page, id, old, "failed");
+  const endpoint = `**/api/projects/${id}/checks/${old}/retry`;
+  await page.route(endpoint, route => route.fulfill({ status: 409, contentType: "application/json", body: JSON.stringify({ error: { code: "run_basis_changed" } }) }));
+  await findings(page).getByRole("button", { name: "重试", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "检查依据已经更新，下次点击『再检查一次』会检查新的正文。" })).toBeVisible();
+  await expect(findings(page).getByRole("button", { name: "重试", exact: true })).toHaveCount(0);
+  await page.unroute(endpoint);
+  const next = await beginCheck(page, id);
+  expect((await finishCheck(page, id, next)).attempt_number).toBe(1);
+});
+
 test("示例结果：四条结果、正文编号和前文依据", async ({ page }) => {
   const id = await setup(page), result = await run(page, id);
   expect(result.issues).toHaveLength(4);

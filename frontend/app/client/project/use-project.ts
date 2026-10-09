@@ -671,7 +671,12 @@ export function useProject({
         setMemoryDelta(delta); setCoverage(delta.coverage ?? null);
       } else setPairedRun(null);
       notify(`开始第 ${next.attempt_number ?? "—"} 次检查；之前的记录保留不变。`);
-    } catch (cause) { fail(cause); } finally { setBusy(""); }
+    } catch (cause) {
+      if (["run_basis_changed", "run_retry_lineage_stale"].includes((cause as ApiFailure)?.code)) {
+        setRun((current) => current?.run_id === run.run_id ? { ...current, is_stale: true } : current);
+        notify("检查依据已经更新，下次点击『再检查一次』会检查新的正文。");
+      } else fail(cause);
+    } finally { setBusy(""); }
   };
 
   const startAnalysis = async (analysisType: "context_brief" | "plan_alignment") => {

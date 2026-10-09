@@ -146,7 +146,7 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
     <Button kind="primary" size="lg" disabled={Boolean(p.busy) || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingDecisionConflict)} onClick={() => void p.save()}>{p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存修改" : "保存"}</Button>
   ) : checking ? (
     <Button kind="primary" size="lg" disabled busy>正在检查…</Button>
-  ) : p.run && retryableRun(p.run) ? (
+  ) : p.run && retryableRun(p.run) && !outdated ? (
     <Button kind="primary" size="lg" disabled={blocked} onClick={() => void p.retryRun()}>再检查一次</Button>
   ) : (
     <Button kind="primary" size="lg" disabled={blocked || !p.draft || empty || visitorLimit !== null} title={empty ? "先写下正文，再检查" : visitorLimit !== null ? `访客每次最多检查 ${formatCount(visitorLimit)} 字` : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
@@ -566,18 +566,20 @@ function RunStatus({ run, p, actions, visitor }: { run: Run; p: ProjectState; ac
   const kind = run.run_type === "memory_delta" ? "事实变化" : "检查";
   const blocked = Boolean(p.busy) || p.readOnly;
   const running = activeRun(run);
+  const outdated = p.dirty || Boolean(run.is_stale);
   return (
     <div className={`run-status status-${run.status}`} aria-live="polite">
       <p className="run-status-line">
         <strong>{running ? stageLabel(run.stage) : `${kind}没有完成`}</strong>
         <span className="label">{(run.attempt_number ?? 1) > 1 ? `第 ${run.attempt_number} 次 · ` : ""}{timeLabel(run.created_at)}</span>
       </p>
-      {!running && <p className="inline-error">{labelRunFailure(run.error_code, run.run_type === "memory_delta" ? "事实整理" : "检查")}{actions && retryableRun(run) ? (visitor ? "重试会再用掉一次检查机会。" : "重试不会再扣字数。") : ""}</p>}
+      {!running && <p className="inline-error">{labelRunFailure(run.error_code, run.run_type === "memory_delta" ? "事实整理" : "检查")}{actions && retryableRun(run) && !outdated ? (visitor ? "重试会再用掉一次检查机会。" : "重试不会再扣字数。") : ""}</p>}
+      {actions && retryableRun(run) && outdated && <p className="small-note">草稿改过了，点『再检查一次』检查新的正文。</p>}
       {run.stage === "cancelling" && <p className="small-note">正在等模型返回；之后返回的结果会被丢弃，不会保存。</p>}
       {actions && (running || retryableRun(run)) && (
         <div className="finding-actions">
           {running && <Button kind="small" disabled={blocked} onClick={() => void p.cancelRun()}>{run.stage === "cancelling" ? "正在取消" : "取消检查"}</Button>}
-          {retryableRun(run) && <Button kind="text" disabled={blocked} onClick={() => void p.retryRun()}>重试</Button>}
+          {retryableRun(run) && !outdated && <Button kind="text" disabled={blocked} onClick={() => void p.retryRun()}>重试</Button>}
         </div>
       )}
     </div>
