@@ -167,7 +167,7 @@ export const importWarningLabel = (warning: string) =>
 export const timelineStatusLabel: Record<string, string> = { checked: "已检查", basis_changed: "前文改过", edited_unchecked: "改后未查", unchecked: "未检查", empty: "还没写" };
 export const timelineStatusHint: Record<string, string> = {
   checked: "检查覆盖了这一章现在的正文。",
-  basis_changed: "检查之后，前面的章节改过，建议重新检查。",
+  basis_changed: "检查之后，前面的章节改过，建议再检查一次。",
   edited_unchecked: "这一章检查之后又改过，新的正文还没检查。",
   unchecked: "这一章还没有检查过。",
   empty: "还没写。",

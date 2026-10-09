@@ -71,6 +71,9 @@
 .findings { min-width: 0; margin: 0 -16px; padding: 8px 16px 24px; }
 /* The right column's switch: findings, 写前回顾, 对照计划. It stays at the top while the column scrolls. */
 .findings { scroll-margin-top: calc(var(--topbar-h) + var(--s-6)); }
+/* The full-width review follows the grid. Let results end as whole cards there,
+   instead of pushing a clipped inner scroll pane above the top bar at the grid's end. */
+.writing:has(> .fact-review) .findings { position: static; max-height: none; overflow: visible; }
 .side-tabs { position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; gap: 0 var(--s-6); border-bottom: 2px solid var(--c-rule); background: var(--c-ground); }
 .side-tab { display: inline-flex; align-items: baseline; gap: var(--s-2); min-height: var(--control-h); padding: var(--s-2) 0 0; border: 0; border-bottom: var(--s-1) solid transparent; margin-bottom: -2px; background: none; color: var(--c-muted); font-size: var(--fs-15); cursor: pointer; }
 .side-tab:hover { color: var(--c-ink); }

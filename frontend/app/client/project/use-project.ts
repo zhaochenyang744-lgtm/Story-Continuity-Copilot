@@ -657,7 +657,7 @@ export function useProject({
   };
   const retryRun = async () => {
     if (!projectId || !run || !retryableRun(run) || readOnly) return;
-    setBusy("正在重新检查");
+    setBusy("正在检查");
     try {
       const retried = await json<{ paired: boolean; run?: Run; continuity_run_id?: string; memory_delta_run_id?: string }>(`/projects/${projectId}/checks/${run.run_id}/retry`, "POST", { client_request_id: crypto.randomUUID() });
       const nextId = retried.paired ? retried.continuity_run_id : retried.run?.run_id;

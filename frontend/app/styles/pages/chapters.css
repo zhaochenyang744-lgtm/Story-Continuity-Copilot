@@ -36,7 +36,7 @@
 .select-summary { flex: 1 1 320px; color: var(--c-on-inverse-2); font-size: 14px; }
 .select-go { min-height: 48px; padding: 0 22px; border: 0; background: var(--c-blue); box-shadow: var(--inverse-edge); color: var(--c-on-blue); font-weight: 700; cursor: pointer; }
 .select-go:hover:not(:disabled) { background: var(--c-blue-hover); }
-.select-go:disabled { background: var(--c-on-inverse-2); color: var(--c-on-inverse-3); opacity: .5; cursor: not-allowed; }
+.select-go:disabled { background: var(--c-inverse-disabled-bg); box-shadow: var(--inverse-disabled-edge); color: var(--c-on-inverse-3); opacity: 1; cursor: not-allowed; }
 
 .latest { margin-top: 64px; }
 .latest .small-note { margin-top: 12px; }

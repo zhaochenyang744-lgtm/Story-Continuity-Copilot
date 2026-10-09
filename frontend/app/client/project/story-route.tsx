@@ -151,7 +151,7 @@ export function StoryRoute({ id, chapters, draft, threads, plans, onOpen }: {
             <g key={n}>
               {chapter && (
                 <rect x={cx - 7} y={baseline - 7} width="14" height="14" fill={chapter.status === "checked" ? INK : GROUND} stroke={INK} strokeWidth="2">
-                  <title>{`第 ${n} 章 · ${bareChapterTitle(chapter.title)} · ${chapter.status === "checked" ? "已检查" : chapter.status === "unchecked" || chapter.status === "empty" ? "未检查" : "改过，未重新检查"}`}</title>
+                  <title>{`第 ${n} 章 · ${bareChapterTitle(chapter.title)} · ${chapter.status === "checked" ? "已检查" : chapter.status === "unchecked" || chapter.status === "empty" ? "未检查" : "改过，请再检查一次"}`}</title>
                 </rect>
               )}
               {chapter && (chapter.status === "basis_changed" || chapter.status === "edited_unchecked") && <path d={`M ${cx - 6} ${baseline + 6} L ${cx + 6} ${baseline - 6} L ${cx + 6} ${baseline + 6} Z`} fill={INK} />}
@@ -191,7 +191,7 @@ export function StoryRoute({ id, chapters, draft, threads, plans, onOpen }: {
         const isDraft = Boolean(draft) && n === draftNumber;
         if (!chapter && !isDraft) return null;
         const title = bareChapterTitle(chapter ? chapter.title : draft!.title);
-        const tip = chapter ? `第 ${n} 章 · ${title} · ${chapter.status === "checked" ? "已检查" : chapter.status === "unchecked" || chapter.status === "empty" ? "未检查" : "改过，未重新检查"}` : `第 ${n} 章草稿 · ${title}`;
+        const tip = chapter ? `第 ${n} 章 · ${title} · ${chapter.status === "checked" ? "已检查" : chapter.status === "unchecked" || chapter.status === "empty" ? "未检查" : "改过，请再检查一次"}` : `第 ${n} 章草稿 · ${title}`;
         return (
           <button key={`point-${n}`} type="button" data-testid={`route-chapter-${n}`} className="route-point" aria-label={title ? `第 ${n} 章 · ${title}` : `第 ${n} 章`} title={tip}
             style={{ left: Math.max(0, x(n) - step / 2), width: step, top: 10, height: height - 20 }}

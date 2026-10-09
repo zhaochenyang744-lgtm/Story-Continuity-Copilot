@@ -1,6 +1,17 @@
 import { api, beginCheck, button, draft, expect, findings, finishCheck, run, saveBody, selectIssue, setDraftBody, setup, shot, test } from "./support/writing";
 import { openTab, sampleWorkId, startVisitor } from "./support/app";
 
+test("12 Q 重试遇到次数限制显示当天检查次数用完", async ({ page }) => {
+  const id = await setup(page);
+  await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_FAIL_ONCE。");
+  const old = await beginCheck(page, id);
+  await finishCheck(page, id, old, "failed");
+  await page.route(`**/api/projects/${id}/checks/${old}/retry`, route => route.fulfill({ status: 429, contentType: "application/json", body: JSON.stringify({ error: { code: "workflow_quota_exceeded" } }) }));
+  await findings(page).getByRole("button", { name: "重试", exact: true }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "今天的检查次数用完了，明天再来。" })).toBeVisible();
+  expect((await run(page, id)).run_id).toBe(old);
+});
+
 test("12 N 取消后改稿保存，再检查创建新记录而非重试旧记录", async ({ page }) => {
   const id = await setup(page);
   await page.request.get("/api/test/stage12/reset");

@@ -62,6 +62,8 @@
   --c-green: var(--c-blue-text);
   --c-green-tint: var(--c-blue-tint);
   --c-shadow: transparent;
+  --c-inverse-disabled-bg: transparent;
+  --inverse-disabled-edge: inset 0 0 0 1px var(--c-on-inverse-3);
 
   /* Type. Fonts are self-hosted (sliced by unicode-range, fetched on demand). */
   --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, sans-serif;

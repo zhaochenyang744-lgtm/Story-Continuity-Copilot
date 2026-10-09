@@ -162,6 +162,11 @@ test("全部处理完，审阅事实变化", async ({ page }) => {
   await expect(relation).toHaveValue("location");
   expect(await relation.evaluate((select: HTMLSelectElement) => select.selectedOptions[0].textContent)).toBe("所在位置");
   await expect(form).toContainText("所在位置：截至第10章末仍握在温岚手中");
+  // 12 Q: once the review follows the writing grid, its right column must end with whole cards.
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await shot(page, "12-Q-writing-bottom-day", false);
+  const side = await findings(page).evaluate(e => ({ scroll: e.scrollHeight, client: e.clientHeight }));
+  expect(side.scroll, "审阅区上方的右栏应完整结束，不能在卡片中间裁掉").toBeLessThanOrEqual(side.client);
   await expect(form).not.toContainText("其他");
   await form.scrollIntoViewIfNeeded();
   await pair(page, "writing-fact-review");

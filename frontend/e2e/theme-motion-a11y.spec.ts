@@ -4,6 +4,21 @@ import { api, createWorkByApi, expect, openTab, registerAccount, sampleWorkId, s
 import { button, finding, run, setup } from "./support/writing";
 import { evidence, project, sample, theme, workMenu } from "./support/pages";
 
+test("12 Q 夜间勾选栏禁用按钮透明底和弱描边", async ({ page }) => {
+  await sample(page, "sources");
+  await theme(page, "night");
+  const control = button(page, "检查选中的章节");
+  await expect(control).toBeDisabled();
+  const expected = await control.evaluate(e => getComputedStyle(e).getPropertyValue("--c-on-inverse-3").trim());
+  const actual = await control.evaluate(e => { const s = getComputedStyle(e); const probe = document.createElement("span"); probe.style.color = s.getPropertyValue("--c-on-inverse-3"); e.append(probe); const color = getComputedStyle(probe).color; probe.remove(); return { background: s.backgroundColor, color: s.color, border: s.borderTopColor, width: s.borderTopWidth, expected: color }; });
+  expect(expected).toBeTruthy();
+  expect.soft(actual.background).toBe("rgba(0, 0, 0, 0)");
+  expect.soft(actual.color).toBe(actual.expected);
+  expect.soft(actual.border).toBe(actual.expected);
+  await expect(control).toHaveCSS("box-shadow", `rgb(149, 155, 255) 0px 0px 0px 1px inset`);
+  await shot(page, "12-Q-disabled-night", false);
+});
+
 test("08 夜间开关：系统默认和本机持久化", async ({ page }) => {
   for (const [scheme, value, background] of [["dark", "night", "rgb(17, 17, 17)"], ["light", "day", "rgb(244, 244, 241)"]] as const) {
     await page.emulateMedia({ colorScheme: scheme });
@@ -145,10 +160,21 @@ test("08 axe 扫描：十个页面的日间和夜间", async ({ page }, info) =>
   expect(severe, JSON.stringify(severe, null, 2)).toEqual([]);
 });
 
+function hasVisibleFocus(s: { outline: string; width: string; color: string; shadow: string }) {
+  const nonTransparent = (color: string) => color.startsWith("rgb(") || (color.startsWith("rgba(") && Number(color.slice(5, -1).split(",").at(-1)) > 0);
+  return (s.outline !== "none" && s.width !== "0px" && nonTransparent(s.color))
+    || (s.shadow.match(/rgba?\([^)]*\)/g) ?? []).some(nonTransparent);
+}
+
+test("12 Q 焦点判据拒绝透明描边和阴影", () => {
+  expect(hasVisibleFocus({ outline: "solid", width: "3px", color: "rgba(0, 0, 0, 0)", shadow: "rgba(0, 0, 0, 0) 0px 0px 3px" })).toBe(false);
+  expect(hasVisibleFocus({ outline: "none", width: "0px", color: "rgb(0, 0, 0)", shadow: "rgba(0, 0, 0, 0) 0px 0px 3px, rgb(40, 40, 255) 0px 0px 2px" })).toBe(true);
+});
+
 async function focusVisible(page: Page) {
   const focused = page.locator(":focus-visible");
   await expect(focused).toHaveCount(1);
-  return focused.evaluate(e => ({ element: e.outerHTML.slice(0, 500), outline: getComputedStyle(e).outlineStyle, width: getComputedStyle(e).outlineWidth, shadow: getComputedStyle(e).boxShadow }));
+  return focused.evaluate(e => ({ element: e.outerHTML.slice(0, 500), outline: getComputedStyle(e).outlineStyle, width: getComputedStyle(e).outlineWidth, color: getComputedStyle(e).outlineColor, shadow: getComputedStyle(e).boxShadow }));
 }
 async function tabTo(page: Page, target: Locator, checks: Awaited<ReturnType<typeof focusVisible>>[]) {
   for (let i = 0; i < 160; i++) {
@@ -170,7 +196,7 @@ test("08 键盘决定：焦点框与不是问题写入", async ({ page }, info) 
   await expect.poll(async () => (await run(page, id, before.run_id)).issues.find((i: any) => i.id === issue.id).decision?.decision).toBe("false_positive");
   await evidence(info, "keyboard-focus", checks);
   await shot(page, "keyboard-decision-day", false);
-  expect(checks.filter(s => !((s.outline !== "none" && s.width !== "0px") || s.shadow !== "none")), "每个键盘焦点必须有 outline 或 box-shadow").toEqual([]);
+  expect(checks.filter(s => !hasVisibleFocus(s)), "每个键盘焦点必须有不透明的 outline 或 box-shadow").toEqual([]);
 });
 
 test("08 对话框焦点：初始焦点循环和 Esc 返回", async ({ page }, info) => {

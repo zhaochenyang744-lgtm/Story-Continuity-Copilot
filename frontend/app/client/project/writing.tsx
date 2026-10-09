@@ -492,8 +492,8 @@ function FindingDetail({ p, issue, tutorialStep, outdated, decided: onDecided }:
             </>
           )}
           {tone === "state" && !decided && issue.has_memory_proposal && <p className="finding-hint">这不是错误。保留后，全部处理完时点「审阅事实变化」，把新的状态记进资料。</p>}
-          {outdated && <p className="finding-hint warn">草稿在检查之后改过，这一条针对的是先前的正文。重新检查后再决定。</p>}
-          {!decided && !ready && <p className="finding-hint">依据不够充分，只能标为待修改，或者补写前文后重新检查。</p>}
+          {outdated && <p className="finding-hint warn">草稿在检查之后改过，这一条针对的是先前的正文。再检查一次后再决定。</p>}
+          {!decided && !ready && <p className="finding-hint">依据不够充分，只能标为待修改，或者补写前文后再检查一次。</p>}
           {!p.readOnly ? (
             <div className="author-decision">
               {issue.reused_decision && <p className="finding-decided">沿用你之前对同一句的判断。<a href={issue.reused_decision.review_path}>管理沿用的判断</a></p>}
