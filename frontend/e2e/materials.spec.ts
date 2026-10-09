@@ -1,4 +1,4 @@
-import { api, expect, openTab, registerAccount, setDraftBody, test } from "./support/app";
+import { api, expect, openTab, registerAccount, setDraftBody, shot, test } from "./support/app";
 import { button, draft, failDraftSaves, saveBody } from "./support/writing";
 import { cardWith, evidence, importBook, initialize, memories, pair, sample, startAnalysis, view } from "./support/pages";
 
@@ -91,6 +91,8 @@ test("08 改动影响：分析附依据而不改人物", async ({ page }, info) 
     await expect(card).toContainText(item.impact);
   }
   expect(await api(page).get(`/projects/${id}/characters`)).toEqual(before);
+  await card.scrollIntoViewIfNeeded();
+  await shot(page, "materials-impact", false);
 });
 
 test("08 自定义设定分类：分配改名删除保留设定", async ({ page }) => {
