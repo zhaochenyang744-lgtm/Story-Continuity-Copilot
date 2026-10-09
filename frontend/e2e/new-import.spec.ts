@@ -230,7 +230,7 @@ test("不支持的文件：错误留在第一步，不会进入预览", async ({
   // An empty file with a good name.
   await chooseFile(page, await tempFile("empty.txt", ""));
   await send();
-  await expect(alert("")).toBeVisible();
+  await expect(alert("文件是空的，请换一个文件。")).toBeVisible();
   await expectStep(page, 1);
   await expect(page.getByRole("list", { name: "分章预览" })).toHaveCount(0);
   expect(await listWorks(page)).toEqual([]);

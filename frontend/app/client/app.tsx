@@ -29,6 +29,8 @@ let rememberedTheme: "day" | "night" | undefined;
 let lastTabMark: { kind: string; left: number; width: number } | null = null;
 const themeKey = "story-continuity:theme";
 const publicAuthPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm", "/verify-email"];
+// A signed-in author who opens one of these is sent home; nothing of them is drawn on the way.
+const signedOutOnlyPaths = ["/login", "/register", "/password-reset", "/password-reset/confirm"];
 export const TUTORIAL_VERSION = "1.2.0";
 
 export const projectTabs = [
@@ -50,6 +52,8 @@ export function App() {
   const [narrow, setNarrow] = useState(false);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState<unknown>(null);
+  // The address an error should follow to: an expired session sends the author to /login, where the reason is shown.
+  const [errorFollowsTo, setErrorFollowsTo] = useState<string | null>(null);
   const [busy, setBusy] = useState("");
   const [onboarding, setOnboarding] = useState<Onboarding | null>(null);
   const [tutorialProgress, setTutorialProgress] = useState<TutorialProgress | null>(null);
@@ -77,6 +81,7 @@ export function App() {
       bootstrappedUser = null;
       setUser(null);
       clearProject.current();
+      setErrorFollowsTo("/login");
       router.replace("/login");
     }
   }, [router]);
@@ -126,7 +131,12 @@ export function App() {
   };
   // A new address starts at the top (an #anchor is scrolled to by the page), without the last error.
   const [shownPath, setShownPath] = useState(pathname);
-  if (shownPath !== pathname) { setShownPath(pathname); setError(null); }
+  if (shownPath !== pathname) {
+    setShownPath(pathname);
+    // The redirect to the login page keeps the "登录已过期" reason; any other new address starts without the last error.
+    if (errorFollowsTo === pathname) setErrorFollowsTo(null);
+    else { setError(null); setErrorFollowsTo(null); }
+  }
   useEffect(() => { if (!window.location.hash) window.scrollTo({ top: 0 }); }, [pathname]);
   // Messages leave by themselves after a while; errors stay until closed.
   useEffect(() => {
@@ -173,7 +183,7 @@ export function App() {
     if (!ready) return;
     const isPublic = publicAuthPaths.includes(pathname);
     if (!user && !isPublic) { router.replace("/login"); return; }
-    if (user && ["/login", "/register", "/password-reset", "/password-reset/confirm"].includes(pathname)) { router.replace("/"); return; }
+    if (user && signedOutOnlyPaths.includes(pathname)) { router.replace("/"); return; }
     if (user && pathname === "/") request<Onboarding>("/onboarding").then(applyOnboarding).catch(fail);
   }, [ready, user, pathname, router, applyOnboarding, fail]);
   useEffect(() => {
@@ -281,7 +291,7 @@ export function App() {
         tutorial_version: TUTORIAL_VERSION, project_id: tutorial.project_id, base_revision: tutorialProgress?.revision ?? onboarding?.progress?.revision ?? null, confirm: true,
       });
       applyOnboarding(next);
-      p.setTutorialRestored(true);
+      p.markTutorialRestarted();
       notify("导览回到了第一步；正文、资料和处理记录都没有变。");
       go(`/projects/${tutorial.project_id}/overview`);
     } catch (cause) { fail(cause); } finally { setBusy(""); }
@@ -291,7 +301,7 @@ export function App() {
   const tutorialStep = (p.project?.is_tutorial && tutorialProgress?.tutorial_project_id === p.project.id ? tutorialProgress.current_step : 1) as 1 | 2 | 3 | 4 | 5;
 
   let body;
-  if (!ready) body = <div className="boot" role="status">正在载入…</div>;
+  if (!ready || (user && signedOutOnlyPaths.includes(pathname))) body = <div className="boot" role="status">正在载入…</div>;
   else if (pathname === "/password-reset") body = <PasswordResetRequestPage go={(href) => router.push(href)} />;
   else if (pathname === "/password-reset/confirm") body = <PasswordResetConfirmPage go={(href) => router.push(href)} />;
   else if (pathname === "/verify-email") body = <VerifyEmailPage go={(href) => router.push(href)} refreshUser={updateUser} />;

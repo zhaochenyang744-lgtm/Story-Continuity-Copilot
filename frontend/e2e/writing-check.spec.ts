@@ -101,7 +101,6 @@ test("访客的额度：重查消耗一次", async ({ page }) => {
 });
 
 test("访客超长：检查按钮禁用并说明上限", async ({ page }) => {
-  test.fixme(true, "writing.tsx 的 over 仅改变额度文字样式，没有加入检查按钮 disabled 条件；3001 字时按钮仍 enabled");
   await startVisitor(page);
   const id = await sampleWorkId(page), usage = await api(page).get("/account/usage");
   await openTab(page, id, "workspace");

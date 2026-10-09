@@ -131,14 +131,18 @@ export function useProject({
   const epoch = useRef(0);
   const activeRequest = useRef<AbortController | null>(null);
   const tutorialSeen = useRef<string | null>(null);
+  // "重新看一遍导览" asks for the 已回到第 N 步 note; loading the work afterwards must not take it back.
+  const tutorialRestarted = useRef(false);
   const selectTrigger = useRef<HTMLElement | null>(null);
   const sourceTrigger = useRef<HTMLElement | null>(null);
 
   // Recording any tour step ends the "已回到第 N 步" note.
   const tutorialEvent = (id: string, event: TutorialEvent, context?: { run_id: string; issue_id: string }) => {
+    tutorialRestarted.current = false;
     setTutorialRestored(false);
     return recordTutorialEvent(id, event, context);
   };
+  const markTutorialRestarted = () => { tutorialRestarted.current = true; setTutorialRestored(true); };
   const readOnly = narrow || project?.status === "archived";
   const dirty = draftChanged(draft, saved);
 
@@ -199,7 +203,9 @@ export function useProject({
       setSaved(d);
       const seenThisSession = tutorialSeen.current === p.id;
       if (p.is_tutorial) tutorialSeen.current = p.id;
-      setTutorialRestored(Boolean(!seenThisSession && projectOnboarding?.progress && projectOnboarding.progress.current_step > 1));
+      const restarted = tutorialRestarted.current && p.is_tutorial;
+      tutorialRestarted.current = false;
+      setTutorialRestored(restarted || Boolean(!seenThisSession && projectOnboarding?.progress && projectOnboarding.progress.current_step > 1));
       if (user) {
         try {
           const snapshot = readDraftRecovery(window.localStorage, { userId: user.id, projectId: p.id, draftId: d.id });
@@ -1012,7 +1018,7 @@ export function useProject({
     select, deselect, decide, markToRevise, startControlledEdit, applySuggestion, reviewDecision, beginEvidence,
     review, commit, startMemoryInitialization, reopenMemoryCandidate, submitMemoryInitialization, startIncrementalReview,
     submitMemoryDelta, reset, updateProject, mutateAuthorContext, openMemorySource, openEvidenceSource, closeSource,
-    acceptRecovery, keepServerDraft, stopConflictedPendingDecision, setTutorialRestored, openDraftRecoveryConflict: () => draftRecoveryConflict && setDraftRecoveryPrompt(draftRecoveryConflict),
+    acceptRecovery, keepServerDraft, stopConflictedPendingDecision, markTutorialRestarted, openDraftRecoveryConflict: () => draftRecoveryConflict && setDraftRecoveryPrompt(draftRecoveryConflict),
   };
 }
 

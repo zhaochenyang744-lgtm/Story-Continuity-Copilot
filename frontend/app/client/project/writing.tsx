@@ -117,6 +117,8 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
     if (id !== hovered) setHovered(id);
   };
   const over = usage ? (usage.account_type === "visitor" ? chars > usage.check_chars_per_check : chars > usage.check_chars_remaining) : false;
+  // A visitor's check is refused above the per-check limit, so the button says so up front.
+  const visitorLimit = usage?.account_type === "visitor" && chars > usage.check_chars_per_check ? usage.check_chars_per_check : null;
   const primary = p.dirty || p.controlled || p.pendingControlledDecision ? (
     <Button kind="primary" size="lg" disabled={Boolean(p.busy) || Boolean(p.draftRecoveryConflict) || Boolean(p.pendingDecisionConflict)} onClick={() => void p.save()}>{p.pendingControlledDecision ? "重试记录决定" : p.controlled ? "保存修改" : "保存"}</Button>
   ) : checking ? (
@@ -124,7 +126,7 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
   ) : p.run && retryableRun(p.run) ? (
     <Button kind="primary" size="lg" disabled={blocked} onClick={() => void p.retryRun()}>重新检查</Button>
   ) : (
-    <Button kind="primary" size="lg" disabled={blocked || !p.draft || empty} title={empty ? "先写下正文，再检查" : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
+    <Button kind="primary" size="lg" disabled={blocked || !p.draft || empty || visitorLimit !== null} title={empty ? "先写下正文，再检查" : visitorLimit !== null ? `访客每次最多检查 ${formatCount(visitorLimit)} 字` : undefined} onClick={() => void p.check()}>{p.run ? "再检查一次" : "检查这一章"}</Button>
   );
   const finished = p.run?.status === "completed" && !checking;
 
@@ -153,7 +155,7 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
               </Menu>
               {primary}
             </div>
-            {!empty && usage && <p className={`label draft-head-allowance${over ? " over" : ""}`}>本次约 {formatCount(chars)} 字 · {usage.account_type === "visitor" ? `访客每次最多 ${formatCount(usage.check_chars_per_check)} 字，还可检查 ${usage.checks_remaining} 次` : usageShort(usage)}</p>}
+            {!empty && usage && <p className={`label draft-head-allowance${over ? " over" : ""}`}>本次约 {formatCount(chars)} 字 · {usage.account_type === "visitor" ? `访客每次最多 ${formatCount(usage.check_chars_per_check)} 字，还可检查 ${usage.checks_remaining} 次${over ? "。这一章超过了上限，删减后才能检查，或者注册账号" : ""}` : usageShort(usage)}</p>}
           </div>
         )}
       </header>

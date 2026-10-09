@@ -69,7 +69,7 @@ test("注册校验：账号或密码太短不会创建账号，重复账号的�
   await page.getByLabel("密码", { exact: true }).fill("another-long-password");
   await page.getByRole("button", { name: "创建账号", exact: true }).click();
   await expect(page.locator("#auth-error")).toHaveAttribute("role", "alert");
-  await expect(page.locator("#auth-error")).toBeVisible();
+  await expect(page.locator("#auth-error")).toHaveText("这个账号已经被占用了，换一个试试。");
   await expect(page).toHaveURL(/\/register$/);
   await expect(page.getByLabel("账号", { exact: true })).toHaveValue(account);
   await expect(page.getByLabel("显示名称", { exact: true })).toHaveValue("重名的人");
@@ -156,7 +156,7 @@ test("已登录时打开 /login：直接回到首页，登录表单一次都不�
     const look = () => {
       // The sign-in and registration form is the only thing with an account-name field.
       if (document.querySelector('.auth-form input[name="account_name"]')) seen.login = true;
-      if (document.querySelector(".not-found")) seen.notFound = true;
+      if (document.querySelector(".not-found") || document.body?.innerText.includes("找不到这个页面")) seen.notFound = true;
       if (document.querySelector(".auth")) seen.resetPage = true;
     };
     new MutationObserver(look).observe(document, { childList: true, subtree: true });
@@ -168,19 +168,19 @@ test("已登录时打开 /login：直接回到首页，登录表单一次都不�
   type Seen = { login: boolean; notFound: boolean; resetPage: boolean };
   const seen = await page.evaluate(() => (window as unknown as { __seen: Seen }).__seen);
   expect(seen.login, "the sign-in card appeared while redirecting").toBe(false);
-  if (seen.notFound) test.info().annotations.push({ type: "observation", description: "「找不到这个页面」在从 /login 跳回首页的过程中闪现过" });
+  expect(seen.notFound, "「找不到这个页面」showed while redirecting").toBe(false);
   // The same for the other sign-in addresses.
-  for (const path of ["/register", "/password-reset"]) {
+  for (const path of ["/register", "/password-reset", "/password-reset/confirm"]) {
     await page.goto(path);
     await page.waitForURL((url) => url.pathname === "/");
     const again = await page.evaluate(() => (window as unknown as { __seen: Seen }).__seen);
     expect(again.login, `the sign-in card appeared while leaving ${path}`).toBe(false);
-    if (again.resetPage) test.info().annotations.push({ type: "observation", description: `已登录时打开 ${path}，找回密码页在跳回首页之前出现过` });
+    expect(again.notFound, `「找不到这个页面」showed while leaving ${path}`).toBe(false);
+    expect(again.resetPage, `the sign-in or reset page showed while leaving ${path}`).toBe(false);
   }
 });
 
 test("会话过期：清掉 cookie 后在应用里换页，回到登录页并说明登录已过期", async ({ page, context }) => {
-  test.fixme(true, "产品问题：「登录已过期，请重新登录。」只在 /projects 上闪一下，地址变成 /login 时 app.tsx 的换页清错误逻辑把它清掉了，登录页上看不到");
   await registerAccount(page, "expired");
   await context.clearCookies();
   await page.getByRole("button", { name: "作品管理", exact: true }).click();

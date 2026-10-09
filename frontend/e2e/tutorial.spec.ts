@@ -146,6 +146,7 @@ test("重新看一遍导览：回到第一步，之前的决定和草稿都不�
   await expect(notice(page, "导览回到了第一步；正文、资料和处理记录都没有变。")).toBeVisible();
   await expect(page).toHaveURL(new RegExp(`/projects/${workId}/overview$`));
   await expect(bar(page)).toContainText("导览 1 / 5");
+  await expect(bar(page)).toContainText("已回到第 1 步，可以从这里继续。");
 
   const onboarding = await api(page).get("/onboarding");
   expect(onboarding.status).toBe("active");
