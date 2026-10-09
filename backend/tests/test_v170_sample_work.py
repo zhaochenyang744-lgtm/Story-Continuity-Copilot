@@ -98,6 +98,17 @@ class SampleFactReviewTests(unittest.TestCase):
         self.assertEqual((change["memory_type"], change["subject"], change["predicate"]), (target["type"], target["subject"], target["predicate"]))
         self.assertEqual(data["seed_version"], 5)
 
+    def test_the_compass_fact_and_its_proposed_change_use_a_controlled_relation(self):
+        from app.memory_contract import CONTROLLED_PREDICATES
+        data = seed_data._load(seed_data.SAMPLE_WORK_PATH)
+        records = dict((f"sample-memory-{index}", record) for index, record in enumerate(data["memory"], 1))
+        change = next(issue["proposed_memory_change"] for issue in data["draft_issues"] if issue.get("proposed_memory_change"))
+        self.assertEqual(records["sample-memory-12"]["predicate"], "location")
+        self.assertEqual(change["predicate"], "location")
+        self.assertIn("location", CONTROLLED_PREDICATES)
+        # The value keeps its meaning: it still says the compass was in Wen Lan's hand at the end of chapter 10.
+        self.assertIn("握在温岚手中", records["sample-memory-12"]["value"])
+
     def test_deciding_the_sample_findings_leads_to_one_recordable_fact_change(self):
         script = textwrap.dedent("""
             import json, pathlib, tempfile, uuid

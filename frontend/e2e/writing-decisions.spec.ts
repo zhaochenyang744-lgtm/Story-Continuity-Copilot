@@ -1,4 +1,5 @@
 import { api, beginCheck, button, countDraftWrites, decide, draft, expect, finding, findings, finishCheck, readDraftBody, reloadAcceptingUnload, run, saveBody, selectIssue, setDraftBody, setup, shot, test } from "./support/writing";
+import { pair } from "./support/pages";
 
 test("采用改法（示例结果）：正文与决定只保存一次", async ({ page }) => {
   const id = await setup(page), before = await draft(page, id), result = await run(page, id);
@@ -154,12 +155,20 @@ test("全部处理完，审阅事实变化", async ({ page }) => {
   await expect(form).toContainText("截至第10章末仍握在温岚手中");
   await expect(form).toContainText("放在档案室的桌上");
   await expect(form.getByRole("radio", { name: "记下", exact: true })).toBeChecked();
+  // The compass fact uses a relation from the controlled list, so the form names it ("所在位置" in the frontend's table), not 其他.
+  expect(changes.items[0].after.predicate).toBe("location");
+  expect(changes.items[0].before.predicate).toBe("location");
+  const relation = form.getByRole("combobox", { name: /^关系/ });
+  await expect(relation).toHaveValue("location");
+  expect(await relation.evaluate((select: HTMLSelectElement) => select.selectedOptions[0].textContent)).toBe("所在位置");
+  await expect(form).toContainText("所在位置：截至第10章末仍握在温岚手中");
+  await expect(form).not.toContainText("其他");
   await form.scrollIntoViewIfNeeded();
-  await shot(page, "writing-fact-review", false);
+  await pair(page, "writing-fact-review");
   await button(page, "确认并更新资料").click();
   await expect.poll(async () => (await api(page).get(`/projects/${id}`)).current_memory_version).toBe(before.current_memory_version + 1);
   const records = (await api(page).get(`/projects/${id}/memory`)).records;
-  expect(records.some((m: any) => m.subject === "黄铜罗盘" && m.predicate === "holder_at_ch10_end" && m.value === "放在档案室的桌上")).toBe(true);
+  expect(records.some((m: any) => m.subject === "黄铜罗盘" && m.predicate === "location" && m.value === "放在档案室的桌上")).toBe(true);
   expect(records.some((m: any) => m.subject === "黄铜罗盘" && m.value.includes("截至第10章末仍握在温岚手中"))).toBe(false);
   await expect(form).toHaveCount(0);
 });

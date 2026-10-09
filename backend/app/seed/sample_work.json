@@ -235,7 +235,7 @@
         "affected_memory_id": "sample-memory-12",
         "memory_type": "dynamic_state",
         "subject": "黄铜罗盘",
-        "predicate": "holder_at_ch10_end",
+        "predicate": "location",
         "value": "放在档案室的桌上"
       }
     },
@@ -341,7 +341,7 @@
     {
       "type": "dynamic_state",
       "subject": "黄铜罗盘",
-      "predicate": "holder_at_ch10_end",
+      "predicate": "location",
       "value": "截至第10章末仍握在温岚手中，苏岑尚未取回",
       "passage": "ch10-p2"
     }
