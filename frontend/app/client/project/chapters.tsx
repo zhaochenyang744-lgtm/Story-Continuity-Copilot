@@ -49,6 +49,8 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [reviewError, setReviewError] = useState("");
+  // How many facts the server said are waiting for review when it refused to start a check.
+  const [blockedByReview, setBlockedByReview] = useState<number | null>(null);
   const load = useCallback(async () => {
     const base = `/projects/${project.id}`;
     const [list, rows, review] = await Promise.all([
@@ -57,7 +59,10 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
       request<Snapshot>(`${base}/long-term-review`).then((value) => ({ value, failure: "" }), (cause) => ({ value: null, failure: explain(cause) })),
     ]);
     setRuns(list.runs); setTimeline(rows.chapters);
-    if (review.value) setSnapshot(review.value);
+    if (review.value) {
+      setSnapshot(review.value);
+      if (!review.value.source_revision_reviews.some((item) => item.status === "pending")) setBlockedByReview(null);
+    }
     setReviewError(review.failure);
   }, [project.id]);
   useEffect(() => {
@@ -84,7 +89,13 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
       await json(`/projects/${project.id}/chapter-checks`, "POST", { chapter_ids: picked });
       setPicked([]);
       await load();
-    } catch (cause) { setError(labelError(cause)); } finally { setBusy(false); }
+    } catch (cause) {
+      if ((cause as ApiFailure).code === "source_revision_review_required") {
+        const count = Number((cause as ApiFailure).details?.pending_count);
+        setBlockedByReview(count > 0 ? count : 1);
+        await load().catch(() => undefined);
+      } else setError(labelError(cause));
+    } finally { setBusy(false); }
   };
 
   const bodies = new Map((snapshot?.chapters ?? []).map((chapter) => [chapter.id, chapter]));
@@ -103,6 +114,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
   const shown = picked.length ? estimate : null;
   const over = Boolean(shown && usage?.account_type === "registered" && shown.characters > usage.check_chars_remaining);
   const pendingReviews = snapshot?.source_revision_reviews.filter((item) => item.status === "pending") ?? [];
+  const reviewsWaiting = pendingReviews.length || blockedByReview || 0;
   const draftIssues = (p.run?.issues ?? []).filter((issue) => !issue.decision && !issue.reused_decision && !p.locallyResolvedIssueIds.includes(issue.id)).length;
   const canPick = !visitor && !p.readOnly;
   const openChapter = (number: number) => go(`/projects/${project.id}/workspace?chapter=${number}`);
@@ -124,7 +136,7 @@ export function ChaptersPage({ p, user, usage, go, notices }: PageProps) {
           </div>
         }
       />
-      {pendingReviews.length > 0 && <div className="note note-warn"><span>有 {pendingReviews.length} 条事实因为章节修订需要复核。复核完之前不能运行检查。</span><Button kind="text" onClick={() => document.getElementById("source-reviews")?.scrollIntoView({ block: "start", behavior: "smooth" })}>去复核</Button></div>}
+      {reviewsWaiting > 0 && <div className="note note-warn"><span>有 {reviewsWaiting} 条事实因为章节修订需要复核，复核完才能检查。</span><Button kind="text" onClick={() => document.getElementById("source-reviews")?.scrollIntoView({ block: "start", behavior: "smooth" })}>去复核</Button></div>}
       {error && <div className="note note-error" role="alert">{error}</div>}
       {reviewError && <div className="note note-warn" role="status"><span>章节正文和修订记录没读出来：{reviewError} 字数暂时不可用。</span><Button kind="text" onClick={() => void load().catch((cause) => setError(labelError(cause)))}>重新读取</Button></div>}
       <div className="table-scroll">

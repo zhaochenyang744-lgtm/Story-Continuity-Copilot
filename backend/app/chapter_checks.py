@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from . import long_term_workflow as workflow
 from .database import DomainError
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION
 from .text_content import written_chars
@@ -58,6 +59,8 @@ def create(db: Any, user_id: str, project_id: str, chapter_ids: list[str], key: 
     with db.connection() as c:
         def factory() -> dict[str, Any]:
             project = db._project(c, user_id, project_id, True)
+            # Like a draft check: facts that a chapter revision put up for review must be settled first.
+            workflow.require_review_complete(c, project_id)
             known = {row["id"] for row in c.execute("SELECT id FROM v2_chapters WHERE project_id=?", (project_id,)).fetchall()}
             if any(chapter_id not in known for chapter_id in chapter_ids):
                 raise DomainError("chapter_selection_invalid", 422)

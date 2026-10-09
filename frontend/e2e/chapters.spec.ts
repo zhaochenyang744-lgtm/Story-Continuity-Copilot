@@ -126,7 +126,6 @@ test("08 追加章节：检查与事实变化确认", async ({ page }, info) => 
 });
 
 test("08 章节修订：事实复核阻挡检查直到全部处理", async ({ page }, info) => {
-  test.fixme(true, "章节修订产生待复核事实后，多章检查仍返回 HTTP 202 并创建记录；chapter_checks.create 未检查 pending reviews");
   await registerAccount(page, "review08");
   const id = await importBook(page);
   await initialize(page, id);
@@ -142,14 +141,22 @@ test("08 章节修订：事实复核阻挡检查直到全部处理", async ({ pa
   let state = await reviews();
   const pending = state.source_revision_reviews.filter((r: any) => r.status === "pending");
   expect(pending.length).toBeGreaterThan(0);
-  await expect(page.getByText(`有 ${pending.length} 条事实因为章节修订需要复核。复核完之前不能运行检查。`, { exact: true })).toBeVisible();
+  const waiting = `有 ${pending.length} 条事实因为章节修订需要复核，复核完才能检查。`;
+  await expect(page.getByText(waiting, { exact: true })).toBeVisible();
   await page.getByRole("checkbox", { name: "选择第 3 章", exact: true }).check();
   const blocked = page.waitForResponse(r => r.request().method() === "POST" && r.url().endsWith("/chapter-checks"));
   await button(page, "检查选中的章节").click();
   const denied = await blocked;
-  await evidence(info, "source-review-block", { status: denied.status(), body: await denied.json() });
-  expect(denied.ok()).toBe(false);
+  const refusal = await denied.json();
+  await evidence(info, "source-review-block", { status: denied.status(), body: refusal });
+  expect(denied.status()).toBe(409);
+  expect(refusal.error.code).toBe("source_revision_review_required");
+  expect(refusal.error.details.pending_count).toBe(pending.length);
   expect((await api(page).get(`/projects/${id}/chapter-checks`)).runs).toHaveLength(0);
+  await expect(page.getByText(waiting, { exact: true })).toBeVisible();
+  await expect(page.getByText("请求未完成。请保留当前内容并重试。")).toHaveCount(0);
+  await expect(button(page, "去复核")).toHaveCount(1);
+  await shot(page, "chapters-review-required", false);
   await button(page, "去复核").click();
   const region = page.getByRole("region", { name: "待复核的事实", exact: true });
   for (const review of pending) {

@@ -135,6 +135,39 @@ class ChapterCheckTests(unittest.TestCase):
         next_draft = self.client.get(f"/api/projects/{self.project_id}").json()["data"]["current_draft"]
         self.assertEqual(next_draft["chapter_number"], 12)
 
+    def test_facts_waiting_for_review_after_a_chapter_revision_block_the_check_until_settled(self):
+        # The same gate as a draft check: a revised chapter puts its facts up for review, and nothing is checked before that.
+        with self.app.state.database.connection() as c:
+            revised = c.execute("SELECT s.chapter_id FROM v2_memory_records m JOIN v2_source_spans s ON s.id=m.source_span_id WHERE m.project_id=? LIMIT 1", (self.project_id,)).fetchone()["chapter_id"]
+        snapshot = self.client.get(f"/api/projects/{self.project_id}/long-term-review").json()["data"]
+        chapter = next(row for row in snapshot["chapters"] if row["id"] == revised)
+        preview = self.client.post(f"/api/projects/{self.project_id}/chapters/{revised}/revisions/preview", headers=self.idem(), json={
+            "base_source_revision": snapshot["source_revision"], "base_chapter_revision": chapter["source_revision"], "title": chapter["title"], "body": chapter["body"] + "作者补写了一句。"})
+        self.assertEqual(preview.status_code, 201, preview.text)
+        change = preview.json()["data"]["revision_preview"]
+        committed = self.client.post(f"/api/projects/{self.project_id}/chapter-revisions/{change['id']}/commit", headers=self.idem(), json={"confirm": True, "content_sha256": change["content_sha256"]})
+        self.assertEqual(committed.status_code, 200, committed.text)
+        pending = [row for row in committed.json()["data"]["source_revision_reviews"] if row["status"] == "pending"]
+        self.assertGreater(len(pending), 0)
+        used_before = self.client.get("/api/account/usage").json()["data"]["check_chars_used"]
+        refused = self.start([2, 9])
+        self.assertEqual(refused.status_code, 409, refused.text)
+        error = refused.json()["error"]
+        self.assertEqual((error["code"], error["details"]["pending_count"]), ("source_revision_review_required", len(pending)))
+        own_runs = lambda: [run for run in self.client.get(f"/api/projects/{self.project_id}/chapter-checks").json()["data"]["runs"] if not run.get("sample")]
+        self.assertEqual(own_runs(), [], "no check was created")
+        self.assertEqual(self.client.get("/api/account/usage").json()["data"]["check_chars_used"], used_before, "nothing was spent")
+        memory_version = self.client.get(f"/api/projects/{self.project_id}").json()["data"]["current_memory_version"]
+        for review in pending:
+            resolved = self.client.post(f"/api/projects/{self.project_id}/source-reviews/{review['id']}/resolve", headers=self.idem(), json={
+                "confirm": True, "base_revision": review["revision"], "base_memory_version": memory_version, "decision": "retain", "note": "核对过修订后的正文。",
+                "evidence_span_id": review["new_source_span_id"]})
+            self.assertEqual(resolved.status_code, 200, resolved.text)
+            memory_version = resolved.json()["data"]["memory_version"]
+        allowed = self.start([2, 9])
+        self.assertEqual(allowed.status_code, 202, allowed.text)
+        self.assertEqual(len(own_runs()), 1)
+
     def test_an_estimate_spends_nothing(self):
         response = self.client.post(f"/api/projects/{self.project_id}/chapter-checks/estimate", headers=self.idem(),
                                     json={"chapter_ids": [self.chapters[2], self.chapters[9]]})
