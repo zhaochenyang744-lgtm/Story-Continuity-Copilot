@@ -700,11 +700,16 @@ def create_app(paths:AppPaths=PATHS, provider:ProviderPort|None=None, executor=N
             initialization=current if view=='full' else {field:current.get(field) for field in ('id','project_id','status','source_revision','created_at','completed_at')}
             return ok(request,{"initialization":initialization})
         reservation_id=stage13.reserve_workflow(actor['id'],project_id,'memory_initialization',characters=sum(written_chars(source.get('body') or '') for source in input_data['sources']),character_kind='import')
-        with provider_usage(actor['id'],reservation_id): result=memory_engine.execute(input_data)
-        if result['status']!='completed':
-            status=429 if result.get('error_code') in {'provider_attempt_quota_exceeded','workflow_quota_exceeded','server_budget_exceeded'} else 503
-            raise DomainError(result['error_code'],status,result.get('retryable') is True,safe_memory_initialization_failure_details(result))
-        data,status=db.complete_memory_initialization(actor['id'],project_id,input_data,result,memory_engine.provenance(),key(idempotency_key))
+        completed=False
+        try:
+            with provider_usage(actor['id'],reservation_id): result=memory_engine.execute(input_data)
+            if result['status']!='completed':
+                status=429 if result.get('error_code') in {'provider_attempt_quota_exceeded','workflow_quota_exceeded','server_budget_exceeded'} else 503
+                raise DomainError(result['error_code'],status,result.get('retryable') is True,safe_memory_initialization_failure_details(result))
+            data,status=db.complete_memory_initialization(actor['id'],project_id,input_data,result,memory_engine.provenance(),key(idempotency_key))
+            completed=True
+        finally:
+            if not completed: stage13.refund_import(actor['id'],reservation_id)
         data['initialization_metrics']={key:result[key] for key in ('total_batches','schema_repair_attempts','validated_batches','staged_candidate_count','normalization_count','input_tokens','output_tokens','latency_ms') if isinstance(result.get(key),int) and not isinstance(result.get(key),bool)}
         data['initialization_metrics']['repair_events']=safe_repair_events(result.get('repair_events'))
         kinds=result.get('normalization_kinds')

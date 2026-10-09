@@ -4,7 +4,7 @@
 // from this device, or carrying an author decision), checks and their polling, decisions, the fact
 // review that follows, imported-work fact initialisation, and author plans. Pages only render it.
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { json, jsonWithIdempotency, request, type ApiFailure } from "../../api";
+import { json, jsonWithIdempotency, labelRunFailure, request, type ApiFailure } from "../../api";
 import { readDraftRecovery, removeDraftRecovery, writeDraftRecovery, type DraftRecoverySnapshot } from "../../draft-recovery";
 import {
   pendingDecisionSchemaVersion,
@@ -112,6 +112,7 @@ export function useProject({
   const [run, setRun] = useState<Run | null>(null);
   const [pairedRun, setPairedRun] = useState<Run | null>(null);
   const [initialization, setInitialization] = useState<MemoryInitialization | null>(null);
+  const [initializationError, setInitializationError] = useState("");
   const [memoryDelta, setMemoryDelta] = useState<MemoryDelta | null>(null);
   const [coverage, setCoverage] = useState<MemoryCoverage | null>(null);
   const [contextBrief, setContextBrief] = useState<WritingAnalysisRun | null>(null);
@@ -170,7 +171,7 @@ export function useProject({
     activeRequest.current = null;
     epoch.current += 1;
     setProject(null); setChapters([]); setMemories([]); setDraft(null); setSaved(null); setRun(null); setPairedRun(null);
-    setInitialization(null); setMemoryDelta(null); setCoverage(null); setAuthorContext(null); setAuthorBusy("");
+    setInitialization(null); setInitializationError(""); setMemoryDelta(null); setCoverage(null); setAuthorContext(null); setAuthorBusy("");
     setCharacters([]); setWorld([]); setSelected(null); setSourceRecord(null); setControlled(null); setPendingControlledDecision(null);
     setLocallyResolvedIssueIds([]); setChangeSet(null); setSaveFailed(false); setDraftRecoveryPrompt(null); setDraftRecoveryConflict(null);
     setDraftRecoveryUnavailable(""); setPendingDecisionStorageUnavailable(""); setPendingDecisionConflict(""); setPendingDecisionPersisted(false);
@@ -810,14 +811,21 @@ export function useProject({
   const startMemoryInitialization = async () => {
     if (!projectId || readOnly) return;
     setBusy("正在从正文整理事实");
+    setInitializationError("");
+    let completed = false;
     try {
       await json(`/projects/${projectId}/memory/initializations?view=compact`, "POST", { source_revision: 1 });
+      completed = true;
       const initialized = await request<MemoryInitialization>(`/projects/${projectId}/memory/initialization`);
       setInitialization(initialized);
       setCoverage(initialized.coverage ?? null);
       setProject((current) => (current ? { ...current, memory_initialization_status: "in_review" } : current));
       notify("候选事实已整理好，还没写进资料。请对照原文逐条确认。");
-    } catch (cause) { fail(cause); } finally { setBusy(""); }
+    } catch (cause) {
+      const code = (cause as ApiFailure)?.code;
+      if (completed || ["authentication_required", "visitor_expired", "import_quota_exceeded", "workflow_quota_exceeded", "server_budget_exceeded"].includes(code)) fail(cause);
+      else setInitializationError(`${labelRunFailure(code, "事实整理")}这次没有用掉今天的整理次数，可以再试一次。`);
+    } finally { setBusy(""); }
   };
   const reopenMemoryCandidate = async (candidateId: string, baseDecisionStatus: "accepted" | "rejected" | "edited") => {
     if (!projectId || !initialization?.id || readOnly) return;
@@ -1003,7 +1011,7 @@ export function useProject({
   return {
     // state
     project, missingProjectId, chapters, memories, characters, world, authorContext, authorBusy, draft, saved, run, pairedRun,
-    initialization, memoryDelta, coverage, contextBrief, planAlignment, analysisBusy, busy, selected, controlled,
+    initialization, initializationError, memoryDelta, coverage, contextBrief, planAlignment, analysisBusy, busy, selected, controlled,
     pendingControlledDecision, locallyResolvedIssueIds, changeSet, saveFailed, autosaveState, draftRecoveryPrompt,
     draftRecoveryConflict, draftRecoveryUnavailable, pendingDecisionStorageUnavailable, pendingDecisionConflict,
     pendingDecisionPersisted, sourceRecord, tutorialRestored, tutorialActive, readOnly, dirty, narrow,

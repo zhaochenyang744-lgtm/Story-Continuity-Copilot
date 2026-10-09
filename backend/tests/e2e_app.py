@@ -140,12 +140,15 @@ class BrowserTestProvider:
             } for issue in issues]},input_tokens=42,output_tokens=22,latency_ms=25)
         if request.get("task") == "memory_initialization":
             sources = request["sources"]
+            facts = [
+                {"memory_type": "static_canon", "subject": "雾港钟声", "predicate": "harbor_rule", "value": "钟声响起后船只停泊"},
+                {"memory_type": "dynamic_state", "subject": "银钥匙", "predicate": "holder", "value": "林默保管"},
+                {"memory_type": "character_knowledge", "subject": "林默", "predicate": "knowledge", "value": "北堤门只在清晨开启"},
+            ]
             return ProviderResult(
                 {
                     "candidates": [
-                        {"memory_type": "static_canon", "subject": "雾港钟声", "predicate": "harbor_rule", "value": "钟声响起后船只停泊", "chapter_id": sources[0]["chapter_id"], "source_span_id": sources[0]["id"]},
-                        {"memory_type": "dynamic_state", "subject": "银钥匙", "predicate": "holder", "value": "林默保管", "chapter_id": sources[1]["chapter_id"], "source_span_id": sources[1]["id"]},
-                        {"memory_type": "character_knowledge", "subject": "林默", "predicate": "knowledge", "value": "北堤门只在清晨开启", "chapter_id": sources[2]["chapter_id"], "source_span_id": sources[2]["id"]},
+                        *[{**facts[index % len(facts)], "chapter_id": source["chapter_id"], "source_span_id": source["id"]} for index, source in enumerate(sources)],
                         *([{"memory_type": "open_thread", "subject": "废弃船票", "predicate": "status", "value": "仍有效", "chapter_id": sources[0]["chapter_id"], "source_span_id": sources[0]["id"]}] if any("E2E_FACT_LIFECYCLE" in item["body"] for item in sources) else []),
                     ]
                 },

@@ -734,9 +734,9 @@ class Stage13Service:
                 raise DomainError("workflow_quota_exceeded", 429, True)
             if used + reservation > int(round(budget_limit * 1_000_000)):
                 raise DomainError("server_budget_exceeded", 429, True)
-            if character_kind is not None:
-                self._spend_characters(c, user_id, project_id, run_id, visitor, character_kind, characters, cutoff)
             reservation_id = _new_id("usage")
+            if character_kind is not None:
+                self._spend_characters(c, user_id, project_id, run_id, visitor, character_kind, characters, cutoff, reservation_id)
             c.execute(
                 "INSERT INTO v2_usage_reservations VALUES(?,?,?,?,?,?,?)",
                 (reservation_id, user_id, project_id, run_id, workflow_kind, reservation, _now()),
@@ -744,7 +744,7 @@ class Stage13Service:
             return reservation_id
 
     def _spend_characters(self, c: Any, user_id: str, project_id: str | None, run_id: str | None, visitor: bool,
-                          kind: str, characters: int, cutoff: str) -> None:
+                          kind: str, characters: int, cutoff: str, reservation_id: str) -> None:
         if kind not in {"check", "import"} or characters < 0:
             raise DomainError("usage_context_invalid", 503, True)
         if kind == "check" and visitor and characters > self.settings.visitor_check_chars:
@@ -757,7 +757,12 @@ class Stage13Service:
             count = c.execute("SELECT COUNT(*) FROM v2_character_usage WHERE user_id=? AND kind='import' AND created_at>?", (user_id, cutoff)).fetchone()[0]
             if count >= self.settings.registered_imports:
                 raise DomainError("import_quota_exceeded", 429, True, {"limit": self.settings.registered_imports})
-        c.execute("INSERT INTO v2_character_usage VALUES(?,?,?,?,?,?,?)", (_new_id("chars"), user_id, project_id, run_id, kind, characters, _now()))
+        c.execute("INSERT INTO v2_character_usage VALUES(?,?,?,?,?,?,?)", (f"chars-{reservation_id}", user_id, project_id, run_id, kind, characters, _now()))
+
+    def refund_import(self, user_id: str, reservation_id: str) -> None:
+        """Return only this import's characters; workflow and provider spending still stand."""
+        with self.database.connection() as c:
+            c.execute("DELETE FROM v2_character_usage WHERE id=? AND user_id=? AND kind='import'", (f"chars-{reservation_id}", user_id))
 
     def character_usage(self, user_id: str) -> dict[str, Any]:
         """What this author can still check and import in the rolling 24 hours, for the page to show before a check."""

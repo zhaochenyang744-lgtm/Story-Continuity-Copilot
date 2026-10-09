@@ -1,6 +1,40 @@
 import { api, expect, openTab, registerAccount, setDraftBody, shot, test } from "./support/app";
 import { button, draft, failDraftSaves, saveBody } from "./support/writing";
 import { cardWith, evidence, importBook, initialize, memories, pair, sample, startAnalysis, view } from "./support/pages";
+import { writeFile, mkdir } from "node:fs/promises";
+import path from "node:path";
+
+test("12 M 长作品32章分批整理，失败提示和重试，确认第1版资料", async ({ page }) => {
+  await registerAccount(page, "mlong");
+  const directory = process.env.E2E_OUTPUT_DIR!;
+  await mkdir(directory, { recursive: true });
+  const file = path.join(directory, "12-original-long.md");
+  await writeFile(file, Array.from({ length: 32 }, (_, i) => `# 第${i + 1}章 石湾第${i + 1}次观潮\n${`第${i + 1}天，记录员方禾来到石湾，将刻尺固定在岸边。值班员按约定收起测量绳，核对潮位与风向，等记录完成才离开。`.repeat(85)}\n`).join("\n"));
+  const id = await importBook(page, file, "石湾观潮记32章");
+  expect((await api(page).get(`/projects/${id}/chapters`)).chapters).toHaveLength(32);
+  await openTab(page, id, "memory");
+  const endpoint = `**/api/projects/${id}/memory/initializations?view=compact`;
+  // UI failure copy is isolated; the backend refund is verified by provider-failure tests.
+  await page.route(endpoint, route => route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ error: { code: "provider_timeout", retryable: true } }) }));
+  await button(page, "开始整理").click();
+  await expect.soft(page.getByRole("alert").filter({ hasText: "模型响应超时" })).toContainText("模型响应超时，这次事实整理没有完成，没有留下任何结果。这次没有用掉今天的整理次数，可以再试一次。");
+  await shot(page, "12-M-initialization-failed-day", false);
+  await page.unroute(endpoint);
+  await button(page, "开始整理").click();
+  const form = page.getByRole("form", { name: "确认整理出的事实", exact: true });
+  await expect(form).toBeVisible();
+  const init = await api(page).get(`/projects/${id}/memory/initialization`);
+  expect(init.candidates.length).toBeGreaterThan(0);
+  await shot(page, "12-M-long-candidates-day", false);
+  for (const expand of await form.getByText(/^\d{2}–\d{2}$/).all()) {
+    if (!await expand.evaluate(e => e.closest("details")?.open)) await expand.click();
+  }
+  for (const choice of await form.getByRole("radio", { name: "接受", exact: true }).all()) await choice.check();
+  await button(page, "确认，建立第 1 版资料").click();
+  await expect.poll(async () => (await api(page).get(`/projects/${id}/memory/initialization`)).status).toBe("committed");
+  await expect.poll(async () => (await api(page).get(`/projects/${id}`)).current_memory_version).toBe(1);
+  expect((await memories(page, id)).length).toBeGreaterThan(0);
+});
 
 test("08 资料五个视图：网址和刷新保持", async ({ page }) => {
   await sample(page, "memory");

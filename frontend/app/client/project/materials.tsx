@@ -196,6 +196,7 @@ function InitReview({ p, go }: { p: ProjectState; go: (href: string) => void }) 
     return (
       <div className="confirm-block">
         <SectionHead title="从正文整理事实" strong />
+        {p.initializationError && <p className="note note-error" role="alert">{p.initializationError}</p>}
         <p className="lede">系统从导入的章节里找出人物、地点、规则和事件，整理成候选。候选要你逐条确认，不会自动写进资料。</p>
         {experienceSimulation && <p className="note note-info">隔离模拟环境：候选来自固定示例数据，不会调用真实模型。请先导入体验包里的 v140-simulation-sample.md。</p>}
         <Button kind="primary" size="lg" disabled={blocked} onClick={() => void p.startMemoryInitialization()}>开始整理</Button>
