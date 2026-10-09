@@ -73,7 +73,6 @@ test("08 人物别名：添加改名归档与刷新", async ({ page }) => {
 });
 
 test("08 改动影响：分析附依据而不改人物", async ({ page }, info) => {
-  test.fixme(true, "清单第 13 条的同类预算问题：示例人物 change_impact 返回 failed/input_budget_exceeded，无法显示结果");
   const id = await sample(page, "memory");
   const before = await api(page).get(`/projects/${id}/characters`);
   await view(page, "人物", "people");

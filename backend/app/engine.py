@@ -12,7 +12,7 @@ from .internal_ids import strip_internal_ids
 from .memory_contract import CONTROLLED_PREDICATES, predicate_label
 from .provider import MAX_CLAIM_BASIS_CODEPOINTS, MAX_ISSUE_REASONING_CODEPOINTS
 from .provider import ProviderDispatchDenied
-from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, request_prompt_and_budget, review_effort_scope
+from .provider import CONTINUITY_PROMPT_VERSION, InputBudgetExceeded, MAX_INPUT_BUDGET_UNITS, MAX_MEMORY_CANDIDATES_PER_BATCH, MEMORY_BATCH_TARGET_BUDGET_UNITS, ProviderFailure, ProviderInvalidJson, ProviderPort, ProviderTimeout, ProviderUnavailable, WRITING_ANALYSIS_INPUT_BUDGET_UNITS, request_prompt_and_budget, review_effort_scope
 from .provider import CONTINUITY_SCREENED_PROMPT_VERSION, CONTINUITY_SCREEN_PROMPT_VERSION, CONTINUITY_TRIAGE_PROMPT_VERSION, input_budget_units_for
 from . import review_screening as screening
 from .review_screening import SCREENED_RETRIEVAL_METHOD_VERSION
@@ -25,6 +25,7 @@ REVIEW_NATURES={"confirmed_conflict","possible_conflict","state_change","insuffi
 REVIEW_ACTIONS={"edit","apply_suggestion","keep_intentional","false_positive"}
 EVIDENCE_CHAIN_ROLES={"prior_state","current_context","missing_link"}
 MAX_RUN_TOKENS=8000
+MAX_WRITING_ANALYSIS_RUN_TOKENS=16000
 PROMPT_VERSION=CONTINUITY_PROMPT_VERSION
 # The screened pipeline (review_screening.py) is the default. CONTINUITY_REVIEW_PIPELINE=legacy is the
 # temporary rollback to per-sentence review; a run keeps the pipeline recorded when it was created.
@@ -1367,9 +1368,9 @@ class WritingAnalysisEngine:
         request=self._request(data)
         response=None
         try:
-            if request_prompt_and_budget(request)[1]>MAX_INPUT_BUDGET_UNITS:raise InputBudgetExceeded()
+            if request_prompt_and_budget(request)[1]>WRITING_ANALYSIS_INPUT_BUDGET_UNITS:raise InputBudgetExceeded()
             response=self.provider.evaluate(request)
-            if (response.input_tokens or 0)+(response.output_tokens or 0)>MAX_RUN_TOKENS:return {"status":"budget_paused","error_code":"budget_paused","retryable":True,**_aggregate([response])}
+            if (response.input_tokens or 0)+(response.output_tokens or 0)>MAX_WRITING_ANALYSIS_RUN_TOKENS:return {"status":"budget_paused","error_code":"budget_paused","retryable":True,**_aggregate([response])}
             analysis=self.validate(response.payload,data)
             return {"status":"completed","analysis":analysis,**_aggregate([response])}
         except InputBudgetExceeded:return {"status":"failed","error_code":"input_budget_exceeded","retryable":True}

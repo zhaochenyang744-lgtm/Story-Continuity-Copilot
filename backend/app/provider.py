@@ -237,6 +237,10 @@ ANALYSIS_LAYER_RULES = (
 
 MAX_TOTAL_BUDGET_UNITS = 8000
 MAX_INPUT_BUDGET_UNITS = 6000
+# Writing analyses carry the layered evidence on top of fixed prompt rules, so a typical work already sits near
+# 6,000 units; they get their own, larger allowance.
+WRITING_ANALYSIS_INPUT_BUDGET_UNITS = 12000
+WRITING_ANALYSIS_TASKS = frozenset({"context_brief", "plan_alignment", "change_impact", "story_qa", "foreshadow_scan", "revision_plan", "author_material_comparison"})
 MAX_OUTPUT_BUDGET_UNITS = 2000
 MEMORY_BATCH_TARGET_BUDGET_UNITS = 5800
 MAX_MEMORY_CANDIDATES_PER_BATCH = 8
@@ -416,6 +420,8 @@ def input_budget_units_for(request: dict[str, Any], repair_budget_units: int | N
         return SCREENED_REVIEW_REPAIR_INPUT_BUDGET_UNITS if "contract_repair" in request else SCREENED_REVIEW_INPUT_BUDGET_UNITS
     if request.get("task") is None and "contract_repair" in request and repair_budget_units:
         return repair_budget_units
+    if request.get("task") in WRITING_ANALYSIS_TASKS:
+        return WRITING_ANALYSIS_INPUT_BUDGET_UNITS
     return MAX_INPUT_BUDGET_UNITS
 
 

@@ -28,7 +28,6 @@ test("写前回顾：分析记录与出处原文", async ({ page }) => {
   await shot(page, "writing-brief");
 });
 test("对照计划：逐条结果与后端一致", async ({ page }) => {
-  test.fixme(true, "未修改的示例作品对照计划返回 failed/input_budget_exceeded，无法显示逐条计划结果");
   const id = await setup(page), result = await analysis(page, id, "对照计划", "plan_alignment");
   const region = page.getByRole("region", { name: "对照计划", exact: true });
   await expect(region).toContainText(result.analysis.summary);
