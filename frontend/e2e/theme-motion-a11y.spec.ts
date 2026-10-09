@@ -44,6 +44,8 @@ test("08 夜间反色色块：深蓝底、浅色字，蓝色按钮有描边；�
   await registerAccount(page, "inverse08");
   const id = await sampleWorkId(page);
   await createWorkByApi(page, { title: "夜间试验之书" });
+  await button(page, "开始导览").click();
+  await expect(page.getByRole("region", { name: "导览", exact: true })).toContainText("导览 1 / 5");
   const look = (target: Locator) => target.evaluate(e => ({ shadow: getComputedStyle(e).boxShadow }));
   const colours = { day: { background: "rgb(17, 17, 17)", color: "rgb(244, 244, 241)" }, night: { background: "rgb(29, 33, 85)", color: "rgb(244, 244, 241)" } };
   const places: [string, () => Promise<{ band: Locator; control: Locator }>][] = [
