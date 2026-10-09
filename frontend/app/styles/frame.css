@@ -5,6 +5,9 @@
 .boot { display: grid; place-items: center; min-height: 40vh; color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-12); letter-spacing: var(--tracking-label); }
 .main { flex: 1; width: 100%; max-width: var(--page-max); margin: 0 auto; padding: 0 var(--page-gutter) var(--s-24); }
 .main-auth { max-width: none; padding: 0; }
+/* The skip link puts focus on the main area itself; it takes no frame, so the whole area is not boxed in. */
+.main:focus,
+.main:focus-visible { outline: none; }
 .page { min-width: 0; }
 .loading { padding: var(--s-6) 0; color: var(--c-muted); font-family: var(--font-mono); font-size: var(--fs-12); letter-spacing: var(--tracking-label); }
 .empty { padding: var(--s-5) 0; color: var(--c-muted); font-size: var(--fs-15); }

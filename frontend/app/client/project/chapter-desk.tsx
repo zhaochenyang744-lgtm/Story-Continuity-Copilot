@@ -5,7 +5,7 @@ import { json, labelError, request, type ApiFailure } from "../../api";
 import type { Chapter, DraftBodyFormat } from "../../model";
 import { DraftWordCount, RichDraftEditor, WritingTools } from "../editor";
 import { Odometer } from "../motion";
-import { bareChapterTitle, Button, Dialog, formatCount, Num, pad2, writtenChars } from "../ui";
+import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Num, pad2, writtenChars } from "../ui";
 import type { PageProps } from "./frame";
 
 /** A written chapter as the revision endpoints know it. */
@@ -195,6 +195,7 @@ export function ChapterDesk({ p, user, go, notices, number, open }: Pick<PagePro
       <header className="draft-head">
         <Num className="draft-head-num ink"><Odometer value={number} /></Num>
         <div className="draft-head-main">
+          <h1 className="sr-only">{chapterHeading(number, shownTitle)}</h1>
           <p className="label draft-head-meta">
             <span className="badge badge-line">已完成</span>
             <span>{formatCount(writtenChars(shownBody))} 字</span>

@@ -123,3 +123,47 @@ test("完成本章：禁用未保存内容、预览和新草稿", async ({ page 
   expect(chapters.find((c: {number: number}) => c.number === 11).body).toBe(saved.body);
   await expect(page.getByLabel("草稿第 12 章", { exact: true })).toBeVisible();
 });
+
+test("写作页的一级标题：读屏能读到「第 N 章 · 标题」，看不见；标题为空时只有「第 N 章」", async ({ page }) => {
+  const id = await setup(page);
+  const h1 = page.getByRole("heading", { level: 1 });
+  await expect(h1).toHaveCount(1);
+  await expect(h1).toHaveText("第 11 章 · 桌上的留白");
+  // Not drawn: it occupies one pixel, clipped, like the other text only a screen reader needs.
+  const box = await h1.boundingBox();
+  expect(box!.width).toBeLessThanOrEqual(1);
+  expect(box!.height).toBeLessThanOrEqual(1);
+  // An empty title leaves the chapter number alone.
+  const title = page.getByRole("textbox", { name: "章节标题", exact: true });
+  await title.fill("");
+  await expect(h1).toHaveText("第 11 章");
+  await title.fill("雨停之后");
+  await expect(h1).toHaveText("第 11 章 · 雨停之后");
+  // A written chapter, opened by its number, has the same.
+  await page.goto(`/projects/${id}/workspace?chapter=3`);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(/^第 3 章 · /);
+});
+
+test("键盘聚焦：章标题的底线变蓝加粗，正文左边出现 3px 蓝线，没有整圈的框", async ({ page }) => {
+  await setup(page);
+  const title = page.getByRole("textbox", { name: "章节标题", exact: true });
+  const body = page.getByRole("textbox", { name: "草稿正文", exact: true });
+  const read = (target: import("@playwright/test").Locator) => target.evaluate(e => { const style = getComputedStyle(e); return { outline: style.outlineStyle, shadow: style.boxShadow, border: style.borderBottomColor }; });
+  const blue = "rgb(31, 43, 255)";
+  const before = await read(title);
+  expect(before.shadow).toBe("none");
+  await title.focus();
+  await expect(title).toBeFocused();
+  const withFocus = await read(title);
+  expect(withFocus.border).toBe(blue);
+  await expect.poll(async () => (await read(title)).shadow).toBe(`${blue} 0px 2px 0px 0px`);
+  await body.focus();
+  await expect(body).toBeFocused();
+  // The shadow eases in over a moment, so it is read until it settles.
+  await expect.poll(async () => (await read(body)).shadow).toBe(`${blue} -3px 0px 0px 0px`);
+  expect((await read(body)).outline, "正文没有整圈的框").toBe("none");
+  // The bar is only a shadow: nothing moves.
+  const box = await body.boundingBox();
+  await title.focus();
+  expect(await body.boundingBox()).toEqual(box);
+});

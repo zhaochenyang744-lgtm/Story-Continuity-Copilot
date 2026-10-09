@@ -167,16 +167,40 @@ export function useScrollLock() {
   }, []);
 }
 
-/** Keeps Tab inside a dialog and closes it on Escape. */
+/** The button that opened the menu this control sits in (a details menu's summary, or the account menu's button). */
+function menuButtonOf(element: HTMLElement): HTMLElement | null {
+  const details = element.closest("details");
+  if (details?.classList.contains("menu")) return details.querySelector<HTMLElement>("summary");
+  return element.closest('[role="menu"]')?.parentElement?.querySelector<HTMLElement>('[aria-haspopup="menu"]') ?? null;
+}
+// What last had focus outside any dialog, noted as it happens: by the time a dialog is drawn, the menu item
+// that opened it may already be closed or gone.
+let lastFocus: { element: HTMLElement; menuButton: HTMLElement | null } | null = null;
+if (typeof document !== "undefined") document.addEventListener("focusin", (event) => {
+  const target = event.target;
+  if (target instanceof HTMLElement && !target.closest('[role="dialog"]')) lastFocus = { element: target, menuButton: menuButtonOf(target) };
+});
+/** Gives focus back to what had it when the dialog opened; if that is gone or hidden, to the button of the menu it was in. */
+function restoreFocus(from: typeof lastFocus) {
+  for (const element of [from?.element, from?.menuButton]) {
+    if (!element?.isConnected) continue;
+    element.focus();
+    if (document.activeElement === element) return;
+  }
+}
+
+/** Keeps Tab inside a dialog, closes it on Escape, and gives focus back when it closes (a dialog and a drawer alike). */
 export function useFocusTrap<T extends HTMLElement>(close: () => void, closeDisabled = false) {
   const ref = useRef<T>(null);
+  const [from] = useState(() => lastFocus);
+  const giveBack = useRef<number | undefined>(undefined);
   useEffect(() => {
-    // Return focus to whatever opened the dialog when it closes.
-    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    // A remount that follows straight after a cleanup (development's strict mode does this) must not have focus taken from it.
+    window.clearTimeout(giveBack.current);
     const first = ref.current?.querySelector<HTMLElement>("[data-autofocus]") ?? ref.current?.querySelector<HTMLElement>('input:not([disabled]), textarea:not([disabled]), select:not([disabled]), button:not([disabled])');
     first?.focus();
-    return () => { if (opener?.isConnected) window.setTimeout(() => opener.focus(), 0); };
-  }, []);
+    return () => { giveBack.current = window.setTimeout(() => restoreFocus(from), 0); };
+  }, [from]);
   const onKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
     if (event.key === "Escape") {
       event.preventDefault();
@@ -280,6 +304,11 @@ export const formatCount = (value: number) => value.toLocaleString("en-US");
 export const pad2 = (value: number) => String(value).padStart(2, "0");
 export const writtenChars = (text: string) => text.replace(/\s+/g, "").length;
 export const clip = (text: string, max: number) => (text.length > max ? `${text.slice(0, max - 1)}…` : text);
+/** "第 11 章 · 桌上的留白", or just "第 11 章" when the title is empty or only repeats the chapter number. */
+export const chapterHeading = (number: number, title: string) => {
+  const name = title.replace(/^\s*第\s*[0-9零〇一二三四五六七八九十百千两]+\s*[章回节]\s*[:：·.、\-—\s]*/, "").trim();
+  return name ? `第 ${number} 章 · ${name}` : `第 ${number} 章`;
+};
 /** "第十一章：桌上的留白" → "桌上的留白", for places that already show the chapter number. */
 export const bareChapterTitle = (title: string) =>
   title.replace(/^\s*第\s*[0-9零〇一二三四五六七八九十百千两]+\s*[章回节]\s*[:：·.、\-—\s]*/, "").trim() || title.trim();

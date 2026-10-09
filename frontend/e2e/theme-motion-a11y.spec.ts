@@ -109,6 +109,8 @@ test("08 axe 扫描：十个页面的日间和夜间", async ({ page }, info) =>
     await page.evaluate(() => document.fonts.ready);
     for (const value of ["day", "night"] as const) {
       await theme(page, value);
+      // Colours ease over to the other theme; the scan starts once they have arrived, not halfway.
+      await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === "running" && animation.effect?.getComputedTiming().iterations !== Infinity).length), { message: "the theme's colour transition has finished" }).toBe(0);
       const result = await new AxeBuilder({ page }).analyze();
       results.push({ page: name, theme: value, violations: result.violations.map(v => ({ id: v.id, impact: v.impact, description: v.description, help: v.help, helpUrl: v.helpUrl, nodes: v.nodes.map(n => ({ target: n.target, html: n.html, failureSummary: n.failureSummary })) })) });
       const capture: Record<string, string> = { "登录": "login", "首页新用户": "home", "作品管理": "works", "写作": "writing", "个人信息": "profile" };
@@ -137,6 +139,8 @@ test("08 axe 扫描：十个页面的日间和夜间", async ({ page }, info) =>
   await expect(page.getByRole("heading", { level: 1, name: "E2E 作者", exact: true })).toBeVisible();
   await scan("个人信息");
   await evidence(info, "axe-results", results);
+  // The writing page has its one h1 (unseen), so axe no longer asks for one.
+  expect(results.flatMap(r => r.violations.map(v => `${r.page}/${r.theme}: ${v.id}`)).filter(item => item.endsWith("page-has-heading-one"))).toEqual([]);
   const severe = results.flatMap(r => r.violations.filter(v => ["critical", "serious"].includes(v.impact)).map(v => ({ page: r.page, theme: r.theme, ...v })));
   expect(severe, JSON.stringify(severe, null, 2)).toEqual([]);
 });
@@ -156,7 +160,6 @@ async function tabTo(page: Page, target: Locator, checks: Awaited<ReturnType<typ
 }
 
 test("08 键盘决定：焦点框与不是问题写入", async ({ page }, info) => {
-  test.fixme(true, "新发现：章标题与草稿正文虽然匹配 :focus-visible，但 outline-style 和 box-shadow 都为 none；键盘决定写入本身通过");
   const id = await setup(page), before = await run(page, id), issue = before.issues[0];
   const checks: Awaited<ReturnType<typeof focusVisible>>[] = [];
   await tabTo(page, finding(page, issue.id), checks);
@@ -171,7 +174,6 @@ test("08 键盘决定：焦点框与不是问题写入", async ({ page }, info) 
 });
 
 test("08 对话框焦点：初始焦点循环和 Esc 返回", async ({ page }, info) => {
-  test.fixme(true, "重置对话框 Esc 关闭后焦点落回 BODY，没有返回打开它的重置作品按钮；菜单关闭后按钮隐藏");
   await sample(page);
   await workMenu(page, "重置作品");
   const d = page.getByRole("dialog", { name: "重置作品", exact: true });
@@ -183,5 +185,19 @@ test("08 对话框焦点：初始焦点循环和 Esc 返回", async ({ page }, i
   await page.keyboard.press("Escape");
   await expect(d).toHaveCount(0);
   await evidence(info, "dialog-return-focus", await page.evaluate(() => ({ activeTag: document.activeElement?.tagName, activeText: document.activeElement?.textContent?.slice(0, 120) })));
-  await expect(page.getByRole("menuitem", { name: "重置作品", exact: true, includeHidden: true })).toBeFocused();
+  // The menu item went away with the menu, so focus goes to the button that opened the menu.
+  await expect(page.getByLabel("更多：导出、编辑信息、归档", { exact: true })).toBeFocused();
+});
+
+test("08 抽屉焦点：原文出处关闭后回到打开它的那一条依据", async ({ page }) => {
+  const id = await setup(page), issue = (await run(page, id)).issues[0];
+  await finding(page, issue.id).click();
+  const evidence = page.getByRole("complementary", { name: "检查与回顾", exact: true }).getByRole("button", { name: /^第 \d+ 章/ }).first();
+  await evidence.click();
+  const drawer = page.getByRole("dialog", { name: /^第 \d+ 章/ });
+  await expect(drawer).toBeVisible();
+  await expect.poll(() => drawer.evaluate(e => e.contains(document.activeElement))).toBe(true);
+  await page.keyboard.press("Escape");
+  await expect(drawer).toHaveCount(0);
+  await expect(evidence).toBeFocused();
 });

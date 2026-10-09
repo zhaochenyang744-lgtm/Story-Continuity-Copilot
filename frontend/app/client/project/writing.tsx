@@ -25,7 +25,7 @@ import {
   stageLabel,
   timeLabel,
 } from "../labels";
-import { bareChapterTitle, Button, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
+import { bareChapterTitle, Button, chapterHeading, Dialog, formatCount, Menu, Num, pad2, SectionHead, Tag, usageShort, useFocusTrap, useScrollLock, writtenChars } from "../ui";
 import { ChapterDesk, ChapterRail, TitleField } from "./chapter-desk";
 import type { PageProps } from "./frame";
 import { FindingTag, findingHeadline } from "./findings";
@@ -164,6 +164,7 @@ function DraftDesk({ p, usage, tutorialStep, open: openDialog, go, notices, open
       <header className="draft-head" aria-label={`草稿第 ${chapterNumber} 章`}>
         <Num className="draft-head-num"><Odometer value={chapterNumber} /></Num>
         <div className="draft-head-main">
+          <h1 className="sr-only">{chapterHeading(chapterNumber, p.draft?.title ?? "")}</h1>
           <p className="label draft-head-meta">
             <span className="badge">草稿</span>
             <span>{formatCount(chars)} 字</span>

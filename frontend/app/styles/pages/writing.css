@@ -15,7 +15,10 @@
 .draft-title { display: block; margin-top: 10px; }
 .draft-title textarea { display: block; width: 100%; min-height: 0; padding: 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--c-ink); font-size: clamp(36px, 4.2vw, 60px); font-weight: 900; line-height: 1.12; letter-spacing: -.02em; resize: none; overflow: hidden; field-sizing: content; transition: border-color var(--dur-fast) var(--ease); }
 .draft-title textarea:hover:not(:disabled) { border-bottom-color: var(--c-line); }
-.draft-title textarea:focus { border-bottom-color: var(--c-blue); box-shadow: none; }
+/* Focus is shown without a frame around the writing: the title's rule thickens and turns blue; the body gets a bar at its left.
+   Both use :focus-visible, which a text field and an editable area match however they were focused. */
+.draft-title textarea:focus,
+.draft-title textarea:focus-visible { border-bottom-color: var(--c-blue); box-shadow: 0 calc(var(--s-1) / 2) 0 var(--c-blue); }
 .draft-title textarea:disabled { background: transparent; color: var(--c-ink); opacity: 1; }
 .draft-save-detail { margin-top: 8px; color: var(--c-muted); font-size: 13px; }
 .draft-head-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
@@ -47,6 +50,7 @@
 .rich-draft-body blockquote p { text-indent: 0; }
 .rich-draft-body ul { margin: 0 0 1.1em; padding-left: 1.4em; list-style: square; }
 .rich-draft-body li p { margin-bottom: .3em; text-indent: 0; }
+.rich-draft-body:focus-visible { box-shadow: calc(var(--s-1) * -.75) 0 0 var(--c-blue); }
 .rich-draft-body:has(> p:only-child > br:only-child)::before { content: attr(data-placeholder); position: absolute; color: var(--c-faint); text-indent: 2em; pointer-events: none; }
 .draft-field > textarea { min-height: 60vh; padding: 0; border: 0; background: transparent; font-family: var(--font-serif); font-size: 19px; line-height: 2.05; }
 .draft-field > textarea:focus { box-shadow: none; }
@@ -161,7 +165,8 @@
 .focus[data-width="narrow"] .focus-column { width: min(100%, 600px); }
 .focus[data-width="wide"] .focus-column { width: min(100%, 880px); }
 .focus-title input { margin-bottom: 32px; padding: 0; border: 0; background: transparent; font-size: 44px; font-weight: 900; line-height: 1.1; }
-.focus-title input:focus { box-shadow: none; }
+.focus-title input:focus,
+.focus-title input:focus-visible { box-shadow: 0 calc(var(--s-1) / 2) 0 var(--c-blue); }
 .focus[data-size="small"] .rich-draft-body { font-size: 17px; }
 .focus[data-size="large"] .rich-draft-body { font-size: 21px; }
 .focus[data-leading="compact"] .rich-draft-body { line-height: 1.7; }

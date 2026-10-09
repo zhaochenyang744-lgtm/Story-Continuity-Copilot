@@ -321,7 +321,7 @@ export function App() {
   const showFeedback = !publicAuthPaths.includes(pathname) && Boolean(user) && (notice || Boolean(error));
   return (
     <div className={`app${user ? "" : " app-auth"}`}>
-      <a className="skip" href="#main">跳到主要内容</a>
+      <a className="skip" href="#main" onClick={() => document.getElementById("main")?.focus()}>跳到主要内容</a>
       {user && (
         <header className="topbar">
           <div className="topbar-inner">
@@ -365,7 +365,7 @@ export function App() {
         </header>
       )}
       {!user && ready && <ThemeSwitch theme={theme} toggle={toggleTheme} floating />}
-      <main id="main" className={user ? "main" : "main main-auth"}>
+      <main id="main" tabIndex={-1} className={user ? "main" : "main main-auth"}>
         {showFeedback && (
           <div className={error ? "feedback error" : "feedback"} role={error ? "alert" : "status"}>
             <span key={error ? "error" : notice}>{error ? labelError(error) : notice}</span>

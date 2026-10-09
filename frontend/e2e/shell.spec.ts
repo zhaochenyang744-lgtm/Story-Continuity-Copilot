@@ -112,8 +112,7 @@ test("找不到页面：未知网址和不存在的作品都有自己的说明",
   await expect(page).toHaveURL(/\/projects$/);
 });
 
-test("跳到主要内容：第一次按 Tab 落在跳转链接上，回车后下一个焦点进入主要内容区", async ({ page }) => {
-  test.fixme(true, "清单第 17 条：首页重渲染使跳转链接的焦点起点不稳定；按 08 任务要求保留原断言并标记待修");
+test("跳到主要内容：第一次按 Tab 落在跳转链接上，回车后焦点就在主要内容区上，再按 Tab 进入它里面的第一个控件", async ({ page }) => {
   await registerAccount(page, "skiplink");
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "从第一章开始", exact: true })).toBeVisible();
@@ -124,10 +123,20 @@ test("跳到主要内容：第一次按 Tab 落在跳转链接上，回车后下
   await expect(skip).toBeVisible();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#main$/);
-  // The browser moves its focus starting point to the main content: the next Tab lands on the first
-  // control inside it, not back in the top bar.
+  // Focus is on the main area itself, and takes no frame (the whole area would be boxed in).
+  const main = page.getByRole("main");
+  await expect(main).toBeFocused();
+  await expect(main).toHaveCSS("outline-style", "none");
+  // The next Tab lands on the first control inside it, not back in the top bar.
+  const first = await page.evaluate(() => {
+    const selector = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])';
+    const element = Array.from(document.getElementById("main")!.querySelectorAll<HTMLElement>(selector)).find(item => item.getClientRects().length > 0);
+    return element ? element.outerHTML.slice(0, 160) : null;
+  });
+  expect(first, "主要内容区里有可以聚焦的控件").not.toBeNull();
   await page.keyboard.press("Tab");
-  await expect.poll(() => page.evaluate(() => Boolean(document.getElementById("main")?.contains(document.activeElement)))).toBe(true);
+  await expect.poll(() => page.evaluate(() => document.activeElement === document.getElementById("main"))).toBe(false);
+  await expect.poll(() => page.evaluate(() => document.activeElement?.outerHTML.slice(0, 160))).toBe(first);
 });
 
 test("错误文案：补齐的错误码一一对应，失败的检查和分析用平常的话，不出现技术词", async () => {
