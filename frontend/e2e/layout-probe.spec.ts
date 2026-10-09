@@ -2,6 +2,28 @@ import { expect, shot, test } from "./support/app";
 import { setup } from "./support/writing";
 import { evidence, sample, workMenu } from "./support/pages";
 
+test("12 P 短长页logo不横移，对话框锁滚动也不横移", async ({ page }, info) => {
+  await sample(page);
+  const logo = page.getByRole("banner").getByLabel("首页", { exact: true });
+  const before = (await logo.boundingBox())!.x;
+  await workMenu(page, "重置作品");
+  const during = (await logo.boundingBox())!.x;
+  await page.getByRole("dialog", { name: "重置作品", exact: true }).getByRole("button", { name: "取消", exact: true }).click();
+  const after = (await logo.boundingBox())!.x;
+  await page.goto("/12-missing-page");
+  await expect(page.getByRole("heading", { name: "找不到这个页面", exact: true })).toBeVisible();
+  const short = (await logo.boundingBox())!.x;
+  await logo.click();
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  const home = (await logo.boundingBox())!.x;
+  const viewport = await page.evaluate(() => ({ inner: innerWidth, client: document.documentElement.clientWidth, overflow: getComputedStyle(document.documentElement).overflowY }));
+  await evidence(info, "12-P-scroll", { before, during, after, short, home, viewport });
+  expect(Math.abs(during - before)).toBeLessThanOrEqual(.5);
+  expect(Math.abs(after - before)).toBeLessThanOrEqual(.5);
+  expect(Math.abs(short - home)).toBeLessThanOrEqual(.5);
+  expect(viewport.overflow).toBe("scroll");
+});
+
 test("08 版面测量：滚动后导览条与顶栏", async ({ page }, info) => {
   await setup(page);
   // The tour bar is part of the page, not of the top bar: how much of it is visible below the top bar, at the top and scrolled far down.
