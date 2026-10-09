@@ -255,6 +255,15 @@
 .tutorial-guidance-target.is-pulsing { animation: pulse 1.4s ease-in-out 2; }
 
 /* ── Narrow screens ── */
+@media (min-width: 721px) {
+  .topbar-inner:has(.topbar-work) { flex-wrap: nowrap; }
+  .topbar-work { flex: 0 1 260px; min-width: 0; }
+  .topbar-tabs:not(.global) { flex: 1 0 auto; flex-wrap: nowrap; }
+  .topbar-brand, .theme-switch, .account { flex-shrink: 0; }
+}
+@media (min-width: 721px) and (max-width: 1279px) {
+  .topbar-inner:has(.topbar-work) .topbar-quota { display: none; }
+}
 @media (max-width: 720px) {
   :root { --page-gutter: 16px; }
   /* One line for logo, work, theme switch and avatar; a long work title is cut short, never wrapped. */
@@ -265,6 +274,8 @@
   .account { flex: none; }
   .topbar-work { flex: 1 1 0; min-width: 0; max-width: none; padding-left: var(--s-3); }
   .topbar-tabs { order: 3; flex-basis: 100%; flex-wrap: nowrap; gap: 4px 20px; overflow-x: auto; }
+  .topbar-tabs:not(.global) { justify-content: space-between; gap: var(--s-1) var(--s-2); overflow-x: visible; }
+  .topbar-tabs:not(.global) .topbar-tab-num { display: none; }
   .topbar-tabs.global { padding-left: 0; border-left: 0; }
   .topbar-quota { display: none; }
   .btn.topbar-new { display: none; }

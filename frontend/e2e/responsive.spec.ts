@@ -2,6 +2,25 @@ import { createWorkByApi, expect, expectNoHorizontalOverflow, logout, openTab, r
 import { button, saveBody } from "./support/writing";
 import { evidence, noWriteControls, view } from "./support/pages";
 
+for (const width of [390, 1024, 1280]) test(`12 O ${width} 五页顶栏单行、标签没有滚动条`, async ({ page }, info) => {
+  await registerAccount(page, `o${width}`);
+  const id = await createWorkByApi(page, { title: "这是一部名字特别特别长的长篇小说，用来检查中等宽度的作品顶栏" });
+  await page.setViewportSize({ width, height: width === 390 ? 844 : 960 });
+  for (const tab of tabOrder) {
+    await openTab(page, id, tab);
+    const banner = page.getByRole("banner");
+    const controls = [banner.getByRole("button", { name: "首页", exact: true }), banner.getByRole("button", { name: /^更换当前作品：/ }), banner.getByRole("button", { name: /^切换到/ }), banner.getByRole("button", { name: /^账号菜单：/ })];
+    const boxes = await Promise.all(controls.map(c => c.boundingBox()));
+    const centres = boxes.map(b => b!.y + b!.height / 2);
+    const tabs = await page.getByRole("navigation", { name: "作品", exact: true }).evaluate(e => ({ scroll: e.scrollWidth, client: e.clientWidth, top: e.getBoundingClientRect().top }));
+    await evidence(info, `${width}-${tab}`, { boxes, tabs });
+    expect.soft(Math.max(...centres) - Math.min(...centres)).toBeLessThan(20);
+    expect.soft(tabs.scroll).toBeLessThanOrEqual(tabs.client);
+    if (width >= 1024) expect.soft(tabs.top).toBeLessThan(boxes[0]!.y + boxes[0]!.height);
+    await shot(page, `12-O-${tab}-${width}-day`, false);
+  }
+});
+
 test("08 窄屏作品五页：无横向溢出并且只读", async ({ page }, info) => {
   await registerAccount(page, "narrow08");
   const id = await sampleWorkId(page);
