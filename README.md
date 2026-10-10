@@ -1,25 +1,26 @@
 # Story Continuity Copilot
 
-AI continuity review for long-form fiction: it reads a new chapter against everything written before it, flags contradictions and claims the earlier text cannot support, cites the earlier passage for every finding, and leaves every decision to the author.
+AI continuity checks for long-form fiction: it reads a new chapter against everything written before it, flags contradictions and claims the earlier text cannot support, cites the earlier passage for every finding, and leaves every decision to the author.
 
-**Live site:** [43-160-207-57.sslip.io](https://43-160-207-57.sslip.io) (try it without an account via 访客体验) · **Latest release:** [v1.6.1](https://github.com/zhaochenyang744-lgtm/Story-Continuity-Copilot/releases/tag/v1.6.1) · **Product page:** [current product and verification scope](docs/current-product.md)
+**Current source version: v1.7.0.** Deployment is pending; see [version and deployment](#version-and-deployment). [Current product and verification scope](docs/current-product.md).
 
 ## What it does
 
-A novelist writes chapter 40 and has the heroine open a door with a key she lost in chapter 12. Story Continuity Copilot catches that kind of slip. It checks a draft or a chosen set of written chapters against the earlier text, and reports each problem as a finding the author can trace: what the new sentence says, which earlier passage it conflicts with or lacks, and how serious it is. Nothing is rewritten for the author, and the work's fact base (Story Memory) only changes when the author confirms a change.
+A novelist writes chapter 40 and has the heroine open a door with a key she lost in chapter 12. Story Continuity Copilot catches that kind of slip. It checks a draft or a chosen set of written chapters against the earlier text, and reports each problem as a finding the author can trace: what the new sentence says, which earlier passage it conflicts with or lacks, and how serious it is. Nothing is rewritten for the author, and the work's fact base only changes when the author confirms a change.
 
 The interface is in Chinese and is built for Chinese web fiction; the evaluation sets also include English works.
 
 ## Main features
 
-- **Checks real chapters.** Built for chapters of about 2,500 characters; one chapter takes about 40 seconds and ¥0.21 on average.
-- **Every finding cites its evidence.** A finding points to the passage of an earlier chapter it rests on; a finding whose evidence cannot be traced back to the work is rejected, never shown.
-- **Three kinds of findings.** Clear conflicts, possible conflicts, and insufficient evidence, where the new text settles something the earlier text leaves open and the finding names the missing link.
-- **Check chosen chapters.** Tick up to eight written chapters and check them together; each is judged against the chapters before it, and the estimated characters and cost are shown before anything is spent.
-- **Chapter timeline.** Every chapter and the current draft in order, marked checked, not checked, edited after its check, or basis changed (an earlier chapter was revised since).
-- **Author-controlled Story Memory.** Proposed fact changes are accepted, rejected or edited one by one; only accepted changes update the fact base, and every decision is recorded.
-- **Writing and import.** Rich-text and immersive writing with server-side autosave; import by paste, TXT or Word (`.docx`, split by heading styles). An imported work can be checked at once.
-- **Visitor mode.** A 24-hour visitor space with three sample works and labelled sample reports, no sign-up needed.
+The work has five tabs: **概览 / Overview · 写作 / Writing · 章节 / Chapters · 资料 / Records · 计划 / Plans**.
+
+- **Writing:** rich-text and focus writing, server-side draft autosave, checks with source passages, pre-writing recap and plan comparison. Findings distinguish clear conflicts, possible conflicts, state changes (shown as 「状态更新」) and insufficient evidence. The author can keep as intended, mark as not a problem, apply the suggestion or edit the text; available actions depend on the finding. A state change uses 「保留这个变化」 for keeping it. Mark for revision is a reminder, not a decision.
+- **Chapters:** select up to eight written chapters to check against their earlier chapters, inspect check status, append chapters and revise written text. Review affected facts after revising a chapter before another check. Earlier eligible decisions are reused automatically when their sentence, evidence and supporting versions still match.
+- **Records:** inspect the versioned, author-confirmed fact base, people, settings, foreshadowing and ask the records. Trace facts to their source passages, review fact changes from new chapters and manage setting categories. Change impact only analyses a proposed change.
+- **Plans:** keep unwritten plot, character and setting plans as decided or considering; only decided, unarchived plans enter the pre-writing recap and plan comparison.
+- **Overview:** a story route connects written chapters, the draft, open foreshadowing and upcoming plans. Chapter points open the corresponding text; work actions include export and reset.
+- **A sample work and guided tour:** each account has one copy of Grey Harbor Echoes (《灰港回声》), labelled sample findings and a five-step tour. A visitor space lasts 24 hours by default.
+- **Day and night modes:** switch from the top bar. Interface motion respects the system's reduced-motion preference.
 
 ## How a check works
 
@@ -53,85 +54,72 @@ The first long-text formal run failed on insufficient-evidence recall and maximu
 
 ## Version and deployment
 
-The live release is **v1.6.1** (`v161-edd821a-20261006`, deployed 2026-10-06, [record](docs/deployment-2026-10-06-v161.md)); the rollback target is `v160-ef7341e-20261006`.
+The current source version is **v1.7.0**. Release ID: `<release-id>`; deployment date: `<date>`; deployment record to be filled at release time: `docs/deployment-<date>-v170.md`. These are placeholders, not a deployment claim. The rollback target is `v161-edd821a-20261006`.
 
-- **v1.6.1** — server-side draft autosave (5 s after typing stops, never overwriting a newer version saved elsewhere); checked drafts count in the chapter timeline; the works list shows chapter and character counts; check readiness on the overview.
-- **v1.6.0** — the long-text release: screened checking of real chapters, checking chosen chapters, character-based quotas, the chapter timeline, checkable imports and Word import ([record](docs/deployment-2026-10-06.md)).
-- **v1.5.2** — insufficient evidence is reported with the missing link instead of silence; an over-long model answer is retried claim by claim instead of failing the check ([record](docs/deployment-2026-10-04.md)).
+- **v1.7.0** — a rewritten frontend and visual design, five tabs, night mode and motion disabled by reduced-motion settings. Each account has one sample work and a five-step tour. **On upgrade, old tutorial and demo works are replaced, including edited copies; authors' own works are retained.** Plans gain considering status; setting categories are author-managed. Mark for revision replaces revision plans; eligible earlier decisions are reused automatically when only other parts of the draft change. Author materials, revision plans and writing tips are removed. Pre-writing recap, plan comparison and change impact have larger input allowances and fixes for failures on ordinary works; changed plans are read directly and their target chapters reach the model. Failed fact-base building no longer consumes the day's fact-building allowance. Word import recognises short chapter headings such as 「第X章」 without heading styles. Empty grouping headings merge into the next chapter title (for example 「第一卷 风起 · 雨夜」), retaining the text; a trailing empty heading is retained at the end. Standalone TXT downloads include a UTF-8 BOM for editors such as WPS. Writing and checks work at window widths of 768 px and above. Browser tests have been rewritten.
+- **v1.6.1** — server-side draft autosave, checked drafts in the chapter timeline, chapter and character counts in the works list, and check readiness on the overview. [Deployment record](docs/deployment-2026-10-06-v161.md).
+- **v1.6.0** — screened checking of full chapters, selected-chapter checks, rolling character allowances, chapter check status and checkable TXT/Word imports. [Deployment record](docs/deployment-2026-10-06.md).
 
-Full notes are on the [releases page](https://github.com/zhaochenyang744-lgtm/Story-Continuity-Copilot/releases); earlier versions are kept in the Git tags and the records under `docs/`.
+Earlier releases remain in Git tags and the [documentation index](docs/README.md).
 
 ## Known limitations
 
-- Insufficient-evidence recall (0.83) and the share of clean chapters with no finding (78%) are close to their bars and vary from run to run; prompt changes need a new gate.
-- In about one check in nine, the 灰港回声 sample draft reports "决定先核对那声不该响起的雾钟" as a confirmed world-rule conflict.
-- Whole-book checks are not offered yet; a chapter check covers at most eight chapters.
-- With the real model, some fact-change reviews of long appended chapters fail backend validation, and a long check can occasionally fail on evidence that cannot be traced. Both are rejected rather than shown.
-- Writing and checking need a desktop width (1024 px or more); narrower screens are browse-only.
-- The evaluation sets are small (26 chapters; 36 cases per short-draft set). They support the stated claims, not general benchmarks. No study with real authors has been done yet.
+- The formal set's insufficient-evidence recall (0.83) and clean chapters without findings (78%) are close to their bars; results vary and model or prompt changes need a new gate. Timing and cost above are measurements from that frozen run, not service guarantees.
+- An earlier real-model observation of the Grey Harbor sample draft found an occasional false world-rule conflict around the fog bell. It has not been remeasured for v1.7.0.
+- Whole-book checks are not offered; one selected-chapter check covers at most eight chapters. Real-model fact-change reviews of long appended chapters or checks with unresolvable evidence can fail validation.
+- Writing and checking require a window width of at least 768 px; narrower windows are browse-only. The writing page uses a text/findings switch through 1023 px.
+- Imports consisting only of headings, or ending in several consecutive empty headings, can still fail. The focus-writing dialog's background editor may remain visible to assistive technology.
+- Evaluation sets are small (26 chapters in the long-text formal set). No completed study with real authors is evidenced. Automated checks, real-model samples and manual acceptance establish different things.
 
 ## Data and safety
 
-- AI output never writes the prose or the fact base. Findings and proposed changes stay as candidates until the author decides.
-- Every work is isolated per account; another account's resources answer as not found.
-- Evidence must resolve to a passage of the same work, or the finding fails closed. Failed, cancelled or timed-out checks leave no partial results.
-- Model and email credentials stay on the server. Visitors get isolated, time-limited spaces with server-enforced quotas: registered authors check up to 60,000 characters per 24 hours, visitors one chapter of up to 3,000 characters at a time.
+- AI output does not change prose or the fact base by itself. Applying a suggestion requires the author; proposed fact changes enter the fact base only after confirmation.
+- Works are isolated per account. Another account's resources return not found. A fact and its evidence remain associated with their work and versions.
+- Evidence must resolve within the same work. Failed, cancelled or timed-out checks leave no partial findings.
+- Model and email credentials stay on the server. Default checkable characters are 60,000 per rolling 24 hours for registered authors; visitors check one chapter of at most 3,000 characters per request. Separate workflow and provider-attempt limits also apply.
+- Reset clears the selected work's checks, decisions and unsubmitted changes; it does not reset other works. Read the confirmation before proceeding.
 
 ## Run locally
 
-Windows, PowerShell, from the repository root:
+Use Windows PowerShell, Python 3.11+ and Node.js 20.9.0 or later (the installed Next.js requirement). Install from the repository root:
 
 ```powershell
 python -m venv .venv
 & .venv\Scripts\python.exe -m pip install -r backend\requirements.txt
-Set-Location frontend; npm ci; Set-Location ..
-```
-
-Backend (first terminal):
-
-```powershell
-Set-Location backend
-$env:PUBLIC_APP_MODE = '0'
-$env:PUBLIC_BASE_URL = 'http://127.0.0.1:3000'
-$env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
-$env:TRUSTED_HOSTS = '127.0.0.1:8000'
-$env:TRUSTED_ORIGINS = 'http://127.0.0.1:3000'
-& ..\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-```
-
-Frontend (second terminal), then open `http://127.0.0.1:3000`:
-
-```powershell
 Set-Location frontend
-$env:PUBLIC_APP_MODE = '0'
-$env:PUBLIC_BASE_URL = 'http://127.0.0.1:3000'
-$env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
-npm run dev
+npm ci
+Set-Location ..
 ```
 
-Without a configured model provider, a check returns `503 provider_unavailable` rather than a placeholder result. Provider configuration, health checks and isolated test servers are covered in [local setup and reproduction](docs/local-setup.md).
+Follow [local setup](docs/local-setup.md) to start the API on 8000 and a temporary frontend copy on 3000 with matching origins. Do not run `next dev` (including `npm run dev`) directly in the repository's `frontend/`: it rewrites `tsconfig.json` and `next-env.d.ts`. Without a configured model provider, a check returns `503 provider_unavailable`.
 
 ## Tests
 
 ```powershell
-# Backend (from backend/, with the same environment as above plus testserver)
+# Backend, from backend/
+Get-ChildItem Env:CONTINUITY_* | Remove-Item
+$env:PUBLIC_APP_MODE = '0'
+$env:PUBLIC_BASE_URL = 'http://127.0.0.1:3000'
+$env:BACKEND_ORIGIN = 'http://127.0.0.1:8000'
 $env:TRUSTED_HOSTS = '127.0.0.1:8000,testserver'
 $env:TRUSTED_ORIGINS = 'http://127.0.0.1:3000,http://testserver'
 & ..\.venv\Scripts\python.exe -m unittest discover -s tests
+& ..\.venv\Scripts\python.exe -m pytest tests/test_maintenance_package.py
 
-# Evaluation package (from the repository root; no model calls)
+# Evaluation package, from the repository root; no model calls
 $env:PYTHONPATH = '.;backend'
 & .venv\Scripts\python.exe -m evaluation.validate_release_bundle
 & .venv\Scripts\python.exe -m unittest discover -s evaluation\tests
 
-# Frontend (from frontend/)
-npm run lint
-npm run typecheck
-Get-ChildItem Env:CONTINUITY_* | Remove-Item
+# Browser and deployment checks, from frontend/
+$env:E2E_PYTHON = (Resolve-Path ..\.venv\Scripts\python.exe).Path
 npm run test:e2e
+npm run test:build-origin
 ```
 
-At v1.6.1: backend 554/554, evaluation 77/77, browser end-to-end 129/129 in eight isolated groups, ESLint and TypeScript clean. The browser tests use test-only providers, so they check the product, not model quality. The group list, ports and options are in [local setup](docs/local-setup.md#isolated-browser-e2e). `npm run test:build-origin` has one known failure ("canonical HTTPS proxy exposes public health…").
+Measured for this v1.7.0 documentation update: backend 593/594 passed (0 failures, 1 errors); evaluation 57/77 passed (4 failures, 16 errors); browser E2E 149 passed, 0 failed, 0 fixmes, 0 not run. Maintenance-package tests: 10/10 passed. Release-bundle validation passed. `test:build-origin`: 43/45 passed, with the two known failures (the Stage 14 model-name expectation and current-change allowlist coverage). The backend exception is the missing ignored Stage 11L artifact. Evaluation failures/errors include missing retained V5–V8 databases and historical-contract mismatches; this checkout does not reproduce the former 77/77 claim. No checks or frozen assets were changed to hide these results.
+
+The browser suite is one `v170` group on 3280/8280, run by `npm run test:e2e`. Set `E2E_PYTHON` to a backend-capable interpreter (a shared virtual environment can be used). The runner automatically sets `STORY_SAMPLE_WORK_FILE`. These tests use test-only providers and do not measure model quality. See [isolated browser E2E](docs/local-setup.md#isolated-browser-e2e).
 
 ## Repository layout
 
@@ -148,13 +136,18 @@ Built with Python, FastAPI, SQLite, Next.js, React and TypeScript; tested with u
 
 ## Documentation
 
-- [Current product and verification scope](docs/current-product.md) — what the product does now and what has been verified
-- [Local setup and reproduction](docs/local-setup.md) — running, configuring and testing locally
-- [Demo guide](docs/demo-guide.md) — a 3–5 minute walkthrough with sample works
-- [Evaluation README](evaluation/README.md) and [long-text gate plan](evaluation/longform/PLAN.md)
-- [Operations](docs/operations.md) — backups, restore drills and monitoring
-- Deployment records: [v1.6.1](docs/deployment-2026-10-06-v161.md), [v1.6.0](docs/deployment-2026-10-06.md), [v1.5.2](docs/deployment-2026-10-04.md)
+- [Documentation index](docs/README.md) — current guides, release records, historical design and frozen evidence
+- [Current product and verification scope](docs/current-product.md)
+- [Demo guide](docs/demo-guide.md) — a 3–5 minute sample-work walkthrough
+- [Local setup](docs/local-setup.md), [operations](docs/operations.md) and [evaluation maintenance](docs/evaluation-maintenance.md)
+- [Evaluation README](evaluation/README.md) and [long-text gate plan](evaluation/longform/PLAN.md) — recorded model gates
+
+### Historical records
+
+- [v1.0 product decisions](docs/product-decisions-and-validation.md)
+- [v1.0 verification and limitations](docs/verification-and-limitations.md)
+- [v1.6.1 deployment](docs/deployment-2026-10-06-v161.md) and [v1.6.0 deployment](docs/deployment-2026-10-06.md)
 
 ## Project history
 
-The project began as a CLI proof of concept and was built up through a series of numbered stages into a signed **v1.0 Public Release** baseline: a local web demo, author-controlled Story Memory, workflow validation on real 100k- and 300k-character texts, a six-state run lifecycle with retry and cancel, and visitor isolation and recovery for public use. The frozen V4 evaluation and the failed V5–V8 gates remain as historical evidence; Stage numbers, release IDs and the technical package name `story-continuity-app` are kept for traceability, and the npm package version stays `0.1.0`. See the [verification record](docs/verification-and-limitations.md) and the [product decisions record](docs/product-decisions-and-validation.md).
+The project began as a CLI proof of concept and developed through numbered stages into a signed **v1.0 Public Release** baseline: a local web application, an author-confirmed fact base, workflow validation on real 100k- and 300k-character texts, a six-state check lifecycle with retry and cancel, and visitor isolation and recovery. Frozen V4 evaluation results and failed V5–V8 gates remain historical evidence. Stage numbers, release IDs and the technical package name `story-continuity-app` remain traceable; the private npm package retains version `0.1.0`. Historical design and verification records are linked above.
