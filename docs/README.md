@@ -1,6 +1,6 @@
 # 文档目录
 
-现行产品以 v1.7.0 源码说明为准；发布与历史记录保留当时结论，不表示本轮已经部署。
+现行产品以 v1.7.0 的说明为准；发布与历史记录保留当时的结论。
 
 ## 现行
 
@@ -18,6 +18,7 @@
 - [deployment-2026-10-04.md](deployment-2026-10-04.md) — 当次发布过程、版本身份与部署回执。
 - [deployment-2026-10-06-v161.md](deployment-2026-10-06-v161.md) — 当次发布过程、版本身份与部署回执。
 - [deployment-2026-10-06.md](deployment-2026-10-06.md) — 当次发布过程、版本身份与部署回执。
+- [deployment-2026-10-10-v170.md](deployment-2026-10-10-v170.md) — v1.7.0 的发布过程、版本身份与部署回执。
 - [maintenance-deployment.md](maintenance-deployment.md) — 当次发布过程、版本身份与部署回执。
 - [v1.4.0-deployment.md](v1.4.0-deployment.md) — 当次发布过程、版本身份与部署回执。
 

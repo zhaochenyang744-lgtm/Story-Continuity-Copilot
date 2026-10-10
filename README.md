@@ -2,7 +2,7 @@
 
 AI continuity checks for long-form fiction: it reads a new chapter against everything written before it, flags contradictions and claims the earlier text cannot support, cites the earlier passage for every finding, and leaves every decision to the author.
 
-**Current source version: v1.7.0.** Deployment is pending; see [version and deployment](#version-and-deployment). [Current product and verification scope](docs/current-product.md).
+**Current version: v1.7.0**, deployed 2026-10-10; see [version and deployment](#version-and-deployment). [Current product and verification scope](docs/current-product.md).
 
 ## What it does
 
@@ -54,7 +54,7 @@ The first long-text formal run failed on insufficient-evidence recall and maximu
 
 ## Version and deployment
 
-The current source version is **v1.7.0**. Release ID: `<release-id>`; deployment date: `<date>`; deployment record to be filled at release time: `docs/deployment-<date>-v170.md`. These are placeholders, not a deployment claim. The rollback target is `v161-edd821a-20261006`.
+Production runs **v1.7.0**, release `v170-8cd1dbd-20261010`, deployed 2026-10-10 ([deployment record](docs/deployment-2026-10-10-v170.md)). The rollback target is `v161-edd821a-20261006`.
 
 - **v1.7.0** — a rewritten frontend and visual design, five tabs, night mode and motion disabled by reduced-motion settings. Each account has one sample work and a five-step tour. **On upgrade, old tutorial and demo works are replaced, including edited copies; authors' own works are retained.** Plans gain considering status; setting categories are author-managed. Mark for revision replaces revision plans; eligible earlier decisions are reused automatically when only other parts of the draft change. Author materials, revision plans and writing tips are removed. Pre-writing recap, plan comparison and change impact have larger input allowances and fixes for failures on ordinary works; changed plans are read directly and their target chapters reach the model. Failed fact-base building no longer consumes the day's fact-building allowance. Word import recognises short chapter headings such as 「第X章」 without heading styles. Empty grouping headings merge into the next chapter title (for example 「第一卷 风起 · 雨夜」), retaining the text; a trailing empty heading is retained at the end. Standalone TXT downloads include a UTF-8 BOM for editors such as WPS. Writing and checks work at window widths of 768 px and above. Browser tests have been rewritten.
 - **v1.6.1** — server-side draft autosave, checked drafts in the chapter timeline, chapter and character counts in the works list, and check readiness on the overview. [Deployment record](docs/deployment-2026-10-06-v161.md).
@@ -147,7 +147,7 @@ Built with Python, FastAPI, SQLite, Next.js, React and TypeScript; tested with u
 
 - [v1.0 product decisions](docs/product-decisions-and-validation.md)
 - [v1.0 verification and limitations](docs/verification-and-limitations.md)
-- [v1.6.1 deployment](docs/deployment-2026-10-06-v161.md) and [v1.6.0 deployment](docs/deployment-2026-10-06.md)
+- [v1.7.0 deployment](docs/deployment-2026-10-10-v170.md), [v1.6.1 deployment](docs/deployment-2026-10-06-v161.md) and [v1.6.0 deployment](docs/deployment-2026-10-06.md)
 
 ## Project history
 
