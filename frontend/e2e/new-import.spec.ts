@@ -170,6 +170,33 @@ test("导入 Markdown：章数多时分章预览可以翻页", async ({ page }) 
   expect(chapters).toHaveLength(10);
 });
 
+test("导入 TXT：卷名并入下一章标题，中文提示和提交后的标题一致", async ({ page }) => {
+  await registerAccount(page, "importvolume");
+  const text = [
+    "第一卷 风起", "", "第一章 雨夜", "值班员在门边收起雨伞。",
+    "第二章 来客", "访客把一封信放在桌上。",
+    "第二卷 潮落", "第三章 归舟", "木船靠上码头，船夫系好缆绳。",
+  ].join("\n");
+  const previewed = page.waitForResponse((response) =>
+    response.request().method() === "POST" && response.url().endsWith("/api/imports/preview") && response.ok());
+  await toPreview(page, await tempFile("volumes.txt", text));
+  const preview = (await (await previewed).json()).data;
+  const titles = ["第一卷 风起 · 雨夜", "来客", "第二卷 潮落 · 归舟"];
+  expect(preview.detected.chapters.map((chapter: { title: string }) => chapter.title)).toEqual(titles);
+  expect(preview.warnings).toContain("grouping_heading_merged");
+  await expect(chapterRows(page)).toHaveCount(3);
+  for (const [index, title] of titles.entries()) {
+    await expect(chapterRows(page).nth(index).getByText(title, { exact: true })).toBeVisible();
+  }
+  await expect(page.getByRole("note")).toHaveText("只有标题没有正文的行（比如卷名）并进了下一章的标题");
+  await finishImport(page, "风起潮落（分卷导入）");
+  await page.getByRole("button", { name: "导入并创建作品", exact: true }).click();
+  await expect(page).toHaveURL(/\/projects\/[^/]+\/overview$/);
+  const { chapters } = await importedWork(page, "风起潮落（分卷导入）");
+  expect(chapters.map((chapter) => chapter.title)).toEqual(preview.detected.chapters.map((chapter: { title: string }) => chapter.title));
+  expect(chapters.map((chapter) => chapter.number)).toEqual([1, 2, 3]);
+});
+
 test("导入 TXT：按章节标记分章，章数对得上", async ({ page }) => {
   await registerAccount(page, "importtxt");
   await toPreview(page, await tempFile("tide-letters.txt", txtBook));

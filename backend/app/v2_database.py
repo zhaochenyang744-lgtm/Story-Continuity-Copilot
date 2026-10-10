@@ -3947,6 +3947,34 @@ class V2Database:
 
         heading_indices={marker["index"] for marker in markers}
         excluded_indices={index for marker in markers for index in marker["excluded"]}
+        first=markers[0]
+        chapter_markers=[];grouping_titles=[];grouping_start=None
+        for position,marker in enumerate(markers):
+            end=markers[position+1]["index"] if position+1<len(markers) else len(raw_lines)
+            empty=not marker["excluded"] and not any(
+                raw_lines[index].strip() for index in range(marker["index"]+1,end)
+                if index not in excluded_indices
+            )
+            if empty and position+1<len(markers):
+                # A grouping heading and its blank lines are structural, never body.
+                heading_indices.update(range(marker["index"],end))
+                grouping_titles.append(plain_lines[marker["index"]].strip().lstrip("#").strip())
+                if grouping_start is None: grouping_start=marker["index"]
+                if "grouping_heading_merged" not in warnings: warnings.append("grouping_heading_merged")
+                continue
+            if empty and position>0:
+                # Removing the last boundary leaves its exact source in the last body.
+                heading_indices.remove(marker["index"])
+                warnings.append("trailing_heading_kept_in_body")
+                continue
+            chapter_markers.append({
+                **marker,
+                "title":" · ".join([*grouping_titles,marker["title"]]),
+                "source_start":grouping_start if grouping_start is not None else marker["index"],
+            })
+            grouping_titles=[];grouping_start=None
+        # No following chapter can receive unresolved grouping titles.
+        if grouping_titles: raise DomainError("chapter_detection_failed",422)
         chapters=[];assigned_body_indices=[]
         def add_chapter(title: str, indices: list[int], line_start: int, line_end: int, heading_line: int | None, excluded_count: int=0) -> None:
             body="".join(raw_lines[index] for index in indices)
@@ -3954,7 +3982,6 @@ class V2Database:
             assigned_body_indices.extend(indices)
             chapters.append({"id":f"preview-{len(chapters)+1}","title":title.strip()[:120],"order":len(chapters)+1,"body":body,"source_line_start":line_start,"source_line_end":line_end,"source_character_start":offsets[line_start-1] if line_start>=1 else 0,"source_character_end":offsets[line_end-1]+len(raw_lines[line_end-1]) if line_end>=1 else 0,"heading_source_line":heading_line,"excluded_index_line_count":excluded_count})
 
-        first=markers[0]
         leading_indices=list(range(0,first["index"]))
         leading_substantive=bool("".join(raw_lines[index] for index in leading_indices).strip())
         # Prefix whitespace/BOM belongs to the first detected chapter too; every source
@@ -3968,11 +3995,11 @@ class V2Database:
             leading_indices=[]
 
         directory_blocks=[]
-        for position,marker in enumerate(markers):
-            end=markers[position+1]["index"] if position+1<len(markers) else len(raw_lines)
-            body_indices=[index for index in range(marker["index"]+1,end) if index not in excluded_indices]
+        for position,marker in enumerate(chapter_markers):
+            end=chapter_markers[position+1]["source_start"] if position+1<len(chapter_markers) else len(raw_lines)
+            body_indices=[index for index in range(marker["index"]+1,end) if index not in excluded_indices and index not in heading_indices]
             if position==0 and merge_leading: body_indices=leading_indices+body_indices
-            line_start=1 if position==0 and merge_leading else marker["index"]+1
+            line_start=1 if position==0 and merge_leading else marker["source_start"]+1
             line_end=end
             add_chapter(marker["title"],body_indices,line_start,line_end,marker["index"]+1,len(marker["excluded"]))
             if marker["excluded"]:

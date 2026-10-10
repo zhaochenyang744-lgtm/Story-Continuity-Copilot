@@ -156,6 +156,8 @@ export const importStrategyLabel = (strategy: string) =>
 export const importWarningLabel = (warning: string) =>
   ({
     directory_index_removed: "目录行已跳过，不会写进正文",
+    grouping_heading_merged: "只有标题没有正文的行（比如卷名）并进了下一章的标题",
+    trailing_heading_kept_in_body: "文末只有标题没有正文的一行，留在了最后一章的末尾",
     numeric_headings_preserved_as_subsections: "重复的数字标题当作章内小节保留",
     leading_chapter_inferred: "第一章是根据后面的“第二章”推定的，开头正文已保留",
     leading_content_preserved: "章名前的开篇内容单独保留",

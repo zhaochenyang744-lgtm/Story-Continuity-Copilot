@@ -114,6 +114,28 @@ class DocxToMarkdownTests(unittest.TestCase):
 
 
 class DocxImportApiTests(unittest.TestCase):
+    def test_bold_plain_volume_and_styled_chapters_preview_successfully(self):
+        book = docx([
+            '<w:p><w:r><w:rPr><w:b/></w:rPr><w:t>第一卷 风起</w:t></w:r></w:p>',
+            paragraph("第一章 雨夜", "Heading1"), paragraph("值班员在门边收起雨伞。"),
+            paragraph("第二章 来客", "Heading1"), paragraph("访客把一封信放在桌上。"),
+        ])
+        root = pathlib.Path(tempfile.mkdtemp(prefix="v160-docx-"))
+        app = create_app(AppPaths.from_project_root(root, protected_poc_root=root / "protected"), settings=Stage13Settings.for_test())
+        client = TestClient(app)
+        self.addCleanup(client.close)
+        registration = client.post("/api/auth/register", headers={"Idempotency-Key": str(uuid.uuid4())}, json={
+            "account_name": f"docx{uuid.uuid4().hex[:8]}", "display_name": "Docx", "password": "valid-password-99",
+            "recovery_email": f"{uuid.uuid4().hex[:8]}@example.test"})
+        self.assertEqual(registration.status_code, 201, registration.text)
+        preview = client.post("/api/imports/preview", headers={"Idempotency-Key": str(uuid.uuid4())},
+                              files={"file": ("分卷稿.docx", book, "application/vnd.openxmlformats-officedocument.wordprocessingml.document")})
+        self.assertEqual(preview.status_code, 201, preview.text)
+        data = preview.json()["data"]
+        self.assertEqual(data["detected"]["chapter_count"], 2)
+        self.assertEqual([item["title"] for item in data["detected"]["chapters"]], ["第一卷 风起 · 第一章 雨夜", "第二章 来客"])
+        self.assertIn("grouping_heading_merged", data["warnings"])
+
     def test_a_word_file_imports_by_its_headings(self):
         root = pathlib.Path(tempfile.mkdtemp(prefix="v160-docx-"))
         app = create_app(AppPaths.from_project_root(root, protected_poc_root=root / "protected"), settings=Stage13Settings.for_test())
