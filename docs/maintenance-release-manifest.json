@@ -188,6 +188,10 @@
       "target": "docs/current-model-acceptance.md"
     },
     {
+      "source": "docs/README.md",
+      "target": "docs/README.md"
+    },
+    {
       "source": "docs/current-product.md",
       "target": "docs/current-product.md"
     },
