@@ -108,7 +108,7 @@ class BrowserTestProvider:
             memory=request["layers"]["confirmed"]["memory_records"]
             if not memory:return ProviderResult({"answer_status":"insufficient","answer":"没有证据。","findings":[]},input_tokens=12,output_tokens=4,latency_ms=20)
             source={"source_type":"memory_record","source_id":memory[0]["id"]}
-            return ProviderResult({"answer_status":"answered","answer":"根据当前 Story Memory，这个问题已有可核对的答案。","findings":[{"layer":"confirmed","stance":"supports","text":"回答只采用作者已确认的事实。","evidence":[source]}]},input_tokens=30,output_tokens=14,latency_ms=25)
+            return ProviderResult({"answer_status":"answered","answer":"根据当前已确认的事实，这个问题已有可核对的答案。","findings":[{"layer":"confirmed","stance":"supports","text":"回答只采用作者已确认的事实。","evidence":[source]}]},input_tokens=30,output_tokens=14,latency_ms=25)
         if request.get("task") == "foreshadow_scan":
             written=request["layers"]["written"]
             if "E2E_FORESHADOW_BLOCK" in written["draft"]["excerpt"]:
