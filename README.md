@@ -66,6 +66,7 @@ Earlier releases remain in Git tags and the [documentation index](docs/README.md
 
 - The formal set's insufficient-evidence recall (0.83) and clean chapters without findings (78%) are close to their bars; results vary and model or prompt changes need a new gate. Timing and cost above are measurements from that frozen run, not service guarantees.
 - An earlier real-model observation of the Grey Harbor sample draft found an occasional false world-rule conflict around the fog bell. It has not been remeasured for v1.7.0.
+- To avoid invented content, the pre-writing recap renders each item as a quotation of its source; when the model cites mostly the current draft, the recap adds little.
 - Whole-book checks are not offered; one selected-chapter check covers at most eight chapters. Real-model fact-change reviews of long appended chapters or checks with unresolvable evidence can fail validation.
 - Writing and checking require a window width of at least 768 px; narrower windows are browse-only. The writing page uses a text/findings switch through 1023 px.
 - Imports consisting only of headings, or ending in several consecutive empty headings, can still fail. The focus-writing dialog's background editor may remain visible to assistive technology.
@@ -117,7 +118,7 @@ npm run test:e2e
 npm run test:build-origin
 ```
 
-Measured for this v1.7.0 documentation update: backend 593/594 passed (0 failures, 1 errors); evaluation 57/77 passed (4 failures, 16 errors); browser E2E 149 passed, 0 failed, 0 fixmes, 0 not run. Maintenance-package tests: 10/10 passed. Release-bundle validation passed. `test:build-origin`: 43/45 passed, with the two known failures (the Stage 14 model-name expectation and current-change allowlist coverage). The backend exception is the missing ignored Stage 11L artifact. Evaluation failures/errors include missing retained V5–V8 databases and historical-contract mismatches; this checkout does not reproduce the former 77/77 claim. No checks or frozen assets were changed to hide these results.
+At v1.7.0: backend 594/594, evaluation 77/77, browser end-to-end 149/149, ESLint and TypeScript clean, maintenance-package tests 10/10, release-bundle validation passed. One backend test and 20 evaluation tests read local artifacts that Git ignores (`artifacts/test-records/stage11/` and `evaluation/fixture-workspaces/`); in a clone without them those tests stop with a missing-file error. `npm run test:build-origin` has two known failures: the Stage 14 model-name expectation and the current-change allowlist coverage.
 
 The browser suite is one `v170` group on 3280/8280, run by `npm run test:e2e`. Set `E2E_PYTHON` to a backend-capable interpreter (a shared virtual environment can be used). The runner automatically sets `STORY_SAMPLE_WORK_FILE`. These tests use test-only providers and do not measure model quality. See [isolated browser E2E](docs/local-setup.md#isolated-browser-e2e).
 
