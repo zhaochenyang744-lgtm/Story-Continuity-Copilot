@@ -78,6 +78,22 @@ class ProjectExportTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200, response.text)
 
+    def test_only_standalone_txt_has_utf8_bom(self):
+        for include_draft in (False, True):
+            with self.subTest(include_draft=include_draft):
+                _, archive, _ = self.bundle(include_draft)
+                params = {"include_draft": str(include_draft).lower()}
+                txt = self.client.get(self.url, params={**params, "format": "txt"})
+                md = self.client.get(self.url, params={**params, "format": "markdown"})
+                self.assertEqual(txt.status_code, 200)
+                self.assertEqual(md.status_code, 200)
+                self.assertTrue(txt.content.startswith(b"\xef\xbb\xbf"))
+                self.assertEqual(txt.content[3:], archive.read("manuscript.txt"))
+                self.assertEqual(md.content, archive.read("manuscript.md"))
+                self.assertFalse(md.content.startswith(b"\xef\xbb\xbf"))
+                for name in archive.namelist():
+                    self.assertFalse(archive.read(name).startswith(b"\xef\xbb\xbf"), name)
+
     def test_zip_manifest_hashes_scope_and_no_credentials(self):
         response, archive, snapshot = self.bundle()
         expected = {"README.txt", "manuscript.txt", "manuscript.md", "materials.md", "snapshot.json", "checksums.json"}
@@ -241,15 +257,24 @@ class ProjectExportTests(unittest.TestCase):
         with self.assertRaises(DomainError):
             export_filename("title", "../zip")
 
-    def test_export_read_does_not_migrate_legacy_materials_or_change_database(self):
+    def test_export_lists_plans_with_their_state_and_does_not_change_database(self):
         with self.db.connection() as c:
             c.execute("""INSERT INTO v2_author_story_plans VALUES(
-                'export-legacy-plan',?,'旧规划','旧规划内容','目标',1,'planned',NULL,NULL,'2026-09-12','2026-09-12')""", (self.project_id,))
+                'export-story-plan',?,'旧规划','旧规划内容','目标',1,'planned',7,NULL,'2026-09-12','2026-09-12')""", (self.project_id,))
+            c.execute("""INSERT INTO v2_author_story_plans VALUES(
+                'export-later-plan',?,'也许以后','还在想','',2,'planned',NULL,NULL,'2026-09-12','2026-09-12')""", (self.project_id,))
+            c.execute("INSERT INTO v2_plan_states VALUES('story','export-later-plan',?,'considering','2026-09-12')", (self.project_id,))
         with self.db.connection() as c:
             before = "\n".join(c.iterdump())
         _, archive, snapshot = self.bundle()
-        self.assertTrue(any(item["title"] == "旧规划" for item in snapshot["author_materials"]))
-        self.assertIn("旧规划内容", archive.read("materials.md").decode())
+        self.assertEqual(snapshot["schema_version"], "project-export-v2")
+        plans = {item["id"]: item for item in snapshot["plans"]}
+        self.assertEqual((plans["export-story-plan"]["target_chapter_number"], plans["export-story-plan"]["considering"]), (7, False))
+        self.assertTrue(plans["export-later-plan"]["considering"])
+        materials = archive.read("materials.md").decode()
+        self.assertIn("旧规划内容", materials)
+        self.assertIn("写在：第 7 章", materials)
+        self.assertIn("考虑中", materials)
         with self.db.connection() as c:
             after = "\n".join(c.iterdump())
         self.assertEqual(before, after)

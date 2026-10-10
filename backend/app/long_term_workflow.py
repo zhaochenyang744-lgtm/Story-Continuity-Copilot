@@ -20,6 +20,7 @@ SCHEMA = """
 CREATE TABLE IF NOT EXISTS v2_workflow_run_bindings(run_id TEXT PRIMARY KEY REFERENCES v2_runs(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),binding_json TEXT NOT NULL,binding_digest TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS v2_decision_reuse(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),issue_id TEXT NOT NULL REFERENCES v2_issues(id),decision_id TEXT NOT NULL REFERENCES v2_decisions(id),fingerprint TEXT NOT NULL,binding_json TEXT NOT NULL,binding_digest TEXT NOT NULL,enabled INTEGER NOT NULL,revision INTEGER NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,UNIQUE(project_id,issue_id));
 CREATE INDEX IF NOT EXISTS v2_decision_reuse_match ON v2_decision_reuse(project_id,fingerprint,binding_digest,enabled);
+CREATE TABLE IF NOT EXISTS v2_issue_marks(issue_id TEXT PRIMARY KEY REFERENCES v2_issues(id),project_id TEXT NOT NULL REFERENCES v2_projects(id),mark TEXT NOT NULL CHECK(mark IN ('to_revise')),actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS v2_decision_reuse_events(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES v2_projects(id),policy_id TEXT NOT NULL REFERENCES v2_decision_reuse(id),revision INTEGER NOT NULL,enabled INTEGER NOT NULL,actor_user_id TEXT NOT NULL REFERENCES v2_users(id),created_at TEXT NOT NULL,UNIQUE(policy_id,revision));
 CREATE TABLE IF NOT EXISTS v2_chapter_revision_history(project_id TEXT NOT NULL REFERENCES v2_projects(id),chapter_id TEXT NOT NULL REFERENCES v2_chapters(id),source_revision INTEGER NOT NULL,title TEXT NOT NULL,summary TEXT NOT NULL,body TEXT NOT NULL,body_format TEXT NOT NULL,source_span_ids_json TEXT NOT NULL,change_set_id TEXT,created_at TEXT NOT NULL,PRIMARY KEY(chapter_id,source_revision));
 CREATE TABLE IF NOT EXISTS v2_chapter_content_formats(chapter_id TEXT NOT NULL REFERENCES v2_chapters(id),source_revision INTEGER NOT NULL,body_format TEXT NOT NULL,PRIMARY KEY(chapter_id,source_revision));
@@ -54,6 +55,21 @@ def current_binding(c, project_id, draft_id):
     if not project or not draft:
         return None
     return {"project_id": project_id, "draft_id": draft_id, "draft_revision": draft["revision"], "draft_checksum": draft["checksum"], "source_revision": project["source_revision"], "memory_version": project["current_memory_version"], "author_context_version": project["author_context_version"], "alias_version": project["alias_version"]}
+
+
+# A repeat decision is about one sentence and its evidence (the fingerprint). Editing other parts of the draft must
+# not undo it, so the draft's own revision and checksum are left out when asking whether a past decision still applies.
+REUSE_IGNORED_KEYS = ("draft_revision", "draft_checksum")
+
+
+def reuse_basis(binding):
+    """The binding without the whole-draft keys: what a past decision has to share with this check to be reused."""
+    return {key: value for key, value in binding.items() if key not in REUSE_IGNORED_KEYS}
+
+
+def reuse_basis_digest(binding_json):
+    binding = json.loads(binding_json) if isinstance(binding_json, (str, bytes)) else binding_json
+    return digest(reuse_basis(binding))
 
 
 def bind_run(c, run_id):
@@ -122,7 +138,7 @@ def _policy_view(c, row):
     decision = c.execute("SELECT * FROM v2_decisions WHERE id=?", (row["decision_id"],)).fetchone()
     binding = json.loads(row["binding_json"])
     current = current_binding(c, row["project_id"], binding["draft_id"])
-    changed = next((key for key in binding if not current or current.get(key) != binding[key]), None)
+    changed = next((key for key in binding if key not in REUSE_IGNORED_KEYS and (not current or current.get(key) != binding[key])), None)
     return {"id": row["id"], "issue_id": row["issue_id"], "run_id": decision["run_id"], "decision": decision["decision"], "note": decision["note"], "enabled": bool(row["enabled"]), "revision": row["revision"], "is_current": changed is None, "invalidation_reason": (changed + "_changed") if changed else None, "scope": binding, "updated_at": row["updated_at"]}
 
 
@@ -131,14 +147,16 @@ def issue_reuse(c, issue, run):
     result = {"reuse_policy": _policy_view(c, own) if own else None, "reused_decision": None}
     if not binding_is_current(c, run):
         return result
-    bound = c.execute("SELECT binding_digest FROM v2_workflow_run_bindings WHERE run_id=?", (run["id"],)).fetchone()
+    bound = c.execute("SELECT binding_json FROM v2_workflow_run_bindings WHERE run_id=?", (run["id"],)).fetchone()
     if not bound:
         return result
     try:
         fingerprint = _issue_fingerprint(c, issue)
     except DomainError:
         return result
-    policy = c.execute("SELECT * FROM v2_decision_reuse WHERE project_id=? AND fingerprint=? AND binding_digest=? AND enabled=1 AND issue_id!=? ORDER BY updated_at DESC,id LIMIT 1", (issue["project_id"], fingerprint, bound["binding_digest"], issue["id"])).fetchone()
+    basis = reuse_basis_digest(bound["binding_json"])
+    candidates = c.execute("SELECT * FROM v2_decision_reuse WHERE project_id=? AND fingerprint=? AND enabled=1 AND issue_id!=? ORDER BY updated_at DESC,id", (issue["project_id"], fingerprint, issue["id"])).fetchall()
+    policy = next((row for row in candidates if reuse_basis_digest(row["binding_json"]) == basis), None)
     if policy:
         result["reused_decision"] = {**_policy_view(c, policy), "status": "previously_reviewed", "requires_new_decision": False, "source_issue_id": policy["issue_id"], "review_path": f"/projects/{issue['project_id']}/sources#long-term-review"}
     return result
@@ -158,6 +176,49 @@ def open_issue_count(c, project_id, severity=None):
         if not issue_reuse(c, issue, runs[issue["run_id"]])["reused_decision"]:
             count += 1
     return count
+
+
+def issue_to_revise(c, issue_id):
+    """v1.7.0 「待修改」: the author's note that this finding still needs a change in the prose."""
+    return bool(c.execute("SELECT 1 FROM v2_issue_marks WHERE issue_id=? AND mark='to_revise'", (issue_id,)).fetchone())
+
+
+def set_issue_mark(db, user_id, project_id, issue_id, payload, key):
+    with db.connection() as c:
+        c.execute("BEGIN IMMEDIATE")
+        db._project(c, user_id, project_id, True)
+        def apply():
+            if not c.execute("SELECT 1 FROM v2_issues WHERE id=? AND project_id=?", (issue_id, project_id)).fetchone():
+                raise DomainError("resource_not_found", 404)
+            if payload["to_revise"]:
+                c.execute("INSERT OR IGNORE INTO v2_issue_marks VALUES(?,?,?,?,?)", (issue_id, project_id, "to_revise", user_id, _now()))
+            else:
+                c.execute("DELETE FROM v2_issue_marks WHERE issue_id=? AND project_id=?", (issue_id, project_id))
+            return {"issue_id": issue_id, "to_revise": issue_to_revise(c, issue_id)}
+        return db._idem(c, user_id, f"issue_mark:{project_id}:{issue_id}", key, payload, apply)
+
+
+def auto_enable_reuse(c, user_id, issue, run, decision_id, decision):
+    """v1.7.0: a "keep intentional" or "false positive" decision is reused by default.
+
+    The policy is created enabled when the decision can be bound to the run's current inputs; the
+    author can still turn it off from the chapter page. Decisions without a complete basis are left
+    alone, exactly as when the author tries to enable reuse by hand.
+    """
+    if decision not in {"keep_intentional", "false_positive"}:
+        return
+    if c.execute("SELECT 1 FROM v2_decision_reuse WHERE issue_id=? AND project_id=?", (issue["id"], issue["project_id"])).fetchone():
+        return
+    bound = c.execute("SELECT * FROM v2_workflow_run_bindings WHERE run_id=?", (run["id"],)).fetchone()
+    if not bound or not binding_is_current(c, run):
+        return
+    try:
+        fingerprint = _issue_fingerprint(c, issue)
+    except DomainError:
+        return
+    stamp, policy_id = _now(), _id("reuse")
+    c.execute("INSERT INTO v2_decision_reuse VALUES(?,?,?,?,?,?,?,?,?,?,?)", (policy_id, issue["project_id"], issue["id"], decision_id, fingerprint, bound["binding_json"], bound["binding_digest"], 1, 1, stamp, stamp))
+    c.execute("INSERT INTO v2_decision_reuse_events VALUES(?,?,?,?,?,?,?)", (_id("reuseevent"), issue["project_id"], policy_id, 1, 1, user_id, stamp))
 
 
 def set_reuse(db, user_id, project_id, issue_id, payload, key):
@@ -389,6 +450,10 @@ class ReusePatch(Strict):
     base_policy_revision: StrictInt = Field(ge=0)
 
 
+class IssueMark(Strict):
+    to_revise: StrictBool
+
+
 class RevisionPreview(Strict):
     base_source_revision: StrictInt = Field(ge=1)
     base_chapter_revision: StrictInt = Field(ge=1)
@@ -420,6 +485,12 @@ def register_long_term_routes(app, db, user, csrf, key, ok, operation):
     def reuse(project_id: str, issue_id: str, payload: ReusePatch, request: Request, idempotency_key: str | None = Header(default=None, alias="Idempotency-Key")):
         csrf(request); operation(request, "decision_reuse_failed")
         data, status = set_reuse(db, user(request)["id"], project_id, issue_id, payload.model_dump(), key(idempotency_key))
+        return ok(request, data, status)
+
+    @app.post("/api/projects/{project_id}/issues/{issue_id}/mark")
+    def mark(project_id: str, issue_id: str, payload: IssueMark, request: Request, idempotency_key: str | None = Header(default=None, alias="Idempotency-Key")):
+        csrf(request); operation(request, "issue_mark_failed")
+        data, status = set_issue_mark(db, user(request)["id"], project_id, issue_id, payload.model_dump(), key(idempotency_key))
         return ok(request, data, status)
 
     @app.post("/api/projects/{project_id}/chapters/{chapter_id}/revisions/preview", status_code=201)

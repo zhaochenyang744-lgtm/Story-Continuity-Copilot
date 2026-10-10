@@ -1,10 +1,13 @@
 """Test-only ASGI app for browser E2E. Never imported by production startup."""
 
 from pathlib import Path
+from dataclasses import replace
 import os
 import tempfile
 import threading
 import uuid
+
+from fastapi import HTTPException
 
 from app.config import AppPaths
 
@@ -14,12 +17,23 @@ from app.config import AppPaths
 os.environ["SCC_DISABLE_DEFAULT_APP"] = "1"
 from app.main import create_app
 from app.provider import ProviderInvalidJson, ProviderResult, ProviderTimeout
+from app.stage13 import Stage13Settings
 from app import review_screening
 
 # The browser stub marks every sentence of a chapter as key, and stage5's "extreme issues" page test
 # needs twenty issues on one chapter. The per-chapter review caps are product behaviour covered by the
 # backend tests; here they are lifted so the page can be tested with many issues.
 review_screening.KEY_MAX_CLAIMS = 64
+
+
+class CaptureMailer:
+    """Keeps every security mail in memory; the browser tests read the links through /api/test/mail."""
+
+    def __init__(self):
+        self.messages: list[dict[str, str]] = []
+
+    def send(self, recipient: str, purpose: str, action_url: str) -> None:
+        self.messages.append({"recipient": recipient, "purpose": purpose, "action_url": action_url})
 
 
 class BrowserTestProvider:
@@ -46,14 +60,6 @@ class BrowserTestProvider:
         if request.get("task") == "continuity_triage":
             return ProviderResult({"scores": [{"id": sentence["id"], "score": 3} for sentence in request["sentences"]]},
                                   input_tokens=30, output_tokens=6, cost_cny=0.0003, latency_ms=10)
-        if request.get("task") == "author_material_comparison":
-            material=request["comparison"]["material"]
-            passage=request["comparison"]["passage"]
-            return ProviderResult({
-                "assessment":"plan_deviation" if material["nature"]=="plan" else "possible_tension",
-                "explanation":"浏览器验收桩只验证服务链路与绑定证据，不代表真实 AI 质量结论。",
-                "evidence":[{"source_type":"author_material","source_id":material["id"]},{"source_type":"source_span","source_id":passage["id"]}],
-            },input_tokens=12,output_tokens=18,latency_ms=20)
         if request.get("task") == "context_brief":
             written=request["layers"]["written"]
             if "E2E_G02_CITATION" in written["draft"]["excerpt"]:
@@ -102,7 +108,7 @@ class BrowserTestProvider:
             memory=request["layers"]["confirmed"]["memory_records"]
             if not memory:return ProviderResult({"answer_status":"insufficient","answer":"没有证据。","findings":[]},input_tokens=12,output_tokens=4,latency_ms=20)
             source={"source_type":"memory_record","source_id":memory[0]["id"]}
-            return ProviderResult({"answer_status":"answered","answer":"根据当前 Story Memory，这个问题已有可核对的答案。","findings":[{"layer":"confirmed","stance":"supports","text":"回答只采用作者已确认的事实。","evidence":[source]}]},input_tokens=30,output_tokens=14,latency_ms=25)
+            return ProviderResult({"answer_status":"answered","answer":"根据当前已确认的事实，这个问题已有可核对的答案。","findings":[{"layer":"confirmed","stance":"supports","text":"回答只采用作者已确认的事实。","evidence":[source]}]},input_tokens=30,output_tokens=14,latency_ms=25)
         if request.get("task") == "foreshadow_scan":
             written=request["layers"]["written"]
             if "E2E_FORESHADOW_BLOCK" in written["draft"]["excerpt"]:
@@ -126,12 +132,19 @@ class BrowserTestProvider:
             } for issue in issues]},input_tokens=42,output_tokens=22,latency_ms=25)
         if request.get("task") == "memory_initialization":
             sources = request["sources"]
+            facts = [
+                {"memory_type": "static_canon", "subject": "雾港钟声", "predicate": "harbor_rule", "value": "钟声响起后船只停泊"},
+                {"memory_type": "dynamic_state", "subject": "银钥匙", "predicate": "holder", "value": "林默保管"},
+                {"memory_type": "character_knowledge", "subject": "林默", "predicate": "knowledge", "value": "北堤门只在清晨开启"},
+            ]
+            # Short batches still need a controlled fact to permit the author's v1 confirmation.
+            # The three-source fixture (including its legacy rule) keeps its original output.
+            if len(sources) < 3:
+                facts = facts[-len(sources):]
             return ProviderResult(
                 {
                     "candidates": [
-                        {"memory_type": "static_canon", "subject": "雾港钟声", "predicate": "harbor_rule", "value": "钟声响起后船只停泊", "chapter_id": sources[0]["chapter_id"], "source_span_id": sources[0]["id"]},
-                        {"memory_type": "dynamic_state", "subject": "银钥匙", "predicate": "holder", "value": "林默保管", "chapter_id": sources[1]["chapter_id"], "source_span_id": sources[1]["id"]},
-                        {"memory_type": "character_knowledge", "subject": "林默", "predicate": "knowledge", "value": "北堤门只在清晨开启", "chapter_id": sources[2]["chapter_id"], "source_span_id": sources[2]["id"]},
+                        *[{**facts[index % len(facts)], "chapter_id": source["chapter_id"], "source_span_id": source["id"]} for index, source in enumerate(sources)],
                         *([{"memory_type": "open_thread", "subject": "废弃船票", "predicate": "status", "value": "仍有效", "chapter_id": sources[0]["chapter_id"], "source_span_id": sources[0]["id"]}] if any("E2E_FACT_LIFECYCLE" in item["body"] for item in sources) else []),
                     ]
                 },
@@ -184,6 +197,22 @@ class BrowserTestProvider:
             if not evidence or not memory:
                 issues.append({"claim_span_id": claim["id"], "status": "insufficient_evidence", "category": category, "severity": "medium", "explanation": "可检索片段尚不足以支撑连续性结论，需要作者补充或确认来源。" * 4, "evidence": [], "proposed_memory_change": None})
                 continue
+            if "E2E_SUGGEST" in claim["text"] and body.count(claim["text"]) == 1:
+                issues.append({
+                    "claim_span_id": claim["id"], "status": "conflict",
+                    "category": "object_state", "severity": "high",
+                    "nature": "possible_conflict",
+                    "explanation": "这句物品状态与已确认的事实可能冲突，请核对后采用改法。",
+                    "reasoning": "引用前文提供物品的既有状态，但没有明确的同一时间依据。",
+                    "temporal_basis": {"claim_anchor": None, "evidence_anchor": None, "relation": "unknown"},
+                    "evidence": [{"chapter_id": evidence["chapter_id"], "span_id": evidence["id"],
+                                  "relation": "contradicts", "sufficiency": "sufficient", "related_memory_ids": [memory["id"]]}],
+                    "evidence_chain": [{"span_id": evidence["id"], "role": "prior_state"}],
+                    "suggested_revision": {"before": claim["text"], "after": claim["text"].replace("E2E_SUGGEST", "E2E_APPLIED")},
+                    "available_actions": ["apply_suggestion", "edit", "keep_intentional", "false_positive"],
+                    "proposed_memory_change": None,
+                })
+                continue
             change = {
                 "operation": "replace" if index else "add",
                 "memory_type": memory["memory_type"] if index else "open_thread",
@@ -226,11 +255,13 @@ allowed_prefixes = (
     "story-stage12-v2-impl-",
     "story-stage12-v2-pm3-",
     "story-v130-rc-",
+    "story-v170-e2e-",
 )
 if (
     system_temp not in TEST_ROOT.parents
     or not TEST_ROOT.name.startswith(allowed_prefixes)
-    or "story-continuity-web-demo" in str(TEST_ROOT).casefold()
+    # The repository folder (current and former name) must never hold test data.
+    or any(name in str(TEST_ROOT).casefold() for name in ("story-continuity-copilot", "story-continuity-web-demo"))
 ):
     raise RuntimeError(
         "E2E_TEST_ROOT must be an approved isolated browser-test system-temp directory"
@@ -241,7 +272,12 @@ TEST_PATHS = AppPaths.from_project_root(
     protected_poc_root=TEST_ROOT / "protected-poc-placeholder",
 )
 provider = BrowserTestProvider()
-app = create_app(paths=TEST_PATHS, provider=provider)
+mailer = CaptureMailer()
+_frontend_url = os.environ.get("E2E_BASE_URL")
+if not _frontend_url:
+    raise RuntimeError("E2E_BASE_URL is required for captured mail links")
+app = create_app(paths=TEST_PATHS, provider=provider, mailer=mailer,
+                 settings=replace(Stage13Settings.from_env(), reset_base_url=_frontend_url))
 
 
 @app.get("/api/test/stage12/release")
@@ -264,9 +300,19 @@ def stage12_provider_stats():
         "external_provider_http_enabled": False,
         "provider_calls": provider.calls,
         "provider_http_calls": 0,
+        "mailer_calls": len(mailer.messages),
         "blocked": provider.entered.is_set() and not provider.release.is_set(),
         "test_root": str(TEST_ROOT),
     }
+
+
+@app.get("/api/test/mail/{purpose}")
+def latest_test_mail(purpose: str):
+    """The newest captured mail for a purpose (verify_email, password_reset); 404 when none was sent."""
+    message = next((item for item in reversed(mailer.messages) if item["purpose"] == purpose), None)
+    if not message:
+        raise HTTPException(404, "no_mail_captured")
+    return {"recipient": message["recipient"], "action_url": message["action_url"]}
 
 
 @app.post("/api/test/v130/projects/{project_id}/characters")

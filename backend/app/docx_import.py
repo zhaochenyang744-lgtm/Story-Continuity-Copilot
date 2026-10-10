@@ -2,7 +2,7 @@
 
 Reads the paragraphs of word/document.xml into the Markdown the import parser already understands:
 a paragraph styled as a level-1 or level-2 heading becomes a "# " chapter heading, every other
-paragraph a plain line. Only the standard library is used. The archive and its XML are untrusted:
+paragraph a plain line. Short unstyled chapter markers are headings too. Only the standard library is used. The archive and its XML are untrusted:
 the uncompressed document is size-capped and a document type declaration (the vehicle for entity
 expansion) is refused outright.
 """
@@ -17,6 +17,8 @@ from .database import DomainError
 
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 MAX_XML_BYTES = 30 * 1024 * 1024
+CHINESE_CHAPTER_HEADING = re.compile(r"^\s*第\s*([0-9零〇一二两三四五六七八九十百]+)\s*([章节回卷])(?:\s*[:：、.\-]?\s*)(.*?)\s*$")
+ENGLISH_CHAPTER_HEADING = re.compile(r"^\s*chapter\s+([0-9]{1,4})(?:\s*[:：.\-]?\s*)(.*?)\s*$",re.I)
 HEADING_NAME = re.compile(r"^(?:heading|标题)\s*([1-9])$", re.IGNORECASE)
 
 
@@ -88,7 +90,10 @@ def docx_to_markdown(content: bytes) -> str:
     for paragraph in (body if body is not None else document).iter(W + "p"):
         text = _paragraph_text(paragraph).strip()
         level = _heading_level(paragraph, levels)
-        if text and level is not None and level <= 2:
+        short_chapter = level is None and len(text) <= 40 and (
+            CHINESE_CHAPTER_HEADING.match(text) or ENGLISH_CHAPTER_HEADING.match(text)
+        )
+        if text and ((level is not None and level <= 2) or short_chapter):
             lines.append("# " + " ".join(text.split()))
         else:
             lines.append(text)

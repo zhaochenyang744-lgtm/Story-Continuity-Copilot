@@ -1,0 +1,181 @@
+import { api, beginCheck, button, draft, expect, findings, finishCheck, run, saveBody, selectIssue, setDraftBody, setup, shot, test } from "./support/writing";
+import { openTab, sampleWorkId, startVisitor } from "./support/app";
+
+test("12 Q 重试遇到次数限制显示当天检查次数用完", async ({ page }) => {
+  const id = await setup(page);
+  await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_FAIL_ONCE。");
+  const old = await beginCheck(page, id);
+  await finishCheck(page, id, old, "failed");
+  await page.route(`**/api/projects/${id}/checks/${old}/retry`, route => route.fulfill({ status: 429, contentType: "application/json", body: JSON.stringify({ error: { code: "workflow_quota_exceeded" } }) }));
+  await findings(page).getByRole("button", { name: "重试", exact: true }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "今天的检查次数用完了，明天再来。" })).toBeVisible();
+  expect((await run(page, id)).run_id).toBe(old);
+});
+
+test("12 N 取消后改稿保存，再检查创建新记录而非重试旧记录", async ({ page }) => {
+  const id = await setup(page);
+  await page.request.get("/api/test/stage12/reset");
+  await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_BLOCK。");
+  const old = await beginCheck(page, id);
+  try {
+    const cancelled = page.waitForResponse(r => r.request().method() === "POST" && r.url().endsWith(`/checks/${old}/cancel`));
+    await findings(page).getByRole("button", { name: "取消检查", exact: true }).click();
+    expect((await cancelled).ok()).toBe(true);
+    await page.request.get("/api/test/stage12/release");
+    await expect.poll(async () => (await run(page, id, old)).status).toBe("cancelled");
+    await saveBody(page, id, "温岚握着黄铜罗盘，雨停以后来到北门。");
+    await expect(findings(page).getByRole("button", { name: "重试", exact: true })).toHaveCount(0);
+    await expect(findings(page)).toContainText("草稿改过了，点『再检查一次』检查新的正文。");
+    const next = await beginCheck(page, id);
+    expect(next).not.toBe(old);
+    expect((await finishCheck(page, id, next)).attempt_number).toBe(1);
+    expect((await run(page, id, old)).status).toBe("cancelled");
+    await shot(page, "12-N-new-check-after-edit-day", false);
+  } finally { await page.request.get("/api/test/stage12/release"); }
+});
+
+test("12 N 重试被告知依据已变后，下次点击开始新检查", async ({ page }) => {
+  const id = await setup(page);
+  await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_FAIL_ONCE。");
+  const old = await beginCheck(page, id);
+  await finishCheck(page, id, old, "failed");
+  const endpoint = `**/api/projects/${id}/checks/${old}/retry`;
+  await page.route(endpoint, route => route.fulfill({ status: 409, contentType: "application/json", body: JSON.stringify({ error: { code: "run_basis_changed" } }) }));
+  await findings(page).getByRole("button", { name: "重试", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "检查依据已经更新，下次点击『再检查一次』会检查新的正文。" })).toBeVisible();
+  await expect(findings(page).getByRole("button", { name: "重试", exact: true })).toHaveCount(0);
+  await page.unroute(endpoint);
+  const next = await beginCheck(page, id);
+  expect((await finishCheck(page, id, next)).attempt_number).toBe(1);
+});
+
+test("示例结果：四条结果、正文编号和前文依据", async ({ page }) => {
+  const id = await setup(page), result = await run(page, id);
+  expect(result.issues).toHaveLength(4);
+  await expect(findings(page).getByText("示例结果", { exact: true })).toBeVisible();
+  await expect(findings(page).getByTestId(/^finding-/)).toHaveCount(4);
+  for (let n = 1; n <= 4; n++) await expect(page.getByLabel(`第 ${n} 处`, { exact: true })).toBeVisible();
+  await shot(page, "writing-sample-results");
+  await selectIssue(page, result.issues[0]);
+  const ev = result.issues[0].evidence[0];
+  await expect(findings(page).getByRole("button", { name: new RegExp(`^第 ${ev.chapter_number} 章`) })).toBeVisible();
+  await shot(page, "writing-finding-open");
+});
+
+test("检查一次：新 run 完成且结果与接口一致", async ({ page }) => {
+  const id = await setup(page), old = await run(page, id);
+  const before = await (await page.request.get("/api/test/stage12/stats")).json();
+  await saveBody(page, id, "温岚仍握着黄铜罗盘。苏岑在档案室检查手边的纸条。");
+  const rid = await beginCheck(page, id);
+  expect(rid).not.toBe(old.run_id);
+  const result = await finishCheck(page, id, rid);
+  expect(result.issues.length).toBeGreaterThan(0);
+  await expect(findings(page).getByText("示例结果", { exact: true })).toHaveCount(0);
+  const after = await (await page.request.get("/api/test/stage12/stats")).json();
+  expect(after.provider_calls).toBeGreaterThan(before.provider_calls);
+  expect(after.provider_http_calls).toBe(0);
+});
+
+test("检查中：阻塞状态与放行", async ({ page }) => {
+  const id = await setup(page);
+  await page.request.get("/api/test/stage12/reset");
+  await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_BLOCK。");
+  const rid = await beginCheck(page, id);
+  try {
+    await expect(button(page, "正在检查…")).toBeDisabled();
+    await expect(page.getByRole("status", { name: "正在检查这一章", exact: true })).toBeVisible();
+    await shot(page, "writing-checking");
+  } finally { await page.request.get("/api/test/stage12/release"); }
+  await finishCheck(page, id, rid);
+});
+
+test("检查失败后重试：保留两次尝试且无半截结果", async ({ page }) => {
+  const id = await setup(page);
+  await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_FAIL_ONCE。");
+  const first = await beginCheck(page, id);
+  const failed = await finishCheck(page, id, first, "failed");
+  expect(failed.attempt_number).toBe(1);
+  expect(failed.issues).toBeUndefined();
+  // Plain words: it did not finish, nothing was kept, and a retry costs no more characters.
+  await expect(findings(page)).toContainText("这次检查没有完成，没有留下任何结果。重试不会再扣字数。");
+  await expect(findings(page)).not.toContainText(/结构|校验|写入|[Pp]rovider/);
+  await expect(findings(page).getByTestId(/^finding-/)).toHaveCount(0);
+  // One name per state: the head button says 再检查一次 (the draft has been checked), the failed result's button says 重试.
+  await expect(button(page, "再检查一次")).toBeEnabled();
+  await expect(page.getByRole("button", { name: "重新检查", exact: true })).toHaveCount(0);
+  await expect(findings(page).getByRole("button", { name: "重试", exact: true })).toBeEnabled();
+  await shot(page, "writing-check-failed");
+  const spent = (await api(page).get("/account/usage")).check_chars_used;
+  expect(spent).toBeGreaterThan(0);
+  const second = await beginCheck(page, id, true);
+  expect(second).not.toBe(first);
+  expect((await finishCheck(page, id, second)).attempt_number).toBe(2);
+  expect((await run(page, id, first)).status).toBe("failed");
+  // The retry spent no characters (it does not count the chapter again).
+  expect((await api(page).get("/account/usage")).check_chars_used).toBe(spent);
+});
+
+test("超时：可以重试且没有半截结果", async ({ page }) => {
+  const id = await setup(page);
+  await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_TIMEOUT。");
+  const rid = await beginCheck(page, id);
+  await expect.poll(async () => (await run(page, id, rid)).status).toMatch(/^(timed_out|failed)$/);
+  expect((await run(page, id, rid)).issues).toBeUndefined();
+  await expect(findings(page)).toContainText("这次检查没有完成，没有留下任何结果。");
+  await expect(findings(page)).not.toContainText(/结构|校验|写入|[Pp]rovider/);
+  await expect(findings(page).getByRole("button", { name: "重试", exact: true })).toBeEnabled();
+  await expect(findings(page).getByTestId(/^finding-/)).toHaveCount(0);
+});
+
+test("访客重试：说明会再用掉一次检查机会，次数确实少一次", async ({ page }) => {
+  await startVisitor(page);
+  const id = await sampleWorkId(page);
+  await openTab(page, id, "workspace");
+  await saveBody(page, id, "温岚握着黄铜罗盘，STAGE12_FAIL_ONCE。");
+  await finishCheck(page, id, await beginCheck(page, id), "failed");
+  await expect(findings(page)).toContainText("这次检查没有完成，没有留下任何结果。重试会再用掉一次检查机会。");
+  const before = (await api(page).get("/account/usage")).checks_remaining;
+  await finishCheck(page, id, await beginCheck(page, id, true));
+  expect((await api(page).get("/account/usage")).checks_remaining).toBe(before - 1);
+});
+
+test("检查后又改了草稿：旧结果不能作决定", async ({ page }) => {
+  const id = await setup(page);
+  await saveBody(page, id, "温岚握着黄铜罗盘。");
+  const result = await finishCheck(page, id, await beginCheck(page, id));
+  await setDraftBody(page, "温岚握着黄铜罗盘。雨停了。");
+  await expect(findings(page)).toContainText("草稿在检查之后改过，下面的结果针对的是先前的正文。");
+  await selectIssue(page, result.issues[0]);
+  await expect(findings(page).getByRole("button", { name: "是有意的", exact: true })).toBeDisabled();
+  await expect(findings(page).getByRole("button", { name: "不是问题", exact: true })).toBeDisabled();
+  await button(page, "保存").click();
+  await expect(button(page, "保存")).toHaveCount(0);
+  await finishCheck(page, id, await beginCheck(page, id));
+  await expect(findings(page).getByText("草稿在检查之后改过，下面的结果针对的是先前的正文。", { exact: true })).toHaveCount(0);
+});
+
+test("空草稿：禁用检查并提示先写正文", async ({ page }) => {
+  const id = await setup(page, false);
+  expect((await draft(page, id)).body).toBe("");
+  await expect(button(page, "检查这一章")).toBeDisabled();
+  await expect(findings(page)).toContainText("先写下正文，再检查。");
+});
+
+test("访客的额度：重查消耗一次", async ({ page }) => {
+  await startVisitor(page);
+  const id = await sampleWorkId(page), before = await api(page).get("/account/usage");
+  await openTab(page, id, "workspace");
+  await finishCheck(page, id, await beginCheck(page, id));
+  const after = await api(page).get("/account/usage");
+  expect(after.checks_remaining).toBe(before.checks_remaining - 1);
+  await expect(page.getByLabel("草稿第 11 章", { exact: true }).getByText(new RegExp(`还可检查 ${after.checks_remaining} 次`))).toBeVisible();
+});
+
+test("访客超长：检查按钮禁用并说明上限", async ({ page }) => {
+  await startVisitor(page);
+  const id = await sampleWorkId(page), usage = await api(page).get("/account/usage");
+  await openTab(page, id, "workspace");
+  await saveBody(page, id, "潮".repeat(usage.check_chars_per_check + 1));
+  await expect(page.getByText(new RegExp(`访客每次最多 ${usage.check_chars_per_check.toLocaleString()} 字`))).toBeVisible();
+  await expect(button(page, "再检查一次")).toBeDisabled();
+});

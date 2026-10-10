@@ -505,13 +505,9 @@ class Stage13Service:
                 (user_id, account_name, display_name, password_hash, stamp, expires),
             )
             seeded = []
-            for seed_key, title, genre, summary in (
-                ("grey_harbor", "灰港回声", "悬疑", "潮图修复师追查被改写的航线记录。"),
-                ("paper_moon", "纸月档案", "奇幻", "档案修复员追查消失的纸月。"),
-                ("zero_garden", "零点花园", "科幻", "夜班园丁记录零点开放的花。"),
-            ):
-                project_id = self.database._create_project(c, user_id, title, genre, summary, "demo_seed", seed_key)
-                seeded.append({"id": project_id, "seed_key": seed_key, "title": title})
+            # Since v1.7.0 a visitor gets the one sample work (示例作品), like every account.
+            project_id = self.database._create_sample_work(c, user_id, "demo_seed")
+            seeded.append({"id": project_id, "seed_key": "grey_harbor", "title": c.execute("SELECT title FROM v2_projects WHERE id=?", (project_id,)).fetchone()[0]})
             raw = secrets.token_urlsafe(48)
             c.execute(
                 "INSERT INTO v2_sessions VALUES(?,?,?,?,?,?)",
@@ -738,9 +734,9 @@ class Stage13Service:
                 raise DomainError("workflow_quota_exceeded", 429, True)
             if used + reservation > int(round(budget_limit * 1_000_000)):
                 raise DomainError("server_budget_exceeded", 429, True)
-            if character_kind is not None:
-                self._spend_characters(c, user_id, project_id, run_id, visitor, character_kind, characters, cutoff)
             reservation_id = _new_id("usage")
+            if character_kind is not None:
+                self._spend_characters(c, user_id, project_id, run_id, visitor, character_kind, characters, cutoff, reservation_id)
             c.execute(
                 "INSERT INTO v2_usage_reservations VALUES(?,?,?,?,?,?,?)",
                 (reservation_id, user_id, project_id, run_id, workflow_kind, reservation, _now()),
@@ -748,7 +744,7 @@ class Stage13Service:
             return reservation_id
 
     def _spend_characters(self, c: Any, user_id: str, project_id: str | None, run_id: str | None, visitor: bool,
-                          kind: str, characters: int, cutoff: str) -> None:
+                          kind: str, characters: int, cutoff: str, reservation_id: str) -> None:
         if kind not in {"check", "import"} or characters < 0:
             raise DomainError("usage_context_invalid", 503, True)
         if kind == "check" and visitor and characters > self.settings.visitor_check_chars:
@@ -761,7 +757,12 @@ class Stage13Service:
             count = c.execute("SELECT COUNT(*) FROM v2_character_usage WHERE user_id=? AND kind='import' AND created_at>?", (user_id, cutoff)).fetchone()[0]
             if count >= self.settings.registered_imports:
                 raise DomainError("import_quota_exceeded", 429, True, {"limit": self.settings.registered_imports})
-        c.execute("INSERT INTO v2_character_usage VALUES(?,?,?,?,?,?,?)", (_new_id("chars"), user_id, project_id, run_id, kind, characters, _now()))
+        c.execute("INSERT INTO v2_character_usage VALUES(?,?,?,?,?,?,?)", (f"chars-{reservation_id}", user_id, project_id, run_id, kind, characters, _now()))
+
+    def refund_import(self, user_id: str, reservation_id: str) -> None:
+        """Return only this import's characters; workflow and provider spending still stand."""
+        with self.database.connection() as c:
+            c.execute("DELETE FROM v2_character_usage WHERE id=? AND user_id=? AND kind='import'", (f"chars-{reservation_id}", user_id))
 
     def character_usage(self, user_id: str) -> dict[str, Any]:
         """What this author can still check and import in the rolling 24 hours, for the page to show before a check."""
@@ -823,62 +824,7 @@ class Stage13Service:
                 user_id = visitor["id"]
                 projects = [row[0] for row in c.execute("SELECT id FROM v2_projects WHERE user_id=?", (user_id,)).fetchall()]
                 for project_id in projects:
-                    # Later feature tables reference the runs, decisions, sources,
-                    # candidates and chapters removed by the original cleanup below.
-                    # Keep this explicit child-first order and tolerate older schemas.
-                    for table in (
-                        "v2_decision_reuse_events", "v2_decision_reuse", "v2_workflow_run_bindings",
-                        "v2_source_revision_reviews", "v2_chapter_revision_history",
-                        "v2_author_comparison_decisions", "v2_author_comparisons",
-                        "v2_author_material_versions", "v2_author_materials",
-                        "v2_foreshadow_candidate_decisions", "v2_foreshadow_candidates",
-                        "v2_foreshadow_versions", "v2_foreshadows",
-                        "v2_character_aliases", "v2_character_alias_state",
-                        "v2_memory_candidate_review_events", "v2_tutorial_progress_restarts",
-                    ):
-                        if table in existing_tables:
-                            c.execute(f"DELETE FROM {table} WHERE project_id=?", (project_id,))
-                    if "v2_chapter_content_formats" in existing_tables:
-                        c.execute("DELETE FROM v2_chapter_content_formats WHERE chapter_id IN (SELECT id FROM v2_chapters WHERE project_id=?)", (project_id,))
-                    run_ids = [row[0] for row in c.execute("SELECT id FROM v2_runs WHERE project_id=?", (project_id,)).fetchall()]
-                    change_ids = [row[0] for row in c.execute("SELECT id FROM v2_change_sets WHERE project_id=?", (project_id,)).fetchall()]
-                    init_ids = [row[0] for row in c.execute("SELECT id FROM v2_memory_initializations WHERE project_id=?", (project_id,)).fetchall()]
-                    batch_ids = [row[0] for row in c.execute("SELECT id FROM v2_memory_delta_batches WHERE project_id=?", (project_id,)).fetchall()]
-                    source_change_ids = [row[0] for row in c.execute("SELECT id FROM v2_source_change_sets WHERE project_id=?", (project_id,)).fetchall()]
-                    for run_id in run_ids:
-                        c.execute("DELETE FROM v2_retrieval_traces WHERE run_id=?", (run_id,))
-                        c.execute("DELETE FROM v2_run_claims WHERE run_id=?", (run_id,))
-                        c.execute("DELETE FROM v2_run_events WHERE run_id=?", (run_id,))
-                        c.execute("DELETE FROM v2_run_stages WHERE run_id=?", (run_id,))
-                    for change_id in change_ids:
-                        c.execute("DELETE FROM v2_change_set_items WHERE change_set_id=?", (change_id,))
-                    for init_id in init_ids:
-                        c.execute("DELETE FROM v2_memory_candidate_decisions WHERE initialization_id=?", (init_id,))
-                        c.execute("DELETE FROM v2_memory_candidates WHERE initialization_id=?", (init_id,))
-                    for batch_id in batch_ids:
-                        c.execute("DELETE FROM v2_memory_delta_decisions WHERE batch_id=?", (batch_id,))
-                        c.execute("DELETE FROM v2_memory_delta_candidates WHERE batch_id=?", (batch_id,))
-                    for source_change_id in source_change_ids:
-                        c.execute("DELETE FROM v2_source_change_set_audits WHERE change_set_id=?", (source_change_id,))
-                    draft_ids = [row[0] for row in c.execute("SELECT id FROM v2_drafts WHERE project_id=?", (project_id,)).fetchall()]
-                    for draft_id in draft_ids:
-                        c.execute("DELETE FROM v2_draft_revisions WHERE draft_id=?", (draft_id,))
-                    for table in (
-                        "v2_revision_candidate_decisions", "v2_revision_task_versions", "v2_revision_tasks", "v2_revision_plan_candidates",
-                        "v2_evidence", "v2_decisions", "v2_issues", "v2_commit_audits", "v2_change_set_items",
-                        "v2_change_sets", "v2_reset_audits", "v2_source_coverage_audits", "v2_memory_delta_decisions",
-                        "v2_memory_delta_candidates", "v2_memory_delta_batches", "v2_source_change_set_audits",
-                        "v2_source_change_sets", "v2_memory_candidate_decisions", "v2_memory_candidates",
-                        "v2_memory_initializations", "v2_analysis_results", "v2_analysis_inputs", "v2_runs", "v2_drafts", "v2_memory_records",
-                        "v2_memory_versions", "v2_source_spans", "v2_chapters", "v2_world_entries", "v2_characters",
-                        "v2_outline_nodes", "v2_author_story_plan_versions", "v2_author_character_plan_versions",
-                        "v2_author_world_plan_versions", "v2_author_context_versions", "v2_author_story_plans",
-                        "v2_author_character_plans", "v2_author_world_plans",
-                    ):
-                        c.execute(f"DELETE FROM {table} WHERE project_id=?", (project_id,))
-                    if "v2_demo_seed_state" in existing_tables:
-                        c.execute("DELETE FROM v2_demo_seed_state WHERE project_id=?", (project_id,))
-                    c.execute("DELETE FROM v2_projects WHERE id=?", (project_id,))
+                    self.database.purge_project(c, project_id)
                 reservation_ids = [row[0] for row in c.execute("SELECT id FROM v2_usage_reservations WHERE user_id=?", (user_id,)).fetchall()]
                 for reservation_id in reservation_ids:
                     c.execute("DELETE FROM v2_provider_attempts WHERE reservation_id=?", (reservation_id,))

@@ -1,5 +1,7 @@
 # Story Continuity Copilot v1.0 Public Release — product decisions and evidence
 
+> **Historical record.** This document describes the design or process at v1.0 Public Release. Some terms and features have changed since, for example Story Memory is now the fact base, and author materials and revision plans have been removed. See [the current product](current-product.md).
+
 > Historical v1.0 product-decision and evidence record. Its current-delivery wording refers to the signed Stage 14 baseline. Use [current product and verification scope](current-product.md) for the later v1.4.0 deployment and maintenance candidate. Original evaluation outcomes, failures, and scope remain unchanged below.
 
 ## Problem

@@ -1,0 +1,90 @@
+/* 章节 */
+.table-scroll { overflow-x: auto; }
+.chapter-table { min-width: 860px; margin-top: 8px; }
+.chapter-row { display: grid; grid-template-columns: 44px 72px minmax(0, 1fr) 90px 130px 150px 80px; gap: 16px; align-items: center; min-height: 64px; }
+.no-pick .chapter-row { grid-template-columns: 72px minmax(0, 1fr) 90px 130px 150px 80px; }
+.no-pick .chapter-passages { margin-left: 88px; }
+.chapter-meta { display: contents; }
+.chapter-row-head { min-height: 0; padding: 10px 0; border-bottom: 1px solid var(--c-rule); color: var(--c-muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: var(--tracking-label); }
+.chapter-item { border-bottom: 1px solid var(--c-line); scroll-margin-top: calc(var(--topbar-h) + 40px); }
+.chapter-item.picked { background: var(--c-surface); }
+.chapter-item.draft { border-bottom: 2px solid var(--c-rule); background: var(--c-blue-tint); }
+.chapter-item:focus-visible { outline: 3px solid var(--c-blue); outline-offset: -3px; }
+.chapter-pick { display: grid; place-items: center; }
+.chapter-pick input { width: 22px; height: 22px; cursor: pointer; }
+.chapter-num { font-size: 36px; }
+.chapter-title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; min-width: 0; }
+.chapter-title strong { font-size: 18px; }
+.chapter-expand { min-height: 28px; padding: 0; border: 0; border-bottom: 1px solid var(--c-faint); background: none; color: var(--c-muted); font-size: 13px; cursor: pointer; }
+.chapter-expand:hover { color: var(--c-ink); border-bottom-color: var(--c-ink); }
+.chapter-status { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.chapter-result { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.status-mark { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--c-ink); }
+.status-mark.checked { background: var(--c-ink); }
+.status-mark.basis_changed,
+.status-mark.edited_unchecked { background: linear-gradient(135deg, transparent 50%, var(--c-ink) 50%); }
+.chapter-passages { margin: 0 0 16px 132px; padding-left: 20px; border-left: 2px solid var(--c-rule); }
+.chapter-passages li { display: grid; padding: 8px 0; }
+.chapter-passages li strong { font-size: 13px; }
+.chapter-passages li span { color: var(--c-ink-2); font-family: var(--font-serif); font-size: 15px; line-height: 1.8; }
+.chapter-passages li.old { opacity: .55; }
+.chapter-passages .btn { margin-top: 8px; }
+
+.select-bar { position: sticky; bottom: 16px; z-index: 20; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 24px; padding: 16px 24px; background: var(--c-inverse); color: var(--c-on-inverse); }
+.select-count .num { font-size: 32px; }
+.select-count > span:last-child { color: var(--c-on-inverse-3); font-size: 16px; }
+.select-summary { flex: 1 1 320px; color: var(--c-on-inverse-2); font-size: 14px; }
+.select-go { min-height: 48px; padding: 0 22px; border: 0; background: var(--c-blue); box-shadow: var(--inverse-edge); color: var(--c-on-blue); font-weight: 700; cursor: pointer; }
+.select-go:hover:not(:disabled) { background: var(--c-blue-hover); }
+.select-go:disabled { background: var(--c-inverse-disabled-bg); box-shadow: var(--inverse-disabled-edge); color: var(--c-on-inverse-3); opacity: 1; cursor: not-allowed; }
+
+.latest { margin-top: 64px; }
+.latest .small-note { margin-top: 12px; }
+.latest-grid { display: flex; flex-wrap: wrap; gap: 32px 56px; padding-top: 20px; }
+.latest-chapter { flex: 1 1 200px; }
+.latest-chapter.wide { flex: 999 1 560px; min-width: 0; }
+.latest-chapter header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 16px; }
+.latest-chapter header .num { font-size: 40px; }
+.latest-chapter .muted { margin-top: 4px; font-size: 14px; }
+.latest-issue { margin-top: 14px; }
+.latest-quote { margin-top: 12px; padding: 10px 14px; font-family: var(--font-serif); font-size: 18px; line-height: 1.9; background: var(--c-yellow-tint); }
+.latest-quote.tone-high { background: var(--c-red-tint); }
+.latest-quote.tone-gap { background: none; border-bottom: 2px dashed var(--c-ink); }
+.latest-quote.tone-state { background: none; box-shadow: inset 0 -2px 0 var(--c-blue); }
+.latest-issue > p { margin-top: 12px; }
+.latest-evidence { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--c-line); }
+.latest-evidence p { color: var(--c-ink-2); font-family: var(--font-serif); font-size: 14px; }
+
+.append,
+.revise,
+.source-reviews { display: grid; gap: 16px; margin-top: 64px; scroll-margin-top: calc(var(--topbar-h) + 24px); }
+.append .tabs { margin-top: 0; }
+.append-lede { font-size: 16px; }
+.append-preview { display: grid; gap: 12px; }
+.revise-impact { font-size: 16px; }
+.revise-impact .num { font-size: 28px; }
+.revise-preview { display: grid; gap: 14px; }
+.prose-input { font-family: var(--font-serif); font-size: 16px; line-height: 1.9; }
+.prose-pre { max-height: 360px; overflow: auto; padding: 12px; border: 1px solid var(--c-line); background: var(--c-surface); font-family: var(--font-serif); font-size: 14px; line-height: 1.8; }
+.fact-check { display: grid; gap: 10px; padding: 16px 0; border-bottom: 1px solid var(--c-line); }
+.fact-check details > summary { display: inline-block; border-bottom: 1px solid currentColor; font-size: 13px; }
+.fact-check details[open] > summary { margin-bottom: 8px; }
+.reuse { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--c-rule); }
+.reuse > summary { display: flex; align-items: baseline; gap: 16px; font-size: 20px; font-weight: 900; }
+.reuse[open] > summary { margin-bottom: 8px; }
+.reuse-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 0; border-bottom: 1px solid var(--c-line); }
+.reuse-text { display: grid; flex: 1 1 320px; }
+.reuse-text strong { font-family: var(--font-serif); font-weight: 400; }
+
+/* Narrow: each chapter is one block. Number and title on the first line; words, status, last result and the link on the second. */
+@media (max-width: 1023px) {
+  .chapter-table { min-width: 0; }
+  .chapter-row-head { display: none; }
+  .chapter-row,
+  .no-pick .chapter-row { grid-template-columns: auto auto minmax(0, 1fr); align-items: center; gap: var(--s-1) var(--s-3); min-height: 0; padding: var(--s-3) 0; }
+  .no-pick .chapter-row { grid-template-columns: auto minmax(0, 1fr); }
+  .chapter-meta { display: flex; flex-wrap: wrap; align-items: center; grid-column: 1 / -1; gap: var(--s-1) var(--s-4); }
+  .chapter-meta > :empty { display: none; }
+  .chapter-passages,
+  .no-pick .chapter-passages { margin-left: 0; }
+}

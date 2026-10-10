@@ -1,5 +1,7 @@
 # 2026-10-02 生产部署记录
 
+> **历史部署记录**：记录的是当时的发布过程，不随产品更新。现行说明见[当前产品](current-product.md)。
+
 本次上线由 Git 提交经 `deployment/build-maintenance-source.py` 打包：在服务器上从 GitHub 下载该提交的源码，`plan` 核对 inventory 后 `build`/`verify`，解压到新目录（0700），复制上一版的 `deploy.env` 与 `release-state`，再执行 `deployment/release.sh`。没有数据库结构变化；`release.sh` 切换前做了 `pre-release-ui-26ae621-20261002` 备份。旧版本目录和镜像保留作回滚目标。
 
 ## 发布身份

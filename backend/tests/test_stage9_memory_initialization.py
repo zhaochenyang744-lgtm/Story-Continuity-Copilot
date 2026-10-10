@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 
 from app.config import AppPaths
 from app.main import create_app
-from app.provider import ProviderResult
+from app.provider import ProviderResult, ProviderTimeout
 
 
 def idem(value=None):
@@ -75,6 +75,49 @@ class Stage9MemoryInitializationTests(unittest.TestCase):
 
     def start(self, project_id, key=None, revision=1):
         return self.client.post(f"/api/projects/{project_id}/memory/initializations", json={"source_revision":revision}, headers=idem(key))
+
+    def test_failed_initialization_refunds_only_its_import_and_can_retry(self):
+        project_id = self.imported_project()
+        for failure in (ProviderTimeout("test timeout"), ProviderResult({"wrong": []})):
+            with self.subTest(failure=type(failure).__name__):
+                with patch.object(self.provider, "evaluate", side_effect=failure if isinstance(failure, Exception) else None, return_value=failure):
+                    response = self.start(project_id)
+                self.assertEqual(response.status_code, 503, response.text)
+                with self.app.state.database.connection() as c:
+                    self.assertEqual(c.execute("SELECT COUNT(*) FROM v2_character_usage WHERE kind='import'").fetchone()[0], 0)
+                    self.assertGreater(c.execute("SELECT COUNT(*) FROM v2_usage_reservations WHERE workflow_kind='memory_initialization'").fetchone()[0], 0)
+        self.assertEqual(self.start(project_id).status_code, 201)
+
+    def test_unexpected_initialization_exception_refunds_import(self):
+        project_id = self.imported_project()
+        with patch("app.main.MemoryInitializationEngine.execute", side_effect=RuntimeError("unexpected test failure")):
+            with self.assertRaises(RuntimeError):
+                self.start(project_id)
+        with self.app.state.database.connection() as c:
+            self.assertEqual(c.execute("SELECT COUNT(*) FROM v2_character_usage WHERE kind='import'").fetchone()[0], 0)
+            self.assertEqual(c.execute("SELECT COUNT(*) FROM v2_usage_reservations WHERE workflow_kind='memory_initialization'").fetchone()[0], 1)
+        self.assertEqual(self.start(project_id).status_code, 201)
+
+    def test_successful_initialization_keeps_import_quota(self):
+        first = self.imported_project()
+        second = self.imported_project("第二部")
+        self.assertEqual(self.start(first).status_code, 201)
+        response = self.start(second)
+        self.assertEqual((response.status_code, response.json()["error"]["code"]), (429, "import_quota_exceeded"))
+
+    def test_import_refund_targets_reservation_not_the_latest_record(self):
+        project_id = self.imported_project()
+        def unexpected_failure(_input):
+            with self.app.state.database.connection() as c:
+                row = c.execute("SELECT * FROM v2_character_usage WHERE project_id=? AND kind='import'", (project_id,)).fetchone()
+                c.execute("INSERT INTO v2_character_usage VALUES(?,?,?,?,?,?,?)", ("chars-unrelated-newer", row["user_id"], project_id, None, "import", 7, "2099-01-01T00:00:00+00:00"))
+            raise RuntimeError("test failure after unrelated spending")
+        with patch("app.main.MemoryInitializationEngine.execute", side_effect=unexpected_failure):
+            with self.assertRaises(RuntimeError):
+                self.start(project_id)
+        with self.app.state.database.connection() as c:
+            rows = c.execute("SELECT id,characters FROM v2_character_usage WHERE kind='import'").fetchall()
+            self.assertEqual([tuple(row) for row in rows], [("chars-unrelated-newer", 7)])
 
     def test_import_initialize_decide_commit_v1_then_first_check(self):
         project_id = self.imported_project()

@@ -1,0 +1,197 @@
+/* 版面 design tokens (v1.7.0). The only place colours, type, spacing and timing are defined; every
+   other stylesheet uses these names. Swiss typographic layout: off-white paper, black ink, one
+   electric blue for actions, the draft and what comes next. Red and yellow are reserved for
+   findings (confirmed / possible conflict); dashed outlines mean "not certain yet". Corners are
+   square. Day is the default; <html data-theme="night"> switches palettes. */
+:root {
+  color-scheme: light;
+  --writing-focus-width: 3px;
+  --writing-focus-gap: 12px;
+
+  /* Surfaces */
+  --c-ground: #f4f4f1;        /* page */
+  --c-surface: #ffffff;       /* raised: selected rows, open cards, inputs */
+  --c-paper: #ffffff;
+  --c-sunken: #eaeae6;        /* tracks, quiet fills */
+  --c-inverse: #111111;       /* black bands (continue card, selection bar) */
+  --c-on-inverse: #f4f4f1;
+  --c-on-inverse-2: #d8d8d8;
+  --c-on-inverse-3: #b8b8b8;
+  /* An edge for blue buttons on an inverse band: none by day, a light line at night, where blue on deep blue barely separates. */
+  --inverse-edge: none;
+
+  /* Rules */
+  --c-rule: #111111;          /* section rules, outlines */
+  --c-line: #d4d4cf;          /* hairlines between rows */
+  --c-line-soft: #e4e4df;
+  --c-line-strong: #111111;
+
+  /* Ink */
+  --c-ink: #111111;
+  --c-ink-2: #333333;
+  --c-muted: #555555;
+  --c-faint: #8a8a85;
+
+  /* Blue: actions, the draft, the future */
+  --c-blue: #1f2bff;
+  --c-blue-hover: #1520d6;
+  --c-on-blue: #ffffff;
+  --c-blue-text: #1f2bff;
+  --c-blue-tint: #e6e7ff;
+  --c-blue-mid: #c9cdff;
+
+  /* Findings */
+  --c-red: #ff4019;           /* confirmed conflict (fill, black text) */
+  --c-red-tint: #ffcdbf;
+  --c-red-text: #c42a0a;      /* red used as text on paper */
+  --c-yellow: #ffc400;        /* possible conflict (fill, black text) */
+  --c-yellow-tint: #ffe89a;
+  --c-on-finding: #111111;
+
+  --c-veil: rgba(17, 17, 17, .48);
+
+  /* Legacy names still read by older rules */
+  --c-indigo: var(--c-blue);
+  --c-indigo-hover: var(--c-blue-hover);
+  --c-on-indigo: var(--c-on-blue);
+  --c-indigo-text: var(--c-blue-text);
+  --c-indigo-tint: var(--c-blue-tint);
+  --c-verm: var(--c-red-text);
+  --c-verm-tint: var(--c-red-tint);
+  --c-verm-mark: var(--c-red-tint);
+  --c-amber: #7a5800;
+  --c-amber-tint: var(--c-yellow-tint);
+  --c-green: var(--c-blue-text);
+  --c-green-tint: var(--c-blue-tint);
+  --c-shadow: transparent;
+  --c-inverse-disabled-bg: transparent;
+  --inverse-disabled-edge: inset 0 0 0 1px var(--c-on-inverse-3);
+
+  /* Type. Fonts are self-hosted (sliced by unicode-range, fetched on demand). */
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, sans-serif;
+  --font-serif: "Noto Serif SC", "Songti SC", STSong, "Source Han Serif SC", serif;
+  --font-mono: "IBM Plex Mono", "Noto Sans SC", ui-monospace, Consolas, monospace;
+  /* Expanded heavy numerals and the wordmark. Use with font-stretch: 125%. */
+  --font-display: "Archivo Variable", "Archivo", "Noto Sans SC", sans-serif;
+  --fs-11: 11px;
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;
+  --fs-15: 15px;
+  --fs-16: 16px;
+  --fs-17: 17px;
+  --fs-18: 18px;
+  --fs-20: 20px;
+  --fs-22: 22px;
+  --fs-24: 24px;
+  --fs-28: 28px;
+  --fs-30: 30px;
+  --fs-36: 36px;
+  /* Large numerals: the sizes they are set at and the least they shrink to when their box is too narrow.
+     --num-digit / --num-comma are the width of a digit and of a separator in em (Archivo 125% at weight
+     900 measures .82 and .38); --figures-reserve is what a row of page-head figures spends on padding,
+     rules and labels. */
+  --fs-figure: 72px;
+  --fs-figure-md: 48px;
+  --fs-figure-min: 24px;
+  --num-digit: .83;
+  --num-comma: .4;
+  --figures-reserve: 200px;
+  --lh-tight: 1.25;
+  --lh-ui: 1.6;
+  --lh-prose: 2.05;
+  --tracking-label: .08em;
+
+  /* Space (4px grid) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-7: 28px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-14: 56px;
+  --s-16: 64px;
+  --s-18: 72px;
+  --s-24: 96px;
+
+  /* Shape: square by design. */
+  --r-xs: 0;
+  --r-sm: 0;
+  --r-md: 0;
+  --r-lg: 0;
+  --r-xl: 0;
+  --r-pill: 999px;
+  --control-h: 44px;
+  --control-h-lg: 48px;
+  --control-h-sm: 36px;
+  --topbar-h: 64px;
+  --page-max: 1360px;
+  --page-gutter: 40px;
+  --form-max: 800px;
+  --prose-max: 680px;
+  --elev-1: none;
+  --elev-2: 8px 8px 0 rgba(17, 17, 17, .14);
+  /* Floating layers (menus, messages): a soft lift instead of a frame. */
+  --elev-pop: 0 14px 36px rgba(17, 17, 17, .12), 0 2px 6px rgba(17, 17, 17, .08);
+
+  /* Motion: three durations and one curve. Fast for hover and menus, mid for opening and switching,
+     slow for drawing charts and the after-glow of a change. */
+  --dur-fast: 140ms;
+  --dur-mid: 280ms;
+  --dur-slow: 640ms;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --stagger: 60ms;
+  --motion-fast: var(--dur-fast);
+  --motion-base: var(--dur-fast);
+  --motion-panel: var(--dur-mid);
+  --motion-exit: var(--dur-fast);
+  --ease-standard: var(--ease);
+}
+
+:root[data-theme="night"] {
+  color-scheme: dark;
+  --c-ground: #111111;
+  --c-surface: #1c1c1c;
+  --c-paper: #1c1c1c;
+  --c-sunken: #262626;
+  /* The "inverse" bands stay a dark colour at night too: deep blue with light text, not a white slab. */
+  --c-inverse: #1d2155;
+  --c-on-inverse: #f4f4f1;
+  --c-on-inverse-2: #c9cdff;
+  --c-on-inverse-3: #959bff;
+  --inverse-edge: inset 0 0 0 2px var(--c-on-inverse-3);
+  --c-rule: #f4f4f1;
+  --c-line: #3a3a38;
+  --c-line-soft: #2a2a29;
+  --c-line-strong: #f4f4f1;
+  --c-ink: #f4f4f1;
+  --c-ink-2: #d4d4cf;
+  --c-muted: #a3a39e;
+  --c-faint: #76766f;
+  --c-blue: #4651ff;
+  --c-blue-hover: #6069ff;
+  --c-on-blue: #ffffff;
+  --c-blue-text: #959bff;
+  --c-blue-tint: #1d2155;
+  --c-blue-mid: #2c3290;
+  --c-red: #ff5a36;
+  --c-red-tint: #4a1f14;
+  --c-red-text: #ff8a6e;
+  --c-yellow: #ffc400;
+  --c-yellow-tint: #403310;
+  --c-amber: #ffd45c;
+  --c-veil: rgba(0, 0, 0, .62);
+  --elev-2: 8px 8px 0 rgba(0, 0, 0, .5);
+  --elev-pop: 0 14px 36px rgba(0, 0, 0, .55), 0 2px 6px rgba(0, 0, 0, .4);
+}
+
+@media (max-width: 720px) {
+  :root {
+    --fs-figure: 48px;
+    --fs-figure-md: 36px;
+  }
+}

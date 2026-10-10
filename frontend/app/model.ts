@@ -22,6 +22,8 @@ export type ProjectSummary = {
   source_revision?: number;
   chapter_count?: number;
   word_count?: number;
+  /** Characters in the written chapters only (word_count also counts the draft). */
+  chapter_word_count?: number;
   open_issue_count?: number;
   continuity_status?: "unchecked" | "checked_clear" | "pending";
   updated_at: string;
@@ -210,7 +212,11 @@ export type Issue = {
   claim_span_id: string;
   claim_text?: string;
   reused_decision?: { decision: string; status: string; source_issue_id: string; review_path: string; requires_new_decision: boolean } | null;
-  decision?: { decision: string; resulting_revision: number | null } | null;
+  /** v1.7.0 「待修改」: the author noted that the prose still needs a change for this finding. */
+  to_revise?: boolean;
+  decision?: { decision: string; resulting_revision: number | null; reused?: boolean } | null;
+  /** The check proposed a change to the project facts for this finding (kept as an intentional change, it goes to fact review). */
+  has_memory_proposal?: boolean;
   evidence?: {
     id: string;
     chapter_id: string;
@@ -229,6 +235,8 @@ export type Issue = {
 export type Run = {
   run_id: string;
   project_id: string;
+  /** The draft the check was run on; absent on older backends. */
+  draft_id?: string | null;
   run_type: "continuity" | "memory_delta";
   status: "queued" | "running" | "completed" | "timed_out" | "failed" | "cancelled";
   stage: string;

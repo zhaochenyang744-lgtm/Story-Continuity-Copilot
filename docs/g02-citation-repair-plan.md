@@ -1,5 +1,7 @@
 # G02 citation repair and current-contract comparison set: implementation plan
 
+> **Historical record.** This document describes the design or process at the G02 repair stage on 2026-09-26. Some terms and features have changed since, for example Story Memory is now the fact base, and author materials and revision plans have been removed. See [the current product](current-product.md).
+
 Date: 2026-09-26. Scope authorized after the final Flash independent acceptance. Product baseline `c3bd54ab019447354e8b1387e16b9aca3258b4c9`; this worktree's existing V1/V2/V3 and independent reviews remain immutable. G02 product behavior may change. No Agent, continuity retrieval/decision rewrite, commit, deployment or real author research.
 
 ## Reproduction and intended behavior

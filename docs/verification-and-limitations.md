@@ -1,5 +1,7 @@
 # Story Continuity Copilot v1.0 Public Release — validation evidence and known limitations
 
+> **Historical record.** This document describes the design or process at v1.0 Public Release and Stages 11–14. Some terms and features have changed since, for example Story Memory is now the fact base, and author materials and revision plans have been removed. See [the current product](current-product.md).
+
 > Historical verification record for the retained V4–V8, Stage 11–14 and v1.0 release evidence. Counts and outcomes below belong to those versions. Current implementation, production-model validation, and deployment scope are tracked separately in [current product and verification scope](current-product.md) and [maintenance acceptance](maintenance-acceptance.md).
 
 ## Published V4 baseline verification record

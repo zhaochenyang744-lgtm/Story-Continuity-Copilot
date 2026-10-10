@@ -1,0 +1,329 @@
+{
+  "seed_version": 4,
+  "project": {
+    "title": "灰港回声",
+    "genre": "悬疑",
+    "summary": "一名潮图修复师在雾港追查被改写的航线记录。"
+  },
+  "chapters": [
+    {
+      "id": "ghe-ch-01",
+      "number": 1,
+      "title": "雾钟",
+      "summary": "苏岑抵达灰港，听见北潮闸关闭时才会响一次的雾钟。",
+      "body": "苏岑在黄昏时抵达灰港，码头上的人都在收网。灰港的雾钟只在北潮闸完全关闭后敲响一次，别的潮声不会让它响。那天夜里，她听见钟声从港口另一头传来，便在旅店的窗边记下了时间。",
+      "passages": [
+        {
+          "id": "ghe-ch01-s01",
+          "label": "雾钟守则",
+          "text": "灰港的雾钟只在北潮闸完全关闭后敲响一次，别的潮声不会让它响。"
+        }
+      ]
+    },
+    {
+      "id": "ghe-ch-02",
+      "number": 2,
+      "title": "裂纹罗盘",
+      "summary": "苏岑从测绘塔取回父亲留下的罗盘。",
+      "body": "苏岑爬上测绘塔，在父亲留下的工具箱里找到一枚旧罗盘。黄铜罗盘的镜面有一道月牙裂纹，此刻由苏岑放在外套内袋。她试着校准方向，指针晃了很久才停下。",
+      "passages": [
+        {
+          "id": "ghe-ch02-s01",
+          "label": "罗盘状态",
+          "text": "黄铜罗盘的镜面有一道月牙裂纹，此刻由苏岑放在外套内袋。"
+        }
+      ]
+    },
+    {
+      "id": "ghe-ch-03",
+      "number": 3,
+      "title": "迟到的渡船",
+      "summary": "黎舟带苏岑穿过风栈码头，记录潮汐反常的时刻。",
+      "body": "黎舟带苏岑穿过风栈码头，一边走一边看怀表。十九点二十，西航道先退潮，最后一班渡船在十九点四十才离开风栈码头。黎舟把这两个时刻抄在潮汐簿上，说往年从没晚过这么久。",
+      "passages": [
+        {
+          "id": "ghe-ch03-s01",
+          "label": "时间线",
+          "text": "十九点二十，西航道先退潮，最后一班渡船在十九点四十才离开风栈码头。"
+        }
+      ]
+    },
+    {
+      "id": "ghe-ch-04",
+      "number": 4,
+      "title": "无字潮表",
+      "summary": "档案员温岚找到一张加密潮表。",
+      "body": "档案员温岚在旧柜底层翻出一张没有标题的潮表，纸边已经发黄。温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。她把潮表夹进档案册，打算第二天再查。",
+      "passages": [
+        {
+          "id": "ghe-ch04-s01",
+          "label": "知识边界",
+          "text": "温岚看得懂潮表上的坐标，却还不知道‘廊桥钥匙’这个代号指向什么。"
+        }
+      ]
+    },
+    {
+      "id": "ghe-ch-05",
+      "number": 5,
+      "title": "盐雾信箱",
+      "summary": "一张无人署名的纸条把三人引向旧灯塔。",
+      "body": "旧灯塔下的信箱里多了一张折起的纸条。纸条只写着‘白色渡船没有靠岸’，署名和日期都被盐雾抹去了。三人商量之后，决定去旧灯塔看看。",
+      "passages": [
+        {
+          "id": "ghe-ch05-s01",
+          "label": "开放线索",
+          "text": "纸条只写着‘白色渡船没有靠岸’，署名和日期都被盐雾抹去了。"
+        }
+      ]
+    },
+    {
+      "id": "ghe-ch-06",
+      "number": 6,
+      "title": "低室电台",
+      "summary": "黎舟修好低室电台，三人听到短促的求救码。",
+      "body": "黎舟花了一下午修好低室里那台老电台。电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。温岚把求救码记在本子上，苏岑则盯着地图上的水门。",
+      "passages": [
+        {
+          "id": "ghe-ch06-s01",
+          "label": "事件记录",
+          "text": "电台在二十一点零五分收到三次短促求救码，信号来自雾线水门以外。"
+        }
+      ]
+    },
+    {
+      "id": "ghe-ch-07",
+      "number": 7,
+      "title": "潮线之外",
+      "summary": "苏岑和温岚在雾线水门外找到被撕开的航图。",
+      "body": "第二天清早，苏岑和温岚沿着潮线走到雾线水门外。航图被固定在雾线水门外的锚柱上，右下角缺失了一块。两人没有动它，只把锚柱的位置画进了笔记。",
+      "passages": [
+        {
+          "id": "ghe-ch07-s01",
+          "label": "地点状态",
+          "text": "航图被固定在雾线水门外的锚柱上，右下角缺失了一块。"
+        }
+      ]
+    },
+    {
+      "id": "ghe-ch-08",
+      "number": 8,
+      "title": "北堤灯火",
+      "summary": "温岚用旧档案证明父亲曾守过北堤。",
+      "body": "温岚从旧档案里找到一页值守记录，证明苏岑的父亲曾在北堤守过灯。温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。",
+      "passages": [
+        {
+          "id": "ghe-ch08-s01",
+          "label": "关系变化",
+          "text": "温岚把北堤值守簿交给苏岑，两人约定不再各自隐瞒新线索。"
+        }
+      ]
+    },
+    {
+      "id": "ghe-ch-09",
+      "number": 9,
+      "title": "换手",
+      "summary": "苏岑将罗盘交给温岚，自己进入封闭仓道。",
+      "body": "仓道入口很窄，只容一个人侧身通过。进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。随后她独自走进封闭仓道，温岚留在入口等候。",
+      "passages": [
+        {
+          "id": "ghe-ch09-s01",
+          "label": "动态状态",
+          "text": "进入仓道前，苏岑把带月牙裂纹的黄铜罗盘交到温岚手里保管。"
+        }
+      ]
+    },
+    {
+      "id": "ghe-ch-10",
+      "number": 10,
+      "title": "回声坐标",
+      "summary": "雾钟再响，白色渡船的回声从港外传来。",
+      "body": "夜里雾更浓了，港口的灯一盏接一盏熄灭。北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。苏岑从仓道里出来，三人一起望向港外。",
+      "passages": [
+        {
+          "id": "ghe-ch10-s01",
+          "label": "未解问题",
+          "text": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。"
+        }
+      ]
+    }
+  ],
+  "draft": {
+    "number": 11,
+    "title": "第十一章：未归的航标",
+    "body": "温岚仍握着黄铜罗盘；与此同时，黄铜罗盘也在苏岑的外套内袋。随后，温岚把罗盘放在潮汐档案室的桌上。苏岑沿着雾线水门的石阶回望灰港，决定先核对那声不该响起的雾钟。黎舟已经告诉苏岑‘廊桥钥匙’的含义。"
+  },
+  "draft_issues": [
+    {
+      "sentence": "温岚仍握着黄铜罗盘；与此同时，黄铜罗盘也在苏岑的外套内袋。",
+      "nature": "confirmed_conflict",
+      "severity": "high",
+      "category": "object_state",
+      "explanation": "同一时刻、同一枚黄铜罗盘被写成由两人分别持有，形成已确认冲突。",
+      "reasoning": "第 10 章在紧邻当前草稿的时间点明确写着温岚仍握着这枚罗盘；当前句又用“与此同时”把同一枚罗盘放进苏岑内袋，时间与对象范围一致，两个位置不能同时成立。",
+      "evidence_passage": "ghe-ch10-s01",
+      "suggested_revision": {
+        "before": "温岚仍握着黄铜罗盘；与此同时，黄铜罗盘也在苏岑的外套内袋。",
+        "after": "温岚仍握着黄铜罗盘。"
+      },
+      "related_memory": "mem-ghe-v4-002",
+      "proposed_memory_change": {
+        "operation": "add",
+        "memory_type": "open_thread",
+        "subject": "黄铜罗盘临时离手",
+        "predicate": "status",
+        "value": "持有人表述冲突，待作者澄清"
+      }
+    },
+    {
+      "sentence": "随后，温岚把罗盘放在潮汐档案室的桌上。",
+      "nature": "state_change",
+      "severity": "medium",
+      "category": "location_action",
+      "explanation": "这是从“温岚手中”到“档案室桌上”的有先后关系的状态变化。",
+      "reasoning": "第 9 章先建立温岚接手保管罗盘的旧状态，当前草稿用“随后”写出她将罗盘放到桌上的后续动作；这是可追溯的前后变化，不应误报为同一时刻冲突。",
+      "evidence_passage": "ghe-ch09-s01",
+      "suggested_revision": null,
+      "related_memory": "mem-ghe-v4-002",
+      "proposed_memory_change": {
+        "operation": "replace",
+        "memory_type": "dynamic_state",
+        "subject": "黄铜罗盘",
+        "predicate": "holder",
+        "value": "由温岚放在潮汐档案室桌上",
+        "affected_memory_id": "mem-ghe-v4-002"
+      }
+    },
+    {
+      "sentence": "苏岑决定先核对那声不该响起的雾钟。",
+      "nature": "possible_conflict",
+      "severity": "medium",
+      "category": "event_status",
+      "explanation": "雾钟规则与异常响钟之间存在疑点，但既有正文已把它标为未解线索。",
+      "reasoning": "第 1 章给出正常响钟规则，第 10 章则明确保留一次异常响钟；当前草稿只是继续调查这个开放线索，尚不足以确认世界规则已被无意违反。",
+      "evidence_passage": "ghe-ch10-s01",
+      "suggested_revision": null,
+      "related_memory": "mem-ghe-v4-008",
+      "proposed_memory_change": {
+        "operation": "add",
+        "memory_type": "event_timeline",
+        "subject": "苏岑",
+        "predicate": "next_action",
+        "value": "优先核对异常雾钟"
+      }
+    },
+    {
+      "sentence": "黎舟已经告诉苏岑‘廊桥钥匙’的含义。",
+      "nature": "insufficient_evidence",
+      "severity": "low",
+      "category": "character_knowledge",
+      "explanation": "已写来源没有出现黎舟完成告知或苏岑获知该含义的事件。",
+      "reasoning": "第 4 章只证明温岚当时不知道代号含义；现有来源中缺少黎舟获知、转告以及苏岑接收信息的中间事件，因此在证据链缺口补齐前停止判断。",
+      "evidence_passage": "ghe-ch04-s01",
+      "suggested_revision": null,
+      "related_memory": "mem-ghe-v4-004"
+    }
+  ],
+  "memory": [
+    {
+      "key": "mem-ghe-v4-001",
+      "type": "static_canon",
+      "subject": "灰港雾钟",
+      "predicate": "rule",
+      "value": "只在北潮闸完全关闭后敲响一次",
+      "passage": "ghe-ch01-s01"
+    },
+    {
+      "key": "mem-ghe-v4-002",
+      "type": "dynamic_state",
+      "subject": "黄铜罗盘",
+      "predicate": "holder",
+      "value": "温岚",
+      "passage": "ghe-ch09-s01"
+    },
+    {
+      "key": "mem-ghe-v4-003",
+      "type": "event_timeline",
+      "subject": "西航道退潮",
+      "predicate": "time",
+      "value": "第3章 19:20",
+      "passage": "ghe-ch03-s01"
+    },
+    {
+      "key": "mem-ghe-v4-004",
+      "type": "character_knowledge",
+      "subject": "温岚",
+      "predicate": "does_not_know",
+      "value": "廊桥钥匙的含义",
+      "passage": "ghe-ch04-s01"
+    },
+    {
+      "key": "mem-ghe-v4-005",
+      "type": "open_thread",
+      "subject": "白色渡船",
+      "predicate": "status",
+      "value": "没有靠岸，来源未明",
+      "passage": "ghe-ch05-s01"
+    },
+    {
+      "key": "mem-ghe-v4-006",
+      "type": "dynamic_state",
+      "subject": "航图",
+      "predicate": "location",
+      "value": "雾线水门外锚柱",
+      "passage": "ghe-ch07-s01"
+    },
+    {
+      "key": "mem-ghe-v4-007",
+      "type": "event_timeline",
+      "subject": "低室电台",
+      "predicate": "received",
+      "value": "第6章 21:05 收到三次求救码",
+      "passage": "ghe-ch06-s01"
+    },
+    {
+      "key": "mem-ghe-v4-008",
+      "type": "open_thread",
+      "subject": "异常雾钟",
+      "predicate": "status",
+      "value": "北潮闸未关闭时响起，原因未解",
+      "passage": "ghe-ch10-s01"
+    }
+  ],
+  "characters": [
+    {
+      "name": "温岚",
+      "role": "ally",
+      "identity": "灰港档案员",
+      "goal": "核对潮表",
+      "current_state": "保管罗盘",
+      "knowledge_boundary": "不知道廊桥钥匙的含义",
+      "aliases": []
+    }
+  ],
+  "settings": [
+    {
+      "category": "地点",
+      "name": "灰港",
+      "summary": "雾钟与北潮闸所在的港口"
+    }
+  ],
+  "foreshadows": [],
+  "plans": [],
+  "chapter_check_sample": {
+    "chapters": [
+      9,
+      10
+    ],
+    "issues": [
+      {
+        "chapter": 10,
+        "sentence": "北潮闸并未关闭，雾钟却响了一次；温岚仍握着罗盘，港外传来白色渡船的汽笛。",
+        "nature": "possible_conflict",
+        "severity": "medium",
+        "category": "world_rule",
+        "explanation": "第 1 章写明雾钟只在北潮闸完全关闭后才会响；本章写北潮闸没关，雾钟却响了。如果这是有意埋下的谜团，可以保留原意。",
+        "evidence_passage": "ghe-ch01-s01"
+      }
+    ]
+  }
+}
