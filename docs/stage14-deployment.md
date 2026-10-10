@@ -1,5 +1,7 @@
 # Story Continuity Copilot v1.0 Public Release — 腾讯云 Lighthouse 部署 Runbook
 
+> **历史记录**：本文记录的是 v1.0 Public Release 的 Stage 14 时的设计或过程，文中的部分说法和功能已经变化，例如 Story Memory 现在叫事实库，作者资料和修订计划已经删除。现行说明见[当前产品](current-product.md)。
+
 本文是部署操作手册，不是产品 Gate 结果。62 号冻结文档中的 OCI 候选保留为历史决策；有效托管平台由腾讯云 Lighthouse 平台替换附录定义。最终 Gate 结果见 65 号独立验收与签署记录。
 
 以下为部署前由用户确认的实例信息，保留为当时时点记录：

@@ -1,5 +1,7 @@
 # 既有缺口 G01–G05 修补交接
 
+> **历史记录**：本文记录的是 2026-09-26 的既有缺口修补 时的设计或过程，文中的部分说法和功能已经变化，例如 Story Memory 现在叫事实库，作者资料和修订计划已经删除。现行说明见[当前产品](current-product.md)。
+
 状态更新（2026-09-26）：第三轮主控本地独立验收通过，用户已确认修补结果并明确授权在 `codex/legacy-gap-repair` 创建本地 Git 提交。下文“未提交”“待主控验收”为实施交接当时的历史状态；最新结论以 [独立验收报告](legacy-gap-repair-independent-acceptance.md) 为准。真实模型/线上/恢复验证仍待授权，未开始 Agent、合并、推送或部署。
 
 日期：2026-09-26。隔离工作树 `story-continuity-legacy-gap-repair`，分支 `codex/legacy-gap-repair`，基线 `39de855c005d77f7f02a132f5e807a0c1c476b7b`。本次未提交、推送、部署，未调用真实 Provider 或 SMTP，未读取原仓库 `.env` 或改动原数据库。旧 Agent P1 原型工作树保持隔离，未合并；本次没有启动 Agent UI 或 Agent 循环。

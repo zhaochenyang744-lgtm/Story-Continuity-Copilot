@@ -1,5 +1,7 @@
 # Long-form capacity validation, Stage 11M evidence record
 
+> **Historical record.** This document describes the design or process at Stage 11M. Some terms and features have changed since, for example Story Memory is now the fact base, and author materials and revision plans have been removed. See [the current product](current-product.md).
+
 This implementation adds a separate 300k runner and validator. It preserves the
 11L runner, validator, and v1-v6 evidence unchanged. The formal runner accepts
 only the frozen 300k Unicode prefix, requires `deepseek-v4-pro`, sets transport
