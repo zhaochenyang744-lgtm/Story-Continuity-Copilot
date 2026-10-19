@@ -74,7 +74,7 @@ One bar, process lines or notes stating story content (0.0475, bar ≤ 0.05), wa
 
 ## Version and deployment
 
-Production runs **v1.8.0**, release `v180-c674227-20261019` ([deployment record](docs/deployment-2026-10-19-v180.md)), until v1.8.1 is deployed. The v1.8.1 release ID and deployment record are added at deployment.
+Production runs **v1.8.1**, release `v181-bfaf9df-20261020` ([deployment record](docs/deployment-2026-10-20-v181.md)).
 
 - **v1.8.1:**
   - Settings in four sections (general, account, usage, data), with each row's label on the left and its control on the right; name and bio save as you leave the box. The old settings addresses lead to the new sections.

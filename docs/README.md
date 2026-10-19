@@ -12,6 +12,7 @@
 
 ## 发布与部署记录
 
+- [deployment-2026-10-20-v181.md](deployment-2026-10-20-v181.md) — v1.8.1 的发布过程、版本身份与部署后验收。
 - [deployment-2026-10-19-v180.md](deployment-2026-10-19-v180.md) — v1.8.0 的发布过程、版本身份、部署后验收和留给 v1.8.1 的问题。
 - [deployment-2026-10-10-v170.md](deployment-2026-10-10-v170.md) — v1.7.0 的发布过程、版本身份与部署回执。
 - [maintenance-deployment.md](maintenance-deployment.md) — 当次发布过程、版本身份与部署回执。
