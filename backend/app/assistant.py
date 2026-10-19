@@ -286,6 +286,32 @@ def unsupported_people(sentence: dict[str, Any], sources: dict[str, dict[str, An
     return sorted(name for name in people if name in sentence["text"] and name not in texts)
 
 
+def shown_texts(messages: list[dict[str, Any]]) -> list[str]:
+    """Every text the model was shown in a task besides the system prompt and its own replies: the author's questions,
+    the opening message and each tool result (its strings, when it is JSON)."""
+    texts: list[str] = []
+
+    def walk(value: Any) -> None:
+        if isinstance(value, str):
+            texts.append(value)
+        elif isinstance(value, dict):
+            for item in value.values():
+                walk(item)
+        elif isinstance(value, list):
+            for item in value:
+                walk(item)
+
+    for message in messages:
+        content = message.get("content")
+        if message.get("role") in ("system", "assistant") or not isinstance(content, str):
+            continue
+        try:
+            walk(json.loads(content))
+        except ValueError:
+            texts.append(content)
+    return texts
+
+
 def without_unsupported_people(cleaned: dict[str, Any], sources: dict[str, dict[str, Any]],
                                people: frozenset[str]) -> tuple[dict[str, Any] | None, list[str]]:
     """The answer without its fact-only sentences that name someone their facts do not mention (used once the repair is
@@ -771,7 +797,7 @@ class AssistantEngine:
                                 problems += refusal_problems(cleaned["sentences"], registry.rows)
                                 cleaned = None
                     if cleaned is not None and kind != "recap":
-                        note = assistant_coverage.without_story(cleaned["note"])
+                        note = assistant_coverage.without_false_injection(assistant_coverage.without_story(cleaned["note"]), shown_texts(messages))
                         if not note and cleaned["status"] == "not_found":
                             note = "没有找到问题问到的内容。"
                         cleaned = {**cleaned, "note": note}

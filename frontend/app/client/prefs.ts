@@ -27,7 +27,8 @@ const set = (next: Partial<State>) => { state = { ...state, ...next }; };
 
 export const resolveTheme = (mode: ThemeMode, systemDark: boolean): "day" | "night" => (mode === "system" ? (systemDark ? "night" : "day") : mode);
 
-const sweepAllowed = () => !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+type ViewTransitionLike = { ready?: Promise<void>; finished?: Promise<void>; updateCallbackDone?: Promise<void> } | undefined;
+const sweepAllowed =() => !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /** Reads what this device remembers (once, when the app starts) and follows the system's light/dark setting. */
 export function loadPrefs() {
@@ -57,9 +58,13 @@ export function setThemeMode(mode: ThemeMode) {
   const next = resolveTheme(mode, state.systemDark);
   writeKey(themeKey, mode === "system" ? null : mode);
   const apply = () => { set({ mode }); document.documentElement.dataset.theme = next; flushSync(emit); };
-  const sweep = (document as Document & { startViewTransition?: (update: () => void) => unknown }).startViewTransition;
-  if (sweep && sweepAllowed() && document.documentElement.dataset.theme !== next) sweep.call(document, apply);
-  else apply();
+  const sweep = (document as Document & { startViewTransition?: (update: () => void) => ViewTransitionLike }).startViewTransition;
+  if (sweep && sweepAllowed() && document.documentElement.dataset.theme !== next) {
+    // The browser skips the sweep when another one starts or the page is hidden; the colours still change, so the
+    // rejected promises are expected.
+    const transition = sweep.call(document, apply);
+    for (const step of [transition?.ready, transition?.finished, transition?.updateCallbackDone]) step?.catch(() => undefined);
+  } else apply();
 }
 
 /** The top bar's button: from a fixed theme to the other one; from "follow the system" to the opposite of what it shows now. */

@@ -148,15 +148,15 @@ export function AuthorHomePage({ user, go, fail, leaveToRegister }: { user: User
         </div>
       )}
       <header className="author-hero">
-        <Avatar user={{ avatar_preset: profile.avatar_preset }} className="avatar-xl" sizes="176px" />
+        <Avatar user={profile} className="avatar-xl" />
         <div className="author-who">
           <p className="author-handle">{visitor ? `访客 · ${monthDayLabel(localDay(profile.created_at))}开始` : `@${profile.account_name} · ${joinedLabel(profile.created_at)}`}</p>
           <h1 className="author-name">{profile.display_name}</h1>
           {visitor ? <p className="author-bio faint">注册后可以写一句介绍自己。</p>
             : profile.bio ? <p className="author-bio">{profile.bio}</p>
-              : <button type="button" className="link author-bio-empty" onClick={() => go("/settings/profile")}>写一句介绍自己</button>}
+              : <button type="button" className="link author-bio-empty" onClick={() => go("/settings/general")}>写一句介绍自己</button>}
           <div className="author-actions">
-            {!visitor && <Button kind="small" onClick={() => go("/settings/profile")}>编辑资料</Button>}
+            {!visitor && <Button kind="small" onClick={() => go("/settings/general")}>编辑资料</Button>}
             <Button kind="small" onClick={() => go("/settings")}>设置</Button>
           </div>
         </div>

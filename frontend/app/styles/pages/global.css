@@ -49,13 +49,6 @@
 .pager { display: flex; align-items: center; gap: 16px; }
 .import-confirm { font-size: 17px; }
 
-/* ── 头像 (the author's page and settings are in author.css) ── */
-.avatar-lg { width: 64px; height: 64px; }
-.avatar-picker { display: flex; flex-wrap: wrap; gap: 16px; }
-.avatar-option { display: grid; justify-items: center; gap: 6px; padding: 8px; border: 2px solid transparent; font-size: 13px; cursor: pointer; }
-.avatar-option:has(input:checked) { border-color: var(--c-rule); background: var(--c-surface); }
-.avatar-option:has(input:focus-visible) { outline: 3px solid var(--c-blue); }
-
 /* ── 登录 ── */
 .auth { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(360px, 520px); min-height: 100vh; }
 .auth-side { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; padding: 48px 56px; background: var(--c-inverse); color: var(--c-on-inverse); }

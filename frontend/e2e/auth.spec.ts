@@ -190,7 +190,7 @@ test("会话过期：清掉 cookie 后在应用里换页，回到登录页并说
   expect((await api(page).raw("GET", "/auth/session?optional=true")).body.data.user).toBeNull();
 });
 
-test("验证恢复邮箱：从邮件里的链接验证，账号安全页显示已验证", async ({ page }) => {
+test("验证恢复邮箱：从邮件里的链接验证，设置的账号一项显示已验证", async ({ page }) => {
   const { email } = await registerAccount(page, "verify");
   expect((await api(page).get("/auth/session")).user.recovery_email.verified).toBe(false);
   await page.goto(await mailLink(page, "verify_email", email));
@@ -201,7 +201,7 @@ test("验证恢复邮箱：从邮件里的链接验证，账号安全页显示�
   await page.getByRole("button", { name: "回到首页", exact: true }).click();
   await openAccountMenu(page);
   await page.getByRole("menuitem", { name: "设置", exact: true }).click();
-  await page.getByRole("navigation", { name: "设置", exact: true }).getByRole("button", { name: "账号与安全", exact: true }).click();
+  await page.getByRole("navigation", { name: "设置", exact: true }).getByRole("button", { name: "账号", exact: true }).click();
   await expect(page.getByText("已验证", { exact: true })).toBeVisible();
 });
 

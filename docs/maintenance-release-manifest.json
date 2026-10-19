@@ -432,22 +432,6 @@
       "target": "frontend-source/public-config.mjs"
     },
     {
-      "source": "frontend/public/assets/avatars/archive-blue.webp",
-      "target": "frontend-source/public/assets/avatars/archive-blue.webp"
-    },
-    {
-      "source": "frontend/public/assets/avatars/continuity-violet.webp",
-      "target": "frontend-source/public/assets/avatars/continuity-violet.webp"
-    },
-    {
-      "source": "frontend/public/assets/avatars/folio-rose.webp",
-      "target": "frontend-source/public/assets/avatars/folio-rose.webp"
-    },
-    {
-      "source": "frontend/public/assets/avatars/signal-amber.webp",
-      "target": "frontend-source/public/assets/avatars/signal-amber.webp"
-    },
-    {
       "source": "frontend/public/assets/brand/story-continuity-lockup.svg",
       "target": "frontend-source/public/assets/brand/story-continuity-lockup.svg"
     },

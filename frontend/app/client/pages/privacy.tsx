@@ -5,7 +5,7 @@
 // the day they were last changed.
 import { Button } from "../ui";
 
-export const PRIVACY_UPDATED = "2026 年 10 月 15 日";
+export const PRIVACY_UPDATED = "2026 年 10 月 20 日";
 export const PRIVACY_CONTACT = "zcy4711@gmail.com";
 const DEEPSEEK_POLICY = "https://cdn.deepseek.com/policies/zh-CN/deepseek-privacy-policy.html";
 
@@ -19,7 +19,7 @@ export function PrivacyPage({ go, signedIn }: { go: (href: string) => void; sign
 
       <h2>我们收集什么</h2>
       <ul>
-        <li><strong>账号信息</strong>：登录账号、密码（只保存加密后的结果，任何人都看不到原文）、显示名称、头像选择。</li>
+        <li><strong>账号信息</strong>：登录账号、密码（只保存加密后的结果，任何人都看不到原文）、显示名称和一句简介。</li>
         <li><strong>恢复邮箱</strong>（可选）：只用来找回密码和发送必要的安全通知。</li>
         <li><strong>你的作品</strong>：章节正文、草稿、你确认的事实、计划和伏笔记录，以及检查结果和助手的对话。</li>
         <li><strong>用量记录</strong>：每次检查和助手任务用了多少字，用来计算每天的额度。</li>

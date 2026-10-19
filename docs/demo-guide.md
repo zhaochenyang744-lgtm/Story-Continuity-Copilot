@@ -1,6 +1,6 @@
-# Story Continuity Copilot v1.8.0 — 3–5 minute demo guide
+# Story Continuity Copilot v1.8.1 — 3–5 minute demo guide
 
-Use a running v1.8.0 instance at a window width of at least 768 px. Steps 1–7 use labelled sample findings and need no real model request; the optional assistant step uses one real request. A public instance may still run an earlier version until deployment.
+Use a running v1.8.1 instance at a window width of at least 768 px. Steps 1–7 use labelled sample findings and need no real model request; the optional assistant step uses one real request. A public instance may still run an earlier version until deployment.
 
 ## 1. Enter as a visitor
 

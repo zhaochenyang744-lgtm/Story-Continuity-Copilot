@@ -5,7 +5,7 @@
 
    xs 3   tags, badges, alias marks, citation marks, context chips
    sm 6   buttons, fields, segmented controls, tips
-   md 10  the assistant's box, menus, the question bubble, citation cards, avatar options, floating bars
+   md 10  the assistant's box, menus, the question bubble, citation cards, floating bars
    lg 14  large cards, dialogs, the drawer */
 
 /* xs */
@@ -23,7 +23,7 @@
 .password-toggle:hover:not(:disabled) { background: var(--c-line); color: var(--c-ink); }
 
 /* md */
-.menu-list, .account-menu, .feedback, .avatar-option, .a-ask, .a-selpop { border-radius: var(--r-md); }
+.menu-list, .account-menu, .feedback, .a-ask, .a-selpop { border-radius: var(--r-md); }
 .menu-list, .account-menu, .a-selpop { overflow: hidden; }
 .note { border-radius: var(--r-md); }
 

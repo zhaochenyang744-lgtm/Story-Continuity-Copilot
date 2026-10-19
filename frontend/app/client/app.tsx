@@ -13,7 +13,7 @@ import { WorksPage } from "./pages/works";
 import { NewWorkPage } from "./pages/new-work";
 import { ImportPage } from "./pages/import";
 import { AuthorHomePage } from "./pages/account";
-import { isSettingsItem, SettingsPage } from "./pages/settings";
+import { isSettingsItem, settingsAliases, SettingsPage } from "./pages/settings";
 import { NotFoundPage, TutorialCompletePage } from "./pages/misc";
 import { PrivacyPage } from "./pages/privacy";
 import { ProjectFrame } from "./project/frame";
@@ -189,7 +189,11 @@ export function App() {
     if (user && signedOutOnlyPaths.includes(pathname)) { router.replace("/"); return; }
     // The addresses of the single 个人信息 and 账号安全 pages (before v1.8.0) still lead somewhere.
     if (user && pathname === "/account/profile") { router.replace("/account"); return; }
-    if (user && pathname === "/account/security") { router.replace("/settings/security"); return; }
+    if (user && pathname === "/account/security") { router.replace("/settings/account"); return; }
+    // And those of the five settings items before v1.8.1.
+    const oldItem = pathname.startsWith("/settings/") ? pathname.slice("/settings/".length) : "";
+    const settingsAlias = Object.hasOwn(settingsAliases, oldItem) ? settingsAliases[oldItem] : undefined;
+    if (user && settingsAlias) { router.replace(`/settings/${settingsAlias}`); return; }
     if (user && pathname === "/") request<Onboarding>("/onboarding").then(applyOnboarding).catch(fail);
   }, [ready, user, pathname, router, applyOnboarding, fail]);
   useEffect(() => {
@@ -317,10 +321,10 @@ export function App() {
   else if (pathname === "/verify-email") body = <VerifyEmailPage go={(href) => router.push(href)} refreshUser={updateUser} />;
   else if (pathname === "/privacy") body = <PrivacyPage signedIn={Boolean(user)} go={(href) => (user ? go(href) : router.push(href))} />;
   else if (!user) body = <AuthPage register={pathname === "/register"} busy={busy} error={error} submit={submitAuth} visitor={enterVisitor} go={(href) => { setError(null); setNotice(""); router.push(href); }} />;
-  else if (pathname === "/account/profile" || pathname === "/account/security") body = <div className="boot" role="status">正在载入…</div>;
+  else if (pathname === "/account/profile" || pathname === "/account/security" || (parts[0] === "settings" && parts.length === 2 && Object.hasOwn(settingsAliases, parts[1]))) body = <div className="boot" role="status">正在载入…</div>;
   else if (pathname === "/account") body = <AuthorHomePage user={user} go={go} fail={fail} leaveToRegister={() => performLogout("/register")} />;
   else if (parts[0] === "settings" && parts.length <= 2 && (parts[1] === undefined || isSettingsItem(parts[1])))
-    body = <SettingsPage user={user} updateUser={updateUser} usage={usage} item={isSettingsItem(parts[1] ?? "") ? (parts[1] as Parameters<typeof SettingsPage>[0]["item"]) : "profile"} go={go} setDirty={(dirty) => { settingsDirty.current = dirty; }} leaveTo={(to) => performLogout(to)} />;
+    body = <SettingsPage user={user} updateUser={updateUser} usage={usage} item={isSettingsItem(parts[1] ?? "") ? (parts[1] as Parameters<typeof SettingsPage>[0]["item"]) : "general"} go={go} setDirty={(dirty) => { settingsDirty.current = dirty; }} leaveTo={(to) => performLogout(to)} />;
   else if (pathname === "/onboarding/complete") body = <TutorialCompletePage go={(href) => { p.clear(); window.scrollTo(0, 0); router.replace(href); }} />;
   else if (!projectId)
     body = pathname === "/projects/new" ? <NewWorkPage fail={fail} go={go} />
@@ -451,8 +455,8 @@ export function App() {
         </Dialog>
       )}
       {settingsLeave && (
-        <Dialog title="资料还没保存" close={() => setSettingsLeave(null)}>
-          <p>个人资料有改动还没保存，现在离开会丢掉它们。</p>
+        <Dialog title="资料没能保存" close={() => setSettingsLeave(null)}>
+          <p>个人资料有改动没能保存，现在离开会丢掉它们。</p>
           <div className="dialog-actions">
             <Button kind="primary" onClick={() => {
               const target = settingsLeave;

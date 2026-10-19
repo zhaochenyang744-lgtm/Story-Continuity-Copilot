@@ -2,7 +2,7 @@
 
 AI continuity checks and a writing assistant for long-form fiction: it reads a new chapter against everything written before it, flags contradictions and claims the earlier text cannot support, answers questions about the work with the passages it read, and leaves every decision to the author.
 
-**Current version: v1.8.0**; see [version and deployment](#version-and-deployment). [Current product and verification scope](docs/current-product.md).
+**Current version: v1.8.1**; see [version and deployment](#version-and-deployment). [Current product and verification scope](docs/current-product.md).
 
 ## What it does
 
@@ -22,7 +22,7 @@ The work has five tabs: **概览 / Overview · 写作 / Writing · 章节 / Chap
   The steps the assistant takes are shown as it works. A task takes at most 8 steps and ¥0.30, and a question can have two follow-ups. Visitors can use it on the sample work three times per 24 hours.
 - **Author home and settings (new in v1.8.0):**
   - **Home (`/account`):** a writing calendar, the chapter in progress, works and a feed of recent checks and fact changes.
-  - **Settings (`/settings`):** profile, password change, daily usage, preferences, and export of all works.
+  - **Settings (`/settings`):** four sections (general, account, usage, data): name and bio that save as you leave the box, theme and text size, password change, daily usage, and export of all works. The author's badge is the first character of their display name.
 - **Writing:** rich-text and focus writing, server-side draft autosave, checks with source passages and plan comparison.
   - Findings distinguish clear conflicts, possible conflicts, state changes (shown as 「状态更新」) and insufficient evidence.
   - The author can keep a finding as intended, mark it as not a problem, apply the suggestion or edit the text. The available actions depend on the finding.
@@ -74,8 +74,13 @@ One bar, process lines or notes stating story content (0.0475, bar ≤ 0.05), wa
 
 ## Version and deployment
 
-Production runs **v1.7.0**, release `v170-8cd1dbd-20261010` ([deployment record](docs/deployment-2026-10-10-v170.md)), until v1.8.0 is deployed. The v1.8.0 release ID and deployment record are added at deployment.
+Production runs **v1.8.0**, release `v180-c674227-20261019` ([deployment record](docs/deployment-2026-10-19-v180.md)), until v1.8.1 is deployed. The v1.8.1 release ID and deployment record are added at deployment.
 
+- **v1.8.1:**
+  - Settings in four sections (general, account, usage, data), with each row's label on the left and its control on the right; name and bio save as you leave the box. The old settings addresses lead to the new sections.
+  - The four portrait avatars are replaced by the first character of the display name.
+  - The assistant's note keeps its "there was an instruction for the assistant in the material" line only when the material it read holds one.
+  - Fixes: the privacy page date, the bio counter, and a console error when the theme sweep is interrupted.
 - **v1.8.0:**
   - The writing assistant (ask, pre-writing recap, help me fix this) with visible steps, follow-up questions, per-task limits and a visitor allowance.
   - Author home and settings pages: writing calendar, usage, password change, export of all works.
@@ -88,7 +93,6 @@ Production runs **v1.7.0**, release `v170-8cd1dbd-20261010` ([deployment record]
   - Mark for revision, and automatic reuse of eligible decisions.
   - Author materials, revision plans and writing tips are removed.
   - Writing and checks work at window widths of 768 px and above.
-- **v1.6.1:** server-side draft autosave, checked drafts in the chapter timeline, chapter and character counts in the works list, and check readiness on the overview.
 
 Earlier releases remain in Git tags; the [documentation index](docs/README.md) lists what is kept.
 

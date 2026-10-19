@@ -107,7 +107,7 @@ test("作者主页：名字、简介、四个数字、写作日历、这一年�
   await expect(page).toHaveURL(new RegExp(`/projects/${second}/workspace$`));
   await page.goBack();
   await page.getByRole("button", { name: "编辑资料", exact: true }).click();
-  await expect(page).toHaveURL(/\/settings\/profile$/);
+  await expect(page).toHaveURL(/\/settings\/general$/);
   await page.goto("/account");
   await page.getByRole("button", { name: "设置", exact: true }).click();
   await expect(page).toHaveURL(/\/settings$/);
@@ -122,7 +122,7 @@ test("作者主页：没有草稿时没有「正在写」；没写简介时是�
   await expect(page.locator(".author-figs .v.blue")).toHaveText("0");
   await expect(page.getByText("还没有动态", { exact: false })).toBeVisible();
   await page.getByRole("button", { name: "写一句介绍自己", exact: true }).click();
-  await expect(page).toHaveURL(/\/settings\/profile$/);
+  await expect(page).toHaveURL(/\/settings\/general$/);
   // A work with an empty draft is not being written either.
   await createWorkByApi(page, { title: "空白的书" });
   await page.goto("/account");
@@ -164,17 +164,25 @@ test("访客的作者主页：最上面一条横幅，没有简介可写，不�
   await expect(page.getByRole("heading", { level: 1, name: "创建账号", exact: true })).toBeVisible();
 });
 
-test("旧地址：/account/profile 去作者主页，/account/security 去设置的账号与安全", async ({ page }) => {
+test("旧地址：/account/profile 去作者主页，/account/security 和设置的旧五项都去现在的那一项", async ({ page }) => {
   await registerAccount(page, "legacy");
   await page.goto("/account/profile");
   await expect(page).toHaveURL(/\/account$/);
   await expect(page.getByRole("heading", { level: 1, name: "E2E 作者", exact: true })).toBeVisible();
   await page.goto("/account/security");
-  await expect(page).toHaveURL(/\/settings\/security$/);
-  await expect(page.getByRole("heading", { level: 2, name: "账号与安全", exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/settings\/account$/);
+  await expect(page.getByRole("heading", { level: 2, name: "账号", exact: true })).toBeVisible();
   // The old address is replaced, not stacked: back leaves for the page before it.
   await page.goBack();
   await expect(page).not.toHaveURL(/\/account\/security$/);
+  // The settings items before v1.8.1.
+  for (const [old, now, heading] of [["profile", "general", "通用"], ["preferences", "general", "通用"], ["security", "account", "账号"]] as const) {
+    await page.goto(`/settings/${old}`);
+    await expect(page).toHaveURL(new RegExp(`/settings/${now}$`));
+    await expect(page.getByRole("heading", { level: 2, name: heading, exact: true })).toBeVisible();
+  }
+  await page.goto("/settings/constructor");
+  await expect(page.getByRole("heading", { level: 1, name: /找不到|404/ })).toBeVisible();
 });
 
 test("头像菜单：作者主页、设置、退出登录三项，访客也一样", async ({ page, browser }) => {
@@ -193,12 +201,13 @@ test("头像菜单：作者主页、设置、退出登录三项，访客也一�
   await visitor.context().close();
 });
 
-test("设置：五项各有自己的地址，/settings 是个人资料，刷新后停在原来那一项", async ({ page }) => {
+test("设置：四项各有自己的地址，/settings 是通用，刷新后停在原来那一项", async ({ page }) => {
   await registerAccount(page, "nav");
   await page.goto("/settings");
   const nav = settingsNav(page);
-  await expect(nav.getByRole("button", { name: "个人资料", exact: true })).toHaveAttribute("aria-current", "page");
-  for (const [name, path, heading] of [["账号与安全", "security", "账号与安全"], ["用量", "usage", "用量"], ["偏好", "preferences", "偏好"], ["数据", "data", "数据"], ["个人资料", "profile", "个人资料"]] as const) {
+  await expect(nav.getByRole("button", { name: "通用", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(nav.locator(".settings-links").getByRole("button")).toHaveText(["通用", "账号", "用量", "数据"]);
+  for (const [name, path, heading] of [["账号", "account", "账号"], ["用量", "usage", "用量"], ["数据", "data", "数据"], ["通用", "general", "通用"]] as const) {
     await nav.getByRole("button", { name, exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/settings/${path}$`));
     await page.reload();
@@ -211,62 +220,88 @@ test("设置：五项各有自己的地址，/settings 是个人资料，刷新�
   await expect(page.getByRole("heading", { level: 1, name: /找不到|404/ })).toBeVisible();
 });
 
-test("个人资料：直接是表单，有改动才能保存，简介 60 字，保存后主页和顶栏跟着变", async ({ page }) => {
+test("个人资料：名字和简介离开输入框就保存，简介 60 字，头像是名字的第一个字，主页和顶栏跟着变", async ({ page }) => {
   const { account } = await registerAccount(page, "profile");
-  await page.goto("/settings/profile");
+  await page.goto("/settings/general");
   const name = page.getByRole("textbox", { name: "显示名称", exact: true });
   const bio = page.getByRole("textbox", { name: "简介", exact: true });
-  const save = page.getByRole("button", { name: "保存", exact: true });
+  const badge = page.locator(".settings .avatar");
   await expect(name).toHaveValue("E2E 作者");
   await expect(bio).toHaveValue("");
-  await expect(page.getByText(/^0\s*\/ 60$/)).toBeVisible();
-  await expect(save).toBeDisabled();
-  await shot(page, "settings-profile");
+  await expect(page.locator("#bio-count")).toHaveText(/^0\s*\/ 60$/);
+  await expect(badge).toHaveText("E");
+  await expect(page.getByRole("button", { name: /^(保存|取消)$/ })).toHaveCount(0);
+  await expect(page.getByRole("radio")).toHaveCount(0);
+  await shot(page, "settings-general");
 
+  // The name saves when the author leaves the box.
   const before = (await api(page).get("/auth/session")).user;
   await name.fill("夜航的笔名");
-  await bio.fill("写近未来的港口城市，和住在里面的人。");
-  await expect(page.getByText(/^18\s*\/ 60$/)).toBeVisible();
-  await expect(save).toBeEnabled();
-  await page.getByRole("radio", { name: "书页玫" }).check({ force: true });
-  await save.click();
-  await expect(page.getByText("已保存。", { exact: true })).toBeVisible();
-  await expect(save).toBeDisabled();
+  await expect(badge).toHaveText("夜");
+  await bio.click();
+  await expect(page.getByRole("status").filter({ hasText: "已保存" })).toBeVisible();
   await expect(accountMenuButton(page)).toHaveAccessibleName("账号菜单：夜航的笔名");
+  await expect(accountMenuButton(page).locator(".avatar")).toHaveText("夜");
+  // The introduction too; Enter does the same as leaving.
+  await bio.fill("写近未来的港口城市，和住在里面的人。");
+  await expect(page.locator("#bio-count")).toHaveText(/^18\s*\/ 60$/);
+  await bio.press("Enter");
+  await expect(bio).not.toBeFocused();
+  await expect.poll(async () => (await api(page).get("/auth/session")).user.bio).toBe("写近未来的港口城市，和住在里面的人。");
   const after = (await api(page).get("/auth/session")).user;
-  expect(after).toMatchObject({ display_name: "夜航的笔名", bio: "写近未来的港口城市，和住在里面的人。", avatar_preset: "folio_rose", account_name: account });
-  expect(after.profile_revision).toBe(before.profile_revision + 1);
+  expect(after).toMatchObject({ display_name: "夜航的笔名", bio: "写近未来的港口城市，和住在里面的人。", avatar_preset: before.avatar_preset, account_name: account });
+  expect(after.profile_revision).toBe(before.profile_revision + 2);
+  // Leaving a box unchanged saves nothing.
+  await name.click();
+  await bio.click();
+  await page.locator(".settings-pane").click({ position: { x: 4, y: 4 } });
+  expect((await api(page).get("/auth/session")).user.profile_revision).toBe(after.profile_revision);
   await page.goto("/account");
   await expect(page.getByRole("heading", { level: 1, name: "夜航的笔名", exact: true })).toBeVisible();
   await expect(page.getByText("写近未来的港口城市，和住在里面的人。", { exact: true })).toBeVisible();
+  await expect(page.locator(".avatar-xl")).toHaveText("夜");
 
-  // A bio of 61 characters cannot be saved; the counter says so.
-  await page.goto("/settings/profile");
+  // A bio of 61 characters and an empty name are not saved, and say why.
+  await page.goto("/settings/general");
   await bio.fill("写".repeat(61));
-  await expect(page.getByText(/^61\s*\/ 60$/)).toBeVisible();
-  await expect(save).toBeDisabled();
-  // Cancel puts back what is saved.
-  await name.fill("不想保存的名字");
-  await page.getByRole("button", { name: "取消", exact: true }).click();
-  await expect(name).toHaveValue("夜航的笔名");
-  await expect(bio).toHaveValue("写近未来的港口城市，和住在里面的人。");
+  await expect(page.locator("#bio-count")).toHaveText(/^61\s*\/ 60$/);
+  await expect(page.locator("#bio-count .over")).toHaveText("61");
+  await name.click();
+  await expect(page.getByRole("alert").filter({ hasText: "简介最多 60 个字。" })).toBeVisible();
+  await name.fill("");
+  await bio.click();
+  await expect(page.getByRole("alert").filter({ hasText: "名字不能是空的。" })).toBeVisible();
   expect((await api(page).get("/auth/session")).user.profile_revision).toBe(after.profile_revision);
+  // The counter sits on one line, at the right edge of the box.
+  const box = await bio.boundingBox();
+  const count = await page.locator("#bio-count").boundingBox();
+  expect(count!.height).toBeLessThan(20);
+  expect(Math.abs(count!.x + count!.width - (box!.x + box!.width))).toBeLessThan(2);
 });
 
-test("个人资料：有没保存的改动时，换设置项、去别的页、退出和刷新都会提醒", async ({ page }) => {
+test("个人资料：没能保存的改动，换设置项、去别的页、退出和刷新都会提醒；能保存的改动直接存好", async ({ page }) => {
   await registerAccount(page, "guard");
-  await page.goto("/settings/profile");
+  await page.goto("/settings/general");
   const name = page.getByRole("textbox", { name: "显示名称", exact: true });
-  await name.fill("还没存的名字");
-  const dialog = page.getByRole("dialog", { name: "资料还没保存", exact: true });
+  // Typed, then a click elsewhere in the settings: saved on the way, nothing asked.
+  await name.fill("顺手存好的名字");
+  await settingsNav(page).getByRole("button", { name: "用量", exact: true }).click();
+  await expect(page).toHaveURL(/\/settings\/usage$/);
+  await expect.poll(async () => (await api(page).get("/auth/session")).user.display_name).toBe("顺手存好的名字");
+
+  await settingsNav(page).getByRole("button", { name: "通用", exact: true }).click();
+  await name.fill("");
+  await name.press("Tab");
+  await expect(page.getByRole("alert").filter({ hasText: "名字不能是空的。" })).toBeVisible();
+  const dialog = page.getByRole("dialog", { name: "资料没能保存", exact: true });
   // Another item of the settings.
-  await settingsNav(page).getByRole("button", { name: "偏好", exact: true }).click();
+  await settingsNav(page).getByRole("button", { name: "账号", exact: true }).click();
   await expect(dialog).toBeVisible();
   await shot(page, "settings-leave-dialog");
   await dialog.getByRole("button", { name: "留在这里", exact: true }).click();
   await expect(dialog).toHaveCount(0);
-  await expect(page).toHaveURL(/\/settings\/profile$/);
-  await expect(name).toHaveValue("还没存的名字");
+  await expect(page).toHaveURL(/\/settings\/general$/);
+  await expect(name).toHaveValue("");
   // Another page.
   await topNav(page).getByRole("button", { name: "首页", exact: true }).click();
   await expect(dialog).toBeVisible();
@@ -282,11 +317,11 @@ test("个人资料：有没保存的改动时，换设置项、去别的页、�
   await page.evaluate(() => { window.location.reload(); });
   expect(await warned).toBe(true);
   // Leaving is a choice: 放弃修改并离开.
-  await settingsNav(page).getByRole("button", { name: "偏好", exact: true }).click();
+  await settingsNav(page).getByRole("button", { name: "账号", exact: true }).click();
   await dialog.getByRole("button", { name: "放弃修改并离开", exact: true }).click();
-  await expect(page).toHaveURL(/\/settings\/preferences$/);
-  expect((await api(page).get("/auth/session")).user.display_name).toBe("E2E 作者");
-  // Nothing is asked once the form is clean again.
+  await expect(page).toHaveURL(/\/settings\/account$/);
+  expect((await api(page).get("/auth/session")).user.display_name).toBe("顺手存好的名字");
+  // Nothing is asked once the change is gone.
   await topNav(page).getByRole("button", { name: "首页", exact: true }).click();
   await expect(page).toHaveURL(/\/$/);
   await expect(dialog).toHaveCount(0);
@@ -294,7 +329,7 @@ test("个人资料：有没保存的改动时，换设置项、去别的页、�
 
 test("个人资料：访客不能改，只有一段说明", async ({ page }) => {
   await startVisitor(page);
-  await page.goto("/settings/profile");
+  await page.goto("/settings/general");
   await expect(page.getByText("访客空间不能修改个人资料", { exact: false })).toBeVisible();
   await expect(page.getByRole("textbox")).toHaveCount(0);
   const user = (await api(page).get("/auth/session")).user;
@@ -302,9 +337,9 @@ test("个人资料：访客不能改，只有一段说明", async ({ page }) => 
   expect(edit.status).toBe(403);
 });
 
-test("账号与安全：修改密码，旧密码错、两次不一致、不合规都挡住，成功后当前会话不退出", async ({ page }) => {
+test("账号：修改密码，旧密码错、两次不一致、不合规都挡住，成功后当前会话不退出", async ({ page }) => {
   const { account, password } = await registerAccount(page, "password");
-  await page.goto("/settings/security");
+  await page.goto("/settings/account");
   const row = page.locator(".row").filter({ hasText: "密码" }).first();
   await expect(row).toContainText("注册时设置");
   await expect(page.getByText("只在一处保持登录")).toBeVisible();
@@ -364,9 +399,9 @@ test("账号与安全：修改密码，旧密码错、两次不一致、不合�
   await other.context().close();
 });
 
-test("账号与安全：忘了旧密码的链接去邮箱找回", async ({ page }) => {
+test("账号：忘了旧密码的链接去邮箱找回", async ({ page }) => {
   await registerAccount(page, "forgot");
-  await page.goto("/settings/security");
+  await page.goto("/settings/account");
   await page.getByRole("button", { name: "修改密码", exact: true }).click();
   await page.getByRole("button", { name: "退出登录并找回密码", exact: true }).click();
   await expect(page).toHaveURL(/\/password-reset$/);
@@ -374,10 +409,10 @@ test("账号与安全：忘了旧密码的链接去邮箱找回", async ({ page 
   expect((await api(page).raw("GET", "/auth/session")).status).toBe(401);
 });
 
-test("账号与安全：当前恢复邮箱和状态，更换邮箱后变成未验证并收到新的验证邮件，可以重新发送", async ({ page }) => {
+test("账号：当前恢复邮箱和状态，更换邮箱后变成未验证并收到新的验证邮件，可以重新发送", async ({ page }) => {
   const { email } = await registerAccount(page, "security");
-  await page.goto("/settings/security");
-  await expect(page.getByRole("heading", { level: 2, name: "账号与安全", exact: true })).toBeVisible();
+  await page.goto("/settings/account");
+  await expect(page.getByRole("heading", { level: 2, name: "账号", exact: true })).toBeVisible();
   const first = (await api(page).get("/auth/session")).user.recovery_email;
   expect(first).toMatchObject({ configured: true, verified: false });
   await expect(page.getByText(first.masked, { exact: true })).toBeVisible();
@@ -386,7 +421,7 @@ test("账号与安全：当前恢复邮箱和状态，更换邮箱后变成未�
   // Verify it, so that the change below visibly takes the verification away.
   await page.goto(await mailLink(page, "verify_email", email));
   await expect(page.getByText("恢复邮箱验证好了，可以用来找回密码。", { exact: true })).toBeVisible();
-  await page.goto("/settings/security");
+  await page.goto("/settings/account");
   await expect(page.getByText("已验证", { exact: true })).toBeVisible();
   expect((await api(page).get("/auth/session")).user.recovery_email.verified).toBe(true);
 
@@ -425,16 +460,16 @@ test("账号与安全：当前恢复邮箱和状态，更换邮箱后变成未�
   await page.goto(await mailLink(page, "verify_email", newEmail));
   await expect(page.getByText("恢复邮箱验证好了，可以用来找回密码。", { exact: true })).toBeVisible();
   expect((await api(page).get("/auth/session")).user.recovery_email.verified).toBe(true);
-  await page.goto("/settings/security");
+  await page.goto("/settings/account");
   await expect(page.getByText("已验证", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "更换", exact: true }).click();
   await expect(page.getByRole("button", { name: "重新发送验证", exact: true })).toHaveCount(0);
 });
 
-test("访客的账号与安全：不能绑定恢复邮箱，没有密码", async ({ page }) => {
+test("访客的账号：不能绑定恢复邮箱，没有密码", async ({ page }) => {
   await startVisitor(page);
-  await page.goto("/settings/security");
-  await expect(page.getByRole("heading", { level: 2, name: "账号与安全", exact: true })).toBeVisible();
+  await page.goto("/settings/account");
+  await expect(page.getByRole("heading", { level: 2, name: "账号", exact: true })).toBeVisible();
   await expect(page.getByText("访客空间不能绑定恢复邮箱，也没有密码。注册个人账号后就可以绑定。", { exact: true })).toBeVisible();
   await expect(page.getByRole("textbox")).toHaveCount(0);
   await expect(page.getByRole("button", { name: /修改密码|更换|绑定/ })).toHaveCount(0);
@@ -452,7 +487,7 @@ test("用量：近 24 小时还能检查多少字、恢复时间、近 7 天两�
   await api(page).post(`/test/v180/users/${me.id}/usage`, { kind: "assistant_task", chars: 500, hours_ago: 0.1 });
   await api(page).post(`/test/v180/users/${me.id}/usage`, { kind: "continuity", chars: 800, hours_ago: 0.05 });
   await page.goto("/settings/usage");
-  await expect(page.getByText("近 24 小时还能检查", { exact: true })).toBeVisible();
+  await expect(page.getByText("还能检查", { exact: true })).toBeVisible();
   const usage = await api(page).get("/account/usage");
   expect(usage.check_chars_used).toBe(4500);
   await expect(page.getByTestId("usage-remaining")).toContainText(usage.check_chars_remaining.toLocaleString("en-US"));
@@ -489,9 +524,9 @@ test("用量：访客看到的是访客的次数额度", async ({ page }) => {
   await expect(page.getByRole("list", { name: "近 7 天每天用掉的字数" })).toHaveCount(0);
 });
 
-test("偏好：主题三态，顶栏按钮和设置同步，跟随系统时系统一变就跟着变", async ({ page }) => {
+test("外观：主题三态，顶栏按钮和设置同步，跟随系统时系统一变就跟着变", async ({ page }) => {
   await registerAccount(page, "theme");
-  await page.goto("/settings/preferences");
+  await page.goto("/settings/general");
   const themes = group(page, "主题");
   const html = page.locator("html");
   const stored = () => page.evaluate(() => localStorage.getItem("story-continuity:theme"));
@@ -534,9 +569,29 @@ test("偏好：主题三态，顶栏按钮和设置同步，跟随系统时系�
   await expect(page.getByText("跟随系统设置", { exact: true })).toBeVisible();
 });
 
-test("偏好：访客也能用，设置存在本机，localStorage 不可用时也不出错", async ({ page }) => {
+test("顶栏的主题按钮：系统是深色、还没选过时，按钮写切到日间，第一下就切过去；连点也不报错", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
+  await page.emulateMedia({ colorScheme: "dark" });
+  await registerAccount(page, "darksys");
+  await page.goto("/");
+  const html = page.locator("html");
+  await expect(html).toHaveAttribute("data-theme", "night");
+  const toDay = page.getByRole("button", { name: "切换到日间模式", exact: true });
+  await expect(toDay).toBeVisible();
+  await toDay.click();
+  await expect(html).toHaveAttribute("data-theme", "day");
+  // Quick clicks interrupt the sweep; the theme still lands and nothing is reported.
+  for (let index = 0; index < 4; index += 1) await page.locator(".theme-switch").click();
+  await expect(html).toHaveAttribute("data-theme", "day");
+  await page.waitForTimeout(800);
+  expect(errors.filter((text) => /Transition|AbortError/.test(text))).toEqual([]);
+});
+
+test("外观：访客也能用，设置存在本机，localStorage 不可用时也不出错", async ({ page }) => {
   await startVisitor(page);
-  await page.goto("/settings/preferences");
+  await page.goto("/settings/general");
   await group(page, "主题").getByRole("button", { name: "深色", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "night");
   await group(page, "正文字号").getByRole("button", { name: "大", exact: true }).click();
@@ -550,7 +605,7 @@ test("偏好：访客也能用，设置存在本机，localStorage 不可用时�
   const errors: string[] = [];
   blocked.on("pageerror", (error) => errors.push(error.message));
   await startVisitor(blocked);
-  await blocked.goto("/settings/preferences");
+  await blocked.goto("/settings/general");
   await group(blocked, "主题").getByRole("button", { name: "深色", exact: true }).click();
   await expect(blocked.locator("html")).toHaveAttribute("data-theme", "night");
   await group(blocked, "正文字号").getByRole("button", { name: "小", exact: true }).click();
@@ -559,15 +614,15 @@ test("偏好：访客也能用，设置存在本机，localStorage 不可用时�
   await blocked.context().close();
 });
 
-test("偏好：正文字号小、中、大改变写作页的字，中就是原来的字号", async ({ page }) => {
+test("外观：正文字号小、中、大改变写作页的字，中就是原来的字号", async ({ page }) => {
   await registerAccount(page, "size");
   const work = await createWorkByApi(page, { title: "字号试验" });
   const sizeOfEditor = async () => parseFloat(await page.getByRole("textbox", { name: "草稿正文", exact: true }).evaluate((node) => getComputedStyle(node).fontSize));
-  await page.goto("/settings/preferences");
+  await page.goto("/settings/general");
   const sizes = group(page, "正文字号");
   await expect(sizes.getByRole("button", { name: "中", exact: true })).toHaveAttribute("aria-pressed", "true");
   const read = async (choice: string, expected: number) => {
-    await page.goto("/settings/preferences");
+    await page.goto("/settings/general");
     await sizes.getByRole("button", { name: choice, exact: true }).click();
     await page.goto(`/projects/${work}/workspace`);
     await expect(page.getByRole("textbox", { name: "草稿正文", exact: true })).toBeVisible();
@@ -582,7 +637,7 @@ test("偏好：正文字号小、中、大改变写作页的字，中就是原�
   await expect(page.getByRole("textbox", { name: "草稿正文", exact: true })).toBeVisible();
   expect(await sizeOfEditor()).toBeCloseTo(17, 0);
   // Back to 中: the attribute stays out of the way and the size is the old one.
-  await page.goto("/settings/preferences");
+  await page.goto("/settings/general");
   await sizes.getByRole("button", { name: "中", exact: true }).click();
   expect(await page.evaluate(() => localStorage.getItem("story-continuity:font-size"))).toBeNull();
 });
@@ -593,7 +648,7 @@ test("数据：导出全部作品下载一个 zip，不含示例作品；删除�
   await createWorkByApi(page, { title: "纸灯" });
   await saveDraft(page, first, "还没入库的草稿EXPORT-ME。");
   await page.goto("/settings/data");
-  await expect(page.getByText("单部作品仍可在作品的“更多”里导出", { exact: true })).toBeVisible();
+  await expect(page.getByText("单部作品仍可在作品的“更多”里导出。", { exact: true })).toBeVisible();
   await expect(page.getByText("暂不提供", { exact: true })).toBeVisible();
   await expect(page.getByText("删除账号", { exact: true })).toBeVisible();
   await shot(page, "settings-data");
@@ -645,7 +700,7 @@ test("窄屏 375：作者主页单列，设置的左栏变成一行能横向滚�
   expect(new Set(works).size).toBe(1);
   await shot(page, "author-home-narrow");
 
-  await page.goto("/settings/profile");
+  await page.goto("/settings/general");
   expect(await overflow()).toBeLessThanOrEqual(0);
   const links = page.locator(".settings-links");
   const box = await links.boundingBox();

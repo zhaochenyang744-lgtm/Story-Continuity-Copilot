@@ -1,112 +1,155 @@
 "use client";
 
-import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, ReactNode, useEffect, useId, useRef, useState } from "react";
 import { json, labelError, request, type ApiFailure } from "../../api";
 import type { DailyUsage, User } from "../../model";
 import { momentDayLabel, monthDayLabel, shortDay, untilLabel } from "../day";
-import { Avatar, avatarPresets } from "../identity";
+import { Avatar } from "../identity";
 import { type FontSize, setFontSize, setThemeMode, type ThemeMode, usePrefs } from "../prefs";
 import { Button, type CheckUsage, formatCount, Tag } from "../ui";
 
 export const settingsItems = [
-  ["profile", "个人资料"],
-  ["security", "账号与安全"],
+  ["general", "通用"],
+  ["account", "账号"],
   ["usage", "用量"],
-  ["preferences", "偏好"],
   ["data", "数据"],
 ] as const;
 export type SettingsItem = (typeof settingsItems)[number][0];
 export const isSettingsItem = (value: string): value is SettingsItem => settingsItems.some(([id]) => id === value);
+/** The addresses of the five items before v1.8.1, and where each one is now. */
+export const settingsAliases: Record<string, SettingsItem> = { profile: "general", preferences: "general", security: "account" };
 
 const BIO_MAX = 60;
 /** Characters as the author counts them (an emoji or a rare character is one). */
 const length = (text: string) => Array.from(text).length;
 
-/** A row of a settings group: name · the value now · the action. */
-function Row({ name, children, action, danger = false, top = false }: { name: string; children: ReactNode; action?: ReactNode; danger?: boolean; top?: boolean }) {
+/** A row of a settings group: what it is (and a line on it) on the left, the control on the right. */
+function Row({ name, hint, children, wide = false, top = false, danger = false }: { name: string; hint?: ReactNode; children?: ReactNode; wide?: boolean; top?: boolean; danger?: boolean }) {
   return (
-    <div className={`row${danger ? " danger" : ""}${top ? " top" : ""}`}>
-      <span className="k">{name}</span>
-      <div className="v">{children}</div>
-      <span className="a">{action}</span>
+    <div className={`row${wide ? " wide" : ""}${top ? " top" : ""}${danger ? " danger" : ""}`}>
+      <div className="row-text">
+        <span className="k">{name}</span>
+        {hint && <span className="d">{hint}</span>}
+      </div>
+      {children !== undefined && <div className="row-ctl">{children}</div>}
     </div>
   );
 }
 
-function PaneHead({ title, lede }: { title: string; lede: string }) {
-  return <div className="pane-head"><h2>{title}</h2><p className="lede">{lede}</p></div>;
+function Group({ title, note, children }: { title: string; note?: string; children: ReactNode }) {
+  const id = useId();
+  return (
+    <section className="group" aria-labelledby={id}>
+      <div className="group-h"><h3 id={id}>{title}</h3>{note && <span>{note}</span>}</div>
+      {children}
+    </section>
+  );
 }
 
-/** 个人资料: the name, the one-line introduction and the portrait, as a form. */
-function ProfilePane({ user, updateUser, setDirty }: { user: User; updateUser: (user: User) => void; setDirty: (dirty: boolean) => void }) {
-  const visitor = user.account_type === "visitor";
+function PaneHead({ title, lede }: { title: string; lede?: string }) {
+  return <div className="pane-head"><h2>{title}</h2>{lede && <p className="lede">{lede}</p>}</div>;
+}
+
+type ProfileField = "display_name" | "bio";
+
+/** 个人资料: the name and the one-line introduction. Each saves itself when the author leaves the box. */
+function ProfileGroup({ user, updateUser, setDirty }: { user: User; updateUser: (user: User) => void; setDirty: (dirty: boolean) => void }) {
   const [name, setName] = useState(user.display_name);
   const [bio, setBio] = useState(user.bio ?? "");
-  const [avatar, setAvatar] = useState<User["avatar_preset"]>(user.avatar_preset || "continuity_violet");
-  const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-  const changed = name.trim() !== user.display_name || bio.trim() !== (user.bio ?? "") || avatar !== user.avatar_preset;
-  useEffect(() => { setDirty(changed && !visitor); }, [changed, visitor, setDirty]);
+  const [saving, setSaving] = useState<ProfileField | null>(null);
+  const [saved, setSaved] = useState<ProfileField | null>(null);
+  const [error, setError] = useState<{ field: ProfileField; text: string } | null>(null);
+  // Saves run one after another, each on the revision the one before returned.
+  const latest = useRef(user);
+  const queue = useRef<Promise<void>>(Promise.resolve());
+  const mounted = useRef(true);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+  useEffect(() => { latest.current = user; }, [user]);
+  const changed = name.trim() !== user.display_name || bio.trim() !== (user.bio ?? "");
+  // Only a change that could not be saved holds the author back when they leave.
+  useEffect(() => { setDirty(changed && error !== null); }, [changed, error, setDirty]);
   useEffect(() => {
-    if (!changed || visitor) return;
+    if (!changed) return;
     const warn = (event: BeforeUnloadEvent) => event.preventDefault();
     window.addEventListener("beforeunload", warn);
     return () => window.removeEventListener("beforeunload", warn);
-  }, [changed, visitor]);
-  if (visitor) return (
-    <>
-      <PaneHead title="个人资料" lede="名字、简介和头像。" />
-      <p className="note note-info" role="note">访客空间不能修改个人资料。注册个人账号后，可以设置名字、一句简介和头像。</p>
-    </>
-  );
-  const submit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setBusy(true); setMessage(""); setError("");
-    try {
-      const data = await json<{ user: User }>("/auth/profile", "PATCH", { base_profile_revision: user.profile_revision, display_name: name, avatar_preset: avatar, bio });
-      updateUser(data.user);
-      setName(data.user.display_name);
-      setBio(data.user.bio ?? "");
-      setAvatar(data.user.avatar_preset);
-      setMessage("已保存。");
-    } catch (cause) {
-      if ((cause as ApiFailure).code === "profile_revision_conflict") {
-        try { updateUser((await request<{ user: User }>("/auth/session")).user); } catch { /* keep the author's choices */ }
-      }
-      setError(labelError(cause));
-    } finally { setBusy(false); }
+  }, [changed]);
+  const save = (field: ProfileField) => {
+    const value = (field === "display_name" ? name : bio).trim();
+    if (value === (field === "display_name" ? latest.current.display_name : latest.current.bio ?? "")) {
+      if (error?.field === field) setError(null);
+      return;
+    }
+    if (field === "display_name" && !value) { setError({ field, text: "名字不能是空的。" }); return; }
+    if (field === "bio" && length(value) > BIO_MAX) { setError({ field, text: `简介最多 ${BIO_MAX} 个字。` }); return; }
+    queue.current = queue.current.then(async () => {
+      const base = latest.current;
+      if (mounted.current) { setSaving(field); setSaved(null); setError(null); }
+      try {
+        const body = { base_profile_revision: base.profile_revision, display_name: base.display_name, avatar_preset: base.avatar_preset, bio: base.bio ?? "", [field]: value };
+        const data = await json<{ user: User }>("/auth/profile", "PATCH", body);
+        latest.current = data.user;
+        updateUser(data.user);
+        if (!mounted.current) return;
+        if (field === "display_name") setName(data.user.display_name); else setBio(data.user.bio ?? "");
+        setSaved(field);
+      } catch (cause) {
+        if ((cause as ApiFailure).code === "profile_revision_conflict") {
+          try { const fresh = (await request<{ user: User }>("/auth/session")).user; latest.current = fresh; updateUser(fresh); } catch { /* keep the author's text */ }
+        }
+        if (mounted.current) setError({ field, text: labelError(cause) });
+      } finally { if (mounted.current) setSaving(null); }
+    });
+  };
+  const status = (field: ProfileField) => saving === field ? <span className="save-state" role="status">正在保存…</span>
+    : error?.field === field ? <span className="save-state bad" role="alert">{error.text}</span>
+      : saved === field ? <span className="save-state ok" role="status">已保存</span> : null;
+  const commitOnEnter = (event: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.nativeEvent.isComposing) { event.preventDefault(); event.currentTarget.blur(); }
   };
   return (
+    <Group title="个人资料" note="显示在你的作者主页上，只有你自己看得到">
+      <Row name="头像" hint="用显示名称的第一个字">
+        <Avatar user={{ display_name: name.trim() || user.display_name, account_name: user.account_name }} className="avatar-md" />
+      </Row>
+      <Row name="显示名称" hint={status("display_name") ?? "显示在作者主页和右上角"} wide>
+        <input aria-label="显示名称" value={name} onChange={(event) => { setName(event.target.value); setSaved(null); }} onBlur={() => save("display_name")} onKeyDown={commitOnEnter} maxLength={60} autoComplete="nickname" aria-invalid={error?.field === "display_name" || undefined} />
+      </Row>
+      <Row name="简介" hint={status("bio") ?? "一句话介绍自己"} wide top>
+        <textarea aria-label="简介" className="bio-input" value={bio} onChange={(event) => { setBio(event.target.value.replace(/[\r\n]+/g, " ")); setSaved(null); }} onBlur={() => save("bio")} onKeyDown={commitOnEnter} rows={2} aria-describedby="bio-count" aria-invalid={error?.field === "bio" || undefined} />
+        <span id="bio-count" className="char-count" aria-live="polite"><span className={length(bio) > BIO_MAX ? "over" : undefined}>{length(bio)}</span> / {BIO_MAX}</span>
+      </Row>
+    </Group>
+  );
+}
+
+function Segmented<T extends string>({ label, value, items, onChange }: { label: string; value: T; items: readonly (readonly [T, string])[]; onChange: (next: T) => void }) {
+  return (
+    <span className="seg" role="group" aria-label={label}>
+      {items.map(([id, text]) => <button key={id} type="button" aria-pressed={value === id} onClick={() => onChange(id)}>{text}</button>)}
+    </span>
+  );
+}
+
+const themeItems: readonly (readonly [ThemeMode, string])[] = [["day", "浅色"], ["night", "深色"], ["system", "跟随系统"]];
+const sizeItems: readonly (readonly [FontSize, string])[] = [["small", "小"], ["medium", "中"], ["large", "大"]];
+
+/** 通用: the profile, and how the pages look on this device. */
+function GeneralPane({ user, updateUser, setDirty }: { user: User; updateUser: (user: User) => void; setDirty: (dirty: boolean) => void }) {
+  const { mode, fontSize } = usePrefs();
+  return (
     <>
-      <PaneHead title="个人资料" lede="这些会显示在你的作者主页上，只有你自己看得到。" />
-      <form className="settings-form" onSubmit={(event) => void submit(event)}>
-        <div className="group">
-          <Row name="显示名称"><input aria-label="显示名称" value={name} onChange={(event) => { setName(event.target.value); setMessage(""); }} required maxLength={60} autoComplete="name" disabled={busy} /></Row>
-          <Row name="简介" top>
-            <textarea aria-label="简介" className="bio-input" value={bio} onChange={(event) => { setBio(event.target.value.replace(/[\r\n]+/g, " ")); setMessage(""); }} rows={2} disabled={busy} aria-describedby="bio-count" />
-            <p id="bio-count" className="count" aria-live="polite"><span className={length(bio) > BIO_MAX ? "over" : undefined}>{length(bio)}</span> / {BIO_MAX}</p>
-          </Row>
-          <Row name="头像" top>
-            <fieldset className="avatar-picker">
-              <legend className="sr-only">头像</legend>
-              {avatarPresets.map((preset) => (
-                <label key={preset.id} className="avatar-option">
-                  <input className="sr-only" type="radio" name="avatar" value={preset.id} checked={avatar === preset.id} onChange={() => { setAvatar(preset.id); setMessage(""); }} disabled={busy} />
-                  <Avatar user={{ avatar_preset: preset.id }} className="avatar-lg" />
-                  <span>{preset.label}</span>
-                </label>
-              ))}
-            </fieldset>
-          </Row>
-        </div>
-        {error && <p className="inline-error" role="alert">{error}</p>}
-        {message && <p className="inline-ok" role="status">{message}</p>}
-        <div className="form-actions">
-          <Button kind="primary" type="submit" disabled={busy || !changed || length(bio.trim()) > BIO_MAX || !name.trim()} busy={busy}>{busy ? "正在保存" : "保存"}</Button>
-          <Button kind="text" disabled={busy || !changed} onClick={() => { setName(user.display_name); setBio(user.bio ?? ""); setAvatar(user.avatar_preset || "continuity_violet"); setError(""); }}>取消</Button>
-        </div>
-      </form>
+      <PaneHead title="通用" />
+      {user.account_type === "visitor" ? (
+        <Group title="个人资料">
+          <p className="note note-info" role="note">访客空间不能修改个人资料。注册个人账号后，可以设置名字和一句简介。</p>
+        </Group>
+      ) : <ProfileGroup user={user} updateUser={updateUser} setDirty={setDirty} />}
+      <Group title="外观" note="只影响这台设备，换一台设备要重新设">
+        <Row name="主题" hint="跟随系统时，系统换成深色，这里也跟着换"><Segmented label="主题" value={mode} items={themeItems} onChange={setThemeMode} /></Row>
+        <Row name="正文字号" hint="写作页和章节正文的阅读区"><Segmented label="正文字号" value={fontSize} items={sizeItems} onChange={setFontSize} /></Row>
+        <Row name="减少动画" hint="在系统的辅助功能里打开后，页面的动画会停下"><span className="faint">跟随系统设置</span></Row>
+      </Group>
     </>
   );
 }
@@ -176,43 +219,46 @@ function RecoveryEmailForm({ user, updateUser }: { user: User; updateUser: (user
   );
 }
 
-/** 账号与安全: the account, the password, the recovery email, and how signing in works. */
-function SecurityPane({ user, updateUser, leaveTo }: { user: User; updateUser: (user: User) => void; leaveTo: (href: string) => Promise<void> }) {
+/** 账号: the account, the password, the recovery email, and how signing in works. */
+function AccountPane({ user, updateUser, leaveTo }: { user: User; updateUser: (user: User) => void; leaveTo: (href: string) => Promise<void> }) {
   const visitor = user.account_type === "visitor";
   const recovery = user.recovery_email ?? { configured: false, verified: false, masked: null };
   const [changing, setChanging] = useState(false);
   const [editingEmail, setEditingEmail] = useState(false);
   const [notice, setNotice] = useState("");
+  const signedIn = <Row name="登录状态" hint="在别的设备登录后，这里会自动退出"><span className="faint">只在一处保持登录</span></Row>;
   return (
     <>
-      <PaneHead title="账号与安全" lede="登录用的账号，和找回密码的方式。" />
+      <PaneHead title="账号" />
       {visitor ? (
-        <>
+        <Group title="登录与安全">
           <p className="note note-info" role="note">访客空间不能绑定恢复邮箱，也没有密码。注册个人账号后就可以绑定。</p>
-          <div className="group">
-            <Row name="登录状态">只在一处保持登录<small>在别的设备登录后，这里会自动退出</small></Row>
-          </div>
-        </>
+          {signedIn}
+        </Group>
       ) : (
-        <div className="group">
-          <Row name="登录账号" action={<span className="faint">不能修改</span>}><span className="mono">{user.account_name}</span></Row>
-          <Row name="密码" action={!changing && <button type="button" className="link-action" onClick={() => { setChanging(true); setNotice(""); }}>修改密码</button>}>
+        <Group title="登录与安全">
+          <Row name="登录账号" hint="注册时起的，不能修改"><span className="mono">{user.account_name}</span></Row>
+          <Row name="密码" hint={<>
             {user.password_changed_at ? `上次修改：${momentDayLabel(user.password_changed_at)}` : "注册时设置"}
-            {notice && <small className="ok" role="status">{notice}</small>}
+            {notice && <span className="save-state ok d-line" role="status">{notice}</span>}
+          </>}>
+            {!changing && <Button kind="small" onClick={() => { setChanging(true); setNotice(""); }}>修改密码</Button>}
           </Row>
           {changing && <div className="row-sub"><PasswordForm leaveTo={leaveTo} onCancel={() => setChanging(false)} onDone={() => {
             setChanging(false);
             setNotice("密码已修改");
             void request<{ user: User }>("/auth/session").then((data) => updateUser(data.user)).catch(() => undefined);
           }} /></div>}
-          <Row name="恢复邮箱" action={<button type="button" className="link-action" aria-expanded={editingEmail} onClick={() => setEditingEmail((open) => !open)}>{recovery.configured ? "更换" : "绑定"}</button>}>
+          <Row name="恢复邮箱" hint={<>
             <span className="security-email">{recovery.configured ? recovery.masked : "还没绑定"}</span>{" "}
             <Tag tone={recovery.verified ? "solid" : "gap"}>{recovery.verified ? "已验证" : "未验证"}</Tag>
-            <small>只用来找回密码和必要的安全通知</small>
+            <span className="d-line">只用来找回密码和必要的安全通知</span>
+          </>}>
+            <Button kind="small" expanded={editingEmail} onClick={() => setEditingEmail((open) => !open)}>{recovery.configured ? "更换" : "绑定"}</Button>
           </Row>
           {editingEmail && <div className="row-sub"><RecoveryEmailForm user={user} updateUser={updateUser} /></div>}
-          <Row name="登录状态">只在一处保持登录<small>在别的设备登录后，这里会自动退出</small></Row>
-        </div>
+          {signedIn}
+        </Group>
       )}
     </>
   );
@@ -257,61 +303,39 @@ function UsagePane({ user, usage }: { user: User; usage: CheckUsage | null }) {
   return (
     <>
       <PaneHead title="用量" lede="检查和助手用同一个额度，按字数计：检查算它读的字数，助手每问一次算 500 字。额度是滚动的 24 小时，用掉的字数过 24 小时就回来，不是每天 0 点恢复。" />
-      {usage?.account_type === "visitor" ? (
-        <div className="meter-block">
-          <span className="label">访客 · 24 小时内还可检查</span>
-          <span className="big">{usage.checks_remaining}<small>/ {usage.checks_limit} 次</small></span>
-          <span className="bar"><i style={{ width: `${usage.checks_limit ? (usage.checks_remaining / usage.checks_limit) * 100 : 0}%` }} /></span>
-          <span className="sub"><span>每次最多 {formatCount(usage.check_chars_per_check)} 字</span>{usage.assistant_tasks_limit !== undefined && <span>助手还可以问 {usage.assistant_tasks_remaining} / {usage.assistant_tasks_limit} 次</span>}</span>
-          <p className="small-note">注册个人账号后，可以检查更长的章节，也能看到每天的用量。</p>
-        </div>
-      ) : usage?.account_type === "registered" ? (
-        <div className="meter-block">
-          <span className="label">近 24 小时还能检查</span>
-          <span className="big" data-testid="usage-remaining">{formatCount(usage.check_chars_remaining)}<small>/ {formatCount(usage.check_chars_limit)} 字</small></span>
-          <span className="bar"><i style={{ width: `${usage.check_chars_limit ? (usage.check_chars_remaining / usage.check_chars_limit) * 100 : 0}%` }} /></span>
-          <span className="sub">
-            <span>已用 {formatCount(usage.check_chars_used)} 字</span>
-            {daily?.oldest_charge && <span>最早的一笔在 {untilLabel(daily.oldest_charge.recovers_at, now)}后恢复</span>}
-          </span>
-        </div>
-      ) : <p className="loading">正在读取…</p>}
+      <Group title="近 24 小时">
+        {usage?.account_type === "visitor" ? (
+          <div className="meter-block">
+            <span className="label">访客 · 24 小时内还可检查</span>
+            <span className="big">{usage.checks_remaining}<small>/ {usage.checks_limit} 次</small></span>
+            <span className="bar"><i style={{ width: `${usage.checks_limit ? (usage.checks_remaining / usage.checks_limit) * 100 : 0}%` }} /></span>
+            <span className="sub"><span>每次最多 {formatCount(usage.check_chars_per_check)} 字</span>{usage.assistant_tasks_limit !== undefined && <span>助手还可以问 {usage.assistant_tasks_remaining} / {usage.assistant_tasks_limit} 次</span>}</span>
+            <p className="small-note">注册个人账号后，可以检查更长的章节，也能看到每天的用量。</p>
+          </div>
+        ) : usage?.account_type === "registered" ? (
+          <div className="meter-block">
+            <span className="label">还能检查</span>
+            <span className="big" data-testid="usage-remaining">{formatCount(usage.check_chars_remaining)}<small>/ {formatCount(usage.check_chars_limit)} 字</small></span>
+            <span className="bar"><i style={{ width: `${usage.check_chars_limit ? (usage.check_chars_remaining / usage.check_chars_limit) * 100 : 0}%` }} /></span>
+            <span className="sub">
+              <span>已用 {formatCount(usage.check_chars_used)} 字</span>
+              {daily?.oldest_charge && <span>最早的一笔在 {untilLabel(daily.oldest_charge.recovers_at, now)}后恢复</span>}
+            </span>
+          </div>
+        ) : <p className="loading">正在读取…</p>}
+      </Group>
       {!visitor && (
-        <section aria-labelledby="usage-week">
-          <div className="sec-h">
+        <section className="group" aria-labelledby="usage-week">
+          <div className="group-h">
             <h3 id="usage-week">近 7 天</h3>
             <span className="key" aria-hidden="true"><span><i className="c" />检查</span><span><i className="a" />助手</span></span>
           </div>
-          {daily ? <WeekChart daily={daily} /> : failed ? <p className="empty">暂时读不到每天的用量，请稍后再看。</p> : <p className="loading">正在读取…</p>}
-          <p className="small-note">一天从北京时间 0 点算起。</p>
+          <div className="group-body">
+            {daily ? <WeekChart daily={daily} /> : failed ? <p className="empty">暂时读不到每天的用量，请稍后再看。</p> : <p className="loading">正在读取…</p>}
+            <p className="small-note">一天从北京时间 0 点算起。</p>
+          </div>
         </section>
       )}
-    </>
-  );
-}
-
-function Segmented<T extends string>({ label, value, items, onChange }: { label: string; value: T; items: readonly (readonly [T, string])[]; onChange: (next: T) => void }) {
-  return (
-    <span className="seg" role="group" aria-label={label}>
-      {items.map(([id, text]) => <button key={id} type="button" aria-pressed={value === id} onClick={() => onChange(id)}>{text}</button>)}
-    </span>
-  );
-}
-
-const themeItems: readonly (readonly [ThemeMode, string])[] = [["day", "浅色"], ["night", "深色"], ["system", "跟随系统"]];
-const sizeItems: readonly (readonly [FontSize, string])[] = [["small", "小"], ["medium", "中"], ["large", "大"]];
-
-/** 偏好: kept on this device only. */
-function PreferencesPane() {
-  const { mode, fontSize } = usePrefs();
-  return (
-    <>
-      <PaneHead title="偏好" lede="只影响这台设备上的显示，换一台设备要重新设。" />
-      <div className="group">
-        <Row name="主题"><Segmented label="主题" value={mode} items={themeItems} onChange={setThemeMode} /></Row>
-        <Row name="正文字号"><Segmented label="正文字号" value={fontSize} items={sizeItems} onChange={setFontSize} /><small>写作页和章节正文的阅读区</small></Row>
-        <Row name="减少动画">跟随系统设置</Row>
-      </div>
     </>
   );
 }
@@ -363,17 +387,15 @@ function DataPane({ user }: { user: User }) {
   return (
     <>
       <PaneHead title="数据" lede="你的作品是你的。" />
-      <div className="group">
-        <Row name="导出全部作品" action={<Button kind="small" disabled={visitor || busy} busy={busy} onClick={() => void download()}>{busy ? "正在生成…" : "导出"}</Button>}>
-          全部作品的正文、草稿、事实和计划，打成一个压缩包。不含示例作品。
-          <small>{visitor ? "访客空间不能导出全部作品；注册个人账号后可以使用。" : "单部作品仍可在作品的“更多”里导出"}</small>
+      <Group title="导出">
+        <Row name="导出全部作品" hint={<>全部作品的正文、草稿、事实和计划，打成一个压缩包，不含示例作品。<span className="d-line">{visitor ? "访客空间不能导出全部作品；注册个人账号后可以使用。" : "单部作品仍可在作品的“更多”里导出。"}</span></>}>
+          <Button kind="small" disabled={visitor || busy} busy={busy} onClick={() => void download()}>{busy ? "正在生成…" : "导出"}</Button>
         </Row>
-        <Row name="删除账号" danger action={<span className="faint">暂不提供</span>}>
-          删除账号和全部作品，不能恢复
-          <small>以后再做，这一版先不放</small>
-        </Row>
-      </div>
+      </Group>
       <p className={failed ? "inline-error" : "inline-ok"} role={failed ? "alert" : "status"} aria-live="polite" hidden={!message}>{message}</p>
+      <Group title="删除">
+        <Row name="删除账号" hint="删除账号和全部作品，不能恢复。这一版先不提供。" danger><span className="faint">暂不提供</span></Row>
+      </Group>
     </>
   );
 }
@@ -402,10 +424,9 @@ export function SettingsPage({ user, updateUser, usage, item, go, setDirty, leav
         <button type="button" className="link back" onClick={() => go("/account")}>← 回到作者主页</button>
       </nav>
       <div className="settings-pane">
-        {item === "profile" && <ProfilePane user={user} updateUser={updateUser} setDirty={setDirty} />}
-        {item === "security" && <SecurityPane user={user} updateUser={updateUser} leaveTo={leaveTo} />}
+        {item === "general" && <GeneralPane user={user} updateUser={updateUser} setDirty={setDirty} />}
+        {item === "account" && <AccountPane user={user} updateUser={updateUser} leaveTo={leaveTo} />}
         {item === "usage" && <UsagePane user={user} usage={usage} />}
-        {item === "preferences" && <PreferencesPane />}
         {item === "data" && <DataPane user={user} />}
       </div>
     </section>
